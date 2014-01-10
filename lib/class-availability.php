@@ -12,9 +12,7 @@
 define( 'class_wpp_availability_version', '0.1-alpha' );
 define( 'class_wpp_availability_interface_version', '0.1' );
 
-if( WPP_F::site_has_license( 'class_wpp_availability' ) ) {
-  add_action( 'wpp_init', array( 'class_wpp_availability', 'wpp_init' ) );
-}
+// if( WPP_F::site_has_license( 'class_wpp_availability' ) ) { add_action( 'wpp_init', array( 'class_wpp_availability', 'wpp_init' ) ); }
 
 //** Be sure we do not try to define class twice */
 if( class_exists( 'class_wpp_availability' ) ) {
@@ -29,12 +27,21 @@ if( class_exists( 'class_wpp_availability' ) ) {
  * @package WP-Property
  * @subpackage Availability
  */
-class class_wpp_availability extends WPP_PF {
+class class_wpp_availability extends UsabilityDynamics\WPP\Module {
 
   /**
    * Interface Version
    */
   static protected $interface_version = class_wpp_availability_interface_version;
+
+
+  function __construct() {
+
+
+  }
+
+  function get( $key, $default ) {}
+  function set( $key, $value ) {}
 
   /**
    * Capability to manage the current feature
