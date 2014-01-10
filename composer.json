@@ -1,0 +1,16 @@
+
+{
+  "name": "usabilitydynamics/wp-property-pdf",
+  "version": "2.1.8",
+  "keywords": [ "wp-property" ],
+  "require": {
+    "tecnick.com/tcpdf": "6.0.053"
+  },
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
+    }
+  ]
+}

@@ -125,7 +125,7 @@ class class_wpp_pdf_flyer {
 
     //** Property Overview Page */
     if($current_screen->id == 'property_page_wpp_property_pdf_lists') {
-      wp_enqueue_script( 'wp-property-backend-global' );
+      wp_enqueue_script( 'wpp.admin' );
       wp_enqueue_script('jquery');
       wp_enqueue_script('wpp-jquery-colorpicker');
       wp_enqueue_style('wpp-jquery-colorpicker-css');
@@ -947,7 +947,7 @@ class class_wpp_pdf_flyer {
 
         //**
         // When the .slug_setter input field is modified, we update names of other elements in row
-        // This event also added in wp-property-backend-global.js file but only for new rows [new_row=true],
+        // This event also added in wpp.admin.js file but only for new rows [new_row=true],
         // So be careful to avoid duplicate events functionality
         //*/
         if(window.updateRowNames) {
