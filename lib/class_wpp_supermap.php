@@ -20,6 +20,15 @@ class class_wpp_supermap {
    */
   static protected $capability = "manage_wpp_supermap";
 
+  function __construct() {
+
+
+  }
+
+  function get( $key, $default ) {}
+  function set( $key, $value ) {}
+
+
   /**
    * Special functions that must be called prior to init
    *
