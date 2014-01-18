@@ -1,20 +1,20 @@
 <?php
-/*
-Name: PDF Flyer
-Feature ID: 6
-Version: 2.1.8
-Minimum Core Version: 1.38.3
-Internal Slug: property_pdf
-JS Slug: wpp_property_pdf
-Global Variable: wpp_pdf_flyer
-Class: class_wpp_pdf_flyer
-Description: Create flyers for properties on the fly.
-*/
+/**
+ * Name: PDF Flyer
+ * Feature ID: 6
+ * Version: 2.1.8
+ * Minimum Core Version: 1.38.3
+ * Minimum PHP Version: 5.3
+ * Internal Slug: property_pdf
+ * JS Slug: wpp_property_pdf
+ * Global Variable: wpp_pdf_flyer
+ * Class: class_wpp_pdf_flyer
+ * Description: Create flyers for properties on the fly.
+ *
+ */
 
 /** Class including moved into functions in which it is really required. korotkov@ud */
 /** @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php'); */
-
-
 class class_wpp_pdf_flyer {
 
   /*
@@ -31,10 +31,10 @@ class class_wpp_pdf_flyer {
 
   }
 
-  function get( $key, $default ) {
+  static function get( $key, $default ) {
   }
 
-  function set( $key, $value ) {
+  static function set( $key, $value ) {
   }
 
   /**
@@ -42,7 +42,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function pre_init() {
+  static function pre_init() {
 
     /* Preserve PDF List settings */
     add_filter( 'wpp_settings_save', array( 'class_wpp_pdf_flyer', 'wpp_settings_save' ), 0, 2 );
@@ -61,7 +61,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function init() {
+  static function init() {
     global $wpp_pdf_flyer, $wp_properties;
 
     if( current_user_can( self::$capability ) ) {
@@ -116,7 +116,7 @@ class class_wpp_pdf_flyer {
   /*
    * Adds Custom capability to the current premium feature
    */
-  function add_capability( $capabilities ) {
+  static function add_capability( $capabilities ) {
 
     $capabilities[ self::$capability ] = __( 'Manage PDF Flyer', 'wpp' );
 
@@ -130,7 +130,7 @@ class class_wpp_pdf_flyer {
    * @uses $current_screen global variable
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function admin_enqueue_scripts( $hook ) {
+  static function admin_enqueue_scripts( $hook ) {
     global $current_screen;
 
     //** Property Overview Page */
@@ -147,7 +147,7 @@ class class_wpp_pdf_flyer {
    *
    * @author korotkov@ud
    */
-  function wpp_flyer_pdf_list_page_load() {
+  static function wpp_flyer_pdf_list_page_load() {
 
     //** Default help items */
     $contextual_help[ 'General Settings' ][ ] = '<h3>' . __( 'General Settings', 'wpp' ) . '</h3>';
@@ -172,7 +172,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function add_metabox() {
+  static function add_metabox() {
     add_meta_box( 'wpp_pdf_flyer', __( 'PDF Flyer Options', 'wpp' ),
       array( 'class_wpp_pdf_flyer', 'metabox_options' ), 'property', 'side' );
   }
@@ -182,7 +182,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function metabox_options() {
+  static function metabox_options() {
     global $post_id;
     $disableExclude = get_post_meta( $post_id, 'exclude_from_pdf_lists', true );
     $text           = sprintf( __( 'Exclude %1s from PDF Lists', 'wpp' ), WPP_F::property_label( 'singular' ) );
@@ -197,7 +197,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function save_post( $post_id ) {
+  static function save_post( $post_id ) {
     global $post;
 
     if( $post->post_type == 'property' ) {
@@ -230,7 +230,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function wpp_settings_save( $new_settings, $old_settings ) {
+  static function wpp_settings_save( $new_settings, $old_settings ) {
     $preserved_settings                                                                      = $old_settings[ 'configuration' ][ 'feature_settings' ][ 'wpp_pdf_flyer' ][ 'pdf_lists' ];
     $new_settings[ 'configuration' ][ 'feature_settings' ][ 'wpp_pdf_flyer' ][ 'pdf_lists' ] = $preserved_settings;
 
@@ -245,7 +245,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function render_pdf_list( $list_id, $args = '' ) {
+  static function render_pdf_list( $list_id, $args = '' ) {
     //** Error Silencer */
     ob_start();
 
@@ -542,7 +542,7 @@ class class_wpp_pdf_flyer {
    * @param string $slug Slug of the PDF List
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function pdf_list_exists( $slug ) {
+  static function pdf_list_exists( $slug ) {
     global $wp_properties;
 
     $uploads = wp_upload_dir();
@@ -578,7 +578,7 @@ class class_wpp_pdf_flyer {
    * @param object $wp Request Object
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function parse_request_for_pdf_list( $wp ) {
+  static function parse_request_for_pdf_list( $wp ) {
     global $wp_query, $wp_properties, $wpdb;
 
     ob_start();
@@ -665,7 +665,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function pdf_list_template( $property, $list_data ) {
+  static function pdf_list_template( $property, $list_data ) {
 
     ob_start();
     //** Attempt to get design from template */
@@ -691,7 +691,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function default_pdf_list_template( $property, $list_data ) {
+  static function default_pdf_list_template( $property, $list_data ) {
     $descr        = '&nbsp;';
     $title        = '&nbsp;';
     $info         = '&nbsp;';
@@ -796,7 +796,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function regenerate_pdf_lists() {
+  static function regenerate_pdf_lists() {
     global $wp_properties;
 
     $lists = $wp_properties[ 'configuration' ][ 'feature_settings' ][ 'wpp_pdf_flyer' ][ 'pdf_lists' ];
@@ -815,7 +815,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function admin_menu() {
+  static function admin_menu() {
     global $wp_properties;
 
     if( $wp_properties[ 'configuration' ][ 'feature_settings' ][ 'wpp_pdf_flyer' ][ 'use_pdf_property_lists' ] == 'on' )
@@ -876,7 +876,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function page_property_lists() {
+  static function page_property_lists() {
     global $wp_properties;
 
     @include_once( WPP_Path . 'third-party/tcpdf/wpp_tcpdf.php' );
@@ -1027,7 +1027,7 @@ class class_wpp_pdf_flyer {
           return false;
         } );
 
-        function putLog( log, el ) {
+        static function putLog( log, el ) {
           if( typeof log != 'undefined' && typeof el == 'object' ) {
             if( jQuery( '.logs', el ).length == 0 ) {
               el.append( '<ul class="logs"></ul>' );
@@ -1251,7 +1251,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function template_redirect() {
+  static function template_redirect() {
     global $post, $wpdb;
 
     if( $_REQUEST[ 'wpp_flyer_create' ] == 'true' && $post->ID ) {
@@ -1278,7 +1278,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function page_row_actions( $actions, $post ) {
+  static function page_row_actions( $actions, $post ) {
 
     if( $post->post_type != 'property' )
       return $actions;
@@ -1298,7 +1298,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function flyer_left_column( $property, $wpp_pdf_flyer ) {
+  static function flyer_left_column( $property, $wpp_pdf_flyer ) {
     global $wp_properties;
 
     $map_width = round( $wpp_pdf_flyer[ 'first_col_width' ] / 2 - 27 );
@@ -1372,7 +1372,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function flyer_middle_column( $property, $wpp_pdf_flyer ) {
+  static function flyer_middle_column( $property, $wpp_pdf_flyer ) {
     global $wp_properties;
 
     if( !empty( $wpp_pdf_flyer[ 'pr_features' ] ) ) {
@@ -1403,7 +1403,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function flyer_right_column( $property, $wpp_pdf_flyer ) {
+  static function flyer_right_column( $property, $wpp_pdf_flyer ) {
     if( !empty( $wpp_pdf_flyer[ 'qr_code' ] ) ) {
       ?>
       <tr>
@@ -1435,7 +1435,7 @@ class class_wpp_pdf_flyer {
    * @author Maxim Peshkov
    * @since 1.5.1
    */
-  function flyer_description( $description, $wpp_pdf_flyer ) {
+  static function flyer_description( $description, $wpp_pdf_flyer ) {
 
     //** Cleans description */
     $description = strip_shortcodes( $description );
@@ -1465,7 +1465,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function wpp_updated_messages( $messages ) {
+  static function wpp_updated_messages( $messages ) {
     global $post;
     $messages[ 'property' ][ 1 ] = $messages[ 'property' ][ 1 ] . sprintf( __( ', or <a href="%s" target="_blank">view flyer</a>.', 'wpp' ), esc_url( get_pdf_flyer_permalink( $post->ID ) ) );
 
@@ -1478,7 +1478,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function settings_nav( $tabs ) {
+  static function settings_nav( $tabs ) {
 
     $tabs[ 'pdf_flyer' ] = array(
       'slug'  => 'pdf_flyer',
@@ -1493,7 +1493,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function settings_page( $tabs ) {
+  static function settings_page( $tabs ) {
     global $wp_properties;
 
     // @include_once( WPP_Path . 'third-party/tcpdf/wpp_tcpdf.php' );
@@ -1805,7 +1805,7 @@ class class_wpp_pdf_flyer {
       closeButton.hide();
     } );
 
-    function putLog( log, el ) {
+    static function putLog( log, el ) {
       if( typeof log != 'undefined' && typeof el == 'object' ) {
         if( jQuery( '.logs', el ).length == 0 ) {
           el.append( '<ul class="logs"></ul>' );
@@ -1824,7 +1824,7 @@ class class_wpp_pdf_flyer {
    *
    * @return array
    */
-  function return_defaults() {
+  static function return_defaults() {
     $default                      = array();
     $default[ 'num_pictures' ]    = 3;
     $default[ 'header_color' ]    = '#e6e6fa';
@@ -1842,7 +1842,7 @@ class class_wpp_pdf_flyer {
    * @uses get_pdf_flyer_permalink
    * @return string
    */
-  function shortcode_pdf_flyer( $atts ) {
+  static function shortcode_pdf_flyer( $atts ) {
     global $post;
 
     if( $post->post_type != 'property' ) {
@@ -1893,7 +1893,7 @@ class class_wpp_pdf_flyer {
    * @uses get_pdf_flyer_permalink
    * @return string
    */
-  function shortcode_pdf_list( $atts ) {
+  static function shortcode_pdf_list( $atts ) {
     global $wp_properties, $wpdb;
     $title   = '<span class="wpp_pdf_flyer_icon">[PDF]</span> ';
     $name    = '';
@@ -1966,7 +1966,7 @@ class class_wpp_pdf_flyer {
    *
    * @author odokienko@UD
    */
-  function check_flyer_pdf( $post_id ) {
+  static function check_flyer_pdf( $post_id ) {
     global $wp_properties, $wpdb;
 
     foreach( (array) $wpdb->get_col( $wpdb->prepare( "
@@ -1991,7 +1991,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function create_flyer_pdf( $post_id, $debug = false ) {
+  static function create_flyer_pdf( $post_id, $debug = false ) {
     global $wp_properties, $post, $wpdb;
 
     //** Include TCPDF here to avoid double class declaration. korotkov@ud */
@@ -2246,7 +2246,7 @@ class class_wpp_pdf_flyer {
    * @ Todo fix default template.
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function default_flyer_template( $wpp_pdf_flyer, $property ) {
+  static function default_flyer_template( $wpp_pdf_flyer, $property ) {
     ob_start();
     ?>
     <html>
@@ -2411,7 +2411,7 @@ class class_wpp_pdf_flyer {
    *
    * @author odokienko@UD
    */
-  function flyer_exists( $post_id ) {
+  static function flyer_exists( $post_id ) {
     global $wpdb;
 
     foreach( (array) $wpdb->get_col( $wpdb->prepare( "
@@ -2437,13 +2437,13 @@ class class_wpp_pdf_flyer {
    *
    * Copyright 2011 TwinCitiesTech.com, Inc.
    */
-  function wpp_settings_help_tab() {
+  static function wpp_settings_help_tab() {
   }
 
   /*
    * Get image size for pdf document
    */
-  function get_pdf_image_size( $image_size ) {
+  static function get_pdf_image_size( $image_size ) {
     if( $image_size == 'thumbnail' ) {
       return 150;
     } elseif( $image_size == 'medium' ) {
@@ -2464,7 +2464,7 @@ class class_wpp_pdf_flyer {
      *
      * @return json
      */
-  function ajax_get_properties() {
+  static function ajax_get_properties() {
     global $wpdb;
     ob_start();
     $ids = $wpdb->get_results( "
@@ -2488,7 +2488,7 @@ class class_wpp_pdf_flyer {
      *
      * @return json
      */
-  function ajax_generate_pdf_flyer() {
+  static function ajax_generate_pdf_flyer() {
     ob_start();
     $result = array(
       "success" => 1
@@ -2514,7 +2514,7 @@ class class_wpp_pdf_flyer {
      *
      * @return json
      */
-  function ajax_generate_pdf_list() {
+  static function ajax_generate_pdf_list() {
     ob_start();
     $result = array(
       "success" => 1
