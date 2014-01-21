@@ -2,6 +2,7 @@
 /**
  * Name: Supermap
  * Class: class_wpp_supermap
+ * Slug: class_wpp_supermap
  * Version: 3.4.9.3
  * Minimum Core Version: 1.37.2
  * Feature ID: 3
