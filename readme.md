@@ -1,5 +1,4 @@
-WP-Property Premium Feature
-Super Map
+WP-Property Premium Feature. Super Map
 =========
 
 Description:
