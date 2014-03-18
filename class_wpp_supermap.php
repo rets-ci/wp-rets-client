@@ -2,7 +2,7 @@
 /*
 Name: Supermap
 Class: class_wpp_supermap
-Version: 3.4.9.4
+Version: 3.4.9.5
 Minimum Core Version: 1.40.0
 Feature ID: 3
 Description: A big map for property overview.
@@ -905,12 +905,6 @@ class class_wpp_supermap {
 
     //* Get properties */
     $property_ids = WPP_F::get_properties( $query , true );
-
-    //** We do this so if there are properties that are so close the icons overlap, the properties in the beginning of the array will be he overlapping ones */
-
-    if(is_array($property_ids['results'])) {
-      $property_ids['results'] = array_reverse($property_ids['results']);
-    }
 
     if (!empty($property_ids['results'])) {
 

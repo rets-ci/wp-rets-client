@@ -8,7 +8,8 @@ Super Map plugin lets you put a large interactive map virtually anywhere in your
 Changelog:
 -----------
 
-&nbsp;
+@update 3.4.9.5
+ - Fixed bug with sorting
 
 @update 3.4.9.4
  - Improvements
