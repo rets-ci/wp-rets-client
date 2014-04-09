@@ -2,7 +2,7 @@
 /*
 Name: PDF Flyer
 Feature ID: 6
-Version: 2.1.8
+Version: 2.1.9
 Minimum Core Version: 1.38.3
 Internal Slug: property_pdf
 JS Slug: wpp_property_pdf
@@ -2191,21 +2191,19 @@ class class_wpp_pdf_flyer {
         }
 
         //** Checks if the flyer has been created, and adds it as an attachment to the Post */
-        if( file_exists($uploads['path'].'/'.$filename.'.pdf') ) {
-            $attachment_title = $property['post_title'] . ' ' . __('Flyer', 'wpp');
-              //** Check to see if the flyer is already attached to the object */
-            $flyer_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_title = %s AND post_type='attachment'", $attachment_title ));
+        $flyer_url =  $uploads['url'].'/'.$filename.'.pdf'; //get_pdf_flyer_permalink( $post_id );
+        $flyer_path =  $uploads['path'].'/'.$filename.'.pdf';
+        if( file_exists( $flyer_path ) ) {
+            //** Check to see if the flyer is already attached to the object */
+            $flyer_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s AND post_type='attachment'", $flyer_url ));
 
-            if($flyer_id){
-              update_attached_file( $flyer_id, $uploads['path'].'/'.$filename.'.pdf' );
-            }
-
-            if(!$flyer_id){
-                $flyer_url =  $uploads['url'].'/'.$filename.'.pdf';//get_pdf_flyer_permalink( $post_id );
-
+            if( $flyer_id ){
+              update_attached_file( $flyer_id, $flyer_path );
+            } else {
                 // Attach the PDF and QR code as attachments, need filter to exclude QR code from image galleries
                 $object = array(
-                    'post_title' => $attachment_title,
+                    'post_title' => $property['post_title'] . ' ' . __('Flyer', 'wpp'),
+                    'post_name' => sanitize_key( $property['post_name'] . '-flyer' ),
                     'post_content' => __('PDF flyer for ', 'wpp') . $property['post_title'],
                     'post_type' => 'attachment',
                     'post_parent' => $post_id,
@@ -2213,9 +2211,8 @@ class class_wpp_pdf_flyer {
                     'post_mime_type' => 'application/pdf',
                     'guid' => $flyer_url
                 );
-
                 $flyer_id = wp_insert_attachment($object);
-                update_attached_file( $flyer_id, $uploads['path'].'/'.$filename.'.pdf' );
+                update_attached_file( $flyer_id, $flyer_path );
             }
         }
 

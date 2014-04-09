@@ -9,3 +9,5 @@ The WP-Property PDF Flyer premium feature allows the website owner to quickly ge
 Changelog:
 -----------
 
+@updated 2.1.9
+ - Fixed infinite redirect on getting PDF Flyer of property with duplicate title.
