@@ -2,7 +2,7 @@
 /*
 Name: Supermap
 Class: class_wpp_supermap
-Version: 3.4.9.5
+Version: 3.5.0.0
 Minimum Core Version: 1.40.0
 Feature ID: 3
 Description: A big map for property overview.
@@ -1587,7 +1587,7 @@ class class_wpp_supermap {
       <div id="super_map_<?php echo $rand; ?>" class="super_map <?php if($hide_sidebar == 'true'): ?>no_sidebar<?php endif; ?>" <?php echo $inline_styles['map']; ?>></div>
       <?php if($hide_sidebar == 'false'): ?>
         <div id="super_map_list_<?php echo $rand; ?>" class="super_map_list" <?php echo $inline_styles['sidebar']; ?>>
-        <?php if (!empty($searchable_attributes)) : ?>
+        <?php if (!empty( $searchable_attributes) && empty( $_REQUEST[ 'wpp_search' ] ) ) : ?>
           <?php //* hide the option link if  supermap shortcode doesn't include any attribute connected with sortable attribute */ ?>
           <div class="supermap_filter_wrapper">
             <div class="hide_filter">
@@ -1595,9 +1595,12 @@ class class_wpp_supermap {
             </div>
             <div id="map_filters_<?php echo $rand; ?>" class="map_filters">
               <?php //* Dynamic search options (attributes sets in shortcode) */ ?>
-      <?php class_wpp_supermap::draw_supermap_options_form($searchable_attributes, $atts['property_type'], $rand); ?>
+              <?php class_wpp_supermap::draw_supermap_options_form($searchable_attributes, $atts['property_type'], $rand); ?>
             </div>
           </div><!-- END  .supermap_filter_wrapper -->
+        <?php elseif ( !empty( $_REQUEST[ 'wpp_search' ] ) ) : ?>
+          <?php //* Set hidden form with attributes to handle search results on supermap ( supermap page can be used as default search result page ) */ ?>
+          <?php class_wpp_supermap::draw_supermap_options_form( false, $atts['property_type'], $rand); ?>
         <?php endif; ?>
         <div id="super_map_list_property_<?php echo $rand; ?>" class="super_map_list_property">
         <?php if (!empty($properties)) {
@@ -1694,12 +1697,49 @@ class class_wpp_supermap {
    */
   function draw_supermap_options_form($search_attributes = false, $searchable_property_types = false, $rand = 0) {
     global $wp_properties;
-    if(!$search_attributes) {
-      return;
-    }
+    
+    if( !empty( $_REQUEST[ 'wpp_search' ] ) ) {
+    
+      /** 
+       * Render hidden form in case we have wpp_search request. 
+       * because supermap page can be used as default search results page
+       */
+      $fields = array();
+      foreach( $wp_properties[ 'property_stats' ] as $k => $v ) {
+        if( key_exists( $k, $_REQUEST[ 'wpp_search' ] ) ) {
+          $data = $_REQUEST[ 'wpp_search' ][ $k ];
+          if( is_array( $data ) ) {
+            foreach( $data as $name => $value ) {
+              $fields[] = array(
+                'name' => "wpp_search[{$k}][{$name}]",
+                'value' => $value,
+              );
+            }
+          } else {
+            $fields[] = array(
+              'name' => "wpp_search[{$k}]",
+              'value' => $data,
+            );
+          }
+        }
+      }
+      
+      if( !empty( $fields ) ) {
+        echo "<form id=\"formFilter_{$rand}\" name=\"formFilter\" action=\"\">";
+        foreach( $fields as $field ) {
+          echo "<input type=\"hidden\" name=\"{$field['name']}\" value=\"{$field['value']}\" />";
+        }
+        echo "</form>";
+      }
+      
+    } else {
+    
+      if( !$search_attributes) {
+        return;
+      }
 
-    $search_values = WPP_F::get_search_values(array_keys((array)$search_attributes), $searchable_property_types );
-    ?>
+      $search_values = WPP_F::get_search_values(array_keys((array)$search_attributes), $searchable_property_types );
+      ?>
       <form id="formFilter_<?php echo $rand; ?>" name="formFilter" action="">
         <div class="class_wpp_supermap_elements">
           <ul>
@@ -1743,12 +1783,13 @@ class class_wpp_supermap {
               <div class="clear"></div>
             </li>
           <?php } ?>
-        </ul>
-        <input class="search_b btn" type="button" value="Search" onclick="getProperties(<?php echo $rand; ?>)" />
-        <div class="search_loader" style="display:none"><?php _e('Loading','wpp') ?></div>
-      </div> <?php //end of class_wpp_supermap_elements ?>
-    </form>
-  <?php
+          </ul>
+          <input class="search_b btn" type="button" value="Search" onclick="getProperties(<?php echo $rand; ?>)" />
+          <div class="search_loader" style="display:none"><?php _e('Loading','wpp') ?></div>
+        </div> <?php //end of class_wpp_supermap_elements ?>
+      </form>
+      <?php
+    }
   }
 
   /**
