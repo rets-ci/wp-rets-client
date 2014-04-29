@@ -2,7 +2,7 @@
 /*
 Name: Supermap
 Class: class_wpp_supermap
-Version: 3.5.0.0
+Version: 3.5.1.0
 Minimum Core Version: 1.40.0
 Feature ID: 3
 Description: A big map for property overview.
@@ -927,6 +927,8 @@ class class_wpp_supermap {
       $supermap = self::supermap_template($properties, $atts);
 
       return $supermap;
+    } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
+      return sprintf( __( 'Sorry, no %s found, try expanding your search.', 'wpp' ), WPP_F::property_label( 'plural' ) );
     }
   }
 

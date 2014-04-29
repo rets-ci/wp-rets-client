@@ -8,6 +8,9 @@ Super Map plugin lets you put a large interactive map virtually anywhere in your
 Changelog:
 -----------
 
+@update 3.5.1.0
+ - Added "no results found" text when using search results page with supermap and there are no results.
+
 @update 3.5.0.0
  - Fixed bug with search results rendering on using [supermap] shortcode instead of [property_overview] on Default Search page.
 
