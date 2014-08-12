@@ -1314,7 +1314,7 @@ class class_wpp_pdf_flyer {
         </tr>
         <tr>
             <td class="pdf-text"><br/>
-                <?php echo @draw_stats( 'exclude='.$wpp_pdf_flyer['excluded_details_stats'].'&display=plain_list&sort_by_groups=false', $property ); ?>
+                <?php echo @draw_stats( 'exclude='.$wpp_pdf_flyer['excluded_details_stats'].'&display=plain_list&sort_by_groups=false&show_true_as_image=false', $property ); ?>
             </td>
         </tr>
         <?php endif; ?>
@@ -1960,6 +1960,7 @@ class class_wpp_pdf_flyer {
     foreach( $attachment_ids as $attachment_id) {
       wp_delete_attachment( $attachment_id, true );
     }
+    
     //** Maybe generate PDF flyer. */
     if( empty( $wpp_pdf_flyer[ 'generate_flyers_on_the_fly' ] ) || $wpp_pdf_flyer[ 'generate_flyers_on_the_fly' ] != 'on' ) {
       self::create_flyer_pdf( $post_id );
@@ -2152,7 +2153,7 @@ class class_wpp_pdf_flyer {
         //** No custom template, using the default one from the function */
         $html = class_wpp_pdf_flyer::default_flyer_template( $wpp_pdf_flyer, $property );
     }
-
+    
     $pdf = new WPP_PDF_Flyer('P', PDF_UNIT, $wpp_pdf_flyer['format'], true, 'UTF-8', false);
 
     $pdf->setPrintHeader(false);
