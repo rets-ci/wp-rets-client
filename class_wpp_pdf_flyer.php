@@ -2384,7 +2384,7 @@ class class_wpp_pdf_flyer {
           AND post_type = 'attachment'
         ORDER BY ID DESC 
         LIMIT 1;
-    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) )
+    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) );
     
     $url = wp_get_attachment_url( $attachment_id[0] );
     $result = wp_remote_retrieve_response_code( $url, array( 'timeout' => 10 ) );
