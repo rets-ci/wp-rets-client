@@ -2,7 +2,7 @@
 /*
 Name: PDF Flyer
 Feature ID: 6
-Version: 2.1.9
+Version: 2.2.0
 Minimum Core Version: 1.38.3
 Internal Slug: property_pdf
 JS Slug: wpp_property_pdf
@@ -22,7 +22,7 @@ add_action('template_redirect', array('class_wpp_pdf_flyer', 'template_redirect'
 
 class class_wpp_pdf_flyer {
 
-  /*
+  /**
    * (custom) Capability to manage the current feature
    */
   static protected $capability = "manage_wpp_pdfflyer";
@@ -54,7 +54,7 @@ class class_wpp_pdf_flyer {
   function init() {
     global $wpp_pdf_flyer, $wp_properties;
 
-    if(current_user_can(self::$capability)) {
+    if( current_user_can( self::$capability ) ) {
       /* Add to settings page nav */
       add_filter('wpp_settings_nav', array('class_wpp_pdf_flyer', 'settings_nav'));
       /* Add Settings Page */
@@ -72,10 +72,8 @@ class class_wpp_pdf_flyer {
     add_shortcode('property_flyer', array('class_wpp_pdf_flyer', 'shortcode_pdf_flyer'));
     add_shortcode('wpp_pdf_list', array('class_wpp_pdf_flyer', 'shortcode_pdf_list'));
 
-    /* Creates the PDF on the fly when a property is saved */
-
-    $callback = ( isset( $wpp_pdf_flyer['generate_flyers_on_the_fly'] ) && $wpp_pdf_flyer[ 'generate_flyers_on_the_fly' ] == 'on' ) ? 'check_flyer_pdf' : 'create_flyer_pdf';
-    add_action('save_property', array('class_wpp_pdf_flyer', $callback ));
+    /* Flush PDF files on saving property */
+    add_action('save_property', array( __CLASS__, 'check_flyer_pdf' ) );
 
     /* Add "View Flyer" message to overview page actions */
     add_filter('page_row_actions', array('class_wpp_pdf_flyer', 'page_row_actions'),0,2);
@@ -1804,19 +1802,18 @@ class class_wpp_pdf_flyer {
 
   }
 
-
-    /**
-    * Return default PDF settings
-    *
-    * @return array
-    */
-    function return_defaults() {
-        $default = array ();
-        $default['num_pictures'] = 3;
-        $default['header_color'] = '#e6e6fa';
-        $default['section_bgcolor'] = '#bbbbbb';
-        return $default;
-    }
+  /**
+   * Return default PDF settings
+   *
+   * @return array
+   */
+  function return_defaults() {
+    $default = array ();
+    $default['num_pictures'] = 3;
+    $default['header_color'] = '#e6e6fa';
+    $default['section_bgcolor'] = '#bbbbbb';
+    return $default;
+  }
 
   /**
    * Handles the pdf_flyer shortcodes and it's attributes.
@@ -1863,7 +1860,6 @@ class class_wpp_pdf_flyer {
     if( $urlonly == 'yes' ) {
       return $get_pdf_url;
     }
-
 
     return '<a href="' . $get_pdf_url . '" class="' . $class .'">' . $title . '</a>';
 
@@ -1942,287 +1938,288 @@ class class_wpp_pdf_flyer {
     return '<a href="' . $pdf_url . '" class="' . $class .'">' . $title . '</a>';
   }
 
-   /**
-    * Removed PDF flyer on property save.
-    * It will be created on next request.
-    *
-    * Hooks into save_property hook.
-    *
-    * @author odokienko@UD
-    */
-    function check_flyer_pdf ($post_id){
-      global $wp_properties, $wpdb;
+  /**
+   * Removes all PDF flyers on property save.
+   * and, if 'generate_flyers_on_the_fly' option is disabled, creates new PDF Flyer
+   * Hooks into save_property hook.
+   *
+   * @author odokienko@UD
+   * @author peshkov@UD
+   */
+  function check_flyer_pdf ( $post_id ){
+    global $wp_properties, $wpp_pdf_flyer, $wpdb;
+    //** Get all PDF Flyer attachments */
+    $attachment_ids = (array) $wpdb->get_col( $wpdb->prepare( "
+      SELECT ID 
+        FROM {$wpdb->posts} 
+        WHERE post_parent = %d 
+          AND post_title like %s 
+          AND post_type = 'attachment';
+    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) );
+    //** Remove all PDF Flyer attachments for current property */
+    foreach( $attachment_ids as $attachment_id) {
+      wp_delete_attachment( $attachment_id, true );
+    }
+    //** Maybe generate PDF flyer. */
+    if( empty( $wpp_pdf_flyer[ 'generate_flyers_on_the_fly' ] ) || $wpp_pdf_flyer[ 'generate_flyers_on_the_fly' ] != 'on' ) {
+      self::create_flyer_pdf( $post_id );
+    }
+  }
 
-      foreach( (array) $wpdb->get_col( $wpdb->prepare( "
-        SELECT ID FROM {$wpdb->posts} WHERE post_parent = %d AND post_title like %s AND post_type = 'attachment'
-      ", $post_id, '% ' . __('Flyer', 'wpp') ) ) as $attachment_id) {
+  /**
+   * Creates the PDF flyer and saves it to disk.
+   *
+   * Hooks into save_property hook.
+   *
+   * @todo Fix the dimensions so they can actually be set by user to A4, Letter, US Legal, etc. Right now an arbitrary document size is generated based on image sizes. - potanin@UD
+   * @todo Need to display some sort of warning if PDF cache directy cannot be created
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  function create_flyer_pdf( $post_id, $debug = false )  {
+    global $wp_properties, $post, $wpdb;
 
-        wp_delete_attachment( $attachment_id, true );
+    //** Include TCPDF here to avoid double class declaration. korotkov@ud */
+    @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php');
 
+    //** Include extended TCPDF class WPP_PDF_Flyer */
+    @include_once(WPP_Path.'third-party/tcpdf/wpp_pdf_flyer.php');
+
+    ini_set('memory_limit', '608M');
+
+    $property = WPP_F::get_property( $post_id );
+
+    //** Load PDF Settings */
+    $wpp_pdf_flyer = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'];
+
+    //** If, some reason, PDF Settings don't exist, we load PDF default settings */
+    if(empty($wpp_pdf_flyer)) {
+      $wpp_pdf_flyer = class_wpp_pdf_flyer::return_defaults();
+    }
+
+    //** Check Primary Photo's (Featured Photo) size */
+    if (empty($wpp_pdf_flyer['primary_photo_size']) || trim($wpp_pdf_flyer['primary_photo_size']) == '-') {
+        $wpp_pdf_flyer['primary_photo_size'] = 'medium';
+    }
+    //** Check Secondary Photo's size */
+    if (empty($wpp_pdf_flyer['secondary_photos']) || trim($wpp_pdf_flyer['secondary_photos']) == '-') {
+        $wpp_pdf_flyer['secondary_photos'] = 'medium';
+    }
+    //** Check Agent Photo's size */
+    if (empty($wpp_pdf_flyer['agent_photo_size']) || trim($wpp_pdf_flyer['agent_photo_size']) == '-') {
+        $wpp_pdf_flyer['agent_photo_size'] = 'thumbnail';
+    }
+
+    if (empty($wpp_pdf_flyer['flyer_page_format'])) {
+      $wpp_pdf_flyer['flyer_page_format'] = 'A4';
+    }
+
+    $uploads = wp_upload_dir();
+
+    //** Make sure that PDF cache folder is writable, attempt making the directory
+    if(is_writable($uploads['path'])) {
+      if(!file_exists($uploads['path'])) mkdir($uploads['path']);
+    } else {
+    //** @TODO: Need to display some sort of warning if PDF cache directy cannot be created */
+
+      return false;
+    }
+
+    $property_type = $property['property_type'];
+
+    //** Load best template, or $template_path is false, and default will be loaded from this file */
+    $template_path = WPP_F::get_template_part(array(
+      "property-flyer-$property_type",
+      'custom-flyer',
+      'property-flyer'
+    ), array(WPP_Templates) );
+
+    //** At this point everything should be in order to load TCPDF files */
+    require_once WPP_Path.'third-party/tcpdf/phpqrcode.php';
+
+    //** Check, if featured image's url exsists we approve featured image's url */
+    if( !empty( $property['featured_image'] ) ) {
+
+        $primary_image = wpp_get_image_link($property['featured_image'], $wpp_pdf_flyer['primary_photo_size'], array('return' => 'array'));
+
+        if(WPP_F::file_in_uploads_exists_by_url($primary_image['link'])) {
+          if(isset($headers['Content-Type']) && strpos( $headers['Content-Type'], 'image' ) === false) {
+            unset($featured_image_url);
+            unset($property['featured_image_url']);
+          } else {
+            $featured_image_url = $primary_image['link'];
+          }
+        } else {
+          unset($featured_image_url);
+          unset($property['featured_image_url']);
+        }
+    }
+
+    //** Check, if logo image's url exsists we approve logo's image url */
+    if( !empty( $wpp_pdf_flyer['logo_url'] ) ) {
+      $headers = @get_headers( $wpp_pdf_flyer['logo_url'] , 1 );
+      if( strpos( $headers[0], '200' )) {
+        if(isset($headers['Content-Type']) && strpos( $headers['Content-Type'], 'image' ) === false) {
+          unset($logo_url);
+          unset($wpp_pdf_flyer['logo_url']);
+        } else {
+          $logo_url= $wpp_pdf_flyer['logo_url'];
+        }
+      } else {
+        unset($logo_url);
+        unset($wpp_pdf_flyer['logo_url']);
       }
+    }
+    
+    $filename = $property['post_name'];
+    $filename = remove_accents ($filename);     // WordPress remove_accents. /wp-includes/formatting.php.
+    $filename = sanitize_file_name ($filename);   // WordPresssanitize_file_name /wp-includes/formatting.php
+    $filename = ereg_replace("[^-_.A-Za-z0-9]", "", $filename); // remove all character symbols
+    $filename = ereg_replace("_-", "_", $filename); // Change "abc_-abc" to "abc_abc"
+    $filename = ereg_replace("-_", "-", $filename); // Change "abc-_abc" to "abc-abc"
 
-      return;
-
+    //** Set QR code. If image's file doesn't exist, we create it. */
+    $qrcode_path = $uploads['path'].'/'.$filename.'_qr.png';
+    $qrcode      = $uploads['url'] .'/'.$filename.'_qr.png';
+    if($wpp_pdf_flyer['qr_code']=='on' && class_exists('QRcode')) {
+      //** If, some reason, file already exists, - remove it to avoid conflict. */
+      if(file_exists($qrcode_path)) {
+        unlink($qrcode_path);
+      }
+      //** Generates QR Code image file */
+      QRcode::png($property['permalink'], $qrcode_path,2,2);
     }
 
-
-    /**
-    * Creates the PDF flyer and saves it to disk.
-    *
-    * Hooks into save_property hook.
-    *
-    * @todo Fix the dimensions so they can actually be set by user to A4, Letter, US Legal, etc. Right now an arbitrary document size is generated based on image sizes. - potanin@UD
-    * @todo Need to display some sort of warning if PDF cache directy cannot be created
-    *
-    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-    */
-    function create_flyer_pdf($post_id, $debug = false)  {
-        global $wp_properties, $post, $wpdb;
-
-        //** Include TCPDF here to avoid double class declaration. korotkov@ud */
-        @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php');
-
-        //** Include extended TCPDF class WPP_PDF_Flyer */
-        @include_once(WPP_Path.'third-party/tcpdf/wpp_pdf_flyer.php');
-
-        ini_set('memory_limit', '608M');
-
-        $property = WPP_F::get_property( $post_id );
-
-        //** Load PDF Settings */
-        $wpp_pdf_flyer = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'];
-
-        //** If, some reason, PDF Settings don't exist, we load PDF default settings */
-        if(empty($wpp_pdf_flyer)) {
-          $wpp_pdf_flyer = class_wpp_pdf_flyer::return_defaults();
-        }
-
-        //** Check Primary Photo's (Featured Photo) size */
-        if (empty($wpp_pdf_flyer['primary_photo_size']) || trim($wpp_pdf_flyer['primary_photo_size']) == '-') {
-            $wpp_pdf_flyer['primary_photo_size'] = 'medium';
-        }
-        //** Check Secondary Photo's size */
-        if (empty($wpp_pdf_flyer['secondary_photos']) || trim($wpp_pdf_flyer['secondary_photos']) == '-') {
-            $wpp_pdf_flyer['secondary_photos'] = 'medium';
-        }
-        //** Check Agent Photo's size */
-        if (empty($wpp_pdf_flyer['agent_photo_size']) || trim($wpp_pdf_flyer['agent_photo_size']) == '-') {
-            $wpp_pdf_flyer['agent_photo_size'] = 'thumbnail';
-        }
-
-        if (empty($wpp_pdf_flyer['flyer_page_format'])) {
-          $wpp_pdf_flyer['flyer_page_format'] = 'A4';
-        }
-
-        $uploads = wp_upload_dir();
-
-        //** Make sure that PDF cache folder is writable, attempt making the directory
-        if(is_writable($uploads['path'])) {
-          if(!file_exists($uploads['path'])) mkdir($uploads['path']);
-        } else {
-        //** @TODO: Need to display some sort of warning if PDF cache directy cannot be created */
-
-          return false;
-        }
-
-        $property_type = $property['property_type'];
-
-      //** Load best template, or $template_path is false, and default will be loaded from this file */
-
-        $template_path = WPP_F::get_template_part(array(
-          "property-flyer-$property_type",
-          'custom-flyer',
-          'property-flyer'
-        ), array(WPP_Templates) );
-
-      //** At this point everything should be in order to load TCPDF files */
-        require_once WPP_Path.'third-party/tcpdf/phpqrcode.php';
-
-      //** Check, if featured image's url exsists we approve featured image's url */
-        if( !empty( $property['featured_image'] ) ) {
-
-            $primary_image = wpp_get_image_link($property['featured_image'], $wpp_pdf_flyer['primary_photo_size'], array('return' => 'array'));
-
-            if(WPP_F::file_in_uploads_exists_by_url($primary_image['link'])) {
-              if(isset($headers['Content-Type']) && strpos( $headers['Content-Type'], 'image' ) === false) {
-                unset($featured_image_url);
-                unset($property['featured_image_url']);
-              } else {
-                $featured_image_url = $primary_image['link'];
-              }
-            } else {
-              unset($featured_image_url);
-              unset($property['featured_image_url']);
-            }
-        }
-
-      //** Check, if logo image's url exsists we approve logo's image url */
-        if( !empty( $wpp_pdf_flyer['logo_url'] ) ) {
-            $headers = @get_headers( $wpp_pdf_flyer['logo_url'] , 1 );
-            if( strpos( $headers[0], '200' )) {
-              if(isset($headers['Content-Type']) && strpos( $headers['Content-Type'], 'image' ) === false) {
-                unset($logo_url);
-                unset($wpp_pdf_flyer['logo_url']);
-              } else {
-                $logo_url= $wpp_pdf_flyer['logo_url'];
-              }
-            } else {
-              unset($logo_url);
-              unset($wpp_pdf_flyer['logo_url']);
-            }
-        }
-        $filename = $property['post_name'];
-        $filename = remove_accents ($filename);     // WordPress remove_accents. /wp-includes/formatting.php.
-        $filename = sanitize_file_name ($filename);   // WordPresssanitize_file_name /wp-includes/formatting.php
-        $filename = ereg_replace("[^-_.A-Za-z0-9]", "", $filename); // remove all character symbols
-        $filename = ereg_replace("_-", "_", $filename); // Change "abc_-abc" to "abc_abc"
-        $filename = ereg_replace("-_", "-", $filename); // Change "abc-_abc" to "abc-abc"
-
-//** Set QR code. If image's file doesn't exist, we create it. */
-        $qrcode_path = $uploads['path'].'/'.$filename.'_qr.png';
-        $qrcode      = $uploads['url'] .'/'.$filename.'_qr.png';
-        if($wpp_pdf_flyer['qr_code']=='on' && class_exists('QRcode')) {
-          // If, some reason, file already exists, - remove it to avoid conflict.
-          if(file_exists($qrcode_path)) {
-            unlink($qrcode_path);
-          }
-          // Generates QR Code image file
-          QRcode::png($property['permalink'], $qrcode_path,2,2);
-        }
-
-        $wpp_pdf_flyer['featured_image_url'] = $featured_image_url;
-        $wpp_pdf_flyer['featured_image_width'] = $primary_image['width'];
-        $wpp_pdf_flyer['featured_image_height'] = $primary_image['height'];
-        if(file_exists($qrcode_path)) {
-          $wpp_pdf_flyer['qr_code'] = $qrcode;
-        }
-
-      //** Set list of excluded property stats */
-        $property_stats = self::get_pdf_list_attributes('property_stats');
-        $excluded_stats = array();
-        foreach((array)$property_stats as $slug => $attr) {
-          if(!array_key_exists($slug, (array)$wpp_pdf_flyer['detail_attributes'])) {
-            $excluded_stats[] = $slug;
-          }
-        }
-        $wpp_pdf_flyer['excluded_details_stats'] = implode(',',$excluded_stats);
-
-        if(!empty($logo_url)) {
-            $wpp_pdf_flyer['logo_url'] = $logo_url;
-        }
-
-        $wpp_pdf_flyer['agent_photo_width'] = class_wpp_pdf_flyer::get_pdf_image_size($wpp_pdf_flyer['agent_photo_size']);
-
-        if ( $wpp_pdf_flyer['featured_image_width'] < ($wpp_pdf_flyer['agent_photo_width'] * 2 + 400) ) {
-            $wpp_pdf_flyer['first_col_width'] = $wpp_pdf_flyer['agent_photo_width'] * 2 + 400;
-        } else {
-            $wpp_pdf_flyer['first_col_width'] = $wpp_pdf_flyer['featured_image_width'];
-        }
-
-        $wpp_pdf_flyer['second_photo_width'] = class_wpp_pdf_flyer::get_pdf_image_size($wpp_pdf_flyer['secondary_photos']);
-        $wpp_pdf_flyer['pdf_width'] = $wpp_pdf_flyer['first_col_width'] + $wpp_pdf_flyer['second_photo_width'] + 70;
-
-      //** Set font sizes */
-        $em = round($wpp_pdf_flyer['pdf_width'] / 350);
-        if ($em == 0) $em = 1;
-        $wpp_pdf_flyer['font_size_content'] = $em * 16;
-        $wpp_pdf_flyer['font_size_header'] = $em * 26;
-        $wpp_pdf_flyer['font_size_note'] = $em * 12;
-
-      //** Set format of PDF document */
-        $wpp_pdf_flyer['format'] = array(round($wpp_pdf_flyer['pdf_width'], 3), round($wpp_pdf_flyer['pdf_width'] *  841.89 / 595.276, 3));
-
-        //** Scan through images and verify they are accessible */
-        foreach( (array) $property['gallery'] as $attachment_key => $attachment ) {
-          if( !file_exists( get_attached_file( $attachment['attachment_id'] )  ) ) {
-            unset(  $property[ 'gallery' ][ $attachment_key ] );
-          }
-        }
-
-        $wpp_pdf_flyer = array_filter( (array) $wpp_pdf_flyer );
-
-        //** TODO: if a custom template is placed in the theme directory. Suggest calling it property-flyer.php */
-        if( $template_path ) {
-            $site_url = site_url();
-            ob_start();
-            include $template_path;
-            $html = ob_get_contents();
-            ob_end_clean();
-        } else {
-            //** No custom template, using the default one from the function */
-            $html = class_wpp_pdf_flyer::default_flyer_template( $wpp_pdf_flyer, $property );
-        }
-
-
-
-        $pdf = new WPP_PDF_Flyer('P', PDF_UNIT, $wpp_pdf_flyer['format'], true, 'UTF-8', false);
-
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-        $pdf->setFontSubsetting(true);
-        if ($wpp_pdf_flyer['setfont']){
-          $pdf->SetFont($wpp_pdf_flyer['setfont']);
-        }
-        $pdf->SetCreator("WP-Property");
-        $pdf->SetAuthor("WP-Property");
-        $pdf->SetTitle($property['post_name']);
-        $pdf->SetSubject($property['permalink']);
-        $pdf->SetFooterMargin(0);
-        $pdf->SetTopMargin(1);
-        $pdf->SetLeftMargin(10);
-        $pdf->SetRightMargin(10);
-        $pdf->AddPage('P', $wpp_pdf_flyer['format']);
-
-        if($pdf->wpp_error_log) {
-          update_post_meta($post_id, 'wpp_post_error', $pdf->wpp_error_log);
-        }
-
-        $pdf->writeHTML( $html, true, false, true, false, '' );
-
-        $lastPage = $pdf->getPage();
-        $lastPageContentLength = strlen($pdf->getPageBuffer($lastPage));
-        if ($lastPageContentLength < 400){
-          $pdf->deletePage($lastPage);
-        }
-
-
-        if(!empty($property['post_name'])) {
-          $pdf->Output($uploads['path'].'/'.$filename.'.pdf', 'F');
-        }
-
-        //** Checks if the flyer has been created, and adds it as an attachment to the Post */
-        $flyer_url =  $uploads['url'].'/'.$filename.'.pdf'; //get_pdf_flyer_permalink( $post_id );
-        $flyer_path =  $uploads['path'].'/'.$filename.'.pdf';
-        if( file_exists( $flyer_path ) ) {
-            //** Check to see if the flyer is already attached to the object */
-            $flyer_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s AND post_type='attachment'", $flyer_url ));
-
-            if( $flyer_id ){
-              update_attached_file( $flyer_id, $flyer_path );
-            } else {
-                // Attach the PDF and QR code as attachments, need filter to exclude QR code from image galleries
-                $object = array(
-                    'post_title' => $property['post_title'] . ' ' . __('Flyer', 'wpp'),
-                    'post_name' => sanitize_key( $property['post_name'] . '-flyer' ),
-                    'post_content' => __('PDF flyer for ', 'wpp') . $property['post_title'],
-                    'post_type' => 'attachment',
-                    'post_parent' => $post_id,
-                    'post_date' =>  current_time('mysql'),
-                    'post_mime_type' => 'application/pdf',
-                    'guid' => $flyer_url
-                );
-                $flyer_id = wp_insert_attachment($object);
-                update_attached_file( $flyer_id, $flyer_path );
-            }
-        }
-
-        if(file_exists($qrcode_path)) {
-          //** Remove QR code image if it exists. The reason: It's not used anywhere except the current function */
-          unlink($qrcode_path);
-        }
-
-        return $flyer_id ? $flyer_id : false;
+    $wpp_pdf_flyer['featured_image_url'] = $featured_image_url;
+    $wpp_pdf_flyer['featured_image_width'] = $primary_image['width'];
+    $wpp_pdf_flyer['featured_image_height'] = $primary_image['height'];
+    if(file_exists($qrcode_path)) {
+      $wpp_pdf_flyer['qr_code'] = $qrcode;
     }
+
+    //** Set list of excluded property stats */
+    $property_stats = self::get_pdf_list_attributes('property_stats');
+    $excluded_stats = array();
+    foreach((array)$property_stats as $slug => $attr) {
+      if(!array_key_exists($slug, (array)$wpp_pdf_flyer['detail_attributes'])) {
+        $excluded_stats[] = $slug;
+      }
+    }
+    $wpp_pdf_flyer['excluded_details_stats'] = implode(',',$excluded_stats);
+
+    if(!empty($logo_url)) {
+      $wpp_pdf_flyer['logo_url'] = $logo_url;
+    }
+
+    $wpp_pdf_flyer['agent_photo_width'] = class_wpp_pdf_flyer::get_pdf_image_size($wpp_pdf_flyer['agent_photo_size']);
+
+    if ( $wpp_pdf_flyer['featured_image_width'] < ($wpp_pdf_flyer['agent_photo_width'] * 2 + 400) ) {
+      $wpp_pdf_flyer['first_col_width'] = $wpp_pdf_flyer['agent_photo_width'] * 2 + 400;
+    } else {
+      $wpp_pdf_flyer['first_col_width'] = $wpp_pdf_flyer['featured_image_width'];
+    }
+
+    $wpp_pdf_flyer['second_photo_width'] = class_wpp_pdf_flyer::get_pdf_image_size($wpp_pdf_flyer['secondary_photos']);
+    $wpp_pdf_flyer['pdf_width'] = $wpp_pdf_flyer['first_col_width'] + $wpp_pdf_flyer['second_photo_width'] + 70;
+
+    //** Set font sizes */
+    $em = round($wpp_pdf_flyer['pdf_width'] / 350);
+    if ($em == 0) $em = 1;
+    $wpp_pdf_flyer['font_size_content'] = $em * 16;
+    $wpp_pdf_flyer['font_size_header'] = $em * 26;
+    $wpp_pdf_flyer['font_size_note'] = $em * 12;
+
+    //** Set format of PDF document */
+    $wpp_pdf_flyer['format'] = array(round($wpp_pdf_flyer['pdf_width'], 3), round($wpp_pdf_flyer['pdf_width'] *  841.89 / 595.276, 3));
+
+    //** Scan through images and verify they are accessible */
+    foreach( (array) $property['gallery'] as $attachment_key => $attachment ) {
+      if( !file_exists( get_attached_file( $attachment['attachment_id'] )  ) ) {
+        unset(  $property[ 'gallery' ][ $attachment_key ] );
+      }
+    }
+
+    $wpp_pdf_flyer = array_filter( (array) $wpp_pdf_flyer );
+
+    //** TODO: if a custom template is placed in the theme directory. Suggest calling it property-flyer.php */
+    if( $template_path ) {
+        $site_url = site_url();
+        ob_start();
+        include $template_path;
+        $html = ob_get_contents();
+        ob_end_clean();
+    } else {
+        //** No custom template, using the default one from the function */
+        $html = class_wpp_pdf_flyer::default_flyer_template( $wpp_pdf_flyer, $property );
+    }
+
+    $pdf = new WPP_PDF_Flyer('P', PDF_UNIT, $wpp_pdf_flyer['format'], true, 'UTF-8', false);
+
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->setFontSubsetting(true);
+    if ($wpp_pdf_flyer['setfont']){
+      $pdf->SetFont($wpp_pdf_flyer['setfont']);
+    }
+    $pdf->SetCreator("WP-Property");
+    $pdf->SetAuthor("WP-Property");
+    $pdf->SetTitle($property['post_name']);
+    $pdf->SetSubject($property['permalink']);
+    $pdf->SetFooterMargin(0);
+    $pdf->SetTopMargin(1);
+    $pdf->SetLeftMargin(10);
+    $pdf->SetRightMargin(10);
+    $pdf->AddPage('P', $wpp_pdf_flyer['format']);
+
+    if($pdf->wpp_error_log) {
+      update_post_meta($post_id, 'wpp_post_error', $pdf->wpp_error_log);
+    }
+
+    $pdf->writeHTML( $html, true, false, true, false, '' );
+
+    $lastPage = $pdf->getPage();
+    $lastPageContentLength = strlen($pdf->getPageBuffer($lastPage));
+    if ($lastPageContentLength < 400){
+      $pdf->deletePage($lastPage);
+    }
+
+    if(!empty($property['post_name'])) {
+      $pdf->Output($uploads['path'].'/'.$filename.'.pdf', 'F');
+    }
+
+    //** Checks if the flyer has been created, and adds it as an attachment to the Post */
+    $flyer_url =  $uploads['url'].'/'.$filename.'.pdf'; //get_pdf_flyer_permalink( $post_id );
+    $flyer_path =  $uploads['path'].'/'.$filename.'.pdf';
+    if( file_exists( $flyer_path ) ) {
+      //** Check to see if the flyer is already attached to the object */
+      $flyer_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s AND post_type='attachment'", $flyer_url ));
+
+      if( $flyer_id ){
+        update_attached_file( $flyer_id, $flyer_path );
+      } else {
+        //** Attach the PDF and QR code as attachments, need filter to exclude QR code from image galleries */
+        $object = array(
+            'post_title' => $property['post_title'] . ' ' . __('Flyer', 'wpp'),
+            'post_name' => sanitize_key( $property['post_name'] . '-flyer' ),
+            'post_content' => __('PDF flyer for ', 'wpp') . $property['post_title'],
+            'post_type' => 'attachment',
+            'post_parent' => $post_id,
+            'post_date' =>  current_time('mysql'),
+            'post_mime_type' => 'application/pdf',
+            'guid' => $flyer_url
+        );
+        $flyer_id = wp_insert_attachment($object);
+        update_attached_file( $flyer_id, $flyer_path );
+      }
+    }
+
+    if(file_exists($qrcode_path)) {
+      //** Remove QR code image if it exists. The reason: It's not used anywhere except the current function */
+      unlink($qrcode_path);
+    }
+
+    return $flyer_id ? $flyer_id : false;
+  }
 
 
     /**
@@ -2372,39 +2369,37 @@ class class_wpp_pdf_flyer {
     }
 
   /**
-  * Check if a flyer exists
-  *
-  * @author odokienko@UD
-  */
-  function flyer_exists($post_id) {
+   * Check if a flyer exists
+   *
+   * @author odokienko@UD
+   */
+  function flyer_exists( $post_id ) {
     global $wpdb;
 
-    foreach( (array) $wpdb->get_col( $wpdb->prepare( "
-      SELECT ID FROM {$wpdb->posts} WHERE post_parent = %d AND post_title like %s AND post_type = 'attachment';
-    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) ) as $attachment_id) {
-
-      $url = wp_get_attachment_url($attachment_id);
-      //var_dump("\$url", $url);
-
-      $result = wp_remote_retrieve_response_code($url, array( 'timeout' => 10));
-
-      if( $result == 200) {
-        return true;
-      }
-
+    $attachment_id = (array) $wpdb->get_col( $wpdb->prepare( "
+      SELECT ID 
+        FROM {$wpdb->posts} 
+        WHERE post_parent = %d 
+          AND post_title like %s 
+          AND post_type = 'attachment'
+        ORDER BY ID DESC 
+        LIMIT 1;
+    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) )
+    
+    $url = wp_get_attachment_url( $attachment_id[0] );
+    $result = wp_remote_retrieve_response_code( $url, array( 'timeout' => 10 ) );
+    if( $result == 200 ) {
+      return true;
     }
-
     return false;
   }
 
-
-    /**
-  * Add things to Help tab
-  *
-  * Copyright 2011 TwinCitiesTech.com, Inc.
-  */
-  function wpp_settings_help_tab() {
-  }
+  /**
+   * Add things to Help tab
+   *
+   * Copyright 2011 TwinCitiesTech.com, Inc.
+   */
+  function wpp_settings_help_tab() {}
 
   /*
    * Get image size for pdf document
@@ -2502,60 +2497,65 @@ class class_wpp_pdf_flyer {
 
 }
 
-  /**
-  * Returns link to flyer, or creates a link to on-the-fly Flyer generation if enabled
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  * @author odokienko@UD
-  */
-  function get_pdf_flyer_permalink($post_id = false, $name = false) {
-    global $post, $wpdb, $wp_properties;
+/**
+ * Returns link to flyer, or creates a link to on-the-fly Flyer generation if enabled
+ *
+ * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+ * @author odokienko@UD
+ */
+function get_pdf_flyer_permalink( $post_id = false, $name = false ) {
+  global $post, $wpdb, $wp_properties;
 
-    if(!$post_id)
-      $post_id = $post->ID;
-
-
-    if(!$post_id)
+  if( !$post_id ) {
+    if( !is_object( $post ) || !$post->ID ) {
       return false;
-
-    foreach( (array) $wpdb->get_col( $wpdb->prepare( "
-      SELECT ID FROM {$wpdb->posts} WHERE post_parent = %d AND post_title like %s AND post_type = 'attachment'
-    ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) ) as $attachment_id) {
-      //var_dump(wp_get_attachment_metadata($attachment_id));
-      return wp_get_attachment_url($attachment_id);
-
     }
+    $post_id = $post->ID;
+  }
+  
+  $attachment_id = (array) $wpdb->get_col( $wpdb->prepare( "
+    SELECT ID 
+      FROM {$wpdb->posts} 
+      WHERE post_parent = %d 
+        AND post_title like %s 
+        AND post_type = 'attachment'
+      ORDER BY ID DESC
+      LIMIT 1;
+  ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) );
 
-    //** Flyer does not exist, create it */
-    $permalink = get_option('permalink_structure');
-    return get_permalink($post_id) . ( '' != $permalink ? '?' : '&') . 'wpp_flyer_create=true';
+  if( !empty( $attachment_id[0] ) ) {
+    return wp_get_attachment_url( $attachment_id[0] );
+  }
+  
+  //** Flyer does not exist, create it */
+  $permalink = get_option( 'permalink_structure' );
+  return get_permalink( $post_id ) . ( '' != $permalink ? '?' : '&' ) . 'wpp_flyer_create=true';
+}
 
+/**
+ * Return permalink for PDF List
+ *
+ * @param string $slug Slug of the PDF List
+ * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+ */
+function get_pdf_list_permalink ($slug = false) {
+  global $wp_properties;
+
+  //** Get Base Url for PDF List */
+  $url = WPP_F::base_url($wp_properties['configuration']['base_slug']);
+
+  //** Determine if permalink is set */
+  //** If not, we use GET params */
+  $permalink = get_option('permalink_structure');
+  if ( '' == $permalink) {
+    $slug = '&pdf_list=' . $slug;
+  } else {
+    //** Check url for slash in the end */
+    preg_match('/\/$/', $url, $m);
+    if(!$m) {
+      $url .= '/';
+    }
   }
 
-  /**
-  * Return permalink for PDF List
-  *
-  * @param string $slug Slug of the PDF List
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function get_pdf_list_permalink ($slug = false) {
-    global $wp_properties;
-
-    //** Get Base Url for PDF List */
-    $url = WPP_F::base_url($wp_properties['configuration']['base_slug']);
-
-    //** Determine if permalink is set */
-    //** If not, we use GET params */
-    $permalink = get_option('permalink_structure');
-    if ( '' == $permalink) {
-      $slug = '&pdf_list=' . $slug;
-    } else {
-      //** Check url for slash in the end */
-      preg_match('/\/$/', $url, $m);
-      if(!$m) {
-        $url .= '/';
-      }
-    }
-
-    return $url . ($slug ? $slug . '.pdf' : '');
-  }
+  return $url . ($slug ? $slug . '.pdf' : '');
+}
