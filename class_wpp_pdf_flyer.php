@@ -253,9 +253,9 @@ class class_wpp_pdf_flyer {
     $list_data = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'][$list_id];
 
     $uploads = wp_upload_dir();
-
+    
     //** Create PDF list
-    if(!class_wpp_pdf_flyer::pdf_list_exists($list_id) || $args['force_generate'] == 'true') {
+    if( !class_wpp_pdf_flyer::pdf_list_exists($list_id) || $args['force_generate'] == 'true') {
       //** Check the uploads directory
       if(!file_exists($uploads['basedir'].'/wpp-files')) {
         mkdir($uploads['basedir'].'/wpp-files');
@@ -307,9 +307,9 @@ class class_wpp_pdf_flyer {
       }
 
       //** Determine if Group by is set and get values */
-      if(!empty($list_data['group_by'])) {
+      if(!empty( $list_data['group_by'] ) ) {
         $group_by_key = $list_data['group_by'];
-        $group_by_values = WPP_F::get_all_attribute_values($list_data['group_by']);
+        $group_by_values = WPP_F::get_all_attribute_values( $list_data[ 'group_by' ] );
       }
 
       //** Get Property Items and clean them using PDF List settings */
@@ -428,7 +428,7 @@ class class_wpp_pdf_flyer {
                 $html .= '</tr></table>';
 
                 $current = 0;
-                foreach($group['items'] as $property) {
+                foreach( $group[ 'items' ] as $property ) {
                   if($count != 0 && ($count%$per_page == 0) && !$ignore) {
                     @$pdf->writeHTML( $html, true, false, true, false, '' );
                     $html = '';
@@ -1169,8 +1169,7 @@ class class_wpp_pdf_flyer {
                   <ul>
                     <?php foreach( (array) $available_stats as $s_slug => $s_label): ?>
                     <li>
-                      <input <?php echo WPP_F::checked_in_array($s_slug, $list['attributes']); ?> type="checkbox" name="wpp_flyer_list_settings[<?php echo $slug; ?>][attributes][]" value="<?php echo $s_slug; ?>" />
-                      <label><?php echo $s_label;?></label>
+                      <label><input <?php echo WPP_F::checked_in_array($s_slug, $list['attributes']); ?> type="checkbox" name="wpp_flyer_list_settings[<?php echo $slug; ?>][attributes][]" value="<?php echo $s_slug; ?>" /> <?php echo $s_label;?></label>
                     </li>
                     <?php endforeach; ?>
                   </ul>
