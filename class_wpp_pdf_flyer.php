@@ -1242,7 +1242,6 @@ class class_wpp_pdf_flyer {
 
 
     if($_REQUEST['wpp_flyer_create'] == 'true' && $post->ID)  {
-    
       //** Make sure flyer doesn't already exist * /
       if(self::flyer_exists($post->ID)) {
         wp_redirect(get_pdf_flyer_permalink($post->ID)); exit;
@@ -1424,12 +1423,15 @@ class class_wpp_pdf_flyer {
 
     //** Cleans description */
     $description = strip_shortcodes( $description );
-    $description = apply_filters('the_content', $description);
-    $description = str_replace(']]>', ']]&gt;', $description);
-    $description = strip_tags($description);
-
+    $description = apply_filters( 'the_content', $description );
+    $description = str_replace( ']]>', ']]&gt;', $description );
+    $description = str_replace( '<p>', '', $description );
+    $description = str_replace( '</p>', '<br/><br/>', $description );
+    $description = strip_tags( $description, '<br>' );
+    
     //** Truncates description when it's enabled in PDF Flyer Settings */
-    if($wpp_pdf_flyer['truncate_description'] == 'on') {
+    if( $wpp_pdf_flyer['truncate_description'] == 'on' ) {
+      $description = str_replace( '<br/>', '', $description );
       $excerpt_length = 25;
       $words = preg_split("/[\n\r\t ]+/", $description, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
       if ( count($words) > $excerpt_length ) {
