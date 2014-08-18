@@ -2,17 +2,17 @@
 /**
  * Name: Power Tools
  * Class: class_wpp_power_tools
- * Version: 0.5.4
+ * Version: 0.5.5
  * Feature ID: 13
  * Minimum Core Version: 1.37.3.2
  * Description: Power tools for WPP to include capabilities management.
  */
 
-add_action('wpp_init', array('class_wpp_power_tools', 'init'));
-add_action('wpp_pre_init', array('class_wpp_power_tools', 'pre_init'));
-add_action('admin_menu', array('class_wpp_power_tools', 'admin_menu'));
+add_action( 'wpp_init', array( 'class_wpp_power_tools', 'init' ) );
+add_action( 'wpp_pre_init', array( 'class_wpp_power_tools', 'pre_init' ) );
+add_action( 'admin_menu', array( 'class_wpp_power_tools', 'admin_menu' ) );
 
-add_filter('wpp_taxonomies', array('class_wpp_power_tools', 'wpp_taxonomies'));
+add_filter( 'wpp_taxonomies', array( 'class_wpp_power_tools', 'wpp_taxonomies' ) );
 
 
 /**
@@ -33,7 +33,7 @@ class class_wpp_power_tools {
    * Special functions that must be called prior to init
    *
    */
-  function pre_init() {
+  static public function pre_init() {
 
     //* Add capabilities */
     add_filter('wpp_capabilities', array('class_wpp_power_tools', "add_capability"));
@@ -49,10 +49,10 @@ class class_wpp_power_tools {
 
   }
 
-  /*
+  /**
    * Apply feature's Hooks and other functionality
    */
-  static function init() {
+  static public function init() {
 
     if(current_user_can(self::$capability_capability)) {
       //* Add Inquiry page to Property Settings page array */
@@ -65,13 +65,12 @@ class class_wpp_power_tools {
 
   }
 
-
   /**
    * Disable taxonomies.
    *
    * @since 0.1
    */
-  function wpp_taxonomies($wpp_taxonomies = false) {
+  static public function wpp_taxonomies($wpp_taxonomies = false) {
     global $wp_properties;
 
     if(is_array($wp_properties['configuration']['disabled_taxonomies'])) {
@@ -91,35 +90,28 @@ class class_wpp_power_tools {
     return $wpp_taxonomies;
   }
 
-
   /**
    * Adds contextual help.
    *
    * @since 0.1
    */
-  function admin_menu() {
-
+  static public function admin_menu() {
     add_filter('wpp_contextual_help_overview', array('class_wpp_power_tools', "wpp_contextual_help_overview"));
-
   }
-
 
   /**
    * Adds Custom capability to the current premium feature
    */
-  function add_capability($capabilities) {
-
+  static public function add_capability($capabilities) {
     $capabilities[self::$capability_capability] = __('Manage Capabilities','wpp');
     $capabilities[self::$capability_white_label] = __('Manage White Label','wpp');
-
     return $capabilities;
   }
-
 
   /**
    * Save capabilities
    */
-  function save_capabilities($wpp_settings) {
+  static public function save_capabilities($wpp_settings) {
     global $wp_roles, $wpp_capabilities;
 
     foreach($wp_roles->roles as $r_slug => $role) {
@@ -144,7 +136,6 @@ class class_wpp_power_tools {
     return $wpp_settings;
   }
 
-
   /**
    * Adds contextual help fpr Capabilities tab on Settings page
    *
@@ -152,7 +143,7 @@ class class_wpp_power_tools {
    * @return array
    * @author peshkov@UD
    */
-  public function wpp_contextual_help( $data ) {
+  static public function wpp_contextual_help( $data ) {
 
     $capabilities_help = array(
       '<h3>' . __( 'Capabilities', 'wpp' ) .'</h3>',
@@ -184,12 +175,11 @@ class class_wpp_power_tools {
 
   }
 
-
   /**
    * Adds menu to settings page navigation
    *
    */
-  function settings_nav($tabs) {
+  static public function settings_nav($tabs) {
     $tabs['capabilities'] = array(
       'slug' => 'capabilities',
       'title' => __('Capabilities','wpp')
@@ -197,15 +187,13 @@ class class_wpp_power_tools {
     return $tabs;
   }
 
-
   /**
    * Displays advanced management page
    *
    */
-  function capabilities_settings_page() {
+  static public function capabilities_settings_page() {
     global $wp_roles, $wpp_capabilities;
     ?>
-
     <table class="form-table">
       <tr>
         <td>
@@ -256,21 +244,21 @@ class class_wpp_power_tools {
     </table>
     <?php
   }
-
-
-  function wpp_settings_main_tab_bottom($wp_properties = false) {
+  
+  /**
+   *
+   */
+  static public function wpp_settings_main_tab_bottom($wp_properties = false) {
 
     if(!$wp_properties) {
       global $wp_properties;
     }
-
 
     if(is_array($wp_properties['taxonomies'])) {
       foreach($wp_properties['taxonomies'] as $taxonomy => $taxonomy_data) {
         $configurable_taxonomies[$taxonomy] = $taxonomy_data['label'];
       }
     }
-
 
     if(is_array($wp_properties['configuration']['disabled_taxonomies'])) {
       foreach($wp_properties['configuration']['disabled_taxonomies'] as $taxonomy => $taxonomy_label) {
@@ -281,10 +269,8 @@ class class_wpp_power_tools {
     if(!is_array($configurable_taxonomies)) {
       return;
     }
-
-
+    
     ?>
-
     <?php if(is_array($configurable_taxonomies)) { ?>
     <tr>
       <th><?php _e('Taxonomies','wpp'); ?></th>
@@ -297,12 +283,13 @@ class class_wpp_power_tools {
       </td>
     </tr>
     <?php } ?>
-
     <?php
   }
 
-
-  function wpp_settings_display_tab_bottom() {
+  /**
+   *
+   */
+  static public function wpp_settings_display_tab_bottom() {
     global $wp_properties;
 
     if(!current_user_can(self::$capability_capability)) {
@@ -364,21 +351,22 @@ class class_wpp_power_tools {
       </td>
     </tr>
     <?php
-
   }
 
   /**
-  * Load default settings
-  *
-  * @since 0.1
-  */
-  function load_white_label_defaults() {
+   * Load default settings
+   *
+   * @since 0.1
+   */
+  static public function load_white_label_defaults() {
     global $wp_properties;
     $wp_properties['configuration']['feature_settings']['white_label']['labels']['name'] = __('Properties');
   }
 
-
-  function wpp_contextual_help_overview($text) {
+  /**
+   *
+   */
+  static public function wpp_contextual_help_overview($text) {
     global $wp_properties;
 
     $contextual_help = $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'];
@@ -390,8 +378,10 @@ class class_wpp_power_tools {
     return $text;
   }
 
-
-  function wpp_object_labels($labels) {
+  /**
+   *
+   */
+  static public function wpp_object_labels($labels) {
     global $wp_properties;
 
     $custom_labels = $wp_properties['configuration']['feature_settings']['white_label']['labels'];
@@ -421,6 +411,5 @@ class class_wpp_power_tools {
 
     return $labels;
   }
-
 
 }
