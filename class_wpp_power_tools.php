@@ -73,7 +73,7 @@ class class_wpp_power_tools {
   static public function wpp_taxonomies($wpp_taxonomies = false) {
     global $wp_properties;
 
-    if(is_array($wp_properties['configuration']['disabled_taxonomies'])) {
+    if( isset( $wp_properties['configuration']['disabled_taxonomies'] ) && is_array( $wp_properties['configuration']['disabled_taxonomies'] ) ) {
       $disabled_taxonomies = array_keys($wp_properties['configuration']['disabled_taxonomies']);
     }
     
@@ -81,9 +81,9 @@ class class_wpp_power_tools {
       return $wpp_taxonomies;
     }
 
-    foreach($wpp_taxonomies as $taxonomy_slug => $taxonomy_label) {
-      if(in_array($taxonomy_slug, $disabled_taxonomies)) {
-        unset($wpp_taxonomies[$taxonomy_slug]);
+    foreach( $wpp_taxonomies as $taxonomy_slug => $taxonomy_label ) {
+      if( in_array( $taxonomy_slug, $disabled_taxonomies ) ) {
+        unset( $wpp_taxonomies[ $taxonomy_slug ] );
       }
     }
     
