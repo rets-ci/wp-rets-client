@@ -14,11 +14,11 @@ Description: Create flyers for properties on the fly.
 /** Class including moved into functions in which it is really required. korotkov@ud */
 /** @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php'); */
 
-add_action('wpp_init', array('class_wpp_pdf_flyer', 'init'));
-add_action('wpp_pre_init', array('class_wpp_pdf_flyer', 'pre_init'));
+add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'init' ) );
+add_action( 'wpp_pre_init', array( 'class_wpp_pdf_flyer', 'pre_init' ) );
 
 /* Any front-end Functions */
-add_action('template_redirect', array('class_wpp_pdf_flyer', 'template_redirect'));
+add_action( 'template_redirect', array( 'class_wpp_pdf_flyer', 'template_redirect' ) );
 
 class class_wpp_pdf_flyer {
 
@@ -28,11 +28,11 @@ class class_wpp_pdf_flyer {
   static protected $capability = "manage_wpp_pdfflyer";
 
   /**
-  * Special functions that must be called prior to init
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function pre_init() {
+   * Special functions that must be called prior to init
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function pre_init() {
 
     /* Preserve PDF List settings */
     add_filter('wpp_settings_save', array('class_wpp_pdf_flyer', 'wpp_settings_save'), 0, 2);
@@ -45,13 +45,13 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Called at end of WPP init hook, in WP init hook
-  *
-  * Run-time settings are stored in $wpp_property_pdf['runtime']
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function init() {
+   * Called at end of WPP init hook, in WP init hook
+   *
+   * Run-time settings are stored in $wpp_property_pdf['runtime']
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function init() {
     global $wpp_pdf_flyer, $wp_properties;
 
     if( current_user_can( self::$capability ) ) {
@@ -104,10 +104,8 @@ class class_wpp_pdf_flyer {
   /*
    * Adds Custom capability to the current premium feature
    */
-  function add_capability($capabilities) {
-
+  static public function add_capability($capabilities) {
     $capabilities[self::$capability] = __('Manage PDF Flyer','wpp');
-
     return $capabilities;
   }
 
@@ -118,7 +116,7 @@ class class_wpp_pdf_flyer {
    * @uses $current_screen global variable
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function admin_enqueue_scripts($hook) {
+  static public function admin_enqueue_scripts($hook) {
     global $current_screen;
 
     //** Property Overview Page */
@@ -134,7 +132,7 @@ class class_wpp_pdf_flyer {
    * Settings page load handler
    * @author korotkov@ud
    */
-  function wpp_flyer_pdf_list_page_load() {
+  static public function wpp_flyer_pdf_list_page_load() {
 
     //** Default help items */
     $contextual_help['General Settings'][] = '<h3>' . __('General Settings', 'wpp') . '</h3>';
@@ -159,7 +157,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function add_metabox(){
+  static public function add_metabox(){
     add_meta_box( 'wpp_pdf_flyer', __( 'PDF Flyer Options', 'wpp' ),
     array('class_wpp_pdf_flyer','metabox_options'), 'property', 'side' );
   }
@@ -169,7 +167,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function metabox_options(){
+  static public function metabox_options(){
     global $post_id;
     $disableExclude = get_post_meta($post_id, 'exclude_from_pdf_lists', true);
     $text = sprintf( __( 'Exclude %1s from PDF Lists', 'wpp' ), WPP_F::property_label( 'singular' ) );
@@ -183,7 +181,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function save_post($post_id){
+  static public function save_post($post_id){
     global $post;
 
     if($post->post_type == 'property') {
@@ -212,25 +210,25 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Preserve PDF Flyer settings from being overwritten during settings page saving.
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function wpp_settings_save($new_settings, $old_settings) {
+   * Preserve PDF Flyer settings from being overwritten during settings page saving.
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function wpp_settings_save($new_settings, $old_settings) {
     $preserved_settings = $old_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'];
     $new_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] = $preserved_settings;
     return $new_settings;
   }
 
   /**
-  * Render PDF list in browser
-  *
-  *
-  * @todo Update error handling so warnings (such as bad images) can be caught and saved in a log.
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function render_pdf_list($list_id, $args = '') {
+   * Render PDF list in browser
+   *
+   *
+   * @todo Update error handling so warnings (such as bad images) can be caught and saved in a log.
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function render_pdf_list($list_id, $args = '') {
     //** Error Silencer */
     ob_start();
 
@@ -524,12 +522,12 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Determine if PDF list exists
-  *
-  * @param string $slug Slug of the PDF List
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function pdf_list_exists($slug) {
+   * Determine if PDF list exists
+   *
+   * @param string $slug Slug of the PDF List
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function pdf_list_exists($slug) {
     global $wp_properties;
 
     $uploads = wp_upload_dir();
@@ -539,7 +537,6 @@ class class_wpp_pdf_flyer {
     }
 
     return false;
-
   }
 
 
@@ -552,19 +549,19 @@ class class_wpp_pdf_flyer {
    * @param array $qvars The array containing all query variables
    * @return The modified array
    */
-  public function add_pdf_query_vars ($qvars) {
+  static public function add_pdf_query_vars ($qvars) {
     $qvars[] = "pdf_list";
     return $qvars;
   }
 
   /**
-  * Determine if the current request is the PDF List link
-  * Check request and PDF List options and Open PDF
-  *
-  * @param object $wp Request Object
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function parse_request_for_pdf_list ($wp) {
+   * Determine if the current request is the PDF List link
+   * Check request and PDF List options and Open PDF
+   *
+   * @param object $wp Request Object
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function parse_request_for_pdf_list ($wp) {
     global $wp_query, $wp_properties, $wpdb;
 
     ob_start();
@@ -646,11 +643,11 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Get a PDF list template, or use default
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function pdf_list_template($property, $list_data) {
+   * Get a PDF list template, or use default
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function pdf_list_template($property, $list_data) {
 
     ob_start();
     //** Attempt to get design from template */
@@ -672,11 +669,11 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Default PDF list template
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function default_pdf_list_template($property, $list_data) {
+   * Default PDF list template
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function default_pdf_list_template($property, $list_data) {
     $descr = '&nbsp;';
     $title = '&nbsp;';
     $info = '&nbsp;';
@@ -698,7 +695,6 @@ class class_wpp_pdf_flyer {
     foreach ((array)$property_stats as $label => $value) {
       $info .= '<br/>'. $label .': '. $value;
     }
-
 
     //** Prepare and Render view of Taxonomies */
     $wpp_taxonomies = class_wpp_pdf_flyer::get_pdf_list_attributes('taxonomies');
@@ -778,11 +774,11 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Regenerate PDF lists.
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function regenerate_pdf_lists() {
+   * Regenerate PDF lists.
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function regenerate_pdf_lists() {
     global $wp_properties;
 
      $lists = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'];
@@ -797,11 +793,11 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Adds pages
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function admin_menu() {
+   * Adds pages
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function admin_menu() {
     global $wp_properties;
 
     if($wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['use_pdf_property_lists'] == 'on')
@@ -813,12 +809,12 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Get available attributes for PDF Flyer
-  * @return array $available_stats
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  static function get_pdf_list_attributes($type = false) {
+   * Get available attributes for PDF Flyer
+   * @return array $available_stats
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function get_pdf_list_attributes($type = false) {
     global $wp_properties;
 
     $available_stats = array();
@@ -855,11 +851,11 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * Renders page to create and configure PDF lists
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function page_property_lists() {
+   * Renders page to create and configure PDF lists
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function page_property_lists() {
     global $wp_properties;
 
     @include_once( WPP_Path.'third-party/tcpdf/wpp_tcpdf.php' );
@@ -1223,21 +1219,18 @@ class class_wpp_pdf_flyer {
 
     </div>
     <?php
-
-
   }
 
-
-/**
-  * Handles front-end functions.
-  *
-  * Creates a flyer on-the-fly if wpp_flyer_create is passed, then redirects to it automatically.
-  * If wpp_flyer_create is passed, but flyer already exists, simply opens the flyer -> does not re-generate
-  *
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function template_redirect() {
+  /**
+   * Handles front-end functions.
+   *
+   * Creates a flyer on-the-fly if wpp_flyer_create is passed, then redirects to it automatically.
+   * If wpp_flyer_create is passed, but flyer already exists, simply opens the flyer -> does not re-generate
+   *
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function template_redirect() {
     global $post, $wpdb;
 
 
@@ -1255,17 +1248,13 @@ class class_wpp_pdf_flyer {
     }
   }
 
-
   /**
-  * Adds a PDF Flyer link to property objects in the back-end property view table
-  *
-  * Returns link if it flyer exists, or if on-the-fly creation is enabled.
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function page_row_actions($actions, $post)
-  {
-
+   * Adds a PDF Flyer link to property objects in the back-end property view table
+   * Returns link if it flyer exists, or if on-the-fly creation is enabled.
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function page_row_actions($actions, $post) {
     if($post->post_type != 'property')
       return $actions;
 
@@ -1275,124 +1264,121 @@ class class_wpp_pdf_flyer {
       $actions['pdf_flyer'] = "<a href='$pdf_link'>". __('PDF Flyer', 'wpp') . "</a>";
 
     return $actions;
-
   }
 
-    /**
-    * Default left middle added via hook into flyer template
-    *
-    *
-    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-    */
-    function flyer_left_column( $property, $wpp_pdf_flyer ){
-      global $wp_properties;
+  /**
+   * Default left middle added via hook into flyer template
+   *
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function flyer_left_column( $property, $wpp_pdf_flyer ){
+    global $wp_properties;
 
-      $map_width = round($wpp_pdf_flyer['first_col_width'] / 2 - 27 );
+    $map_width = round($wpp_pdf_flyer['first_col_width'] / 2 - 27 );
 
-      $static_google_map = "http://maps.google.com/maps/api/staticmap?center={$property[latitude]},{$property[longitude]}&zoom=".
-      apply_filters('wpp_flyer_map_scale', 14, $property, $wpp_pdf_flyer)
-      ."&size={$map_width}x250&scale=2&sensor=true&markers=color:blue%7C{$property[latitude]},{$property[longitude]}";
+    $static_google_map = "http://maps.google.com/maps/api/staticmap?center={$property[latitude]},{$property[longitude]}&zoom=".
+    apply_filters('wpp_flyer_map_scale', 14, $property, $wpp_pdf_flyer)
+    ."&size={$map_width}x250&scale=2&sensor=true&markers=color:blue%7C{$property[latitude]},{$property[longitude]}";
 
-      if(!WPP_F::can_get_image($static_google_map)) {
-        $static_google_map = false;
+    if(!WPP_F::can_get_image($static_google_map)) {
+      $static_google_map = false;
+    }
+
+    //** disabled Groupped attributes */
+    //$sort_by_groups = !empty( $wp_properties[ 'property_groups' ] ) && $wp_properties[ 'configuration' ][ 'property_overview' ][ 'sort_stats_by_groups' ] == 'true' ? 'true' : 'false';
+
+    $property['post_content'] = apply_filters('wpp_flyer_description', $property['post_content'], $wpp_pdf_flyer);
+
+
+    if (!empty($wpp_pdf_flyer['pr_details']) && !empty($wpp_pdf_flyer['detail_attributes'])): ?>
+
+      <tr>
+          <td>
+            <div class="heading_text"><?php echo __('Details', 'wpp'); ?></div>
+          </td>
+      </tr>
+      <tr>
+          <td class="pdf-text"><br/>
+              <?php echo @draw_stats( 'exclude='.$wpp_pdf_flyer['excluded_details_stats'].'&display=plain_list&sort_by_groups=false&show_true_as_image=false', $property ); ?>
+          </td>
+      </tr>
+      <?php endif; ?>
+
+      <?php if (!empty($wpp_pdf_flyer['pr_description']) && $property['post_content'] != '') : ?>
+      <tr>
+          <td><div class="heading_text"><?php echo __('Description', 'wpp'); ?></div>
+          </td>
+      </tr>
+      <tr>
+          <td class="pdf-text"><br/>
+              <?php echo $property['post_content']; ?>
+          </td>
+      </tr>
+      <tr>
+          <td height="15">&nbsp;
+          </td>
+      </tr>
+      <?php endif; ?>
+
+      <?php if (!empty($wpp_pdf_flyer['pr_location']) && !empty($property['latitude']) && !empty($property['longitude'])) : ?>
+      <tr>
+          <td><div class="heading_text"><?php echo __('Location', 'wpp'); ?></div>
+          </td>
+      </tr>
+      <?php if($static_google_map) { ?>
+      <tr>
+          <td class="pdf-text"><br/>
+              <table cellspacing="0" cellpadding="10" border="0" class="bg-section">
+              <tr>
+                  <td><img width="<?php echo $map_width?>" src="<?php echo $static_google_map; ?>" /></td>
+              </tr>
+              </table>
+          </td>
+      </tr>
+      <?php
       }
-
-      //** disabled Groupped attributes */
-      //$sort_by_groups = !empty( $wp_properties[ 'property_groups' ] ) && $wp_properties[ 'configuration' ][ 'property_overview' ][ 'sort_stats_by_groups' ] == 'true' ? 'true' : 'false';
-
-      $property['post_content'] = apply_filters('wpp_flyer_description', $property['post_content'], $wpp_pdf_flyer);
-
-
-      if (!empty($wpp_pdf_flyer['pr_details']) && !empty($wpp_pdf_flyer['detail_attributes'])): ?>
-
-        <tr>
-            <td>
-              <div class="heading_text"><?php echo __('Details', 'wpp'); ?></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-text"><br/>
-                <?php echo @draw_stats( 'exclude='.$wpp_pdf_flyer['excluded_details_stats'].'&display=plain_list&sort_by_groups=false&show_true_as_image=false', $property ); ?>
-            </td>
-        </tr>
-        <?php endif; ?>
-
-        <?php if (!empty($wpp_pdf_flyer['pr_description']) && $property['post_content'] != '') : ?>
-        <tr>
-            <td><div class="heading_text"><?php echo __('Description', 'wpp'); ?></div>
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-text"><br/>
-                <?php echo $property['post_content']; ?>
-            </td>
-        </tr>
-        <tr>
-            <td height="15">&nbsp;
-            </td>
-        </tr>
-        <?php endif; ?>
-
-        <?php if (!empty($wpp_pdf_flyer['pr_location']) && !empty($property['latitude']) && !empty($property['longitude'])) : ?>
-        <tr>
-            <td><div class="heading_text"><?php echo __('Location', 'wpp'); ?></div>
-            </td>
-        </tr>
-        <?php if($static_google_map) { ?>
-        <tr>
-            <td class="pdf-text"><br/>
-                <table cellspacing="0" cellpadding="10" border="0" class="bg-section">
-                <tr>
-                    <td><img width="<?php echo $map_width?>" src="<?php echo $static_google_map; ?>" /></td>
-                </tr>
-                </table>
-            </td>
-        </tr>
-        <?php
-        }
-        endif;
-    }
-
-
-    /**
-    * Default column middle added via hook into flyer template
-    *
-    *
-    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-    */
-    function flyer_middle_column( $property, $wpp_pdf_flyer )
-    {
-        global $wp_properties;
-
-        if (!empty($wpp_pdf_flyer['pr_features'])) {
-          if(!empty($wp_properties['taxonomies']))
-            foreach($wp_properties['taxonomies'] as $tax_slug => $tax_data): ?>
-              <?php if(get_features("type=$tax_slug&format=count", $property)):  ?>
-                <tr>
-                    <td><div class="heading_text"><?php echo $tax_data['label']; ?></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdf-text"><br/>
-                        <?php get_features("type=$tax_slug&format=comma&links=false", $property); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="15">&nbsp;
-                    </td>
-                </tr>
-            <?php endif;
-            endforeach;
-        }
-    }
+    endif;
+  }
 
   /**
-  * Default left middle added via hook into flyer template
-  *
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function flyer_right_column( $property, $wpp_pdf_flyer ) {
+   * Default column middle added via hook into flyer template
+   *
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function flyer_middle_column( $property, $wpp_pdf_flyer ) {
+    global $wp_properties;
+
+    if (!empty($wpp_pdf_flyer['pr_features'])) {
+      if(!empty($wp_properties['taxonomies']))
+        foreach($wp_properties['taxonomies'] as $tax_slug => $tax_data): ?>
+          <?php if(get_features("type=$tax_slug&format=count", $property)):  ?>
+            <tr>
+                <td><div class="heading_text"><?php echo $tax_data['label']; ?></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-text"><br/>
+                    <?php get_features("type=$tax_slug&format=comma&links=false", $property); ?>
+                </td>
+            </tr>
+            <tr>
+                <td height="15">&nbsp;
+                </td>
+            </tr>
+        <?php endif;
+      endforeach;
+    }
+  }
+
+  /**
+   * Default left middle added via hook into flyer template
+   *
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function flyer_right_column( $property, $wpp_pdf_flyer ) {
     if(!empty($wpp_pdf_flyer['qr_code'])) {
     ?>
         <tr>
@@ -1412,15 +1398,14 @@ class class_wpp_pdf_flyer {
   }
 
   /**
-  * 'Cleans' Property Description before display it in Flyer
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  * @return string $description
-  * @author Maxim Peshkov
-  * @since 1.5.1
-  */
-  function flyer_description ($description, $wpp_pdf_flyer) {
-
+   * 'Cleans' Property Description before display it in Flyer
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   * @return string $description
+   * @author Maxim Peshkov
+   * @since 1.5.1
+   */
+  static public function flyer_description ($description, $wpp_pdf_flyer) {
     //** Cleans description */
     $description = strip_shortcodes( $description );
     $description = apply_filters( 'the_content', $description );
@@ -1442,43 +1427,40 @@ class class_wpp_pdf_flyer {
         $description = implode(' ', $words);
       }
     }
-
     return $description;
   }
 
   /**
-  * Modifies updated message after saving / creating a property with link to flyer
-  *
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function wpp_updated_messages($messages) {
+   * Modifies updated message after saving / creating a property with link to flyer
+   *
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function wpp_updated_messages($messages) {
     global $post;
     $messages['property'][1] = $messages['property'][1] . sprintf( __(', or <a href="%s" target="_blank">view flyer</a>.','wpp'), esc_url( get_pdf_flyer_permalink($post->ID) ) );
     return $messages;
-
   }
 
   /**
-  * Adds pdf flyer menu to settings page navigation
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function settings_nav($tabs) {
-
-  $tabs['pdf_flyer'] = array(
-    'slug' => 'pdf_flyer',
-    'title' => __('PDF','wpp')
-  );
-  return $tabs;
+   * Adds pdf flyer menu to settings page navigation
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function settings_nav($tabs) {
+    $tabs['pdf_flyer'] = array(
+      'slug' => 'pdf_flyer',
+      'title' => __('PDF','wpp')
+    );
+    return $tabs;
   }
 
   /**
-  * Content for PDF Flyer settings on WPP settings page
-  *
-  * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
-  */
-  function settings_page($tabs) {
+   * Content for PDF Flyer settings on WPP settings page
+   *
+   * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
+   */
+  static public function settings_page($tabs) {
     global $wp_properties;
 
     @include_once(WPP_Path.'third-party/tcpdf/wpp_tcpdf.php');
@@ -1497,310 +1479,309 @@ class class_wpp_pdf_flyer {
 
     $available_image_sizes = get_intermediate_image_sizes();
 
-  ?>
+    ?>
 
-  <table class="form-table">
-  <tbody>
+    <table class="form-table">
+    <tbody>
 
-  <?php if(!is_writable($uploads['path'])) { ?>
-    <tr valign="top">
-    <th scope="row" colspan="2" style="color:red">
-      <div class="updated fade"><p><?php printf(__("Warning: <b>%s</b> is not writable, PDF flyer cannot be created.", 'wpp'), $uploads['path']); ?></p></div>
-    </th>
-    </tr>
-  <?php } ?>
+    <?php if(!is_writable($uploads['path'])) { ?>
+      <tr valign="top">
+      <th scope="row" colspan="2" style="color:red">
+        <div class="updated fade"><p><?php printf(__("Warning: <b>%s</b> is not writable, PDF flyer cannot be created.", 'wpp'), $uploads['path']); ?></p></div>
+      </th>
+      </tr>
+    <?php } ?>
 
-    <tr valign="top">
-      <th scope="row"><?php _e('Options','wpp'); ?></th>
-      <td>
-      <ul>
-
-        <li>
-            <input type="checkbox" id="use_pdf_property_lists" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][use_pdf_property_lists]" <?php checked($wpp_pdf_flyer['use_pdf_property_lists'],'on'); ?>>
-            <label for="use_pdf_property_lists" class="description"><?php printf(__('Show panel that allows you to create PDF %1s lists.','wpp'), WPP_F::property_label( 'singular' )); ?></label>
-        </li>
-
-        <li>
-            <input type="checkbox" id="generate_flyers_on_the_fly" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][generate_flyers_on_the_fly]" <?php checked($wpp_pdf_flyer['generate_flyers_on_the_fly'],'on'); ?>>
-            <label for="generate_flyers_on_the_fly" class="description"><?php printf(__('Generate %1s flyers automatically when somebody tries to view them for the first time.','wpp'), WPP_F::property_label( 'singular' )); ?></label>
-        </li>
-
-        <li>
-          <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]" <?php if(isset($wpp_pdf_flyer['qr_code']) && $wpp_pdf_flyer['qr_code']=='on') echo " CHECKED "; ?>>
-          <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]"><?php _e("Generate QR Code.", 'wpp'); ?></label></span>
-        </li>
-
-        <li>
-          <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]" <?php if(isset($wpp_pdf_flyer['truncate_description']) && $wpp_pdf_flyer['truncate_description']=='on') echo " CHECKED "; ?>>
-          <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]"><?php _e('Truncate the Description when it\'s displayed in Flyer (It can be helpful, when the data can not be placed on one page).','wpp'); ?></label></span>
-        </li>
-
-      </ul>
-      </td>
-    </tr>
-
-    <tr valign="top">
-      <th scope="row"><?php _e('Flyer Display','wpp'); ?></th>
-      <td>
+      <tr valign="top">
+        <th scope="row"><?php _e('Options','wpp'); ?></th>
+        <td>
         <ul>
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]" <?php if(isset($wpp_pdf_flyer['pr_title']) && $wpp_pdf_flyer['pr_title']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]"><?php _e('Title (Header)','wpp'); ?></label></span>
-            </li>
 
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]" <?php if(isset($wpp_pdf_flyer['pr_tagline']) && $wpp_pdf_flyer['pr_tagline']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]"><?php _e('Tagline under Title (Header)','wpp'); ?></label></span>
-            </li>
+          <li>
+              <input type="checkbox" id="use_pdf_property_lists" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][use_pdf_property_lists]" <?php checked($wpp_pdf_flyer['use_pdf_property_lists'],'on'); ?>>
+              <label for="use_pdf_property_lists" class="description"><?php printf(__('Show panel that allows you to create PDF %1s lists.','wpp'), WPP_F::property_label( 'singular' )); ?></label>
+          </li>
 
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]" <?php if(isset($wpp_pdf_flyer['qr_code_note']) && $wpp_pdf_flyer['qr_code_note']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]"><?php _e("QR Code's note (a note explaining what a QR Code is, if it exists)", 'wpp'); ?></label></span>
-            </li>
+          <li>
+              <input type="checkbox" id="generate_flyers_on_the_fly" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][generate_flyers_on_the_fly]" <?php checked($wpp_pdf_flyer['generate_flyers_on_the_fly'],'on'); ?>>
+              <label for="generate_flyers_on_the_fly" class="description"><?php printf(__('Generate %1s flyers automatically when somebody tries to view them for the first time.','wpp'), WPP_F::property_label( 'singular' )); ?></label>
+          </li>
 
-            <li>
-              <?php $attrs = self::get_pdf_list_attributes('property_stats'); ?>
-              <?php if (!empty($attrs)) : ?>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]" <?php if(isset($wpp_pdf_flyer['pr_details']) && $wpp_pdf_flyer['pr_details']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]"><?php _e('Details','wpp'); ?></label></span>
-              <div class="flyer-detail-attributes wp-tab-panel hidden">
-                <ul>
-                <?php foreach ($attrs as $slug => $attr) : ?>
-                  <li>
-                    <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]" <?php if(isset($wpp_pdf_flyer['detail_attributes'][$slug]) && $wpp_pdf_flyer['detail_attributes'][$slug]=='on') echo " CHECKED "; ?>>
-                    <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]"><?php echo $attr; ?></label></span>
-                  </li>
-                <?php endforeach; ?>
-                </ul>
+          <li>
+            <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]" <?php if(isset($wpp_pdf_flyer['qr_code']) && $wpp_pdf_flyer['qr_code']=='on') echo " CHECKED "; ?>>
+            <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code]"><?php _e("Generate QR Code.", 'wpp'); ?></label></span>
+          </li>
 
-              </div>
+          <li>
+            <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]" <?php if(isset($wpp_pdf_flyer['truncate_description']) && $wpp_pdf_flyer['truncate_description']=='on') echo " CHECKED "; ?>>
+            <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][truncate_description]"><?php _e('Truncate the Description when it\'s displayed in Flyer (It can be helpful, when the data can not be placed on one page).','wpp'); ?></label></span>
+          </li>
 
-              <script type="text/javascript">
-                jQuery(document).ready(function(){
-                  var pr_details = jQuery("input[name='wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]']");
-                  var attrs_block = jQuery(".flyer-detail-attributes");
-                  /* When details option is checked we show options for attributes */
-                  if (pr_details.is(':checked')) {
-                    attrs_block.show();
-                  }
-
-                  pr_details.change(function(){
-                    if (pr_details.is(':checked')) {
-                      attrs_block.show('slow');
-                    } else {
-                      attrs_block.hide('slow');
-                    }
-                  });
-                });
-              </script>
-              <?php endif; ?>
-            </li>
-
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]" <?php if(isset($wpp_pdf_flyer['pr_description']) && $wpp_pdf_flyer['pr_description']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]"><?php _e('Description (if exists)','wpp'); ?></label></span>
-            </li>
-
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]" <?php if(isset($wpp_pdf_flyer['pr_location']) && $wpp_pdf_flyer['pr_location']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]"><?php _e('Location on Map (if exists)','wpp'); ?></label></span>
-            </li>
-
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]" <?php if(isset($wpp_pdf_flyer['pr_features']) && $wpp_pdf_flyer['pr_features']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]"><?php _e('Features (if exists)','wpp'); ?></label></span>
-            </li>
-
-            <li>
-              <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]" <?php if(isset($wpp_pdf_flyer['pr_agent_info']) && $wpp_pdf_flyer['pr_agent_info']=='on') echo " CHECKED "; ?>>
-              <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]"><?php _e('Agent Information (if exists)','wpp'); ?></label></span>
-            </li>
         </ul>
-      </td>
-    </tr>
+        </td>
+      </tr>
 
-    <tr valign="top">
-    <th scope="row"><?php _e('Primary Photo Size','wpp'); ?></th>
-    <td>
-      <?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][primary_photo_size]&selected={$wpp_pdf_flyer['primary_photo_size']}"); ?>
-    </td>
-    </tr>
-    <tr valign="top">
-      <th scope="row"><?php _e('Font','wpp'); ?></th>
+      <tr valign="top">
+        <th scope="row"><?php _e('Flyer Display','wpp'); ?></th>
+        <td>
+          <ul>
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]" <?php if(isset($wpp_pdf_flyer['pr_title']) && $wpp_pdf_flyer['pr_title']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_title]"><?php _e('Title (Header)','wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]" <?php if(isset($wpp_pdf_flyer['pr_tagline']) && $wpp_pdf_flyer['pr_tagline']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_tagline]"><?php _e('Tagline under Title (Header)','wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]" <?php if(isset($wpp_pdf_flyer['qr_code_note']) && $wpp_pdf_flyer['qr_code_note']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][qr_code_note]"><?php _e("QR Code's note (a note explaining what a QR Code is, if it exists)", 'wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <?php $attrs = self::get_pdf_list_attributes('property_stats'); ?>
+                <?php if (!empty($attrs)) : ?>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]" <?php if(isset($wpp_pdf_flyer['pr_details']) && $wpp_pdf_flyer['pr_details']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]"><?php _e('Details','wpp'); ?></label></span>
+                <div class="flyer-detail-attributes wp-tab-panel hidden">
+                  <ul>
+                  <?php foreach ($attrs as $slug => $attr) : ?>
+                    <li>
+                      <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]" <?php if(isset($wpp_pdf_flyer['detail_attributes'][$slug]) && $wpp_pdf_flyer['detail_attributes'][$slug]=='on') echo " CHECKED "; ?>>
+                      <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][detail_attributes][<?php echo $slug; ?>]"><?php echo $attr; ?></label></span>
+                    </li>
+                  <?php endforeach; ?>
+                  </ul>
+
+                </div>
+
+                <script type="text/javascript">
+                  jQuery(document).ready(function(){
+                    var pr_details = jQuery("input[name='wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_details]']");
+                    var attrs_block = jQuery(".flyer-detail-attributes");
+                    /* When details option is checked we show options for attributes */
+                    if (pr_details.is(':checked')) {
+                      attrs_block.show();
+                    }
+
+                    pr_details.change(function(){
+                      if (pr_details.is(':checked')) {
+                        attrs_block.show('slow');
+                      } else {
+                        attrs_block.hide('slow');
+                      }
+                    });
+                  });
+                </script>
+                <?php endif; ?>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]" <?php if(isset($wpp_pdf_flyer['pr_description']) && $wpp_pdf_flyer['pr_description']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_description]"><?php _e('Description (if exists)','wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]" <?php if(isset($wpp_pdf_flyer['pr_location']) && $wpp_pdf_flyer['pr_location']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_location]"><?php _e('Location on Map (if exists)','wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]" <?php if(isset($wpp_pdf_flyer['pr_features']) && $wpp_pdf_flyer['pr_features']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_features]"><?php _e('Features (if exists)','wpp'); ?></label></span>
+              </li>
+
+              <li>
+                <input type="checkbox" id="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]" <?php if(isset($wpp_pdf_flyer['pr_agent_info']) && $wpp_pdf_flyer['pr_agent_info']=='on') echo " CHECKED "; ?>>
+                <span class="description"><label for="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][pr_agent_info]"><?php _e('Agent Information (if exists)','wpp'); ?></label></span>
+              </li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr valign="top">
+      <th scope="row"><?php _e('Primary Photo Size','wpp'); ?></th>
       <td>
-        <?php wpp_tcpdf_get_HTML_font_list("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][setfont]&selected={$wpp_pdf_flyer['setfont']}"); ?><br>
-        <span class="description"><?php _e('The default font is Helvetica. If you have any problems with the current font try choosing another one from the list.','wpp'); ?></span>
+        <?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][primary_photo_size]&selected={$wpp_pdf_flyer['primary_photo_size']}"); ?>
       </td>
-    </tr>
-    <tr>
-      <th><?php _e('Secondary Images','wpp'); ?></th>
-      <td>
-      <ul>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><?php _e('Font','wpp'); ?></th>
+        <td>
+          <?php wpp_tcpdf_get_HTML_font_list("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][setfont]&selected={$wpp_pdf_flyer['setfont']}"); ?><br>
+          <span class="description"><?php _e('The default font is Helvetica. If you have any problems with the current font try choosing another one from the list.','wpp'); ?></span>
+        </td>
+      </tr>
+      <tr>
+        <th><?php _e('Secondary Images','wpp'); ?></th>
+        <td>
+        <ul>
+          <li>
+          <?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][secondary_photos]&selected={$wpp_pdf_flyer['secondary_photos']}"); ?>
+        </li>
         <li>
-        <?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][wpp_pdf_flyer][secondary_photos]&selected={$wpp_pdf_flyer['secondary_photos']}"); ?>
-      </li>
-      <li>
-	  <?php printf(__('Show %1$s images.', 'wpp'), '<input type="text" size="5" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][num_pictures]" value='.$wpp_pdf_flyer['num_pictures'].'>'); ?>
-      </li>
-      </ul>
-      </td>
-    </tr>
-    <tr valign="top">
-      <th scope="row"><?php _e('Logo URL','wpp'); ?></th>
-      <td>
-      <input type="text" size="60" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][logo_url]" value="<?php echo $wpp_pdf_flyer['logo_url']; ?>">
-      <span class="description"><?php _e('Use JPEG and GIF images only.','wpp'); ?></span>
-      </td>
-    </tr>
-    <?php /* Removed because sized are hardcoded in generation.
-    <tr valign="top">
-      <th scope="row"><?php _e('Page Format', 'wpp'); ?></th>
-      <td>
-      <select name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][flyer_page_format]">
-        <option value="A4" <?php selected('A4', $wpp_pdf_flyer['flyer_page_format']); ?>>A4</option>
-        <option value="LETTER" <?php selected('LETTER', $wpp_pdf_flyer['flyer_page_format']); ?>>Letter</option>
-        <option value="LEGAL" <?php selected('LEGAL', $wpp_pdf_flyer['flyer_page_format']); ?>>US Legal</option>
-      </select>
-      </td>
-    </tr>
-    */ ?>
-    <tr valign="top">
-      <th scope="row"><?php _e('Header color','wpp'); ?></th>
-      <td>
-      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][header_color]" value="<?php echo $wpp_pdf_flyer['header_color']; ?>">
-      <span class="description"><?php _e('Header color','wpp'); ?></span>
-      </td>
-    </tr>
+      <?php printf(__('Show %1$s images.', 'wpp'), '<input type="text" size="5" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][num_pictures]" value='.$wpp_pdf_flyer['num_pictures'].'>'); ?>
+        </li>
+        </ul>
+        </td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><?php _e('Logo URL','wpp'); ?></th>
+        <td>
+        <input type="text" size="60" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][logo_url]" value="<?php echo $wpp_pdf_flyer['logo_url']; ?>">
+        <span class="description"><?php _e('Use JPEG and GIF images only.','wpp'); ?></span>
+        </td>
+      </tr>
+      <?php /* Removed because sized are hardcoded in generation.
+      <tr valign="top">
+        <th scope="row"><?php _e('Page Format', 'wpp'); ?></th>
+        <td>
+        <select name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][flyer_page_format]">
+          <option value="A4" <?php selected('A4', $wpp_pdf_flyer['flyer_page_format']); ?>>A4</option>
+          <option value="LETTER" <?php selected('LETTER', $wpp_pdf_flyer['flyer_page_format']); ?>>Letter</option>
+          <option value="LEGAL" <?php selected('LEGAL', $wpp_pdf_flyer['flyer_page_format']); ?>>US Legal</option>
+        </select>
+        </td>
+      </tr>
+      */ ?>
+      <tr valign="top">
+        <th scope="row"><?php _e('Header color','wpp'); ?></th>
+        <td>
+        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][header_color]" value="<?php echo $wpp_pdf_flyer['header_color']; ?>">
+        <span class="description"><?php _e('Header color','wpp'); ?></span>
+        </td>
+      </tr>
 
-    <tr valign="top">
-      <th scope="row"><?php _e('Section background color','wpp'); ?></th>
-      <td>
-      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][section_bgcolor]" value="<?php echo $wpp_pdf_flyer['section_bgcolor']; ?>">
-       </td>
-    </tr>
+      <tr valign="top">
+        <th scope="row"><?php _e('Section background color','wpp'); ?></th>
+        <td>
+        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][section_bgcolor]" value="<?php echo $wpp_pdf_flyer['section_bgcolor']; ?>">
+         </td>
+      </tr>
 
-     <?php do_action('wpp_flyer_settings_table_bottom', $wpp_pdf_flyer); ?>
+       <?php do_action('wpp_flyer_settings_table_bottom', $wpp_pdf_flyer); ?>
 
-    </table>
+      </table>
 
 
 
-    <table class='form-table'>
-    <tr valign="top">
-      <td colspan="2">
-      <br class="cb" />
-      <span class="description">
-      <?php _e('Shortcode examples:<br />','wpp'); ?>
-      <?php _e('<strong>[property_flyer]</strong> - Returns a html link to the PDF Flyer<br />','wpp'); ?>
-      <?php _e('<strong>[property_flyer title=\'PDF Flyer\']</strong> - Returns a html link to the PDF Flyer with custom title.<br />','wpp'); ?>
-      <?php _e('<strong>[property_flyer urlonly=\'yes\']</strong> -  Returns the raw URL to the PDF Flyer (for use in custom html).<br />','wpp'); ?>
-      <?php _e('<strong>[property_flyer class=\'custom_css_class\']</strong> - For use with a custom CSS class.<br />','wpp'); ?>
-      <?php _e('<strong>[property_flyer image=\'url_to_custom_image\']</strong> - Returns url_to_custom_image with a link to the PDF Flyer.','wpp'); ?>
-      </span>
-      </td>
-    </tr>
-    </table>
+      <table class='form-table'>
+      <tr valign="top">
+        <td colspan="2">
+        <br class="cb" />
+        <span class="description">
+        <?php _e('Shortcode examples:<br />','wpp'); ?>
+        <?php _e('<strong>[property_flyer]</strong> - Returns a html link to the PDF Flyer<br />','wpp'); ?>
+        <?php _e('<strong>[property_flyer title=\'PDF Flyer\']</strong> - Returns a html link to the PDF Flyer with custom title.<br />','wpp'); ?>
+        <?php _e('<strong>[property_flyer urlonly=\'yes\']</strong> -  Returns the raw URL to the PDF Flyer (for use in custom html).<br />','wpp'); ?>
+        <?php _e('<strong>[property_flyer class=\'custom_css_class\']</strong> - For use with a custom CSS class.<br />','wpp'); ?>
+        <?php _e('<strong>[property_flyer image=\'url_to_custom_image\']</strong> - Returns url_to_custom_image with a link to the PDF Flyer.','wpp'); ?>
+        </span>
+        </td>
+      </tr>
+      </table>
 
-    <div class="wpp_settings_block" style="margin: 10px 10px 0;">
-        <span><?php printf(__('You can regenerate all your PDF flyers, but depending on your server, it can be very time consuming if you have many %1s.','wpp'), WPP_F::property_label( 'plural' )); ?></span>
-        <input type="button" id="wpp_ajax_regenerate_all_flyers" value="<?php _e('Regenerate all Flyers','wpp'); ?>">&nbsp;<img style="display:none;" id="regenerate_all_flyers_ajax_spinner" src="<?php echo WPP_URL; ?>images/ajax_loader.gif" />
-        <br/><input style="display:none;" type="button" id="wpp_ajax_regenerate_all_flyers_close" value="<?php _e('Close Result\'s Logs','wpp'); ?>">
-        <pre class="wpp_class_pre hidden" id="wpp_ajax_regenerate_all_flyers_result" style="height:300px;"></pre>
-    </div>
-    <script type="text/javascript">
-    jQuery('#wpp_ajax_regenerate_all_flyers').click(function(){
-        var ajaxSpinner = jQuery('#regenerate_all_flyers_ajax_spinner');
-        var closeButton = jQuery("#wpp_ajax_regenerate_all_flyers_close");
-        var resultBox = jQuery('#wpp_ajax_regenerate_all_flyers_result');
+      <div class="wpp_settings_block" style="margin: 10px 10px 0;">
+          <span><?php printf(__('You can regenerate all your PDF flyers, but depending on your server, it can be very time consuming if you have many %1s.','wpp'), WPP_F::property_label( 'plural' )); ?></span>
+          <input type="button" id="wpp_ajax_regenerate_all_flyers" value="<?php _e('Regenerate all Flyers','wpp'); ?>">&nbsp;<img style="display:none;" id="regenerate_all_flyers_ajax_spinner" src="<?php echo WPP_URL; ?>images/ajax_loader.gif" />
+          <br/><input style="display:none;" type="button" id="wpp_ajax_regenerate_all_flyers_close" value="<?php _e('Close Result\'s Logs','wpp'); ?>">
+          <pre class="wpp_class_pre hidden" id="wpp_ajax_regenerate_all_flyers_result" style="height:300px;"></pre>
+      </div>
+      <script type="text/javascript">
+      jQuery('#wpp_ajax_regenerate_all_flyers').click(function(){
+          var ajaxSpinner = jQuery('#regenerate_all_flyers_ajax_spinner');
+          var closeButton = jQuery("#wpp_ajax_regenerate_all_flyers_close");
+          var resultBox = jQuery('#wpp_ajax_regenerate_all_flyers_result');
 
-        var wpp_recursively_generate_pdf_flyer = function( data, callback ) {
-          var item = data.shift();
-          jQuery.ajax({
-            url: '<?php echo admin_url('admin-ajax.php'); ?>',
-            data: 'action=wpp_generate_pdf_flyer&post_id=' + item.post_id,
-            complete: function( r, status ) {
-              if( status === 'success' ) {
-                var result = eval('(' + r.responseText + ')');
-                if(result.success == 1) {
-                  putLog('<?php _e('PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('" is generated.','wpp'); ?>', resultBox);
-                } else {
-                  putLog('<?php _e('<b>Error. PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('" could not be generated.</b>','wpp'); ?>', resultBox);
-                }
-              } else {
-                putLog('<?php _e('Could not regenerate PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('". Looks like, something caused error on server.','wpp'); ?>', resultBox);
-              }
-              if ( data.length == 0 ) {
-                if( typeof callback === 'function' ) {
-                  callback();
-                }
-              } else {
-                wpp_recursively_generate_pdf_flyer( data, callback );
-              }
-            }
-          });
-        }
-
-        ajaxSpinner.show( 'fast', function() {
-          resultBox.show( 'fast', function() {
+          var wpp_recursively_generate_pdf_flyer = function( data, callback ) {
+            var item = data.shift();
             jQuery.ajax({
               url: '<?php echo admin_url('admin-ajax.php'); ?>',
-              //async: false,
-              data: 'action=wpp_get_property_ids',
+              data: 'action=wpp_generate_pdf_flyer&post_id=' + item.post_id,
               complete: function( r, status ) {
-
                 if( status === 'success' ) {
+                  var result = eval('(' + r.responseText + ')');
+                  if(result.success == 1) {
+                    putLog('<?php _e('PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('" is generated.','wpp'); ?>', resultBox);
+                  } else {
+                    putLog('<?php _e('<b>Error. PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('" could not be generated.</b>','wpp'); ?>', resultBox);
+                  }
+                } else {
+                  putLog('<?php _e('Could not regenerate PDF Flyer for property "','wpp'); ?>' + item.post_title + '<?php _e('". Looks like, something caused error on server.','wpp'); ?>', resultBox);
+                }
+                if ( data.length == 0 ) {
+                  if( typeof callback === 'function' ) {
+                    callback();
+                  }
+                } else {
+                  wpp_recursively_generate_pdf_flyer( data, callback );
+                }
+              }
+            });
+          }
 
-                  var data = eval('(' + r.responseText + ')');
-                  if( data.length > 0 ) {
-                    putLog('<?php _e('Property List is got. Start generate PDF Flyers...','wpp'); ?>', resultBox);
+          ajaxSpinner.show( 'fast', function() {
+            resultBox.show( 'fast', function() {
+              jQuery.ajax({
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                //async: false,
+                data: 'action=wpp_get_property_ids',
+                complete: function( r, status ) {
 
-                    // Loop all properties
-                    wpp_recursively_generate_pdf_flyer( data, function() {
-                      putLog('<?php _e('Finished.','wpp'); ?>', resultBox);
+                  if( status === 'success' ) {
+
+                    var data = eval('(' + r.responseText + ')');
+                    if( data.length > 0 ) {
+                      putLog('<?php _e('Property List is got. Start generate PDF Flyers...','wpp'); ?>', resultBox);
+
+                      // Loop all properties
+                      wpp_recursively_generate_pdf_flyer( data, function() {
+                        putLog('<?php _e('Finished.','wpp'); ?>', resultBox);
+                        ajaxSpinner.hide();
+                        closeButton.show();
+                      } );
+
+                    } else {
+                      putLog('<?php _e('There are no any property to generate PDF Flyer for.','wpp'); ?>', resultBox);
                       ajaxSpinner.hide();
                       closeButton.show();
-                    } );
-
+                    }
                   } else {
-                    putLog('<?php _e('There are no any property to generate PDF Flyer for.','wpp'); ?>', resultBox);
+                    putLog('<?php _e('Looks like, something caused error on server. Please, try to regenerate PDF Flyers later.','wpp'); ?>', resultBox);
                     ajaxSpinner.hide();
                     closeButton.show();
                   }
-                } else {
-                  putLog('<?php _e('Looks like, something caused error on server. Please, try to regenerate PDF Flyers later.','wpp'); ?>', resultBox);
-                  ajaxSpinner.hide();
-                  closeButton.show();
-                }
 
-              }
+                }
+              } );
             } );
           } );
-        } );
-        return false;
-    });
+          return false;
+      });
 
-    jQuery("#wpp_ajax_regenerate_all_flyers_close").click(function(){
-        var closeButton = jQuery(this);
-        var resultBox = jQuery('#wpp_ajax_regenerate_all_flyers_result');
+      jQuery("#wpp_ajax_regenerate_all_flyers_close").click(function(){
+          var closeButton = jQuery(this);
+          var resultBox = jQuery('#wpp_ajax_regenerate_all_flyers_result');
 
-        resultBox.hide();
-        resultBox.html('');
-        closeButton.hide();
-    });
+          resultBox.hide();
+          resultBox.html('');
+          closeButton.hide();
+      });
 
 
-    function putLog (log, el) {
-        if (typeof log != 'undefined' && typeof el == 'object'){
-            if (jQuery('.logs', el).length == 0) {
-                el.append('<ul class="logs"></ul>');
-            }
-            jQuery('.logs', el).append('<li>' + log + '</li>');
-        }
-    }
+      function putLog (log, el) {
+          if (typeof log != 'undefined' && typeof el == 'object'){
+              if (jQuery('.logs', el).length == 0) {
+                  el.append('<ul class="logs"></ul>');
+              }
+              jQuery('.logs', el).append('<li>' + log + '</li>');
+          }
+      }
 
     </script>
     <?php
-
   }
 
   /**
@@ -1808,7 +1789,7 @@ class class_wpp_pdf_flyer {
    *
    * @return array
    */
-  function return_defaults() {
+  static public function return_defaults() {
     $default = array ();
     $default['num_pictures'] = 3;
     $default['header_color'] = '#e6e6fa';
@@ -1824,7 +1805,7 @@ class class_wpp_pdf_flyer {
    * @uses get_pdf_flyer_permalink
    * @return string
    */
-  function shortcode_pdf_flyer( $atts ) {
+  static public function shortcode_pdf_flyer( $atts ) {
     global $post;
 
     if($post->post_type != 'property') {
@@ -1874,7 +1855,7 @@ class class_wpp_pdf_flyer {
    * @uses get_pdf_flyer_permalink
    * @return string
    */
-  function shortcode_pdf_list( $atts ) {
+  static public function shortcode_pdf_list( $atts ) {
     global $wp_properties, $wpdb;
     $title = '<span class="wpp_pdf_flyer_icon">[PDF]</span> ';
     $name = '';
@@ -1947,7 +1928,7 @@ class class_wpp_pdf_flyer {
    * @author odokienko@UD
    * @author peshkov@UD
    */
-  function flush_pdf_flyer ( $post_id ){
+  static public function flush_pdf_flyer ( $post_id ){
     global $wp_properties, $wpp_pdf_flyer, $wpdb;
     //** Get all PDF Flyer attachments */
     $attachment_ids = (array) $wpdb->get_col( $wpdb->prepare( "
@@ -1978,7 +1959,7 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  function create_flyer_pdf( $post_id, $debug = false )  {
+  static public function create_flyer_pdf( $post_id, $debug = false )  {
     global $wp_properties, $post, $wpdb;
 
     $flyer_id = false;
@@ -2256,7 +2237,7 @@ class class_wpp_pdf_flyer {
    *
    * @author odokienko@UD
    */
-  function flyer_exists( $post_id ) {
+  static public function flyer_exists( $post_id ) {
     global $wpdb;
 
     $attachment_id = (array) $wpdb->get_col( $wpdb->prepare( "
@@ -2282,12 +2263,12 @@ class class_wpp_pdf_flyer {
    *
    * Copyright 2011 TwinCitiesTech.com, Inc.
    */
-  function wpp_settings_help_tab() {}
+  static public function wpp_settings_help_tab() {}
 
   /*
    * Get image size for pdf document
    */
-  function get_pdf_image_size($image_size){
+  static public function get_pdf_image_size($image_size){
     if ($image_size == 'thumbnail'){
       return 150;
     } elseif ($image_size == 'medium'){
@@ -2300,83 +2281,83 @@ class class_wpp_pdf_flyer {
     }
   }
 
-    /*
-     * Returns ids of properties.
-     * Used by AJAX call
-     *
-     *
-     * @return json
-     */
-    function ajax_get_properties () {
-        global $wpdb;
-        ob_start();
-        $ids = $wpdb->get_results("
-            SELECT `ID` as 'post_id', `post_title`
-            FROM {$wpdb->prefix}posts
-              WHERE `post_type` = 'property'
-                AND `post_status` IN ( 'publish', 'private' )
-        ");
+  /**
+   * Returns ids of properties.
+   * Used by AJAX call
+   *
+   *
+   * @return json
+   */
+  static public function ajax_get_properties () {
+    global $wpdb;
+    ob_start();
+    $ids = $wpdb->get_results("
+        SELECT `ID` as 'post_id', `post_title`
+        FROM {$wpdb->prefix}posts
+          WHERE `post_type` = 'property'
+            AND `post_status` IN ( 'publish', 'private' )
+    ");
 
-        if(!is_array($ids) && empty($ids)) {
-            $ids = array();
-        }
-        ob_end_clean();
-        print json_encode($ids);
-        exit();
+    if(!is_array($ids) && empty($ids)) {
+        $ids = array();
     }
+    ob_end_clean();
+    print json_encode($ids);
+    exit();
+  }
 
-    /*
-     * Generate PDF Flyer for property.
-     * Used by AJAX call
-     *
-     * @return json
-     */
-    function ajax_generate_pdf_flyer () {
-        ob_start();
-        $result = array(
-            "success" => 1
-        );
+  /**
+   * Generate PDF Flyer for property.
+   * Used by AJAX call
+   *
+   * @return json
+   */
+  static public function ajax_generate_pdf_flyer () {
+    ob_start();
+    $result = array(
+        "success" => 1
+    );
 
-        if (!empty($_REQUEST['post_id'])) {
-            if(self::create_flyer_pdf((int)$_REQUEST['post_id']) === false)  {
-                $result['success'] = 0;
-                $result['message'] = 'Can not generate PDF Flyer.';
-            }
-        } else {
+    if (!empty($_REQUEST['post_id'])) {
+        if(self::create_flyer_pdf((int)$_REQUEST['post_id']) === false)  {
             $result['success'] = 0;
-            $result['message'] = 'Property ID is absent.';
+            $result['message'] = 'Can not generate PDF Flyer.';
         }
-        ob_end_clean();
-        print json_encode($result);
-        exit();
+    } else {
+        $result['success'] = 0;
+        $result['message'] = 'Property ID is absent.';
     }
+    ob_end_clean();
+    print json_encode($result);
+    exit();
+  }
 
-    /*
-     * Generate PDF List.
-     * Used by AJAX call
-     *
-     * @return json
-     */
-    function ajax_generate_pdf_list () {
-        ob_start();
-        $result = array(
-            "success" => 1
-        );
+  /**
+   * Generate PDF List.
+   * Used by AJAX call
+   *
+   * @return json
+   */
+  static public function ajax_generate_pdf_list () {
+    ob_start();
+    $result = array(
+        "success" => 1
+    );
 
-        if (!empty($_REQUEST['slug'])) {
-            if(self::render_pdf_list($_REQUEST['slug'], "force_generate=true&display=false")) {
-                $result['success'] = 0;
-                $result['message'] = "Can not generate PDF List.";
-            }
-        } else {
+    if (!empty($_REQUEST['slug'])) {
+        if(self::render_pdf_list($_REQUEST['slug'], "force_generate=true&display=false")) {
             $result['success'] = 0;
-            $result['message'] = "List's Slug is absent.";
+            $result['message'] = "Can not generate PDF List.";
         }
-
-        ob_end_clean();
-        print json_encode($result);
-        exit();
+    } else {
+        $result['success'] = 0;
+        $result['message'] = "List's Slug is absent.";
     }
+
+    ob_end_clean();
+    print json_encode($result);
+    exit();
+  }
 
 }
 
