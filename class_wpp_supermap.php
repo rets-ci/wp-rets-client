@@ -2,14 +2,14 @@
 /*
 Name: Supermap
 Class: class_wpp_supermap
-Version: 3.5.1.0
+Version: 3.5.2
 Minimum Core Version: 1.40.0
 Feature ID: 3
 Description: A big map for property overview.
 */
 
-add_action('wpp_init', array('class_wpp_supermap', 'init'));
-add_action('wpp_pre_init', array('class_wpp_supermap', 'pre_init'));
+add_action( 'wpp_init', array( 'class_wpp_supermap', 'init' ) );
+add_action( 'wpp_pre_init', array( 'class_wpp_supermap', 'pre_init' ) );
 
 if(!class_exists('class_wpp_supermap')) :
 
@@ -24,7 +24,7 @@ class class_wpp_supermap {
    * Special functions that must be called prior to init
    *
    */
-  function pre_init() {
+  static public function pre_init() {
     //* Add capability */
     add_filter('wpp_capabilities', array('class_wpp_supermap', "add_capability"));
     //* Check and set specific supermap meta_keys */
@@ -36,7 +36,7 @@ class class_wpp_supermap {
    * Something like constructor
    *
    */
-  function init() {
+  static public function init() {
     add_shortcode('supermap', array('class_wpp_supermap', 'shortcode_supermap'));
 
     add_action('wp_ajax_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
@@ -73,7 +73,7 @@ class class_wpp_supermap {
    * @param array $capabilities
    * @return array $capabilities
    */
-  function add_capability($capabilities) {
+  static public function add_capability($capabilities) {
 
     $capabilities[self::$capability] = __('Manage Supermap','wpp');
 
@@ -86,7 +86,7 @@ class class_wpp_supermap {
    *
    * @param array $tabs
    */
-  function settings_nav($tabs) {
+  static public function settings_nav($tabs) {
     $tabs['supermap'] = array(
       'slug' => 'supermap',
       'title' => __('Supermap','wpp')
@@ -98,7 +98,7 @@ class class_wpp_supermap {
    * Add Supermap tab's content on Settings Page
    *
    */
-  function settings_page() {
+  static public function settings_page() {
     global $wp_properties, $wpdb, $class_wpp_slideshow;
 
     $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
@@ -400,7 +400,7 @@ class class_wpp_supermap {
    * @return $settings
    * @author Maxim Peshkov
    */
-  function property_type_settings($settings, $slug) {
+  static public function property_type_settings($settings, $slug) {
     global $wp_properties;
 
     $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
@@ -479,7 +479,7 @@ class class_wpp_supermap {
    *
    * @author Maxim Peshkov
    */
-  function ajax_marker_upload() {
+  static public function ajax_marker_upload() {
     global $wp_properties;
 
     $return = array();
@@ -562,7 +562,7 @@ class class_wpp_supermap {
    * @uses $current_screen global variable
    * @author Maxim Peshkov
    */
-  function admin_enqueue_scripts() {
+  static public function admin_enqueue_scripts() {
     global $current_screen, $wp_properties;
 
     //* WPP Settings Page */
@@ -609,7 +609,7 @@ class class_wpp_supermap {
    * Enqueue scripts and style
    *
    */
-  function supermap_template_redirect(){
+  static public function supermap_template_redirect(){
     global $post;
 
     if(strpos($post->post_content, "supermap")) {
@@ -624,7 +624,7 @@ class class_wpp_supermap {
    * Adds metabox to property editor
    *
    */
-  function add_metabox(){
+  static public function add_metabox(){
     add_meta_box( 'wp_property_supermap', __( 'Supermap Options', 'wpp' ),
     array('class_wpp_supermap','property_supermap_options'), 'property', 'side' );
   }
@@ -633,7 +633,7 @@ class class_wpp_supermap {
    * Renders content for metabox
    *
    */
-  function property_supermap_options(){
+  static public function property_supermap_options(){
     global $post_id, $wp_properties;
 
     //* Exclude From Supermap checkbox */
@@ -728,7 +728,7 @@ class class_wpp_supermap {
    *
    * @param int $post_id
    */
-  function save_post($post_id){
+  static public function save_post($post_id){
     global $wp_properties;
 
     if(isset($_POST['exclude_from_supermap'])) {
@@ -767,7 +767,7 @@ class class_wpp_supermap {
    *
    * @author Maxim Peshkov
    */
-  function get_marker_by_post_id($marker_url = '', $post_id) {
+  static public function get_marker_by_post_id($marker_url = '', $post_id) {
     global $wp_properties;
 
     //* Get supermap marker for the current property */
@@ -816,7 +816,7 @@ class class_wpp_supermap {
    *
    * @param array $atts Attributes of shortcode
    */
-  function shortcode_supermap($atts = array()) {
+  static public function shortcode_supermap($atts = array()) {
     global $wp_properties, $wp_scripts;
 
     $defaults = array(
@@ -937,7 +937,7 @@ class class_wpp_supermap {
    * list of properties and markers
    *
    */
-  function ajax_get_properties() {
+  static public function ajax_get_properties() {
     global $wpdb, $wp_properties;
 
     $defaults = array(
@@ -1146,7 +1146,7 @@ class class_wpp_supermap {
    * @param array $atts
    * @return string $content HTML
    */
-  function supermap_template($properties, $atts = array()) {
+  static public function supermap_template($properties, $atts = array()) {
     global $wp_properties;
 
     //* Determine if properties exist */
@@ -1682,12 +1682,8 @@ class class_wpp_supermap {
     <?php
     $return_content['html'] = ob_get_contents();
     ob_end_clean();
-
     $return_content['script'] = WPP_F::minify_js($return_content['script']);
-
-
     return implode($return_content);
-
   }
 
   /**
@@ -1697,7 +1693,7 @@ class class_wpp_supermap {
    * @param $searchable_property_types
    * @param $rand
    */
-  function draw_supermap_options_form($search_attributes = false, $searchable_property_types = false, $rand = 0) {
+  static public function draw_supermap_options_form($search_attributes = false, $searchable_property_types = false, $rand = 0) {
     global $wp_properties;
     
     if( !empty( $_REQUEST[ 'wpp_search' ] ) ) {
@@ -1802,7 +1798,7 @@ class class_wpp_supermap {
    *
    * @author Maxim Peshkov
    */
-  function settings_save($wpp_settings) {
+  static public function settings_save($wpp_settings) {
     global $wpdb;
 
     //* START Markers (files) checking */
@@ -1844,7 +1840,7 @@ class class_wpp_supermap {
    * @return mixed
    * @author korotkov@ud
    */
-  function importer_meta_filter( $value, $attribute, $type, $post_id ) {
+  static public function importer_meta_filter( $value, $attribute, $type, $post_id ) {
     global $wp_properties;
 
     /**
