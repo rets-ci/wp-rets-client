@@ -248,42 +248,42 @@ class class_wpp_power_tools {
   /**
    *
    */
-  static public function wpp_settings_main_tab_bottom($wp_properties = false) {
+  static public function wpp_settings_main_tab_bottom( $wp_properties = false ) {
 
-    if(!$wp_properties) {
+    if( !$wp_properties ) {
       global $wp_properties;
     }
+    
+    $disabled_taxonomies = isset( $wp_properties['configuration']['disabled_taxonomies'] ) ? (array)$wp_properties['configuration']['disabled_taxonomies'] : array();
 
-    if(is_array($wp_properties['taxonomies'])) {
+    if( is_array( $wp_properties['taxonomies'] ) ) {
       foreach($wp_properties['taxonomies'] as $taxonomy => $taxonomy_data) {
         $configurable_taxonomies[$taxonomy] = $taxonomy_data['label'];
       }
     }
-
-    if(is_array($wp_properties['configuration']['disabled_taxonomies'])) {
-      foreach($wp_properties['configuration']['disabled_taxonomies'] as $taxonomy => $taxonomy_label) {
-        $configurable_taxonomies[$taxonomy] = $taxonomy_label;
-      }
+    
+    foreach( $disabled_taxonomies as $taxonomy => $taxonomy_label) {
+      $configurable_taxonomies[$taxonomy] = $taxonomy_label;
     }
 
-    if(!is_array($configurable_taxonomies)) {
+    if( !is_array( $configurable_taxonomies ) ) {
       return;
     }
     
-    ?>
-    <?php if(is_array($configurable_taxonomies)) { ?>
-    <tr>
-      <th><?php _e('Taxonomies','wpp'); ?></th>
-      <td>
-        <ul>
-          <?php foreach($configurable_taxonomies as $taxonomy => $taxonomy_label) { ?>
-            <li><?php echo WPP_F::checkbox("id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable %1$s taxonomy.', 'wpp'), $taxonomy_label), $wp_properties['configuration']['disabled_taxonomies']); ?></li>
-          <?php } ?>
-        </ul>
-      </td>
-    </tr>
-    <?php } ?>
-    <?php
+    if( is_array( $configurable_taxonomies ) ) {
+      ?>
+      <tr>
+        <th><?php _e('Taxonomies','wpp'); ?></th>
+        <td>
+          <ul>
+            <?php foreach( $configurable_taxonomies as $taxonomy => $taxonomy_label ) { ?>
+              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable %1$s taxonomy.', 'wpp'), $taxonomy_label ), $disabled_taxonomies ); ?></li>
+            <?php } ?>
+          </ul>
+        </td>
+      </tr>
+      <?php 
+    }
   }
 
   /**
