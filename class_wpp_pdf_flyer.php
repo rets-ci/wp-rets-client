@@ -181,11 +181,11 @@ class class_wpp_pdf_flyer {
    *
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
-  static public function save_post($post_id){
+  static public function save_post( $post_id ){
     global $post;
 
-    if($post->post_type == 'property') {
-      if(isset($_POST['exclude_from_pdf_lists'])) {
+    if( is_object( $post ) && $post->post_type == 'property' ) {
+      if( isset( $_POST[ 'exclude_from_pdf_lists' ] ) ) {
         update_post_meta($post_id, 'exclude_from_pdf_lists', $_POST['exclude_from_pdf_lists']);
       }
 
