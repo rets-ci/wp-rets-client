@@ -181,7 +181,7 @@ class class_wpp_supermap {
           <td>
             <ul>
               <li>
-                <input <?php checked('true', $supermap_configuration['hide_sidebar_thumb']); ?> value='true' type="checkbox" id="supermap_hide_sidebar_thumb" name="wpp_settings[configuration][feature_settings][supermap][hide_sidebar_thumb]" />
+                <input <?php if( isset( $supermap_configuration['hide_sidebar_thumb'] ) ) checked( 'true', $supermap_configuration[ 'hide_sidebar_thumb' ] ); ?> value='true' type="checkbox" id="supermap_hide_sidebar_thumb" name="wpp_settings[configuration][feature_settings][supermap][hide_sidebar_thumb]" />
                 <label for="supermap_hide_sidebar_thumb"><?php _e('Do not show a property thumbnail in sidebar.','wpp') ?></label>
               </li>
               <li><?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][supermap][supermap_thumb]&selected=" . $supermap_configuration['supermap_thumb']); ?></li>
@@ -568,8 +568,6 @@ class class_wpp_supermap {
     //* WPP Settings Page */
     if($current_screen->id == 'property_page_property_settings') {
       wp_enqueue_script('wpp-jquery-ajaxupload');
-
-      wp_localize_script( 'wpp-jquery-ajaxupload', 'l10n', $wp_properties['l10n'] );
     }
 
     //* Add custom supermap styles */
