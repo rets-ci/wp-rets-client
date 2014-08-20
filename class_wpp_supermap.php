@@ -1206,8 +1206,8 @@ class class_wpp_supermap {
       $inline_styles['sidebar']['height'] = 'height: '. str_replace( 'px', '', $map_height ) . 'px;';
     }
 
-    $inline_styles['map'] = 'style="' . implode( ' ', (array) $inline_styles['map']). '"';
-    $inline_styles['sidebar'] = 'style="' . implode( ' ', (array) $inline_styles['sidebar'] ) . '"';
+    $inline_styles['map'] = 'style="' . implode( ' ', ( !empty( $inline_styles['map'] ) ? (array) $inline_styles['map'] : array() ) ). '"';
+    $inline_styles['sidebar'] = 'style="' . implode( ' ', ( !empty( $inline_styles['sidebar'] ) ? (array) $inline_styles['sidebar'] : array() ) ) . '"';
 
     //* START Render Javascript functionality for Areas */
     $areas = $wp_properties['configuration']['feature_settings']['supermap']['areas'];
@@ -1577,8 +1577,10 @@ class class_wpp_supermap {
 
     $supermap_configuration['display_attributes'] = (is_array($supermap_configuration['display_attributes']) ? $supermap_configuration['display_attributes'] : array());
 
-    foreach($supermap_configuration['display_attributes'] as $attribute) {
-      $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
+    foreach( $supermap_configuration['display_attributes'] as $attribute ) {
+      if( isset( $wp_properties['property_stats'][$attribute] ) ) {
+        $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
+      }
     }
 
     ob_start();
@@ -1647,16 +1649,13 @@ class class_wpp_supermap {
               $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '" class="btn btn-info btn-small"><span>'  . __('View Property', 'wpp') . '</span></a></li>';
             }
 
-            if($supermap_configuration['hide_sidebar_thumb'] != 'true') {
-              $image = wpp_get_image_link($value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array'));
-            }
-
             ?>
             <?php if ($value['latitude'] && $value['longitude'] && $value['ID']) { ?>
               <div id="property_in_list_<?php echo $rand; ?>_<?php echo $value['ID']; ?>" class="property_in_list clearfix">
                 <ul class='property_in_list_items clearfix'>
-                  <?php if($supermap_configuration['hide_sidebar_thumb'] != 'true') { ?>
-                  <li class='supermap_list_thumb'><span  onclick="showInfobox_<?php echo $rand; ?>(<?php echo $value['ID']; ?>);"><img class="<?php echo ($image['link'] ? 'wpp_supermap_thumb' : 'wpp_supermap_thumb wpp_default_iamge'); ?>" src="<?php echo (empty($image['link']) ? WPP_URL . 'templates/images/no_image.png' : $image['link']); ?>" style="<?php echo ($image['width'] ? 'width: '.$image['width'].'px; ' : 'width: '.$default_image_width.'px;'); ?>" alt="<?php echo $value['post_title']; ?>" /></span></li>
+                  <?php if( !empty( $value['featured_image'] ) && ( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true' ) ) { ?>
+                    <?php $image = wpp_get_image_link( $value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array')); ?>
+                    <li class='supermap_list_thumb'><span  onclick="showInfobox_<?php echo $rand; ?>(<?php echo $value['ID']; ?>);"><img class="<?php echo ($image['link'] ? 'wpp_supermap_thumb' : 'wpp_supermap_thumb wpp_default_iamge'); ?>" src="<?php echo (empty($image['link']) ? WPP_URL . 'templates/images/no_image.png' : $image['link']); ?>" style="<?php echo ($image['width'] ? 'width: '.$image['width'].'px; ' : 'width: '.$default_image_width.'px;'); ?>" alt="<?php echo $value['post_title']; ?>" /></span></li>
                   <?php } ?>
                   <li class='supermap_list_title'><span onclick="showInfobox_<?php echo $rand; ?>(<?php echo $value['ID']; ?>);"><?php echo  stripslashes($value['post_title']); ?></span></li>
                 <?php if(count($attributes) > 0) { echo implode('', $attributes); } ?>
