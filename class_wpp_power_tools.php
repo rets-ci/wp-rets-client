@@ -119,12 +119,12 @@ class class_wpp_power_tools {
         continue;
       }
 
-      $role =& get_role($r_slug);
-      foreach($wpp_capabilities as $cap => $value){
-        if (isset($wpp_settings['capabilities'][$r_slug]) && in_array($cap, $wpp_settings['capabilities'][$r_slug])) {
-          $role->add_cap($cap);
+      $role = get_role( $r_slug );
+      foreach( $wpp_capabilities as $cap => $value ){
+        if ( isset( $wpp_settings['capabilities'][$r_slug] ) && in_array( $cap, $wpp_settings['capabilities'][$r_slug] ) ) {
+          $role->add_cap( $cap );
         } else {
-          $role->remove_cap($cap);
+          $role->remove_cap( $cap );
         }
       }
     }
