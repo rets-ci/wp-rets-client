@@ -1233,8 +1233,7 @@ class class_wpp_pdf_flyer {
   static public function template_redirect() {
     global $post, $wpdb;
 
-
-    if($_REQUEST['wpp_flyer_create'] == 'true' && $post->ID)  {
+    if( isset( $_REQUEST['wpp_flyer_create'] ) && $_REQUEST['wpp_flyer_create'] == 'true' && $post->ID )  {
       //** Make sure flyer doesn't already exist * /
       if(self::flyer_exists($post->ID)) {
         wp_redirect(get_pdf_flyer_permalink($post->ID)); exit;
