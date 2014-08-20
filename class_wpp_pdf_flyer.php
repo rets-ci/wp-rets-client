@@ -1277,9 +1277,9 @@ class class_wpp_pdf_flyer {
 
     $map_width = round($wpp_pdf_flyer['first_col_width'] / 2 - 27 );
 
-    $static_google_map = "http://maps.google.com/maps/api/staticmap?center={$property[latitude]},{$property[longitude]}&zoom=".
+    $static_google_map = "http://maps.google.com/maps/api/staticmap?center={$property['latitude']},{$property['longitude']}&zoom=".
     apply_filters('wpp_flyer_map_scale', 14, $property, $wpp_pdf_flyer)
-    ."&size={$map_width}x250&scale=2&sensor=true&markers=color:blue%7C{$property[latitude]},{$property[longitude]}";
+    ."&size={$map_width}x250&scale=2&sensor=true&markers=color:blue%7C{$property['latitude']},{$property['longitude']}";
 
     if(!WPP_F::can_get_image($static_google_map)) {
       $static_google_map = false;
