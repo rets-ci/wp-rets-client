@@ -301,7 +301,8 @@ class class_wpp_power_tools {
     }
 
     $labels = $wp_properties['configuration']['feature_settings']['white_label']['labels'];
-    $contextual_help = $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'];
+    $contextual_help = isset( $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'] ) ? 
+      (array) $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'] : array( 'overview_page' => '' );
 
     ?>
     <tr>
@@ -322,13 +323,13 @@ class class_wpp_power_tools {
           <ul>
             <li>
               <label><?php _e('Singular Property:', 'wpp'); ?></label>
-              <input name="wpp_settings[configuration][feature_settings][white_label][labels][singular_name]" value="<?php echo esc_attr($labels['singular_name']); ?>" />
+              <input name="wpp_settings[configuration][feature_settings][white_label][labels][singular_name]" value="<?php echo isset( $labels['singular_name'] ) ? esc_attr( $labels['singular_name'] ) : ''; ?>" />
               <span class="description"><?php _e('Default is "Property", will change the label in the navigation menus.', 'wpp'); ?></span>
             </li>
 
             <li>
               <label><?php _e('Plural Property:', 'wpp'); ?></label>
-              <input name="wpp_settings[configuration][feature_settings][white_label][labels][plural_name]" value="<?php echo esc_attr($labels['plural_name']); ?>" />
+              <input name="wpp_settings[configuration][feature_settings][white_label][labels][plural_name]" value="<?php echo isset( $labels['plural_name'] ) ? esc_attr( $labels['plural_name'] ) : ''; ?>" />
               <span class="description"><?php _e('Default is "Properties", will change the label in the navigation menus.', 'wpp'); ?></span>
             </li>
 
@@ -342,7 +343,7 @@ class class_wpp_power_tools {
           <ul>
             <li>
               <label><?php _e('Overview Page Contextual Help:', 'wpp'); ?></label>
-              <textarea class="code" name="wpp_settings[configuration][feature_settings][white_label][contextual_help][overview_page]"><?php echo esc_attr($contextual_help['overview_page']); ?></textarea>
+              <textarea class="code" name="wpp_settings[configuration][feature_settings][white_label][contextual_help][overview_page]"><?php echo esc_attr( $contextual_help['overview_page'] ); ?></textarea>
             </li>
             </ul>
         </div>
@@ -369,7 +370,8 @@ class class_wpp_power_tools {
   static public function wpp_contextual_help_overview($text) {
     global $wp_properties;
 
-    $contextual_help = $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'];
+    $contextual_help = isset( $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'] ) ? 
+      (array) $wp_properties['configuration']['feature_settings']['white_label']['contextual_help'] : array( 'overview_page' => '' );;
 
     if(!empty($contextual_help['overview_page'])) {
       return nl2br($contextual_help['overview_page']);
@@ -384,7 +386,8 @@ class class_wpp_power_tools {
   static public function wpp_object_labels($labels) {
     global $wp_properties;
 
-    $custom_labels = $wp_properties['configuration']['feature_settings']['white_label']['labels'];
+    $custom_labels = isset( $wp_properties['configuration']['feature_settings']['white_label']['labels'] ) ? 
+      (array) $wp_properties['configuration']['feature_settings']['white_label']['labels'] : array();
 
     if(!empty($custom_labels['singular_name'])) {
       $labels['singular_name'] = $custom_labels['singular_name'];
