@@ -216,7 +216,7 @@ class class_wpp_pdf_flyer {
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
   static public function wpp_settings_save($new_settings, $old_settings) {
-    $preserved_settings = $old_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'];
+    $preserved_settings = isset( $old_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] ) ? $old_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] : array();
     $new_settings['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] = $preserved_settings;
     return $new_settings;
   }
