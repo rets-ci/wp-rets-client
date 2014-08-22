@@ -66,7 +66,8 @@ class class_wpp_pdf_flyer {
     }
 
     //** Load settings */
-    $wpp_pdf_flyer = (array)$wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'];
+    $wpp_pdf_flyer = isset( $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'] ) ? 
+      (array)$wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'] : array();
 
     //** Add shortcode */
     add_shortcode('property_flyer', array('class_wpp_pdf_flyer', 'shortcode_pdf_flyer'));
@@ -798,9 +799,9 @@ class class_wpp_pdf_flyer {
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
   static public function admin_menu() {
-    global $wp_properties;
+    global $wp_properties, $wpp_pdf_flyer;
 
-    if($wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['use_pdf_property_lists'] == 'on')
+    if( isset( $wpp_pdf_flyer['use_pdf_property_lists'] ) && $wpp_pdf_flyer['use_pdf_property_lists'] == 'on' )
       $wp_properties['runtime']['pages']['wpp_flyer_pdf_list'] = add_submenu_page( 'edit.php?post_type=property', __('PDF Lists','wpp'), __('PDF Lists','wpp'), self::$capability, 'wpp_property_pdf_lists', array('class_wpp_pdf_flyer','page_property_lists'));
 
     if ( !empty( $wp_properties['runtime']['pages']['wpp_flyer_pdf_list'] ) ) {
@@ -1284,11 +1285,7 @@ class class_wpp_pdf_flyer {
       $static_google_map = false;
     }
 
-    //** disabled Groupped attributes */
-    //$sort_by_groups = !empty( $wp_properties[ 'property_groups' ] ) && $wp_properties[ 'configuration' ][ 'property_overview' ][ 'sort_stats_by_groups' ] == 'true' ? 'true' : 'false';
-
     $property['post_content'] = apply_filters('wpp_flyer_description', $property['post_content'], $wpp_pdf_flyer);
-
 
     if (!empty($wpp_pdf_flyer['pr_details']) && !empty($wpp_pdf_flyer['detail_attributes'])): ?>
 
@@ -1460,26 +1457,50 @@ class class_wpp_pdf_flyer {
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
   static public function settings_page($tabs) {
-    global $wp_properties;
+    global $wp_properties, $wpp_pdf_flyer;
 
     @include_once(WPP_Path.'third-party/tcpdf/wpp_tcpdf.php');
 
-    $wpp_pdf_flyer = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'];
     $uploads = wp_upload_dir();
 
-    if(empty($wpp_pdf_flyer['header_color']))
+    $wpp_pdf_flyer = wp_parse_args( $wpp_pdf_flyer, array(
+      'use_pdf_property_lists' => false,
+      'generate_flyers_on_the_fly' => false,
+      'qr_code' => false,
+      'truncate_description' => false,
+      'pr_title' => false,
+      'pr_tagline' => false,
+      'qr_code_note' => false,
+      'pr_details' => false,
+      'detail_attributes' => false,
+      'pr_description' => false,
+      'pr_location' => false,
+      'pr_features' => false,
+      'pr_agent_info' => false,
+      'primary_photo_size' => false,
+      'setfont' => false,
+      'secondary_photos' => false,
+      'num_pictures' => false,
+      'logo_url' => false,
+      'header_color' => false,
+      'section_bgcolor' => false,
+    ) );
+    
+    if( empty( $wpp_pdf_flyer['header_color'] ) ) {
       $wpp_pdf_flyer['header_color'] = '#e6e6fa';
+    }
 
-    if(empty($wpp_pdf_flyer['section_bgcolor']))
+    if( empty( $wpp_pdf_flyer['section_bgcolor'] ) ) {
       $wpp_pdf_flyer['section_bgcolor'] = '#bbbbbb';
+    }
 
-    if(empty($wpp_pdf_flyer['num_pictures']))
+    if( empty($wpp_pdf_flyer['num_pictures']) ) {
       $wpp_pdf_flyer['num_pictures'] = '3';
+    }
 
     $available_image_sizes = get_intermediate_image_sizes();
 
     ?>
-
     <table class="form-table">
     <tbody>
 
@@ -1497,7 +1518,7 @@ class class_wpp_pdf_flyer {
         <ul>
 
           <li>
-              <input type="checkbox" id="use_pdf_property_lists" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][use_pdf_property_lists]" <?php checked($wpp_pdf_flyer['use_pdf_property_lists'],'on'); ?>>
+              <input type="checkbox" id="use_pdf_property_lists" name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][use_pdf_property_lists]" <?php checked( $wpp_pdf_flyer['use_pdf_property_lists'],'on' ); ?>>
               <label for="use_pdf_property_lists" class="description"><?php printf(__('Show panel that allows you to create PDF %1s lists.','wpp'), WPP_F::property_label( 'singular' )); ?></label>
           </li>
 
