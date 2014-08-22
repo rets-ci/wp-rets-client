@@ -101,20 +101,27 @@ class class_wpp_supermap {
   static public function settings_page() {
     global $wp_properties, $wpdb, $class_wpp_slideshow;
 
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    $supermap_configuration = isset( $wp_properties['configuration']['feature_settings']['supermap'] ) ? 
+      $wp_properties['configuration']['feature_settings']['supermap'] : array();
 
-    if(empty($supermap_configuration)) {
-      $supermap_configuration = array();
-    }
+    $supermap_configuration = wp_parse_args( $supermap_configuration, array(
+      'markers' => array(),
+      'areas' => array(),
+      'display_attributes' => array(),
+      'hide_sidebar_thumb' => false,
+      'supermap_thumb' => false,
+    ) );
 
     //* Set default Marker */
-    if(empty($supermap_configuration['markers'])) {
+    if(empty( $supermap_configuration['markers']) ) {
       $supermap_configuration['markers']['custom']['name'] = 'Custom';
       $supermap_configuration['markers']['custom']['file'] = '';
     }
 
     //* Set example of Area */
     if(empty($supermap_configuration['areas'])) {
+      $supermap_configuration['areas']['example_area']['name'] = __( 'Example Area', 'wpp' );
+      $supermap_configuration['areas']['example_area']['hoverColor'] = '';
       $supermap_configuration['areas']['example_area']['strokeColor'] = '#a49b8a';
       $supermap_configuration['areas']['example_area']['strokeOpacity'] = '#a49b8a';
       $supermap_configuration['areas']['example_area']['fillColor'] = '#a49b8a';
@@ -162,7 +169,7 @@ class class_wpp_supermap {
             <ul>
               <?php foreach($wp_properties['property_stats'] as $slug => $title): ?>
                 <li>
-                  <input <?php if(@in_array($slug, $supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='<?php echo $slug; ?>' type="checkbox" id="display_attribute_<?php echo $slug; ?>" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
+                  <input <?php if(@in_array($slug, (array)$supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='<?php echo $slug; ?>' type="checkbox" id="display_attribute_<?php echo $slug; ?>" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
                   <label for="display_attribute_<?php echo $slug; ?>"><?php echo $title; ?></label>
                 </li>
               <?php endforeach; ?>
@@ -170,7 +177,7 @@ class class_wpp_supermap {
             </div>
             <ul style="margin-top:10px;">
               <li>
-                <input <?php if(@in_array('view_property', $supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='view_property' type="checkbox" id="display_attribute_view_property" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
+                <input <?php if(@in_array('view_property', (array)$supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='view_property' type="checkbox" id="display_attribute_view_property" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
                 <label for="display_attribute_view_property"><?php _e('Display "View Property" link in the left sidebar. It directs user to Property Page.','wpp') ?></label>
               </li>
             </ul>
@@ -403,7 +410,8 @@ class class_wpp_supermap {
   static public function property_type_settings($settings, $slug) {
     global $wp_properties;
 
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    $supermap_configuration = isset( $wp_properties['configuration']['feature_settings']['supermap'] ) ? 
+      $wp_properties['configuration']['feature_settings']['supermap'] : array();
     $upload_dir = wp_upload_dir();
     $markers_url = $upload_dir['baseurl'] . '/supermap_files/markers';
     $markers_dir = $upload_dir['basedir'] . '/supermap_files/markers';
@@ -414,10 +422,8 @@ class class_wpp_supermap {
     <div class="wp-tab-panel supermap_marker_settings">
     <div class="wpp_property_type_supermap_settings">
       <div class="wpp_supermap_marker_image">
-      <?php $marker_url = $markers_url . "/" . $supermap_configuration['property_type_markers'][$slug]; ?>
-      <?php $marker_dir = $markers_dir . "/" . $supermap_configuration['property_type_markers'][$slug]; ?>
-      <?php if (!empty($supermap_configuration['property_type_markers'][$slug]) && file_exists($marker_dir)) : ?>
-      <img src="<?php echo $marker_url; ?>" alt="" />
+      <?php if (!empty( $supermap_configuration['property_type_markers'][$slug] ) && file_exists( $markers_dir . "/" . $supermap_configuration['property_type_markers'][$slug] ) ) : ?>
+        <img src="<?php echo $markers_url . "/" . $supermap_configuration['property_type_markers'][$slug]; ?>" alt="" />
       <?php else : ?>
       <img src="<?php echo $default_marker; ?>" alt="" />
       <?php endif; ?>
@@ -426,8 +432,8 @@ class class_wpp_supermap {
       <label for="wpp_setting_property_type_<?php echo $slug ?>_marker"><?php _e('Map Marker', 'wpp'); ?>:</label>
       <select class="wpp_setting_property_type_marker" id="wpp_setting_property_type_<?php echo $slug ?>_marker" name="wpp_settings[configuration][feature_settings][supermap][property_type_markers][<?php echo $slug; ?>]" >
         <option value=""><?php _e('Default by Google', 'wpp'); ?></option>
-        <?php if(!empty($supermap_configuration['markers'])) : ?>
-          <?php foreach ($supermap_configuration['markers'] as $mslug => $mvalue) : ?>
+        <?php if( !empty( $supermap_configuration['markers'] ) && is_array( $supermap_configuration['markers'] ) ) : ?>
+          <?php foreach ($supermap_configuration['markers'] as $mslug => $mvalue ) : ?>
             <option value="<?php echo $mvalue['file']; ?>" <?php selected($supermap_configuration['property_type_markers'][$slug], $mvalue['file']); ?>><?php echo $mvalue['name']; ?></option>
           <?php endforeach; ?>
         <?php endif; ?>
