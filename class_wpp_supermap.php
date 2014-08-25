@@ -650,7 +650,7 @@ class class_wpp_supermap {
     $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
     $default_marker = WPP_URL . 'images/google_maps_marker.png';
 
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    $supermap_configuration = !empty( $wp_properties['configuration']['feature_settings']['supermap'] ) ? $wp_properties['configuration']['feature_settings']['supermap'] : array();
     if(empty($supermap_configuration['property_type_markers'])) {
       $supermap_configuration['property_type_markers'] = array();
     }
