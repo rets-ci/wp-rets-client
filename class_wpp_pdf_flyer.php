@@ -2164,7 +2164,7 @@ class class_wpp_pdf_flyer {
       }
       ob_start();
       include $template_path;
-      $html = ob_get_contents();
+      $html = ob_get_clean();
       
       //** STEP: GENERATE PDF FLYER. */
       
