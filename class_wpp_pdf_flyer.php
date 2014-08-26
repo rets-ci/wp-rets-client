@@ -1408,7 +1408,7 @@ class class_wpp_pdf_flyer {
     $description = strip_tags( $description, '<br>' );
     
     //** Truncates description when it's enabled in PDF Flyer Settings */
-    if( $wpp_pdf_flyer['truncate_description'] == 'on' ) {
+    if( isset( $wpp_pdf_flyer['truncate_description'] ) && $wpp_pdf_flyer['truncate_description'] == 'on' ) {
       $description = str_replace( '<br/>', '', $description );
       $excerpt_length = 25;
       $words = preg_split("/[\n\r\t ]+/", $description, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
@@ -1977,7 +1977,7 @@ class class_wpp_pdf_flyer {
    * Copyright Usability Dynamics, Inc. <http://usabilitydynamics.com>
    */
   static public function create_flyer_pdf( $post_id, $debug = false )  {
-    global $wp_properties, $post, $wpdb;
+    global $wp_properties, $post, $wpdb, $wpp_pdf_flyer;
 
     $flyer_id = false;
     
@@ -2004,8 +2004,6 @@ class class_wpp_pdf_flyer {
         throw new Exception( __( 'Listing must have title. PDF Flyer can not be created because \'post_name\' is not set.', 'wpp' ) );
       }
       
-      //** Load PDF Settings */
-      $wpp_pdf_flyer = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer'];
       //** If, some reason, PDF Settings don't exist, we load PDF default settings */
       if( empty( $wpp_pdf_flyer ) ) {
         $wpp_pdf_flyer = class_wpp_pdf_flyer::return_defaults();
@@ -2091,7 +2089,7 @@ class class_wpp_pdf_flyer {
       
       //** STEP: QR CODE. */
       //** Maybe set QR code. */
-      if( $wpp_pdf_flyer['qr_code'] == 'on' ) {
+      if( isset( $wpp_pdf_flyer['qr_code'] ) && $wpp_pdf_flyer['qr_code'] == 'on' ) {
         if( !class_exists( 'QRcode' ) ) {
           require_once WPP_Path.'third-party/tcpdf/phpqrcode.php';
         }
@@ -2114,7 +2112,7 @@ class class_wpp_pdf_flyer {
       $property_stats = self::get_pdf_list_attributes('property_stats');
       $excluded_stats = array();
       foreach( (array) $property_stats as $slug => $attr ) {
-        if(!array_key_exists($slug, (array)$wpp_pdf_flyer['detail_attributes'])) {
+        if( !isset( $wpp_pdf_flyer['detail_attributes'] ) || !array_key_exists( $slug, (array)$wpp_pdf_flyer['detail_attributes'] ) ) {
           $excluded_stats[] = $slug;
         }
       }
@@ -2170,8 +2168,8 @@ class class_wpp_pdf_flyer {
       $pdf->setPrintHeader(false);
       $pdf->setPrintFooter(false);
       $pdf->setFontSubsetting(true);
-      if ($wpp_pdf_flyer['setfont']){
-        $pdf->SetFont($wpp_pdf_flyer['setfont']);
+      if ( !empty( $wpp_pdf_flyer[ 'setfont' ] ) ){
+        $pdf->SetFont( $wpp_pdf_flyer[ 'setfont' ] );
       }
       $pdf->SetCreator("WP-Property");
       $pdf->SetAuthor("WP-Property");
@@ -2183,7 +2181,7 @@ class class_wpp_pdf_flyer {
       $pdf->SetRightMargin(10);
       $pdf->AddPage('P', $wpp_pdf_flyer['format']);
 
-      if( $pdf->wpp_error_log ) {
+      if( !empty( $pdf->wpp_error_log ) ) {
         update_post_meta( $post_id, 'wpp_post_error', $pdf->wpp_error_log );
       }
 
@@ -2200,9 +2198,9 @@ class class_wpp_pdf_flyer {
       $filename = $property[ 'post_name' ];
       $filename = remove_accents ( $filename );     // WordPress remove_accents. /wp-includes/formatting.php.
       $filename = sanitize_file_name ( $filename );   // WordPresssanitize_file_name /wp-includes/formatting.php
-      $filename = ereg_replace( "[^-_.A-Za-z0-9]", "", $filename); // remove all character symbols
-      $filename = ereg_replace( "_-", "_", $filename ); // Change "abc_-abc" to "abc_abc"
-      $filename = ereg_replace( "-_", "-", $filename ); // Change "abc-_abc" to "abc-abc"
+      $filename = preg_replace( "/[^-_.A-Za-z0-9]/", "", $filename); // remove all character symbols
+      $filename = preg_replace( "/_-/", "_", $filename ); // Change "abc_-abc" to "abc_abc"
+      $filename = preg_replace( "/-_/", "-", $filename ); // Change "abc-_abc" to "abc-abc"
       
       $pdf->Output( $uploads[ 'path' ] . '/'. $filename . '.pdf', 'F' );
 
