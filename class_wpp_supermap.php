@@ -3,7 +3,7 @@
 Name: Supermap
 Class: class_wpp_supermap
 Version: 3.5.2
-Minimum Core Version: 1.40.0
+Minimum Core Version: 1.42.0
 Feature ID: 3
 Description: A big map for property overview.
 */
