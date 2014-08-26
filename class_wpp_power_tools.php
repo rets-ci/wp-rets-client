@@ -4,7 +4,7 @@
  * Class: class_wpp_power_tools
  * Version: 0.5.5
  * Feature ID: 13
- * Minimum Core Version: 1.37.3.2
+ * Minimum Core Version: 1.42.0
  * Description: Power tools for WPP to include capabilities management.
  */
 
