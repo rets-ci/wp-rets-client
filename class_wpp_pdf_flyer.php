@@ -3,16 +3,13 @@
 Name: PDF Flyer
 Feature ID: 6
 Version: 2.2.0
-Minimum Core Version: 1.38.3
+Minimum Core Version: 1.42.0
 Internal Slug: property_pdf
 JS Slug: wpp_property_pdf
 Global Variable: wpp_pdf_flyer
 Class: class_wpp_pdf_flyer
 Description: Create flyers for properties on the fly.
 */
-
-/** Class including moved into functions in which it is really required. korotkov@ud */
-/** @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php'); */
 
 add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'init' ) );
 add_action( 'wpp_pre_init', array( 'class_wpp_pdf_flyer', 'pre_init' ) );
