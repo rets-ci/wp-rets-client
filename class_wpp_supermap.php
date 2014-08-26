@@ -749,7 +749,8 @@ class class_wpp_supermap {
        */
       if(!empty($_POST['wpp_data']['meta']['property_type'])) {
         $property_type = $_POST['wpp_data']['meta']['property_type'];
-        $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+        $supermap_configuration = isset( $wp_properties['configuration']['feature_settings']['supermap'] ) ? 
+          $wp_properties['configuration']['feature_settings']['supermap'] : array();
 
         if(!empty($supermap_configuration['property_type_markers'])) {
           if($supermap_configuration['property_type_markers'][$property_type] == $supermap_marker) {
