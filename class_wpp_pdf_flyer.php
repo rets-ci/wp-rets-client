@@ -132,6 +132,12 @@ class class_wpp_pdf_flyer {
    */
   static public function wpp_flyer_pdf_list_page_load() {
 
+    $contextual_help = array(
+      'General Settings' => array(),
+      'Advanced Query' => array(),
+      'List Creation' => array(),
+    );
+  
     //** Default help items */
     $contextual_help['General Settings'][] = '<h3>' . __('General Settings', 'wpp') . '</h3>';
     $contextual_help['General Settings'][] .= '<p>' . __('Unless <b>Don\'t make accessible for public</b> is checked for a list, it will be accessible by anybody who visits your website, provided they have a link to the list.  The lists are stored in your uploads folder, but to the users they appear to be below your main <b>Property Page</b>.  In other words, if your default property page is \'all-properties\', all your lists will have urls that will go something like: http://website.com/all-properties/the-list-filename.pdf', 'wpp') . '</p>';
@@ -146,7 +152,7 @@ class class_wpp_pdf_flyer {
     //** Hook this action is you want to add info */
     $contextual_help = apply_filters('wpp_flyer_pdf_list_page_help', $contextual_help);
 
-    do_action('wpp_contextual_help', array('contextual_help'=>$contextual_help));
+    do_action('wpp_contextual_help', array( 'contextual_help'=> $contextual_help ));
 
   }
 
@@ -859,7 +865,7 @@ class class_wpp_pdf_flyer {
     @include_once( WPP_Path.'third-party/tcpdf/wpp_tcpdf.php' );
 
     //** Save settings */
-    if(wp_verify_nonce($_REQUEST['_wpnonce'], 'wpp_flyer_lists_page')) {
+    if( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpp_flyer_lists_page' ) ) {
 
       $wp_messages['notice'][] = __('List settings updated and old lists have been deleted. ', 'wpp');
 
@@ -887,19 +893,18 @@ class class_wpp_pdf_flyer {
       $pdf_lists = $tmp_pdf_lists;
       unset($tmp_pdf_lists);
 
-
-
       $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] = $pdf_lists;
 
       update_option('wpp_settings', $wp_properties);
     }
 
-    if(!$pdf_lists) {
-      $pdf_lists = $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'];
+    if( !isset( $pdf_lists ) ) {
+      $pdf_lists = isset( $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] ) ? 
+        $wp_properties['configuration']['feature_settings']['wpp_pdf_flyer']['pdf_lists'] : array();
     }
 
     //** Set default (sample_pdf_list) List, if there is no any list */
-    if(empty($pdf_lists)) {
+    if( empty( $pdf_lists ) ) {
       $pdf_lists['sample_pdf_list']['title'] = __('Sample PDF List', 'wpp');
     }
 
@@ -1063,7 +1068,7 @@ class class_wpp_pdf_flyer {
 
                   <li>
                     <label for=""><?php _e('File Name:', 'wpp'); ?></label>
-                    <input type="text" readonly="readonly" class="wpp_pdf_list_name" name="wpp_flyer_list_settings[<?php echo $slug; ?>][filename]" value="<?php echo $list['filename']; ?>" />
+                    <input type="text" readonly="readonly" class="wpp_pdf_list_name" name="wpp_flyer_list_settings[<?php echo $slug; ?>][filename]" value="<?php echo isset( $list['filename'] ) ? $list['filename'] : ''; ?>" />
                   </li>
 
                   <li>
@@ -2264,6 +2269,10 @@ class class_wpp_pdf_flyer {
         ORDER BY ID DESC 
         LIMIT 1;
     ", $post_id, '% ' . __( 'Flyer', 'wpp' ) ) );
+    
+    if( empty( $attachment_id[0] ) ) {
+      return false;
+    }
     
     $url = wp_get_attachment_url( $attachment_id[0] );
     $result = wp_remote_retrieve_response_code( $url, array( 'timeout' => 10 ) );
