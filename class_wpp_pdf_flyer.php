@@ -1056,7 +1056,23 @@ class class_wpp_pdf_flyer {
           <tbody>
 
           <?php foreach( (array)$pdf_lists as $slug => $list):  ?>
-
+              <?php 
+              $list = wp_parse_args( $list, array(
+                'title' => '',
+                'filename' => '',
+                'group_by' => '',
+                'per_page' => '',
+                'options' => array(),
+                'tagline' => '',
+                'contact_info' => '',
+                'advanced_query' => '',
+                'setfont' => '',
+                'background' => '',
+                'header_text_color' => '',
+                'text_color' => '',
+                'attributes' => array(),
+              ) );
+              ?>
               <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row="false">
                 <td>
                   <ul class='wpp_flyer_list_settings'>
