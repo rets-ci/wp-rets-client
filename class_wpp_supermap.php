@@ -1585,8 +1585,9 @@ class class_wpp_supermap {
       $searchable_attributes = false;
     }
 
-    $supermap_configuration['display_attributes'] = (is_array($supermap_configuration['display_attributes']) ? $supermap_configuration['display_attributes'] : array());
+    $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array($supermap_configuration['display_attributes']) ? $supermap_configuration['display_attributes'] : array();
 
+    $display_attributes = array();
     foreach( $supermap_configuration['display_attributes'] as $attribute ) {
       if( isset( $wp_properties['property_stats'][$attribute] ) ) {
         $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
