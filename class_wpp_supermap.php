@@ -1015,8 +1015,11 @@ class class_wpp_supermap {
 
     $supermap_configuration['display_attributes'] = (is_array($supermap_configuration['display_attributes']) ? $supermap_configuration['display_attributes'] : array());
 
+    $display_attributes = array();
     foreach($supermap_configuration['display_attributes'] as $attribute) {
-      $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
+      if( isset( $wp_properties['property_stats'][$attribute] ) ) {
+        $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
+      }
     }
 
     ob_start();
