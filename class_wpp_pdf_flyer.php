@@ -319,7 +319,7 @@ class class_wpp_pdf_flyer {
       if( !empty( $property_ids ) && is_array( $property_ids ) ) {
         //** Determine if Child Properties are allowed */
         $child_properties = false;
-        if(is_array($list_data['options'])) {
+        if( isset( $list_data['options'] ) && is_array( $list_data['options'] ) ) {
           $key = array_search('show_child_properties', $list_data['options']);
           if($key !== false) {
             $child_properties = true;
@@ -924,6 +924,7 @@ class class_wpp_pdf_flyer {
     </style>
     <script type='text/javascript'>
       jQuery(document).ready(function() {
+      
         var wpp_pdf_root_url = jQuery(".wpp_pdf_root_url").val();
 
         jQuery('.slug_setter').live('change', function() {
@@ -997,10 +998,12 @@ class class_wpp_pdf_flyer {
 
           ajaxSpinner.show( 'fast', function() {
             resultBox.show( 'fast', function() {
+              jQuery( '#wpp_ajax_regenerate_all_flyers' ).prop( 'disabled', true );
               putLog("<?php _e("Regenerating PDF Lists. If you have a lot of properties this process may take a while, please do not close this browser window until it is complete.", "wpp"); ?>", resultBox);
 
               // Loop all properties
               wpp_recursively_generate_pdf_list( lists, function() {
+                jQuery( '#wpp_ajax_regenerate_all_flyers' ).prop( 'disabled', false );
                 putLog('<?php _e("Finished.", "wpp"); ?>', resultBox);
                 ajaxSpinner.hide();
                 closeButton.show();
@@ -1019,8 +1022,15 @@ class class_wpp_pdf_flyer {
             jQuery('.logs', el).append('<li>' + log + '</li>');
           }
         }
-
+        
       });
+      
+      /**
+       * Callback function to fire after new row is added.
+       */
+      function wpp_pdf_list_added( row ) {
+        row.find( '.wpp_link' ).remove();
+      }
     </script>
     <div class='wrap'>
       <h2><?php _e('PDF Lists', 'wpp'); ?></h2>
@@ -1087,12 +1097,13 @@ class class_wpp_pdf_flyer {
                     <input type="text" readonly="readonly" class="wpp_pdf_list_name" name="wpp_flyer_list_settings[<?php echo $slug; ?>][filename]" value="<?php echo isset( $list['filename'] ) ? $list['filename'] : ''; ?>" />
                   </li>
 
+                  <?php if( !empty( $list['filename'] ) ) : ?>
                   <li>
                     <label><span><?php _e('Actions:', 'wpp'); ?></span></label>
                     <a href='<?php echo get_pdf_list_permalink($slug); ?>' class="wpp_link" target="_blank"><?php _e('View PDF', 'wpp'); ?></a>
                     <?php do_action('wpp_flyer_list_ui_actions'); ?>
                   </li>
-
+                  <?php endif; ?>
 
                  </ul>
                 </td>
@@ -1206,7 +1217,7 @@ class class_wpp_pdf_flyer {
           <tfoot>
             <tr>
               <td colspan="4">
-              <input type="button" class="wpp_add_row button-secondary" value="<?php _e('Add List', 'wpp'); ?>">
+              <input type="button" class="wpp_add_row button-secondary" value="<?php _e('Add List', 'wpp'); ?>" callback_function="wpp_pdf_list_added" />
               <input  type="submit" name="Submit" class="button-primary btn" style="margin-left: 20px;" value="<?php _e('Save Lists', 'wpp'); ?>" />
               </td>
             </tr>
@@ -1728,11 +1739,11 @@ class class_wpp_pdf_flyer {
           <pre class="wpp_class_pre hidden" id="wpp_ajax_regenerate_all_flyers_result" style="height:300px;"></pre>
       </div>
       <script type="text/javascript">
-      jQuery('#wpp_ajax_regenerate_all_flyers').click(function(){
+      jQuery( '#wpp_ajax_regenerate_all_flyers' ).click(function(){
           var ajaxSpinner = jQuery('#regenerate_all_flyers_ajax_spinner');
           var closeButton = jQuery("#wpp_ajax_regenerate_all_flyers_close");
           var resultBox = jQuery('#wpp_ajax_regenerate_all_flyers_result');
-
+          
           var wpp_recursively_generate_pdf_flyer = function( data, callback ) {
             var item = data.shift();
             jQuery.ajax({
@@ -1762,6 +1773,7 @@ class class_wpp_pdf_flyer {
 
           ajaxSpinner.show( 'fast', function() {
             resultBox.show( 'fast', function() {
+              jQuery( '#wpp_ajax_regenerate_all_flyers' ).prop( 'disabled', true );
               jQuery.ajax({
                 url: '<?php echo admin_url('admin-ajax.php'); ?>',
                 //async: false,
@@ -1776,6 +1788,7 @@ class class_wpp_pdf_flyer {
 
                       // Loop all properties
                       wpp_recursively_generate_pdf_flyer( data, function() {
+                        jQuery( '#wpp_ajax_regenerate_all_flyers' ).prop( 'disabled', false );
                         putLog('<?php _e('Finished.','wpp'); ?>', resultBox);
                         ajaxSpinner.hide();
                         closeButton.show();
@@ -1817,7 +1830,7 @@ class class_wpp_pdf_flyer {
               jQuery('.logs', el).append('<li>' + log + '</li>');
           }
       }
-
+      
     </script>
     <?php
   }
