@@ -1013,7 +1013,8 @@ class class_wpp_supermap {
     }
 
 
-    $supermap_configuration['display_attributes'] = (is_array($supermap_configuration['display_attributes']) ? $supermap_configuration['display_attributes'] : array());
+    $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array( $supermap_configuration['display_attributes'] ) ? 
+      $supermap_configuration['display_attributes'] : array();
 
     $display_attributes = array();
     foreach($supermap_configuration['display_attributes'] as $attribute) {
@@ -1071,12 +1072,16 @@ class class_wpp_supermap {
           }
         }
 
-        if(in_array('view_property', $supermap_configuration['display_attributes'])) {
+        if( isset( $supermap_configuration['display_attributes'] ) && in_array( 'view_property', $supermap_configuration['display_attributes'] ) ) {
           $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '"><span>'  . __('View Property', 'wpp') . '</span></a></li>';
         }
 
-        if($supermap_configuration['hide_sidebar_thumb'] != 'true') {
-          $image = wpp_get_image_link($value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array'));
+        if( 
+          isset( $value['featured_image'] ) 
+          && isset( $supermap_configuration['hide_sidebar_thumb'] ) 
+          && $supermap_configuration['hide_sidebar_thumb'] != 'true' 
+        ) {
+          $image = wpp_get_image_link( $value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array'));
         }
 
       ?>
@@ -1113,7 +1118,7 @@ class class_wpp_supermap {
       HTML += '<li class="supermap_list_thumb">';
       HTML += '<span  onclick="showInfobox_<?php echo $_POST['random']; ?>(<?php echo $value['ID']; ?>);">';
       <?php if($supermap_configuration['hide_sidebar_thumb'] != 'true') { ?>
-      HTML += '<img src="<?php echo (empty($image['link'])) ? WPP_URL . 'templates/images/no_image.png' : $image['link'];?>" width="<?php echo esc_attr($image['width']); ?>" alt="<?php echo esc_attr($value['post_title']); ?>" />';
+      HTML += '<img src="<?php echo (empty($image['link'])) ? WPP_URL . 'templates/images/no_image.png' : $image['link'];?>" width="<?php echo isset( $image['width'] ) ? esc_attr($image['width']) : ''; ?>" alt="<?php echo esc_attr($value['post_title']); ?>" />';
       <?php } ?>
       HTML += '</span>';
       HTML += '</li>';
