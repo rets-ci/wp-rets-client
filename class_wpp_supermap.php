@@ -1078,8 +1078,7 @@ class class_wpp_supermap {
 
         if( 
           isset( $value['featured_image'] ) 
-          && isset( $supermap_configuration['hide_sidebar_thumb'] ) 
-          && $supermap_configuration['hide_sidebar_thumb'] != 'true' 
+          && ( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true' )
         ) {
           $image = wpp_get_image_link( $value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array'));
         }
@@ -1817,10 +1816,12 @@ class class_wpp_supermap {
     //* START Markers (files) checking */
     $upload_dir = wp_upload_dir();
     $markers_dir = $upload_dir['basedir'] . '/supermap_files/markers';
-    $markers = $wpp_settings['configuration']['feature_settings']['supermap']['markers'];
+    $markers = isset( $wpp_settings['configuration']['feature_settings']['supermap']['markers'] ) ? 
+      (array)$wpp_settings['configuration']['feature_settings']['supermap']['markers'] : array();
+      
     //* Get all markers files */
     $files = array();
-    foreach ((array)$markers as $marker) {
+    foreach ( $markers as $marker ) {
       if(!empty($marker['file'])) {
         $files[] = $marker['file'];
       }
