@@ -1,15 +1,7 @@
 <?php
-/*
-Name: Supermap
-Class: class_wpp_supermap
-Version: 3.5.3
-Minimum Core Version: 1.42.0
-Feature ID: 3
-Description: A big map for property overview.
-*/
-
-add_action( 'wpp_init', array( 'class_wpp_supermap', 'init' ) );
-add_action( 'wpp_pre_init', array( 'class_wpp_supermap', 'pre_init' ) );
+/**
+ * Core
+ */
 
 if(!class_exists('class_wpp_supermap')) :
 

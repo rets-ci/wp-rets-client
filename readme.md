@@ -1,21 +1,15 @@
-WP-Property Premium Feature. Super Map
-=========
+### WP-Property Supermap Plugin
 
-Description:
------------
-Super Map plugin lets you put a large interactive map virtually anywhere in your WordPress setup. The map lets your visitors quickly view the location of all your properties, and filter them down by attributes.
- 
-Changelog:
------------
+WP-Property Super Map Add-on lets you put a large interactive map virtually anywhere in your WordPress setup. The map lets your visitors quickly view the location of all your properties, and filter them down by attributes.
 
-@update 3.5.1.0
- - Added "no results found" text when using search results page with supermap and there are no results.
-
-@update 3.5.0.0
- - Fixed bug with search results rendering on using [supermap] shortcode instead of [property_overview] on Default Search page.
-
-@update 3.4.9.5
- - Fixed bug with sorting
-
-@update 3.4.9.4
- - Improvements
+***
+[![Issues - Bug](https://badge.waffle.io/usabilitydynamics/wp-property-supermap.png?label=bug&title=Bugs)](http://waffle.io/usabilitydynamics/wp-property-supermap)
+[![Issues - Backlog](https://badge.waffle.io/usabilitydynamics/wp-property-supermap.png?label=backlog&title=Backlog)](http://waffle.io/usabilitydynamics/wp-property-supermap/)
+[![Issues - Active](https://badge.waffle.io/usabilitydynamics/wp-property-supermap.png?label=in progress&title=Active)](http://waffle.io/usabilitydynamics/wp-property-supermap/)
+***
+[![Dependency Status](https://gemnasium.com/usabilitydynamics/wp-property-supermap.svg)](https://gemnasium.com/usabilitydynamics/wp-property-supermap)
+[![Scrutinizer Quality](http://img.shields.io/scrutinizer/g/usabilitydynamics/wp-property-supermap.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-property-supermap)
+[![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/usabilitydynamics/wp-property-supermap.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-property-supermap)
+[![Packagist Vesion](http://img.shields.io/packagist/v/usabilitydynamics/wp-property-supermap.svg)](https://packagist.org/packages/usabilitydynamics/wp-property-supermap)
+[![CircleCI](https://circleci.com/gh/usabilitydynamics/wp-property-supermap.png)](https://circleci.com/gh/usabilitydynamics/wp-property-supermap)
+***
