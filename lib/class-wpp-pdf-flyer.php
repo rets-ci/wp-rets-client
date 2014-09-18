@@ -1,21 +1,7 @@
 <?php
-/*
-Name: PDF Flyer
-Feature ID: 6
-Version: 2.2.0
-Minimum Core Version: 1.42.0
-Internal Slug: property_pdf
-JS Slug: wpp_property_pdf
-Global Variable: wpp_pdf_flyer
-Class: class_wpp_pdf_flyer
-Description: Create flyers for properties on the fly.
-*/
-
-add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'init' ) );
-add_action( 'wpp_pre_init', array( 'class_wpp_pdf_flyer', 'pre_init' ) );
-
-/* Any front-end Functions */
-add_action( 'template_redirect', array( 'class_wpp_pdf_flyer', 'template_redirect' ) );
+/**
+ * Core
+ */
 
 class class_wpp_pdf_flyer {
 

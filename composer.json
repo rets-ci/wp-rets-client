@@ -1,0 +1,69 @@
+{
+  "name": "usabilitydynamics/wp-property-pdf",
+  "version": "3.0.0",
+  "type": "plugin",
+  "minimum-stability": "dev",
+  "homepage": "https://usabilitydynamics.com",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usabilitydynamics/wp-property-pdf.git"
+  },
+  "require": {
+    "php": ">=5.3",
+    "usabilitydynamics/lib-wp-bootstrap": "master"
+  },
+  "require-dev": {
+    "usabilitydynamics/lib-wp-phpunit": "master",
+    "codeclimate/php-test-reporter": "dev-master"
+  },
+  "autoload": {
+    "classmap": [ "lib/classes" ]
+  },
+  "archive": {
+    "exclude": [
+      "node_modules",
+      ".gitignore",
+      "test",
+      "circle.yml",
+      "composer.lock",
+      "gruntfile.js",
+      "package.json"
+    ]
+  },
+  "extra": {
+    "schemas": {
+      "dependencies" : {
+        "modules": {
+          "usabilitydynamics/lib-utility": {
+            "\\UsabilityDynamics\\Utility": "0.3.6"
+          }
+        },
+        "plugins": [
+          {
+            "name": "WP-Property",
+            "slug": "wp-property",
+            "version": "2.0.0",
+            "required": true
+          }
+        ]
+      },
+      "licenses" : {
+        "client" : false,
+        "product" : {
+          "referrer": "WP-Property",
+          "product_id": "WP-Property PDF Flyer"
+        }
+      }
+    }
+  }
+}
