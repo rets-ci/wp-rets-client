@@ -1,12 +1,15 @@
-WP-Property Premium Feature. Power Tools with Capability Management
-=========
+### WP-Property Power Tools Plugin
 
-Description:
------------
-Extra functionality which includes capability management, white labeling the control panel, and changes menu titles.
- 
-Changelog:
------------
+The WP-Property Power Tools with Capability Management Add-on is the extra functionality which includes capability management, white labeling the control panel, and changes menu titles.
 
-@update 0.5.4
- - Fixed bug with taxonomy disabling. If any taxonomy has been disabled, all taxonomies were disabled as result.
+***
+[![Issues - Bug](https://badge.waffle.io/usabilitydynamics/wp-property-power-tools.png?label=bug&title=Bugs)](http://waffle.io/usabilitydynamics/wp-property-power-tools)
+[![Issues - Backlog](https://badge.waffle.io/usabilitydynamics/wp-property-power-tools.png?label=backlog&title=Backlog)](http://waffle.io/usabilitydynamics/wp-property-power-tools/)
+[![Issues - Active](https://badge.waffle.io/usabilitydynamics/wp-property-power-tools.png?label=in progress&title=Active)](http://waffle.io/usabilitydynamics/wp-property-power-tools/)
+***
+[![Dependency Status](https://gemnasium.com/usabilitydynamics/wp-property-power-tools.svg)](https://gemnasium.com/usabilitydynamics/wp-property-power-tools)
+[![Scrutinizer Quality](http://img.shields.io/scrutinizer/g/usabilitydynamics/wp-property-power-tools.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-property-power-tools)
+[![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/usabilitydynamics/wp-property-power-tools.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-property-power-tools)
+[![Packagist Vesion](http://img.shields.io/packagist/v/usabilitydynamics/wp-property-power-tools.svg)](https://packagist.org/packages/usabilitydynamics/wp-property-power-tools)
+[![CircleCI](https://circleci.com/gh/usabilitydynamics/wp-property-power-tools.png)](https://circleci.com/gh/usabilitydynamics/wp-property-power-tools)
+***

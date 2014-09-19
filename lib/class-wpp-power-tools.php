@@ -1,21 +1,6 @@
 <?php
 /**
- * Name: Power Tools
- * Class: class_wpp_power_tools
- * Version: 0.5.5
- * Feature ID: 13
- * Minimum Core Version: 1.42.0
- * Description: Power tools for WPP to include capabilities management.
- */
-
-add_action( 'wpp_init', array( 'class_wpp_power_tools', 'init' ) );
-add_action( 'wpp_pre_init', array( 'class_wpp_power_tools', 'pre_init' ) );
-add_action( 'admin_menu', array( 'class_wpp_power_tools', 'admin_menu' ) );
-
-add_filter( 'wpp_taxonomies', array( 'class_wpp_power_tools', 'wpp_taxonomies' ) );
-
-
-/**
+ * Core
  * Contains administrative functions
  * to manage WPP capabilities
  *
@@ -23,7 +8,7 @@ add_filter( 'wpp_taxonomies', array( 'class_wpp_power_tools', 'wpp_taxonomies' )
  */
 class class_wpp_power_tools {
 
-  /*
+  /**
    * (custom) Capability to manage the current feature
    */
   static protected $capability_capability = "manage_wpp_capabilities";
