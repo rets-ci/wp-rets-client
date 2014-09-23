@@ -223,9 +223,9 @@ class class_wpp_pdf_flyer {
     ob_start();
 
     //** Include TCPDF here to avoid double class declaration. korotkov@ud */
-    @include_once(WPP_Path.'third-party/tcpdf/tcpdf.php');
+    @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/tcpdf.php', 'dir' ) );
     //** Include extended TCPDF class TCPDF_List */
-    @include_once(WPP_Path.'third-party/tcpdf/tcpdf_list.php');
+    @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/tcpdf_list.php', 'dir' ) );
 
     global $wp_properties;
 
@@ -848,7 +848,7 @@ class class_wpp_pdf_flyer {
   static public function page_property_lists() {
     global $wp_properties;
 
-    @include_once( WPP_Path.'third-party/tcpdf/wpp_tcpdf.php' );
+    @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/wpp_tcpdf.php', 'dir' ) );
 
     //** Save settings */
     if( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpp_flyer_lists_page' ) ) {
@@ -1474,7 +1474,7 @@ class class_wpp_pdf_flyer {
   static public function settings_page($tabs) {
     global $wp_properties, $wpp_pdf_flyer;
 
-    @include_once(WPP_Path.'third-party/tcpdf/wpp_tcpdf.php');
+    @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/wpp_tcpdf.php', 'dir' ) );
 
     $uploads = wp_upload_dir();
 
@@ -2006,9 +2006,9 @@ class class_wpp_pdf_flyer {
     
     try {
       //** Include TCPDF here to avoid double class declaration. korotkov@ud */
-      @include_once( WPP_Path.'third-party/tcpdf/tcpdf.php' );
+      @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/tcpdf.php', 'dir' ) );
       //** Include extended TCPDF class WPP_PDF_Flyer */
-      @include_once(WPP_Path.'third-party/tcpdf/wpp_pdf_flyer.php');
+      @include_once( ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/wpp_pdf_flyer.php', 'dir' ) );
 
       $uploads = wp_upload_dir();
       //** Make sure that PDF cache folder is writable, attempt making the directory
@@ -2111,7 +2111,7 @@ class class_wpp_pdf_flyer {
       //** Maybe set QR code. */
       if( isset( $wpp_pdf_flyer['qr_code'] ) && $wpp_pdf_flyer['qr_code'] == 'on' ) {
         if( !class_exists( 'QRcode' ) ) {
-          require_once WPP_Path.'third-party/tcpdf/phpqrcode.php';
+          require_once ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/phpqrcode.php', 'dir' );
         }
         $qrcode_path = $uploads['path'] . '/' . $filename . '_qr.png';
         $qrcode      = $uploads['url'] . '/' . $filename . '_qr.png';
