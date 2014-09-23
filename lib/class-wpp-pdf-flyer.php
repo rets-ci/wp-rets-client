@@ -642,9 +642,9 @@ class class_wpp_pdf_flyer {
     ob_start();
     //** Attempt to get design from template */
 
-    $template_found = WPP_F::get_template_part(array(
+    $template_found = WPP_F::get_template_part( array(
       "pdf-list-template"
-    ), array(WPP_Templates));
+    ), array( ud_get_wpp_pdf()->path( 'static/views', 'dir' ) ) );
 
     if($template_found) {
       include $template_found;
@@ -2169,11 +2169,11 @@ class class_wpp_pdf_flyer {
 
       //** STEP: TEMPLATE */
       //** Load best template, or $template_path */
-      $template_path = WPP_F::get_template_part(array(
+      $template_path = WPP_F::get_template_part( array(
         "property-flyer-{$property[ 'property_type' ]}",
         'custom-flyer',
         'property-flyer'
-      ), array( WPP_Templates ) );
+      ), array( ud_get_wpp_pdf()->path( 'static/views', 'dir' ) ) );
       if( empty( $template_path ) ) {
         throw new Exception( __( 'There is no template for DPF Flyer. You should put \'property-flyer.php\' template to root of your theme folder', 'wpp' ) );
       }
