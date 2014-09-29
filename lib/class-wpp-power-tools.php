@@ -88,8 +88,8 @@ class class_wpp_power_tools {
    * Adds Custom capability to the current premium feature
    */
   static public function add_capability($capabilities) {
-    $capabilities[self::$capability_capability] = __('Manage Capabilities','wpp');
-    $capabilities[self::$capability_white_label] = __('Manage White Label','wpp');
+    $capabilities[self::$capability_capability] = __('Manage Capabilities',ud_get_wpp_pt()->domain);
+    $capabilities[self::$capability_white_label] = __('Manage White Label',ud_get_wpp_pt()->domain);
     return $capabilities;
   }
 
@@ -131,27 +131,27 @@ class class_wpp_power_tools {
   static public function wpp_contextual_help( $data ) {
 
     $capabilities_help = array(
-      '<h3>' . __( 'Capabilities', 'wpp' ) .'</h3>',
-      '<h4>' . __( 'View Properties', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Adds Properties menu and user can see the list of all available properties.', 'wpp' ) .'</p>',
-      '<p>' . __( 'It is required capability to manage WP-Property. All cababilities depend on this one.', 'wpp' ) .'</p>',
-      '<p>' . __( 'For example, user can not edit property if he has capability \'Add/Edit Property\', but doesn\'t have \'View Properties\' capability.', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Add/Edit Properties', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows to add new property and edit properties where user is author. To edit properties where user is not author ( which he didn\'t create ), user must have \'Edit Other Properties\' ( see below ).', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Edit Other Properties', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows to edit properties where user is not author ( which he didn\'t create )', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Delete Properties', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows user to delete properties. This capability depends on \'Add/Edit Properties\' and \'Edit Other Properties\'.', 'wpp' ) .'</p>',
-      '<p>' . __( 'User can delete properties where he is author if he has \'Add/Edit Properties\' capability', 'wpp' ) .'</p>',
-      '<p>' . __( 'User can delete properties where he is not author if he has \'Edit Other Properties\' capability', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Publish Properties', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows user to publish properties.', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Manage Settings', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows user to manage WP-Property settings. Adds \'Settings\' page to menu.', 'wpp' ) .'</p>',
-      '<h4>' . __( 'Manage Taxonomies', 'wpp' ) . '</h4>',
-      '<p>' . __( 'Allows user to manage taxonomies such as <b>Feature</b> and <b>Community Feature</b>', 'wpp' ) .'</p>',
-      '<h3>' . __( 'Other manage capabilities', 'wpp' ) . '</h3>',
-      '<p>' . __( 'Other capabilities belong to premium features settings and functionality. User who has no capability to manage specific premium feature will not be able to manage it.', 'wpp' ) . '</p>',
+      '<h3>' . __( 'Capabilities', ud_get_wpp_pt()->domain ) .'</h3>',
+      '<h4>' . __( 'View Properties', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Adds Properties menu and user can see the list of all available properties.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<p>' . __( 'It is required capability to manage WP-Property. All cababilities depend on this one.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<p>' . __( 'For example, user can not edit property if he has capability \'Add/Edit Property\', but doesn\'t have \'View Properties\' capability.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Add/Edit Properties', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows to add new property and edit properties where user is author. To edit properties where user is not author ( which he didn\'t create ), user must have \'Edit Other Properties\' ( see below ).', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Edit Other Properties', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows to edit properties where user is not author ( which he didn\'t create )', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Delete Properties', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows user to delete properties. This capability depends on \'Add/Edit Properties\' and \'Edit Other Properties\'.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<p>' . __( 'User can delete properties where he is author if he has \'Add/Edit Properties\' capability', ud_get_wpp_pt()->domain ) .'</p>',
+      '<p>' . __( 'User can delete properties where he is not author if he has \'Edit Other Properties\' capability', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Publish Properties', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows user to publish properties.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Manage Settings', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows user to manage WP-Property settings. Adds \'Settings\' page to menu.', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h4>' . __( 'Manage Taxonomies', ud_get_wpp_pt()->domain ) . '</h4>',
+      '<p>' . __( 'Allows user to manage taxonomies such as <b>Feature</b> and <b>Community Feature</b>', ud_get_wpp_pt()->domain ) .'</p>',
+      '<h3>' . __( 'Other manage capabilities', ud_get_wpp_pt()->domain ) . '</h3>',
+      '<p>' . __( 'Other capabilities belong to premium features settings and functionality. User who has no capability to manage specific premium feature will not be able to manage it.', ud_get_wpp_pt()->domain ) . '</p>',
     );
 
     $data['Capabilities'] = apply_filters( 'wpp::contextual_help::capabilities', $capabilities_help );
@@ -167,7 +167,7 @@ class class_wpp_power_tools {
   static public function settings_nav($tabs) {
     $tabs['capabilities'] = array(
       'slug' => 'capabilities',
-      'title' => __('Capabilities','wpp')
+      'title' => __('Capabilities',ud_get_wpp_pt()->domain)
     );
     return $tabs;
   }
@@ -182,25 +182,25 @@ class class_wpp_power_tools {
     <table class="form-table">
       <tr>
         <td>
-          <h3><?php _e('WP Property Capabilities','wpp') ?></h3>
+          <h3><?php _e('WP Property Capabilities',ud_get_wpp_pt()->domain) ?></h3>
           <p><?php printf( __( 'User Roles capabilities management. See more details what every capability does %shere%s.' ), '<span class="wpp_link wpp_toggle_contextual_help">', '</span>' ); ?></p>
           <table class="ud_ui_dynamic_table widefat">
           <thead>
             <tr>
-              <th style="width:20%;"><?php _e('Role','wpp') ?></th>
-              <th><?php _e('Capabilities','wpp') ?></th>
+              <th style="width:20%;"><?php _e('Role',ud_get_wpp_pt()->domain) ?></th>
+              <th><?php _e('Capabilities',ud_get_wpp_pt()->domain) ?></th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($wp_roles->roles as $r_slug => $role) : ?>
             <tr>
               <td>
-                <h4 style="margin:0;"><?php _e($role['name'],'wpp') ?></h4>
+                <h4 style="margin:0;"><?php echo $role['name']; ?></h4>
                 <?php
                   $description = "";
                   switch ($r_slug) {
                     case "administrator":
-                      $description = __('Administrator has all capabilities which can not be managed.', 'wpp');
+                      $description = __('Administrator has all capabilities which can not be managed.', ud_get_wpp_pt()->domain);
                       break;
                   }
                 ?>
@@ -214,7 +214,7 @@ class class_wpp_power_tools {
                   <li>
                     <input id="wpp_<?php echo $r_slug;?>_<?php echo $cap;?>_capability" <?php echo $checked; ?> <?php echo $disabled; ?> type="checkbox" name="wpp_settings[capabilities][<?php echo $r_slug; ?>][]" value="<?php echo $cap; ?>" />
                     <label for="wpp_<?php echo $r_slug;?>_<?php echo $cap;?>_capability">
-                    <?php _e($value, 'wpp');?>
+                    <?php echo $value; ?>
                     </label>
                   </li>
                   <?php endforeach; ?>
@@ -258,11 +258,11 @@ class class_wpp_power_tools {
     if( is_array( $configurable_taxonomies ) ) {
       ?>
       <tr>
-        <th><?php _e('Taxonomies','wpp'); ?></th>
+        <th><?php _e('Taxonomies',ud_get_wpp_pt()->domain); ?></th>
         <td>
           <ul>
             <?php foreach( $configurable_taxonomies as $taxonomy => $taxonomy_label ) { ?>
-              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable %1$s taxonomy.', 'wpp'), $taxonomy_label ), $disabled_taxonomies ); ?></li>
+              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable %1$s taxonomy.', ud_get_wpp_pt()->domain), $taxonomy_label ), $disabled_taxonomies ); ?></li>
             <?php } ?>
           </ul>
         </td>
@@ -291,43 +291,43 @@ class class_wpp_power_tools {
 
     ?>
     <tr>
-      <th><?php _e('White Label', 'wpp'); ?></th>
+      <th><?php _e('White Label', ud_get_wpp_pt()->domain); ?></th>
       <td>
 
       <div class="wpp_subtle_tabs wpp_nl_tabs" >
         <ul class="wpp_section_tabs">
-          <li><a href="#wpp_wl_labels"><?php _e('Labels', 'wpp'); ?></a></li>
-          <li><a href="#wpp_wl_contextual_help"><?php _e('Contextual Menus', 'wpp'); ?></a></li>
+          <li><a href="#wpp_wl_labels"><?php _e('Labels', ud_get_wpp_pt()->domain); ?></a></li>
+          <li><a href="#wpp_wl_contextual_help"><?php _e('Contextual Menus', ud_get_wpp_pt()->domain); ?></a></li>
         </ul>
 
 
         <div id="wpp_wl_labels" class="wp-tab-panel">
           <div class="wpp_subtle_tab_description">
-            <?php _e('Use this menu to rename WP-Property components, for example if you are listing "Real Estate", or "Vehicles".', 'wpp'); ?>
+            <?php _e('Use this menu to rename WP-Property components, for example if you are listing "Real Estate", or "Vehicles".', ud_get_wpp_pt()->domain); ?>
           </div>
           <ul>
             <li>
-              <label><?php _e('Singular Property:', 'wpp'); ?></label>
+              <label><?php _e('Singular Property:', ud_get_wpp_pt()->domain); ?></label>
               <input name="wpp_settings[configuration][feature_settings][white_label][labels][singular_name]" value="<?php echo isset( $labels['singular_name'] ) ? esc_attr( $labels['singular_name'] ) : ''; ?>" />
-              <span class="description"><?php _e('Default is "Property", will change the label in the navigation menus.', 'wpp'); ?></span>
+              <span class="description"><?php _e('Default is "Property", will change the label in the navigation menus.', ud_get_wpp_pt()->domain); ?></span>
             </li>
 
             <li>
-              <label><?php _e('Plural Property:', 'wpp'); ?></label>
+              <label><?php _e('Plural Property:', ud_get_wpp_pt()->domain); ?></label>
               <input name="wpp_settings[configuration][feature_settings][white_label][labels][plural_name]" value="<?php echo isset( $labels['plural_name'] ) ? esc_attr( $labels['plural_name'] ) : ''; ?>" />
-              <span class="description"><?php _e('Default is "Properties", will change the label in the navigation menus.', 'wpp'); ?></span>
+              <span class="description"><?php _e('Default is "Properties", will change the label in the navigation menus.', ud_get_wpp_pt()->domain); ?></span>
             </li>
 
           </ul>
           </div>
         <div id="wpp_wl_contextual_help" class="wp-tab-panel">
           <div class="wpp_subtle_tab_description">
-            <?php _e('Contextual menus are displayed when a user clicks the "Help" tab in the top right corner of a page.', 'wpp'); ?>
+            <?php _e('Contextual menus are displayed when a user clicks the "Help" tab in the top right corner of a page.', ud_get_wpp_pt()->domain); ?>
           </div>
 
           <ul>
             <li>
-              <label><?php _e('Overview Page Contextual Help:', 'wpp'); ?></label>
+              <label><?php _e('Overview Page Contextual Help:', ud_get_wpp_pt()->domain); ?></label>
               <textarea class="code" name="wpp_settings[configuration][feature_settings][white_label][contextual_help][overview_page]"><?php echo esc_attr( $contextual_help['overview_page'] ); ?></textarea>
             </li>
             </ul>
@@ -376,11 +376,11 @@ class class_wpp_power_tools {
 
     if(!empty($custom_labels['singular_name'])) {
       $labels['singular_name'] = $custom_labels['singular_name'];
-      $labels['add_new'] =  __('Add ', 'wpp') .  $custom_labels['singular_name'];
-      $labels['add_new_item'] =  __('Add New ', 'wpp') .  $custom_labels['singular_name'];
-      $labels['edit_item'] =  __('Edit ', 'wpp') .  $custom_labels['singular_name'];
-      $labels['new_item'] =  __('New ', 'wpp') .  $custom_labels['singular_name'];
-      $labels['view_item'] =  __('View ', 'wpp') .  $custom_labels['singular_name'];
+      $labels['add_new'] =  __('Add ', ud_get_wpp_pt()->domain) .  $custom_labels['singular_name'];
+      $labels['add_new_item'] =  __('Add New ', ud_get_wpp_pt()->domain) .  $custom_labels['singular_name'];
+      $labels['edit_item'] =  __('Edit ', ud_get_wpp_pt()->domain) .  $custom_labels['singular_name'];
+      $labels['new_item'] =  __('New ', ud_get_wpp_pt()->domain) .  $custom_labels['singular_name'];
+      $labels['view_item'] =  __('View ', ud_get_wpp_pt()->domain) .  $custom_labels['singular_name'];
     }
 
     /*
@@ -392,9 +392,9 @@ class class_wpp_power_tools {
 
     if(!empty($custom_labels['plural_name'])) {
       $labels['name'] = $custom_labels['plural_name'];
-      $labels['all_items'] = __('All ', 'wpp') . $custom_labels['plural_name'];
-      $labels['search_items'] = __('Search ', 'wpp') . $custom_labels['plural_name'];
-      $labels['not_found'] = __('No ', 'wpp') . $custom_labels['plural_name'] . __(' found.', 'wpp') ;
+      $labels['all_items'] = __('All ', ud_get_wpp_pt()->domain) . $custom_labels['plural_name'];
+      $labels['search_items'] = __('Search ', ud_get_wpp_pt()->domain) . $custom_labels['plural_name'];
+      $labels['not_found'] = __('No ', ud_get_wpp_pt()->domain) . $custom_labels['plural_name'] . __(' found.', ud_get_wpp_pt()->domain) ;
     }
 
     return $labels;
