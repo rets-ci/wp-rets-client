@@ -189,11 +189,11 @@ else
   git branch --set-upstream-to=origin/temp-branch-$RELEASE_VERSION temp-branch-$RELEASE_VERSION
   echo "---"
 
-  echo "Set configuration to proceed"
-  git config --global push.default simple
-  git config --global user.email "$( git log -1 --pretty=%an )"
-  git config --global user.name "$( git log -1 --pretty=%ae )"
-  echo "---"
+  #cho "Set configuration to proceed"
+  #git config --global push.default simple
+  #git config --global user.email "$( git log -1 --pretty=%an )"
+  #git config --global user.name "$( git log -1 --pretty=%ae )"
+  #echo "---"
 
   echo "Add/remove files"
   git add --all
