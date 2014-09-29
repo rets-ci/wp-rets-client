@@ -67,7 +67,7 @@ class class_wpp_supermap {
    */
   static public function add_capability($capabilities) {
 
-    $capabilities[self::$capability] = __('Manage Supermap','wpp');
+    $capabilities[self::$capability] = __('Manage Supermap',ud_get_wpp_supermap()->domain);
 
     return $capabilities;
   }
@@ -81,7 +81,7 @@ class class_wpp_supermap {
   static public function settings_nav($tabs) {
     $tabs['supermap'] = array(
       'slug' => 'supermap',
-      'title' => __('Supermap','wpp')
+      'title' => __('Supermap',ud_get_wpp_supermap()->domain)
     );
     return $tabs;
   }
@@ -112,7 +112,7 @@ class class_wpp_supermap {
 
     //* Set example of Area */
     if(empty($supermap_configuration['areas'])) {
-      $supermap_configuration['areas']['example_area']['name'] = __( 'Example Area', 'wpp' );
+      $supermap_configuration['areas']['example_area']['name'] = __( 'Example Area', ud_get_wpp_supermap()->domain );
       $supermap_configuration['areas']['example_area']['hoverColor'] = '';
       $supermap_configuration['areas']['example_area']['strokeColor'] = '#a49b8a';
       $supermap_configuration['areas']['example_area']['strokeOpacity'] = '#a49b8a';
@@ -154,9 +154,9 @@ class class_wpp_supermap {
     <table class="form-table">
       <tbody>
         <tr valign="top">
-          <th scope="row"><?php _e('Sidebar Attributes', 'wpp'); ?></th>
+          <th scope="row"><?php _e('Sidebar Attributes', ud_get_wpp_supermap()->domain); ?></th>
           <td>
-            <p><?php _e('Select the attributes you want to display in the left sidebar on the supermap.', 'wpp'); ?></p>
+            <p><?php _e('Select the attributes you want to display in the left sidebar on the supermap.', ud_get_wpp_supermap()->domain); ?></p>
             <div class="wp-tab-panel">
             <ul>
               <?php foreach($wp_properties['property_stats'] as $slug => $title): ?>
@@ -170,34 +170,34 @@ class class_wpp_supermap {
             <ul style="margin-top:10px;">
               <li>
                 <input <?php if(@in_array('view_property', (array)$supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='view_property' type="checkbox" id="display_attribute_view_property" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
-                <label for="display_attribute_view_property"><?php _e('Display "View Property" link in the left sidebar. It directs user to Property Page.','wpp') ?></label>
+                <label for="display_attribute_view_property"><?php _e('Display "View Property" link in the left sidebar. It directs user to Property Page.',ud_get_wpp_supermap()->domain) ?></label>
               </li>
             </ul>
           </td>
         </tr>
         <tr>
-          <th><?php _e('Supermap Sidebar Thumbnail:','wpp') ?></th>
+          <th><?php _e('Supermap Sidebar Thumbnail:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
             <ul>
               <li>
                 <input <?php if( isset( $supermap_configuration['hide_sidebar_thumb'] ) ) checked( 'true', $supermap_configuration[ 'hide_sidebar_thumb' ] ); ?> value='true' type="checkbox" id="supermap_hide_sidebar_thumb" name="wpp_settings[configuration][feature_settings][supermap][hide_sidebar_thumb]" />
-                <label for="supermap_hide_sidebar_thumb"><?php _e('Do not show a property thumbnail in sidebar.','wpp') ?></label>
+                <label for="supermap_hide_sidebar_thumb"><?php _e('Do not show a property thumbnail in sidebar.',ud_get_wpp_supermap()->domain) ?></label>
               </li>
               <li><?php WPP_F::image_sizes_dropdown("name=wpp_settings[configuration][feature_settings][supermap][supermap_thumb]&selected=" . $supermap_configuration['supermap_thumb']); ?></li>
-              <li><?php _e('If you create a new image size, please be sure to regenerate all thumbnails. ','wpp') ?></li>
+              <li><?php _e('If you create a new image size, please be sure to regenerate all thumbnails. ',ud_get_wpp_supermap()->domain) ?></li>
             </ul>
           </td>
         </tr>
         <tr>
-          <th><?php _e('Map Markers:','wpp') ?></th>
+          <th><?php _e('Map Markers:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
             <table id="wpp_supermap_markers" class="wpp_sortable ud_ui_dynamic_table widefat" allow_random_slug="true">
               <thead>
                 <tr>
                   <th style="width:10px;" class="wpp_draggable_handle">&nbsp;</th>
-                  <th style="width:50px;"><?php _e('Image','wpp') ?></th>
-                  <th style="width:150px;"><?php _e('Name','wpp') ?></th>
-                  <th style="width:250px;"><?php _e('Slug','wpp') ?></th>
+                  <th style="width:50px;"><?php _e('Image',ud_get_wpp_supermap()->domain) ?></th>
+                  <th style="width:150px;"><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
+                  <th style="width:250px;"><?php _e('Slug',ud_get_wpp_supermap()->domain) ?></th>
                   <th style="width:50px;">&nbsp;</th>
                 </tr>
               </thead>
@@ -224,7 +224,7 @@ class class_wpp_supermap {
                       <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug wpp_marker_slug">
                     </td>
                     <td>
-                      <span class="wpp_delete_row wpp_link"><?php _e('Delete','wpp') ?></span>
+                      <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
                     </td>
                   </tr>
               <?php endforeach; ?>
@@ -232,7 +232,7 @@ class class_wpp_supermap {
               <tfoot>
                 <tr>
                   <td colspan='5'>
-                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Marker','wpp') ?>" />
+                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Marker',ud_get_wpp_supermap()->domain) ?>" />
                   </td>
                 </tr>
               </tfoot>
@@ -332,18 +332,18 @@ class class_wpp_supermap {
           </td>
         </tr>
         <tr>
-          <th><?php _e('Map Areas:','wpp') ?></th>
+          <th><?php _e('Map Areas:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
-            <?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>','wpp') ?>
+            <?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>',ud_get_wpp_supermap()->domain) ?>
             <table id="wpp_supermap_areas" class="ud_ui_dynamic_table widefat">
               <thead>
                 <tr>
-                  <th><?php _e('Name','wpp') ?></th>
-                  <th style="width:50px;"><?php _e('Coordinates','wpp') ?></th>
-                  <th><?php _e('Fill Color','wpp') ?></th>
-                  <th><?php _e('Opacity','wpp') ?></th>
-                  <th><?php _e('Stoke Color','wpp') ?></th>
-                  <th><?php _e('Hover Color','wpp') ?></th>
+                  <th><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
+                  <th style="width:50px;"><?php _e('Coordinates',ud_get_wpp_supermap()->domain) ?></th>
+                  <th><?php _e('Fill Color',ud_get_wpp_supermap()->domain) ?></th>
+                  <th><?php _e('Opacity',ud_get_wpp_supermap()->domain) ?></th>
+                  <th><?php _e('Stoke Color',ud_get_wpp_supermap()->domain) ?></th>
+                  <th><?php _e('Hover Color',ud_get_wpp_supermap()->domain) ?></th>
                   <th>&nbsp;</th>
                 </tr>
               </thead>
@@ -371,7 +371,7 @@ class class_wpp_supermap {
                       <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][hoverColor]" value="<?php echo $area_data['hoverColor']; ?>" />
                     </td>
                     <td>
-                      <span class="wpp_delete_row wpp_link"><?php _e('Delete','wpp') ?></span>
+                      <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -379,7 +379,7 @@ class class_wpp_supermap {
               <tfoot>
                 <tr>
                   <td colspan='7'>
-                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row','wpp') ?>" />
+                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row',ud_get_wpp_supermap()->domain) ?>" />
                   </td>
                 </tr>
               </tfoot>
@@ -421,9 +421,9 @@ class class_wpp_supermap {
       <?php endif; ?>
       </div>
       <div class="wpp_supermap_marker_selector">
-      <label for="wpp_setting_property_type_<?php echo $slug ?>_marker"><?php _e('Map Marker', 'wpp'); ?>:</label>
+      <label for="wpp_setting_property_type_<?php echo $slug ?>_marker"><?php _e('Map Marker', ud_get_wpp_supermap()->domain); ?>:</label>
       <select class="wpp_setting_property_type_marker" id="wpp_setting_property_type_<?php echo $slug ?>_marker" name="wpp_settings[configuration][feature_settings][supermap][property_type_markers][<?php echo $slug; ?>]" >
-        <option value=""><?php _e('Default by Google', 'wpp'); ?></option>
+        <option value=""><?php _e('Default by Google', ud_get_wpp_supermap()->domain); ?></option>
         <?php if( !empty( $supermap_configuration['markers'] ) && is_array( $supermap_configuration['markers'] ) ) : ?>
           <?php foreach ($supermap_configuration['markers'] as $mslug => $mvalue ) : ?>
             <option value="<?php echo $mvalue['file']; ?>" <?php selected($supermap_configuration['property_type_markers'][$slug], $mvalue['file']); ?>><?php echo $mvalue['name']; ?></option>
@@ -490,7 +490,7 @@ class class_wpp_supermap {
     $ext = pathinfo($file_name, PATHINFO_EXTENSION);
 
     if(!in_array($ext, $exts)) {
-      $return['error'] = __('File should be an image','wpp');
+      $return['error'] = __('File should be an image',ud_get_wpp_supermap()->domain);
     } else {
       $upload_dir = wp_upload_dir();
       $files_dir = $upload_dir['basedir'] . '/supermap_files';
@@ -543,7 +543,7 @@ class class_wpp_supermap {
       //* END Resize and Rename file */
 
       if(!file_exists($resized_file_new)) {
-        $return['error'] = __('Looks like, Image can not be uploaded.', 'wpp');
+        $return['error'] = __('Looks like, Image can not be uploaded.', ud_get_wpp_supermap()->domain);
       } else {
         $return['success'] = 'true';
         $return['url'] = $files_markers_url . '/' . $slug . '.' . $ext . '?' . (rand(0,100));
@@ -621,7 +621,7 @@ class class_wpp_supermap {
    *
    */
   static public function add_metabox(){
-    add_meta_box( 'wp_property_supermap', __( 'Supermap Options', 'wpp' ),
+    add_meta_box( 'wp_property_supermap', __( 'Supermap Options', ud_get_wpp_supermap()->domain ),
     array('class_wpp_supermap','property_supermap_options'), 'property', 'side' );
   }
 
@@ -634,7 +634,7 @@ class class_wpp_supermap {
 
     //* Exclude From Supermap checkbox */
     $disable_exclude = get_post_meta($post_id, 'exclude_from_supermap', true);
-    $text = __('Exclude property from Supermap','wpp');
+    $text = __('Exclude property from Supermap',ud_get_wpp_supermap()->domain);
     echo WPP_F::checkbox("name=exclude_from_supermap&id=exclude_from_supermap&label=$text", $disable_exclude);
 
     //* START Renders Supermap Marker's settings */
@@ -672,9 +672,9 @@ class class_wpp_supermap {
         <img src="<?php echo $marker_url; ?>" alt="" />
       </div>
       <div class="wpp_supermap_marker_selector">
-      <label for="wpp_setting_supermap_marker"><?php _e('Map Marker', 'wpp'); ?>:</label>
+      <label for="wpp_setting_supermap_marker"><?php _e('Map Marker', ud_get_wpp_supermap()->domain); ?>:</label>
       <select id="wpp_setting_supermap_marker" name="supermap_marker">
-        <option value="default_google_map_marker"><?php _e('Default by Google', 'wpp'); ?></option>
+        <option value="default_google_map_marker"><?php _e('Default by Google', ud_get_wpp_supermap()->domain); ?></option>
         <?php if(!empty($supermap_configuration['markers'])) : ?>
           <?php foreach ($supermap_configuration['markers'] as $mslug => $mvalue) : ?>
             <option value="<?php echo $mvalue['file']; ?>" <?php selected($supermap_marker, $mvalue['file']); ?>><?php echo $mvalue['name']; ?></option>
@@ -825,7 +825,7 @@ class class_wpp_supermap {
       'hide_sidebar' => 'false',
       'map_height' => '',
       'map_width' => '',
-      'options_label' => __('Options','wpp'),
+      'options_label' => __('Options',ud_get_wpp_supermap()->domain),
       'silent_failure' => 'true',
       'sort_order' => 'DESC',
       'sort_by' => 'post_date'
@@ -837,7 +837,7 @@ class class_wpp_supermap {
 
     //** Quit function if Google Maps is not loaded */
     if(!WPP_F::is_asset_loaded('google-maps')) {
-      return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', 'wpp'), 'google-maps'));
+      return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
     }
 
     //* Available search attributes */
@@ -925,7 +925,7 @@ class class_wpp_supermap {
 
       return $supermap;
     } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
-      return sprintf( __( 'Sorry, no %s found, try expanding your search.', 'wpp' ), WPP_F::property_label( 'plural' ) );
+      return sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), WPP_F::property_label( 'plural' ) );
     }
   }
 
@@ -1049,7 +1049,7 @@ class class_wpp_supermap {
               if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
                 $attribute_value = '<div class="true-checkbox-image"></div>';
               } else {
-                $attribute_value = __('Yes', 'wpp');
+                $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
               }
               $boolean_field = true;
             } elseif ($attribute_value == 'false') {
@@ -1065,7 +1065,7 @@ class class_wpp_supermap {
         }
 
         if( isset( $supermap_configuration['display_attributes'] ) && in_array( 'view_property', $supermap_configuration['display_attributes'] ) ) {
-          $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '"><span>'  . __('View Property', 'wpp') . '</span></a></li>';
+          $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '"><span>'  . __('View Property', ud_get_wpp_supermap()->domain) . '</span></a></li>';
         }
 
         if( 
@@ -1108,7 +1108,7 @@ class class_wpp_supermap {
       HTML += '<ul class="property_in_list_items clearfix">';
       HTML += '<li class="supermap_list_thumb">';
       HTML += '<span  onclick="showInfobox_<?php echo $_POST['random']; ?>(<?php echo $value['ID']; ?>);">';
-      <?php if($supermap_configuration['hide_sidebar_thumb'] != 'true') { ?>
+      <?php if( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true') { ?>
       HTML += '<img src="<?php echo (empty($image['link'])) ? WPP_URL . 'templates/images/no_image.png' : $image['link'];?>" width="<?php echo isset( $image['width'] ) ? esc_attr($image['width']) : ''; ?>" alt="<?php echo esc_attr($value['post_title']); ?>" />';
       <?php } ?>
       HTML += '</span>';
@@ -1128,7 +1128,7 @@ class class_wpp_supermap {
       window.supermap_<?php echo $_POST['random']; ?>.total = '0';
 
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
-      var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', 'wpp'); ?></div>';
+      var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
 
       wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
 
@@ -1167,7 +1167,7 @@ class class_wpp_supermap {
       'map_height' => '',
       'map_width' => '',
       'zoom' => '',
-      'options_label' => __('Options','wpp'),
+      'options_label' => __('Options',ud_get_wpp_supermap()->domain),
       'center_on' => '',
       'property_type' => (array) $wp_properties['searchable_property_types'],
       'rand' => rand(1000,5000)
@@ -1638,7 +1638,7 @@ class class_wpp_supermap {
                   if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
                     $attribute_value = '<div class="true-checkbox-image"></div>';
                   } else {
-                    $attribute_value = __('Yes', 'wpp');
+                    $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
                   }
                   $boolean_field = true;
                 } elseif ($attribute_value == 'false') {
@@ -1653,7 +1653,7 @@ class class_wpp_supermap {
             }
 
             if(in_array('view_property', $supermap_configuration['display_attributes'])) {
-              $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '" class="btn btn-info btn-small"><span>'  . __('View Property', 'wpp') . '</span></a></li>';
+              $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '" class="btn btn-info btn-small"><span>'  . __('View Property', ud_get_wpp_supermap()->domain) . '</span></a></li>';
             }
 
             ?>
@@ -1674,8 +1674,8 @@ class class_wpp_supermap {
         </div>
         <?php if($atts['pagination'] == 'on') { ?>
         <div class="show_more btn" style="<?php echo count($properties) < $atts['total'] ? '' : 'display:none;'; ?>">
-          <?php _e('Show More', 'wpp'); ?>
-          <div class="search_loader" style="display:none"><?php _e('Loading...', 'wpp'); ?></div>
+          <?php _e('Show More', ud_get_wpp_supermap()->domain); ?>
+          <div class="search_loader" style="display:none"><?php _e('Loading...', ud_get_wpp_supermap()->domain); ?></div>
         </div>
         <?php }?>
       </div>
@@ -1787,7 +1787,7 @@ class class_wpp_supermap {
           <?php } ?>
           </ul>
           <input class="search_b btn" type="button" value="Search" onclick="getProperties(<?php echo $rand; ?>)" />
-          <div class="search_loader" style="display:none"><?php _e('Loading','wpp') ?></div>
+          <div class="search_loader" style="display:none"><?php _e('Loading',ud_get_wpp_supermap()->domain) ?></div>
         </div> <?php //end of class_wpp_supermap_elements ?>
       </form>
       <?php
