@@ -2113,8 +2113,8 @@ class class_wpp_pdf_flyer {
         if( !class_exists( 'QRcode' ) ) {
           require_once ud_get_wpp_pdf()->path( 'lib/third-party/tcpdf/phpqrcode.php', 'dir' );
         }
-        $qrcode_path = $uploads['path'] . '/' . $filename . '_qr.png';
-        $qrcode      = $uploads['url'] . '/' . $filename . '_qr.png';
+        $qrcode_path = $uploads['path'] . '/qr_' . $post_id . '.png';
+        $qrcode      = $uploads['url'] . '/qr_' . $post_id . '.png';
         //** If, some reason, file already exists, - remove it to avoid conflict. */
         if( file_exists( $qrcode_path ) ) {
           @unlink( $qrcode_path );
