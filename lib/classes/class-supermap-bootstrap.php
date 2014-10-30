@@ -8,7 +8,7 @@ namespace UsabilityDynamics\WPP {
 
   if( !class_exists( 'UsabilityDynamics\WPP\Supermap_Bootstrap' ) ) {
 
-    final class Supermap_Bootstrap extends \UsabilityDynamics\WP\Bootstrap {
+    final class Supermap_Bootstrap extends \UsabilityDynamics\WP\Bootstrap_Plugin {
       
       /**
        * Singleton Instance Reference.
@@ -24,11 +24,6 @@ namespace UsabilityDynamics\WPP {
        * Instantaite class.
        */
       public function init() {
-        //** Be sure we do not have errors. Do not initialize plugin if we have them. */
-        if( $this->has_errors() ) {
-          return null;
-        }
-        
         require_once( dirname( __DIR__ ) . '/class-wpp-supermap.php' );
         add_action( 'wpp_init', array( 'class_wpp_supermap', 'init' ) );
         add_action( 'wpp_pre_init', array( 'class_wpp_supermap', 'pre_init' ) );

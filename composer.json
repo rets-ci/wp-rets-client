@@ -1,7 +1,6 @@
 {
   "name": "usabilitydynamics/wp-property-supermap",
-  "version": "4.0.0",
-  "type": "plugin",
+  "type": "wordpress-plugin",
   "minimum-stability": "dev",
   "homepage": "https://usabilitydynamics.com",
   "author": {
@@ -20,7 +19,7 @@
   },
   "require": {
     "php": ">=5.3",
-    "usabilitydynamics/lib-wp-bootstrap": "master"
+    "usabilitydynamics/lib-wp-bootstrap": "*"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "master",
