@@ -8,7 +8,7 @@ namespace UsabilityDynamics\WPP {
 
   if( !class_exists( 'UsabilityDynamics\WPP\PT_Bootstrap' ) ) {
 
-    final class PT_Bootstrap extends \UsabilityDynamics\WP\Bootstrap {
+    final class PT_Bootstrap extends \UsabilityDynamics\WP\Bootstrap_Plugin {
       
       /**
        * Singleton Instance Reference.
@@ -24,11 +24,6 @@ namespace UsabilityDynamics\WPP {
        * Instantaite class.
        */
       public function init() {
-        //** Be sure we do not have errors. Do not initialize plugin if we have them. */
-        if( $this->has_errors() ) {
-          return null;
-        }
-        
         require_once( dirname( __DIR__ ) . '/class-wpp-power-tools.php' );
         add_action( 'wpp_init', array( 'class_wpp_power_tools', 'init' ) );
         add_action( 'wpp_pre_init', array( 'class_wpp_power_tools', 'pre_init' ) );
