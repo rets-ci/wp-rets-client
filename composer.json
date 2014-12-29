@@ -60,7 +60,7 @@
         "client" : false,
         "product" : {
           "referrer": "WP-Property",
-          "product_id": "WP-Property PDF Flyer"
+          "product_id": "usabilitydynamics/wp-property-pdf"
         }
       }
     }
