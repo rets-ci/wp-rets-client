@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: WP-Property Supermap
- * Plugin URI: https://usabilitydynamics.com
+ * Plugin URI: https://usabilitydynamics.com/product/wp-property
  * Description: WP-Property Super Map Add-on lets you put a large interactive map virtually anywhere in your WordPress setup. The map lets your visitors quickly view the location of all your properties, and filter them down by attributes.
  * Author: Usability Dynamics, Inc.
- * Version: 4.0.0-RC2
+ * Version: 4.0.0
  * Text Domain: wpp_supermap
  * Author URI: http://usabilitydynamics.com
  *
