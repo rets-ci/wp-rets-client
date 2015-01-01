@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Build Plugin
 ##
 ##
@@ -24,3 +25,31 @@ release:
 	@echo Releasing $(NAME).
   make default
   sh build.sh $(TAG)
+=======
+## Build Plugin
+##
+##
+
+NAME = {%= name %}
+
+# Default Install Action
+default:
+	npm install
+  
+# Install project
+# - Removes composer.lock, vendor
+# - Runs composer install --no-dev
+# - Removes extra files.
+install:
+	echo Install $(NAME).
+	make default
+	grunt install
+
+# Creates Release with Build Distribution
+# Example: 
+# make TAG=1.0.0 release
+release:
+	@echo Releasing $(NAME).
+	make default
+	sh build.sh $(TAG)
+>>>>>>> 474ac413e40dac89454adee473b14502799b80d6
