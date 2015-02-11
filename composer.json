@@ -42,11 +42,7 @@
   "extra": {
     "schemas": {
       "dependencies" : {
-        "modules": {
-          "usabilitydynamics/lib-utility": {
-            "\\UsabilityDynamics\\Utility": "0.3.6"
-          }
-        },
+        "modules": {},
         "plugins": [
           {
             "name": "WP-Property",
