@@ -55,7 +55,7 @@
       "licenses" : {
         "client" : false,
         "product" : {
-          "referrer": "WP-Property",
+          "referrer": "wp-property/wp-property",
           "product_id": "wp-property/wp-property-power-tools"
         }
       }
