@@ -28,8 +28,6 @@ class class_wpp_power_tools {
 
     add_action('wpp_settings_display_tab_bottom',  array('class_wpp_power_tools', "wpp_settings_display_tab_bottom"));
 
-    add_action('wpp_settings_main_tab_bottom',  array('class_wpp_power_tools', "wpp_settings_main_tab_bottom"));
-
     add_filter('wpp_object_labels', array('class_wpp_power_tools', "wpp_object_labels"));
 
   }
@@ -228,47 +226,6 @@ class class_wpp_power_tools {
       </tr>
     </table>
     <?php
-  }
-  
-  /**
-   *
-   */
-  static public function wpp_settings_main_tab_bottom( $wp_properties = false ) {
-
-    if( !$wp_properties ) {
-      global $wp_properties;
-    }
-    
-    $disabled_taxonomies = isset( $wp_properties['configuration']['disabled_taxonomies'] ) ? (array)$wp_properties['configuration']['disabled_taxonomies'] : array();
-
-    if( is_array( $wp_properties['taxonomies'] ) ) {
-      foreach($wp_properties['taxonomies'] as $taxonomy => $taxonomy_data) {
-        $configurable_taxonomies[$taxonomy] = $taxonomy_data['label'];
-      }
-    }
-    
-    foreach( $disabled_taxonomies as $taxonomy => $taxonomy_label) {
-      $configurable_taxonomies[$taxonomy] = $taxonomy_label;
-    }
-
-    if( !is_array( $configurable_taxonomies ) ) {
-      return;
-    }
-    
-    if( is_array( $configurable_taxonomies ) ) {
-      ?>
-      <tr>
-        <th><?php _e('Taxonomies',ud_get_wpp_pt()->domain); ?></th>
-        <td>
-          <ul>
-            <?php foreach( $configurable_taxonomies as $taxonomy => $taxonomy_label ) { ?>
-              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable <a href="%1$s" class="wp-property-taxonomy-link">%2$s</a> taxonomy.',  ud_get_wpp_pt()->domain), admin_url( 'edit-tags.php?taxonomy=' . $taxonomy ), $taxonomy_label ), $disabled_taxonomies ); ?></li>
-            <?php } ?>
-          </ul>
-        </td>
-      </tr>
-      <?php 
-    }
   }
 
   /**
