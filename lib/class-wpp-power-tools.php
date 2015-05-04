@@ -250,12 +250,8 @@ class class_wpp_power_tools {
     foreach( $disabled_taxonomies as $taxonomy => $taxonomy_label) {
       $configurable_taxonomies[$taxonomy] = $taxonomy_label;
     }
-
-    if( !is_array( $configurable_taxonomies ) ) {
-      return;
-    }
     
-    if( is_array( $configurable_taxonomies ) ) {
+    if( !empty($configurable_taxonomies) && is_array( $configurable_taxonomies ) ) {
       ?>
       <tr>
         <th><?php _e('Taxonomies',ud_get_wpp_pt()->domain); ?></th>
