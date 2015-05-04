@@ -258,7 +258,7 @@ class class_wpp_power_tools {
         <td>
           <ul>
             <?php foreach( $configurable_taxonomies as $taxonomy => $taxonomy_label ) { ?>
-              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable %1$s taxonomy.', ud_get_wpp_pt()->domain), $taxonomy_label ), $disabled_taxonomies ); ?></li>
+              <li><?php echo WPP_F::checkbox( "id=wpp_settings_configuration_disabled_taxonomies_{$taxonomy}&name=wpp_settings[configuration][disabled_taxonomies][{$taxonomy}]&value={$taxonomy_label}&label=" . sprintf(__('Disable <a href="%1$s" class="wp-property-taxonomy-link">%2$s</a> taxonomy.',  ud_get_wpp_pt()->domain), admin_url( 'edit-tags.php?taxonomy=' . $taxonomy ), $taxonomy_label ), $disabled_taxonomies ); ?></li>
             <?php } ?>
           </ul>
         </td>
