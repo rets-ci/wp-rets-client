@@ -1718,11 +1718,13 @@ class class_wpp_pdf_flyer {
       </tr>
       </table>
 
-      <div class="wpp_settings_block" style="margin: 10px 10px 0;">
-          <span><?php printf(__('You can regenerate all your PDF flyers, but depending on your server, it can be very time consuming if you have many %1s.',ud_get_wpp_pdf()->domain), WPP_F::property_label( 'plural' )); ?></span>
-          <input type="button" id="wpp_ajax_regenerate_all_flyers" value="<?php _e('Regenerate all Flyers',ud_get_wpp_pdf()->domain); ?>">&nbsp;<img style="display:none;" id="regenerate_all_flyers_ajax_spinner" src="<?php echo WPP_URL; ?>images/ajax_loader.gif" />
-          <br/><input style="display:none;" type="button" id="wpp_ajax_regenerate_all_flyers_close" value="<?php _e('Close Result\'s Logs',ud_get_wpp_pdf()->domain); ?>">
-          <pre class="wpp_class_pre hidden" id="wpp_ajax_regenerate_all_flyers_result" style="height:300px;"></pre>
+      <div class="wp-core-ui">
+        <div class="wpp_settings_block" style="margin: 10px 10px 0;">
+            <span><?php printf(__('You can regenerate all your PDF flyers, but depending on your server, it can be very time consuming if you have many %1s.',ud_get_wpp_pdf()->domain), WPP_F::property_label( 'plural' )); ?></span>
+            <input type="button" class="button" id="wpp_ajax_regenerate_all_flyers" value="<?php _e('Regenerate all Flyers',ud_get_wpp_pdf()->domain); ?>">&nbsp;<img style="display:none;" id="regenerate_all_flyers_ajax_spinner" src="<?php echo WPP_URL; ?>images/ajax_loader.gif" />
+            <br/><input style="display:none;" type="button" id="wpp_ajax_regenerate_all_flyers_close" value="<?php _e('Close Result\'s Logs',ud_get_wpp_pdf()->domain); ?>">
+            <pre class="wpp_class_pre hidden" id="wpp_ajax_regenerate_all_flyers_result" style="height:300px;"></pre>
+        </div>
       </div>
       <script type="text/javascript">
       jQuery( '#wpp_ajax_regenerate_all_flyers' ).click(function(){
