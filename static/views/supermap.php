@@ -33,14 +33,16 @@ foreach( $supermap_configuration['display_attributes'] as $attribute ) {
             <?php class_wpp_supermap::draw_supermap_options_form($searchable_attributes, $atts['property_type'], $rand); ?>
           </div>
         </div><!-- END  .supermap_filter_wrapper -->
-      <?php elseif ( !empty( $_REQUEST[ 'wpp_search' ] ) ) : ?>
+      <?php elseif ( !empty( $_REQUEST[ 'wpp_search' ]  ) ) : ?>
         <?php //* Set hidden form with attributes to handle search results on supermap ( supermap page can be used as default search result page ) */ ?>
         <?php class_wpp_supermap::draw_supermap_options_form( false, $atts['property_type'], $rand); ?>
       <?php endif; ?>
       <div id="super_map_list_property_<?php echo $rand; ?>" class="super_map_list_property">
         <?php if( !empty( $properties ) ) : ?>
           <?php foreach( $properties as $property ) : ?>
-            <?php ud_get_wpp_supermap()->render_property_item( $property ); ?>
+            <?php ud_get_wpp_supermap()->render_property_item( $property, array(
+              'rand' => $rand,
+            ) ); ?>
           <?php endforeach; ?>
         <?php endif; ?>
       </div>

@@ -17,7 +17,7 @@ namespace UsabilityDynamics\WPP {
        * @param $value
        * @return string
        */
-      static public function render_property_item( $property, $return = false ) {
+      static public function render_property_item( $property, $args = array(), $return = false ) {
         $html = "";
 
         /** Try find Supermap Item Template */
@@ -27,6 +27,9 @@ namespace UsabilityDynamics\WPP {
         );
 
         if( $template ) {
+          if( !empty( $args ) && is_array( $args ) ) {
+            extract( $args );
+          }
           ob_start();
           include $template;
           $html .= ob_get_clean();

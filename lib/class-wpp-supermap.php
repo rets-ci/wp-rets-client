@@ -1291,7 +1291,7 @@ class class_wpp_supermap {
       bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
       map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
 
-      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, true ) ) ) ); ?>';
+      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'] ), true ) ) ) ); ?>';
 
       <?php } ?>
 
@@ -1356,6 +1356,7 @@ class class_wpp_supermap {
       
       if( !empty( $fields ) ) {
         echo "<form id=\"formFilter_{$rand}\" name=\"formFilter\" action=\"\">";
+        do_action( "draw_property_search_form", array() );
         foreach( $fields as $field ) {
           echo "<input type=\"hidden\" name=\"{$field['name']}\" value=\"{$field['value']}\" />";
         }
