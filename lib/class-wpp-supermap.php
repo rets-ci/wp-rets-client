@@ -1191,7 +1191,6 @@ class class_wpp_supermap {
       }
     }
 
-
     $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array( $supermap_configuration['display_attributes'] ) ? 
       $supermap_configuration['display_attributes'] : array();
 
@@ -1212,55 +1211,6 @@ class class_wpp_supermap {
       $labels_to_keys = array_flip($wp_properties['property_stats']);
 
       foreach ($properties as $property_id => $value) {
-
-        $attributes = array();
-
-        $property_stats = WPP_F::get_stat_values_and_labels($value, array(
-          'property_stats' => $display_attributes
-        ));
-
-        if(is_array($property_stats)) {
-          foreach($property_stats as $attribute_label => $attribute_value) {
-
-            $boolean_field = false;
-
-            $attribute_slug = $labels_to_keys[$attribute_label];
-            $attribute_data = UsabilityDynamics\WPP\Attributes::get_attribute_data($attribute_slug);
-
-            if(empty($attribute_value)) {
-              continue;
-            }
-
-            if( (  $attribute_data['data_input_type']=='checkbox' && ($attribute_value == 'true' || $attribute_value == 1) ) )
-            {
-              if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
-                $attribute_value = '<div class="true-checkbox-image"></div>';
-              } else {
-                $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
-              }
-              $boolean_field = true;
-            } elseif ($attribute_value == 'false') {
-              continue;
-            }
-
-            $attributes[] =  '<li class="supermap_list_' . $attribute_slug . ' wpp_supermap_attribute_row">';
-            $attributes[] =  '<span class="attribute">' . $attribute_label . (!$boolean_field ? ':' : '') . ' </span>';
-            $attributes[] =  '<span class="value">' . $attribute_value . '</span>';
-            $attributes[] =  '</li>';
-
-          }
-        }
-
-        if( isset( $supermap_configuration['display_attributes'] ) && in_array( 'view_property', $supermap_configuration['display_attributes'] ) ) {
-          $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($value['ID']) . '"><span>'  . __('View Property', ud_get_wpp_supermap()->domain) . '</span></a></li>';
-        }
-
-        if( 
-          isset( $value['featured_image'] ) 
-          && ( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true' )
-        ) {
-          $image = wpp_get_image_link( $value['featured_image'], $supermap_configuration['supermap_thumb'], array('return'=>'array'));
-        }
 
       ?>
       window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
@@ -1291,7 +1241,7 @@ class class_wpp_supermap {
       bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
       map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
 
-      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'] ), true ) ) ) ); ?>';
+      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'], 'supermap_configuration' => $supermap_configuration, ), true ) ) ) ); ?>';
 
       <?php } ?>
 
