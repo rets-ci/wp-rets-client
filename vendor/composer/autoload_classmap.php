@@ -13,6 +13,7 @@ return array(
     'UsabilityDynamics\\Utility' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-utility.php',
     'UsabilityDynamics\\Utility\\Guid_Fix' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
     'UsabilityDynamics\\WPP\\Supermap_Bootstrap' => $baseDir . '/lib/classes/class-supermap-bootstrap.php',
+    'UsabilityDynamics\\WPP\\Supermap_Utility' => $baseDir . '/lib/classes/class-supermap-utility.php',
     'UsabilityDynamics\\WP\\Bootstrap' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap.php',
     'UsabilityDynamics\\WP\\Bootstrap_Plugin' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap-plugin.php',
     'UsabilityDynamics\\WP\\Bootstrap_Theme' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap-theme.php',

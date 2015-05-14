@@ -1048,6 +1048,7 @@ class class_wpp_supermap {
           continue;
         }
 
+        /* @todo: must be moved to static/scripts/supermap.js ! */
         $area_lines[] = "var areaCoords_{$count} = [" . implode(",\n", $this_area_coords) . "]";
         $area_lines[] = "
           areaCoords_{$count} = new google.maps.Polygon({
@@ -1088,7 +1089,7 @@ class class_wpp_supermap {
 
     /**** TEMP SOLUTION *****/
     /**
-     * @todo move current php template to javascript file
+     * @todo move current php template to javascript file (static/scripts/supermap.js)
      */
     /** Try find Supermap Template */
     $jstemplate = ud_get_wpp_supermap()->path( 'static/views/supermap-js.php', 'dir' );
@@ -1102,7 +1103,7 @@ class class_wpp_supermap {
 
     /** Try find Supermap Template */
     $template = WPP_F::get_template_part(
-      apply_filters( "wpp::supermap::template_path", array( "supermap" ) ),
+      apply_filters( "wpp::supermap::template_name", array( "supermap" ) ),
       apply_filters( "wpp::supermap::template_path", array( ud_get_wpp_supermap()->path( 'static/views', 'dir' ) ) )
     );
 
@@ -1290,20 +1291,8 @@ class class_wpp_supermap {
       bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
       map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
 
-      HTML += '<div id="property_in_list_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>" class="property_in_list clearfix">';
-      HTML += '<ul class="property_in_list_items clearfix">';
-      HTML += '<li class="supermap_list_thumb">';
-      HTML += '<span  onclick="showInfobox_<?php echo $_POST['random']; ?>(<?php echo $value['ID']; ?>);">';
-      <?php if( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true') { ?>
-      HTML += '<img src="<?php echo (empty($image['link'])) ? WPP_URL . 'templates/images/no_image.png' : $image['link'];?>" width="<?php echo isset( $image['width'] ) ? esc_attr($image['width']) : ''; ?>" alt="<?php echo esc_attr($value['post_title']); ?>" />';
-      <?php } ?>
-      HTML += '</span>';
-      HTML += '</li>';
-      HTML += '<li class="supermap_list_title">';
-      HTML += '<span onclick="showInfobox_<?php echo $_POST['random']; ?>(<?php echo $value['ID']; ?>);"><?php echo addslashes(trim($value['post_title'])) ?></span>';
-      HTML += '</li>';
-      <?php if(count($attributes) > 0) { echo "HTML += '".addcslashes(implode('', $attributes), "'")."';"; } ?>
-      HTML += '</ul></div>';
+      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, true ) ) ) ); ?>';
+
       <?php } ?>
 
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');

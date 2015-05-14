@@ -41,6 +41,23 @@ namespace UsabilityDynamics\WPP {
        */
       public function deactivate() {}
 
+      /**
+       * Determine if Utility class contains missed function
+       * in other case, just return NULL to prevent ERRORS
+       *
+       * @author peshkov@UD
+       * @param $name
+       * @param $arguments
+       * @return mixed|null
+       */
+      public function __call($name, $arguments) {
+        if (is_callable(array("\\UsabilityDynamics\\WPP\\Supermap_Utility", $name))) {
+          return call_user_func_array(array("\\UsabilityDynamics\\WPP\\Supermap_Utility", $name), $arguments);
+        } else {
+          return NULL;
+        }
+      }
+
     }
 
   }

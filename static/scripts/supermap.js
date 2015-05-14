@@ -1,6 +1,7 @@
 (function($){
 
   /**
+   * Supermap
    *
    * @param options
    */
@@ -13,17 +14,19 @@
 
     /** Making variables public */
     var vars = $.extend({
-
+      // Configuration!
     }, options);
 
     /** Events Handler */
     var supermap = instance.supermap = {
 
+      init: function() {
 
+      }
 
     }
 
-    list.init();
+    instance.init();
 
     return instance;
   };
