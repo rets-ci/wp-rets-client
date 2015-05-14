@@ -1082,7 +1082,23 @@ class class_wpp_supermap {
     //* END Render Areas */
 
     /** Enqueue script  */
-    wp_enqueue_script( 'wpp-supermap', ud_get_wpp_supermap()->path( 'static/scripts/supermap.js', 'url' ), array(), ud_get_wpp_supermap()->version );
+    //wp_enqueue_script( 'wpp-supermap', ud_get_wpp_supermap()->path( 'static/scripts/supermap.js', 'url' ), array(), ud_get_wpp_supermap()->version );
+
+    $supermap = "";
+
+    /**** TEMP SOLUTION *****/
+    /**
+     * @todo move current php template to javascript file
+     */
+    /** Try find Supermap Template */
+    $jstemplate = ud_get_wpp_supermap()->path( 'static/views/supermap-js.php', 'dir' );
+    if( file_exists( $jstemplate ) ) {
+      ob_start();
+      include $jstemplate;
+      $supermap .= ob_get_clean();
+    }
+
+    /**** END TEMP SOLUTION *****/
 
     /** Try find Supermap Template */
     $template = WPP_F::get_template_part(
@@ -1093,8 +1109,9 @@ class class_wpp_supermap {
     if( $template ) {
       ob_start();
       include $template;
-      $supermap = ob_get_clean();
+      $supermap .= ob_get_clean();
     }
+
     return $supermap;
   }
 
