@@ -207,7 +207,7 @@ class class_wpp_power_tools {
               <td>
                 <ul class="wp-tab-panel wpp_hidden_property_attributes">
                   <?php foreach($wpp_capabilities as $cap => $value): ?>
-                  <?php $checked = (array_key_exists($cap , $role['capabilities']) ? "checked=\"checked\"" : ""); ?>
+                  <?php $checked = (array_key_exists($cap , (array) $role['capabilities']) ? "checked=\"checked\"" : ""); ?>
                   <?php $disabled = ( ($r_slug == "administrator") ? "disabled=\"disabled\"" : ""); ?>
                   <li>
                     <input id="wpp_<?php echo $r_slug;?>_<?php echo $cap;?>_capability" <?php echo $checked; ?> <?php echo $disabled; ?> type="checkbox" name="wpp_settings[capabilities][<?php echo $r_slug; ?>][]" value="<?php echo $cap; ?>" />
