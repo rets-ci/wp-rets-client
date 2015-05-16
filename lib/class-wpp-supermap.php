@@ -407,7 +407,8 @@ class class_wpp_supermap {
     $upload_dir = wp_upload_dir();
     $markers_url = $upload_dir['baseurl'] . '/supermap_files/markers';
     $markers_dir = $upload_dir['basedir'] . '/supermap_files/markers';
-    $default_marker = WPP_URL . 'images/google_maps_marker.png';
+
+    $default_marker = apply_filters( 'wpp:default_pin_icon', WPP_URL . 'images/google_maps_marker.png' );
 
     ob_start();
     ?>
@@ -640,7 +641,8 @@ class class_wpp_supermap {
     //* START Renders Supermap Marker's settings */
     //* Get supermap marker for the current property */
     $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
-    $default_marker = WPP_URL . 'images/google_maps_marker.png';
+
+    $default_marker = apply_filters( 'wpp:default_pin_icon', WPP_URL . 'images/google_maps_marker.png' );
 
     $supermap_configuration = !empty( $wp_properties['configuration']['feature_settings']['supermap'] ) ? $wp_properties['configuration']['feature_settings']['supermap'] : array();
     if(empty($supermap_configuration['property_type_markers'])) {
@@ -1218,6 +1220,7 @@ class class_wpp_supermap {
 
       window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
         position: myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>,
+        test: 'sadf',
         map: map_<?php echo $_POST['random']; ?>,
         title: '<?php echo str_replace("'","\'", $value['location']); ?>',
         icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
