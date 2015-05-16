@@ -49,8 +49,9 @@ class class_wpp_supermap {
       add_action('wpp_settings_content_supermap', array('class_wpp_supermap', 'settings_page'));
 
       //* For Admin panel */
-      add_action('add_meta_boxes', array('class_wpp_supermap','add_metabox'));
       add_action('save_post', array('class_wpp_supermap','save_post'));
+
+      add_action('wpp_publish_box_options', array('class_wpp_supermap','property_supermap_options'));
 
       //* Upload files (markers) */
       add_action('wp_ajax_supermap_upload_marker', array('class_wpp_supermap','ajax_marker_upload'));
@@ -622,8 +623,7 @@ class class_wpp_supermap {
    *
    */
   static public function add_metabox(){
-    add_meta_box( 'wp_property_supermap', __( 'Supermap Options', ud_get_wpp_supermap()->domain ),
-    array('class_wpp_supermap','property_supermap_options'), 'property', 'side' );
+    //add_meta_box( 'wp_property_supermap', __( 'Supermap Options', ud_get_wpp_supermap()->domain ), array('class_wpp_supermap','property_supermap_options'), 'property', 'side' );
   }
 
   /**
