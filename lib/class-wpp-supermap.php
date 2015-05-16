@@ -814,6 +814,7 @@ class class_wpp_supermap {
    * center_on=74.3434,-130.22
    *
    * @param array $atts Attributes of shortcode
+   * @return mixed|string
    */
   static public function shortcode_supermap($atts = array()) {
     global $wp_properties, $wp_scripts;
