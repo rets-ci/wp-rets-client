@@ -610,7 +610,7 @@ class class_wpp_supermap {
   static public function supermap_template_redirect(){
     global $post;
 
-    if(strpos($post->post_content, "supermap")) {
+    if(strpos($post->post_content, "[supermap")) {
       wp_enqueue_script('google-maps');
       wp_enqueue_script('google-infobubble');
       wp_enqueue_script('wpp-jquery-fancybox');
