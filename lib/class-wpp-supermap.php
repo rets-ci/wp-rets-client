@@ -610,7 +610,7 @@ class class_wpp_supermap {
   static public function supermap_template_redirect(){
     global $post;
 
-    if(strpos($post->post_content, "[supermap")) {
+    if(strpos($post->post_content, "supermap")) {
       wp_enqueue_script('google-maps');
       wp_enqueue_script('google-infobubble');
       wp_enqueue_script('wpp-jquery-fancybox');
@@ -887,9 +887,9 @@ class class_wpp_supermap {
     $query['latitude'] = 'all';
     $query['longitude'] = 'all';
     $query['address_is_formatted'] = 'true';
-
-    //* Add only properties which are not excluded from supermap (option on Property editing form) */
     $query['exclude_from_supermap'] = 'false,0';
+
+    $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
 
     //* Prepare search attributes to use them in get_properties() */
     $query = WPP_F::prepare_search_attributes($query);
@@ -932,8 +932,11 @@ class class_wpp_supermap {
       }
 
       return $supermap;
+
     } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
-      return sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), WPP_F::property_label( 'plural' ) );
+
+      return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), WPP_F::property_label( 'plural' ) ) . '</span>';
+
     }
   }
 
@@ -1160,9 +1163,10 @@ class class_wpp_supermap {
     //* Exclude properties which has no latitude,longitude keys */
     $query['latitude'] = 'all';
     $query['longitude'] = 'all';
-    $query['address_is_formatted'] = '1';
+
+    //$query['address_is_formatted'] = '1';
     //* Add only properties which are not excluded from supermap (option on Property editing form) */
-    $query['exclude_from_supermap'] = 'false,0';
+    //$query['exclude_from_supermap'] = 'false,0';
     //* Set Property type */
     $query['property_type'] = $atts['property_type'];
 
@@ -1221,7 +1225,6 @@ class class_wpp_supermap {
 
       window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
         position: myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>,
-        test: 'sadf',
         map: map_<?php echo $_POST['random']; ?>,
         title: '<?php echo str_replace("'","\'", $value['location']); ?>',
         icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'

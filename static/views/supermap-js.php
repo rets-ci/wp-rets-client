@@ -39,7 +39,8 @@ ob_start();
       <?php if(!empty($center_on)): ?>
       center:  new google.maps.LatLng(<?php echo $center_on; ?>),
       <?php endif; ?>
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      scrollwheel: false
     }
 
     if(typeof window.map_<?php echo $rand; ?> ==='object' || jQuery("#super_map_<?php echo $rand; ?>:visible").length===0){
