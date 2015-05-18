@@ -7,7 +7,7 @@
 $attributes = array();
 
 $property_stats = WPP_F::get_stat_values_and_labels($property, array(
-'property_stats' => $display_attributes
+  'property_stats' => $display_attributes
 ));
 
 if(is_array($property_stats)) {
@@ -22,11 +22,11 @@ if(is_array($property_stats)) {
       continue;
     }
 
-    if( (  $attribute_data['data_input_type']=='checkbox' && ($attribute_value == 'true' || $attribute_value == 1) ) ) {
+    if( (  $attribute_data['data_input_type'] == 'checkbox' && ($attribute_value == 'true' || $attribute_value == 1) ) ) {
       if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
         $attribute_value = '<div class="true-checkbox-image"></div>';
       } else {
-      $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
+        $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
       }
       $boolean_field = true;
     } elseif ($attribute_value == 'false') {
@@ -48,7 +48,7 @@ if(in_array('view_property', $supermap_configuration['display_attributes'])) {
 
 <?php if ($property['latitude'] && $property['longitude'] && $property['ID']) { ?>
 
-  <div id="property_in_list_<?php echo isset( $rand ) ? $rand : ''; ?>_<?php echo $property['ID']; ?>" class="property_in_list clearfix">
+  <div id="property_in_list_<?php echo isset( $rand ) ? $rand : ''; ?>_<?php echo $property['ID']; ?>" class="property_in_list but_smaller">
     <ul class='property_in_list_items clearfix'>
 
       <?php if( !empty( $property['featured_image'] ) && ( !isset( $supermap_configuration['hide_sidebar_thumb'] ) || $supermap_configuration['hide_sidebar_thumb'] != 'true' ) ) { ?>
@@ -57,6 +57,7 @@ if(in_array('view_property', $supermap_configuration['display_attributes'])) {
       <?php } ?>
         <li class='supermap_list_title'><span onclick="showInfobox_<?php echo $rand; ?>(<?php echo $property['ID']; ?>);"><?php echo  stripslashes($property['post_title']); ?></span></li>
       <?php if(count($attributes) > 0) { echo implode('', $attributes); } ?>
+
 
     </ul>
 

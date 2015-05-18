@@ -32,7 +32,9 @@ ob_start();
    */
   function superMap_<?php echo $rand; ?>() {
     /* Map settings */
+
     var myOptions_<?php echo $rand; ?> = {
+      styles: "<?php file_get_contents( WP_CONTENT_DIR . '/static/config/google-maps.apple.json' ); ?>",
       <?php if($zoom): ?>
       zoom: <?php echo $zoom; ?>,
       <?php endif; ?>
@@ -145,6 +147,7 @@ ob_start();
    * Shows Infobox on Supermap
    */
   function showInfobox_<?php echo $rand; ?>(id) {
+    console.log( 'showInfobox', id );
     map_<?php echo $rand; ?>.setCenter(eval('myLatlng_<?php echo $rand; ?>_' + id));
     map_<?php echo $rand; ?>.setZoom(<?php echo (int)$zoom != 0 ? $zoom : 10; ?>);
 
