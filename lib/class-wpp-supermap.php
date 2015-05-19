@@ -923,14 +923,16 @@ class class_wpp_supermap {
         $properties[$id] = $property;
       }
 
+      $supermap = "";
+
       /**
        * Call function which prepares data and renders template.
        */
       $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'supermap_template' ), $query, $properties, $atts );
       if( is_callable($template_function) ) {
         $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
-      }
 
+      }
       return $supermap;
 
     } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
@@ -938,6 +940,7 @@ class class_wpp_supermap {
       return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), WPP_F::property_label( 'plural' ) ) . '</span>';
 
     }
+
   }
 
   /**
