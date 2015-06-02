@@ -5,7 +5,7 @@
   "homepage": "https://www.usabilitydynamics.com/product/wp-property-pdf",
   "author": {
     "name": "UsabilityDynamics, Inc.",
-    "url": "https://usabilitydynamics.com"
+    "url": "https://www.usabilitydynamics.com"
   },
   "repositories": [
     {
@@ -19,7 +19,8 @@
   },
   "require": {
     "php": ">=5.3",
-    "usabilitydynamics/lib-wp-bootstrap": "~1.0"
+    "usabilitydynamics/lib-utility": "0.3.6",
+    "usabilitydynamics/lib-wp-bootstrap": "1.1.1"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "master",
