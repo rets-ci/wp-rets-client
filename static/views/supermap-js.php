@@ -29,12 +29,14 @@ ob_start();
 
   /**
    * Renders Supermap
+   *
+   * styles: file_get_contents( WP_CONTENT_DIR . '/static/config/google-maps.apple.json' );
+   *
    */
   function superMap_<?php echo $rand; ?>() {
     /* Map settings */
 
     var myOptions_<?php echo $rand; ?> = {
-      styles: "<?php file_get_contents( WP_CONTENT_DIR . '/static/config/google-maps.apple.json' ); ?>",
       <?php if($zoom): ?>
       zoom: <?php echo $zoom; ?>,
       <?php endif; ?>
