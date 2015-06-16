@@ -979,7 +979,11 @@ class class_wpp_supermap {
     }
 
     //* Supermap configuration */
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    if ( !empty( $wp_properties['configuration']['feature_settings']['supermap'] ) ) {
+      $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    } else {
+      $supermap_configuration = array();
+    }
     if(empty($supermap_configuration['supermap_thumb'])) {
       $supermap_configuration['supermap_thumb'] = 'thumbnail';
     }
@@ -1017,7 +1021,7 @@ class class_wpp_supermap {
     $inline_styles['sidebar'] = 'style="' . implode( ' ', ( !empty( $inline_styles['sidebar'] ) ? (array) $inline_styles['sidebar'] : array() ) ) . '"';
 
     //* START Render Javascript functionality for Areas */
-    $areas = $wp_properties['configuration']['feature_settings']['supermap']['areas'];
+    $areas = !empty( $supermap_configuration['areas'] ) ? $supermap_configuration['areas'] : array();
     $area_lines = array();
     // Plot areas
     if(is_array($areas) && $show_areas) {
