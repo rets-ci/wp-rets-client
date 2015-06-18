@@ -1,0 +1,73 @@
+{
+  "name": "usabilitydynamics/www.reddoorcompany.com",
+  "type": "wordpress-site",
+  "description": "A wpCloud/Site.",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repository.usabilitydynamics.com"
+    }
+  ],
+  "extra": {
+    "settings": {
+      "wp_debug": false,
+      "wp_debug_log": true,
+      "wp_debug_display": false,
+      "wp_cache": false,
+      "concatenate_scripts": false,
+      "sunrise": false,
+      "multisite": false,	
+      "empty_trash_days": 7,
+      "alternate_wp_cron": false,
+      "wp_cron_lock_timeout": 0,
+      "wp": {
+        "upstream_automatic_push": true,
+        "post_revisions": 10,
+        "media_trash" : true,
+        "allow_repair": true,
+        "force_ssl_admin": false,
+        "force_ssl_login": false,
+        "auto_core_update": true,
+        "memcached_servers": "localhost:11211",
+        "use_themes": true
+      },
+      "db": [
+        {
+          "name": "www.reddoorcompany.com",
+          "user": "rdc",
+          "password": "wpcvdvwyocbhnrfj",
+          "host": "api.wpcloud.io:3306",
+          "read": 40,
+          "write": 40
+        }
+      ]
+    }
+  },  
+  "config": {
+    "preferred-install": "dist",
+    "github-protocols": ["ssh"],
+    "vendor-dir": "wp-vendor",
+    "bin-dir": "wp-vendor/bin",
+    "optimize-autoloader": true,
+    "docker": {
+      "scripts": {
+        "start": [ 
+"ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git", "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa"
+          ]
+      }
+    }
+  },
+  "require": {
+    "php": "~5.3",
+    "composer/installers": "~1.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "~2.0",
+    "phpunit/phpunit": "~3.7"
+  },
+  "keywords": [
+    "wordpress", "wpcloud.io"
+  ],
+  "minimum-stability": "dev",
+  "license": "proprietary"
+}
