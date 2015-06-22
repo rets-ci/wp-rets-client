@@ -1,0 +1,43 @@
+{
+  "name": "kopepasah/madison",
+  "keywords": [
+    "real estate",
+    "property management",
+    "modern",
+    "customizer",
+    "custom header",
+    "wp-property"
+  ],
+  "homepage": "http://usabilitydynamics.com/products",
+  "version": "1.0.0",
+  "description": "A theme built for WordPress Real Estate & Property Management by Powered by WP Property.",
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
+    }
+  ],
+  "autoload": {},
+  "config": {
+    "vendor-dir": "lib/vendor",
+    "vendor-bin": "bin",
+    "optimize-autoloader": true,
+    "autoloader-suffix": "VendorPackages"
+  },
+  "authors": [
+    {
+      "name": "Justin Kopepasah",
+      "email": "justin@kopepasah.com",
+      "homepage": "http://kopepasah.com/",
+      "role": "Developer"
+    },
+    {
+      "name": "Maxim Peshkov",
+      "email": "maxim.peshkov@usabilitydynamics.com",
+      "homepage": "http://usabilitydynamics.com",
+      "role": "Developer"
+    }
+  ],
+  "license": "GNU General Public License"
+}
