@@ -1669,18 +1669,6 @@ class class_wpp_pdf_flyer {
         <span class="description"><?php _e('Use JPEG and GIF images only.',ud_get_wpp_pdf()->domain); ?></span>
         </td>
       </tr>
-      <?php /* Removed because sized are hardcoded in generation.
-      <tr valign="top">
-        <th scope="row"><?php _e('Page Format', ud_get_wpp_pdf()->domain); ?></th>
-        <td>
-        <select name="wpp_settings[configuration][feature_settings][wpp_pdf_flyer][flyer_page_format]">
-          <option value="A4" <?php selected('A4', $wpp_pdf_flyer['flyer_page_format']); ?>>A4</option>
-          <option value="LETTER" <?php selected('LETTER', $wpp_pdf_flyer['flyer_page_format']); ?>>Letter</option>
-          <option value="LEGAL" <?php selected('LEGAL', $wpp_pdf_flyer['flyer_page_format']); ?>>US Legal</option>
-        </select>
-        </td>
-      </tr>
-      */ ?>
       <tr valign="top">
         <th scope="row"><?php _e('Header color',ud_get_wpp_pdf()->domain); ?></th>
         <td>

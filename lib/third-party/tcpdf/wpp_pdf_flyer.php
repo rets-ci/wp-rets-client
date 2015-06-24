@@ -7,7 +7,7 @@
  *
  * @author potanin@UD
  */
-class WPP_PDF_Flyer extends WPP_TCPDF {
+class WPP_PDF_Flyer extends TCPDF {
 
   /*
    * Override to avoid fatal errors when errors occur.
