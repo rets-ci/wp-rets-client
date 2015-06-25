@@ -171,7 +171,7 @@ class class_wpp_supermap {
             <ul style="margin-top:10px;">
               <li>
                 <input <?php if(@in_array('view_property', (array)$supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='view_property' type="checkbox" id="display_attribute_view_property" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
-                <label for="display_attribute_view_property"><?php _e('Display "View Property" link in the left sidebar. It directs user to Property Page.',ud_get_wpp_supermap()->domain) ?></label>
+                <label for="display_attribute_view_property"><?php printf(__('Display "View %s" link in the left sidebar. It directs user to %s Page.',ud_get_wpp_supermap()->domain), WPP_F::property_label(), WPP_F::property_label()); ?></label>
               </li>
             </ul>
           </td>

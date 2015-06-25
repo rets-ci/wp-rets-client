@@ -43,7 +43,7 @@ foreach( (array) $property_stats as $attribute_label => $attribute_value) {
 }
 
 if(in_array('view_property', $supermap_configuration['display_attributes'])) {
-  $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($property['ID']) . '" class="btn btn-info btn-small"><span>'  . __('View Property', ud_get_wpp_supermap()->domain) . '</span></a></li>';
+  $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($property['ID']) . '" class="btn btn-info btn-small"><span>'  . sprintf( __('View %s', ud_get_wpp_supermap()->domain), WPP_F::property_label() ) . '</span></a></li>';
 }
 
 ?>
