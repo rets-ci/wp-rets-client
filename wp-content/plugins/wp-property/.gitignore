@@ -1,10 +1,8 @@
-core/premium
 .svn
 .idea
 .idea/workspace.xml
 .DS_Store
 .dynamic
-*premium
 *cache
 .Trashes
 *.sublime-project
