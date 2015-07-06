@@ -9,6 +9,7 @@
 ?>
 
 <?php if ( have_properties() ) : ?>
+    <div class="<?php wpp_css('property_overview::row_view', "wpp_row_view wpp_property_view_result"); ?>">
 	<?php foreach ( returned_properties() as $property ) : ?>
 		<article id="property-<?php echo $property['ID']; ?>" class="hentry property property-overview-item column col-6-12">
 			<div class="col-inner">
@@ -43,6 +44,7 @@
 			</div>
 		</article>
 	<?php endforeach; ?>
+    </div>
 <?php else : ?>
 	<div id="property-overview-end">
 		<p><?php _e( 'No more properties found.', 'madison' ); ?></p>
