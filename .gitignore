@@ -1,2 +1,4 @@
 /wp-content/storage
 /wp-content/uploads
+.idea
+*.log
