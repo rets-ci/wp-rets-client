@@ -275,7 +275,7 @@ function madison_site_contact_information() {
 				<div class="site-social-info right column col-7-12">
 					<?php foreach ( $mods['social'] as $network => $url ) : ?>
 						<?php if ( ! empty( $url ) ) : ?>
-							<a href="<?php esc_url( $url ); ?>" class="site-social-<?php echo str_replace( '_', '-', $network ); ?>"><i class="fa fa-<?php echo str_replace( '_', '-', $network ) ?>"></i></a>
+							<a href="<?php echo esc_url( $url ); ?>" class="site-social-<?php echo str_replace( '_', '-', $network ); ?>"><i class="fa fa-<?php echo str_replace( '_', '-', $network ) ?>"></i></a>
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</div>
