@@ -70,8 +70,11 @@ $property_images = get_post_meta( $post->ID, 'slideshow_images', true );
 				<div class="property-stats column-wrapper">
 					<?php if ( empty( $GLOBALS['wp_properties']['property_groups'] ) || $GLOBALS['wp_properties']['configuration']['property_overview']['sort_stats_by_groups'] != 'true' ) : ?>
 						<?php foreach ( draw_stats( array( 'display' => 'array' ) ) as $slug => $data ) : ?>
-							<span class="left column col-6-12"><?php echo $data[ 'label' ]; ?></span>
-							<span class="right column col-6-12"><?php echo $data[ 'value' ]; ?></span>
+              <div class="column-row">
+                <span class="left column col-6-12"><?php echo $data[ 'label' ]; ?></span>
+                <span class="right column col-6-12"><?php echo $data[ 'value' ]; ?></span>
+                <div class="clearfix"></div>
+              </div>
 						<?php endforeach; ?>
 					<?php else : ?>
 						<?php foreach ( draw_stats( array( 'display' => 'array' ) ) as $group => $attribute ) : ?>

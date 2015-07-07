@@ -2128,11 +2128,11 @@ textarea:focus {
 	padding: 1em;
 }
 .property-stats .left {
-	border-right: 1px solid #ededed;
 	font-weight: bold;
 	text-align: right;
 }
 .property-stats .right {
+    border-left: 1px solid #ededed;
 	text-align: left;
 }
 .property .entry-title {
