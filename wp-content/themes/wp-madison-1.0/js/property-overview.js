@@ -7,9 +7,9 @@
 			$( '#property-overview-load-more' ).on( 'click', 'a', function( event ) {
 				event.preventDefault();
 
-				var append_to    = $( this ).data( 'append-to' ),
-				    starting_row = $( this ).data( 'starting-row' ),
-				    per_page     = $( this ).data( 'per-page' ),
+        var _data = $( this ).data();
+
+				var append_to    = $( this ).data( 'append_to' ),
 				    template     = $( this ).data( 'template' );
 
 				$( this ).css( 'display', 'none' ).parent().addClass( 'loading' );
@@ -38,19 +38,13 @@
 
 				$.ajax({
 					type: 'POST',
-					url: wpp.instance.ajax_url,
-					data: { 
-						'action'       : 'madison-property-view-load-properties',
-						'append_to'    : append_to,
-						'starting_row' : starting_row,
-						'per_page'     : per_page,
-						'template'     : template,
-					},
+					url: wpp.instance.ajax_url + '?action=madison-property-view-load-properties',
+					data: _data,
 					dataType: 'html',
 					success: function( data ) {
 						if ( ! data.match( 'property-overview-end' ) ) {
 							$( '#' + append_to ).append( data );
-							$( '#property-overview-load-more' ).removeClass( 'loading' ).find( '.btn' ).data( 'starting-row', $( '#' + append_to + ' .property' ).length ).css( 'display', 'inline-block' );
+							$( '#property-overview-load-more' ).removeClass( 'loading' ).find( '.btn' ).data( 'starting_row', $( '#' + append_to + ' .property' ).length ).css( 'display', 'inline-block' );
 							$( '#property-overview-load-more .spinner' ).remove();
 						} else {
 							$( '#property-overview-load-more' ).remove();

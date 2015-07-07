@@ -198,19 +198,17 @@ add_shortcode( 'property_overview', 'madison_wpp_property_grid_shortcode' );
  * @return string HTML output of properties.
 */
 function madison_wpp_load_properties() {
+
 	$atts = array(
-		'sort_by'          => 'menu_order',
-		'sort_order'       => 'ASC',
-		'template'         => $_POST['template'],
 		'fancybox_preview' => false,
 		'sorter_type'      => 'none',
-		'per_page'         => $_POST['per_page'],
-		'starting_row'     => $_POST['starting_row'],
 		'disable_wrapper'  => true,
 		'pagination'       => 'off',
 		'hide_count'       => true,
 		'ajax_call'        => false
 	);
+
+  $atts = wp_parse_args( $_POST, $atts );
 
 	echo WPP_Core::shortcode_property_overview( $atts );
 
@@ -240,9 +238,17 @@ function madison_wpp_filter_property_overview_render( $result ) {
 
 	$load_more = '';
 
+  if ( !empty( $GLOBALS['wpp_query']['query'] ) && is_array($GLOBALS['wpp_query']['query']) ) {
+    $_attribute_string = '';
+    foreach( $GLOBALS['wpp_query']['query'] as $_field => $_value ) {
+      if ( $_field == 'pagi' ) continue;
+      $_attribute_string .= 'data-' . $_field . '="' . $_value . '" ';
+    }
+  }
+
 	if ( $GLOBALS['wpp_query'][ 'properties' ]['total'] > $GLOBALS['wpp_query']['per_page'] ) {
 		$load_more .= '<div id="property-overview-load-more">';
-			$load_more .= '<a href class="btn" data-append-to="wpp_shortcode_' . $GLOBALS['wpp_query']['unique_hash'] . '" data-starting-row="' . $GLOBALS['wpp_query']['per_page'] . '" data-per-page="' . $GLOBALS['wpp_query']['per_page'] . '" data-template="' . $GLOBALS['wpp_query']['template'] . '">' . __( 'Load More', 'madison' ) . '<i class="fa fa-plus"></i></a>';
+			$load_more .= '<a href class="btn" '.$_attribute_string.' data-append_to="wpp_shortcode_' . $GLOBALS['wpp_query']['unique_hash'] . '" data-starting_row="' . $GLOBALS['wpp_query']['per_page'] . '" data-per_page="' . $GLOBALS['wpp_query']['per_page'] . '" data-template="' . $GLOBALS['wpp_query']['template'] . '">' . __( 'Load More', 'madison' ) . '<i class="fa fa-plus"></i></a>';
 		$load_more .= '</div>';
 	}
 
