@@ -46,9 +46,8 @@ $property_images = get_post_meta( $post->ID, 'slideshow_images', true );
 				<span class="property-price column col-6-12"><?php echo get_attribute( 'price' ); ?></span>
 				<span class="property-return column col-6-12"><a href="<?php echo $post->parent_link; ?>"><?php _e( 'Return to Building','madison' ) ?></a></span>
 			<?php else : ?>
-				<span class="property-price column col-4-12"><?php echo get_attribute( 'price' ); ?></span>
-				<span class="property-bedrooms column col-4-12"><?php echo get_attribute( 'bedrooms' ); ?> <?php _e( 'Bedrooms', 'madison' ); ?></span>
-				<span class="property-bathrooms column col-4-12"><?php echo get_attribute( 'bathrooms' ); ?> <?php _e( 'Bathrooms', 'madison' ); ?></span>
+				<span class="property-price column col-5-12"><?php echo get_attribute( 'price' ); ?></span>
+				<span class="property-type column col-7-12"><?php printf( __( '%1s Type', 'wpp' ), WPP_F::property_label() ); ?>: <?php echo $post->property_type_label; ?></span>
 			<?php endif; ?>
 		</div>
 
