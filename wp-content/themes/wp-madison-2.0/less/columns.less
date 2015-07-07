@@ -1,0 +1,25 @@
+.columns(@n, @i: 1) when (@i =< @n) {
+	&.col-@{i}-12 {
+		width: round( ( @i * 100% / @n ), 7 );
+	}
+	.columns(@n, (@i + 1));
+}
+
+.column {
+	float: left;
+	&-wrapper {
+		overflow: hidden;
+		}
+	&.right {
+		text-align: right;
+		.col-inner {
+			margin-left: 1em;
+		}
+	}
+	&.left {
+		.col-inner {
+			margin-right: 1em;
+		}
+	}
+	.columns(12);
+}
