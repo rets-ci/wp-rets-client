@@ -23,7 +23,8 @@ namespace UsabilityDynamics\Madison {
       /**
        * https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/16
        */
-      public function __construct() {
+      public function __construct( $args ) {
+        parent::__construct( $args );
         include_once( get_template_directory() . '/lib/functions.php' );
       }
       
