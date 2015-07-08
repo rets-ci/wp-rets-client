@@ -170,6 +170,8 @@ add_action( 'widgets_init', 'madison_widgets_init', 11 );
 */
 function madison_scripts() {
 	// Enqueue the main stylesheet (style.css).
+
+	wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
 	wp_enqueue_style( 'madison', get_stylesheet_uri() );
 	wp_enqueue_style( 'madison-fa-icons', get_template_directory_uri() . '/fonts/icons/fa/css/font-awesome.min.css', array(), '4.0.3' );
 

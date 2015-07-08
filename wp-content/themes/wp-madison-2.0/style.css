@@ -3672,3 +3672,13 @@ input.wpp_supermap_input_field_max {
     margin: 6px 0;
     width: 15px;
 }
+
+.wpp_property_overview_shortcode .property .property_image, .wpp_property_overview_shortcode .property_div .property_image {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+
+.wpp_property_overview_shortcode .property .wpp_overview_data, .wpp_property_overview_shortcode .property_div .wpp_overview_data {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
