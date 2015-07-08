@@ -3664,3 +3664,11 @@ input.wpp_supermap_input_field_max {
 	  max-height: 250px;
   }
 }
+
+.true-checkbox-image {
+    background: transparent url("images/true-checkbox-image.png") no-repeat scroll 0 0;
+    float: left;
+    height: 15px;
+    margin: 6px 0;
+    width: 15px;
+}
