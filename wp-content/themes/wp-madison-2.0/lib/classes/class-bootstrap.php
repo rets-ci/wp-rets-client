@@ -19,12 +19,19 @@ namespace UsabilityDynamics\Madison {
        * @type UsabilityDynamics\Madison\Bootstrap object
        */
       protected static $instance = null;
+
+      /**
+       * https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues/16
+       */
+      public function __construct() {
+        include_once( get_template_directory() . '/lib/functions.php' );
+      }
       
       /**
        * Instantaite class.
        */
       public function init() {
-        include_once( get_template_directory() . '/lib/functions.php' );
+        //include_once( get_template_directory() . '/lib/functions.php' );
       }
       
       /**
