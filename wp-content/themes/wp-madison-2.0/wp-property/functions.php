@@ -299,7 +299,3 @@ function madison_wpp_header_menu_items( $items, $args ) {
 	return $items;
 }
 // add_action( 'wp_nav_menu_items' , 'madison_wpp_header_menu_items', 101, 2 );
-
-// * NOTE todo make this work as as the full shortcode and not just the hardcoded search. - Kopepasah
-// Load WP Property specific template tags.
-// require_once( dirname( __FILE__ ) . '/template-tags.php' );

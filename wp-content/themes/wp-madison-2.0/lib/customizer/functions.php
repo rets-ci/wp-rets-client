@@ -89,6 +89,79 @@ function madison_customize_register( $wp_customize ) {
 			'settings'   => 'madison_secondary_color',
 	)));
 
+  $wp_customize->add_section( 'madison_search', array(
+      'title'       => __( 'Header Search', 'madison' ),
+      'description' => __( 'Control a site-wide search form in a header.', 'madison' ),
+      'priority'    => 62
+  ));
+
+  $wp_customize->add_setting( 'madison_search_enable', array(
+      'default'              => ''
+  ));
+
+  $wp_customize->add_control( 'madison_search_enable', array(
+      'label'   => __( 'Enable Site-wide Search', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'checkbox',
+      'settings' => 'madison_search_enable'
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_1', array(
+      'default'              => ''
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_2', array(
+      'default'              => ''
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_3', array(
+      'default'              => ''
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_4', array(
+      'default'              => ''
+  ));
+
+  global $wp_properties;
+  $_attributes = array();
+  if ( !empty( $wp_properties['searchable_attributes'] ) && is_array( $wp_properties['searchable_attributes'] ) ) {
+    foreach( $wp_properties['searchable_attributes'] as $_attr_slug ) {
+      $_attributes[$_attr_slug] = $wp_properties['property_stats'][$_attr_slug];
+    }
+  }
+
+  $wp_customize->add_control( 'madison_search_field_1', array(
+      'label'   => __( 'Field 1', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => $_attributes,
+      'settings' => 'madison_search_field_1'
+  ));
+
+  $wp_customize->add_control( 'madison_search_field_2', array(
+      'label'   => __( 'Field 2', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => $_attributes,
+      'settings' => 'madison_search_field_2'
+  ));
+
+  $wp_customize->add_control( 'madison_search_field_3', array(
+      'label'   => __( 'Field 3', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => $_attributes,
+      'settings' => 'madison_search_field_3'
+  ));
+
+  $wp_customize->add_control( 'madison_search_field_4', array(
+      'label'   => __( 'Field 4', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => $_attributes,
+      'settings' => 'madison_search_field_4'
+  ));
+
 	/**
 	 * This section defines the header colors. It is
 	 * placed just below the Header Image section.
