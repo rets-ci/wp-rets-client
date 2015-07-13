@@ -18,3 +18,10 @@
 .contact_form .field {
   margin-bottom: 25px;
 }
+.contact_form .field select {
+  max-width: 330px;
+}
+.contact_form .field input[type="radio"] {
+  margin-left: 10px;
+  margin-right: 10px;
+}
