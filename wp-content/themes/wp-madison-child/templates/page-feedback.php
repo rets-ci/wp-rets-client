@@ -191,9 +191,8 @@
             <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/form-submitted/"/>
             <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
-            <div align="center">
-              <input class="button" type="submit" value="Send"
-                  />
+            <div>
+              <input class="button" type="submit" value="Send" />
             </div>
           </form>
 
