@@ -1001,7 +1001,6 @@ textarea:focus {
 
 /** ----------------------------------------:[ search ]:--- */
 .section-property-search {
-	display: none;
 	padding: 1em 0 1.5em;
 	background: #e95a65;
 	border-top: 1px solid transparent;

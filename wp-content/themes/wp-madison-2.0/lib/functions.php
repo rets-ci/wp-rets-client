@@ -233,3 +233,110 @@ if ( defined( 'WPP_Version' ) ) {
   }
 	
 }
+
+/**
+ * Prevent function redeclaration
+ */
+if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
+  /**
+   * Display header search
+   */
+  function madison_maybe_header_property_search() {
+    global $wp_properties;
+
+    $search_enabled = get_theme_mod( 'madison_search_enable' );
+
+    $field_1 = get_theme_mod( 'madison_search_field_1' );
+    $field_1_type = get_theme_mod( 'madison_search_field_1_type' );
+
+    $field_2 = get_theme_mod( 'madison_search_field_2' );
+    $field_2_type = get_theme_mod( 'madison_search_field_2_type' );
+
+    $field_3 = get_theme_mod( 'madison_search_field_3' );
+    $field_3_type = get_theme_mod( 'madison_search_field_3_type' );
+
+    $field_4 = get_theme_mod( 'madison_search_field_4' );
+    $field_4_type = get_theme_mod( 'madison_search_field_4_type' );
+
+    if( empty( $searchable_property_types ) ) {
+      $searchable_property_types = $wp_properties[ 'searchable_property_types' ];
+    } else {
+      $searchable_property_types = explode( ",", $searchable_property_types );
+    }
+
+    $search_values = WPP_F::get_search_values( array_filter(array($field_1,$field_2,$field_3,$field_4)), $searchable_property_types );
+
+    $html = '';
+
+    if( !empty( $search_enabled ) ) {
+
+      ob_start();
+
+      ?>
+
+      <section class="section-property-search">
+        <div class="section-container column-wrapper">
+          <form action="<?php echo WPP_F::base_url( $wp_properties[ 'configuration' ][ 'base_slug' ] ); ?>" method="post" class="column-wrapper wpp_search_elements">
+            <div class="column col-2-12">
+              <?php
+              wpp_render_search_input( array(
+                  'attrib' => $field_1,
+                  'search_values' => $search_values,
+                  'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_1 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_1 ] : '',
+                  'input_type' => $field_1_type
+              ) );
+              ?>
+            </div>
+            <div class="column col-2-12">
+              <div class="col-inner">
+                <?php
+                wpp_render_search_input( array(
+                    'attrib' => $field_2,
+                    'search_values' => $search_values,
+                    'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_2 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_2 ] : '',
+                    'input_type' => $field_2_type
+                ) );
+                ?>
+              </div>
+            </div>
+            <div class="column col-2-12">
+              <div class="col-inner">
+                <?php
+                wpp_render_search_input( array(
+                    'attrib' => $field_3,
+                    'search_values' => $search_values,
+                    'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_3 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_3 ] : '',
+                    'input_type' => $field_3_type
+                ) );
+                ?>
+              </div>
+            </div>
+            <div class="column col-2-12">
+              <div class="col-inner">
+                <?php
+                wpp_render_search_input( array(
+                    'attrib' => $field_4,
+                    'search_values' => $search_values,
+                    'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_4 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_4 ] : '',
+                    'input_type' => $field_4_type
+                ) );
+                ?>
+              </div>
+            </div>
+            <div class="column col-2-12">
+              <input type="submit" class="wpp_search_button submit btn" value="<?php _e( 'Search', 'wpp' ) ?>"/>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <?php
+
+      $html = ob_get_clean();
+
+    }
+
+    return $html;
+
+  }
+}

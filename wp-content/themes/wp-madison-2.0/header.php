@@ -50,8 +50,8 @@
 				</div>
 			</section>
 
-			<?php if ( function_exists( 'madison_wpp_header_property_search' ) ) : ?>
-				<?php echo madison_wpp_header_property_search();  // NOTE This has been tabled until a better solution can be added. ?>
+			<?php if ( function_exists( 'madison_maybe_header_property_search' ) ) : ?>
+				<?php echo madison_maybe_header_property_search(); ?>
 			<?php endif; ?>
 
 			<?php if ( function_exists( 'breadcrumb_trail' ) && ! is_page_template( 'page-templates/front-page.php' ) ) : ?>
