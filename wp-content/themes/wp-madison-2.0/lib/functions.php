@@ -283,7 +283,8 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                   'attrib' => $field_1,
                   'search_values' => $search_values,
                   'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_1 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_1 ] : '',
-                  'input_type' => $field_1_type
+                  'input_type' => $field_1_type,
+                  'madison_placeholder' => $wp_properties['property_stats'][$field_1]
               ) );
               ?>
             </div>
@@ -294,7 +295,8 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'attrib' => $field_2,
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_2 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_2 ] : '',
-                    'input_type' => $field_2_type
+                    'input_type' => $field_2_type,
+                    'madison_placeholder' => $wp_properties['property_stats'][$field_2]
                 ) );
                 ?>
               </div>
@@ -306,7 +308,8 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'attrib' => $field_3,
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_3 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_3 ] : '',
-                    'input_type' => $field_3_type
+                    'input_type' => $field_3_type,
+                    'madison_placeholder' => $wp_properties['property_stats'][$field_3]
                 ) );
                 ?>
               </div>
@@ -318,7 +321,8 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'attrib' => $field_4,
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_4 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_4 ] : '',
-                    'input_type' => $field_4_type
+                    'input_type' => $field_4_type,
+                    'madison_placeholder' => $wp_properties['property_stats'][$field_4]
                 ) );
                 ?>
               </div>
@@ -340,3 +344,30 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
 
   }
 }
+
+if ( !function_exists( 'madison_search_placeholders' ) ) {
+  function madison_search_placeholders( $html, $args ) {
+
+    if ( array_key_exists('madison_placeholder', $args) ) {
+
+      switch( $args['input_type'] ) {
+        case 'input':
+          $html = str_replace( 'placeholder=""', '', $html );
+          $html = str_replace( '/>', ' placeholder="'.$args['madison_placeholder'].'" />', $html );
+          break;
+
+        case 'dropdown':
+        case 'range_dropdown':
+          $html = str_replace( '<option value="-1">Any</option>', '<option value="-1" selected disabled>'.$args['madison_placeholder'].'</option>', $html );
+
+          break;
+        default: break;
+      }
+
+    }
+
+    return $html;
+
+  }
+}
+add_filter( 'wpp_render_search_input', 'madison_search_placeholders', 10, 2 );

@@ -1585,7 +1585,7 @@ if ( !function_exists( 'wpp_render_search_input' ) ):
     <?php
     }
 
-    echo apply_filters( 'wpp_render_search_input', ob_get_clean() );
+    echo apply_filters( 'wpp_render_search_input', ob_get_clean(), $args );
   }
 endif;
 

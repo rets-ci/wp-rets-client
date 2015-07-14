@@ -1025,6 +1025,22 @@ textarea:focus {
     -moz-border-radius: 5px;
     padding: 10px;
 }
+
+.section-property-search input::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #404040;
+}
+.section-property-search input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #404040;
+    opacity:  1;
+}
+.section-property-search input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #404040;
+    opacity:  1;
+}
+.section-property-search input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #404040;
+}
+
 .section-property-search input:focus,
 .section-property-search select:focus {
     color: #252525;
