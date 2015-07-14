@@ -2160,6 +2160,7 @@ textarea:focus {
 .property-stats .right {
     border-left: 1px solid #ededed;
 	text-align: left;
+    word-break: break-all;
 }
 .property .entry-title {
 	margin: 16px 0;
