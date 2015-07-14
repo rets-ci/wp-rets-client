@@ -1026,6 +1026,12 @@ textarea:focus {
     padding: 10px;
 }
 
+.section-property-search select {
+    background-image: url("images/arrow-down.png");
+    background-position: 90% center;
+    background-repeat: no-repeat;
+}
+
 .section-property-search input::-webkit-input-placeholder { /* WebKit browsers */
     color:    #404040;
 }
