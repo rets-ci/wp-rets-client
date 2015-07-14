@@ -612,8 +612,7 @@ function madison_customize_head_hook() {
 		<?php if ( $mods['header_menu_item_bg_color'] && $mods['header_menu_item_bg_color'] !== 'ea636d' ) : ?>
 			#site-header .site-navigation .menu li a:hover,
 			#site-header .site-navigation .menu li.current-menu-item > a,
-			#site-header .site-navigation .menu li.current-menu-ancestor > a,
-			#site-header .section-property-search {
+			#site-header .site-navigation .menu li.current-menu-ancestor > a {
 				background: #<?php echo $mods['header_menu_item_bg_color']; ?>;
 			}
 		<?php endif; ?>
@@ -621,8 +620,7 @@ function madison_customize_head_hook() {
 		<?php if ( $mods['header_menu_item_text_color'] ) : ?>
 			#site-header .site-navigation .menu li a:hover,
 			#site-header .site-navigation .menu li.current-menu-item > a,
-			#site-header .site-navigation .menu li.current-menu-ancestor > a,
-			#site-header .section-property-search {
+			#site-header .site-navigation .menu li.current-menu-ancestor > a {
 				color: #<?php echo $mods['header_menu_item_text_color']; ?>;
 			}
 		<?php endif; ?>
