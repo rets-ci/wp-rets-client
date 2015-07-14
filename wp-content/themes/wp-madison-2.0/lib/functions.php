@@ -277,7 +277,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
       <section class="section-property-search">
         <div class="section-container column-wrapper">
           <form action="<?php echo WPP_F::base_url( $wp_properties[ 'configuration' ][ 'base_slug' ] ); ?>" method="post" class="column-wrapper wpp_search_elements">
-            <div class="column col-2-12">
+            <div class="column col-2x4-12">
               <?php
               wpp_render_search_input( array(
                   'attrib' => $field_1,
@@ -287,7 +287,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
               ) );
               ?>
             </div>
-            <div class="column col-2-12">
+            <div class="column col-2x4-12">
               <div class="col-inner">
                 <?php
                 wpp_render_search_input( array(
@@ -299,7 +299,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                 ?>
               </div>
             </div>
-            <div class="column col-2-12">
+            <div class="column col-2x4-12">
               <div class="col-inner">
                 <?php
                 wpp_render_search_input( array(
@@ -311,7 +311,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                 ?>
               </div>
             </div>
-            <div class="column col-2-12">
+            <div class="column col-2x4-12">
               <div class="col-inner">
                 <?php
                 wpp_render_search_input( array(
@@ -323,7 +323,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                 ?>
               </div>
             </div>
-            <div class="column col-2-12">
+            <div class="column col-2x4-12">
               <input type="submit" class="wpp_search_button submit btn" value="<?php _e( 'Search', 'wpp' ) ?>"/>
             </div>
           </form>

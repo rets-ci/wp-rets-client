@@ -180,6 +180,9 @@ section {
 .column.col-2-12 {
 	width: 16.6666667%;
 }
+.column.col-2x4-12 {
+    width: 20%;
+}
 .column.col-3-12 {
 	width: 25%;
 }
@@ -1001,36 +1004,23 @@ textarea:focus {
 
 /** ----------------------------------------:[ search ]:--- */
 .section-property-search {
-	padding: 1em 0 1.5em;
-	background: #e95a65;
-	border-top: 1px solid transparent;
-	border-color: rgba(255, 255, 255, 0.1);
-	color: #ffffff;
-}
-.section-property-search label {
-	display: block;
-	color: #ffffff;
-}
-.section-property-search .price-inputs input {
-	width: 45%;
+	padding: 1em;
+	background: white;
+    border-bottom: 2px solid #e95a65;
 }
 .section-property-search .col-3-12 .col-inner {
 	margin-right: 1em;
 }
 .section-property-search input,
 .section-property-search select {
-	background: transparent;
-	border-color: #ffffff;
-	color: #ffffff;
+
 }
 .section-property-search input:focus,
 .section-property-search select:focus {
-	background: #ffffff;
-	border-color: #66b27c;
-	color: #66b27c;
+
 }
 .section-property-search .submit {
-	margin-top: 28px;
+
 }
 
 /** ----------------------------------------:[ breadcrumbs ]:--- */
