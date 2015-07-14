@@ -122,6 +122,22 @@ function madison_customize_register( $wp_customize ) {
       'default'              => ''
   ));
 
+  $wp_customize->add_setting( 'madison_search_field_1_type', array(
+      'default'              => 'range_dropdown'
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_2_type', array(
+      'default'              => 'range_dropdown'
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_3_type', array(
+      'default'              => 'range_dropdown'
+  ));
+
+  $wp_customize->add_setting( 'madison_search_field_4_type', array(
+      'default'              => 'range_dropdown'
+  ));
+
   global $wp_properties;
   $_attributes = array();
   if ( !empty( $wp_properties['searchable_attributes'] ) && is_array( $wp_properties['searchable_attributes'] ) ) {
@@ -138,12 +154,36 @@ function madison_customize_register( $wp_customize ) {
       'settings' => 'madison_search_field_1'
   ));
 
+  $wp_customize->add_control( 'madison_search_field_1_type', array(
+      'label'   => __( 'Field 1 Type', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => array(
+        'range_dropdown' => 'Range Dropdown',
+        'dropdown' => 'Dropdown',
+        'input' => 'Text Input'
+      ),
+      'settings' => 'madison_search_field_1_type'
+  ));
+
   $wp_customize->add_control( 'madison_search_field_2', array(
       'label'   => __( 'Field 2', 'madison' ),
       'section' => 'madison_search',
       'type'    => 'select',
       'choices' => $_attributes,
       'settings' => 'madison_search_field_2'
+  ));
+
+  $wp_customize->add_control( 'madison_search_field_2_type', array(
+      'label'   => __( 'Field 2 Type', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => array(
+          'range_dropdown' => 'Range Dropdown',
+          'dropdown' => 'Dropdown',
+          'input' => 'Text Input'
+      ),
+      'settings' => 'madison_search_field_2_type'
   ));
 
   $wp_customize->add_control( 'madison_search_field_3', array(
@@ -154,12 +194,36 @@ function madison_customize_register( $wp_customize ) {
       'settings' => 'madison_search_field_3'
   ));
 
+  $wp_customize->add_control( 'madison_search_field_3_type', array(
+      'label'   => __( 'Field 3 Type', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => array(
+          'range_dropdown' => 'Range Dropdown',
+          'dropdown' => 'Dropdown',
+          'input' => 'Text Input'
+      ),
+      'settings' => 'madison_search_field_3_type'
+  ));
+
   $wp_customize->add_control( 'madison_search_field_4', array(
       'label'   => __( 'Field 4', 'madison' ),
       'section' => 'madison_search',
       'type'    => 'select',
       'choices' => $_attributes,
       'settings' => 'madison_search_field_4'
+  ));
+
+  $wp_customize->add_control( 'madison_search_field_4_type', array(
+      'label'   => __( 'Field 4 Type', 'madison' ),
+      'section' => 'madison_search',
+      'type'    => 'select',
+      'choices' => array(
+          'range_dropdown' => 'Range Dropdown',
+          'dropdown' => 'Dropdown',
+          'input' => 'Text Input'
+      ),
+      'settings' => 'madison_search_field_4_type'
   ));
 
 	/**
