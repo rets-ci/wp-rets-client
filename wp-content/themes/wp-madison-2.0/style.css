@@ -1004,23 +1004,37 @@ textarea:focus {
 
 /** ----------------------------------------:[ search ]:--- */
 .section-property-search {
-	padding: 1em;
+	padding: 20px;
 	background: white;
     border-bottom: 2px solid #e95a65;
 }
-.section-property-search .col-3-12 .col-inner {
-	margin-right: 1em;
+.section-property-search .column {
+    padding-left: 0.75em;
+    padding-right: 0.75em;
 }
 .section-property-search input,
 .section-property-search select {
-
+    background: white;
+    border: 1px solid #e5e5e5;
+    height: 46px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 10px;
 }
 .section-property-search input:focus,
 .section-property-search select:focus {
-
+    color: #252525;
+    border-color: #252525;
 }
 .section-property-search .submit {
-
+    width: 100%;
+    background: #e95a65;
+    color: white;
+    border: 1px solid #e95a65;
 }
 
 /** ----------------------------------------:[ breadcrumbs ]:--- */
