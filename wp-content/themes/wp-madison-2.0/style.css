@@ -3121,6 +3121,7 @@ input.wpp_supermap_input_field_max {
 }
 #site-contact-information a:hover {
 	color: #ffffff;
+    text-decoration: none;
 }
 
 /** ---:[ contact info ]:--- */
