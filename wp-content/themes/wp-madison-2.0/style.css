@@ -1024,6 +1024,7 @@ textarea:focus {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     padding: 10px;
+    max-width: 100%;
 }
 
 .section-property-search select {
@@ -3487,6 +3488,17 @@ input.wpp_supermap_input_field_max {
   #site-contact-information .column.site-contact-info span {
 	  margin: 0;
   }
+
+  /** ---:[ header search ]:--- */
+  .section-property-search .column.col-2x4-12 {
+      width: 50%;
+      margin-bottom: 20px;
+  }
+
+  .section-property-search .column.col-2x4-12:last-child {
+      float: none;
+      margin: 0 auto;
+  }
 }
 @media screen and (max-width: 650px) {
   
@@ -3693,6 +3705,27 @@ input.wpp_supermap_input_field_max {
   .super_map {
 	  max-height: 250px;
   }
+
+  .section-property-search {
+      padding: 10px 0;
+      padding-bottom: 0;
+  }
+
+    .section-property-search .column.col-2x4-12 {
+        padding: 0 5px;
+        margin-bottom: 10px;
+    }
+
+  .section-property-search .column.col-2x4-12:last-child {
+      width: 100%;
+      padding: 0;
+  }
+
+    .section-property-search .column.col-2x4-12:last-child input {
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+    }
 }
 
 .true-checkbox-image {
