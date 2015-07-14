@@ -553,7 +553,8 @@ function madison_customize_head_hook() {
 			.content-navigation .meta-nav,
 			.property-map-header .property-address,
 			.property-attributes .property-price,
-			.widget.widget_tag_cloud a:hover,
+      .property .property-price,
+      .widget.widget_tag_cloud a:hover,
 			.site-contact-info a:hover {
 				background: #<?php echo $mods['primary_color'] ?> !important;
 			}
