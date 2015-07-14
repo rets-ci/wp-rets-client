@@ -34,6 +34,9 @@
 				$( '.section-header-navigation' ).css( {
 					'background-color': to
 				} );
+        $( '.section-property-search' ).css( {
+          'border-bottom-color': to
+        } );
 			}
 		} );
 	} );

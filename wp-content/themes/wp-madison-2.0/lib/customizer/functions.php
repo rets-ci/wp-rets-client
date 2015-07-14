@@ -547,15 +547,15 @@ function madison_customize_head_hook() {
 			input[type="reset"],
 			button,
 			#infinite-handle span {
-				background: #<?php echo $mods['primary_color'] ?>;
-				border-color: #<?php echo $mods['primary_color'] ?>;
+				background: #<?php echo $mods['primary_color'] ?> !important;
+				border-color: #<?php echo $mods['primary_color'] ?> !important;
 			}
 			.content-navigation .meta-nav,
 			.property-map-header .property-address,
 			.property-attributes .property-price,
 			.widget.widget_tag_cloud a:hover,
 			.site-contact-info a:hover {
-				background: #<?php echo $mods['primary_color'] ?>;
+				background: #<?php echo $mods['primary_color'] ?> !important;
 			}
 			#comments .comment #respond .cancel-comment a:hover {
 				border-color: #<?php echo $mods['primary_color'] ?>;
@@ -571,7 +571,7 @@ function madison_customize_head_hook() {
 			#colorbox #cboxContent #cboxNext:hover,
 			#colorbox #cboxContent #cboxClose:hover,
 			#colorbox #cboxContent #cboxSlideshow:hover {
-				color: #<?php echo $mods['secondary_color'] ?>;
+				color: #<?php echo $mods['secondary_color'] ?> !important;
 			}
 			.btn:hover,
 			.btn-wrapper a:hover,
@@ -583,8 +583,8 @@ function madison_customize_head_hook() {
 			#infinite-handle span,
 			.section-property-search input:focus,
 			.section-property-search select:focus {
-				border-color: #<?php echo $mods['secondary_color'] ?>;
-				color: #<?php echo $mods['secondary_color'] ?>;
+				border-color: #<?php echo $mods['secondary_color'] ?> !important;
+				color: #<?php echo $mods['secondary_color'] ?> !important;
 			}
 			.content-navigation a:hover span,
 			.property-overview-item .property-information .property-permalink a:hover {
@@ -596,6 +596,9 @@ function madison_customize_head_hook() {
 			#site-header .section-header-navigation {
 				background: #<?php echo $mods['header_bg_color']; ?>;
 			}
+      #site-header .section-property-search {
+        border-bottom-color: #<?php echo $mods['header_bg_color']; ?>;
+      }
 		<?php endif; ?>
 
 		<?php if ( $mods['header_text_color'] && $mods['header_text_color'] !== 'ffffff' ) : ?>
