@@ -44,7 +44,7 @@
 						<span class="site-tagline"><?php bloginfo( 'description' ); ?></span>
 					</header>
 					<nav class="site-navigation column col-9-12" role="navigation">
-						<a href id="mobile-menu-toggle"><?php _e( 'Navigation', 'madison' ); ?><i class="fa fa-bars"></i></a>
+						<a href id="mobile-menu-toggle"><span><?php _e( 'Navigation', 'madison' ); ?></span><i class="fa fa-bars"></i></a>
 						<?php wp_nav_menu( array( 'theme_location' => 'header', 'menu' => 'madison-header-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
             <div class="secondary-menu"><?php wp_nav_menu( array( 'theme_location' => 'header-secondary', 'rdc-header-second-menu', 'container' => false ) ); ?></div>
           </nav>
