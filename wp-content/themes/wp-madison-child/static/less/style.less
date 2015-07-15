@@ -56,6 +56,15 @@
 
 #site-header {
   .site-navigation {
+
+    display: flex;
+    align-items: center;
+    -webkit-align-items: center;
+
+    @media screen and (max-width: 650px) {
+      display: block;
+    }
+
     .secondary-menu {
 
       float: left;
@@ -67,8 +76,6 @@
       }
 
       .menu {
-
-        padding-top: ~"calc(25% - 15px)";
 
         @media screen and (max-width: 650px) {
           width: auto !important;

@@ -43,6 +43,16 @@
     margin-left: 0;
   }
 }
+#site-header .site-navigation {
+  display: flex;
+  align-items: center;
+  -webkit-align-items: center;
+}
+@media screen and (max-width: 650px) {
+  #site-header .site-navigation {
+    display: block;
+  }
+}
 #site-header .site-navigation .secondary-menu {
   float: left;
   margin-left: 15px;
@@ -52,9 +62,6 @@
   #site-header .site-navigation .secondary-menu {
     margin: 0;
   }
-}
-#site-header .site-navigation .secondary-menu .menu {
-  padding-top: calc(25% - 15px);
 }
 @media screen and (max-width: 650px) {
   #site-header .site-navigation .secondary-menu .menu {
