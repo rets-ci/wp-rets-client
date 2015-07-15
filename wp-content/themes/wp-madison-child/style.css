@@ -25,3 +25,24 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+#menu-header {
+  float: left;
+}
+.secondary-menu {
+  float: left;
+  margin-left: 15px;
+  margin-top: 33px;
+}
+.secondary-menu .menu li.menu-item {
+  margin-right: 10px;
+}
+.secondary-menu .menu li.menu-item a {
+  border: 1px solid white;
+  border-radius: 5px;
+  height: 30px;
+  line-height: 20px;
+  padding: 5px 10px !important;
+}
+.secondary-menu .menu li.menu-item a:hover {
+  text-decoration: none;
+}
