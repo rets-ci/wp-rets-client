@@ -11,6 +11,9 @@
  * Template: wp-madison-2.0
  * This file is for WordPress theme recognition only, the actual styles may be found in the "static/styles" directory.
  */
+a:hover {
+  text-decoration: none;
+}
 .contact_form .label {
   color: black;
   font-size: 100%;
