@@ -48,9 +48,16 @@
   align-items: center;
   -webkit-align-items: center;
 }
+@media screen and (max-width: 1000px) {
+  #site-header .site-navigation {
+    position: relative;
+    display: block;
+  }
+}
 @media screen and (max-width: 650px) {
   #site-header .site-navigation {
     display: block;
+    position: static;
   }
 }
 #site-header .site-navigation .secondary-menu {
@@ -58,9 +65,17 @@
   margin-left: 15px;
   margin-top: 0;
 }
+@media screen and (max-width: 1000px) {
+  #site-header .site-navigation .secondary-menu {
+    position: absolute;
+    top: calc(50% - 15px);
+    right: 0;
+  }
+}
 @media screen and (max-width: 650px) {
   #site-header .site-navigation .secondary-menu {
     margin: 0;
+    position: static;
   }
 }
 @media screen and (max-width: 650px) {
