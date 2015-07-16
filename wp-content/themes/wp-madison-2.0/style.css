@@ -2048,6 +2048,7 @@ textarea:focus {
 .property-images .slidesjs-pagination a {
 	display: block;
 	margin-right: 10px;
+    margin-bottom: 10px;
 	opacity: .5;
 	-webkit-transition: opacity .2s ease;
 	-moz-transition: opacity .2s ease;
