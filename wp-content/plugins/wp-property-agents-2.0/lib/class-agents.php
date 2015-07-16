@@ -2047,6 +2047,10 @@ class AgentWidget extends WP_Widget {
   }
 
   function widget($args, $instance) {
+
+    /** Make display it only if it is a property single page */
+    if ( !is_singular( 'property' ) ) return false;
+
     global $post, $property, $wp_properties;
     $before_widget = $after_widget = $after_title = $before_title = '';
 
