@@ -20,3 +20,11 @@ function theme_enqueue_styles() {
  */
 register_nav_menu( 'header-secondary', __('Secondary Header Menu') );
 
+/**
+ * Change property CPT a bit
+ */
+add_filter( 'wpp_post_type', 'rdc_property_rewrite' );
+function rdc_property_rewrite( $args ) {
+  $args['rewrite']['with_front'] = false;
+  return $args;
+}
