@@ -127,3 +127,36 @@ a:hover {
     text-decoration: none;
   }
 }
+.widget_rdc-schedule-showing form span.required {
+  position: absolute;
+  color: red;
+}
+.widget_rdc-schedule-showing form .label {
+  color: black;
+  font-size: 100%;
+}
+.widget_rdc-schedule-showing form .field {
+  margin-bottom: 20px;
+}
+.ui-datepicker {
+  box-shadow: 0 0 12px #eee;
+  -webkit-box-shadow: 0 0 12px #eee;
+  -moz-box-shadow: 0 0 12px #eee;
+}
+.ui-datepicker .ui-datepicker-header {
+  background: white;
+  border: 1px solid #ededed;
+  padding: 10px;
+}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-title {
+  text-align: center;
+}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-next {
+  float: right;
+}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-prev {
+  float: left;
+}
+.ui-datepicker .ui-datepicker-calendar {
+  margin: 0;
+}

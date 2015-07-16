@@ -3,6 +3,16 @@
  * RDC child theme based on WP-Madison 2.0
  */
 
+require_once "lib/widgets.php";
+
+/**
+ * Register widgets
+ */
+add_action('widgets_init', 'rdc_register_widgets');
+function rdc_register_widgets() {
+  register_widget( 'RDCScheduleShowing' );
+}
+
 /**
  * Enqueue parent style hook
  */
