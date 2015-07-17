@@ -38,3 +38,12 @@ function rdc_property_rewrite( $args ) {
   $args['rewrite']['with_front'] = false;
   return $args;
 }
+
+/**
+ * Fix permalinks for tax
+ */
+add_filter( 'wpp::register_taxonomy', 'rdc_tax_rewrite', 10, 2 );
+function rdc_tax_rewrite( $args, $tax ) {
+  $args['rewrite']['with_front'] = false;
+  return $args;
+}
