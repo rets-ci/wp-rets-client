@@ -1,14 +1,18 @@
 <?php
 /**
  * Plugin Name: WP-Property: PDF Flyer
- * Plugin URI: https://usabilitydynamics.com/product/wp-property-pdf
+ * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-pdf
  * Description: The WP-Property PDF Flyer Add-on allows the website owner to quickly generate PDF flyers, or brochures, ready for printing or download. The feature comes with a standard PDF format and a user interface allows the administrator to select which information to display, what colors to use, image sizes, and a logo. For more advances users custom PDF template layouts can be used.
  * Author: Usability Dynamics, Inc.
  * Version: 3.0.0
+ * Requires at least: 4.0
+ * Tested up to: 4.2.2
  * Text Domain: wpp_pdf
- * Author URI: http://usabilitydynamics.com
+ * Author URI: http://www.usabilitydynamics.com
+ * GitHub Plugin URI: wp-property/wp-property-pdf
+ * GitHub Branch: v3.0
  *
- * Copyright 2012 - 2014 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
+ * Copyright 2012 - 2015 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
  *
  */
 
