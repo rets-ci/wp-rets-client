@@ -8,18 +8,20 @@
 
   <div class="label">
     <label for="powf_a6af030d7316e411811d6c3be5a87df0">First Name</label>
+    <span class="required">*</span>
     <span class="tip"></span>
   </div>
 
   <div class="field">
     <input type="text" id="powf_a6af030d7316e411811d6c3be5a87df0" name="powf_a6af030d7316e411811d6c3be5a87df0" value=""
            maxlength="100" class="required"/>
-    <span class="required">*</span>
+
   </div>
 
   <div class="clear"></div>
   <div class="label">
     <label for="powf_401e17337316e411811d6c3be5a87df0">Last Name</label>
+    <span class="required">*</span>
     <span class="tip"></span>
 
   </div>
@@ -27,13 +29,12 @@
   <div class="field">
     <input type="text" id="powf_401e17337316e411811d6c3be5a87df0" name="powf_401e17337316e411811d6c3be5a87df0" value=""
            maxlength="100" class="required"/>
-    <span class="required">*</span>
-
   </div>
 
   <div class="clear"></div>
   <div class="label">
     <label for="powf_1ac7bf437416e411811d6c3be5a87df0">Telephone</label>
+    <span class="required">*</span>
     <span class="tip"></span>
 
   </div>
@@ -41,13 +42,13 @@
   <div class="field">
     <input type="text" id="powf_1ac7bf437416e411811d6c3be5a87df0" name="powf_1ac7bf437416e411811d6c3be5a87df0" value=""
            maxlength="100" class="required digits"/>
-    <span class="required">*</span>
 
   </div>
 
   <div class="clear"></div>
   <div class="label">
     <label for="powf_ab9ba0647416e411811d6c3be5a87df0">Email</label>
+    <span class="required">*</span>
     <span class="tip"></span>
 
   </div>
@@ -55,7 +56,6 @@
   <div class="field">
     <input type="text" id="powf_ab9ba0647416e411811d6c3be5a87df0" name="powf_ab9ba0647416e411811d6c3be5a87df0" value=""
            maxlength="100" class="required email"/>
-    <span class="required">*</span>
 
   </div>
 
