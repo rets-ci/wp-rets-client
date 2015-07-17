@@ -111,32 +111,38 @@
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_0fbe58e50218e411bcfc6c3be5a8dd60">Property ID</label>
-    <span class="tip"></span>
+  <?php
+    global $property;
+    if ( !empty( $property ) ) :
+  ?>
+      <?php
+        if( !empty( $property['wpp_agents'] ) && class_exists( 'class_agents' ) ):
+          $agent_data = get_userdata($property['wpp_agents'][0]);
+      ?>
+        <!-- Broker -->
+        <input type="hidden" id="powf_fc06a4670318e411bcfc6c3be5a8dd60" name="powf_fc06a4670318e411bcfc6c3be5a8dd60"
+               value="<?php echo esc_attr( $agent_data->user_email ); ?>"/>
+      <?php endif; ?>
 
-  </div>
+      <?php if ( !empty( $property['address'] ) ): ?>
+      <!-- Property Address -->
+      <input type="hidden" id="powf_9b14049e0318e411bcfc6c3be5a8dd60" name="powf_9b14049e0318e411bcfc6c3be5a8dd60"
+             value="<?php echo esc_attr( $property['address'] ); ?>"/>
+      <?php endif; ?>
 
-  <div class="field">
-    <input type="text" id="powf_0fbe58e50218e411bcfc6c3be5a8dd60" name="powf_0fbe58e50218e411bcfc6c3be5a8dd60" value=""
-           maxlength="100"/>
-
-  </div>
+      <?php if ( !empty( $property['mls_number'] ) ): ?>
+      <!-- MLS ID -->
+      <input type="hidden" id="powf_c7e7e0c3a424e5118103fc15b4289e3c" name="powf_c7e7e0c3a424e5118103fc15b4289e3c"
+             value="<?php echo esc_attr( $property['mls_number'] ); ?>"/>
+      <?php endif; ?>
+  <?php
+    endif;
+  ?>
 
   <div class="clear"></div>
   <!-- Origin -->
   <input type="hidden" id="powf_d7ce13400318e411bcfc6c3be5a8dd60" name="powf_d7ce13400318e411bcfc6c3be5a8dd60"
          value="Tenant"/>
-  <!-- Broker -->
-  <input type="hidden" id="powf_fc06a4670318e411bcfc6c3be5a8dd60" name="powf_fc06a4670318e411bcfc6c3be5a8dd60"
-         value="{plugin agent email address}"/>
-  <!-- Property Address -->
-  <input type="hidden" id="powf_9b14049e0318e411bcfc6c3be5a8dd60" name="powf_9b14049e0318e411bcfc6c3be5a8dd60"
-         value="{plugin property address}"/>
-  <!-- MLS ID -->
-  <input type="hidden" id="powf_c7e7e0c3a424e5118103fc15b4289e3c" name="powf_c7e7e0c3a424e5118103fc15b4289e3c"
-         value="{plugin MLS ID value"/>
   <!-- Lead Source -->
   <input type="hidden" id="powf_72de01e26d6fe411807f6c3be5a87df0" name="powf_72de01e26d6fe411807f6c3be5a87df0"
          value="RedDoorCompany.com"/>
