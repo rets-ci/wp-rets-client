@@ -10,7 +10,7 @@ class SimpleHistory {
 	const NAME = "Simple History";
 
 	// Dont use this any more! Will be removed in future versions. Use global SIMPLE_HISTORY_VERSION instead.
-	const VERSION = "2.1.1";
+	const VERSION = "2.1.2";
 
 	/**
 	 * For singleton
@@ -90,6 +90,12 @@ class SimpleHistory {
 		// Actions and filters, ordered by order specified in codex: http://codex.wordpress.org/Plugin_API/Action_Reference
 		add_action('after_setup_theme', array($this, 'load_plugin_textdomain'));
 		add_action('after_setup_theme', array($this, 'add_default_settings_tabs'));
+		
+		// Plugins and dropins are loaded using the "after_setup_theme" filter so
+		// themes can use filters to modify the loading of them.
+		// The drawback with this is that for example logouts done when plugins like
+		// iThemes Security is installed is not logged, because those plugins fire wp_logout()
+		// using filter "plugins_loaded", i.e. before simple history has loaded its filters.
 		add_action('after_setup_theme', array($this, 'load_loggers'));
 		add_action('after_setup_theme', array($this, 'load_dropins'));
 
@@ -526,7 +532,6 @@ class SimpleHistory {
 
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
 		$locale = apply_filters('plugin_locale', get_locale(), $domain);
-
 		load_textdomain($domain, WP_LANG_DIR . '/simple-history/' . $domain . '-' . $locale . '.mo');
 		load_plugin_textdomain($domain, FALSE, dirname($this->plugin_basename) . '/languages/');
 
@@ -984,13 +989,11 @@ class SimpleHistory {
 
 			add_thickbox();
 
-			$plugin_url = plugin_dir_url(SIMPLE_HISTORY_BASENAME);
+			wp_enqueue_style("simple_history_styles", SIMPLE_HISTORY_DIR_URL . "css/styles.css", false, SIMPLE_HISTORY_VERSION);
+			wp_enqueue_script("simple_history_script", SIMPLE_HISTORY_DIR_URL . "js/scripts.js", array("jquery", "backbone", "wp-util"), SIMPLE_HISTORY_VERSION, true);
 
-			wp_enqueue_style("simple_history_styles", $plugin_url . "css/styles.css", false, SIMPLE_HISTORY_VERSION);
-			wp_enqueue_script("simple_history_script", $plugin_url . "js/scripts.js", array("jquery", "backbone", "wp-util"), SIMPLE_HISTORY_VERSION, true);
-
-			wp_enqueue_script("select2", $plugin_url . "js/select2/select2.min.js", array("jquery"));
-			wp_enqueue_style("select2", $plugin_url . "js/select2/select2.css");
+			wp_enqueue_script("select2", SIMPLE_HISTORY_DIR_URL . "js/select2/select2.min.js", array("jquery"));
+			wp_enqueue_style("select2", SIMPLE_HISTORY_DIR_URL . "js/select2/select2.css");
 
 			// Translations that we use in JavaScript
 			wp_localize_script('simple_history_script', 'simple_history_script_vars', array(
@@ -2320,6 +2323,13 @@ class SimpleHistory {
 		return $this->instantiatedLoggers;
 
 	}
+
+	public function getInstantiatedDropins() {
+
+		return $this->instantiatedDropins;
+		
+	}
+	
 
 	public function getInstantiatedLoggerBySlug($slug = "") {
 

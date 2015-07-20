@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream
 Requires at least: 3.6.0
 Tested up to: 4.2.2
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -85,6 +85,7 @@ So far Simple History is translated to:
 * Polish
 * Danish
 * Dutch
+* Finnish
 
 I'm looking for translations of Simple History in more languages! If you're interested please check out the [localization](https://developer.wordpress.org/plugins/internationalization/localization/) part of the Plugin Handbook for info on how to translate plugins. When you're done with your translation email it to me at par.thernstrom@gmail.com, or [add a pull request](https://github.com/bonny/WordPress-Simple-History/).
 
@@ -116,6 +117,21 @@ initiated by a specific user.
 
 ## Changelog
 
+= 2.1.2 (July 2015) =
+
+- Changed: By default the log now shows events from the last week, last two weeks or last 30 days, all depending on how many events you have in your log. The previous behavior was to not apply any filtering what so ever during the first load. Anyway: this change makes it possible to load the log very quickly even for very large logs. A large amount of users + keeping the log forver = millions of rows of data. Previosly this could stall the log or make it load almost forever. Now = almost always very fast. I have tried it with over 5.000 users and a million row and yes - zing! - much faster. Fixes https://wordpress.org/support/topic/load-with-pagination-mysql.
+- Added: Finnish translation. Thanks a lot to the translator!
+- Updated: Swedish translation updated
+- Added: Cache is used on a few more places.
+- Added: Plugin now works as a ["must-use-plugin"](https://codex.wordpress.org/Must_Use_Plugins). Props [jacquesletesson](https://github.com/jacquesletesson).
+- Added: Filter `SimpleHistoryFilterDropin/show_more_filters_on_load` that is used to control if the search options should be expanded by default when the history page is loaded. Default is false, to have a less cluttered GUI.
+- Added: Filter `SimpleHistoryFilterDropin/filter_default_user_ids` that is used to search/filter specific user ids by default (no need to search and select users). Should fix https://wordpress.org/support/topic/how-to-pass-array-of-user-ids-to-history-query.
+- Added: Filter `SimpleHistoryFilterDropin/filter_default_loglevel` that is used to search/filter for log levels by default.
+- Fixed: if trying to log an array or an object the logger now automagically runs `json_encode()` on the value to make it a string. Previously is just tried to run `$wpdb->insert() with the array and that gave errors. Should fix https://wordpress.org/support/topic/mysql_real_escape_string.
+- Fixed: The function that checks for new rows each second (or actually each tenth second to spare resourced) was called an extra time each time the submit button for the filter was clicked. Kinda stupid. Kinda fixed now.
+- Fixed: The export feature that was added in version 2.1 was actually not enabled for all users. Now it is!
+- Fixed: Image attachments that is deleted from file system no longer result in "broken image" in the log. (Rare case, I know, but it does happen for me that local dev server and remote prod server gets out of "sync" when it comes to attachments.)
+
 = 2.1.1 (May 2015) =
 
 - Removed: filter `simple_history/dropins_dir` removed. 
@@ -123,7 +139,6 @@ initiated by a specific user.
 - Updated: Brazilian Portuguese translation updated.
 - Fixed: POT file updated for translators.
 - Fixed: Better sanitization of API arguments.
-
 
 = 2.1 (May 2015) =
 
