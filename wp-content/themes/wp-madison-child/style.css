@@ -127,15 +127,18 @@ a:hover {
     text-decoration: none;
   }
 }
-.widget_rdc-schedule-showing form span.required {
+.widget_rdc-schedule-showing form span.required,
+.widget_rdc-prospect-owner-form form span.required {
   position: absolute;
   color: red;
 }
-.widget_rdc-schedule-showing form .label {
+.widget_rdc-schedule-showing form .label,
+.widget_rdc-prospect-owner-form form .label {
   color: black;
   font-size: 100%;
 }
-.widget_rdc-schedule-showing form .field {
+.widget_rdc-schedule-showing form .field,
+.widget_rdc-prospect-owner-form form .field {
   margin-bottom: 20px;
 }
 .ui-datepicker {
