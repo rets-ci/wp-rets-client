@@ -121,7 +121,7 @@
   <input name="ignore_redirecturl" type="hidden" value="http://www.reddoorcompany.com/form-submitted/"/>
   <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
-  <div align="center"><input class="button" type="submit" value="Request Information About Management Services"/></div>
+  <div align="center"><input class="button" type="submit" value="Submit"/></div>
 </form>
 
 <script type="text/javascript">
