@@ -3,7 +3,7 @@
 class RDCScheduleShowing extends WP_Widget {
 
   public function __construct() {
-    parent::WP_Widget('rdc-schedule-showing', __('ScheduleShowing Form'));
+    parent::WP_Widget('rdc-schedule-showing', __('Schedule Showing Form'));
   }
 
   public function widget($args, $instance) {
