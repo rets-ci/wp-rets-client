@@ -1,10 +1,10 @@
 <?php
 /**
- * Product Install Notice
+ * Admin Notice
  */
 ?>
 <style>
-  .ud-install-notice.updated {
+  .ud-ping-notice.updated {
     padding: 11px;
     position: relative;
     border-left: 4px solid #f29816;
@@ -20,38 +20,38 @@
     -moz-box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1);
   }
-  .ud-install-notice.updated a {
+  .ud-ping-notice.updated a {
     color: #ef5222;
     font-weight: 500;
   }
-  .ud-install-notice.updated a:hover {
+  .ud-ping-notice.updated a:hover {
     color: #cf481f;
   }
-  .ud-install-notice-content {
+  .ud-ping-notice-content {
     font-size: 16px;
     line-height: 21px;
     font-weight: 400;
     margin-bottom: 36px;
   }
-  .ud-install-notice-dismiss {
+  .ud-ping-notice-dismiss {
     position: absolute;
     bottom: 11px;
     font-size: 14px;
   }
-  .ud-install-notice-icon {
+  .ud-ping-notice-icon {
     float: right;
     text-align: left;
     max-width: 75px;
     margin-right: 10px;
   }
-  .ud-install-notice-icon.<?php echo $this->slug; ?> {
+  .ud-ping-notice-icon {
     background: url( "<?php echo $icon; ?>" ) center center no-repeat;
     background-size: cover;
     width: 75px;
     height: 75px;
     display: inline-block;
   }
-  .ud-install-notice-clear {
+  .ud-ping-notice-clear {
     display: block;
     clear: both;
     height: 1px;
@@ -61,33 +61,17 @@
     padding: 0;
   }
 </style>
-<div class="<?php echo $this->slug; ?> ud-install-notice updated fade">
+<div class="ud-ping-notice updated fade">
   <?php if( !empty( $icon ) ) : ?>
-    <div class="ud-install-notice-icon <?php echo $this->slug; ?>"></div>
+    <div class="ud-ping-notice-icon"></div>
   <?php endif; ?>
-  <div class="ud-install-notice-content">
-    <?php
-    if( !empty( $content ) ) {
-      echo $content;
-    } else {
-      printf( __( 'Thank you for using <a href="%s" target="_blank">Usability Dynamics</a>\' %s <b>%s</b>. Please, proceed to this <a href="%s">link</a> to see more details.' ),
-        'https://www.usabilitydynamics.com',
-        $type,
-        $name,
-        $dashboard_link
-      );
-    }
-    do_action( 'ud::bootstrap::upgrade_notice::additional_info', $this, $vars );
-    ?>
-    <div class="ud-install-notice-dismiss">
-      <?php printf( __( '<a href="%s" class="">Dismiss this notice</a>' ), $dismiss_link ); ?>
-      <?php if( !empty( $home_link ) ) : ?>
-        | <?php printf( __( '<a href="%s" target="_blank" class="">%s\'s Home page</a>' ), $home_link, ucfirst( $type ) ); ?>
-      <?php endif; ?>
-      <?php if( !empty( $this->uservoice_url ) ) : ?>
-        | <a href="<?php echo $this->uservoice_url ?>" target="_blank" ><?php _e( 'Post your idea' ) ?></a>
-      <?php endif; ?>
-    </div>
+  <div class="ud-ping-notice-content">
+    <?php if( !empty( $notice ) ) echo $notice; ?>
+    <?php if( !empty( $dismiss_url ) ) : ?>
+      <div class="ud-ping-notice-dismiss">
+        <?php printf( __( '<a href="%s" class="">Dismiss this notice</a>' ), $dismiss_url ); ?>
+      </div>
+    <?php endif; ?>
   </div>
-  <div class="ud-install-notice-clear"></div>
+  <div class="ud-ping-notice-clear"></div>
 </div>

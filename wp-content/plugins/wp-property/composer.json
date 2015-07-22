@@ -22,12 +22,12 @@
   ],
   "require": {
     "php": ">=5.3",
-    "usabilitydynamics/lib-ui": "0.3.2",
+    "usabilitydynamics/lib-ui": "0.3.3",
     "usabilitydynamics/lib-utility": "0.3.6",
     "usabilitydynamics/lib-settings": "0.2.3",
     "usabilitydynamics/lib-wp-bootstrap": "1.1.2",
-    "usabilitydynamics/lib-ud-api-client": "1.0.6",
-    "usabilitydynamics/lib-wp-list-table": "1.0.6",
+    "usabilitydynamics/lib-ud-api-client": "1.0.8",
+    "usabilitydynamics/lib-wp-list-table": "1.0.7",
     "usabilitydynamics/wp-meta-box": "4.5.2",
     "usabilitydynamics/wp-meta-box-utilities": "1.0.2",
     "UsabilityDynamics/wp-gallery-metabox": "2.0.0"
@@ -77,7 +77,18 @@
     "schemas": {
       "dependencies" : {
         "modules": {},
-        "plugins": []
+        "plugins": [
+          {
+            "name": "WP-Property Terms",
+            "slug": "wp-property-terms",
+            "version": "1.0.0",
+            "required": false,
+            "private": true,
+            "author": "UsabilityDynamics, Inc.",
+            "author_url": "https://www.usabilitydynamics.com",
+            "external_url": "https://www.usabilitydynamics.com/product/wp-property-terms"
+          }
+        ]
       },
       "licenses" : {
         "client" : {

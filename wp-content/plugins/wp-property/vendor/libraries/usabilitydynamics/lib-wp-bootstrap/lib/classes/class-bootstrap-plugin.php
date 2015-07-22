@@ -128,6 +128,7 @@ namespace UsabilityDynamics\WP {
               'name' => 'Plugin Name',
               'version' => 'Version',
               'domain' => 'Text Domain',
+              'uservoice_url' => 'UserVoice',
             ), 'plugin' );
             $args = array_merge( (array)$pd, (array)$args, array(
               'root_path' => dirname( $dbt[0]['file'] ),
@@ -152,6 +153,7 @@ namespace UsabilityDynamics\WP {
        * Internal method. Use activate() instead
        */
       public function _activate() {
+        delete_option( sanitize_key( 'dismiss_' . $this->slug . '_' . str_replace( '.', '_', $this->args['version'] ) . '_notice' ) );
         $this->activate();
       }
 
@@ -160,7 +162,7 @@ namespace UsabilityDynamics\WP {
        * Internal method. Use deactivate() instead
        */
       public function _deactivate() {
-        delete_transient( md5( 'dismiss_' . $this->slug . '_' . str_replace( '.', '_', $this->args['version'] ) . '_notice' ) );
+        delete_option( sanitize_key( 'dismiss_' . $this->slug . '_' . str_replace( '.', '_', $this->args['version'] ) . '_notice' ) );
         $this->deactivate();
       }
 
