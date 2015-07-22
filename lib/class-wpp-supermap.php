@@ -769,12 +769,16 @@ class class_wpp_supermap {
   static public function get_marker_by_post_id($marker_url = '', $post_id) {
     global $wp_properties;
 
+    if(!isset($wp_properties['configuration']['feature_settings']['supermap'])) {
+      return $marker_url;
+    }
+
     //* Get supermap marker for the current property */
     $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
 
     //* Return empty string if property uses default marker */
     if($supermap_marker == 'default_google_map_marker') {
-      return '';
+      return $marker_url;
     }
 
     $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
@@ -783,7 +787,11 @@ class class_wpp_supermap {
     }
 
     $property_type = get_post_meta($post_id, 'property_type', true);
-    if(empty($supermap_marker) && !empty($property_type)) {
+    if(
+      empty($supermap_marker) &&
+      !empty($property_type) &&
+      !empty( $supermap_configuration['property_type_markers'][$property_type] )
+    ) {
       $supermap_marker = $supermap_configuration['property_type_markers'][$property_type];
     }
 
