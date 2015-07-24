@@ -6,11 +6,10 @@
  * Author: Usability Dynamics, Inc.
  * Version: 1.0.0
  * Requires at least: 4.0
- * Tested up to: 4.2.2
+ * Tested up to: 4.2.3
  * Text Domain: wpp_pt
  * Author URI: http://www.usabilitydynamics.com
  * Domain Path: /static/languages/
- * Network: True
  * GitHub Plugin URI: wp-property/wp-property-power-tools
  * GitHub Branch: v1.0
 
