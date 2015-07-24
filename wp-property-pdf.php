@@ -6,7 +6,7 @@
  * Author: Usability Dynamics, Inc.
  * Version: 3.0.0
  * Requires at least: 4.0
- * Tested up to: 4.2.2
+ * Tested up to: 4.2.3
  * Text Domain: wpp_pdf
  * Author URI: http://www.usabilitydynamics.com
  * GitHub Plugin URI: wp-property/wp-property-pdf
