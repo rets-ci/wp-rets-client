@@ -939,7 +939,6 @@ class class_wpp_supermap {
       $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'supermap_template' ), $query, $properties, $atts );
       if( is_callable($template_function) ) {
         $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
-
       }
       return $supermap;
 
