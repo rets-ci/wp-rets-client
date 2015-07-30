@@ -345,6 +345,9 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
   }
 }
 
+/**
+ *
+ */
 if ( !function_exists( 'madison_search_placeholders' ) ) {
   function madison_search_placeholders( $html, $args ) {
 
@@ -352,8 +355,13 @@ if ( !function_exists( 'madison_search_placeholders' ) ) {
 
       switch( $args['input_type'] ) {
         case 'input':
-          $html = str_replace( 'placeholder=""', '', $html );
-          $html = str_replace( '/>', ' placeholder="'.$args['madison_placeholder'].'" />', $html );
+          if ( $args['attrib'] == 's' ) {
+            $html = str_replace('placeholder=""', '', $html);
+            $html = str_replace('/>', ' placeholder="' . __('Name, Address...') . '" />', $html);
+          } else {
+            $html = str_replace('placeholder=""', '', $html);
+            $html = str_replace('/>', ' placeholder="' . $args['madison_placeholder'] . '" />', $html);
+          }
           break;
 
         case 'dropdown':
@@ -371,3 +379,41 @@ if ( !function_exists( 'madison_search_placeholders' ) ) {
   }
 }
 add_filter( 'wpp_render_search_input', 'madison_search_placeholders', 10, 2 );
+
+
+function madison_get_properties_query( $query ) {
+
+  if ( !empty( $_REQUEST['wpp_search'] ) ) {
+    if ( !empty( $_REQUEST['wpp_search']['s'] ) ) {
+      $query['s'] = $_REQUEST['wpp_search']['s'];
+    }
+  }
+
+  return $query;
+}
+add_filter( 'wpp_get_properties_query', 'madison_get_properties_query' );
+
+function madison_custom_attr_case( $false, $meta_key ) {
+  return $meta_key == 's' ? true : $false;
+}
+add_filter( 'wpp::get_properties::custom_case', 'madison_custom_attr_case', 10, 2 );
+
+function madison_custom_key_search( $matching_ids, $meta_key, $criteria ) {
+
+  if ( $meta_key == 's' ) {
+    $sub_query = new WP_Query(array(
+      's' => $criteria,
+      'post__in' => $matching_ids,
+      'post_type' => 'property'
+    ));
+
+    $matching_ids = array();
+
+    foreach( $sub_query->posts as $_post ) {
+      $matching_ids[] = $_post->ID;
+    }
+  }
+
+  return $matching_ids;
+}
+add_filter( 'wpp::get_properties::custom_key', 'madison_custom_key_search', 10, 3 );

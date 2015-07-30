@@ -145,6 +145,7 @@ function madison_customize_register( $wp_customize ) {
       $_attributes[$_attr_slug] = $wp_properties['property_stats'][$_attr_slug];
     }
   }
+  $_attributes['s'] = __('Full Text', 'madison');
 
   $wp_customize->add_control( 'madison_search_field_1', array(
       'label'   => __( 'Field 1', 'madison' ),
