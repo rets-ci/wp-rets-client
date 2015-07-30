@@ -3,8 +3,8 @@ Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream
 Requires at least: 3.6.0
-Tested up to: 4.2.2
-Stable tag: 2.1.2
+Tested up to: 4.3
+Stable tag: 2.1.4
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -57,7 +57,7 @@ See the plugin in action with this short screencast:
 
 #### API so you can add your own events to Simple History
 
-If you are a theme or plugin developer and would like to add your own things/events to Simple History you can do that by calling the function `simple_history_add()` like this:
+If you are a theme or plugin developer and would like to add your own things/events to Simple History you can do that by using the function `SimpleLogger()` like this:
 
 `
 <?php
@@ -117,9 +117,20 @@ initiated by a specific user.
 
 ## Changelog
 
+= 2.1.4 (July 2015) =
+
+- Fixed: WordPress core updates got the wrong previous version.
+- Updated: Updated German translations.
+- Added: GHU header added to plugin header, to support [GitHub Updater plugin](https://github.com/afragen/github-updater).
+
+= 2.1.3 (July 2015) =
+
+- Fixed: Ajax error when loading a log that contained uploaded images.
+- Fixed: Removed some debug log messages.
+
 = 2.1.2 (July 2015) =
 
-- Changed: By default the log now shows events from the last week, last two weeks or last 30 days, all depending on how many events you have in your log. The previous behavior was to not apply any filtering what so ever during the first load. Anyway: this change makes it possible to load the log very quickly even for very large logs. A large amount of users + keeping the log forver = millions of rows of data. Previosly this could stall the log or make it load almost forever. Now = almost always very fast. I have tried it with over 5.000 users and a million row and yes - zing! - much faster. Fixes https://wordpress.org/support/topic/load-with-pagination-mysql.
+- Changed: By default the log now shows events from the last week, last two weeks or last 30 days, all depending on how many events you have in your log. The previous behavior was to not apply any filtering what so ever during the first load. Anyway: this change makes it possible to load the log very quickly even for very large logs. A large amount of users + keeping the log forver = millions of rows of data. Previously this could stall the log or make it load almost forever. Now = almost always very fast. I have tried it with over 5.000 users and a million row and yes - zing! - much faster. Fixes https://wordpress.org/support/topic/load-with-pagination-mysql.
 - Added: Finnish translation. Thanks a lot to the translator!
 - Updated: Swedish translation updated
 - Added: Cache is used on a few more places.
