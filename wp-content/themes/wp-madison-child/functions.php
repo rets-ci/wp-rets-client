@@ -12,6 +12,7 @@ add_action('widgets_init', 'rdc_register_widgets');
 function rdc_register_widgets() {
   register_widget( 'RDCScheduleShowing' );
   register_widget( 'RDCProspectOwnerForm' );
+  register_widget( 'RDCContactForm' );
 }
 
 /**
