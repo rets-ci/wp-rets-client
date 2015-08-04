@@ -24,11 +24,39 @@ namespace UsabilityDynamics\WPP {
        * Instantaite class.
        */
       public function init() {
-        
-        //** Here is we go. */
+
+        /**
+         * May be load Shortcodes
+         */
+        $this->load_files( $this->path('lib/shortcodes', 'dir') );
+
+        /**
+         * May be load Widgets
+         */
+        $this->load_files( $this->path('lib/widgets', 'dir') );
         
       }
-      
+
+      /**
+       * Includes all PHP files from specific folder
+       *
+       * @param string $dir Directory's path
+       * @author peshkov@UD
+       */
+      public function load_files($dir = '') {
+        $dir = trailingslashit($dir);
+        if (!empty($dir) && is_dir($dir)) {
+          if ($dh = opendir($dir)) {
+            while (( $file = readdir($dh) ) !== false) {
+              if (!in_array($file, array('.', '..')) && is_file($dir . $file) && 'php' == pathinfo($dir . $file, PATHINFO_EXTENSION)) {
+                include_once( $dir . $file );
+              }
+            }
+            closedir($dh);
+          }
+        }
+      }
+
       /**
        * Plugin Activation
        *
