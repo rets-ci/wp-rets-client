@@ -20,7 +20,7 @@
   "require": {
     "php": ">=5.3",
     "composer/installers": "~1.0",
-    "usabilitydynamics/lib-wp-bootstrap": "*"
+    "usabilitydynamics/lib-wp-bootstrap": "1.1.3"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "~0.2",
@@ -45,7 +45,14 @@
     "schemas": {
       "dependencies" : {
         "modules": {},
-        "plugins": []
+        "plugins": [
+          {
+            "name": "WP-Property",
+            "slug": "wp-property",
+            "version": "2.0.0",
+            "required": true
+          }
+        ]
       },
       "licenses" : {
         "client" : false,
