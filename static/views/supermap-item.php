@@ -15,6 +15,8 @@ $labels_to_keys = array_flip( (array) $wp_properties['property_stats']);
 
 foreach( (array) $property_stats as $attribute_label => $attribute_value) {
   $boolean_field = false;
+  $attribute_slug = false;
+  $attribute_data = false;
 
   if( is_array( $labels_to_keys ) ) {
     $attribute_slug = $labels_to_keys[$attribute_label];
@@ -22,6 +24,10 @@ foreach( (array) $property_stats as $attribute_label => $attribute_value) {
   }
 
   if( !isset( $attribute_value ) || empty($attribute_value)) {
+    continue;
+  }
+
+  if( !in_array($attribute_slug, $supermap_configuration['display_attributes'])) {
     continue;
   }
 
