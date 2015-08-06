@@ -6,7 +6,7 @@
  * Author: Usability Dynamics, Inc.
  * Version: 4.0.1
  * Requires at least: 4.0
- * Tested up to: 4.2.3
+ * Tested up to: 4.2.4
  * Text Domain: wpp_supermap
  * Author URI: http://www.usabilitydynamics.com
  * GitHub Plugin URI: wp-property/wp-property-supermap
