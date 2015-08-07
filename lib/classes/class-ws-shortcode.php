@@ -19,11 +19,13 @@ namespace UsabilityDynamics\WPP {
         $name = apply_filters( $this->id . '_template_name', array( $template ), $this );
         /* Set possible pathes where templates could be stored. */
         $path = apply_filters( $this->id . '_template_path', array(
-          ud_get_wpp_av()->path( 'static/views/shortcodes', 'dir' ),
+          ud_get_wpp_walkscore()->path( 'static/views/shortcodes', 'dir' ),
         ) );
+
         $path = \UsabilityDynamics\Utility::get_template_part( $name, $path, array(
           'load' => false
         ) );
+
         if( $output ) {
           extract( $vars );
           include $path;
