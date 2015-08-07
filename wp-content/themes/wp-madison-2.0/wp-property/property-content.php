@@ -84,8 +84,11 @@ $property_images = get_post_meta( $post->ID, 'slideshow_images', true );
 								<span class="group-name column col-12-12"><?php echo $GLOBALS['wp_properties'][ 'property_groups' ][ $group ]['name']; ?></span>
 							<?php endif; ?>
 							<?php foreach ( $attribute as $slug => $data ) : ?>
-								<span class="left column col-6-12"><?php echo $data[ 'label' ]; ?></span>
-								<span class="right column col-6-12"><?php echo $data[ 'value' ]; ?></span>
+                <div class="column-row">
+                  <span class="left column col-6-12"><?php echo $data[ 'label' ]; ?></span>
+                  <span class="right column col-6-12"><?php echo $data[ 'value' ]; ?></span>
+                  <div class="clearfix"></div>
+                </div>
 							<?php endforeach; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
