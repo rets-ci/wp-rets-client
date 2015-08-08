@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP-Property: WalkScore
+ * Plugin Name: WP-Property: Walk Score
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-walkscore
  * Description: Adds WalkScore Widgets and Shortcodes to your WP-Property Site.
  * Author: Usability Dynamics, Inc.

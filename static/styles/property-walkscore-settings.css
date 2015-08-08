@@ -1,0 +1,18 @@
+.uisf-checkbox-wrapper label span.description {
+  display: none;
+}
+
+.uisf-checkbox-wrapper p.description {
+  display: block !important;
+  font-style: italic;
+}
+
+ul.map_modules {
+  list-style: circle inside;
+  margin-left: 20px;
+}
+
+ul.map_modules li {
+  color: #666;
+  font-style: italic;
+}

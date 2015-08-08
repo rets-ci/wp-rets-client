@@ -36,50 +36,6 @@ namespace UsabilityDynamics\WPP {
          */
         $this->ui = new \UsabilityDynamics\UI\Settings( ud_get_wpp_walkscore()->settings, ud_get_wpp_walkscore()->get_schema( 'extra.schemas.ui', true ) );
 
-        /**
-         * @see wp-content/plugins/wp-property/vendor/usabilitydynamics/lib-ui/static/templates/admin/main.php
-         */
-        add_action( 'ud:ui:settings:view:main:top', array( $this, 'custom_ui' ) );
-        // Adds Tab Item ( Link )
-        add_action( 'ud:ui:settings:view:tab_link', array( $this, 'custom_ui' ) );
-        // Adds Panel for Tab
-        add_action( 'ud:ui:settings:view:tab_container', array( $this, 'custom_ui' ) );
-        add_action( 'ud:ui:settings:view:main:bottom', array( $this, 'custom_ui' ) );
-
-        add_action( 'ud:ui:settings:view:main:actions', array( $this, 'custom_ui' ) );
-
-        /**
-         * @see wp-content/plugins/wp-property/vendor/usabilitydynamics/lib-ui/static/templates/admin/tab.php
-         */
-        //
-        add_action( 'ud:ui:settings:view:tab:api:top', array( $this, 'custom_ui' ) );
-        add_action( 'ud:ui:settings:view:tab:api:bottom', array( $this, 'custom_ui' ) );
-
-        /**
-         * @see wp-content/plugins/wp-property/vendor/usabilitydynamics/lib-ui/static/templates/admin/section.php
-         */
-        add_action( 'ud:ui:settings:view:section:credentials:top', array( $this, 'custom_ui' ) );
-        add_action( 'ud:ui:settings:view:section:sync:top', array( $this, 'custom_ui' ) );
-        add_action( 'ud:ui:settings:view:section:credentials:bottom', array( $this, 'custom_ui' ) );
-        add_action( 'ud:ui:settings:view:section:sync:bottom', array( $this, 'custom_ui' ) );
-
-      }
-
-      /**
-       * Custom UI on WalkScore Settings page
-       */
-      public function custom_ui() {
-
-        $hook = current_filter();
-
-        switch( $hook ) {
-
-          default:
-            // Do nothing
-            break;
-
-        }
-
       }
 
       /**
@@ -91,8 +47,8 @@ namespace UsabilityDynamics\WPP {
 
         switch( $screen->id ) {
 
-          default:
-            // Do nothing
+          case 'property_page_walkscore':
+            wp_enqueue_style( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/styles/property-walkscore-settings.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
             break;
 
         }
