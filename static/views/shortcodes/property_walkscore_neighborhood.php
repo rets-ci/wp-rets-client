@@ -8,25 +8,24 @@
 
 <script type='text/javascript'>
   <?php foreach( $data as $k => $v ) {
-    if( in_array( $k, array( 'property_id' ) ) ) continue;
     // Set default values for required parameters or ignore optional ones if they do not have values.
     if( empty( $v ) ) {
       switch( $k ) {
-        case "width":
+        case "ws_width":
           $v = '100%';
           break;
-        case "height":
+        case "ws_height":
           $v = '400';
           break;
-        case "layout":
+        case "ws_layout":
           $v = 'horizontal';
           break;
-        case "map_modules":
+        case "ws_map_modules":
           $v = 'default';
           break;
       }
     }
-    if( !empty( $v ) ) echo "var ws_{$k}=\"{$v}\";";
+    if( !empty( $v ) ) echo "var {$k}=\"{$v}\";";
   } ?>
 </script>
 

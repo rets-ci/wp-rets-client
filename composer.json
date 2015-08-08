@@ -178,7 +178,7 @@
             "options": {
               "horizontal": "horizontal",
               "vertical": "vertical",
-              "vertical": "none"
+              "none": "none"
             },
             "multiple": false,
             "desc": "l10n.desc_layout",
