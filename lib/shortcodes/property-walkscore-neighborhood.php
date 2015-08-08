@@ -215,8 +215,8 @@ namespace UsabilityDynamics\WPP {
           'hide_scores_below' => ud_get_wpp_walkscore( 'config.neighborhood.hide_scores_below', false ),
         ), $atts );
 
-        $data[ 'api_key' ] = ud_get_wpp_walkscore( 'config.api.key' );
-        if( empty( $data[ 'api_key' ] ) ) {
+        $data[ 'wsid' ] = ud_get_wpp_walkscore( 'config.api.key' );
+        if( empty( $data[ 'wsid' ] ) ) {
           return;
         }
 
@@ -239,6 +239,16 @@ namespace UsabilityDynamics\WPP {
         if( empty( $data['latitude'] ) || empty( $data['longitude'] ) ) {
           return;
         }
+
+        if( $data['default_view'] == 'commute' ) {
+          $data[ 'commute' ] = 'true';
+        }
+
+        /*
+        echo "<pre>";
+        print_r( $data );
+        echo "</pre>";
+        //*/
 
         $this->get_template( 'property_walkscore_neighborhood', $data );
 

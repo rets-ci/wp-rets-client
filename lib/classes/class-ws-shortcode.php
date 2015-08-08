@@ -15,7 +15,7 @@ namespace UsabilityDynamics\WPP {
        *
        *
        */
-      public function get_template( $template, $vars, $output = true ) {
+      public function get_template( $template, $data, $output = true ) {
         $name = apply_filters( $this->id . '_template_name', array( $template ), $this );
         /* Set possible pathes where templates could be stored. */
         $path = apply_filters( $this->id . '_template_path', array(
@@ -27,7 +27,7 @@ namespace UsabilityDynamics\WPP {
         ) );
 
         if( $output ) {
-          extract( $vars );
+          extract( $data );
           include $path;
         } else {
           return $path;

@@ -7,15 +7,27 @@
 ?>
 
 <script type='text/javascript'>
-  var ws_wsid = '<?php echo $api_key; ?>';
-  var ws_lat = "<?php echo $latitude; ?>";
-  var ws_lon = "<?php echo $longitude; ?>";
-  var ws_width = '600';
-  var ws_height = '444';
-  var ws_layout = 'horizontal';
-  var ws_commute = 'true';
-  var ws_transit_score = 'true';
-  var ws_map_modules = 'all';
+  <?php foreach( $data as $k => $v ) {
+    if( in_array( $k, array( 'property_id' ) ) ) continue;
+    // Set default values for required parameters or ignore optional ones if they do not have values.
+    if( empty( $v ) ) {
+      switch( $k ) {
+        case "width":
+          $v = '100%';
+          break;
+        case "height":
+          $v = '400';
+          break;
+        case "layout":
+          $v = 'horizontal';
+          break;
+        case "map_modules":
+          $v = 'default';
+          break;
+      }
+    }
+    if( !empty( $v ) ) echo "var ws_{$k}=\"{$v}\";";
+  } ?>
 </script>
 
 <div id='ws-walkscore-tile'></div>
