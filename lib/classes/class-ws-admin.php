@@ -36,6 +36,8 @@ namespace UsabilityDynamics\WPP {
          */
         $this->ui = new \UsabilityDynamics\UI\Settings( ud_get_wpp_walkscore()->settings, ud_get_wpp_walkscore()->get_schema( 'extra.schemas.ui', true ) );
 
+
+        add_action( 'ud:ui:settings:view:section:score_api:bottom', array( $this, 'custom_ui' ) );
       }
 
       /**
@@ -49,6 +51,28 @@ namespace UsabilityDynamics\WPP {
 
           case 'property_page_walkscore':
             wp_enqueue_style( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/styles/property-walkscore-settings.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
+            break;
+
+        }
+
+      }
+
+      /**
+       *
+       */
+      public function custom_ui() {
+        $screen = get_current_screen();
+
+        if ($screen->id !== 'property_page_walkscore') {
+          return false;
+        }
+
+        $hook = current_filter();
+
+        switch ($hook) {
+
+          case 'ud:ui:settings:view:section:score_api:bottom':
+            include( ud_get_wpp_walkscore()->path( 'static/views/admin/bulk_score_request.php', 'dir' ) );
             break;
 
         }

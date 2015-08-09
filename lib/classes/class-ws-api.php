@@ -14,7 +14,7 @@ namespace UsabilityDynamics\WPP {
      * @author: peshkov@UD
      */
     class WS_API {
-    
+
       /**
        *
        */

@@ -92,8 +92,24 @@ namespace UsabilityDynamics\WPP {
           'lon' => get_post_meta( $post_id, 'longitude', true )
         ), $post_id, true );
 
+        //** // Response Example
+        $response = array(
+          'status' => '1',
+          'walkscore' => rand( 1, 99 ),
+          'description' => "walker's paradise",
+          'updated' => '2009-12-25 03:40:16.006257',
+          'logo_url' => 'https://cdn.walk.sc/images/api-logo.png',
+          'more_info_icon' => 'https://cdn.walk.sc/images/api-more-info.gif',
+          'ws_link' => 'http://www.walkscore.com/score/1119-8th-Avenue-Seattle-WA-98101/lat=47.6085/lng=-122.3295/?utm_source=myrealtysite.com&utm_medium=ws_api&utm_campaign=ws_api',
+          'help_link' => 'https://www.redfin.com/how-walk-score-works',
+          'snapped_lat' => '47.6085',
+          'snapped_lon' => '-122.3295',
+        );
+        // */
+
         if( !empty( $response ) ) {
-          // @todo: Save response in property meta.
+          update_post_meta( $post_id, '_ws_walkscore', $response[ 'walkscore' ] );
+          update_post_meta( $post_id, '_ws_link', $response[ 'ws_link' ] );
         } else {
           WS_API::store_error_log( $post_id );
         }
@@ -173,7 +189,7 @@ namespace UsabilityDynamics\WPP {
           'general' => __( 'General', $this->domain ),
           'general_settings' => sprintf( __( 'To start using %sWalk Score%s on your site you have to setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
           'map_api_settings' => __( 'Neighborhood Map API', $this->domain ),
-          'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.%s', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p class="description">', '</p><p class="description" style="color:red;">The Walk Score and Public Transit API is not available in current <strong>' . $this->args['version'] . '</strong> version. Please, be patient. It is coming soon.' ),
+          'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p>' ),
           'map_api_key' => __( 'API Key', $this->domain ),
           'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires API Key to start. %sGet your API Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
           'score_api_settings' => __( 'Walk Score and Public Transit API', $this->domain ),
