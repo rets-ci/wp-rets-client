@@ -49,7 +49,7 @@
           {
             "name": "WP-Property",
             "slug": "wp-property",
-            "version": "2.0.2",
+            "version": "2.0.2-RC1",
             "required": true
           }
         ]
