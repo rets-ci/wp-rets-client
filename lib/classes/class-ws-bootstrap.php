@@ -173,7 +173,7 @@ namespace UsabilityDynamics\WPP {
           'general' => __( 'General', $this->domain ),
           'general_settings' => sprintf( __( 'To start using %sWalk Score%s on your site you have to setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
           'map_api_settings' => __( 'Neighborhood Map API', $this->domain ),
-          'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p class="description">' ),
+          'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.%s', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p class="description">', '</p><p class="description" style="color:red;">The Walk Score and Public Transit API is not available in current <strong>' . $this->args['version'] . '</strong> version. Please, be patient. It is coming soon.' ),
           'map_api_key' => __( 'API Key', $this->domain ),
           'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires API Key to start. %sGet your API Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
           'score_api_settings' => __( 'Walk Score and Public Transit API', $this->domain ),
