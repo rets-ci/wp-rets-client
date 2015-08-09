@@ -4,9 +4,14 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-walkscore
  * Description: Adds WalkScore Widgets and Shortcodes to your WP-Property Site.
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.0
+ * Version: 1.0.0-RC1
+ * Requires at least: 4.0
+ * Tested up to: 4.2.4
  * Text Domain: wpp_walkscore
- * Author URI: http://usabilitydynamics.com
+ * Domain Path: /static/languages/
+ * Author URI: http://www.usabilitydynamics.com
+ * GitHub Plugin URI: wp-property/wp-property-walkscore
+ * GitHub Branch: v1.0
  *
  * Copyright 2012 - 2015 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
  *

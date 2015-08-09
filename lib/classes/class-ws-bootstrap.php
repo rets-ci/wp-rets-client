@@ -45,6 +45,9 @@ namespace UsabilityDynamics\WPP {
         if( is_admin() ) {
           new WS_Admin();
         }
+
+        add_action( 'save_property', array( $this, 'save_property' ), 99, 2 );
+        add_action( 'admin_notices', array( $this, 'admin_notices' ) );
         
       }
 
@@ -62,6 +65,56 @@ namespace UsabilityDynamics\WPP {
             'domain' => $this->domain,
           )
         ) );
+      }
+
+      /**
+       * May be do request to Walk Score to get Score data.
+       *
+       */
+      public function save_property( $post_id, $args ) {
+
+        /* Even do not continue if API key is not provided. */
+        $api_key = $this->get( 'config.api.score_key' );
+        if( empty( $api_key ) ) {
+          return;
+        }
+
+        /* Determine if address attribute exists */
+        $attribute = ud_get_wp_property( 'configuration.address_attribute' );
+        if( empty( $attribute ) ) {
+          return;
+        }
+
+        /* Do our API request to WalkScore */
+        $response = WS_API::get_score( array(
+          'address' => get_post_meta( $post_id, $attribute, true ),
+          'lat' => get_post_meta( $post_id, 'latitude', true ),
+          'lon' => get_post_meta( $post_id, 'longitude', true )
+        ), $post_id, true );
+
+        if( !empty( $response ) ) {
+          // @todo: Save response in property meta.
+        } else {
+          WS_API::store_error_log( $post_id );
+        }
+
+      }
+
+      /**
+       * Admin Notice
+       */
+      public function admin_notices() {
+        global $post;
+        if( !empty( $post ) && is_object( $post ) && !empty( $post->ID ) && $post->post_type == 'property' ) {
+          $log = WS_API::get_error_log( $post->ID );
+          if( !empty( $log ) ) {
+            $log = implode( '<br/>', (array)$log );
+            echo '<div class="error updated" style="padding: 10px;">';
+            printf( __( 'Error occurred on trying to get Walk Score information for current property: %s' ), $log );
+            echo '</div>';
+          }
+          WS_API::clear_error_log( $post->ID );
+        }
       }
 
       /**
@@ -118,10 +171,15 @@ namespace UsabilityDynamics\WPP {
           'walkscore' => __( 'Walk Score', $this->domain ),
           'settings_page_title' => __( 'WP-Property: Walk Score Settings', $this->domain ),
           'general' => __( 'General', $this->domain ),
-          'general_settings' => sprintf( __( 'To use %sWalk Score%s on your site you must setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
-          'api_settings' => __( 'Walk Score API', $this->domain ),
-          'api_key' => __( 'API Key', $this->domain ),
-          'desc_api_key' => sprintf( __( 'Walk Score requires API Key to start. %sGet your API Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/api-sign-up.php" target="_blank">', '</a>' ),
+          'general_settings' => sprintf( __( 'To start using %sWalk Score%s on your site you have to setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
+          'map_api_settings' => __( 'Neighborhood Map API', $this->domain ),
+          'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p class="description">' ),
+          'map_api_key' => __( 'API Key', $this->domain ),
+          'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires API Key to start. %sGet your API Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
+          'score_api_settings' => __( 'Walk Score and Public Transit API', $this->domain ),
+          'desc_map_api_settings' => sprintf( __( 'You have to setup this API to have your %s shortcode and <i>Walk Score Neighborhood Map</i> widget working.', $this->domain ), '<code>[property_walkscore_neighborhood]</code>' ),
+          'score_api_key' => __( 'API Key', $this->domain ),
+          'desc_score_api_key' => sprintf( __( 'Walk Score requires API Key to start. %sGet your API Key%s. <strong>Note</strong>, Neighborhood Map and Walk Score APIs have very similar, but <strong>different Sign Up</strong> pages. Be careful!', $this->domain ), '<a href="https://www.walkscore.com/professional/api-sign-up.php" target="_blank">', '</a>' ),
           'neighborhood_map' => sprintf( __( 'Neighborhood Map', $this->domain ) ),
           'desc_neighborhood_map' => sprintf( __( '<p>Setup your %s shortcode advanced settings below. The current shortcode renders %sNeighborhood Map%s.<br/>The settings below will be used as default ones for all your shortcodes.</p><p>By default, shortcode uses current property for showing map. But if you want to show another property or use shortcode on non-property page you can use attribute <strong>property_id</strong>. Example: <code>[property_walkscore_neighborhood property_id=777]</code>.<br/>Also, you are able to use custom coordinates instead of property_id. Example: <code>[property_walkscore_neighborhood ws_lat="37.720309" ws_lon="-122.390668"]</code></p><p><strong>Note</strong>, you can overwrite any option manually in your shortcode. See shortcode\'s available attribute under option you want to change. Example: %s</p><p>Do you want to use widget instead of the current shortcode? Well, just go to %sWidgets%s settings and setup your <strong>Walk Score Neighborhood Map</strong> widget there.</p><p>Need more information? You can find Neighborhood Map\'s API Documentation %shere%s.</p><p><strong>Attention!</strong> To prevent issues, you must not use more than one Neighborhood Map on page!', $this->domain ), '<code>[property_walkscore_neighborhood]</code>', '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<code>[property_walkscore_neighborhood ws_width=600 ws_height=300 ws_layout=vertical]</code>', '<a href="' . admin_url( 'widgets.php' ) . '" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/neighborhood-map-docs.php" target="_blank">', '</a>' ),
           'layout' => sprintf( __( 'Layout', $this->domain ) ),
@@ -187,6 +245,20 @@ namespace UsabilityDynamics\WPP {
           'desc_no_link_info_bubbles' => sprintf( __( '%s - shortcode\'s attribute.<br/>Remove links from the info bubbles and removes the More link from the amenity list.', $this->domain ), '<code>ws_no_link_info_bubbles</code>' ),
           'hide_scores_below' => sprintf( __( 'Hide Scores Below', $this->domain ) ),
           'desc_hide_scores_below' => sprintf( __( '%s - shortcode\'s attribute.<br/>By default, the Neighborhood Map displays scores from 0 to 100. If you prefer not to show low scores, you can use this to define the cutoff. Example: %s (this will hide scores 0-49, and show scores 50-100)', $this->domain ), '<code>ws_hide_scores_below</code>', '<code>[property_walkscore_neighborhood ws_hide_scores_below="50"]</code>' ),
+        ) );
+      }
+
+      /**
+       * Returns the list of available features for Walk Score and Public Transit API
+       * Just additional method for localization.
+       */
+      public function get_score_api_features_list() {
+        return implode( '', array(
+          '<ul class="score_api_features">',
+          '<li>' . __( 'Display the Walk Score of a location.', $this->domain ) .  '</li>',
+          '<li>' . __( 'Search your listings by Walk Score on your site.', $this->domain ) .  '</li>',
+          '<li>' . __( 'Sort your listings by Walk Score on your site.', $this->domain ) .  '</li>',
+          '</ul>'
         ) );
       }
 

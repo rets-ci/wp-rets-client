@@ -12,6 +12,7 @@ return array(
     'UsabilityDynamics\\Term' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-term.php',
     'UsabilityDynamics\\Utility' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-utility.php',
     'UsabilityDynamics\\Utility\\Guid_Fix' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
+    'UsabilityDynamics\\WPP\\WS_API' => $baseDir . '/lib/classes/class-ws-api.php',
     'UsabilityDynamics\\WPP\\WS_Admin' => $baseDir . '/lib/classes/class-ws-admin.php',
     'UsabilityDynamics\\WPP\\WS_Bootstrap' => $baseDir . '/lib/classes/class-ws-bootstrap.php',
     'UsabilityDynamics\\WPP\\WS_Shortcode' => $baseDir . '/lib/classes/class-ws-shortcode.php',

@@ -7,12 +7,14 @@
   font-style: italic;
 }
 
-ul.map_modules {
+ul.map_modules,
+ul.score_api_features {
   list-style: circle inside;
   margin-left: 20px;
 }
 
-ul.map_modules li {
+ul.map_modules li,
+ul.score_api_features li {
   color: #666;
   font-style: italic;
 }

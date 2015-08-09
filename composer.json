@@ -80,9 +80,16 @@
           }
         },
         "sections": {
-          "api": {
-            "id": "api",
-            "name": "l10n.api_settings",
+          "map_api": {
+            "id": "map_api",
+            "name": "l10n.map_api_settings",
+            "desc": "l10n.desc_map_api_settings",
+            "menu": "general"
+          },
+          "score_api": {
+            "id": "score_api",
+            "name": "l10n.score_api_settings",
+            "desc": "l10n.desc_score_api_settings",
             "menu": "general"
           },
           "layout": {
@@ -154,10 +161,16 @@
         },
         "fields": [
           {
-            "id": "config.api.key",
-            "name": "l10n.api_key",
-            "desc": "l10n.desc_api_key",
-            "section": "api"
+            "id": "config.api.score_key",
+            "name": "l10n.score_api_key",
+            "desc": "l10n.desc_score_api_key",
+            "section": "score_api"
+          },
+          {
+            "id": "config.api.map_key",
+            "name": "l10n.map_api_key",
+            "desc": "l10n.desc_map_api_key",
+            "section": "map_api"
           },
           {
             "id": "config.neighborhood.width",
