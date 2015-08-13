@@ -894,7 +894,7 @@ class class_wpp_supermap {
     //* Exclude properties which has no latitude,longitude keys */
     $query['latitude'] = 'all';
     $query['longitude'] = 'all';
-    $query['address_is_formatted'] = 'true';
+    //$query['address_is_formatted'] = 'true';
     $query['exclude_from_supermap'] = 'false,0';
 
     $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
