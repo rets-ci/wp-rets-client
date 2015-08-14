@@ -39,6 +39,9 @@ namespace UsabilityDynamics\WPP {
          */
         $this->load_files( $this->path('lib/widgets', 'dir') );
 
+        /** Init our AJAX Handler */
+        new WS_Ajax();
+
         /**
          * Load Admin UI
          */

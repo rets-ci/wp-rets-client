@@ -14,6 +14,7 @@ return array(
     'UsabilityDynamics\\Utility\\Guid_Fix' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
     'UsabilityDynamics\\WPP\\WS_API' => $baseDir . '/lib/classes/class-ws-api.php',
     'UsabilityDynamics\\WPP\\WS_Admin' => $baseDir . '/lib/classes/class-ws-admin.php',
+    'UsabilityDynamics\\WPP\\WS_Ajax' => $baseDir . '/lib/classes/class-ws-ajax.php',
     'UsabilityDynamics\\WPP\\WS_Bootstrap' => $baseDir . '/lib/classes/class-ws-bootstrap.php',
     'UsabilityDynamics\\WPP\\WS_Shortcode' => $baseDir . '/lib/classes/class-ws-shortcode.php',
     'UsabilityDynamics\\WP\\Bootstrap' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap.php',

@@ -23,3 +23,16 @@ ul.map_modules li {
   background: rgba(0, 0, 0, 0.07) none repeat scroll 0 0;
   border: 1px solid #d0d0d0;
 }
+
+#ws-response-logs.wpp_class_pre {
+  height: 300px;
+  display: none;
+}
+
+#ws-ajax-spinner {
+  display: none;
+}
+
+#ws-close-log-button {
+  display: none;
+}
