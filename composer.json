@@ -161,13 +161,13 @@
         },
         "fields": [
           {
-            "id": "config.api.score_key",
+            "id": "config.api.key",
             "name": "l10n.score_api_key",
             "desc": "l10n.desc_score_api_key",
             "section": "score_api"
           },
           {
-            "id": "config.api.map_key",
+            "id": "config.api.id",
             "name": "l10n.map_api_key",
             "desc": "l10n.desc_map_api_key",
             "section": "map_api"

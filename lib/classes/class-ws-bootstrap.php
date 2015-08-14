@@ -68,13 +68,14 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
-       * May be do request to Walk Score to get Score data.
+       * May be do request to Walk Score to get Score data
+       * on property saving
        *
        */
       public function save_property( $post_id, $args ) {
 
         /* Even do not continue if API key is not provided. */
-        $api_key = $this->get( 'config.api.score_key' );
+        $api_key = $this->get( 'config.api.key' );
         if( empty( $api_key ) ) {
           return;
         }
@@ -85,6 +86,25 @@ namespace UsabilityDynamics\WPP {
           return;
         }
 
+        /**
+         * We break, if we coordinates were not been changed
+         * and Walk Score already exists.
+         */
+        $walkscore = get_post_meta( $post_id, '_ws_walkscore', true );
+        $walkscore_link = get_post_meta( $post_id, '_ws_link', true );
+        if(
+          isset( $args[ 'update_data' ][ 'latitude' ] ) &&
+          isset( $args[ 'update_data' ][ 'longitude' ] ) &&
+          isset( $args[ 'geo_data' ][ 'old_coordinates' ][ 'lat' ] ) &&
+          isset( $args[ 'geo_data' ][ 'old_coordinates' ][ 'lng' ] ) &&
+          $args[ 'update_data' ][ 'latitude' ] == $args[ 'geo_data' ][ 'old_coordinates' ][ 'lat' ] &&
+          $args[ 'update_data' ][ 'longitude' ] == $args[ 'geo_data' ][ 'old_coordinates' ][ 'lng' ] &&
+          !empty( $walkscore ) &&
+          !empty( $walkscore_link )
+        ) {
+          return;
+        }
+
         /* Do our API request to WalkScore */
         $response = WS_API::get_score( array(
           'address' => get_post_meta( $post_id, $attribute, true ),
@@ -92,10 +112,10 @@ namespace UsabilityDynamics\WPP {
           'lon' => get_post_meta( $post_id, 'longitude', true )
         ), $post_id, true );
 
-        //** // Response Example
+        /** // Response Example
         $response = array(
           'status' => '1',
-          'walkscore' => rand( 1, 99 ),
+          'walkscore' => '63',
           'description' => "walker's paradise",
           'updated' => '2009-12-25 03:40:16.006257',
           'logo_url' => 'https://cdn.walk.sc/images/api-logo.png',
@@ -188,14 +208,14 @@ namespace UsabilityDynamics\WPP {
           'settings_page_title' => __( 'WP-Property: Walk Score Settings', $this->domain ),
           'general' => __( 'General', $this->domain ),
           'general_settings' => sprintf( __( 'To start using %sWalk Score%s on your site you have to setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
-          'map_api_settings' => __( 'Neighborhood Map API', $this->domain ),
+          'map_api_settings' => __( 'Walk Score ID', $this->domain ),
           'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p>' ),
           'map_api_key' => __( 'API Key', $this->domain ),
-          'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires API Key to start. %sGet your API Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
+          'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires Walk Score ID to start. %sGet your ID Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
           'score_api_settings' => __( 'Walk Score and Public Transit API', $this->domain ),
-          'desc_map_api_settings' => sprintf( __( 'You have to setup this API to have your %s shortcode and <i>Walk Score Neighborhood Map</i> widget working.', $this->domain ), '<code>[property_walkscore_neighborhood]</code>' ),
+          'desc_map_api_settings' => sprintf( __( 'You have to setup Walk Score ID to have your %s shortcode and <i>Walk Score Neighborhood Map</i> widget working.', $this->domain ), '<code>[property_walkscore_neighborhood]</code>' ),
           'score_api_key' => __( 'API Key', $this->domain ),
-          'desc_score_api_key' => sprintf( __( 'Walk Score requires API Key to start. %sGet your API Key%s. <strong>Note</strong>, Neighborhood Map and Walk Score APIs have very similar, but <strong>different Sign Up</strong> pages. Be careful!', $this->domain ), '<a href="https://www.walkscore.com/professional/api-sign-up.php" target="_blank">', '</a>' ),
+          'desc_score_api_key' => sprintf( __( 'Walk Score requires API Key to start. %sGet your API Key%s. <strong>Note</strong>, Walk Score ID and API have very similar, but <strong>different Sign Up</strong> pages. Be careful!', $this->domain ), '<a href="https://www.walkscore.com/professional/api-sign-up.php" target="_blank">', '</a>' ),
           'neighborhood_map' => sprintf( __( 'Neighborhood Map', $this->domain ) ),
           'desc_neighborhood_map' => sprintf( __( '<p>Setup your %s shortcode advanced settings below. The current shortcode renders %sNeighborhood Map%s.<br/>The settings below will be used as default ones for all your shortcodes.</p><p>By default, shortcode uses current property for showing map. But if you want to show another property or use shortcode on non-property page you can use attribute <strong>property_id</strong>. Example: <code>[property_walkscore_neighborhood property_id=777]</code>.<br/>Also, you are able to use custom coordinates instead of property_id. Example: <code>[property_walkscore_neighborhood ws_lat="37.720309" ws_lon="-122.390668"]</code></p><p><strong>Note</strong>, you can overwrite any option manually in your shortcode. See shortcode\'s available attribute under option you want to change. Example: %s</p><p>Do you want to use widget instead of the current shortcode? Well, just go to %sWidgets%s settings and setup your <strong>Walk Score Neighborhood Map</strong> widget there.</p><p>Need more information? You can find Neighborhood Map\'s API Documentation %shere%s.</p><p><strong>Attention!</strong> To prevent issues, you must not use more than one Neighborhood Map on page!', $this->domain ), '<code>[property_walkscore_neighborhood]</code>', '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<code>[property_walkscore_neighborhood ws_width=600 ws_height=300 ws_layout=vertical]</code>', '<a href="' . admin_url( 'widgets.php' ) . '" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/neighborhood-map-docs.php" target="_blank">', '</a>' ),
           'layout' => sprintf( __( 'Layout', $this->domain ) ),

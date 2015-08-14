@@ -29,12 +29,12 @@ namespace UsabilityDynamics\WPP {
        * Get Score
        */
       public static function get_score( $args, $property_id, $error_log = false ) {
-        $key = ud_get_wpp_walkscore( 'config.api.score_key' );
+        $key = ud_get_wpp_walkscore( 'config.api.key' );
         if( empty( $key ) ) {
           if( $error_log ) self::log_request_error( __( 'Can not make request to Walk Score since API key is not set.', ud_get_wpp_walkscore( 'domain' ) ), $property_id );
           return false;
         }
-        $api_url = add_query_arg( 'wsapikey', ud_get_wpp_walkscore( 'config.api.score_key' ), 'http://api.walkscore.com/score' );
+        $api_url = add_query_arg( 'wsapikey', ud_get_wpp_walkscore( 'config.api.key' ), 'http://api.walkscore.com/score' );
         $args = wp_parse_args( $args, array(
           'address' => '',
           'lat' => '',

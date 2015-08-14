@@ -215,7 +215,7 @@ namespace UsabilityDynamics\WPP {
           'ws_hide_scores_below' => ud_get_wpp_walkscore( 'config.neighborhood.hide_scores_below', false ),
         ), $atts );
 
-        $data[ 'ws_wsid' ] = ud_get_wpp_walkscore( 'config.api.map_key' );
+        $data[ 'ws_wsid' ] = ud_get_wpp_walkscore( 'config.api.id' );
         if( empty( $data[ 'ws_wsid' ] ) ) {
           return;
         }
