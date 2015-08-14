@@ -156,11 +156,59 @@ namespace UsabilityDynamics\WPP {
        */
       public function action_wpp_ws_update_walkscore( $args = false ) {
 
+        /* Even do not continue if API key is not provided. */
+        $api_key = $this->get( 'config.api.key' );
+        if( empty( $api_key ) ) {
+          throw new \Exception( __( 'Walk Score API key is not set. Check your Walk Score API key option.', ud_get_wpp_walkscore('domain') ) );
+        }
+
+        /* Determine if address attribute exists */
+        $attribute = ud_get_wp_property( 'configuration.address_attribute' );
+        if( empty( $attribute ) ) {
+          throw new \Exception( __( 'Address attribute is not set. Check your WP-Property Settings.', ud_get_wpp_walkscore('domain') ) );
+        }
+
         if( !isset( $args[ 'post_id' ] ) || !is_numeric( $args[ 'post_id' ] ) ) {
           throw new \Exception( __( 'Post ID is not provided or invalid', ud_get_wpp_walkscore('domain') ) );
         }
 
-        get_post( $args[ 'post_id' ] );
+        $post_type = get_post_type( $args[ 'post_id' ] );
+        if( !$post_type || $post_type !== 'property' ) {
+          throw new \Exception( __( 'Post ID is invalid', ud_get_wpp_walkscore('domain') ) );
+        }
+
+        $lat = get_post_meta( $args[ 'post_id' ], 'latitude', true );
+        $lon = get_post_meta( $args[ 'post_id' ], 'longitude', true );
+
+
+        /* Do our API request to WalkScore */
+        $response = WS_API::get_score( array(
+          'address' => get_post_meta( $args[ 'post_id' ], $attribute, true ),
+          'lat' => $lat,
+          'lon' => $lon
+        ), $args[ 'post_id' ], true );
+
+        /** // Response Example
+        $response = array(
+        'status' => '1',
+        'walkscore' => '63',
+        'description' => "walker's paradise",
+        'updated' => '2009-12-25 03:40:16.006257',
+        'logo_url' => 'https://cdn.walk.sc/images/api-logo.png',
+        'more_info_icon' => 'https://cdn.walk.sc/images/api-more-info.gif',
+        'ws_link' => 'http://www.walkscore.com/score/1119-8th-Avenue-Seattle-WA-98101/lat=47.6085/lng=-122.3295/?utm_source=myrealtysite.com&utm_medium=ws_api&utm_campaign=ws_api',
+        'help_link' => 'https://www.redfin.com/how-walk-score-works',
+        'snapped_lat' => '47.6085',
+        'snapped_lon' => '-122.3295',
+        );
+        // */
+
+        if( !empty( $response ) ) {
+          update_post_meta( $args[ 'post_id' ], '_ws_walkscore', $response[ 'walkscore' ] );
+          update_post_meta( $args[ 'post_id' ], '_ws_link', $response[ 'ws_link' ] );
+        } else {
+          WS_API::store_error_log( $post_id );
+        }
 
       }
 
