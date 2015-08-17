@@ -49,7 +49,7 @@
           {
             "name": "WP-Property",
             "slug": "wp-property",
-            "version": "2.0.2-RC1",
+            "version": "2.0.2",
             "required": true
           }
         ]
@@ -77,6 +77,11 @@
             "id": "neighborhood",
             "name": "l10n.neighborhood_map",
             "desc": "l10n.desc_neighborhood_map"
+          },
+          "walkscore": {
+            "id": "walkscore",
+            "name": "l10n.walkscore",
+            "desc": "l10n.desc_walkscore"
           }
         },
         "sections": {
@@ -157,6 +162,12 @@
             "name": "l10n.disable_features",
             "menu": "neighborhood",
             "desc": "l10n.for_premium_users"
+          },
+          "walkscore": {
+            "id": "walkscore",
+            "name": "l10n.walkscore_shortcode",
+            "menu": "walkscore",
+            "desc": "l10n.walkscore_shortcode_desc"
           }
         },
         "fields": [
@@ -372,6 +383,31 @@
             "name": "l10n.hide_scores_below",
             "desc": "l10n.desc_hide_scores_below",
             "section": "disable_features"
+          },
+          {
+            "id": "config.walkscore.view",
+            "name": "l10n.walkscore_view",
+            "type": "select",
+            "options": {
+              "default": "text",
+              "icon": "icon",
+              "badge": "badge"
+            },
+            "multiple": false,
+            "desc": "l10n.desc_walkscore_view",
+            "section": "walkscore"
+          },
+          {
+            "id": "config.walkscore.type",
+            "name": "l10n.walkscore_type",
+            "type": "select",
+            "options": {
+              "free": "free",
+              "premium": "premium"
+            },
+            "multiple": false,
+            "desc": "l10n.desc_walkscore_type",
+            "section": "walkscore"
           }
         ]
       }

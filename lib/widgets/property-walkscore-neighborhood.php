@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget: Walkscore Neighborhood Map
+ * Widget: Walk Score Neighborhood Map
  *
  * @author peshkov@UD
  */
@@ -14,7 +14,7 @@ class Property_Walkscore_Neighborhood_Widget extends WP_Widget {
     parent::__construct(
       'property_walkscore_neighborhood',
       __( 'Walk Score Neighborhood Map', ud_get_wpp_walkscore( 'domain' ) ),
-      array( 'description' => __( 'Renders WalkScore Neighborhood Map for current or specified property.', ud_get_wpp_walkscore( 'domain' ) ), ) // Args
+      array( 'description' => sprintf( __( 'Renders Neighborhood Map for current or specified %s.', ud_get_wpp_walkscore( 'domain' ) ), \WPP_F::property_label() ), ) // Args
     );
   }
 

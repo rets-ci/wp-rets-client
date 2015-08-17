@@ -1,6 +1,6 @@
 <?php
 /**
- * [property_walkscore] template
+ * [property_walkscore_neighborhood] template
  *
  * To modify it, copy it to your theme's root.
  */

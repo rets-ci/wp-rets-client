@@ -1,7 +1,7 @@
 <?php
 /**
  * Shortcode: [property_walkscore_neighborhood]
- * Template: static/views/shortcodes/property_walkscore.php
+ * Template: static/views/shortcodes/property_walkscore_neighborhood.php
  *
  * @since 1.0.0
  */
@@ -44,7 +44,7 @@ namespace UsabilityDynamics\WPP {
               'description' => __( 'Optional.  The pixel height of the Neighborhood Map.', ud_get_wpp_walkscore()->domain ),
             ),
             'ws_layout' => array(
-              'name' => __( 'Height', ud_get_wpp_walkscore()->domain ),
+              'name' => __( 'Layout', ud_get_wpp_walkscore()->domain ),
               'description' => __( 'Optional. The Neighborhood Map has two layout modes: "horizontal" or "vertical".', ud_get_wpp_walkscore()->domain ),
             ),
 
@@ -170,7 +170,7 @@ namespace UsabilityDynamics\WPP {
             ),
 
           ),
-          'description' => __( 'Renders WalkScore', ud_get_wpp_walkscore()->domain ),
+          'description' => __( 'Renders Walk Score Neighborhood Map', ud_get_wpp_walkscore()->domain ),
           'group' => 'WP-Property',
         );
 
