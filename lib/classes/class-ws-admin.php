@@ -38,6 +38,11 @@ namespace UsabilityDynamics\WPP {
 
 
         add_action( 'ud:ui:settings:view:section:score_api:bottom', array( $this, 'custom_ui' ) );
+
+        /**
+         * Add Walk Score Meta Box on Edit Property page
+         */
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
       }
 
       /**
@@ -60,6 +65,12 @@ namespace UsabilityDynamics\WPP {
             ) );
 
             wp_enqueue_style( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/styles/property-walkscore-settings.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
+
+            break;
+
+          case 'property':
+
+            wp_enqueue_style( 'property-walkscore-edit', ud_get_wpp_walkscore()->path( 'static/styles/edit-property.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
 
             break;
 
@@ -89,6 +100,25 @@ namespace UsabilityDynamics\WPP {
 
       }
 
+      /**
+       * Add Walk Score Meta Box on Edit Property page
+       *
+       */
+      public function add_meta_boxes() {
+        add_meta_box( 'wpp_ws_walkscore', __( 'Walk Score', ud_get_wpp_walkscore('domain') ), array( $this, 'render_walkscore_metabox' ), 'property', 'side', 'core' );
+      }
+
+      /**
+       * Render Walk Score Meta Box on Edit Property page
+       *
+       */
+      public function render_walkscore_metabox( $post ) {
+
+        $walkscore = get_post_meta( $post->ID, '_ws_walkscore', true );
+        $walkscore_data = get_post_meta( $post->ID, '_ws_walkscore_response', true );
+
+        include( ud_get_wpp_walkscore()->path( 'static/views/admin/metabox_walkscore.php', 'dir' ) );
+      }
 
     }
 

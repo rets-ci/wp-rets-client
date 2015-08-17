@@ -169,7 +169,7 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
-       * Updates Walk Score for
+       * Updates Walk Score for Property
        */
       public function action_wpp_ws_update_walkscore( $args = false ) {
 
@@ -239,7 +239,7 @@ namespace UsabilityDynamics\WPP {
 
         if( !empty( $response ) ) {
           update_post_meta( $args[ 'post_id' ], '_ws_walkscore', $response[ 'walkscore' ] );
-          update_post_meta( $args[ 'post_id' ], '_ws_link', $response[ 'ws_link' ] );
+          update_post_meta( $args[ 'post_id' ], '_ws_walkscore_response', $response );
 
           return sprintf( __( 'Walk Score has been successfully got for %s %s', ud_get_wpp_walkscore('domain') ), '"' . $args[ 'post_title' ] . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $args[ 'post_id' ] . '&action=edit' ) . '">' . $args[ 'post_id' ] . '</a>)' );
 

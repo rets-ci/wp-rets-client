@@ -132,7 +132,7 @@ namespace UsabilityDynamics\WPP {
 
         if( !empty( $response ) ) {
           update_post_meta( $post_id, '_ws_walkscore', $response[ 'walkscore' ] );
-          update_post_meta( $post_id, '_ws_link', $response[ 'ws_link' ] );
+          update_post_meta( $post_id, '_ws_walkscore_response', $response );
         } else {
           WS_API::store_error_log( $post_id );
         }
