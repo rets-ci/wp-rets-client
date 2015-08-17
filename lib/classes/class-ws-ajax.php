@@ -118,6 +118,18 @@ namespace UsabilityDynamics\WPP {
       public function action_wpp_ws_get_properties_ids( $args = false ) {
         global $wpdb;
 
+        /* Even do not continue if API key is not provided. */
+        $api_key = ud_get_wpp_walkscore( 'config.api.key' );
+        if( empty( $api_key ) ) {
+          throw new \Exception( __( 'Walk Score API key is not set. Check your Walk Score API key option.', ud_get_wpp_walkscore('domain') ) );
+        }
+
+        /* Determine if address attribute exists */
+        $attribute = ud_get_wp_property( 'configuration.address_attribute' );
+        if( empty( $attribute ) ) {
+          throw new \Exception( __( 'Address attribute is not set. Check your WP-Property Settings.', ud_get_wpp_walkscore('domain') ) );
+        }
+
         /* Get the list of All Properties */
         $ids = $wpdb->get_results("
           SELECT ID as post_id, post_title
@@ -145,8 +157,13 @@ namespace UsabilityDynamics\WPP {
           }
         }
 
+        if( empty( $ids ) ) {
+          throw new \Exception( sprintf( __( 'No %s with missed Walk Score found.', ud_get_wpp_walkscore('domain') ), \WPP_F::property_label('plural') ) );
+        }
+
         return array(
           'ids' => $ids,
+          'total' => count($ids),
         );
 
       }
@@ -156,34 +173,51 @@ namespace UsabilityDynamics\WPP {
        */
       public function action_wpp_ws_update_walkscore( $args = false ) {
 
+        $args = wp_parse_args( $args, array(
+          'post_id' => false,
+          'post_title' => '',
+        ) );
+
+        if( empty( $args[ 'post_id' ] ) || !is_numeric( $args[ 'post_id' ] ) ) {
+          throw new \Exception( $this->generate_error_message( __( 'Post ID is not provided or invalid.', ud_get_wpp_walkscore('domain') ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
+        }
+
+        if( empty( $args[ 'post_title' ] ) ) {
+          $post = get_post( $args[ 'post_id' ], ARRAY_A );
+          if( empty( $post[ 'post_title' ] ) ) {
+            throw new \Exception( $this->generate_error_message( __( 'Post ID is invalid or Title is not set.', ud_get_wpp_walkscore('domain') ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
+          }
+          $args[ 'post_title' ] = $post[ 'post_title' ];
+        }
+
+        $post_type = get_post_type( $args[ 'post_id' ] );
+        if( !$post_type || $post_type !== 'property' ) {
+          throw new \Exception( $this->generate_error_message( __( 'Post ID is invalid.', ud_get_wpp_walkscore('domain') ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
+        }
+
         /* Even do not continue if API key is not provided. */
-        $api_key = $this->get( 'config.api.key' );
+        $api_key = ud_get_wpp_walkscore( 'config.api.key' );
         if( empty( $api_key ) ) {
-          throw new \Exception( __( 'Walk Score API key is not set. Check your Walk Score API key option.', ud_get_wpp_walkscore('domain') ) );
+          throw new \Exception( $this->generate_error_message( __( 'Walk Score API key is not set. Check your Walk Score API key option.', ud_get_wpp_walkscore('domain') ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
         }
 
         /* Determine if address attribute exists */
         $attribute = ud_get_wp_property( 'configuration.address_attribute' );
         if( empty( $attribute ) ) {
-          throw new \Exception( __( 'Address attribute is not set. Check your WP-Property Settings.', ud_get_wpp_walkscore('domain') ) );
+          throw new \Exception( $this->generate_error_message( __( 'Address attribute is not set. Check your WP-Property Settings.', ud_get_wpp_walkscore('domain') ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
         }
 
-        if( !isset( $args[ 'post_id' ] ) || !is_numeric( $args[ 'post_id' ] ) ) {
-          throw new \Exception( __( 'Post ID is not provided or invalid', ud_get_wpp_walkscore('domain') ) );
-        }
-
-        $post_type = get_post_type( $args[ 'post_id' ] );
-        if( !$post_type || $post_type !== 'property' ) {
-          throw new \Exception( __( 'Post ID is invalid', ud_get_wpp_walkscore('domain') ) );
-        }
-
+        $address = get_post_meta( $args[ 'post_id' ], $attribute, true );
         $lat = get_post_meta( $args[ 'post_id' ], 'latitude', true );
         $lon = get_post_meta( $args[ 'post_id' ], 'longitude', true );
 
+        if( ( empty( $lat ) || empty( $lon ) ) && empty( $address ) ) {
+          throw new \Exception( $this->generate_error_message( sprintf( __( '%s does not have address.', ud_get_wpp_walkscore('domain') ), \WPP_F::property_label() ), $args[ 'post_id' ], $args[ 'post_title' ] ) );
+        }
 
         /* Do our API request to WalkScore */
         $response = WS_API::get_score( array(
-          'address' => get_post_meta( $args[ 'post_id' ], $attribute, true ),
+          'address' => $address,
           'lat' => $lat,
           'lon' => $lon
         ), $args[ 'post_id' ], true );
@@ -206,10 +240,34 @@ namespace UsabilityDynamics\WPP {
         if( !empty( $response ) ) {
           update_post_meta( $args[ 'post_id' ], '_ws_walkscore', $response[ 'walkscore' ] );
           update_post_meta( $args[ 'post_id' ], '_ws_link', $response[ 'ws_link' ] );
+
+          return sprintf( __( 'Walk Score has been successfully got for %s %s', ud_get_wpp_walkscore('domain') ), '"' . $args[ 'post_title' ] . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $args[ 'post_id' ] . '&action=edit' ) . '">' . $args[ 'post_id' ] . '</a>)' );
+
         } else {
-          WS_API::store_error_log( $post_id );
+          WS_API::store_error_log( $args[ 'post_id' ] );
+          $log = WS_API::get_error_log( $args[ 'post_id' ] );
+          WS_API::clear_error_log( $args[ 'post_id' ] );
+
+          if( is_array($log) ) {
+            $log = implode( ' ', $log );
+          }
+
+          throw new \Exception( sprintf( __( 'Error occurred on request to Walk Score\'s API for getting score for %s %s: %s', ud_get_wpp_walkscore('domain') ), '"' . $args[ 'post_title' ] . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $args[ 'post_id' ] . '&action=edit' ) . '">' . $args[ 'post_id' ] . '</a>)', $log ) );
+
         }
 
+      }
+
+      /**
+       * Generates Error information for output.
+       *
+       * @param $error
+       * @param $post_id
+       * @param $post_title
+       * @return string
+       */
+      public function generate_error_message( $error, $post_id, $post_title ) {
+          return sprintf( __( 'Error occurred for %s %s %s: %s', ud_get_wpp_walkscore('domain') ), \WPP_F::property_label(), '"' . $post_title . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $post_id . '&action=edit' ) . '">' . $post_id . '</a>)', $error );
       }
 
     }

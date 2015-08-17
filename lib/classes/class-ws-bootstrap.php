@@ -213,7 +213,7 @@ namespace UsabilityDynamics\WPP {
           'general_settings' => sprintf( __( 'To start using %sWalk Score%s on your site you have to setup the options below at first.', $this->domain ), '<a href="https://www.walkscore.com/professional/" target="_blank">', '</a>' ),
           'map_api_settings' => __( 'Walk Score ID', $this->domain ),
           'desc_score_api_settings' => sprintf( __( 'The following API adds ability to:%s %s %s <strong>Be aware</strong>, that the current API is supported in the United States, Canada, Australia, and New Zealand.', $this->domain ), '</p>', $this->get_score_api_features_list(), '<br/><p>' ),
-          'map_api_key' => __( 'API Key', $this->domain ),
+          'map_api_key' => __( 'ID Key', $this->domain ),
           'desc_map_api_key' => sprintf( __( 'Walk Score\'s %sNeighborhood Map%s requires Walk Score ID to start. %sGet your ID Key%s', $this->domain ), '<a href="https://www.walkscore.com/professional/neighborhood-map.php" target="_blank">', '</a>', '<a href="https://www.walkscore.com/professional/sign-up.php" target="_blank">', '</a>' ),
           'score_api_settings' => __( 'Walk Score and Public Transit API', $this->domain ),
           'desc_map_api_settings' => sprintf( __( 'You have to setup Walk Score ID to have your %s shortcode and <i>Walk Score Neighborhood Map</i> widget working.', $this->domain ), '<code>[property_walkscore_neighborhood]</code>' ),

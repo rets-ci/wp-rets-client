@@ -41,7 +41,12 @@ namespace UsabilityDynamics\WPP {
           'lon' => '',
         ) );
         $args[ 'format' ] = 'json';
-        $target = $api_url . '&' . http_build_query( $args );
+
+        $api_url .= '&';
+        foreach ($args AS $key=>$value)
+          $api_url .= $key.'='.urlencode($value).'&';
+        $target = rtrim($api_url, '&');
+
         $response = self::_request( $target, $property_id, $error_log );
         if( !empty( $response ) ) {
           if( !isset( $response[ 'status' ] ) ) {
