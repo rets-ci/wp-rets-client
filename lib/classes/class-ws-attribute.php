@@ -16,9 +16,23 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
+        /**
+         * Adds predefined WP-Property 'Walk Score' attribute
+         */
         add_action( 'init', array( $this, 'setup_walkscore_attribute' ) );
 
+        /**
+         * Removes Attribute from RWMB Meta Boxes ( prohibit ability to edit value of attribute )
+         */
         add_filter( 'wpp::rwmb_meta_box::field', array( $this, 'remove_rwmb_meta_box_field' ), 99, 3 );
+
+        /**
+         * Adds Note to 'Walk Score 'Attribute on Developer Tab on WP-Property Settings page
+         */
+        add_action( 'wpp::property_attributes::attribute_name', array( $this, 'add_notice_on_attribute_field' ), 1, 1 );
+
+        /* Handle Scripts and Styles */
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
       }
 
@@ -60,6 +74,7 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       * Removes Attribute from RWMB Meta Boxes ( prohibit ability to edit value of attribute )
        *
        */
       public function remove_rwmb_meta_box_field( $field, $slug, $post ) {
@@ -67,6 +82,38 @@ namespace UsabilityDynamics\WPP {
           $field['type'] = 'hidden';
         }
         return $field;
+      }
+
+      /**
+       * Adds Note to 'Walk Score 'Attribute on Developer Tab on WP-Property Settings page
+       *
+       */
+      public function add_notice_on_attribute_field( $slug ) {
+        if( $slug == '_ws_walkscore' ) {
+          echo "<li class=\"wpp_development_advanced_option\"><div class=\"wpp_notice\"><span>";
+          printf( __( 'Note! The current attribute is predefined and used by %s Add-on. You can not remove it or change its Data Entry from \'Number\' to another value.', ud_get_wpp_walkscore('domain') ), '<strong>WP-Property: Walk Score</strong>' );
+          echo "<br/><hr/>";
+          printf( __( 'Be aware, the value of attribute can not be set manually on Edit %s page.', ud_get_wpp_walkscore('domain') ), \WPP_F::property_label() );
+          echo "</span></div></li>";
+        }
+      }
+
+      /**
+       *
+       */
+      public function admin_enqueue_scripts() {
+        $screen = get_current_screen();
+
+        switch( $screen->id ) {
+
+          case 'property_page_property_settings':
+
+            wp_enqueue_style( 'property-walkscore-attribute', ud_get_wpp_walkscore()->path( 'static/styles/admin/property-walkscore-attribute.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
+
+            break;
+
+        }
+
       }
 
     }

@@ -34,8 +34,7 @@ namespace UsabilityDynamics\WPP {
         /**
          * Setup Admin Settings Interface
          */
-        $this->ui = new \UsabilityDynamics\UI\Settings( ud_get_wpp_walkscore()->settings, ud_get_wpp_walkscore()->get_schema( 'extra.schemas.ui', true ) );
-
+        $this->ui = new WS_UI_Settings( ud_get_wpp_walkscore()->settings, ud_get_wpp_walkscore()->get_schema( 'extra.schemas.ui', true ) );
 
         add_action( 'ud:ui:settings:view:section:score_api:bottom', array( $this, 'custom_ui' ) );
 
@@ -56,7 +55,7 @@ namespace UsabilityDynamics\WPP {
 
           case 'property_page_walkscore':
 
-            wp_enqueue_script( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/scripts/property-walkscore-settings.js', 'url' ), array( 'jquery' ), ud_get_wpp_walkscore( 'version' ) );
+            wp_enqueue_script( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/scripts/admin/property-walkscore-settings.js', 'url' ), array( 'jquery' ), ud_get_wpp_walkscore( 'version' ) );
             wp_localize_script( 'property-walkscore-settings', '_walkscore_settings', array(
               'admin_ajax' => admin_url('admin-ajax.php'),
               'got_ids' => sprintf( __( 'List of %s which do not have Walk Score is got. Start getting Walk Scores...', ud_get_wpp_walkscore('domain') ), \WPP_F::property_label( 'plural' ) ),
@@ -64,13 +63,13 @@ namespace UsabilityDynamics\WPP {
               'done' => __( 'Done.', ud_get_wpp_walkscore('domain') ),
             ) );
 
-            wp_enqueue_style( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/styles/property-walkscore-settings.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
+            wp_enqueue_style( 'property-walkscore-settings', ud_get_wpp_walkscore()->path( 'static/styles/admin/property-walkscore-settings.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
 
             break;
 
           case 'property':
 
-            wp_enqueue_style( 'property-walkscore-edit', ud_get_wpp_walkscore()->path( 'static/styles/edit-property.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
+            wp_enqueue_style( 'property-walkscore-edit', ud_get_wpp_walkscore()->path( 'static/styles/admin/edit-property.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
 
             break;
 

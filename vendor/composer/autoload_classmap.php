@@ -18,6 +18,7 @@ return array(
     'UsabilityDynamics\\WPP\\WS_Attribute' => $baseDir . '/lib/classes/class-ws-attribute.php',
     'UsabilityDynamics\\WPP\\WS_Bootstrap' => $baseDir . '/lib/classes/class-ws-bootstrap.php',
     'UsabilityDynamics\\WPP\\WS_Shortcode' => $baseDir . '/lib/classes/class-ws-shortcode.php',
+    'UsabilityDynamics\\WPP\\WS_UI_Settings' => $baseDir . '/lib/classes/class-ws-ui-settings.php',
     'UsabilityDynamics\\WP\\Bootstrap' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap.php',
     'UsabilityDynamics\\WP\\Bootstrap_Plugin' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap-plugin.php',
     'UsabilityDynamics\\WP\\Bootstrap_Theme' => $vendorDir . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap-theme.php',
