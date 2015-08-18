@@ -56,7 +56,10 @@
       },
       "licenses" : {
         "client" : false,
-        "product" : false
+        "product" : {
+          "referrer": "wp-property/wp-property",
+          "product_id": "wp-property/wp-property-walkscore"
+        }
       },
       "ui": {
         "configuration": {
