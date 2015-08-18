@@ -1776,32 +1776,18 @@ class class_wpp_pdf_flyer {
             unset(  $property[ 'gallery' ][ $attachment_key ] );
           }
           $image = wpp_get_image_link( $image[ 'attachment_id' ], $wpp_pdf_flyer[ 'secondary_photos' ], array( 'return' => 'array' ) );
-          $headers = @get_headers( $image['link'] , 1 );
-          if( strpos( $headers[0], '200' )) {
-            if( isset( $headers[ 'Content-Type' ] ) && strpos( $headers[ 'Content-Type' ], 'image' ) === false ) {
-              continue;
-            }
-          } else {
-            continue;
-          }
           if( !empty( $image ) ) {
             $wpp_pdf_flyer[ 'images' ][] = $image;
             $counter++;
           }
         }
       }
-      
-      //** STEP: TOP LOGO IMAGE. */
-      //** Check, if logo image's url exists we approve logo's image url */
-      if( !empty( $wpp_pdf_flyer['logo_url'] ) ) {
-        $headers = @get_headers( $wpp_pdf_flyer['logo_url'] , 1 );
-        if( strpos( $headers[0], '200' )) {
-          if( isset( $headers[ 'Content-Type' ] ) && strpos( $headers[ 'Content-Type' ], 'image' ) === false ) {
-            $wpp_pdf_flyer[ 'logo_url' ] = false;
-          }
-        } else {
-          $wpp_pdf_flyer['logo_url'] = false;
-        }
+
+      /**
+       * We check image URL only for a valid URL now.
+       */
+      if( empty( $wpp_pdf_flyer['logo_url'] ) || !filter_var($wpp_pdf_flyer['logo_url'], FILTER_VALIDATE_URL) ) {
+        $wpp_pdf_flyer['logo_url'] = false;
       }
       
       //** STEP: QR CODE. */
@@ -1879,7 +1865,6 @@ class class_wpp_pdf_flyer {
       $html = ob_get_clean();
       
       //** STEP: GENERATE PDF FLYER. */
-      
       $pdf = new WPP_PDF_Flyer( 'P', PDF_UNIT, $wpp_pdf_flyer[ 'format' ], true, 'UTF-8', false );
 
       $pdf->setPrintHeader(false);
