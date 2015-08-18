@@ -85,7 +85,7 @@ namespace UsabilityDynamics\WPP {
 
         wp_enqueue_style( 'property-walkscore', ud_get_wpp_walkscore()->path( 'static/styles/walk-score.css', 'url' ), array(), ud_get_wpp_walkscore( 'version' ) );
 
-        $this->get_template( 'property_walkscore', $data );
+        return $this->get_template( 'property_walkscore', $data, false );
 
       }
 

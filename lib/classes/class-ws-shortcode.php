@@ -30,7 +30,10 @@ namespace UsabilityDynamics\WPP {
           extract( $data );
           include $path;
         } else {
-          return $path;
+          ob_start();
+          extract( $data );
+          include $path;
+          return ob_get_clean();
         }
       }
 

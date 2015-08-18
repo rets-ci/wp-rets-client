@@ -244,15 +244,9 @@ namespace UsabilityDynamics\WPP {
           $data[ 'ws_commute' ] = 'true';
         }
 
-        /*
-        echo "<pre>";
-        print_r( $data );
-        echo "</pre>";
-        //*/
-
         unset( $data[ 'property_id' ] );
 
-        $this->get_template( 'property_walkscore_neighborhood', $data );
+        return $this->get_template( 'property_walkscore_neighborhood', $data, false );
 
       }
 

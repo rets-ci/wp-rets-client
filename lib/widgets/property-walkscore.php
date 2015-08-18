@@ -46,9 +46,6 @@ class Property_Walkscore_Widget extends WP_Widget {
     }
 
     echo $args['before_widget'];
-    if ( ! empty( $instance['title'] ) ) {
-      echo $args['before_title'] . apply_filters( 'property_walkscore_neighborhood::title', $instance['title'] ). $args['after_title'];
-    }
 
     echo $html;
 
