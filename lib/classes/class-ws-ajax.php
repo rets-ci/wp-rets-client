@@ -241,7 +241,7 @@ namespace UsabilityDynamics\WPP {
           update_post_meta( $args[ 'post_id' ], '_ws_walkscore', $response[ 'walkscore' ] );
           update_post_meta( $args[ 'post_id' ], '_ws_walkscore_response', $response );
 
-          return sprintf( __( 'Walk Score has been successfully got for %s %s', ud_get_wpp_walkscore('domain') ), '"' . $args[ 'post_title' ] . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $args[ 'post_id' ] . '&action=edit' ) . '">' . $args[ 'post_id' ] . '</a>)' );
+          return sprintf( __( 'Walk Score has been successfully set for %s %s', ud_get_wpp_walkscore('domain') ), '"' . $args[ 'post_title' ] . '"', '(<a target="_blank" href="' . admin_url( 'post.php?post=' . $args[ 'post_id' ] . '&action=edit' ) . '">' . $args[ 'post_id' ] . '</a>)' );
 
         } else {
           WS_API::store_error_log( $args[ 'post_id' ] );

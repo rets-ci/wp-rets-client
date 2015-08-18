@@ -28,6 +28,14 @@ namespace UsabilityDynamics\WPP {
         $this->define_settings();
 
         /**
+         * WP-Property 'Walk Score' attribute Handler.
+         * It adds attribute if it does not exists and handles some stuff related to it.
+         *
+         * Note! Attribute is required and CAN NOT BE REMOVED!!
+         */
+        new WS_Attribute();
+
+        /**
          * May be load Shortcodes
          */
         if( class_exists( '\UsabilityDynamics\Shortcode\Shortcode' ) ) {
