@@ -6,7 +6,7 @@
  * Author: Usability Dynamics, Inc.
  * Version: 1.0.0
  * Requires at least: 4.0
- * Tested up to: 4.3-RC2
+ * Tested up to: 4.3
  * Text Domain: wpp_walkscore
  * Domain Path: /static/languages/
  * Author URI: http://www.usabilitydynamics.com
