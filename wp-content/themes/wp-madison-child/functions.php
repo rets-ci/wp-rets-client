@@ -23,13 +23,14 @@ function rdc_register_widgets() {
 /**
  * Enqueue parent style hook
  */
-add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'rdc_theme_enqueue_scripts' );
 
 /**
  * Enqueue parent style
  */
-function theme_enqueue_styles() {
+function rdc_theme_enqueue_scripts() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+  wp_enqueue_script( 'rdc-common', get_stylesheet_directory_uri() . '/static/js/rdc-common.js', array( 'jquery' ) );
 }
 
 /**
@@ -64,3 +65,20 @@ add_filter( 'madison_custom_header_args', function( $defaults ) {
   $defaults[ 'height' ] = 200;
   return $defaults;
 } );
+
+
+add_action( 'template_redirect', function(){
+  if( isset( $_REQUEST[ 'mps' ] ) ) {
+    $url = untrailingslashit( home_url() );
+    $query = !empty( $_REQUEST[ 's' ] ) ? $_REQUEST[ 's' ] : '';
+    if( !empty( $_REQUEST[ 'post_type' ] ) && $_REQUEST[ 'post_type' ] == 'property' ) {
+      if( !function_exists( 'ud_get_wp_property' ) ) {
+        return;
+      }
+      $url .= '/' . ud_get_wp_property( 'configuration.base_slug' ) . '?wpp_search[s]=' . $query;
+    } else {
+      $url .= '?s=' . $query;
+    }
+    wp_redirect( $url );
+  }
+}, 999 );
