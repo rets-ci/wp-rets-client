@@ -75,6 +75,11 @@ a:hover {
       position: static;
     }
 
+    /* SECONDARY MENU */
+    &.secondary-menu-wrapper {
+      min-height: 100px;
+    }
+
     .secondary-menu {
 
       float: left;
@@ -103,14 +108,19 @@ a:hover {
           margin-right: 10px;
 
           a {
-            border: 1px solid white;
+            color: #808285;
+            border: 1px solid #808285;
             border-radius: 5px;
             height: 30px;
             line-height: 20px;
             padding: 5px 10px !important;
+            background-color: #fff;
 
             &:hover {
               text-decoration: none;
+              background-color: #fff;
+              color: #bf2b1f;
+              border-color: #bf2b1f;
             }
           }
         }
@@ -148,6 +158,27 @@ a:hover {
         }
       }
     }
+  }
+
+  .rdc-section-header-navigation {
+
+    /* TOP MENU */
+    &.madison-header-menu-wrapper {
+
+      .menu > li > a {
+        padding-top: 0;
+        padding-bottom: 0;
+        line-height: 70px;
+        border: 0;
+
+        @media screen and (max-width: 650px) {
+          line-height: 25px;
+        }
+
+      }
+
+    }
+
   }
 }
 

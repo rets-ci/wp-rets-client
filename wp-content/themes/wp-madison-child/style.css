@@ -50,6 +50,7 @@ a:hover {
   display: flex;
   align-items: center;
   -webkit-align-items: center;
+  /* SECONDARY MENU */
 }
 @media screen and (max-width: 1000px) {
   #site-header .site-navigation {
@@ -62,6 +63,9 @@ a:hover {
     display: block;
     position: static;
   }
+}
+#site-header .site-navigation.secondary-menu-wrapper {
+  min-height: 100px;
 }
 #site-header .site-navigation .secondary-menu {
   float: left;
@@ -90,14 +94,19 @@ a:hover {
   margin-right: 10px;
 }
 #site-header .site-navigation .secondary-menu .menu li.menu-item a {
-  border: 1px solid white;
+  color: #808285;
+  border: 1px solid #808285;
   border-radius: 5px;
   height: 30px;
   line-height: 20px;
   padding: 5px 10px !important;
+  background-color: #fff;
 }
 #site-header .site-navigation .secondary-menu .menu li.menu-item a:hover {
   text-decoration: none;
+  background-color: #fff;
+  color: #bf2b1f;
+  border-color: #bf2b1f;
 }
 @media screen and (max-width: 650px) {
   #site-header .site-navigation .secondary-menu .menu {
@@ -125,6 +134,20 @@ a:hover {
   }
   #site-header .site-navigation .secondary-menu .menu li.menu-item a:hover {
     text-decoration: none;
+  }
+}
+#site-header .rdc-section-header-navigation {
+  /* TOP MENU */
+}
+#site-header .rdc-section-header-navigation.madison-header-menu-wrapper .menu > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 70px;
+  border: 0;
+}
+@media screen and (max-width: 650px) {
+  #site-header .rdc-section-header-navigation.madison-header-menu-wrapper .menu > li > a {
+    line-height: 25px;
   }
 }
 .widget_rdc-schedule-showing form span.required,

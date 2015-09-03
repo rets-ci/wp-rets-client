@@ -33,6 +33,42 @@
 
 	<body <?php body_class( 'hfeed' ); ?>>
 		<section id="site-header" class="section-header">
+			<?php //* ?>
+
+			<section class="rdc-section-header-navigation">
+				<div class="section-container column-wrapper">
+					<header class="site-branding column col-3-12" role="banner">
+						<h1 class="site-title">
+							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+								<span><?php bloginfo( 'name' ); ?></span>
+							</a>
+						</h1>
+						<span class="site-tagline"><?php bloginfo( 'description' ); ?></span>
+					</header>
+					<section class="column col-5-12 global-search-wrapper">
+						TEST
+					</section>
+					<nav class="site-navigation column col-4-12 secondary-menu-wrapper" role="navigation">
+						<div class="secondary-menu"><?php wp_nav_menu( array( 'theme_location' => 'header-secondary', 'rdc-header-second-menu', 'container' => false ) ); ?></div>
+					</nav>
+				</div>
+			</section>
+
+			<section class="section-header-navigation rdc-section-header-navigation madison-header-menu-wrapper">
+				<div class="section-container column-wrapper">
+					<nav class=" site-navigation col-9-12" role="navigation">
+						<a href id="mobile-menu-toggle"><span><?php _e( 'Navigation', 'madison' ); ?></span><i class="fa fa-bars"></i></a>
+						<?php wp_nav_menu( array( 'theme_location' => 'header', 'menu' => 'madison-header-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
+					</nav>
+				</div>
+			</section>
+
+			<?php if ( function_exists( 'madison_maybe_header_property_search' ) ) : ?>
+				<?php echo madison_maybe_header_property_search(); ?>
+			<?php endif; ?>
+
+      <?php //*/ ?>
+			<?php /* ?>
 			<section class="section-header-navigation">
 				<div class="section-container column-wrapper">
 					<header class="site-branding column col-3-12" role="banner">
@@ -54,6 +90,7 @@
 			<?php if ( function_exists( 'madison_maybe_header_property_search' ) ) : ?>
 				<?php echo madison_maybe_header_property_search(); ?>
 			<?php endif; ?>
+      <?php //*/ ?>
 
 			<?php if ( function_exists( 'breadcrumb_trail' ) && ! is_page_template( 'page-templates/front-page.php' ) ) : ?>
 				<section class="section-breadcrumbs">

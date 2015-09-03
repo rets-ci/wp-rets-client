@@ -3,7 +3,12 @@
  * RDC child theme based on WP-Madison 2.0
  */
 
-require_once "lib/widgets.php";
+/**
+ * Load the contents of the lib directory.
+ *
+ * @since 1.0.0
+ */
+require_once( dirname( __FILE__ ) . '/lib/load.php' );
 
 /**
  * Register widgets
@@ -49,3 +54,13 @@ function rdc_tax_rewrite( $args, $tax ) {
   $args['rewrite']['with_front'] = false;
   return $args;
 }
+
+/**
+ * Change default image
+ */
+add_filter( 'madison_custom_header_args', function( $defaults ) {
+  $defaults[ 'default-image' ] = get_stylesheet_directory_uri() . '/static/images/default-logo.png';
+  $defaults[ 'width' ] = 540;
+  $defaults[ 'height' ] = 200;
+  return $defaults;
+} );
