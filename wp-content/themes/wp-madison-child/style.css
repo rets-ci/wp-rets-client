@@ -97,8 +97,8 @@ a:hover {
   color: #808285;
   border: 1px solid #808285;
   border-radius: 5px;
-  height: 30px;
-  line-height: 20px;
+  height: 36px;
+  line-height: 26px;
   padding: 5px 10px !important;
   background-color: #fff;
 }
@@ -138,6 +138,7 @@ a:hover {
 }
 #site-header .rdc-section-header-navigation {
   /* TOP MENU */
+  /* Multipurpose Search Form */
 }
 #site-header .rdc-section-header-navigation.madison-header-menu-wrapper .menu > li > a {
   padding-top: 0;
@@ -149,6 +150,35 @@ a:hover {
   #site-header .rdc-section-header-navigation.madison-header-menu-wrapper .menu > li > a {
     line-height: 25px;
   }
+}
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper {
+  align-items: center;
+  display: flex;
+  min-height: 100px;
+}
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input,
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form select {
+  padding: 0 10px;
+  border: 1px solid #cccdce;
+  color: #808285;
+  height: 36px;
+}
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input {
+  width: 200px;
+  padding-left: 35px;
+  background-image: url("static/images/search.png");
+  background-position: 5% center;
+  background-repeat: no-repeat;
+}
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form select {
+  width: auto;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("static/images/arrow-down.png");
+  background-position: 90% center;
+  background-repeat: no-repeat;
+  padding-right: 30px;
 }
 .widget_rdc-schedule-showing form span.required,
 .widget_rdc-prospect-owner-form form span.required {
