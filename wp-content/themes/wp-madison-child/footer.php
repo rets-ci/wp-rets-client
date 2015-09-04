@@ -16,25 +16,24 @@
 
 		<section id="site-footer">
 			<div class="section-container">
-				<section class="footer-logo">
+				<section class="footer-logo column col-3-12">
+					<div class="logo-wrapper">
 
+					</div>
 				</section>
-				<section class="rdc-site-info">
-					<div class="column col-4-12">
-						<?php if ( $site_info = get_theme_mod( 'madison_footer_text') ) : ?>
-							<h3><?php _e( 'At Red Door', 'rdc' ); ?></h3>
-							<?php echo $site_info; ?>
-						<?php endif; ?>
-					</div>
-					<nav class="site-navigation column col-4-12" role="navigation">
-						<h3><?php _e( 'Company', 'rdc' ); ?></h3>
-						<?php wp_nav_menu( array( 'theme_location' => 'footer', 'menu' => 'madison-footer-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
-					</nav>
-					<div class="rdc-contact-info column col-4-12">
-						<h3><?php _e( 'Connect with Us', 'rdc' ); ?></h3>
-						<?php madison_site_contact_information(); ?>
-					</div>
-					<div class="clear"></div>
+				<section class="column col-3-12">
+					<?php if ( $site_info = get_theme_mod( 'madison_footer_text') ) : ?>
+						<h3><?php _e( 'At Red Door', 'rdc' ); ?></h3>
+						<?php echo $site_info; ?>
+					<?php endif; ?>
+				</section>
+				<nav class="site-navigation column col-3-12" role="navigation">
+					<h3><?php _e( 'Company', 'rdc' ); ?></h3>
+					<?php wp_nav_menu( array( 'theme_location' => 'footer', 'menu' => 'madison-footer-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
+				</nav>
+				<section class="rdc-contact-info column col-3-12">
+					<h3><?php _e( 'Connect with Us', 'rdc' ); ?></h3>
+					<?php madison_site_contact_information(); ?>
 				</section>
 				<div class="clear"></div>
 			</div>

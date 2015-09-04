@@ -279,18 +279,16 @@ a:hover {
   background: #444545 none repeat scroll 0 0;
 }
 #site-footer .footer-logo {
+  padding-right: 30px;
+}
+#site-footer .footer-logo .logo-wrapper {
   display: block;
-  float: left;
-  width: 227px;
-  height: 379px;
+  width: 100%;
+  max-width: 227px;
+  height: 360px;
   background-color: #fff;
   margin-bottom: 50px;
   background-image: url("static/images/footer-arrow-bg.png");
   background-repeat: no-repeat;
   background-position: center bottom;
-}
-#site-footer .rdc-site-info {
-  display: block;
-  margin-left: 250px;
-  max-width: 900px;
 }
