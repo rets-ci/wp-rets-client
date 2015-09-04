@@ -37,6 +37,7 @@ function rdc_theme_enqueue_scripts() {
  * Register additional nav menu
  */
 register_nav_menu( 'header-secondary', __('Secondary Header Menu') );
+register_nav_menu( 'footer', __('Footer Menu') );
 
 /**
  * Change property CPT a bit
@@ -66,7 +67,9 @@ add_filter( 'madison_custom_header_args', function( $defaults ) {
   return $defaults;
 } );
 
-
+/**
+ * Multi Purpose Search Logic
+ */
 add_action( 'template_redirect', function(){
   if( isset( $_REQUEST[ 'mps' ] ) ) {
     $url = untrailingslashit( home_url() );
@@ -82,3 +85,12 @@ add_action( 'template_redirect', function(){
     wp_redirect( $url );
   }
 }, 999 );
+
+
+/**
+ * Register(Un-register) widgetized area and update sidebar
+ * with default widgets.
+ */
+add_action( 'widgets_init', function(){
+  unregister_sidebar( 'footer-1' );
+}, 99 );

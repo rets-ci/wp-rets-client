@@ -271,3 +271,26 @@ a:hover {
     padding: 5px 10px !important;
   }
 }
+/* FOOTER */
+#site-footer {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: #444545 none repeat scroll 0 0;
+}
+#site-footer .footer-logo {
+  display: block;
+  float: left;
+  width: 227px;
+  height: 379px;
+  background-color: #fff;
+  margin-bottom: 50px;
+  background-image: url("static/images/footer-arrow-bg.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+#site-footer .rdc-site-info {
+  display: block;
+  margin-left: 250px;
+  max-width: 900px;
+}
