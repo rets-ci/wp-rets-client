@@ -216,3 +216,58 @@ a:hover {
 .ui-datepicker .ui-datepicker-calendar {
   margin: 0;
 }
+/* MOBILE AND TABLET HEADER */
+@media screen and (max-width: 1000px) {
+  #site-header .site-branding.col-3-12 {
+    width: 40%;
+    float: left;
+  }
+  #site-header .multipurpose-search-wrapper.col-5-12 {
+    width: 50%;
+    float: right;
+  }
+  #site-header .site-navigation.secondary-menu-wrapper {
+    min-height: auto;
+    height: auto;
+    padding: 20px 0;
+  }
+  #site-header .site-navigation.secondary-menu-wrapper .secondary-menu {
+    position: relative;
+    float: none;
+    top: 0;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 650px) {
+  #site-header .site-branding.col-3-12 {
+    width: 100%;
+    float: none;
+  }
+  #site-header .multipurpose-search-wrapper.col-5-12 {
+    width: 100%;
+    float: none;
+  }
+  #site-header .multipurpose-search-wrapper.col-5-12 form {
+    margin: 0 auto;
+  }
+  #site-header .site-navigation.secondary-menu-wrapper .secondary-menu .menu {
+    display: inline-block !important;
+    margin: 0 auto;
+    position: initial !important;
+    height: auto !important;
+  }
+  #site-header .site-navigation.secondary-menu-wrapper .secondary-menu .menu li.menu-item {
+    border: none !important;
+    margin: 0 5px;
+    height: auto !important;
+  }
+  #site-header .site-navigation.secondary-menu-wrapper .secondary-menu .menu li.menu-item a {
+    background-color: #fff;
+    border: 1px solid #808285 !important;
+    border-radius: 5px;
+    color: #808285;
+    height: 36px;
+    line-height: 26px;
+    padding: 5px 10px !important;
+  }
+}
