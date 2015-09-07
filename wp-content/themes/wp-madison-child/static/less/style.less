@@ -363,24 +363,129 @@ a:hover {
 /* FOOTER */
 
 #site-footer {
-  padding: 0 !important;
+  padding: 0 0 60px 0 !important;
   margin: 0 !important;
   border: none !important;
   background: #444545 none repeat scroll 0 0;
 
+  h3 {
+    color: #fff;
+    font-size: 1.25em;
+    font-weight: 500;
+  }
+
   .footer-logo {
-    padding-right: 30px;
+    padding-right: 90px;
+    min-width: 200px;
 
     .logo-wrapper {
       display: block;
       width: 100%;
       max-width: 227px;
-      height: 360px;
+      min-width: 200px;
+      padding: 40px 20px 80px;
       background-color: #fff;
       margin-bottom: 50px;
       background-image: url("static/images/footer-arrow-bg.png");
       background-repeat: no-repeat;
       background-position: center bottom;
+
+      a {
+        margin: 0 auto;
+        display: block;
+
+        img {
+          margin: 0 auto;
+          display: block;
+        }
+
+      }
+
+    }
+
+  }
+
+  .column-footer-info {
+    margin-top: 100px;
+    padding-right: 50px;
+  }
+
+  .column-footer-navigation {
+    margin-top: 100px;
+
+    ul {
+
+      li {
+        display: block;
+
+        &.current-menu-item {
+
+          a {
+            color: #ffffff;
+          }
+
+        }
+
+        a {
+          text-decoration: none;
+          color: #a1a1a1;
+          display: inline;
+
+          &:hover {
+            color: #ffffff;
+            text-decoration: none;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  .column-contact-info {
+    margin-top: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+
+    #site-contact-information {
+      background: none;
+      border: none;
+
+      .site-social-info {
+        float: none;
+        text-align: left;
+        width: 100%;
+
+        a {
+          display: inline-block;
+          border: none;
+          transition: none;
+          width: auto;
+          padding: 9px 2px;
+          border-radius: 50px;
+          background: #5f6269;
+          margin-right: 10px;
+          font-size: 1.3rem;
+
+          &:hover {
+            background: #ffffff;
+            color: #5f6269;
+
+            i {
+              color: #5f6269;
+            }
+
+          }
+
+        }
+
+      }
+
+
+
+
     }
 
   }

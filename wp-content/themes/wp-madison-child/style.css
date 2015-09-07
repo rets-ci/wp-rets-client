@@ -273,22 +273,91 @@ a:hover {
 }
 /* FOOTER */
 #site-footer {
-  padding: 0 !important;
+  padding: 0 0 60px 0 !important;
   margin: 0 !important;
   border: none !important;
   background: #444545 none repeat scroll 0 0;
 }
+#site-footer h3 {
+  color: #fff;
+  font-size: 1.25em;
+  font-weight: 500;
+}
 #site-footer .footer-logo {
-  padding-right: 30px;
+  padding-right: 90px;
+  min-width: 200px;
 }
 #site-footer .footer-logo .logo-wrapper {
   display: block;
   width: 100%;
   max-width: 227px;
-  height: 360px;
+  min-width: 200px;
+  padding: 40px 20px 80px;
   background-color: #fff;
   margin-bottom: 50px;
   background-image: url("static/images/footer-arrow-bg.png");
   background-repeat: no-repeat;
   background-position: center bottom;
+}
+#site-footer .footer-logo .logo-wrapper a {
+  margin: 0 auto;
+  display: block;
+}
+#site-footer .footer-logo .logo-wrapper a img {
+  margin: 0 auto;
+  display: block;
+}
+#site-footer .column-footer-info {
+  margin-top: 100px;
+  padding-right: 50px;
+}
+#site-footer .column-footer-navigation {
+  margin-top: 100px;
+}
+#site-footer .column-footer-navigation ul li {
+  display: block;
+}
+#site-footer .column-footer-navigation ul li.current-menu-item a {
+  color: #ffffff;
+}
+#site-footer .column-footer-navigation ul li a {
+  text-decoration: none;
+  color: #a1a1a1;
+  display: inline;
+}
+#site-footer .column-footer-navigation ul li a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+#site-footer .column-contact-info {
+  margin-top: 100px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+#site-footer .column-contact-info #site-contact-information {
+  background: none;
+  border: none;
+}
+#site-footer .column-contact-info #site-contact-information .site-social-info {
+  float: none;
+  text-align: left;
+  width: 100%;
+}
+#site-footer .column-contact-info #site-contact-information .site-social-info a {
+  display: inline-block;
+  border: none;
+  transition: none;
+  width: auto;
+  padding: 9px 2px;
+  border-radius: 50px;
+  background: #5f6269;
+  margin-right: 10px;
+  font-size: 1.3rem;
+}
+#site-footer .column-contact-info #site-contact-information .site-social-info a:hover {
+  background: #ffffff;
+  color: #5f6269;
+}
+#site-footer .column-contact-info #site-contact-information .site-social-info a:hover i {
+  color: #5f6269;
 }
