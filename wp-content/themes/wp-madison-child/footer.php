@@ -25,26 +25,22 @@ if( empty( $logo ) ) {
 					</div>
 				</section>
 				<section class="column-footer-info column col-3-12">
-					<?php if ( $site_info = get_theme_mod( 'madison_footer_text') ) : ?>
-						<h3><?php _e( 'At Red Door', 'rdc' ); ?></h3>
+					<?php if ( $site_info = get_theme_mod( 'rdc_footer_site_info_text') ) : ?>
+						<h3><?php echo get_theme_mod( 'rdc_footer_site_info_label', 'At Red Door' ); ?></h3>
 						<p><?php echo $site_info; ?></p>
 					<?php endif; ?>
 				</section>
 				<nav class="column-footer-navigation column col-2-12" role="navigation">
 					<?php if( has_nav_menu( 'footer' ) ) : ?>
-						<h3><?php _e( 'Company', 'rdc' ); ?></h3>
+						<h3><?php echo get_theme_mod( 'rdc_footer_menu_label', 'Company' ); ?></h3>
 						<?php wp_nav_menu( array( 'theme_location' => 'footer', 'menu' => 'madison-footer-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
 					<?php endif; ?>
 				</nav>
 				<section class="column-contact-info column col-4-12">
-					<?php
-					ob_start();
-					madison_site_contact_information();
-					$social = ob_get_clean();
-					?>
+					<?php $social = rdc_social_information(); ?>
 					<?php if( !empty( $social ) ) : ?>
-						<h3><?php _e( 'Connect with Us', 'rdc' ); ?></h3>
-						<?php if ( $site_info = get_theme_mod( 'madison_footer_text') ) : ?>
+						<h3><?php echo get_theme_mod( 'rdc_footer_contact_info_label', 'Connect with Us' ); ?></h3>
+						<?php if ( $site_info = get_theme_mod( 'rdc_footer_contact_info_text') ) : ?>
 							<p><?php echo $site_info; ?></p>
 						<?php endif; ?>
 						<?php echo $social; ?>
@@ -54,19 +50,6 @@ if( empty( $logo ) ) {
 			</div>
 			<a href class="scroll-to-top"><i class="fa fa-chevron-up"></i></a>
 		</section>
-
-		<?php /*/ ?>
-		<section id="site-footer">
-			<footer class="site-info section-container" role="contentinfo">
-				<?php if ( $site_info = get_theme_mod( 'madison_footer_text') ) : ?>
-					<?php echo $site_info; ?>
-				<?php else : ?>
-          Copyright 2015 Red Door Company
-				<?php endif; ?>
-			</footer>
-			<a href class="scroll-to-top"><i class="fa fa-chevron-up"></i></a>
-		</section>
-		<?php //*/ ?>
 
 		<?php wp_footer(); ?>
 	</body>

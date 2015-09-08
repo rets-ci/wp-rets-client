@@ -46,7 +46,7 @@
 					</header>
 
 					<?php if ( function_exists( 'madison_maybe_header_multipurpose_search' ) ) : ?>
-						<?php echo madison_maybe_header_multipurpose_search(); ?>
+						<?php echo rdc_maybe_header_multipurpose_search(); ?>
 					<?php endif; ?>
 
 					<nav class="site-navigation column col-4-12 secondary-menu-wrapper" role="navigation">
