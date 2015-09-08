@@ -16,6 +16,8 @@ class Property_Attributes_Widget extends WP_Widget {
 
     $property_label = strtolower( WPP_F::property_label() );
 
+    add_filter('wpp_get_attribute', array( $this, 'property_type_handler' ), 10, 2);
+
     parent::__construct(
       'wpp_property_attributes',
       sprintf( __( '%1s Attributes', 'wpp' ), WPP_F::property_label() ),
@@ -28,6 +30,18 @@ class Property_Attributes_Widget extends WP_Widget {
       )
     );
 
+  }
+
+  /**
+   * @param $val
+   * @param $args
+   * @return mixed
+   */
+  function property_type_handler( $val, $args ) {
+    if ( $args['attribute'] == 'property_type' ) {
+      return $args['property']['property_type_label'];
+    }
+    return $val;
   }
 
   /**
@@ -85,7 +99,6 @@ class Property_Attributes_Widget extends WP_Widget {
 
       $attributes[ ] = '<li class="' . $slug . '">' . ( $show_labels ? '<span class="attribute">' . $attribute[ 'label' ] . '<span class="separator">:</span> </span>' : '' ) . '</span><span class="value">' . $value . '</span></li>';
     }
-
 
     if ( !empty( $attributes ) ) {
       $html[ 'attributes' ] = '<ul class="wpp_widget_attribute_list">' . implode( '', $attributes ) . '</ul>';
@@ -184,7 +197,7 @@ class Property_Attributes_Widget extends WP_Widget {
  */
 class OtherPropertiesWidget extends WP_Widget {
 
-  function OtherPropertiesWidget() {
+  function __construct() {
 
     $property_label = strtolower( WPP_F::property_label( 'plural' ) );
 
@@ -474,8 +487,8 @@ class ChildPropertiesWidget extends WP_Widget {
   /**
    * Constructor
    */
-  function ChildPropertiesWidget() {
-    parent::WP_Widget( false, $name = sprintf( __( 'Child %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'Show child properties (if any) for currently displayed property', 'wpp' ) ) );
+  function __construct() {
+    parent::__construct( false, $name = sprintf( __( 'Child %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'Show child properties (if any) for currently displayed property', 'wpp' ) ) );
   }
 
   /**
@@ -721,8 +734,8 @@ class FeaturedPropertiesWidget extends WP_Widget {
   /**
    * constructor
    */
-  function FeaturedPropertiesWidget() {
-    parent::WP_Widget( false, $name = sprintf( __( 'Featured %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'List of properties that were marked as Featured', 'wpp' ) ) );
+  function __construct() {
+    parent::__construct( false, $name = sprintf( __( 'Featured %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'List of properties that were marked as Featured', 'wpp' ) ) );
   }
 
   /**
@@ -1016,8 +1029,8 @@ class LatestPropertiesWidget extends WP_Widget {
   /**
    * constructor
    */
-  function LatestPropertiesWidget() {
-    parent::WP_Widget( false, $name = sprintf( __( 'Latest %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'List of the latest properties created on this site', 'wpp' ) ) );
+  function __construct() {
+    parent::__construct( false, $name = sprintf( __( 'Latest %1s', 'wpp' ), WPP_F::property_label( 'plural' ) ), array( 'description' => __( 'List of the latest properties created on this site', 'wpp' ) ) );
   }
 
   /**
@@ -1252,7 +1265,7 @@ class SearchPropertiesWidget extends WP_Widget {
   var $id = false;
 
   /** constructor */
-  function SearchPropertiesWidget() {
+  function __construct() {
 
     $property_label = strtolower( WPP_F::property_label() );
 
@@ -1687,8 +1700,8 @@ Property Gallery Widget
 class GalleryPropertiesWidget extends WP_Widget {
 
   /** constructor */
-  function GalleryPropertiesWidget() {
-    parent::WP_Widget( false, $name = sprintf( __( '%1s Gallery', 'wpp' ), WPP_F::property_label() ), array( 'description' => __( 'List of all images attached to the current property', 'wpp' ) ) );
+  function __construct() {
+    parent::__construct( false, $name = sprintf( __( '%1s Gallery', 'wpp' ), WPP_F::property_label() ), array( 'description' => __( 'List of all images attached to the current property', 'wpp' ) ) );
   }
 
   /** @see WP_Widget::widget */

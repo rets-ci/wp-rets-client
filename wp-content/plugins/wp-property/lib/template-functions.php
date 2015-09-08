@@ -128,7 +128,7 @@ if ( !function_exists( 'property_overview_image' ) ) {
       ob_start();
       ?>
       <div class="property_image">
-        <a href="<?php echo $thumbnail_link; ?>" title="<?php echo $property[ 'post_title' ] . ( !empty( $property[ 'parent_title' ] ) ? __( ' of ', 'wpp' ) . $property[ 'parent_title' ] : "" ); ?>" class="property_overview_thumb property_overview_thumb_<?php echo $thumbnail_size; ?> <?php echo $link_class; ?> thumbnail" rel="properties">
+        <a href="<?php echo $thumbnail_link; ?>" title="<?php echo $property[ 'post_title' ] . ( !empty( $property[ 'parent_title' ] ) ? __( ' of ', 'wpp' ) . $property[ 'parent_title' ] : "" ); ?>" class="property_overview_thumb property_overview_thumb_<?php echo $thumbnail_size; ?> <?php echo $link_class; ?> thumbnail" rel="<?php echo $property[ 'post_name' ] ?>">
           <img width="<?php echo $image[ 'width' ]; ?>" height="<?php echo $image[ 'height' ]; ?>" src="<?php echo $image[ 'link' ]; ?>" alt="<?php echo $property[ 'post_title' ]; ?>" style="width:<?php echo $image[ 'width' ]; ?>px;height:<?php echo $image[ 'height' ]; ?>px;"/>
         </a>
       </div>
@@ -786,8 +786,10 @@ if ( !function_exists( 'prepare_property_for_display' ) ):
 
         $attribute_value = str_replace( "\n", "", nl2br( $attribute_value ) );
 
-        $property[ $meta_key ] = apply_filters( "wpp_stat_filter_{$meta_key}", $attribute_value, $attribute_scope );
       }
+
+      $attribute_value = apply_filters( "wpp::attribute::display", $attribute_value, $meta_key );
+      $property[ $meta_key ] = apply_filters( "wpp_stat_filter_{$meta_key}", $attribute_value, $attribute_scope );
 
     }
 
@@ -1324,7 +1326,6 @@ if ( !function_exists( 'draw_property_search_form' ) ):
 
     $property_stats = $wp_properties[ 'property_stats' ];
 
-
     if ( !isset( $property_stats[ 'property_type' ] ) ) {
       $property_stats[ 'property_type' ] = __( 'Property Type', 'wpp' );
     }
@@ -1333,7 +1334,6 @@ if ( !function_exists( 'draw_property_search_form' ) ):
     if ( !empty( $search_attributes ) && !empty( $searchable_property_types ) ) {
       $search_values = WPP_F::get_search_values( $search_attributes, $searchable_property_types, $args['cache'], $args['instance_id'] );
     }
-
 
     //** This looks clumsy - potanin@UD */
     if ( array_key_exists( 'property_type', array_fill_keys( $search_attributes, 1 ) ) && is_array( $searchable_property_types ) && count( $searchable_property_types ) > 1 ) {
@@ -1424,7 +1424,7 @@ if ( !function_exists( 'draw_property_search_form' ) ):
           }
         }
         //** Don't display search attributes that have no values */
-        if ( !isset( $search_values[ $attrib ] ) ) {
+        if ( !apply_filters( 'wpp::show_search_field_with_no_values', isset( $search_values[ $attrib ] ), $attrib ) ) {
           continue;
         }
         $label = apply_filters( 'wpp::search_attribute::label', ( empty( $property_stats[ $attrib ] ) ? WPP_F::de_slug( $attrib ) : $property_stats[ $attrib ] ), $attrib );
@@ -1526,6 +1526,28 @@ if ( !function_exists( 'wpp_render_search_input' ) ):
               <?php foreach ( $grouped_values as $v ) : ?>
                 <option value='<?php echo (int) $v; ?>' <?php if ( isset( $value[ 'min' ] ) && $value[ 'min' ] == $v ) echo " selected='true' "; ?>>
               <?php echo apply_filters( "wpp_stat_filter_{$attrib}", $v ); ?> +
+              </option>
+            <?php endforeach; ?>
+          </select>
+          <?php
+          break;
+        case 'advanced_range_dropdown':
+          ?>
+          <?php $grouped_values = !empty( $search_values[ $attrib ] ) ? $search_values[ $attrib ] : group_search_values( $search_values[ $attrib ] ); ?>
+          <select id="<?php echo $random_element_id; ?>" class="wpp_search_select_field wpp_search_select_field_<?php echo $attrib; ?> <?php echo $attribute_data[ 'ui_class' ]; ?>" name="wpp_search[<?php echo $attrib; ?>][min]">
+            <option value=""><?php _e( 'Min', 'wpp' ) ?></option>
+            <?php foreach ( $grouped_values as $v ) : ?>
+              <option value='<?php echo (int) $v; ?>' <?php if ( isset( $value[ 'min' ] ) && $value[ 'min' ] == (int) $v ) echo " selected='selected' "; ?>>
+                <?php echo apply_filters( "wpp_stat_filter_{$attrib}", $v ); ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+          <span class="delimiter">-</span>
+          <select id="<?php echo $random_element_id; ?>" class="wpp_search_select_field wpp_search_select_field_<?php echo $attrib; ?> <?php echo $attribute_data[ 'ui_class' ]; ?>" name="wpp_search[<?php echo $attrib; ?>][max]">
+            <option value=""><?php _e( 'Max', 'wpp' ) ?></option>
+            <?php foreach ( $grouped_values as $v ) : ?>
+              <option value='<?php echo (int) $v; ?>' <?php if ( isset( $value[ 'max' ] ) && $value[ 'max' ] == (int) $v ) echo " selected='selected' "; ?>>
+                <?php echo apply_filters( "wpp_stat_filter_{$attrib}", $v ); ?>
               </option>
             <?php endforeach; ?>
           </select>

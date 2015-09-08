@@ -81,21 +81,51 @@ namespace UsabilityDynamics\WPP {
             'dropdown',
             'range_input',
             'range_dropdown',
+            'advanced_range_dropdown',
           ),
           'currency' => array(
             'input',
             'dropdown',
             'range_input',
             'range_dropdown',
+            'advanced_range_dropdown',
           ),
           'url' => array(
             'input'
           ),
         ));
 
+        /**
+         * Set schema for multiple attributes types.
+         */
+        ud_get_wp_property()->set('attributes.multiple', array(
+          'multi_checkbox'
+        ) );
+
         /** Fix numeric/currency logic */
         $this->fix_numeric_and_currency();
 
+        /**
+         * Prepare attribute's value to display
+         */
+        add_filter( 'wpp::attribute::display', array( $this, 'prepare_to_display' ), 99, 2 );
+
+      }
+
+      /**
+       * Prepare attribute's value to be displayed on front end.
+       *
+       */
+      public function prepare_to_display( $value, $attribute ) {
+        /**
+         * Combine multiple values to string
+         * if attribute is multiple.
+         */
+        $attribute = $this::get_attribute_data( $attribute );
+        if( $attribute[ 'multiple' ] && is_array( $value ) ) {
+          $value = implode( ', ', $value );
+        }
+        return $value;
       }
 
       /**
@@ -167,10 +197,6 @@ namespace UsabilityDynamics\WPP {
           'post_type',
           'post_mime_type',
           'comment_count' );
-
-        if( !$attribute ) {
-          return;
-        }
 
         $ui_class = array( $attribute );
 
@@ -255,6 +281,12 @@ namespace UsabilityDynamics\WPP {
         }
 
         $return[ 'ui_class' ] = implode( ' wpp_', $ui_class );
+
+        $multiple_attributes = ud_get_wp_property( 'attributes.multiple', array() );
+        $return[ 'multiple' ] = false;
+        if( isset( $return[ 'data_input_type' ] ) && in_array( $return[ 'data_input_type' ], (array)$multiple_attributes ) ) {
+          $return[ 'multiple' ] = true;
+        }
 
         $return = apply_filters( 'wpp_attribute_data', $return );
 

@@ -78,22 +78,6 @@ namespace UsabilityDynamics\WPP {
         $list_table->prepare_items();
         $list_table->display();
 
-        /*
-        $children = get_posts( array(
-          'post_parent' => $post->ID,
-          'post_type' => 'property',
-          'numberposts' => -1,
-        ) );
-        ?>
-        <div class="wp-tab-panel">
-          <ul>
-            <?php  foreach ( $children as $child ) {
-              echo '<li data-child-id="' . $child->ID .'"><a href="' . get_edit_post_link( $child->ID ) . '">' . $child->post_title . '</a> <span class="wpp-child-id">('. $child->ID .')</span></li>';
-            } ?>
-          </ul>
-        </div>
-        <?php
-        */
       }
 
       /**
@@ -273,6 +257,18 @@ namespace UsabilityDynamics\WPP {
               $fields[] = $field;
             }
           }
+          /* May be add Meta fields */
+          foreach( ud_get_wp_property()->get( 'property_meta', array() ) as $slug => $label ) {
+            $field = apply_filters( 'wpp::rwmb_meta_box::field', array_filter( array(
+              'id' => $slug,
+              'name' => $label,
+              'type' => 'textarea',
+              'desc' => __( 'Meta description.', ud_get_wp_property()->domain ),
+            ) ), $slug, $post );
+            if( $field ) {
+              $fields[] = $field;
+            }
+          }
         }
 
         /**
@@ -355,6 +351,11 @@ namespace UsabilityDynamics\WPP {
             $input_type = 'wpp_checkbox';
           }
 
+          //* Legacy compatibility */
+          if( in_array( $input_type, array( 'multi_checkbox' ) ) ) {
+            $input_type = 'checkbox_list';
+          }
+
           //* Fix currency */
           if( $input_type == 'currency' ) {
             $input_type = 'text'; // HTML5 does not allow to use float, so we have to use default 'text' here
@@ -404,11 +405,11 @@ namespace UsabilityDynamics\WPP {
            * Check for pre-defined values
            */
           $options = array();
+          if( $input_type == 'select' ) {
+            $options[''] = __( 'Not Selected', ud_get_wp_property()->domain );
+          }
           if ( !empty( $predefined_values[ $slug ] ) && is_string( $predefined_values[ $slug ] ) ) {
             $_options = explode( ',', trim( $predefined_values[ $slug ] ) );
-            if( $input_type == 'select' ) {
-              $options[''] = __( 'Not Selected', ud_get_wp_property()->domain );
-            }
             foreach( $_options as $option ) {
               $option = trim( preg_replace( "/\r|\n/", "", $option ) );
               $options[ esc_attr( $option ) ] = apply_filters( 'wpp_stat_filter_' . $slug, $option );

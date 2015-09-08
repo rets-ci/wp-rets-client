@@ -92,7 +92,7 @@ namespace UsabilityDynamics\WP {
        * @author peshkov@UD
        */
       public function load_textdomain() {
-        load_plugin_textdomain( $this->domain, false, $this->root_path . 'static/languages/' );
+        load_plugin_textdomain( $this->domain, false, dirname( plugin_basename( $this->boot_file ) ) . '/static/languages/' );
       }
       
       /**
@@ -129,6 +129,7 @@ namespace UsabilityDynamics\WP {
               'version' => 'Version',
               'domain' => 'Text Domain',
               'uservoice_url' => 'UserVoice',
+              'support_url' => 'Support',
             ), 'plugin' );
             $args = array_merge( (array)$pd, (array)$args, array(
               'root_path' => dirname( $dbt[0]['file'] ),

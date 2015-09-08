@@ -381,7 +381,7 @@ class WPP_F extends UsabilityDynamics\Utility {
    *
    */
   static public function is_asset_loaded( $handle = false ) {
-    global $wp_properties, $wp_scripts;
+    global $wp_scripts;
 
     if( empty( $handle ) ) {
       return;
@@ -389,8 +389,9 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     $footer = (array) $wp_scripts->in_footer;
     $done   = (array) $wp_scripts->done;
+    $queue   = (array) $wp_scripts->queue;
 
-    $accepted = array_merge( $footer, $done );
+    $accepted = array_merge( $footer, $done, $queue );
 
     if( !in_array( $handle, $accepted ) ) {
       return false;
@@ -478,7 +479,7 @@ class WPP_F extends UsabilityDynamics\Utility {
 
   /**
    * Tests if remote image can be loaded, before sending to browser or TCPDF
-   *
+   * @todo Does not work with self-signed SSL and with allow_url_fopen = Off
    * @version 1.26.0
    */
   static public function can_get_image( $url = false ) {
@@ -497,6 +498,17 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     return true;
 
+  }
+
+  /**
+   * @param string $url
+   * @return int
+   * @since 2.0.3
+   *
+   * Checks if URL is valid
+   */
+  static public function is_valid_url( $url = '' ) {
+    return preg_match('@^(https?|ftp)://[^\s/$.?#].[^\s]*$@iS', $url);
   }
 
   /**
@@ -1466,6 +1478,8 @@ class WPP_F extends UsabilityDynamics\Utility {
     }
 
     $return[ 'attempt' ] = $attempt;
+
+    /* // Instead of re-revalidate, must be overwritten UI: to dp separate AJAX request for every property and output results dynamicly.
     if ( !empty( $return[ 'over_query_limit' ] ) && $max_attempts >= $attempt && $delay < 2 ) {
 
       $_args = array(
@@ -1483,6 +1497,7 @@ class WPP_F extends UsabilityDynamics\Utility {
 
       $return[ 'attempt' ] = $rerevalidate_result[ 'attempt' ];
     }
+    //*/
 
     foreach( array( 'updated', 'over_query_limit', 'failed', 'empty_address' ) as $status ) {
       $return[ $status ] = ( $echo_result == 'true' ) ? count( array_unique( (array) $return[ $status ] ) ) : array_unique( (array) $return[ $status ] );
@@ -1551,7 +1566,7 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     $address = get_post_meta( $post_id, $wp_properties[ 'configuration' ][ 'address_attribute' ], true );
 
-    $coordinates = ( empty( $latitude ) || empty( $longitude ) ) ? "" : array( 'lat' => get_post_meta( $post_id, 'latitude', true ), 'lng' => get_post_meta( $post_id, 'longitude', true ) );
+    $coordinates = ( empty( $latitude ) || empty( $longitude ) ) ? false : array( 'lat' => get_post_meta( $post_id, 'latitude', true ), 'lng' => get_post_meta( $post_id, 'longitude', true ) );
 
     if( $skip_existing == 'true' && !empty( $current_coordinates ) && in_array( $address_is_formatted, array( '1', 'true' ) ) ) {
       $return[ 'status' ] = 'skipped';
@@ -1567,12 +1582,10 @@ class WPP_F extends UsabilityDynamics\Utility {
 
       $address_by_coordinates = !empty( $coordinates ) && $manual_coordinates && empty( $address );
 
-      if( !empty( $address ) ) {
-        $geo_data = WPP_F::geo_locate_address( $address, $wp_properties[ 'configuration' ][ 'google_maps_localization' ], true );
-      }
-
       if( !empty( $coordinates ) && $manual_coordinates ) {
         $geo_data_coordinates = WPP_F::geo_locate_address( $address, $wp_properties[ 'configuration' ][ 'google_maps_localization' ], true, $coordinates );
+      } elseif( !empty( $address ) ) {
+        $geo_data = WPP_F::geo_locate_address( $address, $wp_properties[ 'configuration' ][ 'google_maps_localization' ], true );
       }
 
       /** if Address was invalid or empty but we have valid $coordinates we use them */
@@ -1608,8 +1621,16 @@ class WPP_F extends UsabilityDynamics\Utility {
 
       update_post_meta( $post_id, 'wpp::last_address_validation', time() );
 
-      update_post_meta( $post_id, 'latitude', $manual_coordinates ? $coordinates[ 'lat' ] : $geo_data->latitude );
-      update_post_meta( $post_id, 'longitude', $manual_coordinates ? $coordinates[ 'lng' ] : $geo_data->longitude );
+      if( $manual_coordinates ) {
+        $lat = !empty( $coordinates[ 'lat' ] ) ? $coordinates[ 'lat' ] : 0;
+        $lng = !empty( $coordinates[ 'lng' ] ) ? $coordinates[ 'lng' ] : 0;
+      } else {
+        $lat = $geo_data->latitude;
+        $lng = $geo_data->longitude;
+      }
+
+      update_post_meta( $post_id, 'latitude', $lat );
+      update_post_meta( $post_id, 'longitude', $lng );
 
       if( $return_geo_data ) {
         $return[ 'geo_data' ] = $geo_data;
@@ -1684,7 +1705,7 @@ class WPP_F extends UsabilityDynamics\Utility {
 
       // Return Google result if needed instead of just false
       if ( $return_obj_on_fail ) {
-        return $obj;
+        return $body;
       }
 
       return false;
@@ -2092,24 +2113,27 @@ class WPP_F extends UsabilityDynamics\Utility {
       'ar'    => 'Arabic',
       'bg'    => 'Bulgarian',
       'cs'    => 'Czech',
+      'da'    => 'Danish',
+      'nl'    => 'Dutch',
       'de'    => 'German',
+      'zh-TW' => 'Chinese',
       'el'    => 'Greek',
-      'es'    => 'Spanish',
+      'fi'    => 'Finnish',
       'fr'    => 'French',
       'hu'    => 'Hungarian',
       'it'    => 'Italian',
       'ja'    => 'Japanese',
       'ko'    => 'Korean',
-      'da'    => 'Danish',
-      'nl'    => 'Dutch',
       'no'    => 'Norwegian',
       'pt'    => 'Portuguese',
       'pt-BR' => 'Portuguese (Brazil)',
       'pt-PT' => 'Portuguese (Portugal)',
       'ru'    => 'Russian',
+      'es'    => 'Spanish',
       'sv'    => 'Swedish',
       'th'    => 'Thai',
-      'uk'    => 'Ukranian' );
+      'uk'    => 'Ukrainian'
+    );
 
     $attributes = apply_filters( "wpp_google_maps_localizations", $attributes );
 
@@ -2515,28 +2539,6 @@ class WPP_F extends UsabilityDynamics\Utility {
   }
 
   /**
-   * Run manually when a version mismatch is detected.
-   *
-   * Holds official current version designation.
-   * Called in admin_init hook.
-   *
-   * @since 1.10
-   * @version 1.13
-   *
-   */
-  static public function manual_activation() {
-    $installed_ver = get_option( "wpp_version", 0 );
-    $wpp_version   = WPP_Version;
-    if( @version_compare( $installed_ver, $wpp_version ) == '-1' ) {
-      //** Upgrade data if needed */
-      WPP_Legacy::upgrade();
-      //** Update option to latest version so this isn't run on next admin page load */
-      update_option( "wpp_version", $wpp_version );
-    }
-    return;
-  }
-
-  /**
    * Returns array of searchable property IDs
    *
    *
@@ -2596,6 +2598,7 @@ class WPP_F extends UsabilityDynamics\Utility {
     if( empty( $result ) ) {
       $query_attributes = "";
       $query_types      = "";
+      $range = array();
 
       //** Use the requested attributes, or all searchable */
       if( !is_array( $search_attributes ) ) {
@@ -3169,6 +3172,7 @@ class WPP_F extends UsabilityDynamics\Utility {
       if( $sql_sort_by &&
         $sql_sort_by != 'menu_order' &&
         $sql_sort_by != 'post_date' &&
+        $sql_sort_by != 'post_modified' &&
         $sql_sort_by != 'post_title'
       ) {
 
@@ -3211,6 +3215,9 @@ class WPP_F extends UsabilityDynamics\Utility {
           $additional_sql
           ORDER BY $sql_sort_by $sql_sort_order
           $limit_query" );
+
+
+
 
       }
 
@@ -3411,7 +3418,6 @@ class WPP_F extends UsabilityDynamics\Utility {
       'return_object'         => 'false',
       'load_gallery'          => 'true',
       'load_thumbnail'        => 'true',
-      'allow_multiple_values' => 'false',
       'load_parent'           => 'true',
       'cache'                 => 'true',
     ) ), EXTR_SKIP );
@@ -3421,7 +3427,6 @@ class WPP_F extends UsabilityDynamics\Utility {
     $return_object         = isset( $return_object ) ? $return_object : 'false';
     $load_gallery          = isset( $load_gallery ) ? $load_gallery : 'true';
     $load_thumbnail        = isset( $load_thumbnail ) ? $load_thumbnail : 'true';
-    $allow_multiple_values = isset( $allow_multiple_values ) ? $allow_multiple_values : 'false';
     $load_parent           = isset( $load_parent ) ? $load_parent : 'true';
 
     $args = is_array( $args ) ? http_build_query( $args ) : (string) $args;
@@ -3447,9 +3452,12 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     //** Load all meta keys for this object */
     if( $keys = get_post_custom( $id ) ) {
+
       foreach( $keys as $key => $value ) {
 
-        if( $allow_multiple_values == 'false' ) {
+        $attribute = WPP_F::get_attribute_data( $key );
+
+        if( !$attribute[ 'multiple' ] ) {
           $value = $value[ 0 ];
         }
 
@@ -4012,10 +4020,10 @@ class WPP_F extends UsabilityDynamics\Utility {
           <?php if( !empty( $imageHTML ) ) { ?>
             <td class="wpp_google_maps_left_col" style=" width: <?php echo $image[ 'width' ]; ?>px">
               <?php echo $imageHTML; ?>
-              <?php if( $infobox_settings[ 'show_direction_link' ] == 'true' ): ?>
+              <?php if( $infobox_settings[ 'show_direction_link' ] == 'true' && !empty( $property[ 'latitude' ] ) && !empty( $property[ 'longitude' ] ) ): ?>
                 <div class="wpp_google_maps_attribute_row wpp_google_maps_attribute_row_directions_link">
                   <a target="_blank"
-                     href="http://maps.google.com/maps?gl=us&daddr=<?php echo addslashes( str_replace( ' ', '+', $property[ 'formatted_address' ] ) ); ?>"
+                     href="http://maps.google.com/maps?gl=us&daddr=<?php echo $property[ 'latitude' ] ?>,<?php  echo $property[ 'longitude' ]; ?>"
                      class="btn btn-info"><?php _e( 'Get Directions', 'wpp' ) ?></a>
                 </div>
               <?php endif; ?>
@@ -4023,10 +4031,10 @@ class WPP_F extends UsabilityDynamics\Utility {
           <?php } ?>
 
           <td class="wpp_google_maps_right_col" vertical-align="top" style="vertical-align: top;">
-            <?php if( !empty( $imageHTML ) && $infobox_settings[ 'show_direction_link' ] == 'true' ) { ?>
+            <?php if( !empty( $imageHTML ) && $infobox_settings[ 'show_direction_link' ] == 'true' && !empty( $property[ 'latitude' ] ) && !empty( $property[ 'longitude' ] ) ) { ?>
               <div class="wpp_google_maps_attribute_row wpp_google_maps_attribute_row_directions_link">
                 <a target="_blank"
-                   href="http://maps.google.com/maps?gl=us&daddr=<?php echo addslashes( str_replace( ' ', '+', $property[ 'formatted_address' ] ) ); ?>"
+                   href="http://maps.google.com/maps?gl=us&daddr=<?php echo $property[ 'latitude' ] ?>,<?php  echo $property[ 'longitude' ]; ?>"
                    class="btn btn-info"><?php _e( 'Get Directions', 'wpp' ) ?></a>
               </div>
             <?php

@@ -94,7 +94,7 @@ namespace UsabilityDynamics\WP {
        * @author peshkov@UD
        */
       public function load_textdomain() {
-        load_theme_textdomain( $this->domain, $this->root_path . 'static/languages/' );
+        load_theme_textdomain( $this->domain, get_template_directory() . '/static/languages/' );
       }
       
       /**
@@ -127,6 +127,7 @@ namespace UsabilityDynamics\WP {
           }
           $data = get_file_data( $theme_root . '/' . get_stylesheet() . '/style.css', array(
             'uservoice_url' => 'UserVoice',
+            'support_url' => 'Support',
           ) );
 
           $t = wp_get_theme();
