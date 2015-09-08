@@ -71,6 +71,7 @@ add_filter( 'madison_custom_header_args', function( $defaults ) {
  * Multi Purpose Search Logic
  */
 add_action( 'template_redirect', function(){
+
   if( isset( $_REQUEST[ 'mps' ] ) ) {
     $url = untrailingslashit( home_url() );
     $query = !empty( $_REQUEST[ 's' ] ) ? $_REQUEST[ 's' ] : '';
@@ -84,7 +85,27 @@ add_action( 'template_redirect', function(){
     }
     wp_redirect( $url );
   }
-}, 999 );
+
+}, 99 );
+
+/**
+ * Enable only Post and Pages post types for global search.
+ */
+add_action( 'parse_request', function( $query ) {
+
+  if( isset( $_REQUEST[ 's' ] ) && !isset( $_REQUEST[ 'wpp_search' ] ) ) {
+
+    add_filter( 'pre_get_posts', function( $query ) {
+      if( !empty( $query->query_vars[ 's' ] ) ) {
+        $query->set('post_type', array( 'post', 'page' ) );
+      }
+      return $query;
+    } );
+
+  }
+
+  return $query;
+}, 99 );
 
 
 /**
