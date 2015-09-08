@@ -9,7 +9,7 @@ if ( !function_exists( 'madison_maybe_header_multipurpose_search' ) ) {
   function rdc_maybe_header_multipurpose_search( $classes = 'col-5-12' ) {
     global $wp_query;
 
-    $search_enabled = get_theme_mod( 'madison_multipurpose_search_enable' );
+    $search_enabled = get_theme_mod( 'rdc_multipurpose_search_enable' );
 
     if( !empty( $wp_query->wpp_search_page ) ) {
       $s = !empty( $_REQUEST['wpp_search']['s'] ) ? $_REQUEST['wpp_search']['s'] : '';

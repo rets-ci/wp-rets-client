@@ -18,15 +18,15 @@ function rdc_customize_register( $wp_customize ) {
     'priority'    => 61
   ));
 
-  $wp_customize->add_setting( 'madison_multipurpose_search_enable', array(
+  $wp_customize->add_setting( 'rdc_multipurpose_search_enable', array(
     'default'              => ''
   ));
 
-  $wp_customize->add_control( 'madison_multipurpose_search_enable', array(
+  $wp_customize->add_control( 'rdc_multipurpose_search_enable', array(
     'label'   => __( 'Enable Multipurpose Search', 'madison' ),
     'section' => 'rdc_search',
     'type'    => 'checkbox',
-    'settings' => 'madison_multipurpose_search_enable'
+    'settings' => 'rdc_multipurpose_search_enable'
   ));
 
   /* FOOTER LOGO */
