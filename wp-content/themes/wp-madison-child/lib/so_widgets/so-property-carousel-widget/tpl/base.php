@@ -31,6 +31,14 @@ $the_query = new WP_Query( $query );
 					>
 					<ul class="rdc-carousel-items">
 						<?php while($the_query->have_posts()) : $the_query->the_post(); ?>
+							<?php $property = prepare_property_for_display( get_property( get_the_ID(), array(
+								'get_children'          => 'false',
+								'load_gallery'          => 'false',
+								'load_thumbnail'        => 'false',
+								'load_parent'           => 'false',
+								'cache'                 => 'true',
+							) ) );
+							?>
 							<li class="rdc-carousel-item">
 								<div class="rdc-carousel-thumbnail">
 									<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'rdc-carousel-default'); ?>
@@ -40,8 +48,17 @@ $the_query = new WP_Query( $query );
 									<?php else : ?>
 										<a href="<?php the_permalink() ?>" class="rdc-carousel-default-thumbnail"><span class="overlay"></span></a>
 									<?php endif; ?>
+									<div class="price"><?php echo $property[ 'price' ] ?></div>
 								</div>
-								<h3><a href="<?php the_permalink() ?>"><?php the_title() ?></a></h3>
+								<div class="item-content">
+									<h3><a href="<?php the_permalink() ?>"><?php the_title() ?></a></h3>
+									<p class="address"><?php echo $property[ 'display_address' ]; ?></p>
+									<ul>
+										<li><i class="icon"></i><?php echo $property[ 'bedrooms' ] ?></li>
+										<li><i class="icon"></i><?php echo $property[ 'bathrooms' ] ?></li>
+										<li><i class="icon"></i><?php echo $property[ 'area' ] ?></li>
+									</ul>
+								</div>
 							</li>
 						<?php endwhile; wp_reset_postdata(); ?>
 					</ul>

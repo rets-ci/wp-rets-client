@@ -17,7 +17,7 @@ add_filter( 'siteorigin_widgets_template_file_rdc-property-carousel', function( 
  * Add the carousel image sizes
  */
 function rdc_carousel_register_image_sizes(){
-	add_image_size('rdc-carousel-default', 272, 182, true);
+	add_image_size('rdc-carousel-default', 255, 186, true);
 }
 add_action('init', 'rdc_carousel_register_image_sizes');
 
@@ -35,6 +35,14 @@ function rdc_carousel_get_next_posts_page() {
 	$posts = new WP_Query($query);
 	ob_start();
 	while($posts->have_posts()) : $posts->the_post(); ?>
+		<?php $property = prepare_property_for_display( get_property( get_the_ID(), array(
+			'get_children'          => 'false',
+			'load_gallery'          => 'false',
+			'load_thumbnail'        => 'false',
+			'load_parent'           => 'false',
+			'cache'                 => 'true',
+		) ) );
+		?>
 		<li class="rdc-carousel-item">
 			<div class="rdc-carousel-thumbnail">
 				<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'rdc-carousel-default'); ?>

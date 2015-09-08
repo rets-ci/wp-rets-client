@@ -5,6 +5,15 @@
   font-weight: normal;
   font-style: normal;
 }
+/* HOME LISTINGS CAROUSEL */
+.rdc-property-carousel {
+  background: rgba(0, 0, 0, 0.4);
+}
+.rdc-property-carousel .section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 80px 20px;
+}
 .rdc-carousel-title .widget-title {
   display: inline-block;
   padding-right: 15px;
@@ -89,8 +98,8 @@
   padding: 0;
   display: block;
   float: left;
-  margin-right: 15px;
-  width: 242px;
+  margin-right: 20px;
+  width: 275px;
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -102,9 +111,9 @@
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a {
   display: block;
-  width: 242px;
-  height: 162px;
-  background-size: 242px 162px;
+  width: 275px;
+  height: 200px;
+  background-size: 275px 200px;
   background-position: center center;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a,
@@ -122,36 +131,39 @@
   opacity: 0;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a:hover {
-  background-size: 272px 182px;
+  background-size: 290px 211px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a:hover span {
   opacity: 0.5;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-default-thumbnail {
   display: block;
-  width: 242px;
-  height: 162px;
+  width: 275px;
+  height: 200px;
   background: #e8e8e8;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #e0e0e0), color-stop(1, #e8e8e8));
   background: -ms-linear-gradient(bottom, #e0e0e0, #e8e8e8);
   background: -moz-linear-gradient(center bottom, #e0e0e0 0%, #e8e8e8 100%);
   background: -o-linear-gradient(#e8e8e8, #e0e0e0);
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item h3 {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content {
+  background: #fff;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content h3 {
   font-size: 15px;
   text-align: center;
   font-weight: 500;
   color: #474747;
   margin: 10px 0 0 0;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item h3 a {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content h3 a {
   text-decoration: none;
   color: inherit;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-loading {
   display: block;
-  width: 242px;
-  height: 162px;
+  width: 275px;
+  height: 200px;
   float: left;
   background: url(images/carousel-loader.gif) #f6f6f6 center center no-repeat;
   margin: 0;

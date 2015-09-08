@@ -23,7 +23,11 @@ module.exports = function build( grunt ) {
           yuicompress: true,
           relativeUrls: true
         },
-        files: { 'style.css' : 'static/less/style.less' }
+        files: {
+          'style.css' : 'static/less/style.less',
+          'lib/so_widgets/so-property-carousel-widget/css/style.css' : 'lib/so_widgets/so-property-carousel-widget/css/style.less'
+
+        }
       }
     },
 
@@ -34,7 +38,8 @@ module.exports = function build( grunt ) {
       },
       less: {
         files: [
-          'static/less/*.*'
+          'static/less/*.*',
+          'lib/so_widgets/so-property-carousel-widget/css/*.*'
         ],
         tasks: [ 'less' ]
       },

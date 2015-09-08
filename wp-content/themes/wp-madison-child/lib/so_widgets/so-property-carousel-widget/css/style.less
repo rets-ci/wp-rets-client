@@ -37,6 +37,18 @@
 	background: -o-linear-gradient(@stop,@start);
 }
 
+/* HOME LISTINGS CAROUSEL */
+.rdc-property-carousel {
+    background:rgba(0,0,0,0.4);
+
+    .section-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px 80px 20px;
+    }
+
+}
+
 .rdc-carousel-title {
 	.widget-title {
 		display: inline-block;
@@ -126,8 +138,8 @@
             padding: 0;
             display: block;
             float: left;
-            margin-right: 15px;
-            width: 242px;
+            margin-right: 20px;
+            width: 275px;
             overflow-x: hidden;
             overflow-y: hidden;
 
@@ -140,9 +152,9 @@
 
                 a {
                     display: block;
-                    width: 242px;
-                    height: 162px;
-                    background-size: 242px 162px;
+                    width: 275px;
+                    height: 200px;
+                    background-size: 275px 200px;
                     background-position: center center;
 
                     &, span.overlay {
@@ -158,7 +170,7 @@
                     }
 
                     &:hover {
-                        background-size: 272px 182px;
+                        background-size: 290px 211px;
 
                         span {
                             opacity: 0.5;
@@ -169,29 +181,36 @@
 
             .rdc-carousel-default-thumbnail {
                 display: block;
-                width: 242px;
-                height: 162px;
+                width: 275px;
+                height: 200px;
                 .gradient(#E8E8E8, #E0E0E0, #E8E8E8)
             }
 
-            h3 {
-                font-size: 15px;
-                text-align: center;
-                font-weight: 500;
-                color: #474747;
-                margin: 10px 0 0 0;
+            .item-content {
+                background: #fff;
 
-                a {
-                    text-decoration: none;
-                    color: inherit;
+                h3 {
+                    font-size: 15px;
+                    text-align: center;
+                    font-weight: 500;
+                    color: #474747;
+                    margin: 10px 0 0 0;
+
+                    a {
+                        text-decoration: none;
+                        color: inherit;
+                    }
                 }
+
             }
+
+
         }
 
         li.rdc-carousel-loading {
             display: block;
-            width: 242px;
-            height: 162px;
+            width: 275px;
+            height: 200px;
             float: left;
             background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
             margin: 0;
