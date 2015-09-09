@@ -3,8 +3,9 @@
 $query = array(
 	'post_status' => 'publish',
 	'post_type' => 'property',
-	'posts_per_page' => 100,
+	'posts_per_page' => 50,
 );
+
 $the_query = new WP_Query( $query );
 
 ?>
@@ -25,7 +26,7 @@ $the_query = new WP_Query( $query );
 				<a href="#" class="rdc-carousel-next" title="<?php esc_attr_e('Next', 'siteorigin-widgets') ?>"></a>
 
 				<div class="rdc-carousel-wrapper"
-				     data-query="<?php echo esc_attr($instance['posts']) ?>"
+				     data-query="<?php echo http_build_query($query); ?>"
 				     data-found-posts="<?php echo esc_attr($the_query->found_posts) ?>"
 				     data-ajax-url="<?php echo esc_url( wp_nonce_url( admin_url('admin-ajax.php'), 'widgets_action', '_widgets_nonce' ) ) ?>"
 					>

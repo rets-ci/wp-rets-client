@@ -44,16 +44,27 @@ function rdc_carousel_get_next_posts_page() {
 		) ) );
 		?>
 		<li class="rdc-carousel-item">
-			<div class="rdc-carousel-thumbnail">
-				<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'rdc-carousel-default'); ?>
-					<a href="<?php the_permalink() ?>" style="background-image: url(<?php echo esc_url($img[0]) ?>)">
-						<span class="overlay"></span>
-					</a>
-				<?php else : ?>
-					<a href="<?php the_permalink() ?>" class="rdc-carousel-default-thumbnail"><span class="overlay"></span></a>
-				<?php endif; ?>
-			</div>
-			<h3><a href="<?php the_permalink() ?>"><?php the_title() ?></a></h3>
+			<a href="<?php the_permalink() ?>">
+				<div class="rdc-carousel-thumbnail">
+					<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'rdc-carousel-default'); ?>
+						<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>)">
+							<span class="overlay"></span>
+						</div>
+					<?php else : ?>
+						<div class="rdc-carousel-default-thumbnail"><span class="overlay"></span></div>
+					<?php endif; ?>
+					<div class="price"><?php echo $property[ 'price' ] ?></div>
+				</div>
+				<div class="item-content">
+					<h3><?php the_title() ?></h3>
+					<p class="address"><?php echo $property[ 'display_address' ]; ?></p>
+					<ul>
+						<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><i class="icon fa fa-bed"></i><?php echo $property[ 'bedrooms' ] ?></li>
+						<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><i class="icon fa fa-tint"></i><?php echo $property[ 'bathrooms' ] ?></li>
+						<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><i class="icon fa fa-map"></i><?php echo $property[ 'area' ] ?></li>
+					</ul>
+				</div>
+			</a>
 		</li>
 	<?php endwhile; wp_reset_postdata();
 	$result = array( 'html' => ob_get_clean() );
