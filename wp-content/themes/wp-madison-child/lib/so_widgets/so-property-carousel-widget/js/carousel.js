@@ -6,6 +6,7 @@ jQuery( function($){
             $container = $$.closest('.rdc-carousel-container').parent(),
             $itemsContainer = $$.find('.rdc-carousel-items'),
             $items = $$.find('.rdc-carousel-item'),
+            $filters = $$.parents('.rdc-property-carousel').find('form'),
             $firstItem = $items.eq(0);
 
         var position = 0,
@@ -14,7 +15,37 @@ jQuery( function($){
             numItems = $items.length,
             totalPosts = $$.data('found-posts'),
             complete = numItems == totalPosts,
-            itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) );
+            itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) ),
+            timer;
+
+        var doFilter = function() {
+            page = 1;
+            $itemsContainer.html("");
+            $itemsContainer.css('transition-duration', "0.45s");
+            $itemsContainer.css('margin-left', '0px' );
+            doRequest();
+        }
+
+        var doRequest = function() {
+            $itemsContainer.append('<li class="rdc-carousel-item rdc-carousel-loading"></li>');
+            $.get(
+              $$.data('ajax-url'),
+              {
+                  filter: $filters.serialize(),
+                  query : $$.data('query'),
+                  action : 'rdc_carousel_load',
+                  paged : page
+              },
+              function (data, status){
+                  var $items = $(data.html);
+                  $items.appendTo( $itemsContainer ).hide().fadeIn();
+                  $$.find('.rdc-carousel-loading').remove();
+                  numItems = $$.find('.rdc-carousel-item').length;
+                  complete = numItems == totalPosts;
+                  fetching = false;
+              }
+            )
+        };
 
         var updatePosition = function() {
             if ( position < 0 ) position = 0;
@@ -24,29 +55,34 @@ jQuery( function($){
                 if( !fetching &&  !complete ) {
                     fetching = true;
                     page++;
-                    $itemsContainer.append('<li class="rdc-carousel-item rdc-carousel-loading"></li>');
-
-                    $.get(
-                        $$.data('ajax-url'),
-                        {
-                            query : $$.data('query'),
-                            action : 'rdc_carousel_load',
-                            paged : page
-                        },
-                        function (data, status){
-                            var $items = $(data.html);
-                            $items.appendTo( $itemsContainer ).hide().fadeIn();
-                            $$.find('.rdc-carousel-loading').remove();
-                            numItems = $$.find('.rdc-carousel-item').length;
-                            complete = numItems == totalPosts;
-                            fetching = false;
-                        }
-                    )
+                    doRequest();
                 }
             }
             $itemsContainer.css('transition-duration', "0.45s");
             $itemsContainer.css('margin-left', -( itemWidth * position) + 'px' );
         };
+
+        $filters.find( 'select').on( 'change', function(){
+            doFilter();
+        } );
+
+        $filters.find( 'input').on('keyup', function(e) {
+            // If user hit enter, we don't want to submit the form
+            // We don't preventDefault() for all keys because it would
+            // also prevent to get the page number!
+            if ( 13 == e.which )
+                e.preventDefault();
+
+            // Now the timer comes to use: we wait half a second after
+            // the user stopped typing to actually send the call. If
+            // we don't, the keyup event will trigger instantly and
+            // thus may cause duplicate calls before sending the intended
+            // value
+            window.clearTimeout( timer );
+            timer = window.setTimeout(function() {
+                doFilter();
+            }, 500 );
+        });
 
         $container.on( 'click', 'a.rdc-carousel-previous',
             function(e){
@@ -63,12 +99,14 @@ jQuery( function($){
                 updatePosition();
             }
         );
+
         var validSwipe = false;
         var prevDistance = 0;
         var startPosition = 0;
         var velocity = 0;
         var prevTime = 0;
         var posInterval;
+
         $$.swipe( {
             excludedElements: "",
             triggerOnTouchEnd: true,
@@ -120,6 +158,7 @@ jQuery( function($){
                 }
             }
         } );
+
         var setNewPosition = function(newPosition) {
             if(newPosition < 50 && newPosition >  -( itemWidth * numItems )) {
                 $itemsContainer.css('transition-duration', "0s");
@@ -128,11 +167,13 @@ jQuery( function($){
             }
             return false;
         };
+
         var setFinalPosition = function() {
             var finalPosition = parseInt( $itemsContainer.css('margin-left') );
             position = Math.abs( Math.round( finalPosition / itemWidth ) );
             updatePosition();
         };
+
         $$.on('click', '.rdc-carousel-item a',
             function (event) {
                 if(validSwipe) {
@@ -141,5 +182,6 @@ jQuery( function($){
                 }
             }
         )
+
     } );
 } );

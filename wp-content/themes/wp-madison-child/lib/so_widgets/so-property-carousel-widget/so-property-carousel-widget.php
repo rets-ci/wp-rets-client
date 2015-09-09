@@ -31,75 +31,71 @@ if ( !function_exists( 'rdc_carousel_filters' ) ) {
 	function rdc_carousel_filters( $instance ) {
 		global $wp_properties;
 
-		$field_1 = $instance[ 'filter1' ];
-		$field_1_label = $instance[ 'filter1' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_1];
-		$field_1_type = $instance[ 'filter1_type' ];
+		$fields = array();
+		$search_fields = array();
 
-		$field_2 = $instance[ 'filter2' ];
-		$field_2_label = $instance[ 'filter2' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_2];
-		$field_2_type = $instance[ 'filter2_type' ];
+		if( !empty( $instance[ 'filter1' ] ) ) {
+			array_push( $fields, array(
+				'key' => $instance[ 'filter1' ],
+				'label' => $instance[ 'filter1' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter1' ]],
+				'placeholder' => $instance[ 'filter1' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter1' ]],
+				'type' => $instance[ 'filter1_type' ],
+			) );
+			array_push( $search_fields, $instance[ 'filter1' ] );
+		}
 
-		$field_3 = $instance[ 'filter3' ];
-		$field_3_label = $instance[ 'filter3' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_3];
-		$field_3_type = $instance[ 'filter3_type' ];
+		if( !empty( $instance[ 'filter2' ] ) ) {
+			array_push( $fields, array(
+				'key' => $instance[ 'filter2' ],
+				'label' => $instance[ 'filter2' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter2' ]],
+				'placeholder' => $instance[ 'filter2' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter2' ]],
+				'type' => $instance[ 'filter2_type' ],
+			) );
+			array_push( $search_fields, $instance[ 'filter2' ] );
+		}
+
+		if( !empty( $instance[ 'filter3' ] ) ) {
+			array_push( $fields, array(
+				'key' => $instance[ 'filter3' ],
+				'label' => $instance[ 'filter3' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter3' ]],
+				'placeholder' => $instance[ 'filter3' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter3' ]],
+				'type' => $instance[ 'filter3_type' ],
+			) );
+			array_push( $search_fields, $instance[ 'filter3' ] );
+		}
 
 		$searchable_property_types = ud_get_wp_property( 'searchable_property_types', array() );
 
-		$search_values = WPP_F::get_search_values( array_filter(array($field_1,$field_2,$field_3)), $searchable_property_types );
+		$search_values = WPP_F::get_search_values( $search_fields, $searchable_property_types );
 
 		?>
 		<div class="rdc-carousel-filters">
 			<div class="column-wrapper">
-				<form action="" class="">
-					<ul>
-						<li>
-							<label>
-								<span class="filter-label"><?php echo $field_1_label; ?> <span class="delimiter">:</span></span>
-								<?php
-								wpp_render_search_input( array(
-									'attrib' => $field_1,
-									'search_values' => $search_values,
-									'value' => '',
-									'input_type' => $field_1_type,
-									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
-								) );
-								?>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="filter-label"><?php echo $field_2_label; ?> <span class="delimiter">:</span></span>
-								<?php
-								wpp_render_search_input( array(
-									'attrib' => $field_2,
-									'search_values' => $search_values,
-									'value' => '',
-									'input_type' => $field_2_type,
-									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
-								) );
-								?>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="filter-label"><?php echo $field_3_label; ?> <span class="delimiter">:</span></span>
-								<?php
-								wpp_render_search_input( array(
-									'attrib' => $field_3,
-									'search_values' => $search_values,
-									'value' => '',
-									'input_type' => $field_3_type,
-									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
-								) );
-								?>
-							</label>
-						</li>
-					</ul>
+				<form action="" class="" class="rdc-carousel-filter">
+					<?php if( !empty( $fields ) ) : ?>
+						<ul>
+							<?php foreach( $fields as $field ) : ?>
+								<li>
+									<label>
+										<span class="filter-label"><?php echo $field[ 'label' ]; ?> <span class="delimiter">:</span></span>
+										<?php
+										wpp_render_search_input( array(
+											'attrib' => $field[ 'key' ],
+											'search_values' => $search_values,
+											'value' => '',
+											'input_type' => $field[ 'type' ],
+											'placeholder' => $field[ 'placeholder' ]
+										) );
+										?>
+									</label>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
 				</form>
 			</div>
 		</div>
 		<?php
-
 	}
 }
 
@@ -113,6 +109,10 @@ function rdc_carousel_get_next_posts_page() {
 			'paged' => empty( $_GET['paged'] ) ? 1 : $_GET['paged']
 		)
 	);
+
+	if( !empty( $_REQUEST[ 'filter' ] ) ) {
+		$filters = parse_str( urldecode( $_REQUEST[ 'filter' ] ) );
+	}
 
 	$posts = new WP_Query($query);
 	ob_start();
@@ -232,7 +232,7 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 				),
 				array(
 					'rdc-carousel-basic',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/js/carousel.min.js',
+					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/js/carousel.js',
 					array( 'jquery', 'touch-swipe' ),
 					'1.4.4',
 					true
