@@ -44,7 +44,7 @@
     .section-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 60px 20px 80px 20px;
+        padding: 60px 20px;
     }
 
 }
@@ -147,10 +147,26 @@
                 margin-right: 0;
             }
 
+            &:hover {
+
+                .rdc-carousel-thumbnail {
+                    div.thumb {
+                        background-size: 290px 211px;
+
+                        span {
+                            opacity: 0.4 !important;
+                        }
+                    }
+
+                }
+
+            }
+
             .rdc-carousel-thumbnail {
                 line-height: 0;
+                position: relative;
 
-                a {
+                div.thumb {
                     display: block;
                     width: 275px;
                     height: 200px;
@@ -165,17 +181,20 @@
                         display: block;
                         width: 100%;
                         height: 100%;
-                        background: #3279BB;
+                        background: #bf2b1f;
                         opacity: 0;
                     }
+                }
 
-                    &:hover {
-                        background-size: 290px 211px;
-
-                        span {
-                            opacity: 0.5;
-                        }
-                    }
+                .price {
+                    background: #cf3428;
+                    position: absolute;
+                    height: 26px;
+                    line-height: 26px;
+                    left: 0;
+                    bottom: 0;
+                    padding: 0 8px;
+                    color: #fff;
                 }
             }
 
@@ -183,22 +202,53 @@
                 display: block;
                 width: 275px;
                 height: 200px;
-                .gradient(#E8E8E8, #E0E0E0, #E8E8E8)
+                .gradient(#E8E8E8, #E0E0E0, #E8E8E8);
             }
 
             .item-content {
                 background: #fff;
+                color: #474747;
 
                 h3 {
-                    font-size: 15px;
-                    text-align: center;
-                    font-weight: 500;
+                    font-size: 16px;
                     color: #474747;
-                    margin: 10px 0 0 0;
+                    margin: 0;
+                    padding: 20px 20px 10px;
+                    min-height: 46px;
 
                     a {
                         text-decoration: none;
                         color: inherit;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    line-height: 20px;
+                    padding: 0 20px 20px 20px;
+                    min-height: 60px;
+                }
+
+                ul {
+                    border-top: 1px solid #e6e6e6;
+                    margin: 0;
+                    padding: 20px;
+                    list-style: none;
+
+                    li {
+                        list-style: none;
+                        display: inline-block;
+                        margin-right: 16px;
+
+                        i.fa {
+                            display: inline-block;
+                            width: 24px;
+                            color: #a7a9ac;
+
+                            &.fa-tint {
+                                width: 16px;
+                            }
+                        }
                     }
                 }
 

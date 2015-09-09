@@ -12,7 +12,7 @@
 .rdc-property-carousel .section-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 20px 80px 20px;
+  padding: 60px 20px;
 }
 .rdc-carousel-title .widget-title {
   display: inline-block;
@@ -106,35 +106,46 @@
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:last-child {
   margin-right: 0;
 }
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:hover .rdc-carousel-thumbnail div.thumb {
+  background-size: 290px 211px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:hover .rdc-carousel-thumbnail div.thumb span {
+  opacity: 0.4 !important;
+}
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail {
   line-height: 0;
+  position: relative;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail div.thumb {
   display: block;
   width: 275px;
   height: 200px;
   background-size: 275px 200px;
   background-position: center center;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a,
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a span.overlay {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail div.thumb,
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail div.thumb span.overlay {
   -webkit-transition: all 0.35s ease;
   -moz-transition: all 0.35s ease;
   -o-transition: all 0.35s ease;
   transition: all 0.35s ease;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a span.overlay {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail div.thumb span.overlay {
   display: block;
   width: 100%;
   height: 100%;
-  background: #3279BB;
+  background: #bf2b1f;
   opacity: 0;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a:hover {
-  background-size: 290px 211px;
-}
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail a:hover span {
-  opacity: 0.5;
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail .price {
+  background: #cf3428;
+  position: absolute;
+  height: 26px;
+  line-height: 26px;
+  left: 0;
+  bottom: 0;
+  padding: 0 8px;
+  color: #fff;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-default-thumbnail {
   display: block;
@@ -148,17 +159,43 @@
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content {
   background: #fff;
+  color: #474747;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content h3 {
-  font-size: 15px;
-  text-align: center;
-  font-weight: 500;
+  font-size: 16px;
   color: #474747;
-  margin: 10px 0 0 0;
+  margin: 0;
+  padding: 20px 20px 10px;
+  min-height: 46px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content h3 a {
   text-decoration: none;
   color: inherit;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content p {
+  margin: 0;
+  line-height: 20px;
+  padding: 0 20px 20px 20px;
+  min-height: 60px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
+  border-top: 1px solid #e6e6e6;
+  margin: 0;
+  padding: 20px;
+  list-style: none;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 16px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li i.fa {
+  display: inline-block;
+  width: 24px;
+  color: #a7a9ac;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li i.fa.fa-tint {
+  width: 16px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-loading {
   display: block;
