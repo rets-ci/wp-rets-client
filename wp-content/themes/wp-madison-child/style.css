@@ -465,6 +465,7 @@ body.page-template-page-wide #site-content article {
 body.page-template-page-wide #site-content article .entry-inner {
   margin: 0;
   padding: 0;
+  border: 0;
 }
 body.page-template-page-wide #site-content article .entry-inner header {
   display: none;
