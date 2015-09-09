@@ -3,7 +3,7 @@
 $query = array(
 	'post_status' => 'publish',
 	'post_type' => 'property',
-	'posts_per_page' => 2,
+	'posts_per_page' => 4,
 );
 
 $the_query = new WP_Query( $query );
