@@ -111,10 +111,50 @@ function rdc_carousel_get_next_posts_page() {
 	);
 
 	if( !empty( $_REQUEST[ 'filter' ] ) ) {
-		$filters = parse_str( urldecode( $_REQUEST[ 'filter' ] ) );
+		$filters = array();
+		parse_str( urldecode( $_REQUEST[ 'filter' ] ), $filters );
+		if( !empty( $filters[ 'wpp_search' ] ) ) {
+			$filters = $filters[ 'wpp_search' ];
+		}
+		if( !empty( $filters ) && is_array( $filters ) ) {
+			$attributes = ud_get_wp_property( 'property_stats', array() );
+			$meta_query = array();
+			foreach( $filters as $k => $v ) {
+				if( array_key_exists( $k, (array)$attributes ) && !empty( $v ) && $v != '-1' ) {
+					if( is_array( $v ) ) {
+						if( !empty( $v[ 'min' ] ) ) {
+							array_push( $meta_query, array(
+								'key' => $k,
+								'value' => $v[ 'min' ],
+								'compare' => '>=',
+							) );
+						} elseif ( !empty( $v[ 'max' ] ) ) {
+							array_push( $meta_query, array(
+								'key' => $k,
+								'value' => $v[ 'max' ],
+								'compare' => '<=',
+							) );
+						}
+					} else {
+						array_push( $meta_query, array(
+							'key' => $k,
+							'value' => $v,
+							'compare' => '=',
+						) );
+					}
+				} elseif ( $k == 's' && is_string( $v ) && !empty( $v ) ) {
+					$query[ 's' ] = $v;
+				}
+			}
+		}
+
+		if( !empty( $meta_query ) ) {
+			$query[ 'meta_query' ] = $meta_query;
+		}
 	}
 
 	$posts = new WP_Query($query);
+
 	ob_start();
 	while($posts->have_posts()) : $posts->the_post(); ?>
 		<?php $property = prepare_property_for_display( get_property( get_the_ID(), array(
@@ -149,7 +189,7 @@ function rdc_carousel_get_next_posts_page() {
 			</a>
 		</li>
 	<?php endwhile; wp_reset_postdata();
-	$result = array( 'html' => ob_get_clean() );
+	$result = array( 'html' => ob_get_clean(), 'found_posts' => $posts->found_posts );
 	header('content-type: application/json');
 	echo json_encode( $result );
 

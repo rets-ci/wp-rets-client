@@ -268,7 +268,7 @@
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-loading {
   display: block;
   width: 275px;
-  height: 200px;
+  height: 374px;
   float: left;
   background: url(images/carousel-loader.gif) #f6f6f6 center center no-repeat;
   margin: 0;

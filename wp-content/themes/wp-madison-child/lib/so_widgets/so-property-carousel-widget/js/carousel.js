@@ -40,6 +40,8 @@ jQuery( function($){
                   var $items = $(data.html);
                   $items.appendTo( $itemsContainer ).hide().fadeIn();
                   $$.find('.rdc-carousel-loading').remove();
+                  totalPosts = data.found_posts;
+                  $$.data( 'found-posts', totalPosts );
                   numItems = $$.find('.rdc-carousel-item').length;
                   complete = numItems == totalPosts;
                   fetching = false;
