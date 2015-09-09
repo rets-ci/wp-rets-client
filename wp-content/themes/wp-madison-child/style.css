@@ -453,6 +453,25 @@ a:hover {
     margin: 0 0 20px 0;
   }
 }
+/* PROPERTY OVERVIEW - GRID */
+.property-overview-grid .property-overview-item .property-information ul.icons-list {
+  margin: 0;
+  padding: 20px;
+  list-style: none;
+}
+.property-overview-grid .property-overview-item .property-information ul.icons-list li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 10px;
+}
+.property-overview-grid .property-overview-item .property-information ul.icons-list li i.fa {
+  display: inline-block;
+  width: 24px;
+  color: #a7a9ac;
+}
+.property-overview-grid .property-overview-item .property-information ul.icons-list li i.fa.fa-tint {
+  width: 16px;
+}
 /* WIDE WIDTH TEMPLATE */
 body.page-template-page-wide #site-content {
   width: 100%;
