@@ -44,16 +44,115 @@
     .section-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 60px 20px;
+        padding: 40px 20px 60px;
     }
 
 }
 
 .rdc-carousel-title {
-	.widget-title {
-		display: inline-block;
-		padding-right: 15px;
-	}
+    margin-bottom: 15px;
+
+    .rdc-carousel-filters {
+        display: inline-block;
+        margin-right: -50px;
+        padding-right: 50px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                list-style: none;
+                display: inline-block;
+                margin-right: 16px;
+                margin-bottom: 15px;
+
+                label {
+                    color: #bdbcbd;
+                    border: 1px solid #bdbcbd;
+                    padding: 6px 10px;
+                    height: 41px;
+                    -webkit-border-radius: 3px;
+                    -moz-border-radius: 3px;
+                    border-radius: 3px;
+
+                    input {
+                        background: transparent;
+                        padding: 0;
+                        margin: 0;
+                        width: auto;
+                        border: none;
+                        color: #fff;
+                    }
+
+                    select {
+                        background: transparent;
+                        padding: 0 20px 0 0;
+                        margin: 0;
+                        width: auto;
+                        border: none;
+                        color: #fff;
+                        -moz-appearance: none;
+                        background-image: url("images/arrow-down-white.png");
+                        background-position: 90% center;
+                        background-repeat: no-repeat;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    @media screen and (max-width: 470px) {
+
+        .rdc-carousel-filters {
+            padding-right: 0;
+            margin-right: 0;
+
+            li {
+                margin-right: 0;
+                display: block;
+
+                label {
+
+                    input, select {
+                        max-width: 175px;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    @media screen and (max-width: 400px) {
+
+        .rdc-carousel-filters {
+
+            li {
+
+                label {
+
+                    input, select {
+                        max-width: 130px;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
 
 	a.rdc-carousel-next,
 	a.rdc-carousel-previous {
@@ -64,14 +163,16 @@
 		float: right;
 		overflow: hidden;
 		margin-left: 2px;
-		margin-top: 3px;
+		margin-top: 13px;
 
+        position: relative;
+        z-index: 9999;
 
 		font-style: normal;
 		font-weight: normal;
 		font-variant: normal;
 		text-transform: none;
-		font-size: 8px;
+		font-size: 14px;
 		line-height: 18px;
 		width: 18px;
 		text-align: center;
@@ -83,11 +184,10 @@
 		text-decoration: none;
 		color: #FFFFFF;
 
-		background: #333333;
 		border-radius: 2px;
 
 		&:hover {
-			background: #444444;
+			background: #cf3428;
 		}
 	}
 

@@ -21,6 +21,88 @@ function rdc_carousel_register_image_sizes(){
 }
 add_action('init', 'rdc_carousel_register_image_sizes');
 
+/**
+ * Prevent function redeclaration
+ */
+if ( !function_exists( 'rdc_carousel_filters' ) ) {
+	/**
+	 * Renders Filters for carousel
+	 */
+	function rdc_carousel_filters( $instance ) {
+		global $wp_properties;
+
+		$field_1 = $instance[ 'filter1' ];
+		$field_1_label = $instance[ 'filter1' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_1];
+		$field_1_type = $instance[ 'filter1_type' ];
+
+		$field_2 = $instance[ 'filter2' ];
+		$field_2_label = $instance[ 'filter2' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_2];
+		$field_2_type = $instance[ 'filter2_type' ];
+
+		$field_3 = $instance[ 'filter3' ];
+		$field_3_label = $instance[ 'filter3' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$field_3];
+		$field_3_type = $instance[ 'filter3_type' ];
+
+		$searchable_property_types = ud_get_wp_property( 'searchable_property_types', array() );
+
+		$search_values = WPP_F::get_search_values( array_filter(array($field_1,$field_2,$field_3)), $searchable_property_types );
+
+		?>
+		<div class="rdc-carousel-filters">
+			<div class="column-wrapper">
+				<form action="" class="">
+					<ul>
+						<li>
+							<label>
+								<span class="filter-label"><?php echo $field_1_label; ?> <span class="delimiter">:</span></span>
+								<?php
+								wpp_render_search_input( array(
+									'attrib' => $field_1,
+									'search_values' => $search_values,
+									'value' => '',
+									'input_type' => $field_1_type,
+									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
+								) );
+								?>
+							</label>
+						</li>
+						<li>
+							<label>
+								<span class="filter-label"><?php echo $field_2_label; ?> <span class="delimiter">:</span></span>
+								<?php
+								wpp_render_search_input( array(
+									'attrib' => $field_2,
+									'search_values' => $search_values,
+									'value' => '',
+									'input_type' => $field_2_type,
+									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
+								) );
+								?>
+							</label>
+						</li>
+						<li>
+							<label>
+								<span class="filter-label"><?php echo $field_3_label; ?> <span class="delimiter">:</span></span>
+								<?php
+								wpp_render_search_input( array(
+									'attrib' => $field_3,
+									'search_values' => $search_values,
+									'value' => '',
+									'input_type' => $field_3_type,
+									'madison_placeholder' => $wp_properties['property_stats'][$field_3]
+								) );
+								?>
+							</label>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
+		<?php
+
+	}
+}
+
 function rdc_carousel_get_next_posts_page() {
 	if ( empty( $_REQUEST['_widgets_nonce'] ) || !wp_verify_nonce( $_REQUEST['_widgets_nonce'], 'widgets_action' ) ) return;
 	$query = wp_parse_args(
@@ -78,17 +160,62 @@ add_action( 'wp_ajax_nopriv_rdc_carousel_load', 'rdc_carousel_get_next_posts_pag
 
 class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 	function __construct() {
+
+		$attributes = array(
+			'0' => 'Not Selected',
+		);
+		$sattrs = ud_get_wp_property( 'searchable_attributes', array() );
+		if( !empty( $sattrs ) && is_array( $sattrs ) ) {
+			foreach( $sattrs as $k ) {
+				$attributes[ $k ] =  ud_get_wp_property( "property_stats.{$k}", "No label" );
+			}
+		}
+		$attributes['s'] = __('Full Text', 'rdc');
+
+		$types = array(
+			'range_dropdown' => 'Range Dropdown',
+			'dropdown' => 'Dropdown',
+			'input' => 'Text Input'
+		);
+
 		parent::__construct(
 			'rdc-property-carousel',
 			__('RDC Property Carousel', 'rdc'),
 			array(
 				'description' => __('Display your properties as a carousel.', 'rdc'),
+				'has_preview' => false
 			),
 			array(),
 			array(
-				'title' => array(
-					'type' => 'text',
-					'label' => __('Title', 'rdc'),
+				'filter1' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 1', 'rdc' ),
+					'options' => $attributes
+				),
+				'filter1_type' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 1 Type', 'rdc' ),
+					'options' => $types
+				),
+				'filter2' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 2', 'rdc' ),
+					'options' => $attributes
+				),
+				'filter2_type' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 2 Type', 'rdc' ),
+					'options' => $types
+				),
+				'filter3' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 3', 'rdc' ),
+					'options' => $attributes
+				),
+				'filter3_type' => array(
+					'type' => 'select',
+					'label' => __( 'Filter 3 Type', 'rdc' ),
+					'options' => $types
 				),
 			)
 		);

@@ -22,7 +22,6 @@ class SiteOrigin_Widget_Field_Factory {
 			$field_options['label'] = __( 'This field does not have a type. Please specify a type for it to be rendered correctly.', 'siteorigin-widgets' );
 		}
 		$field_class = $this->get_field_class_name( $field_options['type'] );
-
 		if( $this->is_container_type( $field_options['type'] ) ) {
 			return new $field_class( $field_name, $element_id, $element_name, $field_options, $for_widget, $for_repeater );
 		}

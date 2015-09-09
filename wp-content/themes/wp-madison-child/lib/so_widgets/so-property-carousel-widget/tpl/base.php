@@ -13,7 +13,7 @@ $the_query = new WP_Query( $query );
 	<div class="rdc-property-carousel">
 		<div class="section-content">
 			<div class="rdc-carousel-title">
-				<?php echo $args['before_title'] . esc_html($instance['title']) . $args['after_title'] ?>
+				<?php rdc_carousel_filters( $instance ); ?>
 
 				<a href="#" class="rdc-carousel-next" title="<?php esc_attr_e('Next', 'siteorigin-widgets') ?>"></a>
 				<a href="#" class="rdc-carousel-previous" title="<?php esc_attr_e('Previous', 'siteorigin-widgets') ?>"></a>
