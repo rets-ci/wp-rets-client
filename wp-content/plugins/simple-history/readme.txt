@@ -1,10 +1,10 @@
 ﻿=== Simple History ===
 Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
-Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream
+Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 3.6.0
 Tested up to: 4.3
-Stable tag: 2.1.4
+Stable tag: 2.2
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -29,7 +29,7 @@ activation and deactivation
 * **User profiles**<br>
 info about added, updated or removed users
 * **User logins**<br>
-see when a user login & logout
+see when a user login & logout. Also see when a user fails to login (good way to catch brute-force login attempts).
 * **Failed user logins**<br>
 see when someone has tried to log in, but failed. The log will then include ip address of the possible hacker.
 
@@ -76,6 +76,8 @@ if ( function_exists("SimpleLogger") ) {
 ?>
 `
 
+Check out the [examples-folder](https://github.com/bonny/WordPress-Simple-History/tree/master/examples) for more examples.
+
 #### Translations/Languages
 
 So far Simple History is translated to:
@@ -117,6 +119,33 @@ initiated by a specific user.
 
 ## Changelog
 
+= 2.2 (September 2015)
+
+- Added: Support for plugin [User Switching](https://wordpress.org/plugins/user-switching/). The event log will show when a user switched to another user, when they switched back, or when they switched off.
+
+- Added: Support for plugin [Enable Media Replace](https://wordpress.org/plugins/enable-media-replace/). Whenever a user replaces an attachment with a new, you will now know about it and also see the name of both the old and the new attachment. Awesome!
+
+- Fixed: Mouse over (:hover state) on buttons no longer use blue background. Now works much better with admin themes other than the standard one. Fixes https://wordpress.org/support/topic/pagination-button-design.
+
+= 2.1.7 (September 2015) =
+
+- Fixed: Date and time in the log was using GMT time rather than local time. Could be confusing. Even very confusing if living in a time zone far far away from the GMT zone.
+
+= 2.1.6 (August 2015) =
+
+- Updated: Danish translation updated. Thanks translator!
+- Fixed: Icon on settings page was a bit unaligned on WordPress not running the latest beta version (hrm, which I guess most of you were..)
+- Fixed: Possible php notice. Should fix https://wordpress.org/support/topic/simplehistoryphp-creates-debug-entries.
+- Changed: Logged messages are now trimmed by default (spaces and new lines will be removed from messages).
+- Updated: When installing and activating the plugin it will now add the same "plugin installed" and "plugin activated" message that other plugins get when they are installed. These events where not logged before because the plugin was not installed and could therefor not log its own installation. Solution was to log it manually. Works. Looks good. But perhaps a bit of cheating.
+- Added: A (hopefully) better welcome message when activating the plugin for the first time. Hopefully the new message makes new users understand a bit better why the log may be empty at first.
+
+= 2.1.5 (August 2015) =
+
+- Fixed: It was not possible to modify the filters `simple_history/view_settings_capability` and `simple_history/view_history_capability` from the `functions.php`-file in a theme (filters where applied too early - they did however work from within a plugin!)
+- Changed: Use `h1` instead of `h2` on admin screens. Reason for this the changes in 4.3: https://make.wordpress.org/core/2015/07/31/headings-in-admin-screens-change-in-wordpress-4-3/.
+- Removed: the constant `VERSION` is now removed. Use constant `SIMPLE_HISTORY_VERSION` instead of you need to check the current version of Simple History.
+
 = 2.1.4 (July 2015) =
 
 - Fixed: WordPress core updates got the wrong previous version.
@@ -139,13 +168,13 @@ initiated by a specific user.
 - Added: Filter `SimpleHistoryFilterDropin/filter_default_user_ids` that is used to search/filter specific user ids by default (no need to search and select users). Should fix https://wordpress.org/support/topic/how-to-pass-array-of-user-ids-to-history-query.
 - Added: Filter `SimpleHistoryFilterDropin/filter_default_loglevel` that is used to search/filter for log levels by default.
 - Fixed: if trying to log an array or an object the logger now automagically runs `json_encode()` on the value to make it a string. Previously is just tried to run `$wpdb->insert() with the array and that gave errors. Should fix https://wordpress.org/support/topic/mysql_real_escape_string.
-- Fixed: The function that checks for new rows each second (or actually each tenth second to spare resourced) was called an extra time each time the submit button for the filter was clicked. Kinda stupid. Kinda fixed now.
+- Fixed: The function that checks for new rows each second (or actually each tenth second to spare resources) was called an extra time each time the submit button for the filter was clicked. Kinda stupid. Kinda fixed now.
 - Fixed: The export feature that was added in version 2.1 was actually not enabled for all users. Now it is!
 - Fixed: Image attachments that is deleted from file system no longer result in "broken image" in the log. (Rare case, I know, but it does happen for me that local dev server and remote prod server gets out of "sync" when it comes to attachments.)
 
 = 2.1.1 (May 2015) =
 
-- Removed: filter `simple_history/dropins_dir` removed. 
+- Removed: filter `simple_history/dropins_dir` removed.
 - Changed: Dropins are not loaded from a `glob()` call anymore (just like plugins in the prev release)
 - Updated: Brazilian Portuguese translation updated.
 - Fixed: POT file updated for translators.
