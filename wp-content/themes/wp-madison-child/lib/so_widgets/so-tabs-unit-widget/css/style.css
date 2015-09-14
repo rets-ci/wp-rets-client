@@ -50,6 +50,13 @@
 .rdc-tabs-unit .section-content .rdc-tabs > ul > li.ui-tabs-active a {
   color: #cf3428;
 }
+@media screen and (max-width: 400px) {
+  .rdc-tabs-unit .section-content .rdc-tabs > ul > li {
+    padding: 5px 8px;
+    max-width: 120px;
+    min-width: 90px;
+  }
+}
 .rdc-tabs-unit .section-content ul.static-boxes {
   margin: 0 auto;
   padding: 0;
@@ -113,4 +120,12 @@
 .rdc-tabs-unit .section-content ul.static-boxes li:focus hr,
 .rdc-tabs-unit .section-content ul.static-boxes li:active hr {
   visibility: hidden;
+}
+@media screen and (max-width: 768px) {
+  .rdc-tabs-unit .section-content ul.static-boxes li.column {
+    float: none;
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto;
+  }
 }

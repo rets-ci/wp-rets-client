@@ -476,6 +476,7 @@ a:hover {
 body.page-template-page-wide #site-content {
   width: 100%;
   max-width: 100%;
+  padding: 0;
 }
 body.page-template-page-wide #site-content article {
   margin: 0;
