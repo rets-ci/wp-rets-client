@@ -1,0 +1,21 @@
+.rdc-recent-posts .section-content {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 60px 20px 40px;
+}
+.rdc-recent-posts .section-content h3 {
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0 0 10px 0;
+}
+.rdc-recent-posts .section-content p.section-tagline {
+  color: #808285;
+  text-align: center;
+}
+.rdc-recent-posts .section-content hr.section-delimiter {
+  color: #e2e3e4;
+  background-color: #e2e3e4;
+  width: 200px;
+  margin-bottom: 60px;
+}
