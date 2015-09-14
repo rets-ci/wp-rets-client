@@ -19,7 +19,9 @@ $cron = _get_cron_array();
 foreach ( $cron as $timestamp => $values ) {
 	if ( is_array( $values ) ) {
 		foreach ( $values as $cron_job => $v ) {
-			echo date( 'r', $timestamp ) . " : " . $cron_job . "<br />";
+			if (is_numeric($timestamp)) {
+				echo date( 'r', $timestamp ) . " : " . $cron_job . "<br />";
+			}
 		}
 	}
 }

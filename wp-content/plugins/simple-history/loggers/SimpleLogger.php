@@ -182,7 +182,7 @@ class SimpleLogger {
 					 * @since 2.1
 					 */
 					$use_you = apply_filters("simple_history/header_initiator_use_you", true);
-					
+
 					if ( $use_you && $is_current_user ) {
 
 						$tmpl_initiator_html = '
@@ -336,7 +336,7 @@ class SimpleLogger {
 		// http://developers.whatwg.org/text-level-semantics.html#the-time-element
 		$date_html = "";
 		$str_when = "";
-		$date_datetime = new DateTime($row->date);
+		$date_datetime = new DateTime( $row->date );
 
 		/**
 		 * Filter how many seconds as most that can pass since an
@@ -360,16 +360,16 @@ class SimpleLogger {
 		$time_ago_just_now_max_time = 30;
 		$time_ago_just_now_max_time = apply_filters("simple_history/header_just_now_max_time", $time_ago_just_now_max_time);
 
-		if (time() - $date_datetime->getTimestamp() <= $time_ago_just_now_max_time) {
+		if ( time() - $date_datetime->getTimestamp() <= $time_ago_just_now_max_time ) {
 
 			// show "just now" if event is very recent
 			$str_when = __("Just now", "simple-history");
 
-		} else if (time() - $date_datetime->getTimestamp() > $time_ago_max_time) {
+		} else if ( time() - $date_datetime->getTimestamp() > $time_ago_max_time ) {
 
 			/* translators: Date format for log row header, see http://php.net/date */
 			$datef = __('M j, Y \a\t G:i', "simple-history");
-			$str_when = date_i18n($datef, $date_datetime->getTimestamp());
+			$str_when = date_i18n( $datef, strtotime( get_date_from_gmt( $row->date ) ) );
 
 		} else {
 
@@ -452,8 +452,7 @@ class SimpleLogger {
 
 		// Message is translated here, but translation must be added in
 		// plain text before
-
-		if (empty( $message_key )) {
+		if ( empty( $message_key ) ) {
 
 			// Message key did not exist, so check if we should translate using textdomain
 			if ( ! empty( $row->context["_gettext_domain"] ) ) {
@@ -855,6 +854,7 @@ class SimpleLogger {
 		$sh_latest_translations = $this->simpleHistory->gettextLatestTranslations;
 
 		if ( ! empty( $sh_latest_translations ) ) {
+
 			if ( isset( $sh_latest_translations[ $message ] ) ) {
 
 				// Translation of this phrase was found, so use original phrase instead of translated one
@@ -886,14 +886,9 @@ class SimpleLogger {
 		$level = apply_filters("simple_history/log_argument/level", $level, $context, $message, $this);
 		$message = apply_filters("simple_history/log_argument/message", $message, $level, $context, $this);
 
-		/* Store date at utc or local time?
+		/* Store date as GMT date, i.e. not local date/time
 		 * Some info here:
 		 * http://www.skyverge.com/blog/down-the-rabbit-hole-wordpress-and-timezones/
-		 * UNIX timestamp = no timezone = UTC
-		 * anything is better than now() anyway!
-		 * WP seems to use the local time, so I will go with that too I think
-		 * GMT/UTC-time is: date_i18n($timezone_format, false, 'gmt'));
-		 * local time is: date_i18n($timezone_format));
 		 */
 		$localtime = current_time("mysql", 1);
 
@@ -1020,6 +1015,9 @@ class SimpleLogger {
 
 		}
 
+		// Trim message
+		$data["message"] = trim( $data["message"] );
+
 		/**
 		 * Filter data to be saved to db
 		 *
@@ -1031,6 +1029,7 @@ class SimpleLogger {
 
 		// Insert data into db
 		// sf_d($db_table, '$db_table');exit;
+
 		$result = $wpdb->insert($db_table, $data);
 
 		// Only save context if able to store row
