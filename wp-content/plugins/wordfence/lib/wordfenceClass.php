@@ -486,7 +486,7 @@ class wordfence {
 		add_action('wordfence_hourly_cron', 'wordfence::hourlyCron');
 		add_action('plugins_loaded', 'wordfence::veryFirstAction');
 		add_action('init', 'wordfence::initAction');
-		add_action('template_redirect', 'wordfence::templateRedir', 0);
+		add_action('wp_loaded', 'wordfence::templateRedir', 0);
 		add_action('shutdown', 'wordfence::shutdownAction');
 
 		if(version_compare(PHP_VERSION, '5.4.0') >= 0){
@@ -547,6 +547,8 @@ class wordfence {
 				add_action('post_submitbox_start', 'wordfence::postSubmitboxStart');
 			}
 		}
+
+		add_action('request', 'wordfence::preventAuthorNScans');
 	}
 	/*
   	public static function cronAddSchedules($schedules){
@@ -603,7 +605,7 @@ class wordfence {
 		$isCrawler = false;
 		if($UA){
 			$b = $browscap->getBrowser($UA);
-			if(!empty($b['Crawler'])){
+			if(!empty($b['Crawler']) || wfCrawl::isGoogleCrawler()){
 				$isCrawler = true;
 			}
 		}
@@ -614,6 +616,9 @@ class wordfence {
 			header("Connection: close");
 			header("Content-Length: 0");
 			header("X-Robots-Tag: noindex");
+			if (!$isCrawler) {
+				setcookie('wordfence_verifiedHuman', wp_create_nonce('wordfence_verifiedHuman' . $UA . wfUtils::getIP()), time() + 86400, '/');
+			}
 		}
 		flush();
 		if(! $isCrawler){
@@ -769,7 +774,7 @@ class wordfence {
 
 			$email = trim($_POST['email']);
 			global $wpdb;
-			$ws = $wpdb->get_results("SELECT ID, user_login FROM $wpdb->users");
+			$ws = $wpdb->get_results($wpdb->prepare("SELECT ID, user_login FROM $wpdb->users WHERE user_email = %s", $email));
 			foreach($ws as $user){
 				$userDat = get_userdata($user->ID);
 				if(wfUtils::isAdmin($userDat)){
@@ -2646,18 +2651,12 @@ class wordfence {
 		wfScanEngine::startScan();
 	}
 	public static function templateRedir(){
-		// prevent /?author=N scans from disclosing usernames.
-		if (wfConfig::get('loginSec_disableAuthorScan') && is_author() && !empty($_GET['author']) && is_numeric($_GET['author'])) {
-			wp_redirect(home_url());
-			exit;
-		}
-
 		if (!empty($_GET['wordfence_logHuman'])) {
 			self::ajax_logHuman_callback();
 			exit;
 		}
 
-		$wfFunc = get_query_var('_wfsf');
+		$wfFunc = !empty($_GET['_wfsf']) && is_string($_GET['_wfsf']) ? $_GET['_wfsf'] : '';
 
 		//Logging
 		self::doEarlyAccessLogging();
@@ -2785,21 +2784,44 @@ wfscr.src = url;
 EOL;
 	}
 	public static function wfLogHumanHeader(){
-		$URL = site_url('/?wordfence_logHuman=1&hid=' . wfUtils::encrypt(self::$hitID));
+		$URL = home_url('/?wordfence_logHuman=1&hid=' . wfUtils::encrypt(self::$hitID));
 		$URL = addslashes(preg_replace('/^https?:/i', '', $URL));
 		#Load as external script async so we don't slow page down.
-		echo <<<EOL
+		echo <<<HTML
 <script type="text/javascript">
 (function(url){
-if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
-var wfscr = document.createElement('script');
-wfscr.type = 'text/javascript';
-wfscr.async = true;
-wfscr.src = url + '&r=' + Math.random();
-(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+	if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
+	var addEvent = function(evt, handler) {
+		if (window.addEventListener) {
+			document.addEventListener(evt, handler, false);
+		} else if (window.attachEvent) {
+			document.attachEvent('on' + evt, handler);
+		}
+	};
+	var removeEvent = function(evt, handler) {
+		if (window.removeEventListener) {
+			document.removeEventListener(evt, handler, false);
+		} else if (window.detachEvent) {
+			document.detachEvent('on' + evt, handler);
+		}
+	};
+	var evts = 'contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop keydown keypress keyup mousedown mousemove mouseout mouseover mouseup mousewheel scroll'.split(' ');
+	var logHuman = function() {
+		var wfscr = document.createElement('script');
+		wfscr.type = 'text/javascript';
+		wfscr.async = true;
+		wfscr.src = url + '&r=' + Math.random();
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+		for (var i = 0; i < evts.length; i++) {
+			removeEvent(evts[i], logHuman);
+		}
+	};
+	for (var i = 0; i < evts.length; i++) {
+		addEvent(evts[i], logHuman);
+	}
 })('$URL');
 </script>
-EOL;
+HTML;
 	}
 	public static function shutdownAction(){
 	}
@@ -2940,10 +2962,6 @@ EOL;
 	}
 
 	public static function initAction(){
-		global $wp;
-		if (!is_object($wp)) return; //Suggested fix for compatability with "Portable phpmyadmin"
-
-		$wp->add_query_var('_wfsf');
 		if(wfConfig::liveTrafficEnabled() && (! wfConfig::get('disableCookies', false)) ){
 			self::setCookie();
 		}
@@ -3483,6 +3501,20 @@ EOL;
 				break;
 		}
 		return array('ok' => 1);
+	}
+
+
+	/**
+	 * Modify the query to look for scenarios
+	 *
+	 * @param array $query_vars
+	 * @return array
+	 */
+	public static function preventAuthorNScans($query_vars) {
+		if (wfConfig::get('loginSec_disableAuthorScan') && !empty($query_vars['author']) && is_numeric(preg_replace('/[^0-9]/', '', $query_vars['author']))) {
+			$query_vars['author'] = -1;
+		}
+		return $query_vars;
 	}
 }
 ?>

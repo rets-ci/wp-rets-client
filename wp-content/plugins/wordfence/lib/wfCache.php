@@ -710,14 +710,14 @@ EOT;
 		return false;
 	}
 	public static function getHtaccessPath(){
-		if(file_exists(ABSPATH . '/.htaccess')){
-			return ABSPATH . '/.htaccess';
+		if (!function_exists('get_home_path')) {
+			include_once ABSPATH . 'wp-admin/includes/file.php';
 		}
-		if(preg_match('/^https?:\/\/[^\/]+\/?$/i', home_url()) && preg_match('/^https?:\/\/[^\/]+\/.+/i', site_url())){
-			$path = realpath(ABSPATH . '/../.htaccess');
-			if(file_exists($path)){
-				return $path;
-			}
+
+		$homePath = get_home_path();
+		$htaccessFile = $homePath.'.htaccess';
+		if (file_exists($htaccessFile)) {
+			return $htaccessFile;
 		}
 		return false;
 	}
