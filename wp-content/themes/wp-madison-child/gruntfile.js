@@ -25,8 +25,8 @@ module.exports = function build( grunt ) {
         },
         files: {
           'style.css' : 'static/less/style.less',
-          'lib/so_widgets/so-property-carousel-widget/css/style.css' : 'lib/so_widgets/so-property-carousel-widget/css/style.less'
-
+          'lib/so_widgets/so-property-carousel-widget/css/style.css' : 'lib/so_widgets/so-property-carousel-widget/css/style.less',
+          'lib/so_widgets/so-tabs-unit-widget/css/style.css' : 'lib/so_widgets/so-tabs-unit-widget/css/style.less'
         }
       }
     },
@@ -39,7 +39,8 @@ module.exports = function build( grunt ) {
       less: {
         files: [
           'static/less/*.*',
-          'lib/so_widgets/so-property-carousel-widget/css/*.*'
+          'lib/so_widgets/so-property-carousel-widget/css/*.*',
+          'lib/so_widgets/so-tabs-unit-widget/css/*.*'
         ],
         tasks: [ 'less' ]
       },

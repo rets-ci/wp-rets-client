@@ -262,6 +262,8 @@ function siteorigin_panels_ajax_directory_item_json(){
 	if( empty( $_REQUEST['_panelsnonce'] ) || !wp_verify_nonce($_REQUEST['_panelsnonce'], 'panels_action') ) wp_die();
 	if( empty( $_REQUEST['layout_slug'] ) ) wp_die();
 
+	die(SITEORIGIN_PANELS_LAYOUT_URL . '/layout/' . urlencode($_REQUEST['layout_slug']) . '/?action=download');
+
 	$response = wp_remote_get(
 		SITEORIGIN_PANELS_LAYOUT_URL . '/layout/' . urlencode($_REQUEST['layout_slug']) . '/?action=download'
 	);

@@ -23,5 +23,6 @@ add_filter( 'siteorigin_widgets_widget_folders', function( $folders ) {
 } );
 add_filter( 'siteorigin_widgets_default_active', function( $widgets ) {
   $widgets['so-property-carousel-widget'] = 1;
+  $widgets['so-tabs-unit-widget'] = 1;
   return $widgets;
 } );
