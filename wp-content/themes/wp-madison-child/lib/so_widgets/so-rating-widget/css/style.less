@@ -23,10 +23,53 @@
       color: #e2e3e4;
       background-color: #e2e3e4;
       width: 200px;
-      margin-bottom: 70px;
+      margin-bottom: 20px;
     }
 
     .rating-section {
+      margin: 0 auto;
+      text-align: center;
+
+      .stars.rating {
+        border: none;
+        display: inline-block;
+
+        & > .star-item {
+          cursor: pointer;
+          color: #e6e7e8;
+          float: right;
+
+          &:before {
+            margin: 5px;
+            font-size: 5em;
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f005";
+          }
+
+          &.half:before {
+            content: "\f089";
+            position: absolute;
+          }
+
+          &.checked {
+            color: #cf3428;
+          }
+
+          &:hover,
+          &:hover ~ .star-item {
+            color: #ff4b3d;
+          }
+
+          &.checked:hover,
+          &:hover ~ &.checked:hover ~ .star-item,
+          &.checked:hover ~ .star-item {
+            color: #ff4b3d;
+          }
+
+        }
+
+      }
 
     }
 

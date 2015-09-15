@@ -34,22 +34,34 @@ class SiteOrigin_Widget_Rating_Widget extends SiteOrigin_Widget {
 					'type' => 'text',
 					'label' => __( 'Tagline', 'rdc' )
 				),
+				'rate' => array(
+					'type' => 'text',
+					'label' => __( 'Rate', 'rdc' ),
+					'description' => __( 'The numeric value from 1 to 10. Can be decimal.', 'rdc' ),
+				),
+				'total_reviews' => array(
+					'type' => 'text',
+					'label' => __( 'Total Reviews', 'rdc' ),
+					'description' => __( 'The numeric value.', 'rdc' ),
+				),
 			)
 		);
 	}
 
 	function initialize() {
+
 		$this->register_frontend_scripts(
 			array(
 				array(
 					'rdc-rating-widget',
 					get_stylesheet_directory_uri() . '/lib/so_widgets/so-rating-widget/js/rating.js',
-					array( 'jquery' ),
+					array( 'jquery', 'bootstrap-star-rating' ),
 					'1.0',
 					true
 				)
 			)
 		);
+
 		$this->register_frontend_styles(
 			array(
 				array(

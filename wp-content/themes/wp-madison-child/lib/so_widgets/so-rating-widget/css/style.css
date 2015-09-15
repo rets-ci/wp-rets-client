@@ -21,5 +21,41 @@
   color: #e2e3e4;
   background-color: #e2e3e4;
   width: 200px;
-  margin-bottom: 70px;
+  margin-bottom: 20px;
+}
+.rdc-rating .section-content .rating-section {
+  margin: 0 auto;
+  text-align: center;
+}
+.rdc-rating .section-content .rating-section .stars.rating {
+  border: none;
+  display: inline-block;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item {
+  cursor: pointer;
+  color: #e6e7e8;
+  float: right;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:before {
+  margin: 5px;
+  font-size: 5em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.half:before {
+  content: "\f089";
+  position: absolute;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked {
+  color: #cf3428;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover ~ .star-item {
+  color: #ff4b3d;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover ~ .rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover ~ .star-item,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover ~ .star-item {
+  color: #ff4b3d;
 }

@@ -52,7 +52,6 @@
 			</div>
 
 			<div id="unit-tab-2">
-
 				<ul class="static-boxes row">
 					<li class="column col-4-12 column-left">
 						<div class="sbox-item">
@@ -89,10 +88,10 @@
 						</div>
 					</li>
 				</ul>
-
 			</div>
 
 		</div>
+
 
 	</div>
 </div>

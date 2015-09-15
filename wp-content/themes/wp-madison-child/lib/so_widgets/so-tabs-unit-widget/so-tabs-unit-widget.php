@@ -103,17 +103,22 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 	}
 
 	function initialize() {
-		$this->register_frontend_scripts(
-			array(
+		if(
+			( empty( $_SERVER[ 'SCRIPT_FILENAME' ] ) || strpos( $_SERVER[ 'SCRIPT_FILENAME' ], 'customize.php' ) === false ) &&
+			( empty( $_SERVER[ 'HTTP_REFERER' ] ) || strpos( $_SERVER[ 'HTTP_REFERER' ], 'customize.php' ) === false )
+		) {
+			$this->register_frontend_scripts(
 				array(
-					'rdc-tabs-unit',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-tabs-unit-widget/js/tabs-unit.js',
-					array( 'jquery' ),
-					'1.0',
-					true
+					array(
+						'rdc-tabs-unit',
+						get_stylesheet_directory_uri() . '/lib/so_widgets/so-tabs-unit-widget/js/tabs-unit.js',
+						array('jquery', 'jquery-ui-tabs'),
+						'1.0',
+						true
+					)
 				)
-			)
-		);
+			);
+		}
 		$this->register_frontend_styles(
 			array(
 				array(
