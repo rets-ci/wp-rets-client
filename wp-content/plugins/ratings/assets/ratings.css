@@ -1,0 +1,65 @@
+.ratings_area{
+    position: fixed;right: 40px;bottom: 0;z-index:100000;width: 420px;font-family: Arial, sans-serif;
+    height: auto;overflow: hidden;background: #FFF;border: 1px solid #ddd;
+    -webkit-box-shadow: 1px -1px 6px #ccc;-moz-box-shadow: 1px -1px 6px #ccc;box-shadow: 1px -1px 6px #ccc;
+    box-sizing: content-box;visibility:hidden;
+}
+.ratings_area.active{
+    visibility: visible;
+}
+.ratings_area_title {
+    float:left;width: 380px;padding: 10px 20px 10px 20px;border-bottom: 1px solid #ddd;background-color: #f2f2f2;
+    box-sizing: content-box;font-size: 16px;line-height: 20px;position: relative;
+}
+.ratings_area_title_text{
+    float:left;font-weight: bold;color: #222;
+}
+.ratings_area_title_close{
+    float: right;font-weight: bold;position: absolute;right: 5px;top:5px;cursor: pointer;text-transform: lowercase;
+    font-size: 20px;height:15px;line-height: 12px;
+}
+.ratings_area_body{
+    float:left;width: 100%;padding: 10px 0 10px 0;
+}
+.ratings_area_body ul{
+    float:left;width: 100%;margin: 0;padding: 0;list-style: none;
+}
+.ratings_area_body ul li{
+    float:left;width: 380px;padding: 5px 20px;margin: 0;cursor: pointer;
+}
+.ratings_area_li_img{
+    float: left;width: 24px;height:24px;overflow: hidden;margin: 0 15px 0 0;
+}
+.ratings_area_li_img img{
+    float: left;max-width: 100%;max-height: 100%;
+}
+.ratings_area_li_img.rate_1{background: url(vote_faces.png) 0 0 no-repeat;}
+.ratings_area_li_img.rate_2{background: url(vote_faces.png) 0 -24px no-repeat;}
+.ratings_area_li_img.rate_3{background: url(vote_faces.png) 0 -48px no-repeat;}
+.ratings_area_li_img.rate_4{background: url(vote_faces.png) 0 -72px no-repeat;}
+.ratings_area_li_img.rate_5{background: url(vote_faces.png) 0 -96px no-repeat;}
+.ratings_area_li_img.no_back{background: none !important;}
+.ratings_area_li_img.no_img{display:none;}
+.ratings_area_li_text{
+    float:left;height: 24px;line-height: 24px;font-size: 16px;font-weight: normal;color: #222;
+}
+.ratings_area_body ul li:hover{
+    background:  #eee;
+}
+.ratings_area_body ul li:hover .ratings_area_li_text{
+    color: #333;
+}
+/*
+styles for portable device
+*/
+@media only screen and (max-width: 1124px) {
+    
+}
+@media only screen and (max-width: 758px) {
+/*
+vertical tablet computer
+*/
+}
+@media only screen and (max-width: 524px) {
+/*phone*/
+}
