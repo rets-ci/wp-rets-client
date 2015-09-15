@@ -1,6 +1,3 @@
-<?php
-
-?>
 <div class="rdc-tabs-unit">
 	<div class="section-content">
 

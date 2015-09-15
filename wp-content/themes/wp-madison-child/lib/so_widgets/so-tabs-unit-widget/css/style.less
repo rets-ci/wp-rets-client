@@ -7,7 +7,8 @@
     padding: 60px 20px 40px;
 
     h3 {
-      margin: 0;
+      font-size: 2em;
+      margin: 0 0 12px 0;
       text-align: center;
       text-transform: uppercase;
       padding: 0 0 10px 0;
@@ -22,7 +23,7 @@
       color: #e2e3e4;
       background-color: #e2e3e4;
       width: 200px;
-      margin-bottom: 60px;
+      margin-bottom: 70px;
     }
 
     .rdc-tabs {
@@ -35,11 +36,13 @@
         & > li {
           display: inline-block;
           border: 1px solid #e2e3e4;
-          padding: 10px 20px;
           border-right-width: 0;
           min-width: 150px;
 
           & > a {
+            display: block;
+            padding: 15px 50px;
+            font-size: 1.4em;
             color: #808285;
             text-decoration: none;
 
@@ -58,6 +61,7 @@
 
             a {
               color: #cf3428;
+              font-weight: 600;
             }
           }
 
@@ -65,12 +69,17 @@
 
       }
 
-      @media screen and (max-width: 400px) {
+      @media screen and (max-width: 450px) {
 
         & > ul > li {
-          padding: 5px 8px;
           max-width: 120px;
           min-width: 90px;
+
+          a {
+            padding: 10px 20px;
+            font-size: 1.1em;
+          }
+
         }
 
       }
@@ -82,13 +91,13 @@
       padding: 0;
       text-align: center;
       list-style: none;
-      max-width: 1000px;
+      max-width: 1100px;
 
       li {
         list-style: none;
 
         div.sbox-item {
-          margin: 10px;
+          margin: 15px;
           background-color: #fff;
 
           .icon-box {
@@ -115,6 +124,8 @@
             h4 {
               color: #cf3428;
               margin-top: 0;
+              font-weight: 500;
+              font-size: 1.25em;
             }
 
             p {
@@ -125,7 +136,6 @@
 
         }
 
-        &.a,
         &:hover,
         &:focus,
         &:active {
@@ -144,6 +154,14 @@
 
             }
 
+            .content {
+
+              h4 {
+                font-weight: 600;
+              }
+
+            }
+
           }
 
           hr {
@@ -154,13 +172,13 @@
 
       }
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 890px) {
 
         li.column {
           float: none;
           width: 100%;
-          max-width: 330px;
-          margin: 0 auto;
+          max-width: 370px;
+          margin: 0 auto 25px auto;
         }
 
       }
