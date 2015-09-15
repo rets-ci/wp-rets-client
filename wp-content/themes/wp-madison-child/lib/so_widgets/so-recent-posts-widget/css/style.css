@@ -47,6 +47,7 @@
 }
 .rdc-recent-posts .section-content .posts-loop ul li .sbox-item .content {
   padding: 30px;
+  min-height: 202px;
 }
 .rdc-recent-posts .section-content .posts-loop ul li .sbox-item .content h4 {
   color: #cf3428;
