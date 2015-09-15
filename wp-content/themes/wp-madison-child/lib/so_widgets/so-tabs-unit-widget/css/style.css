@@ -4,7 +4,7 @@
 .rdc-tabs-unit .section-content {
   margin: 0 auto;
   max-width: 1200px;
-  padding: 60px 20px 40px;
+  padding: 80px 20px 40px;
 }
 .rdc-tabs-unit .section-content h3 {
   font-size: 2em;
@@ -94,6 +94,7 @@
 }
 .rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item .content {
   padding: 20px;
+  min-height: 196px;
 }
 .rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item .content h4 {
   color: #cf3428;

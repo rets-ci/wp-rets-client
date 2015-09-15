@@ -27,7 +27,9 @@ module.exports = function build( grunt ) {
           'style.css' : 'static/less/style.less',
           'lib/so_widgets/so-property-carousel-widget/css/style.css' : 'lib/so_widgets/so-property-carousel-widget/css/style.less',
           'lib/so_widgets/so-tabs-unit-widget/css/style.css' : 'lib/so_widgets/so-tabs-unit-widget/css/style.less',
-          'lib/so_widgets/so-recent-posts-widget/css/style.css' : 'lib/so_widgets/so-recent-posts-widget/css/style.less'
+          'lib/so_widgets/so-recent-posts-widget/css/style.css' : 'lib/so_widgets/so-recent-posts-widget/css/style.less',
+          'lib/so_widgets/so-rating-widget/css/style.css' : 'lib/so_widgets/so-rating-widget/css/style.less',
+          'lib/so_widgets/so-supermap-widget/css/style.css' : 'lib/so_widgets/so-supermap-widget/css/style.less'
         }
       }
     },
@@ -42,7 +44,9 @@ module.exports = function build( grunt ) {
           'static/less/*.*',
           'lib/so_widgets/so-property-carousel-widget/css/*.*',
           'lib/so_widgets/so-tabs-unit-widget/css/*.*',
-          'lib/so_widgets/so-recent-posts-widget/css/*.*'
+          'lib/so_widgets/so-recent-posts-widget/css/*.*',
+          'lib/so_widgets/so-rating-widget/css/*.*',
+          'lib/so_widgets/so-supermap-widget/css/*.*'
         ],
         tasks: [ 'less' ]
       },

@@ -51,17 +51,6 @@ class SiteOrigin_Widget_RecentPosts_Widget extends SiteOrigin_Widget {
 	}
 
 	function initialize() {
-		$this->register_frontend_scripts(
-			array(
-				array(
-					'rdc-recent-posts',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-recent-posts-widget/js/tabs-unit.js',
-					array( 'jquery' ),
-					'1.0',
-					true
-				)
-			)
-		);
 		$this->register_frontend_styles(
 			array(
 				array(
