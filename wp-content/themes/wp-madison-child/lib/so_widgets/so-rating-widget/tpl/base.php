@@ -16,8 +16,14 @@ if( !empty( $rate ) && is_numeric( $rate ) ) {
 		<hr class="section-delimiter"/>
 
 		<div class="rating-section">
-
 			<div class="stars rating">
+				<div class="reviews-info-wrap">
+					<div class="reviews-info-content">
+						<span class="ri-1"><?php _e( 'Based on', 'rdc' ); ?></span>
+						<span class="ri-2"><?php echo $instance[ 'total_reviews' ] ?></span>
+						<span class="ri-3"><?php _e( 'reviews', 'rdc' ); ?></span>
+					</div>
+				</div>
 				<div class="star-item full star-5 <?php echo $rate >= 5 ? 'checked' : ''; ?>" title=""></div>
 				<div class="star-item half star-4-half <?php echo $rate >= 4.5 ? 'checked' : ''; ?>" title=""></div>
 				<div class="star-item full star-4 <?php echo $rate >= 4 ? 'checked' : ''; ?>" title=""></div>
@@ -30,8 +36,8 @@ if( !empty( $rate ) && is_numeric( $rate ) ) {
 				<div class="star-item half starhalf <?php echo $rate >= 0.5 ? 'checked' : ''; ?>" title=""></div>
 				<div class="clear"></div>
 			</div>
-
 			<div class="clear"></div>
+			<p class="notice-section"><?php _e( 'Click the stars to add your review', 'rdc' ); ?></p>
 		</div>
 
 	</div>
