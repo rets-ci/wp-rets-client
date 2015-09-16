@@ -18,6 +18,7 @@ function rdc_register_widgets() {
   register_widget( 'RDCScheduleShowing' );
   register_widget( 'RDCProspectOwnerForm' );
   register_widget( 'RDCContactForm' );
+  register_widget( 'RDCFeedbackForm' );
 }
 
 /**

@@ -2,7 +2,6 @@
 
 $rate = $instance[ 'rate' ];
 
-
 if( !empty( $rate ) && is_numeric( $rate ) ) {
 	$rate = round( $rate / 2, 1 );
 }
@@ -38,7 +37,27 @@ if( !empty( $rate ) && is_numeric( $rate ) ) {
 			</div>
 			<div class="clear"></div>
 			<p class="notice-section"><?php _e( 'Click the stars to add your review', 'rdc' ); ?></p>
+			<div class="reviews-info-wrap mobile">
+				<div class="reviews-info-content">
+					<span class="ri-1"><?php _e( 'Based on', 'rdc' ); ?></span>
+					<span class="ri-2"><?php echo $instance[ 'total_reviews' ] ?></span>
+					<span class="ri-3"><?php _e( 'reviews', 'rdc' ); ?></span>
+				</div>
+			</div>
 		</div>
 
 	</div>
+
+	<div class="modal-feedback-form">
+		<div class="modal-inner-wrapper">
+			<div class="modal-inner">
+				<h3 class="header"><?php echo $instance[ 'feedback_label' ] ?></h3>
+				<div class="content">
+					<?php get_template_part( 'static/views/rdc-feedback', 'form' ); ?>
+				</div>
+			</div>
+		</div>
+		<div class="overlay"></div>
+	</div>
+
 </div>

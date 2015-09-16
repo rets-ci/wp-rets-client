@@ -44,6 +44,10 @@ class SiteOrigin_Widget_Rating_Widget extends SiteOrigin_Widget {
 					'label' => __( 'Total Reviews', 'rdc' ),
 					'description' => __( 'The numeric value.', 'rdc' ),
 				),
+				'feedback_label' => array(
+					'type' => 'text',
+					'label' => __( 'Feedback Form Label', 'rdc' )
+				),
 			)
 		);
 	}
@@ -55,7 +59,7 @@ class SiteOrigin_Widget_Rating_Widget extends SiteOrigin_Widget {
 				array(
 					'rdc-rating-widget',
 					get_stylesheet_directory_uri() . '/lib/so_widgets/so-rating-widget/js/rating.js',
-					array( 'jquery', 'bootstrap-star-rating' ),
+					array( 'jquery' ),
 					'1.0',
 					true
 				)
