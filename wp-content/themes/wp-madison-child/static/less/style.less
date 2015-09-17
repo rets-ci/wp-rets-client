@@ -645,11 +645,29 @@ a:hover {
 
   .property-overview-item {
 
+    a {
+      color: #252525;
+
+      .property-address {
+        color: #252525;
+      }
+
+      &:hover,
+      .property-address:hover {
+        -moz-opacity: 0.75;
+        -khtml-opacity: 0.75;
+        opacity: 0.75;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=75);
+        filter:alpha(opacity=75);
+      }
+
+    }
+
     .property-information {
 
       ul.icons-list {
         margin: 0;
-        padding: 20px;
+        padding: 20px 20px 12px 20px;
         list-style: none;
 
         li {
@@ -657,14 +675,17 @@ a:hover {
           display: inline-block;
           margin-right: 10px;
 
-          i.fa {
+          span.rdc-icon {
             display: inline-block;
             width: 24px;
+            font-size: 24px;
             color: #a7a9ac;
+          }
 
-            &.fa-tint {
-              width: 16px;
-            }
+          span.val {
+            display: inline-block;
+            margin-top: -4px;
+            overflow: hidden;
           }
         }
       }

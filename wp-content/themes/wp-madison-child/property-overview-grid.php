@@ -26,13 +26,9 @@
 					</figure>
 				<?php endif; ?>
 
-				<header class="property-header entry-header">
-					<h2 class="property-title entry-title"><a href="<?php echo $property['permalink']; ?>"><?php echo $property['post_title']; ?></a></h2>
-				</header>
-
 				<div class="property-information">
 					<?php if ( $property['display_address'] ) : ?>
-						<span class="property-address"><?php echo $property['display_address']; ?></span>
+						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['display_address']; ?></span></a>
 					<?php endif; ?>
 
 					<?php if ( $property['tagline'] ) : ?>
@@ -40,9 +36,15 @@
 					<?php endif; ?>
 
 					<ul class="icons-list">
-						<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><i class="icon fa fa-bed"></i><?php echo $property[ 'bedrooms' ] ?></li>
-						<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><i class="icon fa fa-tint"></i><?php echo $property[ 'bathrooms' ] ?></li>
-						<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><i class="icon fa fa-map"></i><?php echo $property[ 'area' ] ?></li>
+						<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>
+							<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>
+						<?php endif; ?>
+						<?php if( !empty( $property[ 'bathrooms' ] ) ) : ?>
+							<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'bathrooms' ] ?></span></li>
+						<?php endif; ?>
+						<?php if( !empty( $property[ 'area' ] ) ) : ?>
+							<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'area' ] ?></span></li>
+						<?php endif; ?>
 					</ul>
 
 					<span class="property-permalink"><a href="<?php echo $property['permalink']; ?>"><?php _e( 'More Information', 'l10n' ); ?></a></span>

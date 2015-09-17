@@ -464,9 +464,23 @@ a:hover {
   }
 }
 /* PROPERTY OVERVIEW - GRID */
+.property-overview-grid .property-overview-item a {
+  color: #252525;
+}
+.property-overview-grid .property-overview-item a .property-address {
+  color: #252525;
+}
+.property-overview-grid .property-overview-item a:hover,
+.property-overview-grid .property-overview-item a .property-address:hover {
+  -moz-opacity: 0.75;
+  -khtml-opacity: 0.75;
+  opacity: 0.75;
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=75);
+  filter: alpha(opacity=75);
+}
 .property-overview-grid .property-overview-item .property-information ul.icons-list {
   margin: 0;
-  padding: 20px;
+  padding: 20px 20px 12px 20px;
   list-style: none;
 }
 .property-overview-grid .property-overview-item .property-information ul.icons-list li {
@@ -474,13 +488,16 @@ a:hover {
   display: inline-block;
   margin-right: 10px;
 }
-.property-overview-grid .property-overview-item .property-information ul.icons-list li i.fa {
+.property-overview-grid .property-overview-item .property-information ul.icons-list li span.rdc-icon {
   display: inline-block;
   width: 24px;
+  font-size: 24px;
   color: #a7a9ac;
 }
-.property-overview-grid .property-overview-item .property-information ul.icons-list li i.fa.fa-tint {
-  width: 16px;
+.property-overview-grid .property-overview-item .property-information ul.icons-list li span.val {
+  display: inline-block;
+  margin-top: -4px;
+  overflow: hidden;
 }
 /* WIDE WIDTH TEMPLATE */
 body.page-template-page-wide #site-content {
