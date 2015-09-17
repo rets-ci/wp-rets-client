@@ -1,9 +1,24 @@
+/* Pulse Shrink */
+@-webkit-keyframes loading {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+
+@keyframes loading {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+
 .rdc-supermap {
 
   .section-content {
     margin: 0 auto;
     max-width: 1200px;
-    padding: 80px 20px 40px;
+    padding: 80px 20px 70px;
 
     h3 {
       font-size: 2em;
@@ -26,6 +41,132 @@
     }
 
     .supermap-section {
+
+      .rdc-supemap-filters {
+        margin-bottom: 40px;
+
+        form {
+          text-align: center;
+
+          ul {
+            list-style: none;
+            text-align: center;
+            display: inline-block;
+            margin: 0;
+
+            li {
+              list-style: none;
+              display: inline-block;
+              border-width: 1px;
+              border-style: solid;
+              border-color: #808285;
+              padding: 10px 14px;
+              border-right-width: 0;
+
+              &:first-child {
+                -webkit-border-top-left-radius: 5px;
+                -webkit-border-bottom-left-radius: 5px;
+                -moz-border-radius-topleft: 5px;
+                -moz-border-radius-bottomleft: 5px;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+              }
+
+              &:last-child {
+                -webkit-border-top-right-radius: 5px;
+                -webkit-border-bottom-right-radius: 5px;
+                -moz-border-radius-topright: 5px;
+                -moz-border-radius-bottomright: 5px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                border-right-width: 1px;
+              }
+
+              label {
+
+                i {
+                  color: #808285;
+                  margin-right: 2px;
+                }
+
+                input {
+                  max-width: 175px;
+                  width: auto;
+                  border: none;
+                  padding: 0;
+                  color: #808285;
+                }
+
+                select {
+                  max-width: 150px;
+                  color: #808285;
+                  width: auto;
+                  border: none;
+                  -moz-appearance: none;
+                  background-image: url("images/arrow-down.png");
+                  background-position: 90% center;
+                  background-repeat: no-repeat;
+                  padding-right: 30px;
+                }
+
+              }
+
+            }
+
+          }
+
+          input.button {
+            display: inline-block;
+            padding: 10px;
+            min-width: 130px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            margin-left: 5px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            -webkit-transition-property: color, background-color;
+            transition-property: color, background-color;
+
+            &:hover,
+            &:focus,
+            &:active {
+              color: #fff;
+              background-color: #da4e43 !important;
+            }
+
+          }
+
+          input.loading {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -moz-osx-font-smoothing: grayscale;
+
+            -webkit-animation-name: loading;
+            animation-name: loading;
+            -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-direction: alternate;
+            animation-direction: alternate;
+          }
+
+        }
+
+      }
 
     }
 

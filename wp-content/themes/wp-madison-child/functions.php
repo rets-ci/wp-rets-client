@@ -116,3 +116,18 @@ add_action( 'parse_request', function( $query ) {
 add_action( 'widgets_init', function(){
   unregister_sidebar( 'footer-1' );
 }, 99 );
+
+/**
+ * HACK
+ * Fixes EXTRA output in header.
+ *
+ * In some cases Wordpress SEO prints HTML content of post to header when SiteOrigin is enabled for post
+ *
+ * @author peshkov@UD
+ */
+add_action( 'wp_head', function() {
+  remove_action( 'the_content', 'siteorigin_panels_filter_content' );
+}, 1 );
+add_action( 'wp_head', function() {
+  add_filter( 'the_content', 'siteorigin_panels_filter_content' );
+}, 999 );

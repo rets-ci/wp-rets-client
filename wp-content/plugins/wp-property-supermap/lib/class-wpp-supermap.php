@@ -976,7 +976,7 @@ class class_wpp_supermap {
       'zoom' => '',
       'options_label' => __('Options',ud_get_wpp_supermap()->domain),
       'center_on' => '',
-      'scrollwheel' => false,
+      'scrollwheel' => '',
       'property_type' => (array) $wp_properties['searchable_property_types'],
       'rand' => rand(1000,5000)
     );
@@ -1268,7 +1268,10 @@ class class_wpp_supermap {
       <?php } ?>
 
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');
-      wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
+
+      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
+        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
+      }
 
     <?php else : ?>
 
@@ -1277,7 +1280,9 @@ class class_wpp_supermap {
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
       var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
 
-      wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
+      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
+        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
+      }
 
     <?php endif; ?>
     <?php
