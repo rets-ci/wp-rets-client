@@ -81,9 +81,9 @@ add_action( 'template_redirect', function(){
       if( !function_exists( 'ud_get_wp_property' ) ) {
         return;
       }
-      $url .= '/' . ud_get_wp_property( 'configuration.base_slug' ) . '?wpp_search[s]=' . $query;
+      $url .= '/' . ud_get_wp_property( 'configuration.base_slug' ) . '?wpp_search[s]=' . urlencode( $query );
     } else {
-      $url .= '?s=' . $query;
+      $url .= '?s=' . urlencode( $query );
     }
     wp_redirect( $url );
   }
@@ -99,7 +99,7 @@ add_action( 'parse_request', function( $query ) {
 
     add_filter( 'pre_get_posts', function( $query ) {
       if( !empty( $query->query_vars[ 's' ] ) ) {
-        $query->set('post_type', array( 'post', 'page' ) );
+        $query->set('post_type', array( 'post' ) );
       }
       return $query;
     } );

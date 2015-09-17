@@ -162,6 +162,16 @@ a:hover {
   border: 1px solid #cccdce;
   color: #808285;
   height: 36px;
+  background-color: transparent;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input:hover,
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form select:hover,
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input:focus,
+#site-header .rdc-section-header-navigation .multipurpose-search-wrapper form select:focus {
+  border-color: #bf2b1f;
 }
 #site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input {
   width: 200px;
