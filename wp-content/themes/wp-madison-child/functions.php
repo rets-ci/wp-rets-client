@@ -32,6 +32,7 @@ add_action( 'wp_enqueue_scripts', 'rdc_theme_enqueue_scripts' );
 function rdc_theme_enqueue_scripts() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
   wp_enqueue_script( 'rdc-common', get_stylesheet_directory_uri() . '/static/js/rdc-common.js', array( 'jquery' ) );
+  wp_enqueue_style( 'rdc-icons', get_stylesheet_directory_uri() . '/static/fonts/rdc/style.css', array(), '4.0.3' );
 }
 
 /**

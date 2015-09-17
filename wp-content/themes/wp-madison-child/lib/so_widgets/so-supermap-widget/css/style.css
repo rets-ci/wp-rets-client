@@ -71,9 +71,21 @@
   border-bottom-right-radius: 5px;
   border-right-width: 1px;
 }
-.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label i {
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label {
+  max-height: 49px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label span.rdc-icon-wrap {
+  display: block;
+  float: left;
+  height: 25px;
+  overflow: hidden;
+  padding-top: 4px;
+  width: 25px;
+  margin-right: 4px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label span.rdc-icon-wrap span.rdc-icon {
   color: #808285;
-  margin-right: 2px;
+  font-size: 24px;
 }
 .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label input {
   max-width: 165px;
@@ -88,10 +100,12 @@
   width: auto;
   border: none;
   -moz-appearance: none;
+  -webkit-appearance: none;
   background-image: url("images/arrow-down.png");
   background-position: 90% center;
   background-repeat: no-repeat;
   padding-right: 30px;
+  background-color: transparent;
 }
 .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button {
   display: inline-block;

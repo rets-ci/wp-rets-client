@@ -32,13 +32,11 @@ if ( !function_exists( 'rdc_supermap_filters' ) ) {
 			'bathrooms' => __( 'Baths', 'rdc' ),
 		);
 
-		$default_icon = 'fa-filter';
-
 		$icon_map = array(
-			'random_75' => 'fa-map-pin',
-			'bedrooms' => 'fa-bed',
-			'bathrooms' => 'fa-tint',
-			'price' => 'fa-usd',
+			'random_75' => 'icon-location',
+			'bedrooms' => 'icon-bed-a',
+			'bathrooms' => 'icon-bath',
+			'price' => 'icon-price',
 		);
 
 		if( !empty( $instance[ 'filter1' ] ) ) {
@@ -92,7 +90,12 @@ if ( !function_exists( 'rdc_supermap_filters' ) ) {
 					<?php if( !empty( $fields ) ) : ?>
 						<ul><?php foreach( $fields as $field ) : ?><li class="filter-attribute <?php echo $field[ 'key' ]; ?>">
 									<label>
-										<i class="icon fa <?php echo array_key_exists( $field[ 'key' ], $icon_map ) ? $icon_map[ $field[ 'key' ] ] : $default_icon; ?>"></i>
+										<?php if( array_key_exists( $field[ 'key' ], $icon_map ) ) : ?>
+											<span class="rdc-icon-wrap"><span class="rdc-icon <?php echo $icon_map[ $field[ 'key' ] ]; ?>"></span></span>
+										<?php endif; ?>
+										<?php /*
+										 <i class="icon fa <?php echo array_key_exists( $field[ 'key' ], $icon_map ) ? $icon_map[ $field[ 'key' ] ] : $default_icon; ?>"></i>
+										*/ ?>
 										<?php
 										ob_start();
 										wpp_render_search_input( array(

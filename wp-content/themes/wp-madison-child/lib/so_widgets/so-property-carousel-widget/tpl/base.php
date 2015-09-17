@@ -56,9 +56,9 @@ $the_query = new WP_Query( $query );
 										<h3><?php the_title() ?></h3>
 										<p class="address"><?php echo $property[ 'display_address' ]; ?></p>
 										<ul>
-											<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><i class="icon fa fa-bed"></i><?php echo $property[ 'bedrooms' ] ?></li>
-											<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><i class="icon fa fa-tint"></i><?php echo $property[ 'bathrooms' ] ?></li>
-											<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><i class="icon fa fa-map"></i><?php echo $property[ 'area' ] ?></li>
+											<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>
+											<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'bathrooms' ] ?></span></li>
+											<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'area' ] ?></span></li>
 										</ul>
 									</div>
 								</a>

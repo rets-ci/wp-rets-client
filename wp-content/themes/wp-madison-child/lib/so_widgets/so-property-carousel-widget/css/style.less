@@ -332,7 +332,7 @@
                 ul {
                     border-top: 1px solid #e6e6e6;
                     margin: 0;
-                    padding: 20px;
+                    padding: 20px 20px 12px 20px;
                     list-style: none;
 
                     li {
@@ -340,16 +340,21 @@
                         display: inline-block;
                         margin-right: 16px;
 
-                        i.fa {
+                        span.rdc-icon {
                             display: inline-block;
                             width: 24px;
+                            font-size: 24px;
                             color: #a7a9ac;
-
-                            &.fa-tint {
-                                width: 16px;
-                            }
                         }
+
+                        span.val {
+                            display: inline-block;
+                            margin-top: -4px;
+                            overflow: hidden;
+                        }
+
                     }
+
                 }
 
             }
@@ -360,7 +365,7 @@
         li.rdc-carousel-loading {
             display: block;
             width: 275px;
-            height: 374px;
+            height: 369px;
             float: left;
             background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
             margin: 0;

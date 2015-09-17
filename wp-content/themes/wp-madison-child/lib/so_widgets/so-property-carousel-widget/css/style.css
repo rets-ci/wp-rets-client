@@ -249,7 +249,7 @@
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
   border-top: 1px solid #e6e6e6;
   margin: 0;
-  padding: 20px;
+  padding: 20px 20px 12px 20px;
   list-style: none;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li {
@@ -257,18 +257,21 @@
   display: inline-block;
   margin-right: 16px;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li i.fa {
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li span.rdc-icon {
   display: inline-block;
   width: 24px;
+  font-size: 24px;
   color: #a7a9ac;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li i.fa.fa-tint {
-  width: 16px;
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li span.val {
+  display: inline-block;
+  margin-top: -4px;
+  overflow: hidden;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-loading {
   display: block;
   width: 275px;
-  height: 374px;
+  height: 369px;
   float: left;
   background: url(images/carousel-loader.gif) #f6f6f6 center center no-repeat;
   margin: 0;
