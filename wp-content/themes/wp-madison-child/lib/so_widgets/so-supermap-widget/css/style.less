@@ -90,7 +90,7 @@
                 }
 
                 input {
-                  max-width: 175px;
+                  max-width: 165px;
                   width: auto;
                   border: none;
                   padding: 0;
@@ -98,7 +98,7 @@
                 }
 
                 select {
-                  max-width: 150px;
+                  max-width: 165px;
                   color: #808285;
                   width: auto;
                   border: none;
@@ -162,6 +162,78 @@
             animation-iteration-count: infinite;
             -webkit-animation-direction: alternate;
             animation-direction: alternate;
+          }
+
+        }
+
+      }
+
+      @media screen and (max-width: 800px) {
+
+        .rdc-supemap-filters {
+
+          form {
+
+            ul {
+              display: block;
+
+              li {
+                display: inline;
+                border: 0;
+                padding: 0;
+
+                label {
+                  list-style: none;
+                  display: inline-block;
+                  border-width: 1px;
+                  border-style: solid;
+                  border-color: #808285;
+                  padding: 10px 14px;
+                  margin-bottom: 4px;
+                }
+
+              }
+
+            }
+
+            input.button {
+              margin: 10px 0 0 0;
+              width: 50%;
+            }
+
+          }
+
+        }
+
+        .wpp_supermap_wrapper {
+          margin: 0 -20px;
+        }
+
+      }
+
+      @media screen and (max-width: 400px) {
+
+        .rdc-supemap-filters {
+
+          form {
+
+            ul {
+
+              li {
+
+                label {
+                  display: block;
+                  text-align: left;
+                }
+
+              }
+
+            }
+
+            input.button {
+              width: 100%;
+            }
+
           }
 
         }
