@@ -58,6 +58,7 @@
 			<section class="section-header-navigation rdc-section-header-navigation madison-header-menu-wrapper">
 				<div class="section-container column-wrapper">
 					<nav class=" site-navigation col-9-12" role="navigation">
+						<div class="secondary-menu mobile"><?php wp_nav_menu( array( 'theme_location' => 'header-secondary', 'rdc-header-second-menu', 'container' => false ) ); ?></div>
 						<a href id="mobile-menu-toggle"><span><?php _e( 'Navigation', 'madison' ); ?></span><i class="fa fa-bars"></i></a>
 						<?php wp_nav_menu( array( 'theme_location' => 'header', 'menu' => 'madison-header-menu', 'container' => false, 'fallback_cb' => null ) ); ?>
 					</nav>
