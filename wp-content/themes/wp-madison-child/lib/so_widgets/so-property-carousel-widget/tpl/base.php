@@ -1,10 +1,72 @@
 <?php
 
-$query = array(
+$query = $_query = array(
 	'post_status' => 'publish',
 	'post_type' => 'property',
-	'posts_per_page' => 4,
+	'posts_per_page' => 8,
 );
+
+$filters = array();
+
+if( !empty( $instance[ 'filter1' ] ) && !empty( $instance[ 'filter1_default' ] ) ) {
+	if( !empty( $instance[ 'filter1_type' ] ) && $instance[ 'filter1_type' ] == 'range_dropdown' ) {
+		$filters[ $instance[ 'filter1' ] ] = array( 'min' => $instance[ 'filter1_default' ] );
+	} else {
+		$filters[ $instance[ 'filter1' ] ] = $instance[ 'filter1_default' ];
+	}
+}
+
+if( !empty( $instance[ 'filter2' ] ) && !empty( $instance[ 'filter2_default' ] ) ) {
+	if( !empty( $instance[ 'filter2_type' ] ) && $instance[ 'filter2_type' ] == 'range_dropdown' ) {
+		$filters[ $instance[ 'filter2' ] ] = array( 'min' => $instance[ 'filter2_default' ] );
+	} else {
+		$filters[ $instance[ 'filter2' ] ] = $instance[ 'filter2_default' ];
+	}
+}
+
+if( !empty( $instance[ 'filter3' ] ) && !empty( $instance[ 'filter3_default' ] ) ) {
+	if( !empty( $instance[ 'filter3_type' ] ) && $instance[ 'filter3_type' ] == 'range_dropdown' ) {
+		$filters[ $instance[ 'filter3' ] ] = array( 'min' => $instance[ 'filter3_default' ] );
+	} else {
+		$filters[ $instance[ 'filter3' ] ] = $instance[ 'filter3_default' ];
+	}
+}
+
+if( !empty( $filters ) ) {
+	$attributes = ud_get_wp_property( 'property_stats', array() );
+	$meta_query = array();
+	foreach( $filters as $k => $v ) {
+		if( array_key_exists( $k, (array)$attributes ) && !empty( $v ) && $v != '-1' ) {
+			if( is_array( $v ) ) {
+				if( !empty( $v[ 'min' ] ) ) {
+					array_push( $meta_query, array(
+						'key' => $k,
+						'value' => $v[ 'min' ],
+						'compare' => '>=',
+					) );
+				} elseif ( !empty( $v[ 'max' ] ) ) {
+					array_push( $meta_query, array(
+						'key' => $k,
+						'value' => $v[ 'max' ],
+						'compare' => '<=',
+					) );
+				}
+			} else {
+				array_push( $meta_query, array(
+					'key' => $k,
+					'value' => $v,
+					'compare' => '=',
+				) );
+			}
+		} elseif ( $k == 's' && is_string( $v ) && !empty( $v ) ) {
+			$query[ 's' ] = $v;
+		}
+	}
+}
+
+if( !empty( $meta_query ) ) {
+	$query[ 'meta_query' ] = $meta_query;
+}
 
 $the_query = new WP_Query( $query );
 
@@ -26,7 +88,7 @@ $the_query = new WP_Query( $query );
 				<a href="#" class="rdc-carousel-next" title="<?php esc_attr_e('Next', 'siteorigin-widgets') ?>"></a>
 
 				<div class="rdc-carousel-wrapper"
-				     data-query="<?php echo http_build_query($query); ?>"
+				     data-query="<?php echo http_build_query($_query); ?>"
 				     data-found-posts="<?php echo esc_attr($the_query->found_posts) ?>"
 				     data-ajax-url="<?php echo esc_url( wp_nonce_url( admin_url('admin-ajax.php'), 'widgets_action', '_widgets_nonce' ) ) ?>"
 					>

@@ -42,9 +42,10 @@
     background:rgba(0,0,0,0.4);
 
     .section-content {
-        max-width: 1200px;
+        position: relative;
+        max-width: 1240px;
         margin: 0 auto;
-        padding: 40px 20px 60px;
+        padding: 40px 40px 60px;
     }
 
 }
@@ -97,6 +98,7 @@
                         border: none;
                         color: #fff;
                         -moz-appearance: none;
+                        -webkit-appearance: none;
                         background-image: url("images/arrow-down-white.png");
                         background-position: 90% center;
                         background-repeat: no-repeat;
@@ -156,16 +158,22 @@
 
 	a.rdc-carousel-next,
 	a.rdc-carousel-previous {
+
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        bottom: 230px;
+
 		font-family: 'carousel-arrows';
 		speak: none;
 
 		display: block;
-		float: right;
+		//float: right;
 		overflow: hidden;
 		margin-left: 2px;
 		margin-top: 13px;
 
-        position: relative;
+        //position: relative;
         z-index: 9999;
 
 		font-style: normal;
@@ -190,6 +198,14 @@
 			background: #cf3428;
 		}
 	}
+
+    a.rdc-carousel-next {
+        right: 14px;
+    }
+
+    a.rdc-carousel-previous {
+        left: 14px;
+    }
 
 	a.rdc-carousel-next:before {
 		content: "\e601";

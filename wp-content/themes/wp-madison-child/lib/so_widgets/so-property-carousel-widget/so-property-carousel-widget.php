@@ -40,6 +40,7 @@ if ( !function_exists( 'rdc_carousel_filters' ) ) {
 				'label' => $instance[ 'filter1' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter1' ]],
 				'placeholder' => $instance[ 'filter1' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter1' ]],
 				'type' => $instance[ 'filter1_type' ],
+				'value' => !empty( $instance[ 'filter1_default' ] ) ? $instance[ 'filter1_default' ] : '',
 			) );
 			array_push( $search_fields, $instance[ 'filter1' ] );
 		}
@@ -50,6 +51,7 @@ if ( !function_exists( 'rdc_carousel_filters' ) ) {
 				'label' => $instance[ 'filter2' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter2' ]],
 				'placeholder' => $instance[ 'filter2' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter2' ]],
 				'type' => $instance[ 'filter2_type' ],
+				'value' => !empty( $instance[ 'filter2_default' ] ) ? $instance[ 'filter2_default' ] : '',
 			) );
 			array_push( $search_fields, $instance[ 'filter2' ] );
 		}
@@ -60,6 +62,7 @@ if ( !function_exists( 'rdc_carousel_filters' ) ) {
 				'label' => $instance[ 'filter3' ] == 's' ? __( 'Filter by', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter3' ]],
 				'placeholder' => $instance[ 'filter3' ] == 's' ? __( 'Name, Street...', 'rdc' ) : $wp_properties['property_stats'][$instance[ 'filter3' ]],
 				'type' => $instance[ 'filter3_type' ],
+				'value' => !empty( $instance[ 'filter3_default' ] ) ? $instance[ 'filter3_default' ] : '',
 			) );
 			array_push( $search_fields, $instance[ 'filter3' ] );
 		}
@@ -82,7 +85,7 @@ if ( !function_exists( 'rdc_carousel_filters' ) ) {
 										wpp_render_search_input( array(
 											'attrib' => $field[ 'key' ],
 											'search_values' => $search_values,
-											'value' => '',
+											'value' => $field[ 'value' ],
 											'input_type' => $field[ 'type' ],
 											'placeholder' => $field[ 'placeholder' ]
 										) );
@@ -237,6 +240,10 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 					'label' => __( 'Filter 1 Type', 'rdc' ),
 					'options' => $types
 				),
+				'filter1_default' => array(
+					'type' => 'text',
+					'label' => __( 'Filter 1 Default Value', 'rdc' )
+				),
 				'filter2' => array(
 					'type' => 'select',
 					'label' => __( 'Filter 2', 'rdc' ),
@@ -247,6 +254,10 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 					'label' => __( 'Filter 2 Type', 'rdc' ),
 					'options' => $types
 				),
+				'filter2_default' => array(
+					'type' => 'text',
+					'label' => __( 'Filter 2 Default Value', 'rdc' )
+				),
 				'filter3' => array(
 					'type' => 'select',
 					'label' => __( 'Filter 3', 'rdc' ),
@@ -256,6 +267,10 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 					'type' => 'select',
 					'label' => __( 'Filter 3 Type', 'rdc' ),
 					'options' => $types
+				),
+				'filter3_default' => array(
+					'type' => 'text',
+					'label' => __( 'Filter 3 Default Value', 'rdc' )
 				),
 			)
 		);
