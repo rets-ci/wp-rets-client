@@ -300,7 +300,7 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
 					'rdc-carousel-basic',
 					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/css/style.css',
 					array(),
-					'1.4.4',
+					rand( 10000, 99999 ),
 				)
 			)
 		);
