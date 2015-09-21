@@ -13,6 +13,8 @@
 		el.innerHTML = '<span style="font-family: \'rdc\'">' + entity + '</span>' + html;
 	}
 	var icons = {
+		'icon-honest-pricing': '&#xe60a;',
+		'icon-full-service': '&#xe60b;',
 		'icon-star': '&#xe600;',
 		'icon-service-request': '&#xe601;',
 		'icon-payrent-online': '&#xe602;',

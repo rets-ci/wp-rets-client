@@ -16,7 +16,7 @@
 					<li class="column col-4-12 column-left">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-cubes"></i>
+								<span class="rdc-icon icon-online-portal"></span>
 							</div>
 							<hr/>
 							<div class="content">
@@ -27,7 +27,7 @@
 					</li><li class="column col-4-12 column-middle">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-cc-mastercard"></i>
+								<span class="rdc-icon icon-payrent-online"></span>
 							</div>
 							<hr/>
 							<div class="content">
@@ -38,7 +38,7 @@
 					</li><li class="column col-4-12 column-right">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-phone"></i>
+								<span class="rdc-icon icon-service-request"></span>
 							</div>
 							<hr/>
 							<div class="content">
@@ -56,7 +56,7 @@
 					<li class="column col-4-12 column-left">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-cubes"></i>
+								<span class="rdc-icon icon-online-portal"></span>
 							</div>
 							<hr/>
 							<div class="content">
@@ -67,7 +67,7 @@
 					</li><li class="column col-4-12 column-middle">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-cc-mastercard"></i>
+								<span class="rdc-icon icon-full-service"></span>
 							</div>
 							<hr/>
 							<div class="content">
@@ -78,7 +78,7 @@
 					</li><li class="column col-4-12 column-right">
 						<div class="sbox-item">
 							<div class="icon-box">
-								<i class="icon fa fa-phone"></i>
+								<span class="rdc-icon icon-honest-pricing"></span>
 							</div>
 							<hr/>
 							<div class="content">

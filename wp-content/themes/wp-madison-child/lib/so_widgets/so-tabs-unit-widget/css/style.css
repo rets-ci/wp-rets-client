@@ -81,9 +81,9 @@
 .rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item .icon-box {
   padding: 20px;
 }
-.rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item .icon-box i.icon {
+.rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item .icon-box span.rdc-icon {
   color: #6d6d6e;
-  font-size: 72px;
+  font-size: 150px;
   line-height: 150px;
 }
 .rdc-tabs-unit .section-content ul.static-boxes li div.sbox-item hr {
@@ -117,9 +117,9 @@
 .rdc-tabs-unit .section-content ul.static-boxes li:active div.sbox-item .icon-box {
   background-color: #cf3428;
 }
-.rdc-tabs-unit .section-content ul.static-boxes li:hover div.sbox-item .icon-box i.icon,
-.rdc-tabs-unit .section-content ul.static-boxes li:focus div.sbox-item .icon-box i.icon,
-.rdc-tabs-unit .section-content ul.static-boxes li:active div.sbox-item .icon-box i.icon {
+.rdc-tabs-unit .section-content ul.static-boxes li:hover div.sbox-item .icon-box span.rdc-icon,
+.rdc-tabs-unit .section-content ul.static-boxes li:focus div.sbox-item .icon-box span.rdc-icon,
+.rdc-tabs-unit .section-content ul.static-boxes li:active div.sbox-item .icon-box span.rdc-icon {
   color: #fff;
 }
 .rdc-tabs-unit .section-content ul.static-boxes li:hover div.sbox-item .content h4,
