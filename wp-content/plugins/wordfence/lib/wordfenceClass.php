@@ -486,7 +486,7 @@ class wordfence {
 		add_action('wordfence_hourly_cron', 'wordfence::hourlyCron');
 		add_action('plugins_loaded', 'wordfence::veryFirstAction');
 		add_action('init', 'wordfence::initAction');
-		add_action('wp_loaded', 'wordfence::templateRedir', 0);
+		add_action('template_redirect', 'wordfence::templateRedir', 1001);
 		add_action('shutdown', 'wordfence::shutdownAction');
 
 		if(version_compare(PHP_VERSION, '5.4.0') >= 0){
@@ -495,6 +495,9 @@ class wordfence {
 			add_action('wp_authenticate','wordfence::authActionOld', 1, 2);
 		}
 		add_filter('authenticate', 'wordfence::authenticateFilter', 99, 3);
+		if (self::isLockedOut(wfUtils::getIP())) {
+			add_filter('xmlrpc_enabled', '__return_false');
+		}
 
 		add_action('login_init','wordfence::loginInitAction');
 		add_action('wp_login','wordfence::loginAction');
@@ -851,6 +854,41 @@ class wordfence {
 		if(wfConfig::get('firewallEnabled')){
 			$wfLog = self::getLog();
 			$wfLog->firewallBadIPs();
+
+			$IP = wfUtils::getIP();
+			if($wfLog->isWhitelisted($IP)){
+				return;
+			}
+			if (wfConfig::get('neverBlockBG') == 'neverBlockUA' && wfCrawl::isGoogleCrawler()) {
+				return;
+			}
+			if (wfConfig::get('neverBlockBG') == 'neverBlockVerified' && wfCrawl::isVerifiedGoogleCrawler()) {
+				return;
+			}
+
+			if(wfConfig::get('blockFakeBots')){
+				if(wfCrawl::isGooglebot() && (! wfCrawl::verifyCrawlerPTR($wfLog->getGooglePattern(), $IP) )){
+					$wfLog->blockIP($IP, "Fake Google crawler automatically blocked");
+					wordfence::status(2, 'info', "Blocking fake Googlebot at IP $IP");
+					$wfLog->do503(3600, "Fake Google crawler automatically blocked.");
+				}
+			}
+			if(wfConfig::get('bannedURLs', false)){
+				$URLs = explode(',', wfConfig::get('bannedURLs'));
+				foreach($URLs as $URL){
+					if($_SERVER['REQUEST_URI'] == trim($URL)){
+						$wfLog->blockIP($IP, "Accessed a banned URL.");
+						$wfLog->do503(3600, "Accessed a banned URL.");
+						//exits
+					}
+				}
+			}
+
+			if(wfConfig::get('other_blockBadPOST') == '1' && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_SERVER['HTTP_USER_AGENT']) && empty($_SERVER['HTTP_REFERER'])){
+				$wfLog->blockIP($IP, "POST received with blank user-agent and referer");
+				$wfLog->do503(3600, "POST received with blank user-agent and referer");
+				//exits
+			}
 		}
 	}
 	public static function loginAction($username){
@@ -988,7 +1026,7 @@ class wordfence {
 				if($blacklist = wfConfig::get('loginSec_userBlacklist')){
 					$users = explode(',', $blacklist);
 					foreach($users as $user){
-						if(strtolower($_POST['log']) == strtolower($user)){
+						if(strtolower($username) == strtolower($user)){
 							self::getLog()->blockIP($IP, "Blocked by login security setting.");
 							$secsToGo = wfConfig::get('blockedTime');
 							self::getLog()->do503($secsToGo, "Blocked by login security setting.");
@@ -997,8 +1035,8 @@ class wordfence {
 					}
 				}
 				if(wfConfig::get('loginSec_lockInvalidUsers')){
-					if(strlen($_POST['log']) > 0 && preg_match('/[^\r\s\n\t]+/', $_POST['log'])){
-						self::lockOutIP($IP, "Used an invalid username '" . $_POST['log'] . "' to try to sign in.");
+					if(strlen($username) > 0 && preg_match('/[^\r\s\n\t]+/', $username)){
+						self::lockOutIP($IP, "Used an invalid username '" . $username . "' to try to sign in.");
 					}
 					require('wfLockedOut.php');
 				}
@@ -1012,7 +1050,7 @@ class wordfence {
 					$tries = 1;
 				}
 				if($tries >= wfConfig::get('loginSec_maxFailures')){
-					self::lockOutIP($IP, "Exceeded the maximum number of login failures which is: " . wfConfig::get('loginSec_maxFailures') . ". The last username they tried to sign in with was: '" . $_POST['log'] . "'");
+					self::lockOutIP($IP, "Exceeded the maximum number of login failures which is: " . wfConfig::get('loginSec_maxFailures') . ". The last username they tried to sign in with was: '" . $username . "'");
 					require('wfLockedOut.php');
 				}
 				set_transient($tKey, $tries, wfConfig::get('loginSec_countFailMins') * 60);
@@ -1029,7 +1067,7 @@ class wordfence {
 		}
 
 		if(is_wp_error($authUser) && ($authUser->get_error_code() == 'invalid_username' || $authUser->get_error_code() == 'incorrect_password') && wfConfig::get('loginSec_maskLoginErrors')){
-			return new WP_Error( 'incorrect_password', sprintf( __( '<strong>ERROR</strong>: The username or password you entered is incorrect. <a href="%2$s" title="Password Lost and Found">Lost your password</a>?' ), $_POST['log'], wp_lostpassword_url() ) );
+			return new WP_Error( 'incorrect_password', sprintf( __( '<strong>ERROR</strong>: The username or password you entered is incorrect. <a href="%2$s" title="Password Lost and Found">Lost your password</a>?' ), $username, wp_lostpassword_url() ) );
 		}
 		return $authUser;
 	}
@@ -1857,7 +1895,7 @@ class wordfence {
 				wfConfig::set($key, $val);
 			}
 		}
-		if($regenerateHtaccess){
+		if($regenerateHtaccess && wfConfig::get('cacheType') == 'falcon'){
 			wfCache::addHtaccessCode('add');
 		}
 
@@ -3505,13 +3543,19 @@ HTML;
 
 
 	/**
-	 * Modify the query to look for scenarios
+	 * Modify the query to prevent username enumeration.
 	 *
 	 * @param array $query_vars
 	 * @return array
 	 */
 	public static function preventAuthorNScans($query_vars) {
-		if (wfConfig::get('loginSec_disableAuthorScan') && !empty($query_vars['author']) && is_numeric(preg_replace('/[^0-9]/', '', $query_vars['author']))) {
+		if (wfConfig::get('loginSec_disableAuthorScan') && !is_admin() &&
+			!empty($query_vars['author']) && is_numeric(preg_replace('/[^0-9]/', '', $query_vars['author'])) &&
+			(
+				(isset($_GET['author']) && is_numeric(preg_replace('/[^0-9]/', '', $_GET['author']))) ||
+				(isset($_POST['author']) && is_numeric(preg_replace('/[^0-9]/', '', $_POST['author'])))
+			)
+		) {
 			$query_vars['author'] = -1;
 		}
 		return $query_vars;

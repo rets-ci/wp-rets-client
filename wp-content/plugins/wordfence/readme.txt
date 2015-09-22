@@ -3,7 +3,7 @@ Contributors: mmaunder
 Tags: wordpress, security, performance, speed, caching, cache, caching plugin, wordpress cache, wordpress caching, wordpress security, security plugin, secure, anti-virus, malware, firewall, antivirus, virus, google safe browsing, phishing, scrapers, hacking, wordfence, securty, secrity, secure, two factor, cellphone sign-in, cellphone signin, cellphone, twofactor, security, secure, htaccess, login, log, users, login alerts, lock, chmod, maintenance, plugin, private, privacy, protection, permissions, 503, base64, injection, code, encode, script, attack, hack, hackers, block, blocked, prevent, prevention, RFI, XSS, CRLF, CSRF, SQL Injection, vulnerability, website security, WordPress security, security log, logging, HTTP log, error log, login security, personal security, infrastructure security, firewall security, front-end security, web server security, proxy security, reverse proxy security, secure website, secure login, two factor security, maximum login security, heartbleed, heart bleed, heartbleed vulnerability, openssl vulnerability, nginx, litespeed, php5-fpm, woocommerce support, woocommerce caching, IPv6, IP version 6
 Requires at least: 3.9
 Tested up to: 4.3
-Stable tag: 6.0.16
+Stable tag: 6.0.17
 
 The Wordfence WordPress security plugin provides free enterprise-class WordPress security, protecting your website from hacks and malware.
 == Description ==
@@ -183,8 +183,15 @@ fully compatible with both IPv4 and IPv6 whether you run both or only one addres
 
 == Changelog ==
 
+= 6.0.17 =
+* Fix: Resolved issue where 301 redirects count as 404s with throttling applied.
+* Fix: Fixed Falcon .htaccess code writing to .htaccess when 'Immediately block IP's that access these URLs' option is modified.
+* Fix: Fixed issue where filtering posts by author in wp-admin no longer works due to change in /?author=N scan prevention logic.
+* Fix: Fixed issue in Live Traffic where 404s display as 200s.
+* Fix: Resolved issue with throttling logins via XMLRPC are not applied.
+
 = 6.0.16 =
-* Fix: Resolved issue with some variations of author=N scans not being caught.
+* Fix: Resolved issue with some variations of author=N scans not being caught. Thanks James Golovich.
 * Fix: Updated typo in author=N option.
 * Fix: Resolved issue with Falcon not writing to .htaccess with WP installed in subdirectory.
 * Fix: Added width to logo in activity report email.

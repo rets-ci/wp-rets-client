@@ -123,23 +123,6 @@ class wfLog {
 
 			//Range blocking was here. Moved to wordfenceClass::veryFirstAction
 
-			if(wfConfig::get('blockFakeBots')){
-				if(wfCrawl::isGooglebot() && (! wfCrawl::verifyCrawlerPTR($this->googlePattern, $IP) )){
-					$this->blockIP($IP, "Fake Google crawler automatically blocked");
-					wordfence::status(2, 'info', "Blocking fake Googlebot at IP $IP");
-				}
-			}
-			if(wfConfig::get('bannedURLs', false)){
-				$URLs = explode(',', wfConfig::get('bannedURLs'));
-				foreach($URLs as $URL){
-					if($_SERVER['REQUEST_URI'] == trim($URL)){
-						$this->blockIP($IP, "Accessed a banned URL.");
-						$this->do503(3600, "Accessed a banned URL.");
-						//exits
-					}
-				}
-			}
-
 			if(wfConfig::get('maxGlobalRequests') != 'DISABLED' && $hitsPerMinute > wfConfig::get('maxGlobalRequests')){ //Applies to 404 or pageview
 				$this->takeBlockingAction('maxGlobalRequests', "Exceeded the maximum global requests per minute for crawlers or humans.");
 			}
@@ -164,11 +147,6 @@ class wfLog {
 						}
 					}
 				}
-			}
-			if(wfConfig::get('other_blockBadPOST') == '1' && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_SERVER['HTTP_USER_AGENT']) && empty($_SERVER['HTTP_REFERER'])){
-				$this->blockIP($IP, "POST received with blank user-agent and referer");
-				$this->do503(3600, "POST received with blank user-agent and referer");
-				//exits
 			}
 			if(isset($_SERVER['HTTP_USER_AGENT']) && wfCrawl::isCrawler($_SERVER['HTTP_USER_AGENT'])){
 				if($type == 'hit' && wfConfig::get('maxRequestsCrawlers') != 'DISABLED' && $hitsPerMinute > wfConfig::get('maxRequestsCrawlers')){
