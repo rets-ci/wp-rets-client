@@ -44,6 +44,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Left Box Label', 'rdc' )
 						),
+						'tab1item1link' => array(
+							'type' => 'text',
+							'label' => __( 'Left Box Link', 'rdc' )
+						),
 						'tab1item1text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Left Box Content', 'rdc' )
@@ -52,6 +56,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Middle Box Label', 'rdc' )
 						),
+						'tab1item2link' => array(
+							'type' => 'text',
+							'label' => __( 'Middle Box Link', 'rdc' )
+						),
 						'tab1item2text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Middle Box Content', 'rdc' )
@@ -59,6 +67,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 						'tab1item3label' => array(
 							'type' => 'text',
 							'label' => __( 'Right Box Label', 'rdc' )
+						),
+						'tab1item3link' => array(
+							'type' => 'text',
+							'label' => __( 'Right Box Link', 'rdc' )
 						),
 						'tab1item3text' => array(
 							'type' => 'textarea',
@@ -76,6 +88,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Left Box Label', 'rdc' )
 						),
+						'tab2item1link' => array(
+							'type' => 'text',
+							'label' => __( 'Left Box Link', 'rdc' )
+						),
 						'tab2item1text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Left Box Content', 'rdc' )
@@ -84,6 +100,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Middle Box Label', 'rdc' )
 						),
+						'tab2item2link' => array(
+							'type' => 'text',
+							'label' => __( 'Middle Box Link', 'rdc' )
+						),
 						'tab2item2text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Middle Box Content', 'rdc' )
@@ -91,6 +111,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 						'tab2item3label' => array(
 							'type' => 'text',
 							'label' => __( 'Right Box Label', 'rdc' )
+						),
+						'tab2item3link' => array(
+							'type' => 'text',
+							'label' => __( 'Right Box Link', 'rdc' )
 						),
 						'tab2item3text' => array(
 							'type' => 'textarea',

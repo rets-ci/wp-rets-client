@@ -93,6 +93,7 @@ a:hover {
   padding: 5px 10px !important;
 }
 #site-header .site-navigation .secondary-menu .menu li.menu-item a:hover {
+  background-color: transparent;
   text-decoration: none;
   color: #bf2b1f;
   border-color: #bf2b1f;
