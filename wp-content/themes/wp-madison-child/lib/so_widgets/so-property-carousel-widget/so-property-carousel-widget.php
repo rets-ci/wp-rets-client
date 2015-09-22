@@ -181,12 +181,17 @@ function rdc_carousel_get_next_posts_page() {
 					<div class="price"><?php echo $property[ 'price' ] ?></div>
 				</div>
 				<div class="item-content">
-					<h3><?php the_title() ?></h3>
 					<p class="address"><?php echo $property[ 'display_address' ]; ?></p>
 					<ul>
-						<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>
-						<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'bathrooms' ] ?></span></li>
-						<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'area' ] ?></span></li>
+						<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>
+							<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>
+						<?php endif; ?>
+						<?php if( !empty( $property[ 'bathrooms' ] ) ) : ?>
+							<li title="<?php _e( 'Bathrooms', 'rdc' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'bathrooms' ] ?></span></li>
+						<?php endif; ?>
+						<?php if( !empty( $property[ 'area' ] ) ) : ?>
+							<li title="<?php _e( 'SQFT', 'rdc' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'area' ] ?></span></li>
+						<?php endif; ?>
 					</ul>
 				</div>
 			</a>
