@@ -14,6 +14,7 @@
 			<div id="unit-tab-1">
 				<ul class="static-boxes row">
 					<li class="column col-4-12 column-left">
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item1link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item1link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-online-portal"></span>
@@ -24,7 +25,9 @@
 								<p><?php echo $instance[ 'tab1' ][ 'tab1item1text' ]; ?></p>
 							</div>
 						</div>
+						<?php if ( !empty( $instance[ 'tab1' ][ 'tab1item1link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-middle">
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item2link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item2link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-payrent-online"></span>
@@ -35,7 +38,9 @@
 								<p><?php echo $instance[ 'tab1' ][ 'tab1item2text' ]; ?></p>
 							</div>
 						</div>
+						<?php if ( !empty( $instance[ 'tab1' ][ 'tab1item2link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-right">
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item3link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item3link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-service-request"></span>
@@ -46,6 +51,7 @@
 								<p><?php echo $instance[ 'tab1' ][ 'tab1item3text' ]; ?></p>
 							</div>
 						</div>
+						<?php if ( !empty( $instance[ 'tab1' ][ 'tab1item3link' ] ) ) echo '</a>'; ?>
 					</li>
 				</ul>
 
@@ -54,6 +60,7 @@
 			<div id="unit-tab-2">
 				<ul class="static-boxes row">
 					<li class="column col-4-12 column-left">
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item1link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item1link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-online-portal"></span>
@@ -64,7 +71,9 @@
 								<p><?php echo $instance[ 'tab2' ][ 'tab2item1text' ]; ?></p>
 							</div>
 						</div>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item1link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-middle">
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item2link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item2link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-full-service"></span>
@@ -75,7 +84,9 @@
 								<p><?php echo $instance[ 'tab2' ][ 'tab2item2text' ]; ?></p>
 							</div>
 						</div>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item2link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-right">
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item3link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item3link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-honest-pricing"></span>
@@ -86,6 +97,7 @@
 								<p><?php echo $instance[ 'tab2' ][ 'tab2item3text' ]; ?></p>
 							</div>
 						</div>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item3link' ] ) ) echo '</a>'; ?>
 					</li>
 				</ul>
 			</div>
