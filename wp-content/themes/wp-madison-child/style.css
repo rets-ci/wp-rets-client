@@ -91,11 +91,9 @@ a:hover {
   height: 36px;
   line-height: 26px;
   padding: 5px 10px !important;
-  background-color: #fff;
 }
 #site-header .site-navigation .secondary-menu .menu li.menu-item a:hover {
   text-decoration: none;
-  background-color: #fff;
   color: #bf2b1f;
   border-color: #bf2b1f;
 }

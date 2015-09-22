@@ -584,9 +584,13 @@ wpp.xmli = jQuery.extend({
    * @param row
    */
   row_added: function( row ) {
-    var list = row.find( 'ul.matches ul.list' );
+    var list = row.find( 'ul.matches ul.list'),
+        counter = row.find( '.matches-section .counter' );
     if( list.length > 0 ) {
       list.html('');
+    }
+    if( counter.length > 0 ) {
+      counter.html('0');
     }
   },
 
