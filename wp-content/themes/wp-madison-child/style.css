@@ -140,12 +140,14 @@ a:hover {
     margin: 0 10px 0 0;
   }
   #site-header .site-navigation .secondary-menu.mobile ul li a {
-    border-color: #fff !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
   }
   #site-header .site-navigation .secondary-menu.mobile ul li a:hover,
   #site-header .site-navigation .secondary-menu.mobile ul li a.active {
-    border-color: #d4483d !important;
-    color: #d4483d !important;
+    background-color: transparent;
+    border-color: #ffbebe !important;
+    color: #ffbebe !important;
   }
 }
 @media screen and (max-width: 650px) {
