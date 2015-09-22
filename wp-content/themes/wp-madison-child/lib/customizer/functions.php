@@ -10,11 +10,30 @@
  */
 function rdc_customize_register( $wp_customize ) {
 
+  /* reCAPTCHA See: https://www.google.com/recaptcha/ */
+
+  $wp_customize->add_section( 'rdc_recaptcha', array(
+    'title'       => __( 'reCAPTCHA', 'rdc' ),
+    'description' => sprintf( __( 'Add reCaptcha to your forms.<br/>See %smore details%s.', 'madison' ), '<a target="_blank" href="https://www.google.com/recaptcha/">', '</a>' ),
+    'priority'    => 100
+  ));
+
+  $wp_customize->add_setting( 'rdc_recaptcha_key', array(
+    'default'              => ''
+  ));
+
+  $wp_customize->add_control( 'rdc_recaptcha_key', array(
+    'label'   => __( 'Key', 'rdc' ),
+    'section' => 'rdc_recaptcha',
+    'type'    => 'text',
+    'settings' => 'rdc_recaptcha_key'
+  ));
+
   /* SEARCH WIDGET */
 
   $wp_customize->add_section( 'rdc_search', array(
-    'title'       => __( 'Multipurpose Search', 'madison' ),
-    'description' => __( 'Control a multipurpose search form in a header.', 'madison' ),
+    'title'       => __( 'Multipurpose Search', 'rdc' ),
+    'description' => __( 'Control a multipurpose search form in a header.', 'rdc' ),
     'priority'    => 61
   ));
 
@@ -23,7 +42,7 @@ function rdc_customize_register( $wp_customize ) {
   ));
 
   $wp_customize->add_control( 'rdc_multipurpose_search_enable', array(
-    'label'   => __( 'Enable Multipurpose Search', 'madison' ),
+    'label'   => __( 'Enable Multipurpose Search', 'rdc' ),
     'section' => 'rdc_search',
     'type'    => 'checkbox',
     'settings' => 'rdc_multipurpose_search_enable'

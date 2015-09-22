@@ -174,9 +174,14 @@
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/form-submitted/"/>
     <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
+    <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
+      <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha; ?>"></div>
+    <?php endif; ?>
+
     <div class="submit-wrapper">
       <input class="button" type="submit" value="Send" />
     </div>
+
   </form>
 
   <script type="text/javascript">

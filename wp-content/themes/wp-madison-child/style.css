@@ -570,3 +570,6 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .rdc-feedback-form form .label label {
   white-space: normal;
 }
+.g-recaptcha {
+  margin-bottom: 20px;
+}
