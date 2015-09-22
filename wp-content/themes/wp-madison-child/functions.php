@@ -132,3 +132,32 @@ add_action( 'wp_head', function() {
 add_action( 'wp_head', function() {
   add_filter( 'the_content', 'siteorigin_panels_filter_content' );
 }, 999 );
+
+/**
+ * Replace value for Location ( random_75 ) attribute
+ * with matched value on property import
+ *
+ * @author peshkov@UD
+ */
+add_filter( 'wpp_xml_import_value_on_import', function( $value, $attribute, $type, $post_id ){
+  return $value;
+  $map = array(
+    'raleigh' => array( 27601, 27605, 27608, 27609, 27613, 27614, 27615, 27616, 27622, 27623, 27624, 27625, 27602, 27603, 27604, 27606, 27607, 27610, 27611, 27612, 27617, 27619, 27620, 27621, 27626, 27627, 27628, 27629, 27640, 27650, 27656, 27658, 27676, 27690, 27695, 27634, 27635, 27636, 27661, 27668, 27675, 27697, 27698, 27699 ),
+    'durham' => array( 27704, 27705, 27706, 27707, 27710, 27711, 27713, 27715, 27717, 27701, 27702, 27703, 27708, 27709, 27712, 27722 ),
+    'chapell_hill' => array( 27514, 27515, 27516, 27517, 27599 ),
+  );
+  if( $attribute == 'random_75' ) {
+    switch( true ) {
+      case ( in_array( $value, $map[ 'raleigh' ] ) ):
+        $value = 'Raleigh Rentals';
+        break;
+      case ( in_array( $value, $map[ 'durham' ] ) ):
+        $value = 'Durham Rentals';
+        break;
+      case ( in_array( $value, $map[ 'chapell_hill' ] ) ):
+        $value = 'Chapel Hill Rentals';
+        break;
+    }
+  }
+  return $value;
+}, 99, 4 );
