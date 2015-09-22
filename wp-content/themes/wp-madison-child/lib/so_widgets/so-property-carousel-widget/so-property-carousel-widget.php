@@ -181,7 +181,7 @@ function rdc_carousel_get_next_posts_page() {
 					<div class="price"><?php echo $property[ 'price' ] ?></div>
 				</div>
 				<div class="item-content">
-					<p class="address"><?php echo $property[ 'display_address' ]; ?></p>
+					<p class="address"><?php echo $property[ 'location' ]; ?></p>
 					<ul>
 						<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>
 							<li title="<?php _e( 'Bedrooms', 'rdc' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>

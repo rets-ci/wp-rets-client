@@ -24,7 +24,7 @@
 				<?php endif; ?>
 
 				<div class="property-information">
-					<?php if ( $property['display_address'] ) : ?>
+					<?php if ( $property['location'] ) : ?>
 						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['display_address']; ?></span></a>
 					<?php endif; ?>
 					<ul class="icons-list">
