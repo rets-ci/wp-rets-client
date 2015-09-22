@@ -1,0 +1,1 @@
+function addClass(a,b){var c=b.className;-1==c.indexOf(a)&&(""!=c&&(a=" "+a),b.className=c+a)}function removeClass(a,b){var c=b.className,d=new RegExp("\\s?\\b"+a+"\\b","g");c=c.replace(d,""),b.className=c}
