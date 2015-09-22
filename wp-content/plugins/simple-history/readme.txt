@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 3.6.0
 Tested up to: 4.3
-Stable tag: 2.2
+Stable tag: 2.2.3
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -119,7 +119,21 @@ initiated by a specific user.
 
 ## Changelog
 
-= 2.2 (September 2015)
+= 2.2.3 (September 2015) =
+
+- Fixed: On new installs the database tables was not created correctly and new events could not be logged.
+
+= 2.2.2 (September 2015) =
+
+- Fixed: Logging stopped working for languages other then English. Sorry about that!
+
+- Fixed: When running unit tests for a site where Simple History is a must use plugin it sometimes tried to create tables and add columns more then once. Now uses `if not exists` and similar to only try to create the tables if they not already exists.
+
+= 2.2.1 (September 2015) =
+
+- Fixed: Missed to log users switching back on using the User Switching plugin. Fixes https://github.com/bonny/WordPress-Simple-History/issues/89.
+
+= 2.2 (September 2015) =
 
 - Added: Support for plugin [User Switching](https://wordpress.org/plugins/user-switching/). The event log will show when a user switched to another user, when they switched back, or when they switched off.
 
