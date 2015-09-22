@@ -63,84 +63,95 @@
           right: 0;
           position: absolute;
 
-          form {
+          .rdc-feedback-form {
             height: 100%;
             overflow-y: scroll;
             overflow-x: hidden;
 
-            label,
-            .label {
-              color: #808285;
-            }
+            form {
 
-            .label {
-              display: block;
-              width: 250px;
-              float: left;
-              text-align: right;
-              white-space: normal;
-              font-weight: 500;
-            }
-
-            .field {
-              display: inline-block;
-              padding-left: 260px;
-              margin-left: -250px;
-
-              input[type='text'] {
-                width: 200px;
-                padding: 4px;
-                border: 1px solid #808285;
+              label,
+              .label {
+                color: #808285;
               }
 
-              select {
-                width: 200px;
-                border: 1px solid #808285;
-                -moz-appearance: none;
-                -webkit-appearance: none;
-                background: transparent url("images/arrow-down.png") no-repeat scroll 95% center;
-                margin: 0;
-                padding: 4px 28px 4px 4px;
+              .label {
+                display: block;
+                width: 250px;
+                float: left;
+                text-align: right;
+                white-space: normal;
+                font-weight: 500;
               }
-            }
 
-            .submit-wrapper {
-              position: absolute;
-              bottom: -90px;
-              left: 0;
-              right: 0;
-              padding: 20px;
-              height: 90px;
-              text-align: center;
-              overflow: hidden;
-
-              input[type='submit'] {
-                /* display: inline-block; */
-                margin: 0 auto;
-                padding: 6px 25px;
-                background: #cf3428 !important;
-
+              .field {
                 display: inline-block;
-                vertical-align: middle;
-                -webkit-transform: translateZ(0);
-                transform: translateZ(0);
-                box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-                -webkit-backface-visibility: hidden;
-                backface-visibility: hidden;
-                -moz-osx-font-smoothing: grayscale;
-                overflow: hidden;
-                -webkit-transition-duration: 0.3s;
-                transition-duration: 0.3s;
-                -webkit-transition-property: color, background-color;
-                transition-property: color, background-color;
+                padding-left: 260px;
+                margin-left: -250px;
 
-                &:hover,
-                &:focus,
-                &:active {
-                  color: #fff;
-                  background-color: #da4e43 !important;
+                input[type='text'] {
+                  width: 200px;
+                  padding: 4px;
+                  border: 1px solid #808285;
                 }
 
+                select {
+                  width: 200px;
+                  border: 1px solid #808285;
+                  -moz-appearance: none;
+                  -webkit-appearance: none;
+                  background: transparent url("images/arrow-down.png") no-repeat scroll 95% center;
+                  margin: 0;
+                  padding: 4px 28px 4px 4px;
+                }
+              }
+
+              .submit-wrapper {
+                position: absolute;
+                bottom: -90px;
+                left: 0;
+                right: 0;
+                padding: 20px;
+                height: 90px;
+                text-align: center;
+                overflow: hidden;
+
+                input[type='submit'] {
+                  /* display: inline-block; */
+                  margin: 0 auto;
+                  padding: 6px 25px;
+                  background: #cf3428 !important;
+
+                  display: inline-block;
+                  vertical-align: middle;
+                  -webkit-transform: translateZ(0);
+                  transform: translateZ(0);
+                  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+                  -webkit-backface-visibility: hidden;
+                  backface-visibility: hidden;
+                  -moz-osx-font-smoothing: grayscale;
+                  overflow: hidden;
+                  -webkit-transition-duration: 0.3s;
+                  transition-duration: 0.3s;
+                  -webkit-transition-property: color, background-color;
+                  transition-property: color, background-color;
+
+                  &:hover,
+                  &:focus,
+                  &:active {
+                    color: #fff;
+                    background-color: #da4e43 !important;
+                  }
+
+                }
+
+              }
+
+              .g-recaptcha {
+                left: 50%;
+                margin-left: -150px;
+                position: relative;
+                width: 300px;
               }
 
             }
@@ -162,40 +173,44 @@
             .content {
               padding: 0 10px;
 
-              form {
+              .rdc-feedback-form {
 
-                .label {
-                  display: block;
-                  width: 100%;
-                  float: none;
-                  text-align: center;
-                  margin-bottom: 6px;
+                form {
+
+                  .label {
+                    display: block;
+                    width: 100%;
+                    float: none;
+                    text-align: center;
+                    margin-bottom: 6px;
+                  }
+
+                  .field {
+                    display: block;
+                    width: 100%;
+                    float: none;
+                    text-align: center;
+                    padding: 0;
+                    margin: 0;
+
+                    .radio_row {
+                      text-align: left;
+                      padding-left: 30px;
+
+                    }
+
+                    input[type='text'] {
+                      width: 70%;
+                      margin-bottom: 20px;
+                    }
+
+                    select {
+                      width: 70%;
+                      margin-bottom: 20px;
+                    }
+                  }
                 }
 
-                .field {
-                  display: block;
-                  width: 100%;
-                  float: none;
-                  text-align: center;
-                  padding: 0;
-                  margin: 0;
-
-                  .radio_row {
-                    text-align: left;
-                    padding-left: 30px;
-
-                  }
-
-                  input[type='text'] {
-                    width: 70%;
-                    margin-bottom: 20px;
-                  }
-
-                  select {
-                    width: 70%;
-                    margin-bottom: 20px;
-                  }
-                }
               }
 
             }
@@ -211,6 +226,20 @@
         .radio_row {
           padding-left: 0 !important;
           font-size: 0.75em !important;
+        }
+
+      }
+
+      @media screen and (max-width: 600px) {
+
+        .rdc-feedback-form {
+
+          .g-recaptcha {
+            margin-left: 0 !important;
+            left: 0 !important;
+            overflow: hidden;
+          }
+
         }
 
       }
