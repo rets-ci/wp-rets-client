@@ -562,3 +562,11 @@ body.page-template-page-wide #site-content article .entry-inner {
 body.page-template-page-wide #site-content article .entry-inner header {
   display: none;
 }
+/* FEEDBACK FORM */
+.rdc-feedback-form form .label {
+  display: block;
+  text-align: left;
+}
+.rdc-feedback-form form .label label {
+  white-space: normal;
+}
