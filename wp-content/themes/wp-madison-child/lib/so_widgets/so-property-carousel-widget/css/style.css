@@ -52,7 +52,7 @@
   margin: 0;
   width: auto;
   border: none;
-  color: #fff;
+  color: #bdbcbd;
 }
 .rdc-carousel-title .rdc-carousel-filters ul li label select {
   background: transparent;
@@ -60,7 +60,7 @@
   margin: 0;
   width: auto;
   border: none;
-  color: #fff;
+  color: #bdbcbd;
   -moz-appearance: none;
   -webkit-appearance: none;
   background-image: url("images/arrow-down-white.png");
