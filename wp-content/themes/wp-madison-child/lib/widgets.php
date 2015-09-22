@@ -70,16 +70,16 @@ class RDCScheduleShowing extends WP_Widget {
 }
 
 /**
- * Class RDCProspectOwnerForm
+ * Class RDCProspectLandlordForm
  * Custom widget for RDC project
  */
-class RDCProspectOwnerForm extends WP_Widget {
+class RDCProspectLandlordForm extends WP_Widget {
 
   /**
    * init
    */
   public function __construct() {
-    parent::WP_Widget('rdc-prospect-owner-form', __('Prospect Owner Form'));
+    parent::WP_Widget('rdc-prospect-landlord-form', __('Prospect Landlord Form'));
   }
 
   /**
@@ -100,10 +100,10 @@ class RDCProspectOwnerForm extends WP_Widget {
       echo $before_title . $widget_title . $after_title;
     }
 
-    if ( !file_exists( get_stylesheet_directory() . '/static/views/rdc-prospect-owner-form.php' ) ) {
-      _e('Widget template not found - '.get_stylesheet_directory() . '/static/views/rdc-prospect-owner-form.php');
+    if ( !file_exists( get_stylesheet_directory() . '/static/views/rdc-prospect-landlord-form.php' ) ) {
+      _e('Widget template not found - '.get_stylesheet_directory() . '/static/views/rdc-prospect-landlord-form.php');
     } else {
-      include get_stylesheet_directory() . '/static/views/rdc-prospect-owner-form.php';
+      include get_stylesheet_directory() . '/static/views/rdc-prospect-landlord-form.php';
     }
 
     echo $after_widget;

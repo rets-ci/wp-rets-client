@@ -148,9 +148,9 @@
          value="RedDoorCompany.com"/>
   <!-- tver -->
   <input type="hidden" id="tver" name="tver" value="2013"/>
-  <input type="hidden" name="ignore_submitmessage" value=""/>
+  <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
   <input type="hidden" name="ignore_linkbuttontext" value=""/>
-  <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/form-submitted/"/>
+  <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/tenant/"/>
   <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
   <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
