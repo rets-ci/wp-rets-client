@@ -15,7 +15,7 @@ if( empty( $logo ) ) {
 
 ?>
 <?php if( is_single() && !empty( $post ) && $post->post_type == 'property' ) : ?>
-	<section class="mls-disclaimer section-container"><p><em></em><?php _e( 'Information deemed RELIABLE but not GUARANTEED.', 'rdc' ); ?></em></p></section>
+	<section class="mls-disclaimer section-container"><p><em><?php _e( 'Information deemed RELIABLE but not GUARANTEED.', 'rdc' ); ?></em></p></section>
 <?php endif; ?>
 		</section>
 
