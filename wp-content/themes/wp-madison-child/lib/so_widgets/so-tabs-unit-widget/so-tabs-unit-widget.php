@@ -34,10 +34,6 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 					'type' => 'text',
 					'label' => __( 'Tagline', 'rdc' )
 				),
-				'target_blank' => array(
-					'type' => 'checkbox',
-					'label' => __( 'Open links in a new window tab', 'rdc' )
-				),
 				'tab1'        => array(
 					'type'        => 'section',
 					'label'       => __( 'Tenants', 'rdc' ),
@@ -52,6 +48,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Left Box Link', 'rdc' )
 						),
+						'tab1item1target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
+						),
 						'tab1item1text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Left Box Content', 'rdc' )
@@ -64,6 +64,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Middle Box Link', 'rdc' )
 						),
+						'tab1item2target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
+						),
 						'tab1item2text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Middle Box Content', 'rdc' )
@@ -75,6 +79,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 						'tab1item3link' => array(
 							'type' => 'text',
 							'label' => __( 'Right Box Link', 'rdc' )
+						),
+						'tab1item3target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
 						),
 						'tab1item3text' => array(
 							'type' => 'textarea',
@@ -96,6 +104,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Left Box Link', 'rdc' )
 						),
+						'tab2item1target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
+						),
 						'tab2item1text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Left Box Content', 'rdc' )
@@ -108,6 +120,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 							'type' => 'text',
 							'label' => __( 'Middle Box Link', 'rdc' )
 						),
+						'tab2item2target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
+						),
 						'tab2item2text' => array(
 							'type' => 'textarea',
 							'label' => __( 'Middle Box Content', 'rdc' )
@@ -119,6 +135,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 						'tab2item3link' => array(
 							'type' => 'text',
 							'label' => __( 'Right Box Link', 'rdc' )
+						),
+						'tab2item3target_blank' => array(
+							'type' => 'checkbox',
+							'label' => __( 'Open link in a new window tab', 'rdc' )
 						),
 						'tab2item3text' => array(
 							'type' => 'textarea',
