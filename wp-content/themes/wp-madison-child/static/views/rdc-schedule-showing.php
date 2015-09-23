@@ -186,7 +186,16 @@
       onclick: false,
       debug: false
     });
+
     jQuery("#powf_131a927d0218e411bcfc6c3be5a8dd60").datepicker();
+
+    jQuery("#powf_E3E9D503C22EE41195286C3BE5BD3B20").submit(function(e){
+      var rresult = grecaptcha.getResponse();
+      if( !rresult.length > 0 ) {
+        return false;
+      }
+      return true;
+    });
   });
 
 </script>

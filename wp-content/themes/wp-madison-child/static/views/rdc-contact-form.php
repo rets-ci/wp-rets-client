@@ -115,6 +115,14 @@
       onclick: false,
       debug: false
     });
+
+    jQuery("#powf_95350A21BE5BE411AFEF6C3BE5A87DF0").submit(function(e){
+      var rresult = grecaptcha.getResponse();
+      if( !rresult.length > 0 ) {
+        return false;
+      }
+      return true;
+    });
   });
 
 </script>
