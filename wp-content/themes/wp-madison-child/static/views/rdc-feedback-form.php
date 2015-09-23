@@ -174,8 +174,8 @@
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/feedback/"/>
     <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
-    <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-      <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha; ?>"></div>
+    <?php $recaptcha_key = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha_key ) ) : ?>
+      <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
     <?php endif; ?>
 
     <div class="submit-wrapper">
@@ -207,6 +207,15 @@
         onclick: false,
         debug: false
       });
+
+      jQuery("#powf_E1FC2444265AE411B3136C3BE5A87DF0").submit(function(e){
+        var rresult = grecaptcha.getResponse();
+        if( !rresult.length > 0 ) {
+          return false;
+        }
+        return true;
+      });
+
     });
 
   </script>

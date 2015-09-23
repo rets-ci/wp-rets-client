@@ -25,7 +25,7 @@
 
 				<div class="property-information">
 					<?php if ( $property['location'] ) : ?>
-						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['display_address']; ?></span></a>
+						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['location']; ?></span></a>
 					<?php endif; ?>
 					<ul class="icons-list">
 						<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>

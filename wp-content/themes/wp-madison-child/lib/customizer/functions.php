@@ -29,6 +29,17 @@ function rdc_customize_register( $wp_customize ) {
     'settings' => 'rdc_recaptcha_key'
   ));
 
+  $wp_customize->add_setting( 'rdc_recaptcha_secret', array(
+    'default'              => ''
+  ));
+
+  $wp_customize->add_control( 'rdc_recaptcha_secret', array(
+    'label'   => __( 'Secret Key', 'rdc' ),
+    'section' => 'rdc_recaptcha',
+    'type'    => 'text',
+    'settings' => 'rdc_recaptcha_secret'
+  ));
+
   /* SEARCH WIDGET */
 
   $wp_customize->add_section( 'rdc_search', array(

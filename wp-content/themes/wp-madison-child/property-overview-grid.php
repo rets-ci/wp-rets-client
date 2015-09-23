@@ -28,7 +28,7 @@
 
 				<div class="property-information">
 					<?php if ( $property['location'] ) : ?>
-						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['display_address']; ?></span></a>
+						<a href="<?php echo $property['permalink']; ?>"><span class="property-address"><?php echo $property['location']; ?></span></a>
 					<?php endif; ?>
 
 					<?php if ( $property['tagline'] ) : ?>
