@@ -6,6 +6,7 @@
  * @author Justin Kopepasah
  * @since 1.0.0
 */
+global $post;
 
 $logo = esc_url( get_theme_mod( 'footer_logo' ) );
 if( empty( $logo ) ) {
@@ -13,6 +14,9 @@ if( empty( $logo ) ) {
 }
 
 ?>
+<?php if( is_single() && !empty( $post ) && $post->post_type == 'property' ) : ?>
+	<section class="mls-disclaimer section-container"><p><?php _e( 'Information deemed RELIABLE but not GUARANTEED', 'rdc' ); ?></p></section>
+<?php endif; ?>
 		</section>
 
 		<section id="site-footer">

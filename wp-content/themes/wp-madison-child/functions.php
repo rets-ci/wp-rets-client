@@ -204,7 +204,7 @@ add_action( 'template_redirect', function() {
 
     } catch( Exception $e ) {
 
-      wp_redirect( home_url() . '/error-submit' );
+      wp_redirect( home_url() . '/success/error' );
 
     }
 
