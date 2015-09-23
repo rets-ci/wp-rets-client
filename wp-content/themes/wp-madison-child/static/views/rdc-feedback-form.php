@@ -2,9 +2,10 @@
   <script src="https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js" type="text/javascript"></script>
   <form id="powf_E1FC2444265AE411B3136C3BE5A87DF0" class="contact_form"
         enctype="multipart/form-data"
-        action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_E1FC2444265AE411B3136C3BE5A87DF0&tver=2013&c=1"
+        action="<?php echo home_url() ?>?rdc_action=submit_form"
         method="post">
 
+    <input type="hidden" name="rdc_fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_E1FC2444265AE411B3136C3BE5A87DF0&tver=2013&c=1" />
 
     <div class="label">
       <label for="powf_29adbc5e265ae411b3136c3be5a87df0">E-mail</label>

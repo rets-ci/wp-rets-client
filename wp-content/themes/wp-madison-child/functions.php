@@ -147,3 +147,73 @@ add_filter( 'wpp_xml_import_value_on_import', function( $value ){
   $value = preg_replace( '#([a-z,0-9])(,)([a-z,0-9])#i', '$1, $3', $value );
   return $value;
 }, 10 );
+
+
+/**
+ * Validate reCAPTCHA and send form to external server.
+ *
+ */
+add_action( 'template_redirect', function() {
+
+  if( isset( $_REQUEST[ 'rdc_action' ] ) && $_REQUEST[ 'rdc_action' ] == 'submit_form' && !empty( $_POST[ 'rdc_fyb' ] ) ) {
+
+    $key = get_theme_mod( 'rdc_recaptcha_key' );
+    $secret = get_theme_mod( 'rdc_recaptcha_secret' );
+    $redirect = isset( $_POST[ 'ignore_redirecturl' ] ) ? $_POST[ 'ignore_redirecturl' ] : '';
+
+    try {
+
+      if( !empty( $key ) && !empty( $secret ) ) {
+
+        if (empty($_POST['g-recaptcha-response'])) {
+          throw new Exception('No captcha response');
+        }
+
+        $recaptcha = $_POST['g-recaptcha-response'];
+        unset($_POST['g-recaptcha-response']);
+
+        $request = wp_remote_post('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $recaptcha);
+
+        if (is_wp_error($request) || wp_remote_retrieve_response_code($request) != 200) {
+          throw new Exception('Invalid response from Captcha API');
+        }
+
+        $response = wp_remote_retrieve_body($request);
+        $response = @json_decode($response, true);
+
+        if (empty($response['success']) || !$response['success']) {
+          throw new Exception('Captcha is not valid');
+        }
+
+      }
+
+      $url = $_POST[ 'rdc_fyb' ];
+
+      unset( $_POST[ 'rdc_fyb' ] );
+
+      $data = $_POST;
+      $data[ 'ignore_redirecturl' ] = '';
+
+      $response = wp_remote_post( $url, array(
+        'body' => $data,
+      ) );
+
+      if( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
+        throw new Exception( 'Invalid response from CRM Server' );
+      }
+
+    } catch( Exception $e ) {
+
+      wp_redirect( home_url() . '/error-submit' );
+
+    }
+
+    if( !empty( $redirect ) ) {
+      wp_redirect( $redirect );
+    } else {
+      wp_redirect( home_url() );
+    }
+
+  }
+
+} );

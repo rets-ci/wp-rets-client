@@ -5,9 +5,11 @@
 
 <form id="powf_95350A21BE5BE411AFEF6C3BE5A87DF0"
       enctype="multipart/form-data"
-      action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_95350A21BE5BE411AFEF6C3BE5A87DF0&tver=2013&c=1"
+      action="<?php echo home_url() ?>?rdc_action=submit_form"
       method="post"
       class="contact_form">
+
+  <input type="hidden" name="rdc-fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_95350A21BE5BE411AFEF6C3BE5A87DF0&tver=2013&c=1" />
 
   <div class="label">
     <label for="powf_f8c1dc41be5be411afef6c3be5a87df0">First Name</label>
