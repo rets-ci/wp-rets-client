@@ -1,4 +1,8 @@
-<div class="rdc-tabs-unit">
+<?php
+
+$target_blank = !empty( $instance[ 'target_blank' ] ) ? true : false;
+
+?><div class="rdc-tabs-unit">
 	<div class="section-content">
 
 		<h3 class="section-title"><?php echo $instance[ 'label' ]; ?></h3>
@@ -14,7 +18,7 @@
 			<div id="unit-tab-1">
 				<ul class="static-boxes row">
 					<li class="column col-4-12 column-left">
-						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item1link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item1link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item1link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab1' ][ 'tab1item1link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-online-portal"></span>
@@ -27,7 +31,7 @@
 						</div>
 						<?php if ( !empty( $instance[ 'tab1' ][ 'tab1item1link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-middle">
-						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item2link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item2link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item2link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab1' ][ 'tab1item2link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-payrent-online"></span>
@@ -40,7 +44,7 @@
 						</div>
 						<?php if ( !empty( $instance[ 'tab1' ][ 'tab1item2link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-right">
-						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item3link' ] ) ) echo '<a href="' . $instance[ 'tab1' ][ 'tab1item3link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab1' ][ 'tab1item3link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab1' ][ 'tab1item3link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-service-request"></span>
@@ -60,7 +64,7 @@
 			<div id="unit-tab-2">
 				<ul class="static-boxes row">
 					<li class="column col-4-12 column-left">
-						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item1link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item1link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item1link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab2' ][ 'tab2item1link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-online-portal"></span>
@@ -73,7 +77,7 @@
 						</div>
 						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item1link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-middle">
-						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item2link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item2link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item2link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab2' ][ 'tab2item2link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-full-service"></span>
@@ -86,7 +90,7 @@
 						</div>
 						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item2link' ] ) ) echo '</a>'; ?>
 					</li><li class="column col-4-12 column-right">
-						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item3link' ] ) ) echo '<a href="' . $instance[ 'tab2' ][ 'tab2item3link' ] . '">'; ?>
+						<?php if( !empty( $instance[ 'tab2' ][ 'tab2item3link' ] ) ) echo '<a ' . ( $target_blank ? 'target="_blank"' : '' ) . ' href="' . $instance[ 'tab2' ][ 'tab2item3link' ] . '">'; ?>
 						<div class="sbox-item">
 							<div class="icon-box">
 								<span class="rdc-icon icon-honest-pricing"></span>

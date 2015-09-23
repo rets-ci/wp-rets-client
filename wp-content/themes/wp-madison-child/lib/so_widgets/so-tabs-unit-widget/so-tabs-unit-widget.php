@@ -34,6 +34,10 @@ class SiteOrigin_Widget_TabsUnit_Widget extends SiteOrigin_Widget {
 					'type' => 'text',
 					'label' => __( 'Tagline', 'rdc' )
 				),
+				'target_blank' => array(
+					'type' => 'checkbox',
+					'label' => __( 'Open links in a new window tab', 'rdc' )
+				),
 				'tab1'        => array(
 					'type'        => 'section',
 					'label'       => __( 'Tenants', 'rdc' ),
