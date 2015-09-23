@@ -137,3 +137,13 @@ add_action( 'wp_head', function() {
 add_action( 'wp_head', function() {
   add_filter( 'the_content', 'siteorigin_panels_filter_content' );
 }, 999 );
+
+/**
+ * Add spaces after comma for imported values
+ *
+ * @author peshkov@UD
+ */
+add_filter( 'wpp_xml_import_value_on_import', function( $value ){
+  $value = preg_replace( '#([a-z,0-9])(,)([a-z,0-9])#i', '$1, $3', $value );
+  return $value;
+}, 10 );
