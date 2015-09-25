@@ -10,7 +10,9 @@
   ],
   "extra": {
     "settings": {
-      "wp_debug": false,
+      "wp_siteurl" :"http://www.reddoorcompany.com",
+      "wp_home": "http://www.reddoorcompany.com",
+      "wp_debug": true,
       "wp_debug_log": true,
       "wp_debug_display": false,
       "wp_cache": false,

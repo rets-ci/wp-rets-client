@@ -1,3 +1,6 @@
+legacy/
+dev/
+.ftpquota
 error_log
 /wp-content/storage
 /wp-content/uploads
