@@ -19,6 +19,7 @@ function rdc_register_widgets() {
   register_widget( 'RDCProspectLandlordForm' );
   register_widget( 'RDCContactForm' );
   register_widget( 'RDCFeedbackForm' );
+  register_widget( 'RDCReferralProgramForm' );
 }
 
 /**
