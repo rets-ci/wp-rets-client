@@ -1,5 +1,4 @@
 error_log
-.htaccess
 /wp-content/storage
 /wp-content/uploads
 .idea
