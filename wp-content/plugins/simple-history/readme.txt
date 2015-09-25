@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 3.6.0
 Tested up to: 4.3
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -119,9 +119,29 @@ initiated by a specific user.
 
 ## Changelog
 
+= 2.2.4 (September 2015) =
+
+- Added: Basic support for plugin [https://wordpress.org/plugins/ultimate-member/](Ultimate Member), so users logging in using the plugin will now be logged in Simple History. Fixes https://wordpress.org/support/topic/compatibility-with-ultimate-member.
+
+- Added: Filter `simple_history/logger/interpolate/context` that can be used to modify the variables sent to the message template.
+
+- Changed: Remove "type" key from context detail table, because it's an old an unused column.
+
+- Changed: During a first install the plugin now creates a few less columns than before (some columns where left from version 1 of the plugin).
+
+- Changed: Don't show the "translate this plugin" metabox for any english talking locale.
+
+- Changed: Don't show the GitHub metabox.
+
+- Fixed: If the plugin is deleted (but why?!) then the context table is also removed now.
+
+- Behind the scenes: More unit tests! Hopefully more nasty things will get caught before releasing new versions of the plugin.
+
+
 = 2.2.3 (September 2015) =
 
 - Fixed: On new installs the database tables was not created correctly and new events could not be logged.
+
 
 = 2.2.2 (September 2015) =
 
