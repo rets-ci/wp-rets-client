@@ -10,11 +10,19 @@ var SimpleHistoryFilterDropin = (function($) {
 
 	function init() {
 
+		addElements();
 		addFetchListener();
 
 	}
-
+	
 	function onDomReadyInit() {
+
+		enhanceSelects();
+		addListeners();
+
+	}
+
+	function addElements() {
 
 		$elms.filter_container = $(".SimpleHistory__filters");
 		$elms.filter_user = $elms.filter_container.find(".SimpleHistory__filters__filter--user");
@@ -22,9 +30,6 @@ var SimpleHistoryFilterDropin = (function($) {
 		$elms.filter_form = $elms.filter_container.find(".js-SimpleHistory__filters__form");
 		$elms.show_more_filters_button = $elms.filter_container.find(".js-SimpleHistoryFilterDropin-showMoreFilters");
 		$elms.more_filters_container = $elms.filter_container.find(".js-SimpleHistory__filters__moreFilters");
-
-		enhanceSelects();
-		addListeners();
 
 	}
 
@@ -42,17 +47,15 @@ var SimpleHistoryFilterDropin = (function($) {
 
 	}
 
-	function onSubmitForm(e) {
-
-		e.preventDefault();
+	function updateFilters() {
 
 		// form serialize
-		// search=apa&loglevels=critical&loglevels=alert&loggers=SimpleMediaLogger&loggers=SimpleMenuLogger&user=1&months=2014-09 SimpleHistoryFilterDropin.js?ver=2.0:40
+		// search=apa&loglevels=critical&loglevels=alert&loggers=SimpleMediaLogger&loggers=SimpleMenuLogger&user=1&dates=2014-09 SimpleHistoryFilterDropin.js?ver=2.0:40
 		var $search = $elms.filter_form.find("[name='search']");
 		var $loglevels = $elms.filter_form.find("[name='loglevels']");
 		var $messages = $elms.filter_form.find("[name='messages']");
-		var $user = $elms.filter_form.find("[name='user']");
-		var $months = $elms.filter_form.find("[name='months']");
+		var $users = $elms.filter_form.find("[name='users']");
+		var $dates = $elms.filter_form.find("[name='dates']");
 
 		// If any of our search boxes are filled in we consider ourself to be in search mode
 		isFilteringActive = false;
@@ -73,18 +76,22 @@ var SimpleHistoryFilterDropin = (function($) {
 			activeFilters.messages = $messages.val();
 		}
 
-		if ( $.trim( $user.val() )) {
+		if ( $.trim( $users.val() )) {
 			isFilteringActive = true;
-			activeFilters.user = $user.val();
+			activeFilters.users = $users.val();
 		}
 
-		if ( $months.val() && $months.val().length ) {
+		if ( $dates.val() && $dates.val().length ) {
 			isFilteringActive = true;
-			activeFilters.months = $months.val();
+			activeFilters.dates = $dates.val();
 		}
+	}
 
-		//console.log( "filtering is active:", isFilteringActive );
-		// console.log($search.val(), $loglevels.val(), $loggers.val(), $user.val(), $months.val());
+	function onSubmitForm(e) {
+
+		e.preventDefault();
+		
+		// updateFilters();
 
 		// Reload the log rows collection
 		simple_history.logRowsCollection.reload();
@@ -116,7 +123,10 @@ var SimpleHistoryFilterDropin = (function($) {
 
 	}
 
+	// called each time the log is reloaded
 	function modifyFetchData(collection, url_data) {
+
+		updateFilters();
 
 		if (isFilteringActive) {
 
@@ -149,8 +159,22 @@ var SimpleHistoryFilterDropin = (function($) {
 				}
 			},
 			formatResult: formatUsers,
+			initSelection: function(elm, callback) {
+
+				// called on init if value attribute on input is set
+
+				var $elm = $(elm);
+				var value = $elm.val();
+				var default_user_data = $elms.filter_user.data("default-user-data");
+				
+				callback(default_user_data);
+
+			},
 			formatSelection: formatUsers,
-			escapeMarkup: function(m) { return m; }
+			escapeMarkup: function(m) {
+				return m;
+			},
+			multiple: true
 		});
 
 		$(".SimpleHistory__filters__filter--logger").select2({
@@ -171,6 +195,7 @@ var SimpleHistoryFilterDropin = (function($) {
 	function formatUsers(userdata) {
 
 		var html = "";
+
 		html += "<div class='SimpleHistory__filters__userfilter__gravatar'>";
 		html += userdata.gravatar;
 		html += "</div>";
@@ -180,6 +205,7 @@ var SimpleHistoryFilterDropin = (function($) {
 		html += "<div class='SimpleHistory__filters__userfilter__secondary'>";
 		html += userdata.user_login;
 		html += "</div>";
+		
 		return html;
 
 	}

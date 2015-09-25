@@ -1,0 +1,312 @@
+.rdc-rating {
+  background: url("images/bg-grey-wall.png");
+}
+.rdc-rating .modal-feedback-form {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: auto;
+  padding: 0;
+}
+.rdc-rating .modal-feedback-form .overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  background: rgba(207, 52, 40, 0.1) none repeat scroll 0 0;
+  z-index: 1;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper {
+  height: 80%;
+  width: 600px;
+  background: #fff;
+  -webkit-box-shadow: 0px 0px 5px 0px #888888;
+  -moz-box-shadow: 0px 0px 5px 0px #888888;
+  box-shadow: 0px 0px 5px 0px #888888;
+  position: fixed;
+  z-index: 11;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner h3.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 30px;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content {
+  margin: 90px 20px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form {
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form label,
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .label {
+  color: #808285;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .label {
+  display: block;
+  width: 250px;
+  float: left;
+  text-align: right;
+  white-space: normal;
+  font-weight: 500;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field {
+  display: inline-block;
+  padding-left: 260px;
+  margin-left: -250px;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field input[type='text'] {
+  width: 200px;
+  padding: 4px;
+  border: 1px solid #808285;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field select {
+  width: 200px;
+  border: 1px solid #808285;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: transparent url("images/arrow-down.png") no-repeat scroll 95% center;
+  margin: 0;
+  padding: 4px 28px 4px 4px;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .submit-wrapper {
+  position: absolute;
+  bottom: -90px;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  height: 90px;
+  text-align: center;
+  overflow: hidden;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .submit-wrapper input[type='submit'] {
+  /* display: inline-block; */
+  margin: 0 auto;
+  padding: 6px 25px;
+  background: #cf3428 !important;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .submit-wrapper input[type='submit']:hover,
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .submit-wrapper input[type='submit']:focus,
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .submit-wrapper input[type='submit']:active {
+  color: #fff;
+  background-color: #da4e43 !important;
+}
+.rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .g-recaptcha {
+  left: 50%;
+  margin-left: -150px;
+  position: relative;
+  width: 300px;
+}
+@media screen and (max-width: 650px) {
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper {
+    height: 70%;
+    width: 70%;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content {
+    padding: 0 10px;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .label {
+    display: block;
+    width: 100%;
+    float: none;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field {
+    display: block;
+    width: 100%;
+    float: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field .radio_row {
+    text-align: left;
+    padding-left: 30px;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field input[type='text'] {
+    width: 70%;
+    margin-bottom: 20px;
+  }
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .modal-inner .content .rdc-feedback-form form .field select {
+    width: 70%;
+    margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .radio_row {
+    padding-left: 0 !important;
+    font-size: 0.75em !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .rdc-rating .modal-feedback-form .modal-inner-wrapper .rdc-feedback-form .g-recaptcha {
+    margin-left: 0 !important;
+    left: 0 !important;
+    overflow: hidden;
+  }
+}
+.rdc-rating .section-content {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 80px 20px 70px;
+}
+.rdc-rating .section-content h3 {
+  font-size: 2em;
+  margin: 0 0 12px 0;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0 0 10px 0;
+}
+.rdc-rating .section-content p.section-tagline {
+  color: #808285;
+  text-align: center;
+}
+.rdc-rating .section-content hr.section-delimiter {
+  color: #e2e3e4;
+  background-color: #e2e3e4;
+  width: 200px;
+  margin: 50px auto;
+}
+.rdc-rating .section-content .rating-section {
+  margin: 0 auto;
+  text-align: center;
+}
+.rdc-rating .section-content .rating-section .stars.rating {
+  border: none;
+  display: inline-block;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item {
+  cursor: pointer;
+  color: #e6e7e8;
+  float: right;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:before {
+  margin: 5px;
+  font-size: 72px;
+  line-height: 82px;
+  height: 82px;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.half:before {
+  content: "\f089";
+  position: absolute;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked {
+  color: #cf3428;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover ~ .star-item {
+  color: #ff4b3d;
+}
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item:hover ~ .rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover ~ .star-item,
+.rdc-rating .section-content .rating-section .stars.rating > .star-item.checked:hover ~ .star-item {
+  color: #ff4b3d;
+}
+.rdc-rating .section-content .rating-section .reviews-info-wrap {
+  display: inline-block;
+  float: right;
+  margin: 14px 0 0 36px;
+  width: 122px;
+}
+.rdc-rating .section-content .rating-section .reviews-info-wrap.mobile {
+  display: none;
+}
+.rdc-rating .section-content .rating-section .reviews-info-wrap .ri-1 {
+  display: block;
+  color: #808285;
+  font-size: 1em;
+}
+.rdc-rating .section-content .rating-section .reviews-info-wrap .ri-2 {
+  display: inline-block;
+  color: #cf3428;
+  font-weight: 600;
+  font-size: 1.25em;
+  line-height: 1em;
+}
+.rdc-rating .section-content .rating-section .reviews-info-wrap .ri-3 {
+  display: inline-block;
+  color: #cf3428;
+  font-size: 1.25em;
+  line-height: 1em;
+}
+.rdc-rating .section-content .rating-section .notice-section {
+  display: inline-block;
+  margin: 0 auto;
+  color: #808285;
+  padding-right: 158px;
+  padding-top: 16px;
+}
+@media screen and (max-width: 600px) {
+  .rdc-rating .section-content hr.section-delimiter {
+    margin: 20px auto;
+  }
+  .rdc-rating .section-content .rating-section .stars.rating > .star-item:before {
+    font-size: 46px;
+    line-height: 56px;
+    height: 56px;
+  }
+  .rdc-rating .section-content .rating-section .stars.rating .reviews-info-wrap {
+    display: none;
+  }
+  .rdc-rating .section-content .rating-section .reviews-info-wrap.mobile {
+    display: block;
+    float: none;
+    margin: 20px 0 0 0;
+    width: 100%;
+  }
+  .rdc-rating .section-content .rating-section .reviews-info-wrap.mobile .ri-1 {
+    display: inline-block;
+  }
+  .rdc-rating .section-content .rating-section .notice-section {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    color: #808285;
+    padding: 0;
+    font-size: 0.8em;
+  }
+}

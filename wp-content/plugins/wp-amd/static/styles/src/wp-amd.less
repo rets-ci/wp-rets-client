@@ -1,0 +1,70 @@
+#global-editor-shell {
+  border: 1px solid #DFDFDF;
+  border-radius: 3px 3px 3px 3px;
+  min-height: 360px;
+  height: 600px;
+  position: relative;
+  width: 99.5%;
+  resize: none;
+}
+
+.wp-amd-editor-shell {
+
+  .wp-editor-area[data-editor-status="not-ready"] {
+    opacity: 0;
+  }
+
+  .wp-editor-area[data-editor-status="ready"] {
+    opacity: 1
+  }
+
+}
+
+#global-editor-shell .ace_editor {
+  font-size: 12px;
+  font-family: Consolas, Monaco, Courier, monospace
+}
+
+.wrap {
+
+  .ajax-message {
+    margin-left: 10px;
+    padding: 3px 10px 3px 10px;
+    font-size: 14px;
+    position: relative;
+    top: -2px;
+  }
+
+  .ajax-message.error {
+    background: #f5fcd2;
+    color: red;
+  }
+
+  // @todo Should use native WP colors, but I'm in a hurry right now. -potanin@UD
+  .ajax-message.success {
+    background: #D7FFE4;
+    color: green;
+    border: 1px solid rgb(176, 231, 176);
+  }
+
+}
+
+body.appearance_page_amd-page-script,
+body.appearance_page_amd-page-style {
+
+  ul.post-revisions .avatar {
+    display: none;
+  }
+
+  #post-body-content {
+    margin-right: 370px;
+  }
+
+  .inner-sidebar {
+    width: 351px;
+  }
+
+  #side-sortables {
+    width: 350px;
+  }
+}

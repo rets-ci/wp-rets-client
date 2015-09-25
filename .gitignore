@@ -1,0 +1,8 @@
+error_log
+.htaccess
+/wp-content/storage
+/wp-content/uploads
+.idea
+*.log
+.DS_Store
+cache

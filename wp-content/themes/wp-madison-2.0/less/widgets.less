@@ -1,0 +1,112 @@
+.widget {
+	&-area {
+		
+	}
+	&.widget_tag_cloud {
+		a {
+			display: inline-block;
+			margin-bottom: 5px;
+			padding: 2px 3px;
+			background: @light;
+			color: darken( @light, 40% );
+			font-size: 16px !important;
+			font-size: 16/16rem !important;
+			&:hover {
+				background: @primary;
+				color: @white;
+			}
+		}
+	}
+	.wpp_child_properties_widget,
+	.wpp_featured_properties_widget,
+	.wpp_latest_properties_widget {
+		margin: 0;
+		padding: 0;
+		.property_widget_block {
+			width: 100% !important;
+			border-bottom: 1px solid @light;
+			> * {
+				display: block;
+				margin: 0;
+				padding: 24px;
+				padding: 24/16rem;
+			}
+		}
+		.sidebar_property_thumbnail {
+			float: right;
+			max-width: 150px;
+		}
+		.title {
+			padding-bottom: 0;
+			font-size: 18px;
+			font-size: 18/16rem;
+		}
+		.wpp_widget_attribute_list {
+			padding-top: 10px;
+			padding-left: 44px;
+		}
+		.view-all {
+			text-align: center;
+			margin-bottom: 0;
+			a {
+				display: block;
+			}
+		}
+		.more {
+			padding-top: 0;
+			clear: both;
+			a {
+				display: block;
+				text-align: center;
+				background: lighten( @light, 5% );
+				font-size: .9em;
+				border: 1px solid @light;
+				color: lighten( @dark, 30% );
+				&:hover {
+					background: @light;
+				}
+			}
+		}
+	}
+	.wpp_search_properties_widget {
+		margin: 0;
+		padding: 0;
+		.wpp_search_elements {
+			margin: 0;
+			padding: 0 2em;
+			list-style: none;
+			ul {
+				margin: 0;
+				list-style: none;
+				li {
+					margin-top: 1em;	
+				}
+			}
+		}
+		.wpp_search_form_element {
+			margin: 1em 0;
+		}
+	}
+	.wpp_agent_widget_wrapper {
+		ul {
+			margin: 0;
+			list-style: none;
+		}
+		.wpp_agent_stats_display_name {
+			font-weight: bold;
+		}
+		.wpp_agent_stats_agent_image {
+			float: right;
+			margin-left: 1.5em;
+			max-width: 100px;
+		}
+	}
+	.wpp_gallery_widget {
+		margin: 0;
+		padding: 0;
+		.sidebar_gallery_item {
+			margin: 2em 0;
+			padding: 0 2em;
+		}
+	}
+}

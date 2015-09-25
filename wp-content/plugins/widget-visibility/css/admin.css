@@ -1,0 +1,15 @@
+.clear{
+	clear:both;
+	display: block;
+}
+.widvis {
+	border-top: 1px solid #e5e5e5;
+	margin-top: 20px;
+}
+.widvis-scroller {
+	height: 250px;
+	overflow: auto;
+	border: 1px solid #DFDFDF;
+	padding: 5px;
+	margin: 5px 0;
+}
