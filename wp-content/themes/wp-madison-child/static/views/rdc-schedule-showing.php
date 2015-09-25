@@ -132,7 +132,7 @@
              value="<?php echo esc_attr( $property['address'] ); ?>"/>
       <?php endif; ?>
 
-      <?php if ( !empty( $property['mls_number'] ) ): ?>
+      <?php if ( !empty( get_post_meta( get_the_ID(), 'mls_number', true ) ) ): ?>
       <!-- MLS ID -->
       <input type="hidden" id="powf_c7e7e0c3a424e5118103fc15b4289e3c" name="powf_c7e7e0c3a424e5118103fc15b4289e3c"
              value="<?php echo get_post_meta( get_the_ID(), 'mls_number', true ); ?>"/>
