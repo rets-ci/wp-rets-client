@@ -165,7 +165,7 @@
 
     <div class="clear"></div>
     <!-- Origin -->
-    <input type="hidden" id="powf_6484f9e14547e51180fac4346bb5981c" name="powf_6484f9e14547e51180fac4346bb5981c" value="Referral" />
+    <input type="hidden" id="powf_6484f9e14547e51180fac4346bb5981c" name="powf_6484f9e14547e51180fac4346bb5981c" value="Landlord Referral" />
 
     <div class="label">
       <label for="powf_730e88165747e51180fac4346bb5981c">Contact Preference <font class="required">*</font></label>
