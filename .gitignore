@@ -1,5 +1,7 @@
 legacy/
 dev/
+/wp-content/plugins/wordfence/tmp
+/wp-content/updraft
 .ftpquota
 error_log
 /wp-content/storage
