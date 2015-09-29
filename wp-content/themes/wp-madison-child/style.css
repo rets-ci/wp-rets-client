@@ -47,7 +47,16 @@ a:hover {
   }
 }
 #site-header .site-navigation {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex: 1;
+  /* Safari 6.1+ */
+  -ms-flex: 1;
+  /* IE 10 */
+  flex: 1;
   align-items: center;
   -webkit-align-items: center;
   /* SECONDARY MENU */
@@ -139,6 +148,10 @@ a:hover {
     display: block;
     float: right;
     margin: 0 10px 0 0;
+    overflow: hidden;
+  }
+  #site-header .site-navigation .secondary-menu.mobile ul {
+    overflow: hidden;
   }
   #site-header .site-navigation .secondary-menu.mobile ul li a {
     color: #fff !important;
@@ -197,8 +210,18 @@ a:hover {
   }
 }
 #site-header .rdc-section-header-navigation .multipurpose-search-wrapper {
-  align-items: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex: 1;
+  /* Safari 6.1+ */
+  -ms-flex: 1;
+  /* IE 10 */
+  flex: 1;
+  align-items: center;
+  -webkit-align-items: center;
   min-height: 100px;
 }
 #site-header .rdc-section-header-navigation .multipurpose-search-wrapper form input,
