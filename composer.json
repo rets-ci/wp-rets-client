@@ -24,6 +24,7 @@
       "wp_cron_lock_timeout": 0,
       "wp": {
         "upstream_automatic_push": true,
+        "upstream_debug": true,
         "post_revisions": 30,
         "media_trash" : true,
         "allow_repair": true,
