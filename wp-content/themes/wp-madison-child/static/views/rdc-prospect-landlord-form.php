@@ -111,6 +111,18 @@
 
   <!----------------->
 
+  <div class="clear"></div>
+  <div class="label">
+    <label for="powf_0f6b0f271b41e51180fbc4346bace18c">Referred By</label>
+    <span class="tip"></span>
+  </div>
+
+  <div class="field">
+    <input type="text" id="powf_0f6b0f271b41e51180fbc4346bace18c" name="powf_0f6b0f271b41e51180fbc4346bace18c" value="" maxlength="100" />
+  </div>
+
+  <!----------------->
+
   <input id="powf_097a475ac32ee41195286c3be5bd3b20" name="powf_097a475ac32ee41195286c3be5bd3b20" type="hidden"
          value="Owner"/>
   <input id="powf_5e9a8095f35ae411afef6c3be5a87df0" name="powf_5e9a8095f35ae411afef6c3be5a87df0" type="hidden"
