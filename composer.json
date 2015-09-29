@@ -39,7 +39,8 @@
           "password": "Dd$Q@Fd.ZiNL",
           "host": "localhost:3306",
           "read": 20,
-          "write": 20
+          "write": 20,
+          "charset": "utf8"
         },
         {
           "name": "www.reddoorcompany.com",
