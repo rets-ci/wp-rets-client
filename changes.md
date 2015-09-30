@@ -1,4 +1,5 @@
 #### 3.0.1 ( September 30, 2015 )
+* Utilized Google Map's API key on generating map in Flyer.
 * Removed extra fonts.
 * Fixed images in PDF files.
 * Fixed warning's output which broke property saving.
