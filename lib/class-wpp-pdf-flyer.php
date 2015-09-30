@@ -1725,9 +1725,6 @@ class class_wpp_pdf_flyer {
       if( empty( $wpp_pdf_flyer ) ) {
         $wpp_pdf_flyer = class_wpp_pdf_flyer::return_defaults();
       }
-      if ( empty( $wpp_pdf_flyer[ 'flyer_page_format' ] ) ) {
-        $wpp_pdf_flyer[ 'flyer_page_format' ] = 'A4';
-      }
 
       //** STEP: PRIMARY ( FEATURED ) IMAGE. */
       //** Check Primary Photo's (Featured Photo) size */
@@ -1879,7 +1876,7 @@ class class_wpp_pdf_flyer {
       $html = ob_get_clean();
       
       //** STEP: GENERATE PDF FLYER. */
-      
+
       $pdf = new WPP_PDF_Flyer( 'P', PDF_UNIT, $wpp_pdf_flyer[ 'format' ], true, 'UTF-8', false );
 
       $pdf->setPrintHeader(false);
