@@ -10,7 +10,7 @@ $image_height = '90';
 $wpp_property_stats = class_wpp_pdf_flyer::get_pdf_list_attributes('property_stats');
 $exclude_property_stats = array();
 foreach ($wpp_property_stats as $key => $value) {
-  if(!key_exists($key, $list_data['attributes'])) {
+  if(!array_key_exists($key, $list_data['attributes'])) {
     $exclude_property_stats[] = $key;
   } else {
     unset($list_data['attributes'][$key]);
@@ -28,7 +28,7 @@ if(!empty( $property_stats ) && is_array( $property_stats ) ) {
 $wpp_taxonomies = class_wpp_pdf_flyer::get_pdf_list_attributes('taxonomies');
 if(is_array($wpp_taxonomies)) {
   foreach ($wpp_taxonomies as $key => $value) {
-    if(key_exists($key, $list_data['attributes'])) {
+    if(array_key_exists($key, $list_data['attributes'])) {
       if(get_features("type=$key&format=count" , $property)) {
         $features = get_features("type=$key&format=array&links=false", $property);
         $info .= '<br/>'. $value .': '. implode($features, ", ");
@@ -40,7 +40,7 @@ if(is_array($wpp_taxonomies)) {
 
 // Prepare other property attributes (image, title, description, tagline, etc)
 foreach ($list_data['attributes'] as $attr_id => $attr_value) {
-  if ( $attr_id == 'post_thumbnail' && !empty( $property['images']['thumbnail'] ) && WPP_F::can_get_image($property['images']['thumbnail'])) {
+  if ( $attr_id == 'post_thumbnail' && !empty( $property['images']['thumbnail'] ) && preg_match('@^(https?|ftp)://[^\s/$.?#].[^\s]*$@iS', $property['images']['thumbnail'])) {
 
     $image = '<table cellspacing="0" cellpadding="5" border="0" style="background-color:' . $list_data['background'] . '"><tr><td>';
     $image .= '<img width="'. $image_width .'" height="'. $image_height .'" src="'. $property['images']['thumbnail'] .'" alt="" />';
