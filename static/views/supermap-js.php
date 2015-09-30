@@ -44,7 +44,7 @@ ob_start();
       center:  new google.maps.LatLng(<?php echo $center_on; ?>),
       <?php endif; ?>
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      scrollwheel: false
+      scrollwheel: <?php echo ( !empty( $scrollwheel ) ? $scrollwheel : 'false' ); ?>
     }
 
     if(typeof window.map_<?php echo $rand; ?> ==='object' || jQuery("#super_map_<?php echo $rand; ?>:visible").length===0){
@@ -82,7 +82,7 @@ ob_start();
     window.marker_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
       position: myLatlng_<?php echo $rand; ?>_<?php echo $value['ID']; ?>,
       map: map_<?php echo $rand; ?>,
-      title: '<?php echo str_replace("'","\'", !empty($value[$wp_properties['configuration']['address_attribute']]) ? $value[$wp_properties['configuration']['address_attribute']] : '' ); ?>',
+      title: '<?php echo str_replace( array( "'", "\r", "\n" ), "", !empty($value[$wp_properties['configuration']['address_attribute']]) ? $value[$wp_properties['configuration']['address_attribute']] : '' ); ?>',
       icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
     });
 

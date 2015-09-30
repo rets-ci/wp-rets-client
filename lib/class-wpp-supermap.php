@@ -976,7 +976,7 @@ class class_wpp_supermap {
       'zoom' => '',
       'options_label' => __('Options',ud_get_wpp_supermap()->domain),
       'center_on' => '',
-      'scrollwheel' => false,
+      'scrollwheel' => '',
       'property_type' => (array) $wp_properties['searchable_property_types'],
       'rand' => rand(1000,5000)
     );
