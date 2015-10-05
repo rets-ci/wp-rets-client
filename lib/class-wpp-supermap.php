@@ -171,7 +171,7 @@ class class_wpp_supermap {
             <ul style="margin-top:10px;">
               <li>
                 <input <?php if(@in_array('view_property', (array)$supermap_configuration['display_attributes'])) echo " CHECKED ";  ?> value='view_property' type="checkbox" id="display_attribute_view_property" name="wpp_settings[configuration][feature_settings][supermap][display_attributes][]" />
-                <label for="display_attribute_view_property"><?php _e('Display "View Property" link in the left sidebar. It directs user to Property Page.',ud_get_wpp_supermap()->domain) ?></label>
+                <label for="display_attribute_view_property"><?php printf(__('Display "View %s" link in the left sidebar. It directs user to %s Page.',ud_get_wpp_supermap()->domain), WPP_F::property_label(), WPP_F::property_label()); ?></label>
               </li>
             </ul>
           </td>
@@ -769,12 +769,16 @@ class class_wpp_supermap {
   static public function get_marker_by_post_id($marker_url = '', $post_id) {
     global $wp_properties;
 
+    if(!isset($wp_properties['configuration']['feature_settings']['supermap'])) {
+      return $marker_url;
+    }
+
     //* Get supermap marker for the current property */
     $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
 
     //* Return empty string if property uses default marker */
     if($supermap_marker == 'default_google_map_marker') {
-      return '';
+      return $marker_url;
     }
 
     $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
@@ -783,7 +787,11 @@ class class_wpp_supermap {
     }
 
     $property_type = get_post_meta($post_id, 'property_type', true);
-    if(empty($supermap_marker) && !empty($property_type)) {
+    if(
+      empty($supermap_marker) &&
+      !empty($property_type) &&
+      !empty( $supermap_configuration['property_type_markers'][$property_type] )
+    ) {
       $supermap_marker = $supermap_configuration['property_type_markers'][$property_type];
     }
 
@@ -886,7 +894,7 @@ class class_wpp_supermap {
     //* Exclude properties which has no latitude,longitude keys */
     $query['latitude'] = 'all';
     $query['longitude'] = 'all';
-    $query['address_is_formatted'] = 'true';
+    //$query['address_is_formatted'] = 'true';
     $query['exclude_from_supermap'] = 'false,0';
 
     $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
@@ -931,7 +939,6 @@ class class_wpp_supermap {
       $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'supermap_template' ), $query, $properties, $atts );
       if( is_callable($template_function) ) {
         $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
-
       }
       return $supermap;
 
@@ -969,7 +976,7 @@ class class_wpp_supermap {
       'zoom' => '',
       'options_label' => __('Options',ud_get_wpp_supermap()->domain),
       'center_on' => '',
-      'scrollwheel' => false,
+      'scrollwheel' => '',
       'property_type' => (array) $wp_properties['searchable_property_types'],
       'rand' => rand(1000,5000)
     );
@@ -979,7 +986,11 @@ class class_wpp_supermap {
     }
 
     //* Supermap configuration */
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    if ( !empty( $wp_properties['configuration']['feature_settings']['supermap'] ) ) {
+      $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+    } else {
+      $supermap_configuration = array();
+    }
     if(empty($supermap_configuration['supermap_thumb'])) {
       $supermap_configuration['supermap_thumb'] = 'thumbnail';
     }
@@ -1017,7 +1028,7 @@ class class_wpp_supermap {
     $inline_styles['sidebar'] = 'style="' . implode( ' ', ( !empty( $inline_styles['sidebar'] ) ? (array) $inline_styles['sidebar'] : array() ) ) . '"';
 
     //* START Render Javascript functionality for Areas */
-    $areas = $wp_properties['configuration']['feature_settings']['supermap']['areas'];
+    $areas = !empty( $supermap_configuration['areas'] ) ? $supermap_configuration['areas'] : array();
     $area_lines = array();
     // Plot areas
     if(is_array($areas) && $show_areas) {
@@ -1257,7 +1268,10 @@ class class_wpp_supermap {
       <?php } ?>
 
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');
-      wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
+
+      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
+        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
+      }
 
     <?php else : ?>
 
@@ -1266,7 +1280,9 @@ class class_wpp_supermap {
       var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
       var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
 
-      wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
+      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
+        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
+      }
 
     <?php endif; ?>
     <?php

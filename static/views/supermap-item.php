@@ -3,45 +3,53 @@
  * Supermap Property Item
  *
  */
+global $wp_properties;
 
 $attributes = array();
 
 $property_stats = WPP_F::get_stat_values_and_labels($property, array(
-  'property_stats' => $display_attributes
+  'property_stats' => isset( $display_attributes ) ? $display_attributes : array()
 ));
 
-if(is_array($property_stats)) {
-  $labels_to_keys = array_flip($wp_properties['property_stats']);
+$labels_to_keys = array_flip( (array) $wp_properties['property_stats']);
 
-  foreach($property_stats as $attribute_label => $attribute_value) {
-    $boolean_field = false;
+foreach( (array) $property_stats as $attribute_label => $attribute_value) {
+  $boolean_field = false;
+  $attribute_slug = false;
+  $attribute_data = false;
+
+  if( is_array( $labels_to_keys ) ) {
     $attribute_slug = $labels_to_keys[$attribute_label];
     $attribute_data = UsabilityDynamics\WPP\Attributes::get_attribute_data($attribute_slug);
-
-    if(empty($attribute_value)) {
-      continue;
-    }
-
-    if( (  $attribute_data['data_input_type'] == 'checkbox' && ($attribute_value == 'true' || $attribute_value == 1) ) ) {
-      if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
-        $attribute_value = '<div class="true-checkbox-image"></div>';
-      } else {
-        $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
-      }
-      $boolean_field = true;
-    } elseif ($attribute_value == 'false') {
-      continue;
-    }
-
-    $attributes[] =  '<li class="supermap_list_' . $attribute_slug . ' wpp_supermap_attribute_row">';
-    $attributes[] =  '<span class="attribute">' . $attribute_label . (!$boolean_field ? ':' : '') . ' </span>';
-    $attributes[] =  '<span class="value">' . $attribute_value . '</span>';
-    $attributes[] =  '</li>';
   }
+
+  if( !isset( $attribute_value ) || empty($attribute_value)) {
+    continue;
+  }
+
+  if( !in_array($attribute_slug, $supermap_configuration['display_attributes'])) {
+    continue;
+  }
+
+  if( (  $attribute_data['data_input_type'] == 'checkbox' && ($attribute_value == 'true' || $attribute_value == 1) ) ) {
+    if($wp_properties['configuration']['google_maps']['show_true_as_image'] == 'true') {
+      $attribute_value = '<div class="true-checkbox-image"></div>';
+    } else {
+      $attribute_value = __('Yes', ud_get_wpp_supermap()->domain);
+    }
+    $boolean_field = true;
+  } elseif ($attribute_value == 'false') {
+    continue;
+  }
+
+  $attributes[] =  '<li class="supermap_list_' . $attribute_slug . ' wpp_supermap_attribute_row">';
+  $attributes[] =  '<span class="attribute">' . $attribute_label . (!$boolean_field ? ':' : '') . ' </span>';
+  $attributes[] =  '<span class="value">' . $attribute_value . '</span>';
+  $attributes[] =  '</li>';
 }
 
 if(in_array('view_property', $supermap_configuration['display_attributes'])) {
-  $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($property['ID']) . '" class="btn btn-info btn-small"><span>'  . __('View Property', ud_get_wpp_supermap()->domain) . '</span></a></li>';
+  $attributes[] =  '<li class="supermap_list_view_property"><a href="' . get_permalink($property['ID']) . '" class="btn btn-info btn-small"><span>'  . sprintf( __('View %s', ud_get_wpp_supermap()->domain), WPP_F::property_label() ) . '</span></a></li>';
 }
 
 ?>
