@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-walkscore
  * Description: Adds Walk Score's and Neighborhood Map's Widgets and Shortcodes to your WP-Property Site. Allows to sort and search your listings by Walk Score.
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 4.0
- * Tested up to: 4.3
+ * Tested up to: 4.3.1
  * Text Domain: wpp_walkscore
  * Domain Path: /static/languages/
  * Author URI: http://www.usabilitydynamics.com
