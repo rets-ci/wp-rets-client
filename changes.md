@@ -1,4 +1,4 @@
-#### 4.0.3 ( October 6, 2015 )
+#### 4.0.3 ( October 7, 2015 )
 * Fixed initialisation logic of plugin.
 
 #### 4.0.2 ( August 14, 2015 )
