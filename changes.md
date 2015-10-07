@@ -1,4 +1,4 @@
-#### 3.0.2 ( October 6, 2015 )
+#### 3.0.2 ( October 7, 2015 )
 * Fixed initialisation logic of plugin.
 
 #### 3.0.1 ( September 30, 2015 )
