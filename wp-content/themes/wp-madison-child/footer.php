@@ -30,8 +30,10 @@ if( empty( $logo ) ) {
 				</section>
 				<section class="column-footer-info column col-3-12">
 					<?php if ( $site_info = get_theme_mod( 'rdc_footer_site_info_text') ) : ?>
-						<h3><?php echo get_theme_mod( 'rdc_footer_site_info_label', 'At Red Door' ); ?></h3>
-						<p><?php echo $site_info; ?></p>
+						<div itemscope itemtype="http://schema.org/LocalBusiness">
+							<h3><?php echo get_theme_mod( 'rdc_footer_site_info_label', 'At Red Door' ); ?></h3>
+							<p><?php echo $site_info; ?></p>
+						</div>
 					<?php endif; ?>
 				</section>
 				<nav class="column-footer-navigation column col-2-12" role="navigation">
