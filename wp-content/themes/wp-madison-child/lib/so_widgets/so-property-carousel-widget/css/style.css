@@ -89,23 +89,21 @@
 }
 .rdc-carousel-title a.rdc-carousel-next,
 .rdc-carousel-title a.rdc-carousel-previous {
+  top: 40px;
   position: absolute;
-  height: 18px;
-  bottom: 230px;
+  width: 41px;
+  height: 41px;
   font-family: 'carousel-arrows';
   speak: none;
   display: block;
   overflow: hidden;
-  margin-left: 2px;
-  margin-top: 13px;
   z-index: 9999;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   font-size: 14px;
-  line-height: 18px;
-  width: 18px;
+  line-height: 38px;
   text-align: center;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -113,16 +111,17 @@
   text-decoration: none;
   color: #FFFFFF;
   border-radius: 2px;
+  border: 1px solid #bdbcbd;
 }
 .rdc-carousel-title a.rdc-carousel-next:hover,
 .rdc-carousel-title a.rdc-carousel-previous:hover {
   background: #cf3428;
 }
 .rdc-carousel-title a.rdc-carousel-next {
-  right: 14px;
+  right: 40px;
 }
 .rdc-carousel-title a.rdc-carousel-previous {
-  left: 14px;
+  right: 90px;
 }
 .rdc-carousel-title a.rdc-carousel-next:before {
   content: "\e601";
