@@ -474,3 +474,11 @@ table.block-ranges-table tr td {
 	border-width: 1px 0;
 	padding: 10px 0 12px 0;
 }
+
+.wf-notice {
+	margin: 12px 0;
+	padding: 8px;
+	background-color: #ffffe0;
+	border: 1px solid #ffd975;
+	border-width: 1px 1px 1px 10px;
+}

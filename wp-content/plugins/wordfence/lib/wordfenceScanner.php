@@ -14,6 +14,7 @@ class wordfenceScanner {
 	protected $lastStatusTime = false;
 	protected $patterns = "";
 	protected $api = false;
+	protected static $excludePattern = NULL;
 	public function __sleep(){
 		return array('path', 'results', 'errorMsg', 'apiKey', 'wordpressVersion', 'urlHoover', 'totalFilesScanned', 'startTime', 'lastStatusTime', 'patterns');
 	}
@@ -50,6 +51,33 @@ class wordfenceScanner {
 		}
 		$this->patterns = $sigData;
 	}
+
+	/**
+	 *	Return regular expression to exclude files or false if 
+	 *	there is no pattern
+	 *
+	 *	@return string|boolean
+	 */
+	public static function getExcludeFilePattern() {
+		if (self::$excludePattern !== NULL) {
+			return self::$excludePattern;
+		}
+		if(wfConfig::get('scan_exclude', false)){
+			$exParts = explode("\n", wfUtils::cleanupOneEntryPerLine(wfConfig::get('scan_exclude')));
+			foreach($exParts as &$exPart){
+				$exPart = preg_quote(trim($exPart), '/');
+				$exPart = preg_replace('/\\\\\*/', '.*', $exPart);
+			}
+
+			self::$excludePattern = '/^(?:' . implode('|', array_filter($exParts)) . ')$/i';
+			self::$excludePattern = '/(?:' . implode('|', array_filter($exParts)) . ')$/i';
+		} else {
+			self::$excludePattern = false;
+		}
+
+		return self::$excludePattern;
+	}
+
 	public function scan($forkObj){
 		if(! $this->startTime){
 			$this->startTime = microtime(true);
@@ -59,15 +87,7 @@ class wordfenceScanner {
 		}
 		$db = new wfDB();
 		$lastCount = 'whatever';
-		$excludePattern = false;
-		if(wfConfig::get('scan_exclude', false)){
-			$exParts = explode(',', wfConfig::get('scan_exclude'));
-			foreach($exParts as &$exPart){
-				$exPart = preg_quote($exPart, '/');
-				$exPart = preg_replace('/\\\\\*/', '.*', $exPart);
-			}
-			$excludePattern = '/^(?:' . implode('|', $exParts) . ')$/i';
-		}
+		$excludePattern = self::getExcludeFilePattern();
 		while(true){
 			$thisCount = $db->querySingle("select count(*) from " . $db->prefix() . "wfFileMods where oldMD5 != newMD5 and knownFile=0");
 			if($thisCount == $lastCount){
@@ -95,15 +115,14 @@ class wordfenceScanner {
 					$fileExt = strtolower($matches[1]);
 				}
 				$isPHP = false;
-				if(preg_match('/^(?:php|phtml|php\d+)$/', $fileExt)){ 
+				if(preg_match('/\.(?:php(?:\d+)?|phtml)(\.|$)/i', $file)) {
 					$isPHP = true;
 				}
 				$dontScanForURLs = false;
-				if( (! wfConfig::get('scansEnabled_highSense')) && (preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $file) || preg_match('/^(?:sql|tbz|tgz|gz|tar|log|err\d+)$/', $fileExt)) ){
+				if( (! wfConfig::get('scansEnabled_highSense')) && preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $file)) {
 					$dontScanForURLs = true;
 				}
-
-				if(preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png)$/', $fileExt) && (! wfConfig::get('scansEnabled_scanImages')) ){
+				if(! $isPHP && preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png|sql|tbz2?|bz2?|xz|zip|tgz|gz|tar|log|err\d+)$/', $fileExt) && (! wfConfig::get('scansEnabled_scanImages')) ){
 					continue;
 				}
 				if( (! wfConfig::get('scansEnabled_highSense')) && strtolower($fileExt) == 'sql'){ //
@@ -115,6 +134,8 @@ class wordfenceScanner {
 					wordfence::status(2, 'error', "Encountered file that is too large: $file - Skipping.");
 					continue;
 				}
+				wfUtils::beginProcessingFile($file);
+
 				$fsize = filesize($this->path . $file); //Checked if too big above
 				if($fsize > 1000000){
 					$fsize = sprintf('%.2f', ($fsize / 1000000)) . "M";
@@ -214,7 +235,7 @@ class wordfenceScanner {
 										'severity' => 1,
 										'ignoreP' => $this->path . $file,
 										'ignoreC' => $fileSum,
-										'shortMsg' => "This file may contain malicious executable code" . $this->path . $file,
+										'shortMsg' => "This file may contain malicious executable code: " . $this->path . $file,
 										'longMsg' => "This file is a PHP executable file and contains the word 'eval' (without quotes) and the word '" . $badStringFound . "' (without quotes). The eval() function along with an encoding function like the one mentioned are commonly used by hackers to hide their code. If you know about this file you can choose to ignore it to exclude it from future scans.",
 										'data' => array(
 											'file' => $file,
@@ -303,6 +324,7 @@ class wordfenceScanner {
 				}
 			}
 		}
+		wfUtils::endProcessingFile();
 
 		return $this->results;
 	}

@@ -455,6 +455,7 @@ class wfCache {
 			$contents = $code . "\n" . $contents;
 		}
 		ftruncate($fh, 0);
+		fflush($fh);
 		fseek($fh, 0, SEEK_SET);
 		fwrite($fh, $contents);
 		flock($fh, LOCK_UN);
@@ -608,6 +609,7 @@ EOT;
 			$contents = preg_replace('/#WFIPBLOCKS.*WFIPBLOCKS[r\s\n\t]*/s', '', $contents);
 
 			ftruncate($fh, 0);
+			fflush($fh);
 			fseek($fh, 0, SEEK_SET);
 			@fwrite($fh, $contents);
 			flock($fh, LOCK_UN);
@@ -703,6 +705,7 @@ EOT;
 		$contents = preg_replace('/#WFIPBLOCKS.*WFIPBLOCKS[r\s\n\t]*/s', '', $contents);
 		$contents = $blockCode . $contents;
 		ftruncate($fh, 0);
+		fflush($fh);
 		fseek($fh, 0, SEEK_SET);
 		@fwrite($fh, $contents);
 		flock($fh, LOCK_UN);

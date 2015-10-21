@@ -25,6 +25,10 @@ class wfUtils {
 	public static $scanLockFH = false;
 	private static $lastErrorReporting = false;
 	private static $lastDisplayErrors = false;
+	public static function patternToRegex($pattern, $mod = 'i', $sep = '/') {
+		$pattern = preg_quote(trim($pattern), $sep);
+		return $sep . str_replace("\\*", '.*', $pattern) . $sep . $mod;
+	}
 	public static function makeTimeAgo($secs, $noSeconds = false) {
 		if($secs < 1){
 			return "a moment";
@@ -518,6 +522,31 @@ class wfUtils {
 		}
 		return self::$isWindows == 'yes' ? true : false;
 	}
+	public static function cleanupOneEntryPerLine($string) {
+		$string = str_replace(",", "\n", $string); // fix old format
+		return implode("\n", array_unique(array_filter(array_map('trim', explode("\n", $string)))));
+	}
+	public static function getScanFileError() {
+		$fileTime = wfConfig::get('scanFileProcessing');
+		if (! $fileTime) {
+			return;
+		}
+		list($file, $time) =  unserialize($fileTime);
+		if ($time+10 < time()) {
+			$files = wfConfig::get('scan_exclude') . "\n" . $file;
+			wfConfig::set('scan_exclude', self::cleanupOneEntryPerLine($files));
+			self::endProcessingFile();
+		}
+	}
+
+	public static function beginProcessingFile($file) {
+		wfConfig::set('scanFileProcessing', serialize(array($file, time())));
+	}
+
+	public static function endProcessingFile() {
+		wfConfig::set('scanFileProcessing', null);
+	}
+
 	public static function getScanLock(){
 		//Windows does not support non-blocking flock, so we use time.
 		$scanRunning = wfConfig::get('wf_scanRunning');
@@ -528,6 +557,10 @@ class wfUtils {
 		return true;
 	}
 	public static function clearScanLock(){
+		global $wpdb;
+		$wfdb = new wfDB();
+		$wfdb->truncate($wpdb->base_prefix . 'wfHoover');
+
 		wfConfig::set('wf_scanRunning', '');
 	}
 	public static function isScanRunning(){
@@ -909,6 +942,41 @@ class wfUtils {
 		$hex = bin2hex(self::inet_pton($ip));
 		$ip = substr(preg_replace("/([a-f0-9]{4})/i", "$1:", $hex), 0, -1);
 		return $ip;
+	}
+
+	/**
+	 * @param string $readmePath
+	 * @return bool
+	 */
+	public static function hideReadme($readmePath = null) {
+		if ($readmePath === null) {
+			$readmePath = ABSPATH . 'readme.html';
+		}
+
+		if (file_exists($readmePath)) {
+			$readmePathInfo = pathinfo($readmePath);
+			require_once ABSPATH . WPINC . '/pluggable.php';
+			$hiddenReadmeFile = $readmePathInfo['filename'] . '.' . wp_hash('readme') . '.' . $readmePathInfo['extension'];
+			return @rename($readmePath, $readmePathInfo['dirname'] . '/' . $hiddenReadmeFile);
+		}
+		return false;
+	}
+
+	/**
+	 * @param string $readmePath
+	 * @return bool
+	 */
+	public static function showReadme($readmePath = null) {
+		if ($readmePath === null) {
+			$readmePath = ABSPATH . 'readme.html';
+		}
+		$readmePathInfo = pathinfo($readmePath);
+		require_once ABSPATH . WPINC . '/pluggable.php';
+		$hiddenReadmeFile = $readmePathInfo['dirname'] . '/' . $readmePathInfo['filename'] . '.' . wp_hash('readme') . '.' . $readmePathInfo['extension'];
+		if (file_exists($hiddenReadmeFile)) {
+			return @rename($hiddenReadmeFile, $readmePath);
+		}
+		return false;
 	}
 }
 

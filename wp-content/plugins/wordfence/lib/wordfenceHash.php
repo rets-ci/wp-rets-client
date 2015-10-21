@@ -204,6 +204,12 @@ class wordfenceHash {
 			//exits
 		}
 
+		$exclude = WordfenceScanner::getExcludeFilePattern();
+		if ($exclude && preg_match($exclude, $realFile)) {
+			return;
+		}
+
+
 		//Put this after the fork, that way we will at least scan one more file after we fork if it takes us more than 10 seconds to search for the stoppedOnFile
 		if($this->stoppedOnFile && $file != $this->stoppedOnFile){
 			return;
@@ -220,6 +226,7 @@ class wordfenceHash {
 		} else {
 			wordfence::status(4, 'info', "Scanning: $realFile");
 		}
+		wfUtils::beginProcessingFile($file);
 		$wfHash = self::wfHash($realFile); 
 		if($wfHash){
 			$md5 = strtoupper($wfHash[0]);
@@ -342,6 +349,7 @@ class wordfenceHash {
 		} else {
 			//wordfence::status(2, 'error', "Could not gen hash for file (probably because we don't have permission to access the file): $realFile");
 		}
+		wfUtils::endProcessingFile();
 	}
 	public static function wfHash($file){
 		wfUtils::errorsOff();

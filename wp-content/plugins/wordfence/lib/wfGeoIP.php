@@ -475,7 +475,7 @@ if(! function_exists('geoip_country_name_by_name')){
 
 if(! function_exists('geoip_country_id_by_addr_v6')){
 	function geoip_country_id_by_addr_v6($gi, $addr) {
-	  $ipnum = inet_pton($addr);
+	  $ipnum = wfUtils::inet_pton($addr);
 	  return _geoip_seek_country_v6($gi, $ipnum) - GEOIP_COUNTRY_BEGIN;
 	}
 }
@@ -687,7 +687,7 @@ if(! function_exists('geoip_name_by_addr_v6')){
 	  if ($addr == NULL) {
 	    return 0;
 	  }
-	  $ipnum = inet_pton($addr);
+	  $ipnum = wfUtils::inet_pton($addr);
 	  return _get_org_v6($gi, $ipnum);
 	}
 }

@@ -93,6 +93,11 @@
 			<div class="wfTabsContainer">
 				<div id="wfIssues_new" class="wfIssuesContainer">
 					<h2>New Issues</h2>
+					<?php if (wfConfig::get('scansEnabled_highSense')): ?>
+					<div class="wf-notice">
+						<em>HIGH SENSITIVITY scanning is enabled, it may produce false positives</em>
+					</div>
+					<?php endif ?>
 					<p>
 						The list below shows new problems or warnings that Wordfence found with your site.
 						If you have fixed all the issues below, you can <a href="#" onclick="WFAD.updateAllIssues('deleteNew'); return false;">click here to mark all new issues as fixed</a>.

@@ -2,8 +2,8 @@
 Contributors: mmaunder 
 Tags: wordpress, security, performance, speed, caching, cache, caching plugin, wordpress cache, wordpress caching, wordpress security, security plugin, secure, anti-virus, malware, firewall, antivirus, virus, google safe browsing, phishing, scrapers, hacking, wordfence, securty, secrity, secure, two factor, cellphone sign-in, cellphone signin, cellphone, twofactor, security, secure, htaccess, login, log, users, login alerts, lock, chmod, maintenance, plugin, private, privacy, protection, permissions, 503, base64, injection, code, encode, script, attack, hack, hackers, block, blocked, prevent, prevention, RFI, XSS, CRLF, CSRF, SQL Injection, vulnerability, website security, WordPress security, security log, logging, HTTP log, error log, login security, personal security, infrastructure security, firewall security, front-end security, web server security, proxy security, reverse proxy security, secure website, secure login, two factor security, maximum login security, heartbleed, heart bleed, heartbleed vulnerability, openssl vulnerability, nginx, litespeed, php5-fpm, woocommerce support, woocommerce caching, IPv6, IP version 6
 Requires at least: 3.9
-Tested up to: 4.3
-Stable tag: 6.0.17
+Tested up to: 4.3.1
+Stable tag: 6.0.20
 
 The Wordfence WordPress security plugin provides free enterprise-class WordPress security, protecting your website from hacks and malware.
 == Description ==
@@ -182,6 +182,26 @@ fully compatible with both IPv4 and IPv6 whether you run both or only one addres
 5. If you're technically minded, this is the under-the-hood view of Wordfence Security options where you can fine-tune your security settings.
 
 == Changelog ==
+
+= 6.0.20 =
+* Fix: Fixed bug with options that are enabled by default but disabled by the user are reset to defaults.
+
+= 6.0.19 =
+* Fix: Added check to verify pluggable.php is included before calling wp_hash.
+
+= 6.0.18 =
+* Fix: Resolved issue with some admin links not using the network admin URL.
+* Fix: Resolved issue with slashes not being stripped from Advanced Blocking usernames, reasons.
+* Enhancement: Added ability to Block any requests from IPs matching a PTR record.
+* Fix: Updated the GeoIP lib to use the wfUtils::inet_pton functions instead of the PHP default for installs that do not have IPv6 support.
+* Fix: Added help link for whitelisted 404's entry on options page.
+* Fix: Automatically exclude files that crash the scan.
+* Fix: Clear the wfHoover database table after scan is killed.
+* Enhancement: Added notice about false positives when running a scan with HIGH SENSITIVITY enabled.
+* Fix: Removed WordPress version from style and script loaders.  Hid the readme.html.
+* Fix: Alert email for "lost password" did not send when the user used their username.
+* Enhancement: Exclude zip files from scans by default, and add that as option under 'Scan image and binary files'.
+* Fix: Fixed edge case where .htaccess became garbled when using Falcon cache.
 
 = 6.0.17 =
 * Fix: Resolved issue where 301 redirects count as 404s with throttling applied.

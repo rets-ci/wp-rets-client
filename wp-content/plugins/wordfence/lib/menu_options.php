@@ -379,17 +379,17 @@ $w = new wfConfig();
 				<tr>
 					<th>List of comma separated usernames to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreUsers" id="liveTraf_ignoreUsers"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreUsers' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreUsers' ); ?>"/></td>
 				</tr>
 				<tr>
 					<th>List of comma separated IP addresses to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreIPs" id="liveTraf_ignoreIPs"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreIPs' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreIPs' ); ?>"/></td>
 				</tr>
 				<tr>
 					<th>Browser user-agent to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreUA" id="liveTraf_ignoreUA"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreUA' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreUA' ); ?>"/></td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -521,7 +521,7 @@ $w = new wfConfig();
 					           value="1" <?php $w->cb( 'other_scanOutside' ); ?> /></td>
 				</tr>
 				<tr>
-					<th>Scan image files as if they were executable<a
+					<th>Scan images and binary files as if they were executable<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Scan_image_files_as_if_they_were_executable"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="checkbox" id="scansEnabled_scanImages" class="wfConfigElem"
@@ -537,11 +537,12 @@ $w = new wfConfig();
 					</td>
 				</tr>
 				<tr>
-					<th>Exclude files from scan that match these wildcard patterns. Comma separated.<a
+					<th>Exclude files from scan that match these wildcard patterns. (One per line).<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Exclude_files_from_scan_that_match_these_wildcard_patterns."
 							target="_blank" class="wfhelp"></a></th>
-					<td><input type="text" id="scan_exclude" class="wfConfigElem" name="scan_exclude" size="20"
-					           value="<?php echo $w->getHTML( 'scan_exclude' ); ?>"/>e.g. *.sql,*.tar,backup*.zip
+					<td>
+						<textarea id="scan_exclude" class="wfConfigElem" cols="40" rows="4"
+							name="scan_exclude"><?php echo wfUtils::cleanupOneEntryPerLine($w->getHTML( 'scan_exclude' )); ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -794,7 +795,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Immediately_block_the_IP_of_users_who_try_to_sign_in_as_these_usernames"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="loginSec_userBlacklist" id="loginSec_userBlacklist"
-					           value="<?php echo $w->getHTML( 'loginSec_userBlacklist' ); ?>" size="40"/>&nbsp;(Comma
+					           value="<?php $w->f( 'loginSec_userBlacklist' ); ?>" size="40"/>&nbsp;(Comma
 						separated. Existing users won't be blocked.)
 					</td>
 				</tr>
@@ -812,7 +813,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Whitelisted_IP_addresses_that_bypass_all_rules"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="whitelisted" id="whitelisted"
-					           value="<?php echo $w->getHTML( 'whitelisted' ); ?>" size="40"/></td>
+					           value="<?php $w->f( 'whitelisted' ); ?>" size="40"/></td>
 				</tr>
 				<tr>
 					<th colspan="2" style="color: #999;">Whitelisted IP's must be separated by commas. You can specify
@@ -826,7 +827,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Immediately_block_IP.27s_that_access_these_URLs"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="bannedURLs" id="bannedURLs"
-					           value="<?php echo $w->getHTML( 'bannedURLs' ); ?>" size="40"/></td>
+					           value="<?php $w->f( 'bannedURLs' ); ?>" size="40"/></td>
 				</tr>
 				<tr>
 					<th colspan="2" style="color: #999;">Separate multiple URL's with commas. If you see an attacker
@@ -838,7 +839,7 @@ $w = new wfConfig();
 				</tr>
 
 				<tr>
-					<th style="vertical-align: top;">Whitelisted 404 URLs (one per line). </th>
+					<th style="vertical-align: top;">Whitelisted 404 URLs (one per line). <a href="http://docs.wordfence.com/en/Wordfence_options#Whitelisted_404_URLs" target="_blank" class="wfhelp"></a></th>
 					<td><textarea name="allowed404s" id="" cols="40" rows="4"><?php echo $w->getHTML( 'allowed404s' ); ?></textarea></td>
 				</tr>
 				<tr>

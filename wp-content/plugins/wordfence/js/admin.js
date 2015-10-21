@@ -1424,7 +1424,7 @@
 					jQuery('#wfrawhtml').html('<span style="color: #F00;">Sorry, but no data for that IP or domain was found.</span>');
 				}
 			},
-			blockIPUARange: function(ipRange, uaRange, referer, reason) {
+			blockIPUARange: function(ipRange, hostname, uaRange, referer, reason) {
 				if (!/\w+/.test(reason)) {
 					this.colorbox('300px', "Please specify a reason", "You forgot to include a reason you're blocking this IP range. We ask you to include this for your own record keeping.");
 					return;
@@ -1432,8 +1432,10 @@
 				ipRange = ipRange.replace(/ /g, '').toLowerCase();
 				if (ipRange) {
 					var range = ipRange.split('-'),
+						validRange;
+					if (range.length !== 2) {
 						validRange = false;
-					if (range[0].match(':')) {
+					} else if (range[0].match(':')) {
 						validRange = this.inet_pton(range[0]) !== false && this.inet_pton(range[1]) !== false;
 					} else if (range[0].match('.')) {
 						validRange = this.inet_aton(range[0]) !== false && this.inet_aton(range[1]) !== false;
@@ -1443,13 +1445,18 @@
 						return;
 					}
 				}
-				if (!(/\w+/.test(ipRange) || /\w+/.test(uaRange) || /\w+/.test(referer))) {
-					this.colorbox('300px', 'Specify an IP range or Browser pattern', "Please specify either an IP address range or a web browser pattern to match.");
+				if (hostname && !/^[a-z0-9\.\*\-]+$/i.test(hostname)) {
+					this.colorbox('300px', 'Specify a valid hostname', '<i>' + this.htmlEscape(hostname) + '</i> is not valid hostname');
+					return;
+				}
+				if (!(/\w+/.test(ipRange) || /\w+/.test(uaRange) || /\w+/.test(referer) || /\w+/.test(hostname))) {
+					this.colorbox('300px', 'Specify an IP range, Hostname or Browser pattern', "Please specify either an IP address range, Hostname or a web browser pattern to match.");
 					return;
 				}
 				var self = this;
 				this.ajax('wordfence_blockIPUARange', {
 					ipRange: ipRange,
+					hostname: hostname,
 					uaRange: uaRange,
 					referer: referer,
 					reason: reason

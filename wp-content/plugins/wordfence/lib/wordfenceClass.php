@@ -410,6 +410,10 @@ class wordfence {
 			}
 		}
 
+		if (wfConfig::get('other_hideWPVersion')) {
+			wfUtils::hideReadme();
+		}
+
 		//Must be the final line
 	}
 	private static function doEarlyAccessLogging(){
@@ -520,6 +524,12 @@ class wordfence {
 		add_filter('wp_redirect', 'wordfence::wpRedirectFilter', 99, 2);
 		add_filter('pre_comment_approved', 'wordfence::preCommentApprovedFilter', '99', 2);
 		//html|xhtml|atom|rss2|rdf|comment|export
+		if(wfConfig::get('other_hideWPVersion')){
+			add_filter('style_loader_src', 'wordfence::replaceVersion');
+			add_filter('script_loader_src', 'wordfence::replaceVersion');
+
+			add_action('upgrader_process_complete', 'wordfence::hideReadme');
+		}
 		add_filter('get_the_generator_html', 'wordfence::genFilter', 99, 2);
 		add_filter('get_the_generator_xhtml', 'wordfence::genFilter', 99, 2);
 		add_filter('get_the_generator_atom', 'wordfence::genFilter', 99, 2);
@@ -727,12 +737,16 @@ class wordfence {
 		if(self::isLockedOut($IP)){
 			require('wfLockedOut.php');
 		}
-		$email = $_POST['user_login'];
-		if(empty($email)){ return; }
-		$user = get_user_by('email', $_POST['user_login']);
+		if(empty($_POST['user_login'])){ return; }
+		$value = trim($_POST['user_login']);
+		$user  = get_user_by('login', $value);
+		if (!$user) {
+			$user = get_user_by('email', $value);
+		}
+
 		if($user){
 			if(wfConfig::get('alertOn_lostPasswdForm')){
-				wordfence::alert("Password recovery attempted", "Someone tried to recover the password for user with email address: " . wp_kses($email, array()), $IP);
+				wordfence::alert("Password recovery attempted", "Someone tried to recover the password for user with email address: " . wp_kses($user->user_email, array()), $IP);
 			}
 		}
 		if(wfConfig::get('loginSecurityEnabled')){
@@ -1791,7 +1805,7 @@ class wordfence {
 		} else {
 			$opts['alertEmails'] = '';
 		}
-		$opts['scan_exclude'] = preg_replace('/[\r\n\s\t]+/', '', $opts['scan_exclude']);
+		$opts['scan_exclude'] = wfUtils::cleanupOneEntryPerLine($opts['scan_exclude']);
 		$whiteIPs = array();
 		foreach(explode(',', preg_replace('/[\r\n\s\t]+/', '', $opts['whitelisted'])) as $whiteIP){
 			if(strlen($whiteIP) > 0){
@@ -1924,8 +1938,13 @@ class wordfence {
 			wfConfig::set('email_summary_enabled', 0);
 			wfActivityReport::disableCronJob();
 		}
-		
-		
+
+		if (wfConfig::get('other_hideWPVersion')) {
+			wfUtils::hideReadme();
+		} else {
+			wfUtils::showReadme();
+		}
+
 		$paidKeyMsg = false;
 
 
@@ -2021,10 +2040,11 @@ class wordfence {
 	 */
 	public static function ajax_blockIPUARange_callback(){
 		$ipRange = trim($_POST['ipRange']);
+		$hostname = trim($_POST['hostname']);
 		$uaRange = trim($_POST['uaRange']);
 		$referer = trim($_POST['referer']);
 		$reason = trim($_POST['reason']);
-		if (preg_match('/\|+/', $ipRange . $uaRange . $referer)) {
+		if (preg_match('/\|+/', $ipRange . $uaRange . $referer . $hostname)) {
 			return array('err' => 1, 'errorMsg' => "You are not allowed to include a pipe character \"|\" in your IP range, browser pattern or referer");
 		}
 		if ((!$ipRange) && wfUtils::isUABlocked($uaRange)) {
@@ -2050,7 +2070,10 @@ class wordfence {
 			}
 			$ipRange = wfUtils::inet_ntop($ip1) . '-' . wfUtils::inet_ntop($ip2);
 		}
-		$range = $ipRange . '|' . $uaRange . '|' . $referer;
+		if ($hostname && !preg_match('/^[a-z0-9\.\*\-]+$/i', $hostname)) {
+			return array('err' => 1, 'errorMsg' => 'The Hostname you specified is not valid');
+		}
+		$range = $ipRange . '|' . $uaRange . '|' . $referer . '|' . $hostname;
 		self::getLog()->blockRange('IU', $range, $reason);
 		return array('ok' => 1);
 	}
@@ -3217,6 +3240,15 @@ HTML;
 			}
 		}
 	}
+	public static function replaceVersion($url)
+	{
+		global $wp_version;
+		static $version = null;
+		if ($version === null) {
+			$version = wp_hash($wp_version . WORDFENCE_VERSION);
+		}
+		return preg_replace("/([&;\?]ver)=[0-9\.]+/", "$1={$version}", $url);
+	}
 	public static function genFilter($gen, $type){
 		if(wfConfig::get('other_hideWPVersion')){
 			return '';
@@ -3283,10 +3315,10 @@ HTML;
 		return $approved;
 	}
 	public static function getMyHomeURL(){
-		return admin_url('admin.php?page=Wordfence', 'http');
+		return network_admin_url('admin.php?page=Wordfence', 'http');
 	}
 	public static function getMyOptionsURL(){
-		return admin_url('admin.php?page=WordfenceSecOpt', 'http');
+		return network_admin_url('admin.php?page=WordfenceSecOpt', 'http');
 	}
 
 	public static function alert($subject, $alertMsg, $IP){
@@ -3559,6 +3591,17 @@ HTML;
 			$query_vars['author'] = -1;
 		}
 		return $query_vars;
+	}
+
+
+	/**
+	 * @param WP_Upgrader $updater
+	 * @param array $hook_extra
+	 */
+	public static function hideReadme($updater, $hook_extra = null) {
+		if (wfConfig::get('other_hideWPVersion')) {
+			wfUtils::hideReadme();
+		}
 	}
 }
 ?>

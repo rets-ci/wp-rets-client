@@ -259,6 +259,7 @@ class wfLog {
 	 * @return bool
 	 */
 	public function blockRange($blockType, $range, $reason){
+		$reason = stripslashes($reason);
 		$this->getDB()->queryWrite("insert IGNORE into " . $this->ipRangesTable . " (blockType, blockString, ctime, reason, totalBlocked, lastBlocked) values ('%s', '%s', unix_timestamp(), '%s', 0, 0)", $blockType, $range, $reason);
 		wfCache::updateBlockedIPs('add');
 		return true;
@@ -311,6 +312,9 @@ class wfLog {
 			} else {
 				$elem['refererPattern'] = "Allow visitors arriving from all websites";
 			}
+			if (! empty($blockDat[3])) {
+				$elem['hostnamePattern'] = $blockDat[3];
+			}
 			$elem['patternDisabled'] = (wfConfig::get('cacheType') == 'falcon' && $numBlockElements > 1) ? true : false;
 		}
 		return $results;
@@ -358,6 +362,7 @@ class wfLog {
 	}
 	public function lockOutIP($IP, $reason){
 		if($this->isWhitelisted($IP)){ return false; }
+		$reason = stripslashes($reason);
 		$this->getDB()->queryWrite("insert into " . $this->lockOutTable . " (IP, blockedTime, reason) values (%s, unix_timestamp(), '%s') ON DUPLICATE KEY update blockedTime=unix_timestamp(), reason='%s'",
 			wfUtils::inet_pton($IP),
 			$reason,
@@ -736,6 +741,7 @@ class wfLog {
 			return;
 		}
 		$IPnum = wfUtils::inet_pton($IP);
+		$hostname = null;
 
 		//New range and UA pattern blocking:
 		$r1 = $this->getDB()->querySelect("select id, blockType, blockString from " . $this->ipRangesTable);
@@ -760,6 +766,15 @@ class wfLog {
 					}
 
 					if (strcmp($IPnum, $start_range) >= 0 && strcmp($IPnum, $end_range) <= 0) {
+						$ipRangeBlocked = true;
+					}
+				}
+				if (! empty($bDat[3])) {
+					$ipRange = true; /* We reuse the ipRangeBlocked variable */
+					if ($hostname === null) {
+						$hostname = wfUtils::reverseLookup($IP);
+					}
+					if (preg_match(wfUtils::patternToRegex($bDat[3]), $hostname)) {
 						$ipRangeBlocked = true;
 					}
 				}

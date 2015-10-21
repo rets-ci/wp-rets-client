@@ -3,6 +3,13 @@
 <p>Wordfence found the following new issues on "<?php echo get_bloginfo('name', 'raw'); ?>".</p>
 
 <p>Alert generated at <?php echo wfUtils::localHumanDate(); ?></p>
+	
+
+<?php if (wfConfig::get('scansEnabled_highSense')): ?>
+	<div style="margin: 12px 0;padding: 8px; background-color: #ffffe0; border: 1px solid #ffd975; border-width: 1px 1px 1px 10px;">
+		<em>HIGH SENSITIVITY scanning is enabled, it may produce false positives</em>
+	</div>
+<?php endif ?>
 
 <?php if($totalCriticalIssues > 0){ ?>
 <p>Critical Problems:</p>

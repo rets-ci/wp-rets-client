@@ -972,6 +972,7 @@ class wfScanEngine {
 			wfConfig::set('wfKillRequested', 0);
 			wordfence::status(4, 'info', "Entering start scan routine");
 			if(wfUtils::isScanRunning()){
+				wfUtils::getScanFileError();
 				return "A scan is already running. Use the kill link if you would like to terminate the current scan.";
 			}
 		}

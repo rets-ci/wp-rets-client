@@ -10,6 +10,14 @@
 					if( isset( $_GET['wfBlockRange'] ) && preg_match('/^[\da-f\.\s\t\-:]+$/i', $_GET['wfBlockRange']) ){ echo wp_kses($_GET['wfBlockRange'], array()); }
 					?>" onkeyup="WFAD.calcRangeTotal();">&nbsp;<span id="wfShowRangeTotal"></span></td></tr>
 				<tr><td></td><td style="padding-bottom: 15px;"><strong>Examples:</strong> 192.168.200.200 - 192.168.200.220</td></tr>
+				<tr><th>Hostname:</th><td><input id="hostname" type="text" size="30" maxlength="255" value="<?php
+					if( isset( $_GET['wfBlockHostname'] ) ){ echo esc_attr($_GET['wfBlockHostname']); }
+					?>" onkeyup="WFAD.calcRangeTotal();">&nbsp;<span id="wfShowRangeTotal"></span></td></tr>
+				<tr><td><em class="small">
+							Using this setting will make a DNS query<br>
+							per unique IP address (per visitor),<br>
+							and can add additional load. High traffic<br> sites may not want to use this feature.</em>
+					</td><td style="padding-bottom: 15px;vertical-align: top;"><strong>Examples:</strong> *.amazonaws.com, *.linode.com</td></tr>
 				<tr><th>User-Agent (browser) that matches:</th><td><input id="uaRange" type="text" size="30" maxlength="255" >&nbsp;(Case insensitive)</td></tr>
 				<tr><td></td><td style="padding-bottom: 15px;"><strong>Examples:</strong> *badRobot*, AnotherBadRobot*, *someBrowserSuffix</td></tr>
 				<tr><th>Referer (website visitor arrived from) that matches:</th><td><input id="wfreferer" type="text" size="30" maxlength="255" >&nbsp;(Case insensitive)</td></tr>
@@ -17,7 +25,7 @@
 				<tr><th>Enter a reason you're blocking this visitor pattern:</th><td><input id="wfReason" type="text" size="30" maxlength="255"></td></tr>
 				<tr><td></td><td style="padding-bottom: 15px;"><strong>Why a reason:</strong> The reason you specify above is for your own record keeping.</td></tr>
 				<tr><td colspan="2" style="padding-top: 15px;">
-					<input type="button" name="but3" class="button-primary" value="Block Visitors Matching this Pattern" onclick="WFAD.blockIPUARange(jQuery('#ipRange').val(), jQuery('#uaRange').val(), jQuery('#wfreferer').val(), jQuery('#wfReason').val()); return false;" />
+					<input type="button" name="but3" class="button-primary" value="Block Visitors Matching this Pattern" onclick="WFAD.blockIPUARange(jQuery('#ipRange').val(), jQuery('#hostname').val(), jQuery('#uaRange').val(), jQuery('#wfreferer').val(), jQuery('#wfReason').val()); return false;" />
 				</td></tr>
 			</table>
 		</p>
@@ -41,6 +49,9 @@
 	{{/if}}
 	<div>
 		<strong>IP Range:</strong>&nbsp;${ipPattern}
+	</div>
+	<div>
+		<strong>Hostname:</strong>&nbsp;${hostnamePattern}
 	</div>
 	<div>
 		<strong>Browser Pattern:</strong>&nbsp;${browserPattern}
