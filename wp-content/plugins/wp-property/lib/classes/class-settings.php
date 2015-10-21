@@ -89,9 +89,9 @@ namespace UsabilityDynamics\WPP {
         //** Default attribute label descriptions for the back-end */
         $data[ 'descriptions' ] = array(
           'descriptions' => array(
-            'property_type' => __('The property type will determine the layout.','wpp'),
-            'custom_attribute_overview' => __('Customize what appears in search results in the attribute section.  For example: 1bed, 2baths, area varies slightly.','wpp'),
-            'tagline' => __('Will appear on overview pages and on top of every listing page.','wpp')
+            'property_type' => sprintf( __('The %s type will determine the layout.',ud_get_wp_property()->domain), \WPP_F::property_label() ),
+            'custom_attribute_overview' => __('Customize what appears in search results in the attribute section.  For example: 1bed, 2baths, area varies slightly.',ud_get_wp_property()->domain),
+            'tagline' => __('Will appear on overview pages and on top of every listing page.',ud_get_wp_property()->domain)
           )
         );
 
@@ -117,9 +117,9 @@ namespace UsabilityDynamics\WPP {
         // It is adding these defaults only if types are empty (install) - korotkov@UD
         if( empty( $d ) || !is_array( $d ) ) {
           $this->set( 'property_types', array(
-            'building' => __( 'Building', 'wpp' ),
-            'floorplan' => __( 'Floorplan', 'wpp' ),
-            'single_family_home' => __( 'Single Family Home', 'wpp' )
+            'building' => __( 'Building', ud_get_wp_property()->domain ),
+            'floorplan' => __( 'Floorplan', ud_get_wp_property()->domain ),
+            'single_family_home' => __( 'Single Family Home', ud_get_wp_property()->domain )
           ) );
         }
 
@@ -135,11 +135,11 @@ namespace UsabilityDynamics\WPP {
         $d = $this->get( 'property_stats', false );
         if( !$d || !is_array( $d ) ) {
           $this->set( 'property_stats', array(
-            'location' => __('Address','wpp'),
-            'price' => __('Price','wpp'),
-            'deposit' => __('Deposit','wpp'),
-            'area' => __('Area','wpp'),
-            'phone_number' => __('Phone Number','wpp'),
+            'location' => __('Address',ud_get_wp_property()->domain),
+            'price' => __('Price',ud_get_wp_property()->domain),
+            'deposit' => __('Deposit',ud_get_wp_property()->domain),
+            'area' => __('Area',ud_get_wp_property()->domain),
+            'phone_number' => __('Phone Number',ud_get_wp_property()->domain),
           ) );
         }
 
@@ -147,16 +147,17 @@ namespace UsabilityDynamics\WPP {
         $d = $this->get( 'property_meta', false );
         if( !$d || !is_array( $d ) ) {
           $this->set( 'property_meta', array(
-            'lease_terms' => __('Lease Terms','wpp'),
-            'pet_policy' => __('Pet Policy','wpp'),
-            'school' => __('School','wpp'),
-            'tagline' => __('Tagline','wpp')
+            'lease_terms' => __('Lease Terms',ud_get_wp_property()->domain),
+            'pet_policy' => __('Pet Policy',ud_get_wp_property()->domain),
+            'school' => __('School',ud_get_wp_property()->domain),
+            'tagline' => __('Tagline',ud_get_wp_property()->domain)
           ) );
         }
 
         //** On property editing page - determines which fields to hide for a particular property type */
         $d = $this->get( 'hidden_attributes', false );
-        if( !$d || !is_array( $d ) ) {
+
+        if( !is_array( $d ) ) {
           $this->set( 'hidden_attributes', array(
             'floorplan' => array('location', 'parking', 'school'), /*  Floorplans inherit location. Parking and school are generally same for all floorplans in a building */
             'building' => array('price', 'bedrooms', 'bathrooms', 'area', 'deposit'),
@@ -166,7 +167,7 @@ namespace UsabilityDynamics\WPP {
 
         //** Determines property types that have addresses. */
         $d = $this->get( 'location_matters', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'location_matters', array(
             'building',
             'single_family_home' 
@@ -175,7 +176,7 @@ namespace UsabilityDynamics\WPP {
 
         //** Determine which property types should actually be searchable. */
         $d = $this->get( 'searchable_property_types', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'searchable_property_types', array(
             'floorplan',
             'single_family_home'
@@ -184,7 +185,7 @@ namespace UsabilityDynamics\WPP {
         
         //** Attributes to use in searching. */
         $d = $this->get( 'searchable_attributes', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'searchable_attributes', array(
             'area',
             'deposit',
@@ -197,15 +198,15 @@ namespace UsabilityDynamics\WPP {
 
         //** Convert phrases to searchable values.  Converts string stats into numeric values for searching and filtering. */
         $d = $this->get( 'search_conversions', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'search_conversions', array(
-            'bedrooms' => array( __( 'Studio', 'wpp' ) => '0.5' )
+            'bedrooms' => array( __( 'Studio', ud_get_wp_property()->domain ) => '0.5' )
           ) );
         }
 
         //** Don't load defaults if settings exist in db */
         $d = $this->get( 'image_sizes', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'image_sizes', array(
             'map_thumb' => array('width'=> '75', 'height' => '75'),
             'tiny_thumb' => array('width'=> '100', 'height' => '100'),
@@ -215,7 +216,7 @@ namespace UsabilityDynamics\WPP {
         }
 
         $d = $this->get( 'configuration.google_maps.infobox_attributes', false );
-        if( !$d || !is_array( $d ) ) {
+        if( !is_array( $d ) ) {
           $this->set( 'configuration.google_maps.infobox_attributes', array(
             'bedrooms',
             'bathrooms',
@@ -226,6 +227,7 @@ namespace UsabilityDynamics\WPP {
         //** STEP 4. */
 
         $wp_properties = $this->get();
+
         
       }
 

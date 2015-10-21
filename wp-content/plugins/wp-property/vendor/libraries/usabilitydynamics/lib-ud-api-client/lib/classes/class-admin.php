@@ -605,7 +605,7 @@ namespace UsabilityDynamics\UD_API {
         //** If we do not have cache ( transient ), do request to get the list of all available products */
         if( !$trnst || !is_array( $trnst ) ) {
           $target_url = $this->api_url . 'products.json';
-          $request = wp_remote_get( $target_url );
+          $request = wp_remote_get( $target_url, array( 'sslverify' => false ) );
           if( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
             return $more_products;
           } else {
@@ -994,6 +994,14 @@ namespace UsabilityDynamics\UD_API {
             }
 
             $notice = $this->ping_response[ 'message' ];
+
+            /** Determine if user has permissions to see plugin notices */
+            if ( ! function_exists( 'wp_get_current_user' ) ) {
+              require_once( ABSPATH . 'wp-includes/pluggable.php' );
+            }
+            if( !current_user_can( 'activate_plugins' ) ) {
+              return;
+            }
 
             /** Determine if notice dismissed */
             $dismissed = get_option( 'dismissed_ud_notices' );

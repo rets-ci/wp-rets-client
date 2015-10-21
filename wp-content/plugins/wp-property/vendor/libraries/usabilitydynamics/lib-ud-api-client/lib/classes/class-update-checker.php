@@ -230,6 +230,9 @@ namespace UsabilityDynamics\UD_API {
         if ( isset( $new_ver ) && isset( $curr_ver ) ) {
           if ( $response !== false && version_compare( $new_ver, $curr_ver, '>' ) ) {
             if( $this->type == 'plugin' ) {
+              if( isset( $response->slug ) ) {
+                $response->slug = sanitize_title( $response->slug );  
+              }
               $transient->response[$this->file] = $response;
             } else {
               $theme = basename( dirname( $this->file ) );
@@ -264,7 +267,7 @@ namespace UsabilityDynamics\UD_API {
         if ( false === $response || empty( $response ) ) {
           //** Add nocache hack. We must be sure we do not get CACHE result. peshkov@UD */
           $_target_url = $target_url . '&' . http_build_query( array( 'nocache' => rand( 10000, 99999 ) ) );
-          $request = wp_remote_get( $_target_url, array( 'decompress' => false ) );
+          $request = wp_remote_get( $_target_url, array( 'decompress' => false, 'sslverify' => false ) );
           if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
             return false;
           }
