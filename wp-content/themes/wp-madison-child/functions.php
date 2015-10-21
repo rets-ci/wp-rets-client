@@ -218,3 +218,12 @@ add_action( 'template_redirect', function() {
   }
 
 } );
+
+/**
+ * Convert date format
+ */
+add_filter( 'wpp::attribute::display', function( $attribute_value, $meta_key ) {
+  global $wp_properties;
+  if ( empty( $wp_properties['admin_attr_fields'][$meta_key] ) || $wp_properties['admin_attr_fields'][$meta_key] != 'date' ) return $attribute_value;
+  return date(get_option('date_format'), strtotime( $attribute_value ));
+}, 10, 2);
