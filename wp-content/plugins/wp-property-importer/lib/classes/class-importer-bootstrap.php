@@ -38,8 +38,8 @@ namespace UsabilityDynamics\WPP {
         require_once( dirname( __DIR__ ) . '/class-wpp-cli-xmli.php' );
         require_once( dirname( __DIR__ ) . '/class-wpp-property-import.php' );
 
+        add_action( 'wpp_init', array( 'class_wpp_property_import', 'pre_init' ) );
         add_action( 'wpp_post_init', array( 'class_wpp_property_import', 'init' ) );
-        add_action( 'wpp_pre_init', array( 'class_wpp_property_import', 'pre_init' ) );
 
         //** @todo: What a hell is it? peshkov@UD */
         if( !is_admin() ) {

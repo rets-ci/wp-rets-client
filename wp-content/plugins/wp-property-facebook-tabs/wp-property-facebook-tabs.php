@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-facebook-tabs
  * Description: The Add-on allows you to add a tab with property listings or any other content from your website, on a Facebook Page.
  * Author: Usability Dynamics, Inc.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Requires at least: 4.0
- * Tested up to: 4.2.3
+ * Tested up to: 4.3.1
  * Text Domain: wpp_fbtabs
  * Author URI: http://www.usabilitydynamics.com
  * GitHub Plugin URI: wp-property/wp-property-facebook-tabs

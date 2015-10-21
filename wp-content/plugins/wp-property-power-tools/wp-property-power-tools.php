@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-power-tools
  * Description: The WP-Property Power Tools with Capability Management Add-on is the extra functionality which includes capability management, white labeling the control panel, and changes menu titles.
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 4.0
- * Tested up to: 4.2.3
+ * Tested up to: 4.3.1
  * Text Domain: wpp_pt
  * Author URI: http://www.usabilitydynamics.com
  * Domain Path: /static/languages/

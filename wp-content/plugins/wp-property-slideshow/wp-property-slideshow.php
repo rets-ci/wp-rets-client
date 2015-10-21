@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-slideshow
  * Description: The slideshow Add-on allows you to insert a slideshow into any property page, home page, or virtually anywhere in your blog.
  * Author: Usability Dynamics, Inc.
- * Version: 4.0.0
+ * Version: 4.0.1
  * Requires at least: 4.0
- * Tested up to: 4.2.3
+ * Tested up to: 4.3.1
  * Text Domain: wpp_slideshow
  * Author URI: http://www.usabilitydynamics.com
  * Domain Path: /static/languages/

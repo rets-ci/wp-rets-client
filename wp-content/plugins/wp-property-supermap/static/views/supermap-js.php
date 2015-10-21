@@ -75,14 +75,14 @@ ob_start();
 
     /* START Markers functionality */
     <?php foreach ((array) $properties as $id => $value) : ?>
-    <?php if ($value['latitude'] && $value['longitude']) : ?>
+    <?php if ( !empty( $value['latitude'] ) && !empty( $value['longitude'] ) ) : ?>
     window.myLatlng_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
     window.content_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = '<?php echo WPP_F::google_maps_infobox($value); ?>';
 
     window.marker_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
       position: myLatlng_<?php echo $rand; ?>_<?php echo $value['ID']; ?>,
       map: map_<?php echo $rand; ?>,
-      title: '<?php echo str_replace("'","\'", !empty($value[$wp_properties['configuration']['address_attribute']]) ? $value[$wp_properties['configuration']['address_attribute']] : '' ); ?>',
+      title: '<?php echo str_replace( array( "'", "\r", "\n" ), "", !empty($value[$wp_properties['configuration']['address_attribute']]) ? $value[$wp_properties['configuration']['address_attribute']] : '' ); ?>',
       icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
     });
 

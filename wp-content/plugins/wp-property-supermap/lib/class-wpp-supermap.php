@@ -1062,7 +1062,7 @@ class class_wpp_supermap {
         foreach($area['paths'] as $coords) {
           if(empty($coords))
             continue;
-          $this_area_coords[] = "new google.maps.LatLng{$coords}";
+          $this_area_coords[] = "new google.maps.LatLng({$coords})";
         }
 
         if(empty($this_area_coords)) {

@@ -16,7 +16,7 @@ namespace UsabilityDynamics\WPP {
        * @protected
        * @static
        * @property $instance
-       * @type UsabilityDynamics\WPP\Agents_Bootstrap object
+       * @type \UsabilityDynamics\WPP\Agents_Bootstrap object
        */
       protected static $instance = null;
       
@@ -26,7 +26,6 @@ namespace UsabilityDynamics\WPP {
       public function init() {
         require_once( dirname( __DIR__ ) . '/class-agents.php' );
         add_action('wpp_init', array('class_agents', 'init'));
-        add_action('wpp_pre_init', array('class_agents', 'pre_init'));
 
         /**
          * May be load Widgets

@@ -25,8 +25,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function init() {
         require_once( dirname( __DIR__ ) . '/class-wpp-pdf-flyer.php' );
-        add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'init' ) );
-        add_action( 'wpp_pre_init', array( 'class_wpp_pdf_flyer', 'pre_init' ) );
+        add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'pre_init' ), 0 );
+        add_action( 'wpp_init', array( 'class_wpp_pdf_flyer', 'init' ), 10 );
         /* Any front-end Functions */
         add_action( 'template_redirect', array( 'class_wpp_pdf_flyer', 'template_redirect' ) );
       }

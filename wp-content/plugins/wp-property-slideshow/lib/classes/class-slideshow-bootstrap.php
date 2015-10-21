@@ -16,7 +16,7 @@ namespace UsabilityDynamics\WPP {
        * @protected
        * @static
        * @property $instance
-       * @type UsabilityDynamics\WPP\Slideshow_Bootstrap object
+       * @type \UsabilityDynamics\WPP\Slideshow_Bootstrap object
        */
       protected static $instance = null;
       
@@ -25,8 +25,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function init() {
         require_once( dirname( __DIR__ ) . '/class-wpp-slideshow.php' );
-        add_action( 'wpp_init', array( 'class_wpp_slideshow', 'init' ) );
-        add_action( 'wpp_pre_init', array( 'class_wpp_slideshow', 'pre_init' ) );
+        add_action( 'wpp_init', array( 'class_wpp_slideshow', 'pre_init' ), 0 );
+        add_action( 'wpp_init', array( 'class_wpp_slideshow', 'init' ), 10 );
       }
       
       /**

@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    function wpp_feps_spc_event(event, result, target, gateway) {
+    function wpp_feps_spc_event(event, result, target) {
         jQuery(".wpi_checkout_payment_response", target).remove();
         var scp_wrapper = jQuery(target).parents(".wpi_checkout");
         jQuery(".wpp_feps_message").length || scp_wrapper.before('<div class="wpp_feps_message"></div>'), 

@@ -1,3 +1,6 @@
+#### 5.1.1 ( October 7, 2015 )
+* Fixed initialisation logic of plugin.
+
 #### 5.1.0 ( September 22, 2015 )
 * Added ability to replace values on import with custom values using matches map.
 

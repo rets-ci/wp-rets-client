@@ -1724,9 +1724,7 @@ class class_wpp_property_import {
           class_wpp_property_import::delete_orphan_directories();
           $result[ 'success' ] = true;
           $result[ 'ui' ] = sprintf( __( 'Deleted %1s unattached property files that were created from an XML import.', ud_get_wpp_importer()->domain ), count( $deleted_orphan_image_count ) );
-          if( class_exists( 'WPP_UD_F' ) ) {
-            WPP_UD_F::log( $result[ 'ui' ] );
-          }
+          WPP_F::log( $result[ 'ui' ] );
         } else {
           $result[ 'success' ] = false;
           $result[ 'ui' ] = __( 'Something went wrong, did not delete any unattached images.', ud_get_wpp_importer()->domain );

@@ -25,8 +25,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function init() {
         require_once( dirname( __DIR__ ) . '/class-wpp-power-tools.php' );
-        add_action( 'wpp_init', array( 'class_wpp_power_tools', 'init' ) );
-        add_action( 'wpp_pre_init', array( 'class_wpp_power_tools', 'pre_init' ) );
+        add_action( 'wpp_init', array( 'class_wpp_power_tools', 'pre_init' ), 0 );
+        add_action( 'wpp_init', array( 'class_wpp_power_tools', 'init' ), 10 );
         add_action( 'admin_menu', array( 'class_wpp_power_tools', 'admin_menu' ) );
         add_filter( 'wpp_taxonomies', array( 'class_wpp_power_tools', 'wpp_taxonomies' ) );
       }

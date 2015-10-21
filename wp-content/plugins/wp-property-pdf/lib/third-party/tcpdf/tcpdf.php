@@ -1909,6 +1909,7 @@ class TCPDF {
 		}
 		$this->default_form_prop = array('lineWidth'=>1, 'borderStyle'=>'solid', 'fillColor'=>array(255, 255, 255), 'strokeColor'=>array(128, 128, 128));
 		// set file ID for trailer
+		if(is_array($format)) $format = implode('_', $format);
 		$this->file_id = md5($this->getRandomSeed('TCPDF'.$orientation.$unit.$format.$encoding));
 		// get default graphic vars
 		$this->default_graphic_vars = $this->getGraphicVars();
