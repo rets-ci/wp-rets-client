@@ -4,4 +4,4 @@
  *
  * @author potanin@UD
  */
-die('{"ok":true,"message":"Service up."}');
+die('{"ok":true,"message":"Service online."}');
