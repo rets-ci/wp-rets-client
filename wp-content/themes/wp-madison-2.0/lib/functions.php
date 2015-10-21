@@ -182,7 +182,7 @@ function madison_scripts() {
 		wp_register_script( 'spin', get_template_directory_uri() . '/js/spin.min.js', array(), '1.3.3', true );
 	}
 
-	wp_register_script( 'modernizr', 'http://modernizr.com/downloads/modernizr-latest.js', array(), '2.7.1', false );
+	wp_register_script( 'modernizr', 'https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js', array(), '2.8.3', false );
 
 	// Enqueue the global script.
 	wp_enqueue_script( 'madison-global', get_template_directory_uri() . '/js/global.js', array( 'fitvids', 'modernizr' ), $GLOBALS['koop_theme_data']['version'], true );
