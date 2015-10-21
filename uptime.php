@@ -4,4 +4,4 @@
  *
  * @author potanin@UD
  */
-die('ok');
+die('{"ok":true}');
