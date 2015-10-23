@@ -88,6 +88,8 @@ function siteorigin_panels_ajax_prebuilt_layouts(){
 		$post_type = str_replace('clone_', '', $_REQUEST['type'] );
 		global $wpdb;
 
+		$user_can_read_private = ( $post_type == 'post' && current_user_can( 'read_private_posts' ) || ( $post_type == 'page' && current_user_can( 'read_private_pages' ) ));
+		$include_private = $user_can_read_private ? "OR posts.post_status = 'private' " : "";
 		// Select only the posts with the given post type that also have panels_data
 		$results = $wpdb->get_results( $wpdb->prepare("
 			SELECT ID, post_title, meta.meta_value
@@ -96,10 +98,10 @@ function siteorigin_panels_ajax_prebuilt_layouts(){
 			WHERE
 				posts.post_type = %s
 				AND meta.meta_key = 'panels_data'
-				AND ( posts.post_status = 'publish' OR posts.post_status = 'draft' )
+				AND ( posts.post_status = 'publish' OR posts.post_status = 'draft' " . $include_private . ")
 			ORDER BY post_title
 			LIMIT 200
-		", $post_type) );
+		", $post_type ) );
 
 		foreach( $results as $result ) {
 			$meta_value = unserialize( $result->meta_value );
@@ -261,8 +263,6 @@ add_action('wp_ajax_so_panels_directory_query', 'siteorigin_panels_ajax_director
 function siteorigin_panels_ajax_directory_item_json(){
 	if( empty( $_REQUEST['_panelsnonce'] ) || !wp_verify_nonce($_REQUEST['_panelsnonce'], 'panels_action') ) wp_die();
 	if( empty( $_REQUEST['layout_slug'] ) ) wp_die();
-
-	die(SITEORIGIN_PANELS_LAYOUT_URL . '/layout/' . urlencode($_REQUEST['layout_slug']) . '/?action=download');
 
 	$response = wp_remote_get(
 		SITEORIGIN_PANELS_LAYOUT_URL . '/layout/' . urlencode($_REQUEST['layout_slug']) . '/?action=download'
