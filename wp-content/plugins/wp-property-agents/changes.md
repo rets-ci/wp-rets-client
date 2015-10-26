@@ -1,3 +1,6 @@
+#### 2.0.2 ( October 7, 2015 )
+* Fixed initialisation logic of plugin.
+
 #### 2.0.1 ( September 7, 2015 )
 * Added White Label for Agents role.
 * Added compatibility with WordPress 4.3

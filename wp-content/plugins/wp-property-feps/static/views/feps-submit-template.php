@@ -84,7 +84,7 @@
         </div>
         <div class="<?php wpp_css("feps-default-template::input-wrapper","wpp_feps_input_wrapper"); ?>">
           <div class="<?php wpp_css("feps-default-template::input-content","wpp_feps_input_content"); ?>">
-            <input tabindex="<?php echo $tabindex; ?>" type="password" id="<?php echo $form_id; ?>_user_password" name="wpp_feps_data[user_password]"  class="<?php wpp_css("feps-default-template::input-class","wpp_feps_user_password"); ?>" />
+            <input tabindex="<?php echo $tabindex; ?>" type="password" id="<?php echo $form_id; ?>_user_password" name="wpp_feps_data[user_password]" class="<?php wpp_css("feps-default-template::input-class","wpp_feps_user_password"); ?>" value="" />
           </div>
         </div>
         <div class="<?php wpp_css("feps-default-template::clear","clear"); ?>"></div>

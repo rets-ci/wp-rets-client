@@ -30,18 +30,40 @@ namespace UsabilityDynamics\WPP {
         add_action( 'widgets_init', create_function( '', 'return register_widget("MyFepsWidget");' ) );
         add_action( 'widgets_init', create_function( '', 'return register_widget("MyFepsInfoWidget");' ) );
       }
-      
+
       /**
        * Plugin Activation
        *
        */
-      public function activate() {}
-      
+      public function activate() {
+        //** flush Object Cache */
+        wp_cache_flush();
+        //** set transient to flush WP-Property cache */
+        set_transient( 'wpp_cache_flush', time() );
+      }
+
       /**
        * Plugin Deactivation
        *
        */
-      public function deactivate() {}
+      public function deactivate() {
+        //** flush Object Cache */
+        wp_cache_flush();
+      }
+
+      /**
+       * Determine if Utility class contains missed method
+       * in other case, just return NULL to prevent ERRORS
+       *
+       * @author peshkov@UD
+       */
+      public function __call( $name, $arguments ) {
+        if ( method_exists( '\UsabilityDynamics\WPP\FEPS_Utility', $name )) {
+          return call_user_func_array(array('\UsabilityDynamics\WPP\FEPS_Utility', $name), $arguments);
+        } else {
+          return NULL;
+        }
+      }
 
     }
 

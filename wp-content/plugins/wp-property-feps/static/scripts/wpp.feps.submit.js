@@ -39,6 +39,8 @@
     }
     if ("object" != typeof this_form && (this_form = jQuery(this_form)), !this_form.length) return !1;
     var submit_button = jQuery('input[type="submit"]', this_form);
+    jQuery("input.wpp_feps_user_email", this_form).length > 0 && jQuery("input.wpp_feps_user_email", this_form).val(""), 
+    jQuery("input.wpp_feps_user_password", this_form).length > 0 && jQuery("input.wpp_feps_user_password", this_form).val(""), 
     this_form.validate({
         submitHandler: function(form) {
             submit_button.attr("disabled", "disabled"), wpp_feps_lookup_email(form);

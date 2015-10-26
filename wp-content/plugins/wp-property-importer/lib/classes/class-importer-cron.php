@@ -19,7 +19,7 @@ namespace UsabilityDynamics\WPP {
       public function __construct()
       {
         if (!defined('WPP_XMLI_CRON_RUNNING')) {
-          add_action('wpp_pre_init', array($this, 'maybe_run_cron'));
+          add_action('wpp_init', array($this, 'maybe_run_cron'));
         }
       }
 

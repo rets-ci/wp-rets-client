@@ -6,7 +6,7 @@ jQuery.extend(!0, wpp = wpp || {}, {
                 jQuery(".wpp_feps_tabs").bind("tabsselect", function(event, ui) {
                     index = jQuery("#save_form").attr("action").indexOf("#"), url = jQuery("#save_form").attr("action").substring(0, index), 
                     jQuery("#save_form").attr("action", url + "#feps_form_" + jQuery(ui.panel).attr("feps_form_id"));
-                }), jQuery(".wpp_feps_tabs").bind("tabscreate", function(event, ui) {
+                }), jQuery(".wpp_feps_tabs").bind("tabscreate", function() {
                     jQuery("#save_form").attr("action", url + window.location.hash);
                 }), wpp.version_compare(jQuery.ui.version, "1.10", ">=") ? jQuery(".wpp_feps_tabs").tabs() : jQuery(".wpp_feps_tabs").tabs({
                     add: function(event, ui) {
@@ -110,7 +110,7 @@ jQuery.extend(!0, wpp = wpp || {}, {
                     plan_images_col.length > 0 && plan_images_col.hide());
                 });
             },
-            on_added_row: function(added_row) {
+            on_added_row: function() {
                 wpp.ui.feps.update_dom();
             }
         }

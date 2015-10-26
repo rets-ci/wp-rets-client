@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    function wpp_feps_checkout_event(event, result, target, gateway) {
+    function wpp_feps_checkout_event(event, result, target) {
         jQuery(".wpi_checkout_payment_response", target).remove(), jQuery(".wpp_feps_message").hide().removeClass("error").html("");
         var message = "", error = !1;
         switch (event) {

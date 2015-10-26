@@ -14,6 +14,19 @@ wp_cache_flush();
     background-size: 150px 150px !important;
     box-shadow: none !important;
   }
+  .changelog .col-1 {
+    padding-right: 2%;
+  }
+  .changelog .col-1,
+  .changelog .col-2 {
+    float: left;
+    width: 48%;
+  }
+  .changelog ul {
+    list-style-position: outside;
+    list-style-type: disc;
+    margin-left: 20px;
+  }
 </style>
 <div class="changelog">
 
@@ -35,6 +48,17 @@ wp_cache_flush();
       <hr />
       <p><?php printf( __( 'Do you want to help us to improve %s? Or do you have any idea? We are waiting <a href="%s" target="_blank">feedback</a> from you!', ud_get_wp_property()->domain ), ud_get_wp_property()->name, $s->uservoice_url  ); ?></p>
     <?php endif; ?>
+
+    <hr />
+
+    <h3><?php printf( __( 'WP-Property %s important changes', ud_get_wp_property()->domain ), ud_get_wp_property( 'version' ) ); ?>:</h3>
+
+    <ul>
+      <li>Added ability to sort properties by modified date for Property Overview widget.</li>
+      <li>Added option to export properties to CSV file on Help Tab of Settings page.</li>
+      <li>Fixed replacing of plugin's settings data with default values on updating WP-Property settings in some cases.</li>
+      <li>Fixed showing of Multi-Checkbox values.</li>
+    </ul>
 
   </div>
 

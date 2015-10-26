@@ -25,8 +25,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function init() {
         require_once( dirname( __DIR__ ) . '/class-wpp-facebook-tabs.php' );
-        add_action( 'wpp_init', array( 'class_wpp_facebook_tabs', 'wpp_init' ) );
-        add_action( 'wpp_pre_init', array( 'class_wpp_facebook_tabs', 'wpp_pre_init' ) );
+        add_action( 'wpp_init', array( 'class_wpp_facebook_tabs', 'wpp_pre_init' ), 0 );
+        add_action( 'wpp_init', array( 'class_wpp_facebook_tabs', 'wpp_init' ), 10 );
       }
       
       /**

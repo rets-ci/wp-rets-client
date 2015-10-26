@@ -39,6 +39,7 @@
           "user": "ngdewitt_2015",
           "password": "Dd$Q@Fd.ZiNL",
           "host": "localhost:3306",
+          "charset": "utf8",
           "read": 20,
           "write": 20,
           "charset": "utf8"
@@ -48,6 +49,7 @@
           "user": "rdc",
           "password": "wpcvdvwyocbhnrfj",
           "host": "api.wpcloud.io:3306",
+          "charset": "utf8",
           "read": 40,
           "write": 40,
           "charset": "utf8"

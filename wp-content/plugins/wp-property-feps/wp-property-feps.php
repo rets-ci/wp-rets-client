@@ -4,9 +4,9 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-feps
  * Description: Front End Property Submission (FEPS) lets you create forms and display them on the front-end of the website. The forms may be used by visitors to submit properties, which are then held for approval.
  * Author: Usability Dynamics, Inc.
- * Version: 3.0.1
+ * Version: 3.0.3
  * Requires at least: 4.0
- * Tested up to: 4.3-RC2
+ * Tested up to: 4.3.1
  * Text Domain: wpp_feps
  * Author URI: http://www.usabilitydynamics.com
  * GitHub Plugin URI: wp-property/wp-property-feps

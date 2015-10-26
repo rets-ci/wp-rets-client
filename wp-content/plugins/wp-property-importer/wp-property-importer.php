@@ -4,7 +4,7 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-importer
  * Description: The XMLI Importer enables you to automatically import property listings directly into your website. This includes MLS, RETS, XML, and many other source formats. Properties are created, merged, removed, or updated according to rules you specify. This powerful importation tool downloads and attaches images and can even associate properties with real estate agents, on the fly. Once an import schedule has been created, you can literally import hundreds, thousands, even tens of thousands of properties with a single click.
  * Author: Usability Dynamics, Inc.
- * Version: 5.1.0
+ * Version: 5.1.1
  * Requires at least: 4.0
  * Tested up to: 4.3.1
  * Text Domain: wpp_importer

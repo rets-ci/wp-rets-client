@@ -344,6 +344,11 @@ class class_wpp_feps {
     
     $templates = get_page_templates();
 
+    // Add index page in case theme has no templates.
+    if( empty( $templates ) ) {
+      $templates[ 'Index' ] = 'index';
+    }
+
     ?>
     <table class="form-table">
       <tbody>
@@ -795,8 +800,15 @@ class class_wpp_feps {
     global $post, $wp_properties, $wpi_settings;
 
     if ( $post->post_status != 'publish' && $form_id = get_post_meta( $post->ID, FEPS_META_FORM, true ) ) {
+
       $forms = $wp_properties['configuration']['feature_settings']['feps']['forms'];
-      if ( !empty( $forms[$form_id] ) && $forms[$form_id]['feps_credits'] == 'true' && !empty( $forms[$form_id]['subscription_plans'] ) ) {
+
+      if (
+        !empty( $forms[$form_id] ) &&
+        isset( $forms[$form_id]['feps_credits'] ) &&
+        $forms[$form_id]['feps_credits'] == 'true' &&
+        !empty( $forms[$form_id]['subscription_plans'] )
+      ) {
 
         $image_field = array_filter((array)$forms[$form_id]['fields'], create_function('$field','return $field["attribute"]=="image_upload";'));
         $form_has_images = !empty($image_field)?true:false;
@@ -1480,6 +1492,8 @@ class class_wpp_feps {
       //** Set to override the 404 status */
       add_action('wp', create_function('', 'status_header( 200 );'));
 
+      add_action( 'wp', function() { global $wp_query; $wp_query->is_404 = false; }, 0, 10 );
+
       //** Prevent is_404() in template files from returning true */
       add_action('template_redirect', create_function('', ' global $wp_query; $wp_query->is_404 = false;'), 0, 10);
     }
@@ -1674,7 +1688,7 @@ class class_wpp_feps {
       $data = WPP_F::sanitize_request( $request[ 'wpp_feps_data' ] );
       
       //** Verify nonce */
-      if( !WPP_F::verify_nonce( $request['nonce'], 'submit_feps' ) ) {
+      if( !ud_get_wpp_feps()->verify_nonce( $request['nonce'], 'submit_feps' ) ) {
         throw new Exception( sprintf( __( '%s submitting is prohibited', ud_get_wpp_feps()->domain ), WPP_F::property_label() ) );
       }
       
@@ -2761,7 +2775,7 @@ class class_wpp_feps {
         $form_id                     = rand(99, 9999999);
         $this_session                = rand(99, 9999999);
         $current_user                = wp_get_current_user();
-        $nonce                       = WPP_F::generate_nonce('submit_feps');
+        $nonce                       = ud_get_wpp_feps()->generate_nonce('submit_feps');
         $thumbnail_size              = WPP_F::image_sizes($args['the_form']['thumbnail_size']);
         $images_limit                = ( isset( $args['the_form']['feps_credits'] ) && $args['the_form']['feps_credits'] == 'true' ) ? 1 : $args['the_form']['images_limit'];
 
@@ -4531,7 +4545,7 @@ class class_wpp_feps {
   static public function user_profile_fields( $user ) {
     global $wpi_settings;
 
-    if( current_user_can( 'edit_user', $user->ID ) ) {
+    if( $user && current_user_can( 'edit_user', $user->ID ) ) {
       ?>
       <h3><?php _e( 'Front End Property Submissions (FEPS).', ud_get_wpp_feps()->domain ); ?></h3>
       <table class="form-table">

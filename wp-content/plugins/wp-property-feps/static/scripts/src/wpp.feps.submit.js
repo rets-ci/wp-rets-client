@@ -26,6 +26,16 @@ if( typeof wpp.init_feps_form !== 'function' ) {
 
     var submit_button = jQuery( 'input[type="submit"]', this_form );
 
+    /**
+     * Flush email and password fields in case browser filled default values itself.
+     */
+    if( jQuery( "input.wpp_feps_user_email", this_form ).length > 0 ) {
+      jQuery( "input.wpp_feps_user_email", this_form ).val('');
+    }
+    if( jQuery( "input.wpp_feps_user_password", this_form ).length > 0 ) {
+      jQuery( "input.wpp_feps_user_password", this_form ).val('');
+    }
+
     /* */
     this_form.validate({
       submitHandler: function( form ){

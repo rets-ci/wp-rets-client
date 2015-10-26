@@ -29,23 +29,20 @@ class class_agents {
   static protected $capability = "manage_wpp_agents";
 
   /**
-   * Special functions that must be called prior to init
+   *
    */
-  static public function pre_init() {
+  static public function init() {
+    global $wp_roles;
 
     /* Setup White Labels */
     $single_label = ud_get_wp_property( 'configuration.feature_settings.agents.label.single', false );
     if( empty( $single_label ) ) {
-      ud_get_wp_property()->set( 'configuration.feature_settings.agents.label.single', 'Real Estate Agent' );
+      ud_get_wp_property()->set( 'configuration.feature_settings.agents.label.single', __( 'Real Estate Agent', ud_get_wpp_agents()->domain ) );
     }
     $plural_label = ud_get_wp_property( 'configuration.feature_settings.agents.label.plural', false );
     if( empty( $plural_label ) ) {
-      ud_get_wp_property()->set( 'configuration.feature_settings.agents.label.plural', 'Real Estate Agents' );
+      ud_get_wp_property()->set( 'configuration.feature_settings.agents.label.plural', __( 'Real Estate Agents', ud_get_wpp_agents()->domain ) );
     }
-
-    // Add role
-    add_role('agent', ud_get_wp_property( 'configuration.feature_settings.agents.label.single', 'Real Estate Agent' ), self::get_agent_capabilities());
-    add_filter('wpp_role_description_agent', array('class_agents', "role_description"));
 
     /* Add capability */
     add_filter('wpp_capabilities', array('class_agents', "add_capability"));
@@ -54,15 +51,11 @@ class class_agents {
     add_filter('wpp_settings_save', array('class_agents','add_role_agent_to_admin'));
 
     add_filter('wpp_feps_submitted', array('class_agents','assign_agent_to_new_feps_listing'));
-  }
 
-  /**
-   *
-   */
-  static public function init() {
-    global $wp_roles;
-
-    /* Use Custom Agent's Role Name ( White Label ) */
+    //* Add role */
+    add_role('agent', ud_get_wp_property( 'configuration.feature_settings.agents.label.single' ), self::get_agent_capabilities());
+    add_filter('wpp_role_description_agent', array('class_agents', "role_description"));
+    //* Use Custom Agent's Role Name ( White Label ) */
     if ( ! isset( $wp_roles ) ) {
       $wp_roles = new WP_Roles();
     }
@@ -2042,4 +2035,3 @@ class class_agents {
   }
 
 } // end class_agents
-
