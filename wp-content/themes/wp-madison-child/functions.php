@@ -203,6 +203,22 @@ add_action( 'template_redirect', function() {
         throw new Exception( 'Invalid response from CRM Server' );
       }
 
+      /**
+       * If not error - autoincrement review count
+       */
+      global $post;
+      if ( $page_widgets = get_post_meta($post->ID, 'panels_data', 1) ) {
+        if ( !empty($page_widgets['widgets']) && is_array($page_widgets['widgets']) ) {
+          foreach ($page_widgets['widgets'] as &$widget) {
+            if ( $widget['panels_info']['class'] == 'SiteOrigin_Widget_Rating_Widget' ) {
+              $widget['total_reviews']++;
+              update_post_meta($post->ID, 'panels_data', $page_widgets);
+              break;
+            }
+          }
+        }
+      }
+
     } catch( Exception $e ) {
 
       wp_redirect( home_url() . '/success/error' );
