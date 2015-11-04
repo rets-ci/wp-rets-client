@@ -615,6 +615,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   text-align: center;
   line-height: 32px;
   margin-bottom: 30px;
+  margin-top: 60px;
 }
 .so-widget-rdc-features-advanced .widget-heading .subtitle {
   color: #808285;
@@ -624,9 +625,6 @@ body.page-template-page-wide #site-content article .entry-inner header {
 }
 .so-widget-rdc-features-advanced .sow-features-feature {
   margin-bottom: 62px;
-}
-.so-widget-rdc-features-advanced .sow-features-feature-last-row {
-  margin-bottom: 0;
 }
 .so-widget-rdc-features-advanced .rdc_icon_svg {
   position: static;
