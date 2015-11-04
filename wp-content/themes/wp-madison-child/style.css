@@ -596,3 +596,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .g-recaptcha {
   margin-bottom: 20px;
 }
+/** HERO SO WIDGET */
+.so-widget-sow-hero .ow-button-hover:hover span {
+  color: #D03428;
+}
