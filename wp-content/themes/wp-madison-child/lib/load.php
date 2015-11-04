@@ -27,5 +27,6 @@ add_filter( 'siteorigin_widgets_default_active', function( $widgets ) {
   $widgets['so-recent-posts-widget'] = 1;
   $widgets['so-rating-widget'] = 1;
   $widgets['so-supermap-widget'] = 1;
+  $widgets['so-features-advanced'] = 1;
   return $widgets;
 } );
