@@ -79,7 +79,13 @@ class SiteOrigin_Widget_Features_Advanced_Widget extends SiteOrigin_Widget {
                       'options' => array(
                         '' => __( 'None', 'so-widgets-bundle'),
                         'pen_agreement' => __('Pen and Agreement', 'so-widgets-bundle'),
-                        'building' => __('Building', 'so-widgets-bundle')
+                        'building' => __('Building', 'so-widgets-bundle'),
+                        'letter-search' => __( 'Letter and Search', 'so-widgets-bundle' ),
+                        'people-search' => __( 'People Search', 'so-widgets-bundle' ),
+                        'compliance' => __( 'Compliance', 'so-widgets-bundle' ),
+                        'leases-breaches' => __( 'Leases and Breaches', 'so-widgets-bundle' ),
+                        'money-in-out' => __( 'Money In Out', 'so-widgets-bundle' ),
+                        'repair' => __( 'Repair', 'so-widgets-bundle' )
                       )
                     ),
 

@@ -19,7 +19,7 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 			<div class="sow-features-clear"></div>
 		<?php endif; ?>
 
-		<div class="row sow-features-feature <?php if(  floor( $i / $instance['per_row'] ) == $last_row ) echo 'sow-features-feature-last-row' ?>" style="width: <?php echo round( 100 / $instance['per_row'], 3 ) ?>%">
+		<div class="col-md-<?php echo 12/$instance['per_row']; ?> sow-features-feature <?php if(  floor( $i / $instance['per_row'] ) == $last_row ) echo 'sow-features-feature-last-row' ?>">
 
 			<?php if( !empty( $feature['more_url'] ) && $instance['icon_link'] ) echo '<a href="' . sow_esc_url( $feature['more_url'] ) . '" ' . ( $instance['new_window'] ? 'target="_blank"' : '' ) . '>'; ?>
 			<div
@@ -42,7 +42,7 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 					echo siteorigin_widget_get_icon($feature['icon'], $icon_styles);
 				} elseif( !empty( $feature['rdc_icon'] ) ) {
           ?>
-          <img class="rdc_icon_svg" style="width: 150px; height: 150px;" src="<?php echo $this->widget_url() . 'assets/icons/' . $feature['rdc_icon'] . '.svg'; ?>" type="image/svg+xml" />
+          <img class="rdc_icon_svg" src="<?php echo $this->widget_url() . 'assets/icons/' . $feature['rdc_icon'] . '.svg'; ?>" type="image/svg+xml" />
           <?php
         }
 				?>

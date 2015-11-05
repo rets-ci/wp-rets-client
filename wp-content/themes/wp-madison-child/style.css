@@ -600,16 +600,16 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .so-widget-sow-hero .ow-button-hover:hover span {
   color: #D03428;
 }
-.so-widget-rdc-features-advanced .widget-heading {
+.service-tailored .so-widget-rdc-features-advanced .widget-heading {
   margin-bottom: 60px;
 }
-.so-widget-rdc-features-advanced .widget-heading .separator {
+.service-tailored .so-widget-rdc-features-advanced .widget-heading .separator {
   background: #e2e3e4;
   height: 1px;
   width: 200px;
   margin: auto;
 }
-.so-widget-rdc-features-advanced .widget-heading .title {
+.service-tailored .so-widget-rdc-features-advanced .widget-heading .title {
   font-size: 32px;
   text-transform: uppercase;
   text-align: center;
@@ -617,33 +617,67 @@ body.page-template-page-wide #site-content article .entry-inner header {
   margin-bottom: 30px;
   margin-top: 60px;
 }
-.so-widget-rdc-features-advanced .widget-heading .subtitle {
+.service-tailored .so-widget-rdc-features-advanced .widget-heading .subtitle {
   color: #808285;
   font-size: 16px;
   text-align: center;
   margin-bottom: 60px;
 }
-.so-widget-rdc-features-advanced .sow-features-feature {
+.service-tailored .so-widget-rdc-features-advanced .sow-features-feature {
   margin-bottom: 62px;
 }
-.so-widget-rdc-features-advanced .rdc_icon_svg {
+.service-tailored .so-widget-rdc-features-advanced .rdc_icon_svg {
   position: static;
   display: block;
   align-self: center;
   margin: auto;
 }
-.so-widget-rdc-features-advanced .sow-icon-container {
+.service-tailored .so-widget-rdc-features-advanced .sow-icon-container {
   display: flex;
   border: 1px solid #e6e6e6;
   background: white;
 }
-.so-widget-rdc-features-advanced .textwidget {
+.service-tailored .so-widget-rdc-features-advanced .textwidget {
   padding-left: 55px;
   font-size: 16px;
   color: #808285;
 }
-.so-widget-rdc-features-advanced .textwidget h5 {
+.service-tailored .so-widget-rdc-features-advanced .textwidget h5 {
   font-size: 24px;
   color: #333333;
   margin-bottom: 33px;
+}
+.service-landlords .so-widget-rdc-features-advanced .widget-heading {
+  margin-bottom: 60px;
+}
+.service-landlords .so-widget-rdc-features-advanced .widget-heading .separator {
+  background: #e2e3e4;
+  height: 1px;
+  width: 200px;
+  margin: auto;
+}
+.service-landlords .so-widget-rdc-features-advanced .widget-heading .title {
+  font-size: 32px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 32px;
+  margin-bottom: 30px;
+  margin-top: 60px;
+}
+.service-landlords .so-widget-rdc-features-advanced .widget-heading .subtitle {
+  color: #808285;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+.service-landlords .so-widget-rdc-features-advanced .rdc_icon_svg {
+  position: static;
+  display: block;
+  align-self: center;
+  margin: auto;
+}
+.service-landlords .so-widget-rdc-features-advanced .sow-icon-container {
+  display: flex;
+  padding: 0;
+  background: white;
 }
