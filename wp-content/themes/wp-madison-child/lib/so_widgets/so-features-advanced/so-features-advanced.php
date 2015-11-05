@@ -169,16 +169,7 @@ class SiteOrigin_Widget_Features_Advanced_Widget extends SiteOrigin_Widget {
   }
 
   function initialize() {
-    $this->register_frontend_styles(
-        array(
-            array(
-                'siteorigin-widgets',
-                plugin_dir_url(__FILE__) . 'css/style.css',
-                array(),
-                SOW_BUNDLE_VERSION
-            )
-        )
-    );
+
   }
 
   function get_style_name($instance){
