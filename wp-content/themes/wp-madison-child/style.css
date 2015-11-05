@@ -902,3 +902,38 @@ body.page-template-page-wide #site-content article .entry-inner header {
     margin: 0 auto 25px auto;
   }
 }
+.widget_rdc-call-us-modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: none;
+}
+.widget_rdc-call-us-modal .so-widget-rdc-call-us-modal-base {
+  bottom: 0;
+  display: flex;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.widget_rdc-call-us-modal .rdc-modal-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #000000;
+  opacity: .6;
+}
+.widget_rdc-call-us-modal .rdc-modal-window {
+  width: 400px;
+  height: 360px;
+  background: white;
+  align-self: center;
+  margin: auto;
+  z-index: 9999;
+}
