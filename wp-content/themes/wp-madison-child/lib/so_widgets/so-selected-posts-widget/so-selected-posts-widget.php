@@ -55,16 +55,7 @@ class SiteOrigin_Widget_SelectedPosts_Widget extends SiteOrigin_Widget {
 	}
 
 	function initialize() {
-		$this->register_frontend_styles(
-			array(
-				array(
-					'rdc-recent-posts',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-selected-posts-widget/css/style.css',
-					array(),
-					'1.0',
-				)
-			)
-		);
+
 	}
 
 	function get_template_name($instance){
