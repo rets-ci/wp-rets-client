@@ -647,6 +647,9 @@ body.page-template-page-wide #site-content article .entry-inner header {
   color: #333333;
   margin-bottom: 33px;
 }
+.service-landlords .so-widget-rdc-features-advanced .sow-features-feature {
+  margin-bottom: 65px;
+}
 .service-landlords .so-widget-rdc-features-advanced .widget-heading {
   margin-bottom: 60px;
 }
@@ -680,4 +683,16 @@ body.page-template-page-wide #site-content article .entry-inner header {
   display: flex;
   padding: 0;
   background: white;
+}
+.service-landlords .so-widget-rdc-features-advanced .textwidget {
+  color: #808285;
+  font-size: 14px;
+}
+.service-landlords .so-widget-rdc-features-advanced .textwidget p {
+  margin-bottom: 10px;
+}
+.service-landlords .so-widget-rdc-features-advanced .textwidget h5 {
+  color: #333333;
+  font-size: 20px;
+  margin-bottom: 10px;
 }

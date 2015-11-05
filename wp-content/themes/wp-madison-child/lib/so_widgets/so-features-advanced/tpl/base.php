@@ -19,11 +19,11 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 			<div class="sow-features-clear"></div>
 		<?php endif; ?>
 
-		<div class="col-md-<?php echo 12/$instance['per_row']; ?> sow-features-feature <?php if(  floor( $i / $instance['per_row'] ) == $last_row ) echo 'sow-features-feature-last-row' ?>">
+		<div class="col-sm-<?php echo 12/$instance['per_row']; ?> sow-features-feature <?php if(  floor( $i / $instance['per_row'] ) == $last_row ) echo 'sow-features-feature-last-row' ?>">
 
 			<?php if( !empty( $feature['more_url'] ) && $instance['icon_link'] ) echo '<a href="' . sow_esc_url( $feature['more_url'] ) . '" ' . ( $instance['new_window'] ? 'target="_blank"' : '' ) . '>'; ?>
 			<div
-				class="col-md-4 sow-icon-container <?php echo !empty($instance['container_shape']) ? 'sow-container-' . esc_attr($instance['container_shape']) : 'sow-container-none'?>"
+				class="col-sm-4 sow-icon-container <?php echo !empty($instance['container_shape']) ? 'sow-container-' . esc_attr($instance['container_shape']) : 'sow-container-none'?>"
 				style="font-size: <?php echo intval($instance['container_size']) ?>px; color: <?php echo esc_attr($feature['container_color']) ?>; width: <?php echo intval($instance['container_size']) ?>px; height: <?php echo intval($instance['container_size']) ?>px;">
 				<?php
 				if( !empty($feature['icon_image']) ) {
@@ -49,7 +49,7 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 			</div>
 			<?php if( !empty( $feature['more_url'] ) && $instance['icon_link'] ) echo '</a>'; ?>
 
-			<div class="col-md-8 textwidget">
+			<div class="col-sm-8 textwidget">
 				<?php if(!empty($feature['title'])) : ?>
 					<h5>
 						<?php if( !empty( $feature['more_url'] ) && $instance['title_link'] ) echo '<a href="' . sow_esc_url( $feature['more_url'] ) . '" ' . ( $instance['new_window'] ? 'target="_blank"' : '' ) . '>'; ?>
