@@ -1212,7 +1212,7 @@ body.page-template-page-wide {
 }
 
 .widget_rdc-call-us-modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -1247,5 +1247,52 @@ body.page-template-page-wide {
     align-self: center;
     margin: auto;
     z-index: 9999;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    position: relative;
+
+    .rdc-close-modal {
+      height: 16px;
+      position: absolute;
+      right: 0;
+      top: -20px;
+      width: 16px;
+      cursor: pointer;
+
+      img {
+        display: block;
+      }
+    }
+
+    .rdc-modal-phone-top {
+      height: 220px;
+      background: #f0f0f0;
+      border-radius: 10px 10px 0 0;
+
+      img {
+        display: block;
+        margin: auto;
+        padding-top: 40px;
+      }
+    }
+
+    .rdc-modal-phone-bottom {
+      height: 140px;
+      text-align: center;
+
+      .rdc-phone-number {
+        color: #d1321f;
+        font-size: 32px;
+        font-family: "Open Sans";
+        font-weight: bold;
+        margin-top: 22px;
+      }
+
+      .rdc-phone-textline {
+        font-size: 16px;
+        color: #808285;
+      }
+    }
   }
 }

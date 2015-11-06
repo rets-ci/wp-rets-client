@@ -903,7 +903,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   }
 }
 .widget_rdc-call-us-modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -936,4 +936,44 @@ body.page-template-page-wide #site-content article .entry-inner header {
   align-self: center;
   margin: auto;
   z-index: 9999;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  position: relative;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-close-modal {
+  height: 16px;
+  position: absolute;
+  right: 0;
+  top: -20px;
+  width: 16px;
+  cursor: pointer;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-close-modal img {
+  display: block;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-modal-phone-top {
+  height: 220px;
+  background: #f0f0f0;
+  border-radius: 10px 10px 0 0;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-modal-phone-top img {
+  display: block;
+  margin: auto;
+  padding-top: 40px;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-modal-phone-bottom {
+  height: 140px;
+  text-align: center;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-modal-phone-bottom .rdc-phone-number {
+  color: #d1321f;
+  font-size: 32px;
+  font-family: "Open Sans";
+  font-weight: bold;
+  margin-top: 22px;
+}
+.widget_rdc-call-us-modal .rdc-modal-window .rdc-modal-phone-bottom .rdc-phone-textline {
+  font-size: 16px;
+  color: #808285;
 }
