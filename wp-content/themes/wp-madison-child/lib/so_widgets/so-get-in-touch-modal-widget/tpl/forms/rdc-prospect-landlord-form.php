@@ -18,11 +18,8 @@
   <!----------------->
 
   <div class="last_name">
-    <div class="label">
-      <label for="powf_85a66052c22ee41195286c3be5bd3b20">Last Name</label>
-      <span class="required">*</span>
-    </div>
-    <div class="field"><input id="powf_85a66052c22ee41195286c3be5bd3b20" class="required" maxlength="100"
+    <div class="field">
+      <input placeholder="Last Name" id="powf_85a66052c22ee41195286c3be5bd3b20" class="required" maxlength="100"
                               name="powf_85a66052c22ee41195286c3be5bd3b20" type="text" value=""/><br/>
     </div>
   </div>
@@ -30,11 +27,8 @@
   <!----------------->
 
   <div class="email">
-    <div class="label">
-      <label for="powf_217c2869c22ee41195286c3be5bd3b20">Email</label>
-      <span class="required">*</span>
-    </div>
-    <div class="field"><input id="powf_217c2869c22ee41195286c3be5bd3b20" class="required email" maxlength="100"
+    <div class="field">
+      <input placeholder="Email" id="powf_217c2869c22ee41195286c3be5bd3b20" class="required email" maxlength="100"
                               name="powf_217c2869c22ee41195286c3be5bd3b20" type="text" value=""/>
     </div>
   </div>
@@ -42,11 +36,8 @@
   <!----------------->
 
   <div class="phone">
-    <div class="label">
-      <label for="powf_83a17082c22ee41195286c3be5bd3b20">Telephone</label>
-      <span class="required">*</span>
-    </div>
-    <div class="field"><input id="powf_83a17082c22ee41195286c3be5bd3b20" class="required digits" maxlength="100"
+    <div class="field">
+      <input placeholder="Telephone" id="powf_83a17082c22ee41195286c3be5bd3b20" class="required digits" maxlength="100"
                               name="powf_83a17082c22ee41195286c3be5bd3b20" type="text" value=""/>
     </div>
   </div>
@@ -54,11 +45,8 @@
   <!----------------->
 
   <div class="address_1">
-    <div class="label">
-      <label for="powf_518481d4c22ee41195286c3be5bd3b20">Property Address 1</label>
-      <span class="required">*</span>
-    </div>
-    <div class="field"><input id="powf_518481d4c22ee41195286c3be5bd3b20" class="required" maxlength="100"
+    <div class="field">
+      <input placeholder="Property Address 1" id="powf_518481d4c22ee41195286c3be5bd3b20" class="required" maxlength="100"
                               name="powf_518481d4c22ee41195286c3be5bd3b20" type="text" value=""/>
 
     </div>
@@ -67,44 +55,32 @@
   <!----------------->
 
   <div class="address_2">
-    <div class="label">
-      <label for="powf_c9cea6f0c22ee41195286c3be5bd3b20">Property Address 2</label>
-    </div>
     <div class="field">
-      <input id="powf_c9cea6f0c22ee41195286c3be5bd3b20" maxlength="100" name="powf_c9cea6f0c22ee41195286c3be5bd3b20"
+      <input placeholder="Property Address 2" id="powf_c9cea6f0c22ee41195286c3be5bd3b20" maxlength="100" name="powf_c9cea6f0c22ee41195286c3be5bd3b20"
                 type="text" value=""/>
     </div>
   </div>
   <!----------------->
 
   <div class="city">
-    <div class="label">
-      <label for="powf_f5e36104c32ee41195286c3be5bd3b20">City</label>
-    </div>
     <div class="field">
-      <input id="powf_f5e36104c32ee41195286c3be5bd3b20" maxlength="100" name="powf_f5e36104c32ee41195286c3be5bd3b20"
+      <input placeholder="City" id="powf_f5e36104c32ee41195286c3be5bd3b20" maxlength="100" name="powf_f5e36104c32ee41195286c3be5bd3b20"
                 type="text" value=""/>
     </div>
   </div>
   <!----------------->
 
   <div class="state">
-    <div class="label">
-      <label for="powf_3bb30615c32ee41195286c3be5bd3b20">State</label>
-    </div>
     <div class="field">
-      <input id="powf_3bb30615c32ee41195286c3be5bd3b20" maxlength="100" name="powf_3bb30615c32ee41195286c3be5bd3b20"
+      <input placeholder="State" id="powf_3bb30615c32ee41195286c3be5bd3b20" maxlength="100" name="powf_3bb30615c32ee41195286c3be5bd3b20"
                 type="text" value=""/>
     </div>
   </div>
   <!----------------->
 
   <div class="zip">
-    <div class="label">
-      <label for="powf_5f60502bc32ee41195286c3be5bd3b20">Zip</label>
-    </div>
     <div class="field">
-      <input id="powf_5f60502bc32ee41195286c3be5bd3b20" maxlength="100" name="powf_5f60502bc32ee41195286c3be5bd3b20"
+      <input placeholder="Zip" id="powf_5f60502bc32ee41195286c3be5bd3b20" maxlength="100" name="powf_5f60502bc32ee41195286c3be5bd3b20"
                 type="text" value=""/>
     </div>
   </div>
@@ -112,11 +88,8 @@
   <!----------------->
 
   <div class="questions">
-    <div class="label">
-      <label for="powf_672f7c42c32ee41195286c3be5bd3b20">Questions/Comments</label>
-    </div>
     <div class="field">
-      <textarea id="powf_672f7c42c32ee41195286c3be5bd3b20" cols="" name="powf_672f7c42c32ee41195286c3be5bd3b20"
+      <textarea placeholder="Questions/Comments" id="powf_672f7c42c32ee41195286c3be5bd3b20" cols="" name="powf_672f7c42c32ee41195286c3be5bd3b20"
                    rows=""></textarea>
     </div>
   </div>
@@ -125,13 +98,8 @@
 
   <div class="referred_by">
     <div class="clear"></div>
-    <div class="label">
-      <label for="powf_0f6b0f271b41e51180fbc4346bace18c">Referred By</label>
-      <span class="tip"></span>
-    </div>
-
     <div class="field">
-      <input type="text" id="powf_0f6b0f271b41e51180fbc4346bace18c" name="powf_0f6b0f271b41e51180fbc4346bace18c" value="" maxlength="100" />
+      <input placeholder="Referred By" type="text" id="powf_0f6b0f271b41e51180fbc4346bace18c" name="powf_0f6b0f271b41e51180fbc4346bace18c" value="" maxlength="100" />
     </div>
   </div>
 

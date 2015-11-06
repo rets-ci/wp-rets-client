@@ -954,22 +954,52 @@ body.page-template-page-wide #site-content article .entry-inner header {
   position: relative;
 }
 .widget_rdc-get-touch-modal .rdc-modal-window h3 {
-  margin: 0;
+  margin: 0 0 20px;
   text-align: center;
   text-transform: uppercase;
 }
 .widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper {
   overflow-y: scroll;
-  height: calc(100% - 60px);
+  height: calc(100% - 40px);
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .field {
+  margin-bottom: 15px;
+  width: 98%;
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form input[type="text"] {
+  height: 50px;
+  border-radius: 6px;
+  max-width: none;
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form textarea {
+  border-radius: 6px;
 }
 .widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .first_name {
   width: 48%;
   float: left;
   margin-right: 2%;
 }
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .first_name .field {
+  width: 100%;
+}
 .widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .last_name {
   width: 48%;
   float: left;
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .last_name .field {
+  width: 100%;
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .city,
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .state,
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .zip {
+  width: 31%;
+  float: left;
+  margin-right: 2%;
+}
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .city .field,
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .state .field,
+.widget_rdc-get-touch-modal .rdc-modal-window .rdc-form-wrapper form .zip .field {
+  width: 100%;
 }
 .widget_rdc-call-us-modal {
   position: fixed;

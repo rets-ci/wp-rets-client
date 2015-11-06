@@ -1267,26 +1267,57 @@ body.page-template-page-wide {
     position: relative;
 
     h3 {
-      margin: 0;
+      margin: 0 0 20px;
       text-align: center;
       text-transform: uppercase;
     }
 
     .rdc-form-wrapper {
       overflow-y: scroll;
-      height: ~"calc(100% - 60px)";
+      height: ~"calc(100% - 40px)";
 
       form {
+
+        .field {
+          margin-bottom: 15px;
+          width: 98%;
+        }
+
+        input[type="text"] {
+          height: 50px;
+          border-radius: 6px;
+          max-width: none;
+        }
+
+        textarea {
+          border-radius: 6px;
+        }
 
         .first_name {
           width: 48%;
           float: left;
           margin-right: 2%;
+
+          .field {
+            width: 100%;
+          }
         }
 
         .last_name {
           width: 48%;
           float: left;
+          .field {
+            width: 100%;
+          }
+        }
+
+        .city, .state, .zip {
+          width: 31%;
+          float: left;
+          margin-right: 2%;
+          .field {
+            width: 100%;
+          }
         }
       }
     }
