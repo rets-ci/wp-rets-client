@@ -30,5 +30,6 @@ add_filter( 'siteorigin_widgets_default_active', function( $widgets ) {
   $widgets['so-features-advanced'] = 1;
   $widgets['so-selected-posts-widget'] = 1;
   $widgets['so-call-us-modal-widget'] = 1;
+  $widgets['so-get-in-touch-modal-widget'] = 1;
   return $widgets;
 } );

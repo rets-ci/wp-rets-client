@@ -11,12 +11,8 @@
 
   <!----------------->
   <div class="first_name">
-    <div class="label">
-      <label for="powf_8f29ad3ac22ee41195286c3be5bd3b20">First Name</label>
-      <span class="required">*</span>
-    </div>
-    <div class="field"><input id="powf_8f29ad3ac22ee41195286c3be5bd3b20" class="required" maxlength="100"
-                              name="powf_8f29ad3ac22ee41195286c3be5bd3b20" type="text" value=""/>
+    <div class="field">
+      <input placeholder="First Name" id="powf_8f29ad3ac22ee41195286c3be5bd3b20" class="required" maxlength="100" name="powf_8f29ad3ac22ee41195286c3be5bd3b20" type="text" value=""/>
     </div>
   </div>
   <!----------------->

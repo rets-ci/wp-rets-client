@@ -1211,6 +1211,88 @@ body.page-template-page-wide {
 
 }
 
+.widget_rdc-get-touch-modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: none;
+
+  .so-widget-rdc-get-touch-modal-base {
+   bottom: 0;
+   display: flex;
+   left: 0;
+   position: absolute;
+   right: 0;
+   top: 0;
+  }
+
+  .rdc-modal-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #000000;
+    opacity: .6;
+  }
+
+  .rdc-close-modal {
+    height: 16px;
+    position: absolute;
+    right: 0;
+    top: -20px;
+    width: 16px;
+    cursor: pointer;
+
+    img {
+      display: block;
+    }
+  }
+
+  .rdc-modal-window {
+    width: 600px;
+    height: 85%;
+    background: white;
+    align-self: center;
+    margin: auto;
+    padding: 40px;
+    z-index: 9999;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    position: relative;
+
+    h3 {
+      margin: 0;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .rdc-form-wrapper {
+      overflow-y: scroll;
+      height: ~"calc(100% - 60px)";
+
+      form {
+
+        .first_name {
+          width: 48%;
+          float: left;
+          margin-right: 2%;
+        }
+
+        .last_name {
+          width: 48%;
+          float: left;
+        }
+      }
+    }
+  }
+}
+
 .widget_rdc-call-us-modal {
   position: fixed;
   top: 0;
