@@ -85,7 +85,10 @@ class SiteOrigin_Widget_Features_Advanced_Widget extends SiteOrigin_Widget {
                         'compliance' => __( 'Compliance', 'so-widgets-bundle' ),
                         'leases-breaches' => __( 'Leases and Breaches', 'so-widgets-bundle' ),
                         'money-in-out' => __( 'Money In Out', 'so-widgets-bundle' ),
-                        'repair' => __( 'Repair', 'so-widgets-bundle' )
+                        'repair' => __( 'Repair', 'so-widgets-bundle' ),
+                        'online-tenant-portal' => __( 'Online Tenant Portal', 'so-widgets-bundle' ),
+                        'emergency-response' => __( 'Emergency Response', 'so-widgets-bundle' ),
+                        'transparency' => __( 'Transparency', 'so-widgets-bundle' )
                       )
                     ),
 

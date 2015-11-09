@@ -1076,3 +1076,17 @@ body.page-template-page-wide #site-content article .entry-inner header {
   font-size: 16px;
   color: #808285;
 }
+.tenants-page .rdc-property-carousel {
+  background: white;
+}
+.tenants-page .rdc-property-carousel .rdc-carousel-item {
+  border: 1px solid #e6e6e6;
+}
+.tenants-page .rdc-property-carousel .rdc-carousel-next,
+.tenants-page .rdc-property-carousel .rdc-carousel-previous {
+  color: #8f8f8f;
+}
+.tenants-page .rdc-property-carousel .rdc-carousel-next:hover,
+.tenants-page .rdc-property-carousel .rdc-carousel-previous:hover {
+  color: white !important;
+}
