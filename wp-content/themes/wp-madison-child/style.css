@@ -1155,3 +1155,14 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .scroll-to-top {
   z-index: 99999999;
 }
+@media screen and (max-width: 1199px) {
+  .so-widget-rdc-features-advanced .sow-icon-container {
+    float: none;
+    margin: 0 auto;
+  }
+  .so-widget-rdc-features-advanced .textwidget {
+    padding-top: 50px;
+    width: 100%;
+    padding-left: 15px !important;
+  }
+}
