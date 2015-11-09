@@ -1090,3 +1090,68 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .tenants-page .rdc-property-carousel .rdc-carousel-previous:hover {
   color: white !important;
 }
+.tenants-top-features .so-widget-rdc-features-advanced .sow-features-feature {
+  margin-bottom: 65px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .widget-heading {
+  margin-bottom: 60px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .widget-heading .separator {
+  background: #e2e3e4;
+  height: 1px;
+  width: 200px;
+  margin: auto;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .widget-heading .title {
+  font-size: 32px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 32px;
+  margin-bottom: 30px;
+  margin-top: 60px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .widget-heading .subtitle {
+  color: #808285;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .rdc_icon_svg {
+  position: static;
+  display: block;
+  align-self: center;
+  margin: 90px auto auto;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .sow-icon-container {
+  width: 100% !important;
+  height: auto !important;
+  padding: 0;
+  background: white;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .textwidget {
+  background: white;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+  color: #808285;
+  padding: 40px;
+  font-size: 16px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .textwidget p {
+  margin-bottom: 10px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .textwidget h5 {
+  text-align: center;
+  color: #333333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.tenants-top-features .so-widget-rdc-features-advanced .textwidget h5 a {
+  color: #333333;
+}
+.scroll-to-top {
+  z-index: 99999999;
+}

@@ -1,0 +1,63 @@
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <style type="text/css">.st0{clip-path:url(#SVGID_2_);fill:#F5EFD5;}
+	.st1{fill:none;stroke:#474B49;stroke-width:4;stroke-miterlimit:10;}
+	.st2{clip-path:url(#SVGID_4_);}
+	.st3{clip-path:url(#SVGID_6_);fill:none;stroke:#474B49;stroke-width:11;stroke-linecap:square;stroke-miterlimit:10;}
+	.st4{fill:#CF2127;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:30;}
+	.st5{clip-path:url(#SVGID_8_);fill:#474B49;}
+	.st6{fill:none;stroke:#7F6E5E;stroke-width:4;stroke-miterlimit:10;}</style>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="152" width="152" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1">
+   <g id="svg_2">
+    <defs transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)">
+     <path d="m364.10001,393.89999c0,32 -26,58 -58,58s-58,-26 -58,-58s26,-58 58,-58s58,26 58,58" id="SVGID_1_"/>
+    </defs>
+    <clipPath transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)" id="SVGID_2_">
+     <use id="svg_3" xlink:href="#SVGID_1_"/>
+    </clipPath>
+    <rect id="svg_4" height="126" width="126" class="st0" y="11.9" x="12.1"/>
+   </g>
+  </g>
+  <path id="svg_5" d="m133.10001,74.89999c0,32 -26,58 -58,58s-58,-26 -58,-58s26,-58 58,-58s58,26 58,58" class="st1"/>
+  <g id="svg_6">
+   <g id="svg_7">
+    <defs>
+     <rect height="48" width="28" y="407.9" x="330.1" id="SVGID_3_"/>
+    </defs>
+    <clipPath id="SVGID_4_">
+     <use id="svg_8" xlink:href="#SVGID_3_"/>
+    </clipPath>
+    <g id="svg_9" class="st2"/>
+   </g>
+  </g>
+  <g id="svg_10">
+   <g id="svg_11">
+    <defs transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)">
+     <rect height="60" width="40" y="401.9" x="324.1" id="SVGID_5_"/>
+    </defs>
+    <clipPath transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)" id="SVGID_6_">
+     <use id="svg_12" xlink:href="#SVGID_5_"/>
+    </clipPath>
+    <path id="svg_13" d="m33.10001,94.89999l0,36m-8,-11.5c0,4.39999 3.60001,8 8,8c2.39999,0 4.60001,-1.10001 6.10001,-2.80002c1.89999,-2.19998 1.39999,-5.5 -0.89999,-7.29999l-10.5,-8.10001c-2.30002,-1.79999 -2.70001,-5.10001 -0.89999,-7.29999c1.5,-1.70001 3.69998,-2.80002 6.09998,-2.80002c4.40002,0 8,3.60001 8,8" class="st3"/>
+   </g>
+  </g>
+  <path id="svg_14" d="m115.10001,130.89999l-4,0l0,-1.70001c-4.60001,-0.89999 -8,-5 -8,-9.79999l4,0c0,2.60001 1.70001,4.79999 4,5.69998l0,-10.79999l-4.5,-3.5c-1.60001,-1.20001 -2.5,-3 -2.79999,-4.89999c-0.20001,-1.89999 0.29999,-3.80002 1.5,-5.20001c1.60001,-1.79999 3.60001,-2.89999 5.69998,-3.29999l0,-2.39999l4,0l0,2.39999c4.5,1 7.90002,5 7.90002,9.79999l-4,0c0,-2.60001 -1.60001,-4.79999 -3.90002,-5.60001l0,10.80002l4.40002,3.39999c1.59998,1.29999 2.59998,3.10001 2.79999,5.10001c0.20001,1.89999 -0.39999,3.69998 -1.60001,5.10001c-1.5,1.69998 -3.5,2.79999 -5.60001,3.29999l0,1.60001l0.10001,0zm0,-13.5l0,7.69998c1,-0.39999 1.89999,-1 2.60001,-1.79999c0.60001,-0.70001 0.70001,-1.60001 0.70001,-2.10001c-0.10001,-0.89999 -0.60001,-1.69998 -1.30002,-2.29999l-2,-1.5zm-4,-16c-1,0.29999 -2,1 -2.69998,1.79999c-0.5,0.60001 -0.70001,1.39999 -0.60001,2.20001c0.10001,0.89999 0.5,1.69998 1.19998,2.19998l2.10001,1.60001l0,-7.79999z" class="st4"/>
+  <g id="svg_15">
+   <g id="svg_16">
+    <defs transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)">
+     <path d="m306.10001,397.70001c-2.19998,0 -4,-1.79999 -4,-4s1.80002,-4 4,-4s4,1.79999 4,4c0,2.19998 -1.80002,4 -4,4zm2,-11.70001l0,-20.29999c0,-1.10001 -0.89999,-2 -2,-2s-2,0.89999 -2,2l0,20.29999c-2.79999,0.70001 -5,2.89999 -5.69998,5.70001l-14.30002,0c-1.10001,0 -2,0.89999 -2,2s0.89999,2 2,2l14.30002,0c0.89999,3.39999 4,6 7.69998,6c4.39999,0 8,-3.60001 8,-8c0,-3.70001 -2.5,-6.80002 -6,-7.70001z" id="SVGID_7_"/>
+    </defs>
+    <clipPath transform="translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(0, -1) translate(1) translate(-1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(1) translate(-240, -312)" id="SVGID_8_">
+     <use id="svg_17" xlink:href="#SVGID_7_"/>
+    </clipPath>
+    <rect id="svg_18" height="48" width="42" class="st5" y="39.7" x="46.1"/>
+   </g>
+  </g>
+  <path id="svg_19" d="m45.39999,45l-1.39999,-1.39999m1.39999,60.79999l-1.39999,1.39999m62.20001,-62.19998l-1.39999,1.39999m-71.70001,29.70001l-2,0m88,0l-2,0m-42,42l0,2m0,-88l0,2" class="st6"/>
+ </g>
+</svg>

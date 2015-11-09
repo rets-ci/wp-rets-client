@@ -88,7 +88,19 @@ class SiteOrigin_Widget_Features_Advanced_Widget extends SiteOrigin_Widget {
                         'repair' => __( 'Repair', 'so-widgets-bundle' ),
                         'online-tenant-portal' => __( 'Online Tenant Portal', 'so-widgets-bundle' ),
                         'emergency-response' => __( 'Emergency Response', 'so-widgets-bundle' ),
-                        'transparency' => __( 'Transparency', 'so-widgets-bundle' )
+                        'transparency' => __( 'Transparency', 'so-widgets-bundle' ),
+                        'customer-service' => __( 'Customer Service', 'so-widgets-bundle' ),
+                        'professional-service' => __( 'Professional Service', 'so-widgets-bundle' )
+                      )
+                    ),
+
+                    'icon_position' => array(
+                      'type' => 'select',
+                      'label' => __('Icon Position', 'so-widgets-bundle'),
+                      'default' => 'left',
+                      'options' => array(
+                        'left' => __( 'Left', 'so-widgets-bundle' ),
+                        'top' => __( 'Top', 'so-widgets-bundle' )
                       )
                     ),
 

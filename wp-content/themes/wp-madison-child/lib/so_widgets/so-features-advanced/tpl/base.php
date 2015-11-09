@@ -15,6 +15,13 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 
 	<?php foreach( $instance['features'] as $i => $feature ) : ?>
 
+    <?php
+    $item_layout = array(4,8);
+    if ( !empty( $feature['icon_position'] ) && $feature['icon_position'] == 'top' ) {
+      $item_layout = array(12,12);
+    }
+    ?>
+
 		<?php if( $i % $instance['per_row'] == 0 && $i != 0 ) : ?>
 			<div class="sow-features-clear"></div>
 		<?php endif; ?>
@@ -23,7 +30,7 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 
 			<?php if( !empty( $feature['more_url'] ) && $instance['icon_link'] ) echo '<a href="' . sow_esc_url( $feature['more_url'] ) . '" ' . ( $instance['new_window'] ? 'target="_blank"' : '' ) . '>'; ?>
 			<div
-				class="col-sm-4 sow-icon-container <?php echo !empty($instance['container_shape']) ? 'sow-container-' . esc_attr($instance['container_shape']) : 'sow-container-none'?>"
+				class="col-sm-<?php echo $item_layout[0]; ?> sow-icon-container <?php echo !empty($instance['container_shape']) ? 'sow-container-' . esc_attr($instance['container_shape']) : 'sow-container-none'?>"
 				style="font-size: <?php echo intval($instance['container_size']) ?>px; color: <?php echo esc_attr($feature['container_color']) ?>; width: <?php echo intval($instance['container_size']) ?>px; height: <?php echo intval($instance['container_size']) ?>px;">
 				<?php
 				if( !empty($feature['icon_image']) ) {
@@ -49,7 +56,7 @@ $last_row = floor( ( count($instance['features']) - 1 ) / $instance['per_row'] )
 			</div>
 			<?php if( !empty( $feature['more_url'] ) && $instance['icon_link'] ) echo '</a>'; ?>
 
-			<div class="col-sm-8 textwidget">
+			<div class="col-sm-<?php echo $item_layout[1]; ?> textwidget">
 				<?php if(!empty($feature['title'])) : ?>
 					<h5>
 						<?php if( !empty( $feature['more_url'] ) && $instance['title_link'] ) echo '<a href="' . sow_esc_url( $feature['more_url'] ) . '" ' . ( $instance['new_window'] ? 'target="_blank"' : '' ) . '>'; ?>
