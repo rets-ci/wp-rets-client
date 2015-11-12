@@ -912,6 +912,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   }
 }
 .widget_rdc-get-touch-modal {
+  margin: 0 !important;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -1011,6 +1012,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   width: 100%;
 }
 .widget_rdc-call-us-modal {
+  margin: 0 !important;
   position: fixed;
   top: 0;
   bottom: 0;
