@@ -600,6 +600,9 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .so-widget-sow-hero .ow-button-hover:hover span {
   color: #D03428;
 }
+.sow-features-clear {
+  clear: both;
+}
 .service-tailored .so-widget-rdc-features-advanced .widget-heading {
   margin-bottom: 60px;
 }
