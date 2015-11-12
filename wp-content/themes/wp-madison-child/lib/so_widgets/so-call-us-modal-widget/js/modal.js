@@ -1,4 +1,9 @@
 jQuery(document).ready(function() {
+  jQuery(document).keyup(function(e) {
+    if (e.keyCode == 27) {
+      jQuery('.widget_rdc-call-us-modal').hide();
+    }
+  });
   jQuery('.rdc-close-modal, .rdc-modal-overlay').on('click', function(){
     jQuery('.widget_rdc-call-us-modal').hide();
   });
