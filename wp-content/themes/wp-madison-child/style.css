@@ -648,7 +648,13 @@ body.page-template-page-wide #site-content article .entry-inner header {
   margin-bottom: 33px;
 }
 .service-landlords .so-widget-rdc-features-advanced .sow-features-feature {
-  margin-bottom: 65px;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+  padding-top: 30px;
+  border: 1px solid transparent;
+}
+.service-landlords .so-widget-rdc-features-advanced .sow-features-feature:hover {
+  border: 1px solid #EDEDED;
 }
 .service-landlords .so-widget-rdc-features-advanced .widget-heading {
   margin-bottom: 60px;
