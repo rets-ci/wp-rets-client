@@ -922,7 +922,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   display: none;
 }
 .widget_rdc-get-touch-modal .g-recaptcha * {
-  text-align: center;
+  margin: auto;
 }
 .widget_rdc-get-touch-modal .so-widget-rdc-get-touch-modal-base {
   bottom: 0;
