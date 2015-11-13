@@ -956,6 +956,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .widget_rdc-get-touch-modal .rdc-modal-window {
   width: 600px;
   height: 85%;
+  max-height: 800px;
   background: white;
   align-self: center;
   margin: auto;
