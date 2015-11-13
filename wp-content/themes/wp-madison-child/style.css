@@ -921,7 +921,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
   z-index: 999;
   display: none;
 }
-.widget_rdc-get-touch-modal .g-recaptcha {
+.widget_rdc-get-touch-modal .g-recaptcha * {
   text-align: center;
 }
 .widget_rdc-get-touch-modal .so-widget-rdc-get-touch-modal-base {
