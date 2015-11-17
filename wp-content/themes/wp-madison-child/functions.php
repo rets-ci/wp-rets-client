@@ -243,3 +243,7 @@ add_filter( 'wpp::attribute::display', function( $attribute_value, $meta_key ) {
   if ( empty( $wp_properties['admin_attr_fields'][$meta_key] ) || $wp_properties['admin_attr_fields'][$meta_key] != 'date' ) return $attribute_value;
   return date(get_option('date_format'), strtotime( $attribute_value ));
 }, 10, 2);
+
+add_action( 'init', function(){
+  add_post_type_support( 'page', 'excerpt' );
+} );
