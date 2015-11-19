@@ -310,6 +310,9 @@ a:hover {
     width: 50%;
     float: right;
   }
+  #site-header .multipurpose-search-wrapper.col-5-12 form {
+    padding-right: 20px;
+  }
   #site-header .site-navigation.secondary-menu-wrapper {
     min-height: auto;
     height: auto;
