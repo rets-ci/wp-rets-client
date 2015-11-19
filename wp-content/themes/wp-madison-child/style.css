@@ -337,6 +337,7 @@ a:hover {
   #site-header .multipurpose-search-wrapper.col-5-12 form {
     margin: 0 auto;
     text-align: center;
+    padding: 0;
   }
   #site-header .site-navigation.secondary-menu-wrapper .secondary-menu .menu {
     display: inline-block !important;
