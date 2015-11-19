@@ -275,6 +275,10 @@ a:hover {
 
       form {
 
+        display: block;
+        text-align: right;
+        width: 100%;
+
         input,
         select {
           padding: 0 10px;
@@ -282,9 +286,9 @@ a:hover {
           color: #808285;
           height: 36px;
           background-color: transparent;
-          -webkit-border-radius: 0;
-          -moz-border-radius: 0;
-          border-radius: 0;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
 
           &:hover,
           &:focus {
@@ -293,6 +297,7 @@ a:hover {
         }
 
         input {
+          margin-right: 10px;
           width: 200px;
           padding-left: 35px;
           background-image: url("static/images/search.png");
