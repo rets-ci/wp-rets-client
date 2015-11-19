@@ -84,8 +84,8 @@ class class_agents {
     add_action('edit_agent_profile_update', array('class_agents', 'save_profile_fields'), 11 );
     add_action('edit_agent_profile_update', array('class_agents', 'redirect_agent_page'), 12 );
 
-    //* Upload files (markers) */
-    add_action('wp_ajax_wpp_agent_image_upload', array('class_agents','ajax_image_upload'));
+    //* Upload Image */
+    add_action('wp_ajax_wpp_save_agent_image', array('class_agents','save_agent_image'));
 
     add_action('init', array('class_agents', 'remove_agent_image'), 4 );
 
@@ -133,6 +133,20 @@ class class_agents {
 
     //** Agents page load handler */
     add_action('load-property_page_show_agents', array('class_agents', 'property_page_show_agents_load'));
+  }
+
+  public static function save_agent_image() {
+    if ( !empty( $_POST['agent_id'] ) && !empty( $_POST['attachment_id'] ) ) {
+      if ( update_user_meta($_POST['agent_id'], 'agent_images', array($_POST['attachment_id'])) ) {
+        wp_send_json_success(array(
+          'message' => __('Saved', ud_get_wpp_agents()->domain)
+        ));
+      } else {
+        wp_send_json_error(array(
+          'message' => __('Same image', ud_get_wpp_agents()->domain)
+        ));
+      }
+    }
   }
 
   /**
@@ -686,7 +700,6 @@ class class_agents {
     if($current_screen->id == 'property_page_show_agents' && (isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit')) {
       wp_enqueue_script('post');
       wp_enqueue_script('postbox');
-      wp_enqueue_script('wpp-jquery-ajaxupload');
       wp_enqueue_script('wpp-edit-agent', ud_get_wpp_agents()->path( 'static/scripts/wpp.admin.agent.js' ), array( 'jquery', 'wpp-localization' ), WPP_Version );
 
       add_meta_box('metabox_primary_info', __('Primary'), array('class_agents','metabox_primary_info'), 'property_page_show_agents', 'normal', 'core');
@@ -1162,106 +1175,30 @@ class class_agents {
   }
 
   /**
-   * Ajax File (Image) Uploader
-   *
-   * @return string JSON
-   * @author peshkov@UD
-   */
-  static public function ajax_image_upload() {
-    global $wp_properties;
-
-    $return = array();
-    $file_name = $_REQUEST['qqfile'];
-    $agent_id = $_REQUEST['agentId'];
-    /** Available Extensions */
-    $exts = array('jpg','jpeg','png','gif','bmp');
-    $ext = pathinfo($file_name, PATHINFO_EXTENSION);
-
-    if(!in_array($ext, $exts)) {
-      $return['error'] = __('File should be an image',ud_get_wpp_agents()->domain);
-    } elseif(empty($agent_id) || (int)$agent_id == 0){
-      $return['error'] = __('Agent ID is not set',ud_get_wpp_agents()->domain);
-    } else {
-      $upload_dir = wp_upload_dir();
-      $files_dir = $upload_dir['basedir'] . '/wpp_agents';
-      $files_url = $upload_dir['baseurl'] . '/wpp_agents';
-      /** Create DIR if it doesn't exist */
-      if(!is_dir($files_dir)) {
-        mkdir($files_dir, 0755);
-        fopen($files_dir . '/index.php', "w");
-      }
-      $file_name = wp_unique_filename($files_dir, $file_name);
-      $path = $files_dir . '/'. $file_name;
-      $url = $files_url . '/'. $file_name;
-
-      /** Try to upload file */
-      if ( empty( $_FILES ) ) {
-        $temp = tmpfile();
-        $input = fopen("php://input", "r");
-        $realSize = stream_copy_to_stream($input, $temp);
-        fclose($input);
-        $target = fopen($path, "w");
-        fseek($temp, 0, SEEK_SET);
-        stream_copy_to_stream($temp, $target);
-        fclose($target);
-      } else {
-        /** for IE!!! */
-        move_uploaded_file($_FILES['qqfile']['tmp_name'], $path);
-      }
-
-      /* Checks if the image has been uploaded, and adds it to user postmeta */
-      if(!file_exists($path)) {
-        $return['error'] = __('Looks like, Image can not be uploaded.', ud_get_wpp_agents()->domain);
-      } else {
-        /* Save image as attachment */
-        $attachment = array(
-          'post_title' => __('Image of Real Estate Agent #', ud_get_wpp_agents()->domain) . $agent_id,
-          'post_content' => __('Image for User #', ud_get_wpp_agents()->domain) . $agent_id,
-          'post_type' => "attachment",
-          'post_date' =>  current_time('mysql'),
-          'post_mime_type' => "image/{$ext}",
-          'guid' => $url
-        );
-        $attachment_id = wp_insert_attachment($attachment);
-        update_attached_file( $attachment_id, $path );
-
-        /* Retrieve existing images */
-        $image_ids = get_user_meta($agent_id, 'agent_images', false);
-        if ( empty($image_ids) ) {
-          $image_ids = array();
-        } else {
-          $image_ids = $image_ids[0];
-        }
-        /* Add currently added attachment */
-        $image_ids[] = intval($attachment_id);
-        /* Update user meta */
-        update_user_meta($agent_id, 'agent_images', $image_ids);
-
-        $return['success'] = 'true';
-        $return['url'] = wpp_get_image_link($attachment_id , 'thumbnail') . '?' . (rand(0,100));
-        $return['filename'] = $file_name;
-        $return['attachment_id'] = $attachment_id;
-      }
-    }
-
-    die(htmlspecialchars(json_encode($return), ENT_NOQUOTES));
-  }
-
-  /**
    * Adds section to user edit screen
    */
   static public function metabox_profile_images($user) {
+    wp_enqueue_media();
+
     if ($user->ID == -1){
       echo '<p class="pad10">' .__('Please save first to add images.', ud_get_wpp_agents()->domain) . '</p>';
       return;
     }
     $images = self::get_agent_images($user->ID);
     ?>
+
     <ul id="wpp_agent_image_gallery">
     <?php if ( empty($images) ) : ?>
       <li class="wpp_agent_single_image wpp_no_agent_images"><?php _e('No images found.', ud_get_wpp_agents()->domain); ?></li>
+      <li style="display: none;" class='wpp_agent_single_image'>
+        <table>
+          <tr><td>
+              <img src="" alt="" style="width: 100%;" />
+            </td></tr>
+        </table>
+      </li>
     <?php else : ?>
-    <?php foreach ($images as $image) : ?>
+    <?php $image = $images[0]; ?>
       <li class='wpp_agent_single_image'>
         <table>
           <tr><td>
@@ -1272,54 +1209,15 @@ class class_agents {
           <a href="<?php echo self::get_link_edit($user->ID).'&amp;remove_agent_image='.$image['id']; ?>"><?php _e('Remove', ud_get_wpp_agents()->domain); ?></a>
         </div>
       </li>
-    <?php endforeach; ?>
     <?php endif; ?>
     </ul>
     <div class="clear"></div>
-    <div id="wpp_ajax_uploader"></div>
-    <noscript>
-      <p><?php _e('Please enable JavaScript to use file uploader',ud_get_wpp_agents()->domain); ?></p>
-    </noscript>
-    <div class="wpp_widget_action">
-      <div class="wpp_agent_image_wrapper">
-        <a title="Add an Image" class="button" href="javascript:;" id="wpp_add_agent_image"><?php _e('Add Image', ud_get_wpp_agents()->domain); ?></a>
-      </div>
-      <div class="wpp_ajax_loader"></div>
-      <div class="clear"></div>
-    </div>
+
+    <button class="button-secondary agent-image-select clearfix" style="width:100px;margin-bottom:10px;margin-left:7px;" data-uploader_title="<?php _e('Select', ud_get_wpp_agents()->domain); ?>"><?php _e('Select', ud_get_wpp_agents()->domain); ?></button>
     <script type="text/javascript">
-      jQuery(document).ready(function() {
-        if(typeof(qq) == 'undefined') {
-          return;
-        }
-        var uploader = new qq.FileUploader({
-          element: jQuery('#wpp_ajax_uploader')[0],
-          action: '<?php echo admin_url('admin-ajax.php'); ?>',
-          params: {
-            action: 'wpp_agent_image_upload',
-            agentId: <?php echo $user->ID; ?>
-          },
-          button: jQuery('#wpp_add_agent_image')[0],
-          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-          onSubmit: function(id, fileName){
-            jQuery(".wpp_ajax_loader").show();
-          },
-          onComplete: function(id, fileName, responseJSON){
-            jQuery(".wpp_ajax_loader").hide();
-            if ( responseJSON ) {
-              if(jQuery('#wpp_agent_image_gallery .wpp_no_agent_images').length > 0) {
-                jQuery('#wpp_agent_image_gallery .wpp_no_agent_images').remove();
-              }
-              var url = responseJSON.url;
-              var image_id = responseJSON.attachment_id;
-              var html = "<li class=\"wpp_agent_single_image\">";
-              html += "<table><tr><td><img style='width:100%;' src=\""+url+"\" alt=\"\" /></td></tr></table>";
-              html += "<div class=\"delete_image\">";
-              html += "<a href=\"<?php echo self::get_link_edit($user->ID)?>&amp;remove_agent_image="+image_id+"\"><?php _e('Remove', ud_get_wpp_agents()->domain); ?></a>";
-              html += "</div></li>";
-              jQuery('#wpp_agent_image_gallery').append(html);
-            }
-           }
+      jQuery(document).ready(function(){
+        jQuery('.agent-image-select').agent_image_select({
+          image: ".wpp_agent_single_image img"
         });
       });
     </script>
