@@ -29,7 +29,13 @@ class class_wpp_supermap {
    *
    */
   static public function init() {
+
+    add_filter ( 'wp_prepare_attachment_for_js',  array(__CLASS__, 'add_image_sizes_to_js') , 10, 3  );
+
+    wp_register_script('wpp-supermap-settings', ud_get_wpp_supermap()->path( 'static/scripts/supermap.settings.js', 'url' ), array('jquery'), '1.0.0');
+
     add_shortcode('supermap', array('class_wpp_supermap', 'shortcode_supermap'));
+    add_image_size( 'supermap_marker', 32, 32, 1 );
 
     add_action('wp_ajax_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
     add_action('wp_ajax_nopriv_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
@@ -52,12 +58,39 @@ class class_wpp_supermap {
       add_action('save_post', array('class_wpp_supermap','save_post'));
 
       add_action('wpp_publish_box_options', array('class_wpp_supermap','property_supermap_options'));
-
-      //* Upload files (markers) */
-      add_action('wp_ajax_supermap_upload_marker', array('class_wpp_supermap','ajax_marker_upload'));
     }
     //** Filter meta keys during import process @author korotkov@ud */
     add_filter('wpp_xml_import_value_on_import', array('class_wpp_supermap', 'importer_meta_filter'), 10, 4);
+  }
+
+  /**
+   * @param $response
+   * @param $attachment
+   * @param $meta
+   * @return mixed
+   */
+  public static function add_image_sizes_to_js( $response, $attachment, $meta ) {
+
+    $size_array = array( 'supermap_marker' ) ;
+
+    foreach ( $size_array as $size ):
+
+      if ( isset( $meta['sizes'][ $size ] ) ) {
+        $attachment_url = wp_get_attachment_url( $attachment->ID );
+        $base_url = str_replace( wp_basename( $attachment_url ), '', $attachment_url );
+        $size_meta = $meta['sizes'][ $size ];
+
+        $response['sizes'][ $size ] = array(
+            'height'        => $size_meta['height'],
+            'width'         => $size_meta['width'],
+            'url'           => $base_url . $size_meta['file'],
+            'orientation'   => $size_meta['height'] > $size_meta['width'] ? 'portrait' : 'landscape',
+        );
+      }
+
+    endforeach;
+
+    return $response;
   }
 
   /**
@@ -93,6 +126,8 @@ class class_wpp_supermap {
    */
   static public function settings_page() {
     global $wp_properties, $wpdb, $class_wpp_slideshow;
+
+    wp_enqueue_media();
 
     $supermap_configuration = isset( $wp_properties['configuration']['feature_settings']['supermap'] ) ? 
       $wp_properties['configuration']['feature_settings']['supermap'] : array();
@@ -205,29 +240,34 @@ class class_wpp_supermap {
               <tbody>
               <?php
               $upload_dir = wp_upload_dir();
-              $markers_dir = $upload_dir['basedir'] . '/supermap_files/markers';
               $markers_url = $upload_dir['baseurl'] . '/supermap_files/markers';
-              foreach($supermap_configuration['markers'] as $slug => $marker):  ?>
-                  <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='false'>
-                    <td class="wpp_draggable_handle">&nbsp;</td>
-                    <td class="wpp_ajax_image_upload">
-                      <div class="wpp_supermap_ajax_uploader">
-                      <?php if(!empty($marker['file']) && file_exists($markers_dir . '/' . $marker['file'])) : ?>
-                        <img class="wpp_marker_image" src="<?php echo ($markers_url . '/' . $marker['file']) ; ?>" alt="" />
-                      <?php endif; ?>
-                      </div>
-                      <input type="hidden" class="wpp_supermap_marker_file" name="wpp_settings[configuration][feature_settings][supermap][markers][<?php echo $slug; ?>][file]" value="<?php echo $marker['file']; ?>" />
-                    </td>
-                    <td>
-                      <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][markers][<?php echo $slug; ?>][name]" value="<?php echo $marker['name']; ?>" />
-                    </td>
-                    <td>
-                      <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug wpp_marker_slug">
-                    </td>
-                    <td>
-                      <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
-                    </td>
-                  </tr>
+              foreach($supermap_configuration['markers'] as $slug => $marker): ?>
+
+                <?php
+                  $marker_image_url = preg_match( '/(http|https):\/\//', $marker['file'] )
+                                      ? $marker['file'] : $markers_url . '/' . $marker['file'];
+                ?>
+
+                <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='false'>
+                  <td class="wpp_draggable_handle">&nbsp;</td>
+                  <td class="wpp_ajax_image_upload">
+                    <div class="wpp_supermap_ajax_uploader">
+                    <?php if(!empty($marker_image_url)) : ?>
+                      <img class="wpp_marker_image" src="<?php echo $marker_image_url; ?>" alt="" />
+                    <?php endif; ?>
+                    </div>
+                    <input type="hidden" class="wpp_supermap_marker_file" name="wpp_settings[configuration][feature_settings][supermap][markers][<?php echo $slug; ?>][file]" value="<?php echo $marker['file']; ?>" />
+                  </td>
+                  <td>
+                    <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][markers][<?php echo $slug; ?>][name]" value="<?php echo $marker['name']; ?>" />
+                  </td>
+                  <td>
+                    <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug wpp_marker_slug">
+                  </td>
+                  <td>
+                    <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
+                  </td>
+                </tr>
               <?php endforeach; ?>
               </tbody>
               <tfoot>
@@ -241,58 +281,8 @@ class class_wpp_supermap {
             <script type="text/javascript">
               jQuery(document).ready(function(){
 
-                function wpp_supermap_init_ajax_uploader(e) {
-                  // Don't init ajaxuploader if image already exists
-                  var img = jQuery(e).find('img');
-                  if(img.length > 0) {
-                    return;
-                  }
-
-                  var row = jQuery(e).parents('.wpp_dynamic_table_row');
-                  if(row.length > 0) {
-                    var slug = row.attr('slug');
-
-                    if(typeof eval('window.wpp_uploader_'+slug) == 'undefined' ||
-                       eval('window.wpp_uploader_'+slug) == null) {
-
-                      /* Determine if slug field is empty, - it's new row without own slug */
-                      if(jQuery('input.slug', row).val() == '') {
-                        return;
-                      }
-                      /* Initialize Uploader */
-                      var uploader = new qq.FileUploader({
-                        element: e,
-                        action: '<?php echo admin_url('admin-ajax.php'); ?>',
-                        params: {
-                          action: 'supermap_upload_marker',
-                          slug: slug
-                        },
-                        onSubmit: function() {
-                          if(!jQuery('.spinner', e).length > 0){
-                            jQuery(e).append('<div class="spinner"></div>');
-                          }
-                          jQuery('.spinner', e).show();
-                        },
-                        onComplete: function(id, fileName, responseJSON){
-                          jQuery('.spinner', e).hide();
-                          if(responseJSON.success == 'true') {
-                            jQuery('.qq-uploader', e).remove();
-                            var url = responseJSON.url;
-                            var filename = responseJSON.filename;
-                            jQuery(e).html('<img class="wpp_marker_image" src="' + url + '" alt="" />');
-                            jQuery('input.wpp_supermap_marker_file', row).val(filename);
-                            //eval('window.wpp_uploader_'+slug+' = null');
-                          }
-                        }
-                      });
-                      eval('window.wpp_uploader_'+slug+' = uploader');
-                    }
-                  }
-                }
-
-                /* Adds ajaxuploader functionality */
-                jQuery('#wpp_supermap_markers .wpp_supermap_ajax_uploader').each(function(i,e){
-                  wpp_supermap_init_ajax_uploader(e);
+                jQuery('.wpp_ajax_image_upload').map_marker_select({
+                  image: "img"
                 });
 
                 /* Remove ajaxuploader and image on Slug changing */
@@ -304,9 +294,6 @@ class class_wpp_supermap {
                     eval('window.wpp_uploader_'+slug+' = null');
                     jQuery('.wpp_supermap_ajax_uploader', row).html('');
                     jQuery('input.wpp_supermap_marker_file', row).val('');
-
-                    var uploader = jQuery('.wpp_supermap_ajax_uploader', row).get(0);
-                    wpp_supermap_init_ajax_uploader(uploader);
                   }
                 });
 
@@ -416,8 +403,12 @@ class class_wpp_supermap {
     <div class="wp-tab-panel supermap_marker_settings">
     <div class="wpp_property_type_supermap_settings">
       <div class="wpp_supermap_marker_image">
-      <?php if (!empty( $supermap_configuration['property_type_markers'][$slug] ) && file_exists( $markers_dir . "/" . $supermap_configuration['property_type_markers'][$slug] ) ) : ?>
-        <img src="<?php echo $markers_url . "/" . $supermap_configuration['property_type_markers'][$slug]; ?>" alt="" />
+      <?php if (!empty( $supermap_configuration['property_type_markers'][$slug] ) ) : ?>
+        <?php
+        $marker_image_url = preg_match( '/(http|https):\/\//', $supermap_configuration['property_type_markers'][$slug] )
+            ? $supermap_configuration['property_type_markers'][$slug] : $markers_url . "/" . $supermap_configuration['property_type_markers'][$slug];
+        ?>
+        <img src="<?php echo $marker_image_url; ?>" alt="" />
       <?php else : ?>
       <img src="<?php echo $default_marker; ?>" alt="" />
       <?php endif; ?>
@@ -445,7 +436,7 @@ class class_wpp_supermap {
             var rand = Math.random();
             var HTML = '';
             if(filename != '') {
-              HTML = '<img src="<?php echo $markers_url; ?>/' + filename + '?' + rand + '" alt="" />';
+              HTML = '<img src="' + filename + '?' + rand + '" alt="" />';
             } else {
               HTML = '<img src="<?php echo $default_marker; ?>" alt="" />';
             }
@@ -474,89 +465,6 @@ class class_wpp_supermap {
   }
 
   /**
-   * Handles ajax file uploads.
-   * Uploads submitted file.
-   *
-   * @author Maxim Peshkov
-   */
-  static public function ajax_marker_upload() {
-    global $wp_properties;
-
-    $return = array();
-
-    $file_name = $_REQUEST['qqfile'];
-    $slug = $_REQUEST['slug'];
-
-    //* Available Extensions */
-    $exts = array('jpg','jpeg','png','gif','bmp');
-    $ext = pathinfo($file_name, PATHINFO_EXTENSION);
-
-    if(!in_array($ext, $exts)) {
-      $return['error'] = __('File should be an image',ud_get_wpp_supermap()->domain);
-    } else {
-      $upload_dir = wp_upload_dir();
-      $files_dir = $upload_dir['basedir'] . '/supermap_files';
-      $files_markers_dir = $files_dir .  '/markers';
-      $files_markers_url = $upload_dir['baseurl'] . '/supermap_files/markers';
-
-      if(!is_dir($files_dir)) {
-        mkdir($files_dir, 0755);
-      }
-
-      if(!is_dir($files_markers_dir)) {
-        mkdir($files_markers_dir, 0755);
-        fopen($files_markers_dir . '/index.php', "w");
-      }
-
-      $path = $files_markers_dir . '/'. $file_name;
-
-      if ( empty( $_FILES ) ) {
-        $temp = tmpfile();
-        $input = fopen("php://input", "r");
-        $realSize = stream_copy_to_stream($input, $temp);
-        fclose($input);
-        $target = fopen($path, "w");
-        fseek($temp, 0, SEEK_SET);
-        stream_copy_to_stream($temp, $target);
-        fclose($target);
-      } else {
-        //* for IE!!! */
-        move_uploaded_file($_FILES['qqfile']['tmp_name'], $path);
-      }
-
-      //* Try to resize file */
-      $rf = image_make_intermediate_size($path, 32, 32, false);
-      if(!empty($rf['file'])) {
-        $resized_file_old = $files_markers_dir . '/'. $rf['file'];
-      } else {
-        $resized_file_old = $path;
-      }
-
-      //* Rename file */
-      $resized_file_new = $files_markers_dir . '/'. $slug . '.' . $ext;
-      if(file_exists($resized_file_new)) {
-        $return['step'] = $resized_file_new;
-        unlink($resized_file_new);
-      }
-      rename($resized_file_old, $resized_file_new);
-      if(file_exists($path)) {
-        unlink($path);
-      }
-      //* END Resize and Rename file */
-
-      if(!file_exists($resized_file_new)) {
-        $return['error'] = __('Looks like, Image can not be uploaded.', ud_get_wpp_supermap()->domain);
-      } else {
-        $return['success'] = 'true';
-        $return['url'] = $files_markers_url . '/' . $slug . '.' . $ext . '?' . (rand(0,100));
-        $return['filename'] = $slug . '.' . $ext;
-      }
-    }
-
-    die(htmlspecialchars(json_encode($return), ENT_NOQUOTES));
-  }
-
-  /**
    * Enqueue scripts on specific pages, and print content into head
    *
    * @uses $current_screen global variable
@@ -567,7 +475,7 @@ class class_wpp_supermap {
 
     //* WPP Settings Page */
     if($current_screen->id == 'property_page_property_settings') {
-      wp_enqueue_script('wpp-jquery-ajaxupload');
+      wp_enqueue_script('wpp-supermap-settings');
     }
 
     //* Add custom supermap styles */
@@ -662,10 +570,14 @@ class class_wpp_supermap {
     if(empty($supermap_marker)) {
       $marker_url = $default_marker;
     } else {
-      $marker_url = $markers_url . "/" . $supermap_marker;
-      $marker_dir = $markers_dir . "/" . $supermap_marker;
-      if(!file_exists($marker_dir)) {
-        $marker_url = $default_marker;
+      if ( preg_match( '/(http|https):\/\//', $supermap_marker ) ) {
+        $marker_url = $supermap_marker;
+      } else {
+        $marker_url = $markers_url . "/" . $supermap_marker;
+        $marker_dir = $markers_dir . "/" . $supermap_marker;
+        if (!file_exists($marker_dir)) {
+          $marker_url = $default_marker;
+        }
       }
     }
     ?>
@@ -679,7 +591,11 @@ class class_wpp_supermap {
         <option value="default_google_map_marker"><?php _e('Default by Google', ud_get_wpp_supermap()->domain); ?></option>
         <?php if(!empty($supermap_configuration['markers'])) : ?>
           <?php foreach ($supermap_configuration['markers'] as $mslug => $mvalue) : ?>
-            <option value="<?php echo $mvalue['file']; ?>" <?php selected($supermap_marker, $mvalue['file']); ?>><?php echo $mvalue['name']; ?></option>
+            <?php
+            $marker_image_url = preg_match( '/(http|https):\/\//', $mvalue['file'] )
+                ? $mvalue['file'] : $marker_url . '/' . $mvalue['file'];
+            ?>
+            <option value="<?php echo $marker_image_url; ?>" <?php selected($supermap_marker, $marker_image_url); ?>><?php echo $mvalue['name']; ?></option>
           <?php endforeach; ?>
         <?php endif; ?>
       </select>
@@ -697,7 +613,7 @@ class class_wpp_supermap {
             var rand = Math.random();
             var HTML = '';
             if(filename != '' && filename != 'default_google_map_marker') {
-              HTML = '<img src="<?php echo $markers_url; ?>/' + filename + '?' + rand + '" alt="" />';
+              HTML = '<img src="' + filename + '?' + rand + '" alt="" />';
             } else {
               HTML = '<img src="<?php echo $default_marker; ?>" alt="" />';
             }
@@ -803,10 +719,14 @@ class class_wpp_supermap {
     if(empty($supermap_marker)) {
       $marker_url = '';
     } else {
-      $marker_url = $markers_url . "/" . $supermap_marker;
-      $marker_dir = $markers_dir . "/" . $supermap_marker;
-      if(!file_exists($marker_dir)) {
-        $marker_url = '';
+      if ( preg_match( '/(http|https):\/\//', $supermap_marker ) ) {
+        $marker_url = $supermap_marker;
+      } else {
+        $marker_url = $markers_url . "/" . $supermap_marker;
+        $marker_dir = $markers_dir . "/" . $supermap_marker;
+        if(!file_exists($marker_dir)) {
+          $marker_url = '';
+        }
       }
     }
 
