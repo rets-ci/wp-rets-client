@@ -35,7 +35,7 @@ class class_wpp_supermap {
     wp_register_script('wpp-supermap-settings', ud_get_wpp_supermap()->path( 'static/scripts/supermap.settings.js', 'url' ), array('jquery'), '1.0.0');
 
     add_shortcode('supermap', array('class_wpp_supermap', 'shortcode_supermap'));
-    add_image_size( 'supermap_marker', 32, 32, 1 );
+    add_image_size( 'supermap_marker', 32, 32, 0 );
 
     add_action('wp_ajax_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
     add_action('wp_ajax_nopriv_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
