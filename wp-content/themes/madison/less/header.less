@@ -171,40 +171,60 @@
 
 /** ----------------------------------------:[ search ]:--- */
 .section-property-search {
-	display: none;
-	padding: 1em 0 1.5em;
-	background: @primary;
-	border-top: 1px solid transparent;
-	border-color: rgba( 255, 255, 255, .1 );
-	color: @white;
-	label {
-		display: block;
-		color: @white;
-	}
-	.price-inputs {
-		input {
-			width: 45%;
-		}
-	}
-	.col-3-12 {
-		.col-inner {
-			margin-right: 1em;
-		}
-	}
-	input,
-	select {
-		background: transparent;
-		border-color: @white;
-		color: @white;
-		&:focus {
-			background: @white;
-			border-color: @green;
-			color: @green;
-		}
-	}
-	.submit {
-		margin-top: 28px;
-	}
+  padding: 20px;
+  background: white;
+  border-bottom: 2px solid #e95a65;
+}
+.section-property-search .column {
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+.section-property-search input,
+.section-property-search select {
+  background: white;
+  border: 1px solid #e5e5e5;
+  height: 46px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 10px;
+  max-width: 100%;
+}
+
+.section-property-search select {
+  background-image: ~'url("images/arrow-down.png")';
+  background-position: 90% center;
+  background-repeat: no-repeat;
+}
+
+.section-property-search input::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #404040;
+}
+.section-property-search input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #404040;
+  opacity:  1;
+}
+.section-property-search input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #404040;
+  opacity:  1;
+}
+.section-property-search input:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color:    #404040;
+}
+
+.section-property-search input:focus,
+.section-property-search select:focus {
+  color: #252525;
+  border-color: #252525;
+}
+.section-property-search .submit {
+  width: 100%;
+  background: #e95a65;
+  color: white;
+  border: 1px solid #e95a65;
 }
 
 /** ----------------------------------------:[ breadcrumbs ]:--- */

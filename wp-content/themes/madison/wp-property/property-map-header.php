@@ -14,7 +14,7 @@
 		<div class="section-container">
 			<div class="property-map-header">
 				<span class="property-title"><?php the_title(); ?></span>
-				<span class="property-address"><?php echo $post->address; ?></span>
+				<span class="property-address"><?php echo $post->$wp_properties['configuration']['address_attribute']; ?></span>
 			</div>
 		</div>
 	</section>

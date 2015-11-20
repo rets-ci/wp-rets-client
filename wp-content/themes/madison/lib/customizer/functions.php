@@ -145,7 +145,9 @@ function madison_customize_register( $wp_customize ) {
 		$_attributes = array();
 		if ( !empty( $wp_properties['searchable_attributes'] ) && is_array( $wp_properties['searchable_attributes'] ) ) {
 			foreach( $wp_properties['searchable_attributes'] as $_attr_slug ) {
-				$_attributes[$_attr_slug] = $wp_properties['property_stats'][$_attr_slug];
+        if( !empty($wp_properties['property_stats'][$_attr_slug]) ) {
+          $_attributes[$_attr_slug] = $wp_properties['property_stats'][$_attr_slug];
+        }
 			}
 		}
 		$_attributes['s'] = __('Full Text', 'madison');
@@ -473,6 +475,75 @@ function madison_customize_register( $wp_customize ) {
 		'section'  => 'madison_footer',
 		'settings' => 'madison_footer_text',
 	)));
+
+  $wp_customize->add_section( 'madison_supermap', array(
+    'title'    => __( 'Supermap Settings', 'madison' ),
+    'description' => __( 'Use this section to customize the supermap on your home page', 'madison' ),
+    'priority' => 104
+  ));
+
+  $wp_customize->add_setting( 'madison_supermap_height', array(
+      'default'   => '500'
+  ));
+
+  $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'madison_supermap_height', array(
+    'label'    => __( 'Height', 'madison' ),
+    'section'  => 'madison_supermap',
+    'settings' => 'madison_supermap_height',
+  )));
+
+  $wp_customize->add_setting( 'madison_supermap_per_page', array(
+    'default'   => '10'
+  ));
+
+  $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'madison_supermap_per_page', array(
+    'label'    => __( 'Number of Properties', 'madison' ),
+    'section'  => 'madison_supermap',
+    'settings' => 'madison_supermap_per_page',
+  )));
+
+  $wp_customize->add_setting( 'madison_supermap_hide_sidebar', array(
+      'default'   => 'true'
+  ));
+
+  $wp_customize->add_control( 'madison_supermap_hide_sidebar', array(
+      'label'   => __( 'Hide Sidebar', 'madison' ),
+      'section' => 'madison_supermap',
+      'type'    => 'select',
+      'choices' => array(
+        'true' => __( 'Yes', 'madison' ),
+        'false' => __( 'No', 'madison' )
+      ),
+      'settings' => 'madison_supermap_hide_sidebar'
+  ));
+
+  $wp_customize->add_setting( 'madison_supermap_pagination', array(
+      'default'   => 'off'
+  ));
+
+  $wp_customize->add_control( 'madison_supermap_pagination', array(
+      'label'   => __( 'Enable Pagination', 'madison' ),
+      'section' => 'madison_supermap',
+      'description' => __( 'Enable it if you need Number of Properties option to work', 'madison' ),
+      'type'    => 'select',
+      'choices' => array(
+          'on' => __( 'Yes', 'madison' ),
+          'off' => __( 'No', 'madison' )
+      ),
+      'settings' => 'madison_supermap_pagination'
+  ));
+
+  $wp_customize->add_setting( 'madison_supermap_custom_query', array(
+      'default'   => ''
+  ));
+
+  $wp_customize->add_control( 'madison_supermap_custom_query', array(
+      'label'   => __( 'Custom Query', 'madison' ),
+      'section' => 'madison_supermap',
+      'description' => __( 'e.g. property_type="building" price="999"', 'madison' ),
+      'type'    => 'text',
+      'settings' => 'madison_supermap_custom_query'
+  ));
 }
 add_action( 'customize_register', 'madison_customize_register' );
 

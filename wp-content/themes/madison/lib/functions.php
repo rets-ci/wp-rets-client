@@ -181,7 +181,7 @@ function madison_scripts() {
 	if ( ! wp_script_is( 'spin', 'registered' ) ) {
 		wp_register_script( 'spin', get_template_directory_uri() . '/js/spin.min.js', array(), '1.3.3', true );
 	}
-  
+
   wp_register_script( 'modernizr', 'https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js', array(), '2.8.3', false );
 
 	// Enqueue the global script.
@@ -289,7 +289,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                   'search_values' => $search_values,
                   'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_1 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_1 ] : '',
                   'input_type' => $field_1_type,
-                  'madison_placeholder' => $wp_properties['property_stats'][$field_1]
+                  'madison_placeholder' => !empty($wp_properties['property_stats'][$field_1])?$wp_properties['property_stats'][$field_1]:''
               ) );
               ?>
             </div>
@@ -301,7 +301,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_2 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_2 ] : '',
                     'input_type' => $field_2_type,
-                    'madison_placeholder' => $wp_properties['property_stats'][$field_2]
+                    'madison_placeholder' => !empty($wp_properties['property_stats'][$field_2])?$wp_properties['property_stats'][$field_2]:''
                 ) );
                 ?>
               </div>
@@ -314,7 +314,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_3 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_3 ] : '',
                     'input_type' => $field_3_type,
-                    'madison_placeholder' => $wp_properties['property_stats'][$field_3]
+                    'madison_placeholder' => !empty($wp_properties['property_stats'][$field_3])?$wp_properties['property_stats'][$field_3]:''
                 ) );
                 ?>
               </div>
@@ -327,7 +327,7 @@ if ( !function_exists( 'madison_maybe_header_property_search' ) ) {
                     'search_values' => $search_values,
                     'value' => isset( $_REQUEST[ 'wpp_search' ][ $field_4 ] ) ? $_REQUEST[ 'wpp_search' ][ $field_4 ] : '',
                     'input_type' => $field_4_type,
-                    'madison_placeholder' => $wp_properties['property_stats'][$field_4]
+                    'madison_placeholder' => !empty($wp_properties['property_stats'][$field_4])?$wp_properties['property_stats'][$field_4]:''
                 ) );
                 ?>
               </div>

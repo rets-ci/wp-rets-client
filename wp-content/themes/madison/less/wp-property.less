@@ -281,6 +281,9 @@
 	}
 }
 /** ----------------------------------------:[ single property ]:--- */
+.gm-style img {
+  max-width: none;
+}
 .property {
 	&-map {
 		&-container {
@@ -324,6 +327,7 @@
 				width: 10%;
 			}
 			a {
+                margin-bottom: 10px;
 				display: block;
 				margin-right: 10px;
 				opacity: .5;
@@ -390,6 +394,7 @@
 	&-feature {
 		text-align: center;
 		a {
+            margin-bottom: 4px;
 			display: inline-block;
 			padding: 0 0.5em;
 			background: @light;
@@ -450,12 +455,13 @@
 			padding: 1em;
 		}
 		.left {
-			border-right: 1px solid @light;
 			font-weight: bold;
 			text-align: right;
 		}
 		.right {
+            border-left: 1px solid #ededed;
 			text-align: left;
+            word-wrap: break-word;
 		}
 	}
 	.entry {
@@ -680,9 +686,14 @@
 	.wpp_sorter_options {
 		float: right;
 		span {
-			display: block;
-			float: left;
-			padding: 1em 1em;
+          background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+          border-radius: 0;
+          display: block;
+          float: left;
+          font-size: 100%;
+          line-height: inherit;
+          padding: 1em;
+          font-weight: normal;
 		}
 	}
 	.wpp_sort_by_text {
@@ -745,7 +756,7 @@
 		width: 80px;
 		height: 80px;
 		margin: 0 0 0 -40px;
-		background: @light url( "images/ajax-loader.gif" ) center center no-repeat;
+		background: @light ~"url('images/ajax-loader.gif')" center center no-repeat;
 		top: 100px;
 		left: 50%;
 		display: none;
@@ -865,7 +876,7 @@
   top: 45%;
   z-index: 99;
   cursor: pointer;
-  background: url("images/arrows.png") no-repeat scroll 0 0 transparent;
+  background: ~"url('images/arrows.png')" no-repeat scroll 0 0 transparent;
   border: 0 none;
   display: block;
   height: 30px;
@@ -878,7 +889,7 @@
 }
 
 .nivo-directionNav a.nivo-nextNav {
-  background: url("images/arrows.png") no-repeat scroll -30px 0 transparent;
+  background: ~"url('images/arrows.png')" no-repeat scroll -30px 0 transparent;
   right: 15px;
 }
 
@@ -888,7 +899,7 @@
 }
 
 .nivo-controlNav a {
-  background: url("images/bullets.png") no-repeat scroll 0 0 transparent;
+  background: ~"url('images/arrows.png')" no-repeat scroll 0 0 transparent;
   border: 0 none;
   display: block;
   float: left;
@@ -1121,7 +1132,7 @@ input.wpp_supermap_input_field_min, input.wpp_supermap_input_field_max {
   height: 13px;
   font-size: 10px;
   color: #888888;
-  background: url(images/ajax-loader.gif) center left no-repeat;
+  background: ~"url(images/ajax-loader.gif)" center left no-repeat;
 }
 
 .super_map_list ul.property_in_list_items > li.supermap_list_title span {
@@ -1258,4 +1269,32 @@ input.wpp_supermap_input_field_min, input.wpp_supermap_input_field_max {
   margin-bottom: 5px;
   text-align: left;
   width: 60px;
+}
+
+.wpp_agent_widget_wrapper {
+  .wpp_agent_info_list {
+    min-height: 150px;
+  }
+}
+
+.true-checkbox-image {
+  background: transparent ~"url(images/true-checkbox-image.png)" no-repeat scroll 0 0;
+  float: left;
+  height: 15px;
+  margin: 6px 0;
+  width: 15px;
+}
+
+.wpp_property_overview_shortcode .property .property_image, .wpp_property_overview_shortcode .property_div .property_image {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+
+.wpp_property_overview_shortcode .property .wpp_overview_data, .wpp_property_overview_shortcode .property_div .wpp_overview_data {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+
+.thumbnail {
+  border: none;
 }
