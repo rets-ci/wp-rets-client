@@ -7,71 +7,49 @@
 
     <input type="hidden" name="rdc_fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_E1FC2444265AE411B3136C3BE5A87DF0&tver=2013&c=1" />
 
-    <div class="label">
-      <label for="powf_29adbc5e265ae411b3136c3be5a87df0">E-mail</label>
-      <span class="required">*</span>
-      <span class="tip"></span>
-
-    </div>
-
     <div class="field">
-      <input requred type="text" id="powf_29adbc5e265ae411b3136c3be5a87df0" name="powf_29adbc5e265ae411b3136c3be5a87df0"
-             value="" maxlength="100" class="required"/>
-
-
-    </div>
-
-    <div class="clear"></div>
-    <div class="label">
-      <label for="powf_19ae158a265ae411b3136c3be5a87df0">First Name</label>
-      <span class="required">*</span>
-      <span class="tip"></span>
-
-    </div>
-
-    <div class="field">
-      <input requred type="text" id="powf_19ae158a265ae411b3136c3be5a87df0" name="powf_19ae158a265ae411b3136c3be5a87df0"
-             value="" maxlength="100" class="required"/>
-
-
-    </div>
-
-    <div class="clear"></div>
-    <div class="label">
-      <label for="powf_2940c89e265ae411b3136c3be5a87df0">Last Name</label>
-      <span class="required">*</span>
-      <span class="tip"></span>
-
-    </div>
-
-    <div class="field">
-      <input requred type="text" id="powf_2940c89e265ae411b3136c3be5a87df0" name="powf_2940c89e265ae411b3136c3be5a87df0"
+      <input placeholder="E-mail *" requred type="text" id="powf_29adbc5e265ae411b3136c3be5a87df0" name="powf_29adbc5e265ae411b3136c3be5a87df0"
              value="" maxlength="100" class="required"/>
 
     </div>
 
     <div class="clear"></div>
-    <div class="label">
-      <label for="powf_ee9450b8265ae411b3136c3be5a87df0">Company</label>
-      <span class="tip"></span>
+
+    <div class="first_name">
+
+      <div class="field">
+        <input placeholder="First Name *" requred type="text" id="powf_19ae158a265ae411b3136c3be5a87df0" name="powf_19ae158a265ae411b3136c3be5a87df0"
+               value="" maxlength="100" class="required"/>
+
+
+      </div>
+
+      <div class="clear"></div>
+
+    </div>
+
+    <div class="last_name">
+
+      <div class="field">
+        <input placeholder="Last Name *" requred type="text" id="powf_2940c89e265ae411b3136c3be5a87df0" name="powf_2940c89e265ae411b3136c3be5a87df0"
+               value="" maxlength="100" class="required"/>
+
+      </div>
+
+      <div class="clear"></div>
 
     </div>
 
     <div class="field">
-      <input type="text" id="powf_ee9450b8265ae411b3136c3be5a87df0" name="powf_ee9450b8265ae411b3136c3be5a87df0"
+      <input placeholder="Company" type="text" id="powf_ee9450b8265ae411b3136c3be5a87df0" name="powf_ee9450b8265ae411b3136c3be5a87df0"
              value="" maxlength="100"/>
 
     </div>
 
     <div class="clear"></div>
-    <div class="label">
-      <label for="powf_9ec8f6d0265ae411b3136c3be5a87df0">Phone Number</label>
-      <span class="tip"></span>
-
-    </div>
 
     <div class="field">
-      <input type="text" id="powf_9ec8f6d0265ae411b3136c3be5a87df0" name="powf_9ec8f6d0265ae411b3136c3be5a87df0"
+      <input placeholder="Phone Number" type="text" id="powf_9ec8f6d0265ae411b3136c3be5a87df0" name="powf_9ec8f6d0265ae411b3136c3be5a87df0"
              value="" maxlength="100"/>
 
     </div>
@@ -124,14 +102,9 @@
     </div>
 
     <div class="clear"></div>
-    <div class="label">
-      <label for="powf_f91ecac0275ae411b3136c3be5a87df0">Comments</label>
-      <span class="tip"></span>
-
-    </div>
 
     <div class="field">
-      <input type="text" id="powf_f91ecac0275ae411b3136c3be5a87df0" name="powf_f91ecac0275ae411b3136c3be5a87df0"
+      <input placeholder="Comments" type="text" id="powf_f91ecac0275ae411b3136c3be5a87df0" name="powf_f91ecac0275ae411b3136c3be5a87df0"
              value="" maxlength="2000"/>
 
     </div>
