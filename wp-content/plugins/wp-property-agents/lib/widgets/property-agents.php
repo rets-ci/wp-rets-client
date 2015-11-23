@@ -59,6 +59,7 @@ class AgentWidget extends WP_Widget {
     echo "</div>";
 
     echo $after_widget;
+    do_action( 'wpp:agent:widget:end', $agent_data );
   }
 
   function update($new_instance, $old_instance) {

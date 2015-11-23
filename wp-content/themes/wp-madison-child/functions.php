@@ -251,3 +251,17 @@ add_filter( 'wpp::attribute::display', function( $attribute_value, $meta_key ) {
 add_action( 'init', function(){
   add_post_type_support( 'page', 'excerpt' );
 } );
+
+add_action( 'wpp:agent:widget:end', function( $agent_data ){
+  $a = new SiteOrigin_Widget_GetTouch_Modal_Widget(array(
+    'title' => 'Test',
+    'form' => 'rdc-schedule-showing'
+  ));
+  $a->widget(array(
+    'before_widget' => '<div class="widget_rdc-get-touch-modal">',
+    'after_widget' => '</div>'
+  ), array(
+    'title' => 'Test',
+    'form' => 'rdc-schedule-showing'
+  ));
+});

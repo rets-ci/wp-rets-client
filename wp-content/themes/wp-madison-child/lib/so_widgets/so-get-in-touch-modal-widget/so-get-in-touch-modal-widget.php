@@ -15,7 +15,7 @@ add_filter( 'siteorigin_widgets_template_file_rdc-get-touch-modal', function( $t
 
 class SiteOrigin_Widget_GetTouch_Modal_Widget extends SiteOrigin_Widget {
 
-	function __construct() {
+	function __construct($options = array()) {
 
 		parent::__construct(
 			'rdc-get-touch-modal',
@@ -24,7 +24,7 @@ class SiteOrigin_Widget_GetTouch_Modal_Widget extends SiteOrigin_Widget {
 				'description' => __('Display Form modal.', 'rdc'),
 				'has_preview' => false
 			),
-			array(),
+      $options,
 			array(
 				'title' => array(
 					'type' => 'text',
