@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 3.6.0
 Tested up to: 4.3
-Stable tag: 2.3.1
+Stable tag: 2.4
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -125,22 +125,39 @@ https://github.com/bonny/WordPress-Simple-History
 are of type post and pages and media (i.e. images & other uploads), and only events
 initiated by a specific user.
 
-2. Events with different severity – Simple History uses the log levels specified in the PHP PSR-3 standard.
+2. The __Post Quick Diff__ feature will make it quick and easy for a user of a site to see what updates other users are have done to posts and pages.
 
-3. Events have context with extra details - Each logged event can include useful rich formatted extra information. For example: a plugin install can contain author info and a the url to the plugin, and an uploaded image can contain a thumbnail of the image.
+3. Events with different severity – Simple History uses the log levels specified in the PHP PSR-3 standard.
 
-4. Click on the IP address of an entry to view the location of for example a failed login attempt.
+4. Events have context with extra details - Each logged event can include useful rich formatted extra information. For example: a plugin install can contain author info and a the url to the plugin, and an uploaded image can contain a thumbnail of the image.
+
+5. Click on the IP address of an entry to view the location of for example a failed login attempt.
+
+6. See even more details about a logged event (by clicking on the date and time of the event).
 
 
 == Changelog ==
 
 ## Changelog
 
+= 2.4 (November 2015) =
+
+- Added: Now logs when a user changes their password using the "reset password" link.
+- Added: Now logs when a user uses the password reset form.
+- Added: New method `register_dropin` that can be used to add dropins.
+- Added: New action `simple_history/add_custom_dropin`.
+- Added: Example on how to add an external dropin: [example-dropin.php](https://github.com/bonny/WordPress-Simple-History/blob/master/examples/example-dropin.php).
+- Added: "Last day" added to filter, because a brute force attack can add so many logs that it's not possible to fetch a whole week.
+- Changed: Filter `simple_history/log/do_log` now pass 5 arguments instead of 3. Before this update in was not possible for multiple add_action()-calls to use this filter, because you would not now if any other code had canceled it and so on. If you have been using this filter you need to modify your code.
+- Changed: When hovering the time of an event in the log, the date of the event displays in both local time and GMT time. Hopefully makes it easier for admins in different timezones that work together on a site to understand when each event happened. Fixes https://github.com/bonny/WordPress-Simple-History/issues/84.
+- Fixed: Line height was a bit tight on the dashboard. Also: the margin was a tad to small for the first logged event on the dashboard.
+- Fixed: Username was not added correctly to failed login attempts when using plugin Captcha on Login + it would still show that a user logged out sometimes when a bot/script brute force attacked a site by only sending login and password and not the captcha field.
+
 = 2.3.1 (October 2015) =
 
 - Fixed: Hopefully fixed the wrong relative time, as reported here: https://wordpress.org/support/topic/wrong-reporting-time.
 - Changed: The RSS-feed with updates is now disabled by default for new installs. It is password protected, but some users felt that is should be optional to activate it. And now it is! Thanks to https://github.com/guillaumemolter for adding this feature.
-- Fixed: Failed login entries when using plugin (Captcha on Login)[https://wordpress.org/plugins/captcha-on-login/] was reported as "Logged out" when they really meant "Failed to log in". Please note that this was nothing that Simple History did wrong, it was rather Captcha on Login that manually called `wp_logout()` each time a user failed to login. Should fix all those mystery "Logged out"-entried some of you users had.
+- Fixed: Failed login entries when using plugin [Captcha on Login](https://wordpress.org/plugins/captcha-on-login/) was reported as "Logged out" when they really meant "Failed to log in". Please note that this was nothing that Simple History did wrong, it was rather Captcha on Login that manually called `wp_logout()` each time a user failed to login. Should fix all those mystery "Logged out"-entried some of you users had.
 - Added: Filter `simple_history/log/do_log` that can be used to shortcut the log()-method.
 - Updated: German translation updated.
 
