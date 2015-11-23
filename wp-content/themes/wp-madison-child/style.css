@@ -1247,3 +1247,6 @@ body.page-template-page-wide #site-content article .entry-inner header {
   background: url("static/images/icons/phone.png") no-repeat scroll 15px center;
   background-size: 60px 60px;
 }
+.single-property .is-sticky .widget.widget_agentwidget {
+  margin-top: 0;
+}

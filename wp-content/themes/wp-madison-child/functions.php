@@ -39,6 +39,10 @@ function rdc_theme_enqueue_scripts() {
   if( !empty( $recaptcha ) ) {
     wp_enqueue_script( 'google-recaptcha-api', 'https://www.google.com/recaptcha/api.js' );
   }
+
+  if ( is_singular( 'property' ) ) {
+    wp_enqueue_script( 'rdc-sticky', get_stylesheet_directory_uri() . '/static/js/jquery.sticky.js', array( 'jquery' ) );
+  }
 }
 
 /**
