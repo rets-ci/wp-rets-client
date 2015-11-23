@@ -11,6 +11,13 @@
   margin: auto;
   padding: 0;
 }
+.rdc-rating .modal-feedback-form .close-btn {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: -30px;
+  z-index: 999999;
+}
 .rdc-rating .modal-feedback-form .overlay {
   position: fixed;
   bottom: 0;

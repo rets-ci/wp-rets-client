@@ -85,6 +85,10 @@ class SiteOrigin_Widget_Rating_Widget extends SiteOrigin_Widget {
 	function get_style_name($instance){
 		return false;
 	}
+
+  public function widget_url() {
+    return get_stylesheet_directory_uri().'/lib/so_widgets/so-rating-widget/';
+  }
 }
 
 siteorigin_widget_register('rating', __FILE__);

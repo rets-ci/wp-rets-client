@@ -13,12 +13,20 @@
     }
 
     $( '.star-item', block).on( 'click', function(  ){
-      form.show();
+      form.show().css('opacity', 0).animate({
+        opacity: 1
+      }, 500);
     } );
 
-    $( '.overlay', form ).on( 'click', function(  ){
+    $( '.overlay, .close-btn', form ).on( 'click', function(  ){
       form.hide();
     } );
+
+    jQuery(document).keyup(function(e) {
+      if (e.keyCode == 27) {
+        form.hide();
+      }
+    });
 
   });
 

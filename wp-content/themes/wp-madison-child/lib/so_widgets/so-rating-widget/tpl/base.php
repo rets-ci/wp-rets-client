@@ -50,6 +50,9 @@ if( !empty( $rate ) && is_numeric( $rate ) ) {
 
 	<div class="modal-feedback-form">
 		<div class="modal-inner-wrapper">
+      <div class="close-btn">
+        <img src="<?php echo $this->widget_url() ?>/assets/icons/close.png" alt="" />
+      </div>
 			<div class="modal-inner">
 				<h3 class="header"><?php echo $instance[ 'feedback_label' ] ?></h3>
 				<div class="content">
