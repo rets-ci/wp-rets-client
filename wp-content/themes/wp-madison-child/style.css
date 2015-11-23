@@ -1105,6 +1105,10 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .tenants-page .rdc-property-carousel {
   background: white;
 }
+.tenants-page .rdc-property-carousel .wpp_search_select_field {
+  color: #474747;
+  background-image: url("lib/so_widgets/so-property-carousel-widget/css/images/arrow-down-474747.png") !important;
+}
 .tenants-page .rdc-property-carousel .rdc-carousel-item {
   border: 1px solid #e6e6e6;
 }

@@ -60,7 +60,7 @@
   margin: 0;
   width: auto;
   border: none;
-  color: #bdbcbd;
+  color: white;
   -moz-appearance: none;
   -webkit-appearance: none;
   background-image: url("images/arrow-down-white.png");
@@ -116,6 +116,9 @@
 .rdc-carousel-title a.rdc-carousel-next:hover,
 .rdc-carousel-title a.rdc-carousel-previous:hover {
   background: #cf3428;
+  color: white !important;
+  border: 1px solid #cf3428 !important;
+  transition: color .3s, background .3s, border .3s;
 }
 .rdc-carousel-title a.rdc-carousel-next {
   right: 40px;
