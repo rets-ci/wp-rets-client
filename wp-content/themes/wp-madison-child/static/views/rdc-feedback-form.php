@@ -1,5 +1,4 @@
 <div class="rdc-feedback-form">
-  <script src="https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js" type="text/javascript"></script>
   <form id="powf_E1FC2444265AE411B3136C3BE5A87DF0" class="contact_form"
         enctype="multipart/form-data"
         action="<?php echo home_url() ?>?rdc_action=submit_form"
@@ -148,8 +147,13 @@
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/feedback/"/>
     <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
-    <?php $recaptcha_key = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha_key ) ) : ?>
-      <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+    <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
+      <div class="recaptcha" id="feedback-recaptcha"></div>
+      <script>
+        jQuery(window).load(function(){
+          grecaptcha.render('feedback-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+        });
+      </script>
     <?php endif; ?>
 
     <div class="submit-wrapper">

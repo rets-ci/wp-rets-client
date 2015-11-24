@@ -58,6 +58,8 @@ class AgentWidget extends WP_Widget {
     echo implode($agent_data);
     echo "</div>";
 
+    do_action( 'wpp:agent:widget:before_end', $agent_data );
+
     echo $after_widget;
     do_action( 'wpp:agent:widget:end', $agent_data );
   }

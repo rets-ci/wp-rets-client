@@ -265,17 +265,20 @@ a:hover {
   padding-right: 30px;
 }
 .widget_rdc-schedule-showing form span.required,
-.widget_rdc-prospect-landlord-form form span.required {
+.widget_rdc-prospect-landlord-form form span.required,
+.widget_rdc-application-request-form form span.required {
   position: absolute;
   color: red;
 }
 .widget_rdc-schedule-showing form .label,
-.widget_rdc-prospect-landlord-form form .label {
+.widget_rdc-prospect-landlord-form form .label,
+.widget_rdc-application-request-form form .label {
   color: black;
   font-size: 100%;
 }
 .widget_rdc-schedule-showing form .field,
-.widget_rdc-prospect-landlord-form form .field {
+.widget_rdc-prospect-landlord-form form .field,
+.widget_rdc-application-request-form form .field {
   margin-bottom: 20px;
 }
 .ui-datepicker {
@@ -604,7 +607,8 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .rdc-feedback-form form .label label {
   white-space: normal;
 }
-.g-recaptcha {
+.g-recaptcha,
+.recaptcha {
   margin-bottom: 20px;
 }
 /** HERO SO WIDGET */
@@ -922,6 +926,13 @@ body.page-template-page-wide #site-content article .entry-inner header {
     margin: 0 auto 25px auto;
   }
 }
+.rdc-agent-modals {
+  margin-top: -50px !important;
+}
+.rdc-agent-modals .btn {
+  width: 100%;
+  margin-bottom: 15px;
+}
 .widget_rdc-get-touch-modal {
   margin: 0 !important;
   position: fixed;
@@ -932,7 +943,8 @@ body.page-template-page-wide #site-content article .entry-inner header {
   z-index: 999;
   display: none;
 }
-.widget_rdc-get-touch-modal .g-recaptcha * {
+.widget_rdc-get-touch-modal .g-recaptcha *,
+.widget_rdc-get-touch-modal .recaptcha * {
   margin: auto;
 }
 .widget_rdc-get-touch-modal .so-widget-rdc-get-touch-modal-base {

@@ -323,7 +323,7 @@ a:hover {
   }
 }
 
-.widget_rdc-schedule-showing, .widget_rdc-prospect-landlord-form {
+.widget_rdc-schedule-showing, .widget_rdc-prospect-landlord-form, .widget_rdc-application-request-form {
   form {
     span.required {
       position: absolute;
@@ -849,7 +849,7 @@ body.page-template-page-wide {
 
 }
 
-.g-recaptcha {
+.g-recaptcha, .recaptcha {
   margin-bottom: 20px;
 }
 
@@ -1233,6 +1233,14 @@ body.page-template-page-wide {
 
 }
 
+.rdc-agent-modals {
+  margin-top: -50px !important;
+  .btn {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
 .widget_rdc-get-touch-modal {
   margin: 0 !important;
   position: fixed;
@@ -1243,7 +1251,7 @@ body.page-template-page-wide {
   z-index: 999;
   display: none;
 
-  .g-recaptcha {
+  .g-recaptcha, .recaptcha {
     * {
       margin: auto;
     }

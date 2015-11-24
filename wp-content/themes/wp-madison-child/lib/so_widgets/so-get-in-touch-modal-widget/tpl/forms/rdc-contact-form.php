@@ -1,8 +1,3 @@
-<script src="https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js"
-        type="text/javascript"></script>
-<script src="https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js"
-        type="text/javascript"></script>
-
 <form id="powf_95350A21BE5BE411AFEF6C3BE5A87DF0"
       enctype="multipart/form-data"
       action="<?php echo home_url() ?>?rdc_action=submit_form"
@@ -61,7 +56,12 @@
   <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
   <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-    <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha; ?>"></div>
+    <div class="recaptcha" id="contact-form-recaptcha"></div>
+    <script>
+      jQuery(window).load(function(){
+        grecaptcha.render('contact-form-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+      });
+    </script>
   <?php endif; ?>
 
   <div class="text-center">

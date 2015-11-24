@@ -20,6 +20,7 @@ function rdc_register_widgets() {
   register_widget( 'RDCContactForm' );
   register_widget( 'RDCFeedbackForm' );
   register_widget( 'RDCReferralProgramForm' );
+  register_widget( 'RDCApplicationRequestForm' );
 }
 
 /**
@@ -31,6 +32,8 @@ add_action( 'wp_enqueue_scripts', 'rdc_theme_enqueue_scripts' );
  * Enqueue parent style
  */
 function rdc_theme_enqueue_scripts() {
+  wp_enqueue_script( 'rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
+  wp_enqueue_script( 'rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
   wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
   wp_enqueue_script( 'rdc-common', get_stylesheet_directory_uri() . '/static/js/rdc-common.js', array( 'jquery' ) );
   wp_enqueue_style( 'rdc-icons', get_stylesheet_directory_uri() . '/static/fonts/rdc/style.css', array(), '4.0.3' );
@@ -252,16 +255,43 @@ add_action( 'init', function(){
   add_post_type_support( 'page', 'excerpt' );
 } );
 
+/**
+ * Agent widgets buttons
+ */
+add_action( 'wpp:agent:widget:before_end', function( $agent_data ){
+  ?>
+  <div class="container-fluid rdc-agent-modals">
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn" id="rdc-agent-schedule-showing-modal"><?php _e('Schedule Showing'); ?></button>
+      </div>
+      <div class="col-md-12">
+        <button class="btn" id="rdc-agent-application-request-modal"><?php _e('Application Request'); ?></button>
+      </div>
+    </div>
+  </div>
+  <?php
+});
+
+/**
+ * Add custom modals to agent widget
+ */
 add_action( 'wpp:agent:widget:end', function( $agent_data ){
-  $a = new SiteOrigin_Widget_GetTouch_Modal_Widget(array(
-    'title' => 'Test',
-    'form' => 'rdc-schedule-showing'
-  ));
-  $a->widget(array(
-    'before_widget' => '<div class="widget_rdc-get-touch-modal">',
+  $schedule_showing_modal = new SiteOrigin_Widget_GetTouch_Modal_Widget();
+  $schedule_showing_modal->widget(array(
+    'before_widget' => '<div class="widget_rdc-get-touch-modal rdc-agent-schedule-showing-modal">',
     'after_widget' => '</div>'
   ), array(
-    'title' => 'Test',
+    'title' => 'Schedule Showing',
     'form' => 'rdc-schedule-showing'
+  ));
+
+  $application_request_modal = new SiteOrigin_Widget_GetTouch_Modal_Widget();
+  $application_request_modal->widget(array(
+      'before_widget' => '<div class="widget_rdc-get-touch-modal rdc-agent-application-request-modal">',
+      'after_widget' => '</div>'
+  ), array(
+      'title' => 'Application Request',
+      'form' => 'rdc-application-request'
   ));
 });

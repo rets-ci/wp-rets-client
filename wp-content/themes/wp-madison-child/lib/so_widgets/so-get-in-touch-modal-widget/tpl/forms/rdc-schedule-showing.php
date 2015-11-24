@@ -5,107 +5,49 @@
 
   <input type="hidden" name="rdc_fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_32455D6F7216E411811D6C3BE5A87DF0&tver=2013&c=1" />
 
-  <div class="label">
-    <label for="powf_a6af030d7316e411811d6c3be5a87df0">First Name</label>
-    <span class="required">*</span>
-    <span class="tip"></span>
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_a6af030d7316e411811d6c3be5a87df0" name="powf_a6af030d7316e411811d6c3be5a87df0" value=""
+    <input placeholder="First Name *" type="text" id="powf_a6af030d7316e411811d6c3be5a87df0" name="powf_a6af030d7316e411811d6c3be5a87df0" value=""
            maxlength="100" class="required"/>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_401e17337316e411811d6c3be5a87df0">Last Name</label>
-    <span class="required">*</span>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_401e17337316e411811d6c3be5a87df0" name="powf_401e17337316e411811d6c3be5a87df0" value=""
+    <input placeholder="Last Name *" type="text" id="powf_401e17337316e411811d6c3be5a87df0" name="powf_401e17337316e411811d6c3be5a87df0" value=""
            maxlength="100" class="required"/>
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_1ac7bf437416e411811d6c3be5a87df0">Telephone</label>
-    <span class="required">*</span>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_1ac7bf437416e411811d6c3be5a87df0" name="powf_1ac7bf437416e411811d6c3be5a87df0" value=""
+    <input placeholder="Telephone *" type="text" id="powf_1ac7bf437416e411811d6c3be5a87df0" name="powf_1ac7bf437416e411811d6c3be5a87df0" value=""
            maxlength="100" class="required digits"/>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_ab9ba0647416e411811d6c3be5a87df0">Email</label>
-    <span class="required">*</span>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_ab9ba0647416e411811d6c3be5a87df0" name="powf_ab9ba0647416e411811d6c3be5a87df0" value=""
+    <input placeholder="Email *" type="text" id="powf_ab9ba0647416e411811d6c3be5a87df0" name="powf_ab9ba0647416e411811d6c3be5a87df0" value=""
            maxlength="100" class="required email"/>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_472852a40118e411bcfc6c3be5a8dd60">Available Times to Show</label>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_472852a40118e411bcfc6c3be5a8dd60" name="powf_472852a40118e411bcfc6c3be5a8dd60" value=""
+    <input placeholder="Available Times to Show" type="text" id="powf_472852a40118e411bcfc6c3be5a8dd60" name="powf_472852a40118e411bcfc6c3be5a8dd60" value=""
            maxlength="100"/>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_131a927d0218e411bcfc6c3be5a8dd60">Target Move In Date</label>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_131a927d0218e411bcfc6c3be5a8dd60" name="powf_131a927d0218e411bcfc6c3be5a8dd60" value=""
+    <input placeholder="Target Move In Date" type="text" id="powf_131a927d0218e411bcfc6c3be5a8dd60" name="powf_131a927d0218e411bcfc6c3be5a8dd60" value=""
            maxlength="100" class="date"/>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_c12b19e00118e411bcfc6c3be5a8dd60">Comments/Questions</label>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <textarea id="powf_c12b19e00118e411bcfc6c3be5a8dd60" name="powf_c12b19e00118e411bcfc6c3be5a8dd60" cols=""
+    <textarea placeholder="Comments/Questions" id="powf_c12b19e00118e411bcfc6c3be5a8dd60" name="powf_c12b19e00118e411bcfc6c3be5a8dd60" cols=""
               rows=""></textarea>
 
   </div>
 
-  <div class="clear"></div>
-  <div class="label">
-    <label for="powf_c37884fd0118e411bcfc6c3be5a8dd60">Pet Info</label>
-    <span class="tip"></span>
-
-  </div>
-
   <div class="field">
-    <input type="text" id="powf_c37884fd0118e411bcfc6c3be5a8dd60" name="powf_c37884fd0118e411bcfc6c3be5a8dd60" value=""
+    <input placeholder="Pet Info" type="text" id="powf_c37884fd0118e411bcfc6c3be5a8dd60" name="powf_c37884fd0118e411bcfc6c3be5a8dd60" value=""
            maxlength="100"/>
 
   </div>

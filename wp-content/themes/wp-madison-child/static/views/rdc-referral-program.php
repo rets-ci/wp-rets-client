@@ -1,8 +1,5 @@
 <div class="rdc-referral-program-form">
 
-  <!-- PowerWebForm <body> -->
-  <script src="https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js" type="text/javascript"></script>
-
   <form id="powf_60B61B4E4447E51180FAC4346BB5981C" class="contact_form"
         enctype="multipart/form-data"
         action="<?php echo home_url() ?>?rdc_action=submit_form"
@@ -189,8 +186,13 @@
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/referral" />
     <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
-    <?php $recaptcha_key = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha_key ) ) : ?>
-      <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+    <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
+      <div class="recaptcha" id="referral-program-recaptcha"></div>
+      <script>
+        jQuery(window).load(function(){
+          grecaptcha.render('referral-program-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+        });
+      </script>
     <?php endif; ?>
 
     <div class="submit-wrapper">
