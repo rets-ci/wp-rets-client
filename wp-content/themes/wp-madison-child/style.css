@@ -611,6 +611,10 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .recaptcha {
   margin-bottom: 20px;
 }
+.g-recaptcha *,
+.recaptcha * {
+  margin: auto;
+}
 /** HERO SO WIDGET */
 .so-widget-sow-hero .ow-button-hover:hover span {
   color: #D03428;
@@ -925,9 +929,6 @@ body.page-template-page-wide #site-content article .entry-inner header {
     max-width: 370px;
     margin: 0 auto 25px auto;
   }
-}
-.rdc-agent-modals {
-  margin-top: -50px !important;
 }
 .rdc-agent-modals .btn {
   width: 100%;
@@ -1261,4 +1262,7 @@ body.page-template-page-wide #site-content article .entry-inner header {
 }
 .single-property .is-sticky .widget.widget_agentwidget {
   margin-top: 0;
+}
+.wpp_agent_widget_wrapper .wpp_agent_info_list {
+  min-height: unset;
 }
