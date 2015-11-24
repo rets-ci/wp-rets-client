@@ -263,10 +263,10 @@ add_action( 'wpp:agent:widget:before_end', function( $agent_data ){
   <div class="container-fluid rdc-agent-modals">
     <div class="row">
       <div class="col-md-12">
-        <button class="btn" id="rdc-agent-schedule-showing-modal"><?php _e('Schedule Showing'); ?></button>
+        <button class="btn" id="rdc-agent-schedule-showing-modal"><?php _e('Request Showing'); ?></button>
       </div>
       <div class="col-md-12">
-        <button class="btn" id="rdc-agent-application-request-modal"><?php _e('Application Request'); ?></button>
+        <button class="btn" id="rdc-agent-application-request-modal"><?php _e('Request Application'); ?></button>
       </div>
     </div>
   </div>
