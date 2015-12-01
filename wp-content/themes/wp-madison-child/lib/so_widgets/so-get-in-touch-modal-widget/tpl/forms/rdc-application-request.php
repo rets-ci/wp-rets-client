@@ -76,7 +76,11 @@
     <div id="application-request-recaptcha" class="recaptcha"></div>
     <script>
       jQuery(window).load(function(){
-        grecaptcha.render('application-request-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+        grecaptcha.render('application-request-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>',
+          'callback' : function(response) {
+            ar_captcha = response;
+          }
+        });
       });
     </script>
   <?php endif; ?>
@@ -89,6 +93,8 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function () {
+    ar_captcha = '';
+
     jQuery.extend(jQuery.validator.messages, {
 
       email: "Please enter a valid email address. Make sure there are no leading or trailing spaces."
@@ -112,8 +118,7 @@
     });
 
     jQuery("#powf_280C1763D278E5118103C4346BB5981C").submit(function(e){
-      var rresult = grecaptcha.getResponse();
-      if( !rresult.length > 0 ) {
+      if( ar_captcha.length == 0 ) {
         return false;
       }
       return true;

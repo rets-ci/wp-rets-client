@@ -98,7 +98,11 @@
     <div id="schedule-showing-recaptcha" class="recaptcha"></div>
     <script>
       jQuery(window).load(function(){
-        grecaptcha.render('schedule-showing-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+        grecaptcha.render('schedule-showing-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>',
+          'callback' : function(response) {
+            ss_captcha = response;
+          }
+        });
       });
     </script>
   <?php endif; ?>
@@ -111,6 +115,8 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function () {
+    ss_captcha = '';
+
     jQuery.extend(jQuery.validator.messages, {
 
       email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
@@ -135,9 +141,8 @@
 
     jQuery("#powf_131a927d0218e411bcfc6c3be5a8dd60").datepicker();
 
-    jQuery("#powf_E3E9D503C22EE41195286C3BE5BD3B20").submit(function(e){
-      var rresult = grecaptcha.getResponse();
-      if( !rresult.length > 0 ) {
+    jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0").submit(function(e){
+      if( ss_captcha.length == 0 ) {
         return false;
       }
       return true;
