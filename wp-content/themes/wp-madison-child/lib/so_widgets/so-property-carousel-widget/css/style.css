@@ -67,6 +67,9 @@
   background-position: 90% center;
   background-repeat: no-repeat;
 }
+.rdc-carousel-title .rdc-carousel-filters ul li label select option {
+  color: #bdbcbd;
+}
 @media screen and (max-width: 470px) {
   .rdc-carousel-title .rdc-carousel-filters {
     padding-right: 0;
