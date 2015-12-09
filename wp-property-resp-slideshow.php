@@ -24,7 +24,7 @@ if( !function_exists( 'ud_get_wpp_resp_slideshow' ) ) {
    * @since 1.0.0
    */
   function ud_get_wpp_resp_slideshow( $key = false, $default = null ) {
-    $instance = \UsabilityDynamics\WPP\Resp_Slideshow_Bootstrap::get_instance();
+    $instance = \UsabilityDynamics\WPP\RS_Bootstrap::get_instance();
     return $key ? $instance->get( $key, $default ) : $instance;
   }
 
@@ -62,7 +62,7 @@ if( !function_exists( 'ud_check_wpp_resp_slideshow' ) ) {
         throw new Exception( sprintf( __( 'Distributive is broken. %s file is missed. Try to remove and upload plugin again.', 'wpp_resp_slideshow' ), dirname( __FILE__ ) . '/vendor/autoload.php' ) );
       }
       //** Be sure our Bootstrap class exists */
-      if( !class_exists( '\UsabilityDynamics\WPP\Resp_Slideshow_Bootstrap' ) ) {
+      if( !class_exists( '\UsabilityDynamics\WPP\RS_Bootstrap' ) ) {
         throw new Exception( __( 'Distributive is broken. Plugin loader is not available. Try to remove and upload plugin again.', 'wpp_resp_slideshow' ) );
       }
     } catch( Exception $e ) {
