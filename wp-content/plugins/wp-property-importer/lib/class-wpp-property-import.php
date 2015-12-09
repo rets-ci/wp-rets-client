@@ -521,11 +521,7 @@ class class_wpp_property_import {
                 //** Set attachment meta */
                 $images_meta[ md5( $filename ) ] = array( 'unique_id' => $_unique_id );
                 /** Ok, if we're the first image, we're also the featured image */
-                if( $image_count == 0 ) {
-                  $image_data[ 'featured-image' ][ ] = $filename;
-                } else {
-                  $image_data[ 'images' ][ ] = $filename;
-                }
+                $image_data[ 'images' ][ ] = $filename;
               } else {
                 Throw new exception( "Could not save image {$property_unique_id} to {$filename}. " );
               }
@@ -537,15 +533,6 @@ class class_wpp_property_import {
           //** Ok, we have the property object, lets see if we can abstract the images from it */
           if( ( $raw_images = ( isset( $property[ 'wpp::images' ] ) ? $property[ 'wpp::images' ] : false ) ) ) {
             $image_data = @json_decode( html_entity_decode( $raw_images ), 1 );
-          }
-          //** Set Featured Image if option 'Automatically set the first image as the thumbnail' enabled and feature image is not set yet. */
-          if( empty( $image_data[ 'featured-image' ] ) &&
-            !empty( $schedule[ 'automatically_feature_first_image' ] ) &&
-            !empty( $image_data[ 'images' ][ 0 ] ) &&
-            count( $image_data[ 'images' ] ) > 1
-          ) {
-            $image_data[ 'featured-image' ] = $image_data[ 'images' ][ 0 ];
-            unset( $image_data[ 'images' ][ 0 ] );
           }
         }
       } catch ( Exception $e ) {
@@ -561,38 +548,14 @@ class class_wpp_property_import {
       /** Now, go through the images and attach them all */
       $attached_images = array();
 
-      /** Do the featured image */
-      if( isset( $image_data[ 'featured-image' ] ) && is_array( $image_data[ 'featured-image' ] ) && count( $image_data[ 'featured-image' ] ) ) {
-        foreach( $image_data[ 'featured-image' ] as $image ) {
-          if( !empty( $schedule[ 'limit_images' ] ) && count( $attached_images ) >= $schedule[ 'limit_images' ] ) {
-            break;
-          }
-          $attached_image = self::attach_image( array(
-            'post_id' => $post_id,
-            'image' => $image,
-            'data' => $property,
-            'mode' => 'u',
-            'schedule_settings' => $schedule,
-            'schedule_id' => $schedule_id,
-          ) );
-          if( $attached_image ) {
-            $attached_images[ ] = $attached_image[ 'thumb_id' ];
-            update_post_meta( $post_id, '_thumbnail_id', $attached_image[ 'thumb_id' ] );
-            if( !empty( $images_meta[ md5( $image ) ] ) ) {
-              foreach( (array)$images_meta[ md5( $image ) ] as $meta_key => $meta_value ) {
-                update_post_meta( $attached_image[ 'thumb_id' ], $meta_key, $meta_value );
-              }
-            }
-            self::maybe_echo_log( "Imported featured image, set featured thumbnail to {$attached_image['thumb_id']} for {$post_id}." );
-          }
-        }
-      }
-
       if( isset( $image_data[ 'images' ] ) && is_array( $image_data[ 'images' ] ) && count( $image_data[ 'images' ] ) ) {
+        $image_count = 0;
+        $last_photos = count($image_data[ 'images' ]);
         foreach( $image_data[ 'images' ] as $image ) {
           if( !empty( $schedule[ 'limit_images' ] ) && count( $attached_images ) >= $schedule[ 'limit_images' ] ) {
             break;
           }
+          $image_count ++;
           $attached_image = self::attach_image( array(
             'post_id' => $post_id,
             'image' => $image,
@@ -601,6 +564,18 @@ class class_wpp_property_import {
             'schedule_settings' => $schedule,
             'schedule_id' => $schedule_id,
           ) );
+
+          // Featured Image Start
+          if(isset($schedule['automatically_feature_image_enabled']) && $schedule['automatically_feature_image_enabled']){
+            if( $image_count == 1                && !empty( $schedule[ 'automatically_feature_image' ] ) && $schedule[ 'automatically_feature_image' ] == 'first'){
+              add_post_meta( $post_id, '_thumbnail_id', $attached_image[ 'thumb_id' ] );
+            }
+            elseif( $image_count == $last_photos && !empty( $schedule[ 'automatically_feature_image' ] ) && $schedule[ 'automatically_feature_image' ] == 'last' ){
+              add_post_meta( $post_id, '_thumbnail_id', $attached_image[ 'thumb_id' ] );
+            }
+          }
+          // Featured Image End
+
           if( $attached_image ) {
             $attached_images[ ] = $attached_image[ 'thumb_id' ];
             if( !empty( $images_meta[ md5( $image ) ] ) ) {
@@ -1500,6 +1475,9 @@ class class_wpp_property_import {
     $contextual_help[ 'Function: free_text' ][ ] = '<h3>' . __( "Function: free_text", "wpp" ) . '</h3>';
     $contextual_help[ 'Function: free_text' ][ ] = '<p>' . __( 'To insert some common text, use the <b>free_text</b> command, like so: <b>free_text: Imported from Some List</b> and the text will be kept as is.', "wpp" ) . '</p>';
 
+    $contextual_help[ 'Function: free_list' ][ ] = '<h3>' . __( "Function: free_list", "wpp" ) . '</h3>';
+    $contextual_help[ 'Function: free_list' ][ ] = '<p>' . __( 'To insert  multiple values, use the <b>free_list</b> function with values separated by comma, like so: <b>free_list: First item, Second item, Third item</b>.', "wpp" ) . '</p>';
+
     $contextual_help[ 'Function: uppercase' ][ ] = '<h3>' . __( "Function: uppercase", "wpp" ) . '</h3>';
     $contextual_help[ 'Function: uppercase' ][ ] = '<p>' . __( 'To convert all alphabetic characters to uppercase, use the <b>uppercase</b> command, like so: <b>uppercase: {xpath}</b>.', "wpp" ) . '</p>';
 
@@ -1942,7 +1920,7 @@ class class_wpp_property_import {
         }
 
         //** Build array of slugs that may have multiple values */
-        $allow_multiple = array( 'images' );
+        $allow_multiple = array( 'images', 'wpp_agents' );
         foreach( $wp_properties[ 'taxonomies' ] as $slug => $tax ) {
           $allow_multiple[ ] = $slug;
         }
@@ -2001,6 +1979,14 @@ class class_wpp_property_import {
               //* Handle plain text */
               $import_data[ $counter ][ $rule_attribute ][ ] = trim( str_replace( 'free_text:', '', $xpath_rule ) );
 
+            } elseif( strpos( $xpath_rule, 'free_list:' ) !== false ) {
+
+              //* Handle plain text array */
+              $free_list = trim( str_replace( 'free_list:', '', $xpath_rule ) );
+              $free_list = explode(',', $free_list);
+              foreach ($free_list as $key => $value) {
+                $import_data[ $counter ][ $rule_attribute ][ ] = trim($value);
+              }
             } elseif( strpos( $xpath_rule, 'uppercase:' ) !== false ) {
 
               $xpath_rule = trim( trim( trim( str_replace( 'uppercase:', '', $xpath_rule ) ), "'" ), '"' );
@@ -2085,7 +2071,8 @@ class class_wpp_property_import {
           //**  All Rules have been processed. Cycle back through rules and concatenate any values that are not allowed to have multiple values */
           if( !empty( $import_data[ $counter ] ) ) {
             foreach( $import_data[ $counter ] as $rule_attribute => $values ) {
-              if( !in_array( $rule_attribute, $allow_multiple ) ) {
+              $attribute_data = WPP_F::get_attribute_data($rule_attribute);
+              if( !(in_array( $rule_attribute, $allow_multiple ) || $attribute_data['multiple'])) {
                 $values = ( array )$values;
                 if( count( $values ) > 1 ) {
                   //** Make sure featured-image is not being concatenated */
@@ -2104,6 +2091,11 @@ class class_wpp_property_import {
                     unset( $import_data[ $counter ][ $rule_attribute ] );
                     $import_data[ $counter ][ $rule_attribute ][ 0 ] = implode( apply_filters( 'wpp_import_attributes_implode_non_multiple', "\n" ), $values );
                   }
+                }
+              }
+              elseif($attribute_data['multiple']){
+                if(count($import_data[ $counter ][ $rule_attribute ]) == 1){
+                  $import_data[ $counter ][ $rule_attribute ] = explode(',', $import_data[ $counter ][ $rule_attribute ][0]);
                 }
               }
             }
@@ -2520,7 +2512,8 @@ class class_wpp_property_import {
       'post_status' => 'publish',
       'post_type' => 'property',
       'ping_status' => get_option( 'default_ping_status' ),
-      'post_parent' => 0
+      'post_parent' => 0,
+	  'comment_status' => get_option( 'default_comment_status' )
     ), $data );
 
     //* Handle WPP Import in a special way */
@@ -2706,7 +2699,7 @@ class class_wpp_property_import {
       $removed_images = 0;
       $all_images = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE post_type = 'attachment' AND post_parent = %d ", $post_id ), ARRAY_A );
       foreach( $all_images as $image_row ) {
-        if( wp_delete_attachment( $image_row->ID, true ) ) {
+        if( wp_delete_attachment( $image_row['ID'], true ) ) {
           $removed_images++;
         }
       }
@@ -2717,12 +2710,11 @@ class class_wpp_property_import {
 
     //** Keep track of all attributes that have values and have been imported */
     $processed_attributes = array();
-
+    
     //** Cycle through attributes ( which include meta value, images and taxonomies ) */
     foreach( $data as $attribute => $values ) {
 
       $attribute_data = WPP_F::get_attribute_data( $attribute );
-
       //** If no values, stop processing this attribute */
       if( empty( $values ) ) {
         continue;
@@ -2736,11 +2728,14 @@ class class_wpp_property_import {
       //** Get array of keys we will not encode on import */
       $keys_to_not_encode = apply_filters( 'wpp_import_do_not_encode_attributes', array( 'wpp_agents' ) );
 
+      // Previous value 
+      $prev_value = get_post_meta($post_id, $attribute);
       //** Values are in array format, cycle through them */
       foreach( $values as $value ) {
 
         //** Handle Agent Matching */
         if( $attribute == 'wpp_agents' ) {
+          $value = apply_filters( 'wpp_xml_import_value_on_import', $value, $attribute, 'meta_field', $post_id, $schedule_settings );
           $agent_match_bridge = ( $schedule_settings[ 'wpp_agent_attribute_match' ] ? $schedule_settings[ 'wpp_agent_attribute_match' ] : 'display_name' );
           $users_columns = array(
             'ID',
@@ -2767,8 +2762,8 @@ class class_wpp_property_import {
             if( $schedule_settings[ 'log_detail' ] == 'on' ) {
               class_wpp_property_import::maybe_echo_log( "Property agent found based on {$agent_match_bridge} with ID of $possible_match - adding to {$post_id}  property." );
             }
-            delete_post_meta( $post_id, 'wpp_agents' );
-            add_post_meta( $post_id, 'wpp_agents', $possible_match );
+            if(!in_array($possible_match, $prev_value))
+              add_post_meta( $post_id, 'wpp_agents', $possible_match );
           }
           $possible_match = null;
 
@@ -2786,6 +2781,9 @@ class class_wpp_property_import {
         } elseif( in_array( $attribute, $post_table_columns ) ) {
           /** Handle values that are stored in main posts table */
           $wpdb->update( $wpdb->posts, array( $attribute => apply_filters( 'wpp_xml_import_value_on_import', $value, $attribute, 'post_table', $post_id, $schedule_settings ) ), array( 'ID' => $post_id ) );
+        } elseif($attribute_data['multiple']){
+            if(!in_array($value, $prev_value)) // checking whether value already exist. If not then add it.
+              add_post_meta( $post_id, $attribute, $value );
 
           //** Handle regular meta fields */
         } else {

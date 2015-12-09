@@ -12,4 +12,4 @@ The XMLI Importer enables you to automatically import property listings directly
 [![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/usabilitydynamics/wp-property-importer.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-property-importer)
 [![Packagist Vesion](http://img.shields.io/packagist/v/usabilitydynamics/wp-property-importer.svg)](https://packagist.org/packages/usabilitydynamics/wp-property-importer)
 [![CircleCI](https://circleci.com/gh/usabilitydynamics/wp-property-importer.png)](https://circleci.com/gh/usabilitydynamics/wp-property-importer)
-***
+*** 

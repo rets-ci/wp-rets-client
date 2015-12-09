@@ -43,7 +43,8 @@ $settings = wp_parse_args( $settings, array(
   'min_image_width' => '',
   'min_image_height' => '',
   'reimport_delay' => '',
-  'automatically_feature_first_image' => '',
+  'automatically_feature_image_enabled' => '',
+  'automatically_feature_image' => '',
   'remove_non_existant' => '',
   'remove_images' => '',
   'skip_images' => '',
@@ -360,8 +361,16 @@ $alt_cron_timers = array(
 
       <li class="wpp_xi_advanced_setting">
         <label class="description">
-          <input type="checkbox" name="wpp_property_import[automatically_feature_first_image]" value="on"<?php echo checked( 'on', $settings[ 'automatically_feature_first_image' ] ); ?> />
-          <?php echo __( 'Automatically set the first image as the thumbnail.', ud_get_wpp_importer()->domain ); ?>
+          <?php
+          $drop_down = '
+          <select name="wpp_property_import[automatically_feature_image]">
+            <option value="first" ' . selected( 'first', $settings[ 'automatically_feature_image' ] , false) . '>First</option>
+            <option value="last" ' . selected( 'last', $settings[ 'automatically_feature_image' ] , false) . '>Last</option>
+          </select>
+          ';
+          ?>
+          <input type="checkbox" name="wpp_property_import[automatically_feature_image_enabled]" value="on" <?php checked( 'on', $settings[ 'automatically_feature_image_enabled' ] ); ?> />
+          <?php printf( __( "Automatically set the %s image as the thumbnail.", ud_get_wpp_importer()->domain ), $drop_down ); ?>
         </label>
       </li>
 
