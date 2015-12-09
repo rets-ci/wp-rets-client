@@ -188,13 +188,21 @@ namespace UsabilityDynamics\WPP {
        * Plugin Activation
        *
        */
-      public function activate() {}
-      
+      public function activate() {
+        //** flush Object Cache */
+        wp_cache_flush();
+        //** set transient to flush WP-Property cache */
+        set_transient( 'wpp_cache_flush', time() );
+      }
+
       /**
        * Plugin Deactivation
        *
        */
-      public function deactivate() {}
+      public function deactivate() {
+        //** flush Object Cache */
+        wp_cache_flush();
+      }
 
       /**
        * Return localization's list.
