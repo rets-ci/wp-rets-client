@@ -18,7 +18,12 @@ namespace UsabilityDynamics\WPP {
         $options = array(
           'id' => 'property_responsive_slideshow',
           'params' => array(
-
+              'property_id' => array(
+                'name' => sprintf( __( '%s ID', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label() ),
+                'description' => sprintf( __( 'If not empty, Slideshow will show for particular %s, which ID is set. If not provided will show slideshow for current %s', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label(), \WPP_F::property_label() ),
+                'type' => 'text',
+                'default' => ''
+              ),
             // See params examples in: wp-property/lib/shortcodes
 
           ),
@@ -36,19 +41,36 @@ namespace UsabilityDynamics\WPP {
       public function call( $atts = "" ) {
 
         $data = shortcode_atts( array(
-
-          // Default Params
-
+          'property_id' => '',
         ), $atts );
-
-        return $this->get_template( 'property_responsive_shortcode', $data, false );
+        self::maybe_print_styles();
+        return $this->get_template( 'property-responsive-shortcode', $data, false );
 
       }
 
+      /**
+       * Render property_overview default styles at once!
+       */
+      static public function maybe_print_styles() {
+        global $_wp_property_resp_slidshow_style;
+        if( empty( $_wp_property_resp_slidshow_style) || !$_wp_property_resp_slidshow_style ) {
+          $_wp_property_resp_slidshow_style = true;
+          wp_enqueue_style("swiper-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/swiper/swiper.min.css', 'url' ));
+          wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/lightbox/lightbox.css', 'url' ));
+          wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/res-slideshow.css', 'url' ));
+
+          wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/swiper/swiper.jquery.js', 'url' ));
+          wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/lightbox/lightbox.js', 'url' ));
+          wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/res-slideshow.js', 'url' ));
+        }
+      }
+
     }
-
-    new Property_Responsive_Slideshow_Shortcode();
-
+    add_action('init', 'UsabilityDynamics\WPP\PRSS_CB');
+    function PRSS_CB(){
+      new Property_Responsive_Slideshow_Shortcode();
+    }
+    
   }
 
 }

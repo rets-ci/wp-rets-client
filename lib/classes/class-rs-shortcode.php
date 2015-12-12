@@ -26,14 +26,16 @@ namespace UsabilityDynamics\WPP {
           'load' => false
         ) );
 
-        if( $output ) {
-          extract( $data );
-          include $path;
-        } else {
-          ob_start();
-          extract( $data );
-          include $path;
-          return ob_get_clean();
+        if($path){
+          if( $output ) {
+            extract( $data );
+            include $path;
+          } else {
+            ob_start();
+            extract( $data );
+            include $path;
+            return ob_get_clean();
+          }
         }
       }
 

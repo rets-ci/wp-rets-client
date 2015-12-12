@@ -47,13 +47,21 @@ module.exports = function build( grunt ) {
           yuicompress: true,
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/lightbox/lightbox.css': [ 'static/styles/src/lightbox/lightbox.less' ],
+          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ]
+          
+        }
       },
       development: {
         options: {
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/lightbox/lightbox.css': [ 'static/styles/src/lightbox/lightbox.less' ],
+          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ]
+          
+        }
       }
     },
 
