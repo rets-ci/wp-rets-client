@@ -48,8 +48,8 @@ module.exports = function build( grunt ) {
           relativeUrls: true
         },
         files: {
-          'static/styles/lightbox/lightbox.css': [ 'static/styles/src/lightbox/lightbox.less' ],
-          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ]
+          'static/styles/lightbox/lightbox.min.css': [ 'static/styles/src/lightbox/lightbox.less' ],
+          'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ]
           
         }
       },

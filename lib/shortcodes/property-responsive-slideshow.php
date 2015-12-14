@@ -52,25 +52,19 @@ namespace UsabilityDynamics\WPP {
        * Render property_overview default styles at once!
        */
       static public function maybe_print_styles() {
-        global $_wp_property_resp_slidshow_style;
-        if( empty( $_wp_property_resp_slidshow_style) || !$_wp_property_resp_slidshow_style ) {
-          $_wp_property_resp_slidshow_style = true;
-          wp_enqueue_style("swiper-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/swiper/swiper.min.css', 'url' ));
-          wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/lightbox/lightbox.css', 'url' ));
-          wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/res-slideshow.css', 'url' ));
+        wp_enqueue_style("swiper-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/swiper/swiper.min.css', 'url' ));
+        wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/lightbox/lightbox.css', 'url' ));
+        wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/res-slideshow.css', 'url' ));
 
-          wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/swiper/swiper.jquery.js', 'url' ));
-          wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/lightbox/lightbox.js', 'url' ));
-          wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/res-slideshow.js', 'url' ));
-        }
+        wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/swiper/swiper.jquery.js', 'url' ));
+        wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/lightbox/lightbox.js', 'url' ));
+        wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/res-slideshow.js', 'url' ));
       }
 
     }
-    add_action('init', 'UsabilityDynamics\WPP\PRSS_CB');
-    function PRSS_CB(){
+    add_action('init', function(){
       new Property_Responsive_Slideshow_Shortcode();
-    }
-    
+    });
   }
 
 }

@@ -18,12 +18,13 @@ foreach ($images as $img) {
 								'thumb' => $thumb
 							);
 }
-
+global $property_resp_slideshow_counter;
+$property_resp_slideshow_counter++;
 ?>
 <!-- Swiper -->
-<div class="property-resp-slideshow">
+<div id="<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
     <div class="swiper-container gallery-top">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper clearfix">
         <?php foreach ($imgs as $key => $img) {
         	echo "<div class='swiper-slide' data-href='{$img['full']}' data-lightbox='property-responsive-slideshow' data-title='$title'>{$img['large']}</div>\n";
         }
