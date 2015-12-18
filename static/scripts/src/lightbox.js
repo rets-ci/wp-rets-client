@@ -1,5 +1,5 @@
 /*!
- * Lightbox v2.8.1
+ * Lightbox v2.8.0
  * by Lokesh Dhakar
  *
  * More info:
@@ -146,6 +146,9 @@
     var $window = $(window);
     $window.find('body').css('overflow', 'no-scrool');
     $window.on('resize', $.proxy(this.sizeOverlay, this));
+    $window.on('resize', function(){
+      self.changeImage(self.$lightbox.find('.lb-image').attr('data-imageNumber'));
+    });
 
     $('select, object, embed').css({
       visibility: 'hidden'
@@ -204,8 +207,11 @@
     $('html, body').css({
       margin: 0,
       height: '100%',
-      overflow: 'hidden'
     });
+    $('html').css({
+      overflow: 'hidden' 
+    });
+    $('body').addClass('inLightbox');
   };
 
   // Hide most UI elements in preparation for the animated resizing of the lightbox.
@@ -234,6 +240,7 @@
       var windowWidth;
 
       $image.attr('src', self.album[imageNumber].link);
+      $image.attr('data-imageNumber', imageNumber);
 
       $preloader = $(preloader);
 
@@ -246,8 +253,8 @@
 
         windowWidth    = $(window).width();
         windowHeight   = $(window).height();
-        maxImageWidth  = windowWidth - 30;
-        maxImageHeight = windowHeight - self.$dataContainer.height() -5;
+        maxImageWidth  = windowWidth - 5;
+        maxImageHeight = windowHeight - self.$dataContainer.outerHeight(true)-5;
         //console.log("maxImageWidth:" + maxImageWidth);
         //console.log("maxImageHeight:" + maxImageHeight);
         // Check if image size is larger then maxWidth|maxHeight in settings
@@ -272,10 +279,17 @@
             $image.height(imageHeight);
           }
         }
-        console.log(imageWidth);
-        console.log(imageHeight);
+        else{
+            imageWidth  = preloader.width;
+            imageHeight = preloader.height;
+            $image.width(imageWidth);
+            $image.height(imageHeight);
+        }
       }
-      self.sizeContainer($image.width(), $image.height(), maxImageHeight);
+    console.log('XimageWidth:' + imageWidth);
+    console.log('XimageHeight:' + imageHeight);
+    console.log('XmaxImageHeight:' + maxImageHeight);
+      self.sizeContainer(imageWidth, imageHeight, maxImageHeight);
     };
 
     preloader.src          = this.album[imageNumber].link;
@@ -292,7 +306,9 @@
   // Animate the size of the lightbox to fit the image we are showing
   Lightbox.prototype.sizeContainer = function(imageWidth, imageHeight, maxImageHeight) {
     var self = this;
-
+    console.log('imageWidth:' + imageWidth);
+    console.log('imageHeight:' + imageHeight);
+    console.log('maxImageHeight:' + maxImageHeight);
     var oldWidth  = this.$outerContainer.outerWidth();
     var oldHeight = this.$outerContainer.outerHeight();
     var newWidth  = imageWidth;
@@ -458,6 +474,7 @@
       height: '',
       overflow: ''
     });
+    $('body').removeClass('inLightbox');
   };
 
   return new Lightbox();
