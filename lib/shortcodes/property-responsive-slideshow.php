@@ -52,13 +52,14 @@ namespace UsabilityDynamics\WPP {
        * Render property_overview default styles at once!
        */
       static public function maybe_print_styles() {
-        wp_enqueue_style("swiper-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/swiper/swiper.min.css', 'url' ));
-        wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/lightbox/lightbox.css', 'url' ));
-        wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( 'static/styles/res-slideshow.css', 'url' ));
+        $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ?  '' : '.min';
+        wp_enqueue_style("swiper-style", ud_get_wpp_resp_slideshow()->path( "static/styles/swiper/swiper$suffix.css", "url" ));
+        wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( "static/styles/lightbox/lightbox$suffix.css", "url" ));
+        wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( "static/styles/res-slideshow$suffix.css", "url" ));
 
-        wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/swiper/swiper.jquery.js', 'url' ));
-        wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/lightbox/lightbox.js', 'url' ));
-        wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( 'static/scripts/res-slideshow.js', 'url' ));
+        wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/swiper/swiper.jquery.js", "url" ));
+        wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/lightbox/lightbox.js", "url" ));
+        wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/res-slideshow.js", "url" ));
       }
 
     }

@@ -1887,23 +1887,11 @@
             }
             s.emit('onSetTransition', s, duration);
         };
-        //zm_edited
         s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
             var x = 0, y = 0, z = 0;
             if (isH()) {
-                var width = 0,
+                var width = s.virtualSize,
                     wrapper_width = s.wrapper.width(); 
-
-                s.slides.each(function() {
-                    var margin = true,
-                        $this = $(this);
-                    if($this.is(':last-child')) 
-                        margin = false;
-                    else
-                        margin = true;
-                    width += $this.outerWidth(margin);
-                });
-                
                 if(translate>0)
                     translate = 0;
                 else if(translate< -(width - wrapper_width))
@@ -3501,17 +3489,17 @@
      ===========================*/
     var swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
     for (var i = 0; i < swiperDomPlugins.length; i++) {
-    	if (window[swiperDomPlugins[i]]) {
-    		addLibraryPlugin(window[swiperDomPlugins[i]]);
-    	}
+        if (window[swiperDomPlugins[i]]) {
+            addLibraryPlugin(window[swiperDomPlugins[i]]);
+        }
     }
     // Required DOM Plugins
     var domLib;
     if (typeof Dom7 === 'undefined') {
-    	domLib = window.Dom7 || window.Zepto || window.jQuery;
+        domLib = window.Dom7 || window.Zepto || window.jQuery;
     }
     else {
-    	domLib = Dom7;
+        domLib = Dom7;
     }
 
     /*===========================
