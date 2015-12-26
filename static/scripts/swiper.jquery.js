@@ -45,7 +45,7 @@
             }), s.observers.push(observer);
         }
         function handleKeyboard(e) {
-            if (console.log(e), !$("body").hasClass("inLightbox")) {
+            if (!$("body").hasClass("inLightbox")) {
                 e.originalEvent && (e = e.originalEvent);
                 var kc = e.keyCode || e.charCode;
                 if (!s.params.allowSwipeToNext && (isH() && 39 === kc || !isH() && 40 === kc)) return !1;
@@ -484,6 +484,18 @@
                     translated || forceSetTranslate());
                 } else s.params.autoHeight && s.updateAutoHeight();
             }, s.onResize = function(forceUpdatePagination) {
+                if (s.container.hasClass("gallery-top")) {
+                    var width = s.container.width(), ratio = window.innerHeight > window.innerWidth ? 4 / 3 : .5;
+                    s.container.height(width * ratio);
+                    var $styler = jQuery("#swiper-img-max-width");
+                    0 == $styler.length && ($styler = $('<style id="swiper-img-max-width"></style>').appendTo("body")), 
+                    $styler.html(".swiper-container .swiper-slide img{max-width:" + s.container.width() + "px!important;}");
+                    var container_width = s.container.width(), container_height = s.container.height();
+                    s.slides.each(function() {
+                        var $this = jQuery(this).find("img"), width = parseInt($this.attr("width")), height = parseInt($this.attr("height"));
+                        width > container_width && height > container_height ? $this.height(container_height) : width > container_width ? $this.width(container_width) : height > container_height ? $this.height(container_height) : $this.width($this.width());
+                    });
+                }
                 s.params.breakpoints && s.setBreakpoint();
                 var allowSwipeToPrev = s.params.allowSwipeToPrev, allowSwipeToNext = s.params.allowSwipeToNext;
                 if (s.params.allowSwipeToPrev = s.params.allowSwipeToNext = !0, s.updateContainerSize(), 
@@ -1240,7 +1252,9 @@
                 s.params.keyboardControl && s.enableKeyboardControl && s.enableKeyboardControl(), 
                 s.params.mousewheelControl && s.enableMousewheelControl && s.enableMousewheelControl(), 
                 s.params.hashnav && s.hashnav && s.hashnav.init(), s.params.a11y && s.a11y && s.a11y.init(), 
-                s.emit("onInit", s);
+                s.emit("onInit", s), setTimeout(function() {
+                    s.onResize();
+                }, 200);
             }, s.cleanupStyles = function() {
                 s.container.removeClass(s.classNames.join(" ")).removeAttr("style"), s.wrapper.removeAttr("style"), 
                 s.slides && s.slides.length && s.slides.removeClass([ s.params.slideVisibleClass, s.params.slideActiveClass, s.params.slideNextClass, s.params.slidePrevClass ].join(" ")).removeAttr("style").removeAttr("data-swiper-column").removeAttr("data-swiper-row"), 

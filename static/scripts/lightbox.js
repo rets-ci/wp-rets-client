@@ -23,7 +23,7 @@
     }, Lightbox.prototype.enable = function() {
         var self = this;
         $("body").on("click", ".swiper-slide.swiper-slide-active[data-lightbox]", function(event) {
-            return console.log($(this).attr("class")), $(this).hasClass("swiper-slide-active") ? (self.start($(event.currentTarget)), 
+            return $(this).hasClass("swiper-slide-active") ? (self.start($(event.currentTarget)), 
             !1) : void 0;
         });
     }, Lightbox.prototype.build = function() {
@@ -57,9 +57,7 @@
         }
         var self = this, $window = $(window);
         $window.find("body").css("overflow", "no-scrool"), $window.on("resize", $.proxy(this.sizeOverlay, this)), 
-        $window.on("resize", function() {
-            self.changeImage(self.$lightbox.find(".lb-image").attr("data-imageNumber"));
-        }), $("select, object, embed").css({
+        $window.on("resize", $.proxy(this.resizeImage, this)), $("select, object, embed").css({
             visibility: "hidden"
         }), this.sizeOverlay(), this.album = [];
         var $links, imageNumber = 0, dataLightboxValue = $link.attr("data-lightbox");
@@ -100,19 +98,18 @@
             $image.height(imageHeight)) : (imageHeight = maxImageHeight, imageWidth = parseInt(preloader.width / (preloader.height / imageHeight), 10), 
             $image.width(imageWidth), $image.height(imageHeight)) : (imageWidth = preloader.width, 
             imageHeight = preloader.height, $image.width(imageWidth), $image.height(imageHeight))), 
-            console.log("XimageWidth:" + imageWidth), console.log("XimageHeight:" + imageHeight), 
-            console.log("XmaxImageHeight:" + maxImageHeight), self.sizeContainer(imageWidth, imageHeight, maxImageHeight);
+            self.sizeContainer(imageWidth, imageHeight, maxImageHeight);
         }, preloader.src = this.album[imageNumber].link, this.currentImageIndex = imageNumber;
     }, Lightbox.prototype.sizeOverlay = function() {
         this.$overlay.width($(window).width()).height($(document).height());
+    }, Lightbox.prototype.resizeImage = function() {
+        var imageNumber = this.$lightbox.find(".lb-image").attr("data-imageNumber");
+        imageNumber && this.changeImage(imageNumber);
     }, Lightbox.prototype.sizeContainer = function(imageWidth, imageHeight, maxImageHeight) {
         function postResize() {
             self.showImage();
         }
-        var self = this;
-        console.log("imageWidth:" + imageWidth), console.log("imageHeight:" + imageHeight), 
-        console.log("maxImageHeight:" + maxImageHeight);
-        var oldWidth = this.$outerContainer.outerWidth(), oldHeight = this.$outerContainer.outerHeight(), newWidth = imageWidth, newHeight = imageHeight;
+        var self = this, oldWidth = this.$outerContainer.outerWidth(), oldHeight = this.$outerContainer.outerHeight(), newWidth = imageWidth, newHeight = imageHeight;
         oldWidth !== newWidth || oldHeight !== newHeight ? this.$outerContainer.animate({
             width: newWidth,
             height: newHeight,
@@ -160,8 +157,9 @@
         var KEYCODE_ESC = 27, KEYCODE_LEFTARROW = 37, KEYCODE_RIGHTARROW = 39, keycode = event.keyCode, key = String.fromCharCode(keycode).toLowerCase();
         keycode === KEYCODE_ESC || key.match(/x|o|c/) ? this.end() : "p" === key || keycode === KEYCODE_LEFTARROW ? 0 !== this.currentImageIndex ? this.changeImage(this.currentImageIndex - 1) : this.options.wrapAround && this.album.length > 1 && this.changeImage(this.album.length - 1) : ("n" === key || keycode === KEYCODE_RIGHTARROW) && (this.currentImageIndex !== this.album.length - 1 ? this.changeImage(this.currentImageIndex + 1) : this.options.wrapAround && this.album.length > 1 && this.changeImage(0));
     }, Lightbox.prototype.end = function() {
-        this.disableKeyboardNav(), $(window).off("resize", this.sizeOverlay), this.$lightbox.fadeOut(this.options.fadeDuration), 
-        this.$overlay.fadeOut(this.options.fadeDuration), $("select, object, embed").css({
+        this.disableKeyboardNav(), $(window).off("resize", this.sizeOverlay), $(window).off("resize", this.resizeImage), 
+        this.$lightbox.fadeOut(this.options.fadeDuration), this.$overlay.fadeOut(this.options.fadeDuration), 
+        $("select, object, embed").css({
             visibility: "visible"
         }), $("html, body").css({
             margin: "",

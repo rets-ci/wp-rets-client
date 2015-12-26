@@ -1008,6 +1008,36 @@
           ===========================*/
         s.onResize = function (forceUpdatePagination) {
             //Breakpoints
+            if(s.container.hasClass('gallery-top')){
+                var width = s.container.width(),
+                    ratio = (window.innerHeight > window.innerWidth)?(4/3):(2/4);
+                s.container.height(width * ratio);
+
+                var $styler = jQuery('#swiper-img-max-width')
+                if($styler.length==0)
+                    $styler = $('<style id="swiper-img-max-width"></style>').appendTo('body');
+                $styler.html('.swiper-container .swiper-slide img{max-width:'+ s.container.width() +'px!important;}');
+                var container_width = s.container.width();
+                var container_height = s.container.height();
+                s.slides.each(function(){
+                    var $this   = jQuery(this).find('img'),
+                        width   = parseInt($this.attr('width')),
+                        height  = parseInt($this.attr('height'))
+
+                        if((width > container_width) && (height > container_height)){
+                            $this.height(container_height);
+                        }
+                        else if(width > container_width){
+                            $this.width(container_width);
+                        }
+                        else if(height > container_height){
+                            $this.height(container_height);
+                        }
+                        else
+                            $this.width($this.width());
+
+                });
+            }
             if (s.params.breakpoints) {
                 s.setBreakpoint();
             }
@@ -1896,7 +1926,6 @@
                     translate = 0;
                 else if(translate< -(width - wrapper_width))
                     translate = -(width - wrapper_width);
-
                 x = s.rtl ? -translate : translate;
             }
             else {
@@ -2840,7 +2869,6 @@
           Keyboard Control
           ===========================*/
         function handleKeyboard(e) {
-            console.log(e);
             if ( $('body').hasClass('inLightbox')) return;
             if (e.originalEvent) e = e.originalEvent; //jquery fix
             var kc = e.keyCode || e.charCode;
@@ -3332,6 +3360,9 @@
             }
             if (s.params.a11y && s.a11y) s.a11y.init();
             s.emit('onInit', s);
+            setTimeout(function() {
+                s.onResize();
+            },200); 
         };
         
         // Cleanup dynamic styles

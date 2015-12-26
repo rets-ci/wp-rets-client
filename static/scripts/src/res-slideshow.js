@@ -6,9 +6,9 @@ jQuery(document).ready(function($){
                 prevButton: '.swiper-button-prev',
                 centeredSlides: true,
                 slidesPerView: 'auto',
-                spaceBetween: 20,
+                spaceBetween: 10,
                 keyboardControl:true,
-                preventClicks:false,
+                preventClicks:false
                 //slideToClickedSlide:true
             }),
             
@@ -29,14 +29,17 @@ jQuery(document).ready(function($){
                     galleryTop.slideTo(clickedIndex);
                     return false;
                 }
-            },
-            width = galleryTop.container.width();
-
-        galleryTop.container.height(width * (3/4));
-        galleryTop.params.control = galleryThumbs;
-        galleryThumbs.params.control = galleryTop;
+            }
+            
         galleryTop.container.on('click', '.swiper-slide', goToClickedSlide);
         galleryThumbs.container.on('click', '.swiper-slide', goToClickedSlide);
+
+        jQuery(window).on('orientationchange', galleryTop.onResize);
+        galleryTop.on('onSlideChangeStart', function(e, s){
+            galleryThumbs.slideTo(e.activeIndex);
+        });
+        //galleryTop.params.control = galleryThumbs;
+        //galleryThumbs.params.control = galleryTop;
     })
 });
 

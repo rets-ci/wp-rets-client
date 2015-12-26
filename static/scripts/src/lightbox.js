@@ -69,7 +69,6 @@
   Lightbox.prototype.enable = function() {
     var self = this;
     $('body').on('click', '.swiper-slide.swiper-slide-active[data-lightbox]', function(event) {
-      console.log($(this).attr('class'));
       if($(this).hasClass('swiper-slide-active')){
         self.start($(event.currentTarget));
         return false;
@@ -146,9 +145,7 @@
     var $window = $(window);
     $window.find('body').css('overflow', 'no-scrool');
     $window.on('resize', $.proxy(this.sizeOverlay, this));
-    $window.on('resize', function(){
-      self.changeImage(self.$lightbox.find('.lb-image').attr('data-imageNumber'));
-    });
+    $window.on('resize', $.proxy(this.resizeImage, this));
 
     $('select, object, embed').css({
       visibility: 'hidden'
@@ -286,9 +283,6 @@
             $image.height(imageHeight);
         }
       }
-    console.log('XimageWidth:' + imageWidth);
-    console.log('XimageHeight:' + imageHeight);
-    console.log('XmaxImageHeight:' + maxImageHeight);
       self.sizeContainer(imageWidth, imageHeight, maxImageHeight);
     };
 
@@ -303,12 +297,16 @@
       .height($(document).height());
   };
 
+  // Stretch overlay to fit the viewport
+  Lightbox.prototype.resizeImage = function() {
+      var imageNumber =  this.$lightbox.find('.lb-image').attr('data-imageNumber');
+      if(imageNumber)
+        this.changeImage(imageNumber);
+  };
+
   // Animate the size of the lightbox to fit the image we are showing
   Lightbox.prototype.sizeContainer = function(imageWidth, imageHeight, maxImageHeight) {
     var self = this;
-    console.log('imageWidth:' + imageWidth);
-    console.log('imageHeight:' + imageHeight);
-    console.log('maxImageHeight:' + maxImageHeight);
     var oldWidth  = this.$outerContainer.outerWidth();
     var oldHeight = this.$outerContainer.outerHeight();
     var newWidth  = imageWidth;
@@ -463,6 +461,7 @@
   Lightbox.prototype.end = function() {
     this.disableKeyboardNav();
     $(window).off('resize', this.sizeOverlay);
+    $(window).off('resize', this.resizeImage);
     this.$lightbox.fadeOut(this.options.fadeDuration);
     this.$overlay.fadeOut(this.options.fadeDuration);
     $('select, object, embed').css({

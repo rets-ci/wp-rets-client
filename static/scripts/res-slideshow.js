@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
             prevButton: ".swiper-button-prev",
             centeredSlides: !0,
             slidesPerView: "auto",
-            spaceBetween: 20,
+            spaceBetween: 10,
             keyboardControl: !0,
             preventClicks: !1
         }), galleryThumbs = new Swiper($this.find(".gallery-thumbs"), {
@@ -20,9 +20,10 @@ jQuery(document).ready(function($) {
             var clickedIndex = $(this).index();
             return galleryTop.activeIndex != clickedIndex ? (galleryTop.slideTo(clickedIndex), 
             !1) : void 0;
-        }, width = galleryTop.container.width();
-        galleryTop.container.height(.75 * width), galleryTop.params.control = galleryThumbs, 
-        galleryThumbs.params.control = galleryTop, galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
-        galleryThumbs.container.on("click", ".swiper-slide", goToClickedSlide);
+        };
+        galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), galleryThumbs.container.on("click", ".swiper-slide", goToClickedSlide), 
+        jQuery(window).on("orientationchange", galleryTop.onResize), galleryTop.on("onSlideChangeStart", function(e, s) {
+            galleryThumbs.slideTo(e.activeIndex);
+        });
     });
 });

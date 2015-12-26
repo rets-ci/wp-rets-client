@@ -1,13 +1,25 @@
+/*
+    Responsive 
+
+*/
+@650px: ~"only screen and (max-width: 650px)";
+@550px: ~"only screen and (max-width: 550px)";
+
 .swiper-container {
     width: 100%;
     height: 400px;
     &.gallery-thumbs {
         height: 100px;
+        @media @650px{
+            height:80px;
+        }
+        @media @550px{
+            height:70px;
+        }
     }
     .swiper-slide {
         text-align: center;
         font-size: 18px;
-        background: #fdfdfd;
         width: auto;
         /* Center slide text vertically */
         display: -webkit-box;
@@ -33,6 +45,7 @@
             max-height: 100%;
             max-width: 100%;
             width: auto;
+            height: auto;
         }
     }
     
