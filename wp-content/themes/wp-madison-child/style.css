@@ -1266,3 +1266,57 @@ body.page-template-page-wide #site-content article .entry-inner header {
 .wpp_agent_widget_wrapper .wpp_agent_info_list {
   min-height: unset;
 }
+.single-agent #site-content {
+  width: 100%;
+  max-width: 100%;
+}
+.single-agent #site-content .agent-hero {
+  min-height: 400px;
+  position: relative;
+  background: #333333;
+}
+.single-agent #site-content .agent-hero .background-image {
+  background-image: url("https://storage.googleapis.com/media.reddoorcompany.com/2015/11/c8c3e0eb-landlords-hero.jpg");
+  background-position: center center;
+  background-size: cover;
+  top: 0;
+  bottom: 0;
+  opacity: 0.5;
+  position: absolute;
+  width: 100%;
+}
+.single-agent #site-content .agent-hero .agent-photo {
+  border-radius: 5px;
+  position: relative;
+  top: 75px;
+  width: 320px;
+}
+.single-agent #site-content .agent-hero .agent-name {
+  color: white;
+  font-size: 32px;
+  line-height: 32px;
+  margin-top: 95px;
+}
+.single-agent #site-content .agent-hero .agent-bio {
+  font-size: 18px;
+  color: white;
+}
+.single-agent #site-content .agent-info-line {
+  background: url("static/images/agent-info-bg.png") repeat transparent;
+  height: 100px;
+}
+.single-agent #site-content .agent-info-line .phone {
+  font-size: 28px;
+  line-height: 100px;
+}
+.single-agent #site-content .agent-info-line .phone i {
+  display: block;
+  float: left;
+  line-height: 100px;
+  margin-right: 15px;
+}
+.single-agent #site-content .agent-info-line .phone p {
+  float: left;
+  margin: 0;
+  font-size: 20px;
+}
