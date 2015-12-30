@@ -5,6 +5,9 @@
  * @since 1.0.0
 */
 
+// Load class for handling agent pages
+require_once( dirname( __FILE__ ) . '/agents.php' );
+
 // Load help and template functions.
 require_once( dirname( __FILE__ ) . '/functions.php' );
 
