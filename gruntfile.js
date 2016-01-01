@@ -65,6 +65,36 @@ module.exports = function build( grunt ) {
       }
     },
 
+    concat: {
+      options: {
+        separator: ';',
+      },
+      production: {
+        src: [
+                'static/scripts/src/swiper/wrap-start.js',
+                'static/scripts/src/swiper/swiper-intro.js',
+                'static/scripts/src/swiper/core.js',
+                'static/scripts/src/swiper/effects.js',
+                'static/scripts/src/swiper/lazy-load.js',
+                'static/scripts/src/swiper/keyboard.js',
+                'static/scripts/src/swiper/plugins.js',
+                'static/scripts/src/swiper/emitter.js',
+                'static/scripts/src/swiper/a11y.js',
+                'static/scripts/src/swiper/init.js',
+                'static/scripts/src/swiper/swiper-outro.js',
+                'static/scripts/src/swiper/swiper-proto.js',
+                'static/scripts/src/swiper/dom.js',
+                'static/scripts/src/swiper/get-dom-lib.js',
+                'static/scripts/src/swiper/dom-plugins.js',
+                'static/scripts/src/swiper/get-dom-lib.js',
+                'static/scripts/src/swiper/dom-plugins.js',
+                'static/scripts/src/swiper/wrap-end.js',
+                //'static/scripts/src/swiper/amd.js'
+              ],
+        dest: 'static/scripts/swiper.jquery.js',
+      },
+    },
+
     watch: {
       options: {
         interval: 100,
@@ -75,6 +105,12 @@ module.exports = function build( grunt ) {
           'static/styles/src/*.*'
         ],
         tasks: [ 'less' ]
+      },
+      concat: {
+        files: [
+          'static/scripts/src/*.*'
+        ],
+        tasks: [ 'concat' ]
       },
       js: {
         files: [
