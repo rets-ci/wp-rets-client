@@ -6,6 +6,9 @@
   width: 100%;
   height: 400px;
 }
+.swiper-container.gallery-top {
+  margin-bottom: 2.5px;
+}
 .swiper-container.gallery-thumbs {
   height: 100px;
 }

@@ -984,6 +984,7 @@ s.update = function (updateTranslate) {
   Resize Handler
   ===========================*/
 s.onResize = function (forceUpdatePagination) {
+    s.emit('onResizeStart', s);
     //Breakpoints
     if (s.params.breakpoints) {
         s.setBreakpoint();
@@ -1867,6 +1868,12 @@ s.setWrapperTransition = function (duration, byController) {
 s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
     var x = 0, y = 0, z = 0;
     if (isH()) {
+        var width = s.virtualSize,
+            wrapper_width = s.wrapper.width(); 
+        if(translate>0)
+            translate = 0;
+        else if(translate< -(width - wrapper_width))
+            translate = -(width - wrapper_width);
         x = s.rtl ? -translate : translate;
     }
     else {

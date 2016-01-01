@@ -2,6 +2,7 @@
   Keyboard Control
   ===========================*/
 function handleKeyboard(e) {
+    if ( $('body').hasClass('inLightbox')) return;
     if (e.originalEvent) e = e.originalEvent; //jquery fix
     var kc = e.keyCode || e.charCode;
     // Directions locks
