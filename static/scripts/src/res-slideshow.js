@@ -20,6 +20,10 @@ jQuery(document).ready(function($){
                 spaceBetween: 2.5,
                 keyboardControl:true,
                 preventClicks:false,
+                // Enable lazy loading
+                lazyLoading: true,
+                lazyLoadingInPrevNext: true,
+                lazyLoadingOnTransitionStart: true,
                 onInit: function(s){
                                     setTimeout(function() {
                                         s.onResize();
@@ -99,6 +103,11 @@ jQuery(document).ready(function($){
 
                 });
             }
+        });
+
+        
+        galleryTop.on('onLazyImageReady', function(s, slide, _img){
+            s.onResize();
         });
 
         //galleryTop.params.control = galleryThumbs;

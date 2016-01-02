@@ -12,6 +12,9 @@ jQuery(document).ready(function($) {
             spaceBetween: 2.5,
             keyboardControl: !0,
             preventClicks: !1,
+            lazyLoading: !0,
+            lazyLoadingInPrevNext: !0,
+            lazyLoadingOnTransitionStart: !0,
             onInit: function(s) {
                 setTimeout(function() {
                     s.onResize();
@@ -46,6 +49,8 @@ jQuery(document).ready(function($) {
                     $this.width(container_height * hRatio)) : ($this.width($this.width()), $this.height($this.height()));
                 });
             }
+        }), galleryTop.on("onLazyImageReady", function(s, slide, _img) {
+            s.onResize();
         });
     });
 });

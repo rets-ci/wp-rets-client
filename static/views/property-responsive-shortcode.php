@@ -9,12 +9,16 @@ $imgs = array();
 //print_r($images);
 foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
-	$large = wp_get_attachment_image($attach_id, 'large');
 	$full = wp_get_attachment_image_src( $attach_id, "full");
-    if(!wp_is_mobile())
+    if(!wp_is_mobile()){
+        $large = wp_get_attachment_image($attach_id, 'large');
         $thumb = wp_get_attachment_image($attach_id);
-    else
+    }
+    else{
+        $large_src = wp_get_attachment_image_src($attach_id, 'large');
+        $large = "<img data-src='{$large_src[0]}' class='swiper-lazy' width='{$large_src[1]}' height='{$large_src[2]}' /><div class='swiper-lazy-preloader'></div>";
         $thumb = '';
+    }
 	$imgs[$attach_id] = array(
 								'full' => $full[0],
 								'large' => $large,
