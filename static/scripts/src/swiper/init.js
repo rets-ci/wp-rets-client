@@ -50,9 +50,6 @@ s.init = function () {
     }
     if (s.params.a11y && s.a11y) s.a11y.init();
     s.emit('onInit', s);
-    setTimeout(function() {
-        s.onResize();
-    },200); 
 };
 
 // Cleanup dynamic styles

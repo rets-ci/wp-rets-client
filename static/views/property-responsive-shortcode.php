@@ -11,7 +11,10 @@ foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
 	$large = wp_get_attachment_image($attach_id, 'large');
 	$full = wp_get_attachment_image_src( $attach_id, "full");
-	$thumb = wp_get_attachment_image($attach_id);
+    if(!wp_is_mobile())
+        $thumb = wp_get_attachment_image($attach_id);
+    else
+        $thumb = '';
 	$imgs[$attach_id] = array(
 								'full' => $full[0],
 								'large' => $large,
@@ -31,9 +34,14 @@ $property_resp_slideshow_counter++;
         ?>
         </div>
         <!-- Add Arrows  swiper-button-white-->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next swiper-button-black"></div>
+        <div class="swiper-button-prev swiper-button-black"></div>
+        <span class="count-progress">
+            <span class="current">1</span> / 
+            <span class="total"><?php echo count($imgs);?></span>
+        </span> 
     </div>
+    <?php if(!wp_is_mobile()):?>
     <div class="swiper-container gallery-thumbs">
         <div class="swiper-wrapper">
         <?php foreach ($imgs as $key => $img) {
@@ -42,5 +50,6 @@ $property_resp_slideshow_counter++;
         ?>
         </div>
     </div>
+    <?php endif;?>
 </div>
 <!-- END Swiper -->

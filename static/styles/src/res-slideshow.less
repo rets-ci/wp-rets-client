@@ -4,9 +4,15 @@
 */
 @650px: ~"only screen and (max-width: 650px)";
 @550px: ~"only screen and (max-width: 550px)";
+@mobile: ~"only screen and (max-width: 768px)";
 
 .swiper-container {
     width: 100%;
+    .swiper-button-next, .swiper-button-prev{
+        @media @mobile{
+            display:none;
+        }
+    }
     &.gallery-top{
         position:relative;
         margin-bottom:2.5px;
@@ -32,6 +38,9 @@
         }
         @media @550px{
             height:70px;
+        }
+        @media @mobile{
+            display:none;
         }
     }
     .swiper-slide {
@@ -65,5 +74,17 @@
             height: auto;
         }
     }
-    
+    .count-progress {
+        @media @mobile{
+            position: absolute;
+            bottom: 10px;
+            background-color: rgba(0,0,0,0.6);
+            left: 15px;
+            z-index: 1;
+            padding: 0.4em 0.8em 0.4em;
+            border-radius: 2px;
+            font-size: 12px;
+            color: #fff;
+        }
+    }
 }
