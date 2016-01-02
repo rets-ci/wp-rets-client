@@ -1,3 +1,4 @@
+*.sql
 legacy/
 dev/
 /wp-content/plugins/wordfence/tmp
