@@ -36,7 +36,7 @@ class AgentWidget extends WP_Widget {
       return false;
     }
 
-    $agents = array_unique($agents);
+    $agents = array_unique( $agents );
 
     foreach($agents as $agent_id) {
       $this_agent = class_agents::display_agent_card($agent_id,"fields=" . implode(',',$saved_fields));

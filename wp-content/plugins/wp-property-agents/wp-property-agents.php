@@ -4,7 +4,7 @@
  * Plugin URI: https://usabilitydynamics.com/product/wp-property-agents
  * Description: The WP-Property Real Estate Agents Add-on allows the website administrator to create new Real Estate agent accounts and associate them with properties. Multiple agents can be assigned to any given property and the agent information can be displayed in a widget placed on a property page. Furthermore, properties can be queried by the agent(s) to create agent-specific property listings pages.
  * Author: Usability Dynamics, Inc.
- * Version: 2.0.2
+ * Version: 2.0.3
  * Requires at least: 4.0
  * Tested up to: 4.3.1
  * Text Domain: wpp_agents

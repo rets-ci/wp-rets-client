@@ -561,13 +561,20 @@ class class_agents {
    */
   static public function wpp_agent_widget_field_agent_image($text, $display_fields, $slug, $this_field) {
     global $wp_properties;
-    $images =  class_agents::get_agent_images($this_field, apply_filters('wpp_agent_widget_image_size', 'thumbnail'));
+    $image_ids = get_user_meta($this_field, 'agent_images', false);
+    if ( empty($image_ids) ) return array();
+    else $image_ids = $image_ids[0];
+
     $return = array();
-    if ( $images ){
+    if ( $image_ids ){
       $return[] = "<li class='wpp_agent_stats_{$slug}'>";
       $return[] ='<div class="wpp_agent_images">';
-      foreach( $images as $image ){
-        $return[] ='<img width="'.$image['width'].'" height="'.$image['height'].'" src="'.$image['src'].'"/>';
+      foreach( $image_ids as $image ){
+        $title = trim(strip_tags( get_the_title($image)));
+        $alt = trim(strip_tags( get_post_meta($image, '_wp_attachment_image_alt', true)));
+        if(empty($alt))
+          $alt = $title;
+        $return[] = wp_get_attachment_image($image, apply_filters('wpp_agent_widget_image_size', 'thumbnail'), false, array('alt' => $alt, 'title' => $title ));
       }
       $return[] ='</div>';
       $return[] ="</li>";
