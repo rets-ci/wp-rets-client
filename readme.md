@@ -12,4 +12,4 @@ Responsive Slideshow for WP-Property plugin
 [![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/wp-property/wp-property-resp-slideshow.svg)](https://scrutinizer-ci.com/g/wp-property/wp-property-resp-slideshow)
 [![Packagist Vesion](http://img.shields.io/packagist/v/wp-property/wp-property-resp-slideshow.svg)](https://packagist.org/packages/wp-property/wp-property-resp-slideshow)
 [![CircleCI](https://circleci.com/gh/wp-property/wp-property-resp-slideshow.png)](https://circleci.com/gh/wp-property/wp-property-resp-slideshow)
-***  
+***
