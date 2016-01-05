@@ -76,16 +76,20 @@
   width: auto;
   height: auto;
 }
+.swiper-container .count-progress {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 15px;
+  z-index: 1;
+  padding: 0.4em 0.8em 0.4em;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #fff;
+}
 @media only screen and (max-width: 768px) {
   .swiper-container .count-progress {
-    position: absolute;
-    bottom: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    left: 15px;
-    z-index: 1;
-    padding: 0.4em 0.8em 0.4em;
-    border-radius: 2px;
-    font-size: 12px;
-    color: #fff;
+    display: block;
   }
 }
