@@ -33,7 +33,7 @@ global $wp_query;
       </section>
       <section class="agent-info-line">
         <div class="container">
-          <div class="col-md-offset-4 col-md-8 phone">
+          <div class="col-md-offset-4 col-md-8 col-sm-4 phone">
             <i class="fa fa-phone"></i>
             <p><?php echo preg_replace( '/(x.+)/', '<b>$1</b>', get_user_meta( $wp_query->agent->ID, 'phone_number', 1 ) ); ?></p>
           </div>

@@ -1672,6 +1672,7 @@ body.page-template-page-wide {
         position: relative;
         top: 75px;
         width: 320px;
+        margin: 0 auto;
       }
 
       .agent-name {
@@ -1679,6 +1680,10 @@ body.page-template-page-wide {
         font-size: 32px;
         line-height: 32px;
         margin-top: 95px;
+
+        @media screen and (max-width: 992px) {
+          text-align: center;
+        }
       }
 
       .agent-bio {
@@ -1694,6 +1699,10 @@ body.page-template-page-wide {
       .phone {
         font-size: 28px;
         line-height: 100px;
+
+        @media screen and (max-width: 992px) {
+          text-align: center;
+        }
 
         i {
           display: block;
