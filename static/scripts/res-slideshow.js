@@ -11,7 +11,6 @@ jQuery(document).ready(function($) {
             slidesPerView: "auto",
             spaceBetween: 2.5,
             keyboardControl: !0,
-            preventClicks: !1,
             lazyLoading: !0,
             lazyLoadingInPrevNext: !0,
             lazyLoadingOnTransitionStart: !0,
@@ -51,6 +50,9 @@ jQuery(document).ready(function($) {
             }
         }), galleryTop.on("onLazyImageReady", function(s, slide, _img) {
             s.onResize();
+        }), $this.wpp_rs_lb({
+            galleryTop: galleryTop,
+            galleryThumbs: galleryThumbs
         });
     });
 });

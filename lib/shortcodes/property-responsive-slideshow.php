@@ -57,7 +57,7 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_style("lightbox-style", ud_get_wpp_resp_slideshow()->path( "static/styles/lightbox/lightbox$suffix.css", "url" ));
         wp_enqueue_style("property-responsive-slideshow-style", ud_get_wpp_resp_slideshow()->path( "static/styles/res-slideshow$suffix.css", "url" ));
 
-        //wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/lightbox.js", "url" ));
+        wp_enqueue_script("lightbox-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/lightbox.js", "url" ));
         wp_enqueue_script("swiper-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/swiper.jquery.js", "url" ));
         wp_enqueue_script("property-responsive-slideshow-script", ud_get_wpp_resp_slideshow()->path( "static/scripts/res-slideshow.js", "url" ));
       }

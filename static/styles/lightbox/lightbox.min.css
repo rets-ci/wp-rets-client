@@ -1,0 +1,29 @@
+/*
+    Responsive 
+
+*/
+.property-resp-slideshow.lightbox {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: 999999;
+  padding: 5px 5px 110px 5px;
+  box-sizing: border-box;
+  background: #fdfdfd;
+}
+.property-resp-slideshow.lightbox .swiper-container.gallery-top {
+  height: 100%;
+}
+.property-resp-slideshow.lightbox .swiper-container.gallery-top.ratio-16-9:before {
+  content: ;
+  display: none;
+}
+.property-resp-slideshow.lightbox .swiper-container.gallery-top.ratio-16-9 .swiper-wrapper {
+  position: relative;
+}
+.property-resp-slideshow.lightbox .swiper-container.gallery-thumbs {
+  position: absolute;
+  bottom: 5px;
+}

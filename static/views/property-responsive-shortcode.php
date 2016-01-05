@@ -29,7 +29,7 @@ global $property_resp_slideshow_counter;
 $property_resp_slideshow_counter++;
 ?>
 <!-- Swiper -->
-<div id="<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
+<div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
     <div class="swiper-container gallery-top ratio-16-9">
         <div class="swiper-wrapper clearfix">
         <?php foreach ($imgs as $key => $img) {

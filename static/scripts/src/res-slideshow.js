@@ -19,7 +19,7 @@ jQuery(document).ready(function($){
                 slidesPerView: 'auto',
                 spaceBetween: 2.5,
                 keyboardControl:true,
-                preventClicks:false,
+                //preventClicks:false,
                 // Enable lazy loading
                 lazyLoading: true,
                 lazyLoadingInPrevNext: true,
@@ -109,9 +109,9 @@ jQuery(document).ready(function($){
         galleryTop.on('onLazyImageReady', function(s, slide, _img){
             s.onResize();
         });
-
+        $this.wpp_rs_lb({galleryTop:galleryTop, galleryThumbs:galleryThumbs});
         //galleryTop.params.control = galleryThumbs;
         //galleryThumbs.params.control = galleryTop;
-    })
+    });
 });
 
