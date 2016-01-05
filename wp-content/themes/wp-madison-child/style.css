@@ -1270,6 +1270,9 @@ body.page-template-page-wide #site-content article .entry-inner header {
   width: 100%;
   max-width: 100%;
 }
+.single-agent #site-content .entry-title {
+  margin-top: 35px;
+}
 .single-agent #site-content .agent-hero {
   min-height: 400px;
   position: relative;

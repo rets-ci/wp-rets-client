@@ -35,7 +35,7 @@ global $wp_query;
         <div class="container">
           <div class="col-md-offset-4 col-md-8 phone">
             <i class="fa fa-phone"></i>
-            <p><?php echo get_user_meta( $wp_query->agent->ID, 'phone_number', 1 ); ?></p>
+            <p><?php echo preg_replace( '/(x.+)/', '<b>$1</b>', get_user_meta( $wp_query->agent->ID, 'phone_number', 1 ) ); ?></p>
           </div>
         </div>
       </section>
