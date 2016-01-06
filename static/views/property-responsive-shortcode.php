@@ -30,6 +30,18 @@ $property_resp_slideshow_counter++;
 ?>
 <!-- Swiper -->
 <div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
+    <div class="modal-header">
+      <div class="pull-left">
+          <span><?php echo $title;?></span>
+      </div>
+      <div class="pull-right">
+        <a class="viewOriginal" class="button" aria-label="Close" href="javascript:void(0);" target="_blank">
+          View Original
+        </a>
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
     <div class="swiper-container gallery-top ratio-16-9">
         <div class="swiper-wrapper clearfix">
         <?php foreach ($imgs as $key => $img) {

@@ -1865,15 +1865,18 @@ s.setWrapperTransition = function (duration, byController) {
     }
     s.emit('onSetTransition', s, duration);
 };
+// zm edited;
 s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
     var x = 0, y = 0, z = 0;
     if (isH()) {
-        var width = s.virtualSize,
-            wrapper_width = s.wrapper.width(); 
-        if(translate>0)
-            translate = 0;
-        else if(translate< -(width - wrapper_width))
-            translate = -(width - wrapper_width);
+        if(!s.container.parent().hasClass('lightbox') || s.container.hasClass('gallery-thumbs')){
+            var width = s.virtualSize,
+                wrapper_width = s.wrapper.width(); 
+            if(translate>0)
+                translate = 0;
+            else if(translate< -(width - wrapper_width))
+                translate = -(width - wrapper_width);
+        }
         x = s.rtl ? -translate : translate;
     }
     else {

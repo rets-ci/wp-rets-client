@@ -48,7 +48,7 @@ module.exports = function build( grunt ) {
           relativeUrls: true
         },
         files: {
-          'static/styles/lightbox/lightbox.min.css': [ 'static/styles/src/lightbox/lightbox.less' ],
+          'static/styles/lightbox.min.css': [ 'static/styles/src/lightbox.less' ],
           'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ]
           
         }
@@ -58,7 +58,7 @@ module.exports = function build( grunt ) {
           relativeUrls: true
         },
         files: {
-          'static/styles/lightbox/lightbox.css': [ 'static/styles/src/lightbox/lightbox.less' ],
+          'static/styles/lightbox.css': [ 'static/styles/src/lightbox.less' ],
           'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ]
           
         }
@@ -102,13 +102,14 @@ module.exports = function build( grunt ) {
       },
       less: {
         files: [
-          'static/styles/src/*.*'
+          'static/styles/src/*.*',
+          'static/styles/src/swiper/*.*'
         ],
         tasks: [ 'less' ]
       },
       concat: {
         files: [
-          'static/scripts/src/*.*'
+          'static/scripts/src/swiper/*.*'
         ],
         tasks: [ 'concat' ]
       },

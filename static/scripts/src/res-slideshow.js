@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
     $('.property-resp-slideshow').each(function(){
         var $this = $(this);
+        var id = $this.attr('id');
         var galleryThumbs;
         var _galleryThumbs = $this.find('.gallery-thumbs');
         var goToClickedSlide = function(e){
@@ -65,10 +66,10 @@ jQuery(document).ready(function($){
             if(s.container.hasClass('gallery-top')){
                 var width = s.container.width();
 
-                var $styler = jQuery('#swiper-img-max-width')
+                var $styler = jQuery('#' + id + '-img-max-width')
                 if($styler.length==0)
-                    $styler = jQuery('<style id="swiper-img-max-width"></style>').appendTo('body');
-                $styler.html('.swiper-container.gallery-top .swiper-slide img{max-width:'+ s.container.width() +'px!important;max-height:'+s.container.height() +'px!important;}');
+                    $styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo('body');
+                $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ s.container.width() +'px!important;max-height:'+s.container.height() +'px!important;}');
                 var container_width = s.container.width();
                 var container_height = s.container.height();
                 s.slides.each(function(){
@@ -97,8 +98,8 @@ jQuery(document).ready(function($){
                             $this.width(container_height*hRatio);
                         }
                         else{
-                            $this.width($this.width());
-                            $this.height($this.height());
+                            $this.width(width);
+                            $this.height(height);
                         }
 
                 });
