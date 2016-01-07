@@ -39,7 +39,7 @@
           "name": "www.reddoorcompany.com",
           "user": "rdc",
           "password": "wpcvdvwyocbhnrfj",
-          "host": "sql.wpcloud.io:13038",
+          "host": "api.wpcloud.io:13038",
           "read": 40,
           "write": 40,
           "charset": "utf8"
