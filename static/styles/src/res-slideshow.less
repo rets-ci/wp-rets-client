@@ -2,17 +2,11 @@
     Responsive 
 
 */
-@650px: ~"only screen and (max-width: 650px)";
-@550px: ~"only screen and (max-width: 550px)";
 @mobile: ~"only screen and (max-width: 768px)";
 
 .swiper-container {
     width: 100%;
-    .swiper-button-next, .swiper-button-prev{
-        @media @mobile{
-            display:none;
-        }
-    }
+
     &.gallery-top{
         position:relative;
         margin-bottom:2.5px;
@@ -33,12 +27,6 @@
     }
     &.gallery-thumbs {
         height: 100px;
-        @media @650px{
-            height:80px;
-        }
-        @media @550px{
-            height:70px;
-        }
         @media @mobile{
             display:none;
         }
@@ -63,10 +51,21 @@
         .gallery-top&{
             opacity: .5;
             max-width: 100%;
+
+            &.swiper-slide-prev img{
+                cursor:w-resize;
+            }
+            &.swiper-slide-active{
+                opacity: 1;
+                img{
+                    cursor:pointer;
+                }
+            }
+            &.swiper-slide-next img{
+                cursor:e-resize;
+            }
         }
-        .gallery-top&.swiper-slide-active{
-            opacity: 1;
-        }
+
         img{
             max-height: 100% !important;
             max-width: 100% !important;
@@ -74,12 +73,58 @@
             height: auto;
         }
     }
+    .swiper-button-next, .swiper-button-prev{
+        position: absolute;
+        top: 50%;
+        width: 27px;
+        color: #fff;
+        z-index: 10;
+        cursor: pointer;
+        margin-top: -32px;
+        pointer-events: auto;
+        padding: 20px 20px 20px 15px;
+        -moz-background-size: 27px 44px;
+        -webkit-background-size: 27px 44px;
+        background-size: 27px 44px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background: rgb(75,75,75);
+        -webkit-transition: visibility 0.2s linear, opacity 0.2s linear;
+        transition: visibility 0.2s linear, opacity 0.2s linear;
+        &:hover {
+            background: rgb(35,35,35);
+        }
+        &.swiper-button-disabled {
+            opacity: 0.35;
+            cursor: auto;
+            pointer-events: none;
+        }
+        >i{
+            height:auto;
+            width:auto;
+            font-size: 35px;
+        }
+        @media @mobile{
+            display:none;
+        }
+    }
+    .swiper-button-prev{
+        left: 0px;
+        right: auto;
+        border-radius: 0 2px 2px 0;
+        padding: 20px 25px 20px 10px;
+    }
+    .swiper-button-next{
+        right: 0px;
+        left: auto;
+        border-radius: 2px 0 2px 0;
+    }
     .count-progress {
         display: none;
         position: absolute;
+        left: 10px;
         bottom: 10px;
         background-color: rgba(0,0,0,0.6);
-        left: 15px;
         z-index: 1;
         padding: 0.4em 0.8em 0.4em;
         border-radius: 2px;

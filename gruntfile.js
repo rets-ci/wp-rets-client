@@ -49,7 +49,8 @@ module.exports = function build( grunt ) {
         },
         files: {
           'static/styles/lightbox.min.css': [ 'static/styles/src/lightbox.less' ],
-          'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ]
+          'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ],
+          'static/styles/swiper/swiper.min.css'    : [ 'static/styles/src/swiper/swiper.less' ]
           
         }
       },
@@ -59,7 +60,8 @@ module.exports = function build( grunt ) {
         },
         files: {
           'static/styles/lightbox.css': [ 'static/styles/src/lightbox.less' ],
-          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ]
+          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ],
+          'static/styles/swiper/swiper.css'    : [ 'static/styles/src/swiper/swiper.less' ]
           
         }
       }
@@ -67,14 +69,14 @@ module.exports = function build( grunt ) {
 
     concat: {
       options: {
-        separator: ';',
+        separator: ';\n',
       },
       production: {
         src: [
                 'static/scripts/src/swiper/wrap-start.js',
                 'static/scripts/src/swiper/swiper-intro.js',
                 'static/scripts/src/swiper/core.js',
-                'static/scripts/src/swiper/effects.js',
+                //'static/scripts/src/swiper/effects.js', // for 3d
                 'static/scripts/src/swiper/lazy-load.js',
                 'static/scripts/src/swiper/keyboard.js',
                 'static/scripts/src/swiper/plugins.js',

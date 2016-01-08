@@ -5,12 +5,6 @@
 .swiper-container {
   width: 100%;
 }
-@media only screen and (max-width: 768px) {
-  .swiper-container .swiper-button-next,
-  .swiper-container .swiper-button-prev {
-    display: none;
-  }
-}
 .swiper-container.gallery-top {
   position: relative;
   margin-bottom: 2.5px;
@@ -29,16 +23,6 @@
 }
 .swiper-container.gallery-thumbs {
   height: 100px;
-}
-@media only screen and (max-width: 650px) {
-  .swiper-container.gallery-thumbs {
-    height: 80px;
-  }
-}
-@media only screen and (max-width: 550px) {
-  .swiper-container.gallery-thumbs {
-    height: 70px;
-  }
 }
 @media only screen and (max-width: 768px) {
   .swiper-container.gallery-thumbs {
@@ -67,8 +51,17 @@
   opacity: .5;
   max-width: 100%;
 }
+.gallery-top.swiper-container .swiper-slide.swiper-slide-prev img {
+  cursor: w-resize;
+}
 .gallery-top.swiper-container .swiper-slide.swiper-slide-active {
   opacity: 1;
+}
+.gallery-top.swiper-container .swiper-slide.swiper-slide-active img {
+  cursor: pointer;
+}
+.gallery-top.swiper-container .swiper-slide.swiper-slide-next img {
+  cursor: e-resize;
 }
 .swiper-container .swiper-slide img {
   max-height: 100% !important;
@@ -76,12 +69,65 @@
   width: auto;
   height: auto;
 }
+.swiper-container .swiper-button-next,
+.swiper-container .swiper-button-prev {
+  position: absolute;
+  top: 50%;
+  width: 27px;
+  color: #fff;
+  z-index: 10;
+  cursor: pointer;
+  margin-top: -32px;
+  pointer-events: auto;
+  padding: 20px 20px 20px 15px;
+  -moz-background-size: 27px 44px;
+  -webkit-background-size: 27px 44px;
+  background-size: 27px 44px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background: #4b4b4b;
+  -webkit-transition: visibility 0.2s linear, opacity 0.2s linear;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+}
+.swiper-container .swiper-button-next:hover,
+.swiper-container .swiper-button-prev:hover {
+  background: #232323;
+}
+.swiper-container .swiper-button-next.swiper-button-disabled,
+.swiper-container .swiper-button-prev.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-container .swiper-button-next > i,
+.swiper-container .swiper-button-prev > i {
+  height: auto;
+  width: auto;
+  font-size: 35px;
+}
+@media only screen and (max-width: 768px) {
+  .swiper-container .swiper-button-next,
+  .swiper-container .swiper-button-prev {
+    display: none;
+  }
+}
+.swiper-container .swiper-button-prev {
+  left: 0px;
+  right: auto;
+  border-radius: 0 2px 2px 0;
+  padding: 20px 25px 20px 10px;
+}
+.swiper-container .swiper-button-next {
+  right: 0px;
+  left: auto;
+  border-radius: 2px 0 2px 0;
+}
 .swiper-container .count-progress {
   display: none;
   position: absolute;
+  left: 10px;
   bottom: 10px;
   background-color: rgba(0, 0, 0, 0.6);
-  left: 15px;
   z-index: 1;
   padding: 0.4em 0.8em 0.4em;
   border-radius: 2px;

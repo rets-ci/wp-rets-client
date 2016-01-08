@@ -2,8 +2,6 @@
     Responsive 
 
 */
-@650px: ~"only screen and (max-width: 650px)";
-@550px: ~"only screen and (max-width: 550px)";
 @mobile: ~"only screen and (max-width: 768px)";
  
 .property-resp-slideshow {
@@ -22,10 +20,14 @@
     margin: 0px;
     box-sizing: border-box;
     background: #333;
+
+    @media @mobile{
+        padding: 42.5px 2.5px 2.5px 2.5px;
+    }
     .modal-header{
         position:absolute;
-        top:0px;
-        left:0px;
+        top: 0px;
+        left: 0px;
         width:100%;
         height:40px;
         color: #fff;
@@ -62,6 +64,22 @@
     .swiper-container {
         &.gallery-top{
             height: 100%;
+
+            .swiper-slide.swiper-slide-active{
+                position:relative;
+                img{
+                    cursor:zoom-in;
+                    &.zoom{
+                        position: absolute;
+                        top:0;
+                        left:0;
+                        cursor: move;
+                        max-height: none !important;
+                        max-width : none !important;
+                    }
+                }
+            }
+
             &.ratio-16-9{
                 &:before {
                     content:;

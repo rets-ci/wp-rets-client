@@ -1,4 +1,5 @@
 <?php
+global $property_resp_slideshow_counter;
 if(empty($property_id)){
 	global $post;
 	$property_id = $post->ID;
@@ -6,7 +7,7 @@ if(empty($property_id)){
 $title = get_the_title($property_id);
 $images = UsabilityDynamics\WPP\Property_Factory::get_images($property_id);
 $imgs = array();
-//print_r($images);
+
 foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
 	$full = wp_get_attachment_image_src( $attach_id, "full");
@@ -20,14 +21,13 @@ foreach ($images as $img) {
         $thumb = '';
     }
 	$imgs[$attach_id] = array(
-								'full' => $full[0],
+								'full' => $full,
 								'large' => $large,
 								'thumb' => $thumb
 							);
 }
-global $property_resp_slideshow_counter;
-$property_resp_slideshow_counter++;
 ?>
+<?php if(count($imgs)>0):?>
 <!-- Swiper -->
 <div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
     <div class="modal-header">
@@ -36,22 +36,22 @@ $property_resp_slideshow_counter++;
       </div>
       <div class="pull-right">
         <a class="viewOriginal" class="button" aria-label="Close" href="javascript:void(0);" target="_blank">
-          View Original
+          View Original <i class="dashicons dashicons-external"></i>
         </a>
-        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <button type="button" class="close" aria-label="Close"><i class="dashicons dashicons-no"></i></button>
       </div>
       <div class="clearfix"></div>
     </div>
     <div class="swiper-container gallery-top ratio-16-9">
         <div class="swiper-wrapper clearfix">
         <?php foreach ($imgs as $key => $img) {
-        	echo "<div class='swiper-slide' data-href='{$img['full']}' data-lightbox='property-responsive-slideshow' data-title='$title'>{$img['large']}</div>\n";
+        	echo "<div class='swiper-slide' data-href='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>\n";
         }
         ?>
         </div>
         <!-- Add Arrows  swiper-button-white-->
-        <div class="swiper-button-next swiper-button-black"></div>
-        <div class="swiper-button-prev swiper-button-black"></div>
+        <div class="swiper-button-prev"><i class="dashicons dashicons-arrow-left-alt2"></i></div>
+        <div class="swiper-button-next"><i class="dashicons dashicons-arrow-right-alt2"></i></div>
         <span class="count-progress">
             <span class="current">1</span> / 
             <span class="total"><?php echo count($imgs);?></span>
@@ -69,3 +69,5 @@ $property_resp_slideshow_counter++;
     <?php endif;?>
 </div>
 <!-- END Swiper -->
+<?php $property_resp_slideshow_counter++;?>
+<?php endif;?>
