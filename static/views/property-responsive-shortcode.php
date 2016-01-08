@@ -45,7 +45,7 @@ foreach ($images as $img) {
     <div class="swiper-container gallery-top ratio-16-9">
         <div class="swiper-wrapper clearfix">
         <?php foreach ($imgs as $key => $img) {
-        	echo "<div class='swiper-slide' data-href='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>\n";
+        	echo "<div class='swiper-slide' data-src='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>\n";
         }
         ?>
         </div>

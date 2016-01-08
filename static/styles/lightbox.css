@@ -62,20 +62,6 @@
 .property-resp-slideshow.lightbox .swiper-container.gallery-top {
   height: 100%;
 }
-.property-resp-slideshow.lightbox .swiper-container.gallery-top .swiper-slide.swiper-slide-active {
-  position: relative;
-}
-.property-resp-slideshow.lightbox .swiper-container.gallery-top .swiper-slide.swiper-slide-active img {
-  cursor: zoom-in;
-}
-.property-resp-slideshow.lightbox .swiper-container.gallery-top .swiper-slide.swiper-slide-active img.zoom {
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: move;
-  max-height: none !important;
-  max-width: none !important;
-}
 .property-resp-slideshow.lightbox .swiper-container.gallery-top.ratio-16-9:before {
   content: ;
   display: none;

@@ -22,12 +22,6 @@
       if(!lb.hasClass('lightbox')){
         showLightbox();
       }
-      else{ // in lightbox zoom
-        if(!$(this).parent().hasClass('zoomEnabled')){
-          _enableZoom(options.galleryTop);
-          $(this).parent().addClass('zoomEnabled');//swiper-no-swiping 
-        }
-      }
     });
 
     //Click event on element
@@ -37,9 +31,11 @@
 
     setViewOriginalHref(options.galleryTop);
 
-    //Click event on element
+    //
     options.galleryTop.on('slideChangeStart', function(s){
-      setViewOriginalHref(s);
+      // Setting view originals link for current slide.
+      setViewOriginalHref(s); 
+
     });
 
     //Swipe down to close
@@ -55,50 +51,7 @@
       }
     });
 
-
-    var _enableZoom = (function() {
-      var scroller = undefined;
-
-      return function(swiper) {
-        if(scroller !== undefined) {
-          scroller.destroy();
-        }
-        scroller = new IScroll($(swiper.container).find('.swiper-slide-active')[0], {
-                                hideScrollbar: true,
-                                zoom: true,
-                                scrollX: true,
-                                scrollY: true,
-                                mouseWheel: true,
-                                wheelAction: 'zoom',
-                              });
-
-        scroller.on('zoomEnd', function(e) {
-          var slide = $(this.wrapper);
-
-          if(parseInt(this.scale) == 1) {
-            slide.removeClass('swiper-no-swiping');
-          } else {
-            slide.addClass('swiper-no-swiping');
-          }
-        });
-
-        scroller.on('zoomStart', function(e) {
-          var slide = $(this.wrapper);
-          if(e.type === 'touchstart') {
-            slide.addClass('swiper-no-swiping');
-            //this.originX = Math.abs(e.touches[0].pageX + e.touches[1].pageX) / 2 - this.x;
-          } else if(e.type === 'touchend') {
-            slide.removeClass('swiper-no-swiping');
-            this.wrapperOffsetLeft = 0;
-          }
-        });
-      };
-    })();
-
-
     function handleMoveImage(s, e){
-      console.log("s.touches");
-      console.log(s.touches);
       e.stopPropagation();
       e.stopImmediatePropagation();
       return false;
@@ -115,10 +68,12 @@
       options.galleryTop.params.slidesPerView = 1;
       options.galleryTop.params.noSwiping = true;
 
+      loadFullImageLazy();
       lb.addClass('lightbox');
       $('#wpadminbar').hide();
 
       options.galleryTop.update();
+      options.galleryTop.lazy.load();
       setTimeout(function() {
           options.galleryTop.onResize();
       },150);
@@ -129,7 +84,22 @@
       $(document).on('keydown', lbHandleKeyboard);
       $('body').css({'overflow':'hidden'});
     }
-    
+
+    function loadFullImageLazy(index){
+      if(!lb.hasClass('fullLazyInserted')){
+        $.each(options.galleryTop.slides, function(index, item){
+          var slide = $(item);
+          var src = slide.data('src');
+          if(src){
+            var img = slide.find('img');
+            slide.removeAttr('data-src');
+            img.addClass('swiper-lazy').attr('data-src', src).attr('data-srcset', " ");
+          }
+        });
+      }
+      lb.addClass('fullLazyInserted');
+    }
+
     function hideLightbox(){
       var activeIndex = options.galleryTop.activeIndex;
 

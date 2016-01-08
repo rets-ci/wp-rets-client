@@ -7,12 +7,22 @@
         function showLightbox() {
             var activeIndex = options.galleryTop.activeIndex;
             options.galleryTop.params.slidesPerView = 1, options.galleryTop.params.noSwiping = !0, 
-            lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.update(), setTimeout(function() {
+            loadFullImageLazy(), lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.update(), 
+            options.galleryTop.lazy.load(), setTimeout(function() {
                 options.galleryTop.onResize();
             }, 150), options.galleryTop.slideTo(activeIndex, 0), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
             $(document).on("keydown", lbHandleKeyboard), $("body").css({
                 overflow: "hidden"
             });
+        }
+        function loadFullImageLazy(index) {
+            lb.hasClass("fullLazyInserted") || $.each(options.galleryTop.slides, function(index, item) {
+                var slide = $(item), src = slide.data("src");
+                if (src) {
+                    var img = slide.find("img");
+                    slide.removeAttr("data-src"), img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ");
+                }
+            }), lb.addClass("fullLazyInserted");
         }
         function hideLightbox() {
             var activeIndex = options.galleryTop.activeIndex;
@@ -36,9 +46,8 @@
             galleryTop: [],
             galleryThumbs: []
         }, prop), originalSlidesPerView = options.galleryTop.params.slidesPerView;
-        lb.on("click", ".gallery-top .swiper-slide.swiper-slide-active img", function(e) {
-            lb.hasClass("lightbox") ? $(this).parent().hasClass("zoomEnabled") || (_enableZoom(options.galleryTop), 
-            $(this).parent().addClass("zoomEnabled")) : showLightbox();
+        return lb.on("click", ".gallery-top .swiper-slide.swiper-slide-active img", function(e) {
+            lb.hasClass("lightbox") || showLightbox();
         }), lb.on("click", ".modal-header .close", function(e) {
             hideLightbox();
         }), setViewOriginalHref(options.galleryTop), options.galleryTop.on("slideChangeStart", function(s) {
@@ -48,27 +57,6 @@
             return diff > 100 ? (e.preventDefault(), setTimeout(function() {
                 hideLightbox();
             }, 50), !1) : void 0;
-        });
-        var _enableZoom = function() {
-            var scroller = void 0;
-            return function(swiper) {
-                void 0 !== scroller && scroller.destroy(), scroller = new IScroll($(swiper.container).find(".swiper-slide-active")[0], {
-                    hideScrollbar: !0,
-                    zoom: !0,
-                    scrollX: !0,
-                    scrollY: !0,
-                    mouseWheel: !0,
-                    wheelAction: "zoom"
-                }), scroller.on("zoomEnd", function(e) {
-                    var slide = $(this.wrapper);
-                    1 == parseInt(this.scale) ? slide.removeClass("swiper-no-swiping") : slide.addClass("swiper-no-swiping");
-                }), scroller.on("zoomStart", function(e) {
-                    var slide = $(this.wrapper);
-                    "touchstart" === e.type ? slide.addClass("swiper-no-swiping") : "touchend" === e.type && (slide.removeClass("swiper-no-swiping"), 
-                    this.wrapperOffsetLeft = 0);
-                });
-            };
-        }();
-        return this;
+        }), this;
     };
 }(jQuery);

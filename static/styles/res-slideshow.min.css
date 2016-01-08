@@ -2,6 +2,11 @@
     Responsive 
 
 */
+@media only screen and (max-width: 768px) {
+  .modal-header .viewOriginal {
+    display: none;
+  }
+}
 .swiper-container {
   width: 100%;
 }
@@ -73,13 +78,12 @@
 .swiper-container .swiper-button-prev {
   position: absolute;
   top: 50%;
-  width: 27px;
+  font-size: 35px;
   color: #fff;
   z-index: 10;
   cursor: pointer;
   margin-top: -32px;
   pointer-events: auto;
-  padding: 20px 20px 20px 15px;
   -moz-background-size: 27px 44px;
   -webkit-background-size: 27px 44px;
   background-size: 27px 44px;
@@ -103,7 +107,7 @@
 .swiper-container .swiper-button-prev > i {
   height: auto;
   width: auto;
-  font-size: 35px;
+  font-size: inherit;
 }
 @media only screen and (max-width: 768px) {
   .swiper-container .swiper-button-next,
@@ -115,12 +119,13 @@
   left: 0px;
   right: auto;
   border-radius: 0 2px 2px 0;
-  padding: 20px 25px 20px 10px;
+  padding: .6em .3em .6em .22em;
 }
 .swiper-container .swiper-button-next {
   right: 0px;
   left: auto;
-  border-radius: 2px 0 2px 0;
+  border-radius: 2px 0 0 2px;
+  padding: .6em .22em .6em .3em;
 }
 .swiper-container .count-progress {
   display: none;
