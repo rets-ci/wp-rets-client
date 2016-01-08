@@ -47,14 +47,54 @@ module.exports = function build( grunt ) {
           yuicompress: true,
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/lightbox.min.css': [ 'static/styles/src/lightbox.less' ],
+          'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ],
+          'static/styles/swiper/swiper.min.css'    : [ 'static/styles/src/swiper/swiper.less' ]
+          
+        }
       },
       development: {
         options: {
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/lightbox.css': [ 'static/styles/src/lightbox.less' ],
+          'static/styles/res-slideshow.css'    : [ 'static/styles/src/res-slideshow.less' ],
+          'static/styles/swiper/swiper.css'    : [ 'static/styles/src/swiper/swiper.less' ]
+          
+        }
       }
+    },
+
+    concat: {
+      options: {
+        separator: ';\n',
+      },
+      production: {
+        src: [
+                'static/scripts/src/swiper/wrap-start.js',
+                'static/scripts/src/swiper/swiper-intro.js',
+                'static/scripts/src/swiper/core.js',
+                //'static/scripts/src/swiper/effects.js', // for 3d
+                'static/scripts/src/swiper/lazy-load.js',
+                'static/scripts/src/swiper/keyboard.js',
+                'static/scripts/src/swiper/plugins.js',
+                'static/scripts/src/swiper/emitter.js',
+                'static/scripts/src/swiper/a11y.js',
+                'static/scripts/src/swiper/init.js',
+                'static/scripts/src/swiper/swiper-outro.js',
+                'static/scripts/src/swiper/swiper-proto.js',
+                'static/scripts/src/swiper/dom.js',
+                'static/scripts/src/swiper/get-dom-lib.js',
+                'static/scripts/src/swiper/dom-plugins.js',
+                'static/scripts/src/swiper/get-dom-lib.js',
+                'static/scripts/src/swiper/dom-plugins.js',
+                'static/scripts/src/swiper/wrap-end.js',
+                //'static/scripts/src/swiper/amd.js'
+              ],
+        dest: 'static/scripts/swiper.jquery.js',
+      },
     },
 
     watch: {
@@ -64,9 +104,16 @@ module.exports = function build( grunt ) {
       },
       less: {
         files: [
-          'static/styles/src/*.*'
+          'static/styles/src/*.*',
+          'static/styles/src/swiper/*.*'
         ],
         tasks: [ 'less' ]
+      },
+      concat: {
+        files: [
+          'static/scripts/src/swiper/*.*'
+        ],
+        tasks: [ 'concat' ]
       },
       js: {
         files: [
