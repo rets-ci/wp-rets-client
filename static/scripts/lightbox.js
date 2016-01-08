@@ -1,7 +1,7 @@
 !function($) {
     $.fn.wpp_rs_lb = function(prop) {
         function setViewOriginalHref(s) {
-            var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("href");
+            var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("src");
             lb.find(".viewOriginal").attr("href", href);
         }
         function showLightbox() {
@@ -20,7 +20,7 @@
                 var slide = $(item), src = slide.data("src");
                 if (src) {
                     var img = slide.find("img");
-                    slide.removeAttr("data-src"), img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ");
+                    img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ");
                 }
             }), lb.addClass("fullLazyInserted");
         }

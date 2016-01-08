@@ -59,7 +59,7 @@
 
     function setViewOriginalHref(s){
       var activeIndex = s.activeIndex;
-      var href = $(s.slides[activeIndex]).data('href');
+      var href = $(s.slides[activeIndex]).data('src');
       lb.find('.viewOriginal').attr('href', href);
     }
 
@@ -92,7 +92,6 @@
           var src = slide.data('src');
           if(src){
             var img = slide.find('img');
-            slide.removeAttr('data-src');
             img.addClass('swiper-lazy').attr('data-src', src).attr('data-srcset', " ");
           }
         });

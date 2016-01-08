@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
-    $('.property-resp-slideshow').each(function(){
+    var wpprs = $('.property-resp-slideshow');
+    wpprs.each(function(){
         var $this = $(this);
         var id = $this.attr('id');
         var galleryThumbs;
@@ -12,7 +13,14 @@ jQuery(document).ready(function($){
                     e.stopImmediatePropagation()
                     return false;
                 }
+                enDisKeyCtrl(); // Enable keyboard control only on current swiper.
             };
+        var enDisKeyCtrl = function(){
+            wpprs.find('.gallery-top').each(function(){
+                this.swiper.disableKeyboardControl();
+            });
+            galleryTop.enableKeyboardControl();
+        }
         var galleryTop = new Swiper($this.find('.gallery-top'), {
                 nextButton: $this.find('.swiper-button-next'),
                 prevButton: $this.find('.swiper-button-prev'),
@@ -40,7 +48,6 @@ jQuery(document).ready(function($){
                 slidesPerView: 'auto',
                 touchRatio: 1,
                 longSwipesRatio: 1,
-                freeModeMomentumRatio: 5,
                 //simulateTouch: false,
                 //slideToClickedSlide:true
 
@@ -59,7 +66,9 @@ jQuery(document).ready(function($){
             var progress    = s.container.find('.count-progress');
             progress.find('.current').html(active);
             //progress.find('.total').html(total);
+            enDisKeyCtrl(); // Enable keyboard control only on current swiper.
         });
+        
         jQuery(window).on('orientationchange', galleryTop.onResize);
         jQuery(document).on('wpp_denali_tabbed_widget_render', galleryTop.onResize);
         galleryTop.container.on('click', '.swiper-slide', goToClickedSlide);
@@ -112,6 +121,8 @@ jQuery(document).ready(function($){
         galleryTop.on('onLazyImageReady', function(s, slide, _img){
             s.onResize();
         });
+
+        // Lightbox
         $this.wpp_rs_lb({galleryTop:galleryTop, galleryThumbs:galleryThumbs});
 
         // set font based on cointer width

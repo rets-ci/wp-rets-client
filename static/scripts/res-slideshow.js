@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
-    $(".property-resp-slideshow").each(function() {
+    var wpprs = $(".property-resp-slideshow");
+    wpprs.each(function() {
         function setControlSize() {
             var cWidth = galleryTop.container.width(), control = $(galleryTop.container).find(".swiper-button-prev, .swiper-button-next");
             cWidth > 900 ? width = 36 : 400 > cWidth ? width = 20 : width = cWidth / 100 * 6, 
@@ -8,7 +9,11 @@ jQuery(document).ready(function($) {
         var galleryThumbs, $this = $(this), id = $this.attr("id"), _galleryThumbs = $this.find(".gallery-thumbs"), goToClickedSlide = function(e) {
             var clickedIndex = $(this).index();
             return galleryTop.activeIndex != clickedIndex ? (galleryTop.slideTo(clickedIndex), 
-            e.preventDefault(), e.stopImmediatePropagation(), !1) : void 0;
+            e.preventDefault(), e.stopImmediatePropagation(), !1) : void enDisKeyCtrl();
+        }, enDisKeyCtrl = function() {
+            wpprs.find(".gallery-top").each(function() {
+                this.swiper.disableKeyboardControl();
+            }), galleryTop.enableKeyboardControl();
         }, galleryTop = new Swiper($this.find(".gallery-top"), {
             nextButton: $this.find(".swiper-button-next"),
             prevButton: $this.find(".swiper-button-prev"),
@@ -30,13 +35,12 @@ jQuery(document).ready(function($) {
             centeredSlides: !0,
             slidesPerView: "auto",
             touchRatio: 1,
-            longSwipesRatio: 1,
-            freeModeMomentumRatio: 5
+            longSwipesRatio: 1
         }), galleryThumbs.container.on("click", ".swiper-slide", goToClickedSlide), galleryTop.on("onSlideChangeStart", function(s) {
             galleryThumbs.slideTo(s.activeIndex);
         })), galleryTop.on("onSlideChangeStart", function(s) {
             var active = s.activeIndex + 1, progress = s.container.find(".count-progress");
-            progress.find(".current").html(active);
+            progress.find(".current").html(active), enDisKeyCtrl();
         }), jQuery(window).on("orientationchange", galleryTop.onResize), jQuery(document).on("wpp_denali_tabbed_widget_render", galleryTop.onResize), 
         galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), galleryTop.on("onResizeStart", function(s) {
             setControlSize();
