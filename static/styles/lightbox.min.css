@@ -66,6 +66,9 @@
   content: ;
   display: none;
 }
+.property-resp-slideshow.lightbox .swiper-container.gallery-top.ratio-16-9 .swiper-slide.swiper-slide-active img {
+  cursor: auto;
+}
 .property-resp-slideshow.lightbox .swiper-container.gallery-top.ratio-16-9 .swiper-wrapper {
   position: relative;
 }

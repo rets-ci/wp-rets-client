@@ -28,6 +28,7 @@
 }
 .swiper-container.gallery-thumbs {
   height: 100px;
+  cursor: pointer;
 }
 @media only screen and (max-width: 768px) {
   .swiper-container.gallery-thumbs {
