@@ -7,7 +7,7 @@ if(empty($property_id)){
 $title = get_the_title($property_id);
 $images = UsabilityDynamics\WPP\Property_Factory::get_images($property_id);
 $imgs = array();
-
+$property_resp_slideshow_counter++;
 foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
 	$full = wp_get_attachment_image_src( $attach_id, "full");
@@ -38,7 +38,7 @@ foreach ($images as $img) {
         <a class="viewOriginal" class="button" aria-label="Close" href="javascript:void(0);" target="_blank">
           View Original <i class="dashicons dashicons-external"></i>
         </a>
-        <button type="button" class="close" aria-label="Close"><i class="dashicons dashicons-no"></i></button>
+        <a class="close" aria-label="Close"><i class="dashicons dashicons-no"></i></a>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -69,5 +69,4 @@ foreach ($images as $img) {
     <?php endif;?>
 </div>
 <!-- END Swiper -->
-<?php $property_resp_slideshow_counter++;?>
 <?php endif;?>
