@@ -18,15 +18,7 @@ $property_images = get_post_meta( $post->ID, 'slideshow_images', true );
 	<?php endif; ?>
 
 	<?php if ( ! empty( $property_images[0] ) && count( $property_images ) > 1 ) : ?>
-		<section class="property-images">
-			<?php foreach ( $property_images as $index => $id ) : ?>
-				<?php
-					$large = wp_get_attachment_image_src( $id, 'property-featured-image' );
-					$thumb = wp_get_attachment_image_src( $id, 'thumbnail' );
-				?>
-				<img src="<?php echo $large[0]; ?>" alt="" data-image-id="<?php echo $id; ?>" data-image-index="<?php echo $index; ?>" data-image-thumb="<?php echo $thumb[0]?>" />
-			<?php endforeach; ?>
-		</section>
+		<?php echo do_shortcode('[property_responsive_slideshow]'); ?>
 	<?php elseif ( has_post_thumbnail() ) : ?>
 		<section class="property-image">
 			<?php the_post_thumbnail( 'property-featured-image' ); ?>
