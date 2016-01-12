@@ -6,9 +6,9 @@
  * Author: Usability Dynamics, Inc.
  * Version: 1.0.0
  * Text Domain: wpp_resp_slideshow
- * Author URI: http://usabilitydynamics.com
+ * Author URI: https://www.usabilitydynamics.com
  * Domain Path: /static/languages/
- * GitHub Plugin URI: wp-property/wp-property-terms
+ * GitHub Plugin URI: wp-property/wp-property-responsive-slideshow
  * GitHub Branch: v1.0
  *
  * Copyright 2012 - 2015 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )

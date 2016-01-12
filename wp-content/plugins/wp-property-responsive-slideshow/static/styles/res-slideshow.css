@@ -106,6 +106,7 @@
 }
 .swiper-container .swiper-button-next > i,
 .swiper-container .swiper-button-prev > i {
+  display: block;
   height: auto;
   width: auto;
   font-size: inherit;
