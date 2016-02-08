@@ -10,6 +10,14 @@
  * * read - If 0 then considered as non-readable/non-writable. Otherwise 1 or more sets priority with one being most preferred.
  * * write - Same as read, 0 marks it as non-readble.
  *
+ *
+ * ## Changelog
+ *
+ * ### 0.5.1
+ * * Started changelog in-file.
+ * * Setup errors to only show/print when WP_DEBUG and WP_DEBUG_DISPLAY are enabled.
+ *
+ * @version 0.5.1
  * @module Cluster
  * @author potanin@UD
  */
@@ -692,7 +700,11 @@ namespace wpCloud {
             $msg .= "'tcp_responsive' => " . ( $tcp === true ? 'true' : $tcp ) . ",\n";
             $msg .= "'lagged_status' => " . ( isset( $lagged_status ) ? $lagged_status : ( defined( 'HYPERDB_LAG_UNKNOWN' ) ? HYPERDB_LAG_UNKNOWN : 3 ) );
 
-            $this->print_error( $msg );
+            // Only shos error if we have enabled it.
+            if( defined( 'WP_DEBUG_DISPLAY' ) && defined( 'WP_DEBUG' ) && WP_DEBUG_DISPLAY && WP_DEBUG ) {
+              $this->print_error( $msg );
+            }
+
           }
 
           if ( ! $success || ! isset( $this->dbhs[ $dbhname ] ) || ! is_resource( $this->dbhs[ $dbhname ] ) ) {
