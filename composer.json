@@ -10,7 +10,7 @@
   ],
   "extra": {
     "settings": {
-      "wp_siteurl" :"https://www.reddoorcompany.com",
+      "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
       "wp_debug_log": true,
@@ -19,7 +19,7 @@
       "wp_cache": false,
       "concatenate_scripts": false,
       "sunrise": false,
-      "multisite": false,	
+      "multisite": false,
       "empty_trash_days": 7,
       "alternate_wp_cron": false,
       "wp_cron_lock_timeout": 0,
@@ -27,7 +27,7 @@
         "upstream_automatic_push": true,
         "upstream_debug": true,
         "post_revisions": 30,
-        "media_trash" : true,
+        "media_trash": true,
         "allow_repair": true,
         "force_ssl_admin": false,
         "force_ssl_login": false,
@@ -35,6 +35,15 @@
         "use_themes": true
       },
       "db": [
+        {
+          "name": "www.reddoorcompany.com",
+          "user": "root",
+          "password": "root",
+          "host": "localhost",
+          "read": 5,
+          "write": 5,
+          "charset": "utf8"
+        },
         {
           "name": "www.reddoorcompany.com",
           "user": "rdc",
@@ -46,16 +55,21 @@
         }
       ]
     }
-  },  
+  },
   "config": {
     "preferred-install": "dist",
-    "github-protocols": ["ssh"],
+    "github-protocols": [
+      "ssh"
+    ],
     "vendor-dir": "wp-vendor",
     "bin-dir": "wp-vendor/bin",
     "optimize-autoloader": true,
     "docker": {
       "scripts": {
-        "start": [ "ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git", "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa" ]
+        "start": [
+          "ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git",
+          "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa"
+        ]
       }
     }
   },
@@ -68,7 +82,8 @@
     "phpunit/phpunit": "~3.7"
   },
   "keywords": [
-    "wordpress", "wpcloud.io"
+    "wordpress",
+    "wpcloud.io"
   ],
   "minimum-stability": "dev",
   "license": "proprietary"
