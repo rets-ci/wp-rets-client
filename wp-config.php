@@ -267,6 +267,12 @@ namespace UsabilityDynamics\Cluster {
         } else if ( is_file( $this->baseDir . '/composer.json' ) ) {
           $this->composer_file = $this->baseDir . '/composer.json';
         }
+        
+        // Still composer.json not detected? Try dirname() instead of $_SERVER[ 'DOCUMENT_ROOT' ] now. peshkov@UD
+        if( !$this->composer_file && is_file( dirname( _FILE_ ) . '/composer.json' ) ) {
+          $this->composer_file = dirname( _FILE_ ) . '/composer.json';
+          $this->baseDir = dirname( _FILE_ );
+        }
 
         return $this->baseDir;
 
