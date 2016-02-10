@@ -36,8 +36,6 @@ class class_wpp_supermap {
 
     add_image_size( 'supermap_marker', 32, 32, 0 );
 
-    add_action('wp_ajax_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
-    add_action('wp_ajax_nopriv_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
     add_action('template_redirect', array('class_wpp_supermap','supermap_template_redirect'));
 
     //* Load admin header scripts */
@@ -733,164 +731,6 @@ class class_wpp_supermap {
   }
 
   /**
-   * Ajax. Returns javascript:
-   * list of properties and markers
-   *
-   */
-  static public function ajax_get_properties() {
-    global $wpdb, $wp_properties;
-
-    $defaults = array(
-      'per_page' => 10,
-      'starting_row' => 0,
-      'pagination' => 'on',
-      'sort_order' => 'ASC',
-      'sort_by' => 'menu_order',
-      'property_type' => ( $wp_properties['searchable_property_types'] )
-    );
-
-    $atts = shortcode_atts($defaults, $_REQUEST);
-
-    //* Supermap configuration */
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
-    if(empty($supermap_configuration['supermap_thumb'])) {
-      $supermap_configuration['supermap_thumb'] = 'thumbnail';
-    }
-
-    //* START Prepare search params for get_properties() */
-    $query = array();
-    if(!empty($_REQUEST['wpp_search'])) {
-      //* Available search attributes */
-      $searchable_attributes = (array)$wp_properties['searchable_attributes'];
-      $query_keys = array_flip($searchable_attributes);
-      foreach($query_keys as $key => $val) {
-        $query_keys[$key] = '';
-      }
-      $query = $_REQUEST['wpp_search'];
-      $query = shortcode_atts($query_keys, $query);
-    }
-
-    //* Exclude properties which has no latitude,longitude keys */
-    $query['latitude'] = 'all';
-    $query['longitude'] = 'all';
-
-    //$query['address_is_formatted'] = '1';
-    //* Add only properties which are not excluded from supermap (option on Property editing form) */
-    //$query['exclude_from_supermap'] = 'false,0';
-    //* Set Property type */
-    $query['property_type'] = $atts['property_type'];
-
-    //* Prepare Query params */
-    $query = WPP_F::prepare_search_attributes($query);
-
-    if($atts['pagination'] == 'on') {
-      $query['pagi'] = $atts['starting_row'] . '--' . $atts['per_page'];
-    }
-    $query['sort_by'] = $atts['sort_by'];
-    $query['sort_order'] = $atts['sort_order'];
-    //* END Prepare search params for get_properties() */
-
-    //* Get Properties */
-    $property_ids = WPP_F::get_properties($query, true);
-
-    if (!empty($property_ids['results'])) {
-      $properties = array();
-      foreach ((array)$property_ids['results'] as $key => $id) {
-
-        $property =  (array) prepare_property_for_display($id, array(
-          'load_gallery' => 'false',
-          'get_children' => 'false',
-          'load_parent' => 'false',
-          'scope' => 'supermap_sidebar'
-        ));
-
-        $properties[$id] = $property;
-      }
-    }
-
-    $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array( $supermap_configuration['display_attributes'] ) ? 
-      $supermap_configuration['display_attributes'] : array();
-
-    $display_attributes = array();
-    foreach($supermap_configuration['display_attributes'] as $attribute) {
-      if( isset( $wp_properties['property_stats'][$attribute] ) ) {
-        $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
-      }
-    }
-
-    ob_start();
-
-    if(!empty($properties)) : ?>
-      var HTML = '';
-      window.supermap_<?php echo $_POST['random']; ?>.total = '<?php echo $property_ids['total']; ?>';
-      <?php
-
-      $labels_to_keys = array_flip($wp_properties['property_stats']);
-
-      foreach ($properties as $property_id => $value) {
-
-      ?>
-      window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
-      window.content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = '<?php echo WPP_F::google_maps_infobox($value); ?>';
-
-      window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
-        position: myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>,
-        map: map_<?php echo $_POST['random']; ?>,
-        title: '<?php echo str_replace("'","\'", $value['location']); ?>',
-        icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
-      });
-
-      window.markers_<?php echo $_POST['random']; ?>.push(window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-
-      google.maps.event.addListener(marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>, 'click', function() {
-        infowindow_<?php echo $_POST['random']; ?>.close();
-        infowindow_<?php echo $_POST['random']; ?>.setContent(content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-        infowindow_<?php echo $_POST['random']; ?>.open(map_<?php echo $_POST['random']; ?>,marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-        loadFuncy();
-        makeActive(<?php echo $_POST['random']; ?>,<?php echo $value['ID']; ?>);
-      });
-
-      google.maps.event.addListener(infowindow_<?php echo $_POST['random']; ?>, 'domready', function() {
-        document.getElementById('infowindow').parentNode.style.overflow='';
-        document.getElementById('infowindow').parentNode.parentNode.style.overflow='';
-      });
-
-      bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-      map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
-
-      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'], 'supermap_configuration' => $supermap_configuration, ), true ) ) ) ); ?>';
-
-      <?php } ?>
-
-      var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');
-
-      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
-      }
-
-    <?php else : ?>
-
-      window.supermap_<?php echo $_POST['random']; ?>.total = '0';
-
-      var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
-      var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
-
-      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
-      }
-
-    <?php endif; ?>
-    <?php
-
-    $result = ob_get_contents();
-    ob_end_clean();
-
-    echo WPP_F::minify_js($result);
-
-    exit();
-  }
-
-  /**
    * Draws Option Form on sidebar of Supermap
    *
    * @param $search_attributes
@@ -1061,6 +901,17 @@ class class_wpp_supermap {
     }
 
     return $value;
+  }
+
+  /**
+   * Renders supermap.
+   * Deprecated. Use do_shortcode( '[supermap]' ) instead.
+   *
+   * @deprecated 4.0.4
+   */
+  static function shortcode_supermap( $atts = '' ) {
+    //_deprecated_function( __FUNCTION__, '2.1.0', 'do_shortcode([supermap])' );
+    return UsabilityDynamics\WPP\Supermap_Shortcode::render( $atts );
   }
 
 }
