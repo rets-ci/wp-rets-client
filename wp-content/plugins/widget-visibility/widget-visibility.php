@@ -3,7 +3,7 @@
 Plugin Name: Widget Visibility
 Plugin URI: http://www.codefleet.net/widget-visibility/
 Description: Control which pages your widgets appear on WordPress
-Version: 1.2.0
+Version: 1.2.1
 Author: Nico Amarilla
 Author URI: http://www.codefleet.net/
 License: GPL-2.0+
@@ -27,7 +27,7 @@ function widvis_init() {
     
     $plugin = new WidVis_Plugin();
     
-    $plugin['version'] = '1.2.0';
+    $plugin['version'] = '1.2.1';
     $plugin['path'] = realpath(plugin_dir_path(__FILE__)) . DIRECTORY_SEPARATOR;
     $plugin['url'] = plugin_dir_url(__FILE__);
 	$plugin['textdomain'] = 'widvis';

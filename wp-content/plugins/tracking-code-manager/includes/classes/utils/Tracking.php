@@ -10,15 +10,15 @@ if (!defined('ABSPATH')) exit;
  * @since  1.8.2
  * @return void
  */
-class TCM_Tracking {
+class TCMP_Tracking {
 
     public function __construct() {
         //We send once a week (while tracking is allowed) to check in which can be used
         //to determine active sites
-        add_action('tcm_weekly_scheduled_events', array($this, 'sendTracking'));
+        add_action('tcmp_weekly_scheduled_events', array($this, 'sendTracking'));
 
-        //add_action('tcm_tracking_on', array($this, 'enableTracking'));
-        //add_action('tcm_tracking_off', array($this, 'disableTracking'));
+        //add_action('tcmp_tracking_on', array($this, 'enableTracking'));
+        //add_action('tcmp_tracking_off', array($this, 'disableTracking'));
         //add_action('admin_notices', array($this, 'admin_notice'));
     }
 
@@ -76,7 +76,7 @@ class TCM_Tracking {
     }
     //obtain tracking data into an associative array
     public function getData() {
-        global $tcm;
+        global $tcmp;
 
         //retrieve blog info
         $result['wp_url']=home_url();
@@ -89,34 +89,36 @@ class TCM_Tracking {
         $result['theme']=$this->getThemeData();
 
         //to obtain for each post type its count
-        $post_types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
+        $post_types=$tcmp->Utils->query(TCMP_QUERY_POST_TYPES);
         $data=array();
         foreach ($post_types as $v) {
-            $v=$v['name'];
+            $v=$v['id'];
             $data[$v]=intval(wp_count_posts($v)->publish);
         }
         $result['post_types']=$data;
 
         //plugin configuration without secret-code
         $data=array();
-        $keys=$tcm->Manager->keys();
+        $keys=$tcmp->Manager->keys();
         foreach($keys as $k) {
-            $v=$tcm->Manager->get($k);
+            $v=$tcmp->Manager->get($k);
             //to allow us to receive a part of the code and to protect user privacy
             //we use this data only to know which SaaS services are used
             //and not to use your data
             $v['code']=substr($v['code'], 0, 100);
             $data[]=$v;
         }
-        $result['iwpm_plugin_name']=TCM_PLUGIN_SLUG;
-        $result['iwpm_plugin_version']=TCM_PLUGIN_VERSION;
+        $result['iwpm_plugin_name']=TCMP_PLUGIN_SLUG;
+        $result['iwpm_plugin_version']=TCMP_PLUGIN_VERSION;
         $result['iwpm_plugin_data']=$data;
-        $result['iwpm_plugin_install_date']=$tcm->Options->getPluginInstallDate();
-        $result['iwpm_plugin_update_date']=$tcm->Options->getPluginUpdateDate();
+        $result['iwpm_plugin_install_date']=$tcmp->Options->getPluginInstallDate();
+        $result['iwpm_plugin_update_date']=$tcmp->Options->getPluginUpdateDate();
 
-        $result['iwpm_tracking_enable']=$tcm->Options->isTrackingEnable();
-        $result['iwpm_logger_enable']=$tcm->Options->isLoggerEnable();
-        $result['iwpm_feedback_email']=$tcm->Options->getFeedbackEmail();
+        $result['iwpm_license_key']=$tcmp->Options->getLicenseKey();
+        $result['iwpm_license_status']=$tcmp->Options->isLicenseSuccess();
+        $result['iwpm_tracking_enable']=$tcmp->Options->isTrackingEnable();
+        $result['iwpm_logger_enable']=$tcmp->Options->isLoggerEnable();
+        $result['iwpm_feedback_email']=$tcmp->Options->getFeedbackEmail();
 
         //var_dump($result);
         return $result;
@@ -124,14 +126,14 @@ class TCM_Tracking {
 
     //send tracking data info to our server
     public function sendTracking($override = FALSE) {
-        global $tcm;
+        global $tcmp;
 
         $result=-1;
-        if(!$override && !$tcm->Options->isTrackingEnable())
+        if(!$override && !$tcmp->Options->isTrackingEnable())
             return $result;
 
         // Send a maximum of once per week
-        $last_send=$tcm->Options->getTrackingLastSend();
+        $last_send=$tcmp->Options->getTrackingLastSend();
         if(!$override && $last_send>strtotime('-1 week'))
             return $result;
 
@@ -139,33 +141,33 @@ class TCM_Tracking {
         //add_filter('https_ssl_verify', '__return_false');
         //add_filter('block_local_requests', '__return_false');
 
-        $data=$tcm->Utils->remotePost('usage', $this->getData());
+        $data=$tcmp->Utils->remotePost('usage', $this->getData());
         if($data) {
             $result=intval($data['id']);
-            $tcm->Options->setTrackingLastSend(time());
+            $tcmp->Options->setTrackingLastSend(time());
         }
         return $result;
     }
 
     public function enableTracking() {
-        global $tcm;
+        global $tcmp;
 
-        $tcm->Options->setTrackingEnable(TRUE);
-        $tcm->Options->setTrackingNotice(FALSE);
+        $tcmp->Options->setTrackingEnable(TRUE);
+        $tcmp->Options->setTrackingNotice(FALSE);
         $this->sendTracking(TRUE);
     }
     public function disableTracking() {
-        global $tcm;
+        global $tcmp;
 
-        $tcm->Options->setTrackingEnable(FALSE);
-        $tcm->Options->setTrackingNotice(FALSE);
+        $tcmp->Options->setTrackingEnable(FALSE);
+        $tcmp->Options->setTrackingNotice(FALSE);
         $this->sendTracking(TRUE);
     }
 
     public function admin_notice() {
-        global $tcm;
+        global $tcmp;
 
-        if(!$tcm->Options->isTrackingNotice() || $tcm->Options->isTrackingEnable() || !current_user_can('manage_options'))
+        if(!$tcmp->Options->isTrackingNotice() || $tcmp->Options->isTrackingEnable() || !current_user_can('manage_options'))
             return;
 
         if(FALSE && (
@@ -173,17 +175,17 @@ class TCM_Tracking {
             stristr(network_site_url('/'), 'localhost') !== false ||
             stristr(network_site_url('/'), ':8888'    ) !== false // This is common with MAMP on OS X
            )) {
-            $tcm->Options->setTrackingNotice(TRUE);
+            $tcmp->Options->setTrackingNotice(TRUE);
         } else {
-            $yes_url=add_query_arg('tcm_action', 'manager_trackingOn');
-            $no_url=add_query_arg('tcm_action', 'manager_trackingOff');
+            $yes_url=add_query_arg('tcmp_action', 'manager_trackingOn');
+            $no_url=add_query_arg('tcmp_action', 'manager_trackingOff');
 
             ?>
             <div class="updated">
                 <p>
-                    <?php $tcm->Lang->P('Allow IntellyWP to track plugin usage?');?>
-                    &nbsp;<a href="<?php echo esc_url($yes_url)?>" class="button-primary"><?php $tcm->Lang->P('Oh yes :)')?></a>
-                    &nbsp;<a href="<?php echo esc_url($no_url)?>" class="button-secondary"><?php $tcm->Lang->P('Refuse!')?></a>
+                    <?php $tcmp->Lang->P('Allow IntellyWP to track plugin usage?');?>
+                    &nbsp;<a href="<?php echo esc_url($yes_url)?>" class="button-primary"><?php $tcmp->Lang->P('Oh yes :)')?></a>
+                    &nbsp;<a href="<?php echo esc_url($no_url)?>" class="button-secondary"><?php $tcmp->Lang->P('Refuse!')?></a>
                 </p>
             </div>
         <?php }

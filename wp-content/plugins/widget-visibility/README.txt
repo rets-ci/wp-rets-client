@@ -3,8 +3,8 @@ Contributors: kosinix
 Donate link: http://www.codefleet.net/donate/
 Tags: widget, visibility, appear
 Requires at least: 3.5
-Tested up to: 4.1
-Stable tag: 1.2.0
+Tested up to: 4.4.2
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ GPLv2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+
+= 1.2.1 - 2016-02-08 =
+* Tested on WordPress 4.4.2
+* Removed screenshots from plugin dir and move to svn assets
 
 = 1.2.0 - 2014-12-18 =
 * Use better codebase.

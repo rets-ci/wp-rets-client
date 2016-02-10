@@ -1,49 +1,50 @@
 <?php
-function tcm_ui_track() {
-    global $tcm;
-    $track=$tcm->Utils->qs('track', '');
+function tcmp_ui_track() {
+    global $tcmp;
+
+    $track=$tcmp->Utils->qs('track', '');
     if($track!='') {
         $track=intval($track);
-        $tcm->Options->setTrackingEnable($track);
-        $tcm->Tracking->sendTracking(TRUE);
+        $tcmp->Options->setTrackingEnable($track);
+        $tcmp->Tracking->sendTracking(TRUE);
     }
 
-    $uri=TCM_TAB_SETTINGS_URI.'&track=';
-    if($tcm->Options->isTrackingEnable()) {
+    $uri=TCMP_TAB_SETTINGS_URI.'&track=';
+    if($tcmp->Options->isTrackingEnable()) {
         $uri.='0';
-        $tcm->Options->pushSuccessMessage('EnableAllowTrackingNotice', $uri);
+        $tcmp->Options->pushSuccessMessage('EnableAllowTrackingNotice', $uri);
     } else {
         $uri.='1';
-        $tcm->Options->pushErrorMessage('DisableAllowTrackingNotice', $uri);
+        $tcmp->Options->pushErrorMessage('DisableAllowTrackingNotice', $uri);
     }
-    $tcm->Options->writeMessages();
+    $tcmp->Options->writeMessages();
 }
-function tcm_ui_settings() {
-    global $tcm;
+function tcmp_ui_settings() {
+    global $tcmp;
 
-    $tcm->Form->prefix='License';
-    if($tcm->Check->nonce('tcm_settings')) {
-        $options=$tcm->Options->getMetaboxPostTypes();
-        foreach($options as $k=>$v) {
-            $v=intval($tcm->Utils->qs('metabox_'.$k, 0));
+    $tcmp->Form->prefix='License';
+    if($tcmp->Check->nonce('tcmp_license')) {
+        $options=$tcmp->Options->getMetaboxPostTypes();
+        foreach ($options as $k => $v) {
+            $v=intval($tcmp->Utils->qs('metabox_' . $k, 0));
             $options[$k]=$v;
         }
-        $tcm->Options->setMetaboxPostTypes($options);
+        $tcmp->Options->setMetaboxPostTypes($options);
     }
 
-    $tcm->Form->formStarts();
-    {
-        $tcm->Form->p('MetaboxSection');
-        $metaboxes=$tcm->Options->getMetaboxPostTypes();
+    $tcmp->Form->formStarts();
+    $tcmp->Form->p('MetaboxSection');
+    $metaboxes=$tcmp->Options->getMetaboxPostTypes();
 
-        $types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
-        foreach($types as $v) {
-            $v=$v['name'];
-            $tcm->Form->checkbox('metabox_'.$v, $metaboxes[$v]);
-        }
-        $tcm->Form->nonce('tcm_settings');
-        $tcm->Form->br();
-        $tcm->Form->submit('Save');
+    $types=$tcmp->Utils->query(TCMP_QUERY_POST_TYPES);
+    foreach ($types as $v) {
+        $v=$v['id'];
+        //$tcmp->Form->tags=TRUE;
+        //$tcmp->Form->premium=!in_array($v, array('post', 'page'));
+        $tcmp->Form->checkbox('metabox_'.$v, $metaboxes[$v]);
     }
-    $tcm->Form->formEnds();
+    $tcmp->Form->nonce('tcmp_license');
+    $tcmp->Form->br();
+    $tcmp->Form->submit('Save');
+    $tcmp->Form->formEnds();
 }

@@ -1,16 +1,42 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alessio
- * Date: 24/03/2015
- * Time: 08:45
- */
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class TCM_Options {
+class TCMP_Options {
     public function __construct() {
 
+    }
+
+    //Cache
+    private function getCacheName($array) {
+        if(!is_array($array)) {
+            $array=array($array);
+        }
+        $result='Cache';
+        foreach($array as $v) {
+            if(is_object($v)) {
+                $v=get_class($v);
+            } elseif(is_array($v)) {
+                $v=$v[0];
+                if(is_object($v)) {
+                    $v=get_class($v);
+                }
+            }
+            $result.='_'.$v;
+        }
+        return $result;
+    }
+    public function getCache($name, $callable=NULL) {
+        $key=$this->getCacheName($name);
+        $result=$this->getRequest($key, FALSE);
+        if($result===FALSE && $callable && is_callable($callable)) {
+            $result=$callable();
+            $this->setCache($name, $result);
+        }
+        return $result;
+    }
+    public function setCache($name, $value) {
+        $key=$this->getCacheName($name);
+        $this->setRequest($key, $value);
     }
 
     //always add a prefix to avoid conflicts with other plugins
@@ -101,9 +127,24 @@ class TCM_Options {
         $this->setOption('ShowActivationNotice', $value);
     }
 
+    public function getShowWhatsNewSeenVersion() {
+        return intval($this->getOption('ShowWhatsNewSeenVersion', 0));
+    }
+    public function setShowWhatsNewSeenVersion($value) {
+        $this->setOption('ShowWhatsNewSeenVersion', $value);
+    }
+
     //ShowWhatsNew
     public function isShowWhatsNew() {
-        return $this->getOption('ShowWhatsNew', TRUE);
+        $result=intval($this->getOption('ShowWhatsNew', TRUE));
+        if($result) {
+            $v=$this->getShowWhatsNewSeenVersion();
+            if($v==TCMP_WHATSNEW_VERSION) {
+                $result=FALSE;
+                $this->getOption('ShowWhatsNew', FALSE);
+            }
+        }
+        return $result;
     }
     public function setShowWhatsNew($value) {
         $this->setOption('ShowWhatsNew', $value);
@@ -125,27 +166,63 @@ class TCM_Options {
     }
 
     public function getTrackingLastSend() {
-        return $this->getOption('TrackingLastSend['.TCM_PLUGIN_SLUG.']', 0);
+        return $this->getOption('TrackingLastSend['.TCMP_PLUGIN_SLUG.']', 0);
     }
     public function setTrackingLastSend($value) {
-        $this->setOption('TrackingLastSend['.TCM_PLUGIN_SLUG.']', $value);
+        $this->setOption('TrackingLastSend['.TCMP_PLUGIN_SLUG.']', $value);
     }
     public function getPluginInstallDate() {
-        return $this->getOption('PluginInstallDate['.TCM_PLUGIN_SLUG.']', 0);
+        return $this->getOption('PluginInstallDate['.TCMP_PLUGIN_SLUG.']', 0);
     }
     public function setPluginInstallDate($value) {
-        $this->setOption('PluginInstallDate['.TCM_PLUGIN_SLUG.']', $value);
+        $this->setOption('PluginInstallDate['.TCMP_PLUGIN_SLUG.']', $value);
     }
     public function getPluginUpdateDate() {
-        return $this->getOption('PluginUpdateDate['.TCM_PLUGIN_SLUG.']', 0);
+        return $this->getOption('PluginUpdateDate['.TCMP_PLUGIN_SLUG.']', 0);
     }
     public function setPluginUpdateDate($value) {
-        $this->setOption('PluginUpdateDate['.TCM_PLUGIN_SLUG.']', $value);
+        $this->setOption('PluginUpdateDate['.TCMP_PLUGIN_SLUG.']', $value);
+    }
+
+    //LicenseKey
+    public function getLicenseKey() {
+        return $this->getOption('LiceseKey', '');
+    }
+    public function setLicenseKey($value) {
+        $this->setOption('LiceseKey', $value);
+    }
+    //LicenseStatus
+    public function isLicenseSuccess() {
+        return $this->getOption('LicenseSuccess', 0);
+    }
+    public function setLicenseSuccess($value) {
+        $this->setOption('LicenseSuccess', $value);
+    }
+    //License
+    public function getLicense() {
+        return $this->getOption('License', FALSE);
+    }
+    public function setLicense($value) {
+        $this->setOption('License', $value);
+    }
+    //LicenseSiteCount
+    public function getLicenseSiteCount() {
+        return $this->getOption('LicenseSiteCount', FALSE);
+    }
+    public function setLicenseSiteCount($value) {
+        $this->setOption('LicenseSiteCount', $value);
+    }
+    //LicenseLastCheck
+    public function getLicenseLastCheck() {
+        return intval($this->getOption('LicenseLastCheck', 0));
+    }
+    public function setLicenseLastCheck($value) {
+        $this->setOption('LicenseLastCheck', intval($value));
     }
 
     //LoggerEnable
     public function isLoggerEnable() {
-        return ($this->getOption('LoggerEnable', FALSE) || (defined('TCM_LOGGER') && TCM_LOGGER));
+        return ($this->getOption('LoggerEnable', FALSE) || (defined('TCMP_LOGGER') && TCMP_LOGGER));
     }
     public function setLoggerEnable($value) {
         $this->setOption('LoggerEnable', $value);
@@ -172,12 +249,13 @@ class TCM_Options {
         $this->removeOption('SnippetList');
     }
 
-    public function pushConversionSnippets($options) {
-        global $tcm;
-        $snippets=$tcm->Manager->getConversionSnippets($options);
+    public function pushConversionSnippets($options, TCMP_EcommercePurchase $purchase) {
+        global $tcmp;
+        $this->setRequest('EcommercePurchase', $purchase);
+        $snippets=$tcmp->Manager->getConversionSnippets($options);
         foreach($snippets as $v) {
             $id=$v['id'];
-            $tcm->Options->pushConversionSnippetId($id);
+            $tcmp->Options->pushConversionSnippetId($id);
         }
     }
     public function pushConversionSnippetId($id) {
@@ -187,7 +265,12 @@ class TCM_Options {
         $this->setRequest('ConversionSnippetIds', $array);
     }
     public function getConversionSnippetIds() {
-        return $this->getRequest('ConversionSnippetIds', array());
+        return $this->getRequest('ConversionSnippetIds', FALSE);
+    }
+    public function getEcommercePurchase() {
+        /* @var $result TCMP_EcommercePurchase */
+        $result=$this->getRequest('EcommercePurchase', FALSE);
+        return $result;
     }
 
     public function hasSnippetWritten($snippet) {
@@ -228,22 +311,15 @@ class TCM_Options {
     public function setPostShown($post) {
         $this->setRequest('PostShown', $post);
     }
-    //Cache
-    public function getCache($name, $id) {
-        return $this->getRequest('Cache_'.$name.'_'.$id);
-    }
-    public function setCache($name, $id, $value) {
-        $this->setRequest('Cache_'.$name.'_'.$id, $value);
-    }
 
     private function hasGenericMessages($type) {
         $result=$this->getRequest($type.'Messages', NULL);
         return (is_array($result) && count($result)>0);
     }
     private function pushGenericMessage($type, $message, $v1=NULL, $v2=NULL, $v3=NULL, $v4=NULL, $v5=NULL) {
-        global $tcm;
+        global $tcmp;
         $array=$this->getRequest($type.'Messages', array());
-        $array[]=$tcm->Lang->L($message, $v1, $v2, $v3, $v4, $v5);
+        $array[]=$tcmp->Lang->L($message, $v1, $v2, $v3, $v4, $v5);
         $this->setRequest($type.'Messages', $array);
     }
     private function writeGenericMessages($type, $clean=TRUE) {
@@ -252,7 +328,7 @@ class TCM_Options {
         if(is_array($array) && count($array)>0) {
             $result=TRUE;
             ?>
-            <div class="tcm-box-<?php echo strtolower($type)?>"><?php echo wpautop(implode("\n", $array)); ?></div>
+            <div class="tcmp-box-<?php echo strtolower($type)?>"><?php echo wpautop(implode("\n", $array)); ?></div>
         <?php }
         if($clean) {
             $this->removeRequest($type.'Messages');
@@ -335,14 +411,14 @@ class TCM_Options {
 
     //MetaboxPostTypes
     public function getMetaboxPostTypes($create=TRUE) {
-        global $tcm;
+        global $tcmp;
         $result=$this->getOption('MetaboxPostTypes', array());
         if($create) {
-            $types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
+            $types=$tcmp->Utils->query(TCMP_QUERY_POST_TYPES);
             foreach($types as $v) {
                 $v=$v['id'];
                 if(!isset($result[$v]))  {
-                    $result[$v]=1;
+                    $result[$v]=(in_array($v, array('post', 'page')) ? 1 : 0);
                 }
             }
         }

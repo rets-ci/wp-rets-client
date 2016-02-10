@@ -1,59 +1,112 @@
 <?php
-function tcm_ui_editor_check($snippet) {
-    global $tcm;
+function tcmp_notice_pro_features() {
+    global $tcmp;
+    ?>
+    <br/>
+    <div class="message updated below-h2 iwp">
+        <div style="height:10px;"></div>
+        <?php
+        $i=1;
+        while($tcmp->Lang->H('Notice.ProHeader'.$i)) {
+            $tcmp->Lang->P('Notice.ProHeader'.$i);
+            echo '<br/>';
+            ++$i;
+        }
+        $i=1;
+        ?>
+        <br/>
+        <?php
+
+        /*$options = array('public' => TRUE, '_builtin' => FALSE);
+        $q=get_post_types($options, 'names');
+        if(is_array($q) && count($q)>0) {
+            sort($q);
+            $q=implode(', ', $q);
+            $q='(<b>'.$q.'</b>)';
+        } else {
+            $q='';
+        }*/
+        $q='';
+        while($tcmp->Lang->H('Notice.ProFeature'.$i)) { ?>
+            <div style="clear:both; margin-top: 2px;"></div>
+            <div style="float:left; vertical-align:middle; height:24px; margin-right:5px; margin-top:-5px;">
+                <img src="<?php echo TCMP_PLUGIN_IMAGES_URI?>tick.png" />
+            </div>
+            <div style="float:left; vertical-align:middle; height:24px;">
+                <?php $tcmp->Lang->P('Notice.ProFeature'.$i, $q)?>
+            </div>
+            <?php ++$i;
+        }
+        ?>
+        <div style="clear:both;"></div>
+        <div style="height:10px;"></div>
+        <div style="float:right;">
+            <?php
+            $url=TCMP_PAGE_PREMIUM.'?utm_source=free-users&utm_medium=wp-cta&utm_campaign=wp-plugin';
+            ?>
+            <a href="<?php echo $url?>" target="_blank">
+                <b><?php $tcmp->Lang->P('Notice.ProCTA')?></b>
+            </a>
+        </div>
+        <div style="height:10px; clear:both;"></div>
+    </div>
+    <br/>
+<?php }
+function tcmp_ui_editor_check($snippet) {
+    global $tcmp;
 
     $snippet['trackMode']=intval($snippet['trackMode']);
     $snippet['trackPage']=intval($snippet['trackPage']);
 
     $snippet['includeEverywhereActive']=0;
-    if($snippet['trackPage']==TCM_TRACK_PAGE_ALL) {
+    if($snippet['trackPage']==TCMP_TRACK_PAGE_ALL) {
         $snippet['includeEverywhereActive']=1;
     }
-    $snippet=$tcm->Manager->sanitize($snippet['id'], $snippet);
+    $snippet=$tcmp->Manager->sanitize($snippet['id'], $snippet);
 
     if ($snippet['name'] == '') {
-        $tcm->Options->pushErrorMessage('Please enter a unique name');
+        $tcmp->Options->pushErrorMessage('Please enter a unique name');
     } else {
-        $exist=$tcm->Manager->exists($snippet['name']);
+        $exist=$tcmp->Manager->exists($snippet['name']);
         if ($exist && $exist['id'] != $snippet['id']) {
             //nonostante il tutto il nome deve essee univoco
-            $tcm->Options->pushErrorMessage('You have entered a name that already exists. IDs are NOT case-sensitive');
+            $tcmp->Options->pushErrorMessage('You have entered a name that already exists. IDs are NOT case-sensitive');
         }
     }
     if ($snippet['code'] == '') {
-        $tcm->Options->pushErrorMessage('Paste your HTML Tracking Code into the textarea');
+        $tcmp->Options->pushErrorMessage('Paste your HTML Tracking Code into the textarea');
     }
 
-    if($snippet['trackMode']==TCM_TRACK_MODE_CODE) {
+    if($snippet['trackMode']==TCMP_TRACK_MODE_CODE) {
 
-        $types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
-        if($snippet['trackPage']==TCM_TRACK_PAGE_SPECIFIC) {
+        $types=$tcmp->Utils->query(TCMP_QUERY_POST_TYPES);
+        if($snippet['trackPage']==TCMP_TRACK_PAGE_SPECIFIC) {
             foreach ($types as $v) {
-                $includeActiveKey = 'includePostsOfType_' . $v['name'] . '_Active';
-                $includeArrayKey = 'includePostsOfType_' . $v['name'];
-                $exceptActiveKey = 'exceptPostsOfType_' . $v['name'] . '_Active';
-                $exceptArrayKey = 'exceptPostsOfType_' . $v['name'];
+                $includeActiveKey='includePostsOfType_' . $v['id'] . '_Active';
+                $includeArrayKey='includePostsOfType_' . $v['id'];
+                $exceptActiveKey='exceptPostsOfType_' . $v['id'] . '_Active';
+                $exceptArrayKey='exceptPostsOfType_' . $v['id'];
 
                 if ($snippet[$includeActiveKey] == 1 && $snippet[$exceptActiveKey] == 1) {
                     if (in_array(-1, $snippet[$includeArrayKey]) && in_array(-1, $snippet[$exceptArrayKey])) {
-                        $tcm->Options->pushErrorMessage('Error.IncludeExcludeAll', $v['name']);
+                        $tcmp->Options->pushErrorMessage('Error.IncludeExcludeAll', $v['name']);
                     }
                 }
                 if ($snippet[$includeActiveKey] == 1 && count($snippet[$includeArrayKey]) == 0) {
-                    $tcm->Options->pushErrorMessage('Error.IncludeSelectAtLeastOne', $v['name']);
+                    $tcmp->Options->pushErrorMessage('Error.IncludeSelectAtLeastOne', $v['name']);
                 }
             }
 
             //second loop to respect the display order
             foreach ($types as $v) {
-                $includeActiveKey = 'includePostsOfType_' . $v['name'] . '_Active';
-                $includeArrayKey = 'includePostsOfType_' . $v['name'];
-                $exceptActiveKey = 'exceptPostsOfType_' . $v['name'] . '_Active';
-                $exceptArrayKey = 'exceptPostsOfType_' . $v['name'];
+                $includeActiveKey='includePostsOfType_' . $v['name'] . '_Active';
+                $includeArrayKey='includePostsOfType_' . $v['name'];
+                $exceptActiveKey='exceptPostsOfType_' . $v['name'] . '_Active';
+                $exceptArrayKey='exceptPostsOfType_' . $v['name'];
 
                 if ($snippet[$includeActiveKey] == 1 && in_array(-1, $snippet[$includeArrayKey])) {
                     if ($snippet[$exceptActiveKey] == 1 && count($snippet[$exceptArrayKey]) == 0) {
-                        $tcm->Options->pushErrorMessage('Error.ExcludeSelectAtLeastOne', $v['name']);
+                        $tcmp->Options->pushErrorMessage('Error.ExcludeSelectAtLeastOne', $v['name']);
                     }
                 }
             }
@@ -64,144 +117,123 @@ function tcm_ui_editor_check($snippet) {
 
                 if($snippet[$exceptActiveKey]==1
                     && count($snippet[$exceptArrayKey])==0) {
-                    $tcm->Options->pushErrorMessage('Error.ExcludeSelectAtLeastOne', $v['name']);
+                    $tcmp->Options->pushErrorMessage('Error.ExcludeSelectAtLeastOne', $v['name']);
                 }
             }
         }
     }
 }
-function tcm_ui_editor() {
-    global $tcm;
+function tcmp_ui_editor() {
+    global $tcmp;
 
-    $tcm->Form->prefix = 'Editor';
-    $id = intval($tcm->Utils->qs('id', 0));
-    $action = $tcm->Utils->qs('action');
-    $snippet = $tcm->Manager->get($id, TRUE);
+    $tcmp->Form->prefix='Editor';
+    $id=intval($tcmp->Utils->qs('id', 0));
+    if($id==0 && $tcmp->Manager->isLimitReached(FALSE)) {
+        $tcmp->Utils->redirect(TCMP_TAB_MANAGER_URI);
+    }
+
+    $action=$tcmp->Utils->qs('action');
+    $snippet=$tcmp->Manager->get($id, TRUE);
     //var_dump($snippet);
 
-    if (wp_verify_nonce($tcm->Utils->qs('tcm_nonce'), 'tcm_nonce')) {
+    if (wp_verify_nonce($tcmp->Utils->qs('tcmp_nonce'), 'tcmp_nonce')) {
         //var_dump($_POST);
         //var_dump($_GET);
-        foreach ($snippet as $k => $v) {
-            $snippet[$k] = $tcm->Utils->qs($k);
+        foreach ($snippet as $k=>$v) {
+            $snippet[$k]=$tcmp->Utils->qs($k);
             if (is_string($snippet[$k])) {
-                $snippet[$k] = stripslashes($snippet[$k]);
+                $snippet[$k]=stripslashes($snippet[$k]);
             }
         }
-        tcm_ui_editor_check($snippet);
 
-        if (!$tcm->Options->hasErrorMessages()) {
-            $snippet = $tcm->Manager->put($snippet['id'], $snippet);
+	    tcmp_ui_editor_check($snippet);
+        if (!$tcmp->Options->hasErrorMessages()) {
+            $snippet=$tcmp->Manager->put($snippet['id'], $snippet);
             /*if ($id <= 0) {
-                $tcm->Options->pushSuccessMessage('Editor.Add', $snippet['id'], $snippet['name']);
-                $snippet = $tcm->Manager->get('', TRUE);
+                $tcmp->Options->pushSuccessMessage('Editor.Add', $snippet['id'], $snippet['name']);
+                $snippet=$tcmp->Manager->get('', TRUE);
             } else {
-                $tcm->Utils->redirect(TCM_PAGE_MANAGER.'&id='.$id);
+                $tcmp->Utils->redirect(TCMP_PAGE_MANAGER.'&id='.$id);
                 exit();
             }*/
             $id=$snippet['id'];
-            $tcm->Utils->redirect(TCM_PAGE_MANAGER.'&id='.$id);
-        }
+            $tcmp->Utils->redirect(TCMP_PAGE_MANAGER.'&id='.$id);        }
     }
-    if(!$tcm->Options->writeMessages()) {
-        tcm_ui_free_notice();
-    }
-    if($tcm->Manager->rc()<=0 && $id<=0) {
-        $tcm->Utils->redirect(TCM_PAGE_MANAGER);
-        exit();
-    }
-
+    $tcmp->Options->writeMessages()
     ?>
     <script>
         jQuery(function(){
-            var tcmPostTypes=[];
-
-            <?php
-            $types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
-            foreach($types as $v) { ?>
-                tcmPostTypes.push('<?php echo $v['name']?>');
-            <?php } ?>
-
             //enable/disable some part of except creating coherence
             function tcmCheckVisible() {
-                var showExceptCategories=true;
-                var showExceptTags=true;
-                var showExceptPostTypes={};
-                jQuery.each(tcmPostTypes, function (i,v) {
-                    showExceptPostTypes[v]=true;
-                });
-
                 var $mode=jQuery('[name=trackMode]:checked');
                 var showTrackCode=false;
                 var showTrackConversion=false;
                 if($mode.length>0) {
-                    if(parseInt($mode.val())!=<?php echo TCM_TRACK_MODE_CODE ?>) {
+                    if(parseInt($mode.val())!=<?php echo TCMP_TRACK_MODE_CODE ?>) {
                         showTrackConversion=true;
-                        jQuery('[name=position]').val(<?php echo TCM_POSITION_FOOTER?>);
-                        jQuery('[name=position]').prop('disabled', true);
+                        jQuery('#position-box').hide();
 
                         tcmShowHide('.box-track-conversion', false);
                         tcmShowHide('#box-track-conversion-'+$mode.val(), true);
                     } else {
                         showTrackCode=true;
-                        jQuery('[name=position]').prop('disabled', false);
+                        jQuery('#position-box').show();
                     }
                 }
                 tcmShowHide('#box-track-conversion', showTrackConversion);
                 tcmShowHide('#box-track-code', showTrackCode);
 
                 var $all=jQuery('[name=trackPage]:checked');
-                if($all.length>0 && parseInt($all.val())==<?php echo TCM_TRACK_PAGE_SPECIFIC ?>) {
-                    showExceptCategories=false;
-                    showExceptTags=false;
+                if($all.length>0 && parseInt($all.val())==<?php echo TCMP_TRACK_PAGE_SPECIFIC ?>) {
+                    showExcept=false;
+                    jQuery('[type=checkbox]').each(function() {
+                        var $check=jQuery(this);
+                        var id=TCMP.attr($check, 'id', '');
+                        if(TCMP.startsWith(id, 'include')) {
+                            var $select=id.replace('_Active', '');
+                            $select=TCMP.jQuery($select);
 
-                    jQuery.each(tcmPostTypes, function (i,v) {
-                        isCheck=jQuery('#includePostsOfType_'+v+'_Active').is(':checked');
-                        selection=jQuery('#includePostsOfType_'+v).select2("val");
-                        found=false;
-                        for(i=0; i<selection.length; i++) {
-                            if(parseInt(selection[i])==-1){
-                                found=true;
+                            isCheck=$check.is(':checked');
+                            selection=$select.select2('val');
+                            found=false;
+                            for(i=0; i<selection.length; i++) {
+                                if(parseInt(selection[i])==-1){
+                                    found=true;
+                                }
                             }
-                        }
 
-                        showExceptPostTypes[v]=false;
-                        if(isCheck && found) {
-                            showExceptPostTypes[v]=true;
-                            if(v!='page') {
-                                showExceptCategories=true;
-                                showExceptTags=true;
+                            var $except=id.replace('_Active', '');
+                            $except=$except.replace('Active', '')+'Box';
+                            $except=$except.substr('include'.length);
+                            $except='except'+$except;
+                            $except=jQuery('[id='+$except+']');
+
+                            if(found) {
+                                showExcept=true;
+                                if($except.length>0) {
+                                    $except.show();
+                                }
+                            } else {
+                                if($except.length>0) {
+                                    $except.hide();
+                                }
                             }
                         }
                     });
                 }
 
-                //hide/show except post type if all the website is selected
-                //or [All] is selected in a specific post type select
-                var showExcept=false;
-                jQuery.each(showExceptPostTypes, function (k,v) {
-                    if(v) {
-                        //at least one post type to show except
-                        showExcept=true;
-                    }
-                    tcmShowHide('#exceptPostsOfType_'+k+'Box', v);
-                });
-
-                //tcmShowHide('#exceptCategoriesBox', showExceptCategories);
-                //tcmShowHide('#exceptTagsBox', showExceptTags);
                 showInclude=false;
                 if($all.length==0) {
                     showExcept=false;
                 } else {
-                    showExcept=(showExcept || showExceptTags || showExceptCategories);
-                    if(parseInt($all.val())==<?php echo TCM_TRACK_PAGE_ALL ?>) {
+                    if(parseInt($all.val())==<?php echo TCMP_TRACK_PAGE_ALL ?>) {
                         showExcept=true;
                     } else {
                         showInclude=true;
                     }
                 }
-                tcmShowHide('#tcm-except-div', showExcept);
-                tcmShowHide('#tcm-include-div', showInclude);
+                tcmShowHide('#tcmp-except-div', showExcept);
+                tcmShowHide('#tcmp-include-div', showInclude);
             }
             function tcmShowHide(selector, show) {
                 $selector=jQuery(selector);
@@ -218,16 +250,16 @@ function tcm_ui_editor() {
             }).on('change', function() {
                 tcmCheckVisible();
             });*/
-            jQuery(".tcmLineTags").select2({
+            jQuery('.tcmLineTags,.tcmp-dropdown').select2({
                 placeholder: "Type here..."
                 , theme: "classic"
                 , width: '550px'
             });
 
-            jQuery('.tcm-hideShow').click(function() {
+            jQuery('.tcmp-hideShow').click(function() {
                 tcmCheckVisible();
             });
-            jQuery('.tcm-hideShow, input[type=checkbox], input[type=radio]').change(function() {
+            jQuery('.tcmp-hideShow, input[type=checkbox], input[type=radio]').change(function() {
                 tcmCheckVisible();
             });
             jQuery('.tcmLineTags').on('change', function() {
@@ -238,54 +270,59 @@ function tcm_ui_editor() {
     </script>
     <?php
 
-    $tcm->Form->formStarts();
-    $tcm->Form->hidden('id', $snippet);
-    $tcm->Form->checkbox('active', $snippet);
-    $tcm->Form->text('name', $snippet);
-    $tcm->Form->textarea('code', $snippet);
-    $values = array(TCM_POSITION_HEAD, TCM_POSITION_BODY, TCM_POSITION_FOOTER);
-    $tcm->Form->select('position', $snippet, $values, FALSE);
+    $tcmp->Form->formStarts();
+    $tcmp->Form->hidden('id', $snippet);
+    $tcmp->Form->hidden('order', $snippet);
+
+    $tcmp->Form->checkbox('active', $snippet);
+    $tcmp->Form->text('name', $snippet);
+    $tcmp->Form->editor('code', $snippet);
+
+    $values=array(TCMP_POSITION_HEAD, TCMP_POSITION_BODY, TCMP_POSITION_FOOTER);
+    $tcmp->Form->dropdown('position', $snippet, $values, FALSE);
+    $values=array(TCMP_DEVICE_TYPE_ALL, TCMP_DEVICE_TYPE_DESKTOP, TCMP_DEVICE_TYPE_MOBILE, TCMP_DEVICE_TYPE_TABLET);
+    $tcmp->Form->dropdown('deviceType', $snippet, $values, TRUE);
 
     $args=array('id'=>'box-track-mode');
-    $tcm->Form->divStarts($args);
+    $tcmp->Form->divStarts($args);
     {
-        $tcm->Form->p('Where do you want to add this code?');
-        $tcm->Form->radio('trackMode', $snippet['trackMode'], TCM_TRACK_MODE_CODE);
-        $plugins=$tcm->Ecommerce->getActivePlugins();
+        $tcmp->Form->p('Where do you want to add this code?');
+        $tcmp->Form->radio('trackMode', $snippet['trackMode'], TCMP_TRACK_MODE_CODE);
+        $plugins=$tcmp->Ecommerce->getActivePlugins();
         if(count($plugins)==0) {
             $plugins=array('Ecommerce'=>array(
                 'name'=>'Ecommerce'
-                , 'id'=>TCM_PLUGINS_NO_PLUGINS
+                , 'id'=>TCMP_PLUGINS_NO_PLUGINS
                 , 'version'=>'')
             );
         }
-        $tcm->Form->tagNew=TRUE;
+        $tcmp->Form->tagNew=TRUE;
         foreach($plugins as $k=>$v) {
             $ecommerce=$v['name'];
             if(isset($v['version']) && $v['version']!='') {
                 $ecommerce.=' (v.'.$v['version'].')';
             }
-            $args=array('label'=>$tcm->Lang->L('Editor.trackMode_1', $ecommerce));
-            $tcm->Form->radio('trackMode', $snippet['trackMode'], $v['id'], $args);
+            $args=array('label'=>$tcmp->Lang->L('Editor.trackMode_1', $ecommerce));
+            $tcmp->Form->radio('trackMode', $snippet['trackMode'], $v['id'], $args);
         }
-        $tcm->Form->tagNew=FALSE;
+        $tcmp->Form->tagNew=FALSE;
 
     }
-    $tcm->Form->divEnds();
+    $tcmp->Form->divEnds();
 
     $args=array('id'=>'box-track-conversion');
-    $tcm->Form->divStarts($args);
+    $tcmp->Form->divStarts($args);
     {
-        $tcm->Form->p('In which products do you want to insert this code?');
+        $tcmp->Form->p('ConversionProductQuestion');
         ?>
-        <p style="font-style: italic;"><?php $tcm->Lang->P('Editor.PositionBlocked') ?></p>
+        <p style="font-style: italic;"><?php $tcmp->Lang->P('Editor.PositionBlocked') ?></p>
         <?php
         foreach($plugins as $k=>$v) {
             $args=array('id'=>'box-track-conversion-'.$v['id'], 'class'=>'box-track-conversion');
-            $tcm->Form->divStarts($args);
+            $tcmp->Form->divStarts($args);
             {
-                if($v['id']==TCM_PLUGINS_NO_PLUGINS) {
-                    $plugins=$tcm->Ecommerce->getPlugins(FALSE);
+                if($v['id']==TCMP_PLUGINS_NO_PLUGINS) {
+                    $plugins=$tcmp->Ecommerce->getPlugins(FALSE);
                     $ecommerce='';
                     foreach($plugins as $k=>$v) {
                         if($ecommerce!='') {
@@ -293,141 +330,89 @@ function tcm_ui_editor() {
                         }
                         $ecommerce.=$k;
                     }
-                    $tcm->Options->pushErrorMessage('Editor.NoEcommerceFound', $ecommerce);
-                    $tcm->Options->writeMessages();
+                    $tcmp->Options->pushErrorMessage('Editor.NoEcommerceFound', $ecommerce);
+                    $tcmp->Options->writeMessages();
                 } else {
-                    $postType=$tcm->Ecommerce->getCustomPostType($v['id']);
+                    $postType=$tcmp->Ecommerce->getCustomPostType($v['id']);
                     $keyActive='CTC_'.$v['id'].'_Active';
-                    $label=$tcm->Lang->L('Editor.EcommerceCheck', $v['name'], $v['version']);
+                    $label=$tcmp->Lang->L('Editor.EcommerceCheck', $v['name'], $v['version']);
 
                     if($postType!='') {
-                        $args = array('post_type' => $postType, 'all' => TRUE);
-                        $values = $tcm->Utils->query(TCM_QUERY_POSTS_OF_TYPE, $args);
+                        $args=array('post_type'=>$postType, 'all'=>TRUE);
+                        $values=$tcmp->Utils->query(TCMP_QUERY_POSTS_OF_TYPE, $args);
                         $keyArray='CTC_'.$v['id'].'_ProductsIds';
                         if(count($snippet[$keyArray])==0) {
                             //when enabled default selected -1
                             $snippet[$keyArray]=array(-1);
                         }
 
-                        $args=array('label'=>$label, 'class'=>'tcm-select tcmLineTags');
-                        $tcm->Form->labels=FALSE;
-                        $tcm->Form->select($keyArray, $snippet[$keyArray], $values, TRUE, $args);
-                        $tcm->Form->labels=TRUE;
+                        $args=array('label'=>$label, 'class'=>'tcmp-select tcmLineTags');
+                        $tcmp->Form->labels=FALSE;
+                        $tcmp->Form->dropdown($keyArray, $snippet[$keyArray], $values, TRUE, $args);
+                        $tcmp->Form->labels=TRUE;
                     } else {
                         $args=array('label'=>$label);
-                        $tcm->Form->checkbox($keyActive, $snippet[$keyActive], 1, $args);
+                        $tcmp->Form->checkbox($keyActive, $snippet[$keyActive], 1, $args);
                     }
                 }
             }
-            $tcm->Form->divEnds();
+            $tcmp->Form->divEnds();
+
+            $tcmp->Form->br();
+            $tcmp->Form->i('ConversionDynamicFields');
+            $tcmp->Form->br();
+            $tcmp->Form->br();
         }
     }
-    $tcm->Form->divEnds();
+    $tcmp->Form->divEnds();
 
     $args=array('id'=>'box-track-code');
-    $tcm->Form->divStarts($args);
+    $tcmp->Form->divStarts($args);
     {
-        $tcm->Form->p('In which page do you want to insert this code?');
-        $tcm->Form->radio('trackPage', $snippet['trackPage'], TCM_TRACK_PAGE_ALL);
-        $tcm->Form->radio('trackPage', $snippet['trackPage'], TCM_TRACK_PAGE_SPECIFIC);
+        $tcmp->Form->p('In which page do you want to insert this code?');
+        $tcmp->Form->radio('trackPage', $snippet['trackPage'], TCMP_TRACK_PAGE_ALL);
+        $tcmp->Form->radio('trackPage', $snippet['trackPage'], TCMP_TRACK_PAGE_SPECIFIC);
 
         //, 'style'=>'margin-top:10px;'
-        $args=array('id'=>'tcm-include-div');
-        $tcm->Form->divStarts($args);
+        $args=array('id'=>'tcmp-include-div');
+        $tcmp->Form->divStarts($args);
         {
-            $tcm->Form->p('Include tracking code in which pages?');
-            tcm_formOptions('include', $snippet);
+            $tcmp->Form->p('Include tracking code in which pages?');
+            tcmp_formOptions('include', $snippet);
         }
-        $tcm->Form->divEnds();
+        $tcmp->Form->divEnds();
 
-        $args=array('id'=>'tcm-except-div');
-        $tcm->Form->divStarts($args);
+        $args=array('id'=>'tcmp-except-div');
+        $tcmp->Form->divStarts($args);
         {
-            $tcm->Form->p('Do you want to exclude some specific pages?');
-            tcm_formOptions('except', $snippet);
+            $tcmp->Form->p('Do you want to exclude some specific pages?');
+            tcmp_formOptions('except', $snippet);
         }
-        $tcm->Form->divEnds();
+        $tcmp->Form->divEnds();
     }
-    $tcm->Form->divEnds();
+    $tcmp->Form->divEnds();
 
-    $tcm->Form->nonce('tcm_nonce', 'tcm_nonce');
-    tcm_notice_pro_features();
-    $tcm->Form->submit('Save');
-    if($id>0) {
-        $tcm->Form->delete($id);
-    }
-    $tcm->Form->formEnds();
+    $tcmp->Form->nonce('tcmp_nonce', 'tcmp_nonce');
+    tcmp_notice_pro_features();
+    $tcmp->Form->submit('Save');
+    $tcmp->Form->formEnds();
 }
 
-function tcm_notice_pro_features() {
-    global $tcm;
+function tcmp_formOptions($prefix, $snippet) {
+    global $tcmp;
 
-    ?>
-    <br/>
-    <div class="message updated below-h2" style="max-width:600px;">
-        <div style="height:10px;"></div>
-        <?php
-        $i=1;
-        while($tcm->Lang->H('Notice.ProHeader'.$i)) {
-            $tcm->Lang->P('Notice.ProHeader'.$i);
-            echo '<br/>';
-            ++$i;
-        }
-        $i=1;
-        ?>
-        <br/>
-        <?php
-
-        $options = array('public' => TRUE, '_builtin' => FALSE);
-        $q=get_post_types($options, 'names');
-        if(is_array($q) && count($q)>0) {
-            sort($q);
-            $q=implode(', ', $q);
-            $q='(<b>'.$q.'</b>)';
-        } else {
-            $q='';
-        }
-
-        while($tcm->Lang->H('Notice.ProFeature'.$i)) { ?>
-            <div style="clear:both; margin-top: 2px;"></div>
-            <div style="float:left; vertical-align:middle; height:24px; margin-right:5px;">
-                <img src="<?php echo TCM_PLUGIN_IMAGES?>tick.png" />
-            </div>
-            <div style="float:left; vertical-align:middle; height:24px;">
-                <?php $tcm->Lang->P('Notice.ProFeature'.$i, $q)?>
-            </div>
-            <?php ++$i;
-        }
-        ?>
-        <div style="clear:both;"></div>
-        <div style="height:10px;"></div>
-        <div style="float:right;">
-            <?php
-            $url='http://intellywp.com/tracking-code-manager/?utm_source=free-users&utm_medium=tcm-cta&utm_campaign=TCM';
-            ?>
-            <a href="<?php echo $url?>" target="_blank">
-                <b><?php $tcm->Lang->P('Notice.ProCTA')?></b>
-            </a>
-        </div>
-        <div style="height:10px; clear:both;"></div>
-    </div>
-    <br/>
-<?php }
-
-function tcm_formOptions($prefix, $snippet) {
-    global $tcm;
-
-    $types=$tcm->Utils->query(TCM_QUERY_POST_TYPES);
+    $types=$tcmp->Utils->query(TCMP_QUERY_POST_TYPES);
     foreach($types as $v) {
-        $args = array('post_type' => $v['name'], 'all' => TRUE);
-        $values = $tcm->Utils->query(TCM_QUERY_POSTS_OF_TYPE, $args);
+        $args=array('post_type'=>$v['id'], 'all'=>TRUE);
+        $values=$tcmp->Utils->query(TCMP_QUERY_POSTS_OF_TYPE, $args);
+        //$tcmp->Form->premium=!in_array($v['name'], array('post', 'page'));
 
-        $keyActive=$prefix.'PostsOfType_'.$v['name'].'_Active';
-        $keyArray=$prefix.'PostsOfType_'.$v['name'];
+        $keyActive=$prefix.'PostsOfType_'.$v['id'].'_Active';
+        $keyArray=$prefix.'PostsOfType_'.$v['id'];
         if($snippet[$keyActive]==0 && count($snippet[$keyArray])==0 && $prefix!='except') {
             //when enabled default selected -1
             $snippet[$keyArray]=array(-1);
         }
-        $tcm->Form->checkSelect($keyActive, $keyArray, $snippet, $values);
+        $tcmp->Form->checkSelect($keyActive, $keyArray, $snippet, $values);
     }
 }

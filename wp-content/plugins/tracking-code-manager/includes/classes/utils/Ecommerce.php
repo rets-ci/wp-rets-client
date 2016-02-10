@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-class TCM_Ecommerce {
+class TCMP_Ecommerce {
     function __construct() {
         add_action('woocommerce_thankyou', array(&$this, 'wooCommerceThankYou'));
         add_action('edd_payment_receipt_after_table', array(&$this, 'eddThankYou'));
@@ -11,13 +11,13 @@ class TCM_Ecommerce {
     public function getCustomPostType($pluginId) {
         $result='';
         switch (intval($pluginId)) {
-            case TCM_PLUGINS_WOOCOMMERCE:
+            case TCMP_PLUGINS_WOOCOMMERCE:
                 $result='product';
                 break;
-            case TCM_PLUGINS_EDD:
+            case TCMP_PLUGINS_EDD:
                 $result='download';
                 break;
-            case TCM_PLUGINS_WP_ECOMMERCE:
+            case TCMP_PLUGINS_WP_ECOMMERCE:
                 $result='wpsc-product';
                 break;
         }
@@ -26,11 +26,13 @@ class TCM_Ecommerce {
 
     //WPSC_Purchase_Log_Customer_HTML_Notification
     function eCommerceThankYou($order) {
-        global $tcm;
+        global $tcmp;
+        $purchase=new TCMP_EcommercePurchase();
 
         $orderId=intval($order['purchase_id']);
-        $tcm->Log->debug('Ecommerce: ECOMMERCE THANKYOU');
-        $tcm->Log->debug('Ecommerce: NEW ECOMMERCE ORDERID=%s', $orderId);
+        $purchase->orderId=$orderId;
+        $tcmp->Log->debug('Ecommerce: ECOMMERCE THANKYOU');
+        $tcmp->Log->debug('Ecommerce: NEW ECOMMERCE ORDERID=%s', $orderId);
 
         $order=new WPSC_Purchase_Log($orderId);
         $items=$order->get_cart_contents();
@@ -40,99 +42,127 @@ class TCM_Ecommerce {
                 $k=intval($v->prodid);
                 if($k) {
                     $v=$v->name;
+                    $purchase->products[]=$v;
                     $productsIds[]=$k;
-                    $tcm->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
+                    $tcmp->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
                 }
             }
         }
 
         $args=array(
-            'pluginId'=>TCM_PLUGINS_WP_ECOMMERCE
+            'pluginId'=>TCMP_PLUGINS_WP_ECOMMERCE
             , 'productsIds'=>$productsIds
             , 'categoriesIds'=>array()
             , 'tagsIds'=>array()
         );
-        $tcm->Options->pushConversionSnippets($args);
+        $tcmp->Options->pushConversionSnippets($args, $purchase);
         return '';
     }
 
     function eddThankYou($payment, $edd_receipt_args=NULL) {
-        global $tcm;
+        global $tcmp;
+        if(!class_exists('EDD_Customer')) {
+            return;
+        }
 
-        $tcm->Log->debug('Ecommerce: EDD THANKYOU');
-        $tcm->Log->debug('Ecommerce: NEW EDD ORDERID=%s', $payment->ID);
-        $cart=edd_get_payment_meta_cart_details($payment->ID, TRUE);
+        /* @var $payment WP_Post */
+        $purchase=new TCMP_EcommercePurchase();
+        $purchase->orderId=$tcmp->Utils->get($payment, 'ID');
+        $purchase->userId=$tcmp->Utils->get($payment, 'post_author', FALSE);
+
+        $settings=edd_get_settings();
+        if(isset($settings['currency'])) {
+            $purchase->currency=$settings['currency'];
+        }
+
+        $tcmp->Log->debug('Ecommerce: EDD THANKYOU');
+        $tcmp->Log->debug('Ecommerce: NEW EDD ORDERID=%s', $purchase->orderId);
+        $cart=edd_get_payment_meta_cart_details($purchase->orderId, TRUE);
         $productsIds=array();
+        $purchase->amount=0;
+        $purchase->total=0;
         foreach ($cart as $key=>$item) {
             if(isset($item['id'])) {
                 $k=intval($item['id']);
                 if($k) {
                     $v=$item['name'];
+                    $purchase->products[]=$v;
                     $productsIds[]=$k;
-                    $tcm->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
+                    $tcmp->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
                 }
             }
         }
 
         $args=array(
-            'pluginId'=>TCM_PLUGINS_EDD
+            'pluginId'=>TCMP_PLUGINS_EDD
             , 'productsIds'=>$productsIds
             , 'categoriesIds'=>array()
             , 'tagsIds'=>array()
         );
-        $tcm->Options->pushConversionSnippets($args);
+        $tcmp->Options->pushConversionSnippets($args, $purchase);
     }
     function wooCommerceThankYou($orderId) {
-        global $tcm;
-        $tcm->Log->debug('Ecommerce: WOOCOMMERCE THANKYOU');
+        global $tcmp;
+        $purchase=new TCMP_EcommercePurchase();
+        $purchase->orderId=$orderId;
+        $tcmp->Log->debug('Ecommerce: WOOCOMMERCE THANKYOU');
 
         $order=new WC_Order($orderId);
+        $purchase->email=$order->billing_email;
+        $purchase->fullname=$order->billing_first_name;
+        if($order->billing_last_name!='') {
+            $purchase->fullname.=' '.$order->billing_last_name;
+        }
+
+
+
         $items=$order->get_items();
-        $tcm->Log->debug('Ecommerce: NEW WOOCOMMERCE ORDERID=%s', $orderId);
+        $tcmp->Log->debug('Ecommerce: NEW WOOCOMMERCE ORDERID=%s', $orderId);
         $productsIds=array();
         foreach($items as $k=>$v) {
             $k=intval($v['product_id']);
             if($k>0) {
                 $v=$v['name'];
-                $tcm->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
+                $purchase->products[]=$v;
+                $tcmp->Log->debug('Ecommerce: ITEM %s=%s IN CART', $k, $v);
                 $productsIds[]=$k;
             }
         }
 
         $args=array(
-            'pluginId'=>TCM_PLUGINS_WOOCOMMERCE
+            'pluginId'=>TCMP_PLUGINS_WOOCOMMERCE
             , 'productsIds'=>$productsIds
             , 'categoriesIds'=>array()
             , 'tagsIds'=>array()
         );
-        $tcm->Options->pushConversionSnippets($args);
+        $tcmp->Options->pushConversionSnippets($args, $purchase);
     }
 
     function getActivePlugins() {
         return $this->getPlugins(TRUE);
     }
     function getPlugins($onlyActive=TRUE) {
-        global $tcm;
+        global $tcmp;
 
         $array=array();
-        $array[]=TCM_PLUGINS_WOOCOMMERCE;
-        $array[]=TCM_PLUGINS_EDD;
-        $array[]=TCM_PLUGINS_WP_ECOMMERCE;
+        $array[]=TCMP_PLUGINS_WOOCOMMERCE;
+        $array[]=TCMP_PLUGINS_EDD;
+        $array[]=TCMP_PLUGINS_WP_ECOMMERCE;
         /*
-        $array[]=TCM_PLUGINS_WP_SPSC;
-        $array[]=TCM_PLUGINS_S2MEMBER;
-        $array[]=TCM_PLUGINS_MEMBERS;
-        $array[]=TCM_PLUGINS_CART66;
-        $array[]=TCM_PLUGINS_ESHOP;
-        $array[]=TCM_PLUGINS_JIGOSHOP;
-        $array[]=TCM_PLUGINS_MARKETPRESS;
-        $array[]=TCM_PLUGINS_SHOPP;
-        $array[]=TCM_PLUGINS_SIMPLE_WP_ECOMMERCE;
-        $array[]=TCM_PLUGINS_CF7;
-        $array[]=TCM_PLUGINS_GRAVITY;
+        $array[]=TCMP_PLUGINS_WP_SPSC;
+        $array[]=TCMP_PLUGINS_S2MEMBER;
+        $array[]=TCMP_PLUGINS_MEMBERS;
+        $array[]=TCMP_PLUGINS_CART66;
+        $array[]=TCMP_PLUGINS_ESHOP;
+        $array[]=TCMP_PLUGINS_JIGOSHOP;
+        $array[]=TCMP_PLUGINS_MARKETPRESS;
+        $array[]=TCMP_PLUGINS_SHOPP;
+        $array[]=TCMP_PLUGINS_SIMPLE_WP_ECOMMERCE;
+        $array[]=TCMP_PLUGINS_CF7;
+        $array[]=TCMP_PLUGINS_GRAVITY;
         */
 
-        $array=$tcm->Plugin->getPlugins($array, $onlyActive);
+        $array=$tcmp->Plugin->getPlugins($array, $onlyActive);
         return $array;
     }
 }

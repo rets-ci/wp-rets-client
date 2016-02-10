@@ -8,12 +8,12 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class TCM_Logger {
+class TCMP_Logger {
     private $name;
     private $context=array();
 
-    public function __construct($name='TCM') {
-        if($name=='') $name='TCM';
+    public function __construct($name='TCMP') {
+        if($name=='') $name='TCMP';
         $this->name=$name;
     }
 
@@ -52,7 +52,7 @@ class TCM_Logger {
         return $v;
     }
     private function write($verbosity, $message, $v1=NULL, $v2=NULL, $v3=NULL, $v4=NULL, $v5=NULL, $v6=NULL) {
-        global $tcm;
+        global $tcmp;
 
         $text=sprintf($message
             , $this->dump($v1)
@@ -66,12 +66,12 @@ class TCM_Logger {
             $message.='{'.$this->context[count($this->context)-1].'} ';
         }
         $message="\n".$message.$text;
-        if(!$tcm->Options->isLoggerEnable()) {
+        if(!$tcmp->Options->isLoggerEnable()) {
             return $message;
         }
 
         $hasErrors=false;
-        $filename=TCM_PLUGIN_ROOT."logs/".$this->name."_".date("Ym").".txt";
+        $filename=TCMP_PLUGIN_DIR."logs/".$this->name."_".date("Ym").".txt";
         if (!$handle = fopen($filename, 'a')) {
             $hasErrors=true;
         }

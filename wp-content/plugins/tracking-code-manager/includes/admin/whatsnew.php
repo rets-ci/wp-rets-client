@@ -1,86 +1,88 @@
 <?php
-function tcm_ui_whats_new() {
-    global $tcm;
-    $tcm->Options->setShowWhatsNew(FALSE);
+define('TCMP_WHATSNEW_VERSION', 8);
+function tcmp_ui_whats_new() {
+    global $tcmp;
+    $tcmp->Options->setShowWhatsNew(FALSE);
+    $tcmp->Options->setShowWhatsNewSeenVersion(TCMP_WHATSNEW_VERSION);
     ?>
     <style>
-        .tcm-grid {
+        .tcmp-grid {
             margin-left: auto;
             margin-right: auto;
             border-spacing: 10px;
+            max-width: 1120px;
         }
-        .tcm-grid td {
-            text-align: center;
+        .tcmp-grid td, .tcmp-grid td p {
+            font-size:16px;
+            vertical-align: top;
         }
-        .tcm-headline {
+        .tcmp-grid td ul {
+            list-style-type: disc;
+            margin-left: 30px!important;
+        }
+        .tcmp-grid td {
+            padding: 20px!important;
+        }
+        .tcmp-headline {
             font-size:40px;
             font-weight:bold;
             text-align:center;
+            margin: 10px!important;
+        }
+        .tcmp-subheadline {
+            font-size:25px!important;
+            font-weight:bold;
+            text-align:left;
+            margin: 0px!important;
         }
     </style>
 
-    <p class="tcm-headline">Introducing Ecommerce Conversion Tracking</p>
-    <table border="0" class="tcm-grid">
-        <tr>
-            <td><img src="<?php echo TCM_PLUGIN_ASSETS ?>landing/edd.png" /></td>
-            <td><img src="<?php echo TCM_PLUGIN_ASSETS ?>landing/woocommerce.png" /></td>
-            <td><img src="<?php echo TCM_PLUGIN_ASSETS ?>landing/wp-ecommerce.png" /></td>
-        </tr>
-    </table>
-    <div style="clear:both; height:30px;"></div>
-
-    <div style="text-align:center; width:auto;">
-        <img src="<?php echo TCM_PLUGIN_ASSETS ?>landing/mockup.png" />
-    </div>
-    <div style="clear:both; height:30px;"></div>
-
-    <table border="0" class="tcm-grid">
-        <tr>
-            <td><iframe width="350" height="210" src="https://www.youtube.com/embed/jgmmMlerFRg"></iframe></td>
-            <td><iframe width="350" height="210" src="https://www.youtube.com/embed/TDgoefbdtSI"></iframe></td>
-            <td><iframe width="350" height="210" src="https://www.youtube.com/embed/vBjDeb4Ej-I"></iframe></td>
-        </tr>
-        <tr>
-            <td>Track Conversion in Easy Digital Download</td>
-            <td>Track Conversion in Woocommerce</td>
-            <td>Track Conversion in WP eCommerce</td>
-        </tr>
-    </table>
-    <div style="clear:both"></div>
-
-    <hr/>
-
-    <p class="tcm-headline">Get unlimited tracking codes with Tracking Code Manager PRO</p>
-    <table border="0" class="tcm-grid">
-        <tr>
-            <td style="text-align:left;">
-                Tracking Code Manager PRO let you:
-                <ul style="list-style-type: disc;">
-                    <li>Have unlimited tracking codes</li>
-                    <li>Put tracking codes in categories, tags and custom post types</li>
-                    <li>Have unlimited combinations and unlimited exclusions</li>
-                    <li>Include a tracking code only in latest posts (outstanding for retargeting)</li>
+    <p class="tcmp-headline">What's new in Tracking Code Manager?</p>
+    <table border="0" class="tcmp-grid">
+        <tr valign="top">
+            <td valign="top" width="50%">
+                Now the Tracking Code Manager let you:
+                <ul>
+                    <li>Use tracking codes by device types</li>
+                    <li>Sort tracking codes using drag & drop</li>
+                    <li>Shortcode support</li>
+                    <li>Fixed 6 small issues</li>
+                    <li>Quick support links added</li>
                 </ul>
-            </td>
-            <td><img src="<?php echo TCM_PLUGIN_ASSETS ?>landing/screenshot-latest.png" style="border:1px dashed red;" /></td>
-        </tr>
-    </table>
+                <br>
 
-    <table border="0" class="tcm-grid">
-        <tr>
-            <td>
-                <form method="get" action="<?php echo TCM_PAGE_MANAGER?>">
-                    <input type="hidden" name="page" value="<?php echo TCM_PLUGIN_SLUG?>" />
-                    <input type="submit" class="button" value="CONTINUE USING FREE VERSION" />
-                </form>
+                <p class="tcmp-subheadline">Dynamic Conversion Values</p>
+                <p>Finally, Dynamic Conversion Values are now available for WooCommerce and Easy Digital Download. Now you can track the values of your conversions on <b>Google Adwords</b> and <b>Facebook Ads</b> (with the <b>New Pixel</b> and relative events like "Purchase" and others), and many other channels.</p>
+                <img src="<?php echo TCMP_PLUGIN_ASSETS_URI ?>landing/tcmp-fb.png" />
+                <br>
+                <br>
+                <div style="float: right;">
+                    <a class="button button-secondary" href="<?php echo TCMP_TAB_MANAGER_URI?>&hwb=1">CONTINUE USING FREE VERSION</a>
+                    <a class="button button-primary" href="<?php echo TCMP_TAB_DOCS_DCV_URI?>?utm_campaign=whatsnew" target="_blank">SEE MORE ››</a>
+                </div>
             </td>
-            <td>
-                <form method="get" action="<?php echo TCM_PAGE_PREMIUM?>">
-                    <input type="hidden" name="utm_source" value="free-users" />
-                    <input type="hidden" name="utm_medium" value="tcm-whatsnew" />
-                    <input type="hidden" name="utm_campaign" value="TCM" />
-                    <input type="submit" class="button-primary" value="UPGRADE TO PREMIUM NOW ››" />
-                </form>
+            <td valign="top" width="50%" style="border-left: 1px solid #44444E;">
+                <p class="tcmp-subheadline" style="margin-top: 0px!important;">Introducing the Tracking Code Manager brother!</p>
+                <p>We are proud to introduce Posts' Footer Manager, a free plugin that let you clean and organize the stuff you have in the footer of your blogpost.</p>
+                <p>If you are tired of the MESSY stuff that appears after the content of your pages and articles, you should give it a go.</p>
+                <div style="float: right;">
+                    <a class="button button-secondary" href="http://wordpress.org/plugins/intelly-posts-footer-manager" target="_blank">
+                        Download Posts' Footer Manager from Wordpress.org ››
+                    </a>
+                </div>
+                <br>
+                <br>
+                <br>
+
+                <p class="tcmp-subheadline">Our new awesome Plugins:</p>
+                <p>Built by Marketers, for Marketers.</p>
+                <ul>
+                    <li><a href="https://intellywp.com/custom-audiences-enhancer/?utm_campaign=whatsnew" target="_blank">Custom Audiences Enhancer</a></li>
+                    <li><a href="https://wordpress.org/plugins/intelly-welcome-bar/" target="_blank">Welcome Bar</a></li>
+                    <li><a href="https://wordpress.org/plugins/intelly-related-posts/" target="_blank">Inline Related Posts</a></li>
+                    <li><a href="https://wordpress.org/plugins/intelly-countdown/" target="_blank">Evergreen Countdown Timer</a></li>
+                    <li><a href="https://wordpress.org/plugins/intelly-posts-footer-manager/" target="_blank">Posts' Footer Manager</a></li>
+                </ul>
             </td>
         </tr>
     </table>

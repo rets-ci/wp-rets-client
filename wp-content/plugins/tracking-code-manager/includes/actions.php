@@ -20,50 +20,53 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 1.0
  * @return void
 */
-add_action('init', 'tcm_do_action');
-function tcm_do_action() {
-    global $tcm;
+add_action('init', 'tcmp_do_action');
+function tcmp_do_action() {
+    global $tcmp;
 
-	if (isset($tcm) && isset($tcm->Utils) && $tcm->Utils->qs('tcm_action')) {
+	if (isset($tcmp) && isset($tcmp->Utils) && $tcmp->Utils->qs('tcmp_action')) {
         $args=array_merge($_GET, $_POST, $_COOKIE, $_SERVER);
-        $name='tcm_'.$tcm->Utils->qs('tcm_action');
+        $name='tcmp_'.$tcmp->Utils->qs('tcmp_action');
         if(has_action($name)) {
-            $tcm->Log->debug('EXECUTING ACTION=%s', $name);
+            $tcmp->Log->debug('EXECUTING ACTION=%s', $name);
             do_action($name, $args);
         } elseif(function_exists($name)) {
-            $tcm->Log->debug('EXECUTING FUNCTION=%s DATA=%s', $name, $args);
+            $tcmp->Log->debug('EXECUTING FUNCTION=%s DATA=%s', $name, $args);
             call_user_func($name, $args);
-        } elseif(strpos($tcm->Utils->qs('tcm_action'), '_')!==FALSE) {
-            $pos=strpos($tcm->Utils->qs('tcm_action'), '_');
-            $what=substr($tcm->Utils->qs('tcm_action'), 0, $pos);
-            $function=substr($tcm->Utils->qs('tcm_action'), $pos+1);
+        } elseif(strpos($tcmp->Utils->qs('tcmp_action'), '_')!==FALSE) {
+            $pos=strpos($tcmp->Utils->qs('tcmp_action'), '_');
+            $what=substr($tcmp->Utils->qs('tcmp_action'), 0, $pos);
+            $function=substr($tcmp->Utils->qs('tcmp_action'), $pos+1);
 
             $class=NULL;
             switch (strtolower($what)) {
                 case 'manager':
-                    $class=$tcm->Manager;
+                    $class=$tcmp->Manager;
+                    break;
+                case 'license':
+                    $class=$tcmp->License;
                     break;
                 case 'cron':
-                    $class=$tcm->Cron;
+                    $class=$tcmp->Cron;
                     break;
                 case 'tracking':
-                    $class=$tcm->Tracking;
+                    $class=$tcmp->Tracking;
                     break;
                 case 'properties':
-                    $class=$tcm->Options;
+                    $class=$tcmp->Options;
                     break;
             }
 
             if(!$class) {
-                $tcm->Log->fatal('NO CLASS FOR=%s IN ACTION=%s', $what, $tcm->Utils->qs('tcm_action'));
+                $tcmp->Log->fatal('NO CLASS FOR=%s IN ACTION=%s', $what, $tcmp->Utils->qs('tcmp_action'));
             } elseif(!method_exists ($class, $function)) {
-                $tcm->Log->fatal('NO METHOD FOR=%s IN CLASS=%s IN ACTION=%s', $function, $what, $tcm->Utils->qs('tcm_action'));
+                $tcmp->Log->fatal('NO METHOD FOR=%s IN CLASS=%s IN ACTION=%s', $function, $what, $tcmp->Utils->qs('tcmp_action'));
             } else {
-                $tcm->Log->debug('METHOD=%s OF CLASS=%s', $function, $what);
+                $tcmp->Log->debug('METHOD=%s OF CLASS=%s', $function, $what);
                 call_user_func(array($class, $function), $args);
             }
         } else {
-            $tcm->Log->fatal('NO FUNCTION FOR==%s', $tcm->Utils->qs('tcm_action'));
+            $tcmp->Log->fatal('NO FUNCTION FOR==%s', $tcmp->Utils->qs('tcmp_action'));
         }
 	}
 }

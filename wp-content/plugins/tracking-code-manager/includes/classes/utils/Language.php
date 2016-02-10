@@ -1,65 +1,47 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) exit;
 
-class TCM_Language {
+class TCMP_Language {
     var $domain;
+    var $bundle;
+
+    function __construct() {
+        $this->bundle=new TCMP_Properties();
+    }
     function load($domain, $file) {
         $this->domain=$domain;
-        if(!file_exists($file)) {
-            return;
-        }
-        $file=file_get_contents($file);
-        if($file!=NULL && strlen($file)>0) {
-            $bundle=array();
-            $file=str_replace("\r\n", "\n", $file);
-            $file=str_replace("\n\n", "\n", $file);
-            $file=explode("\n", $file);
-
-            foreach($file as $row) {
-                $index=strpos($row, "=");
-                if($index===FALSE) continue;
-
-                $k=trim(substr($row, 0, $index));
-                $v=trim(substr($row, $index+1));
-                $bundle[$k]=$v;
-            }
-
-            global $wp_session;
-            $wp_session['LanguageBundle_'.$domain]=$bundle;
-        }
+        $this->bundle->load($file);
     }
-    //echo the $tcm->Lang->L result
+    //echo the $ec->Lang->L result
     function P($key, $v1=NULL, $v2=NULL, $v3=NULL, $v4=NULL, $v5=NULL) {
         $what=$this->L($key, $v1, $v2, $v3, $v4, $v5);
         echo $what;
     }
     //verify if the key is defined or not
     function H($key) {
-        global $wp_session;
-        $bundle=$wp_session['LanguageBundle_'.$this->domain];
-        if($bundle==NULL || count($bundle)==0) {
+        if($this->bundle==NULL || !$this->bundle->hasKeys()) {
             return FALSE;
         }
 
         $result=FALSE;
-        if(isset($bundle[$key])) {
+        if($this->bundle->existsKey($key)) {
             $result=TRUE;
-        } elseif(isset($bundle[$key.'1'])) {
+        } elseif($this->bundle->existsKey($key.'1')) {
             $result=TRUE;
         } else {
             //special way to call this function passing arguments
             //WTF_something means key=WTF and something as first argument
             $s=strpos($result, '_');
             if ($s!==FALSE) {
-                $text = substr($result, 0, $s);
-                $value = substr($result, $s + 1);
-                $e = strrpos($value, '_');
+                $text=substr($result, 0, $s);
+                $value=substr($result, $s + 1);
+                $e=strrpos($value, '_');
                 if ($e!==FALSE) {
-                    $text .= substr($value, $e + 1);
-                    $value = substr($value, 0, $e);
+                    $text.=substr($value, $e + 1);
+                    $value=substr($value, 0, $e);
                 }
-                if (isset($bundle[$text])) {
-                    $result = TRUE;
+                if ($this->bundle->existsKey($text)) {
+                    $result=TRUE;
                 }
             }
         }
@@ -67,26 +49,25 @@ class TCM_Language {
     }
     //read the key from a text file with its translation. Try to translate using __(
     function L($key, $v1=NULL, $v2=NULL, $v3=NULL, $v4=NULL, $v5=NULL) {
-        global $wp_session;
-        $bundle=$wp_session['LanguageBundle_'.$this->domain];
-        $result = $key;
-        $args = array($v1, $v2, $v3, $v4, $v5);
+        global $tcmp;
+        $result=$key;
+        $args=array($v1, $v2, $v3, $v4, $v5);
 
-        if($bundle==NULL || count($bundle)==0) {
+        if($this->bundle==NULL || !$this->bundle->hasKeys()) {
             $result=__($result, $this->domain);
         } else {
             //i use the file to store the translations without writing it inside the code
-            if (isset($bundle[$key])) {
-                $result = $bundle[$key];
-                $result = __($result, $this->domain);
-            } elseif (isset($bundle[$key . '1'])) {
-                $result = '';
-                $n = 1;
-                while (isset($bundle[$key . $n])) {
+            if ($this->bundle->existsKey($key)) {
+                $result=$this->bundle->getString($key);
+                $result=__($result, $this->domain);
+            } elseif ($this->bundle->existsKey($key.'1')) {
+                $result='';
+                $n=1;
+                while ($this->bundle->existsKey($key.$n)) {
                     if ($result != '') {
                         $result .= '<br/>';
                     }
-                    $result .= __($bundle[$key . $n], $this->domain);
+                    $result .= __($this->bundle->getString($key . $n), $this->domain);
                     ++$n;
                 }
             } else {
@@ -94,24 +75,34 @@ class TCM_Language {
                 //WTF_something means key=WTF and something as first argument
                 $s=strpos($result, '_');
                 if ($s!==FALSE) {
-                    $text = substr($result, 0, $s);
-                    $value = substr($result, $s + 1);
-                    $e = strrpos($value, '_');
+                    $text=substr($result, 0, $s);
+                    $value=substr($result, $s + 1);
+                    $e=strrpos($value, '_');
                     if ($e!==FALSE) {
                         $text .= substr($value, $e + 1);
-                        $value = substr($value, 0, $e);
+                        $value=substr($value, 0, $e);
                     }
-                    if (isset($bundle[$text])) {
-                        $result = $bundle[$text];
+                    if ($this->bundle->existsKey($text)) {
+                        $result=$this->bundle->getString($text);
                         $args=array($value);
                     }
                 }
-                $result = __($result, $this->domain);
+                $result=__($result, $this->domain);
             }
+        }
+        if($result==$key) {
+            $this->bundle->pushString($key, '');
         }
         //here i translate it using WP
         foreach($args as $k=>$v) {
             $k='{'.$k.'}';
+            while(strpos($result, $k)!==FALSE) {
+                $result=str_replace($k, $v, $result);
+            }
+        }
+        foreach($args as $k=>$v) {
+            $k='{dt:'.$k.'}';
+            $v=$tcmp->Utils->formatSmartDatetime($v);
             while(strpos($result, $k)!==FALSE) {
                 $result=str_replace($k, $v, $result);
             }

@@ -7,7 +7,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class TCM_Check {
+class TCMP_Check {
     var $data;
 
     public function __construct() {
@@ -41,14 +41,14 @@ class TCM_Check {
 
     //check if is a mandatory field by checking the .txt language file
     private function error($name) {
-        global $tcm;
+        global $tcmp;
 
         $result=FALSE;
-        $k=$tcm->Form->prefix.'.'.$name.'.check';
-        $v=$tcm->Lang->L($k);
+        $k=$tcmp->Form->prefix.'.'.$name.'.check';
+        $v=$tcmp->Lang->L($k);
         if($v!=$k) {
             //this is a mandatory field so we give error
-            $tcm->Options->pushErrorMessage($v);
+            $tcmp->Options->pushErrorMessage($v);
             $result=TRUE;
         }
         return $result;
@@ -106,7 +106,7 @@ class TCM_Check {
     }
 
     public function hasErrors() {
-        global $tcm;
-        return $tcm->Options->hasErrorMessages();
+        global $tcmp;
+        return $tcmp->Options->hasErrorMessages();
     }
 }

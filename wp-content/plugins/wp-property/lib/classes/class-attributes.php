@@ -38,7 +38,6 @@ namespace UsabilityDynamics\WPP {
           'time' => __( 'Time picker', ud_get_wp_property('domain') ),
           'color' => __( 'Color picker', ud_get_wp_property('domain') ),
           'image_advanced' => __( 'Image upload', ud_get_wp_property('domain') ),
-          'plupload_image' => __( 'Images upload', ud_get_wp_property('domain') ),
           'file_advanced' => __( 'Files upload', ud_get_wp_property('domain') ),
           'file_input' => __( 'File URL', ud_get_wp_property('domain') ),
         ) );
@@ -95,11 +94,28 @@ namespace UsabilityDynamics\WPP {
           ),
         ));
 
+
+        /**
+         * Set supported type for default value.
+         */
+        ud_get_wp_property()->set('attributes.default', array(
+          'input'           => 'text',
+          'number'          => 'text',
+          'currency'        => 'text',
+          'url'             => 'text',
+          'oembed'          => 'text',
+          'textarea'        => 'textarea',
+          'wysiwyg'         => 'textarea',
+        ));
+
         /**
          * Set schema for multiple attributes types.
          */
         ud_get_wp_property()->set('attributes.multiple', array(
-          'multi_checkbox'
+          'multi_checkbox',
+          'image_advanced',
+          'file_advanced',
+          'image_upload',
         ) );
 
         /** Fix numeric/currency logic */

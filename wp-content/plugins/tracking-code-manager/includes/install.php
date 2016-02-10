@@ -1,23 +1,30 @@
 <?php
-register_activation_hook(TCM_PLUGIN_FILE, 'tcm_install');
-function tcm_install($networkwide=NULL) {
-	global $wpdb, $tcm;
 
-    $time=$tcm->Options->getPluginInstallDate();
+register_activation_hook(TCMP_PLUGIN_FILE, 'tcmp_install');
+function tcmp_install($networkwide=NULL) {
+	global $wpdb, $tcmp;
+
+    $time=$tcmp->Options->getPluginInstallDate();
     if($time==0) {
-        $tcm->Options->setPluginInstallDate(time());
+        $tcmp->Options->setPluginInstallDate(time());
     }
-    $tcm->Options->setPluginUpdateDate(time());
-    $tcm->Options->setShowWhatsNew(TRUE);
-    $tcm->Options->setPluginFirstInstall(TRUE);
+    $tcmp->Options->setPluginUpdateDate(time());
+    $tcmp->Options->setShowWhatsNew(TRUE);
+    $tcmp->Options->setPluginFirstInstall(TRUE);
 }
 
-add_action('admin_init', 'tcm_first_redirect');
-function tcm_first_redirect() {
-    global $tcm;
-    if ($tcm->Options->isPluginFirstInstall()) {
-        $tcm->Options->setPluginFirstInstall(FALSE);
-        $tcm->Options->setShowActivationNotice(TRUE);
-        $tcm->Utils->redirect(TCM_PAGE_MANAGER);
+add_action('admin_init', 'tcmp_first_redirect');
+function tcmp_first_redirect() {
+    global $tcmp;
+    $v=$tcmp->Options->getShowWhatsNewSeenVersion();
+    if($v>=0 && $v!=TCMP_WHATSNEW_VERSION) {
+        $tcmp->Options->setShowWhatsNewSeenVersion(-1);
+        tcmp_install();
+    }
+
+    if ($tcmp->Options->isPluginFirstInstall()) {
+        $tcmp->Options->setPluginFirstInstall(FALSE);
+        $tcmp->Options->setShowActivationNotice(TRUE);
+        $tcmp->Utils->redirect(TCMP_PAGE_MANAGER);
     }
 }
