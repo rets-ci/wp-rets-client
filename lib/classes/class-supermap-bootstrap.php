@@ -27,6 +27,42 @@ namespace UsabilityDynamics\WPP {
         require_once( dirname( __DIR__ ) . '/class-wpp-supermap.php' );
         add_action( 'wpp_init', array( 'class_wpp_supermap', 'pre_init' ), 0 );
         add_action( 'wpp_init', array( 'class_wpp_supermap', 'init' ), 10 );
+
+        /**
+         * May be load Shortcodes
+         */
+        add_action( 'init', function() {
+          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path('lib/shortcodes', 'dir') );
+        }, 999 );
+
+
+        /**
+         * May be load Widgets
+         */
+        add_action( 'widgets_init', function() {
+          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path('lib/widgets', 'dir') );
+        }, 1 );
+
+      }
+
+      /**
+       * Includes all PHP files from specific folder
+       *
+       * @param string $dir Directory's path
+       * @author peshkov@UD
+       */
+      public function load_files($dir = '') {
+        $dir = trailingslashit($dir);
+        if (!empty($dir) && is_dir($dir)) {
+          if ($dh = opendir($dir)) {
+            while (( $file = readdir($dh) ) !== false) {
+              if (!in_array($file, array('.', '..')) && is_file($dir . $file) && 'php' == pathinfo($dir . $file, PATHINFO_EXTENSION)) {
+                include_once( $dir . $file );
+              }
+            }
+            closedir($dh);
+          }
+        }
       }
 
       /**
