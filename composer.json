@@ -10,12 +10,12 @@
   ],
   "extra": {
     "settings": {
-      "wp_siteurl": "https://www.reddoorcompany.com",
-      "wp_home": "https://www.reddoorcompany.com",
+      "wp_siteurl": "https://414392a625bd.c.wpcloud.io",
+      "wp_home": "https://414392a625bd.c.wpcloud.io",
       "wp_debug": true,
       "wp_debug_log": true,
-      "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "wp_debug_display": false,
+      "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "wp_cache": false,
       "concatenate_scripts": false,
       "sunrise": false,
@@ -42,15 +42,6 @@
           "host": "localhost",
           "read": 5,
           "write": 5,
-          "charset": "utf8"
-        },
-        {
-          "name": "www.reddoorcompany.com",
-          "user": "rdc",
-          "password": "wpcvdvwyocbhnrfj",
-          "host": "api.wpcloud.io:13038",
-          "read": 40,
-          "write": 40,
           "charset": "utf8"
         }
       ]
