@@ -12,6 +12,6 @@
 
 <?php wp_footer(); ?>
 </div><!-- Container -->
-</div><!-- Container-fluid -->
+
 </body>
 </html>
