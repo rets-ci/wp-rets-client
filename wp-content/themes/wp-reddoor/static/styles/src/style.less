@@ -262,8 +262,9 @@ input[type="submit"]:active {
     float: left;
     margin: 28px 0 0 40px;
     #menu-header {
-        .current-menu-item{
+        &>.current-menu-item{
             font-weight: 400;
+            background: rgba(0, 0, 0, 0) url('../../images/src/arrow.png') no-repeat scroll 10px 45px;
         }
         &>li {
             float: left;
@@ -289,7 +290,7 @@ input[type="submit"]:active {
             position: absolute;
             top: 45px;
             width: 1584px;
-            z-index: 2;
+            z-index: 5;
             li{
                 float: left;
                 margin-right: 40px;
@@ -327,6 +328,94 @@ input[type="submit"]:active {
 }
 /* =Footer
 ------------------------------------------------- */
+.footerBg1{
+    background: #2f2e31;
+}
+.footerBg2{
+    background: #272629;
+}
+.menu-footer-menu-container{
+    height: 30px;
+    #menu-footer-menu{
+        li{
+        border-right: 2px solid @white;
+        float: left;
+        padding: 0 10px;
+        &:last-child{
+        border-right: none;
+        }
+        a{
+        color: @white;
+        font-size: 10pt;
+        }
+        }
+    }
+}
 footer {
 
 }/* footer */
+
+/* Adaptive */
+
+// Mode adaptive 1920
+@adapt1920: 1920px;
+
+// Mode adaptive 1680
+@adapt1680: 1680px;
+
+// Mode adaptive 1600
+@adapt1600: 1600px;
+
+// Mode adaptive 1440
+@adapt1440: 1440px;
+
+// Mode adaptive 1366
+@adapt1366: 1366px;
+
+// Mode adaptive 1360
+@adapt1360: 1360px;
+
+// Mode adaptive 1280
+@adapt1280: 1280px;
+
+// Mode adaptive 1024
+@adapt1024: 1024px;
+
+
+@media screen and (min-width: @adapt1920) {
+
+}
+@media screen and (min-width: @adapt1680) {
+
+}
+@media screen and (min-width: @adapt1600) {
+    .sub-menu {
+        left: -400px;
+        padding-left: 400px;
+        width: 1584px;
+    }
+}
+@media screen and (min-width: @adapt1440) {
+
+}
+@media screen and (min-width: @adapt1366) {
+
+}
+@media screen and (min-width: @adapt1360) {
+
+}
+@media screen and (min-width: @adapt1280) {
+    .sub-menu {
+        left: -400px;
+        padding-left: 400px;
+        width: 1280px;
+    }
+}
+@media screen and (min-width: @adapt1024) {
+    .sub-menu {
+        left: -230px;
+        padding-left: 230px;
+        width: 1024px;
+    }
+}
+

@@ -21,11 +21,36 @@ register_nav_menu('main-menu', 'Main menu');
 
 
 /* Register sidebar */
-$args = array(
-    'name' => __('Sidebar Left'),
-    'id' => 'sidebar-left');
-register_sidebar($args);
+if (function_exists('register_sidebar')) {
+    register_sidebar(array(
+        'name'=> 'Footer area 1',
+        'id' => 'footer_area_1',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2 class="offscreen">',
+        'after_title' => '</h2>',
+    ));
+    register_sidebar(array(
+        'name'=> 'Footer area 2',
+        'id' => 'footer_area_2',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2 class="offscreen">',
+        'after_title' => '</h2>',
+    ));
+    register_sidebar(array(
+        'name'=> 'Footer area 3',
+        'id' => 'footer_area_3',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2 class="offscreen">',
+        'after_title' => '</h2>',
+    ));
 
+}
+
+
+/* Customize logo */
 function themeslug_theme_customizer( $wp_customize ) {
     $wp_customize->add_section( 'themeslug_logo_section' , array(
         'title'       => __( 'Logo', 'themeslug' ),
