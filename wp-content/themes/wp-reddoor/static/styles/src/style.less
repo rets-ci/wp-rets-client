@@ -277,7 +277,7 @@ input[type="submit"]:active {
                 text-decoration: none;
                 font-weight: 400;
             }
-            font-size: 18pt;
+            font-size: 1.6em;
             color: #5a595c;
         }
         }
@@ -297,7 +297,7 @@ input[type="submit"]:active {
                 font-weight: 300;
                 position: relative;
             a{
-                font-size: 12pt;
+                font-size: 1.3em;
                 color: @white;
             }
             }
@@ -306,6 +306,9 @@ input[type="submit"]:active {
             }
         }
     }
+}
+.site-content{
+    margin: 40px 0;
 }
 .head-popups{
     float: right;
@@ -319,10 +322,69 @@ input[type="submit"]:active {
         width: 100px;
         text-align: center;
         display: inline-block;
-        font-size: 12pt;
+        font-size: 1em;
         &:hover{
             text-decoration: none;
             color: @white;
+        }
+    }
+}
+.oneAgent{
+    width: 380px;
+    border: 1px solid #dcddde;
+    border-radius: 5px;
+    &> img{
+        display: block;
+        margin: 40px auto;
+    }
+    &>h3{
+        color: #747375;
+        font-weight: 400;
+        margin: 0;
+        text-align: center;
+    }
+    &>span{
+        color: #5a595c;
+        display: block;
+        font-weight: 200;
+        text-align: center;
+        margin: 11px 0 30px;
+    }
+    &>ul{
+        background: #f3f0e9;
+        border-radius: 0 0 5px 5px;
+        margin: 58px 0 0;
+        li{
+            display: inline-block;
+            width: 123px;
+            border-right: 1px solid #eeeaea;
+            text-align: center;
+            padding: 22px 0 15px;
+            &:last-child{
+                border-right: none;
+            }
+            div{
+                color: #555555;
+                font-size: 1.1em;
+                font-weight: 500;
+            }
+            span{
+                font-size: 1em;
+                font-weight: 200;
+                color: #919093;
+            }
+        }
+    }
+    .oneAgentLinksBlock{
+        text-align: center;
+        a{
+        background: #cf3428;
+        width: 150px;
+        color: @white;
+        font-size: 1em;
+        border-radius: 5px;
+        display: inline-block;
+        padding: 8px 0;
         }
     }
 }
