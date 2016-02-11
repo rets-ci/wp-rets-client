@@ -3,7 +3,7 @@
 Plugin Name: Page Builder by SiteOrigin
 Plugin URI: https://siteorigin.com/page-builder/
 Description: A drag and drop, responsive page builder that simplifies building your website.
-Version: 2.3
+Version: 2.3.1
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 License: GPL3
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: http://siteorigin.com/page-builder/#donate
 */
 
-define('SITEORIGIN_PANELS_VERSION', '2.3');
+define('SITEORIGIN_PANELS_VERSION', '2.3.1');
 if ( ! defined('SITEORIGIN_PANELS_JS_SUFFIX' ) ) {
 	define('SITEORIGIN_PANELS_JS_SUFFIX', '.min');
 }
@@ -738,7 +738,8 @@ function siteorigin_panels_generate_css($post_id, $panels_data = false){
 		}
 
 		if ( $settings['responsive'] ) {
-			if( $cell_count >= 3  && $panels_tablet_width > $panels_mobile_width ) {
+
+			if( $settings['tablet-layout'] && $cell_count >= 3  && $panels_tablet_width > $panels_mobile_width ) {
 				// Tablet Responsive
 				$css->add_cell_css($post_id, $grid_id, false, '', array(
 					'width' => '50%'
@@ -940,8 +941,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			$widget_info['panels_info']['cell_index'] = $last_wi++;
 		}
 	}
-
-	if( is_rtl() ) $panels_data = siteorigin_panels_make_rtl( $panels_data );
 
 	// Create the skeleton of the grids
 	$grids = array();
