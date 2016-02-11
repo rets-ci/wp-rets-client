@@ -187,7 +187,7 @@ video {
 body {
     background-color: #ffffff;
     color: @black;
-    font-family: Arial;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     line-height: 1.4;
 }
@@ -203,6 +203,7 @@ a:hover {
 /* colors */
 @orange: #FF8100;
 @black: #262626;
+@white: #fff;
 /* colors */
 
 
@@ -252,15 +253,78 @@ input[type="submit"]:active {
 }
 /* INPUTS */
 
-#menu-header{
-    li{
-        float: left;
-        a{
-
+.site-logo{
+    float: left;
+    position: relative;
+    z-index: 10;
+}
+.menu-header-container {
+    float: left;
+    margin: 28px 0 0 40px;
+    #menu-header {
+        .current-menu-item{
+            font-weight: 400;
+        }
+        &>li {
+            float: left;
+            margin-right: 40px;
+            font-weight: 300;
+            position: relative;
+            height: 55px;
+        a {
+            &:hover{
+                text-decoration: none;
+                font-weight: 400;
+            }
+            font-size: 18pt;
+            color: #5a595c;
+        }
+        }
+        .sub-menu{
+            background: #38373a none repeat scroll 0 0;
+            height: 60px;
+            left: -400px;
+            line-height: 60px;
+            padding-left: 400px;
+            position: absolute;
+            top: 45px;
+            width: 1584px;
+            z-index: 2;
+            li{
+                float: left;
+                margin-right: 40px;
+                font-weight: 300;
+                position: relative;
+            a{
+                font-size: 12pt;
+                color: @white;
+            }
+            }
+            .current-menu-item{
+                font-weight: 400;
+            }
         }
     }
 }
-
+.head-popups{
+    float: right;
+    margin-top: 28px;
+    a{
+        font-weight: 400;
+        color: @white;
+        background: #cf3428;
+        border-radius: 5px;
+        padding: 5px;
+        width: 100px;
+        text-align: center;
+        display: inline-block;
+        font-size: 12pt;
+        &:hover{
+            text-decoration: none;
+            color: @white;
+        }
+    }
+}
 /* =Footer
 ------------------------------------------------- */
 footer {

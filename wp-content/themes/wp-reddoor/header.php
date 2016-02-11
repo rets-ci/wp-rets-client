@@ -9,6 +9,7 @@
     <title><?php bloginfo('name'); ?><?php wp_title(); ?></title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('stylesheet_directory'); ?>/static/styles/src/style.less"/>
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,700' rel='stylesheet' type='text/css'>
     <?php wp_head(); ?>
 </head>
 
@@ -28,6 +29,10 @@
                 </hgroup>
             <?php endif; ?>
             <?php wp_nav_menu(array('menu' => 'Header')); ?>
+            <div class="head-popups">
+                <a href="#">Contact</a>
+                <a href="#">Login</a>
+            </div>
         </header>
     </div>
 
