@@ -39,6 +39,18 @@ namespace UsabilityDynamics\WPP {
         $options = array(
             'id' => 'supermap',
             'params' => array(
+              /*
+              'template' => array(
+                'name' => __( 'Template', ud_get_wpp_supermap()->domain ),
+                'description' => sprintf( __( 'View of you Supermap.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
+                'type' => 'select',
+                'options' => array(
+                  'default' => __( 'default', ud_get_wpp_supermap()->domain ),
+                  'advanced' => __( 'advanced', ud_get_wpp_supermap()->domain )
+                ),
+                'default' => 'default'
+              ),
+              */
               'hide_sidebar' => array(
                 'name' => __( 'Hide Sidebar', ud_get_wpp_supermap()->domain ),
                 'description' => sprintf( __( 'Toggles the sidebar that displays a list of returned properties and a search filter.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
@@ -172,25 +184,16 @@ namespace UsabilityDynamics\WPP {
           'pagination' => 'on',
           'sidebar_width' => '',
           'hide_sidebar' => 'false',
-          'map_height' => '',
-          'map_width' => '',
+          'map_height' => '450',
+          'map_width' => '450',
           'options_label' => __('Options',ud_get_wpp_supermap()->domain),
           'silent_failure' => 'true',
           'sort_order' => 'DESC',
-          'sort_by' => 'post_date'
+          'sort_by' => 'post_date',
+          'template' => 'default'
         );
 
         $atts = array_merge($defaults, (array)$atts);
-
-        wp_enqueue_script( 'google-maps' );
-
-        //** Quit function if Google Maps is not loaded */
-        if(!\WPP_F::is_asset_loaded('google-maps')) {
-          return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
-        }
-
-        //* Available search attributes */
-        $searchable_attributes = (array) $wp_properties['searchable_attributes'];
 
         //* Set property types */
         if(!isset($atts['property_type'])) {
@@ -273,8 +276,8 @@ namespace UsabilityDynamics\WPP {
           /**
            * Call function which prepares data and renders template.
            */
-          $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'supermap_template' ), $query, $properties, $atts );
-          if( is_callable($template_function) ) {
+          $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'render_' . $atts[ 'template' ] . '_template' ), $query, $properties, $atts );
+          if( is_callable( $template_function ) ) {
             $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
           }
           return $supermap;
@@ -288,13 +291,32 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       *
+       * @param $properties
+       * @param array $atts
+       */
+      static public function render_advanced_template( $properties, $atts = array() ) {
+
+        echo "<pre>";
+        print_r( $properties );
+        echo "</pre>";
+
+
+        echo "<pre>";
+        print_r( $atts );
+        echo "</pre>";
+        die();
+
+      }
+
+      /**
        * Prepares data, enquires javascript,
        * includes template and returns it
        *
        * Note, you can redeclare function by calling your own one using filter:
        * wpp::supermap::template_function
        */
-      static public function supermap_template( $properties, $atts = array() ) {
+      static public function render_default_template( $properties, $atts = array() ) {
         global $wp_properties;
 
         //* Determine if properties exist */
@@ -305,18 +327,24 @@ namespace UsabilityDynamics\WPP {
         //* Default settings */
         $defaults = array(
           'hide_sidebar' => 'false',
-          'css_class' => '',
           'show_areas' => false,
           'sidebar_width' => '',
           'map_height' => '',
           'map_width' => '',
           'zoom' => '',
-          'options_label' => __('Options',ud_get_wpp_supermap()->domain),
+          'options_label' => __('Options',ud_get_wpp_supermap()->domain), // @todo add to shortcode params
           'center_on' => '',
-          'scrollwheel' => '',
+          'scrollwheel' => '', // @todo add to shortcode params
           'property_type' => (array) $wp_properties['searchable_property_types'],
           'rand' => rand(1000,5000)
         );
+
+        wp_enqueue_script( 'google-maps' );
+
+        //** Quit function if Google Maps is not loaded */
+        if(!\WPP_F::is_asset_loaded('google-maps')) {
+          return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
+        }
 
         if(!empty($sidebar_width)) {
           $sidebar_width = trim(str_replace(array('%', 'px'), '', $sidebar_width));
@@ -450,7 +478,7 @@ namespace UsabilityDynamics\WPP {
          * @todo move current php template to javascript file (static/scripts/supermap.js)
          */
         /** Try find Supermap Template */
-        $jstemplate = ud_get_wpp_supermap()->path( 'static/views/supermap-js.php', 'dir' );
+        $jstemplate = ud_get_wpp_supermap()->path( 'static/views/default/supermap-js.php', 'dir' );
         if( file_exists( $jstemplate ) ) {
           ob_start();
           include $jstemplate;
@@ -462,7 +490,7 @@ namespace UsabilityDynamics\WPP {
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(
           apply_filters( "wpp::supermap::template_name", array( "supermap" ) ),
-          apply_filters( "wpp::supermap::template_path", array( ud_get_wpp_supermap()->path( 'static/views', 'dir' ) ) )
+          apply_filters( "wpp::supermap::template_path", array( ud_get_wpp_supermap()->path( 'static/views/default', 'dir' ) ) )
         );
 
         if( $template ) {

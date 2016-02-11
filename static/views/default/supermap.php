@@ -43,6 +43,7 @@ foreach( $supermap_configuration['display_attributes'] as $attribute ) {
             <?php ud_get_wpp_supermap()->render_property_item( $property, array(
               'rand' => $rand,
               'supermap_configuration' => $supermap_configuration,
+              'template' => 'default'
             ) ); ?>
           <?php endforeach; ?>
         <?php endif; ?>
