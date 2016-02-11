@@ -1,0 +1,24 @@
+{
+	"name": "wpplex/wp-autoupdate",
+	"type": "library",
+	"description": "Create your own self-hosted WordPress Plugin repository for pushing automatic updates.",
+	"keywords": ["wordpress", "auto-update"],
+	"homepage": "http://omarabid.com",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Abid Omar",
+			"email": "contact@omarabid.com",
+			"homepage": "http://omarabid.com",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0" 
+	},
+	"autoload": {
+		"psr-4": {
+			"wpplex\\WP_AutoUpdate\\": ""
+		}
+	}
+}
