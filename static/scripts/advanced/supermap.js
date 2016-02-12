@@ -39,9 +39,6 @@
         $scope.total = 0;
         $scope.properties = [];
         $scope.wpp = wpp;
-        $scope.test = 'HELL';
-
-        //$scope.test = 'WTF';
 
         /**
          * Get Properties by provided Query ( filter )
@@ -86,6 +83,7 @@
               google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
                 return function() {
                   $scope.currentProperty = $scope.properties[i];
+                  $scope.$apply();
                   $scope.infowindow.setContent( jQuery( '.marker-infowindow', ngAppDOM).html() );
                   $scope.infowindow.open( map, marker );
                 }
