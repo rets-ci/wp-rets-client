@@ -19,14 +19,54 @@
 
 get_header(); ?>
 
-<div class="row">
-
-	<div class="col-lg-4">
-
+	<div class="container-fluid archiveFilterBg">
+		<div class="container">
+			<div class="row">
+			<section class="archiveFilterBody">
+				<div>
+					Filter by:
+				</div>
+				<!--
+				<ul>
+					<li>Home Buying</li>
+					<li>Home Selling</li>
+					<li>Home Renting</li>
+					<li>Management</li>
+				</ul>
+				-->
+			</section>
+			</div>
+		</div>
 	</div>
 
+<div class="container">
+	<div class="row">
+		<?php
 
+		// Start the Loop.
+		while ( have_posts() ) : the_post(); ?>
 
+		<div class="col-lg-4">
+			<div class="oneCategory">
+				<?php
+				$currentId = get_the_ID();
+				$post_thumbnail_id = get_post_thumbnail_id( $currentId );
+				$_url = wp_get_attachment_image_url($post_thumbnail_id, 'medium');
+				?>
+
+					<div class="oneCategoryImg">
+						<img src="<?php echo $_url ?>" alt="<?php the_title(); ?>" />
+					</div>
+				<div class="catIconLoop">
+					<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/categoryIcon.png" alt="" />
+				</div>
+				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+			</div>
+		</div>
+
+		<?php endwhile; ?>
+
+	</div>
 </div>
 
 
