@@ -333,6 +333,7 @@ input[type="submit"]:active {
     width: 380px;
     border: 1px solid #dcddde;
     border-radius: 5px;
+    margin: 20px 0;
     &> img{
         display: block;
         margin: 40px auto;
@@ -384,7 +385,8 @@ input[type="submit"]:active {
         font-size: 1em;
         border-radius: 5px;
         display: inline-block;
-        padding: 8px 0;
+        padding: 15px 0;
+        margin: 0 5px;
         }
     }
 }
@@ -392,26 +394,103 @@ input[type="submit"]:active {
 ------------------------------------------------- */
 .footerBg1{
     background: #2f2e31;
+    padding-bottom: 75px;
 }
 .footerBg2{
     background: #272629;
+    padding: 15px 0;
 }
 .menu-footer-menu-container{
     height: 30px;
     #menu-footer-menu{
         li{
-        border-right: 2px solid @white;
+        border-right: 1px solid @white;
         float: left;
         padding: 0 10px;
+        line-height: 11px;
         &:last-child{
         border-right: none;
         }
         a{
         color: @white;
-        font-size: 10pt;
+        font-size: 0.85em;
         }
         }
     }
+}
+.footerWidgetArea1{
+    width: 282px;
+    padding-bottom: 85px;
+    background: #e9e5da url('../../images/src/waBg.png') no-repeat scroll 0 bottom;
+    &>a{
+        border: 1px solid #e4c2b6;
+        border-radius: 5px;
+        color: #cf3428;
+        display: block;
+        font-size: 1.1em;
+        margin: auto;
+        text-align: center;
+        width: 178px;
+        padding: 5px 0;
+        &:hover{
+            text-decoration: none;
+            color: @white;
+        }
+    }
+    .textwidget {
+        padding: 0 35px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    &>img{
+        margin-bottom: 45px;
+    }
+}
+.footerWidgetArea2{
+    &>h3{
+        color: @white;
+        font-size: 1.5em;
+    }
+    &>div{
+        color: #fefefe;
+        line-height: 1.5em;
+        margin: 25px 0;
+    }
+    &>span{
+        display: block;
+    }
+    img{
+        margin-right: 10px;
+    }
+}
+.footerWidgetArea3{
+    &>h3{
+        color: @white;
+        font-size: 1.5em;
+    }
+    &>ul{
+        background: @white;
+        border-radius: 3px;
+        padding-bottom: 25px;
+        li{
+        img{
+            width: 100%;
+        }
+        &>a{
+            color: #cf3428;
+            font-size: 1.3em;
+            line-height: 1.1em;
+            display: block;
+            margin: 20px auto auto;
+            width: 320px;
+        }
+        div{
+            padding: 0 25px;
+            margin-top: 10px;
+        }
+        }
+    }
+
 }
 footer {
 
