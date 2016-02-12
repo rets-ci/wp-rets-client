@@ -13,14 +13,13 @@
  */
 
 get_header(); ?>
+  <div class="container">
+    <div class="row site-content">
+      <?php while (have_posts()) : the_post(); ?>
+        <?php get_template_part('templates/content', 'main'); ?>
+        <?php //comments_template( '', true ); ?>
+      <?php endwhile; // end of the loop. ?>
+    </div><!-- .row -->
+  </div>
 
-	<div class="row site-content">
-			<?php while ( have_posts() ) : the_post(); ?>
-				<?php get_template_part( 'templates/content', 'main' ); ?>
-				<?php //comments_template( '', true ); ?>
-			<?php endwhile; // end of the loop. ?>
-
-		</div><!-- .row -->
-
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
