@@ -50,6 +50,7 @@
   <div ng-controller="main">
 
     <div class="row">
+
       <div class="col-md-6">
         <ng-map zoom="4" center="[43.6650000, -79.4103000]"></ng-map>
         <div class="marker-infowindow">
@@ -58,9 +59,29 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
 
+      <div class="col-md-6">
+        <div class="sm-sidebar-top">
+          {{total}} <?php printf( __( '%s found in %s', ud_get_wpp_supermap()->domain ), \WPP_F::property_label('plural'), 'Raleigh' ); ?>
+        </div>
+        <table st-table="properties" class="table table-striped">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>post_title</th>
+            <th>city</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in properties">
+            <td>{{row.ID}}</td>
+            <td>{{row.post_title}}</td>
+            <td>{{row.city}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
+
     </div>
 
   </div>

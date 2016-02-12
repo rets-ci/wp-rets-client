@@ -291,9 +291,14 @@ namespace UsabilityDynamics\WPP {
       static public function render_advanced_mode_view( $query, $atts = array() ) {
 
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
-        wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps' ) );
-        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs' ) );
+        wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
+        wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
         wp_enqueue_script( 'markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
+        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'markerclusterer', 'ng-map', 'ng-smart-table' ) );
+
+        wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
+        wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
+
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(

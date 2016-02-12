@@ -47,13 +47,17 @@ module.exports = function build( grunt ) {
           yuicompress: true,
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/supermap-advanced.min.css': [ 'static/styles/src/supermap-advanced.less' ],
+        }
       },
       development: {
         options: {
           relativeUrls: true
         },
-        files: {}
+        files: {
+          'static/styles/supermap-advanced.css': [ 'static/styles/src/supermap-advanced.less' ],
+        }
       }
     },
 

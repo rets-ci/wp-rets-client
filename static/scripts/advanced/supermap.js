@@ -12,6 +12,11 @@
 
     var ngAppDOM = jQuery( this );
 
+    /**
+     * Be sure it's shown
+     */
+    ngAppDOM.show();
+
     /** Making variables public */
     var vars = jQuery.extend({
       'ng_app': false,
@@ -31,7 +36,7 @@
     /**
      * Angular Module.
      */
-    angular.module( vars.ng_app, [ 'ngMap' ] )
+    angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
 
       .controller( 'main', [ '$scope', '$http', 'NgMap', function( $scope, $http, NgMap ){
 

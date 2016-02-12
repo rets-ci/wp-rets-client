@@ -1,0 +1,12 @@
+.wpp-advanced-supermap {
+  /**
+   * We are hiding supermap before data loaded.
+   */
+  display: none;
+}
+.wpp-advanced-supermap .marker-infowindow {
+  /**
+     * We never show infowindow. It's for internal usage!
+     */
+  display: none;
+}
