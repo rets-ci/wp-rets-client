@@ -232,7 +232,7 @@ ob_start();
 
       jQuery.ajax({
         async: false,
-        type: "POST",
+        type: "GET",
         url: "<?php echo admin_url('admin-ajax.php'); ?>",
         data:params,
         success: function(msg){

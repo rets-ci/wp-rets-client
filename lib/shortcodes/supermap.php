@@ -40,8 +40,8 @@ namespace UsabilityDynamics\WPP {
             'id' => 'supermap',
             'params' => array(
               /*
-              'template' => array(
-                'name' => __( 'Template', ud_get_wpp_supermap()->domain ),
+              'mode' => array(
+                'name' => __( 'Mode View', ud_get_wpp_supermap()->domain ),
                 'description' => sprintf( __( 'View of you Supermap.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
                 'type' => 'select',
                 'options' => array(
@@ -145,13 +145,6 @@ namespace UsabilityDynamics\WPP {
             'group' => 'WP-Property'
         );
 
-        /* Declare path to shortcode templates */
-        add_filter( $options[ 'id' ] . '_template_path', function() {
-          return array(
-            ud_get_wpp_supermap()->path( 'static/views', 'dir' ),
-          );
-        }  );
-
         parent::__construct( $options );
       }
 
@@ -177,6 +170,13 @@ namespace UsabilityDynamics\WPP {
       static public function render($atts = array()) {
         global $wp_properties;
 
+        wp_enqueue_script( 'google-maps' );
+
+        //** Quit function if Google Maps is not loaded */
+        if(!\WPP_F::is_asset_loaded('google-maps')) {
+          return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
+        }
+
         $defaults = array(
           'per_page' => 10,
           'css_class' => '',
@@ -184,13 +184,13 @@ namespace UsabilityDynamics\WPP {
           'pagination' => 'on',
           'sidebar_width' => '',
           'hide_sidebar' => 'false',
-          'map_height' => '450',
-          'map_width' => '450',
+          'map_height' => '',
+          'map_width' => '',
           'options_label' => __('Options',ud_get_wpp_supermap()->domain),
           'silent_failure' => 'true',
           'sort_order' => 'DESC',
           'sort_by' => 'post_date',
-          'template' => 'default'
+          'mode' => 'default'
         );
 
         $atts = array_merge($defaults, (array)$atts);
@@ -251,42 +251,35 @@ namespace UsabilityDynamics\WPP {
 
         //* END Set query */
 
-        //* Get properties */
-        $property_ids = \WPP_F::get_properties( $query , true );
+        $supermap = "";
 
-        if (!empty($property_ids['results'])) {
+        /**
+         * Call function which prepares data and renders template.
+         */
+        $template_function = array( __CLASS__, 'render_' . $atts[ 'mode' ] . '_mode_view' );
+        $_template_function = apply_filters( 'wpp::supermap::template_function', $template_function, $query, null, $atts );
 
-          $atts['total'] = $property_ids['total'];
+        if( is_callable( $template_function ) ) {
 
-          $properties = array();
-          foreach ($property_ids['results'] as $key => $id) {
-
-            $property = prepare_property_for_display( $id, array(
-              'load_gallery' => 'false',
-              'get_children' => 'false',
-              'load_parent' => 'false',
-              'scope' => 'supermap_sidebar'
-            ) );
-
-            $properties[$id] = $property;
+          // Legacy Supermap version support.
+          // If template function was re-declared we are using old logic to call template function
+          if( $_template_function !== $template_function ) {
+            $properties = self::get_properties( $query );
+            if ( !empty( $properties[ 'total' ] ) ) {
+              $atts['total'] = $properties['total'];
+              $supermap = call_user_func_array( $template_function, array( $properties[ 'data' ], $atts ) );
+            } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
+              return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label( 'plural' ) ) . '</span>';
+            }
           }
-
-          $supermap = "";
-
-          /**
-           * Call function which prepares data and renders template.
-           */
-          $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'render_' . $atts[ 'template' ] . '_template' ), $query, $properties, $atts );
-          if( is_callable( $template_function ) ) {
-            $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
+          // New Template logic:
+          else {
+            $supermap = call_user_func_array( $template_function, array( $query, $atts ) );
           }
-          return $supermap;
-
-        } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
-
-          return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label( 'plural' ) ) . '</span>';
 
         }
+
+        return $supermap;
 
       }
 
@@ -295,17 +288,27 @@ namespace UsabilityDynamics\WPP {
        * @param $properties
        * @param array $atts
        */
-      static public function render_advanced_template( $properties, $atts = array() ) {
+      static public function render_advanced_mode_view( $query, $atts = array() ) {
 
-        echo "<pre>";
-        print_r( $properties );
-        echo "</pre>";
+        wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
+        wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps' ) );
+        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs' ) );
+        wp_enqueue_script( 'markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
 
+        /** Try find Supermap Template */
+        $template = \WPP_F::get_template_part(
+          apply_filters( "wpp::supermap::template_name", array( "supermap" ) ),
+          apply_filters( "wpp::supermap::template_path", array( ud_get_wpp_supermap()->path( 'static/views/advanced', 'dir' ) ) )
+        );
 
-        echo "<pre>";
-        print_r( $atts );
-        echo "</pre>";
-        die();
+        $content = '';
+        if( $template ) {
+          ob_start();
+          include $template;
+          $content .= ob_get_clean();
+        }
+
+        return $content;
 
       }
 
@@ -316,8 +319,17 @@ namespace UsabilityDynamics\WPP {
        * Note, you can redeclare function by calling your own one using filter:
        * wpp::supermap::template_function
        */
-      static public function render_default_template( $properties, $atts = array() ) {
+      static public function render_default_mode_view( $query, $atts = array() ) {
         global $wp_properties;
+
+        $result = self::get_properties( $query );
+        $properties = array();
+        if ( !empty( $result[ 'total' ] ) ) {
+          $atts['total'] = $result[ 'total' ];
+          $properties = $result[ 'data' ];
+        } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
+          return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label( 'plural' ) ) . '</span>';
+        }
 
         //* Determine if properties exist */
         if(empty($properties)) {
@@ -338,13 +350,6 @@ namespace UsabilityDynamics\WPP {
           'property_type' => (array) $wp_properties['searchable_property_types'],
           'rand' => rand(1000,5000)
         );
-
-        wp_enqueue_script( 'google-maps' );
-
-        //** Quit function if Google Maps is not loaded */
-        if(!\WPP_F::is_asset_loaded('google-maps')) {
-          return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
-        }
 
         if(!empty($sidebar_width)) {
           $sidebar_width = trim(str_replace(array('%', 'px'), '', $sidebar_width));
@@ -503,6 +508,37 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       * Returns the list of all found properties prepared for display.
+       *
+       * @param $query
+       */
+      static public function get_properties( $query ) {
+        //* Get properties */
+        $property_ids = \WPP_F::get_properties( $query , true );
+
+        $atts['total'] = $property_ids['total'];
+
+        $properties = array();
+        foreach ($property_ids['results'] as $key => $id) {
+
+          $property = prepare_property_for_display( $id, array(
+            'load_gallery' => 'false',
+            'get_children' => 'false',
+            'load_parent' => 'false',
+            'scope' => 'supermap_sidebar'
+          ) );
+
+          $properties[$id] = $property;
+        }
+
+        return array(
+          'total' => $property_ids['total'],
+          'data' => $properties,
+        );
+
+      }
+
+      /**
        * Ajax. Returns javascript:
        * list of properties and markers
        *
@@ -516,7 +552,8 @@ namespace UsabilityDynamics\WPP {
           'pagination' => 'on',
           'sort_order' => 'ASC',
           'sort_by' => 'menu_order',
-          'property_type' => ( $wp_properties['searchable_property_types'] )
+          'property_type' => ( $wp_properties['searchable_property_types'] ),
+          'json' => false,
         );
 
         $atts = shortcode_atts($defaults, $_REQUEST);
@@ -530,11 +567,11 @@ namespace UsabilityDynamics\WPP {
         //* START Prepare search params for get_properties() */
         $query = array();
         if(!empty($_REQUEST['wpp_search'])) {
-          //* Available search attributes */
-          $searchable_attributes = (array)$wp_properties['searchable_attributes'];
-          $query_keys = array_flip($searchable_attributes);
-          foreach($query_keys as $key => $val) {
-            $query_keys[$key] = '';
+          //** Load all queriable keys **/
+          $query_keys = array();
+          foreach( \WPP_F::get_queryable_keys() as $key ) {
+            //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
+            $query_keys[ $key ] = false;
           }
           $query = $_REQUEST['wpp_search'];
           $query = shortcode_atts($query_keys, $query);
@@ -560,23 +597,15 @@ namespace UsabilityDynamics\WPP {
         $query['sort_order'] = $atts['sort_order'];
         //* END Prepare search params for get_properties() */
 
-        //* Get Properties */
-        $property_ids = \WPP_F::get_properties($query, true);
+        $result = self::get_properties( $query );
 
-        if (!empty($property_ids['results'])) {
-          $properties = array();
-          foreach ((array)$property_ids['results'] as $key => $id) {
-
-            $property =  (array) prepare_property_for_display($id, array(
-              'load_gallery' => 'false',
-              'get_children' => 'false',
-              'load_parent' => 'false',
-              'scope' => 'supermap_sidebar'
-            ));
-
-            $properties[$id] = $property;
-          }
+        if( $atts[ 'json' ] ) {
+          $result[ 'data' ] = array_values( $result[ 'data' ] );
+          wp_send_json( $result );
+          exit();
         }
+
+        $properties = $result[ 'data' ];
 
         $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array( $supermap_configuration['display_attributes'] ) ?
           $supermap_configuration['display_attributes'] : array();
@@ -592,7 +621,7 @@ namespace UsabilityDynamics\WPP {
 
         if(!empty($properties)) : ?>
           var HTML = '';
-          window.supermap_<?php echo $_POST['random']; ?>.total = '<?php echo $property_ids['total']; ?>';
+          window.supermap_<?php echo $_GET['random']; ?>.total = '<?php echo $result['total']; ?>';
           <?php
 
           $labels_to_keys = array_flip($wp_properties['property_stats']);
@@ -600,53 +629,53 @@ namespace UsabilityDynamics\WPP {
           foreach ($properties as $property_id => $value) {
 
             ?>
-            window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
-            window.content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = '<?php echo \WPP_F::google_maps_infobox($value); ?>';
+            window.myLatlng_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
+            window.content_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?> = '<?php echo \WPP_F::google_maps_infobox($value); ?>';
 
-            window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
-            position: myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>,
-            map: map_<?php echo $_POST['random']; ?>,
+            window.marker_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
+            position: myLatlng_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>,
+            map: map_<?php echo $_GET['random']; ?>,
             title: '<?php echo str_replace("'","\'", $value['location']); ?>',
             icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
             });
 
-            window.markers_<?php echo $_POST['random']; ?>.push(window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
+            window.markers_<?php echo $_GET['random']; ?>.push(window.marker_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>);
 
-            google.maps.event.addListener(marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>, 'click', function() {
-            infowindow_<?php echo $_POST['random']; ?>.close();
-            infowindow_<?php echo $_POST['random']; ?>.setContent(content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-            infowindow_<?php echo $_POST['random']; ?>.open(map_<?php echo $_POST['random']; ?>,marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
+            google.maps.event.addListener(marker_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>, 'click', function() {
+            infowindow_<?php echo $_GET['random']; ?>.close();
+            infowindow_<?php echo $_GET['random']; ?>.setContent(content_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>);
+            infowindow_<?php echo $_GET['random']; ?>.open(map_<?php echo $_GET['random']; ?>,marker_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>);
             loadFuncy();
-            makeActive(<?php echo $_POST['random']; ?>,<?php echo $value['ID']; ?>);
+            makeActive(<?php echo $_GET['random']; ?>,<?php echo $value['ID']; ?>);
             });
 
-            google.maps.event.addListener(infowindow_<?php echo $_POST['random']; ?>, 'domready', function() {
+            google.maps.event.addListener(infowindow_<?php echo $_GET['random']; ?>, 'domready', function() {
             document.getElementById('infowindow').parentNode.style.overflow='';
             document.getElementById('infowindow').parentNode.parentNode.style.overflow='';
             });
 
-            bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-            map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
+            bounds_<?php echo $_GET['random']; ?>.extend(window.myLatlng_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>);
+            map_<?php echo $_GET['random']; ?>.fitBounds(bounds_<?php echo $_GET['random']; ?>);
 
-            HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'], 'supermap_configuration' => $supermap_configuration, ), true ) ) ) ); ?>';
+            HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_GET['random'], 'supermap_configuration' => $supermap_configuration, ), true ) ) ) ); ?>';
 
           <?php } ?>
 
-          var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');
+          var wpp_supermap_<?php echo $_GET['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_GET['random']; ?>');
 
-          if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-          wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
+          if( wpp_supermap_<?php echo $_GET['random']; ?> !== null ) {
+          wpp_supermap_<?php echo $_GET['random']; ?>.innerHTML += HTML;
           }
 
         <?php else : ?>
 
-          window.supermap_<?php echo $_POST['random']; ?>.total = '0';
+          window.supermap_<?php echo $_GET['random']; ?>.total = '0';
 
-          var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
+          var wpp_supermap_<?php echo $_GET['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_GET['random']; ?>");
           var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
 
-          if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-          wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
+          if( wpp_supermap_<?php echo $_GET['random']; ?> !== null ) {
+          wpp_supermap_<?php echo $_GET['random']; ?>.innerHTML += y;
           }
 
         <?php endif; ?>
