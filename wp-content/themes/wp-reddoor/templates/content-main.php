@@ -3,7 +3,7 @@
 //the_content(); ?>
 
 <div class="row">
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 				<h3>Denis Zabelin</h3>
@@ -28,7 +28,7 @@
 				</ul>
 		</div>
 	</div>
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 			<h3>Denis Zabelin</h3>
@@ -53,7 +53,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 			<h3>Denis Zabelin</h3>
@@ -78,7 +78,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 			<h3>Denis Zabelin</h3>
@@ -103,7 +103,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 			<h3>Denis Zabelin</h3>
@@ -128,7 +128,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-4">
+	<div class="col-lg-4 col-md-6 col-xs-12">
 		<div class="oneAgent">
 			<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
 			<h3>Denis Zabelin</h3>

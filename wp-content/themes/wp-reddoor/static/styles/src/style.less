@@ -179,6 +179,15 @@ video {
 .right-side {
     float: right;
 }
+.clear{
+    clear: both;
+}
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
 
 
 /* =Basic structure
@@ -272,6 +281,11 @@ input[type="submit"]:active {
             font-weight: 300;
             position: relative;
             height: 55px;
+            &:hover{
+                .sub-menu{
+                    display: block;
+                }
+            }
         a {
             &:hover{
                 text-decoration: none;
@@ -291,6 +305,7 @@ input[type="submit"]:active {
             top: 45px;
             width: 1584px;
             z-index: 5;
+            display: none;
             li{
                 float: left;
                 margin-right: 40px;
@@ -401,6 +416,26 @@ input[type="submit"]:active {
     background-repeat: no-repeat !important;
     height: 555px;
 }
+.archiveImageHeader {
+    background-image: url('../../images/src/archive-header.jpg');
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    height: 555px;
+    padding-top: 10%;
+    h1{
+        margin: 0 0 20px 0;
+        color: @white;
+        font-size: 5em;
+        text-align: center;
+        font-weight: 600;
+    }
+    h3{
+        color: @white;
+        line-height: 1.8em;
+        padding: 0 20%;
+        text-align: center;
+    }
+}
 .single {
     .singleTitle {
         color: #5a595c;
@@ -435,6 +470,7 @@ input[type="submit"]:active {
         width: 100%;
         margin-bottom: 50px;
         text-align: center;
+        background: #efefef none repeat scroll 0 0;
         &>img {
             height: 100%;
             width: 100%;
@@ -442,7 +478,7 @@ input[type="submit"]:active {
     }
     .catIconLoop{
         background: @white;
-        border-radius: 40px 40px 0 0;
+        border-radius: 50%;
         height: 80px;
         left: 40%;
         position: absolute;
@@ -451,6 +487,13 @@ input[type="submit"]:active {
         img{
             display: block;
             margin: 11px auto;
+        }
+        .icon{
+            color: #cf3428;
+            font-size: 2.5em;
+            left: 22px;
+            position: relative;
+            top: 10px;
         }
     }
     &>a{
@@ -465,16 +508,35 @@ input[type="submit"]:active {
 .archiveFilterBg{
     background: #f3f0e9;
     height: 80px;
+    position: relative;
+    top: -20px;
     .archiveFilterBody{
         line-height: 80px;
         div{
-
-            margin-right: 35px;
+            float: left;
+            padding-right: 35px;
+            border-right: 1px solid #d0d4d9;
         }
         ul{
-
+            float: left;
+            margin: 0;
             li{
-                padding: 0 20px;
+                padding: 0 50px 0 100px;
+                position: relative;
+                display: inline-block;
+                border-right: 1px solid #d0d4d9;
+                a{
+                    color: #5a595c;
+                    &:hover{
+                        text-decoration: none;
+                    }
+                }
+                .icon{
+                    font-size: 2.1em;
+                    position: absolute;
+                    top: 23px;
+                    left: 43px;
+                }
             }
         }
     }

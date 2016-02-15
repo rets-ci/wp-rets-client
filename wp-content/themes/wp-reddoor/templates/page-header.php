@@ -6,7 +6,6 @@ if( is_home() ) {
 }else{
 	$currentId = get_the_ID();
 }
-
 $post_thumbnail_id = get_post_thumbnail_id( $currentId );
 
 if(!($post_thumbnail_id)) {

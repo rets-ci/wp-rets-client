@@ -19,21 +19,40 @@
 
 get_header(); ?>
 
+<?php if(is_category() || is_archive()){ ?>
+
+	<div class="container-fluid ftrdImgGoTop">
+		<section class="archiveImageHeader">
+			<h1><?php single_cat_title(); ?></h1>
+			<h3><?php echo category_description( $category_id ); ?></h3>
+		</section>
+	</div>
+
+<?php } ?>
+
 	<div class="container-fluid archiveFilterBg">
 		<div class="container">
 			<div class="row">
 			<section class="archiveFilterBody">
 				<div>
-					Filter by:
+					<?php _e( 'Filter by:' ); ?>
 				</div>
-				<!--
 				<ul>
-					<li>Home Buying</li>
-					<li>Home Selling</li>
-					<li>Home Renting</li>
-					<li>Management</li>
+				<?php
+				$_categories = get_terms('category');
+				if(!empty($_categories)) {
+					foreach ($_categories as $_categoriesNew) {
+						if($_categoriesNew->slug != 'uncategorized'){
+				?>
+					<li>
+							<a href="<?php echo get_category_link($_categoriesNew->term_id); ?>">
+							<svg class="icon icon-<?php echo $_categoriesNew->slug; ?>"><use xlink:href="#icon-<?php echo $_categoriesNew->slug; ?>"></use></svg>
+							<?php echo $_categoriesNew->name; ?>
+							</a>
+					</li>
+				<?php	} } } ?>
 				</ul>
-				-->
+				<div class="clear"></div>
 			</section>
 			</div>
 		</div>
@@ -58,7 +77,21 @@ get_header(); ?>
 						<img src="<?php echo $_url ?>" alt="<?php the_title(); ?>" />
 					</div>
 				<div class="catIconLoop">
-					<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/categoryIcon.png" alt="" />
+					<!-- <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/categoryIcon.png" alt="" /> -->
+					<!-- <svg class="icon icon-<?php //echo $_categoriesNew->slug; ?>"><use xlink:href="#icon-<?php //echo $_categoriesNew->slug; ?>"></use></svg> -->
+					<?php
+
+					$categories = get_the_category();
+					if ( ! empty( $categories ) ) {
+						foreach( $categories as $category ) { ?>
+							<svg class="icon icon-<?php echo $category->slug; ?>"><use xlink:href="#icon-<?php echo $category->slug; ?>"></use></svg>
+							<?php }
+					}
+
+
+					?>
+
+
 				</div>
 				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 			</div>
