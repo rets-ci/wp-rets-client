@@ -39,7 +39,6 @@ namespace UsabilityDynamics\WPP {
         $options = array(
             'id' => 'supermap',
             'params' => array(
-              /*
               'mode' => array(
                 'name' => __( 'Mode View', ud_get_wpp_supermap()->domain ),
                 'description' => sprintf( __( 'View of you Supermap.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
@@ -50,10 +49,9 @@ namespace UsabilityDynamics\WPP {
                 ),
                 'default' => 'default'
               ),
-              */
               'hide_sidebar' => array(
                 'name' => __( 'Hide Sidebar', ud_get_wpp_supermap()->domain ),
-                'description' => sprintf( __( 'Toggles the sidebar that displays a list of returned properties and a search filter.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
+                'description' => sprintf( __( 'Toggles the sidebar that displays a list of returned properties and a search filter. Only for default mode.', ud_get_wpp_supermap()->domain ), \WPP_F::property_label() ),
                 'type' => 'select',
                 'options' => array(
                   'true' => __( 'Yes', ud_get_wpp_supermap()->domain ),
@@ -63,7 +61,7 @@ namespace UsabilityDynamics\WPP {
               ),
               'map_width' => array(
                 'name' => __( 'Map Width', ud_get_wpp_supermap()->domain ),
-                'description' => __( 'Map Width, in pixels.', ud_get_wpp_supermap()->domain ),
+                'description' => __( 'Map Width, in pixels (only for default mode).', ud_get_wpp_supermap()->domain ),
                 'type' => 'number',
                 'default' => 450
               ),
@@ -71,22 +69,22 @@ namespace UsabilityDynamics\WPP {
                 'name' => __( 'Map Height', ud_get_wpp_supermap()->domain ),
                 'description' => __( 'Map Height, in pixels.', ud_get_wpp_supermap()->domain ),
                 'type' => 'number',
-                'default' => 450
+                'default' => 550
               ),
               'zoom' => array(
                 'name' => __( 'Zoom', ud_get_wpp_supermap()->domain ),
-                'description' => __( 'Sets map zoom. By default, calculated automatically based on results.', ud_get_wpp_supermap()->domain ),
+                'description' => __( 'Sets map zoom. By default, calculated automatically based on results. Only for default mode.', ud_get_wpp_supermap()->domain ),
                 'type' => 'number'
               ),
               'center_on' => array(
                 'name' => __( 'Center On', ud_get_wpp_supermap()->domain ),
-                'description' => __( 'Sets center coordinates. By default, calculated automatically based on results.', ud_get_wpp_supermap()->domain ),
+                'description' => __( 'Sets center coordinates. By default, calculated automatically based on results. Only for default mode.', ud_get_wpp_supermap()->domain ),
                 'type' => 'text',
                 'default' => ''
               ),
               'show_areas' => array(
                 'name' => __( 'Show Areas', ud_get_wpp_supermap()->domain ),
-                'description' => sprintf( __( 'Slug of area which you can add on Supermap tab (Settings). By default, all areas are shown. Also You can use area\'s slugs to show them on the map, like as %s', ud_get_wpp_supermap()->domain ), '<code>new_york,washington</code>' ),
+                'description' => sprintf( __( 'Slug of area which you can add on Supermap tab (Settings). Only for default mode. By default, all areas are shown. Also You can use area\'s slugs to show them on the map, like as %s', ud_get_wpp_supermap()->domain ), '<code>new_york,washington</code>' ),
                 'type' => 'text',
                 'default' => 'all'
               ),
@@ -104,7 +102,7 @@ namespace UsabilityDynamics\WPP {
               ),
               'pagination' => array(
                 'name' => __( 'Pagination', ud_get_wpp_supermap()->domain ),
-                'description' => __( 'Switches pagination', ud_get_wpp_supermap()->domain ),
+                'description' => __( 'Switches pagination. Only for default mode', ud_get_wpp_supermap()->domain ),
                 'type' => 'select',
                 'options' => array(
                   'on' => __( 'On', ud_get_wpp_supermap()->domain ),
@@ -184,7 +182,7 @@ namespace UsabilityDynamics\WPP {
           'pagination' => 'on',
           'sidebar_width' => '',
           'hide_sidebar' => 'false',
-          'map_height' => '',
+          'map_height' => '550',
           'map_width' => '',
           'options_label' => __('Options',ud_get_wpp_supermap()->domain),
           'silent_failure' => 'true',
@@ -290,6 +288,14 @@ namespace UsabilityDynamics\WPP {
        */
       static public function render_advanced_mode_view( $query, $atts = array() ) {
 
+        $atts = array_filter( (array)$atts );
+
+        $defaults = array(
+          'map_height' => '550'
+        );
+
+        $atts = shortcode_atts( $defaults, $atts );
+
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
         wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
         wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
@@ -299,6 +305,14 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
 
+
+        // Prepare (fix actually) query
+        if( !empty( $query[ 'pagi' ] ) ) {
+          $pagi = explode( '--', $query[ 'pagi' ] );
+          $query[ 'starting_row' ] = $pagi[0] ? $pagi[0] : '0';
+          $query[ 'per_page' ] = $pagi[1] ? $pagi[1] : '10';
+          unset( $query[ 'pagi' ] );
+        }
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(

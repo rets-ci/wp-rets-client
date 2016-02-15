@@ -3,10 +3,35 @@
    * We are hiding supermap before data loaded.
    */
   display: none;
+  overflow: hidden;
 }
 .wpp-advanced-supermap .marker-infowindow {
   /**
      * We never show infowindow. It's for internal usage!
      */
   display: none;
+}
+.wpp-advanced-supermap .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.wpp-advanced-supermap .col-md-1,
+.wpp-advanced-supermap .col-md-2,
+.wpp-advanced-supermap .col-md-3,
+.wpp-advanced-supermap .col-md-4,
+.wpp-advanced-supermap .col-md-5,
+.wpp-advanced-supermap .col-md-6,
+.wpp-advanced-supermap .col-md-7,
+.wpp-advanced-supermap .col-md-8,
+.wpp-advanced-supermap .col-md-9,
+.wpp-advanced-supermap .col-md-10,
+.wpp-advanced-supermap .col-md-11,
+.wpp-advanced-supermap .col-md-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+.wpp-advanced-supermap .sm-google-map {
+  display: block;
+  widht: 100%;
+  height: 100%;
 }

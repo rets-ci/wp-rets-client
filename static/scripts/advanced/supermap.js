@@ -12,15 +12,11 @@
 
     var ngAppDOM = jQuery( this );
 
-    /**
-     * Be sure it's shown
-     */
-    ngAppDOM.show();
-
     /** Making variables public */
     var vars = jQuery.extend({
       'ng_app': false,
-      'query': false
+      'query': false,
+      'atts': false
     }, options);
 
     if( !vars.ng_app ) {
@@ -33,17 +29,35 @@
       return;
     }
 
+    // Prepare DOM before initialize angular.
+
+    vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts ) ) : {};
+
+    if( typeof vars.atts.map_height !== 'undefined' ) {
+      ngAppDOM.css( 'height', vars.atts.map_height );
+      jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
+    }
+
+    /**
+     * Be sure it's shown
+     */
+    ngAppDOM.show();
+
     /**
      * Angular Module.
      */
     angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
 
-      .controller( 'main', [ '$scope', '$http', 'NgMap', function( $scope, $http, NgMap ){
+      .controller( 'main', [ '$scope', '$http', '$filter', 'NgMap', function( $scope, $http, $filter, NgMap ){
 
         $scope.query = unserialize( decodeURIComponent( vars.query ) );
+        $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.properties = [];
+        $scope.propertiesCollection = [];
         $scope.wpp = wpp;
+        $scope.dynMarkers = [];
+        $scope.latLngs = [];
 
         /**
          * Get Properties by provided Query ( filter )
@@ -60,6 +74,7 @@
             } else {
               $scope.total = response.data.total;
               $scope.properties = response.data.data;
+              $scope.propertiesCollection = response.data.data;
               $scope.currentProperty = $scope.properties[0];
               $scope.refreshMarkers();
             }
@@ -82,6 +97,8 @@
             for ( var i=0; i < $scope.properties.length; i++ ) {
               var latLng = new google.maps.LatLng( $scope.properties[i].latitude, $scope.properties[i].longitude );
               var marker = new google.maps.Marker( { position: latLng } );
+              marker.listingId = $scope.properties[i].ID;
+
               $scope.dynMarkers.push( marker );
               $scope.latLngs.push( latLng );
 
@@ -89,8 +106,7 @@
                 return function() {
                   $scope.currentProperty = $scope.properties[i];
                   $scope.$apply();
-                  $scope.infowindow.setContent( jQuery( '.marker-infowindow', ngAppDOM).html() );
-                  $scope.infowindow.open( map, marker );
+
                 }
               })( marker, i, $scope ) );
 
@@ -107,6 +123,39 @@
 
           } );
         }
+
+        /**
+         * Fired when table row is selected
+         */
+        $scope.$watch( 'properties', function( row ) {
+          // get selected row
+          row.filter(function(r) {
+            if (r.isSelected) {
+              $scope.currentProperty = r;
+            }
+          })
+        }, true );
+
+        /**
+         * Fired when table row is selected
+         */
+        $scope.$watch( 'currentProperty', function( currentProperty ) {
+          //console.log( 'currentProperty', currentProperty );
+          //console.log( 'dynMarkers', $scope.dynMarkers );
+          //console.log( 'currentProperty', currentProperty );
+
+          for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
+            if ( $scope.dynMarkers[i].listingId == currentProperty.ID ) {
+              NgMap.getMap().then( function( map ) {
+                $scope.infowindow.setContent( jQuery( '.marker-infowindow', ngAppDOM ).html() );
+                $scope.infowindow.open( map, $scope.dynMarkers[i] );
+              } );
+              break;
+            }
+          }
+
+
+        }, true );
 
         // Get properties by requets
         $scope.getProperties();
@@ -305,6 +354,7 @@
     jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
       jQuery( e ).wpp_advanced_supermap( {
         'query': jQuery(e).data( 'query' ) || false,
+        'atts': jQuery(e).data( 'atts' ) || false,
         'ng_app': jQuery(e).attr( 'ng-app' ) || false
       } );
     } );
