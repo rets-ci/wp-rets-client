@@ -52,11 +52,25 @@
     <div class="row">
 
       <div class="col-md-6 sm-google-map-wrap">
-        <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false"></ng-map>
-        <div class="marker-infowindow">
-          <div class="infowindow">
-            <h4>{{currentProperty.post_title}}</h4>
+
+        <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false">
+
+          <div class="sm-search-layer">
+            <button><?php echo apply_filters( 'wpp::supermap::filter::label', __( 'Filter', ud_get_wpp_supermap()->domain ) ); ?></button>
+            <div class="sm-search-form">
+              <form class="">
+                <select name="location">
+                  <option>Test1</option>
+                  <option>Test2</option>
+                </select>
+              </form>
+            </div>
           </div>
+
+        </ng-map>
+
+        <div class="sm-marker-infobubble">
+          <span class="sm-infobubble"><a href="{{currentProperty.permalink}}">{{currentProperty.post_title}}</a></span>
         </div>
       </div>
 
@@ -64,21 +78,32 @@
         <div class="sm-sidebar-top">
           {{total}} <?php printf( __( '%s found in %s', ud_get_wpp_supermap()->domain ), \WPP_F::property_label('plural'), 'Raleigh' ); ?>
         </div>
-        <table st-table="properties" class="table table-striped sm-properties-list">
+        <table st-table="propertiesTableCollection" st-safe-src="properties" class="table table-striped sm-properties-list">
           <thead>
           <tr>
             <th>ID</th>
             <th>post_title</th>
             <th>city</th>
+            <th>lat</th>
+            <th>lon</th>
           </tr>
           </thead>
           <tbody>
-          <tr st-select-row="row" ng-repeat="row in properties">
-            <td>{{row.ID}}</td>
-            <td>{{row.post_title}}</td>
-            <td>{{row.city}}</td>
-          </tr>
+            <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)">
+              <td>{{row.ID}}</td>
+              <td>{{row.post_title}}</td>
+              <td>{{row.city}}</td>
+              <td>{{row.latitude}}</td>
+              <td>{{row.longitude}}</td>
+            </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" class="text-center">
+                <div class="collection-pagination" st-pagination="" st-items-by-page="per_page" st-displayed-pages="7"></div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
 

@@ -1,0 +1,32 @@
+{
+  "name": "js-info-bubble",
+  "homepage": "https://github.com/googlemaps/js-info-bubble",
+  "authors": [
+    "Google Inc."
+  ],
+  "description": "A library to create customizable CSS3-based InfoWindows",
+  "main": "src/infobubble.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "google",
+    "marker",
+    "infowindow",
+    "javascript",
+    "js",
+    "api",
+    "v3"
+  ],
+  "license": "Apache 2.0",
+  "_release": "e89d02a8ca",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e89d02a8ca9ef0e6284ebe193927aa71335677c5"
+  },
+  "_source": "git://github.com/daniellmb/js-info-bubble.git",
+  "_target": "*",
+  "_originalSource": "js-info-bubble",
+  "_direct": true
+}

@@ -291,7 +291,8 @@ namespace UsabilityDynamics\WPP {
         $atts = array_filter( (array)$atts );
 
         $defaults = array(
-          'map_height' => '550'
+          'map_height' => '550',
+          'per_page' => '10'
         );
 
         $atts = shortcode_atts( $defaults, $atts );
@@ -299,20 +300,19 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
         wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
         wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
-        wp_enqueue_script( 'markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
-        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'markerclusterer', 'ng-map', 'ng-smart-table' ) );
+        wp_enqueue_script( 'gm-markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
+        wp_enqueue_script( 'gm-infobubble', ud_get_wpp_supermap()->path( 'bower_components/js-info-bubble/src/infobubble-compiled.js' ), array( 'ng-map' ) );
+        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ) );
 
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
 
-
-        // Prepare (fix actually) query
+        // Fix our query
+        // We are getting all data by request. And use ONLY client pagination.
         if( !empty( $query[ 'pagi' ] ) ) {
-          $pagi = explode( '--', $query[ 'pagi' ] );
-          $query[ 'starting_row' ] = $pagi[0] ? $pagi[0] : '0';
-          $query[ 'per_page' ] = $pagi[1] ? $pagi[1] : '10';
           unset( $query[ 'pagi' ] );
         }
+        $query[ 'pagination' ] = 'off';
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(

@@ -54,10 +54,11 @@
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.properties = [];
-        $scope.propertiesCollection = [];
+        $scope.propertiesTableCollection = [];
         $scope.wpp = wpp;
         $scope.dynMarkers = [];
         $scope.latLngs = [];
+        $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
 
         /**
          * Get Properties by provided Query ( filter )
@@ -74,8 +75,6 @@
             } else {
               $scope.total = response.data.total;
               $scope.properties = response.data.data;
-              $scope.propertiesCollection = response.data.data;
-              $scope.currentProperty = $scope.properties[0];
               $scope.refreshMarkers();
             }
           }, function errorCallback(response) {
@@ -92,21 +91,61 @@
           NgMap.getMap().then(function( map ) {
             $scope.dynMarkers = [];
             $scope.latLngs = [];
-            $scope.infowindow = new google.maps.InfoWindow();
+
+            $scope.infoWindow = new google.maps.InfoWindow();
+
+            $scope.infoBubble = new InfoBubble({
+              map: map,
+              shadowStyle: 1,
+              padding: 0,
+              backgroundColor: '#f3f0e9',
+              borderRadius: 4,
+              arrowSize: 10,
+              borderWidth: 0,
+              borderColor: 'transparent',
+              disableAutoPan: false,
+              hideCloseButton: false,
+              arrowPosition: 30,
+              backgroundClassName: 'phoney',
+              arrowStyle: 2
+            });
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
               var latLng = new google.maps.LatLng( $scope.properties[i].latitude, $scope.properties[i].longitude );
+              latLng.listingId = $scope.properties[i].ID;
               var marker = new google.maps.Marker( { position: latLng } );
               marker.listingId = $scope.properties[i].ID;
 
               $scope.dynMarkers.push( marker );
               $scope.latLngs.push( latLng );
 
+              /**
+               * Marker Click Event!
+               * - Selects Table Page
+               * - Selects Collection Row
+               */
               google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
                 return function() {
-                  $scope.currentProperty = $scope.properties[i];
+                  // Preselect a row
+                  var index;
+                  for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
+                    var property = $scope.properties[i];
+                    if ( property.ID == marker.listingId ) {
+                      property.isSelected = true;
+                      index = i;
+                    } else {
+                      property.isSelected = false;
+                    }
+                  }
+                  // Maybe Select Page!
+                  if( index !== null ) {
+                    var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
+                    angular
+                      .element( jQuery( '.collection-pagination' ) )
+                      .isolateScope()
+                      .selectPage( pageNumber );
+                  }
                   $scope.$apply();
-
                 }
               })( marker, i, $scope ) );
 
@@ -121,15 +160,30 @@
             // Finally Initialize Marker Cluster
             $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {} );
 
+
           } );
+        }
+
+        /**
+         * Fixes selected Row.
+         *
+         * @param row
+         */
+        $scope.selectRow = function (row) {
+          var index = null;
+          for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
+            $scope.properties[i].isSelected = false;
+
+          }
+          row.isSelected = true;
         }
 
         /**
          * Fired when table row is selected
          */
-        $scope.$watch( 'properties', function( row ) {
+        $scope.$watch( 'properties', function( rows ) {
           // get selected row
-          row.filter(function(r) {
+          rows.filter(function(r) {
             if (r.isSelected) {
               $scope.currentProperty = r;
             }
@@ -138,23 +192,31 @@
 
         /**
          * Fired when table row is selected
+         * Opens InfoBubble Window!
          */
         $scope.$watch( 'currentProperty', function( currentProperty ) {
           //console.log( 'currentProperty', currentProperty );
           //console.log( 'dynMarkers', $scope.dynMarkers );
           //console.log( 'currentProperty', currentProperty );
-
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
             if ( $scope.dynMarkers[i].listingId == currentProperty.ID ) {
+              //console.log( 'Marker', $scope.dynMarkers[i] );
               NgMap.getMap().then( function( map ) {
-                $scope.infowindow.setContent( jQuery( '.marker-infowindow', ngAppDOM ).html() );
-                $scope.infowindow.open( map, $scope.dynMarkers[i] );
+                //*
+                $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
+                $scope.infoBubble.setPosition( $scope.latLngs[i] );
+                //map.setCenter( $scope.latLngs[i] );
+                $scope.infoBubble.open( map );
+                //*/
+                /*
+                $scope.infoWindow.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
+                $scope.infoWindow.setPosition( $scope.latLngs[i] );
+                $scope.infoWindow.open( map );
+                //*/
               } );
               break;
             }
           }
-
-
         }, true );
 
         // Get properties by requets
