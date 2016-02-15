@@ -18,9 +18,6 @@
                 <?php if (!dynamic_sidebar('Footer area 1')) : ?>
                 [ do default stuff if no widgets ]
                 <?php endif; ?>
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/footer-logo.png" alt="" />
-                <p>2530 Meridian Pkwy #300,
-                Durham, NC 27713, USA</p>
                 <a href="#">Contact Us</a>
             </div>
         </div>
