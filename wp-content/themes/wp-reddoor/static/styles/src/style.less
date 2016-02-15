@@ -7,6 +7,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 body {
     line-height: 1;
+    background: #ffffff url('../../images/src/submenuBg.png') repeat-x scroll 0 73px !important;
 }
 .dsds{
     
@@ -188,6 +189,12 @@ video {
     height: 1em;
     fill: currentColor;
 }
+h1.site-title{
+    font-size: 2em;
+    width: 15%;
+    float: left;
+    color: #CF3428;
+}
 
 
 /* =Basic structure
@@ -274,6 +281,9 @@ input[type="submit"]:active {
         &>.current-menu-item{
             font-weight: 400;
             background: rgba(0, 0, 0, 0) url('../../images/src/arrow.png') no-repeat scroll 10px 45px;
+            .sub-menu{
+                display: block !important;
+            }
         }
         &>li {
             float: left;
@@ -281,29 +291,21 @@ input[type="submit"]:active {
             font-weight: 300;
             position: relative;
             height: 55px;
-            &:hover{
-                .sub-menu{
-                    display: block;
-                }
-            }
         a {
             &:hover{
                 text-decoration: none;
-                font-weight: 400;
+                color: #34343a;
             }
             font-size: 1.6em;
             color: #5a595c;
         }
         }
         .sub-menu{
-            background: #38373a none repeat scroll 0 0;
             height: 60px;
-            left: -400px;
             line-height: 60px;
-            padding-left: 400px;
             position: absolute;
             top: 45px;
-            width: 1584px;
+            width: 700px;
             z-index: 5;
             display: none;
             li{
@@ -313,7 +315,10 @@ input[type="submit"]:active {
                 position: relative;
             a{
                 font-size: 1.3em;
-                color: @white;
+                color: #dddddd;
+                &:hover{
+                    color: @white;
+                }
             }
             }
             .current-menu-item{
@@ -595,7 +600,7 @@ input[type="submit"]:active {
             margin-bottom: 25px;
         }
     }
-    .textwidget {
+    .widget_sp_image {
         img {
             margin-bottom: 45px;
         }
@@ -685,11 +690,7 @@ footer {
 
 }
 @media screen and (min-width: @adapt1600) {
-    .sub-menu {
-        left: -400px;
-        padding-left: 400px;
-        width: 1584px;
-    }
+
 }
 @media screen and (min-width: @adapt1440) {
 
@@ -701,17 +702,9 @@ footer {
 
 }
 @media screen and (min-width: @adapt1280) {
-    .sub-menu {
-        left: -400px;
-        padding-left: 400px;
-        width: 1280px;
-    }
+
 }
 @media screen and (min-width: @adapt1024) {
-    .sub-menu {
-        left: -230px;
-        padding-left: 230px;
-        width: 1024px;
-    }
+
 }
 
