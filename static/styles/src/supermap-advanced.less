@@ -34,10 +34,182 @@
     padding-right: 0;
   }
 
+  /**
+   *
+   * GOOGLE MAP
+   *
+   */
+
   .sm-google-map {
     display: block;
     widht: 100%;
     height: 100%;
+  }
+
+  /**
+   *
+   * INFO BUBBLE ( WINDOW )
+   *
+   */
+
+  .sm-infobubble-wrap {
+    overflow: hidden;
+
+    .sm-infobubble {
+
+      .sm-map-marker-icon {
+
+      }
+
+      a {
+        padding-left: 5px;
+        line-height: 32px;
+        font-size: 14px;
+      }
+
+    }
+
+  }
+
+  /**
+   *
+   * SEARCH LAYER
+   *
+   */
+
+  .sm-search-layer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 99;
+
+    .sm-search-filter {
+      float: right;
+    }
+
+    /**
+     * Show only on click!
+     */
+    .sm-search-form {
+      margin-top: 10px;
+      background-color: #fff;
+      padding: 10px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+
+      input[name*="min"],
+      input[name*="max"] {
+        max-width: 100px;
+      }
+
+    }
+
+  }
+
+  /**
+   *
+   * TOP MENU
+   *
+   */
+
+  .sm-sidebar-top {
+    padding: 8px;
+    background-color: #f3f0e9;
+  }
+
+  /**
+   *
+   * CURRENT PROPERTY
+   *
+   */
+
+  .sm-current-property {
+
+    .sm-current-property-thumb {
+      display: block;
+      width: 100%;
+      min-height: 200px;
+      background-position: center center;
+      background-size: cover;
+    }
+
+    .sm-current-property-details {
+      width: 100%;
+      min-height: 200px;
+      border-right: 1px solid #ededed;
+      padding: 8px;
+
+      ul, li {
+        list-style: none;
+        margin: 0;
+      }
+
+      label.sm-attribute-label {
+        display: inline-block;
+        margin-right: 6px;
+        font-weight: 600;
+      }
+
+      span.sm-attribute-value {
+        display: inline-block;
+      }
+
+    }
+
+  }
+
+  /**
+   *
+   * TABLE COLLECTION
+   *
+   */
+
+  .table-striped {
+
+    & > thead {
+
+      & > tr {
+        background-color: #f3f0e9;
+
+        th, td {
+          border-left: 0;
+          border-right: 0;
+          border-bottom: 0;
+        }
+
+      }
+
+    }
+
+    & > tbody {
+
+      & > tr {
+        cursor: pointer;
+
+        th, td {
+          border-left: 0;
+          border-right: 0;
+        }
+
+        &:nth-of-type(2n+1) {
+          background-color: transparent;
+        }
+
+        &:hover {
+          //background-color: #fbfaf8;
+          background-color: #f3f0e9;
+        }
+
+        &.st-selected {
+          //background-color: #fbfaf8;
+          background-color: #f3f0e9;
+        }
+
+      }
+
+    }
+
   }
 
   /*
@@ -104,36 +276,5 @@
     display: inline-block;
   }
   //*/
-
-  .sm-search-layer {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 99;
-  }
-
-  .table-striped > tbody {
-    overflow-x: auto;
-
-    & > tr {
-      cursor: pointer;
-
-      &:nth-of-type(2n+1) {
-        background-color: transparent;
-      }
-
-      &:hover {
-        //background-color: #fbfaf8;
-        background-color: #f3f0e9;
-      }
-
-      &.st-selected {
-        //background-color: #fbfaf8;
-        background-color: #f3f0e9;
-      }
-
-    }
-
-  }
 
 }

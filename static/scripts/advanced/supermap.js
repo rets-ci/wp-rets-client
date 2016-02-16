@@ -39,11 +39,6 @@
     }
 
     /**
-     * Be sure it's shown
-     */
-    ngAppDOM.show();
-
-    /**
      * Angular Module.
      */
     angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
@@ -59,6 +54,12 @@
         $scope.dynMarkers = [];
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
+        $scope.searchForm = false;
+
+        /**
+         * Be sure it's shown
+         */
+        ngAppDOM.show();
 
         /**
          * Get Properties by provided Query ( filter )
@@ -100,14 +101,14 @@
               padding: 0,
               backgroundColor: '#f3f0e9',
               borderRadius: 4,
-              arrowSize: 10,
+              arrowSize: 2,
               borderWidth: 0,
               borderColor: 'transparent',
               disableAutoPan: false,
-              hideCloseButton: false,
-              arrowPosition: 30,
-              backgroundClassName: 'phoney',
-              arrowStyle: 2
+              hideCloseButton: true,
+              arrowPosition: 7,
+              backgroundClassName: 'sm-infobubble-wrap',
+              arrowStyle: 3
             });
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
@@ -165,6 +166,13 @@
 
 
           } );
+        }
+
+        /**
+         *
+         */
+        $scope.toggleSearchForm = function toggleSearchForm() {
+          $scope.searchForm = !$scope.searchForm;
         }
 
         /**

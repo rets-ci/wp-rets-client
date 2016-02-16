@@ -4,6 +4,36 @@
    */
   display: none;
   overflow: hidden;
+  /**
+   *
+   * GOOGLE MAP
+   *
+   */
+  /**
+   *
+   * INFO BUBBLE ( WINDOW )
+   *
+   */
+  /**
+   *
+   * SEARCH LAYER
+   *
+   */
+  /**
+   *
+   * TOP MENU
+   *
+   */
+  /**
+   *
+   * CURRENT PROPERTY
+   *
+   */
+  /**
+   *
+   * TABLE COLLECTION
+   *
+   */
   /*
   table {
     box-sizing: border-box;
@@ -99,17 +129,84 @@
   widht: 100%;
   height: 100%;
 }
+.wpp-advanced-supermap .sm-infobubble-wrap {
+  overflow: hidden;
+}
+.wpp-advanced-supermap .sm-infobubble-wrap .sm-infobubble a {
+  padding-left: 5px;
+  line-height: 32px;
+  font-size: 14px;
+}
 .wpp-advanced-supermap .sm-search-layer {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 99;
+  /**
+     * Show only on click!
+     */
 }
-.wpp-advanced-supermap .table-striped > tbody {
-  overflow-x: auto;
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter {
+  float: right;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-form {
+  margin-top: 10px;
+  background-color: #fff;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="min"],
+.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="max"] {
+  max-width: 100px;
+}
+.wpp-advanced-supermap .sm-sidebar-top {
+  padding: 8px;
+  background-color: #f3f0e9;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-thumb {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  background-position: center center;
+  background-size: cover;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details {
+  width: 100%;
+  min-height: 200px;
+  border-right: 1px solid #ededed;
+  padding: 8px;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details ul,
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details li {
+  list-style: none;
+  margin: 0;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details label.sm-attribute-label {
+  display: inline-block;
+  margin-right: 6px;
+  font-weight: 600;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details span.sm-attribute-value {
+  display: inline-block;
+}
+.wpp-advanced-supermap .table-striped > thead > tr {
+  background-color: #f3f0e9;
+}
+.wpp-advanced-supermap .table-striped > thead > tr th,
+.wpp-advanced-supermap .table-striped > thead > tr td {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
 }
 .wpp-advanced-supermap .table-striped > tbody > tr {
   cursor: pointer;
+}
+.wpp-advanced-supermap .table-striped > tbody > tr th,
+.wpp-advanced-supermap .table-striped > tbody > tr td {
+  border-left: 0;
+  border-right: 0;
 }
 .wpp-advanced-supermap .table-striped > tbody > tr:nth-of-type(2n+1) {
   background-color: transparent;
