@@ -78,28 +78,27 @@
         <div class="sm-sidebar-top">
           {{total}} <?php printf( __( '%s found in %s', ud_get_wpp_supermap()->domain ), \WPP_F::property_label('plural'), 'Raleigh' ); ?>
         </div>
+        <div class="sm-current-property">
+          CURRENT PROPERTY
+        </div>
         <table st-table="propertiesTableCollection" st-safe-src="properties" class="table table-striped sm-properties-list">
           <thead>
-          <tr>
-            <th>ID</th>
-            <th>post_title</th>
-            <th>city</th>
-            <th>lat</th>
-            <th>lon</th>
-          </tr>
+            <tr>
+              <th></th>
+              <th><?php echo apply_filters( "wpp::supermap::column::title::label", __( 'Title', ud_get_wpp_supermap()->domain ) ); ?></th>
+              <th ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">{{wpp.instance.settings.property_stats[column]}}</th>
+            </tr>
           </thead>
           <tbody>
             <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)">
-              <td>{{row.ID}}</td>
+              <td><img class="sm-map-marker-icon" src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
               <td>{{row.post_title}}</td>
-              <td>{{row.city}}</td>
-              <td>{{row.latitude}}</td>
-              <td>{{row.longitude}}</td>
+              <td ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">{{row[column]}}</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="5" class="text-center">
+              <td colspan="{{wpp.instance.settings.configuration.feature_settings.supermap.display_attributes.length + 2}}" class="text-center">
                 <div class="collection-pagination" st-pagination="" st-items-by-page="per_page" st-displayed-pages="7"></div>
               </td>
             </tr>

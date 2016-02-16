@@ -41,7 +41,9 @@ class class_wpp_supermap {
     //* Load admin header scripts */
     add_action('admin_enqueue_scripts', array('class_wpp_supermap', 'admin_enqueue_scripts'));
 
-    add_filter('wpp_supermap_marker', array('class_wpp_supermap', 'get_marker_by_post_id'), 10, 2);
+    //* Handles map markers */
+    add_filter('wpp_supermap_marker', array('class_wpp_supermap', 'get_marker_by_post_id'), 10 );
+    add_filter('wpp_get_property', array('class_wpp_supermap', 'wpp_get_property'), 10 );
 
     //* Add to settings page nav */
     if(current_user_can(self::$capability)) {
@@ -58,6 +60,17 @@ class class_wpp_supermap {
     }
     //** Filter meta keys during import process @author korotkov@ud */
     add_filter('wpp_xml_import_value_on_import', array('class_wpp_supermap', 'importer_meta_filter'), 10, 4);
+  }
+
+  /**
+   * Adds to property _map_marker_url
+   *
+   * @param $property
+   * @return mixed
+   */
+  public static function wpp_get_property( $property ) {
+    $property[ '_map_marker_url' ] = self::get_marker_by_post_id( $property['ID'] );
+    return $property;
   }
 
   /**
@@ -189,7 +202,7 @@ class class_wpp_supermap {
         <tr valign="top">
           <th scope="row"><?php _e('Sidebar Attributes', ud_get_wpp_supermap()->domain); ?></th>
           <td>
-            <p><?php _e('Select the attributes you want to display in the left sidebar on the supermap.', ud_get_wpp_supermap()->domain); ?></p>
+            <p><?php _e('Select the attributes you want to display in the sidebar on the supermap.', ud_get_wpp_supermap()->domain); ?></p>
             <div class="wp-tab-panel">
             <ul>
               <?php foreach($wp_properties['property_stats'] as $slug => $title): ?>
@@ -212,6 +225,7 @@ class class_wpp_supermap {
           <th><?php _e('Supermap Sidebar Thumbnail:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
             <ul>
+              <li><i><?php _e( 'Only available for default mode view.', ud_get_wpp_supermap()->domain ); ?></i></li>
               <li>
                 <input <?php if( isset( $supermap_configuration['hide_sidebar_thumb'] ) ) checked( 'true', $supermap_configuration[ 'hide_sidebar_thumb' ] ); ?> value='true' type="checkbox" id="supermap_hide_sidebar_thumb" name="wpp_settings[configuration][feature_settings][supermap][hide_sidebar_thumb]" />
                 <label for="supermap_hide_sidebar_thumb"><?php _e('Do not show a property thumbnail in sidebar.',ud_get_wpp_supermap()->domain) ?></label>
@@ -319,56 +333,60 @@ class class_wpp_supermap {
         <tr>
           <th><?php _e('Map Areas:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
-            <?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>',ud_get_wpp_supermap()->domain) ?>
-            <table id="wpp_supermap_areas" class="ud_ui_dynamic_table widefat">
-              <thead>
-                <tr>
-                  <th><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
-                  <th style="width:50px;"><?php _e('Coordinates',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Fill Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Opacity',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Stoke Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Hover Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-              <?php
-                foreach($supermap_configuration['areas'] as $slug => $area_data):  ?>
-                  <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='true'>
-                    <td >
-                      <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][name]" value="<?php echo $area_data['name']; ?>" />
-                      <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug">
-                    </td>
-                    <td>
-                      <textarea name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][paths]"><?php echo $area_data['paths']; ?></textarea>
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" id="" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillColor]" value="<?php echo $area_data['fillColor']; ?>" />
-                    </td>
-                    <td>
-                      <input style="width:40px;" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillOpacity]" value="<?php echo $area_data['fillOpacity']; ?>" />
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][strokeColor]" value="<?php echo $area_data['strokeColor']; ?>" />
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][hoverColor]" value="<?php echo $area_data['hoverColor']; ?>" />
-                    </td>
-                    <td>
-                      <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
+            <ul>
+              <li><i><?php _e( 'Only available for default mode view.', ud_get_wpp_supermap()->domain ); ?></i></li>
+              <li><?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>',ud_get_wpp_supermap()->domain) ?></li>
+              <li>
+                <table id="wpp_supermap_areas" class="ud_ui_dynamic_table widefat">
+                <thead>
+                  <tr>
+                    <th><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
+                    <th style="width:50px;"><?php _e('Coordinates',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Fill Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Opacity',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Stoke Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Hover Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                  foreach($supermap_configuration['areas'] as $slug => $area_data):  ?>
+                    <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='true'>
+                      <td >
+                        <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][name]" value="<?php echo $area_data['name']; ?>" />
+                        <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug">
+                      </td>
+                      <td>
+                        <textarea name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][paths]"><?php echo $area_data['paths']; ?></textarea>
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" id="" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillColor]" value="<?php echo $area_data['fillColor']; ?>" />
+                      </td>
+                      <td>
+                        <input style="width:40px;" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillOpacity]" value="<?php echo $area_data['fillOpacity']; ?>" />
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][strokeColor]" value="<?php echo $area_data['strokeColor']; ?>" />
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][hoverColor]" value="<?php echo $area_data['hoverColor']; ?>" />
+                      </td>
+                      <td>
+                        <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan='7'>
+                    <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row',ud_get_wpp_supermap()->domain) ?>" />
                     </td>
                   </tr>
-                <?php endforeach; ?>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan='7'>
-                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row',ud_get_wpp_supermap()->domain) ?>" />
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                </tfoot>
+              </table>
+            </li>
           </td>
         </tr>
       </tbody>
@@ -679,8 +697,10 @@ class class_wpp_supermap {
    *
    * @author Maxim Peshkov
    */
-  static public function get_marker_by_post_id($marker_url = '', $post_id) {
+  static public function get_marker_by_post_id( $post_id ) {
     global $wp_properties;
+
+    $marker_url = '';
 
     if(!isset($wp_properties['configuration']['feature_settings']['supermap'])) {
       return $marker_url;

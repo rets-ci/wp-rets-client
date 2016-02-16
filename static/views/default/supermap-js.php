@@ -83,7 +83,7 @@ ob_start();
       position: myLatlng_<?php echo $rand; ?>_<?php echo $value['ID']; ?>,
       map: map_<?php echo $rand; ?>,
       title: '<?php echo str_replace( array( "'", "\r", "\n" ), "", !empty($value[$wp_properties['configuration']['address_attribute']]) ? $value[$wp_properties['configuration']['address_attribute']] : '' ); ?>',
-      icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
+      icon: '<?php echo apply_filters('wpp_supermap_marker', $value['ID']); ?>'
     });
 
     window.markers_<?php echo $rand; ?>.push(window.marker_<?php echo $rand; ?>_<?php echo $value['ID']; ?>);

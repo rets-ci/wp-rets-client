@@ -113,7 +113,10 @@
             for ( var i=0; i < $scope.properties.length; i++ ) {
               var latLng = new google.maps.LatLng( $scope.properties[i].latitude, $scope.properties[i].longitude );
               latLng.listingId = $scope.properties[i].ID;
-              var marker = new google.maps.Marker( { position: latLng } );
+              var marker = new google.maps.Marker( {
+                position: latLng,
+                icon: $scope.properties[i]._map_marker_url
+              } );
               marker.listingId = $scope.properties[i].ID;
 
               $scope.dynMarkers.push( marker );
@@ -141,7 +144,7 @@
                   if( index !== null ) {
                     var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
                     angular
-                      .element( jQuery( '.collection-pagination' ) )
+                      .element( jQuery( '.collection-pagination', ngAppDOM ) )
                       .isolateScope()
                       .selectPage( pageNumber );
                   }
@@ -169,7 +172,7 @@
          *
          * @param row
          */
-        $scope.selectRow = function (row) {
+        $scope.selectRow = function selectRow(row) {
           var index = null;
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;

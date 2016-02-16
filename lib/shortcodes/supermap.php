@@ -655,7 +655,7 @@ namespace UsabilityDynamics\WPP {
             position: myLatlng_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>,
             map: map_<?php echo $_GET['random']; ?>,
             title: '<?php echo str_replace("'","\'", $value['location']); ?>',
-            icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
+            icon: '<?php echo apply_filters('wpp_supermap_marker', $value['ID']); ?>'
             });
 
             window.markers_<?php echo $_GET['random']; ?>.push(window.marker_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?>);
