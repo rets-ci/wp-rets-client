@@ -10,13 +10,13 @@ module.exports = function(grunt) {
           optimization: 2
         },
         files: {
-          "style.css": "static/styles/src/*.less" // destination file and source file
+          "static/styles/style.css": "static/styles/src/style.less" // destination file and source file
         }
       }
     },
     watch: {
       styles: {
-        files: ['static/styles/src/*.less'], // which files to watch
+        files: ['static/styles/src/*'], // which files to watch
         tasks: ['less'],
         options: {
           nospawn: true
@@ -25,5 +25,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['less', 'watch']);
+  grunt.registerTask('default', ['less']);
+
 };
