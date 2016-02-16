@@ -7,8 +7,7 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width">
   <title><?php bloginfo('name'); ?><?php wp_title(); ?></title>
-  <link rel="stylesheet/less" type="text/css"
-        href="<?php echo get_stylesheet_directory_uri(); ?>/static/styles/src/style.less"/>
+  <link rel="stylesheet/less" type="text/css" href="<?php echo get_stylesheet_directory_uri(); ?>/static/styles/src/style.less?nocache=<?php echo rand( 1001, 9999 ) ?>"/>
   <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,700' rel='stylesheet' type='text/css'>
   <?php wp_head(); ?>
 </head>

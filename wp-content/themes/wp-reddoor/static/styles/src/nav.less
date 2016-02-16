@@ -1,0 +1,53 @@
+.menu-header-container {
+  float: left;
+  margin: 28px 0 0 40px;
+  #menu-header {
+    &>.current-menu-item{
+      font-weight: 400;
+      background: rgba(0, 0, 0, 0) url('../../images/src/arrow.png') no-repeat scroll 10px 43px;
+      .sub-menu{
+        display: block !important;
+      }
+    }
+    &>li {
+      float: left;
+      margin-right: 40px;
+      font-weight: 300;
+      position: relative;
+      height: 55px;
+      a {
+        &:hover{
+          text-decoration: none;
+          color: #34343a;
+        }
+        font-size: 1.6em;
+        color: #5a595c;
+      }
+    }
+    .sub-menu{
+      height: 60px;
+      line-height: 60px;
+      position: absolute;
+      top: 45px;
+      width: 700px;
+      z-index: 5;
+      display: none;
+      li{
+        float: left;
+        margin-right: 40px;
+        font-weight: 300;
+        position: relative;
+        a{
+          font-size: 1.3em;
+          color: #dddddd;
+          &:hover{
+            color: @white;
+          }
+        }
+      }
+      .current-menu-item{
+        font-weight: 400;
+      }
+    }
+  }
+}

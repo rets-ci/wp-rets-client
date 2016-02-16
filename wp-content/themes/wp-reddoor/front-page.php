@@ -13,18 +13,21 @@
  */
 
 get_header(); ?>
-<?php get_template_part('templates/page-header'); ?>
+
+  <div class="container-fluid">
+    <div class="row">
+      <section class="frontPageSearchBlock">
+
+      </section>
+    </div>
+  </div>
+
   <div class="container">
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>
-        <?php
-        if(is_home() && is_page()) {
-          the_content();
-        }
-        else{
-          get_template_part('templates/content-main');
-        }
-        ?>
+
+        <?php  the_content(); ?>
+
       <?php endwhile; // end of the loop. ?>
     </div><!-- .row -->
   </div>

@@ -7,15 +7,19 @@
  */
 get_header(); ?>
 
-<?php get_template_part('templates/page-header'); ?>
-<div class="container">
-  <div class="row site-content">
-    <?php while (have_posts()) : the_post(); ?>
-      <?php get_template_part('templates/content-main'); ?>
-      <?php //comments_template( '', true ); ?>
-    <?php endwhile; // end of the loop. ?>
-  </div><!-- .row -->
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('.featuredImageHeader').css('height', jQuery(window).height()-132);
+  });
+</script>
+<div class="container-fluid ftrdImgGoTop">
+  <section class="archiveImageHeader">
+    <h1><?php _e('Our Articles'); ?></h1>
+    <h3></h3>
+  </section>
 </div>
+
+<?php get_template_part('templates/blog-content') ?>
 
 
 <?php get_footer(); ?>
