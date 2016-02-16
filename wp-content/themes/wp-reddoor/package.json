@@ -1,0 +1,25 @@
+{
+  "name": "www.reddoorcompany.com",
+  "version": "1.0.0",
+  "description": "<!DOCTYPE html> <html> <head> \t<meta name=\"viewport\" content=\"width=device-width\" /> \t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \t<title>WordPress &#8250; ReadMe</title> \t<link rel=\"stylesheet\" href=\"wp-admin/css/install.css?ver=20100228\" type=\"text/css\" /> </head> <body> <h1 id=\"logo\"> \t<a href=\"https://wordpress.org/\"><img alt=\"WordPress\" src=\"wp-admin/images/wordpress-logo.png\" /></a> \t<br /> Version 4.4.2 </h1> <p style=\"text-align: center\">Semantic Personal Publishing Platform</p>",
+  "main": "gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UsabilityDynamics/www.reddoorcompany.com.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues"
+  },
+  "homepage": "https://github.com/UsabilityDynamics/www.reddoorcompany.com#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "jit-grunt": "^0.9.1"
+  }
+}
