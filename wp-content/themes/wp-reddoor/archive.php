@@ -20,11 +20,6 @@
 get_header(); ?>
 
 <?php if(is_category() || is_archive()){ ?>
-	<script type="text/javascript">
-		jQuery(document).ready(function(){
-			jQuery('.featuredImageHeader').css('height', jQuery(window).height()-212);
-		});
-	</script>
 
 	<div class="container-fluid ftrdImgGoTop">
 		<section class="archiveImageHeader">

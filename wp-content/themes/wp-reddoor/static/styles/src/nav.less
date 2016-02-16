@@ -2,9 +2,10 @@
   float: left;
   margin: 28px 0 0 40px;
   #menu-header {
+    position: relative;
     &>.current-menu-item{
       font-weight: 400;
-      background: rgba(0, 0, 0, 0) url('../../images/src/arrow.png') no-repeat scroll 10px 43px;
+      background: rgba(0, 0, 0, 0) url('../images/src/arrow.png') no-repeat scroll 10px 43px;
       .sub-menu{
         display: block !important;
       }
@@ -13,7 +14,6 @@
       float: left;
       margin-right: 40px;
       font-weight: 300;
-      position: relative;
       height: 55px;
       a {
         &:hover{
@@ -32,6 +32,7 @@
       width: 700px;
       z-index: 5;
       display: none;
+      left: 0;
       li{
         float: left;
         margin-right: 40px;

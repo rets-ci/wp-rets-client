@@ -67,17 +67,21 @@
 .ftrdImgGoTop{
   padding: 0 !important;
   position: relative;
-  top: -20px;
+  top: -26px;
 }
 .featuredImageHeader {
   background-size: cover !important;
   background-repeat: no-repeat !important;
+  background-position: center center;
   height: 555px;
+  position: relative;
+  top: -6px;
 }
 .archiveImageHeader {
-  background-image: url('../../images/src/archive-header.jpg');
+  background-image: url('../images/src/archive-header.jpg');
   background-size: cover !important;
   background-repeat: no-repeat !important;
+  background-position: center center;
   height: 555px;
   padding-top: 10%;
   h1{
@@ -167,7 +171,7 @@
   background: #f3f0e9;
   height: 80px;
   position: relative;
-  top: -20px;
+  top: -26px;
   .archiveFilterBody{
     line-height: 80px;
     div{
@@ -185,6 +189,7 @@
         border-right: 1px solid #d0d4d9;
         a{
           color: #5a595c;
+          display: block;
           &:hover{
             text-decoration: none;
           }
@@ -198,4 +203,56 @@
       }
     }
   }
+}
+.frontPageSearchBlock {
+  background-image: url('../images/src/archive-header.jpg');
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center;
+  height: 555px;
+  padding-top: 10%;
+  .searchForm {
+    width: 950px;
+    margin: auto;
+    ul {
+      margin: 0;
+      li {
+        display: inline-block;
+        background: rgba(46, 47, 49, 0.6);
+        height: 45px;
+        line-height: 3.5em;
+        border-radius: 5px 5px 0 0;
+      }
+      a {
+        padding: 0 1.7em;
+        color: @white;
+        display: block;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    .currentFormElement {
+      background: #2f2e31;
+    }
+  form {
+      background: #2f2e31;
+      padding: 12px 13px 11px 13px;
+      border-radius: 0 5px 5px 5px;
+      height: 60px;
+      select {
+
+      }
+      input {
+        border-radius: 5px;
+        background: #cf3428;
+        color: @white;
+        font-size: 1.1em;
+        font-weight: 400;
+        padding: 7px 20px;
+        border: medium none;
+        }
+    }
+  }
+
 }

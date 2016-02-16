@@ -15,11 +15,7 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 
 ?>
 <?php if(!(empty($_url))) { ?>
-	<script type="text/javascript">
-		jQuery(document).ready(function(){
-			jQuery('.featuredImageHeader').css('height', jQuery(window).height()-132);
-		});
-	</script>
+
 <div class="container-fluid ftrdImgGoTop">
 	<section class="featuredImageHeader" style="background: url('<?php echo $_url; ?>');">
 	</section>
