@@ -214,25 +214,34 @@
   .searchForm {
     width: 950px;
     margin: auto;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
     ul {
       margin: 0;
+      background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+      border: medium none;
+      padding: 0;
       li {
         display: inline-block;
         background: rgba(46, 47, 49, 0.6);
         height: 45px;
         line-height: 3.5em;
         border-radius: 5px 5px 0 0;
+        border: medium none;
       }
       a {
-        padding: 0 1.7em;
+        padding: 0 1.7em !important;
         color: @white;
         display: block;
         &:hover {
           text-decoration: none;
         }
+        &:focus{
+          outline: none;
+        }
       }
     }
-    .currentFormElement {
+    .ui-state-active {
       background: #2f2e31;
     }
   form {
@@ -244,14 +253,33 @@
 
       }
       input {
-        border-radius: 5px;
-        background: #cf3428;
-        color: @white;
-        font-size: 1.1em;
-        font-weight: 400;
-        padding: 7px 20px;
-        border: medium none;
+
+        &[type="submit"] {
+          border-radius: 5px;
+          background: #cf3428;
+          color: @white;
+          font-size: 1.1em;
+          font-weight: 400;
+          padding: 7px 20px;
+          border: medium none;
+          float: left;
+          margin-left: 15px;
         }
+        }
+      .ui-autocomplete-input{
+        background: #f8f8f8 none repeat scroll 0 0;
+        border: medium none;
+        border-radius: 5px 0 0 5px;
+        color: #808285;
+        padding: 0.44em 0.6em;
+        float: left;
+      }
+    .ui-selectmenu-button{
+      border-radius: 0;
+      background: #f8f8f8 none repeat scroll 0 0;
+      width: 140px !important;
+      float: left;
+    }
     }
   }
 
