@@ -40,6 +40,9 @@
 // Mode adaptive 1024
 @adapt1024: 1024px;
 
+// Mode adaptive 640
+@adapt640: 640px;
+
 
 @media screen and (min-width: @adapt1920) {
 
@@ -64,5 +67,25 @@
 }
 @media screen and (min-width: @adapt1024) {
 
+}
+@media screen and (max-width: @adapt640) {
+  body {
+    background: none !important;
+  }
+  .site-logo {
+    left: 23%;
+  }
+  .menu-header-container {
+    display: none;
+  }
+  .popUpLoginBtn {
+    display: none !important;
+  }
+  .popUpContactBtn{
+    margin-right: 10%;
+  }
+  .mobileMenu, .toggle{
+    display: block;
+  }
 }
 

@@ -42,7 +42,7 @@ get_header(); ?>
             </li>
           </ul>
           <form class="buyForm" id="tabs-1">
-              <input id="tags">
+              <input class="tags">
             <select class="speed">
               <option>Beds</option>
               <option></option>
@@ -61,17 +61,18 @@ get_header(); ?>
             <input type="submit" value="Search" />
           </form>
           <form class="rentForm" id="tabs-2">
-            <select>
-              <option>Location</option>
+            <input class="tags">
+            <select class="speed">
+              <option>Beds</option>
               <option></option>
               <option></option>
             </select>
-            <select>
+            <select class="speed">
               <option>Baths</option>
               <option></option>
               <option></option>
             </select>
-            <select>
+            <select class="speed">
               <option>Price</option>
               <option></option>
               <option></option>
@@ -79,21 +80,38 @@ get_header(); ?>
             <input type="submit" value="Search" />
           </form>
           <form class="sellForm" id="tabs-3">
-            <select>
-              <option>Location</option>
+            <input class="tags">
+            <select class="speed">
+              <option>Beds</option>
               <option></option>
               <option></option>
             </select>
-            <select>
+            <select class="speed">
               <option>Baths</option>
+              <option></option>
+              <option></option>
+            </select>
+            <select class="speed">
+              <option>Price</option>
               <option></option>
               <option></option>
             </select>
             <input type="submit" value="Search" />
           </form>
           <form class="rentPropForm" id="tabs-4">
-            <select>
-              <option>Location</option>
+            <input class="tags">
+            <select class="speed">
+              <option>Beds</option>
+              <option></option>
+              <option></option>
+            </select>
+            <select class="speed">
+              <option>Baths</option>
+              <option></option>
+              <option></option>
+            </select>
+            <select class="speed">
+              <option>Price</option>
               <option></option>
               <option></option>
             </select>
