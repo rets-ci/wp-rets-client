@@ -1,5 +1,8 @@
 <?php
 
+/* WP-Property ( and WPP Add-ons ) hooks and custom logic. */
+include_once( get_template_directory() . '/wp-property/functions.php' );
+
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('jquery');
   wp_enqueue_script('bootstrap', get_bloginfo('stylesheet_directory') . '/static/scripts/src/bootstrap.js');
