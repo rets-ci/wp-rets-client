@@ -15,11 +15,14 @@
 get_header(); ?>
 
   <script>
-    $(function() {
-      $( "#tabs" ).tabs();
-    });
-  </script>
 
+  </script>
+  <script>
+
+  </script>
+  <script>
+
+  </script>
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock">
@@ -39,22 +42,18 @@ get_header(); ?>
             </li>
           </ul>
           <form class="buyForm" id="tabs-1">
-            <select>
-              <option>Location</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select>
+              <input id="tags">
+            <select class="speed">
               <option>Beds</option>
               <option></option>
               <option></option>
             </select>
-            <select>
+            <select class="speed">
               <option>Baths</option>
               <option></option>
               <option></option>
             </select>
-            <select>
+            <select class="speed">
               <option>Price</option>
               <option></option>
               <option></option>
@@ -79,7 +78,7 @@ get_header(); ?>
             </select>
             <input type="submit" value="Search" />
           </form>
-          <form class="Form" id="tabs-2">
+          <form class="sellForm" id="tabs-3">
             <select>
               <option>Location</option>
               <option></option>
@@ -90,8 +89,11 @@ get_header(); ?>
               <option></option>
               <option></option>
             </select>
+            <input type="submit" value="Search" />
+          </form>
+          <form class="rentPropForm" id="tabs-4">
             <select>
-              <option>Price</option>
+              <option>Location</option>
               <option></option>
               <option></option>
             </select>
