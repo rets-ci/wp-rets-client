@@ -8,6 +8,7 @@ dev/
 error_log
 /wp-content/storage
 /wp-content/uploads
+/wp-content/upgrade
 .idea
 *.log
 .DS_Store
