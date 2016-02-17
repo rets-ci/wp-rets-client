@@ -34,17 +34,16 @@ class class_wpp_supermap {
 
     wp_register_script('wpp-supermap-settings', ud_get_wpp_supermap()->path( 'static/scripts/supermap.settings.js', 'url' ), array('jquery'), '1.0.0');
 
-    add_shortcode('supermap', array('class_wpp_supermap', 'shortcode_supermap'));
     add_image_size( 'supermap_marker', 32, 32, 0 );
 
-    add_action('wp_ajax_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
-    add_action('wp_ajax_nopriv_supermap_get_properties', array('class_wpp_supermap','ajax_get_properties'));
     add_action('template_redirect', array('class_wpp_supermap','supermap_template_redirect'));
 
     //* Load admin header scripts */
     add_action('admin_enqueue_scripts', array('class_wpp_supermap', 'admin_enqueue_scripts'));
 
-    add_filter('wpp_supermap_marker', array('class_wpp_supermap', 'get_marker_by_post_id'), 10, 2);
+    //* Handles map markers */
+    add_filter('wpp_supermap_marker', array('class_wpp_supermap', 'get_marker_by_post_id'), 10 );
+    add_filter('wpp_get_property', array('class_wpp_supermap', 'wpp_get_property'), 10 );
 
     //* Add to settings page nav */
     if(current_user_can(self::$capability)) {
@@ -61,6 +60,17 @@ class class_wpp_supermap {
     }
     //** Filter meta keys during import process @author korotkov@ud */
     add_filter('wpp_xml_import_value_on_import', array('class_wpp_supermap', 'importer_meta_filter'), 10, 4);
+  }
+
+  /**
+   * Adds to property _map_marker_url
+   *
+   * @param $property
+   * @return mixed
+   */
+  public static function wpp_get_property( $property ) {
+    $property[ '_map_marker_url' ] = self::get_marker_by_post_id( $property['ID'] );
+    return $property;
   }
 
   /**
@@ -192,7 +202,7 @@ class class_wpp_supermap {
         <tr valign="top">
           <th scope="row"><?php _e('Sidebar Attributes', ud_get_wpp_supermap()->domain); ?></th>
           <td>
-            <p><?php _e('Select the attributes you want to display in the left sidebar on the supermap.', ud_get_wpp_supermap()->domain); ?></p>
+            <p><?php _e('Select the attributes you want to display in the sidebar on the supermap.', ud_get_wpp_supermap()->domain); ?></p>
             <div class="wp-tab-panel">
             <ul>
               <?php foreach($wp_properties['property_stats'] as $slug => $title): ?>
@@ -215,6 +225,7 @@ class class_wpp_supermap {
           <th><?php _e('Supermap Sidebar Thumbnail:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
             <ul>
+              <li><i><?php _e( 'Only available for default mode view.', ud_get_wpp_supermap()->domain ); ?></i></li>
               <li>
                 <input <?php if( isset( $supermap_configuration['hide_sidebar_thumb'] ) ) checked( 'true', $supermap_configuration[ 'hide_sidebar_thumb' ] ); ?> value='true' type="checkbox" id="supermap_hide_sidebar_thumb" name="wpp_settings[configuration][feature_settings][supermap][hide_sidebar_thumb]" />
                 <label for="supermap_hide_sidebar_thumb"><?php _e('Do not show a property thumbnail in sidebar.',ud_get_wpp_supermap()->domain) ?></label>
@@ -322,56 +333,60 @@ class class_wpp_supermap {
         <tr>
           <th><?php _e('Map Areas:',ud_get_wpp_supermap()->domain) ?></th>
           <td>
-            <?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>',ud_get_wpp_supermap()->domain) ?>
-            <table id="wpp_supermap_areas" class="ud_ui_dynamic_table widefat">
-              <thead>
-                <tr>
-                  <th><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
-                  <th style="width:50px;"><?php _e('Coordinates',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Fill Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Opacity',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Stoke Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th><?php _e('Hover Color',ud_get_wpp_supermap()->domain) ?></th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-              <?php
-                foreach($supermap_configuration['areas'] as $slug => $area_data):  ?>
-                  <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='true'>
-                    <td >
-                      <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][name]" value="<?php echo $area_data['name']; ?>" />
-                      <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug">
-                    </td>
-                    <td>
-                      <textarea name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][paths]"><?php echo $area_data['paths']; ?></textarea>
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" id="" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillColor]" value="<?php echo $area_data['fillColor']; ?>" />
-                    </td>
-                    <td>
-                      <input style="width:40px;" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillOpacity]" value="<?php echo $area_data['fillOpacity']; ?>" />
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][strokeColor]" value="<?php echo $area_data['strokeColor']; ?>" />
-                    </td>
-                    <td>
-                      <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][hoverColor]" value="<?php echo $area_data['hoverColor']; ?>" />
-                    </td>
-                    <td>
-                      <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
+            <ul>
+              <li><i><?php _e( 'Only available for default mode view.', ud_get_wpp_supermap()->domain ); ?></i></li>
+              <li><?php _e('<p>Map areas let you draw our areas on the map, such as neighborhoods.</p><p>Just add to shortcode attribute <b>show_areas=all</b> to draw all areas on the map. Also You can use area\'s slugs to show them on the map, like as <b>show_areas=new_york,washington</b>. Please, use coordinates in this format: <b>(82.72, -37.79)(69.54, -57.48)(68.93, -18.63).</b></p><p><i>This is an experimental feature, you may not want to use it on a live site.  We\'re eager to hear your feedback regarding this feature and the capabilities that would be useful to you.</i></p>',ud_get_wpp_supermap()->domain) ?></li>
+              <li>
+                <table id="wpp_supermap_areas" class="ud_ui_dynamic_table widefat">
+                <thead>
+                  <tr>
+                    <th><?php _e('Name',ud_get_wpp_supermap()->domain) ?></th>
+                    <th style="width:50px;"><?php _e('Coordinates',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Fill Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Opacity',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Stoke Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th><?php _e('Hover Color',ud_get_wpp_supermap()->domain) ?></th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                  foreach($supermap_configuration['areas'] as $slug => $area_data):  ?>
+                    <tr class="wpp_dynamic_table_row" slug="<?php echo $slug; ?>" new_row='true'>
+                      <td >
+                        <input class="slug_setter" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][name]" value="<?php echo $area_data['name']; ?>" />
+                        <input type="text" value="<?php echo $slug; ?>" readonly="readonly" class="slug">
+                      </td>
+                      <td>
+                        <textarea name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][paths]"><?php echo $area_data['paths']; ?></textarea>
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" id="" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillColor]" value="<?php echo $area_data['fillColor']; ?>" />
+                      </td>
+                      <td>
+                        <input style="width:40px;" type="text" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][fillOpacity]" value="<?php echo $area_data['fillOpacity']; ?>" />
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][strokeColor]" value="<?php echo $area_data['strokeColor']; ?>" />
+                      </td>
+                      <td>
+                        <input type="text" class="wpp_input_colorpicker" name="wpp_settings[configuration][feature_settings][supermap][areas][<?php echo $slug; ?>][hoverColor]" value="<?php echo $area_data['hoverColor']; ?>" />
+                      </td>
+                      <td>
+                        <span class="wpp_delete_row wpp_link"><?php _e('Delete',ud_get_wpp_supermap()->domain) ?></span>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan='7'>
+                    <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row',ud_get_wpp_supermap()->domain) ?>" />
                     </td>
                   </tr>
-                <?php endforeach; ?>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan='7'>
-                  <input type="button" class="wpp_add_row button-secondary btn" value="<?php _e('Add Row',ud_get_wpp_supermap()->domain) ?>" />
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                </tfoot>
+              </table>
+            </li>
           </td>
         </tr>
       </tbody>
@@ -682,8 +697,10 @@ class class_wpp_supermap {
    *
    * @author Maxim Peshkov
    */
-  static public function get_marker_by_post_id($marker_url = '', $post_id) {
+  static public function get_marker_by_post_id( $post_id ) {
     global $wp_properties;
+
+    $marker_url = '';
 
     if(!isset($wp_properties['configuration']['feature_settings']['supermap'])) {
       return $marker_url;
@@ -731,488 +748,6 @@ class class_wpp_supermap {
     }
 
     return $marker_url;
-  }
-
-  /**
-   * Returns supermap for shortcode
-   * Copyright 2010 Andy Potanin <andy.potanin@twincitiestech.com>
-   *
-   * Example of Atts:
-   * zoom=5
-   * center_on=74.3434,-130.22
-   *
-   * @param array $atts Attributes of shortcode
-   * @return mixed|string
-   */
-  static public function shortcode_supermap($atts = array()) {
-    global $wp_properties, $wp_scripts;
-
-    $defaults = array(
-      'per_page' => 10,
-      'css_class' => '',
-      'starting_row' => 0,
-      'pagination' => 'on',
-      'sidebar_width' => '',
-      'hide_sidebar' => 'false',
-      'map_height' => '',
-      'map_width' => '',
-      'options_label' => __('Options',ud_get_wpp_supermap()->domain),
-      'silent_failure' => 'true',
-      'sort_order' => 'DESC',
-      'sort_by' => 'post_date'
-    );
-
-    $atts = array_merge($defaults, (array)$atts);
-
-    wp_enqueue_script( 'google-maps' );
-
-    //** Quit function if Google Maps is not loaded */
-    if(!WPP_F::is_asset_loaded('google-maps')) {
-      return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
-    }
-
-    //* Available search attributes */
-    $searchable_attributes = (array) $wp_properties['searchable_attributes'];
-
-    //* Set property types */
-    if(!isset($atts['property_type'])) {
-      //* Need this for better UI and to avoid mistakes */
-      //* @TODO: need to determine if custom attribute 'type' does not isset at first to use this condition. peshkov@UD */
-      if(!empty($atts['type'])) {
-        $atts['property_type'] = $atts['type'];
-      } else {
-        $atts['property_type'] = $wp_properties['searchable_property_types'];
-      }
-    }
-    /* END Set property types */
-
-    //* Set Available query keys */
-    $query_keys = array_flip($searchable_attributes);
-    foreach($query_keys as $key => $val) {
-      $query_keys[$key] = '';
-    }
-
-    $query_keys['property_type'] = '';
-
-    //* START Set query */
-    $query = shortcode_atts($query_keys, $atts);
-
-    if (isset($_REQUEST['wpp_search'])){
-      $query = shortcode_atts($query, $_REQUEST['wpp_search']);
-    }
-
-    /* HACK: Remove attribute with value 'all' from query to avoid search result issues:
-     * Because 'all' means any attribute's value,
-     * But if property has no the attribute, which has value 'all' - query doesn't return this property
-     */
-    foreach ($query as $k => $v) {
-      if($v == 'all' || empty($v)) {
-        unset($query[$k]);
-      }
-    }
-
-    //* Exclude properties which has no latitude,longitude keys */
-    $query['latitude'] = 'all';
-    $query['longitude'] = 'all';
-    //$query['address_is_formatted'] = 'true';
-    $query['exclude_from_supermap'] = 'false,0';
-
-    $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
-
-    //* Prepare search attributes to use them in get_properties() */
-    $query = WPP_F::prepare_search_attributes($query);
-
-    if($atts['pagination'] == 'on') {
-      $query['pagi'] = $atts['starting_row'] . '--' . $atts['per_page'];
-    }
-
-    $query['sort_by'] = $atts['sort_by'];
-    $query['sort_order'] = $atts['sort_order'];
-
-    //* END Set query */
-
-    //* Get properties */
-    $property_ids = WPP_F::get_properties( $query , true );
-
-    if (!empty($property_ids['results'])) {
-
-      $atts['total'] = $property_ids['total'];
-
-      $properties = array();
-      foreach ($property_ids['results'] as $key => $id) {
-
-        $property = prepare_property_for_display( $id, array(
-          'load_gallery' => 'false',
-          'get_children' => 'false',
-          'load_parent' => 'false',
-          'scope' => 'supermap_sidebar'
-        ) );
-
-        $properties[$id] = $property;
-      }
-
-      $supermap = "";
-
-      /**
-       * Call function which prepares data and renders template.
-       */
-      $template_function = apply_filters( 'wpp::supermap::template_function', array( __CLASS__, 'supermap_template' ), $query, $properties, $atts );
-      if( is_callable($template_function) ) {
-        $supermap = call_user_func_array( $template_function, array( $properties, $atts ) );
-      }
-      return $supermap;
-
-    } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {
-
-      return '<span class="wpp-no-listings">'. sprintf( __( 'Sorry, no %s found, try expanding your search.', ud_get_wpp_supermap()->domain ), WPP_F::property_label( 'plural' ) ) . '</span>';
-
-    }
-
-  }
-
-  /**
-   * Prepares data, enquires javascript,
-   * includes template and returns it
-   *
-   * Note, you can redeclare function by calling your own one using filter:
-   * wpp::supermap::template_function
-   */
-  static public function supermap_template( $properties, $atts = array() ) {
-    global $wp_properties;
-
-    //* Determine if properties exist */
-    if(empty($properties)) {
-      return '';
-    }
-
-    //* Default settings */
-    $defaults = array(
-      'hide_sidebar' => 'false',
-      'css_class' => '',
-      'show_areas' => false,
-      'sidebar_width' => '',
-      'map_height' => '',
-      'map_width' => '',
-      'zoom' => '',
-      'options_label' => __('Options',ud_get_wpp_supermap()->domain),
-      'center_on' => '',
-      'scrollwheel' => '',
-      'property_type' => (array) $wp_properties['searchable_property_types'],
-      'rand' => rand(1000,5000)
-    );
-
-    if(!empty($sidebar_width)) {
-      $sidebar_width = trim(str_replace(array('%', 'px'), '', $sidebar_width));
-    }
-
-    //* Supermap configuration */
-    if ( !empty( $wp_properties['configuration']['feature_settings']['supermap'] ) ) {
-      $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
-    } else {
-      $supermap_configuration = array();
-    }
-    if(empty($supermap_configuration['supermap_thumb'])) {
-      $supermap_configuration['supermap_thumb'] = 'thumbnail';
-    }
-
-    //* Set available search attributes for 'Options' form */
-    $searchable_attributes = (array)$wp_properties['searchable_attributes'];
-    $flip =  array_flip($searchable_attributes);
-    if(is_array($flip) & is_array($atts)){
-      $searchable_attributes = (array_intersect_key($atts, $flip));
-    } else {
-      unset($searchable_attributes);
-    }
-
-    //* Get template Attributes */
-    extract(shortcode_atts($defaults, $atts));
-
-    //** Get and set any inline styles */
-    if($hide_sidebar != "true" && !empty($sidebar_width)) {
-      $inline_styles['sidebar']['width'] = 'width: '. $sidebar_width . '%';
-      $inline_styles['map']['width'] = 'width: '. (100 - $sidebar_width). '%;';
-      $inline_styles['map']['margin'] = 'margin: 0;'; /* If using fluid widths, must elimiate all margins */
-      $inline_styles['map']['padding'] = 'padding: 0;'; /* If using fluid widths, must elimiate all padding */
-    }
-
-    if(!isset($inline_styles['map']['width']) && !empty($map_width)) {
-      $inline_styles['map']['width'] = 'width: '. str_replace( 'px', '', $map_width ) . 'px;';
-    }
-
-    if( !empty($map_height) ) {
-      $inline_styles['map']['height'] = 'height: '. str_replace( 'px', '', $map_height ) . 'px;';
-      $inline_styles['sidebar']['height'] = 'height: '. str_replace( 'px', '', $map_height ) . 'px;';
-    }
-
-    $inline_styles['map'] = 'style="' . implode( ' ', ( !empty( $inline_styles['map'] ) ? (array) $inline_styles['map'] : array() ) ). '"';
-    $inline_styles['sidebar'] = 'style="' . implode( ' ', ( !empty( $inline_styles['sidebar'] ) ? (array) $inline_styles['sidebar'] : array() ) ) . '"';
-
-    //* START Render Javascript functionality for Areas */
-    $areas = !empty( $supermap_configuration['areas'] ) ? $supermap_configuration['areas'] : array();
-    $area_lines = array();
-    // Plot areas
-    if(is_array($areas) && $show_areas) {
-      // Check attribute 'show_areas'
-      if($show_areas != 'all') {
-        $show_areas = explode(',',$show_areas);
-        $show_areas = array_fill_keys($show_areas, 1);
-      }
-      foreach($areas as $count => $area) {
-        // If the current area (slug) is not added to shortcode, we didn't draw it.
-        if((is_array($show_areas) && !array_key_exists($count, $show_areas)) || $count == 'example_area' ) {
-          continue;
-        }
-
-        // Set defaults
-        if(empty($area['strokeColor'])) $area['strokeColor'] =  '#a49b8a';
-        if(empty($area['fillColor'])) $area['fillColor'] =  '#dad1c2';
-        if(empty($area['hoverColor'])) $area['hoverColor'] =  '#bfb89a';
-        if(empty($area['fillOpacity'])) $area['fillOpacity'] =  '0.6';
-        if(empty($area['strokeOpacity'])) $area['strokeOpacity'] =  '1';
-        if(empty($area['strokeWeight'])) $area['strokeWeight'] =  '1';
-
-        $area['paths'] = str_replace(")(", ")|(", $area['paths']);
-        $area['paths'] = explode("|", $area['paths']);
-
-        if(count($area['paths']) < 1) {
-          continue;
-        }
-        unset($this_area_coords);
-
-        foreach($area['paths'] as $coords) {
-          if(empty($coords))
-            continue;
-          $this_area_coords[] = "new google.maps.LatLng({$coords})";
-        }
-
-        if(empty($this_area_coords)) {
-          continue;
-        }
-
-        /* @todo: must be moved to static/scripts/supermap.js ! */
-        $area_lines[] = "var areaCoords_{$count} = [" . implode(",\n", $this_area_coords) . "]";
-        $area_lines[] = "
-          areaCoords_{$count} = new google.maps.Polygon({
-          paths: areaCoords_{$count},
-          strokeColor: '{$area['strokeColor']}',
-          strokeOpacity: {$area['strokeOpacity']},
-          strokeWeight: {$area['strokeWeight']},
-          fillColor: '{$area['fillColor']}',
-          fillOpacity: {$area['fillOpacity']}
-        });
-        areaCoords_{$count}.setMap(map_{$rand});
-        google.maps.event.addListener(areaCoords_{$count},'click',function(event){
-          // Set content and Replace our Info Window's position
-          infowindow_{$rand}.setContent('<div id=\"infowindow\" style=\"height:50px;line-height:50px;text-align:center;font-weight:bold;\">{$area['name']}</div>');
-          infowindow_{$rand}.setPosition(event.latLng);
-          infowindow_{$rand}.open(map_{$rand});
-        });
-        google.maps.event.addListener(areaCoords_{$count},'mouseover',function(event){
-          this.setOptions({
-            fillColor: '{$area['hoverColor']}'
-          });
-        });
-        google.maps.event.addListener(areaCoords_{$count},'mouseout',function(event){
-          this.setOptions({
-            fillColor: '{$area['fillColor']}'
-          });
-        });
-      ";
-      }
-    }
-    $area_lines = implode('', $area_lines);
-    //* END Render Areas */
-
-    /** Enqueue script  */
-    //wp_enqueue_script( 'wpp-supermap', ud_get_wpp_supermap()->path( 'static/scripts/supermap.js', 'url' ), array(), ud_get_wpp_supermap()->version );
-
-    $supermap = "";
-
-    /**** TEMP SOLUTION *****/
-    /**
-     * @todo move current php template to javascript file (static/scripts/supermap.js)
-     */
-    /** Try find Supermap Template */
-    $jstemplate = ud_get_wpp_supermap()->path( 'static/views/supermap-js.php', 'dir' );
-    if( file_exists( $jstemplate ) ) {
-      ob_start();
-      include $jstemplate;
-      $supermap .= ob_get_clean();
-    }
-
-    /**** END TEMP SOLUTION *****/
-
-    /** Try find Supermap Template */
-    $template = WPP_F::get_template_part(
-      apply_filters( "wpp::supermap::template_name", array( "supermap" ) ),
-      apply_filters( "wpp::supermap::template_path", array( ud_get_wpp_supermap()->path( 'static/views', 'dir' ) ) )
-    );
-
-    if( $template ) {
-      ob_start();
-      include $template;
-      $supermap .= ob_get_clean();
-    }
-
-    return $supermap;
-  }
-
-  /**
-   * Ajax. Returns javascript:
-   * list of properties and markers
-   *
-   */
-  static public function ajax_get_properties() {
-    global $wpdb, $wp_properties;
-
-    $defaults = array(
-      'per_page' => 10,
-      'starting_row' => 0,
-      'pagination' => 'on',
-      'sort_order' => 'ASC',
-      'sort_by' => 'menu_order',
-      'property_type' => ( $wp_properties['searchable_property_types'] )
-    );
-
-    $atts = shortcode_atts($defaults, $_REQUEST);
-
-    //* Supermap configuration */
-    $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
-    if(empty($supermap_configuration['supermap_thumb'])) {
-      $supermap_configuration['supermap_thumb'] = 'thumbnail';
-    }
-
-    //* START Prepare search params for get_properties() */
-    $query = array();
-    if(!empty($_REQUEST['wpp_search'])) {
-      //* Available search attributes */
-      $searchable_attributes = (array)$wp_properties['searchable_attributes'];
-      $query_keys = array_flip($searchable_attributes);
-      foreach($query_keys as $key => $val) {
-        $query_keys[$key] = '';
-      }
-      $query = $_REQUEST['wpp_search'];
-      $query = shortcode_atts($query_keys, $query);
-    }
-
-    //* Exclude properties which has no latitude,longitude keys */
-    $query['latitude'] = 'all';
-    $query['longitude'] = 'all';
-
-    //$query['address_is_formatted'] = '1';
-    //* Add only properties which are not excluded from supermap (option on Property editing form) */
-    //$query['exclude_from_supermap'] = 'false,0';
-    //* Set Property type */
-    $query['property_type'] = $atts['property_type'];
-
-    //* Prepare Query params */
-    $query = WPP_F::prepare_search_attributes($query);
-
-    if($atts['pagination'] == 'on') {
-      $query['pagi'] = $atts['starting_row'] . '--' . $atts['per_page'];
-    }
-    $query['sort_by'] = $atts['sort_by'];
-    $query['sort_order'] = $atts['sort_order'];
-    //* END Prepare search params for get_properties() */
-
-    //* Get Properties */
-    $property_ids = WPP_F::get_properties($query, true);
-
-    if (!empty($property_ids['results'])) {
-      $properties = array();
-      foreach ((array)$property_ids['results'] as $key => $id) {
-
-        $property =  (array) prepare_property_for_display($id, array(
-          'load_gallery' => 'false',
-          'get_children' => 'false',
-          'load_parent' => 'false',
-          'scope' => 'supermap_sidebar'
-        ));
-
-        $properties[$id] = $property;
-      }
-    }
-
-    $supermap_configuration['display_attributes'] = isset( $supermap_configuration['display_attributes'] ) && is_array( $supermap_configuration['display_attributes'] ) ? 
-      $supermap_configuration['display_attributes'] : array();
-
-    $display_attributes = array();
-    foreach($supermap_configuration['display_attributes'] as $attribute) {
-      if( isset( $wp_properties['property_stats'][$attribute] ) ) {
-        $display_attributes[$attribute] = $wp_properties['property_stats'][$attribute];
-      }
-    }
-
-    ob_start();
-
-    if(!empty($properties)) : ?>
-      var HTML = '';
-      window.supermap_<?php echo $_POST['random']; ?>.total = '<?php echo $property_ids['total']; ?>';
-      <?php
-
-      $labels_to_keys = array_flip($wp_properties['property_stats']);
-
-      foreach ($properties as $property_id => $value) {
-
-      ?>
-      window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
-      window.content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = '<?php echo WPP_F::google_maps_infobox($value); ?>';
-
-      window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.Marker({
-        position: myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>,
-        map: map_<?php echo $_POST['random']; ?>,
-        title: '<?php echo str_replace("'","\'", $value['location']); ?>',
-        icon: '<?php echo apply_filters('wpp_supermap_marker', '', $value['ID']); ?>'
-      });
-
-      window.markers_<?php echo $_POST['random']; ?>.push(window.marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-
-      google.maps.event.addListener(marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>, 'click', function() {
-        infowindow_<?php echo $_POST['random']; ?>.close();
-        infowindow_<?php echo $_POST['random']; ?>.setContent(content_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-        infowindow_<?php echo $_POST['random']; ?>.open(map_<?php echo $_POST['random']; ?>,marker_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-        loadFuncy();
-        makeActive(<?php echo $_POST['random']; ?>,<?php echo $value['ID']; ?>);
-      });
-
-      google.maps.event.addListener(infowindow_<?php echo $_POST['random']; ?>, 'domready', function() {
-        document.getElementById('infowindow').parentNode.style.overflow='';
-        document.getElementById('infowindow').parentNode.parentNode.style.overflow='';
-      });
-
-      bounds_<?php echo $_POST['random']; ?>.extend(window.myLatlng_<?php echo $_POST['random']; ?>_<?php echo $value['ID']; ?>);
-      map_<?php echo $_POST['random']; ?>.fitBounds(bounds_<?php echo $_POST['random']; ?>);
-
-      HTML += '<?php echo str_replace("'","\'", trim( preg_replace('/\s\s+/', ' ', ud_get_wpp_supermap()->render_property_item( $value, array( 'rand' => $_POST['random'], 'supermap_configuration' => $supermap_configuration, ), true ) ) ) ); ?>';
-
-      <?php } ?>
-
-      var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById('super_map_list_property_<?php echo $_POST['random']; ?>');
-
-      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += HTML;
-      }
-
-    <?php else : ?>
-
-      window.supermap_<?php echo $_POST['random']; ?>.total = '0';
-
-      var wpp_supermap_<?php echo $_POST['random']; ?> = document.getElementById("super_map_list_property_<?php echo $_POST['random']; ?>");
-      var y = '<div style="text-align:center;" class="no_properties"><?php _e('No results found.', ud_get_wpp_supermap()->domain); ?></div>';
-
-      if( wpp_supermap_<?php echo $_POST['random']; ?> !== null ) {
-        wpp_supermap_<?php echo $_POST['random']; ?>.innerHTML += y;
-      }
-
-    <?php endif; ?>
-    <?php
-
-    $result = ob_get_contents();
-    ob_end_clean();
-
-    echo WPP_F::minify_js($result);
-
-    exit();
   }
 
   /**
@@ -1386,6 +921,17 @@ class class_wpp_supermap {
     }
 
     return $value;
+  }
+
+  /**
+   * Renders supermap.
+   * Deprecated. Use do_shortcode( '[supermap]' ) instead.
+   *
+   * @deprecated 4.0.4
+   */
+  static function shortcode_supermap( $atts = '' ) {
+    //_deprecated_function( __FUNCTION__, '2.1.0', 'do_shortcode([supermap])' );
+    return UsabilityDynamics\WPP\Supermap_Shortcode::render( $atts );
   }
 
 }

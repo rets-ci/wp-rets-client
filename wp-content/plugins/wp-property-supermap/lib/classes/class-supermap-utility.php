@@ -20,18 +20,22 @@ namespace UsabilityDynamics\WPP {
       static public function render_property_item( $property, $args = array(), $return = false ) {
         $html = "";
 
+        $args = array_merge( array(
+          'template' => 'default'
+        ), $args );
+
         /** Try find Supermap Item Template */
-        $template = \WPP_F::get_template_part(
+        $_template = \WPP_F::get_template_part(
           apply_filters( "wpp::supermap::item::template_name", array( "supermap-item" ) ),
-          apply_filters( "wpp::supermap::item::template_path", array( ud_get_wpp_supermap()->path( 'static/views', 'dir' ) ) )
+          apply_filters( "wpp::supermap::item::template_path", array( ud_get_wpp_supermap()->path( 'static/views/' . $args['template'], 'dir' ) ) )
         );
 
-        if( $template ) {
+        if( $_template ) {
           if( !empty( $args ) && is_array( $args ) ) {
             extract( $args );
           }
           ob_start();
-          include $template;
+          include $_template;
           $html .= ob_get_clean();
         }
 
