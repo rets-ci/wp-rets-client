@@ -71,7 +71,7 @@
          */
         $scope.getProperties = function getProperties() {
           //console.log( { "action": "supermap_get_properties", "json": true, "wpp_search": $scope.query } );
-          var getQuery = jQuery.param( { "action": "supermap_get_properties", "json": true, "wpp_search": $scope.query } );
+          var getQuery = jQuery.param( { "action": "/supermap/get_properties", "json": true, "wpp_search": $scope.query } );
           $http({
             method: 'GET',
             url: wpp.instance.ajax_url + '?' + getQuery

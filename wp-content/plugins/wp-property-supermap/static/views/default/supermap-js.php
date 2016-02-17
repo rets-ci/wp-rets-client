@@ -67,7 +67,7 @@ ob_start();
       pagination : '<?php echo $atts['pagination']; ?>',
       sort_order : '<?php echo $atts['sort_order']; ?>',
       sort_by : '<?php echo $atts['sort_by']; ?>',
-      action : 'supermap_get_properties',
+      action : '/supermap/get_properties',
       random : '<?php echo $rand; ?>',
       property_type: '<?php echo trim(( is_array($atts['property_type']) ? implode(',',$atts['property_type']) : $atts['property_type'] )); ?>',
       search_atts : (formFilter.length > 0 ? formFilter.serialize() : '')
