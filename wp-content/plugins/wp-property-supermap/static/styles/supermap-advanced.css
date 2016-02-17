@@ -1,0 +1,243 @@
+.wpp-advanced-supermap {
+  /**
+   * We are hiding supermap before data loaded.
+   */
+  display: none;
+  overflow: hidden;
+  /**
+   *
+   * GOOGLE MAP
+   *
+   */
+  /**
+   *
+   * INFO BUBBLE ( WINDOW )
+   *
+   */
+  /**
+   *
+   * SEARCH LAYER
+   *
+   */
+  /**
+   *
+   * TOP MENU
+   *
+   */
+  /**
+   *
+   * CURRENT PROPERTY
+   *
+   */
+  /**
+   *
+   * TABLE COLLECTION
+   *
+   */
+  /*
+  table {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 500px; // this can vary
+  }
+
+
+  table * {
+    box-sizing: inherit;
+    -moz-box-sizing: inherit;
+  }
+
+
+  thead {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+
+  tbody {
+    overflow-y: scroll;
+    display: inline-block;
+  }
+
+
+  thead > tr, tbody > tr, tfoot > tr {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+
+  thead, tfoot {
+    flex-shrink: 0;
+  }
+
+
+  th, tbody td {
+    width: 20%; // this can vary
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    border-left: 0;
+    border-right: 0;
+  }
+
+
+  tfoot {
+    display: inline-block;
+    border-left: 0;
+    border-right: 0;
+  }
+
+
+  tfoot td {
+    width: 100%;
+    display: inline-block;
+  }
+  //*/
+}
+.wpp-advanced-supermap .sm-marker-infobubble {
+  /**
+     * We never show infowindow (infobubble). It's for internal usage!
+     */
+  display: none;
+}
+.wpp-advanced-supermap .sm-search-layer,
+.wpp-advanced-supermap .sm-properties-list-wrap {
+  /**
+     * We display the stuff ( Property Search Filter and Properties Collection ) ONLY WHEN everything loaded
+     * JS handles it.
+     */
+  display: none;
+}
+.wpp-advanced-supermap .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.wpp-advanced-supermap .col-md-1,
+.wpp-advanced-supermap .col-md-2,
+.wpp-advanced-supermap .col-md-3,
+.wpp-advanced-supermap .col-md-4,
+.wpp-advanced-supermap .col-md-5,
+.wpp-advanced-supermap .col-md-6,
+.wpp-advanced-supermap .col-md-7,
+.wpp-advanced-supermap .col-md-8,
+.wpp-advanced-supermap .col-md-9,
+.wpp-advanced-supermap .col-md-10,
+.wpp-advanced-supermap .col-md-11,
+.wpp-advanced-supermap .col-md-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+.wpp-advanced-supermap .sm-google-map {
+  display: block;
+  widht: 100%;
+  height: 100%;
+}
+.wpp-advanced-supermap .sm-infobubble-wrap {
+  overflow: hidden;
+}
+.wpp-advanced-supermap .sm-infobubble-wrap .sm-infobubble a {
+  padding-left: 5px;
+  line-height: 32px;
+  font-size: 14px;
+}
+.wpp-advanced-supermap .sm-search-layer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 99;
+  /**
+     * Show only on click!
+     */
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter {
+  float: right;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-form {
+  margin-top: 10px;
+  background-color: #fff;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="min"],
+.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="max"] {
+  max-width: 100px;
+}
+.wpp-advanced-supermap .sm-sidebar-top {
+  padding: 8px;
+  background-color: #f3f0e9;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-thumb {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  background-position: center center;
+  background-size: cover;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details {
+  width: 100%;
+  min-height: 200px;
+  border-right: 1px solid #ededed;
+  padding: 8px;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details ul,
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details li {
+  list-style: none;
+  margin: 0;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details label.sm-attribute-label {
+  display: inline-block;
+  margin-right: 6px;
+  font-weight: 600;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details span.sm-attribute-value {
+  display: inline-block;
+}
+.wpp-advanced-supermap .sm-no-results {
+  padding: 30% 10px 10px 10px;
+  text-align: center;
+  background-color: #f3f0e9;
+  width: 100%;
+  height: 100%;
+}
+.wpp-advanced-supermap .table-striped > thead > tr {
+  background-color: #f3f0e9;
+}
+.wpp-advanced-supermap .table-striped > thead > tr th,
+.wpp-advanced-supermap .table-striped > thead > tr td {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  cursor: pointer;
+}
+.wpp-advanced-supermap .table-striped > thead > tr th.st-sort-ascent:before,
+.wpp-advanced-supermap .table-striped > thead > tr td.st-sort-ascent:before {
+  content: '\25B2';
+}
+.wpp-advanced-supermap .table-striped > thead > tr th.st-sort-descent:before,
+.wpp-advanced-supermap .table-striped > thead > tr td.st-sort-descent:before {
+  content: '\25BC';
+}
+.wpp-advanced-supermap .table-striped > tbody > tr {
+  cursor: pointer;
+}
+.wpp-advanced-supermap .table-striped > tbody > tr th,
+.wpp-advanced-supermap .table-striped > tbody > tr td {
+  border-left: 0;
+  border-right: 0;
+}
+.wpp-advanced-supermap .table-striped > tbody > tr:nth-of-type(2n+1) {
+  background-color: transparent;
+}
+.wpp-advanced-supermap .table-striped > tbody > tr:hover {
+  background-color: #f3f0e9;
+}
+.wpp-advanced-supermap .table-striped > tbody > tr.st-selected {
+  background-color: #f3f0e9;
+}
