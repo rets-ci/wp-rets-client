@@ -15,8 +15,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
-        add_action( 'wp_ajax_supermap_get_properties', array( __CLASS__,'ajax_get_properties' ) );
-        add_action( 'wp_ajax_nopriv_supermap_get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
 
         $custom_attributes = ud_get_wp_property( 'property_stats', array() );
 
