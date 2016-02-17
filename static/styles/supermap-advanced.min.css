@@ -101,7 +101,15 @@
 }
 .wpp-advanced-supermap .sm-marker-infobubble {
   /**
-     * We never show infowindow. It's for internal usage!
+     * We never show infowindow (infobubble). It's for internal usage!
+     */
+  display: none;
+}
+.wpp-advanced-supermap .sm-search-layer,
+.wpp-advanced-supermap .sm-properties-list-wrap {
+  /**
+     * We display the stuff ( Property Search Filter and Properties Collection ) ONLY WHEN everything loaded
+     * JS handles it.
      */
   display: none;
 }
@@ -191,6 +199,13 @@
 .wpp-advanced-supermap .sm-current-property .sm-current-property-details span.sm-attribute-value {
   display: inline-block;
 }
+.wpp-advanced-supermap .sm-no-results {
+  padding: 30% 10px 10px 10px;
+  text-align: center;
+  background-color: #f3f0e9;
+  width: 100%;
+  height: 100%;
+}
 .wpp-advanced-supermap .table-striped > thead > tr {
   background-color: #f3f0e9;
 }
@@ -199,6 +214,15 @@
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
+  cursor: pointer;
+}
+.wpp-advanced-supermap .table-striped > thead > tr th.st-sort-ascent:before,
+.wpp-advanced-supermap .table-striped > thead > tr td.st-sort-ascent:before {
+  content: '\25B2';
+}
+.wpp-advanced-supermap .table-striped > thead > tr th.st-sort-descent:before,
+.wpp-advanced-supermap .table-striped > thead > tr td.st-sort-descent:before {
+  content: '\25BC';
 }
 .wpp-advanced-supermap .table-striped > tbody > tr {
   cursor: pointer;

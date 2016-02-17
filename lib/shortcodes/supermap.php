@@ -532,29 +532,29 @@ namespace UsabilityDynamics\WPP {
        * @param $query
        */
       static public function get_properties( $query ) {
+        $result = array(
+          'total' => 0,
+          'data' => array(),
+        );
         //* Get properties */
         $property_ids = \WPP_F::get_properties( $query , true );
-
-        $atts['total'] = $property_ids['total'];
-
-        $properties = array();
-        foreach ($property_ids['results'] as $key => $id) {
-
-          $property = prepare_property_for_display( $id, array(
-            'load_gallery' => 'false',
-            'get_children' => 'false',
-            'load_parent' => 'false',
-            'scope' => 'supermap_sidebar'
-          ) );
-
-          $properties[$id] = $property;
+        if( !empty( $property_ids ) ) {
+          $properties = array();
+          foreach ($property_ids['results'] as $key => $id) {
+            $property = prepare_property_for_display( $id, array(
+              'load_gallery' => 'false',
+              'get_children' => 'false',
+              'load_parent' => 'false',
+              'scope' => 'supermap_sidebar'
+            ) );
+            $properties[$id] = $property;
+          }
+          $result = array(
+            'total' => $property_ids['total'],
+            'data' => $properties,
+          );
         }
-
-        return array(
-          'total' => $property_ids['total'],
-          'data' => $properties,
-        );
-
+        return $result;
       }
 
       /**
@@ -593,7 +593,7 @@ namespace UsabilityDynamics\WPP {
             $query_keys[ $key ] = false;
           }
           $query = $_REQUEST['wpp_search'];
-          $query = shortcode_atts($query_keys, $query);
+          $query = array_filter( shortcode_atts($query_keys, $query) );
         }
 
         //* Exclude properties which has no latitude,longitude keys */

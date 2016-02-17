@@ -8,7 +8,16 @@
 
   .sm-marker-infobubble {
     /**
-     * We never show infowindow. It's for internal usage!
+     * We never show infowindow (infobubble). It's for internal usage!
+     */
+    display: none;
+  }
+
+  .sm-search-layer,
+  .sm-properties-list-wrap {
+    /**
+     * We display the stuff ( Property Search Filter and Properties Collection ) ONLY WHEN everything loaded
+     * JS handles it.
      */
     display: none;
   }
@@ -159,6 +168,14 @@
 
   }
 
+  .sm-no-results {
+    padding: 30% 10px 10px 10px;
+    text-align: center;
+    background-color: #f3f0e9;
+    width: 100%;
+    height: 100%;
+  }
+
   /**
    *
    * TABLE COLLECTION
@@ -176,6 +193,16 @@
           border-left: 0;
           border-right: 0;
           border-bottom: 0;
+          cursor: pointer;
+
+          &.st-sort-ascent:before{
+            content: '\25B2';
+          }
+
+          &.st-sort-descent:before{
+            content: '\25BC';
+          }
+
         }
 
       }
