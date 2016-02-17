@@ -38,7 +38,9 @@ if( !class_exists( 'Menufication' ) ) {
       $this->plugin_prefix = "wp_menufication";
       $this->plugin_name   = "Menufication";
       $this->plugin_dir    = plugin_dir_path( dirname( __FILE__ ) );
-      $this->plugin_url    = plugin_dir_url( dirname( __DIR__ ) );
+
+      // @todo make the directory dynamic
+      $this->plugin_url    = plugin_dir_url( dirname( __DIR__ ) ) . 'wp-menufication/';
 
       $this->add_actions();
       $this->add_filters();

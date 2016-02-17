@@ -13,6 +13,5 @@ License:  © IVEO AB 2013 - All Rights Reserved
 require_once( 'lib/class-menuficiation.php' );
 
 if( class_exists( 'Menufication' ) ) {
-
   new Menufication;
 }
