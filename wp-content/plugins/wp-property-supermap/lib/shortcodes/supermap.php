@@ -15,8 +15,8 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
-        add_action( 'wp_ajax_supermap_get_properties', array( __CLASS__,'ajax_get_properties' ) );
-        add_action( 'wp_ajax_nopriv_supermap_get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
 
         $custom_attributes = ud_get_wp_property( 'property_stats', array() );
 
@@ -572,7 +572,7 @@ namespace UsabilityDynamics\WPP {
           'sort_order' => 'ASC',
           'sort_by' => 'menu_order',
           'property_type' => ( $wp_properties['searchable_property_types'] ),
-          'json' => false,
+          'json' => 'false',
         );
 
         $atts = shortcode_atts($defaults, $_REQUEST);
@@ -609,7 +609,7 @@ namespace UsabilityDynamics\WPP {
         //* Prepare Query params */
         $query = \WPP_F::prepare_search_attributes($query);
 
-        if($atts['pagination'] == 'on') {
+        if($atts['pagination'] == 'on' && ( $atts[ 'json' ] == 'false' || $atts[ 'json' ] === false )  ) {
           $query['pagi'] = $atts['starting_row'] . '--' . $atts['per_page'];
         }
         $query['sort_by'] = $atts['sort_by'];
@@ -618,7 +618,7 @@ namespace UsabilityDynamics\WPP {
 
         $result = self::get_properties( $query );
 
-        if( $atts[ 'json' ] ) {
+        if( $atts[ 'json' ] == 'true' || $atts[ 'json' ] === true ) {
           $result[ 'data' ] = array_values( $result[ 'data' ] );
           wp_send_json( $result );
           exit();

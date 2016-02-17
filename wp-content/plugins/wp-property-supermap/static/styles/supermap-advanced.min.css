@@ -154,7 +154,10 @@
      * Show only on click!
      */
 }
-.wpp-advanced-supermap .sm-search-layer .sm-search-filter {
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter-layer {
+  width: 100%;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter-layer .sm-search-filter {
   float: right;
 }
 .wpp-advanced-supermap .sm-search-layer .sm-search-form {

@@ -15,7 +15,7 @@
         <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false">
 
           <div class="sm-search-layer">
-            <div class="clearfix">
+            <div class="sm-search-filter-layer clearfix">
               <button ng-click="toggleSearchForm()" class="sm-search-filter btn "><?php echo apply_filters( 'wpp::supermap::filter::label', __( 'Filter', ud_get_wpp_supermap()->domain ) ); ?></button>
             </div>
             <div class="sm-search-form" ng-show="searchForm">
