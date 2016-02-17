@@ -42,61 +42,139 @@ get_header(); ?>
             </li>
           </ul>
           <form class="buyForm" id="tabs-1">
-              <input id="tags">
-            <select class="speed">
-              <option>Beds</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select class="speed">
-              <option>Baths</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select class="speed">
-              <option>Price</option>
-              <option></option>
-              <option></option>
-            </select>
+            <div class="location">
+              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
+              <input class="tags">
+            </div>
+            <div class="sfBeds">
+              <span>Beds</span>
+              <ul>
+                <li><input type="checkbox" /><label>1</label></li>
+                <li><input type="checkbox" /><label>1.5</label></li>
+                <li><input type="checkbox" /><label>2</label></li>
+                <li><input type="checkbox" /><label>3</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfBaths">
+              <span>Baths</span>
+              <ul>
+                <li><input type="checkbox" /><label>1+</label></li>
+                <li><input type="checkbox" /><label>1.5+</label></li>
+                <li><input type="checkbox" /><label>2+</label></li>
+                <li><input type="checkbox" /><label>3+</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfPrice">
+              <span>Price</span>
+            </div>
             <input type="submit" value="Search" />
           </form>
           <form class="rentForm" id="tabs-2">
-            <select>
-              <option>Location</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select>
-              <option>Baths</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select>
-              <option>Price</option>
-              <option></option>
-              <option></option>
-            </select>
+            <div class="location">
+              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
+              <input class="tags">
+            </div>
+            <div class="sfBeds">
+              <span>Beds</span>
+              <ul>
+                <li><input type="checkbox" /><label>1</label></li>
+                <li><input type="checkbox" /><label>1.5</label></li>
+                <li><input type="checkbox" /><label>2</label></li>
+                <li><input type="checkbox" /><label>3</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfBaths">
+              <span>Baths</span>
+              <ul>
+                <li><input type="checkbox" /><label>1+</label></li>
+                <li><input type="checkbox" /><label>1.5+</label></li>
+                <li><input type="checkbox" /><label>2+</label></li>
+                <li><input type="checkbox" /><label>3+</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfPrice">
+              <span>Price</span>
+            </div>
             <input type="submit" value="Search" />
           </form>
           <form class="sellForm" id="tabs-3">
-            <select>
-              <option>Location</option>
-              <option></option>
-              <option></option>
-            </select>
-            <select>
-              <option>Baths</option>
-              <option></option>
-              <option></option>
-            </select>
+            <div class="location">
+              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
+              <input class="tags">
+            </div>
+            <div class="sfBeds">
+              <span>Beds</span>
+              <ul>
+                <li><input type="checkbox" /><label>1</label></li>
+                <li><input type="checkbox" /><label>1.5</label></li>
+                <li><input type="checkbox" /><label>2</label></li>
+                <li><input type="checkbox" /><label>3</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfBaths">
+              <span>Baths</span>
+              <ul>
+                <li><input type="checkbox" /><label>1+</label></li>
+                <li><input type="checkbox" /><label>1.5+</label></li>
+                <li><input type="checkbox" /><label>2+</label></li>
+                <li><input type="checkbox" /><label>3+</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfPrice">
+              <span>Price</span>
+            </div>
             <input type="submit" value="Search" />
           </form>
           <form class="rentPropForm" id="tabs-4">
-            <select>
-              <option>Location</option>
-              <option></option>
-              <option></option>
-            </select>
+            <div class="location">
+              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
+              <input class="tags">
+            </div>
+            <div class="sfBeds">
+              <span>Beds</span>
+              <ul>
+                <li><input type="checkbox" /><label>1</label></li>
+                <li><input type="checkbox" /><label>1.5</label></li>
+                <li><input type="checkbox" /><label>2</label></li>
+                <li><input type="checkbox" /><label>3</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfBaths">
+              <span>Baths</span>
+              <ul>
+                <li><input type="checkbox" /><label>1+</label></li>
+                <li><input type="checkbox" /><label>1.5+</label></li>
+                <li><input type="checkbox" /><label>2+</label></li>
+                <li><input type="checkbox" /><label>3+</label></li>
+                <li><input type="checkbox" /><label>4</label></li>
+                <li><input type="checkbox" /><label>5</label></li>
+                <li><input type="checkbox" /><label>6</label></li>
+              </ul>
+            </div>
+            <div class="sfPrice">
+              <span>Price</span>
+            </div>
             <input type="submit" value="Search" />
           </form>
         </div>

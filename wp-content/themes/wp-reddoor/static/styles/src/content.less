@@ -216,12 +216,12 @@
     margin: auto;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
-    ul {
+    &>ul {
       margin: 0;
       background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
       border: medium none;
       padding: 0;
-      li {
+      &>li {
         display: inline-block;
         background: rgba(46, 47, 49, 0.6);
         height: 45px;
@@ -249,11 +249,15 @@
       padding: 12px 13px 11px 13px;
       border-radius: 0 5px 5px 5px;
       height: 60px;
-      select {
+      ul {
+        background: #fff none repeat scroll 0 0;
+        padding: 1.5em 1em 1em;
+        display: none;
+        li{
 
+        }
       }
       input {
-
         &[type="submit"] {
           border-radius: 5px;
           background: #cf3428;
@@ -266,19 +270,37 @@
           margin-left: 15px;
         }
         }
-      .ui-autocomplete-input{
+      .location{
+        float: left;
         background: #f8f8f8 none repeat scroll 0 0;
-        border: medium none;
         border-radius: 5px 0 0 5px;
         color: #808285;
-        padding: 0.44em 0.6em;
-        float: left;
+        .ui-autocomplete-input{
+          background: #f8f8f8 none repeat scroll 0 0;
+          border: medium none;
+          padding: 0.44em 0.6em;
+        }
+        .icon-location{
+          margin-left: 10px;
+        }
       }
-    .ui-selectmenu-button{
+    .sfBeds, .sfBaths, .sfPrice{
       border-radius: 0;
       background: #f8f8f8 none repeat scroll 0 0;
-      width: 140px !important;
+      width: 140px;
+      height: 36px;
       float: left;
+      border-left: 1px solid #e6e6e6;
+      span{
+        display: block;
+        height: 36px;
+        line-height: 2.2em;
+        text-align: center;
+        cursor: context-menu;
+      }
+      .sfPrice{
+        border-radius: 0 5px 5px 0;
+      }
     }
     }
   }

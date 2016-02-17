@@ -16,6 +16,7 @@
 <div class="container">
   <div class="row">
     <header>
+      <span class="toggle"><svg class="icon icon-list"><use xlink:href="#icon-list"></use></svg></span>
       <?php if (get_theme_mod('rdc_logo')) : ?>
         <div class='site-logo'>
           <a href='<?php echo esc_url(home_url('/')); ?>'
@@ -28,11 +29,17 @@
             <a href='<?php echo esc_url(home_url('/')); ?>' title='<?php echo esc_attr(get_bloginfo('name', 'display')); ?>' rel='home'><?php bloginfo('name'); ?></a>
           </h1>
       <?php endif; ?>
-      <?php wp_nav_menu(array('menu' => 'Header')); ?>
-      <div class="head-popups">
-        <a href="#">Contact</a>
-        <a href="#">Login</a>
+      <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuDesktop')); ?>
+      <div class="mobileMenu">
+        <span class="closeMobileMenu"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
+        <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuAdaptive')); ?>
+        <a href="#">Login to your Account</a>
       </div>
+      <div class="head-popups">
+        <a class="popUpContactBtn" href="#">Contact</a>
+        <a class="popUpLoginBtn" href="#">Login</a>
+      </div>
+
     </header>
   </div>
 </div>

@@ -18,12 +18,10 @@ get_header(); ?>
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>
         <?php
-        if(is_home() && is_page()) {
+
           the_content();
-        }
-        else{
-          get_template_part('templates/content-main');
-        }
+
+
         ?>
       <?php endwhile; // end of the loop. ?>
     </div><!-- .row -->
