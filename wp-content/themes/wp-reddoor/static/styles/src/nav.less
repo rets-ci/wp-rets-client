@@ -1,9 +1,9 @@
 .menu-header-container {
-  float: left;
-  margin: 28px 0 0 40px;
-  display: block;
-  #menu-header {
+  .menuDesktop {
     position: relative;
+    float: left;
+    margin: 28px 0 0 40px;
+    display: block;
     &>.current-menu-item{
       font-weight: 400;
       background: rgba(0, 0, 0, 0) url('../images/src/arrow.png') no-repeat scroll 10px 43px;
@@ -52,6 +52,9 @@
       }
     }
   }
+  .menuAdaptive{
+    display: none;
+  }
 }
 
 /* Mobile menu */
@@ -62,14 +65,27 @@
   padding: 5%;
   position: absolute;
   min-height: 200px;
-  z-index: 15;
+  z-index: 999;
   left: -80%;
   trasition: 1s;
   display: none;
-  &>ul{
+  overflow-y: scroll;
+  .menuAdaptive{
 
     &>li{
       width: 100%;
+      .sub-menu{
+        padding: 5%;
+        display: none;
+        li{
+
+          a{
+            color: #919093;
+            text-decoration: none;
+            font-size: 1.5em;
+          }
+        }
+      }
       &>a{
         border-bottom: 1px solid #dcddde;
         color: #48474a;

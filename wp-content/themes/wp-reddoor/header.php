@@ -29,14 +29,10 @@
             <a href='<?php echo esc_url(home_url('/')); ?>' title='<?php echo esc_attr(get_bloginfo('name', 'display')); ?>' rel='home'><?php bloginfo('name'); ?></a>
           </h1>
       <?php endif; ?>
-      <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu')); ?>
+      <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuDesktop')); ?>
       <div class="mobileMenu">
         <span class="closeMobileMenu"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
-        <ul>
-          <li><a href="#">Buy</a></li>
-          <li><a href="#">Rent</a></li>
-          <li><a href="#">Sell</a></li>
-        </ul>
+        <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuAdaptive')); ?>
         <a href="#">Login to your Account</a>
       </div>
       <div class="head-popups">
