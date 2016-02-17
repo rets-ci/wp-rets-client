@@ -5,12 +5,11 @@ add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('bootstrap', get_bloginfo('stylesheet_directory') . '/static/scripts/src/bootstrap.js');
   wp_enqueue_script('main', get_bloginfo('stylesheet_directory') . '/static/scripts/src/main.js');
   wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
+  wp_enqueue_script('jquery-1.10.2', get_bloginfo('stylesheet_directory') . '/static/scripts/src/jquery-1.10.2.js');
+  wp_enqueue_script('jquery-ui.js', get_bloginfo('stylesheet_directory') . '/static/scripts/src/jquery-ui.js');
   wp_enqueue_style('style', get_bloginfo('stylesheet_directory') . '/static/styles/style.css');
   wp_enqueue_style('style-svg', 'https://i.icomoon.io/public/524f31be7a/rdc/style-svg.css');
 });
-
-
-
 
 /* Theme support */
 add_theme_support('post-thumbnails');

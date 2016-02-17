@@ -14,25 +14,31 @@
 
 get_header(); ?>
 
+  <script>
+    $(function() {
+      $( "#tabs" ).tabs();
+    });
+  </script>
+
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock">
-        <div class="searchForm tabs_box">
-          <ul class="tabs_menu">
+        <div class="searchForm"  id="tabs">
+          <ul>
             <li class="buyBtnForm currentFormElement">
-              <a href="#tab1" class="active">Buy</a>
+              <a href="#tabs-1" class="active">Buy</a>
             </li>
             <li class="rentBtnForm">
-              <a href="#tab2">Rent</a>
+              <a href="#tabs-2">Rent</a>
             </li>
             <li class="sellBtnForm">
-              <a href="#tab3">Sell your home</a>
+              <a href="#tabs-3">Sell your home</a>
             </li>
             <li class="rentPropBtnForm">
-              <a href="#tab4">Rent your property</a>
+              <a href="#tabs-4">Rent your property</a>
             </li>
           </ul>
-          <form class="buyForm tab" id="tab1">
+          <form class="buyForm" id="tabs-1">
             <select>
               <option>Location</option>
               <option></option>
@@ -55,7 +61,25 @@ get_header(); ?>
             </select>
             <input type="submit" value="Search" />
           </form>
-          <form class="rentForm tab" id="tab2">
+          <form class="rentForm" id="tabs-2">
+            <select>
+              <option>Location</option>
+              <option></option>
+              <option></option>
+            </select>
+            <select>
+              <option>Baths</option>
+              <option></option>
+              <option></option>
+            </select>
+            <select>
+              <option>Price</option>
+              <option></option>
+              <option></option>
+            </select>
+            <input type="submit" value="Search" />
+          </form>
+          <form class="Form" id="tabs-2">
             <select>
               <option>Location</option>
               <option></option>
