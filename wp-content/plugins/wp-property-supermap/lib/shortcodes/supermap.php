@@ -555,7 +555,7 @@ namespace UsabilityDynamics\WPP {
        *
        * @param $query
        */
-      static public function get_properties( $query ) {
+      static public function get_properties( $query, $args = array() ) {
         $result = array(
           'total' => 0,
           'data' => array(),
@@ -565,13 +565,12 @@ namespace UsabilityDynamics\WPP {
         if( !empty( $property_ids ) ) {
           $properties = array();
           foreach ($property_ids['results'] as $key => $id) {
-            $property = prepare_property_for_display( $id, array(
+            $property = prepare_property_for_display( $id, wp_parse_args( $args, array(
               'load_gallery' => 'false',
               'get_children' => 'false',
               'load_parent' => 'false',
               'scope' => 'supermap_sidebar'
-            ) );
-
+            ) ) );
             $properties[$id] = $property;
           }
           $result = array(
@@ -598,6 +597,7 @@ namespace UsabilityDynamics\WPP {
           'sort_by' => 'menu_order',
           'property_type' => ( $wp_properties['searchable_property_types'] ),
           'json' => 'false',
+          'fields' => '',
         );
 
         $atts = shortcode_atts($defaults, $_REQUEST);
@@ -641,7 +641,9 @@ namespace UsabilityDynamics\WPP {
         $query['sort_order'] = $atts['sort_order'];
         //* END Prepare search params for get_properties() */
 
-        $result = self::get_properties( $query );
+        $result = self::get_properties( $query, array(
+          'fields' => $atts[ 'fields' ],
+        ) );
 
         if( $atts[ 'json' ] == 'true' || $atts[ 'json' ] === true ) {
           $result[ 'data' ] = array_values( $result[ 'data' ] );
