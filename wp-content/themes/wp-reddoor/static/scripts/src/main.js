@@ -50,6 +50,9 @@ jQuery(document).ready(function(){
         jQuery(this).siblings(".sfBeds ul, .sfBaths ul").slideToggle("slow");
         return false;
     });
+    jQuery(function($){
+        jQuery("#phone").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+    })
 });
 
 

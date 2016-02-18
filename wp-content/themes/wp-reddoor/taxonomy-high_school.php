@@ -18,10 +18,10 @@
  */
 $term_value = $wp->query_vars[high_school];
 get_header(); ?>
-<?php echo $term_value; ?>
-  <div class="container-fluid">
+
+  <div class="container-fluid upToHeader">
     <div class="row">
-      <?php echo do_shortcode("[supermap mode=advanced high_school=wake-cty-school-district ]"); ?>
+      <?php echo do_shortcode("[supermap mode=advanced high_school=$term_value ]"); ?>
     </div><!-- .row -->
   </div>
 
