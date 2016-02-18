@@ -7,6 +7,7 @@
  *
  * Note! The current view is using AngularJS!
  */
+
 ?>
 <div ng-app="wppSupermap<?php echo rand( 1001, 9999 ); ?>" data-query="<?php echo urlencode( serialize( $query ) ) ?>" data-atts="<?php echo urlencode( serialize( $atts ) ) ?>" class="wpp-advanced-supermap">
 

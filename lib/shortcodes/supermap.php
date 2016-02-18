@@ -307,11 +307,36 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
 
-        // Fix our query
-        // We are getting all data by request. And use ONLY client pagination.
-        if( !empty( $query[ 'pagi' ] ) ) {
-          unset( $query[ 'pagi' ] );
+        // HACK
+        // REDECLARE OUR QUERY.
+
+        //** Load all queriable keys **/
+        $query_keys = array();
+        foreach( \WPP_F::get_queryable_keys() as $key ) {
+          //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
+          $query_keys[ $key ] = false;
         }
+
+        //* START Set query */
+        $query = shortcode_atts($query_keys, $atts);
+
+        if ( isset($_REQUEST['wpp_search'] ) ){
+          $query = shortcode_atts( $query, $_REQUEST['wpp_search'] );
+        }
+
+        /* HACK: Remove attribute with value 'all' from query to avoid search result issues:
+         * Because 'all' means any attribute's value,
+         * But if property has no the attribute, which has value 'all' - query doesn't return this property
+         */
+        foreach ($query as $k => $v) {
+          if($v == 'all' || empty($v)) {
+            unset($query[$k]);
+          }
+        }
+
+        $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
+        $query['sort_by'] = $atts['sort_by'];
+        $query['sort_order'] = $atts['sort_order'];
         $query[ 'pagination' ] = 'off';
 
         /** Try find Supermap Template */
