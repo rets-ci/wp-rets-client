@@ -31,7 +31,7 @@
 
     // Prepare DOM before initialize angular.
 
-    vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts ) ) : {};
+    vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts).replace(/\+/g, " ") ) : {};
 
     if( typeof vars.atts.map_height !== 'undefined' ) {
       ngAppDOM.css( 'height', vars.atts.map_height );
@@ -100,14 +100,22 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
-        console.log( $scope.query );
+        //console.log( $scope.query );
 
         /**
          * Get Properties by provided Query ( filter )
          */
         $scope.getProperties = function getProperties() {
-          //console.log( { "action": "supermap_get_properties", "json": true, "wpp_search": $scope.query } );
-          var getQuery = jQuery.param( { "action": "/supermap/get_properties", "json": true, "wpp_search": $scope.query } );
+          var params = {
+            "action": "/supermap/get_properties",
+            "json": true,
+            "wpp_search": $scope.query,
+            "fields": ( typeof $scope.atts.fields !== 'undefined' ? $scope.atts.fields : '' )
+          };
+
+          //console.log( 'query arguments', params );
+
+          var getQuery = jQuery.param( params );
           $http({
             method: 'GET',
             url: wpp.instance.ajax_url + '?' + getQuery
