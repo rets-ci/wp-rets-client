@@ -12,7 +12,6 @@
     </div>
     <div class="col-md-6">
       <div class="sm-current-property-details">
-        <b>See: themes/wp-reddoor/templates/supermap/current-property.php</b>
         <ul>
           <li class="sm-current-property-title"><a href="{{currentProperty.permalink}}">{{currentProperty.post_title}}</a></li>
           <li class="" ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">
