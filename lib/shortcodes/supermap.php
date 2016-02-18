@@ -338,8 +338,7 @@ namespace UsabilityDynamics\WPP {
         );
         $atts = shortcode_atts( $defaults, $atts );
 
-
-        $fields = array(
+        $atts[ 'fields' ] = array_merge( array(
           'ID',
           'post_title',
           'latitude',
@@ -349,11 +348,9 @@ namespace UsabilityDynamics\WPP {
           'featured_image_url',
           'gallery',
           '_map_marker_url',
-        );
-
-        $fields = array_merge( $fields, ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
-
-        $atts[ 'fields' ] = apply_filters( 'wpp::advanced_supermap::property_fields', $fields );
+        ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
+        $atts[ 'fields' ] = apply_filters( 'wpp::advanced_supermap::property_fields', $atts[ 'fields' ] );
+        $atts[ 'fields' ] = is_array( $atts[ 'fields' ] ) ? implode( ',', $atts[ 'fields' ] ) : $atts[ 'fields' ];
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(
