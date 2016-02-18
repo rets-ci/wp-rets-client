@@ -241,7 +241,7 @@ namespace UsabilityDynamics\WPP {
         //** Load property from cache, or function, if not passed */
         if ( !is_array( $property ) ) {
 
-          if ( $cache_property = wp_cache_get( md5( 'display_' . $property_id . $_args ) ) ) {
+          if ( false && $cache_property = wp_cache_get( md5( 'display_' . $property_id . $_args ) ) ) {
             return $cache_property;
           }
 
@@ -252,7 +252,7 @@ namespace UsabilityDynamics\WPP {
         // Go through children properties
         if ( isset( $property[ 'children' ] ) && is_array( $property[ 'children' ] ) ) {
           foreach ( $property[ 'children' ] as $child => $child_data ) {
-            $property[ 'children' ][ $child ] = prepare_property_for_display( $child_data, $args );
+            $property[ 'children' ][ $child ] = self::prepare_for_display( $child_data, $args );
           }
         }
 
@@ -263,7 +263,7 @@ namespace UsabilityDynamics\WPP {
           if ( !array_key_exists( $meta_key, (array)$attributes ) ) {
             continue;
           }
-          $attribute_data = WPP_F::get_attribute_data($meta_key);
+          $attribute_data = \WPP_F::get_attribute_data($meta_key);
           //** Only executed shortcodes if the value isn't an array */
           if ( !is_array( $attribute_value ) ) {
             if ( ( !empty( $args[ 'do_not_execute_shortcodes' ] ) && $args[ 'do_not_execute_shortcodes' ] == 'true' ) || $meta_key == 'post_content' ) {
@@ -287,6 +287,7 @@ namespace UsabilityDynamics\WPP {
           $property[ $meta_key ] = apply_filters( "wpp_stat_filter_{$meta_key}", $attribute_value, $attribute_scope );
         }
 
+        /*
         if( !empty( $args[ 'fields' ] ) ) {
           $fields = is_array( $args[ 'fields' ] ) ? $args[ 'fields' ] : explode( ',', $args[ 'fields' ] );
           $_property = array();
@@ -296,6 +297,7 @@ namespace UsabilityDynamics\WPP {
           }
           $property = $_property;
         }
+        */
 
         $property[ 'system' ][ 'prepared_for_display' ] = true;
 

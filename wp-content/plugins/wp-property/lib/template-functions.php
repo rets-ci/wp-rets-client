@@ -237,7 +237,7 @@ if ( !function_exists( 'prepare_property_for_display' ) ):
    *
    */
   function prepare_property_for_display( $property, $args = false ) {
-    \UsabilityDynamics\WPP\Property_Factory::prepare_for_display( $property, $args = false );
+    return \UsabilityDynamics\WPP\Property_Factory::prepare_for_display( $property, $args = false );
   }
 endif;
 
