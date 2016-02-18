@@ -188,6 +188,128 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       * Runs all filters through property variables
+       *
+       * Main function for preparing the property object to be displayed on the front-end.
+       * Same args are applied to main object, and child objects that are loade. So if gallery is not loaded for parent, it will not be loaded for children.
+       *
+       * Called in the_post() via WPP_F::the_post()
+       *
+       * @todo There is an issue with quotes being converted to &quot; and not working well when value has a shortcode.
+       * @since 1.4
+       *
+       */
+      static function prepare_for_display( $property, $args = false ) {
+        global $wp_properties;
+
+        $args = wp_parse_args( $args, array(
+          'fields' => '',
+        ) );
+
+        $_args = http_build_query( $args );
+
+        if ( empty( $property ) ) {
+          return;
+        }
+
+        /* Used to apply different filters depending on where the attribute is displayed. i.e. google_map_infobox  */
+        $attribute_scope = ( !empty( $args[ 'scope' ] ) ) ? $args[ 'scope' ] : false;
+
+        $return_type = ( is_object( $property ) ? 'object' : 'array' );
+
+        if ( is_numeric( $property ) ) {
+
+          $property_id = $property;
+
+        } elseif ( is_object( $property ) ) {
+
+          $property = (array) $property;
+          $property_id = $property[ 'ID' ];
+
+        } elseif ( is_array( $property ) ) {
+
+          $property_id = $property[ 'ID' ];
+
+        }
+
+        //** Check if this function has already been done */
+        if ( is_array( $property ) && isset( $property[ 'system' ][ 'prepared_for_display' ] ) ) {
+
+          return $property;
+        }
+
+        //** Load property from cache, or function, if not passed */
+        if ( !is_array( $property ) ) {
+
+          if ( $cache_property = wp_cache_get( md5( 'display_' . $property_id . $_args ) ) ) {
+            return $cache_property;
+          }
+
+          //** Cache not found, load property */
+          $property = (array) self::get( $property_id, $args );
+        }
+
+        // Go through children properties
+        if ( isset( $property[ 'children' ] ) && is_array( $property[ 'children' ] ) ) {
+          foreach ( $property[ 'children' ] as $child => $child_data ) {
+            $property[ 'children' ][ $child ] = prepare_property_for_display( $child_data, $args );
+          }
+        }
+
+        $attributes = ud_get_wp_property( 'property_stats', array() );
+
+        foreach ( $property as $meta_key => $attribute_value ) {
+          //** Only execute shortcodes for defined property attributes to prevent different issues */
+          if ( !array_key_exists( $meta_key, (array)$attributes ) ) {
+            continue;
+          }
+          $attribute_data = WPP_F::get_attribute_data($meta_key);
+          //** Only executed shortcodes if the value isn't an array */
+          if ( !is_array( $attribute_value ) ) {
+            if ( ( !empty( $args[ 'do_not_execute_shortcodes' ] ) && $args[ 'do_not_execute_shortcodes' ] == 'true' ) || $meta_key == 'post_content' ) {
+              continue;
+            }
+            //** Determine if the current attribute is address and set it as display address */
+            if ( $meta_key == $wp_properties[ 'configuration' ][ 'address_attribute' ] && !empty( $property[ 'display_address' ] ) ) {
+              $attribute_value = $property[ 'display_address' ];
+            }
+            // No display formating is needed for wysiwyg because it's formatted.
+            if($attribute_data['data_input_type'] == 'wysiwyg'){
+              $attribute_value = do_shortcode( $attribute_value );
+            }
+            else{
+              $attribute_value = do_shortcode( html_entity_decode( $attribute_value ) );
+              $attribute_value = str_replace( "\n", "", nl2br( $attribute_value ) );
+            }
+
+          }
+          $attribute_value = apply_filters( "wpp::attribute::display", $attribute_value, $meta_key );
+          $property[ $meta_key ] = apply_filters( "wpp_stat_filter_{$meta_key}", $attribute_value, $attribute_scope );
+        }
+
+        if( !empty( $args[ 'fields' ] ) ) {
+          $fields = is_array( $args[ 'fields' ] ) ? $args[ 'fields' ] : explode( ',', $args[ 'fields' ] );
+          $_property = array();
+          foreach( $fields as $field ) {
+            $field = trim( $field );
+            $_property[ $field ] = isset( $property[ $field ] ) ? $property[ $field ] : false;
+          }
+          $property = $_property;
+        }
+
+        $property[ 'system' ][ 'prepared_for_display' ] = true;
+
+        wp_cache_add( md5( 'display_' . $property_id . $_args ), $property );
+
+        if ( $return_type == 'object' ) {
+          return (object) $property;
+        } else {
+          return $property;
+        }
+
+      }
+
+      /**
        * Extends particular property with parent's data.
        * Internal method! Do not use it directly.
        *
