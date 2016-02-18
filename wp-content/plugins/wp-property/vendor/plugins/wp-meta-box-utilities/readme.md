@@ -3,7 +3,7 @@ Set of Utilities to extend default Meta Box plugin functionality in WordPress.
 
 #### Utilities
 
-##### Tabs
+##### Tabs 
 
 To create tabs for your meta box, you need to add 2 parameters to your meta box configuration:
 

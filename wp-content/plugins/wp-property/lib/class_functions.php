@@ -952,7 +952,7 @@ class WPP_F extends UsabilityDynamics\Utility {
     if( !empty( $wp_properties[ 'property_stats' ] ) && !empty( $wp_properties[ 'sortable_attributes' ] ) ) {
       foreach( (array)$wp_properties[ 'property_stats' ] as $slug => $label ) {
         if( in_array( $slug, (array)$wp_properties[ 'sortable_attributes' ] ) ) {
-          $sortable_attrs[ $slug ] = apply_filters('wpp::attribute::label',$label,$slug);
+          $sortable_attrs[ $slug ] = $label;
         }
       }
     }
@@ -3490,24 +3490,15 @@ class WPP_F extends UsabilityDynamics\Utility {
       'label_as_key' => 'true',
     );
     $return_multi = ud_get_wp_property( 'attributes.multiple', array() );
-    // Need to improve the way
-    // By: Md. Alimuzzaman Alim
-    if(($key = array_search('multi_checkbox', $return_multi)) !== false) {
-        unset($return_multi[$key]);
-    }
     if( is_array( $property_object ) ) {
       $property_object = (object) $property_object;
     }
 
     $property_types = $wp_properties['property_types'];
-    $property_type = '';
-    if( !empty( $property_object->property_type ) ) {
-      if( array_key_exists($property_object->property_type, $property_types)) {
-        $property_type = $property_object->property_type;
-      } else {
-        $property_type = array_search($property_object->property_type, $property_types);
-      }
-    }
+    if( array_key_exists($property_object->property_type, $property_types))
+      $property_type = $property_object->property_type;
+    else
+      $property_type = array_search($property_object->property_type, $property_types);
     extract( wp_parse_args( $args, $defaults ), EXTR_SKIP );
 
     $exclude = isset( $exclude ) ? ( is_array( $exclude ) ? $exclude : explode( ',', $exclude ) ) : false;
@@ -3673,7 +3664,6 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     $infobox_style = ( !empty( $infobox_settings[ 'minimum_box_width' ] ) ) ? 'style="min-width: ' . $infobox_settings[ 'minimum_box_width' ] . 'px;"' : '';
 
-    $property_stats = array();
     foreach( $infobox_attributes as $attribute ) {
       if ( !empty( $wp_properties[ 'property_stats' ][ $attribute ] ) ) {
         $property_stats[$attribute] = $wp_properties['property_stats'][$attribute];
@@ -3750,13 +3740,6 @@ class WPP_F extends UsabilityDynamics\Utility {
                   }
                 } elseif( $value == 'false' ) {
                   continue;
-                }
-                // to get attribute label and value translation @auther fadi
-                $attribute_label = apply_filters('wpp::attribute::label', $attribute_label, $attribute_slug);
-                if( $attribute_slug == 'property_type' ){
-                  $value = apply_filters( "wpp_stat_filter_property_type_label", $value );
-                }elseif( !empty($wp_properties["predefined_values"][$attribute_slug]) ){
-                  $value = apply_filters( "wpp::attribute::value", $value, $attribute_slug);
                 }
 
                 $attributes[ ] = '<li class="wpp_google_maps_attribute_row wpp_google_maps_attribute_row_' . $attribute_slug . '">';
@@ -4543,8 +4526,7 @@ class WPP_F extends UsabilityDynamics\Utility {
       }
       //** If the page doesn't exist, return default url ( base_slug ) */
       if( empty( $page_id ) ) {
-        $home_url = explode( '?', home_url() );
-        $permalink = $home_url[0] . "/" . ( !is_numeric( $page ) ? $page : $wp_properties[ 'configuration' ][ 'base_slug' ] ) . ( !empty( $home_url[1] ) ? '?' . $home_url[1] : '/' );
+        $permalink = home_url() . "/" . ( !is_numeric( $page ) ? $page : $wp_properties[ 'configuration' ][ 'base_slug' ] ) . '/';
       } else {
         $permalink = get_permalink( $page_id );
       }
@@ -4662,100 +4644,6 @@ class WPP_F extends UsabilityDynamics\Utility {
     return false;
   }
 
-
-  /**
-   * Apply default value to all new and empty and existing properties.
-   *
-   * @param none
-   *
-   * @return nothing.
-   * @author Md. Alimuzzaman Alim
-   * @since 2.1.5
-   */
-  static function apply_default_value( ) {
-    global $wpdb;
-    $replaced_row = 0;
-    $added_row = 0;
-    $prefix = $wpdb->prefix;
-    $data = $_POST['data'];
-    $attribute = $data['attribute'];
-    $value = $data['value'];
-    $response = array();
-    $property_label         = WPP_F::property_label();
-    $property_label_plural  = WPP_F::property_label( 'plural' );
-
-    $chk_meta_key = "SELECT DISTINCT p.ID FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id  WHERE p.post_type = 'property' AND pm.meta_key = '$attribute'";
-    if(isset($data['confirmed']) && $data['confirmed']){
-      if ($data['confirmed'] == 'all') {
-        $sql = "UPDATE {$wpdb->posts} AS p INNER JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id SET pm.meta_value = '$value' WHERE p.post_type = 'property' AND pm.meta_key = '$attribute'";
-        $replaced_row = $wpdb->query($sql);
-      }
-
-      if ($data['confirmed'] == 'all' || $data['confirmed'] == 'empty-or-not-exist') {
-        $_chk_meta_key = "SELECT DISTINCT p.ID FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id  WHERE p.post_type = 'property' AND pm.meta_key = '$attribute' and pm.meta_value != ''";
-        $sql = "SELECT DISTINCT p.ID FROM {$wpdb->posts} AS p WHERE p.post_type = 'property' AND p.ID NOT IN($_chk_meta_key)";
-        $results = $wpdb->get_results($sql);
-        foreach ($results as $post) {
-          $wpdb->insert(
-                        $wpdb->postmeta,
-                        array(
-                          'post_id' => $post->ID,
-                          'meta_key' => $attribute,
-                          'meta_value' => $value,
-                          )
-                      );
-        }
-        $added_row = count($results);
-      }
-      //"Attributes replaced in $replaced_row Property and added in $added_row Property."
-
-      // Whether it's plural or not.
-      $replaced_property_label = ($replaced_row>1)? $property_label_plural:$property_label;
-      $added_property_label   = ($added_row>1)? $property_label_plural:$property_label;
-      $response = array(
-                    'status' => "replaced",
-                    'message' => sprintf( __( "Attributes replaced in %d %s and added in %d %s.", ud_get_wp_property()->domain ), number_format_i18n($replaced_row), $replaced_property_label, number_format_i18n($added_row), $added_property_label ),
-                  );
-    }
-    else{
-      $chk_meta_results = $wpdb->get_results($chk_meta_key);
-      if(is_array($chk_meta_results) && $count = count($chk_meta_results)){
-        $key_exist_property_label   = ($count>1)? $property_label_plural:$property_label;
-        $_those  = __("those", ud_get_wp_property()->domain );
-        $_values = __("values", ud_get_wp_property()->domain );
-        $str_that = _n( "that", $_those, $count, ud_get_wp_property()->domain );
-        $str_value = _n( "value", $_values, $count, ud_get_wp_property()->domain );
-        $response = array(
-                          'status' => "confirm",
-                          'message' => sprintf( __( "Attribute value already exist (In %d %s). Do you want to replace %s %s?", ud_get_wp_property()->domain ), number_format_i18n($count), $key_exist_property_label, $str_that, $str_value),
-                        );
-      }
-      else{
-        $sql = "SELECT DISTINCT p.ID FROM {$wpdb->posts} AS p WHERE p.post_type = 'property' AND p.ID";
-        $results = $wpdb->get_results($sql);
-        $count = count($results);
-        $property_label   = ($count>1)? $property_label_plural:$property_label;
-        foreach ($results as $post) {
-          $wpdb->insert(
-                        $wpdb->postmeta,
-                        array(
-                          'post_id' => $post->ID,
-                          'meta_key' => $attribute,
-                          'meta_value' => $value,
-                          )
-                      );
-        }
-        
-        $response = array(
-                          'status' => 'success',
-                          'message' => sprintf( __( "Applied to %d %s.", ud_get_wp_property()->domain), number_format_i18n($count), $property_label),
-                        );
-      }
-    }
-
-    echo json_encode($response);
-  }
-
 }
 
 /**
@@ -4836,4 +4724,3 @@ if( !function_exists( 'property_feed' ) ) {
 
   }
 }
-

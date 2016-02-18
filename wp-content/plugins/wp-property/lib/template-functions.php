@@ -567,11 +567,6 @@ if ( !function_exists( 'draw_stats' ) ):
       elseif ( isset( $attribute_data[ 'data_input_type' ] ) && $attribute_data[ 'data_input_type' ] == 'oembed') {
         $value = wp_oembed_get(trim($value));
       }
-      elseif ( isset( $attribute_data[ 'data_input_type' ] ) && $attribute_data[ 'data_input_type' ] == 'date') {
-        $time = strtotime($value);
-        $format = get_option('date_format');
-        $value = date($format, $time);
-      }
       elseif ( isset( $attribute_data[ 'data_input_type' ] ) && $attribute_data[ 'data_input_type' ] == 'file_advanced') {
         wp_enqueue_style( 'front-file-style', ud_get_wp_property()->path( 'static/styles/fields/front-file.css' ), array(), ud_get_wp_property( 'version' ) );
 
@@ -653,36 +648,10 @@ if ( !function_exists( 'draw_stats' ) ):
     }
 
     if ( $display == 'array' ) {
-
       if( $sort_by_groups == 'true' && is_array( $groups ) ) {
-
         $stats = sort_stats_by_groups( $stats );
-
-        foreach ( $stats as $gslug => $gstats ) {
-
-          foreach ( $gstats as $tag => $data ) {
-            $data[ 'label' ] = apply_filters('wpp::attribute::label', $data[ 'label' ]);
-            //check if the tag is property type to get the translated value for it
-            $data[ 'value' ] = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : apply_filters('wpp::attribute::value',$data[ 'value' ],$tag);
-            $gstats[ $tag ] = $data;
-          }
-
-          $stats[$gslug] = $gstats;
-        }
-
-      } else {
-
-        foreach ( $stats as $tag => $data ) {
-          $data[ 'label' ] = apply_filters('wpp::attribute::label', $data[ 'label' ]);
-          //check if the tag is property type to get the translated value for it
-          $data[ 'value' ] = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : apply_filters('wpp::attribute::value',$data[ 'value' ],$tag);
-          $stats[ $tag ] = $data;
-        }
-
       }
-
       return $stats;
-
     }
 
     $alt = $first_alt == 'true' ? "" : "alt";
@@ -694,7 +663,7 @@ if ( !function_exists( 'draw_stats' ) ):
         
         $label = apply_filters('wpp::attribute::label', $data[ 'label' ]);
         //check if the tag is property type to get the translated value for it
-        $value = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : apply_filters('wpp::attribute::value',$data[ 'value' ],$tag);
+        $value = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : $data[ 'value' ];
         $alt = ( $alt == "alt" ) ? "" : "alt";
         
         switch ( $display ) {
@@ -741,7 +710,7 @@ if ( !function_exists( 'draw_stats' ) ):
         if ( $main_stats_group != $gslug || !@array_key_exists( $gslug, $groups ) ) {
           $group_name = ( @array_key_exists( $gslug, $groups ) ? $groups[ $gslug ][ 'name' ] : __( 'Other', ud_get_wp_property()->domain ) );
           ?>
-          <h2 class="wpp_stats_group"><?php echo $group_name;  ?></h2>
+          <h2 class="wpp_stats_group"><?php echo $group_name; ?></h2>
         <?php
         }
 
@@ -770,7 +739,7 @@ if ( !function_exists( 'draw_stats' ) ):
               <?php
               $label = apply_filters('wpp::attribute::label',$data[ 'label' ]);
               //check if the tag is property type to get the translated value for it
-              $value = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : apply_filters('wpp::attribute::value',$data[ 'value' ],$tag);
+              $value = ($tag == 'property_type') ? apply_filters('wpp_stat_filter_property_type',$data[ 'value' ]) : $data[ 'value' ];
               $alt = ( $alt == "alt" ) ? "" : "alt";
               ?>
               <li class="<?php echo $stats_prefix; ?>_<?php echo $tag; ?> wpp_stat_plain_list_<?php echo $tag; ?> <?php echo $alt; ?>">
@@ -851,18 +820,18 @@ if ( !function_exists( 'sort_stats_by_groups' ) ):
           case 'city':
             if ( empty( $stats_groups[ 'city' ] ) ) {
               $g_slug = $main_stats_group;
-            } else {
-              $g_slug = '_other';
             }
-            break;
-          default:
-            $g_slug = '_other';
             break;
         }
       }
 
-      //** Build array of attributes in groups */
-      $filtered_stats[ $g_slug ][ $slug ] = $data;
+      if ( $g_slug && !array_key_exists( $g_slug, $groups ) ) {
+        //** Build array of attributes WITHOUT groups */
+        $filtered_stats[ 0 ][ $slug ] = $data;
+      } else {
+        //** Build array of attributes in groups */
+        $filtered_stats[ $g_slug ][ $slug ] = $data;
+      }
     }
 
     //** Cycle back through to make sure we don't have any empty groups */
@@ -885,9 +854,8 @@ if ( !function_exists( 'sort_stats_by_groups' ) ):
         unset( $filtered_stats[$key] );
       }
     }
-
     $filtered_stats = $main_ordered + $ordered + $filtered_stats;
-
+    
     //echo "<pre>";print_r($filtered_stats);echo "</pre>";die();
     return $filtered_stats;
   }
@@ -1025,10 +993,7 @@ if ( !function_exists( 'draw_property_search_form' ) ):
       foreach ( $search_attributes as $attrib ) {
         //** Override search values if they are set in the developer tab */
         if ( !empty( $wp_properties[ 'predefined_search_values' ][ $attrib ] ) ) {
-          //*wpp::attribute::value will return predefined values based on attribute name
-          // if WPML not active will return the first value @fadi*/
-          $maybe_search_values = explode( ',', apply_filters('wpp::attribute::value',$wp_properties[ 'predefined_search_values' ][ $attrib ],$attrib) );
-          
+          $maybe_search_values = explode( ',', $wp_properties[ 'predefined_search_values' ][ $attrib ] );
           if ( is_array( $maybe_search_values ) ) {
             $using_predefined_values = true;
             $search_values[ $attrib ] = $maybe_search_values;
@@ -1092,6 +1057,7 @@ endif;
 if ( !function_exists( 'wpp_render_search_input' ) ):
   function wpp_render_search_input( $args = false ) {
     global $wp_properties;
+
     extract( $args = wp_parse_args( $args, array(
       'type' => 'input',
       'input_type' => false,
@@ -1464,14 +1430,3 @@ if ( !function_exists( 'wpp_css' ) ):
   }
 
 endif;
-
-
-/**
- * Will class to body if on mobile device.
- */
-add_filter( 'body_class','wpp_is_mobile_body_class' );
-function wpp_is_mobile_body_class( $classes ) {
-  if(wp_is_mobile())
-    $classes[] = 'wpp_is_mobile';
-  return $classes;
-}

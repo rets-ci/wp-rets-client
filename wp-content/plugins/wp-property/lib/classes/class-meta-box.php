@@ -52,14 +52,9 @@ namespace UsabilityDynamics\WPP {
           return;
         }
 
-        // Init \RW_Meta_Box defines if needed
-        if ( !defined( 'RWMB_VER' ) ) {
-          $reflector = new \ReflectionClass( '\RW_Meta_Box' );
-          $file = dirname( dirname( $reflector->getFileName() ) ) . '/meta-box.php';
-          if( !file_exists( $file ) ) {
-            return;
-          }
-          include_once( $file );
+        // Init \RW_Meta_Box if needed
+        if ( !defined( 'RWMB_VER' ) && class_exists( 'RWMB_Loader' ) ) {
+          new \RWMB_Loader;
         }
       }
 
@@ -453,14 +448,14 @@ namespace UsabilityDynamics\WPP {
           }
 
           $default = isset($defaults[$slug])?$defaults[$slug]:"";
-          //if(!empty($default) && $attribute['multiple']){
-          //  $_defaults = explode(',', $default);
-          //  $default = array();
-          //  foreach ($_defaults as $key => $d) {
-          //    $d = trim( preg_replace( "/\r|\n/", "", $d ) );
-          //    $default[esc_attr( $d ) ] = apply_filters( 'wpp_stat_filter_' . $slug, $d );
-          //  }
-          //}
+          if(!empty($default) && $attribute['multiple']){
+            $_defaults = explode(',', $default);
+            $default = array();
+            foreach ($_defaults as $key => $d) {
+              $d = trim( preg_replace( "/\r|\n/", "", $d ) );
+              $default[esc_attr( $d ) ] = apply_filters( 'wpp_stat_filter_' . $slug, $d );
+            }
+          }
           /**
            * Well, init field now.
            */

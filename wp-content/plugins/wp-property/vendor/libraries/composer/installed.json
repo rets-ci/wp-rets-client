@@ -6,16 +6,16 @@
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e"
+            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/6213d900e92647831f7a406d5c530ea1f3d4360e",
-            "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e",
+            "url": "https://api.github.com/repos/composer/installers/zipball/bd9b14f094c89c8b5804a4e41edeb7853bb85046",
+            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046",
             "shasum": ""
         },
         "require": {
-            "composer-plugin-api": "^1.0"
+            "composer-plugin-api": "1.0.0"
         },
         "replace": {
             "roundcube/plugin-installer": "*",
@@ -25,7 +25,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2016-01-27 12:54:22",
+        "time": "2015-10-29 23:28:48",
         "type": "composer-plugin",
         "extra": {
             "class": "Composer\\Installers\\Plugin",
@@ -272,16 +272,16 @@
     },
     {
         "name": "usabilitydynamics/lib-ud-api-client",
-        "version": "1.1.5",
-        "version_normalized": "1.1.5.0",
+        "version": "1.1.4",
+        "version_normalized": "1.1.4.0",
         "source": {
             "type": "git",
             "url": "git@github.com:UsabilityDynamics/lib-ud-api-client",
-            "reference": "1.1.5"
+            "reference": "1.1.4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/lib-ud-api-client/archive/1.1.5.zip",
+            "url": "https://github.com/UsabilityDynamics/lib-ud-api-client/archive/1.1.4.zip",
             "reference": null,
             "shasum": null
         },
@@ -484,21 +484,18 @@
     },
     {
         "name": "usabilitydynamics/wp-meta-box",
-        "version": "4.5.2.1",
-        "version_normalized": "4.5.2.1",
+        "version": "master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "git@github.com:UsabilityDynamics/wp-meta-box",
-            "reference": "4.5.2.1"
+            "reference": "master"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/wp-meta-box/archive/4.5.2.1.zip",
+            "url": "https://github.com/UsabilityDynamics/wp-meta-box/archive/master.zip",
             "reference": null,
             "shasum": null
-        },
-        "require": {
-            "composer/installers": "~1.0"
         },
         "type": "wordpress-plugin",
         "extra": {
@@ -507,19 +504,20 @@
         "installation-source": "dist",
         "autoload": {
             "files": [
-                "meta-box-loader.php"
+                "meta-box.php"
             ],
             "classmap": [
+                "inc/",
                 "inc/fields",
-                "inc/common.php",
                 "inc/field.php",
-                "inc/field-multiple-values.php",
+                "inc/meta-box.php",
+                "inc/validation.php",
                 "inc/helpers.php",
-                "inc/meta-box.php"
+                "inc/core.php"
             ]
         },
         "license": [
-            "GPLv2"
+            "GPL-2.0"
         ],
         "authors": [
             {
@@ -530,8 +528,9 @@
             }
         ],
         "description": "Easily create custom meta boxes in WordPress.",
-        "homepage": "http://www.deluxeblogtips.com/meta-box/",
+        "homepage": "http://metabox.io",
         "keywords": [
+            "custom-field",
             "meta-box",
             "select2",
             "ui",
@@ -542,16 +541,16 @@
     },
     {
         "name": "usabilitydynamics/wp-meta-box-utilities",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
         "source": {
             "type": "git",
             "url": "git@github.com:UsabilityDynamics/wp-meta-box-utilities",
-            "reference": "1.0.2"
+            "reference": "1.0.3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/UsabilityDynamics/wp-meta-box-utilities/archive/1.0.2.zip",
+            "url": "https://github.com/UsabilityDynamics/wp-meta-box-utilities/archive/1.0.3.zip",
             "reference": null,
             "shasum": null
         },

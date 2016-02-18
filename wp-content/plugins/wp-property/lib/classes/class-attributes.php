@@ -94,20 +94,6 @@ namespace UsabilityDynamics\WPP {
           ),
         ));
 
-
-        /**
-         * Set supported type for default value.
-         */
-        ud_get_wp_property()->set('attributes.default', array(
-          'input'           => 'text',
-          'number'          => 'text',
-          'currency'        => 'text',
-          'url'             => 'text',
-          'oembed'          => 'text',
-          'textarea'        => 'textarea',
-          'wysiwyg'         => 'textarea',
-        ));
-
         /**
          * Set schema for multiple attributes types.
          */

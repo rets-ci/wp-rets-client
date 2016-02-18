@@ -58,7 +58,6 @@ class ChildPropertiesWidget extends \UsabilityDynamics\WPP\Widget {
         'post_parent' => $post->ID,
         'orderby' => $data[ 'sort_by' ],
         'order' => $data[ 'sort_order' ],
-        'suppress_filters' => 0
     ) );
 
     if ( count( $data[ 'properties' ] ) < 1 ) {
