@@ -555,7 +555,7 @@ namespace UsabilityDynamics\WPP {
        *
        * @param $query
        */
-      static public function get_properties( $query ) {
+      static public function get_properties( $query, $args = array() ) {
         $result = array(
           'total' => 0,
           'data' => array(),
@@ -565,13 +565,12 @@ namespace UsabilityDynamics\WPP {
         if( !empty( $property_ids ) ) {
           $properties = array();
           foreach ($property_ids['results'] as $key => $id) {
-            $property = prepare_property_for_display( $id, array(
+            $property = prepare_property_for_display( $id, wp_parse_args( $args, array(
               'load_gallery' => 'false',
               'get_children' => 'false',
               'load_parent' => 'false',
               'scope' => 'supermap_sidebar'
-            ) );
-
+            ) ) );
             $properties[$id] = $property;
           }
           $result = array(
