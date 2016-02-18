@@ -212,7 +212,7 @@
   height: 555px;
   padding-top: 10%;
   .searchForm {
-    width: 950px;
+    width: 60%;
     margin: auto;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
@@ -283,6 +283,12 @@
         .icon-location{
           margin-left: 10px;
         }
+        .tags{
+          &::-webkit-input-placeholder {color:#242526;}
+          &::-moz-placeholder          {color:#242526;}/* Firefox 19+ */
+          &:-moz-placeholder           {color:#242526;}/* Firefox 18- */
+          &:-ms-input-placeholder      {color:#242526;}
+        }
       }
     .sfBeds, .sfBaths, .sfPrice{
       border-radius: 0;
@@ -295,12 +301,17 @@
         display: block;
         height: 36px;
         line-height: 2.2em;
-        text-align: center;
         cursor: context-menu;
+        color: #808285;
       }
       .sfPrice{
         border-radius: 0 5px 5px 0;
       }
+      .icon-beds, .icon-baths, .icon-price{
+        margin-left: 15px;
+        margin-right: 20px;
+      }
+
     }
     }
   }

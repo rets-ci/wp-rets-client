@@ -26,160 +26,51 @@ get_header(); ?>
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock">
-        <div class="searchForm"  id="tabs">
-          <ul>
-            <li class="buyBtnForm currentFormElement">
-              <a href="#tabs-1" class="active">Buy</a>
-            </li>
-            <li class="rentBtnForm">
-              <a href="#tabs-2">Rent</a>
-            </li>
-            <li class="sellBtnForm">
-              <a href="#tabs-3">Sell your home</a>
-            </li>
-            <li class="rentPropBtnForm">
-              <a href="#tabs-4">Rent your property</a>
-            </li>
-          </ul>
-          <form class="buyForm" id="tabs-1">
-            <div class="location">
-              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-              <input class="tags">
-            </div>
-            <div class="sfBeds">
-              <span>Beds</span>
-              <ul>
-                <li><input type="checkbox" /><label>1</label></li>
-                <li><input type="checkbox" /><label>1.5</label></li>
-                <li><input type="checkbox" /><label>2</label></li>
-                <li><input type="checkbox" /><label>3</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfBaths">
-              <span>Baths</span>
-              <ul>
-                <li><input type="checkbox" /><label>1+</label></li>
-                <li><input type="checkbox" /><label>1.5+</label></li>
-                <li><input type="checkbox" /><label>2+</label></li>
-                <li><input type="checkbox" /><label>3+</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfPrice">
-              <span>Price</span>
-            </div>
-            <input type="submit" value="Search" />
-          </form>
-          <form class="rentForm" id="tabs-2">
-            <div class="location">
-              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-              <input class="tags">
-            </div>
-            <div class="sfBeds">
-              <span>Beds</span>
-              <ul>
-                <li><input type="checkbox" /><label>1</label></li>
-                <li><input type="checkbox" /><label>1.5</label></li>
-                <li><input type="checkbox" /><label>2</label></li>
-                <li><input type="checkbox" /><label>3</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfBaths">
-              <span>Baths</span>
-              <ul>
-                <li><input type="checkbox" /><label>1+</label></li>
-                <li><input type="checkbox" /><label>1.5+</label></li>
-                <li><input type="checkbox" /><label>2+</label></li>
-                <li><input type="checkbox" /><label>3+</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfPrice">
-              <span>Price</span>
-            </div>
-            <input type="submit" value="Search" />
-          </form>
-          <form class="sellForm" id="tabs-3">
-            <div class="location">
-              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-              <input class="tags">
-            </div>
-            <div class="sfBeds">
-              <span>Beds</span>
-              <ul>
-                <li><input type="checkbox" /><label>1</label></li>
-                <li><input type="checkbox" /><label>1.5</label></li>
-                <li><input type="checkbox" /><label>2</label></li>
-                <li><input type="checkbox" /><label>3</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfBaths">
-              <span>Baths</span>
-              <ul>
-                <li><input type="checkbox" /><label>1+</label></li>
-                <li><input type="checkbox" /><label>1.5+</label></li>
-                <li><input type="checkbox" /><label>2+</label></li>
-                <li><input type="checkbox" /><label>3+</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfPrice">
-              <span>Price</span>
-            </div>
-            <input type="submit" value="Search" />
-          </form>
-          <form class="rentPropForm" id="tabs-4">
-            <div class="location">
-              <svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-              <input class="tags">
-            </div>
-            <div class="sfBeds">
-              <span>Beds</span>
-              <ul>
-                <li><input type="checkbox" /><label>1</label></li>
-                <li><input type="checkbox" /><label>1.5</label></li>
-                <li><input type="checkbox" /><label>2</label></li>
-                <li><input type="checkbox" /><label>3</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfBaths">
-              <span>Baths</span>
-              <ul>
-                <li><input type="checkbox" /><label>1+</label></li>
-                <li><input type="checkbox" /><label>1.5+</label></li>
-                <li><input type="checkbox" /><label>2+</label></li>
-                <li><input type="checkbox" /><label>3+</label></li>
-                <li><input type="checkbox" /><label>4</label></li>
-                <li><input type="checkbox" /><label>5</label></li>
-                <li><input type="checkbox" /><label>6</label></li>
-              </ul>
-            </div>
-            <div class="sfPrice">
-              <span>Price</span>
-            </div>
-            <input type="submit" value="Search" />
-          </form>
-        </div>
+        <?php get_template_part('templates/search-form'); ?>
       </section>
     </div>
+    <section>
+      <div class="popupContactUs" style="display: none;">
+        <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
+        <ul>
+          <li class="pupBuy">
+            <a href="#">
+              <span></span><div>I want to buy a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+            </a>
+          </li>
+          <li class="pupRent">
+            <a href="#">
+            <span></span><div>I want to rent a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+            </a>
+          </li>
+          <li class="pupSell">
+            <a href="#">
+            <span></span><div>I want to sell my home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+            </a>
+          </li>
+          <li class="pupRentProp">
+            <a href="#">
+            <span></span><div>I went to rent my property</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="popupLogin">
+        <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
+        <ul>
+          <li>
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/landlord.png" alt="" />
+            <span>Lanlord</span>
+            <a href="">Lanlord Login</a>
+          </li>
+          <li>
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/tenant.png" alt="" />
+            <span>Tenant</span>
+            <a href="">Tenant Login</a>
+          </li>
+          </ul>
+      </div>
+    </section>
   </div>
 
   <div class="container">

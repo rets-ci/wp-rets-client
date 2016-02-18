@@ -39,7 +39,6 @@
         <a class="popUpContactBtn" href="#">Contact</a>
         <a class="popUpLoginBtn" href="#">Login</a>
       </div>
-
     </header>
   </div>
 </div>
