@@ -92,8 +92,13 @@
     right: 10px;
     z-index: 99;
 
-    .sm-search-filter {
-      float: right;
+    .sm-search-filter-layer {
+      width: 100%;
+
+      .sm-search-filter {
+        float: right;
+      }
+
     }
 
     /**
@@ -108,7 +113,9 @@
       border-radius: 5px;
 
       input[name*="min"],
-      input[name*="max"] {
+      input[name*="max"],
+      select[name*="min"],
+      select[name*="max"] {
         max-width: 100px;
       }
 

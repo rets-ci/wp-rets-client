@@ -154,7 +154,10 @@
      * Show only on click!
      */
 }
-.wpp-advanced-supermap .sm-search-layer .sm-search-filter {
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter-layer {
+  width: 100%;
+}
+.wpp-advanced-supermap .sm-search-layer .sm-search-filter-layer .sm-search-filter {
   float: right;
 }
 .wpp-advanced-supermap .sm-search-layer .sm-search-form {
@@ -166,7 +169,9 @@
   border-radius: 5px;
 }
 .wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="min"],
-.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="max"] {
+.wpp-advanced-supermap .sm-search-layer .sm-search-form input[name*="max"],
+.wpp-advanced-supermap .sm-search-layer .sm-search-form select[name*="min"],
+.wpp-advanced-supermap .sm-search-layer .sm-search-form select[name*="max"] {
   max-width: 100px;
 }
 .wpp-advanced-supermap .sm-sidebar-top {

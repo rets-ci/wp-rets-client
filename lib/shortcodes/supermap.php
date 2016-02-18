@@ -288,15 +288,6 @@ namespace UsabilityDynamics\WPP {
        */
       static public function render_advanced_mode_view( $query, $atts = array() ) {
 
-        $atts = array_filter( (array)$atts );
-
-        $defaults = array(
-          'map_height' => '550',
-          'per_page' => '10'
-        );
-
-        $atts = shortcode_atts( $defaults, $atts );
-
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
         wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
         wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
@@ -307,12 +298,45 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
 
-        // Fix our query
-        // We are getting all data by request. And use ONLY client pagination.
-        if( !empty( $query[ 'pagi' ] ) ) {
-          unset( $query[ 'pagi' ] );
+        // HACK
+        // REDECLARE OUR QUERY.
+
+        //** Load all queriable keys **/
+        $query_keys = array();
+        foreach( \WPP_F::get_queryable_keys() as $key ) {
+          //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
+          $query_keys[ $key ] = false;
         }
+
+        //* START Set query */
+        $query = shortcode_atts($query_keys, $atts);
+
+        if ( isset($_REQUEST['wpp_search'] ) ){
+          $query = shortcode_atts( $query, $_REQUEST['wpp_search'] );
+        }
+
+        /* HACK: Remove attribute with value 'all' from query to avoid search result issues:
+         * Because 'all' means any attribute's value,
+         * But if property has no the attribute, which has value 'all' - query doesn't return this property
+         */
+        foreach ($query as $k => $v) {
+          if($v == 'all' || empty($v)) {
+            unset($query[$k]);
+          }
+        }
+
+        $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
+        $query['sort_by'] = $atts['sort_by'];
+        $query['sort_order'] = $atts['sort_order'];
         $query[ 'pagination' ] = 'off';
+
+        //* Prepare out $atts. Leave only necessary data. */
+        $atts = array_filter( (array)$atts );
+        $defaults = array(
+          'map_height' => '550',
+          'per_page' => '10'
+        );
+        $atts = shortcode_atts( $defaults, $atts );
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(
