@@ -361,7 +361,7 @@
 
           // Extend scope query with Property Search Form params
           //angular.extend( $scope.query, formQuery.wpp_search );
-          $scope.query = typeof locationQuery.wpp_search !== 'undefined' ? locationQuery.wpp_search : {};
+          //$scope.query = typeof locationQuery.wpp_search !== 'undefined' ? locationQuery.wpp_search : {};
 
           $scope.$apply();
           $scope.getProperties();
