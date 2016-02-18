@@ -571,6 +571,12 @@ namespace UsabilityDynamics\WPP {
               'load_parent' => 'false',
               'scope' => 'supermap_sidebar'
             ) );
+
+            echo "<pre>";
+            var_dump( $property );
+            echo "</pre>";
+            die();
+
             $properties[$id] = $property;
           }
           $result = array(
