@@ -597,6 +597,7 @@ namespace UsabilityDynamics\WPP {
           'sort_by' => 'menu_order',
           'property_type' => ( $wp_properties['searchable_property_types'] ),
           'json' => 'false',
+          'fields' => '',
         );
 
         $atts = shortcode_atts($defaults, $_REQUEST);
@@ -640,7 +641,9 @@ namespace UsabilityDynamics\WPP {
         $query['sort_order'] = $atts['sort_order'];
         //* END Prepare search params for get_properties() */
 
-        $result = self::get_properties( $query );
+        $result = self::get_properties( $query, array(
+          'fields' => $atts[ 'fields' ],
+        ) );
 
         if( $atts[ 'json' ] == 'true' || $atts[ 'json' ] === true ) {
           $result[ 'data' ] = array_values( $result[ 'data' ] );
