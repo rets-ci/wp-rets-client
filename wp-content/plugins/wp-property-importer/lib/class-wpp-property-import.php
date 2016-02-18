@@ -326,7 +326,7 @@ class class_wpp_property_import {
     /** First, get all the possible ids */
     $schedule_post_ids = $wpdb->get_col( "
       SELECT DISTINCT post_id
-      FROM {$wpdb->prefix}postmeta
+      FROM {$wpdb->postmeta}
       WHERE meta_key = 'wpp_import_schedule_id'
         AND meta_value = '{$schedule_id}'
         AND {$cb} = {$cb}
@@ -747,7 +747,7 @@ class class_wpp_property_import {
       self::maybe_echo_log( 'Attempting to call URL: ' . $url );
       add_filter( 'use_curl_transport', create_function( '$value', 'return false;' ) );
       if( !XMLI_SYSTEM_COMMAND_CRON ) {
-        $result = wp_remote_get( $url, array( 'blocking' => false, 'headers' => array( 'Cache-Control' => 'private, max-age=0, no-cache, no-store, must-revalidate' ) ) );
+        $result = wp_remote_get( $url, array( 'blocking' => false, 'sslverify'   => false, 'headers' => array( 'Cache-Control' => 'private, max-age=0, no-cache, no-store, must-revalidate' ) ) );
         do_action( 'xmli_wp_remote_get', $url );
       } else {
         exec( 'nohup curl "' . $url . '" > /dev/null 2>&1 &' );
@@ -3038,7 +3038,7 @@ class class_wpp_property_import {
       if( $method == 'post' && count( $newvars ) && !empty( $newvars ) ) {
         $return = wp_remote_post( $url, array( 'timeout' => apply_filters( 'wpp_xi_wp_remote_timeout', 300, array( 'method' => $method, 'url' => $url ) ), 'body' => array( 'request' => serialize( $newvars ) ) ) );
       } else {
-        $return = wp_remote_get( $url, array( 'timeout' => apply_filters( 'wpp_xi_wp_remote_timeout', 300, array( 'method' => $method, 'url' => $url ) ) ) );
+        $return = wp_remote_get( $url, array( 'sslverify'   => false, 'timeout' => apply_filters( 'wpp_xi_wp_remote_timeout', 300, array( 'method' => $method, 'url' => $url ) ) ) );
       }
 
       //** Check if data is JSON or XML */
@@ -3071,6 +3071,8 @@ class class_wpp_property_import {
 
         /** Get my rets object */
         $rets = class_wpp_property_import::connect_rets( $import );
+
+        //class_wpp_property_import::maybe_echo_log( "Raw feed data loaded from cache." );
 
         /** Include our function here to write arrays to XML */
         if( !function_exists( 'write' ) ) {
@@ -3128,16 +3130,22 @@ class class_wpp_property_import {
         //$rets_photo = !empty( $import['rets_photo'] ) ? $import['rets_photo'] : self::$default_rets_photo;
         /** Determine our Query */
         $rets_query = !empty( $import[ 'rets_query' ] ) ? $import[ 'rets_query' ] : self::$default_rets_query;
+
         /** Do our dynamic dates */
         $rets_query = str_replace( array(
+          '[yesterday]',
+          '[this_week]',
           '[this_month]',
           '[next_month]',
           '[previous_month]'
         ), array(
+          date( "Y-m-d", strtotime( '-1 day' ) ),
+          date( "Y-m-d", strtotime( '-7 day' ) ),
           date( "Y-m", strtotime( 'now' ) ) . '-01',
           date( "Y-m-d", strtotime( '+1 month' ) ),
           date( "Y-m-d", strtotime( '-1 month' ) )
         ), $rets_query );
+
         /** On preview, we have to get the FULL feed, but not all the images */
         if(
           ( isset( $_REQUEST[ 'wpp_action_type' ] ) && $_REQUEST[ 'wpp_action_type' ] == 'source_evaluation' )
@@ -3165,8 +3173,14 @@ class class_wpp_property_import {
           }
         }
 
+        // $limit = 20;
         /** Search for Properties */
         $search = $rets->SearchQuery( $resource, $import[ 'rets_class' ], $rets_query, array( 'Limit' => $limit ) );
+
+        //echo "<br />rets_query: " . $rets_query;
+        //echo "<br />NumRows: " . $rets->NumRows();
+        //echo "<br />TotalRecordsFound: " . $rets->TotalRecordsFound();
+        //die();
 
         if( !$search ) {
 
@@ -3420,7 +3434,7 @@ class class_wpp_property_import {
         class_wpp_property_import::maybe_echo_log( sprintf( __( 'Attempting to get image  ( ' . $image . ' )  using wp_remote_get()', ud_get_wpp_importer()->domain ), $image ) );
       }
 
-      $image_request = wp_remote_get( preg_replace( '~\s~', '%20', $image ), array( 'timeout' => apply_filters( 'wpp_xi_wp_remote_timeout', 300 ) ) );
+      $image_request = wp_remote_get( preg_replace( '~\s~', '%20', $image ), array( 'sslverify'   => false, 'timeout' => apply_filters( 'wpp_xi_wp_remote_timeout', 300 ) ) );
 
       if( is_wp_error( $image_request ) ) {
         class_wpp_property_import::maybe_echo_log( "Unable to get image ( {$image} ) : " . ( !empty( $image_request ) ) ? $image_request->get_error_message() : '' );

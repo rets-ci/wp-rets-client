@@ -79,13 +79,18 @@ if( defined( 'WP_CLI' ) && WP_CLI ) {
       }
       /** Pull our global */
       global $wpp_property_import;
+
       /** Loop through it */
       if( is_array( $wpp_property_import[ 'schedules' ] ) && count( $wpp_property_import[ 'schedules' ] ) ) {
         foreach( $wpp_property_import[ 'schedules' ] as $schedule_id => $schedule ) {
 
           if( isset( $schedule[ 'hash' ] ) ) {
             WP_CLI::line( $schedule[ 'hash' ] . ' :: ' . $schedule[ 'name' ] );
+          } else {
+            // if missing hash it might have been imported but never re-saved. - potanin@UD
+            WP_CLI::line( '[unsaved] :: ' . $schedule[ 'name' ] );
           }
+
         }
       } else {
         WP_CLI::line( 'No import schedules were found.' );

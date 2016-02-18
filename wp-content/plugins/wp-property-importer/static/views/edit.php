@@ -93,7 +93,7 @@ $alt_cron_timers = array(
 </style>
 <div class="wpp_property_import_setup" import_type="<?php echo( $settings[ 'source_type' ] ? $settings[ 'source_type' ] : 'xml' ); ?>" >
 
-  <form id="wpp_property_import_setup" action="#">
+  <form id="wpp_property_import_setup" action="#" autocomplete="off">
 
     <table class="form-table">
       <tbody>
@@ -172,11 +172,11 @@ $alt_cron_timers = array(
     <span class="description"><?php _e( 'See the <a href="http://code.google.com/apis/spreadsheets/data/3.0/reference.html#ListParameters" target="_blank">Google Spreadsheet API docs</a> for the format of this field ( should be name value pairs, without the beginning "?" )', ud_get_wpp_importer()->domain ); ?></span>
   </li>
   <li class="wpp_i_source_specific wpp_property_import_rets_options"  wpp_i_source_type="rets">
-    <input type="text" class="regular-text wpp_required" name="wpp_property_import[rets_username]" id='wpp_property_import_rets_username'  value="<?php echo $settings[ 'rets_username' ] ?>" />
+    <input type="text" class="regular-text wpp_required" name="wpp_property_import[rets_username]" id='wpp_property_import_rets_username' autocomplete='off' value="<?php echo $settings[ 'rets_username' ] ?>" />
     <label for="wpp_property_import_rets_username"><?php _e( 'RETS Username.', ud_get_wpp_importer()->domain ); ?></label>
   </li>
   <li class="wpp_i_source_specific wpp_property_import_rets_options"  wpp_i_source_type="rets">
-    <input type="password" class="regular-text wpp_required"  name="wpp_property_import[rets_password]" id='wpp_property_import_rets_password'  value="<?php echo $settings[ 'rets_password' ] ?>" />
+    <input type="password" class="regular-text wpp_required"  name="wpp_property_import[rets_password]" id='wpp_property_import_rets_password' autocomplete='off' value="<?php echo $settings[ 'rets_password' ] ?>" />
     <label for="wpp_property_import_rets_password"><?php _e( 'RETS Password.', ud_get_wpp_importer()->domain ); ?></label>
   </li>
   <li class="wpp_i_source_specific wpp_property_import_rets_options wpp_i_advanced_source_settings"  wpp_i_source_type="rets">

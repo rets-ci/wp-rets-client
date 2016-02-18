@@ -106,7 +106,7 @@ namespace UsabilityDynamics\WPP {
               'cb' => rand(),
             ), ud_get_wpp_importer()->path('cron.php', 'url'));
 
-            @wp_remote_get($url, array('blocking' => false, 'headers' => array('Cache-Control' => 'private, max-age=0, no-cache, no-store, must-revalidate')));
+            @wp_remote_get($url, array('sslverify'   => false, 'blocking' => false, 'headers' => array('Cache-Control' => 'private, max-age=0, no-cache, no-store, must-revalidate')));
             break;
 
           case 'shell':
