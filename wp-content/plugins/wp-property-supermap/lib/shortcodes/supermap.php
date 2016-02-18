@@ -334,9 +334,26 @@ namespace UsabilityDynamics\WPP {
         $atts = array_filter( (array)$atts );
         $defaults = array(
           'map_height' => '550',
-          'per_page' => '10'
+          'per_page' => '10',
         );
         $atts = shortcode_atts( $defaults, $atts );
+
+
+        $fields = array(
+          'ID',
+          'post_title',
+          'latitude',
+          'longitude',
+          'permalink',
+          'property_type',
+          'featured_image_url',
+          'gallery',
+          '_map_marker_url',
+        );
+
+        $fields = array_merge( $fields, ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
+
+        $atts[ 'fields' ] = apply_filters( 'wpp::advanced_supermap::property_fields', $fields );
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(
@@ -560,6 +577,7 @@ namespace UsabilityDynamics\WPP {
           'total' => 0,
           'data' => array(),
         );
+
         //* Get properties */
         $property_ids = \WPP_F::get_properties( $query , true );
         if( !empty( $property_ids ) ) {

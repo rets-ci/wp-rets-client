@@ -234,14 +234,13 @@ namespace UsabilityDynamics\WPP {
 
         //** Check if this function has already been done */
         if ( is_array( $property ) && isset( $property[ 'system' ][ 'prepared_for_display' ] ) ) {
-
           return $property;
         }
 
         //** Load property from cache, or function, if not passed */
         if ( !is_array( $property ) ) {
 
-          if ( false && $cache_property = wp_cache_get( md5( 'display_' . $property_id . $_args ) ) ) {
+          if ( $cache_property = wp_cache_get( md5( 'display_' . $property_id . $_args ) ) ) {
             return $cache_property;
           }
 
@@ -287,7 +286,9 @@ namespace UsabilityDynamics\WPP {
           $property[ $meta_key ] = apply_filters( "wpp_stat_filter_{$meta_key}", $attribute_value, $attribute_scope );
         }
 
-        /*
+        $property[ 'system' ][ 'prepared_for_display' ] = true;
+
+        /* Determine the fields which we are looking for */
         if( !empty( $args[ 'fields' ] ) ) {
           $fields = is_array( $args[ 'fields' ] ) ? $args[ 'fields' ] : explode( ',', $args[ 'fields' ] );
           $_property = array();
@@ -297,9 +298,11 @@ namespace UsabilityDynamics\WPP {
           }
           $property = $_property;
         }
-        */
 
-        $property[ 'system' ][ 'prepared_for_display' ] = true;
+        /* Be sure we do not pass post_password! */
+        if( isset( $property[ 'post_password' ] ) ) {
+          unset( $property[ 'post_password' ] );
+        }
 
         wp_cache_add( md5( 'display_' . $property_id . $_args ), $property );
 
