@@ -100,7 +100,7 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
-        //console.log( $scope.query );
+        console.log( $scope.query );
 
         /**
          * Get Properties by provided Query ( filter )
