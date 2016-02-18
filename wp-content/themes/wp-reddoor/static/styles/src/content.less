@@ -1,7 +1,11 @@
 .site-content{
   margin: 40px 0;
 }
-
+.upToHeader{
+  position: relative;
+  top: -20px;
+  margin-bottom: -20px;
+}
 .oneAgent{
   width: 380px;
   border: 1px solid #dcddde;
@@ -52,7 +56,7 @@
   .oneAgentLinksBlock{
     text-align: center;
     a{
-      background: #cf3428;
+      background: @buttons;
       width: 150px;
       color: @white;
       font-size: 1em;
@@ -151,7 +155,7 @@
       margin: 11px auto;
     }
     .icon{
-      color: #cf3428;
+      color: @buttons;
       font-size: 2.5em;
       left: 22px;
       position: relative;
@@ -260,7 +264,7 @@
       input {
         &[type="submit"] {
           border-radius: 5px;
-          background: #cf3428;
+          background: @buttons;
           color: @white;
           font-size: 1.1em;
           font-weight: 400;
@@ -317,3 +321,59 @@
   }
 
 }
+/* Checkboxes */
+
+.sfBeds, .sfBaths {
+  input[type="checkbox"] {
+    display: none;
+  }
+  input[type="checkbox"] + label {
+    color: #808285;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 0.8em;
+  }
+  input[type="checkbox"] + label {
+    cursor: pointer;
+    padding-left: 0;
+  }
+  input[type="checkbox"] + label::before {
+    content: "";
+    display: inline-block;
+    height: 18px;
+    width: 27px;
+    margin: 0 -5px -6px 0;
+    background: url('../images/src/checkboxes.png') no-repeat;
+  }
+  input[type="checkbox"]:checked + label::before {
+    background-position: 0 -17px;
+  }
+}
+.popupCheckbox{
+  input[type="checkbox"] {
+    display: none;
+  }
+  input[type="checkbox"] + label {
+    color: #808285;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 0.8em;
+    margin-right: 2%;
+  }
+  input[type="checkbox"] + label {
+    cursor: pointer;
+    padding-left: 0;
+  }
+  input[type="checkbox"] + label::before {
+    content: "";
+    display: inline-block;
+    height: 21px;
+    width: 35px;
+    margin: 0 -5px -6px 0;
+    background: url('../images/src/checkboxes2.png') no-repeat;
+  }
+  input[type="checkbox"]:checked + label::before {
+    background-position: 0 -23px;
+  }
+}
+/* Checkboxes */
