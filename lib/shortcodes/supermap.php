@@ -288,15 +288,6 @@ namespace UsabilityDynamics\WPP {
        */
       static public function render_advanced_mode_view( $query, $atts = array() ) {
 
-        $atts = array_filter( (array)$atts );
-
-        $defaults = array(
-          'map_height' => '550',
-          'per_page' => '10'
-        );
-
-        $atts = shortcode_atts( $defaults, $atts );
-
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ) );
         wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
         wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
@@ -338,6 +329,14 @@ namespace UsabilityDynamics\WPP {
         $query['sort_by'] = $atts['sort_by'];
         $query['sort_order'] = $atts['sort_order'];
         $query[ 'pagination' ] = 'off';
+
+        //* Prepare out $atts. Leave only necessary data. */
+        $atts = array_filter( (array)$atts );
+        $defaults = array(
+          'map_height' => '550',
+          'per_page' => '10'
+        );
+        $atts = shortcode_atts( $defaults, $atts );
 
         /** Try find Supermap Template */
         $template = \WPP_F::get_template_part(
