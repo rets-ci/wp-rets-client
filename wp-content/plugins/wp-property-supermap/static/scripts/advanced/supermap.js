@@ -234,7 +234,9 @@
             }
             map.fitBounds( $scope.latlngbounds );
             // Finally Initialize Marker Cluster
-            $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {} );
+            $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
+              imagePath: "//google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/images/m"
+            } );
           } );
         }
 
