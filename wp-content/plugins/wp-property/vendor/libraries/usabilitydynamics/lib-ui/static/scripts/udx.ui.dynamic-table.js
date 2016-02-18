@@ -1,1 +1,0 @@
-define("udx.ui.dynamic-table",["udx.utility"],function(){return console.log("udx.ui.dynamic-table","dynamicTable"),function(){console.log("udx.ui.dynamic-table","domReady");require("udx.utility")}});
