@@ -49,9 +49,46 @@
      */
     angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
 
+      /**
+       * Autocomplete directive.
+       * It requires jQuery UI.
+       *
+       * It's not used for the current advanced View,
+       * but can be used for custom solutions as well!
+       */
+      .directive('autoComplete', function($timeout) {
+        return function(scope, iElement, iAttrs) {
+          var uiItems = iAttrs.uiItems;
+          var source;
+          uiItems = uiItems.split('.');
+
+          for( var i=0; i<uiItems.length; i++ ) {
+            if(!source) {
+              if( typeof scope[uiItems[i]] !== 'undefined' ) {
+                source = scope[uiItems[i]];
+              } else {
+                break;
+              }
+            } else if( typeof source[uiItems[i]] !== 'undefined' ) {
+              source = source[uiItems[i]];
+            } else {
+              break;
+            }
+          }
+
+          if(!source || !source.length > 0) {
+            console.log('error on trying to get source for autoComplete directive');
+            return null;
+          }
+          iElement.autocomplete({
+            source: source
+          });
+        };
+      })
+
       .controller( 'main', [ '$scope', '$http', '$filter', 'NgMap', function( $scope, $http, $filter, NgMap ){
 
-        $scope.query = unserialize( decodeURIComponent( vars.query ) );
+        $scope.query = unserialize( decodeURIComponent( vars.query).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
@@ -63,8 +100,7 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
-        jQuery( '.sm-search-layer', ngAppDOM ).show();
-        jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+        console.log( $scope.query );
 
         /**
          * Get Properties by provided Query ( filter )
@@ -76,6 +112,9 @@
             method: 'GET',
             url: wpp.instance.ajax_url + '?' + getQuery
           }).then(function successCallback(response) {
+
+            jQuery( '.sm-search-layer', ngAppDOM ).show();
+            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
 
             $scope.loaded = true;
 
@@ -91,6 +130,10 @@
               $scope.refreshMarkers();
             }
           }, function errorCallback(response) {
+
+            jQuery( '.sm-search-layer', ngAppDOM ).show();
+            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+
             // called asynchronously if an error occurs
             // or server returns response with an error status.
             console.log( 'Error occurred during getting properties data.' );

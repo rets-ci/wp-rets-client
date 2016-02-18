@@ -4,42 +4,73 @@
  */
 
 /**
- * Extend JavaScript var 'wpp' with search_values,
+ * Extend JavaScript var 'wpp' with search values,
  * which are needed for rendering custom search form on supermap.
  */
 add_filter( 'wpp::get_instance', function( $data ) {
-  $data[ 'search_values' ] = array();
 
-  $search_values = \WPP_F::get_search_values( array(
+  $data[ 'search_data' ] = array(
+    'property_type' => array()
+  );
+
+  /* Property Types */
+  foreach( ud_get_wp_property('property_types', array()) as $k => $v ) {
+    array_push( $data[ 'search_data' ][ 'property_type' ], array(
+      'value' => $k,
+      'label' => $v,
+    ) );
+  }
+
+  /**
+   * Specific Attributes
+   * We are setting attributes manually for better perfomance
+   * since there are a lot of attributes in project
+   */
+  $search_values = \WPP_F::get_search_values( apply_filters( 'rdc::search_values::attributes', array(
     'random_75', // Location
     'bathrooms',
     'bedrooms',
     'price',
     'listing_type', // Listing Type
     'prop_type', // Prop Type
-    'status', // Status
+    'status', // Status,
+    'status_2', // Status 2,
+    'status_detail', // Status Detail
     'area', // SQFT
     'acres', // Lot Size
     'year_built',
-  ), ud_get_wp_property( 'searchable_property_types' ) );
+  ) ), ud_get_wp_property( 'searchable_property_types' ) );
 
   foreach( (array)$search_values as $key => $values ) {
 
-    switch( $key ) {
-      case 'bathrooms':
-      case 'bedrooms':
-      case 'price':
-      case 'area':
-      case 'acres':
-        $predefined_values = trim( ud_get_wp_property("predefined_search_values.{$key}") );
-        $data[ 'search_values' ][ $key ] = !empty( $predefined_values ) ? explode( ',', $predefined_values ) : group_search_values( $values );
-        break;
+    $predefined_values = trim( ud_get_wp_property("predefined_search_values.{$key}") );
 
-      default:
-        $data[ 'search_values' ][ $key ] = $values;
-        break;
+    if(
+      in_array( $key, ud_get_wp_property( 'numeric_attributes', array() ) ) ||
+      in_array( $key, ud_get_wp_property( 'currency_attributes', array() ) )
+    ) {
+      $values = !empty( $predefined_values ) ? explode( ',', $predefined_values ) : group_search_values( $values );
+    } else {
+      $values = !empty( $predefined_values ) ? explode( ',', $predefined_values ) : $values;
     }
 
+    $data[ 'search_data' ][ $key ] = array();
+    foreach( (array)$values as $value ) {
+      array_push( $data[ 'search_data' ][ $key ], array(
+        'value' => $value,
+        'label' => $value,
+      ) );
+    }
+
+  }
+
+  $data[ 'search_values' ] = array();
+  foreach( $data[ 'search_data' ] as $key => $d ) {
+    $values = array();
+    foreach( $d as $v ) {
+      array_push( $values, $v['label'] );
+    }
+    $data[ 'search_values' ][ $key ] = $values;
   }
 
   return $data;
