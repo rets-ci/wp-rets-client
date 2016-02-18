@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 3.6.0
 Tested up to: 4.4
-Stable tag: 2.5
+Stable tag: 2.5.1
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -20,6 +20,8 @@ Out of the box Simple History has support for:
 see who added, updated or deleted a post or page
 * **Attachments**<br>
 see who added, updated or deleted an attachment
+* **Taxonomies (Custom taxonomies, categories, tags)**<br>
+see who added, updated or deleted an taxonomy
 * **Comments**<br>
 see who edited, approved or removed a comment
 * **Widgets**<br>
@@ -125,7 +127,7 @@ https://github.com/bonny/WordPress-Simple-History
 are of type post and pages and media (i.e. images & other uploads), and only events
 initiated by a specific user.
 
-2. The __Post Quick Diff__ feature will make it quick and easy for a user of a site to see what updates other users are have done to posts and pages.
+2. The __Post Quick Diff__ feature will make it quick and easy for a user of a site to see what updates other users have done to posts and pages.
 
 3. Events with different severity – Simple History uses the log levels specified in the PHP PSR-3 standard.
 
@@ -139,6 +141,16 @@ initiated by a specific user.
 == Changelog ==
 
 ## Changelog
+
+= 2.5.1 (December 2015) =
+
+- Fixed: No longer assume that the ajaxurl don't already contains query params. Should fix problems with third party plugins like [WPML](https://wpml.org/).
+- Fixed: Notice if context key did not exist. Should fix https://github.com/bonny/WordPress-Simple-History/issues/100.
+- Fixed: Name and title on dashboard and settings page were not translateable. Fixes https://wordpress.org/support/topic/dashboard-max-length-of-content.
+- Fixed: Typo when user resets password.
+- Added: Filter `simple_history/row_header_date_output`.
+- Added: Filter `simple_history/log/inserted`.
+- Added: Filter `simple_history/row_header_date_output`.
 
 = 2.5 (December 2015) =
 
