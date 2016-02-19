@@ -34,3 +34,11 @@ create database `www.reddoorcompany.com.develop`;
 GRANT USAGE on `www.reddoorcompany.com.develop`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
 GRANT ALL PRIVILEGES on `www.reddoorcompany.com.develop`.* to `rdc`@`%`;
 ```
+
+
+### Grunt
+The new theme uses grunt to build files. 
+```
+cd /var/www/wp-content/themes/wp-reddoor
+nohup grunt watch &
+```
