@@ -13,7 +13,7 @@
 
 <body <?php body_class(); ?>>
 
-<div class="container">
+<div id="header" class="container">
   <div class="row">
     <header>
       <span class="toggle"><svg class="icon icon-list"><use xlink:href="#icon-list"></use></svg></span>

@@ -87,5 +87,6 @@ jQuery(document).ready(function(){
     });
 });
 
-
-
+jQuery(window).load(function(){
+    jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(jQuery(window).height()-jQuery("#header").height());
+});
