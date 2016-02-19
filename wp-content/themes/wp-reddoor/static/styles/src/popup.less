@@ -1,5 +1,32 @@
 /* Modal Window */
 
+
+.popup {
+  position:fixed;
+  top:20%;
+  left:40%;
+  display:none;
+  overflow:hidden;
+  -moz-border-radius:15px;
+  -webkit-border-radius:15px;
+  z-index:100;
+  behavior: url(PIE.htc);
+}
+.popup h2 {
+  font:bold 18px/32px Arial, san-serif;
+}
+#overlay {
+  width:100%;
+  height:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  display:none;
+  background:#000;
+  opacity:.8;
+  z-index: 20;
+}
+
 /* Modal Window */
 
 
@@ -44,6 +71,7 @@
 }
 .popupLogin{
   width: 17%;
+  min-width: 270px;
   .exitPopup{
     color: @white;
     display: block;
@@ -53,11 +81,13 @@
     border-radius: 5px;
     margin: 0;
     width: 270px;
+    height: 205px;
     background: @white;
     li{
       float: left;
       padding: 7% 6%;
       border-right: 1px solid #e6e4dd;
+      width: 50%;
       &:last-child{
         border: none;
       }
@@ -76,16 +106,20 @@
         background: @buttons none repeat scroll 0 0;
         border-radius: 5px;
         color: #fff;
-        font-size: 1em;
+        font-size: 0.8em;
         font-weight: 400;
         padding: 5px;
         text-align: center;
+        &:hover{
+          text-decoration: none;
+        }
       }
     }
   }
 }
 .popupContactUsMore{
   width: 20%;
+  min-width: 280px;
   .exitPopup{
     color: @white;
     display: block;
@@ -111,17 +145,24 @@
       text-align: center;
       font-size: 0.9em;
     }
-    span{
+    .clickToView{
       display: block;
       margin: 5% 0;
       text-align: center;
     }
+    .ui-selectmenu-button{
+
+    }
     input {
       &[type="tel"]{
         border: 3px solid #d8d8d8;
-        width: 100%;
         border-radius: 1px;
-        padding: 5% 0;
+        font-size: 1.5em;
+        letter-spacing: 0.1em;
+        padding: 4% 0;
+        text-align: center;
+        width: 100%;
+        color: @buttons;
       }
       &[type="text"]{
         border: 1px solid #d8d8d8;

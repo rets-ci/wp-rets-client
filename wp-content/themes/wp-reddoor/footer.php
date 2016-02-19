@@ -55,9 +55,7 @@
                 </ul>
             </div>
         </div>
-
-
-
+        <?php get_template_part('templates/popups') ?>
     </div>
 </div>
 </div>

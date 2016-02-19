@@ -21,7 +21,7 @@ get_header(); ?>
 
   <div class="container-fluid upToHeader">
     <div class="row">
-      <?php echo do_shortcode("[supermap mode=advanced high_school=$term_value ]"); ?>
+      <?php echo do_shortcode("[supermap mode=advanced high_school=$term_value map_height=650 per_page=5 ]"); ?>
     </div><!-- .row -->
   </div>
 

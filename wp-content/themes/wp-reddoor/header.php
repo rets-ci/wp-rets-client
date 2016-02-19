@@ -36,8 +36,8 @@
         <a href="#">Login to your Account</a>
       </div>
       <div class="head-popups">
-        <a class="popUpContactBtn" id="go" href="javascript:void(0)">Contact</a>
-        <a class="popUpLoginBtn" href="javascript:void(0)">Login</a>
+        <a class="popUpContactBtn show_popup" rel="popupContactUsMore" href="javascript:void(0)">Contact</a>
+        <a class="popUpLoginBtn show_popup" rel="popupLogin" href="javascript:void(0)">Login</a>
       </div>
     </header>
   </div>

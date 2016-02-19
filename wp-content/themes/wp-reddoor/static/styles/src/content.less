@@ -209,14 +209,17 @@
   }
 }
 .frontPageSearchBlock {
-  background-image: url('../images/src/archive-header.jpg');
+  background-image: url('../images/src/main-page-pic.jpg');
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
   height: 555px;
-  padding-top: 10%;
+  padding-top: 15%;
+  position: relative;
+  top: -20px;
   .searchForm {
     width: 60%;
+    min-width: 785px;
     margin: auto;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
@@ -256,7 +259,6 @@
       ul {
         background: #fff none repeat scroll 0 0;
         padding: 1.5em 1em 1em;
-        display: none;
         li{
 
         }
@@ -308,15 +310,55 @@
         cursor: context-menu;
         color: #808285;
       }
-      .sfPrice{
-        border-radius: 0 5px 5px 0;
-      }
       .icon-beds, .icon-baths, .icon-price{
         margin-left: 15px;
         margin-right: 20px;
       }
-
+      &>ul{
+        display: none;
+      }
     }
+    .sfPrice{
+      border-radius: 0 5px 5px 0;
+    }
+    .sfPriceRange{
+      display: none;
+    }
+    }
+    .sfPriceRange {
+      background: @white;
+      color: #a7a9ac;
+      font-size: 0.9em;
+      position: relative;
+      top: -4px;
+      ul{
+        margin: 0;
+      }
+      .sfprInputsBlock{
+        background: #fbfaf8;
+        border-bottom: 1px solid #f2f2f2;
+        height: 65px;
+        padding-left: 18px;
+        padding-top: 17px;
+        input{
+          background: #fbfaf8 none repeat scroll 0 0;
+          border: 1px solid #a7a9ac;
+          float: left;
+          font-size: 0.9em;
+          height: 30px;
+          padding: 0 5px;
+          width: 50px;
+          text-align: center;
+          margin-right: 5px;
+        }
+      }
+      .firstRangeList{
+        padding: 10px 80px 10px 15px;
+      }
+      .lastRangeList {
+        display: none;
+        padding: 10px 15px 10px 80px;
+      }
     }
   }
 
@@ -377,3 +419,16 @@
   }
 }
 /* Checkboxes */
+
+.sow-carousel-wrapper{
+
+  background: rgba(255,255,255,1);
+  background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 26%, rgba(166,142,139,0) 51%, rgba(255,255,255,1) 71%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(26%, rgba(255,255,255,1)), color-stop(51%, rgba(166,142,139,0)), color-stop(71%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 26%, rgba(166,142,139,0) 51%, rgba(255,255,255,1) 71%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 26%, rgba(166,142,139,0) 51%, rgba(255,255,255,1) 71%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 26%, rgba(166,142,139,0) 51%, rgba(255,255,255,1) 71%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 26%, rgba(166,142,139,0) 51%, rgba(255,255,255,1) 71%, rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+
+}

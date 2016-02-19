@@ -41,18 +41,50 @@ jQuery(document).ready(function(){
         jQuery('.mobileMenu').animate({'left':'-80%'},400);
     });
     jQuery(document).click( function(event){
-        if( $(event.target).closest(".sfBeds ul, .sfBaths ul").length )
+        if( $(event.target).closest(".sfBeds ul, .sfBaths ul, .sfPriceRange").length )
             return;
-        jQuery(".sfBeds ul, .sfBaths ul").slideUp("slow");
+        jQuery(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideUp("slow");
         event.stopPropagation();
     });
-    jQuery('.sfBeds span, .sfBaths span').click( function() {
-        jQuery(this).siblings(".sfBeds ul, .sfBaths ul").slideToggle("slow");
+    jQuery('.sfBeds span, .sfBaths span, .sfPrice span').click( function() {
+        jQuery(this).siblings(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideToggle("slow");
         return false;
     });
     jQuery(function($){
-        jQuery("#phone").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+        jQuery("#phone").mask("+919-333-333",{placeholder:"+919-XXX-XXX"});
     })
+    jQuery(function () {
+        //script for popups
+        jQuery('a.show_popup').click(function () {
+            jQuery('div.'+$(this).attr("rel")).fadeIn(500);
+            jQuery("body").append("<div id='overlay'></div>");
+            jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
+            return false;
+        });
+        jQuery('span.exitPopup').click(function () {
+            jQuery(this).parent().fadeOut(100);
+            jQuery('#overlay').remove('#overlay');
+            return false;
+        });
+    });
+    /* Price Range */
+    jQuery('.firstRangeList a').on('click', function(){
+        jQuery('.firstRange').val(jQuery(this).attr('val'));
+        jQuery('.lastRangeList').show();
+        jQuery('.firstRangeList').hide();
+    });
+    jQuery('.lastRangeList a').on('click', function(){
+        jQuery('.lastRange').val(jQuery(this).attr('val'));
+        jQuery('.lastRangeList').hide();
+    });
+    jQuery('.firstRange').on('click', function(){
+       jQuery('.firstRangeList').show();
+       jQuery('.lastRangeList').hide();
+    });
+    jQuery('.lastRange').on('click', function(){
+        jQuery('.lastRangeList').show();
+        jQuery('.firstRangeList').hide();
+    });
 });
 
 
