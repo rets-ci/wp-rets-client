@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.4
-Stable tag: 2.2.16
+Stable tag: 2.2.18
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -20,7 +20,7 @@ To keep it lightweight, the options are kept to a minimum. The entire site will 
 But always backup before you go! If you do not have a sound backup policy, start having one! For a snapshot, install duplicator.
 
 = Love Really Simple SSL? =
-I’ve invested hundreds of hours in the development of this plugin, which was a lot of fun and hopefully saved you at least some hours work. If you want to support the continuing development of this plugin, I’d really appreciate it if you buy me a cup of coffee.
+Hopefully this plugin saved you at least some hours work. If you want to support the continuing development of this plugin, you could buy me a cup of coffee, or leave a review.
 [To the coffeecorner ;)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=NL&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 = What does the plugin actually do =
@@ -30,7 +30,7 @@ I’ve invested hundreds of hours in the development of this plugin, which was a
 * Your insecure content is fixed by replacing all http:// urls with the protocol-independent //. Dynamically, so no database changes are made (except for the siteurl and homeurl).
 
 = Feedback is welcome! =
-Though the plugin is extensively tested and currently successfully active on over 6000 websites, it is impossible to test or even conceive of every different server configuration. So it might be possible you have issues with a non-standard server configuration.
+Though the plugin is extensively tested and currently successfully active on over 15000 websites, it might be possible you have issues with a specific configuration (server/plugins).
 I would appreciate it if you contact me with the issue, so I can help you fix it and improve the plugin at the same time.
 I will need the following information:
 
@@ -46,18 +46,18 @@ Translations can be added very easily [here](https://translate.wordpress.org/pro
 Thanks for the French translation to [Cédric](http://www.blig.fr/)
 Thanks for the Russian translation to [xsacha](https://news36.org/)
 
-= Under development, expected early 2016 =
+= Under development, expected april/may 2016 =
 * A check for possible external resources that are not available over ssl.
-* Option to disable javascript redirect in settings.
 
 == Installation ==
 To install this plugin:
 
-1. Install your ssl certificate
-2. Download the plugin
-3. Upload the plugin to the wp-content/plugins directory,
-4. Go to “plugins” in your wordpress admin, then click activate.
-5. You will get redirected to the login screen. If not, go to the login screen and log on.
+1. Make a backup!
+2. Install your ssl certificate
+3. Download the plugin
+4. Upload the plugin to the wp-content/plugins directory,
+5. Go to “plugins” in your wordpress admin, then click activate.
+6. You will get redirected to the login screen. If not, go to the login screen and log on.
 
 = Testing =
 This plugin is tested in standard apache environments, but is built with several fallbacks for situations where non-standard configurations are used.
@@ -72,13 +72,13 @@ plugin is shipped with a simple method to uninstall:
 
 The plugin is now deactivated and all changes were removed.
 
-For more information: go to the [website](http://www.really-simple-ssl.com/), or
-[contact](http://www.really-simple-ssl.com/contact/) me if you have any questions or suggestions.
+For more information: go to the [website](https://www.really-simple-ssl.com/), or
+[contact](https://www.really-simple-ssl.com/contact/) me if you have any questions or suggestions.
 
 == Frequently Asked Questions ==
 
 = Knowledge base =
-For more detailed explanations and documentation on redirect loops, deactivating, mixed content, errors, and so on, please search the [documentation](http://www.really-simple-ssl.com/knowledge-base/)
+For more detailed explanations and documentation on redirect loops, deactivating, mixed content, errors, and so on, please search the [documentation](https://www.really-simple-ssl.com/knowledge-base/)
 
 = Does the mixed content fixer make my site slower? =
 On a site where the source consists of about 60.000 characters, the delay caused by the mixed content fixer is about 0.00188 seconds. If this is too much for you, fix the mixed content manually and deactivate it in the settings.
@@ -133,6 +133,12 @@ You can activate ssl per site on subdomain and domain mapping installs. On subfo
 Yes, default the plugin redirects permanently with [R=301].
 
 == Changelog ==
+= 2.2.18 =
+Fixed bug in logging of curl detection
+
+= 2.2.17 =
+Security fixes in ssl-test-page.php
+
 = 2.2.16 =
 Bugfix with of insecure content fixer.
 

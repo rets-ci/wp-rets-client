@@ -81,7 +81,6 @@ public $error_number = 0;
       return true;
     }
     else {
-      if ($this->debug) {$this->trace_log("curl not installed on this server...");}
       return false;
     }
   }
