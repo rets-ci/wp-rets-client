@@ -91,7 +91,7 @@ add_action('init', function(){
       'parent_item_colon' => ''
     ),
     'public' => true,
-    'supports' => array('title', 'thumbnail', 'custom-fields'),
+    'supports' => array('title', 'thumbnail'),
     'has_archive' => false,
     'exclude_from_search' => true
 
@@ -138,10 +138,12 @@ function termsSearchable() {
       "slug" => $data->slug,
       "name" => $data->name,
       "count" => $data->count,
-      "taxonomy" => $data->taxonomy,
+      "taxonomy" => ucfirst(str_replace('_', ' ', $data->taxonomy)),
     );
 
   }, $_terms );
+
+
 /*
   $results = get_objects_where(array('name' => $query), $_terms);
   die( '<pre>' . print_r( $results, true ) . '</pre>' );

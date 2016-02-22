@@ -6,17 +6,21 @@
 		<li class="rentBtnForm">
 			<a href="#tabs-2">Rent</a>
 		</li>
+	</ul>
+	<ul>
 		<li class="sellBtnForm">
-			<a href="#tabs-3">Sell your home</a>
+			<a href="http://google.com/">Sell your home</a>
 		</li>
 		<li class="rentPropBtnForm">
-			<a href="#tabs-4">Rent your property</a>
+			<a href="http://google.com/">Rent your property</a>
 		</li>
 	</ul>
+	<div class="clear"></div>
 	<form class="buyForm" id="tabs-1" method="POST" action="">
 		<div class="location">
 			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
 			<select class="citiesSelection">
+				<option selected="selected" value="3620194">Location</option>
 			</select>
 		</div>
 		<div class="sfBeds">
@@ -82,7 +86,9 @@
 	<form class="rentForm" id="tabs-2"  method="POST" action="">
 		<div class="location">
 			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-			<input class="tags" placeholder="Location">
+			<select class="citiesSelection">
+				<option selected="selected" value="3620194">Location</option>
+			</select>
 		</div>
 		<div class="sfBeds">
 			<span><svg class="icon icon-beds"><use xlink:href="#icon-beds"></use></svg>Beds</span>

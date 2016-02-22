@@ -5,35 +5,6 @@ jQuery(document).ready(function(){
     //jQuery( ".speed" ).selectmenu(); // custom select
     jQuery( "#tabs" ).tabs(); //tabs for search form
 
-    /* autocomplete input */
-    var availableTags = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
-    ];
-    jQuery( ".tags" ).autocomplete({
-        source: availableTags
-    });
-    /* autocomplete input end */
     jQuery('.toggle').on('click', function(){
         jQuery('.mobileMenu').animate({'left':'0'},400);
     });
@@ -96,10 +67,21 @@ jQuery(document).ready(function(){
             }
         },
         templateResult: function formatRepo (city) {
-            var html = city.name;
+            if (city.loading) return city.text;
+
+            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: red;'>" + city.taxonomy + "</span>";
             return html;
-        }
+        },
+        escapeMarkup: function (markup) { return markup; },
+        templateSelection: function formatRepoSelection (city) {
+        return city.name;
+    }
     });
+    jQuery('.facebookFootIcon a').html('<svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>');
+    jQuery('.twitterFootIcon a').html('<svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>');
+    jQuery('.googleFootIcon a').html('<svg class="icon icon-google-plus"><use xlink:href="#icon-google-plus"></use></svg>');
+    jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
+    jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
 });
 
 jQuery(window).load(function(){
