@@ -14,7 +14,7 @@
       "wp_home": "https://414392a625bd.c.wpcloud.io",
       "wp_debug": true,
       "wp_debug_log": true,
-      "wp_debug_display": false,
+      "wp_debug_display": true,
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "wp_cache": true,
       "concatenate_scripts": true,
@@ -59,7 +59,11 @@
       "scripts": {
         "start": [
           "ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git",
-          "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa"
+          "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa",
+          "ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
+          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php.ini  /etc/php5/fpm/php.ini",
+          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php-fpm.conf  /etc/php5/fpm/php-fpm.conf",
+          "ln -sf /var/www/wp-content/static/etc/php5/fpm/pool.d/www.conf  /etc/php5/fpm/pool.d/www.conf"
         ]
       }
     }
