@@ -281,13 +281,32 @@
         background: #f8f8f8 none repeat scroll 0 0;
         border-radius: 5px 0 0 5px;
         color: #808285;
-        .ui-autocomplete-input{
+        padding-top: 3px;
+        position: relative;
+        width: 40%;
+        color: green;
+
+        .citiesSelection{
           background: #f8f8f8 none repeat scroll 0 0;
           border: medium none;
           padding: 0.44em 0.6em;
+
         }
+        .select2 {
+          height: 33px;
+          padding-left: 25px;
+          color: #808285;
+          min-width: 100%;
+          .select2-selection {
+            border: none;
+            background: none;
+          }
+        }
+
         .icon-location{
-          margin-left: 10px;
+          bottom: 12px;
+          left: 10px;
+          position: absolute;
         }
         .tags{
           &::-webkit-input-placeholder {color:#242526;}

@@ -36,8 +36,7 @@
         <a href="#">Login to your Account</a>
       </div>
       <div class="head-popups">
-        <a class="popUpContactBtn show_popup" rel="popupContactUsMore" href="javascript:void(0)">Contact</a>
-        <a class="popUpLoginBtn show_popup" rel="popupLogin" href="javascript:void(0)">Login</a>
+        <?php wp_nav_menu(array('menu' => 'RightSide Menu', 'menu_class' => 'contactMenu')); ?>
       </div>
     </header>
   </div>

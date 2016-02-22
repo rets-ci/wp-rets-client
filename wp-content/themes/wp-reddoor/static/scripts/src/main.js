@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
     jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
     jQuery('.single .featuredImageHeader, .blog .featuredImageHeader').css('height', jQuery(window).height()-132);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
-    jQuery( ".speed" ).selectmenu(); // custom select
+    //jQuery( ".speed" ).selectmenu(); // custom select
     jQuery( "#tabs" ).tabs(); //tabs for search form
 
     /* autocomplete input */
@@ -55,7 +55,7 @@ jQuery(document).ready(function(){
     })
     jQuery(function () {
         //script for popups
-        jQuery('a.show_popup').click(function () {
+        jQuery('.showContactPopup a').click(function () {
             jQuery('div.'+$(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
             jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
@@ -84,6 +84,21 @@ jQuery(document).ready(function(){
     jQuery('.lastRange').on('click', function(){
         jQuery('.lastRangeList').show();
         jQuery('.firstRangeList').hide();
+    });
+    jQuery('.citiesSelection').select2({
+        ajax: {
+            url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
+            dataType: 'json',
+            processResults: function(data, page){
+                return {
+                    results: data.data
+                }
+            }
+        },
+        templateResult: function formatRepo (city) {
+            var html = city.name;
+            return html;
+        }
     });
 });
 

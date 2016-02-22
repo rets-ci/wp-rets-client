@@ -11,6 +11,7 @@ add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('jquery-1.10.2', get_bloginfo('stylesheet_directory') . '/static/scripts/src/jquery-1.10.2.js');
   wp_enqueue_script('jquery-ui.js', get_bloginfo('stylesheet_directory') . '/static/scripts/src/jquery-ui.js');
   wp_enqueue_script('masked', get_bloginfo('stylesheet_directory') . '/static/scripts/src/masked.js');
+  wp_enqueue_script('select2.min', get_bloginfo('stylesheet_directory') . '/static/scripts/src/select2.min.js');
   wp_enqueue_style('style', get_bloginfo('stylesheet_directory') . '/static/styles/style.css');
   wp_enqueue_style('style-svg', 'https://i.icomoon.io/public/524f31be7a/rdc/style-svg.css');
 });
@@ -90,9 +91,67 @@ add_action('init', function(){
       'parent_item_colon' => ''
     ),
     'public' => true,
-    'supports' => array('title', 'thumbnail'),
+    'supports' => array('title', 'thumbnail', 'custom-fields'),
     'has_archive' => false,
     'exclude_from_search' => true
 
   ));
 });
+
+
+function get_objects_where($match, $objects) {
+  if ($match == '' || !is_array($match)) return array ();
+  $wanted_objects = array ();
+  foreach ($objects as $object) {
+    $wanted = false;
+    foreach ($match as $k => $v) {
+      if (is_object($object) && isset($object->$k) && $object->$k == $v) {
+        $wanted = true;
+      } else {
+        $wanted = false;
+        break;
+      };
+    };
+    if ($wanted) $wanted_objects[] = $object;
+  };
+  return $wanted_objects;
+};
+
+
+
+
+
+
+function termsSearchable() {
+
+  $query = $_GET['q'];
+
+  $_terms = get_terms( array( 'high_school', 'middle_school', 'elementary_school', 'county', 'zip_code', 'neighborhood', 'city' ), array(
+    'search' => $query
+  ) );
+
+
+  $_terms = array_map( function( $data ) {
+
+    return array(
+      "id" => $data->term_id,
+      "slug" => $data->slug,
+      "name" => $data->name,
+      "count" => $data->count,
+      "taxonomy" => $data->taxonomy,
+    );
+
+  }, $_terms );
+/*
+  $results = get_objects_where(array('name' => $query), $_terms);
+  die( '<pre>' . print_r( $results, true ) . '</pre>' );
+*/
+  wp_send_json(array(
+    "ok" => true,
+    "data" => $_terms
+  ));
+
+}
+
+add_action( 'wp_ajax_TermsSearchable', 'termsSearchable' );
+add_action( 'wp_ajax_nopriv_TermsSearchable', 'termsSearchable' );

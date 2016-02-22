@@ -62,7 +62,12 @@
 <div class="container-fluind footerBg2">
     <div class="container">
         <div class="row">
-            <?php wp_nav_menu(array('menu' => 'Footer menu')); ?>
+            <div class="col-lg-8">
+                <?php wp_nav_menu(array('menu' => 'Footer menu')); ?>
+            </div>
+            <div class="col-lg-4">
+                <?php wp_nav_menu(array('menu' => 'Social Footer Menu', 'menu_class' => 'socialFooterMenu')); ?>
+            </div>
         </div>
     </div>
 </div>
