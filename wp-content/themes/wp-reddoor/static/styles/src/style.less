@@ -43,9 +43,8 @@
 // Mode adaptive 1024
 @adapt1024: 1024px;
 
-// Mode adaptive 640
-@adapt640: 640px;
-
+// Mode adaptive 768
+@adapt768: 768px;
 
 @media screen and (min-width: @adapt1920) {
 
@@ -71,12 +70,15 @@
 @media screen and (min-width: @adapt1024) {
 
 }
-@media screen and (max-width: @adapt640) {
+@media screen and (max-width: @adapt768) {
   body {
     background: none !important;
   }
   .site-logo {
     left: 23%;
+  }
+  .site-content {
+    padding: 0 2%;
   }
   .menuDesktop {
     display: none !important;
@@ -89,6 +91,80 @@
   }
   .mobileMenu, .toggle, .menuAdaptive{
     display: block !important;
+  }
+  .frontPageSearchBlock {
+
+    .searchForm{
+      min-width: 557px;
+      form{
+        border-radius: 0 0 5px 5px;
+        height: 200px;
+        padding: 9px;
+        .location{
+          width: 100%;
+          border-radius: 5px;
+          margin-bottom: 5px;
+        }
+        .sfBeds{
+          width: 49%;
+          border-radius: 5px;
+        }
+        .sfBaths{
+          width: 49%;
+          margin-left: 10px;
+          border-radius: 5px;
+        }
+        .sfPrice{
+          width: 100%;
+          border-radius: 5px;
+          margin-top: 5px;
+        }
+        input[type="submit"]{
+          width: 100%;
+          margin-left: 0;
+          margin-top: 5px;
+          padding: 18px 20px;
+        }
+        ul{
+          position: relative;
+          z-index: 20;
+        }
+      }
+      .sfPriceRange{
+
+        .sfprInputsBlock{
+          padding-left: 5px;
+          input{
+            width: 49%;
+          }
+        }
+        .left-side{
+          width: 50%;
+        }
+        .right-side{
+          width: 50%;
+        }
+        .firstRangeList{
+          padding-right: 15px;
+          text-align: center;
+        }
+        .lastRangeList{
+          padding-left: 15px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .contactMenu{
+    li {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+  .popup {
+    left: 30%;
+    top: 15%;
   }
 }
 

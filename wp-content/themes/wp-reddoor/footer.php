@@ -41,9 +41,6 @@
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
-        <?php //if (!dynamic_sidebar('Footer area 3')) : ?>
-            <!-- [ do default stuff if no widgets ] -->
-        <?php //endif; ?>
             <div class="footerWidgetArea3">
                 <h3>Latest Blogs</h3>
                 <ul>
@@ -53,6 +50,9 @@
                         <div>Posted on <span>20 Aug 2015</span></div>
                     </li>
                 </ul>
+                <?php if (!dynamic_sidebar('Footer area 3')) : ?>
+                    [ do default stuff if no widgets ]
+                <?php endif; ?>
             </div>
         </div>
         <?php get_template_part('templates/popups') ?>

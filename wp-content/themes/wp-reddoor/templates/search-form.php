@@ -1,9 +1,9 @@
 <div class="searchForm" id="tabs">
 	<ul>
-		<li class="buyBtnForm currentFormElement">
+		<li class="formTabs" data-topmenu="buyBtnForm">
 			<a href="#tabs-1" class="active">Buy</a>
 		</li>
-		<li class="rentBtnForm">
+		<li class="formTabs" data-topmenu="rentBtnForm">
 			<a href="#tabs-2">Rent</a>
 		</li>
 	</ul>

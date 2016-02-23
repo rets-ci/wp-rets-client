@@ -74,20 +74,25 @@
   left: -80%;
   trasition: 1s;
   display: none;
-  overflow-y: scroll;
   .menuAdaptive{
+    float: left;
+    width: 100%;
 
     &>li{
+      border-bottom: 1px solid #ededed;
       width: 100%;
       .sub-menu{
-        padding: 5%;
+        padding: 0;
         display: none;
+        border: none;
+        padding-bottom: 5%;
         li{
 
           a{
             color: #919093;
             text-decoration: none;
             font-size: 1.5em;
+            outline: none;
           }
         }
       }
@@ -95,12 +100,22 @@
         border-bottom: 1px solid #dcddde;
         color: #48474a;
         display: block;
-        font-size: 3em;
+        font-size: 2.5em;
         padding-bottom: 3%;
         padding-top: 3%;
+        padding-left: 0;
+        border: none;
+        background: @white;
+        outline: none;
         &:hover{
-          text-decoration: none;
+          text-decoration: none !important;
         }
+        .ui-icon{
+          background-image: none !important;
+        }
+      }
+      .ui-state-active{
+        color: @buttons;
       }
     }
   }
@@ -113,8 +128,9 @@
     font-weight: 400;
     padding: 0.44em 0.7em;
     text-align: center;
-    position: absolute;
-    bottom: 0;
+    float: left;
+    border-bottom: 2px solid;
+    margin-top: 3%;
     &:hover{
       text-decoration: none;
       color: @white;
@@ -127,6 +143,7 @@
     top: 15px;
     color: #48474a;
     cursor: pointer;
+    z-index: 20;
   }
 }
 .toggle{

@@ -5,14 +5,29 @@ jQuery(document).ready(function(){
     //jQuery( ".speed" ).selectmenu(); // custom select
     jQuery( "#tabs" ).tabs(); //tabs for search form
 
+    /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){
-        jQuery('.mobileMenu').animate({'left':'0'},400);
+        jQuery('.mobileMenu').animate({'left':'0'},400).css('position', 'fixed');
     });
     jQuery('.closeMobileMenu').on('click', function(){
         jQuery('.mobileMenu').animate({'left':'-80%'},400);
     });
+    /* Mobile menu slide */
+
+    /* Mobile slide sub-menu */
+    jQuery('.menuAdaptive li').on('click', function(){
+        var ourItem = jQuery(this);
+       jQuery('.menuAdaptive' + ourItem +  '.sub-menu').css('display', 'block');
+    });
+
+    /* Mobile slide sub-menu */
+    jQuery(function() {
+        jQuery( ".menuAdaptive" ).accordion();
+    });
+
+    /* Search-form slide selects */
     jQuery(document).click( function(event){
-        if( $(event.target).closest(".sfBeds ul, .sfBaths ul, .sfPriceRange").length )
+        if( jQuery(event.target).closest(".sfBeds ul, .sfBaths ul, .sfPriceRange").length )
             return;
         jQuery(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideUp("slow");
         event.stopPropagation();
@@ -21,13 +36,15 @@ jQuery(document).ready(function(){
         jQuery(this).siblings(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideToggle("slow");
         return false;
     });
+    /* Search-form slide selects */
+
     jQuery(function($){
         jQuery("#phone").mask("+919-333-333",{placeholder:"+919-XXX-XXX"});
     })
     jQuery(function () {
         //script for popups
         jQuery('.showContactPopup a').click(function () {
-            jQuery('div.'+$(this).attr("rel")).fadeIn(500);
+            jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
             jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
             return false;
@@ -82,6 +99,12 @@ jQuery(document).ready(function(){
     jQuery('.googleFootIcon a').html('<svg class="icon icon-google-plus"><use xlink:href="#icon-google-plus"></use></svg>');
     jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
     jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
+
+    jQuery('.formTabs').on('click', function(){
+        var menuItem = jQuery(this).data('topmenu');
+        jQuery('.menuDesktop li').removeClass('current-menu-item');
+        jQuery('.' + menuItem).addClass('current-menu-item');
+    });
 });
 
 jQuery(window).load(function(){
