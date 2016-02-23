@@ -21,6 +21,7 @@ function rdc_register_widgets() {
   register_widget( 'RDCFeedbackForm' );
   register_widget( 'RDCReferralProgramForm' );
   register_widget( 'RDCApplicationRequestForm' );
+  register_widget( 'RDCJobRequestForm' );
 }
 
 /**
