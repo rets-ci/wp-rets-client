@@ -18,7 +18,6 @@
                 <?php if (!dynamic_sidebar('Footer area 1')) : ?>
                 [ do default stuff if no widgets ]
                 <?php endif; ?>
-                <a href="#">Contact Us</a>
             </div>
         </div>
         <div class="col-md-4 col-lg-4">

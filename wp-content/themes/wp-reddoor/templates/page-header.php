@@ -18,6 +18,10 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 
 <div class="container-fluid ftrdImgGoTop">
 	<section class="featuredImageHeader" style="background: url('<?php echo $_url; ?>');">
+		<?php $category = get_the_category(); ?>
+		<div class="singleHeroIcon">
+			<svg class="icon icon-<?php echo $category[0]->slug; ?>"><use xlink:href="#icon-<?php echo $category[0]->slug; ?>"></use></svg>
+		</div>
 	</section>
 </div>
 <?php } ?>
