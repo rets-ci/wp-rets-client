@@ -29,6 +29,12 @@ git subtree add --prefix=wp-content/plugins/wp-property git@github.com:wp-proper
 
 ### MySQL Setup
 
+Connect to MySQL cluster:
+```
+mysql --host=api.wpcloud.io --port=13038 --user=rdc --password=wpcvdvwyocbhnrfj
+```
+
+Setup development tables:
 ```mysql
 create database `www.reddoorcompany.com.develop`;
 GRANT USAGE on `www.reddoorcompany.com.develop`.* to `rdc`@`%` IDENTIFIED BY "wpcvdvwyocbhnrfj";  
