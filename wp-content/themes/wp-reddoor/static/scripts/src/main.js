@@ -126,6 +126,7 @@ function map_resize() {
         height = 400;
     }
     jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
+    jQuery('.sm-properties-list-wrap').css('overflow-y', 'scroll');
 }
 
 jQuery(window).load(function(){
