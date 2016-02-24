@@ -60,6 +60,10 @@
     }
 }
 .footerWidgetArea2{
+    margin-top: 20%;
+    h2{
+        font-size: 1.5em;
+    }
     &>h3{
         color: @white;
         font-size: 1.5em;
@@ -76,10 +80,35 @@
         margin-right: 10px;
     }
 }
-.footerWidgetArea3{
-    &>h3{
-        color: @white;
-        font-size: 1.5em;
+.footerWidgetArea3 {
+    margin-top: 20%;
+    .sow-carousel-title {
+        position: relative;
+        margin-bottom: 25px;
+        h2 {
+            color: @white;
+            font-size: 1.5em;
+        }
+        .sow-carousel-next{
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .sow-carousel-previous{
+            position: absolute;
+            right: 20px;
+            top: 0;
+        }
+    }
+    .sow-carousel-item{
+        h3 {
+            a {
+                color: @buttons !important;
+                line-height: 1.1em;
+                display: block;
+                margin: 20px auto auto;
+            }
+        }
     }
     &>ul{
         background: @white;

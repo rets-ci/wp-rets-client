@@ -157,3 +157,7 @@ function termsSearchable() {
 
 add_action( 'wp_ajax_TermsSearchable', 'termsSearchable' );
 add_action( 'wp_ajax_nopriv_TermsSearchable', 'termsSearchable' );
+
+if(class_exists('SiteOrigin_Widget')) {
+  include 'widgets/rdc-post-carousel/post-carousel.php';
+}

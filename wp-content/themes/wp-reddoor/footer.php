@@ -22,34 +22,37 @@
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
-        <?php //if (!dynamic_sidebar('Footer area 2')) : ?>
-            <!-- [ do default stuff if no widgets ] -->
-        <?php //endif; ?>
             <div class="footerWidgetArea2">
-                <h3>About Us</h3>
-                <div>
-                    Red Door Company was created in 2006
-                    to make owning investment real estate
-                    easy and profitable. Simply put, we provide
-                    the best property management service in
-                    the business. How do we do it?
-                </div>
+                <?php if (!dynamic_sidebar('Footer area 2')) : ?>
+                    [ do default stuff if no widgets ]
+                <?php endif; ?>
                 <span>In Association with</span><br/>
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/partner1.png" alt="" />
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/partner2.png" alt="" />
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/partner3.png" alt="" />
+                <?php
+                $args = array(
+                  'posts_per_page'  => 3,
+                  'orderby'         => 'post_date',
+                  'order'           => 'ASC',
+                  'post_type'       => 'associations',
+                  'post_status'     => 'publish',
+                  'suppress_filters' => true );
+                $query = new WP_Query($args);
+                while ($query->have_posts()) : $query->the_post();
+                global $post;
+                echo get_the_post_thumbnail($post->ID);
+                endwhile;
+                ?>
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
             <div class="footerWidgetArea3">
-                <h3>Latest Blogs</h3>
+             <!--   <h3>Latest Blogs</h3>
                 <ul>
                     <li>
                         <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sliderFootImg.png" alt="" />
                         <a href="#">How to Make Your Small Space Work for You</a>
                         <div>Posted on <span>20 Aug 2015</span></div>
                     </li>
-                </ul>
+                </ul> -->
                 <?php if (!dynamic_sidebar('Footer area 3')) : ?>
                     [ do default stuff if no widgets ]
                 <?php endif; ?>

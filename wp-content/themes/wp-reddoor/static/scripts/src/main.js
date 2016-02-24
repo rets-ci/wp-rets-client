@@ -100,10 +100,22 @@ jQuery(document).ready(function(){
     jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
     jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
 
+    jQuery('.menuDesktop .menu-item > a').removeAttr('href');
+
     jQuery('.formTabs').on('click', function(){
         var menuItem = jQuery(this).data('topmenu');
         jQuery('.menuDesktop li').removeClass('current-menu-item');
         jQuery('.' + menuItem).addClass('current-menu-item');
+    });
+
+    jQuery('.menuDesktop > li').on('click', function(){
+        jQuery('.menuDesktop > li').removeClass('current-menu-item');
+        jQuery(jQuery(this)).addClass('current-menu-item');
+    });
+
+    jQuery('.itemData > a').on('click', function(){
+        var itemTopMenu = (jQuery(this).attr('rel'));
+        jQuery('[data-topmenu="'+ itemTopMenu +'"] > a').click();
     });
 });
 
