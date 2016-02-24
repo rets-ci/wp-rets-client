@@ -119,6 +119,19 @@ jQuery(document).ready(function(){
     });
 });
 
+function map_resize() {
+    var height = jQuery(window).height()-jQuery("#header").height()-40;
+    console.log(height);
+    if ( height < 400 ) {
+        height = 400;
+    }
+    jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
+}
+
 jQuery(window).load(function(){
-    jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(jQuery(window).height()-jQuery("#header").height());
+    var resizeTimer;
+    jQuery(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(map_resize, 250);
+    }).resize();
 });
