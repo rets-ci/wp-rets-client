@@ -129,7 +129,7 @@
   &>div {
     background: @white;
     border-radius: 5px;
-    padding: 5%;
+    padding: 10% 5% 0;
     img {
       display: block;
       margin: auto;
@@ -170,14 +170,17 @@
         margin: 0 0 3%;
         width: 100%;
         border-radius: 1px;
+        height: 35px;
       }
       &[type="submit"]{
         background: @buttons;
-        width: 100%;
-        margin: 5% 0;
+        border: medium none;
+        border-radius: 3px;
         color: @white;
-        border: none;
-        padding: 3% 0;
+        font-weight: 500;
+        margin: 5% 0;
+        padding: 6% 0;
+        width: 100%;
       }
       &[type="checkbox"]{
 
@@ -188,6 +191,7 @@
       width: 100%;
       margin: 0 0 5%;
       border-radius: 1px;
+      height: 35px;
     }
   }
 }

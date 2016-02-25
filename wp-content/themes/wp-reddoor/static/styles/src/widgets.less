@@ -13,10 +13,38 @@
       }
     }
   }
-  .sow-carousel-item{
-    h3{
-      display: none;
+  .sow-carousel-wrapper{
+    height: 60px;
+  }
+  .sow-carousel-items {
+    height: 60px;
+    .sow-carousel-item {
+      width: 200px !important;
+      border-right: 1px solid #dcddde;
+      border-left: 1px solid #dcddde;
+      margin-right: -1px !important;
+      h3 {
+        display: none;
+      }
+      a {
+        margin: auto;
+      }
     }
+  }
+  .assocCarouselBg{
+    height: 60px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(255,255,255,0);
+    background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 84%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(40%, rgba(255,255,255,0)), color-stop(42%, rgba(255,255,255,0)), color-stop(60%, rgba(255,255,255,0)), color-stop(84%, rgba(255,255,255,0)), color-stop(100%, rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 84%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 84%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 84%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 84%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#fff', GradientType=1 );
+
   }
 }
 .widgetRowBg{
@@ -26,18 +54,24 @@
   .widget_sow-image{
     img{
       display: block;
-      margin: 14% auto 7%;
+      margin: 0 auto 5%;
     }
   }
   .widget_sow-editor{
+    margin-bottom: 3%;
     h3{
+      font-size: 3em;
+      font-weight: 600;
       text-align: center;
     }
     div{
       text-align: center;
+      margin-top: 20px;
     }
   }
   .widget_sow-button{
-
+    a{
+      border: none;
+    }
   }
 }

@@ -100,7 +100,7 @@ jQuery(document).ready(function(){
     jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
     jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
 
-    jQuery('.menuDesktop .menu-item > a').removeAttr('href');
+    jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
     jQuery('.formTabs').on('click', function(){
         var menuItem = jQuery(this).data('topmenu');
@@ -117,6 +117,8 @@ jQuery(document).ready(function(){
         var itemTopMenu = (jQuery(this).attr('rel'));
         jQuery('[data-topmenu="'+ itemTopMenu +'"] > a').click();
     });
+
+    jQuery('.association-carousel .sow-carousel-wrapper').append('<div class="assocCarouselBg"></div>');
 });
 
 function map_resize() {
