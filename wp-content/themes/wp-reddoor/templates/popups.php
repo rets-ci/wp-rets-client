@@ -29,7 +29,7 @@
 			<li>
 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/landlord.png" alt="" />
 				<span>Lanlord</span>
-				<a href="">Lanlord Login</a>
+				<a href="">Landlord Login</a>
 			</li>
 			<li>
 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/tenant.png" alt="" />
