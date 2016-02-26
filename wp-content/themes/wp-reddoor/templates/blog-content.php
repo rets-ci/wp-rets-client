@@ -2,9 +2,6 @@
 	<div class="container">
 		<div class="row">
 			<section class="archiveFilterBody">
-				<div>
-					<?php _e( 'Filter by:' ); ?>
-				</div>
 				<ul>
 					<?php
 					$_categories = get_terms('category');
@@ -27,7 +24,7 @@
 </div>
 
 <div class="container">
-	<div class="row">
+	<div class="row loadMore">
 		<?php
 
 		// Start the Loop.

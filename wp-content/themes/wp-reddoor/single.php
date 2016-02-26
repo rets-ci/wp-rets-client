@@ -23,8 +23,6 @@ if(!($post_thumbnail_id)) {
 $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 
 ?>
-
-
   <?php
   // Start the Loop.
   while ( have_posts() ) : the_post();

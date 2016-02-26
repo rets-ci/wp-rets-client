@@ -132,7 +132,13 @@ function get_objects_where($match, $objects) {
 
 function termsSearchable() {
 
-  $query = $_GET['q'];
+  if(empty($_GET['q'])){
+
+    $query = 'a';
+  }
+  else{
+    $query = $_GET['q'];
+  }
 
   $_terms = get_terms( array( 'high_school', 'middle_school', 'elementary_school', 'county', 'zip_code', 'neighborhood', 'city' ), array(
     'search' => $query

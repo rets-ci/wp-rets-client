@@ -43,7 +43,8 @@ jQuery(document).ready(function(){
     })
     jQuery(function () {
         //script for popups
-        jQuery('.showContactPopup a').click(function () {
+        var popUpWindow = jQuery('span.exitPopup').parent();
+            jQuery('.showContactPopup a').click(function () {
             jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
             jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
@@ -53,6 +54,12 @@ jQuery(document).ready(function(){
             jQuery(this).parent().fadeOut(100);
             jQuery('#overlay').remove('#overlay');
             return false;
+        });
+        jQuery('body').keydown(function(eventObject){
+            if (eventObject.which == 27) {
+                popUpWindow.fadeOut(100);
+                jQuery('#overlay').remove('#overlay');
+            }
         });
     });
     /* Price Range */

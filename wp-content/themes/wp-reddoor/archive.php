@@ -24,7 +24,7 @@ get_header(); ?>
 	<div class="container-fluid ftrdImgGoTop">
 		<section class="archiveImageHeader">
 			<h1><?php single_cat_title(); ?></h1>
-			<h3><?php echo category_description( $category_id ); ?></h3>
+			<h3><?php echo category_description(); ?></h3>
 		</section>
 	</div>
 <?php } ?>
