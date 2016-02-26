@@ -1,0 +1,1714 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ajax Load More\n"
+"POT-Creation-Date: 2016-02-16 10:13-0500\n"
+"PO-Revision-Date: 2016-02-16 10:13-0500\n"
+"Last-Translator: Darren Cooney <dcooney@ecentricarts.com>\n"
+"Language-Team: \n"
+"Language: en_CA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/admin.php:117 ../admin/admin.php:674 ../admin/admin.php:718
+#: ../admin/admin.php:768
+msgid "You don't belong here."
+msgstr ""
+
+#: ../admin/admin.php:147 ../admin/editor/editor-build.php:67
+#: ../admin/views/licenses.php:51 ../admin/views/licenses.php:106
+#: ../admin/views/licenses.php:160 ../admin/views/licenses.php:215
+#: ../admin/views/licenses.php:271 ../admin/views/licenses.php:327
+#: ../admin/views/licenses.php:381 ../admin/views/licenses.php:434
+#: ../admin/views/licenses.php:489 ../admin/views/licenses.php:546
+msgid "Active"
+msgstr ""
+
+#: ../admin/admin.php:148 ../admin/editor/editor-build.php:68
+#: ../admin/views/licenses.php:55 ../admin/views/licenses.php:110
+#: ../admin/views/licenses.php:164 ../admin/views/licenses.php:219
+#: ../admin/views/licenses.php:275 ../admin/views/licenses.php:331
+#: ../admin/views/licenses.php:385 ../admin/views/licenses.php:438
+#: ../admin/views/licenses.php:493 ../admin/views/licenses.php:550
+msgid "Inactive"
+msgstr ""
+
+#: ../admin/admin.php:149
+msgid "Applying layout"
+msgstr ""
+
+#: ../admin/admin.php:150 ../admin/views/repeater-templates.php:220
+msgid "Template Updated"
+msgstr ""
+
+#: ../admin/admin.php:259
+msgid ""
+"[Ajax Load More] Error opening default repeater template - Please check your "
+"file path and ensure your server is configured to allow Ajax Load More to "
+"read and write files within the /ajax-load-more/core/repeater directory"
+msgstr ""
+
+#: ../admin/admin.php:263
+msgid ""
+"[Ajax Load More] Error updating default repeater template - Please check "
+"your file path and ensure your server is configured to allow Ajax Load More "
+"to read and write files within the /ajax-load-more/core/repeater directory."
+msgstr ""
+
+#: ../admin/admin.php:632
+msgid "[Ajax Load More] Unable to open repeater template - "
+msgstr ""
+
+#: ../admin/admin.php:636
+msgid "[Ajax Load More] Error saving repeater template - "
+msgstr ""
+
+#: ../admin/admin.php:669
+msgid "Error Writing File"
+msgstr ""
+
+#: ../admin/admin.php:854
+#: ../admin/shortcode-builder/shortcode-builder.php:1229
+msgid "Container Type"
+msgstr ""
+
+#: ../admin/admin.php:862
+#: ../admin/shortcode-builder/shortcode-builder.php:1253
+msgid "Container Classes"
+msgstr ""
+
+#: ../admin/admin.php:870
+msgid "Disable CSS"
+msgstr ""
+
+#: ../admin/admin.php:878
+msgid "Button/Loading Style"
+msgstr ""
+
+#: ../admin/admin.php:886
+msgid "Button Classes"
+msgstr ""
+
+#: ../admin/admin.php:894
+msgid "Ajax Security"
+msgstr ""
+
+#: ../admin/admin.php:902
+msgid "Top of Page"
+msgstr ""
+
+#: ../admin/admin.php:910
+msgid "Dynamic Content"
+msgstr ""
+
+#: ../admin/admin.php:918
+msgid "Editor Button"
+msgstr ""
+
+#: ../admin/admin.php:926
+msgid "Error Notices"
+msgstr ""
+
+#: ../admin/admin.php:991
+msgid ""
+"Customize the user experience of Ajax Load More by updating the fields below."
+msgstr ""
+
+#: ../admin/admin.php:1004
+msgid "The following settings affect the WordPress admin area only."
+msgstr ""
+
+#: ../admin/admin.php:1035
+msgid "I want to use my own CSS styles."
+msgstr ""
+
+#: ../admin/admin.php:1035
+msgid "View Ajax Load More CSS"
+msgstr ""
+
+#: ../admin/admin.php:1055
+msgid "Hide shortcode button in WYSIWYG editor."
+msgstr ""
+
+#: ../admin/admin.php:1076
+msgid ""
+"Display error messaging regarding repeater template updates in the browser "
+"console."
+msgstr ""
+
+#: ../admin/admin.php:1097
+msgid ""
+"Disable dynamic population of categories, tags and authors in the Shortcode "
+"Builder.<span style=\"display:block\">Recommended if you have an "
+"extraordinary number of categories, tags and/or authors."
+msgstr ""
+
+#: ../admin/admin.php:1118 ../admin/admin.php:1121
+msgid "Ajax Posts Here"
+msgstr ""
+
+#: ../admin/admin.php:1123
+msgid "You can modify the container type when building a shortcode."
+msgstr ""
+
+#: ../admin/admin.php:1140
+msgid ""
+"Add classes to Ajax Load More container - classes are applied globally and "
+"will appear with every instance of Ajax Load More. <span style=\"display:"
+"block\">You can also add classes when building a shortcode.</span>"
+msgstr ""
+
+#: ../admin/admin.php:1202
+msgid ""
+"Select an Ajax loading style - you can choose between a <strong>button</"
+"strong> or <strong>infinite scroll</strong>"
+msgstr ""
+
+#: ../admin/admin.php:1225
+msgid "Preview"
+msgstr ""
+
+#: ../admin/admin.php:1244
+msgid "Add classes to your <strong>Load More</strong> button"
+msgstr ""
+
+#: ../admin/admin.php:1287
+msgid ""
+"On initial page load, move the user's browser window to the top of the "
+"screen.<span style=\"display:block\">This <u>may</u> help prevent the "
+"loading of unnecessary posts.</span>"
+msgstr ""
+
+#: ../admin/admin.php:1308
+msgid ""
+"Enable <a href=\"https://codex.wordpress.org/WordPress_Nonces\" target="
+"\"_blank\">WP nonce</a> verification to help protect URLs against certain "
+"types of misuse, malicious or otherwise on each Ajax Load More query."
+msgstr ""
+
+#: ../admin/editor/editor-build.php:42
+msgid "Jump to Option"
+msgstr ""
+
+#: ../admin/editor/editor-build.php:46
+msgid ""
+"Create your own Ajax Load More shortcode by adjusting the parameters below:"
+msgstr ""
+
+#: ../admin/editor/editor-build.php:53
+msgid "Insert Shortcode"
+msgstr ""
+
+#: ../admin/editor/editor-build.php:56 ../admin/views/shortcode-builder.php:27
+msgid "Copy"
+msgstr ""
+
+#: ../admin/editor/editor.php:19
+msgid "You are not allowed to be here"
+msgstr ""
+
+#: ../admin/includes/components/layout-list.php:3
+msgid "Apply Layout"
+msgstr ""
+
+#: ../admin/includes/components/layout-list.php:13
+msgid "Default Layout"
+msgstr ""
+
+#: ../admin/includes/components/layout-list.php:19
+msgid ""
+"Unlock additional layout templates with the <strong>Layouts add-on</strong>"
+msgstr ""
+
+#: ../admin/includes/components/repeater-options.php:2
+msgid "Options"
+msgstr ""
+
+#: ../admin/includes/components/repeater-options.php:6
+msgid "Update Template from Database"
+msgstr ""
+
+#: ../admin/includes/components/repeater-options.php:7
+msgid "Copy Template Data"
+msgstr ""
+
+#: ../admin/includes/cta/config.php:2
+msgid "Plugin Configurations"
+msgstr ""
+
+#: ../admin/includes/cta/config.php:4
+msgid "Plugin Version"
+msgstr ""
+
+#: ../admin/includes/cta/config.php:10
+msgid "Release Date"
+msgstr ""
+
+#: ../admin/includes/cta/dyk.php:2
+msgid "Did you know?"
+msgstr ""
+
+#: ../admin/includes/cta/extend.php:1
+msgid ""
+"Unlock additional templates with the <a href=\"https://connekthq.com/plugins/"
+"ajax-load-more/add-ons/custom-repeaters/?utm_source=WP"
+"%20Admin&utm_medium=CustomRepeaters%20Extend&utm_campaign=Custom%20Repeaters"
+"\" target=\"_parent\">Custom Repeaters add-on</a>"
+msgstr ""
+
+#: ../admin/includes/cta/extend.php:1
+msgid "More Info"
+msgstr ""
+
+#: ../admin/includes/cta/mailinglist.php:3
+msgid "Join our mailing list"
+msgstr ""
+
+#: ../admin/includes/cta/mailinglist.php:4
+msgid "Get product updates delivered directly to your inbox."
+msgstr ""
+
+#: ../admin/includes/cta/mailinglist.php:10
+msgid "Email Address"
+msgstr ""
+
+#: ../admin/includes/cta/mailinglist.php:11
+msgid "Enter email address"
+msgstr ""
+
+#: ../admin/includes/cta/mailinglist.php:12
+msgid "Subscribe"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:2
+msgid "Resources"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:4
+msgid "Ajax Load More Demo Site"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:5
+msgid "Plugin Support and Issues"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:6
+msgid "Reviews"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:7
+#, fuzzy
+msgid "Facebook"
+msgstr "Partager sur Facebook"
+
+#: ../admin/includes/cta/resources.php:8
+#, fuzzy
+msgid "Twitter"
+msgstr "Partager sur Twitter"
+
+#: ../admin/includes/cta/resources.php:9
+msgid "Github"
+msgstr ""
+
+#: ../admin/includes/cta/resources.php:11
+msgid "WordPress Repository"
+msgstr ""
+
+#: ../admin/includes/cta/reviews.php:1
+msgid "Leave a Review"
+msgstr ""
+
+#: ../admin/includes/cta/reviews.php:2
+msgid ""
+"Good <em>or</em> bad - all reviews will help the plugin push forward and "
+"grow."
+msgstr ""
+
+#: ../admin/includes/cta/reviews.php:4
+msgid "Write a Review"
+msgstr ""
+
+#: ../admin/includes/cta/sharing.php:1
+msgid "Share Ajax Load More"
+msgstr ""
+
+#: ../admin/includes/cta/sharing.php:2
+msgid "Use the links below to share with your friends on Twitter and Facebook."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:2
+msgid "Read/Write Access"
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:10
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-check\"></i><strong>Ajax Load "
+"More</strong></p><p class=\"desc\">Yay! Read/Write access is enabled within "
+"the /ajax-load-more/ directory."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:12
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>Ajax "
+"Load More</strong></p>Access Denied! You must enable read and write access "
+"for Ajax Load More directory (/ajax-load-more/core/repeater/) in order to "
+"save repeater template data.<br/><br/>Please contact your hosting provider "
+"or site administrator for more information."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:14
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>Ajax "
+"Load More</strong></p><p class=\"desc\">Unable to locate configuration file. "
+"Directory access may not be granted."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:25
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-check\"></i><strong>ALM - "
+"Custom Repeaters</strong></p><p class=\"desc\">Nice! Read/Write access is "
+"enabled within the /ajax-load-more-repeaters/repeaters/ directory."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:27
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>ALM "
+"Custom Repeaters</strong></p><p class=\"desc\">Access Denied! You must "
+"enable read and write access for Ajax Load More Custom Repeaters directory (/"
+"ajax-load-more-repeaters/repeaters/) in order to save repeater template data."
+"<br/><br/>Please contact your hosting provider or site administrator for "
+"more information."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:29
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>ALM "
+"Custom Repeaters</strong></p><p class=\"desc\">Unable to locate "
+"configuration file. Directory access may not be granted."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:41
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-check\"></i><strong>ALM - "
+"Custom Repeaters v2</strong></p><p class=\"desc\">Oh Ya! Read/Write access "
+"is enabled within the /ajax-load-more-repeaters-v2/repeaters/ directory."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:43
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>ALM "
+"- Custom Repeaters v2</strong></p><p class=\"desc\">Access Denied! You must "
+"enable read and write access for Ajax Load More Unlimited directory (/ajax-"
+"load-more-repeaters-v2/repeaters/) in order to save repeater template data."
+"<br/><br/>Please contact your hosting provider or site administrator for "
+"more information."
+msgstr ""
+
+#: ../admin/includes/cta/writeable.php:45
+msgid ""
+"<p class=\"writeable-title\"><i class=\"fa fa-exclamation\"></i><strong>ALM "
+"Unlimited</strong></p><p class=\"desc\">Unable to locate configuration file. "
+"Directory access may not be granted."
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:4
+msgid "Key (Name):"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:5
+msgid "Enter custom field key(name)"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:9
+msgid "Value:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:10
+msgid "Enter custom field value"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:15
+msgid "Operator:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/meta-query-options.php:35
+msgid "Type:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:3
+#: ../admin/shortcode-builder/includes/tax-query-options.php:47
+#: ../admin/shortcode-builder/includes/tax-query-options.php:78
+msgid "Taxonomy:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:5
+#: ../admin/shortcode-builder/includes/tax-query-options.php:50
+#: ../admin/shortcode-builder/includes/tax-query-options.php:81
+#: ../admin/shortcode-builder/shortcode-builder.php:384
+msgid "Select Taxonomy"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:12
+#: ../admin/shortcode-builder/includes/tax-query-options.php:57
+#: ../admin/shortcode-builder/includes/tax-query-options.php:88
+msgid "Taxonomy Terms:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:17
+#: ../admin/shortcode-builder/includes/tax-query-options.php:62
+#: ../admin/shortcode-builder/includes/tax-query-options.php:93
+msgid "Taxonomy Operator:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:36
+#: ../admin/shortcode-builder/shortcode-builder.php:815
+msgid "Relation:"
+msgstr ""
+
+#: ../admin/shortcode-builder/includes/tax-query-options.php:36
+msgid ""
+"The logical relationship between each taxonomy when there is more than one."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1
+#: ../admin/views/examples.php:9 ../admin/views/repeater-templates.php:14
+msgid "Collapse All"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1
+#: ../admin/views/examples.php:9 ../admin/views/repeater-templates.php:15
+msgid "Expand All"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:15
+#: ../admin/views/add-ons.php:18 ../admin/views/licenses.php:95
+#: ../admin/views/settings.php:51
+msgid "Cache"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:18
+msgid "Enable Caching"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:19
+msgid "Turn on content caching."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:26
+#: ../admin/shortcode-builder/shortcode-builder.php:70
+#: ../admin/shortcode-builder/shortcode-builder.php:225
+#: ../admin/shortcode-builder/shortcode-builder.php:248
+#: ../admin/shortcode-builder/shortcode-builder.php:302
+#: ../admin/shortcode-builder/shortcode-builder.php:343
+#: ../admin/shortcode-builder/shortcode-builder.php:421
+#: ../admin/shortcode-builder/shortcode-builder.php:492
+#: ../admin/shortcode-builder/shortcode-builder.php:1021
+#: ../admin/shortcode-builder/shortcode-builder.php:1046
+#: ../admin/shortcode-builder/shortcode-builder.php:1093
+#: ../admin/shortcode-builder/shortcode-builder.php:1164
+msgid "True"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:30
+#: ../admin/shortcode-builder/shortcode-builder.php:74
+#: ../admin/shortcode-builder/shortcode-builder.php:229
+#: ../admin/shortcode-builder/shortcode-builder.php:252
+#: ../admin/shortcode-builder/shortcode-builder.php:306
+#: ../admin/shortcode-builder/shortcode-builder.php:347
+#: ../admin/shortcode-builder/shortcode-builder.php:425
+#: ../admin/shortcode-builder/shortcode-builder.php:496
+#: ../admin/shortcode-builder/shortcode-builder.php:1025
+#: ../admin/shortcode-builder/shortcode-builder.php:1050
+#: ../admin/shortcode-builder/shortcode-builder.php:1097
+#: ../admin/shortcode-builder/shortcode-builder.php:1168
+msgid "False"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:40
+msgid "Cache ID"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:41
+msgid ""
+"You <u>must</u> generate a unique ID for this cached query - this unique ID "
+"will be used as a content identifier."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:47
+msgid "Generate New ID"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:59
+#: ../admin/shortcode-builder/shortcode-builder.php:62
+#: ../admin/views/add-ons.php:45 ../admin/views/licenses.php:149
+msgid "Comments"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:63
+msgid "Enable Ajax Load More to display blog comments."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:86
+#: ../admin/shortcode-builder/shortcode-builder.php:357
+msgid "Post ID"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:87
+#: ../admin/shortcode-builder/shortcode-builder.php:358
+msgid "The ID of the current single post."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:99
+msgid "Comments Per Page"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:100
+msgid "The number of top level items to show for each page of comments."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:108
+msgid ""
+"<strong>Note</strong>: The amount selected does NOT include comment replies."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:114
+msgid "Comment Type"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:115
+msgid "The type of comment(s) to display."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:120
+msgid "Comment"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:121
+msgid "All"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:122
+msgid "Trackback"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:123
+msgid "Pingback"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:124
+msgid "Pings"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:133
+msgid "Comment Style"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:134
+msgid "Select the HTML container style for your comments."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:160
+msgid "Comment Template"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:161
+msgid "Select a repeater template that will display comment data."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:167
+#: ../admin/shortcode-builder/shortcode-builder.php:1126
+msgid "None"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:168
+msgid "Default"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:180
+msgid ""
+"<strong>Note</strong>: <span>None</span> will use the default WordPress "
+"comment layout."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:189
+msgid "Callback Function"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:190
+msgid ""
+"A custom <a href=\"https://codex.wordpress.org/Function_Reference/"
+"wp_list_comments#Arguments\" target=\"_blank\">callback</a> function that "
+"will display each comment."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:198
+msgid ""
+"<strong>Note</strong>: The majority of premium themes have a custom callback "
+"function for displaying comments. Please see comments.php or functions.php "
+"within your theme directory to locate the callback function for your theme."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:203
+msgid ""
+"You must add the comments shortcode directly to your single template file "
+"using the <a href=\"https://developer.wordpress.org/reference/functions/"
+"do_shortcode/\" target=\"_blank\">do_shortcode</a> method. &raquo; <a href="
+"\"https://connekthq.com/plugins/ajax-load-more/add-ons/comments/\" target="
+"\"_blank\">View documentation</a>"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:215
+#: ../admin/views/add-ons.php:124 ../admin/views/licenses.php:316
+#: ../admin/views/settings.php:55
+msgid "Paging"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:218
+msgid "Replace infinite scrolling with a paged ajax navigation system."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:240
+msgid "Paging Controls"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:241
+msgid "Show (&laquo;)previous and next(&raquo;) buttons."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:261
+msgid "Paging Navigation Classes"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:262
+msgid "Add custom CSS classes to the paging navigation menu."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:273
+msgid "Show at Most"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:274
+msgid ""
+"The maximum amount of page menu items to show at a time. <br/.>0 = no maximum"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:292
+#: ../admin/views/add-ons.php:151 ../admin/views/licenses.php:370
+msgid "Preloaded"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:295
+msgid "Preload posts prior to making Ajax requests."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:316
+msgid "Preload Amount"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:317
+msgid "Enter the number of posts to preload."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:333
+#: ../admin/views/add-ons.php:177 ../admin/views/licenses.php:423
+#: ../admin/views/settings.php:57
+msgid "Previous Post"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:336
+msgid "Enable the infinite scrolling of single posts."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:370
+#: ../admin/shortcode-builder/shortcode-builder.php:755
+msgid "Taxonomy"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:370
+msgid ""
+"Selecting a taxonomy means only previous posts from the same taxonomy will "
+"be returned"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:371
+msgid "Query previous posts from the same taxonomy."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:385
+#: ../admin/shortcode-builder/shortcode-builder.php:637
+msgid "Category"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:386
+#: ../admin/shortcode-builder/shortcode-builder.php:697
+msgid "Tag"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:400
+msgid ""
+"You must add the Previous Post shortcode directly to your single template "
+"file using the <a href=\"https://developer.wordpress.org/reference/functions/"
+"do_shortcode/\" target=\"_blank\">do_shortcode</a> method. &raquo; <a href="
+"\"https://connekthq.com/plugins/ajax-load-more/add-ons/previous-post/\" "
+"target=\"_blank\">View documentation</a>"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:411
+msgid "SEO (Search Engine Optimization)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:414
+msgid ""
+"Enable address bar URL rewrites as users page through ajax loaded content."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:438
+msgid "Template"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:442
+#: ../admin/shortcode-builder/shortcode-builder.php:543
+msgid "Repeater Template"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:444
+msgid ""
+"Select which <a href=\"admin.php?page=ajax-load-more-repeaters\" target="
+"\"_parent\">repeater template</a> you would like to use."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:481
+#: ../admin/views/licenses.php:40
+msgid "Alternating Templates"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:485
+msgid ""
+"Select an alternate repeater template to be display every <em>x</em> number "
+"of posts."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:509
+msgid "Template Sequencing"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:510
+msgid ""
+"A comma separated list of post position values. Posts in these positions "
+"will be replaced by the alternate template"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:511
+msgid "Pro-Tip"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:512
+msgid ""
+"Use sequence \"even\" to use an alternate template for every even result"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:525
+msgid "Sequence Loop"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:527
+msgid ""
+"Select the maximum number of loops to repeat alternate template sequence."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:528
+msgid "0 = no maximum"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:545
+msgid ""
+"Select an alternate <a href=\"admin.php?page=ajax-load-more-repeaters\" "
+"target=\"_parent\">repeater template</a>."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:552
+#, fuzzy
+msgid "-- Select Repeater --"
+msgstr "Sélectionnez province"
+
+#: ../admin/shortcode-builder/shortcode-builder.php:586
+msgid "Post Types"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:589
+msgid "Select Post Types to query."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:610
+msgid "Post Format"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:613
+msgid ""
+"Select a <a href=\"http://codex.wordpress.org/Post_Formats\" target=\"_blank"
+"\">Post Format</a> to query."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:616
+msgid "Select Post Format"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:617
+msgid "Standard"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:641
+msgid ""
+"A comma separated list of categories to include by slug. (design, research "
+"etc...)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:643
+#: ../admin/shortcode-builder/shortcode-builder.php:914
+msgid "view example"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:665
+#: ../admin/shortcode-builder/shortcode-builder.php:722
+#: ../admin/shortcode-builder/shortcode-builder.php:913
+msgid "Exclude"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:666
+msgid ""
+"A comma separated list of categories to exclude by ID. (3, 12, 35 etc..)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:700
+#: ../admin/shortcode-builder/shortcode-builder.php:902
+msgid "Include"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:701
+msgid ""
+"A comma separated list of tags to include by slug. (toronto, canada etc...)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:723
+msgid "A comma separated list of tags to exclude by ID. (30, 12, 99 etc..)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:758
+msgid "Select a taxonomy then select the terms and an operator."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:773
+msgid "Date"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:776
+msgid ""
+"Enter a year, month(number) and day to query by date archive.<br/>&raquo; <a "
+"href=\"admin.php?page=ajax-load-more-examples#example-date\">view example</a>"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:782
+msgid "Year:"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:786
+msgid "Month:"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:790
+msgid "Day:"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:801
+msgid "Custom Fields (Meta_Query)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:804
+msgid ""
+"Query for <a href=\"http://codex.wordpress.org/Class_Reference/WP_Meta_Query"
+"\" target=\"_blank\">custom field</a> by entering a custom field key, value "
+"and operator."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:815
+msgid ""
+"The logical relationship between each custom field when there is more than "
+"one."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:829
+msgid "Add Another"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:845
+msgid "Author"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:848
+msgid "Select an Author to query(by ID)."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:853
+msgid "Select Author"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:869
+msgid "Search Term"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:872
+msgid "Enter a search term to query."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:876
+msgid "Enter search term"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:884
+msgid "Custom Arguments"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:887
+msgid ""
+"A semicolon separated list of custom value:pair arguments.<br/><br/>e.g. "
+"tag_slug__and:design,development; event_display:upcoming. Default"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:891
+msgid "event_display:upcoming"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:899
+msgid "Post Parameters"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:903
+msgid "A comma separated list of post ID's to query."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:907
+msgid "225, 340, 818, etc..."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:914
+msgid "A comma separated list of post ID's to exclude from query."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:926
+msgid "Post Status"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:929
+msgid "Select status of the post."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:934
+msgid "Published"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:948
+msgid "Ordering"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:951
+msgid "Sort posts by Order and Orderby parameters."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:955
+msgid "Order"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:962
+msgid "Order By"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:981
+msgid "Offset"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:984
+msgid "Offset the initial query by <em>'n'</em> number of posts"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:996
+msgid "Posts Per Page"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:999
+msgid "Select the number of posts to load with each request."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1011
+msgid "Pause"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1014
+msgid ""
+"Do <u>NOT</u> load any posts until user the clicks <em>Load More</em> button."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1035
+msgid "Scrolling"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1038
+msgid "Enable Scrolling"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1039
+msgid "Load more posts as the user scrolls the page."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1060
+msgid "Scroll Distance"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1060
+msgid ""
+"Distance is based on the position of the loading button from the bottom of "
+"the screen"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1061
+msgid ""
+"The distance from the bottom of the screen to trigger loading of posts. "
+"(Default = 150)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1073
+msgid "Maximum Pages"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1073
+msgid "If using an Infinite Scroll button style you should set this to 0"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1074
+msgid "Maximum number of pages to load while scrolling. (0 = unlimited)"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1086
+msgid "Pause Override"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1087
+msgid ""
+"Allow scrolling to override the Pause parameter and trigger the loading of "
+"posts on scroll."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1107
+msgid "Transition"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1110
+msgid "Transition Type"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1111
+msgid "Select a loading transition style."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1118
+msgid "Slide"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1122
+msgid "Fade"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1134
+msgid "Transition Container"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1134
+msgid ""
+"Removing the transition container may have undesired results and is not "
+"recommended."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1135
+msgid "Remove the Ajax Load More (.alm-reveal) loading container."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1152
+msgid "Images Loaded"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1155
+msgid "Wait for all images to load before displaying ajax loaded content"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1156
+msgid "Background images are currently not supported"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1178
+msgid "Destroy After"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1181
+msgid ""
+"Remove ajax load more functionality after '<em>n</em>' number of pages have "
+"been loaded."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1193
+msgid "Button Labels"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1198
+msgid "Button Label"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1199
+msgid "Customize the text of the <em>Load More</em> button."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1203
+#: ../ajax-load-more.php:363
+msgid "Older Posts"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1211
+msgid "Button Loading Label"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1211
+msgid "Leave field empty to not update text while loading content"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1212
+msgid ""
+"Update the text of the <em>Load More</em> button while content is loading."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1216
+msgid "Loading Posts..."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1225
+msgid "Container Options"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1229
+msgid ""
+"You can define a global container type on the Ajax Load More settings screen"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1230
+msgid ""
+"Override the global Container Type that was set on <a href=\"admin.php?"
+"page=ajax-load-more\">ALM Settings page</a>."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1253
+msgid ""
+"You can define global container classes on the Ajax Load More settings screen"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1254
+msgid ""
+"Add custom CSS classes to the Ajax Load More container. <br/><br/> e.g. "
+"portfolio-listing large-12 etc"
+msgstr ""
+
+#: ../admin/views/add-ons.php:4
+msgid "Add-ons"
+msgstr ""
+
+#: ../admin/views/add-ons.php:5
+msgid ""
+"Add-ons are available to extend and enhance the core functionality of Ajax "
+"Load More"
+msgstr ""
+
+#: ../admin/views/add-ons.php:19
+msgid "Improve performance with the Ajax Load More caching engine."
+msgstr ""
+
+#: ../admin/views/add-ons.php:20
+msgid ""
+"The Cache add-on creates static HTML files of Ajax Load More requests then "
+"delivers those static files to your visitors."
+msgstr ""
+
+#: ../admin/views/add-ons.php:46
+msgid "Load blog comments on demand with Ajax Load More."
+msgstr ""
+
+#: ../admin/views/add-ons.php:47
+msgid ""
+"The Comments add-on will display your blog comments with Ajax Load More's "
+"infinite scroll functionality."
+msgstr ""
+
+#: ../admin/views/add-ons.php:70 ../admin/views/licenses.php:204
+msgid "Custom Repeaters"
+msgstr ""
+
+#: ../admin/views/add-ons.php:71
+msgid "Extend Ajax Load More with unlimited repeater templates."
+msgstr ""
+
+#: ../admin/views/add-ons.php:72
+msgid ""
+"Create, delete and modify repeater templates as you need them with "
+"absolutely zero restrictions."
+msgstr ""
+
+#: ../admin/views/add-ons.php:98 ../admin/views/add-ons.php:257
+#: ../admin/views/licenses.php:260 ../admin/views/settings.php:53
+msgid "Layouts"
+msgstr ""
+
+#: ../admin/views/add-ons.php:99
+msgid "Predefined layouts for your repeater templates."
+msgstr ""
+
+#: ../admin/views/add-ons.php:100
+msgid ""
+"The Layouts add-on provides a collection of unique, well designed and fully "
+"responsive templates."
+msgstr ""
+
+#: ../admin/views/add-ons.php:125
+msgid "Extend Ajax Load More with a numbered navigation."
+msgstr ""
+
+#: ../admin/views/add-ons.php:126
+msgid ""
+"The Paging add-on will transform the default infinite scroll functionality "
+"into a robust ajax powered navigation system."
+msgstr ""
+
+#: ../admin/views/add-ons.php:152
+msgid "Load an initial set of posts before making Ajax requests to the server."
+msgstr ""
+
+#: ../admin/views/add-ons.php:153
+msgid ""
+"The Preloaded add-on will display content quicker and allow caching of the "
+"initial query which can reduce stress on your server."
+msgstr ""
+
+#: ../admin/views/add-ons.php:178
+msgid "An extension to enable infinite scrolling of single posts."
+msgstr ""
+
+#: ../admin/views/add-ons.php:179
+msgid ""
+"The Previous Post add-on will load single posts as you scroll and update the "
+"browser URL to the current post."
+msgstr ""
+
+#: ../admin/views/add-ons.php:203 ../admin/views/licenses.php:478
+msgid "Search Engine Optimization"
+msgstr ""
+
+#: ../admin/views/add-ons.php:204
+msgid "Generate unique paging URLs with every Ajax Load More query."
+msgstr ""
+
+#: ../admin/views/add-ons.php:205
+msgid ""
+"The SEO add-on will optimize your ajax loaded content for search engines by "
+"generating unique URLs with every query.</p>"
+msgstr ""
+
+#: ../admin/views/add-ons.php:229 ../admin/views/licenses.php:535
+#: ../admin/views/settings.php:61
+msgid "Theme Repeaters"
+msgstr ""
+
+#: ../admin/views/add-ons.php:230
+msgid "Manage repeater templates within your current theme directory."
+msgstr ""
+
+#: ../admin/views/add-ons.php:231
+msgid ""
+"The Theme Repeater add-on will allow you load, edit and maintain templates "
+"from your current theme directory.</p>"
+msgstr ""
+
+#: ../admin/views/add-ons.php:258
+msgid "Extend Ajax Load More with predefined responsive layouts."
+msgstr ""
+
+#: ../admin/views/add-ons.php:259
+msgid "Boost the look of your theme with a library of mobile ready layouts."
+msgstr ""
+
+#: ../admin/views/add-ons.php:276
+msgid ""
+"All add-ons are installed as stand alone plugins and with a valid license "
+"key will receive plugin update notifications directly within the <a href="
+"\"plugins.php\">WordPress plugin dashboard</a>."
+msgstr ""
+
+#: ../admin/views/examples.php:4
+msgid "Examples"
+msgstr ""
+
+#: ../admin/views/examples.php:5
+msgid "A collection of everyday shortcode usages and implementation examples"
+msgstr ""
+
+#: ../admin/views/examples.php:12
+msgid "Archive.php"
+msgstr ""
+
+#: ../admin/views/examples.php:14
+msgid "Shortcode for use on generic archive page."
+msgstr ""
+
+#: ../admin/views/examples.php:22
+msgid "Author.php"
+msgstr ""
+
+#: ../admin/views/examples.php:24
+msgid "Shortcode for use on author archive pages."
+msgstr ""
+
+#: ../admin/views/examples.php:31
+msgid "Category.php"
+msgstr ""
+
+#: ../admin/views/examples.php:33
+msgid "Shortcode for use on category archive pages."
+msgstr ""
+
+#: ../admin/views/examples.php:40
+msgid "Date Archives"
+msgstr ""
+
+#: ../admin/views/examples.php:42
+msgid "Shortcode for use for archiving by date."
+msgstr ""
+
+#: ../admin/views/examples.php:49
+msgid "Excluding Posts"
+msgstr ""
+
+#: ../admin/views/examples.php:51
+msgid "Shortcode for excluding an array of posts."
+msgstr ""
+
+#: ../admin/views/examples.php:57
+msgid "Tag.php"
+msgstr ""
+
+#: ../admin/views/examples.php:59
+msgid "Shortcode for use on tag archive pages."
+msgstr ""
+
+#: ../admin/views/examples.php:67 ../admin/views/shortcode-builder.php:13
+msgid "Back to Top"
+msgstr ""
+
+#: ../admin/views/help.php:4
+msgid "Help"
+msgstr ""
+
+#: ../admin/views/help.php:5
+msgid "Get started with our four step guide to painless implementation!"
+msgstr ""
+
+#: ../admin/views/licenses.php:4
+msgid "Licenses"
+msgstr ""
+
+#: ../admin/views/licenses.php:5
+msgid ""
+"Enter your license keys to enable automatic updates for <a href=\"admin.php?"
+"page=ajax-load-more-add-ons\">ALM Add-ons</a>."
+msgstr ""
+
+#: ../admin/views/licenses.php:9
+msgid "License Keys"
+msgstr ""
+
+#: ../admin/views/licenses.php:11
+msgid ""
+"Manage your Ajax Load More license key's below - enter a key for each of "
+"your add-ons to receive plugin update notifications directly within the <a "
+"href=\"plugins.php\">WP Plugins dashboard</a>."
+msgstr ""
+
+#: ../admin/views/licenses.php:46 ../admin/views/licenses.php:48
+#: ../admin/views/licenses.php:101 ../admin/views/licenses.php:103
+#: ../admin/views/licenses.php:155 ../admin/views/licenses.php:157
+#: ../admin/views/licenses.php:210 ../admin/views/licenses.php:212
+#: ../admin/views/licenses.php:266 ../admin/views/licenses.php:268
+#: ../admin/views/licenses.php:322 ../admin/views/licenses.php:324
+#: ../admin/views/licenses.php:376 ../admin/views/licenses.php:378
+#: ../admin/views/licenses.php:429 ../admin/views/licenses.php:431
+#: ../admin/views/licenses.php:484 ../admin/views/licenses.php:486
+#: ../admin/views/licenses.php:541 ../admin/views/licenses.php:543
+msgid "Enter License Key"
+msgstr ""
+
+#: ../admin/views/licenses.php:68 ../admin/views/licenses.php:123
+#: ../admin/views/licenses.php:177 ../admin/views/licenses.php:232
+#: ../admin/views/licenses.php:288 ../admin/views/licenses.php:344
+#: ../admin/views/licenses.php:397 ../admin/views/licenses.php:451
+#: ../admin/views/licenses.php:506 ../admin/views/licenses.php:564
+msgid "Activate License"
+msgstr ""
+
+#: ../admin/views/licenses.php:72 ../admin/views/licenses.php:127
+#: ../admin/views/licenses.php:181 ../admin/views/licenses.php:236
+#: ../admin/views/licenses.php:292 ../admin/views/licenses.php:348
+#: ../admin/views/licenses.php:401 ../admin/views/licenses.php:455
+#: ../admin/views/licenses.php:510 ../admin/views/licenses.php:568
+msgid "Deactivate License"
+msgstr ""
+
+#: ../admin/views/licenses.php:586
+msgid "You do not have any Ajax Load More add-ons installed"
+msgstr ""
+
+#: ../admin/views/licenses.php:586
+msgid "Browse Add-ons"
+msgstr ""
+
+#: ../admin/views/licenses.php:597
+msgid "About Licenses"
+msgstr ""
+
+#: ../admin/views/licenses.php:600
+msgid "Add-on licenses will enable updates directly in your WP dashboard."
+msgstr ""
+
+#: ../admin/views/licenses.php:601
+msgid ""
+"License keys are found in the purchase receipt email that was sent "
+"immediately after your successful purchase."
+msgstr ""
+
+#: ../admin/views/licenses.php:602
+msgid ""
+"If you cannot locate your key please use the <a href=\"https://connekthq.com/"
+"contact/\">contact form</a> on our website and reference the email address "
+"used when you completed the purchase."
+msgstr ""
+
+#: ../admin/views/licenses.php:607
+msgid "Legacy Users"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:4
+msgid "Repeater Templates"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:5
+msgid "The library of editable templates for use within your theme"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:38
+msgid "Default Template"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:42
+msgid "Enter the HTML and PHP code for the default template"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:60
+msgid "Save Template"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:128
+msgid "Saving template..."
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:161
+msgid "Something went wrong and the data could not be saved."
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:199
+msgid "Updating template..."
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:252
+msgid "Templating Help"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:254
+msgid "What is a repeater template?"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:255
+msgid ""
+"A repeater template is a snippet of code that will execute over and over "
+"within a <a href=\"http://codex.wordpress.org/The_Loop\" target=\"_blank"
+"\">WordPress loop</a>.</p>"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:258
+msgid "Can I include PHP in the repeater template?"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:259
+msgid ""
+"Yes, PHP and core WordPress functions such as, <code>the_title()</code> and "
+"<code>the_permalink()</code> are required.</p>"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:262
+msgid "Tips and Tricks"
+msgstr ""
+
+#: ../admin/views/repeater-templates.php:264
+msgid ""
+"Always open and close your templates with an HTML element. In some rare "
+"cases data may not be displayed if not wrapped in HTML.<br/>e.g. <code>&lt;"
+"li> &lt;/li></code> or <code>&lt;div> &lt;/div></code>"
+msgstr ""
+
+#: ../admin/views/settings.php:5
+msgid "A powerful plugin to add infinite scroll functionality to your website."
+msgstr ""
+
+#: ../admin/views/settings.php:9
+msgid "Ajax Load More settings have been saved."
+msgstr ""
+
+#: ../admin/views/settings.php:20
+msgid "A small favor to ask"
+msgstr ""
+
+#: ../admin/views/settings.php:22
+msgid ""
+"If you're an Ajax Load More user, please consider helping <a href=\"https://"
+"twitter.com/KaptonKaos\" target=\"_blank\">me</a> spread the word by sharing "
+"with your networks and/or leaving a review on <a href=\"https://wordpress."
+"org/support/view/plugin-reviews/ajax-load-more\" target=\"_blank\">wordpress."
+"org</a> forums."
+msgstr ""
+
+#: ../admin/views/settings.php:32
+msgid "Don't show me this again!"
+msgstr ""
+
+#: ../admin/views/settings.php:43 ../admin/views/settings.php:46
+msgid "Jump to Setting"
+msgstr ""
+
+#: ../admin/views/settings.php:47
+msgid "Global Settings"
+msgstr ""
+
+#: ../admin/views/settings.php:48
+msgid "Admin"
+msgstr ""
+
+#: ../admin/views/settings.php:59
+msgid "SEO"
+msgstr ""
+
+#: ../admin/views/settings.php:90
+msgid "Sorry, settings could not be saved."
+msgstr ""
+
+#: ../admin/views/shortcode-builder.php:4
+msgid "Shortcode Builder"
+msgstr ""
+
+#: ../admin/views/shortcode-builder.php:5
+msgid ""
+"Create your own Ajax Load More <a href=\"http://en.support.wordpress.com/"
+"shortcodes/\" target=\"_blank\">shortcode</a> by adjusting the values below"
+msgstr ""
+
+#: ../admin/views/shortcode-builder.php:23
+msgid "Shortcode Output"
+msgstr ""
+
+#: ../admin/views/shortcode-builder.php:24
+msgid ""
+"Place the following shortcode into the content editor or widget area of your "
+"theme."
+msgstr ""
+
+#: ../admin/views/shortcode-builder.php:29
+msgid "Clear all Shortcode Builder settings"
+msgstr ""
+
+#: ../ajax-load-more.php:192
+msgid "Settings"
+msgstr ""
+
+#: ../core/functions.php:388
+msgid "Pages:"
+msgstr ""
+
+#~ msgid "404 Error"
+#~ msgstr "Erreur 404 "
+
+#~ msgid "Sorry, the page you have requested cannot be found."
+#~ msgstr "Désolé, la page que vous demandez est introuvable."
+
+#~ msgid ""
+#~ "Be sure to check your spelling. If all else fails, you can go back to the "
+#~ "page you came from, return to the <a href=\"/\">homepage</a>, or try "
+#~ "searching."
+#~ msgstr ""
+#~ "Veuillez vérifier l'orthographe. Si tout échoue, retournez à la page "
+#~ "précédente, retournez à la <a href=\"/\">page d'accueil</a>, ou essayez "
+#~ "une recherche."
+
+#~ msgid "Connect with Willow"
+#~ msgstr "Connectez-vous avec Willow"
+
+#~ msgid ""
+#~ "Sign up to stay in touch and receive Willow news, updates and event "
+#~ "information."
+#~ msgstr ""
+#~ "Inscrivez-vous pour rester en contact avec nous et recevoir des nouvelles "
+#~ "de Willow (Disponibles en anglais seulement)"
+
+#~ msgid "all our funders"
+#~ msgstr "tous nos donateurs"
+
+#~ msgid "call our helpline"
+#~ msgstr "Appelez notre ligne de soutien"
+
+#~ msgid "share"
+#~ msgstr "Partager"
+
+#~ msgid "Share via Email"
+#~ msgstr "Partager par courriel"
+
+#~ msgid "Print Page"
+#~ msgstr "Imprimer cette page"
+
+#~ msgid "Your search returned <strong>%s</strong> result%s"
+#~ msgstr "Votre recherche a généré <strong>%s</strong>  résultat%s "
+
+#~ msgid "search"
+#~ msgstr "Recherche"
+
+#~ msgid "Showing"
+#~ msgstr "Montrant"
+
+#~ msgid "result(s) in"
+#~ msgstr "résultat(s) dans"
+
+#~ msgid "For more information please contact:"
+#~ msgstr "Pour de plus amples renseignements, veuillez contacter : "
+
+#~ msgid "filter support groups"
+#~ msgstr "Filtrer les groupes de soutien"
+
+#~ msgid "select a province and city to find a support group"
+#~ msgstr ""
+#~ "Sélectionnez votre province et votre ville pour trouver un groupe de "
+#~ "soutien"
+
+#~ msgid "Filter"
+#~ msgstr "Filtrer"
