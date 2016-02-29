@@ -19,32 +19,32 @@
 	<form class="buyForm" id="tabs-1" method="POST" action="">
 		<div class="location">
 			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-			<select class="citiesSelection">
-				<option selected="selected" value="3620194">Location</option>
+			<select class="citiesSelection" name="_term">
+				<option value=""></option>
 			</select>
 		</div>
 		<div class="sfBeds">
 			<span><svg class="icon icon-beds"><use xlink:href="#icon-beds"></use></svg>Beds</span>
 			<ul>
-				<li><input id="bed1" name="numberBeds" type="checkbox" value="1" /><label for="bed1">1</label></li>
-				<li><input id="bed15" name="numberBeds" type="checkbox" value="1.5" /><label for="bed15">1.5</label></li>
-				<li><input id="bed2" name="numberBeds" type="checkbox" value="2" /><label for="bed2">2</label></li>
-				<li><input id="bed3" name="numberBeds" type="checkbox" value="3" /><label for="bed3">3</label></li>
-				<li><input id="bed4" name="numberBeds" type="checkbox" value="4" /><label for="bed4">4</label></li>
-				<li><input id="bed5" name="numberBeds" type="checkbox" value="5" /><label for="bed5">5</label></li>
-				<li><input id="bed6" name="numberBeds" type="checkbox" value="6" /><label for="bed6">6</label></li>
+				<li><input id="bed1" name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label for="bed1">1</label></li>
+				<li><input id="bed15" name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label for="bed15">1.5</label></li>
+				<li><input id="bed2" name="wpp_search[bedrooms][]" type="checkbox" value="2" /><label for="bed2">2</label></li>
+				<li><input id="bed3" name="wpp_search[bedrooms][]" type="checkbox" value="3" /><label for="bed3">3</label></li>
+				<li><input id="bed4" name="wpp_search[bedrooms][]" type="checkbox" value="4" /><label for="bed4">4</label></li>
+				<li><input id="bed5" name="wpp_search[bedrooms][]" type="checkbox" value="5" /><label for="bed5">5</label></li>
+				<li><input id="bed6" name="wpp_search[bedrooms][]" type="checkbox" value="6" /><label for="bed6">6</label></li>
 			</ul>
 		</div>
 		<div class="sfBaths">
 			<span><svg class="icon icon-baths"><use xlink:href="#icon-baths"></use></svg>Baths</span>
 			<ul>
-				<li><input id="bath1" name="numberBaths" type="checkbox" value="1" /><label for="bath1">1+</label></li>
-				<li><input id="bath15" name="numberBaths" type="checkbox" value="1.5" /><label for="bath15">1.5+</label></li>
-				<li><input id="bath2" name="numberBaths" type="checkbox" value="2" /><label for="bath2">2+</label></li>
-				<li><input id="bath3" name="numberBaths" type="checkbox" value="3" /><label for="bath3">3+</label></li>
-				<li><input id="bath4" name="numberBaths" type="checkbox" value="4" /><label for="bath4">4</label></li>
-				<li><input id="bath5" name="numberBaths" type="checkbox" value="5" /><label for="bath5">5</label></li>
-				<li><input id="bath6" name="numberBaths" type="checkbox" value="6" /><label for="bath6">6</label></li>
+				<li><input id="bath1" name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label for="bath1">1</label></li>
+				<li><input id="bath15" name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label for="bath15">1.5</label></li>
+				<li><input id="bath2" name="wpp_search[bathrooms][]" type="checkbox" value="2" /><label for="bath2">2</label></li>
+				<li><input id="bath3" name="wpp_search[bathrooms][]" type="checkbox" value="3" /><label for="bath3">3</label></li>
+				<li><input id="bath4" name="wpp_search[bathrooms][]" type="checkbox" value="4" /><label for="bath4">4</label></li>
+				<li><input id="bath5" name="wpp_search[bathrooms][]" type="checkbox" value="5" /><label for="bath5">5</label></li>
+				<li><input id="bath6" name="wpp_search[bathrooms][]" type="checkbox" value="6" /><label for="bath6">6</label></li>
 			</ul>
 		</div>
 		<div class="sfPrice">
@@ -52,8 +52,8 @@
 
 			<div class="sfPriceRange">
 				<div class="sfprInputsBlock">
-					<input type="text" class="firstRange" value="" name="firstRange" placeholder="Min">
-					<input type="text" class="lastRange" value="" name="lastRange" placeholder="Max">
+					<input type="text" class="firstRange" value="" name="wpp_search[price][min]" placeholder="Min">
+					<input type="text" class="lastRange" value="" name="wpp_search[price][max]" placeholder="Max">
 				</div>
 				<div class="clear"></div>
 				<div class="left-side">
@@ -86,32 +86,32 @@
 	<form class="rentForm" id="tabs-2"  method="POST" action="">
 		<div class="location">
 			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-			<select class="citiesSelection">
-				<option selected="selected" value="3620194">Location</option>
+			<select class="citiesSelection" name="_term">
+				<option></option>
 			</select>
 		</div>
 		<div class="sfBeds">
 			<span><svg class="icon icon-beds"><use xlink:href="#icon-beds"></use></svg>Beds</span>
 			<ul>
-				<li><input name="numberBeds" type="checkbox" value="1" /><label>1</label></li>
-				<li><input name="numberBeds" type="checkbox" value="1.5" /><label>1.5</label></li>
-				<li><input name="numberBeds" type="checkbox" value="2" /><label>2</label></li>
-				<li><input name="numberBeds" type="checkbox" value="3" /><label>3</label></li>
-				<li><input name="numberBeds" type="checkbox" value="4" /><label>4</label></li>
-				<li><input name="numberBeds" type="checkbox" value="5" /><label>5</label></li>
-				<li><input name="numberBeds" type="checkbox" value="6" /><label>6</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label>1</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="2" /><label>2</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="3" /><label>3</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="4" /><label>4</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="5" /><label>5</label></li>
+				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="6" /><label>6</label></li>
 			</ul>
 		</div>
 		<div class="sfBaths">
 			<span><svg class="icon icon-baths"><use xlink:href="#icon-baths"></use></svg>Baths</span>
 			<ul>
-				<li><input name="numberBaths" type="checkbox" value="1" /><label>1+</label></li>
-				<li><input name="numberBaths" type="checkbox" value="1.5" /><label>1.5+</label></li>
-				<li><input name="numberBaths" type="checkbox" value="2" /><label>2+</label></li>
-				<li><input name="numberBaths" type="checkbox" value="3" /><label>3+</label></li>
-				<li><input name="numberBaths" type="checkbox" value="4" /><label>4</label></li>
-				<li><input name="numberBaths" type="checkbox" value="5" /><label>5</label></li>
-				<li><input name="numberBaths" type="checkbox" value="6" /><label>6</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label>1</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="2" /><label>2</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="3" /><label>3</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="4" /><label>4</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="5" /><label>5</label></li>
+				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="6" /><label>6</label></li>
 			</ul>
 		</div>
 		<div class="sfPrice">
@@ -119,10 +119,10 @@
 		</div>
 		<input type="submit" value="Search" />
 	</form>
-	<div class="sellForm" id="tabs-3"  method="POST" action="">
+	<div class="sellForm" id="tabs-3">
 
 	</div>
-	<div class="rentPropForm" id="tabs-4"  method="POST" action="">
+	<div class="rentPropForm" id="tabs-4">
 
 	</div>
 </div>

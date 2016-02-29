@@ -106,7 +106,13 @@ add_action('init', function(){
   ));
 });
 
-
+/**
+ *
+ *
+ * @param $match
+ * @param $objects
+ * @return array
+ */
 function get_objects_where($match, $objects) {
   if ($match == '' || !is_array($match)) return array ();
   $wanted_objects = array ();
@@ -126,10 +132,9 @@ function get_objects_where($match, $objects) {
 };
 
 
-
-
-
-
+/**
+ *
+ */
 function termsSearchable() {
 
   if(empty($_GET['q'])){
@@ -175,3 +180,30 @@ add_action( 'wp_ajax_nopriv_TermsSearchable', 'termsSearchable' );
 if(class_exists('SiteOrigin_Widget')) {
   include 'widgets/rdc-post-carousel/post-carousel.php';
 }
+
+/**
+ * Parse Search Request and redirect to Taxonomy page
+ *
+ * @author peshkov@UD
+ */
+add_filter( "parse_request", function( $query ) {
+
+  if( !empty( $_POST[ 'wpp_search' ] ) && !empty( $_POST[ '_term' ] ) ) {
+
+    $term = $_POST[ '_term' ];
+    $term = is_numeric( $term ) ? (int)$term : $term;
+    $_redirect = get_term_link( $term );
+
+    if( is_wp_error( $_redirect ) ) {
+      return $query;
+    }
+
+    $_query = http_build_query( apply_filters( 'wpp::search::query', array( 'wpp_search' => $_POST[ 'wpp_search' ] ) ), '', '&' );
+    $_redirect .= ( strpos( $_redirect, '?' ) === false ? '?' : '&' ) . $_query;
+    wp_redirect( $_redirect );
+    die();
+  }
+
+  return $query;
+
+}, 1 );
