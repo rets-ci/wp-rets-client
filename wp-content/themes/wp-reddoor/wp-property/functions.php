@@ -7,7 +7,7 @@
  * Extend JavaScript var 'wpp' with search values,
  * which are needed for rendering custom search form on supermap.
  */
-add_filter( 'wpp::get_instance', function( $data ) {
+add_filter( '__DISABLED__wpp::get_instance', function( $data ) {
 
   $data[ 'search_data' ] = array(
     'property_type' => array()
