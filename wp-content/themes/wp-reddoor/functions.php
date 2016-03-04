@@ -180,7 +180,12 @@ add_action( 'wp_ajax_nopriv_TermsSearchable', 'termsSearchable' );
 if(class_exists('SiteOrigin_Widget')) {
   include 'widgets/rdc-post-carousel/post-carousel.php';
 }
-
+if(class_exists('SiteOrigin_Widget')) {
+  include 'widgets/rdc-hero/hero.php';
+}
+if(class_exists('SiteOrigin_Widget')) {
+  include 'widgets/rdc-button/button.php';
+}
 /**
  * Parse Search Request and redirect to Taxonomy page
  *
