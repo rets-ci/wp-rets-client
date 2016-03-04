@@ -8,16 +8,16 @@ Author URI: https://siteorigin.com
 
 if( !class_exists( 'SiteOrigin_Widget_Base_Slider' ) ) include_once get_stylesheet_directory().'/widgets/rdc-hero/base/base-slider.class.php';
 
-class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
+class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 
 	protected $buttons = array();
 
 	function __construct() {
 		parent::__construct(
-			'rdc-hero',
-			__('RDC Hero', 'so-widgets-bundle'),
+			'tabbed-content',
+			__('Tabbed content', 'so-widgets-bundle'),
 			array(
-				'description' => __('A big hero image with a few settings to make it your own.', 'so-widgets-bundle'),
+				'description' => __('Tabbed content widget', 'so-widgets-bundle'),
 				'help' => 'https://siteorigin.com/widgets-bundle/hero-image-widget/',
 				'panels_title' => false,
 			),
@@ -25,7 +25,7 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 			array(
 				'frames' => array(
 					'type' => 'repeater',
-					'label' => __('Hero frames', 'so-widgets-bundle'),
+					'label' => __('Tabbed frames', 'so-widgets-bundle'),
 					'item_name' => __('Frame', 'so-widgets-bundle'),
 					'item_label' => array(
 						'selector' => "[id*='frames-title']",
@@ -40,30 +40,21 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 							'label' => __( 'Title', 'so-widgets-bundle' ),
 						),
 
+						'image' => array(
+							'type' => 'media',
+							'label' => __( 'Image', 'so-widgets-bundle' ),
+							'library' => 'image',
+							'fallback' => true,
+						),
+
 						'content' => array(
 							'type' => 'tinymce',
 							'label' => __( 'Content', 'so-widgets-bundle' ),
 						),
 
-						'buttons' => array(
-							'type' => 'repeater',
-							'label' => __('Buttons', 'so-widgets-bundle'),
-							'item_name' => __('Button', 'so-widgets-bundle'),
-							'description' => __('Add [buttons] shortcode to the content to insert these buttons.', 'so-widgets-bundle'),
-
-							'item_label' => array(
-								'selector' => "[id*='buttons-button-text']",
-								'update_event' => 'change',
-								'value_method' => 'val'
-							),
-							'fields' => array(
-								'button' => array(
-									'type' => 'widget',
-									'class' => 'SiteOrigin_Widget_Button_Widget',
-									'label' => __('Button', 'so-widgets-bundle'),
-									'collapsible' => false,
-								)
-							)
+						'svg-title' => array(
+							'type' => 'text',
+							'label' => __( 'SVG icon title', 'so-widgets-bundle' ),
 						),
 
 						'background' => array(
@@ -101,104 +92,13 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 									'label' => __( 'Open URL in a new window', 'so-widgets-bundle' ),
 								),
 
-								'videos' => array(
-									'type' => 'repeater',
-									'item_name' => __('Video', 'so-widgets-bundle'),
-									'label' => __('Background videos', 'so-widgets-bundle'),
-									'item_label' => array(
-										'selector' => "[id*='frames-background_videos-url']",
-										'update_event' => 'change',
-										'value_method' => 'val'
-									),
-									'fields' => $this->video_form_fields(),
-								),
 							)
 						),
 					),
 				),
 
-				'controls' => array(
-					'type' => 'section',
-					'label' => __('Slider Controls', 'so-widgets-bundle'),
-					'fields' => $this->control_form_fields()
-				),
-
-				'design' => array(
-					'type' => 'section',
-					'label' => __('Design and Layout', 'so-widgets-bundle'),
-					'fields' => array(
-
-						'height' => array(
-							'type' => 'measurement',
-							'label' => __( 'Height', 'so-widgets-bundle' ),
-							'default' => 'default',
-						),
-
-						'padding' => array(
-							'type' => 'measurement',
-							'label' => __('Top and bottom padding', 'so-widgets-bundle'),
-							'default' => '50px',
-						),
-
-						'extra_top_padding' => array(
-							'type' => 'measurement',
-							'label' => __('Extra top padding', 'so-widgets-bundle'),
-							'description' => __('Additional padding added to the top of the slider', 'so-widgets-bundle'),
-							'default' => '0px',
-						),
-
-						'padding_sides' => array(
-							'type' => 'measurement',
-							'label' => __('Side padding', 'so-widgets-bundle'),
-							'default' => '20px',
-						),
-
-						'width' => array(
-							'type' => 'measurement',
-							'label' => __('Maximum container width', 'so-widgets-bundle'),
-							'default' => '1280px',
-						),
-
-						'heading_font' => array(
-							'type' => 'font',
-							'label' => __('Heading font', 'so-widgets-bundle'),
-							'default' => '',
-						),
-
-						'heading_size' => array(
-							'type' => 'measurement',
-							'label' => __('Heading size', 'so-widgets-bundle'),
-							'default' => '38px',
-						),
-
-						'heading_shadow' => array(
-							'type' => 'slider',
-							'label' => __('Heading shadow intensity', 'so-widgets-bundle'),
-							'max' => 100,
-							'min' => 0,
-							'default' => 50,
-						),
-
-						'text_size' => array(
-							'type' => 'measurement',
-							'label' => __('Text size', 'so-widgets-bundle'),
-							'default' => '16px',
-						),
-
-					)
-				),
 			)
 		);
-	}
-
-	function initialize(){
-		// This widget requires the button widget
-		if( !class_exists('SiteOrigin_Widget_Button_Widget') ) {
-			SiteOrigin_Widgets_Bundle::single()->include_widget( 'button' );
-		}
-
-		// Let the slider base class do its initialization
-		parent::initialize();
 	}
 
 	/**
@@ -222,7 +122,6 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 			'image-sizing' => 'cover',
 			'url' => !empty( $frame['background']['url'] ) ? $frame['background']['url'] : false,
 			'new_window' => !empty( $frame['background']['new_window'] ),
-			'videos' => $frame['background']['videos'],
 			'video-sizing' => 'background',
 			'opacity' => intval($frame['background']['opacity'])/100,
 		);
@@ -238,7 +137,13 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 		?>
 		<div class="sow-slider-image-container">
 			<div class="sow-slider-image-wrapper">
-				<?php echo $this->process_content( $frame['content'], $frame ); ?>
+				<?php $dataImage = wp_get_attachment_image_src($frame['image']);
+							$imageLink = $dataImage[0];
+				?>
+
+				<h2><?php echo $frame['title'] ?></h2>
+				<img src="<?php echo $imageLink ?>" alt="" />
+				<?php echo $frame['content'] ?>
 			</div>
 		</div>
 		<?php
@@ -254,10 +159,6 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 	 */
 	function process_content( $content, $frame ) {
 		ob_start();
-		foreach( $frame['buttons'] as $button ) {
-			$this->sub_widget('SiteOrigin_Widget_Button_Widget', array(), $button['button']);
-		}
-		$button_code = ob_get_clean();
 
 		// Add in the button code
 		$san_content = wp_kses_post($content);
@@ -272,39 +173,7 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 	 *
 	 * @return array
 	 */
-	function get_less_variables($instance) {
-		$less = array();
 
-		// Slider navigation controls
-		$less['nav_color_hex'] = $instance['controls']['nav_color_hex'];
-		$less['nav_size'] = $instance['controls']['nav_size'];
-
-		// Hero specific design
-		//Measurement field type options
-		$meas_options = array();
-		$meas_options['slide_padding'] = $instance['design']['padding'];
-		$meas_options['slide_padding_extra_top'] = $instance['design']['extra_top_padding'];
-		$meas_options['slide_padding_sides'] = $instance['design']['padding_sides'];
-		$meas_options['slide_width'] = $instance['design']['width'];
-		$meas_options['slide_height'] = $instance['design']['height'];
-
-		$meas_options['heading_size'] = $instance['design']['heading_size'];
-		$meas_options['text_size'] = $instance['design']['text_size'];
-
-		foreach ( $meas_options as $key => $val ) {
-			$less[ $key ] = $this->add_default_measurement_unit( $val );
-		}
-
-		$less['heading_shadow'] = intval( $instance['design']['heading_shadow'] );
-
-		$font = siteorigin_widget_get_font( $instance['design']['heading_font'] );
-		$less['heading_font'] = $font['family'];
-		if ( ! empty( $font['weight'] ) ) {
-			$less['heading_font_weight'] = $font['weight'];
-		}
-
-		return $less;
-	}
 
 	function add_default_measurement_unit($val) {
 		if (!empty($val)) {
@@ -315,23 +184,7 @@ class RDC_Hero_Widget extends SiteOrigin_Widget_Base_Slider {
 		return $val;
 	}
 
-	/**
-	 * Less function for importing Google web fonts.
-	 *
-	 * @param $instance
-	 * @param $args
-	 *
-	 * @return string
-	 */
-	function less_import_google_font($instance, $args) {
-		if( empty( $instance ) ) return;
-
-		$font_import = siteorigin_widget_get_font( $instance['design']['heading_font'] );
-		if( !empty( $font_import['css_import'] ) ) {
-			return  $font_import['css_import'];
-		}
-	}
 
 }
 
-siteorigin_widget_register('rdc-hero', __FILE__, 'RDC_Hero_Widget');
+siteorigin_widget_register('tabbed-content', __FILE__, 'Tabbed_Content_Widget');

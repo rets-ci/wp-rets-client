@@ -121,7 +121,7 @@ jQuery( function($){
                         $p.find('>li').removeClass('sow-active').eq(0).addClass('sow-active');
                         if(optionHash.slideCount <= 1) {
                             // Special case when there is only one slide
-                            $p.hide();
+
                             $n.hide();
                         }
 
@@ -141,7 +141,7 @@ jQuery( function($){
             } );
 
             // Set up showing and hiding navs
-            $p.add($n).hide();
+
             if( !$base.hasClass('sow-slider-is-mobile') && $slides.length > 1 ) {
 
                 var toHide = false;

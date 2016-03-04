@@ -137,6 +137,7 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 
 	function render_template( $controls, $frames ){
 		$this->render_template_part('before_slider', $controls, $frames);
+		$this->render_template_part('navigation', $controls, $frames);
 		$this->render_template_part('before_slides', $controls, $frames);
 
 		foreach( $frames as $i => $frame ) {
@@ -144,8 +145,10 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 		}
 
 		$this->render_template_part('after_slides', $controls, $frames);
-		$this->render_template_part('navigation', $controls, $frames);
+
 		$this->render_template_part('after_slider', $controls, $frames);
+
+
 	}
 
 	function render_template_part( $part, $controls, $frames ) {
@@ -153,33 +156,26 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 			case 'before_slider':
 				?><div class="sow-slider-base <?php if( wp_is_mobile() ) echo 'sow-slider-is-mobile' ?>" style="display: none"><?php
 				break;
+			case 'navigation':
+				?>
+				<ol class="sow-slider-pagination">
+
+					<?php foreach($frames as $i => $frame) : ?>
+
+						<li><a href="#" data-goto="<?php echo $i ?>">
+								<svg class="icon icon-ICON_CLASS"><use xlink:href="#icon-ICON_CLASS"></use></svg>
+								<span><?php echo $frame['title']; ?></span>
+							</a></li>
+					<?php endforeach; ?>
+				</ol>
+				<?php
+				break;
 			case 'before_slides':
 				$settings = $this->slider_settings( $controls );
 				?><ul class="sow-slider-images" data-settings="<?php echo esc_attr( json_encode($settings) ) ?>"><?php
 				break;
 			case 'after_slides':
 				?></ul><?php
-				break;
-			case 'navigation':
-				?>
-				<ol class="sow-slider-pagination">
-					<?php foreach($frames as $i => $frame) : ?>
-						<li><a href="#" data-goto="<?php echo $i ?>"><?php echo $i+1 ?></a></li>
-					<?php endforeach; ?>
-				</ol>
-
-				<div class="sow-slide-nav sow-slide-nav-next">
-					<a href="#" data-goto="next" data-action="next">
-						<em class="sow-sld-icon-<?php echo sanitize_html_class( $controls['nav_style'] ) ?>-right"></em>
-					</a>
-				</div>
-
-				<div class="sow-slide-nav sow-slide-nav-prev">
-					<a href="#" data-goto="previous" data-action="prev">
-						<em class="sow-sld-icon-<?php echo sanitize_html_class( $controls['nav_style'] ) ?>-left"></em>
-					</a>
-				</div>
-				<?php
 				break;
 			case 'after_slider':
 				?></div><?php
