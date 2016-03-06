@@ -1,3 +1,10 @@
+function setSlideSize(slide, s) {
+    var width, height, slide = jQuery(slide), img = slide.find("img"), maxHeight = s.container.height() / s.params.slidesPerColumn, attrWidth = parseInt(img.attr("width")), attrHeight = parseInt(img.attr("height")), ratio = attrWidth / attrHeight;
+    return height = slide.is(":first-child") && "12mosaic" == s.params.sliderType ? s.container.height() : maxHeight, 
+    width = height * ratio, img.width(width).height(height), slide.width(width).height(height), 
+    width;
+}
+
 jQuery(document).ready(function($) {
     var wpprs = $(".property-resp-slideshow");
     wpprs.each(function() {
@@ -6,7 +13,7 @@ jQuery(document).ready(function($) {
             cWidth > 900 ? width = 36 : 400 > cWidth ? width = 20 : width = cWidth / 100 * 6, 
             control.css("font-size", width);
         }
-        var galleryThumbs, $this = $(this), id = $this.attr("id"), _galleryThumbs = $this.find(".gallery-thumbs"), goToClickedSlide = function(e) {
+        var slidesPerView, slidesPerColumn, galleryThumbs, $this = $(this), id = $this.attr("id"), sliderType = $this.attr("data-slider-type"), centeredSlides = !0, slidesPerColumnFill = "column", _galleryThumbs = $this.find(".gallery-thumbs"), goToClickedSlide = function(e) {
             var clickedIndex = $(this).index();
             return galleryTop.activeIndex != clickedIndex ? (galleryTop.slideTo(clickedIndex), 
             e.preventDefault(), e.stopImmediatePropagation(), !1) : void enDisKeyCtrl();
@@ -14,11 +21,31 @@ jQuery(document).ready(function($) {
             wpprs.find(".gallery-top").each(function() {
                 this.swiper.disableKeyboardControl();
             }), galleryTop.enableKeyboardControl();
-        }, galleryTop = new Swiper($this.find(".gallery-top"), {
+        };
+        switch (sliderType) {
+          case "standard":
+            slidesPerView = 1, slidesPerColumn = 1;
+            break;
+
+          case "carousel":
+            slidesPerView = "auto", slidesPerColumn = 1;
+            break;
+
+          case "12grid":
+            slidesPerView = 3, slidesPerColumn = 2, centeredSlides = !1;
+            break;
+
+          case "12mosaic":
+            slidesPerView = 3, slidesPerColumn = 2, centeredSlides = !1;
+        }
+        var galleryTop = new Swiper($this.find(".gallery-top"), {
             nextButton: $this.find(".swiper-button-next"),
             prevButton: $this.find(".swiper-button-prev"),
-            centeredSlides: !0,
-            slidesPerView: "auto",
+            centeredSlides: centeredSlides,
+            slidesPerView: slidesPerView,
+            slidesPerColumn: slidesPerColumn,
+            slidesPerColumnFill: slidesPerColumnFill,
+            sliderType: sliderType,
             spaceBetween: 2.5,
             keyboardControl: !0,
             lazyLoading: !0,
@@ -36,29 +63,34 @@ jQuery(document).ready(function($) {
             slidesPerView: "auto",
             touchRatio: 1,
             longSwipesRatio: 1
-        }), galleryThumbs.container.on("click", ".swiper-slide", goToClickedSlide), galleryTop.on("onSlideChangeStart", function(s) {
-            galleryThumbs.slideTo(s.activeIndex);
+        }), galleryThumbs.container.on("click", ".swiper-slide", function(e) {
+            galleryTop.params.byThumbs = !0, goToClickedSlide.call(this, e), galleryTop.params.byThumbs = !1;
+        }), galleryTop.on("onSlideChangeStart", function(s) {
+            galleryThumbs.activeIndex != s.activeIndex && galleryThumbs.slideTo(s.activeIndex);
         })), galleryTop.on("onSlideChangeStart", function(s) {
             var active = s.activeIndex + 1, progress = s.container.find(".count-progress");
             progress.find(".current").html(active), enDisKeyCtrl();
         }), jQuery(window).on("orientationchange", galleryTop.onResize), jQuery(document).on("wpp_denali_tabbed_widget_render", galleryTop.onResize), 
-        galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), galleryTop.on("onResizeStart", function(s) {
-            setControlSize();
-            var $styler = (s.container.width(), jQuery("#" + id + "-img-max-width")), container_width = s.container.width(), container_height = s.container.height();
-            0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
-            $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + s.container.width() + "px!important;max-height:" + s.container.height() + "px!important;}"), 
-            s.slides.each(function() {
-                var $this = jQuery(this).find("img"), width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), wRatio = height / width, hRatio = width / height;
-                width > container_width && height > container_height ? container_width >= container_height * hRatio ? ($this.height(container_height), 
-                $this.width(container_height * hRatio)) : ($this.width(container_width), $this.height(container_width * wRatio)) : width > container_width ? ($this.width(container_width), 
-                $this.height(container_width * wRatio)) : height > container_height ? ($this.height(container_height), 
-                $this.width(container_height * hRatio)) : ($this.width(width), $this.height(height));
-            });
+        "12mosaic" != sliderType && galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
+        galleryTop.on("onResizeStart", function(s) {
+            if (setControlSize(), s.params.lightBox || "12mosaic" != s.params.sliderType) {
+                var $styler = (s.container.width(), jQuery("#" + id + "-img-max-width")), maxWidth = s.container.width() / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
+                0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
+                $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + s.container.width() + "px!important;max-height:" + s.container.height() + "px!important;}"), 
+                s.slides.each(function() {
+                    var $this = jQuery(this).find("img"), width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), ratio = width / height;
+                    width > maxWidth && height > maxHeight ? maxWidth >= maxHeight * ratio ? (height = maxHeight, 
+                    width = maxHeight * ratio) : (width = maxWidth, height = maxWidth / ratio) : width > maxWidth ? (width = maxWidth, 
+                    height = maxWidth / ratio) : height > maxHeight && (height = maxHeight, width = maxHeight * ratio), 
+                    $this.width(width), $this.height(height);
+                });
+            }
         }), galleryTop.on("onLazyImageReady", function(s, slide, _img) {
             s.onResize();
         }), $this.wpp_rs_lb({
             galleryTop: galleryTop,
-            galleryThumbs: galleryThumbs
+            galleryThumbs: galleryThumbs,
+            sliderType: sliderType
         });
     });
 });

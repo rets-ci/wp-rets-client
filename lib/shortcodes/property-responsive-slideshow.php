@@ -23,6 +23,19 @@ namespace UsabilityDynamics\WPP {
                 'description' => sprintf( __( 'If not empty, Slideshow will show for particular %s, which ID is set. If not provided will show slideshow for current %s', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label(), \WPP_F::property_label() ),
                 'type' => 'text',
                 'default' => ''
+              ), 
+              // Available standard, carousel, 12grid and 12mosaic
+              'slider_type' => array(
+                'name' => __( 'Slider Type', ud_get_wp_property( 'domain' ) ),
+                'description' => sprintf( __( 'Type of slider. Default is standard. Also Carousel and Grid Slider is available.', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label(), \WPP_F::property_label() ),
+                'type' => 'select',
+                'options' => array(
+                  'standard'  => 'Standard Slider',
+                  'carousel'  => 'Carousel Slider',
+                  //'12grid' => '1:2 Grid Slider',
+                  '12mosaic' => '1:2 Mosaic Slider'
+                ),
+                'default' => 'standard',
               ),
             // See params examples in: wp-property/lib/shortcodes
 
@@ -42,6 +55,7 @@ namespace UsabilityDynamics\WPP {
 
         $data = shortcode_atts( array(
           'property_id' => '',
+          'slider_type' => '',
         ), $atts );
         self::maybe_print_styles();
         return $this->get_template( 'property-responsive-shortcode', $data, false );

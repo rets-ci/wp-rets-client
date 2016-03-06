@@ -104,7 +104,6 @@
         &.swiper-button-disabled {
             opacity: 0.35;
             cursor: auto;
-            pointer-events: none;
         }
         >i{
             display:block;
@@ -141,6 +140,30 @@
         color: #fff;
         @media @mobile{
             display: block;
+        }
+    }
+}
+
+/*
+    Styles for grid layout.
+*/
+
+.property-resp-slideshow{
+    &.slider-type-12mosaic{
+        .swiper-slide{
+            height:auto;
+            opacity:1;
+        }
+        .gallery-top{
+            .swiper-wrapper{
+                .swiper-slide{
+                    //border:1px solid;
+                    //box-sizing: border-box;
+                    img{
+                        cursor: pointer;
+                    }
+                }
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
 (function () {
     'use strict';
-    var $;;/*===========================
+    var $;;
+/*===========================
 Swiper
 ===========================*/
 var Swiper = function (container, params) {
-    if (!(this instanceof Swiper)) return new Swiper(container, params);;var defaults = {
+    if (!(this instanceof Swiper)) return new Swiper(container, params);;
+var defaults = {
     direction: 'horizontal',
     touchEventsTarget: 'container',
     initialSlide: 0,
@@ -596,10 +598,13 @@ s.updateSlidesSize = function () {
     s.slidesSizesGrid = [];
 
     var spaceBetween = s.params.spaceBetween,
-        slidePosition = -s.params.slidesOffsetBefore,
+        slidePosition = {},
         i,
         prevSlideSize = 0,
         index = 0;
+    for (var i = s.params.slidesPerColumn - 1; i >= 0; i--) {
+        slidePosition[i] = -s.params.slidesOffsetBefore;
+    }
     if (typeof spaceBetween === 'string' && spaceBetween.indexOf('%') >= 0) {
         spaceBetween = parseFloat(spaceBetween.replace('%', '')) / 100 * s.size;
     }
@@ -608,14 +613,21 @@ s.updateSlidesSize = function () {
     // reset margins
     if (s.rtl) s.slides.css({marginLeft: '', marginTop: ''});
     else s.slides.css({marginRight: '', marginBottom: ''});
+    if(!s.params.lightBox && s.params.sliderType == '12mosaic')
+        s.wrapper.css('display', 'block');
+    else
+        s.wrapper.css('display', '');
 
     var slidesNumberEvenToRows;
+    var noOfSlide;
+    if(!s.params.lightBox && s.params.sliderType == '12mosaic')
+        noOfSlide = s.slides.length + 1; // Because the first slide takes size of tow slide.
     if (s.params.slidesPerColumn > 1) {
-        if (Math.floor(s.slides.length / s.params.slidesPerColumn) === s.slides.length / s.params.slidesPerColumn) {
-            slidesNumberEvenToRows = s.slides.length;
+        if (Math.floor(noOfSlide / s.params.slidesPerColumn) === noOfSlide / s.params.slidesPerColumn) {
+            slidesNumberEvenToRows = noOfSlide;
         }
         else {
-            slidesNumberEvenToRows = Math.ceil(s.slides.length / s.params.slidesPerColumn) * s.params.slidesPerColumn;
+            slidesNumberEvenToRows = Math.ceil(noOfSlide / s.params.slidesPerColumn) * s.params.slidesPerColumn;
         }
         if (s.params.slidesPerView !== 'auto' && s.params.slidesPerColumnFill === 'row') {
             slidesNumberEvenToRows = Math.max(slidesNumberEvenToRows, s.params.slidesPerView * s.params.slidesPerColumn);
@@ -626,45 +638,12 @@ s.updateSlidesSize = function () {
     var slideSize;
     var slidesPerColumn = s.params.slidesPerColumn;
     var slidesPerRow = slidesNumberEvenToRows / slidesPerColumn;
-    var numFullColumns = slidesPerRow - (s.params.slidesPerColumn * slidesPerRow - s.slides.length);
+    var numFullColumns = slidesPerRow - (s.params.slidesPerColumn * slidesPerRow - noOfSlide);
+    var ii = 0;
+    var calculatedLeft = {0:0};
     for (i = 0; i < s.slides.length; i++) {
         slideSize = 0;
         var slide = s.slides.eq(i);
-        if (s.params.slidesPerColumn > 1) {
-            // Set slides order
-            var newSlideOrderIndex;
-            var column, row;
-            if (s.params.slidesPerColumnFill === 'column') {
-                column = Math.floor(i / slidesPerColumn);
-                row = i - column * slidesPerColumn;
-                if (column > numFullColumns || (column === numFullColumns && row === slidesPerColumn-1)) {
-                    if (++row >= slidesPerColumn) {
-                        row = 0;
-                        column++;
-                    }
-                }
-                newSlideOrderIndex = column + row * slidesNumberEvenToRows / slidesPerColumn;
-                slide
-                    .css({
-                        '-webkit-box-ordinal-group': newSlideOrderIndex,
-                        '-moz-box-ordinal-group': newSlideOrderIndex,
-                        '-ms-flex-order': newSlideOrderIndex,
-                        '-webkit-order': newSlideOrderIndex,
-                        'order': newSlideOrderIndex
-                    });
-            }
-            else {
-                row = Math.floor(i / slidesPerRow);
-                column = i - row * slidesPerRow;
-            }
-            slide
-                .css({
-                    'margin-top': (row !== 0 && s.params.spaceBetween) && (s.params.spaceBetween + 'px')
-                })
-                .attr('data-swiper-column', column)
-                .attr('data-swiper-row', row);
-
-        }
         if (slide.css('display') === 'none') continue;
         if (s.params.slidesPerView === 'auto') {
             slideSize = isH() ? slide.outerWidth(true) : slide.outerHeight(true);
@@ -672,6 +651,10 @@ s.updateSlidesSize = function () {
         }
         else {
             slideSize = (s.size - (s.params.slidesPerView - 1) * spaceBetween) / s.params.slidesPerView;
+            
+            if(!s.params.lightBox && s.params.sliderType == '12mosaic'){
+                slideSize = setSlideSize(s.slides[i], s);
+            }
             if (s.params.roundLengths) slideSize = round(slideSize);
 
             if (isH()) {
@@ -685,17 +668,82 @@ s.updateSlidesSize = function () {
         s.slidesSizesGrid.push(slideSize);
 
 
+        if (s.params.slidesPerColumn > 1) {
+            // Set slides order
+            var newSlideOrderIndex;
+            var column, row;
+            if(i>0 && !s.params.lightBox && s.params.sliderType == '12mosaic')
+                ii = i +1; // Increase by 1 because first slide takes two rows.
+            if (s.params.slidesPerColumnFill === 'column') {
+                column = Math.floor(ii / slidesPerColumn);
+                row = ii - column * slidesPerColumn;
+                if (column > numFullColumns || (column === numFullColumns && row === slidesPerColumn-1)) {
+                    if (++row >= slidesPerColumn) {
+                        row = 0;
+                        column++;
+                    }
+                }
+            }
+            else {
+                row = Math.floor(ii / slidesPerRow);
+                column = ii - row * slidesPerRow;
+            }
+            // Searching for the nearest position in rows.
+            jQuery.each(calculatedLeft, function(l, item){
+                if(calculatedLeft[l] < calculatedLeft[row])
+                    row = l;
+            });
+            var top = (row * s.container.height() / 2);
+            top += row * s.params.spaceBetween;
+            if(!s.params.lightBox){
+                slide.css({
+                    'left':     calculatedLeft[row] + 'px',
+                    'top':      top + 'px',
+                    'display':  'block',
+                    'position': 'absolute'
+                })
+                .attr('data-swiper-column', column)
+                .attr('data-swiper-row', row);
+            }
+            else{
+                slide.css({
+                    'margin-top': (row !== 0 && s.params.spaceBetween) && (s.params.spaceBetween + 'px'),
+                    'position':'relative',
+                    'display':  '',
+                });
+            }
+
+            if(i == 0){
+                // Because first column will get space of tow row it's need to add it's width to calculatedLeft for each row.
+                for (var j = s.params.slidesPerColumn - 1; j >= 0; j--) {
+                    calculatedLeft[j] = slideSize + s.params.spaceBetween;
+                }
+            }
+            else
+                calculatedLeft[row] += slideSize + s.params.spaceBetween;
+
+        }
+        // Nedded to avoid error on single row.
+        if(typeof row == 'undefined')
+            row = 0;
         if (s.params.centeredSlides) {
-            slidePosition = slidePosition + slideSize / 2 + prevSlideSize / 2 + spaceBetween;
-            if (i === 0) slidePosition = slidePosition - s.size / 2 - spaceBetween;
-            if (Math.abs(slidePosition) < 1 / 1000) slidePosition = 0;
-            if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
-            s.slidesGrid.push(slidePosition);
+            slidePosition[row] = slidePosition[row] + slideSize / 2 + prevSlideSize / 2 + spaceBetween;
+            if (i === 0) slidePosition[row] = slidePosition[row] - s.size / 2 - spaceBetween;
+            if (Math.abs(slidePosition[row]) < 1 / 1000) slidePosition[row] = 0;
+            if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition[row]);
+            s.slidesGrid.push(slidePosition[row]);
         }
         else {
-            if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition);
-            s.slidesGrid.push(slidePosition);
-            slidePosition = slidePosition + slideSize + spaceBetween;
+            if ((index) % s.params.slidesPerGroup === 0) s.snapGrid.push(slidePosition[row]);
+            s.slidesGrid.push(slidePosition[row]); 
+            if(i == 0){
+                for (var j = s.params.slidesPerColumn - 1; j >= 0; j--) {
+                    slidePosition[j] = slideSize + s.params.spaceBetween;
+                }
+            }
+            else{
+                slidePosition[row] = slidePosition[row] + slideSize + spaceBetween;
+            }
         }
 
         s.virtualSize += slideSize + spaceBetween;
@@ -719,6 +767,11 @@ s.updateSlidesSize = function () {
     if (s.params.slidesPerColumn > 1) {
         s.virtualSize = (slideSize + s.params.spaceBetween) * slidesNumberEvenToRows;
         s.virtualSize = Math.ceil(s.virtualSize / s.params.slidesPerColumn) - s.params.spaceBetween;
+        if(!s.params.lightBox && s.params.sliderType == '12mosaic'){
+            jQuery.each(calculatedLeft, function(i, size){
+                s.virtualSize = (size>s.virtualSize) ? size : s.virtualSize;
+            })
+        }
         s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
         if (s.params.centeredSlides) {
             newSlidesGrid = [];
@@ -1714,6 +1767,29 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
     if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
 
+    // going to next
+    if(!s.params.lightBox && !s.params.byThumbs && s.params.sliderType == '12mosaic'){
+        if(slideIndex>s.activeIndex){
+            if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
+            var maxRight = s.snapGrid[s.activeIndex] + s.container.width() - s.params.spaceBetween;
+            for (var i = s.snapIndex; i < s.snapGrid.length; i++) {
+                slideIndex = s.snapIndex = i;
+                if(s.snapGrid[i] + s.slidesSizesGrid[i] > maxRight)
+                    break;
+                    
+            }
+        }
+        else{ // prev
+            if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
+            var maxLeft = s.snapGrid[s.activeIndex] - (s.container.width() + s.params.spaceBetween);
+            for (var i = s.snapIndex; i >= 0; i--) {
+                slideIndex = s.snapIndex = i;
+                if(s.snapGrid[i] - s.slidesSizesGrid[i] < maxLeft)
+                    break;
+            }
+        }
+    }
+
     var translate = - s.snapGrid[s.snapIndex];
     // Stop autoplay
     if (s.params.autoplay && s.autoplaying) {
@@ -1728,6 +1804,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.updateProgress(translate);
 
     // Normalize slideIndex
+    if(s.params.lightBox || s.params.sliderType != '12mosaic')
     for (var i = 0; i < s.slidesGrid.length; i++) {
         if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
             slideIndex = i;
@@ -1875,13 +1952,13 @@ s.setWrapperTransition = function (duration, byController) {
 s.setWrapperTranslate = function (translate, updateActiveIndex, byController) {
     var x = 0, y = 0, z = 0;
     if (isH()) {
-        if(!s.container.parent().hasClass('lightbox') || s.container.hasClass('gallery-thumbs')){
+        if(!s.params.lightBox || s.container.hasClass('gallery-thumbs')){
             var width = s.virtualSize,
-                wrapper_width = s.wrapper.width(); 
+                container_width = s.container.width(); 
             if(translate>0)
-                translate = 0;
-            else if(translate< -(width - wrapper_width))
-                translate = -(width - wrapper_width);
+                translate = 0.01; // Added fraction to avoid accidental lightbox open.
+            else if(translate< -(width - container_width))
+                translate = -(width - container_width) + 0.01; // Added fraction to avoid accidental lightbox open.
         }
         x = s.rtl ? -translate : translate;
     }
@@ -2173,7 +2250,8 @@ s.removeAllSlides = function () {
     }
     s.removeSlide(slidesIndexes);
 };
-;/*=========================
+;
+/*=========================
   Images Lazy Loading
   ===========================*/
 s.lazy = {
@@ -2283,7 +2361,8 @@ s.lazy = {
         }
     }
 };
-;/*=========================
+;
+/*=========================
   Keyboard Control
   ===========================*/
 function handleKeyboard(e) {
@@ -2359,7 +2438,8 @@ s.enableKeyboardControl = function () {
     s.params.keyboardControl = true;
     $(document).on('keydown', handleKeyboard);
 };
-;/*=========================
+;
+/*=========================
   Plugins API. Collect all and init all plugins
   ===========================*/
 s._plugins = [];
@@ -2374,7 +2454,8 @@ s.callPlugins = function (eventName) {
             s._plugins[i][eventName](arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
         }
     }
-};;/*=========================
+};;
+/*=========================
   Events/Callbacks/Plugins Emitter
   ===========================*/
 function normalizeEventName (eventName) {
@@ -2434,7 +2515,8 @@ s.once = function (eventName, handler) {
     };
     s.on(eventName, _handler);
     return s;
-};;// Accessibility tools
+};;
+// Accessibility tools
 s.a11y = {
     makeFocusable: function ($el) {
         $el.attr('tabIndex', '0');
@@ -2524,7 +2606,8 @@ s.a11y = {
         if (s.a11y.liveRegion && s.a11y.liveRegion.length > 0) s.a11y.liveRegion.remove();
     }
 };
-;/*=========================
+;
+/*=========================
   Init/Destroy
   ===========================*/
 s.init = function () {
@@ -2658,10 +2741,12 @@ s.destroy = function (deleteInstance, cleanupStyles) {
 
 s.init();
 ;
+
     // Return swiper instance
     return s;
 };
-;/*==================================================
+;
+/*==================================================
     Prototype
 ====================================================*/
 Swiper.prototype = {
@@ -2724,7 +2809,8 @@ Swiper.prototype = {
     ====================================================*/
     plugins: {}
 };
-;/*===========================
+;
+/*===========================
 Dom7 Library
 ===========================*/
 var Dom7 = (function () {
@@ -3374,7 +3460,8 @@ var Dom7 = (function () {
 
     return $;
 })();
-;/*===========================
+;
+/*===========================
  Get Dom libraries
  ===========================*/
 var swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
@@ -3390,7 +3477,8 @@ if (typeof Dom7 === 'undefined') {
 }
 else {
 	domLib = Dom7;
-};/*===========================
+};
+/*===========================
 Add .swiper plugin from Dom libraries
 ===========================*/
 function addLibraryPlugin(lib) {
@@ -3446,5 +3534,6 @@ if (domLib) {
             return this;
         };
     }
-};    window.Swiper = Swiper;
+};
+    window.Swiper = Swiper;
 })();

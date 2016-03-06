@@ -102,7 +102,6 @@
 .swiper-container .swiper-button-prev.swiper-button-disabled {
   opacity: 0.35;
   cursor: auto;
-  pointer-events: none;
 }
 .swiper-container .swiper-button-next > i,
 .swiper-container .swiper-button-prev > i {
@@ -145,4 +144,14 @@
   .swiper-container .count-progress {
     display: block;
   }
+}
+/*
+    Styles for grid layout.
+*/
+.property-resp-slideshow.slider-type-12mosaic .swiper-slide {
+  height: auto;
+  opacity: 1;
+}
+.property-resp-slideshow.slider-type-12mosaic .gallery-top .swiper-wrapper .swiper-slide img {
+  cursor: pointer;
 }

@@ -3,6 +3,11 @@ jQuery(document).ready(function($){
     wpprs.each(function(){
         var $this = $(this);
         var id = $this.attr('id');
+        var sliderType = $this.attr('data-slider-type');
+        var slidesPerView;
+        var slidesPerColumn;
+        var centeredSlides = true;
+        var slidesPerColumnFill = 'column';
         var galleryThumbs;
         var _galleryThumbs = $this.find('.gallery-thumbs');
         var goToClickedSlide = function(e){
@@ -21,11 +26,39 @@ jQuery(document).ready(function($){
             });
             galleryTop.enableKeyboardControl();
         }
+
+        // Settings specific on slider types.
+        switch(sliderType){
+            case 'standard':
+                slidesPerView   = 1;
+                slidesPerColumn = 1;
+            break;
+            case 'carousel':
+                slidesPerView   = 'auto';
+                slidesPerColumn = 1;
+            break;
+            case '12grid':
+                slidesPerView   = 3;
+                //slidesPerColumnFill   = 'row';
+                slidesPerColumn = 2;
+                centeredSlides = false;
+            break;
+            case '12mosaic':
+                slidesPerView   = 3;
+                //slidesPerColumnFill   = 'row';
+                slidesPerColumn = 2;
+                centeredSlides = false;
+            break;
+        }
+
         var galleryTop = new Swiper($this.find('.gallery-top'), {
                 nextButton: $this.find('.swiper-button-next'),
                 prevButton: $this.find('.swiper-button-prev'),
-                centeredSlides: true,
-                slidesPerView: 'auto',
+                centeredSlides: centeredSlides,
+                slidesPerView: slidesPerView,
+                slidesPerColumn: slidesPerColumn,
+                slidesPerColumnFill: slidesPerColumnFill,
+                sliderType: sliderType,
                 spaceBetween: 2.5,
                 keyboardControl:true,
                 //preventClicks:false,
@@ -53,10 +86,15 @@ jQuery(document).ready(function($){
 
             });
 
-            galleryThumbs.container.on('click', '.swiper-slide', goToClickedSlide);
+            galleryThumbs.container.on('click', '.swiper-slide', function(e){
+                galleryTop.params.byThumbs = true;
+                goToClickedSlide.call(this, e);
+                galleryTop.params.byThumbs = false;
+            });
 
             galleryTop.on('onSlideChangeStart', function(s){
-                galleryThumbs.slideTo(s.activeIndex);
+                if(galleryThumbs.activeIndex != s.activeIndex)
+                    galleryThumbs.slideTo( s.activeIndex );
             });
         }
 
@@ -71,48 +109,50 @@ jQuery(document).ready(function($){
         
         jQuery(window).on('orientationchange', galleryTop.onResize);
         jQuery(document).on('wpp_denali_tabbed_widget_render', galleryTop.onResize);
-        galleryTop.container.on('click', '.swiper-slide', goToClickedSlide);
+        if(sliderType != '12mosaic')
+            galleryTop.container.on('click', '.swiper-slide', goToClickedSlide);
 
         galleryTop.on('onResizeStart', function(s){
             setControlSize();// setting the next prev control size;
+            if (!s.params.lightBox && s.params.sliderType == '12mosaic') {
+                return;
+            }
             var width = s.container.width();
             var $styler = jQuery('#' + id + '-img-max-width')
-            var container_width = s.container.width();
-            var container_height = s.container.height();
-            
+            var maxWidth = (s.container.width() / s.params.slidesPerView) - (s.params.spaceBetween * s.params.slidesPerView);
+            var maxHeight = (s.container.height() / s.params.slidesPerColumn) - s.params.spaceBetween;
+
             if($styler.length==0)
                 $styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo('body');
             $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ s.container.width() +'px!important;max-height:'+s.container.height() +'px!important;}');
-            
+
             s.slides.each(function(){
                 var $this   = jQuery(this).find('img'),
                     width   = parseInt($this.attr('width')),
                     height  = parseInt($this.attr('height')),
-                    wRatio   = height/width,
-                    hRatio   = width/height;
-
-                if((width > container_width) && (height > container_height)){
-                    if(container_height*hRatio<=container_width){
-                        $this.height(container_height);
-                        $this.width(container_height*hRatio);
+                    ratio   = width/height;
+                
+                if((width > maxWidth) && (height > maxHeight)){
+                    if(maxHeight * ratio <= maxWidth){
+                        height  = maxHeight;
+                        width   = maxHeight * ratio;
                     }
                     else{
-                        $this.width(container_width);
-                        $this.height(container_width*wRatio);
+                        width   = maxWidth;
+                        height  = maxWidth / ratio;
                     }
                 }
-                else if(width > container_width){
-                    $this.width(container_width);
-                    $this.height(container_width*wRatio);
+                else if(width > maxWidth){
+                    width   = maxWidth;
+                    height  = maxWidth / ratio;
                 }
-                else if(height > container_height){
-                    $this.height(container_height);
-                    $this.width(container_height*hRatio);
+                else if(height > maxHeight){
+                    height  = maxHeight;
+                    width   = maxHeight * ratio;
                 }
-                else{
-                    $this.width(width);
-                    $this.height(height);
-                }
+
+                $this.width(width);
+                $this.height(height);
 
             });
         });
@@ -123,7 +163,7 @@ jQuery(document).ready(function($){
         });
 
         // Lightbox
-        $this.wpp_rs_lb({galleryTop:galleryTop, galleryThumbs:galleryThumbs});
+        $this.wpp_rs_lb({galleryTop:galleryTop, galleryThumbs:galleryThumbs, sliderType:sliderType});
 
         // set font based on cointer width
         function setControlSize(){
@@ -145,3 +185,27 @@ jQuery(document).ready(function($){
     });
 });
 
+function setSlideSize(slide, s){
+    var width;
+    var height;
+    var slide = jQuery(slide);
+    var img = slide.find('img');
+    var maxHeight = s.container.height() / s.params.slidesPerColumn;
+
+    var attrWidth  = parseInt(img.attr('width'));
+    var attrHeight  = parseInt(img.attr('height'));
+    var ratio   = attrWidth / attrHeight;
+
+    if(slide.is(':first-child') && s.params.sliderType == '12mosaic'){
+        height = s.container.height();
+    }
+    else{
+        height = maxHeight;
+    }
+    width   = height * ratio;
+    img.width(width)
+         .height(height);
+    slide.width(width)
+         .height(height);
+    return width;
+}

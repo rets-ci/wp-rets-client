@@ -29,7 +29,7 @@ foreach ($images as $img) {
 ?>
 <?php if(count($imgs)>0):?>
 <!-- Swiper -->
-<div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow">
+<div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow slider-type-<?php echo $slider_type;?>" data-slider-type="<?php echo $slider_type;?>">
     <div class="modal-header">
       <div class="pull-left">
           <span><?php echo $title;?></span>
@@ -43,9 +43,9 @@ foreach ($images as $img) {
       <div class="clearfix"></div>
     </div>
     <div class="swiper-container gallery-top ratio-16-9">
-        <div class="swiper-wrapper clearfix">
+        <div class="swiper-wrapper">
         <?php foreach ($imgs as $key => $img) {
-        	echo "<div class='swiper-slide' data-src='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>\n";
+        	echo "<div class='swiper-slide' data-src='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>";
         }
         ?>
         </div>
@@ -61,7 +61,7 @@ foreach ($images as $img) {
     <div class="swiper-container gallery-thumbs">
         <div class="swiper-wrapper">
         <?php foreach ($imgs as $key => $img) {
-        	echo "<div class='swiper-slide'>{$img['thumb']}</div>\n";
+        	echo "<div class='swiper-slide'>{$img['thumb']}</div>";
         }
         ?>
         </div>

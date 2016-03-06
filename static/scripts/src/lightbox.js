@@ -15,18 +15,25 @@
     var options = $.extend({
       galleryTop:[],
       galleryThumbs:[],
+      sliderType:''
     },prop);
-    var originalSlidesPerView = options.galleryTop.params.slidesPerView;
+    var originalParams = jQuery.extend(true, {}, options.galleryTop.params);
+    var slideActiveClass;
     //Click event on element
-    lb.on('click', '.gallery-top .swiper-slide.swiper-slide-active img', function(e){
-      if(!lb.hasClass('lightbox')){
-        showLightbox();
-      }
-    });
+    if(options.sliderType == '12mosaic')
+      slideActiveClass = '.gallery-top .swiper-slide img';
+    else
+      slideActiveClass = '.gallery-top .swiper-slide.swiper-slide-active img';
 
+    lb.on('click', slideActiveClass, function(e){
+      if(!lb.hasClass('lightbox')){
+        showLightbox(this);
+      }
+      return false;
+    });
     //Click event on element
     lb.on('click', '.modal-header .close', function(e){
-      hideLightbox();
+      hideLightbox(e);
     });
 
     setViewOriginalHref(options.galleryTop);
@@ -45,7 +52,7 @@
       if(diff>100){
         e.preventDefault();
         setTimeout(function() {
-          hideLightbox();
+          hideLightbox(e);
         },50);
         return false;
       }
@@ -63,16 +70,19 @@
       lb.find('.viewOriginal').attr('href', href);
     }
 
-    function showLightbox(){
-      var activeIndex = options.galleryTop.activeIndex;
+    function showLightbox(img){
+      var activeIndex = jQuery(img).parent().index();
       options.galleryTop.params.slidesPerView = 1;
+      options.galleryTop.params.slidesPerColumn = 1;
+      options.galleryTop.params.lightBox = true;
       options.galleryTop.params.noSwiping = true;
 
       loadFullImageLazy();
       lb.addClass('lightbox');
       $('#wpadminbar').hide();
 
-      options.galleryTop.update();
+      options.galleryTop.destroy(false, true);
+      options.galleryTop.init();
       options.galleryTop.lazy.load();
       setTimeout(function() {
           options.galleryTop.onResize();
@@ -99,10 +109,10 @@
       lb.addClass('fullLazyInserted');
     }
 
-    function hideLightbox(){
+    function hideLightbox(e){
       var activeIndex = options.galleryTop.activeIndex;
 
-      options.galleryTop.params.slidesPerView = originalSlidesPerView;
+      options.galleryTop.params = jQuery.extend(true, {}, originalParams); // Restoring original params object.
 
       lb.removeClass('lightbox');
       $('#wpadminbar').show();
@@ -128,7 +138,7 @@
      function lbHandleKeyboard(e){
       switch(e.keyCode){
         case 27:
-          hideLightbox();
+          hideLightbox(e);
           if (e.preventDefault) e.preventDefault();
           break;
       }
