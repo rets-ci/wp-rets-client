@@ -77,32 +77,106 @@
 }
 
 .so-widget-tabbed-content{
+  .tabbedWidgetTitle{
+    color: #5a595c !important;
+    text-align: center;
+    margin-bottom: 20px !important;
+    text-shadow: none !important;
+  }
   .sow-slider-base{
+    padding-top: 70px;
     ul{
       li{
         background: @white !important;
-        h2{
-          color: #5a595c;
-          text-align: center;
-        }
       }
     }
-
     .sow-slider-pagination{
-      top: 120px !important;
+      top: 20px !important;
       text-align: center !important;
-      margin-bottom: 80px;
+      height: 80px;
         li{
           border: 1px solid #ededed;
-          height: 50px;
-          width: 150px;
+          height: 50px !important;
+          width: 150px !important;
+          margin-left: -6px;
+          &:hover{
+            border-bottom: 1px solid #F10D2C;
+            span{
+              color: #F10D2C;
+            }
+          }
+          &.sow-active{
+            border-bottom: 1px solid #F10D2C;
+            span{
+              color: #F10D2C;
+            }
+          }
           a{
             text-indent: unset !important;
             color: #5a595c !important;
-            width: auto; !important;
-            height: auto !important;
+            width: 146px !important;
+            height: 48px !important;
+            float: left !important;
+            outline: none;
+            div{
+              float: left;
+              font-size: 0.8em;
+              line-height: 1.4em;
+              margin-left: 10px;
+              margin-top: 8px;
+              width: 95px;
+            }
+            span{
+              font-size: 2em;
+              margin-top: 9px;
+              margin-left: 9px;
+              float: left;
+            }
           }
       }
     }
+  .sow-slider-image-wrapper{
+    .tabbedWidgetContent{
+      float: left;
+      width: 50%;
+      overflow: hidden;
+      h3{
+        font-size: 3em !important;
+        text-shadow: none !important;
+        color: #5a595c !important;
+      }
+      p{
+        color: #5a595c !important;
+        text-shadow: none !important;
+        padding-right: 1em;
+      }
+      .featurePoint{
+        & > span{
+          float: left;
+          display: block;
+          font-size: 5em;
+          margin-top: 0.5em;
+          margin-left: 0.5em;
+          color: #F10D2C;
+        }
+        & > div{
+          float: right;
+          width: 70%;
+          h4{
+            font-size: 2em !important;
+            text-shadow: none !important;
+            color: #5a595c !important;
+          }
+        }
+      }
+    }
+    .tabbedWidgetImageArea{
+      width: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      float: right;
+    }
+   }
   }
 }

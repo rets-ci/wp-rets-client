@@ -23,6 +23,11 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 			),
 			array( ),
 			array(
+				'title' => array(
+					'type' => 'text',
+					'label' => __( 'Title', 'so-widgets-bundle' ),
+				),
+
 				'frames' => array(
 					'type' => 'repeater',
 					'label' => __('Tabbed frames', 'so-widgets-bundle'),
@@ -35,11 +40,6 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 
 					'fields' => array(
 
-						'title' => array(
-							'type' => 'text',
-							'label' => __( 'Title', 'so-widgets-bundle' ),
-						),
-
 						'image' => array(
 							'type' => 'media',
 							'label' => __( 'Image', 'so-widgets-bundle' ),
@@ -47,53 +47,63 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 							'fallback' => true,
 						),
 
+						'content_title' => array(
+							'type' => 'text',
+							'label' => __( 'Content title', 'so-widgets-bundle' ),
+						),
+
 						'content' => array(
 							'type' => 'tinymce',
 							'label' => __( 'Content', 'so-widgets-bundle' ),
 						),
 
-						'svg-title' => array(
-							'type' => 'text',
-							'label' => __( 'SVG icon title', 'so-widgets-bundle' ),
+						'svg' => array(
+							'type' => 'icon',
+							'label' => __( 'Navigation icon', 'so-widgets-bundle' ),
 						),
 
-						'background' => array(
+						'feature_point' => array(
 							'type' => 'section',
-							'label' => __('Background', 'so-widgets-bundle'),
+							'label' => __('Feature point', 'so-widgets-bundle'),
 							'fields' => array(
-								'image' => array(
-									'type' => 'media',
-									'label' => __( 'Background image', 'so-widgets-bundle' ),
-									'library' => 'image',
-									'fallback' => true,
+								'icon_point' => array(
+									'type' => 'icon',
+									'label' => __( 'Select icon', 'so-widgets-bundle' ),
 								),
 
-								'opacity' => array(
-									'label' => __( 'Background image opacity', 'so-widgets-bundle' ),
-									'type' => 'slider',
-									'min' => 0,
-									'max' => 100,
-									'default' => 100,
+								'feature_title' => array(
+									'type' => 'text',
+									'label' => __( 'Feature title', 'so-widgets-bundle' ),
 								),
 
-								'color' => array(
-									'type' => 'color',
-									'label' => __( 'Background color', 'so-widgets-bundle' ),
-									'default' => '#333333',
+								'feature_content' => array(
+									'type' => 'tinymce',
+									'label' => __( 'Feature content', 'so-widgets-bundle' ),
 								),
-
-								'url' => array(
-									'type' => 'link',
-									'label' => __( 'Destination URL', 'so-widgets-bundle' ),
-								),
-
-								'new_window' => array(
-									'type' => 'checkbox',
-									'label' => __( 'Open URL in a new window', 'so-widgets-bundle' ),
-								),
-
-							)
+							),
 						),
+
+						'feature_point2' => array(
+							'type' => 'section',
+							'label' => __('Feature point', 'so-widgets-bundle'),
+							'fields' => array(
+								'icon_point2' => array(
+									'type' => 'icon',
+									'label' => __( 'Select icon', 'so-widgets-bundle' ),
+								),
+
+								'feature_title2' => array(
+									'type' => 'text',
+									'label' => __( 'Feature title', 'so-widgets-bundle' ),
+								),
+
+								'feature_content2' => array(
+									'type' => 'tinymce',
+									'label' => __( 'Feature content', 'so-widgets-bundle' ),
+								),
+							),
+						),
+
 					),
 				),
 
@@ -134,16 +144,41 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 	 * @param $frame
 	 */
 	function render_frame_contents($i, $frame) {
+
 		?>
 		<div class="sow-slider-image-container">
-			<div class="sow-slider-image-wrapper">
+			<div class="sow-slider-image-wrapper cl<?php  ?>">
 				<?php $dataImage = wp_get_attachment_image_src($frame['image']);
 							$imageLink = $dataImage[0];
 				?>
+				<div class="tabbedWidgetImageArea" style="background-image: url('<?php echo $imageLink ?>'); height: <?php echo $dataImage[1]; ?>px"></div>
 
-				<h2><?php echo $frame['title'] ?></h2>
-				<img src="<?php echo $imageLink ?>" alt="" />
+				<div class="tabbedWidgetContent">
+				<h3><?php echo $frame['content_title'] ?></h3>
 				<?php echo $frame['content'] ?>
+					<div class="featurePoint">
+						<?php echo siteorigin_widget_get_icon($frame['feature_point']['icon_point']); ?>
+						<div>
+							<h4><?php echo $frame['feature_point']['feature_title'] ?></h4>
+
+							<?php echo $frame['feature_point']['feature_content'] ?>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<?php if($frame['feature_point2']['icon_point2'] || $frame['feature_point2']['feature_title2'] || $frame['feature_point2']['feature_content2'] ){ ?>
+					<div class="featurePoint">
+						<?php echo siteorigin_widget_get_icon($frame['feature_point2']['icon_point2']); ?>
+						<div>
+							<h4><?php echo $frame['feature_point2']['feature_title2'] ?></h4>
+
+							<?php echo $frame['feature_point2']['feature_content2'] ?>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<?php } ?>
+				</div>
+
+				<div class="clear"></div>
 			</div>
 		</div>
 		<?php

@@ -151,6 +151,7 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 
 	}
 
+
 	function render_template_part( $part, $controls, $frames ) {
 		switch( $part ) {
 			case 'before_slider':
@@ -161,10 +162,9 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 				<ol class="sow-slider-pagination">
 
 					<?php foreach($frames as $i => $frame) : ?>
-
 						<li><a href="#" data-goto="<?php echo $i ?>">
-								<svg class="icon icon-ICON_CLASS"><use xlink:href="#icon-ICON_CLASS"></use></svg>
-								<span><?php echo $frame['title']; ?></span>
+								<?php echo siteorigin_widget_get_icon($frame['svg']); ?>
+								<div><?php echo $frame['content_title']; ?></div>
 							</a></li>
 					<?php endforeach; ?>
 				</ol>

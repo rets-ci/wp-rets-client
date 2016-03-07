@@ -63,6 +63,7 @@ jQuery( function($){
                 'margin-top' : -Math.ceil(video.height()/2)
             } );
         }
+        $(document).trigger('activeSlideChange');
     };
 
     $('.sow-slider-images').each(function(){
@@ -147,14 +148,14 @@ jQuery( function($){
                 var toHide = false;
                 $base
                     .mouseenter(function(){
-                        $p.add($n).clearQueue().fadeIn(150);
+                        //$p.add($n).clearQueue().fadeIn(150);
                         toHide = false;
                     })
                     .mouseleave(function(){
                         toHide = true;
                         setTimeout(function(){
                             if( toHide ) {
-                                $p.add($n).clearQueue().fadeOut(150);
+                                //$p.add($n).clearQueue().fadeOut(150);
                             }
                             toHide = false;
                         }, 750);
@@ -226,3 +227,6 @@ jQuery( function($){
         }
     });
 } );
+jQuery(document).on('activeSlideChange', function(){
+   jQuery('.tabbedWidgetImageArea').css('height', jQuery('.tabbedWidgetContent').height());
+});
