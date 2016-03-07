@@ -1,8 +1,16 @@
-function setSlideSize(slide, s) {
+function setSlideSize_12mosaic(slide, s) {
     var width, height, slide = jQuery(slide), img = slide.find("img"), maxHeight = s.container.height() / s.params.slidesPerColumn, attrWidth = parseInt(img.attr("width")), attrHeight = parseInt(img.attr("height")), ratio = attrWidth / attrHeight;
-    return height = slide.is(":first-child") && "12mosaic" == s.params.sliderType ? s.container.height() : maxHeight, 
-    width = height * ratio, img.width(width).height(height), slide.width(width).height(height), 
-    width;
+    return height = slide.is(":first-child") ? s.container.height() : maxHeight, width = height * ratio, 
+    img.width(width).height(height), slide.width(width).height(height), width;
+}
+
+function setSlideSize_12grid(slide, s) {
+    var width, height, width, height, slide = jQuery(slide), img = slide.find("img"), maxHeight = s.container.height() / s.params.slidesPerColumn, attrWidth = parseInt(img.attr("width")), attrHeight = parseInt(img.attr("height")), imgRatio = attrWidth / attrHeight, slideRatio = 4 / 3;
+    return slide.is(":first-child") ? slideHeight = s.container.height() : slideHeight = maxHeight, 
+    slideWidth = slideHeight * slideRatio, slide.width(slideWidth).height(slideHeight), 
+    slideWidth > slideHeight ? (width = slideWidth, height = width / imgRatio) : (height = slideHeight, 
+    width = height * imgRatio), width < slideWidth ? (width = slideWidth, height = width / imgRatio) : height < slideHeight && (height = slideHeight, 
+    width = height * imgRatio), img.width(width).height(height), slideWidth;
 }
 
 jQuery(document).ready(function($) {
@@ -73,7 +81,7 @@ jQuery(document).ready(function($) {
         }), jQuery(window).on("orientationchange", galleryTop.onResize), jQuery(document).on("wpp_denali_tabbed_widget_render", galleryTop.onResize), 
         "12mosaic" != sliderType && galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
         galleryTop.on("onResizeStart", function(s) {
-            if (setControlSize(), s.params.lightBox || "12mosaic" != s.params.sliderType) {
+            if (setControlSize(), !s.is12mosaic() && !s.is12grid()) {
                 var $styler = (s.container.width(), jQuery("#" + id + "-img-max-width")), maxWidth = s.container.width() / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + s.container.width() + "px!important;max-height:" + s.container.height() + "px!important;}"), 

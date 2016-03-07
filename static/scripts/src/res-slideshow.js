@@ -114,7 +114,7 @@ jQuery(document).ready(function($){
 
         galleryTop.on('onResizeStart', function(s){
             setControlSize();// setting the next prev control size;
-            if (!s.params.lightBox && s.params.sliderType == '12mosaic') {
+            if (s.is12mosaic() || s.is12grid()) {
                 return;
             }
             var width = s.container.width();
@@ -185,7 +185,7 @@ jQuery(document).ready(function($){
     });
 });
 
-function setSlideSize(slide, s){
+function setSlideSize_12mosaic(slide, s){
     var width;
     var height;
     var slide = jQuery(slide);
@@ -196,7 +196,7 @@ function setSlideSize(slide, s){
     var attrHeight  = parseInt(img.attr('height'));
     var ratio   = attrWidth / attrHeight;
 
-    if(slide.is(':first-child') && s.params.sliderType == '12mosaic'){
+    if(slide.is(':first-child')){
         height = s.container.height();
     }
     else{
@@ -208,4 +208,50 @@ function setSlideSize(slide, s){
     slide.width(width)
          .height(height);
     return width;
+}
+
+function setSlideSize_12grid(slide, s){
+    var width;
+    var height;
+    var slide = jQuery(slide);
+    var img = slide.find('img');
+    var maxHeight = s.container.height() / s.params.slidesPerColumn;
+
+    var attrWidth  = parseInt(img.attr('width'));
+    var attrHeight  = parseInt(img.attr('height'));
+    var imgRatio   = attrWidth / attrHeight;
+    var slideRatio   = 4 / 3; 
+    var width, height;
+
+    if(slide.is(':first-child')){
+        slideHeight = s.container.height();
+    }
+    else{
+        slideHeight = maxHeight;
+    }
+    slideWidth   = slideHeight * slideRatio;
+
+    slide.width(slideWidth)
+         .height(slideHeight);
+
+    if(slideWidth > slideHeight){
+        width = slideWidth;
+        height = width / imgRatio;
+    }
+    else{
+        height = slideHeight;
+        width = height * imgRatio;
+    }
+    if(width<slideWidth){
+        width = slideWidth;
+        height = width / imgRatio;
+    }
+    else if(height<slideHeight){
+        height = slideHeight;
+        width = height * imgRatio;
+    }
+    
+    img.width(width)
+         .height(height);
+    return slideWidth;
 }

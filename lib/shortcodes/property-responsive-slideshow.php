@@ -32,7 +32,7 @@ namespace UsabilityDynamics\WPP {
                 'options' => array(
                   'standard'  => 'Standard Slider',
                   'carousel'  => 'Carousel Slider',
-                  //'12grid' => '1:2 Grid Slider',
+                  '12grid' => '1:2 Grid Slider',
                   '12mosaic' => '1:2 Mosaic Slider'
                 ),
                 'default' => 'standard',

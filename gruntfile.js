@@ -76,6 +76,7 @@ module.exports = function build( grunt ) {
                 'static/scripts/src/swiper/wrap-start.js',
                 'static/scripts/src/swiper/swiper-intro.js',
                 'static/scripts/src/swiper/core.js',
+                'static/scripts/src/swiper/custom.js',
                 //'static/scripts/src/swiper/effects.js', // for 3d
                 'static/scripts/src/swiper/lazy-load.js',
                 'static/scripts/src/swiper/keyboard.js',

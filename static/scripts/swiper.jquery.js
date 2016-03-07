@@ -613,14 +613,14 @@ s.updateSlidesSize = function () {
     // reset margins
     if (s.rtl) s.slides.css({marginLeft: '', marginTop: ''});
     else s.slides.css({marginRight: '', marginBottom: ''});
-    if(!s.params.lightBox && s.params.sliderType == '12mosaic')
+    if(s.isGrid())
         s.wrapper.css('display', 'block');
     else
         s.wrapper.css('display', '');
 
     var slidesNumberEvenToRows;
     var noOfSlide;
-    if(!s.params.lightBox && s.params.sliderType == '12mosaic')
+    if(s.isGrid())
         noOfSlide = s.slides.length + 1; // Because the first slide takes size of tow slide.
     if (s.params.slidesPerColumn > 1) {
         if (Math.floor(noOfSlide / s.params.slidesPerColumn) === noOfSlide / s.params.slidesPerColumn) {
@@ -652,8 +652,11 @@ s.updateSlidesSize = function () {
         else {
             slideSize = (s.size - (s.params.slidesPerView - 1) * spaceBetween) / s.params.slidesPerView;
             
-            if(!s.params.lightBox && s.params.sliderType == '12mosaic'){
-                slideSize = setSlideSize(s.slides[i], s);
+            if(s.is12mosaic()){
+                slideSize = setSlideSize_12mosaic(s.slides[i], s);
+            }
+            else if(s.is12grid()){
+                slideSize = setSlideSize_12grid(s.slides[i], s);
             }
             if (s.params.roundLengths) slideSize = round(slideSize);
 
@@ -672,7 +675,7 @@ s.updateSlidesSize = function () {
             // Set slides order
             var newSlideOrderIndex;
             var column, row;
-            if(i>0 && !s.params.lightBox && s.params.sliderType == '12mosaic')
+            if(i>0 && s.isGrid())
                 ii = i +1; // Increase by 1 because first slide takes two rows.
             if (s.params.slidesPerColumnFill === 'column') {
                 column = Math.floor(ii / slidesPerColumn);
@@ -767,7 +770,7 @@ s.updateSlidesSize = function () {
     if (s.params.slidesPerColumn > 1) {
         s.virtualSize = (slideSize + s.params.spaceBetween) * slidesNumberEvenToRows;
         s.virtualSize = Math.ceil(s.virtualSize / s.params.slidesPerColumn) - s.params.spaceBetween;
-        if(!s.params.lightBox && s.params.sliderType == '12mosaic'){
+        if(s.isGrid()){
             jQuery.each(calculatedLeft, function(i, size){
                 s.virtualSize = (size>s.virtualSize) ? size : s.virtualSize;
             })
@@ -1768,7 +1771,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
 
     // going to next
-    if(!s.params.lightBox && !s.params.byThumbs && s.params.sliderType == '12mosaic'){
+    if(s.isGrid()){
         if(slideIndex>s.activeIndex){
             if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
             var maxRight = s.snapGrid[s.activeIndex] + s.container.width() - s.params.spaceBetween;
@@ -1804,7 +1807,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.updateProgress(translate);
 
     // Normalize slideIndex
-    if(s.params.lightBox || s.params.sliderType != '12mosaic')
+    if(!s.is12grid() || !s.is12mosaic())
     for (var i = 0; i < s.slidesGrid.length; i++) {
         if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
             slideIndex = i;
@@ -2251,6 +2254,18 @@ s.removeAllSlides = function () {
     s.removeSlide(slidesIndexes);
 };
 ;
+s.isGrid = function(){
+    if(!s.params.lightBox && (s.params.sliderType == "12grid" || s.params.sliderType == "12mosaic"))
+        return true;
+}
+s.is12grid = function(){
+    if(!s.params.lightBox && s.params.sliderType == "12grid")
+        return true;
+}
+s.is12mosaic = function(){
+    if(!s.params.lightBox && s.params.sliderType == "12mosaic")
+        return true;
+};
 /*=========================
   Images Lazy Loading
   ===========================*/

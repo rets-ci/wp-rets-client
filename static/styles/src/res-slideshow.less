@@ -75,8 +75,8 @@
         }
 
         img{
-            max-height: 100% !important;
-            max-width: 100% !important;
+            max-height: 100%;
+            max-width: 100%;
             width: auto;
             height: auto;
         }
@@ -149,7 +149,7 @@
 */
 
 .property-resp-slideshow{
-    &.slider-type-12mosaic{
+    &.slider-type-12mosaic, &.slider-type-12grid{
         .swiper-slide{
             height:auto;
             opacity:1;
@@ -161,6 +161,19 @@
                     //box-sizing: border-box;
                     img{
                         cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    &.slider-type-12grid{
+        .gallery-top{
+            .swiper-wrapper{
+                .swiper-slide{
+                    overflow:hidden;
+                    img{
+                        max-height: none;
+                        max-width: none;
                     }
                 }
             }
