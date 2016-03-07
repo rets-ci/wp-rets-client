@@ -57,7 +57,7 @@ foreach ($images as $img) {
             <span class="total"><?php echo count($imgs);?></span>
         </span> 
     </div>
-    <?php if(!wp_is_mobile()):?>
+    <?php if(!wp_is_mobile() and $slider_type != 'standard'):?>
     <div class="swiper-container gallery-thumbs">
         <div class="swiper-wrapper">
         <?php foreach ($imgs as $key => $img) {
