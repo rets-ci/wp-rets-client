@@ -156,6 +156,8 @@ jQuery(document).ready(function($){
 
                 $this.width(width);
                 $this.height(height);
+                $this[0].style.setProperty('width', width + "px", 'important');
+                $this[0].style.setProperty('height', height + "px", 'important');
 
             });
         });
@@ -210,6 +212,8 @@ function setSlideSize_12mosaic(slide, s){
          .height(height);
     slide.width(width)
          .height(height);
+    img[0].style.setProperty('width', width + "px", 'important');
+    img[0].style.setProperty('height', height + "px", 'important');
     return width;
 }
 
@@ -256,5 +260,7 @@ function setSlideSize_12grid(slide, s){
     
     img.width(width)
          .height(height);
+    img[0].style.setProperty('width', width + "px", 'important');
+    img[0].style.setProperty('height', height + "px", 'important');
     return slideWidth;
 }
