@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
             cWidth > 900 ? width = 36 : 400 > cWidth ? width = 20 : width = cWidth / 100 * 6, 
             control.css("font-size", width);
         }
-        var slidesPerView, slidesPerColumn, galleryThumbs, $this = $(this), id = $this.attr("id"), sliderType = $this.attr("data-slider-type"), centeredSlides = !0, slidesPerColumnFill = "column", _galleryThumbs = $this.find(".gallery-thumbs"), goToClickedSlide = function(e) {
+        var slidesPerView, slidesPerColumn, pagination, galleryThumbs, $this = $(this), id = $this.attr("id"), sliderType = $this.attr("data-slider-type"), centeredSlides = !0, slidesPerColumnFill = "column", _galleryThumbs = $this.find(".gallery-thumbs"), goToClickedSlide = function(e) {
             var clickedIndex = $(this).index();
             return galleryTop.activeIndex != clickedIndex ? (galleryTop.slideTo(clickedIndex), 
             e.preventDefault(), e.stopImmediatePropagation(), !1) : void enDisKeyCtrl();
@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
         };
         switch (sliderType) {
           case "standard":
-            slidesPerView = 1, slidesPerColumn = 1;
+            slidesPerView = 1, slidesPerColumn = 1, pagination = "swiper-pagination";
             break;
 
           case "carousel":
@@ -54,6 +54,7 @@ jQuery(document).ready(function($) {
             slidesPerColumn: slidesPerColumn,
             slidesPerColumnFill: slidesPerColumnFill,
             sliderType: sliderType,
+            pagination: pagination,
             spaceBetween: 2.5,
             keyboardControl: !0,
             lazyLoading: !0,

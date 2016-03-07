@@ -17,7 +17,7 @@
   box-sizing: border-box;
   background: #333;
 }
-.property-resp-slideshow.lightbox.slider-type-standard {
+.property-resp-slideshow.lightbox.slideshow-type-standard {
   padding-bottom: 2.5px;
 }
 @media only screen and (max-width: 768px) {

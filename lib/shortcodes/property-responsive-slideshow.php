@@ -25,9 +25,20 @@ namespace UsabilityDynamics\WPP {
                 'default' => ''
               ), 
               // Available standard, carousel, 12grid and 12mosaic
+              'slideshow_type' => array(
+                'name' => __( 'Slideshow Types', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Type of slideshow. Default is standard. standard and thumbnailCarousel is available.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'select',
+                'options' => array(
+                  'standard'  => 'Standard Slideshow',
+                  'thumbnailCarousel'  => 'Thumbnail Carousel Slideshow',
+                ),
+                'default' => 'thumbnailCarousel',
+              ),
+              // Available standard, carousel, 12grid and 12mosaic
               'slider_type' => array(
                 'name' => __( 'Slider Type', ud_get_wp_property( 'domain' ) ),
-                'description' => sprintf( __( 'Type of slider. Default is standard. Also Carousel and Grid Slider is available.', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label(), \WPP_F::property_label() ),
+                'description' => __( 'Type of slider. Default is standard. Also Carousel and Grid Slider is available.', ud_get_wp_property( 'domain' ) ),
                 'type' => 'select',
                 'options' => array(
                   'standard'  => 'Standard Slider',
@@ -55,7 +66,8 @@ namespace UsabilityDynamics\WPP {
 
         $data = shortcode_atts( array(
           'property_id' => '',
-          'slider_type' => '',
+          'slideshow_type' => 'thumbnailCarousel',
+          'slider_type' => 'standard',
         ), $atts );
         self::maybe_print_styles();
         return $this->get_template( 'property-responsive-shortcode', $data, false );

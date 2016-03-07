@@ -6,6 +6,7 @@ jQuery(document).ready(function($){
         var sliderType = $this.attr('data-slider-type');
         var slidesPerView;
         var slidesPerColumn;
+        var pagination;
         var centeredSlides = true;
         var slidesPerColumnFill = 'column';
         var galleryThumbs;
@@ -32,6 +33,7 @@ jQuery(document).ready(function($){
             case 'standard':
                 slidesPerView   = 1;
                 slidesPerColumn = 1;
+                pagination = "swiper-pagination";
             break;
             case 'carousel':
                 slidesPerView   = 'auto';
@@ -59,6 +61,7 @@ jQuery(document).ready(function($){
                 slidesPerColumn: slidesPerColumn,
                 slidesPerColumnFill: slidesPerColumnFill,
                 sliderType: sliderType,
+                pagination: pagination,
                 spaceBetween: 2.5,
                 keyboardControl:true,
                 //preventClicks:false,

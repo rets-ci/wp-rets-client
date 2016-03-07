@@ -29,7 +29,7 @@ foreach ($images as $img) {
 ?>
 <?php if(count($imgs)>0):?>
 <!-- Swiper -->
-<div id="wpprs-<?php echo $property_resp_slideshow_counter?>" class="property-resp-slideshow slider-type-<?php echo $slider_type;?>" data-slider-type="<?php echo $slider_type;?>">
+<?php echo "<div id='wpprs-$property_resp_slideshow_counter' class='property-resp-slideshow slider-type-$slider_type slideshow-type-$slideshow_type' data-slideshow-type='$slideshow_type' data-slider-type='$slider_type'>";?>
     <div class="modal-header">
       <div class="pull-left">
           <span><?php echo $title;?></span>
@@ -57,15 +57,19 @@ foreach ($images as $img) {
             <span class="total"><?php echo count($imgs);?></span>
         </span> 
     </div>
-    <?php if(!wp_is_mobile() and $slider_type != 'standard'):?>
-    <div class="swiper-container gallery-thumbs">
-        <div class="swiper-wrapper">
-        <?php foreach ($imgs as $key => $img) {
-        	echo "<div class='swiper-slide'>{$img['thumb']}</div>";
-        }
+    <?php 
+    if($slideshow_type == 'standard'): 
+        //echo '<div class="swiper-pagination"></div>';
+    elseif(!wp_is_mobile()):?>
+        <div class="swiper-container gallery-thumbs">
+            <div class="swiper-wrapper">
+        <?php 
+            foreach ($imgs as $key => $img) {
+            	echo "<div class='swiper-slide'>{$img['thumb']}</div>";
+            }
         ?>
+            </div>
         </div>
-    </div>
     <?php endif;?>
 </div>
 <!-- END Swiper -->
