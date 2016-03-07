@@ -109,7 +109,7 @@ jQuery(document).ready(function($){
         
         jQuery(window).on('orientationchange', galleryTop.onResize);
         jQuery(document).on('wpp_denali_tabbed_widget_render', galleryTop.onResize);
-        if(sliderType != '12mosaic')
+        if(!galleryTop.isGrid())
             galleryTop.container.on('click', '.swiper-slide', goToClickedSlide);
 
         galleryTop.on('onResizeStart', function(s){

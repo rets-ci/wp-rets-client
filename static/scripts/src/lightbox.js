@@ -20,7 +20,7 @@
     var originalParams = jQuery.extend(true, {}, options.galleryTop.params);
     var slideActiveClass;
     //Click event on element
-    if(options.sliderType == '12mosaic')
+    if(options.galleryTop.isGrid())
       slideActiveClass = '.gallery-top .swiper-slide img';
     else
       slideActiveClass = '.gallery-top .swiper-slide.swiper-slide-active img';
@@ -76,6 +76,7 @@
       options.galleryTop.params.slidesPerColumn = 1;
       options.galleryTop.params.lightBox = true;
       options.galleryTop.params.noSwiping = true;
+      options.galleryTop.params.initialSlide = activeIndex;
 
       loadFullImageLazy();
       lb.addClass('lightbox');
@@ -84,10 +85,6 @@
       options.galleryTop.destroy(false, true);
       options.galleryTop.init();
       options.galleryTop.lazy.load();
-      setTimeout(function() {
-          options.galleryTop.onResize();
-      },150);
-      options.galleryTop.slideTo(activeIndex, 0);
       if(options.galleryThumbs.onResize)
         options.galleryThumbs.onResize();
 
@@ -113,17 +110,15 @@
       var activeIndex = options.galleryTop.activeIndex;
 
       options.galleryTop.params = jQuery.extend(true, {}, originalParams); // Restoring original params object.
+      
+      options.galleryTop.params.initialSlide = activeIndex;
+      options.galleryTop.params.lightBox = false;
 
       lb.removeClass('lightbox');
       $('#wpadminbar').show();
 
       options.galleryTop.destroy(false, true);
       options.galleryTop.init();
-      setTimeout(function() {
-          options.galleryTop.onResize();
-      },150);
-      options.galleryTop.update(true);
-      options.galleryTop.slideTo(activeIndex, 0);
       options.galleryTop.enableKeyboardControl();
 
       if(options.galleryThumbs.onResize)

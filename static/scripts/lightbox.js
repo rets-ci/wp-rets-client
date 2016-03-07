@@ -8,10 +8,9 @@
             var activeIndex = jQuery(img).parent().index();
             options.galleryTop.params.slidesPerView = 1, options.galleryTop.params.slidesPerColumn = 1, 
             options.galleryTop.params.lightBox = !0, options.galleryTop.params.noSwiping = !0, 
-            loadFullImageLazy(), lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), 
-            options.galleryTop.init(), options.galleryTop.lazy.load(), setTimeout(function() {
-                options.galleryTop.onResize();
-            }, 150), options.galleryTop.slideTo(activeIndex, 0), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
+            options.galleryTop.params.initialSlide = activeIndex, loadFullImageLazy(), lb.addClass("lightbox"), 
+            $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), options.galleryTop.init(), 
+            options.galleryTop.lazy.load(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
             $(document).on("keydown", lbHandleKeyboard), $("body").css({
                 overflow: "hidden"
             });
@@ -27,13 +26,11 @@
         }
         function hideLightbox(e) {
             var activeIndex = options.galleryTop.activeIndex;
-            options.galleryTop.params = jQuery.extend(!0, {}, originalParams), lb.removeClass("lightbox"), 
-            $("#wpadminbar").show(), options.galleryTop.destroy(!1, !0), options.galleryTop.init(), 
-            setTimeout(function() {
-                options.galleryTop.onResize();
-            }, 150), options.galleryTop.update(!0), options.galleryTop.slideTo(activeIndex, 0), 
-            options.galleryTop.enableKeyboardControl(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
-            $(document).off("keydown", lbHandleKeyboard), $("body").css({
+            options.galleryTop.params = jQuery.extend(!0, {}, originalParams), options.galleryTop.params.initialSlide = activeIndex, 
+            options.galleryTop.params.lightBox = !1, lb.removeClass("lightbox"), $("#wpadminbar").show(), 
+            options.galleryTop.destroy(!1, !0), options.galleryTop.init(), options.galleryTop.enableKeyboardControl(), 
+            options.galleryThumbs.onResize && options.galleryThumbs.onResize(), $(document).off("keydown", lbHandleKeyboard), 
+            $("body").css({
                 overflow: ""
             });
         }
@@ -48,7 +45,7 @@
             galleryThumbs: [],
             sliderType: ""
         }, prop), originalParams = jQuery.extend(!0, {}, options.galleryTop.params);
-        return slideActiveClass = "12mosaic" == options.sliderType ? ".gallery-top .swiper-slide img" : ".gallery-top .swiper-slide.swiper-slide-active img", 
+        return slideActiveClass = options.galleryTop.isGrid() ? ".gallery-top .swiper-slide img" : ".gallery-top .swiper-slide.swiper-slide-active img", 
         lb.on("click", slideActiveClass, function(e) {
             return lb.hasClass("lightbox") || showLightbox(this), !1;
         }), lb.on("click", ".modal-header .close", function(e) {

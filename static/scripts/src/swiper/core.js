@@ -1774,7 +1774,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
                     
             }
         }
-        else{ // prev
+        else if(slideIndex<s.activeIndex){ // prev
             if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
             var maxLeft = s.snapGrid[s.activeIndex] - (s.container.width() + s.params.spaceBetween);
             for (var i = s.snapIndex; i >= 0; i--) {
@@ -1799,7 +1799,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.updateProgress(translate);
 
     // Normalize slideIndex
-    if(!s.is12grid() || !s.is12mosaic())
+    if(!s.isGrid())
     for (var i = 0; i < s.slidesGrid.length; i++) {
         if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
             slideIndex = i;

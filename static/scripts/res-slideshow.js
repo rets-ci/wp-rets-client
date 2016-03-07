@@ -79,7 +79,7 @@ jQuery(document).ready(function($) {
             var active = s.activeIndex + 1, progress = s.container.find(".count-progress");
             progress.find(".current").html(active), enDisKeyCtrl();
         }), jQuery(window).on("orientationchange", galleryTop.onResize), jQuery(document).on("wpp_denali_tabbed_widget_render", galleryTop.onResize), 
-        "12mosaic" != sliderType && galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
+        galleryTop.isGrid() || galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
         galleryTop.on("onResizeStart", function(s) {
             if (setControlSize(), !s.is12mosaic() && !s.is12grid()) {
                 var $styler = (s.container.width(), jQuery("#" + id + "-img-max-width")), maxWidth = s.container.width() / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;

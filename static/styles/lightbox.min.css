@@ -17,6 +17,9 @@
   box-sizing: border-box;
   background: #333;
 }
+.property-resp-slideshow.lightbox.slider-type-standard {
+  padding-bottom: 2.5px;
+}
 @media only screen and (max-width: 768px) {
   .property-resp-slideshow.lightbox {
     padding: 42.5px 2.5px 2.5px 2.5px;
