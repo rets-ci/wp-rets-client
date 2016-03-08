@@ -74,7 +74,7 @@ namespace UsabilityDynamics\WPP {
               ),
               'custom_query' => array(
                 'name' => __( 'Custom Query by Attributes Values', ud_get_wp_property()->domain ),
-                'description' => sprintf( __( 'Setup your custom query by providing values for specific attributes. Empty values will be ignored. Example:<br/>- to list only %1$s which have minimum 2 and maximum 4 bedrooms, you should set <b>2-4</b> value for your Bedrooms attribute.<br/>- to list only %1$s which have 1 or 3 bathrooms, you should set <b>1,3</b> value for your Batrooms attribute.', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label() ),
+                'description' => sprintf( __( 'Setup your custom query by providing values for specific attributes. Empty values will be ignored. Example:<br/>- to list only %1$s which have minimum 2 and maximum 4 bedrooms, you should set <b>2-4</b> value for your Bedrooms attribute.<br/>- to list only %1$s which have 1 or 3 bathrooms, you should set <b>1,3</b> value for your Bathrooms attribute.', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label() ),
                 'type' => 'custom_attributes',
                 'options' => $custom_attributes,
               ),
@@ -305,6 +305,7 @@ namespace UsabilityDynamics\WPP {
         \WPP_F::force_script_inclusion( 'wp-property-frontend' );
 
         //** Load all queriable attributes **/
+        $queryable_keys = array();
         foreach( \WPP_F::get_queryable_keys() as $key ) {
           //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
           $queryable_keys[ $key ] = false;
@@ -598,6 +599,7 @@ namespace UsabilityDynamics\WPP {
       static public function draw_pagination( $settings = '' ) {
         global $wpp_query, $wp_properties;
 
+        $use_pagination = false;
         $settings = wp_parse_args( $settings, array(
           'type' => 'slider',
           'javascript' => true,
@@ -710,9 +712,10 @@ namespace UsabilityDynamics\WPP {
       /**
        * Render property_overview default styles at once!
        */
-      public function maybe_print_styles() {
+      static public function maybe_print_styles() {
         global $_wp_property_overview_style;
         if( empty( $_wp_property_overview_style) || !$_wp_property_overview_style ) {
+          wp_enqueue_style('wpp-fa-icons');
           $_wp_property_overview_style = true;
           $style_path = apply_filters( "property-overview-style-path", ud_get_wp_property()->path( 'static/styles/property_overview.css', 'url' ) );
           if( !empty( $style_path ) ) {

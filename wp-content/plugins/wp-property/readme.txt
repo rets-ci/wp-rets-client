@@ -3,8 +3,8 @@ Contributors: usability_dynamics, andypotanin, jbrw1984, maxim.peshkov, Anton Ko
 Donate link: http://usabilitydynamics.com/product/wp-property/
 Tags: property management, real estate, listings, properties, property, wp-property, real estate cms, wordpress real estate, listings, estate, MLS, IDX, RETS, XML Import
 Requires at least: 4.0
-Tested up to: 4.3.1
-Stable tag: 2.1.4
+Tested up to: 4.4.2
+Stable tag: 2.1.6
 
 == Description ==
 
@@ -225,6 +225,24 @@ If you submit a popular idea on UserVoice, we WILL integrate it sooner or later.
 * Security fixes
 
 == Changelog ==
+
+= 2.1.6 =
+* Fixed the bug when page content was always replaced with property_overview shortcode if wpp_search existed in request parameters.
+* Fixed multi-checkbox issue on Property Search.
+* Fixed issue with odd  br in Text Editor Data Entry field.
+* Fixed Single checkbox became enabled when publishing new property.
+* Fixed converting apostrophe to slash in Property Types.
+* Date and Time attributes now take date and time format from Settings/General tab.
+
+= 2.1.5 =
+* Added ability to set default values for property's attributes.
+* Added compatibility with WPML plugin.
+* Removed 'Images Upload' data entry for attribute since it duplicated 'Image Upload'.
+* Changed Agent definer from ID to email in wp-property export feed.
+* Fixed inherited values for non text attributes.
+* Fixed values rendering for 'Image Upload', 'File Upload' attributes on Single Property page.
+* Fixed 'Next' button's event in numeric pagination for property overview.
+* Warnings and Notices fixes.
 
 = 2.1.4 =
 * Property Attributes widget is not shown anymore if no data found.
