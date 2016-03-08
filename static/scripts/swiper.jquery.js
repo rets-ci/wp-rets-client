@@ -2265,6 +2265,10 @@ s.is12grid = function(){
 s.is12mosaic = function(){
     if(!s.params.lightBox && s.params.sliderType == "12mosaic")
         return true;
+}
+s.isLightbox = function(){
+    if(s.params.lightBox)
+        return true;
 };
 /*=========================
   Images Lazy Loading

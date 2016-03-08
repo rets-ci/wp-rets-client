@@ -97,9 +97,15 @@
         $.each(options.galleryTop.slides, function(index, item){
           var slide = $(item);
           var src = slide.data('src');
+          var dataWidth = slide.data('width');
+          var dataHidth = slide.data('height');
           if(src){
             var img = slide.find('img');
-            img.addClass('swiper-lazy').attr('data-src', src).attr('data-srcset', " ");
+            img.addClass('swiper-lazy')
+               .attr('data-src', src)
+               .attr('data-srcset', " ")
+               .data('width', dataWidth)
+               .data('height', dataHidth);
           }
         });
       }

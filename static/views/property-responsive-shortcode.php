@@ -29,11 +29,39 @@ foreach ($images as $img) {
 ?>
 <?php if(count($imgs)>0):?>
 <!-- Swiper -->
-<?php echo "<div id='wpprs-$property_resp_slideshow_counter' class='property-resp-slideshow slider-type-$slider_type slideshow-type-$slideshow_type' data-slideshow-type='$slideshow_type' data-slider-type='$slider_type'>";?>
+<?php 
+$mobile_class = wp_is_mobile()?'mobile':'';
+echo "<div id='wpprs-$property_resp_slideshow_counter' 
+                 class='property-resp-slideshow slider-type-$slider_type slideshow-type-$slideshow_type $mobile_class' 
+                 data-slideshow-type='$slideshow_type' 
+                 data-slider-type='$slider_type'>";?>
     <div class="modal-header">
-      <div class="pull-left">
-          <span><?php echo $title;?></span>
-      </div>
+    <?php
+    if($lb_title_1 != '' || $lb_title_2 != ''){
+        $lb_title_1 = explode(',', $lb_title_1);
+        $lb_title_2 = explode(',', $lb_title_2);   
+        $title_line_1 = '';
+        $title_line_2 = '';
+        foreach ($lb_title_1 as $key => $value) {
+            $value = trim($value);
+            if(empty($value)) continue;
+            $meta = get_post_meta($property_id, $value);
+            $title_line_1 .= implode(' ', $meta) . " ";
+        }
+        foreach ($lb_title_2 as $key => $value) {
+            $value = trim($value);
+            if(empty($value)) continue;
+            $meta = get_post_meta($property_id, $value);
+            $title_line_2 .= implode(' ', $meta ) . " ";
+        }
+      echo '<div class="lb-title pull-left">';
+        if($lb_title_1)
+          echo "<div class='line-1'>$title_line_1</div>";
+        if($lb_title_2)
+          echo "<div class='line-2'>$title_line_2</div>";
+      echo '</div>';
+    }
+    ?>
       <div class="pull-right">
         <a class="viewOriginal" class="button" aria-label="Close" href="javascript:void(0);" target="_blank">
           View Original <i class="dashicons dashicons-external"></i>

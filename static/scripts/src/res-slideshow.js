@@ -117,7 +117,7 @@ jQuery(document).ready(function($){
 
         galleryTop.on('onResizeStart', function(s){
             setControlSize();// setting the next prev control size;
-            if (s.is12mosaic() || s.is12grid()) {
+            if (s.isGrid()) {
                 return;
             }
             var width = s.container.width();
@@ -135,6 +135,10 @@ jQuery(document).ready(function($){
                     height  = parseInt($this.attr('height')),
                     ratio   = width/height;
                 
+                if(s.isLightbox()){
+                    width   = parseInt($this.data('width'));
+                    height  = parseInt($this.data('height'));
+                }
                 if((width > maxWidth) && (height > maxHeight)){
                     if(maxHeight * ratio <= maxWidth){
                         height  = maxHeight;

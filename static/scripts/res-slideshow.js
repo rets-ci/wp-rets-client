@@ -84,12 +84,13 @@ jQuery(document).ready(function($) {
         }), jQuery(window).on("orientationchange", galleryTop.onResize), jQuery(document).on("wpp_denali_tabbed_widget_render", galleryTop.onResize), 
         galleryTop.isGrid() || galleryTop.container.on("click", ".swiper-slide", goToClickedSlide), 
         galleryTop.on("onResizeStart", function(s) {
-            if (setControlSize(), !s.is12mosaic() && !s.is12grid()) {
+            if (setControlSize(), !s.isGrid()) {
                 var $styler = (s.container.width(), jQuery("#" + id + "-img-max-width")), maxWidth = s.container.width() / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + s.container.width() + "px!important;max-height:" + s.container.height() + "px!important;}"), 
                 s.slides.each(function() {
                     var $this = jQuery(this).find("img"), width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), ratio = width / height;
+                    s.isLightbox() && (width = parseInt($this.data("width")), height = parseInt($this.data("height"))), 
                     width > maxWidth && height > maxHeight ? maxWidth >= maxHeight * ratio ? (height = maxHeight, 
                     width = maxHeight * ratio) : (width = maxWidth, height = maxWidth / ratio) : width > maxWidth ? (width = maxWidth, 
                     height = maxWidth / ratio) : height > maxHeight && (height = maxHeight, width = maxHeight * ratio), 

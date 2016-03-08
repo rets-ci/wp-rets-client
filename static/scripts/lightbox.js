@@ -17,10 +17,10 @@
         }
         function loadFullImageLazy(index) {
             lb.hasClass("fullLazyInserted") || $.each(options.galleryTop.slides, function(index, item) {
-                var slide = $(item), src = slide.data("src");
+                var slide = $(item), src = slide.data("src"), dataWidth = slide.data("width"), dataHidth = slide.data("height");
                 if (src) {
                     var img = slide.find("img");
-                    img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ");
+                    img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ").data("width", dataWidth).data("height", dataHidth);
                 }
             }), lb.addClass("fullLazyInserted");
         }

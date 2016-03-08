@@ -15,6 +15,7 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
+        $attributes = (array) \WPP_F::get_total_attribute_array();
         $options = array(
           'id' => 'property_responsive_slideshow',
           'params' => array(
@@ -48,6 +49,22 @@ namespace UsabilityDynamics\WPP {
                 ),
                 'default' => 'standard',
               ),
+              // Available standard, carousel, 12grid and 12mosaic
+              'lb_title_1' => array(
+                'name' => __( 'Lightbox Title line 1', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Lightbox Title line 1. Select an attribute.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'combobox',
+                'options' => $attributes,
+                'default' => 'standard',
+              ),
+              // Available standard, carousel, 12grid and 12mosaic
+              'lb_title_2' => array(
+                'name' => __( 'Lightbox Title line 2', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Lightbox Title line 2. Select an attribute.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'combobox',
+                'options' => $attributes,
+                'default' => 'standard',
+              ),
             // See params examples in: wp-property/lib/shortcodes
 
           ),
@@ -68,6 +85,8 @@ namespace UsabilityDynamics\WPP {
           'property_id' => '',
           'slideshow_type' => 'thumbnailCarousel',
           'slider_type' => 'standard',
+          'lb_title_1' => '',
+          'lb_title_2' => '',
         ), $atts );
         self::maybe_print_styles();
         return $this->get_template( 'property-responsive-shortcode', $data, false );
