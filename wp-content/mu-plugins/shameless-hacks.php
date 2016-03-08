@@ -4,7 +4,7 @@
  */
 
 // special handling for production branch
-if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRANCH'] === 'production' ) {
+if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRANCH'] === '__production' ) {
 
   // disable plugin check
   remove_action('load-update-core.php','wp_update_plugins');
