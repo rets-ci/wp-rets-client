@@ -101,8 +101,13 @@ Have a look at the source code of your page (search for: Tracking Code Manager) 
 
 == Changelog ==
 
+= 1.10.12 =
+*Release Date - 28/02/2016*
+
+* Various bugfixes
+
 = 1.10.8 =
-*Release Date - 05/02/2015*
+*Release Date - 05/02/2016*
 
 * Use tracking codes by device types
 * Sort tracking codes using drag & drop

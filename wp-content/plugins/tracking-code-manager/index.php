@@ -6,7 +6,7 @@ Description: A plugin to manage ALL your tracking code and conversion pixels, si
 Author: IntellyWP
 Author URI: http://intellywp.com/
 Email: info@intellywp.com
-Version: 1.10.8
+Version: 1.10.12
 */
 if(defined('TCMP_PLUGIN_NAME')) {
     add_action('admin_notices', function() {
@@ -23,7 +23,7 @@ define('TCMP_PLUGIN_PREFIX', 'TCMP_');
 define('TCMP_PLUGIN_FILE',__FILE__);
 define('TCMP_PLUGIN_SLUG', 'tracking-code-manager');
 define('TCMP_PLUGIN_NAME', 'Tracking Code Manager');
-define('TCMP_PLUGIN_VERSION', '1.10.8');
+define('TCMP_PLUGIN_VERSION', '1.10.12');
 define('TCMP_PLUGIN_AUTHOR', 'IntellyWP');
 
 define('TCMP_PLUGIN_DIR', dirname(__FILE__).'/');
@@ -69,7 +69,7 @@ define('TCMP_TAB_MANAGER_URI', TCMP_PAGE_MANAGER.'&tab='.TCMP_TAB_MANAGER);
 define('TCMP_TAB_SETTINGS', 'settings');
 define('TCMP_TAB_SETTINGS_URI', TCMP_PAGE_MANAGER.'&tab='.TCMP_TAB_SETTINGS);
 define('TCMP_TAB_DOCS', 'docs');
-define('TCMP_TAB_DOCS_URI', 'http://support.intellywp.com/collection/1-tracking-code-manager');
+define('TCMP_TAB_DOCS_URI', 'http://support.intellywp.com/category/57-tracking-code-manager');
 define('TCMP_TAB_DOCS_DCV_URI', 'http://support.intellywp.com/article/28-dynamic-conversion-values');
 define('TCMP_TAB_ABOUT', 'about');
 define('TCMP_TAB_ABOUT_URI', TCMP_PAGE_MANAGER.'&tab='.TCMP_TAB_ABOUT);

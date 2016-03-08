@@ -225,6 +225,7 @@ class TCMP_Form {
 
                 $ace='ACE_'.$id;
                 $text=$value;
+                $text=str_replace('&amp;', '&', $text);
                 $text=str_replace('<', '&lt;', $text);
                 $text=str_replace('>', '&gt;', $text);
                 ?>
@@ -234,6 +235,7 @@ class TCMP_Form {
                     var text=jQuery('#<?php echo $id?>Ace').html();
                     text=TCMP.replace(text, '&lt;', '<');
                     text=TCMP.replace(text, '&gt;', '>');
+                    text=TCMP.replace(text, '&amp;', '&');
 
                     var <?php echo $ace?>=ace.edit("<?php echo $id?>Ace");
                     <?php echo $ace?>.renderer.setShowGutter(false);
