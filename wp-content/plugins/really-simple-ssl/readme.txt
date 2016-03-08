@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.4
-Stable tag: 2.2.18
+Stable tag: 2.2.20
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -133,6 +133,13 @@ You can activate ssl per site on subdomain and domain mapping installs. On subfo
 Yes, default the plugin redirects permanently with [R=301].
 
 == Changelog ==
+= 2.2.20 =
+Fixed bug in SSL detection
+
+= 2.2.19 =
+Changed followlocation in curl to an alternative method, as this gives issues when safemode or open_basedir is enabled.
+Added dismissable message when redirects cannot be inserted in the .htaccess
+
 = 2.2.18 =
 Fixed bug in logging of curl detection
 
