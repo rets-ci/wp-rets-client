@@ -1,5 +1,12 @@
 <?php
 global $property_resp_slideshow_counter;
+
+if($slider_width && $slideshow_layout != 'strict'){
+    $slider_width = '';
+}
+if($slider_auto_height == 'true'){
+    $slider_height = '';
+}
 if(empty($property_id)){
 	global $post;
 	$property_id = $post->ID;
@@ -70,7 +77,14 @@ echo "<div id='wpprs-$property_resp_slideshow_counter'
       </div>
       <div class="clearfix"></div>
     </div>
-    <div class="swiper-container gallery-top ratio-16-9">
+    <div class="swiper-container gallery-top"
+         data-slideshow_layout = "<?php echo $slideshow_layout;?>" 
+         data-slider_width = "<?php echo $slider_width;?>" 
+         data-slider_height = "<?php echo $slider_height;?>" 
+         data-slider_auto_height = "<?php echo $slider_auto_height;?>" 
+         data-slider_min_height = "<?php echo $slider_min_height;?>" 
+         data-slider_max_height = "<?php echo $slider_max_height;?>" 
+    >
         <div class="swiper-wrapper">
         <?php foreach ($imgs as $key => $img) {
         	echo "<div class='swiper-slide' data-src='{$img['full'][0]}' data-width='{$img['full'][1]}' data-height='{$img['full'][2]}' data-title='$title'>{$img['large']}</div>";

@@ -6,27 +6,21 @@ jQuery(document).ready(function($){
         var sliderType = $this.attr('data-slider-type');
         var slidesPerView;
         var slidesPerColumn;
+        var autoHeight = false;
         var pagination;
         var centeredSlides = true;
         var slidesPerColumnFill = 'column';
+        var galleryTop;
+        var _galleryTop = $this.find('.gallery-top');
         var galleryThumbs;
         var _galleryThumbs = $this.find('.gallery-thumbs');
-        var goToClickedSlide = function(e){
-                var clickedIndex = $(this).index();
-                if(galleryTop.activeIndex != clickedIndex){
-                    galleryTop.slideTo(clickedIndex);
-                    e.preventDefault();
-                    e.stopImmediatePropagation()
-                    return false;
-                }
-                enDisKeyCtrl(); // Enable keyboard control only on current swiper.
-            };
-        var enDisKeyCtrl = function(){
-            wpprs.find('.gallery-top').each(function(){
-                this.swiper.disableKeyboardControl();
-            });
-            galleryTop.enableKeyboardControl();
-        }
+        var slideshow_layout = _galleryTop.data('slideshow_layout');
+        var slider_width = _galleryTop.data('slider_width');
+        var slider_height = _galleryTop.data('slider_height');
+        var slider_auto_height = _galleryTop.data('slider_auto_height').toString();
+            slider_auto_height = slider_auto_height == 'true' ? true : false;
+        var slider_min_height = _galleryTop.data('slider_min_height');
+        var slider_max_height = _galleryTop.data('slider_max_height');
 
         // Settings specific on slider types.
         switch(sliderType){
@@ -34,10 +28,12 @@ jQuery(document).ready(function($){
                 slidesPerView   = 1;
                 slidesPerColumn = 1;
                 pagination = "swiper-pagination";
+                autoHeight = slider_auto_height;
             break;
             case 'carousel':
                 slidesPerView   = 'auto';
                 slidesPerColumn = 1;
+                autoHeight = slider_auto_height;
             break;
             case '12grid':
                 slidesPerView   = 3;
@@ -52,23 +48,30 @@ jQuery(document).ready(function($){
                 centeredSlides = false;
             break;
         }
+        if(!autoHeight && !slider_height && slideshow_layout != 'strict')
+            _galleryTop.addClass('ratio-16-9');
 
-        var galleryTop = new Swiper($this.find('.gallery-top'), {
+        galleryTop = new Swiper(_galleryTop, {
                 nextButton: $this.find('.swiper-button-next'),
                 prevButton: $this.find('.swiper-button-prev'),
                 centeredSlides: centeredSlides,
                 slidesPerView: slidesPerView,
                 slidesPerColumn: slidesPerColumn,
                 slidesPerColumnFill: slidesPerColumnFill,
-                sliderType: sliderType,
                 pagination: pagination,
+                autoHeight: autoHeight,
                 spaceBetween: 2.5,
                 keyboardControl:true,
-                //preventClicks:false,
-                // Enable lazy loading
                 lazyLoading: true,
                 lazyLoadingInPrevNext: true,
                 lazyLoadingOnTransitionStart: true,
+
+                //extra parameter
+                sliderType: sliderType,
+                slider_width: slider_width,
+                slider_height: slider_height,
+                slider_min_height: slider_min_height,
+                slider_max_height: slider_max_height,
                 onInit: function(s){
                                     setTimeout(function() {
                                         s.onResize();
@@ -117,17 +120,32 @@ jQuery(document).ready(function($){
 
         galleryTop.on('onResizeStart', function(s){
             setControlSize();// setting the next prev control size;
+
+            if(s.params.slider_min_height){
+                s.container.css('min-height', s.params.slider_min_height);
+            }
+            if(s.params.slider_max_height){
+                s.container.css('max-height', s.params.slider_max_height);
+            }
+            if(s.params.slider_width){
+                s.container.parent().width(s.params.slider_width);
+            }
+            if(s.params.slider_height){
+                s.container.height(s.params.slider_height);
+            }
+
             if (s.isGrid()) {
                 return;
             }
-            var width = s.container.width();
-            var $styler = jQuery('#' + id + '-img-max-width')
-            var maxWidth = (s.container.width() / s.params.slidesPerView) - (s.params.spaceBetween * s.params.slidesPerView);
-            var maxHeight = (s.container.height() / s.params.slidesPerColumn) - s.params.spaceBetween;
 
+            var containerWidth = s.container.width();
+            var containerHeight = s.container.height();
+            var $styler = jQuery('#' + id + '-img-max-width')
+            var maxWidth = (containerWidth / s.params.slidesPerView) - (s.params.spaceBetween * s.params.slidesPerView);
+            var maxHeight = (containerHeight / s.params.slidesPerColumn) - s.params.spaceBetween;
             if($styler.length==0)
                 $styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo('body');
-            $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ s.container.width() +'px!important;max-height:'+s.container.height() +'px!important;}');
+            $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ containerWidth + 'px!important;max-height:' + containerHeight +'px!important;}');
 
             s.slides.each(function(){
                 var $this   = jQuery(this).find('img'),
@@ -138,6 +156,18 @@ jQuery(document).ready(function($){
                 if(s.isLightbox()){
                     width   = parseInt($this.data('width'));
                     height  = parseInt($this.data('height'));
+                    ratio   = width/height;
+                }
+                else if(s.params.autoHeight && !s.params.slider_height){
+                    maxHeight = containerWidth / ratio;
+                    if(height > maxHeight)
+                        height = maxHeight;
+                    width = height * ratio;
+                    $this.css('height', height);
+                    $this.css('width', width);
+                    $this.css('max-width', maxWidth);
+                    jQuery(this).css('height', '100%');
+                    return;
                 }
                 if((width > maxWidth) && (height > maxHeight)){
                     if(maxHeight * ratio <= maxWidth){
@@ -191,6 +221,22 @@ jQuery(document).ready(function($){
         }
         //galleryTop.params.control = galleryThumbs;
         //galleryThumbs.params.control = galleryTop;
+        var goToClickedSlide = function(e){
+                var clickedIndex = $(this).index();
+                if(galleryTop.activeIndex != clickedIndex){
+                    galleryTop.slideTo(clickedIndex);
+                    e.preventDefault();
+                    e.stopImmediatePropagation()
+                    return false;
+                }
+                enDisKeyCtrl(); // Enable keyboard control only on current swiper.
+            };
+        var enDisKeyCtrl = function(){
+            wpprs.find('.gallery-top').each(function(){
+                this.swiper.disableKeyboardControl();
+            });
+            galleryTop.enableKeyboardControl();
+        }
     });
 });
 

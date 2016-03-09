@@ -552,8 +552,18 @@ s.maxTranslate = function () {
   ===========================*/
 s.updateAutoHeight = function () {
     // Update Height
-    var newHeight = s.slides.eq(s.activeIndex)[0].offsetHeight;
-    if (newHeight) s.wrapper.css('height', s.slides.eq(s.activeIndex)[0].offsetHeight + 'px');
+    var containerWidth = s.container.width();
+    var newWidth = s.slides.eq(s.activeIndex).find('img').attr('width');
+    var newHeight = s.slides.eq(s.activeIndex).find('img').attr('height');
+    var ratio = newWidth / newHeight;
+    var maxHeight = containerWidth / ratio;
+    if(newHeight > maxHeight)
+        newHeight = maxHeight;
+    if (newHeight){
+        s.wrapper.css('height', newHeight + 'px');
+        s.slides.eq(s.activeIndex).find('img').css('height', newHeight + 'px');
+    }
+
 };
 s.updateContainerSize = function () {
     var width, height;
@@ -1819,11 +1829,11 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.previousIndex = s.activeIndex || 0;
     s.activeIndex = slideIndex;
 
+    // Update Height
+    if (s.params.autoHeight) {
+        s.updateAutoHeight();
+    }
     if ((s.rtl && -translate === s.translate) || (!s.rtl && translate === s.translate)) {
-        // Update Height
-        if (s.params.autoHeight) {
-            s.updateAutoHeight();
-        }
         s.updateClasses();
         if (s.params.effect !== 'slide') {
             s.setWrapperTranslate(translate);

@@ -77,6 +77,9 @@
       options.galleryTop.params.lightBox = true;
       options.galleryTop.params.noSwiping = true;
       options.galleryTop.params.initialSlide = activeIndex;
+      options.galleryTop.params.autoHeight = false;
+      options.galleryTop.params.slider_width = false;
+      options.galleryTop.params.slider_height = false;
 
       loadFullImageLazy();
       lb.addClass('lightbox');
@@ -104,8 +107,8 @@
             img.addClass('swiper-lazy')
                .attr('data-src', src)
                .attr('data-srcset', " ")
-               .data('width', dataWidth)
-               .data('height', dataHidth);
+               .attr('data-width', dataWidth)
+               .attr('data-height', dataHidth);
           }
         });
       }

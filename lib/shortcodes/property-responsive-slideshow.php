@@ -49,13 +49,25 @@ namespace UsabilityDynamics\WPP {
                 ),
                 'default' => 'standard',
               ),
+              // Slideshow layout
+              'slideshow_layout' => array(
+                'name' => __( 'Slideshow layout', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Set Slideshow layout. Available  Responsive(auto), Strict(strict), Full Width(fullwidth)', ud_get_wp_property( 'domain' ) ),
+                'type' => 'select',
+                'options' => array(
+                                  'auto'=>'Responsive',
+                                  'strict'=>'Strict',
+                                  'fullwidth'=>'Full Width'
+                                ),
+                'default' => 'auto',
+              ),
               // Available standard, carousel, 12grid and 12mosaic
               'lb_title_1' => array(
                 'name' => __( 'Lightbox Title line 1', ud_get_wp_property( 'domain' ) ),
                 'description' => __( 'Lightbox Title line 1. Select an attribute.', ud_get_wp_property( 'domain' ) ),
                 'type' => 'combobox',
                 'options' => $attributes,
-                'default' => 'standard',
+                'default' => '',
               ),
               // Available standard, carousel, 12grid and 12mosaic
               'lb_title_2' => array(
@@ -63,7 +75,43 @@ namespace UsabilityDynamics\WPP {
                 'description' => __( 'Lightbox Title line 2. Select an attribute.', ud_get_wp_property( 'domain' ) ),
                 'type' => 'combobox',
                 'options' => $attributes,
-                'default' => 'standard',
+                'default' => '',
+              ),
+              // Slider Width
+              'slider_width' => array(
+                'name' => __( 'Slider Width', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Set width of the slideshow.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'text',
+                'default' => '',
+              ),
+              // Slider Auto Height
+              'slider_auto_height' => array(
+                'name' => __( 'Slider Auto Height', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Allows the height of the carousel to adjust based on the image size. If the image size is short or tall, the carousel will rollup/rolldown to new height.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'select',
+                'options' => array('true'=>'True', 'false'=>'False'),
+                'default' => 'false',
+              ),
+              // Slider Height
+              'slider_height' => array(
+                'name' => __( 'Slider Height', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Sets the height of the slider container.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'text',
+                'default' => '',
+              ),
+              // Slider Minimum Height
+              'slider_min_height' => array(
+                'name' => __( 'Slider Minimum Height', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Sets the minimum height of the slider.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'text',
+                'default' => '',
+              ),
+              // Slider Maximum Height
+              'slider_max_height' => array(
+                'name' => __( 'Slider Maximum Height', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Sets the maximum height of the slider.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'text',
+                'default' => '',
               ),
             // See params examples in: wp-property/lib/shortcodes
 
@@ -84,9 +132,15 @@ namespace UsabilityDynamics\WPP {
         $data = shortcode_atts( array(
           'property_id' => '',
           'slideshow_type' => 'thumbnailCarousel',
+          'slideshow_layout' => 'auto',
           'slider_type' => 'standard',
           'lb_title_1' => '',
           'lb_title_2' => '',
+          'slider_width' => '',
+          'slider_auto_height' => 'false',
+          'slider_height' => '',
+          'slider_min_height' => '',
+          'slider_max_height' => '',
         ), $atts );
         self::maybe_print_styles();
         return $this->get_template( 'property-responsive-shortcode', $data, false );

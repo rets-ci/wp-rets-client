@@ -59,7 +59,7 @@ s.cleanupStyles = function () {
 
     // Wrapper
     s.wrapper.removeAttr('style');
-
+    s.container.height('').width('');
     // Slides
     if (s.slides && s.slides.length) {
         s.slides
@@ -72,6 +72,12 @@ s.cleanupStyles = function () {
             .removeAttr('style')
             .removeAttr('data-swiper-column')
             .removeAttr('data-swiper-row');
+        if(s.params.autoHeight){
+            s.slides.width('').height('');
+            s.slides.each(function(){
+                $(this).find('img').width('').height('');
+            })
+        }
     }
 
     // Pagination/Bullets

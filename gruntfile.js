@@ -86,7 +86,7 @@ module.exports = function build( grunt ) {
                 'static/scripts/src/swiper/init.js',
                 'static/scripts/src/swiper/swiper-outro.js',
                 'static/scripts/src/swiper/swiper-proto.js',
-                'static/scripts/src/swiper/dom.js',
+                //'static/scripts/src/swiper/dom.js',
                 'static/scripts/src/swiper/get-dom-lib.js',
                 'static/scripts/src/swiper/dom-plugins.js',
                 'static/scripts/src/swiper/get-dom-lib.js',
