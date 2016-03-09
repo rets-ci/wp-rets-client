@@ -58,6 +58,7 @@ jQuery(document).ready(function($) {
             lazyLoadingInPrevNext: !0,
             lazyLoadingOnTransitionStart: !0,
             sliderType: sliderType,
+            slideshow_layout: slideshow_layout,
             slider_width: slider_width,
             slider_height: slider_height,
             slider_min_height: slider_min_height,
@@ -85,8 +86,21 @@ jQuery(document).ready(function($) {
         galleryTop.on("onResizeStart", function(s) {
             if (setControlSize(), s.params.slider_min_height && s.container.css("min-height", s.params.slider_min_height), 
             s.params.slider_max_height && s.container.css("max-height", s.params.slider_max_height), 
-            s.params.slider_width && s.container.parent().width(s.params.slider_width), s.params.slider_height && s.container.height(s.params.slider_height), 
-            !s.isGrid()) {
+            s.params.slider_height && !s.params.slider_auto_height && s.container.height(s.params.slider_height), 
+            "strict" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height) s.container.parent().width(s.params.slider_width), 
+            s.container.parent().css("margin", "auto"); else if ("auto" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height) {
+                var containerRatio = s.params.slider_width / s.params.slider_height;
+                s.container.height(s.container.width() / containerRatio);
+            } else if ("fullwidth" == s.params.slideshow_layout) {
+                var ofsetleft = $this.offset().left;
+                $this.css({
+                    position: "absolute",
+                    left: -ofsetleft,
+                    width: jQuery(window).width(),
+                    margin: "0 auto"
+                }), jQuery("<div />").width("100%").height($this.height()).insertAfter($this);
+            }
+            if (!s.isGrid()) {
                 var containerWidth = s.container.width(), containerHeight = s.container.height(), $styler = jQuery("#" + id + "-img-max-width"), maxWidth = containerWidth / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = containerHeight / s.params.slidesPerColumn - s.params.spaceBetween;
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + containerWidth + "px!important;max-height:" + containerHeight + "px!important;}"), 

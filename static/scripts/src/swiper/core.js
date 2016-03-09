@@ -560,7 +560,7 @@ s.updateAutoHeight = function () {
     if(newHeight > maxHeight)
         newHeight = maxHeight;
     if (newHeight){
-        s.wrapper.css('height', newHeight + 'px');
+        s.container.css('height', newHeight + 'px');
         s.slides.eq(s.activeIndex).find('img').css('height', newHeight + 'px');
     }
 

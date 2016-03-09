@@ -1,12 +1,6 @@
 <?php
 global $property_resp_slideshow_counter;
 
-if($slider_width && $slideshow_layout != 'strict'){
-    $slider_width = '';
-}
-if($slider_auto_height == 'true'){
-    $slider_height = '';
-}
 if(empty($property_id)){
 	global $post;
 	$property_id = $post->ID;
