@@ -25,7 +25,7 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 ?>
   <?php
   // Start the Loop.
-  while ( have_posts() ) : the_post();
+  while ( have_posts() ) : the_post(); $property = prepare_property_for_display( get_the_ID() );
 
     ?>
 <?php if(!(empty($_url))) { ?>

@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
     jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
-    jQuery('.single .featuredImageHeader, .blog .featuredImageHeader').css('height', jQuery(window).height()-132);
+    jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
     //jQuery( ".speed" ).selectmenu(); // custom select
     jQuery( "#tabs" ).tabs(); //tabs for search form
