@@ -87,11 +87,3 @@ You can provide one or more attribute to show on lightbox title on line no 1. Yo
 #### lb_title_2
 ##### Lightbox Title line 2
 You can provide one or more attribute to show on lightbox title on line no 2. You need to separate with comma(,) if you provide more than one attribute. You can find attributes on Developer tab on setting page of Property.
-
-***
-[![Dependency Status](https://gemnasium.com/wp-property/wp-property-responsive-slideshow.svg)](https://gemnasium.com/wp-property/wp-property-responsive-slideshow)
-[![Scrutinizer Quality](http://img.shields.io/scrutinizer/g/wp-property/wp-property-responsive-slideshow.svg)](https://scrutinizer-ci.com/g/wp-property/wp-property-responsive-slideshow)
-[![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/wp-property/wp-property-responsive-slideshow.svg)](https://scrutinizer-ci.com/g/wp-property/wp-property-responsive-slideshow)
-[![Packagist Vesion](http://img.shields.io/packagist/v/wp-property/wp-property-responsive-slideshow.svg)](https://packagist.org/packages/wp-property/wp-property-responsive-slideshow)
-[![CircleCI](https://circleci.com/gh/wp-property/wp-property-responsive-slideshow.png)](https://circleci.com/gh/wp-property/wp-property-responsive-slideshow)
-***   
