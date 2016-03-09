@@ -19,35 +19,12 @@ namespace UsabilityDynamics\WPP {
         $options = array(
           'id' => 'property_responsive_slideshow',
           'params' => array(
+              // Property ID
               'property_id' => array(
                 'name' => sprintf( __( '%s ID', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label() ),
                 'description' => sprintf( __( 'If not empty, Slideshow will show for particular %s, which ID is set. If not provided will show slideshow for current %s', ud_get_wp_property( 'domain' ) ), \WPP_F::property_label(), \WPP_F::property_label() ),
                 'type' => 'text',
                 'default' => ''
-              ), 
-              // Available standard, carousel, 12grid and 12mosaic
-              'slideshow_type' => array(
-                'name' => __( 'Slideshow Types', ud_get_wp_property( 'domain' ) ),
-                'description' => __( 'Type of slideshow. Default is standard. standard and thumbnailCarousel is available.', ud_get_wp_property( 'domain' ) ),
-                'type' => 'select',
-                'options' => array(
-                  'standard'  => 'Standard Slideshow',
-                  'thumbnailCarousel'  => 'Thumbnail Carousel Slideshow',
-                ),
-                'default' => 'thumbnailCarousel',
-              ),
-              // Available standard, carousel, 12grid and 12mosaic
-              'slider_type' => array(
-                'name' => __( 'Slider Type', ud_get_wp_property( 'domain' ) ),
-                'description' => __( 'Type of slider. Default is standard. Also Carousel and Grid Slider is available.', ud_get_wp_property( 'domain' ) ),
-                'type' => 'select',
-                'options' => array(
-                  'standard'  => 'Standard Slider',
-                  'carousel'  => 'Carousel Slider',
-                  '12grid' => '1:2 Grid Slider',
-                  '12mosaic' => '1:2 Mosaic Slider'
-                ),
-                'default' => 'standard',
               ),
               // Slideshow layout
               'slideshow_layout' => array(
@@ -61,21 +38,29 @@ namespace UsabilityDynamics\WPP {
                                 ),
                 'default' => 'auto',
               ),
-              // Available standard, carousel, 12grid and 12mosaic
-              'lb_title_1' => array(
-                'name' => __( 'Lightbox Title line 1', ud_get_wp_property( 'domain' ) ),
-                'description' => __( 'Lightbox Title line 1. Select an attribute.', ud_get_wp_property( 'domain' ) ),
-                'type' => 'combobox',
-                'options' => $attributes,
-                'default' => '',
+              //Slideshow Types
+              'slideshow_type' => array(
+                'name' => __( 'Slideshow Types', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Type of slideshow. Default is standard. standard and thumbnailCarousel is available.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'select',
+                'options' => array(
+                  'standard'  => 'Standard Slideshow',
+                  'thumbnailCarousel'  => 'Thumbnail Carousel Slideshow',
+                ),
+                'default' => 'thumbnailCarousel',
               ),
-              // Available standard, carousel, 12grid and 12mosaic
-              'lb_title_2' => array(
-                'name' => __( 'Lightbox Title line 2', ud_get_wp_property( 'domain' ) ),
-                'description' => __( 'Lightbox Title line 2. Select an attribute.', ud_get_wp_property( 'domain' ) ),
-                'type' => 'combobox',
-                'options' => $attributes,
-                'default' => '',
+              //Slider Type
+              'slider_type' => array(
+                'name' => __( 'Slider Type', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Type of slider. Default is standard. Also Carousel and Grid Slider is available.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'select',
+                'options' => array(
+                  'standard'  => 'Standard Slider',
+                  'carousel'  => 'Carousel Slider',
+                  '12grid' => '1:2 Grid Slider',
+                  '12mosaic' => '1:2 Mosaic Slider'
+                ),
+                'default' => 'standard',
               ),
               // Slider Width
               'slider_width' => array(
@@ -111,6 +96,22 @@ namespace UsabilityDynamics\WPP {
                 'name' => __( 'Slider Maximum Height', ud_get_wp_property( 'domain' ) ),
                 'description' => __( 'Sets the maximum height of the slider.', ud_get_wp_property( 'domain' ) ),
                 'type' => 'text',
+                'default' => '',
+              ),
+              //Lightbox Title line 1
+              'lb_title_1' => array(
+                'name' => __( 'Lightbox Title line 1', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Lightbox Title line 1. Select an attribute.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'combobox',
+                'options' => $attributes,
+                'default' => '',
+              ),
+              //Lightbox Title line 2
+              'lb_title_2' => array(
+                'name' => __( 'Lightbox Title line 2', ud_get_wp_property( 'domain' ) ),
+                'description' => __( 'Lightbox Title line 2. Select an attribute.', ud_get_wp_property( 'domain' ) ),
+                'type' => 'combobox',
+                'options' => $attributes,
                 'default' => '',
               ),
             // See params examples in: wp-property/lib/shortcodes

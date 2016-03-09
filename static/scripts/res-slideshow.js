@@ -1,20 +1,3 @@
-function setSlideSize_12mosaic(slide, s) {
-    var width, height, slide = jQuery(slide), img = slide.find("img"), maxHeight = s.container.height() / s.params.slidesPerColumn, attrWidth = parseInt(img.attr("width")), attrHeight = parseInt(img.attr("height")), ratio = attrWidth / attrHeight;
-    return height = slide.is(":first-child") ? s.container.height() : maxHeight, width = height * ratio, 
-    img.width(width).height(height), slide.width(width).height(height), img[0].style.setProperty("width", width + "px", "important"), 
-    img[0].style.setProperty("height", height + "px", "important"), width;
-}
-
-function setSlideSize_12grid(slide, s) {
-    var width, height, width, height, slide = jQuery(slide), img = slide.find("img"), maxHeight = s.container.height() / s.params.slidesPerColumn, attrWidth = parseInt(img.attr("width")), attrHeight = parseInt(img.attr("height")), imgRatio = attrWidth / attrHeight, slideRatio = 4 / 3;
-    return slide.is(":first-child") ? slideHeight = s.container.height() : slideHeight = maxHeight, 
-    slideWidth = slideHeight * slideRatio, slide.width(slideWidth).height(slideHeight), 
-    slideWidth > slideHeight ? (width = slideWidth, height = width / imgRatio) : (height = slideHeight, 
-    width = height * imgRatio), width < slideWidth ? (width = slideWidth, height = width / imgRatio) : height < slideHeight && (height = slideHeight, 
-    width = height * imgRatio), img.width(width).height(height), img[0].style.setProperty("width", width + "px", "important"), 
-    img[0].style.setProperty("height", height + "px", "important"), slideWidth;
-}
-
 jQuery(document).ready(function($) {
     var wpprs = $(".property-resp-slideshow");
     wpprs.each(function() {

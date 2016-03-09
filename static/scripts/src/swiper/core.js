@@ -655,10 +655,10 @@ s.updateSlidesSize = function () {
             slideSize = (s.size - (s.params.slidesPerView - 1) * spaceBetween) / s.params.slidesPerView;
             
             if(s.is12mosaic()){
-                slideSize = setSlideSize_12mosaic(s.slides[i], s);
+                slideSize = s.setSlideSize_12mosaic(s.slides[i], s);
             }
             else if(s.is12grid()){
-                slideSize = setSlideSize_12grid(s.slides[i], s);
+                slideSize = s.setSlideSize_12grid(s.slides[i], s);
             }
             if (s.params.roundLengths) slideSize = round(slideSize);
 
