@@ -39,11 +39,9 @@
 				<?php endforeach; ?>
 			</div>
 
-			<?php if( !empty($column['button']) ) : ?>
-				<div class="ow-pt-button">
-					<a href='<?php echo sow_esc_url($column['url']) ?>' class="ow-pt-link" <?php if( !empty( $instance['button_new_window'] ) ) echo 'target="_blank"' ?>><?php echo esc_html($column['button']) ?></a>
-				</div>
-			<?php endif; ?>
+			<div class="ow-pt-button">
+				<a href='<?php echo sow_esc_url($column['url']) ?>' class="ow-pt-link" <?php if( !empty( $instance['button_new_window'] ) ) echo 'target="_blank"' ?>><?php echo esc_html($column['button']) ?></a>
+			</div>
 		</div>
 	<?php endforeach; ?>
 

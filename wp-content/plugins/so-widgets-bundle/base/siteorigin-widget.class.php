@@ -622,14 +622,12 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 		$less = $css_imports . "\n\n" . '.so-widget-'.$css_name." { \n".$less."\n } ";
 
-		$compiler = new lessc();
+		$c = new lessc();
 		$lc_functions = new SiteOrigin_Widgets_Less_Functions($this, $instance);
-		$lc_functions->registerFunctions( $compiler );
+		$lc_functions->registerFunctions($c);
 
 		try {
-			if( method_exists( $compiler, 'compile' ) ) {
-				$css = $compiler->compile( $less );
-			}
+			$css = $c->compile( $less );
 		}
 		catch ( Exception $e ) {
 			$css = '';

@@ -21,9 +21,7 @@ class SiteOrigin_Widgets_Less_Functions {
 	 * Register less functions in a lessc object
 	 */
 	function registerFunctions(&$c){
-		if( method_exists( $c, 'registerFunction' ) ) {
-			$c->registerFunction( 'length', array($this, 'length') );
-		}
+		$c->registerFunction( 'length', array($this, 'length') );
 	}
 
 	/**

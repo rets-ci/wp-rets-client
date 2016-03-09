@@ -235,7 +235,6 @@ function sow_esc_url( $url ) {
 	if( preg_match('/^post: *([0-9]+)/', $url, $matches) ) {
 		// Convert the special post URL into a permalink
 		$url = get_the_permalink( intval($matches[1]) );
-		if( empty($url) ) return '';
 	}
 
 	$protocols = wp_allowed_protocols();
