@@ -8,6 +8,7 @@
   border: 1px solid #dcddde;
   border-radius: 5px;
   margin: 20px 0;
+  background: @white;
   &> img{
     display: block;
     margin: 40px auto;
@@ -481,7 +482,10 @@
 /* Property page */
 
 .single-property {
-
+  .bottomSeparate{
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 30px;
+  }
   .slideshowHeadImage {
     background-position: center center;
     background-repeat: no-repeat;
@@ -492,8 +496,11 @@
   }
   .singlePropertyHeader{
     background: #F3F0EA;
-    padding: 45px 0;
+    padding: 30px 0;
     color: #474649;
+    border-bottom: 1px solid #dedede;
+    position: relative;
+    z-index: 50;
     .title{
       & > span{
         background: #18C2B8;
@@ -501,7 +508,7 @@
         color: @white;
         padding: 0.1em 0.4em;
         border-radius: 2px;
-        font-size: 1.5em;
+        font-size: 1.3em;
         float: left;
         margin-top: 10px;
         margin-right: 15px;
@@ -509,6 +516,7 @@
       & > div{
         float: left;
         font-size: 3em;
+        font-weight: 500;
         & > span{
           font-size: 0.6em;
           margin-left: 15px;
@@ -524,7 +532,161 @@
         display: inline-block;
         font-size: 1.5em;
         margin-right: 10px;
+        svg{
+          margin-right: 10px;
+          color: #a7a9ac;
+        }
       }
+    }
+    .oneAgent{
+      position: absolute;
+      right: 13%;
+      top: 0;
+      z-index: 20;
+      padding-bottom: 30px;
+      .oneAgentLinksBlock{
+        padding: 0 40px;
+        a{
+          width: 100%;
+        }
+      }
+    }
+  }
+  .propertyAttribute{
+    margin-top: 20px;
+    li{
+      display: inline-block;
+      width: 32%;
+      margin-bottom: 20px;
+      div{
+        border: 1px solid #dedede;
+        border-radius: 50%;
+        float: left;
+        font-size: 1.5em;
+        margin-right: 15px;
+        margin-top: 0;
+        padding: 7px 15px;
+        svg{
+          margin-top: 5px;
+          color: #a7a9ac;
+        }
+      }
+      span{
+        display: block;
+        color: #919093;
+        font-size: 0.8em;
+        margin-top: 5px;
+        margin-bottom: 3px;
+      }
+      strong{
+        font-weight: 400;
+        font-size: 1em;
+      }
+    }
+  }
+  .areaMapBlock{
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 30px;
+    .col-lg-7{
+      margin: 15px 0;
+    }
+    .ambItem{
+      border: 1px solid #dedede;
+      border-radius: 5px;
+      margin-right: 20px;
+      padding: 30px;
+      div{
+        background: #89c11e none repeat scroll 0 0;
+        border-radius: 50%;
+        color: @white;
+        font-size: 1.3em;
+        margin: auto;
+        padding: 7px 9px;
+        text-align: center;
+        width: 45px;
+      }
+      span{
+        display: block;
+        font-weight: 500;
+        margin-bottom: 2px;
+        margin-top: 10px;
+        text-align: center;
+      }
+      strong{
+        display: block;
+        font-size: 0.9em;
+        font-weight: 400;
+        text-align: center;
+      }
+    }
+    .nav-tabs{
+      border-bottom-width: 0px;
+      margin-top: 20px;
+      li{
+        width: 25%;
+        text-align: center;
+        background: #f3f3f3;
+        a{
+          border-radius: 0;
+          border-color: #d8d8d8;
+          margin-right: 0;
+          color: #b1b1b1;
+          outline: none;
+          &:hover{
+            background: @white !important;
+          }
+        }
+        &.active{
+          background: @white;
+          a{
+            border-bottom: 1px solid transparent;
+            color: #5a595c;
+          }
+        }
+      }
+    }
+    .tab-content{
+      border: 1px solid #d8d8d8;
+      border-top: 1px solid transparent;
+      padding: 20px 15px 15px;
+    }
+  }
+  .propertyDetails{
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 30px;
+    .col-lg-7{
+      margin: 15px 0;
+    }
+    .nav-tabs{
+      border-bottom-width: 0px;
+      margin-top: 20px;
+      li{
+        width: 25%;
+        text-align: center;
+        background: #f3f3f3;
+        a{
+          border-radius: 0;
+          border-color: #d8d8d8;
+          margin-right: 0;
+          color: #b1b1b1;
+          outline: none;
+          &:hover{
+            background: @white !important;
+          }
+        }
+        &.active{
+          background: @white;
+          a{
+            border-bottom: 1px solid transparent;
+            color: #5a595c;
+          }
+        }
+      }
+    }
+    .tab-content{
+      border: 1px solid #d8d8d8;
+      border-top: 1px solid transparent;
+      padding: 20px 15px 15px;
     }
   }
 }

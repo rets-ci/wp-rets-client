@@ -126,6 +126,9 @@ jQuery(document).ready(function(){
     });
 
     jQuery('.association-carousel .sow-carousel-wrapper').append('<div class="assocCarouselBg"></div>');
+
+    jQuery("#propertyDetails").sticky({topSpacing:0});
+
 });
 
 function map_resize() {
