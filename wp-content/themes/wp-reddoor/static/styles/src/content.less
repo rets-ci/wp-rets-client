@@ -527,14 +527,16 @@
     .attributes{
 
     }
-    ul{
-      li{
-        display: inline-block;
-        font-size: 1.5em;
-        margin-right: 10px;
-        svg{
+    .container {
+      & > ul {
+        li {
+          display: inline-block;
+          font-size: 1.5em;
           margin-right: 10px;
-          color: #a7a9ac;
+          svg {
+            margin-right: 10px;
+            color: #a7a9ac;
+          }
         }
       }
     }
@@ -548,6 +550,24 @@
         padding: 0 40px;
         a{
           width: 100%;
+        }
+      }
+      .socialButtons{
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+        margin: 0;
+        border-bottom: 1px solid #eeeaea;
+        border-radius: 0 !important;
+        li{
+          width: 49.4%;
+          color: #a7a9ac;
+          font-size: 2em !important;
+          padding: 0;
+          a{
+            color: #a7a9ac;
+            display: block;
+            padding: 22px 0 15px;
+            outline: none;
+          }
         }
       }
     }
@@ -585,8 +605,6 @@
     }
   }
   .areaMapBlock{
-    border-bottom: 1px solid #dedede;
-    padding-bottom: 30px;
     .col-lg-7{
       margin: 15px 0;
     }
@@ -652,8 +670,6 @@
     }
   }
   .propertyDetails{
-    border-bottom: 1px solid #dedede;
-    padding-bottom: 30px;
     .col-lg-7{
       margin: 15px 0;
     }
@@ -687,6 +703,71 @@
       border: 1px solid #d8d8d8;
       border-top: 1px solid transparent;
       padding: 20px 15px 15px;
+    }
+    .pdRoomsBlock{
+      width: 40%;
+      margin: 0 5%;
+      float: left;
+      section {
+        & > div {
+          border: 1px solid #dedede;
+          border-radius: 50%;
+          float: left;
+          font-size: 1.5em;
+          height: 50px;
+          margin-right: 15px;
+          margin-top: 0;
+          width: 50px;
+          svg{
+            margin-top: 13px;
+            margin-left: 14px;
+          }
+        }
+        span{
+          float: left;
+          font-size: 1.5em;
+          margin-top: 10px;
+        }
+      }
+      & > ul{
+        margin-top: 25px;
+        li{
+          border-bottom: 1px solid #dedede;
+          padding-bottom: 10px;
+          padding-top: 10px;
+          &:last-child{
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+  .listingProvider{
+    .col-lg-7{
+      margin: 15px 0;
+      ul{
+        width: 40%;
+        float: left;
+        &:nth-child(odd){
+          margin-right: 10%;
+        }
+        &:nth-child(even){
+          margin-left: 10%;
+        }
+        li{
+          border-bottom: 1px solid #dedede;
+          padding-bottom: 10px;
+          padding-top: 10px;
+          &:last-child{
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+    .italicText{
+      color: #919093;
+      font-style: italic;
+      margin: 5% 0;
     }
   }
 }

@@ -52,6 +52,10 @@ while ( have_posts() ) : the_post();
             <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php print_r($property['ground_area']); echo ' '; _e('acres'); ?></span></li>
           </ul>
           <div class="oneAgent">
+            <ul class="socialButtons">
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
+            </ul>
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
             <h3>Denis Zabelin</h3>
             <span>Red Door Company</span>
@@ -62,7 +66,7 @@ while ( have_posts() ) : the_post();
         </div>
       </section>
   </div>
-  <div class="container bottomSeparate">
+  <div class="container">
     <div class="row">
       <div class="col-lg-7 col-md-7">
         This brand new home has more features than we can name here but just a few are: 10ft ceilings on the 1st floor & 9ft ceilings on the 2nd floor,
@@ -90,7 +94,7 @@ while ( have_posts() ) : the_post();
       <div class="col-lg-7 col-md-7">
         <h4>Property Facts</h4>
       </div>
-      <div class="col-lg-8 col-md-8">
+      <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="propertyAttribute">
           <li>
             <div><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></div>
@@ -156,7 +160,7 @@ while ( have_posts() ) : the_post();
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-7 col-md-7">
+      <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Ameneties">Ameneties</a></li>
           <li><a data-toggle="tab" href="#Commute">Commute</a></li>
@@ -166,16 +170,16 @@ while ( have_posts() ) : the_post();
 
         <div class="tab-content">
           <div id="Ameneties" class="tab-pane fade in active">
-            <p>Some content.</p>
+            <p>Some content Ameneties.</p>
           </div>
           <div id="Commute" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content Commute.</p>
           </div>
           <div id="Street" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content Street.</p>
           </div>
           <div id="Satellite" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content Satellite.</p>
           </div>
         </div>
       </div>
@@ -191,7 +195,7 @@ while ( have_posts() ) : the_post();
         4 bedrooms and 4 bathrooms. This house has been listed on Redfin since January 22, 2016 and is currently priced at $499,000.
         This property was built in 2016. The closest school is West Lake Middle School. 5000 Daviston Ct is near Action Park and South Park.
       </div>
-      <div class="col-lg-7 col-md-7">
+      <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
@@ -201,22 +205,88 @@ while ( have_posts() ) : the_post();
 
         <div class="tab-content">
           <div id="Rooms" class="tab-pane fade in active">
-            <p>Some content.</p>
+            <div class="pdRoomsBlock">
+              <section>
+                <div><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></div>
+                <span>Bedroom Info</span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <li>Master Bedroom Floor: <b>Second</b></li>
+                <li>2nd Bedroom Floor: <b>Second</b></li>
+                <li>3rd Bedroom Floor: <b>Second</b></li>
+                <li>4th Bedroom Floor: <b>Main</b></li>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></div>
+                <span>Bathroom Info</span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <li># of Bathrooms (Full): <b>3</b></li>
+                <li># of Bathrooms (1/2): <b>1</b></li>
+                <li>Bath Features: <b>Bath, Shower, Tub</b></li>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></div>
+                <span>Living Area</span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <li>Other Room 1 Description: <b>MstrSitRm</b></li>
+                <li>Other Room 1 Level: <b>Second</b></li>
+                <li>Family Room Floor: <b>Main</b></li>
+                <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
+                <li>Living Area Above Grade: <b>3,200</b></li>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
           <div id="Features" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content Features.</p>
           </div>
           <div id="Neighborhood" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content Neighborhood.</p>
           </div>
           <div id="PropertyLot" class="tab-pane fade">
-            <p>Some content in menu 1.</p>
+            <p>Some content PropertyLot.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  <div class="container listingProvider">
+    <div class="row">
+      <div class="col-lg-7 col-md-7">
+        <h4>Listing Provider for 5000 Daviston CT</h4>
+      </div>
+      <div class="col-lg-7 col-md-7">
+        <ul>
+          <li>Other Room 1 Description: <b>MstrSitRm</b></li>
+          <li>Other Room 1 Level: <b>Second</b></li>
+          <li>Family Room Floor: <b>Main</b></li>
+          <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
+          <li>Living Area Above Grade: <b>3,200</b></li>
+        </ul>
+        <ul>
+          <li>Other Room 1 Description: <b>MstrSitRm</b></li>
+          <li>Other Room 1 Level: <b>Second</b></li>
+          <li>Family Room Floor: <b>Main</b></li>
+          <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
+          <li>Living Area Above Grade: <b>3,200</b></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="col-lg-7 col-md-7 italicText">
+        Information Not Guaranteed. ©2016 Triangle MLS Inc. All rights reserved. Listings marked with an <b style="font-style: normal; color: #000">TMLS IDX&#153;</b>
+        icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
+      </div>
+    </div>
+  </div>
 
 <?php endwhile; ?>
 

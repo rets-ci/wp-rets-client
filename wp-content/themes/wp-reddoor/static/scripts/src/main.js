@@ -129,6 +129,18 @@ jQuery(document).ready(function(){
 
     jQuery("#propertyDetails").sticky({topSpacing:0});
 
+    /* Equal height */
+    jQuery.fn.equivalent = function (){
+        var $blocks = $(this),
+            maxH    = $blocks.eq(0).height();
+        $blocks.each(function(){
+            maxH = ( $(this).height() > maxH ) ? $(this).height() : maxH;
+        });
+        $blocks.height(maxH);
+    }
+    jQuery('.pdRoomsBlock').equivalent();
+    /* Equal height */
+
 });
 
 function map_resize() {
