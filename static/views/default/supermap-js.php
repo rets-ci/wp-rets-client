@@ -75,7 +75,7 @@ ob_start();
 
     /* START Markers functionality */
     <?php foreach ((array) $properties as $id => $value) : ?>
-    <?php if ( !empty( $value['latitude'] ) && !empty( $value['longitude'] ) ) : ?>
+    <?php if ( isset( $value['latitude']) && $value['latitude'] && isset( $value['longitude']) && $value['longitude'] ) : ?>
     window.myLatlng_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
     window.content_<?php echo $rand; ?>_<?php echo $value['ID']; ?> = '<?php echo WPP_F::google_maps_infobox($value); ?>';
 
