@@ -346,6 +346,19 @@ class WPP_F extends UsabilityDynamics\Utility {
   static function get_attribute_data( $attribute = false ) {
     return UsabilityDynamics\WPP\Attributes::get_attribute_data($attribute);
   }
+  /**
+   * Returns valid attribute type.
+   *
+   * @see UsabilityDynamics\WPP\Attributes::get_valid_attribute_type()
+   * @param bool $type //ud_get_wp_property()->set( 'attributes.types'
+   * @return mixed
+   */
+  static function get_valid_attribute_type( $type = false ) {
+    return UsabilityDynamics\WPP\Attributes::get_valid_attribute_type($type);
+  }
+  static function is_attribute_multi( $attribute ) {
+    return UsabilityDynamics\WPP\Attributes::is_attribute_multi($attribute);
+  }
 
   /**
    * Checks if script or style have been loaded.
@@ -4845,4 +4858,39 @@ function stripslashes_array($array){
 add_filter('wpp_settings_save', 'wpp_settings_save_stripslashes');
 function wpp_settings_save_stripslashes($data){
   return stripslashes_array($data);
+}
+
+add_filter('wpp_settings_save', 'wpp_settings_remove_preset_values');
+function wpp_settings_remove_preset_values($data){
+  if(isset( $data ['property_meta']['__first_row'])){
+    unset($data ['property_meta']['__first_row']);
+  }
+  if(isset( $data ['property_types']['__first_row'])){
+    unset($data ['property_types']['__first_row']);
+  }
+  if(isset( $data ['property_stats']['__first_row'])){
+    unset($data ['property_stats']['__first_row']);
+  }
+  if(isset( $data ['property_stats_groups']['__first_row'])){
+    unset($data ['property_stats_groups']['__first_row']);
+  }
+  if(isset( $data ['searchable_attr_fields']['__first_row'])){
+    unset($data ['searchable_attr_fields']['__first_row']);
+  }
+  if(isset( $data ['predefined_search_values']['__first_row'])){
+    unset($data ['predefined_search_values']['__first_row']);
+  }
+  if(isset( $data ['admin_attr_fields']['__first_row'])){
+    unset($data ['admin_attr_fields']['__first_row']);
+  }
+  if(isset( $data ['admin_attr_fields']['__first_row'])){
+    unset($data ['admin_attr_fields']['__first_row']);
+  }
+  if(isset( $data ['predefined_values']['__first_row'])){
+    unset($data ['predefined_values']['__first_row']);
+  }
+  if(isset( $data ['default_values']['__first_row'])){
+    unset($data ['default_values']['__first_row']);
+  }
+  return $data;
 }

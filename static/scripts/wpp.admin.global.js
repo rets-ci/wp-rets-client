@@ -658,6 +658,9 @@ function wpp_set_unique_ids(el, unique) {
  */
 jQuery(document).ready(function() {
 
+  setTimeout(function(){
+    jQuery('#posts_list').removeClass('closed').children('h2').off();
+  }, 400);
   /* Remove any highlight classes */
   jQuery("#contextual-help-link").click(function() {
     jQuery("#contextual-help-wrap h3").removeClass("wpp_contextual_highlight");
@@ -707,12 +710,15 @@ jQuery(document).ready(function() {
     // Blank out all values
     jQuery("input[type=text]", parent).val('');
     jQuery("input[type=checkbox]", parent).attr('checked', false);
-    // Don't hide last row
+    // Last row stays hidden
     if(row_count > 1) {
       jQuery(parent).hide();
       jQuery(parent).remove();
     } else {
-      jQuery(parent).attr( 'new_row', 'true' );
+      var $parent = jQuery(parent);
+      wpp_add_row($parent);
+      $parent.hide();
+      $parent.remove();
     }
 
     table.trigger('row_removed', [parent]);

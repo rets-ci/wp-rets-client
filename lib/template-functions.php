@@ -236,7 +236,7 @@ if ( !function_exists( 'prepare_property_for_display' ) ):
    * @since 1.4
    *
    */
-  function prepare_property_for_display( $property, $args = false ) {
+  function prepare_property_for_display( $property, $args = false, $force = false ) {
     global $wp_properties;
     
     if ( empty( $property ) ) {
@@ -269,7 +269,7 @@ if ( !function_exists( 'prepare_property_for_display' ) ):
     }
 
     //** Check if this function has already been done */
-    if ( is_array( $property ) && isset( $property[ 'system' ][ 'prepared_for_display' ] ) ) {
+    if ( is_array( $property ) && isset( $property[ 'system' ][ 'prepared_for_display' ] ) && $force == false ) {
       
       return $property;
     }
@@ -463,7 +463,7 @@ if ( !function_exists( 'draw_stats' ) ):
       $property = $post;
     }
 
-    $property = prepare_property_for_display( $property );
+    $property = prepare_property_for_display( $property, false, true );
 
     if ( is_array( $property ) ) {
       $property = WPP_F::array_to_object( $property );
@@ -1041,6 +1041,7 @@ if ( !function_exists( 'draw_property_search_form' ) ):
           // if WPML not active will return the first value @fadi*/
           $maybe_search_values = explode( ',', apply_filters('wpp::attribute::value',$wp_properties[ 'predefined_search_values' ][ $attrib ],$attrib) );
           
+          $maybe_search_values = array_map('trim', $maybe_search_values);
           if ( is_array( $maybe_search_values ) ) {
             $using_predefined_values = true;
             $search_values[ $attrib ] = $maybe_search_values;
