@@ -20,7 +20,7 @@ foreach( $supermap_configuration['display_attributes'] as $attribute ) {
 ?>
 <div id="map_cont_<?php echo $rand; ?>" class="wpp_supermap_wrapper <?php echo $css_class; ?>" supermap_id="<?php echo $rand; ?>">
   <div id="super_map_<?php echo $rand; ?>" class="super_map <?php if($hide_sidebar == 'true'): ?>no_sidebar<?php endif; ?>" <?php echo $inline_styles['map']; ?>></div>
-  <?php if($hide_sidebar == 'false'): ?>
+  <?php if($hide_sidebar != 'true'): ?>
     <div id="super_map_list_<?php echo $rand; ?>" class="super_map_list" <?php echo $inline_styles['sidebar']; ?>>
       <?php if (!empty( $searchable_attributes) && empty( $_REQUEST[ 'wpp_search' ] ) ) : ?>
         <?php //* hide the option link if  supermap shortcode doesn't include any attribute connected with sortable attribute */ ?>
