@@ -7,7 +7,10 @@ Author: UsabilityDynamics, Inc.
 Author URI: https://www.usabilitydynamics.com
 */
 
+
+
 add_action('widgets_init', function () {
+  require_once 'so-property-carousel-widget.php';
   register_widget('SiteOrigin_Widget_PropertyCarousel_Widget');
 });
 
@@ -18,12 +21,18 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
       '0' => 'Not Selected',
     );
     $sattrs = ud_get_wp_property( 'searchable_attributes', array() );
+
+
+
     if( !empty( $sattrs ) && is_array( $sattrs ) ) {
       foreach( $sattrs as $k ) {
         $attributes[ $k ] =  ud_get_wp_property( "property_stats.{$k}", "No label" );
       }
     }
-    $attributes['s'] = __('Full Text', 'rdc');
+
+    //die( '<pre>' . print_r( $attributes, true ) . '</pre>' );
+
+    $attributes['s'] = __('Full Text', 'ud');
 
     $types = array(
       'range_dropdown' => 'Range Dropdown',
@@ -32,55 +41,17 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
     );
 
     parent::__construct(
-      'rdc-property-carousel',
-      __('RDC Property Carousel', 'rdc'),
+      'ud-property-carousel',
+      __('UD Property Carousel', 'ud'),
       array(
-        'description' => __('Display your properties as a carousel.', 'rdc'),
+        'description' => __('Display your properties as a carousel.', 'ud'),
         'has_preview' => false
       ),
       array(),
       array(
-        'filter1' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 1', 'rdc' ),
-          'options' => $attributes
-        ),
-        'filter1_type' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 1 Type', 'rdc' ),
-          'options' => $types
-        ),
-        'filter1_default' => array(
-          'type' => 'text',
-          'label' => __( 'Filter 1 Default Value', 'rdc' )
-        ),
-        'filter2' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 2', 'rdc' ),
-          'options' => $attributes
-        ),
-        'filter2_type' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 2 Type', 'rdc' ),
-          'options' => $types
-        ),
-        'filter2_default' => array(
-          'type' => 'text',
-          'label' => __( 'Filter 2 Default Value', 'rdc' )
-        ),
-        'filter3' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 3', 'rdc' ),
-          'options' => $attributes
-        ),
-        'filter3_type' => array(
-          'type' => 'select',
-          'label' => __( 'Filter 3 Type', 'rdc' ),
-          'options' => $types
-        ),
-        'filter3_default' => array(
-          'type' => 'text',
-          'label' => __( 'Filter 3 Default Value', 'rdc' )
+        'Description' => array(
+          'type' => 'tinymce',
+          'label' => __( 'Description', 'ud' ),
         ),
       )
     );
@@ -91,13 +62,13 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
       array(
         array(
           'touch-swipe',
-          plugin_dir_path() . '/ud-property-carousel/js/jquery.touchSwipe.min.js',
+          plugin_dir_url(__FILE__) . 'js/jquery.touchSwipe.min.js',
           array( 'jquery' ),
           '1.6.6'
         ),
         array(
-          'rdc-carousel-basic',
-          plugin_dir_path() . '/ud-property-carousel/js/carousel.js',
+          'ud-carousel-basic',
+          plugin_dir_url(__FILE__) . 'js/carousel.js',
           array( 'jquery', 'touch-swipe' ),
           '1.4.4',
           true
@@ -107,8 +78,8 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
     $this->register_frontend_styles(
       array(
         array(
-          'rdc-carousel-basic',
-          plugin_dir_path() . '/ud-property-carousel/css/style.css',
+          'ud-carousel-basic',
+          plugin_dir_url(__FILE__) . 'css/style.css',
           array(),
           rand( 10000, 99999 ),
         )

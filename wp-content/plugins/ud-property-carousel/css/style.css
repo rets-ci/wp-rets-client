@@ -7,7 +7,7 @@
 }
 /* HOME LISTINGS CAROUSEL */
 .rdc-property-carousel {
-  background: rgba(0, 0, 0, 0.4);
+  background: none;
 }
 .rdc-property-carousel .section-content {
   position: relative;
@@ -92,7 +92,7 @@
 }
 .rdc-carousel-title a.rdc-carousel-next,
 .rdc-carousel-title a.rdc-carousel-previous {
-  top: 40px;
+  bottom: 30px;
   position: absolute;
   width: 41px;
   height: 41px;

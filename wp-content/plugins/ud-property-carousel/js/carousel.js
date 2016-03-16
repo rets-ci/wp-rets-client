@@ -1,6 +1,6 @@
 jQuery( function($){
     // The carousel widget
-    $('.rdc-carousel-wrapper').each(function(){
+    jQuery('.rdc-carousel-wrapper').each(function(){
 
         var $$ = $(this),
             $container = $$.closest('.rdc-carousel-container').parent(),
@@ -33,11 +33,11 @@ jQuery( function($){
               {
                   filter: $filters.serialize(),
                   query : $$.data('query'),
-                  action : 'rdc_carousel_load',
+                  action : 'ud_carousel_load',
                   paged : page
               },
               function (data, status){
-                  var $items = $(data.html);
+                  var $items = jQuery(data.html);
                   $items.appendTo( $itemsContainer ).hide().fadeIn();
                   $$.find('.rdc-carousel-loading').remove();
                   totalPosts = data.found_posts;
