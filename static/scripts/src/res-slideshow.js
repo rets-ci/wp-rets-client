@@ -132,13 +132,10 @@ jQuery(document).ready(function($){
             if(s.params.slider_height && !s.params.slider_auto_height){
                 s.container.height(s.params.slider_height);
             }
-            if(s.params.slideshow_layout == 'strict' && s.params.slider_width && s.params.slider_height){
+            
+            if(s.params.slideshow_layout != 'fullwidth' && s.params.slider_width){
                 s.container.parent().width(s.params.slider_width);
                 s.container.parent().css('margin', 'auto');
-            }
-            else if(s.params.slideshow_layout == 'auto' && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height){
-                var containerRatio = s.params.slider_width / s.params.slider_height;
-                s.container.height(s.container.width() / containerRatio);
             }
             else if(s.params.slideshow_layout == 'fullwidth'){
                 var ofsetleft = $this.offset().left;
@@ -149,6 +146,11 @@ jQuery(document).ready(function($){
                     margin:'0 auto'
                 });
                 jQuery("<div />").width('100%').height($this.height()).insertAfter($this);
+            }
+
+            if(s.params.slideshow_layout == 'auto' && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height){
+                var containerRatio = s.params.slider_width / s.params.slider_height;
+                s.container.height(s.container.width() / containerRatio);
             }
 
             if (s.isGrid()) {

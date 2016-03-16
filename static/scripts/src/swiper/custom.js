@@ -46,7 +46,7 @@ s.setSlideSize_12grid = function(slide, s){
     var slideWidth, slideHeight;
     var slide = jQuery(slide);
     var img = slide.find('img');
-    var maxHeight = s.container.height() / s.params.slidesPerColumn;
+    var maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
 
     var attrWidth  = parseInt(img.attr('width'));
     var attrHeight  = parseInt(img.attr('height'));
@@ -66,21 +66,26 @@ s.setSlideSize_12grid = function(slide, s){
     slide.width(slideWidth)
          .height(slideHeight);
 
-    if(slideWidth > slideHeight){
-        width = slideWidth;
-        height = width / imgRatio;
+    
+    width   = attrWidth;
+    height  = attrHeight;
+    if((width > slideWidth) && (height > slideHeight)){
+        if(slideHeight * imgRatio <= slideWidth){
+            height  = slideHeight;
+            width   = slideHeight * imgRatio;
+        }
+        else{
+            width   = slideWidth;
+            height  = slideWidth / imgRatio;
+        }
     }
-    else{
-        height = slideHeight;
-        width = height * imgRatio;
+    else if(width > slideWidth){
+        width   = slideWidth;
+        height  = slideWidth / imgRatio;
     }
-    if(width<slideWidth){
-        width = slideWidth;
-        height = width / imgRatio;
-    }
-    else if(height<slideHeight){
-        height = slideHeight;
-        width = height * imgRatio;
+    else if(height > slideHeight){
+        height  = slideHeight;
+        width   = slideHeight * imgRatio;
     }
     
     img.width(width)

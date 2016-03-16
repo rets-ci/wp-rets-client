@@ -58,6 +58,7 @@ s.cleanupStyles = function () {
     s.container.removeClass(s.classNames.join(' ')).removeAttr('style');
 
     // Wrapper
+    s.container.parent().removeAttr('style');
     s.wrapper.removeAttr('style');
     s.container.height('').width('');
     // Slides

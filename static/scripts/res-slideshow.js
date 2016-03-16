@@ -70,11 +70,8 @@ jQuery(document).ready(function($) {
             if (setControlSize(), s.params.slider_min_height && s.container.css("min-height", s.params.slider_min_height), 
             s.params.slider_max_height && s.container.css("max-height", s.params.slider_max_height), 
             s.params.slider_height && !s.params.slider_auto_height && s.container.height(s.params.slider_height), 
-            "strict" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height) s.container.parent().width(s.params.slider_width), 
-            s.container.parent().css("margin", "auto"); else if ("auto" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height) {
-                var containerRatio = s.params.slider_width / s.params.slider_height;
-                s.container.height(s.container.width() / containerRatio);
-            } else if ("fullwidth" == s.params.slideshow_layout) {
+            "fullwidth" != s.params.slideshow_layout && s.params.slider_width) s.container.parent().width(s.params.slider_width), 
+            s.container.parent().css("margin", "auto"); else if ("fullwidth" == s.params.slideshow_layout) {
                 var ofsetleft = $this.offset().left;
                 $this.css({
                     position: "absolute",
@@ -82,6 +79,10 @@ jQuery(document).ready(function($) {
                     width: jQuery(window).width(),
                     margin: "0 auto"
                 }), jQuery("<div />").width("100%").height($this.height()).insertAfter($this);
+            }
+            if ("auto" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height) {
+                var containerRatio = s.params.slider_width / s.params.slider_height;
+                s.container.height(s.container.width() / containerRatio);
             }
             if (!s.isGrid()) {
                 var containerWidth = s.container.width(), containerHeight = s.container.height(), $styler = jQuery("#" + id + "-img-max-width"), maxWidth = containerWidth / s.params.slidesPerView - s.params.spaceBetween * s.params.slidesPerView, maxHeight = containerHeight / s.params.slidesPerColumn - s.params.spaceBetween;
