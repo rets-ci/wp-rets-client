@@ -18,19 +18,19 @@ Shortcode: `[property_responsive_slideshow parameters]`
 # Usage
 
 #### parameters
-Parameter                                 | Name                  | Short Description                             | Required  | Values                                | Default
----                                       | ---                   | ---                                           | ---       | ---                                   | ---
-[property_id](#property_id)               | Property ID           | ID of property to show.                       | optional  | Property ID                           | Current property
-[slideshow_layout](#slideshow_layout)     | Slideshow layout      | Slideshow layout                              | required  | auto, strict, fullwidth               | auto
-[slideshow_type](#slideshow_type)         | Slideshow Types       | Type of slideshow                             | required  | standard, thumbnailCarousel           | thumbnailCarousel
-[slider_type](#slider_type)               | Slider Type           | Type of slider                                | required  | standard, carousel, 12grid, 12mosaic  |  standard
-[slider_width](#slider_width)             | Slider Width          | Set width of the slideshow                    | optional  | in px or %                            | none
-[slider_auto_height](#slider_auto_height) | Slider Auto Height    | Automatic height based on image size.         | required  | true, false                           | false
-[slider_height](#slider_height)           | Slider Height         | Set Slider height                             | optional  | in px or %                            | 16:9
-[slider_min_height](#slider_min_height)   | Slider Minimum Height | Minimum slider height.                        | optional  | in px or %                            | none
-[slider_max_height](#slider_max_height)   | Slider Maximum Height | Maximum slider height.                        | optional  | in px or %                            | none
-[lb_title_1](#lb_title_1)                 | Lightbox Title line 1 | Lightbox Title line 1. Select any attribute.  | optional  | attributes                            | none
-[lb_title_2](#lb_title_2)                 | Lightbox Title line 2 | Lightbox Title line 2. Select any attribute.  | optional  | attributes                            | none
+Parameter                                 | Name                  | Short Description                             | Values                                | Default
+---                                       | ---                   | ---                                           | ---                                   | ---
+[property_id](#property_id)               | Property ID           | ID of property to show.                       | Property ID                           | Current property
+[slideshow_layout](#slideshow_layout)     | Slideshow layout      | Slideshow layout                              | auto, strict, fullwidth               | auto
+[slideshow_type](#slideshow_type)         | Slideshow Types       | Type of slideshow                             | standard, thumbnailCarousel           | thumbnailCarousel
+[slider_type](#slider_type)               | Slider Type           | Type of slider                                | standard, carousel, 12grid, 12mosaic  |  standard
+[slider_width](#slider_width)             | Slider Width          | Set width of the slideshow                    | in px or %                            | none
+[slider_auto_height](#slider_auto_height) | Slider Auto Height    | Automatic height based on image size.         | true, false                           | false
+[slider_height](#slider_height)           | Slider Height         | Set Slider height                             | in px or %                            | 16:9
+[slider_min_height](#slider_min_height)   | Slider Minimum Height | Minimum slider height.                        | in px or %                            | none
+[slider_max_height](#slider_max_height)   | Slider Maximum Height | Maximum slider height.                        | in px or %                            | none
+[lb_title_1](#lb_title_1)                 | Lightbox Title line 1 | Lightbox Title line 1. Select any attribute.  | attributes                            | none
+[lb_title_2](#lb_title_2)                 | Lightbox Title line 2 | Lightbox Title line 2. Select any attribute.  | attributes                            | none
 
 
 #### property_id
