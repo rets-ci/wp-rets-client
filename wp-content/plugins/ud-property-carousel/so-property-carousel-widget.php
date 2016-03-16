@@ -10,7 +10,7 @@ Author URI: https://www.usabilitydynamics.com
  * Fix path to template file.
  */
 add_filter( 'siteorigin_widgets_template_file_rdc-property-carousel', function( $template_file, $instance, $object ){
-	return get_stylesheet_directory() . '/lib/so_widgets/so-property-carousel-widget' . $template_file;
+	return get_stylesheet_directory() . '/ud-property-carousel' . $template_file;
 }, 99, 3 );
 
 /**
@@ -206,118 +206,5 @@ function rdc_carousel_get_next_posts_page() {
 add_action( 'wp_ajax_rdc_carousel_load', 'rdc_carousel_get_next_posts_page' );
 add_action( 'wp_ajax_nopriv_rdc_carousel_load', 'rdc_carousel_get_next_posts_page' );
 
-class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
-	function __construct() {
 
-		$attributes = array(
-			'0' => 'Not Selected',
-		);
-		$sattrs = ud_get_wp_property( 'searchable_attributes', array() );
-		if( !empty( $sattrs ) && is_array( $sattrs ) ) {
-			foreach( $sattrs as $k ) {
-				$attributes[ $k ] =  ud_get_wp_property( "property_stats.{$k}", "No label" );
-			}
-		}
-		$attributes['s'] = __('Full Text', 'rdc');
 
-		$types = array(
-			'range_dropdown' => 'Range Dropdown',
-			'dropdown' => 'Dropdown',
-			'input' => 'Text Input'
-		);
-
-		parent::__construct(
-			'rdc-property-carousel',
-			__('RDC Property Carousel', 'rdc'),
-			array(
-				'description' => __('Display your properties as a carousel.', 'rdc'),
-				'has_preview' => false
-			),
-			array(),
-			array(
-				'filter1' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 1', 'rdc' ),
-					'options' => $attributes
-				),
-				'filter1_type' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 1 Type', 'rdc' ),
-					'options' => $types
-				),
-				'filter1_default' => array(
-					'type' => 'text',
-					'label' => __( 'Filter 1 Default Value', 'rdc' )
-				),
-				'filter2' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 2', 'rdc' ),
-					'options' => $attributes
-				),
-				'filter2_type' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 2 Type', 'rdc' ),
-					'options' => $types
-				),
-				'filter2_default' => array(
-					'type' => 'text',
-					'label' => __( 'Filter 2 Default Value', 'rdc' )
-				),
-				'filter3' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 3', 'rdc' ),
-					'options' => $attributes
-				),
-				'filter3_type' => array(
-					'type' => 'select',
-					'label' => __( 'Filter 3 Type', 'rdc' ),
-					'options' => $types
-				),
-				'filter3_default' => array(
-					'type' => 'text',
-					'label' => __( 'Filter 3 Default Value', 'rdc' )
-				),
-			)
-		);
-	}
-
-	function initialize() {
-		$this->register_frontend_scripts(
-			array(
-				array(
-					'touch-swipe',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/js/jquery.touchSwipe.min.js',
-					array( 'jquery' ),
-					'1.6.6'
-				),
-				array(
-					'rdc-carousel-basic',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/js/carousel.js',
-					array( 'jquery', 'touch-swipe' ),
-					'1.4.4',
-					true
-				)
-			)
-		);
-		$this->register_frontend_styles(
-			array(
-				array(
-					'rdc-carousel-basic',
-					get_stylesheet_directory_uri() . '/lib/so_widgets/so-property-carousel-widget/css/style.css',
-					array(),
-					rand( 10000, 99999 ),
-				)
-			)
-		);
-	}
-
-	function get_template_name($instance){
-		return 'base';
-	}
-
-	function get_style_name($instance){
-		return false;
-	}
-}
-
-siteorigin_widget_register('property-carousel', __FILE__);
