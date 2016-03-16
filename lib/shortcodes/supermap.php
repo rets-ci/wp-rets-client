@@ -689,6 +689,9 @@ namespace UsabilityDynamics\WPP {
 
           foreach ($properties as $property_id => $value) {
 
+            if ( !(isset( $value['latitude']) && $value['latitude']) && !(isset( $value['longitude']) && $value['longitude']) ){
+              continue;
+            }
             ?>
             window.myLatlng_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?> = new google.maps.LatLng(<?php echo $value['latitude']; ?>,<?php echo $value['longitude']; ?>);
             window.content_<?php echo $_GET['random']; ?>_<?php echo $value['ID']; ?> = '<?php echo \WPP_F::google_maps_infobox($value); ?>';
