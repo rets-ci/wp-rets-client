@@ -103,6 +103,26 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 								),
 							),
 						),
+						'feature_point3' => array(
+							'type' => 'section',
+							'label' => __('Feature point', 'so-widgets-bundle'),
+							'fields' => array(
+								'icon_point3' => array(
+									'type' => 'icon',
+									'label' => __( 'Select icon', 'so-widgets-bundle' ),
+								),
+
+								'feature_title3' => array(
+									'type' => 'text',
+									'label' => __( 'Feature title', 'so-widgets-bundle' ),
+								),
+
+								'feature_content3' => array(
+									'type' => 'tinymce',
+									'label' => __( 'Feature content', 'so-widgets-bundle' ),
+								),
+							),
+						),
 
 					),
 				),
@@ -160,7 +180,6 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 						<?php echo siteorigin_widget_get_icon($frame['feature_point']['icon_point']); ?>
 						<div>
 							<h4><?php echo $frame['feature_point']['feature_title'] ?></h4>
-
 							<?php echo $frame['feature_point']['feature_content'] ?>
 						</div>
 						<div class="clear"></div>
@@ -170,11 +189,20 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 						<?php echo siteorigin_widget_get_icon($frame['feature_point2']['icon_point2']); ?>
 						<div>
 							<h4><?php echo $frame['feature_point2']['feature_title2'] ?></h4>
-
 							<?php echo $frame['feature_point2']['feature_content2'] ?>
 						</div>
 						<div class="clear"></div>
 					</div>
+					<?php } ?>
+					<?php if($frame['feature_point3']['icon_point3'] || $frame['feature_point3']['feature_title3'] || $frame['feature_point3']['feature_content3'] ){ ?>
+						<div class="featurePoint">
+							<?php echo siteorigin_widget_get_icon($frame['feature_point3']['icon_point3']); ?>
+							<div>
+								<h4><?php echo $frame['feature_point3']['feature_title3'] ?></h4>
+								<?php echo $frame['feature_point3']['feature_content3'] ?>
+							</div>
+							<div class="clear"></div>
+						</div>
 					<?php } ?>
 				</div>
 
