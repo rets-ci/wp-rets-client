@@ -59,6 +59,7 @@ namespace UsabilityDynamics\WPP {
 
         add_action( 'save_property', array( $this, 'save_property' ), 99, 2 );
         add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+        add_filter( 'wpp::backup::data', array( $this, 'backup_settings' ) );
         
       }
 
@@ -76,6 +77,17 @@ namespace UsabilityDynamics\WPP {
             'domain' => $this->domain,
           )
         ) );
+      }
+
+      /**
+       * Add Add-on's settings to WP-Property backup's data
+       *
+       * @param $data
+       * @since 1.0.3
+       */
+      public function backup_settings( $data ) {
+        $data[ 'wpp_walkscore_settings' ] = $this->get();
+        return $data;
       }
 
       /**
