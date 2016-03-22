@@ -140,14 +140,7 @@ jQuery(document).ready(function($){
                 s.container.parent().css('margin', 'auto');
             }
             else if(s.params.slideshow_layout == 'fullwidth'){
-                var ofsetleft = $this.parent().offset().left - $(window).scrollLeft();
-
-                $this.css({
-                    position: 'absolute',
-                    left: -ofsetleft,
-                    width: jQuery(window).width(),
-                    margin:'0 auto'
-                });
+                forceSlideshowFullWidth();
                 if(jQuery('#wprs-fullwidth-spacer').length == 0)
                     jQuery("<div />").attr('id', 'wprs-fullwidth-spacer').width('100%').height($this.height()).insertAfter($this);
             }
@@ -259,6 +252,20 @@ jQuery(document).ready(function($){
                 this.swiper.disableKeyboardControl();
             });
             galleryTop.enableKeyboardControl();
+        }
+        $(window).scroll(function(){
+            forceSlideshowFullWidth();
+        });
+        var forceSlideshowFullWidth = function(){
+            var ofsetTop = $this.parent().offset().top - $(window).scrollTop();
+            $this.css({
+                position: 'fixed',
+                left: 0,
+                right: 0,
+                top: ofsetTop,
+                width: jQuery(window).width(),
+                margin:'0 auto'
+            });
         }
     });
 });
