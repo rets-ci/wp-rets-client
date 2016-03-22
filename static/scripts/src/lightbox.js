@@ -80,6 +80,7 @@
       options.galleryTop.params.autoHeight = false;
       options.galleryTop.params.slider_width = false;
       options.galleryTop.params.slider_height = false;
+      options.galleryTop.params.slideshow_layout = false;
 
       loadFullImageLazy();
       lb.addClass('lightbox');

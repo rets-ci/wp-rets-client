@@ -53,8 +53,8 @@ s.setSlideSize_12grid = function(slide, s){
     var imgRatio   = attrWidth / attrHeight;
     var slideRatio   = 16 / 9; 
 
-    if(s.params.width && s.params.height)
-        slideRatio   = s.params.width / s.params.height;
+    if(s.params.slider_width && s.params.slider_height)
+        slideRatio   = s.params.slider_width / s.params.slider_height;
     if(slide.is(':first-child')){
         slideHeight = s.container.height();
     }
