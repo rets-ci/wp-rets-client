@@ -254,7 +254,8 @@ jQuery(document).ready(function($){
             galleryTop.enableKeyboardControl();
         }
         $(window).scroll(function(){
-            forceSlideshowFullWidth();
+            if(galleryTop.params.slideshow_layout == 'fullwidth')
+                forceSlideshowFullWidth();
         });
         var forceSlideshowFullWidth = function(){
             var ofsetTop = $this.parent().offset().top - $(window).scrollTop();

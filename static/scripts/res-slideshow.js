@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
             }), galleryTop.enableKeyboardControl();
         };
         $(window).scroll(function() {
-            forceSlideshowFullWidth();
+            "fullwidth" == galleryTop.params.slideshow_layout && forceSlideshowFullWidth();
         });
         var forceSlideshowFullWidth = function() {
             var ofsetTop = $this.parent().offset().top - $(window).scrollTop();
