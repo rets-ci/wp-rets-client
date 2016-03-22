@@ -187,6 +187,9 @@ if(class_exists('SiteOrigin_Widget')) {
 if(class_exists('SiteOrigin_Widget')) {
   include 'widgets/rdc-hero/hero.php';
 }
+if(class_exists('SiteOrigin_Widget')) {
+  include 'widgets/rdc-guideContent/guideContent.php';
+}
 
 /**
  * Parse Search Request and redirect to Taxonomy page

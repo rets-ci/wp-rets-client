@@ -11,6 +11,7 @@ function siteorigin_widgets_icon_families_filter( $families ){
 		'typicons' => __( 'Typicons', 'so-widgets-bundle' ),
 		'ionicons' => __( 'Ionicons', 'so-widgets-bundle' ),
 		'reddoorcompany' => __( 'Reddoorcompany', 'so-widgets-bundle' ),
+		'wpproperty' => __( 'Wp-property', 'so-widgets-bundle' ),
 	);
 
 	foreach ( $bundled as $font => $name) {
