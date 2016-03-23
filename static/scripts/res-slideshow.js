@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
             s.params.slider_max_height && s.container.css("max-height", s.params.slider_max_height), 
             s.params.slider_height && !s.params.slider_auto_height && s.container.height(s.params.slider_height), 
             "strict" == s.params.slideshow_layout && s.params.slider_width ? (s.container.parent().width(s.params.slider_width), 
-            s.params.slider_height || s.container.height(16 * s.container.width() / 9), s.container.parent().css("margin", "auto")) : "fullwidth" == s.params.slideshow_layout && (forceSlideshowFullWidth(), 
+            s.params.slider_height || s.container.height(s.container.width() / (16 / 9)), s.container.parent().css("margin", "auto")) : "fullwidth" == s.params.slideshow_layout && (forceSlideshowFullWidth(), 
             0 == jQuery("#wprs-fullwidth-spacer").length && jQuery("<div />").attr("id", "wprs-fullwidth-spacer").width("100%").height($this.height()).insertAfter($this)), 
             "auto" == s.params.slideshow_layout && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height) {
                 var containerRatio = s.params.slider_width / s.params.slider_height;

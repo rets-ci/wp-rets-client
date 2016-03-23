@@ -136,7 +136,7 @@ jQuery(document).ready(function($){
             if(s.params.slideshow_layout == 'strict' && s.params.slider_width){
                 s.container.parent().width(s.params.slider_width);
                 if(!s.params.slider_height)
-                    s.container.height(s.container.width() * 16 / 9);
+                    s.container.height(s.container.width() / (16 / 9));
                 s.container.parent().css('margin', 'auto');
             }
             else if(s.params.slideshow_layout == 'fullwidth'){
