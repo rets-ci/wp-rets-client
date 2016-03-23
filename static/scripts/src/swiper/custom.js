@@ -63,10 +63,6 @@ s.setSlideSize_12grid = function(slide, s){
     }
     slideWidth   = slideHeight * slideRatio;
 
-    slide.width(slideWidth)
-         .height(slideHeight);
-
-    
     width   = attrWidth;
     height  = attrHeight;
     if((width > slideWidth) && (height > slideHeight)){
@@ -92,5 +88,8 @@ s.setSlideSize_12grid = function(slide, s){
          .height(height);
     img[0].style.setProperty('width', width + "px", 'important');
     img[0].style.setProperty('height', height + "px", 'important');
-    return slideWidth;
+
+    slide.height(slideHeight);
+    
+    return width;
 }

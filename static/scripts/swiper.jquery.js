@@ -652,8 +652,9 @@ s.updateSlidesSize = function () {
     var ii = 0;
     var calculatedLeft = {0:0};
     for (i = 0; i < s.slides.length; i++) {
-        slideSize = 0;
+        var _slideSize, compareSlideSize;
         var slide = s.slides.eq(i);
+        slideSize = 0;
         if (slide.css('display') === 'none') continue;
         if (s.params.slidesPerView === 'auto') {
             slideSize = isH() ? slide.outerWidth(true) : slide.outerHeight(true);
@@ -666,7 +667,18 @@ s.updateSlidesSize = function () {
                 slideSize = s.setSlideSize_12mosaic(s.slides[i], s);
             }
             else if(s.is12grid()){
-                slideSize = s.setSlideSize_12grid(s.slides[i], s);
+                _slideSize = s.setSlideSize_12grid(s.slides[i], s);
+                console.log("i:" + i);
+                if(i==0){
+                    compareSlideSize = 0;
+                }
+                else if(i % 2 == 1){
+                    compareSlideSize = s.setSlideSize_12grid(s.slides[i+1], s);
+                }
+                else{
+                    compareSlideSize = s.slides[i-1].swiperSlideSize;
+                }
+                slideSize = Math.max(_slideSize, compareSlideSize);
             }
             if (s.params.roundLengths) slideSize = round(slideSize);
 
@@ -2329,10 +2341,6 @@ s.setSlideSize_12grid = function(slide, s){
     }
     slideWidth   = slideHeight * slideRatio;
 
-    slide.width(slideWidth)
-         .height(slideHeight);
-
-    
     width   = attrWidth;
     height  = attrHeight;
     if((width > slideWidth) && (height > slideHeight)){
@@ -2358,7 +2366,10 @@ s.setSlideSize_12grid = function(slide, s){
          .height(height);
     img[0].style.setProperty('width', width + "px", 'important');
     img[0].style.setProperty('height', height + "px", 'important');
-    return slideWidth;
+
+    slide.height(slideHeight);
+    
+    return width;
 };
 /*=========================
   Images Lazy Loading
