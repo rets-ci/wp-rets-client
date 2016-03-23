@@ -148,8 +148,8 @@
 /*
     Styles for grid layout.
 */
-.property-resp-slideshow.slider-type-12mosaic .swiper-slide,
-.property-resp-slideshow.slider-type-12grid .swiper-slide {
+.property-resp-slideshow.slider-type-12mosaic .gallery-top .swiper-slide,
+.property-resp-slideshow.slider-type-12grid .gallery-top .swiper-slide {
   height: auto;
   opacity: 1;
 }
