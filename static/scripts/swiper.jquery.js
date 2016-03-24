@@ -717,7 +717,7 @@ s.updateSlidesSize = function () {
                 if(calculatedLeft[l] < calculatedLeft[row])
                     row = l;
             });
-            var top = (row * s.container.height() / 2);
+            var top = (row * (s.container.height() - s.params.spaceBetween) / s.params.slidesPerColumn);
             top += row * s.params.spaceBetween;
             if(!s.params.lightBox){
                 slide.css({
@@ -2319,26 +2319,22 @@ s.setSlideSize_12grid = function(slide, s){
     var aspectWidth, aspectHeight;
     var slide = jQuery(slide);
     var img = slide.find('img');
-    var maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
+    var maxHeight = (s.container.height() - s.params.spaceBetween) / s.params.slidesPerColumn;
 
     var attrWidth  = parseInt(img.attr('width'));
     var attrHeight  = parseInt(img.attr('height'));
     var imgRatio   = attrWidth / attrHeight;
-    var slideRatio   = 16 / 9; 
-
-    if(s.params.slider_width && s.params.slider_height)
-        slideRatio   = s.params.slider_width / s.params.slider_height;
     if(slide.is(':first-child')){
         slideHeight = s.container.height();
     }
     else{
         slideHeight = maxHeight;
     }
-    slideWidth   = slideHeight * slideRatio;
+    slideWidth   = slideHeight;
 
     width   = attrWidth;
     height  = attrHeight;
-    if(slideRatio > imgRatio){
+    if(1 > imgRatio){ // Here 1 is slide ratio. Because slide width and height is same.
         width = "100%";
         height = "auto";
         aspectHeight = slideWidth / imgRatio;

@@ -709,7 +709,7 @@ s.updateSlidesSize = function () {
                 if(calculatedLeft[l] < calculatedLeft[row])
                     row = l;
             });
-            var top = (row * s.container.height() / 2);
+            var top = (row * (s.container.height() - s.params.spaceBetween) / s.params.slidesPerColumn);
             top += row * s.params.spaceBetween;
             if(!s.params.lightBox){
                 slide.css({
