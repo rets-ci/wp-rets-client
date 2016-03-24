@@ -1785,9 +1785,9 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
     if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
 
-    // going to next
+    
     if(s.isGrid()){
-        if(slideIndex>s.activeIndex){
+        if(slideIndex>s.activeIndex){ // next
             if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
             var maxRight = s.snapGrid[s.activeIndex] + s.container.width() - s.params.spaceBetween;
             for (var i = s.snapIndex; i < s.snapGrid.length; i++) {
@@ -1801,9 +1801,9 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
             if (s.activeIndex >= s.snapGrid.length) s.activeIndex = s.snapGrid.length - 1;
             var maxLeft = s.snapGrid[s.activeIndex] - (s.container.width() + s.params.spaceBetween);
             for (var i = s.snapIndex; i >= 0; i--) {
-                slideIndex = s.snapIndex = i;
                 if(s.snapGrid[i] - s.slidesSizesGrid[i] < maxLeft)
                     break;
+                slideIndex = s.snapIndex = i;
             }
         }
     }
@@ -1822,7 +1822,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     s.updateProgress(translate);
 
     // Normalize slideIndex
-    if(!s.isGrid())
+    if(!s.isGrid() && !s.isLightbox())
     for (var i = 0; i < s.slidesGrid.length; i++) {
         if (- Math.floor(translate * 100) >= Math.floor(s.slidesGrid[i] * 100)) {
             slideIndex = i;

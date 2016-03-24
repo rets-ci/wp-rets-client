@@ -81,6 +81,7 @@
       options.galleryTop.params.slider_width = false;
       options.galleryTop.params.slider_height = false;
       options.galleryTop.params.slideshow_layout = false;
+      options.galleryThumbs.activeIndex = activeIndex;
 
       loadFullImageLazy();
       lb.addClass('lightbox');

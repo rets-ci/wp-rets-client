@@ -10,9 +10,9 @@
             options.galleryTop.params.lightBox = !0, options.galleryTop.params.noSwiping = !0, 
             options.galleryTop.params.initialSlide = activeIndex, options.galleryTop.params.autoHeight = !1, 
             options.galleryTop.params.slider_width = !1, options.galleryTop.params.slider_height = !1, 
-            options.galleryTop.params.slideshow_layout = !1, loadFullImageLazy(), lb.addClass("lightbox"), 
-            $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), options.galleryTop.init(), 
-            options.galleryTop.lazy.load(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
+            options.galleryTop.params.slideshow_layout = !1, options.galleryThumbs.activeIndex = activeIndex, 
+            loadFullImageLazy(), lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), 
+            options.galleryTop.init(), options.galleryTop.lazy.load(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
             $(document).on("keydown", lbHandleKeyboard), $("body").css({
                 overflow: "hidden"
             });

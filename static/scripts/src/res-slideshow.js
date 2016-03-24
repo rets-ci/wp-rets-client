@@ -94,9 +94,8 @@ jQuery(document).ready(function($){
             });
 
             galleryThumbs.container.on('click', '.swiper-slide', function(e){
-                galleryTop.params.byThumbs = true;
                 goToClickedSlide.call(this, e);
-                galleryTop.params.byThumbs = false;
+                galleryThumbs.slideTo( $(this).index());
             });
 
             galleryTop.on('onSlideChangeStart', function(s){

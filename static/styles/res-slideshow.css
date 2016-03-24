@@ -35,6 +35,9 @@
     display: none;
   }
 }
+.swiper-container.gallery-thumbs .swiper-slide {
+  width: 100px;
+}
 .swiper-container .swiper-slide {
   text-align: center;
   font-size: 18px;

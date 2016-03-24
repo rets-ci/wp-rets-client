@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
             touchRatio: 1,
             longSwipesRatio: 1
         }), galleryThumbs.container.on("click", ".swiper-slide", function(e) {
-            galleryTop.params.byThumbs = !0, goToClickedSlide.call(this, e), galleryTop.params.byThumbs = !1;
+            goToClickedSlide.call(this, e), galleryThumbs.slideTo($(this).index());
         }), galleryTop.on("onSlideChangeStart", function(s) {
             galleryThumbs.activeIndex != s.activeIndex && galleryThumbs.slideTo(s.activeIndex);
         })), galleryTop.on("onSlideChangeStart", function(s) {
