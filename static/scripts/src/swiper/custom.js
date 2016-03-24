@@ -43,7 +43,9 @@ s.setSlideSize_12mosaic = function(slide, s){
 
 s.setSlideSize_12grid = function(slide, s){
     var width, height;
+    var top = 0, left = 0;
     var slideWidth, slideHeight;
+    var aspectWidth, aspectHeight;
     var slide = jQuery(slide);
     var img = slide.find('img');
     var maxHeight = s.container.height() / s.params.slidesPerColumn - s.params.spaceBetween;
@@ -65,31 +67,29 @@ s.setSlideSize_12grid = function(slide, s){
 
     width   = attrWidth;
     height  = attrHeight;
-    if((width > slideWidth) && (height > slideHeight)){
-        if(slideHeight * imgRatio <= slideWidth){
-            height  = slideHeight;
-            width   = slideHeight * imgRatio;
-        }
-        else{
-            width   = slideWidth;
-            height  = slideWidth / imgRatio;
-        }
+    if(slideRatio > imgRatio){
+        width = "100%";
+        height = "auto";
+        aspectHeight = slideWidth / imgRatio;
+        top = (slideHeight - aspectHeight) / 2;
     }
-    else if(width > slideWidth){
-        width   = slideWidth;
-        height  = slideWidth / imgRatio;
+    else{
+        width = "auto";
+        height = "100%";
+        aspectWidth = slideHeight * imgRatio;
+        left = (slideWidth - aspectWidth) / 2;
     }
-    else if(height > slideHeight){
-        height  = slideHeight;
-        width   = slideHeight * imgRatio;
-    }
-    
-    img.width(width)
-         .height(height);
-    img[0].style.setProperty('width', width + "px", 'important');
-    img[0].style.setProperty('height', height + "px", 'important');
+    img.css({
+        width: width,
+        height: height,
+        position: 'relative',
+        left: left + "px",
+        top: top + "px"
+    });
+    img[0].style.setProperty('width', width , 'important');
+    img[0].style.setProperty('height', height , 'important');
 
     slide.height(slideHeight);
     
-    return width;
+    return slideWidth;
 }

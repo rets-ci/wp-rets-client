@@ -660,7 +660,6 @@ s.updateSlidesSize = function () {
             }
             else if(s.is12grid()){
                 _slideSize = s.setSlideSize_12grid(s.slides[i], s);
-                console.log("i:" + i);
                 if(i==0){
                     compareSlideSize = 0;
                 }
@@ -763,7 +762,7 @@ s.updateSlidesSize = function () {
             }
         }
 
-        s.virtualSize += slideSize + spaceBetween;
+        s.virtualSize += slideSize + ((i%2 == 0)?spaceBetween:0);
 
         prevSlideSize = slideSize;
 
@@ -782,13 +781,7 @@ s.updateSlidesSize = function () {
     }
 
     if (s.params.slidesPerColumn > 1) {
-        s.virtualSize = (slideSize + s.params.spaceBetween) * slidesNumberEvenToRows;
-        s.virtualSize = Math.ceil(s.virtualSize / s.params.slidesPerColumn) - s.params.spaceBetween;
-        if(s.isGrid()){
-            jQuery.each(calculatedLeft, function(i, size){
-                s.virtualSize = (size>s.virtualSize) ? size : s.virtualSize;
-            })
-        }
+        s.virtualSize = Math.max(calculatedLeft[0], calculatedLeft[1]);
         s.wrapper.css({width: s.virtualSize + s.params.spaceBetween + 'px'});
         if (s.params.centeredSlides) {
             newSlidesGrid = [];
