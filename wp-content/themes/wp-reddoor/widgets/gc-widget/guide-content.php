@@ -25,7 +25,7 @@
 	public function __construct()
 	{
 		$widget_ops = array('description' => __('Add a custom menu block with WP nav menu and image.'));
-		parent::__construct('nav_menu', __('Guide content'), $widget_ops);
+		parent::__construct('guide_content', __('Guide content'), $widget_ops);
 
 		if (function_exists('wp_enqueue_media')) {
 			wp_enqueue_media();
@@ -35,12 +35,13 @@
 			wp_enqueue_script('thickbox');
 		}
 
-		/* тут запускаем загрузчик и вставляем адрес картинки в поле. */
+		wp_enqueue_style('gc-style', get_stylesheet_directory_uri() . '/widgets/gc-widget/css/gc-style.css?nocache=' . rand(1,200) );
+		wp_enqueue_script('frontend-guide', get_stylesheet_directory_uri() . '/widgets/gc-widget/js/frontend-guide.js?nocache=' . rand(1,200) );
+
 
 		function image_dowmload_script(){
-			wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/widgets/gc-widget/js/guide.js');
+			wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/widgets/gc-widget/js/guide.js?nocache=' . rand(1,200) );
 		}
-
 		add_action('admin_enqueue_scripts', 'image_dowmload_script');
 
 
@@ -57,6 +58,7 @@
 	 */
 	public function widget( $args, $instance ) {
 		// Get menu
+
 		$nav_menu = ! empty( $instance['nav_menu'] ) ? wp_get_nav_menu_object( $instance['nav_menu'] ) : false;
 
 		if ( !$nav_menu )
@@ -65,10 +67,12 @@
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
 		$instance['title'] = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
+		$gc_image = wp_get_attachment_image( $instance['custom_media_id'], 'medium');
+
 		echo $args['before_widget'];
 
 		if ( !empty($instance['title']) )
-			echo $args['before_title'] . $instance['title'] . $args['after_title'];
+			echo '<div class="gc-left-side"><h2>' . $instance['title'] . '</h2>';
 
 		$nav_menu_args = array(
 			'fallback_cb' => '',
@@ -93,7 +97,11 @@
 		 */
 		wp_nav_menu( apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance ) );
 
+		echo '</div><div class="gc-image">' .  $gc_image . '</div>';
+
 		echo $args['after_widget'];
+
+
 	}
 
 	/**
@@ -108,17 +116,8 @@
 	 * @return array Updated settings to save.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		if ( ! empty( $new_instance['title'] ) ) {
-			$instance['title'] = sanitize_text_field( stripslashes( $new_instance['title'] ) );
-		}
-		if ( ! empty( $new_instance['nav_menu'] ) ) {
-			$instance['nav_menu'] = (int) $new_instance['nav_menu'];
-		}
-		if ( ! empty( $new_instance['image'] ) ) {
-			$instance['image'] = (int) $new_instance['image'];
-		}
-		return $instance;
+
+		return $new_instance;
 	}
 
 	/**
@@ -132,7 +131,7 @@
 	public function form( $instance ) {
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
 		$nav_menu = isset( $instance['nav_menu'] ) ? $instance['nav_menu'] : '';
-		$image = isset( $instance['image'] ) ? $instance['image'] : '';
+		$custom_media_id = isset( $instance['custom_media_id'] ) ? $instance['custom_media_id'] : '';
 
 		// Get menus
 		$menus = wp_get_nav_menus();
@@ -166,8 +165,9 @@
 				</select>
 			</p>
 			<p>
-				<a href="javascript:void(0);" class="custom_media_upload button button-primary">Add image</a> <br />
-				<img class="custom_media_url" scr="" width="300" />
+				<a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select image</a> <br />
+				<img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>" width="300" />
+				<input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id( 'custom_media_id' ); ?>" name="<?php echo $this->get_field_name( 'custom_media_id' ); ?>" value="<?php echo esc_attr( $custom_media_id); ?>"/>
 			</p>
 		</div>
 		<?php
