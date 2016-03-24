@@ -73,12 +73,11 @@ s.cleanupStyles = function () {
             .removeAttr('style')
             .removeAttr('data-swiper-column')
             .removeAttr('data-swiper-row');
-        if(s.params.autoHeight){
-            s.slides.width('').height('');
-            s.slides.each(function(){
-                $(this).find('img').width('').height('');
-            })
-        }
+
+        s.slides.width('').height('');
+        s.slides.each(function(){
+            $(this).find('img').removeAttr('style');
+        })
     }
 
     // Pagination/Bullets

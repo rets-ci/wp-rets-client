@@ -44,7 +44,7 @@ s.setSlideSize_12mosaic = function(slide, s){
 s.setSlideSize_12grid = function(slide, s){
     var width, height;
     var top = 0, left = 0;
-    var slideWidth, slideHeight;
+    var slideWidth, slideHeight, slideRatio;
     var aspectWidth, aspectHeight;
     var slide = jQuery(slide);
     var img = slide.find('img');
@@ -53,17 +53,22 @@ s.setSlideSize_12grid = function(slide, s){
     var attrWidth  = parseInt(img.attr('width'));
     var attrHeight  = parseInt(img.attr('height'));
     var imgRatio   = attrWidth / attrHeight;
-    if(slide.is(':first-child')){
-        slideHeight = s.container.height();
-    }
-    else{
-        slideHeight = maxHeight;
-    }
+
+    slideHeight = maxHeight;
     slideWidth   = slideHeight;
 
     width   = attrWidth;
     height  = attrHeight;
-    if(1 > imgRatio){ // Here 1 is slide ratio. Because slide width and height is same.
+
+    if(slide.is(':first-child')){
+        slideHeight = s.container.height();
+        slideRatio = 16 / 9;
+        if(s.params.slider_width && s.params.slider_height)
+            slideRatio   = s.params.slider_width / s.params.slider_height;
+        slideWidth = width = slideHeight * imgRatio;
+        height = slideHeight;
+    }
+    else if(1 > imgRatio){ // Here 1 is slide ratio. Because slide width and height is same.
         width = "100%";
         height = "auto";
         aspectHeight = slideWidth / imgRatio;
