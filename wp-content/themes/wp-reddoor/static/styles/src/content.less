@@ -288,7 +288,7 @@
       background: #2f2e31;
       padding: 12px 13px 11px 13px;
       border-radius: 0 5px 5px 5px;
-      height: 60px;
+      height: 70px;
       margin-top: -2px;
       ul {
         background: #fff none repeat scroll 0 0;
@@ -304,7 +304,7 @@
           color: @white;
           font-size: 1.1em;
           font-weight: 400;
-          padding: 6px 20px;
+          padding: 11px 20px;
           border: medium none;
           float: right;
         }
@@ -317,23 +317,25 @@
         padding-top: 3px;
         position: relative;
         width: 40%;
+        height: 3em;
         .citiesSelection{
           background: #f8f8f8 none repeat scroll 0 0;
           border: medium none;
           padding: 0.44em 0.6em;
         }
         .select2 {
-          height: 33px;
+          height: 41px;
           padding-left: 25px;
           color: #808285;
           min-width: 100%;
           .select2-selection {
             border: none;
             background: none;
+            height: 43px !important;
           }
         }
         .icon-location{
-          bottom: 12px;
+          bottom: 15px;
           left: 10px;
           position: absolute;
         }
@@ -343,24 +345,51 @@
           &:-moz-placeholder           {color:#242526;}/* Firefox 18- */
           &:-ms-input-placeholder      {color:#242526;}
         }
+        .select2-selection__arrow{
+          height: 40px;
+          width: 30px;
+        }
+        .select2-selection__rendered{
+          line-height: 40px !important;
+        }
+        .sf-icon{
+          font-size: 1.3em;
+          left: 8px;
+          position: absolute;
+          top: 13px;
+        }
       }
     .sfBeds, .sfBaths, .sfPrice{
       border-radius: 0;
       background: #f8f8f8 none repeat scroll 0 0;
       width: 15.5%;
-      height: 36px;
+      height: 46px;
       float: left;
       border-left: 1px solid #e6e6e6;
+      height: 3em;
+      .sf-icon{
+        font-size: 1.3em;
+        left: 8px;
+        position: absolute;
+        top: 13px;
+      }
       span{
         display: block;
-        height: 36px;
-        line-height: 2.2em;
+        height: 46px;
+        line-height: 3em;
         cursor: context-menu;
         color: #808285;
-      }
-      .icon-beds, .icon-baths, .icon-price{
-        margin-left: 15px;
-        margin-right: 20px;
+        position: relative;
+        cursor: pointer;
+        padding-left: 40px;
+        .sf-arrow{
+          border-color: #888 transparent transparent;
+          border-style: solid;
+          border-width: 5px 4px 0;
+          position: absolute;
+          right: 15px;
+          top: 22px;
+        }
       }
       &>ul{
         display: none;
@@ -372,6 +401,23 @@
     .sfPriceRange{
       display: none;
     }
+    .sf-property-quantity{
+      bottom: -45px;
+      color: #fff;
+      position: absolute;
+      opacity: 0.8;
+      b{
+        border: 2px solid;
+        border-radius: 50%;
+        display: inline-block;
+        height: 20px;
+        line-height: 16px;
+        padding-bottom: 0;
+        text-align: center;
+        width: 20px;
+        margin-right: 0.8em;
+      }
+    }
     }
     .sfPriceRange {
       background: @white;
@@ -379,6 +425,8 @@
       font-size: 0.9em;
       position: relative;
       top: -4px;
+      left: -30%;
+      width: 130%;
       ul{
         margin: 0;
       }
@@ -395,7 +443,7 @@
           font-size: 0.9em;
           height: 30px;
           padding: 0 5px;
-          width: 50px;
+          width: 80px;
           text-align: center;
           margin-right: 5px;
         }
@@ -406,6 +454,7 @@
       .lastRangeList {
         display: none;
         padding: 10px 15px 10px 80px;
+        text-align: right;
       }
       .left-side{
         width: 100%;

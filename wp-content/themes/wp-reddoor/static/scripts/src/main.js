@@ -81,6 +81,7 @@ jQuery(document).ready(function(){
         jQuery('.firstRangeList').hide();
     });
     jQuery('.citiesSelection').select2({
+        placeholder: 'Location',
         ajax: {
             url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
             dataType: 'json',
@@ -101,6 +102,9 @@ jQuery(document).ready(function(){
         return city.name;
     }
     });
+    jQuery('.location .select2-selection__placeholder').html('Location');
+
+    /* Footer social icons */
     jQuery('.facebookFootIcon a').html('<svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>');
     jQuery('.twitterFootIcon a').html('<svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>');
     jQuery('.googleFootIcon a').html('<svg class="icon icon-google-plus"><use xlink:href="#icon-google-plus"></use></svg>');
@@ -140,6 +144,14 @@ jQuery(document).ready(function(){
     }
     jQuery('.pdRoomsBlock').equivalent();
     /* Equal height */
+
+
+    /* Tabbed content widget (feature point) */
+    var imgFeaturePoint = jQuery('.featurePoint div').outerHeight();
+    var iconHeight = jQuery('.featurePoint > span').outerHeight();
+    var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
+    jQuery('.featurePoint').css('height', imgFeaturePoint);
+    jQuery('.featurePoint > span').css('margin-top', featurePointMarg);
 
 });
 

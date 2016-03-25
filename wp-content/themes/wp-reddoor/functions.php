@@ -6,7 +6,7 @@ include_once( get_template_directory() . '/wp-property/functions.php' );
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('jquery');
   wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js');
-  wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js');
+  wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,1000));
   wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
   wp_enqueue_script('jquery-1.10.2', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-1.10.2.js');
   wp_enqueue_script('jquery-ui.js', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-ui.js');
@@ -15,6 +15,7 @@ add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.min.js');
   wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,100));
   wp_enqueue_style('style-svg', 'https://i.icomoon.io/public/524f31be7a/rdc/style-svg.css');
+  wp_enqueue_style('style1', 'https://s3.amazonaws.com/icomoon.io/28703/wpproperty/style.css?ob605w');
 
 });
 
@@ -191,7 +192,9 @@ if(class_exists('SiteOrigin_Widget')) {
 if(class_exists('WP_Widget')) {
   include 'widgets/gc-widget/guide-content.php';
 }
-
+if(class_exists('WP_Widget')) {
+  include 'widgets/rdc-promote-widget/promote.php';
+}
 
 
 /**

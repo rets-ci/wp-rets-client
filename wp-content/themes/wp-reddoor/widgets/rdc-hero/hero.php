@@ -175,7 +175,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 
 				<div class="tabbedWidgetContent">
 				<h3><?php echo $frame['content_title'] ?></h3>
-				<?php echo $frame['content'] ?>
+					<p><?php echo $frame['content'] ?></p>
 					<div class="featurePoint">
 						<?php echo siteorigin_widget_get_icon($frame['feature_point']['icon_point']); ?>
 						<div>

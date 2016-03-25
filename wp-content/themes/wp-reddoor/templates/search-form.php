@@ -1,3 +1,33 @@
+<?php
+
+	$queryTermsSale = new WP_Query( array(
+			'post_type' => 'property',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'sale_type',
+					'field'    => 'slug',
+					'terms' => 'sale'
+				)
+			)
+		)
+	);
+	$queryTermsRent = new WP_Query( array(
+			'post_type' => 'property',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'sale_type',
+					'field'    => 'slug',
+					'terms' => 'rent'
+				)
+			)
+		)
+	);
+
+	$saleTermsQuantity = count($queryTermsSale->posts);
+	$rentTermsQuantity = count($queryTermsRent->posts);
+
+?>
+
 <div class="searchForm" id="tabs">
 	<ul>
 		<li class="formTabs" data-topmenu="buyBtnForm">
@@ -18,13 +48,13 @@
 	<div class="clear"></div>
 	<form class="buyForm" id="tabs-1" method="POST" action="">
 		<div class="location">
-			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
-			<select class="citiesSelection" name="_term">
-				<option value=""></option>
+			<span class="icon-location-pin-solid sf-icon"></span>
+			<select class="citiesSelection" name="_term" placeholder="Location">
+				<option value="" selected></option>
 			</select>
 		</div>
 		<div class="sfBeds">
-			<span><svg class="icon icon-beds"><use xlink:href="#icon-beds"></use></svg>Beds</span>
+			<span><div class="icon-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input id="bed1" name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label for="bed1">1</label></li>
 				<li><input id="bed15" name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label for="bed15">1.5</label></li>
@@ -36,7 +66,7 @@
 			</ul>
 		</div>
 		<div class="sfBaths">
-			<span><svg class="icon icon-baths"><use xlink:href="#icon-baths"></use></svg>Baths</span>
+			<span><div class="icon-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input id="bath1" name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label for="bath1">1</label></li>
 				<li><input id="bath15" name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label for="bath15">1.5</label></li>
@@ -48,7 +78,7 @@
 			</ul>
 		</div>
 		<div class="sfPrice">
-			<span><svg class="icon icon-price"><use xlink:href="#icon-price"></use></svg>Price</span>
+			<span><div class="icon-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
 
 			<div class="sfPriceRange">
 				<div class="sfprInputsBlock">
@@ -82,6 +112,7 @@
 
 		</div>
 		<input type="submit" value="Search" />
+		<div class="sf-property-quantity"><b>!</b> <?php echo $saleTermsQuantity ?> properties for sale</div>
 	</form>
 	<form class="rentForm" id="tabs-2"  method="POST" action="">
 		<div class="location">
@@ -91,7 +122,7 @@
 			</select>
 		</div>
 		<div class="sfBeds">
-			<span><svg class="icon icon-beds"><use xlink:href="#icon-beds"></use></svg>Beds</span>
+			<span><div class="icon-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label>1</label></li>
 				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
@@ -103,7 +134,7 @@
 			</ul>
 		</div>
 		<div class="sfBaths">
-			<span><svg class="icon icon-baths"><use xlink:href="#icon-baths"></use></svg>Baths</span>
+			<span><div class="icon-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label>1</label></li>
 				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
@@ -115,9 +146,10 @@
 			</ul>
 		</div>
 		<div class="sfPrice">
-			<span><svg class="icon icon-price"><use xlink:href="#icon-price"></use></svg>Price</span>
+			<span><div class="icon-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
 		</div>
 		<input type="submit" value="Search" />
+		<div class="sf-property-quantity"><b>!</b> <?php echo $rentTermsQuantity ?> properties for rent</div>
 	</form>
 	<div class="sellForm" id="tabs-3">
 

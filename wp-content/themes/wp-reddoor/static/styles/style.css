@@ -187,6 +187,9 @@
   color: #fff;
   cursor: pointer;
 }
+.panel-grid {
+  margin: 0 !important;
+}
 .upToHeader {
   position: relative;
   top: -20px;
@@ -197,6 +200,7 @@
   border: 1px solid #dcddde;
   border-radius: 5px;
   margin: 20px 0;
+  background: #fff;
 }
 .oneAgent > img {
   display: block;
@@ -473,7 +477,7 @@
   background: #2f2e31;
   padding: 12px 13px 11px 13px;
   border-radius: 0 5px 5px 5px;
-  height: 60px;
+  height: 70px;
   margin-top: -2px;
 }
 .frontPageSearchBlock .searchForm form ul {
@@ -486,7 +490,7 @@
   color: #fff;
   font-size: 1.1em;
   font-weight: 400;
-  padding: 6px 20px;
+  padding: 11px 20px;
   border: medium none;
   float: right;
 }
@@ -498,6 +502,7 @@
   padding-top: 3px;
   position: relative;
   width: 40%;
+  height: 3em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -505,7 +510,7 @@
   padding: 0.44em 0.6em;
 }
 .frontPageSearchBlock .searchForm form .location .select2 {
-  height: 33px;
+  height: 41px;
   padding-left: 25px;
   color: #808285;
   min-width: 100%;
@@ -513,9 +518,10 @@
 .frontPageSearchBlock .searchForm form .location .select2 .select2-selection {
   border: none;
   background: none;
+  height: 43px !important;
 }
 .frontPageSearchBlock .searchForm form .location .icon-location {
-  bottom: 12px;
+  bottom: 15px;
   left: 10px;
   position: absolute;
 }
@@ -535,36 +541,59 @@
 .frontPageSearchBlock .searchForm form .location .tags:-ms-input-placeholder {
   color: #242526;
 }
+.frontPageSearchBlock .searchForm form .location .select2-selection__arrow {
+  height: 40px;
+  width: 30px;
+}
+.frontPageSearchBlock .searchForm form .location .select2-selection__rendered {
+  line-height: 40px !important;
+}
+.frontPageSearchBlock .searchForm form .location .sf-icon {
+  font-size: 1.3em;
+  left: 8px;
+  position: absolute;
+  top: 13px;
+}
 .frontPageSearchBlock .searchForm form .sfBeds,
 .frontPageSearchBlock .searchForm form .sfBaths,
 .frontPageSearchBlock .searchForm form .sfPrice {
   border-radius: 0;
   background: #f8f8f8 none repeat scroll 0 0;
   width: 15.5%;
-  height: 36px;
+  height: 46px;
   float: left;
   border-left: 1px solid #e6e6e6;
+  height: 3em;
+}
+.frontPageSearchBlock .searchForm form .sfBeds .sf-icon,
+.frontPageSearchBlock .searchForm form .sfBaths .sf-icon,
+.frontPageSearchBlock .searchForm form .sfPrice .sf-icon {
+  font-size: 1.3em;
+  left: 8px;
+  position: absolute;
+  top: 13px;
 }
 .frontPageSearchBlock .searchForm form .sfBeds span,
 .frontPageSearchBlock .searchForm form .sfBaths span,
 .frontPageSearchBlock .searchForm form .sfPrice span {
   display: block;
-  height: 36px;
-  line-height: 2.2em;
+  height: 46px;
+  line-height: 3em;
   cursor: context-menu;
   color: #808285;
+  position: relative;
+  cursor: pointer;
+  padding-left: 40px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds .icon-beds,
-.frontPageSearchBlock .searchForm form .sfBaths .icon-beds,
-.frontPageSearchBlock .searchForm form .sfPrice .icon-beds,
-.frontPageSearchBlock .searchForm form .sfBeds .icon-baths,
-.frontPageSearchBlock .searchForm form .sfBaths .icon-baths,
-.frontPageSearchBlock .searchForm form .sfPrice .icon-baths,
-.frontPageSearchBlock .searchForm form .sfBeds .icon-price,
-.frontPageSearchBlock .searchForm form .sfBaths .icon-price,
-.frontPageSearchBlock .searchForm form .sfPrice .icon-price {
-  margin-left: 15px;
-  margin-right: 20px;
+.frontPageSearchBlock .searchForm form .sfBeds span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfBaths span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfPrice span .sf-arrow {
+  border-color: #888 transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0;
+  position: absolute;
+  right: 15px;
+  top: 22px;
 }
 .frontPageSearchBlock .searchForm form .sfBeds > ul,
 .frontPageSearchBlock .searchForm form .sfBaths > ul,
@@ -577,12 +606,31 @@
 .frontPageSearchBlock .searchForm form .sfPriceRange {
   display: none;
 }
+.frontPageSearchBlock .searchForm form .sf-property-quantity {
+  bottom: -45px;
+  color: #fff;
+  position: absolute;
+  opacity: 0.8;
+}
+.frontPageSearchBlock .searchForm form .sf-property-quantity b {
+  border: 2px solid;
+  border-radius: 50%;
+  display: inline-block;
+  height: 20px;
+  line-height: 16px;
+  padding-bottom: 0;
+  text-align: center;
+  width: 20px;
+  margin-right: 0.8em;
+}
 .frontPageSearchBlock .searchForm .sfPriceRange {
   background: #fff;
   color: #a7a9ac;
   font-size: 0.9em;
   position: relative;
   top: -4px;
+  left: -30%;
+  width: 130%;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange ul {
   margin: 0;
@@ -601,7 +649,7 @@
   font-size: 0.9em;
   height: 30px;
   padding: 0 5px;
-  width: 50px;
+  width: 80px;
   text-align: center;
   margin-right: 5px;
 }
@@ -611,6 +659,7 @@
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
   display: none;
   padding: 10px 15px 10px 80px;
+  text-align: right;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
   width: 100%;
@@ -680,6 +729,278 @@
 .sow-carousel-wrapper {
   background: #fff;
 }
+/* Property page */
+.single-property .bottomSeparate {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 30px;
+}
+.single-property .slideshowHeadImage {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.single-property .ftrdImgGoTop {
+  top: -20px;
+}
+.single-property .singlePropertyHeader {
+  background: #F3F0EA;
+  padding: 30px 0;
+  color: #474649;
+  border-bottom: 1px solid #dedede;
+  position: relative;
+  z-index: 50;
+}
+.single-property .singlePropertyHeader .title > span {
+  background: #18C2B8;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+  font-size: 1.3em;
+  float: left;
+  margin-top: 10px;
+  margin-right: 15px;
+}
+.single-property .singlePropertyHeader .title > div {
+  float: left;
+  font-size: 3em;
+  font-weight: 500;
+}
+.single-property .singlePropertyHeader .title > div > span {
+  font-size: 0.6em;
+  margin-left: 15px;
+  color: #7A787D;
+}
+.single-property .singlePropertyHeader .container > ul li {
+  display: inline-block;
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+.single-property .singlePropertyHeader .container > ul li svg {
+  margin-right: 10px;
+  color: #a7a9ac;
+}
+.single-property .singlePropertyHeader .oneAgent {
+  position: absolute;
+  right: 13%;
+  top: 0;
+  z-index: 20;
+  padding-bottom: 30px;
+}
+.single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock {
+  padding: 0 40px;
+}
+.single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock a {
+  width: 100%;
+}
+.single-property .singlePropertyHeader .oneAgent .socialButtons {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  margin: 0;
+  border-bottom: 1px solid #eeeaea;
+  border-radius: 0 !important;
+}
+.single-property .singlePropertyHeader .oneAgent .socialButtons li {
+  width: 49.4%;
+  color: #a7a9ac;
+  font-size: 2em !important;
+  padding: 0;
+}
+.single-property .singlePropertyHeader .oneAgent .socialButtons li a {
+  color: #a7a9ac;
+  display: block;
+  padding: 22px 0 15px;
+  outline: none;
+}
+.single-property .propertyAttribute {
+  margin-top: 20px;
+}
+.single-property .propertyAttribute li {
+  display: inline-block;
+  width: 32%;
+  margin-bottom: 20px;
+}
+.single-property .propertyAttribute li div {
+  border: 1px solid #dedede;
+  border-radius: 50%;
+  float: left;
+  font-size: 1.5em;
+  margin-right: 15px;
+  margin-top: 0;
+  padding: 7px 15px;
+}
+.single-property .propertyAttribute li div svg {
+  margin-top: 5px;
+  color: #a7a9ac;
+}
+.single-property .propertyAttribute li span {
+  display: block;
+  color: #919093;
+  font-size: 0.8em;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+.single-property .propertyAttribute li strong {
+  font-weight: 400;
+  font-size: 1em;
+}
+.single-property .areaMapBlock .col-lg-7 {
+  margin: 15px 0;
+}
+.single-property .areaMapBlock .ambItem {
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  margin-right: 20px;
+  padding: 30px;
+}
+.single-property .areaMapBlock .ambItem div {
+  background: #89c11e none repeat scroll 0 0;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.3em;
+  margin: auto;
+  padding: 7px 9px;
+  text-align: center;
+  width: 45px;
+}
+.single-property .areaMapBlock .ambItem span {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-top: 10px;
+  text-align: center;
+}
+.single-property .areaMapBlock .ambItem strong {
+  display: block;
+  font-size: 0.9em;
+  font-weight: 400;
+  text-align: center;
+}
+.single-property .areaMapBlock .nav-tabs {
+  border-bottom-width: 0px;
+  margin-top: 20px;
+}
+.single-property .areaMapBlock .nav-tabs li {
+  width: 25%;
+  text-align: center;
+  background: #f3f3f3;
+}
+.single-property .areaMapBlock .nav-tabs li a {
+  border-radius: 0;
+  border-color: #d8d8d8;
+  margin-right: 0;
+  color: #b1b1b1;
+  outline: none;
+}
+.single-property .areaMapBlock .nav-tabs li a:hover {
+  background: #fff !important;
+}
+.single-property .areaMapBlock .nav-tabs li.active {
+  background: #fff;
+}
+.single-property .areaMapBlock .nav-tabs li.active a {
+  border-bottom: 1px solid transparent;
+  color: #5a595c;
+}
+.single-property .areaMapBlock .tab-content {
+  border: 1px solid #d8d8d8;
+  border-top: 1px solid transparent;
+  padding: 20px 15px 15px;
+}
+.single-property .propertyDetails .col-lg-7 {
+  margin: 15px 0;
+}
+.single-property .propertyDetails .nav-tabs {
+  border-bottom-width: 0px;
+  margin-top: 20px;
+}
+.single-property .propertyDetails .nav-tabs li {
+  width: 25%;
+  text-align: center;
+  background: #f3f3f3;
+}
+.single-property .propertyDetails .nav-tabs li a {
+  border-radius: 0;
+  border-color: #d8d8d8;
+  margin-right: 0;
+  color: #b1b1b1;
+  outline: none;
+}
+.single-property .propertyDetails .nav-tabs li a:hover {
+  background: #fff !important;
+}
+.single-property .propertyDetails .nav-tabs li.active {
+  background: #fff;
+}
+.single-property .propertyDetails .nav-tabs li.active a {
+  border-bottom: 1px solid transparent;
+  color: #5a595c;
+}
+.single-property .propertyDetails .tab-content {
+  border: 1px solid #d8d8d8;
+  border-top: 1px solid transparent;
+  padding: 20px 15px 15px;
+}
+.single-property .propertyDetails .pdRoomsBlock {
+  width: 40%;
+  margin: 0 5%;
+  float: left;
+}
+.single-property .propertyDetails .pdRoomsBlock section > div {
+  border: 1px solid #dedede;
+  border-radius: 50%;
+  float: left;
+  font-size: 1.5em;
+  height: 50px;
+  margin-right: 15px;
+  margin-top: 0;
+  width: 50px;
+}
+.single-property .propertyDetails .pdRoomsBlock section > div svg {
+  margin-top: 13px;
+  margin-left: 14px;
+}
+.single-property .propertyDetails .pdRoomsBlock section span {
+  float: left;
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+.single-property .propertyDetails .pdRoomsBlock > ul {
+  margin-top: 25px;
+}
+.single-property .propertyDetails .pdRoomsBlock > ul li {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.single-property .propertyDetails .pdRoomsBlock > ul li:last-child {
+  border-bottom: 0;
+}
+.single-property .listingProvider .col-lg-7 {
+  margin: 15px 0;
+}
+.single-property .listingProvider .col-lg-7 ul {
+  width: 40%;
+  float: left;
+}
+.single-property .listingProvider .col-lg-7 ul:nth-child(odd) {
+  margin-right: 10%;
+}
+.single-property .listingProvider .col-lg-7 ul:nth-child(even) {
+  margin-left: 10%;
+}
+.single-property .listingProvider .col-lg-7 ul li {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.single-property .listingProvider .col-lg-7 ul li:last-child {
+  border-bottom: 0;
+}
+.single-property .listingProvider .italicText {
+  color: #919093;
+  font-style: italic;
+  margin: 5% 0;
+}
 .association-carousel .sow-carousel-thumbnail a {
   background-repeat: no-repeat !important;
   background-size: auto auto !important;
@@ -746,31 +1067,132 @@
 .sellRentMainWidgets .widget_sow-button a {
   border: none;
 }
-.so-widget-tabbed-content .sow-slider-base ul li {
-  background: green !important;
-}
-.so-widget-tabbed-content .sow-slider-base ul li h2 {
-  color: #5a595c;
+.so-widget-tabbed-content .tabbedWidgetTitle {
+  color: #5a595c !important;
   text-align: center;
+  margin-bottom: 20px !important;
+  text-shadow: none !important;
+}
+.so-widget-tabbed-content .sow-slider-base {
+  padding-top: 70px;
+}
+.so-widget-tabbed-content .sow-slider-base ul li {
+  background: #fff !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
-  top: 120px !important;
+  top: 20px !important;
   text-align: center !important;
-  margin-bottom: 80px !important;
+  height: 80px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li {
   border: 1px solid #ededed;
   height: 50px !important;
-  width: 150px !important;
+  width: 160px !important;
+  margin-left: -6px;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
+  border-bottom: 1px solid #F10D2C;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover span {
+  color: #F10D2C;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li.sow-active {
+  border-bottom: 1px solid #F10D2C;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li.sow-active span {
+  color: #F10D2C;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
   text-indent: unset !important;
   color: #5a595c !important;
-  width: auto !important;
-  height: auto !important;
+  width: 146px !important;
+  height: 48px !important;
+  float: left !important;
+  outline: none;
 }
-.so-widget-tabbed-content .sow-slider-image-wrapper {
-  width: auto !important;
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
+  float: left;
+  font-size: 0.8em;
+  line-height: 1.4em;
+  margin-left: 10px;
+  margin-top: 8px;
+  width: 90px;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a span {
+  font-size: 2em;
+  margin-top: 9px;
+  margin-left: 9px;
+  float: left;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent {
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
+  font-size: 3em !important;
+  text-shadow: none !important;
+  color: #5a595c !important;
+  margin-bottom: 0.5em !important;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent p {
+  color: #5a595c !important;
+  text-shadow: none !important;
+  padding-right: 1em;
+  margin-bottom: 3em !important;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
+  margin-bottom: 3em;
+  padding-right: 25px;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > span {
+  float: left;
+  display: block;
+  font-size: 5em;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  color: #F10D2C;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
+  float: right;
+  width: 70%;
+  line-height: 1.7em;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
+  font-size: 2em !important;
+  text-shadow: none !important;
+  color: #5a595c !important;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetImageArea {
+  width: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  float: right;
+}
+.menu-home-buying-page-sub-menu-container {
+  background: #F3F0E9 none repeat scroll 0 0;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu {
+  margin: 0 auto;
+  width: 70%;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li {
+  border-right: 1px solid #d0d4d9;
+  padding: 1.5em;
+  display: inline-block;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:before {
+  font-size: 1.5em;
+  padding: 0.8em;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a {
+  color: #5a595c;
+  font-size: 1.5em;
+  font-family: "Poppins", OpenSans, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a:hover {
+  text-decoration: none;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -2757,5 +3179,11 @@ body .ui-tooltip {
   .popup {
     left: 30%;
     top: 15%;
+  }
+  .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetImageArea {
+    display: none;
+  }
+  .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
+    width: 100% !important;
   }
 }
