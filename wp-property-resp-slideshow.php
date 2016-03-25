@@ -4,7 +4,7 @@
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-resp-slideshow
  * Description: Responsive Slideshow for WP-Property plugin
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Text Domain: wpp_resp_slideshow
  * Author URI: https://www.usabilitydynamics.com
  * Domain Path: /static/languages/
