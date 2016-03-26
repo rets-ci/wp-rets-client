@@ -747,9 +747,11 @@ namespace UsabilityDynamics\WPP {
             unset($query[$taxonomy]);
           }
         }
-        $term_ids      = implode(', ', $term_ids);
-        $inner_join   .= "INNER JOIN {$wpdb->term_relationships} AS term_rel ON (p.ID = term_rel.object_id) ";
-        $where_clause .= " AND term_rel.term_taxonomy_id IN ($term_ids) ";
+        if(count($term_ids)){
+          $term_ids      = implode(', ', $term_ids);
+          $inner_join   .= "INNER JOIN {$wpdb->term_relationships} AS term_rel ON (p.ID = term_rel.object_id) ";
+          $where_clause .= " AND term_rel.term_taxonomy_id IN ($term_ids) ";
+        }
         // End Terms query
 
 
