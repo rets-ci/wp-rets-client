@@ -631,9 +631,8 @@ namespace UsabilityDynamics\WPP {
           'post_date'   => 'date',
           'post_status' => 'equal',
           'post_author' => 'equal',
-          //'post_parent' => false,
-          //'post_name'   => false,
-          //'post_parent' => false,
+          'post_parent' => false,
+          'post_name'   => false,
           //'_thumbnail_id' => false,
         );
         /**
