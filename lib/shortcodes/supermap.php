@@ -15,9 +15,9 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
-        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
-        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
-
+        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'get_properties_map' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'get_properties_map' ) );
+        add_filter('supermap::prepare_property_for_map', array(__CLASS__, 'prepare_property_for_map'));
         $custom_attributes = ud_get_wp_property( 'property_stats', array() );
 
         $sort_by = array(
@@ -580,7 +580,7 @@ namespace UsabilityDynamics\WPP {
         if( !empty( $property_ids ) ) {
           $properties = array();
           foreach ($property_ids['results'] as $key => $id) {
-            $property = prepare_property_for_display( $id, wp_parse_args( $args, array(
+            $property = prepare_property_for_map( $id, wp_parse_args( $args, array(
               'load_gallery' => 'false',
               'get_children' => 'false',
               'load_parent' => 'false',
@@ -596,6 +596,431 @@ namespace UsabilityDynamics\WPP {
         return $result;
       }
 
+      static public function get_properties_map(){
+        global $wpdb, $wp_properties;
+        $sql = "";
+        $where_clause = "";
+        $select_clause = "";
+        $defaults = array(
+          'per_page' => 10,
+          'starting_row' => 0,
+          'pagination' => 'on',
+          'sort_order' => 'ASC',
+          'sort_by' => 'menu_order',
+          'property_type' => ( $wp_properties['searchable_property_types'] ),
+          'json' => 'false',
+          'fields' => '',
+        );
+
+        $_system_keys = array(
+          'pagi',
+          'pagination',
+          'limit_query',
+          'starting_row',
+          'sort_by',
+          'sort_order'
+        );
+
+        // Non post_meta fields
+        $non_post_meta = array(
+          'ID'          => 'or',
+          'post_title'  => 'like',
+          'post_date'   => 'date',
+          'post_status' => 'equal',
+          'post_author' => 'equal',
+          //'post_parent' => false,
+          //'post_name'   => false,
+          //'post_parent' => false,
+          //'_thumbnail_id' => false,
+        );
+        /**
+         * Specific meta data can contain value with commas. E.g. location field ( address_attribute )
+         * The current list contains meta slugs which will be ignored for comma parsing. peshkov@UD
+         */
+        $commas_ignore = apply_filters( 'wpp::get_properties::commas_ignore', array_filter( array( $wp_properties[ 'configuration' ][ 'address_attribute' ] ) ) );
+        
+        // Normalizing to match the default array.
+        $_REQUEST['sort_by'] = $_REQUEST['wpp_search']['sort_by'];
+        $_REQUEST['sort_order'] = $_REQUEST['wpp_search']['sort_order'];
+
+        $atts = shortcode_atts($defaults, $_REQUEST);
+
+        //* Supermap configuration */
+        $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+        if(empty($supermap_configuration['supermap_thumb'])) {
+          $supermap_configuration['supermap_thumb'] = 'thumbnail';
+        }
+
+        //* START Prepare search params for get_properties() */
+        $query = array();
+        if(!empty($_REQUEST['wpp_search'])) {
+          //** Load all queriable keys **/
+          $query_keys = array();
+          foreach( \WPP_F::get_queryable_keys() as $key ) {
+            //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
+            $query_keys[ $key ] = false;
+          }
+          $query = $_REQUEST['wpp_search'];
+          $query = array_filter( shortcode_atts($query_keys, $query) );
+        }
+
+        //$query['address_is_formatted'] = '1';
+        //* Add only properties which are not excluded from supermap (option on Property editing form) */
+        //$query['exclude_from_supermap'] = 'false,0';
+        //* Set Property type */
+        $query['property_type'] = $atts['property_type'];
+
+        //* Prepare Query params */
+        $query = \WPP_F::prepare_search_attributes($query);
+
+        $_select_clause = array();
+
+        $fields = explode(',', $atts['fields']);
+        $fields = array_map('trim', $fields);
+
+        // Aditional columns
+        $fields[] = 'post_name';
+        $fields[] = 'post_parent';
+        $fields[] = '_thumbnail_id';
+
+        $mtI = 1;
+        $left_join = "";
+        $mtID = array();
+        foreach ($fields as $key => $field) {
+          if(array_key_exists($field, $non_post_meta)){
+            $_select_clause[] = "p.$field";
+          }
+          else{
+            $_select_clause[] = "mt$mtI.meta_value AS $field";
+            $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='$field') \n";
+            $mtID[$field] = "mt$mtI";
+            $mtI++;
+          }
+        }
+
+        // Left join meta key post_type.
+        $mtID['property_type'] = "mt$mtI";
+        $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='property_type') \n";
+
+        $select_clause = implode(",\n ", $_select_clause);
+        $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n";
+
+        $where_clause = "WHERE post_type = 'property' ";
+        $where_clause .= " AND {$mtID['latitude']}.meta_value != '' ";
+        $where_clause .= " AND {$mtID['longitude']}.meta_value != '' ";
+        // For post keys
+        foreach( (array) $non_post_meta as $field => $condition ) {
+          if( array_key_exists( $field, $query ) ) {
+            if( $condition == 'like' ) {
+              $where_clause .= " AND p.$field LIKE '%{$query[$field]}%' ";
+            }
+            else if( $condition == 'equal' ) {
+              $where_clause .= " AND p.$field = '{$query[$field]}' ";
+            }
+            else if( $condition == 'or' ) {
+              $f = '';
+              $d = !is_array( $query[ $field ] ) ? explode( ',', $query[ $field ] ) : $query[ $field ];
+              foreach( $d as $k => $v ) {
+                $f .= ( !empty( $f ) ? ",'" . trim($v) . "'" : "'" . trim($v) . "'" );
+              }
+              $where_clause .= " AND p.$field IN ({$f}) ";
+            }
+            else if( $condition == 'date' ) {
+              $where_clause .= " AND YEAR( p.$field ) = " . substr( $query[ $field ], 0, 4 ) . " AND MONTH( p.$field ) = " . substr( $query[ $field ], 4, 2 ) . " ";
+            }
+            unset( $query[ $field ] );
+          }
+        }
+
+        // sort params
+        $sort_clause = " ORDER BY {$atts['sort_by']} {$atts['sort_order']} ";
+        //** Unset arguments that will conflict with attribute query */
+        foreach( (array) $_system_keys as $system_key ) {
+          unset( $query[ $system_key ] );
+        }
+
+
+
+
+        // Go down the array list narrowing down matching properties
+        foreach( (array) $query as $meta_key => $criteria ) {
+
+          $specific = '';
+          $comma_and = '';
+          $numeric = ( isset( $wp_properties[ 'numeric_attributes' ] ) && in_array( $meta_key, (array) $wp_properties[ 'numeric_attributes' ] ) ) ? true : false;
+
+          if( !in_array( $meta_key, (array) $commas_ignore ) && substr_count( $criteria, ',' ) || ( substr_count( $criteria, '-' ) && $numeric ) || substr_count( $criteria, '--' ) ) {
+
+            if( substr_count( $criteria, '-' ) && !substr_count( $criteria, ',' ) ) {
+              $cr = explode( '-', $criteria );
+              // Check pieces of criteria. Array should contains 2 int's elements
+              // In other way, it's just value of meta_key
+              if( count( $cr ) > 2 || ( ( float ) $cr[ 0 ] == 0 && ( float ) $cr[ 1 ] == 0 ) ) {
+                $specific = $criteria;
+              } else {
+                $hyphen_between = $cr;
+                // If min value doesn't exist, set 1
+                if( empty( $hyphen_between[ 0 ] ) && $hyphen_between[ 0 ] != "0" ) {
+                  $hyphen_between[ 0 ] = 1;
+                }
+              }
+            }
+
+            if ( substr_count( $criteria, ',' ) ) {
+              $comma_and = explode( ',', $criteria );
+            }
+
+          } else {
+            $specific = $criteria;
+          }
+
+          if( !isset( $limit_query ) ) {
+            $limit_query = '';
+          }
+
+          switch( $meta_key ) {
+
+            case 'property_type':
+
+              //** If comma_and is set, $criteria is ignored, otherwise $criteria is used */
+              $specific = $comma_and;
+              if(!is_array($comma_and))
+                $specific = explode(',', $criteria);
+              $specific   = array_map('trim', $specific);
+              $specific   = implode( "', '", $specific );
+              // Get all property types
+              $where_clause .= " AND ({$mtID['property_type']}.meta_key = 'property_type' AND {$mtID['property_type']}.meta_value in ('$specific')) ";
+              break;
+            default:
+              $_mtID = $mtID[$meta_key];
+              // Get all properties for that meta_key
+              if( $specific == 'all' && $specific == '-1' ) {
+
+                break;
+              } else {
+
+                if( !empty( $comma_and ) ) {
+                  $where_and = "( $_mtID.meta_value ='" . implode( "' OR $_mtID.meta_value ='", $comma_and ) . "')";
+                  $specific  = $where_and;
+                }
+
+                if( !empty( $hyphen_between ) ) {
+                  // We are going to see if we are looking at some sort of date, in which case we have a special MySQL modifier
+                  $adate = false;
+                  if( preg_match( '%\\d{1,2}/\\d{1,2}/\\d{4}%i', $hyphen_between[ 0 ] ) ) $adate = true;
+
+                  if( !empty( $hyphen_between[ 1 ] ) ) {
+
+                    if( preg_match( '%\\d{1,2}/\\d{1,2}/\\d{4}%i', $hyphen_between[ 1 ] ) ) {
+                      foreach( $hyphen_between as $key => $value ) {
+                        $hyphen_between[ $key ] = "STR_TO_DATE( '{$value}', '%c/%e/%Y' )";
+                      }
+                      $where_between = "STR_TO_DATE( $_mtID.meta_value, '%c/%e/%Y' ) BETWEEN " . implode( " AND ", $hyphen_between ) . "";
+                    } else {
+                      $where_between = "$_mtID.meta_value BETWEEN " . implode( " AND ", $hyphen_between ) . "";
+                    }
+
+                  } else {
+
+                    if( $adate ) {
+                      $where_between = "STR_TO_DATE( $_mtID.meta_value, '%c/%e/%Y' ) >= STR_TO_DATE( '{$hyphen_between[0]}', '%c/%e/%Y' )";
+                    } else {
+                      $where_between = "$_mtID.meta_value >= $hyphen_between[0]";
+                    }
+
+                  }
+                  $specific = $where_between;
+                }
+
+                if( $specific == 'true' ) {
+                  // If properties data were imported, meta value can be '1' instead of 'true'
+                  // So we're trying to find also '1'
+                  $specific = "$_mtID.meta_value IN ( 'true', '1' )";
+                } elseif( !substr_count( $specific, '$_mtID.meta_value' ) ) {
+                  //** Determine if we don't need to use LIKE in SQL query */
+                  preg_match( "/^#(.+)#$/", $specific, $matches );
+                  if( $matches ) {
+                    $specific = " $_mtID.meta_value = '{$matches[1]}'";
+                  } else {
+                    //** Adds conditions for Searching by partial value */
+                    $s        = explode( ' ', trim( $specific ) );
+                    $specific = '';
+                    $count    = 0;
+                    foreach( $s as $p ) {
+                      if( $count > 0 ) {
+                        $specific .= " AND ";
+                      }
+                      $specific .= "$_mtID.meta_value LIKE '%{$p}%'";
+                      $count++;
+                    }
+                  }
+                }
+
+                $where_clause .= " AND ($_mtID.meta_key = '$meta_key' AND $specific) ";
+
+              }
+              break;
+
+          } // END switch
+
+          unset( $comma_and );
+          unset( $hyphen_between );
+
+        } // END foreach
+
+        $sql .= $where_clause . $sort_clause . " LIMIT 10";
+        $results = $wpdb->get_results( $sql, ARRAY_A );
+        $return = array();
+        $return['sql'] = $sql;
+        $return['data'] = apply_filters('supermap::prepare_property_for_map', $results);
+        $return['total'] = count($results);
+        wp_send_json($return);
+        die();
+      }
+
+
+
+      /**
+      * Retrieve the permalink for a post with a custom post type.
+      *
+      * @since 3.0.0
+      *
+      * @global WP_Rewrite $wp_rewrite
+      *
+      * @param int $id         Optional. Post ID.
+      * @param bool $leavename Optional, defaults to false. Whether to keep post name.
+      * @param bool $sample    Optional, defaults to false. Is it a sample permalink.
+      * @return string|WP_Error The post permalink.
+      */
+      static function prepare_property_for_map( $results ) {
+        global $wp_rewrite;
+        $post_type = "property";
+        $permastruct = $wp_rewrite->get_extra_permastruct($post_type);
+        
+        $post_type = get_post_type_object($post_type);
+
+        foreach ($results as $key => $property) {
+          $results[$property['ID']] = $property;
+          unset($results[$key]);
+        }
+
+        // Adding Thumbnail to results
+        $results = self::wpp_add_attachment_urls( $results );
+        // End Thumbnail
+
+        foreach ($results as $key => &$property) {
+
+          // permalink 
+          $slug = $property['post_name'];
+        
+          if ( $parent_id = $property['post_parent'] ) {
+            $slug = get_parent_slug( $parent_id, $properties ) . '/' . $slug;
+          }
+        
+          if ( !empty($permastruct)) {
+                  $post_link = str_replace("%{$post_type->name}%", $slug, $permastruct);
+                  $post_link = home_url( user_trailingslashit($post_link) );
+          } else {
+                  if ( $post_type->query_var)
+                          $post_link = add_query_arg($post_type->query_var, $slug, '');
+                  else
+                          $post_link = add_query_arg(array('post_type' => $post_type->name, 'p' => $property['ID']), '');
+                  $post_link = home_url($post_link);
+          }
+          $property['permalink'] = $post_link;
+          // End permalink
+
+          // Thumbnail
+
+
+
+          // End Thumbnail
+
+
+        }
+
+        return array_values($results);
+      }
+
+
+      static public function get_parent_slug($parent_id, $properties = array()){
+        if(isset($properties[$parent_id])){
+          $parent = $properties[$parent_id];
+        }
+        else{
+          // Need to improve
+          $parent = get_properties_map(array('ID' => $parent_id));
+        }
+
+        return $parent->post_name;
+      }
+
+      static public function wpp_add_attachment_urls( $properties ) {
+
+        global $wpdb, $wp_properties;
+
+        foreach ($properties as $key => &$property) {
+          $sql = "
+            SELECT file.meta_value AS thumb_url, p.guid AS guid
+            FROM {$wpdb->posts} AS p
+            LEFT JOIN {$wpdb->postmeta} AS file ON (p.ID = file.post_id AND file.meta_key = '_wp_attached_file')
+            WHERE p.ID IN (
+                SELECT thumb.meta_value as thumbID
+                FROM {$wpdb->posts} AS p
+                LEFT JOIN {$wpdb->postmeta} AS thumb
+                ON (p.ID = thumb.post_id AND thumb.meta_key = '_thumbnail_id')
+                WHERE p.ID  = 106913
+            )";
+          $result = $wpdb->get_results($sql, ARRAY_A);
+          $property['featured_image_url'] = self::wp_get_attachment_url($result[0]);
+        }
+        return $properties;
+      }
+
+
+      // copied from https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
+      static public function wp_get_attachment_url($file_data){
+        global $wpp_super_map_uploads;
+        // Get upload directory.
+        if(!is_array($wpp_super_map_uploads))
+          $wpp_super_map_uploads = wp_upload_dir();
+
+        // Doing this for some sort of caching.
+        $isSSL = is_ssl() && ! is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'];
+
+        $url = '';
+        if ( ($file = $file_data['thumb_url']) && ($uploads = $wpp_super_map_uploads) && false === $wpp_super_map_uploads['error'] ) {
+            // Check that the upload base exists in the file location.
+            if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
+                // Replace file location with url location.
+                $url = str_replace($uploads['basedir'], $uploads['baseurl'], $file);
+            } elseif ( false !== strpos($file, 'wp-content/uploads') ) {
+                // Get the directory name relative to the basedir (back compat for pre-2.7 uploads)
+                $url = trailingslashit( $uploads['baseurl'] . '/' . _wp_get_attachment_relative_path( $file ) ) . basename( $file );
+            } else {
+                // It's a newly-uploaded file, therefore $file is relative to the basedir.
+                $url = $uploads['baseurl'] . "/$file";
+            }
+        }
+
+        /*
+         * If any of the above options failed, Fallback on the GUID as used pre-2.7,
+         * not recommended to rely upon this.
+         */
+        if ( empty($url) ) {
+            $url = $file_data['guid'];
+        }
+
+        // On SSL front-end, URLs should be HTTPS.
+        if ( $isSSL ) {
+            $url = set_url_scheme( $url );
+        }
+        return $url;
+      }
+
+
+
+
       /**
        * Ajax. Returns javascript:
        * list of properties and markers
@@ -603,7 +1028,6 @@ namespace UsabilityDynamics\WPP {
        */
       static public function ajax_get_properties() {
         global $wpdb, $wp_properties;
-
         $defaults = array(
           'per_page' => 10,
           'starting_row' => 0,
