@@ -868,7 +868,7 @@ namespace UsabilityDynamics\WPP {
 
         } // END foreach
 
-        $sql .= $where_clause . $sort_clause . " LIMIT 10";
+        $sql .= $where_clause . $sort_clause;
         $results = $wpdb->get_results( $sql, ARRAY_A );
         $return = array();
         $return['sql'] = $sql;
