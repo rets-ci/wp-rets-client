@@ -600,7 +600,10 @@ namespace UsabilityDynamics\WPP {
         global $wpdb, $wp_properties;
         $sql = "";
         $where_clause = "";
-        $select_clause = "";
+        $select_clause  = "";
+        $left_join      = "";
+        $inner_join     = "";
+
         $defaults = array(
           'per_page' => 10,
           'starting_row' => 0,
@@ -640,8 +643,8 @@ namespace UsabilityDynamics\WPP {
         $commas_ignore = apply_filters( 'wpp::get_properties::commas_ignore', array_filter( array( $wp_properties[ 'configuration' ][ 'address_attribute' ] ) ) );
         
         // Normalizing to match the default array.
-        $_REQUEST['sort_by'] = $_REQUEST['wpp_search']['sort_by'];
-        $_REQUEST['sort_order'] = $_REQUEST['wpp_search']['sort_order'];
+        $_REQUEST['sort_by'] = isset($_REQUEST['wpp_search']['sort_by'])?$_REQUEST['wpp_search']['sort_by']:"menu_order";
+        $_REQUEST['sort_order'] = isset($_REQUEST['wpp_search']['sort_order'])?$_REQUEST['wpp_search']['sort_order']:"ASC";
 
         $atts = shortcode_atts($defaults, $_REQUEST);
 
@@ -683,8 +686,8 @@ namespace UsabilityDynamics\WPP {
         $fields[] = 'post_parent';
         $fields[] = '_thumbnail_id';
 
+
         $mtI = 1;
-        $left_join = "";
         $mtID = array();
         foreach ($fields as $key => $field) {
           if(array_key_exists($field, $non_post_meta)){
@@ -698,12 +701,8 @@ namespace UsabilityDynamics\WPP {
           }
         }
 
-        // Left join meta key post_type.
-        $mtID['property_type'] = "mt$mtI";
-        $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='property_type') \n";
 
         $select_clause = implode(",\n ", $_select_clause);
-        $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n";
 
         $where_clause = "WHERE post_type = 'property' ";
         $where_clause .= " AND {$mtID['latitude']}.meta_value != '' ";
@@ -740,6 +739,18 @@ namespace UsabilityDynamics\WPP {
         }
 
 
+        // Start Terms
+        $term_ids = array();
+        foreach ($query as $taxonomy => $term_id) {
+          if(array_key_exists($taxonomy, $wp_properties[ 'taxonomies' ])){
+            $term_ids[] = $term_id;
+            unset($query[$taxonomy]);
+          }
+        }
+        $term_ids      = implode(', ', $term_ids);
+        $inner_join   .= "INNER JOIN {$wpdb->term_relationships} AS term_rel ON (p.ID = term_rel.object_id) ";
+        $where_clause .= " AND term_rel.term_taxonomy_id IN ($term_ids) ";
+        // End Terms query
 
 
         // Go down the array list narrowing down matching properties
@@ -777,6 +788,12 @@ namespace UsabilityDynamics\WPP {
           if( !isset( $limit_query ) ) {
             $limit_query = '';
           }
+
+
+          // Left join meta key post_type.
+          $mtID[$meta_key] = "mt$mtI";
+          $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='$meta_key') \n";
+          $mtI++;
 
           switch( $meta_key ) {
 
@@ -856,7 +873,7 @@ namespace UsabilityDynamics\WPP {
                   }
                 }
 
-                $where_clause .= " AND ($_mtID.meta_key = '$meta_key' AND $specific) ";
+                $where_clause .= " AND ($_mtID.meta_key = '$meta_key' AND $specific) \n";
 
               }
               break;
@@ -868,12 +885,13 @@ namespace UsabilityDynamics\WPP {
 
         } // END foreach
 
+        $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n $inner_join \n";
         $sql .= $where_clause . $sort_clause;
         $results = $wpdb->get_results( $sql, ARRAY_A );
         $return = array();
         $return['sql'] = $sql;
         $return['data'] = apply_filters('supermap::prepare_property_for_map', $results);
-        $return['total'] = count($results);
+        $return['total'] = count($return['data']);
         wp_send_json($return);
         die();
       }
