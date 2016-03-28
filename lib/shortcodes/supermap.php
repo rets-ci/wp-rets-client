@@ -15,9 +15,10 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
-        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'get_properties_map' ) );
-        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'get_properties_map' ) );
-        add_filter('supermap::prepare_property_for_map', array(__CLASS__, 'prepare_property_for_map'));
+        add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        if( !isset($_SERVER[ 'HTTP_RAW' ]) || $_SERVER[ 'HTTP_RAW' ]  != 'true' )
+          add_filter('supermap::prepare_properties_for_map', array(__CLASS__, 'prepare_properties_for_map'));
         $custom_attributes = ud_get_wp_property( 'property_stats', array() );
 
         $sort_by = array(
@@ -564,39 +565,9 @@ namespace UsabilityDynamics\WPP {
         return $supermap;
       }
 
-      /**
-       * Returns the list of all found properties prepared for display.
-       *
-       * @param $query
-       */
-      static public function get_properties( $query, $args = array() ) {
-        $result = array(
-          'total' => 0,
-          'data' => array(),
-        );
-
-        //* Get properties */
-        $property_ids = \WPP_F::get_properties( $query , true );
-        if( !empty( $property_ids ) ) {
-          $properties = array();
-          foreach ($property_ids['results'] as $key => $id) {
-            $property = prepare_property_for_map( $id, wp_parse_args( $args, array(
-              'load_gallery' => 'false',
-              'get_children' => 'false',
-              'load_parent' => 'false',
-              'scope' => 'supermap_sidebar'
-            ) ) );
-            $properties[$id] = $property;
-          }
-          $result = array(
-            'total' => $property_ids['total'],
-            'data' => $properties,
-          );
-        }
-        return $result;
-      }
 
       static public function get_properties_map(){
+
         global $wpdb, $wp_properties;
         $sql = "";
         $where_clause = "";
@@ -622,8 +593,9 @@ namespace UsabilityDynamics\WPP {
           'starting_row',
           'sort_by',
           'sort_order',
-          '_map_marker_url',
         );
+
+        $fields_ignore = array('_map_marker_url');
 
         // Non post_meta fields
         $non_post_meta = array(
@@ -687,11 +659,12 @@ namespace UsabilityDynamics\WPP {
         $fields[] = 'supermap_marker';
         $fields[] = '_thumbnail_id';
 
+        $fields_ignore = array('_map_marker_url');
 
         $mtI = 1;
         $mtID = array();
-        foreach ($fields as $key => $field) {
-          if(in_array($field, $_system_keys))
+        foreach ($fields as $field) {
+          if(in_array($field, $fields_ignore))
             continue;
           if(array_key_exists($field, $non_post_meta)){
             $_select_clause[] = "p.$field";
@@ -741,7 +714,11 @@ namespace UsabilityDynamics\WPP {
           unset( $query[ $system_key ] );
         }
 
+        /*  
+        
+        need to fix terms query.
 
+        */
         // Start Terms
         $term_ids = array();
         foreach ($query as $taxonomy => $term_id) {
@@ -896,8 +873,7 @@ namespace UsabilityDynamics\WPP {
 
         $return = array();
         //$return['sql'] = $sql;
-        $return['data'] = apply_filters('supermap::prepare_property_for_map', $results);
-        $return['microtime']['query'] = $query_time;
+        $return['data'] = apply_filters('supermap::prepare_properties_for_map', $results);
         $return['total'] = count($return['data']);
         wp_send_json($return);
         die();
@@ -917,7 +893,7 @@ namespace UsabilityDynamics\WPP {
       * @param bool $sample    Optional, defaults to false. Is it a sample permalink.
       * @return string|WP_Error The post permalink.
       */
-      static function prepare_property_for_map( $results ) {
+      static function prepare_properties_for_map( $results ) {
         global $wp_rewrite;
         $post_type = "property";
         $permastruct = $wp_rewrite->get_extra_permastruct($post_type);
@@ -934,7 +910,7 @@ namespace UsabilityDynamics\WPP {
         // End Thumbnail
 
         foreach ($results as $key => &$property) {
-
+          $property = prepare_property_for_display($property);
           // permalink 
           $slug = $property['post_name'];
         
@@ -965,6 +941,7 @@ namespace UsabilityDynamics\WPP {
           unset($property['post_parent']);
           unset($property['_thumbnail_id']);
           unset($property['supermap_marker']);
+          unset($property['system']);
           // END Remove unnecessary fields
 
         }
@@ -1119,11 +1096,91 @@ namespace UsabilityDynamics\WPP {
 
 
       /**
+       * Returns the list of all found properties prepared for display.
+       *
+       * @param $query
+       */
+      static public function get_properties( $query, $args = array() ) {
+        global $wpdb;
+        $result = array(
+          'total' => 0,
+          'data' => array(),
+        );
+
+        //* Get properties */
+        $property_ids = \WPP_F::get_properties( $query , true );
+        if( !empty( $property_ids ) ) {
+          $properties = array();
+          $ids = implode(",", $property_ids['results']);
+          $sql = "";
+
+          // Non post_meta fields
+          $non_post_meta = array(
+            'ID'          => 'or',
+            'post_title'  => 'like',
+            'post_date'   => 'date',
+            'post_status' => 'equal',
+            'post_author' => 'equal',
+            'post_parent' => false,
+            'post_name'   => false,
+            //'_thumbnail_id' => false,
+          );
+
+          $fields_ignore = array(
+                                '_map_marker_url'
+                            );
+
+          // Fields that are requested.
+          $fields = explode(',', $_REQUEST['fields']);
+          $fields = array_map('trim', $fields);
+          // Aditional columns
+          $fields[] = 'ID';
+          $fields[] = 'post_name';
+          $fields[] = 'post_parent';
+          $fields[] = 'supermap_marker';
+          $fields[] = '_thumbnail_id';
+
+          $mtI = 0;
+          $left_join = "";
+          $_select_clause = array();
+          foreach ($fields as $field) {
+            if(in_array($field, $fields_ignore))
+              continue;
+            if(array_key_exists($field, $non_post_meta)){
+              $_select_clause[] = "p.$field";
+            }
+            else{
+              $_select_clause[] = "mt$mtI.meta_value AS $field";
+              $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='$field') \n";
+              $mtI++;
+            }
+          }
+
+          $select_clause = implode(",\n ", $_select_clause);
+
+          $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n";
+          $sql .= " WHERE p.ID in ($ids)";
+          $properties = $wpdb->get_results($sql, ARRAY_A);
+          $properties = apply_filters("supermap::prepare_properties_for_map", $properties);
+
+          $result = array(
+            'total' => $property_ids['total'],
+            'data' => $properties,
+          );
+        }
+        return $result;
+      }
+
+      /**
        * Ajax. Returns javascript:
        * list of properties and markers
        *
        */
       static public function ajax_get_properties() {
+        if( isset($_SERVER[ 'HTTP_SWITCH' ]) && $_SERVER[ 'HTTP_SWITCH' ]  == 'true' ) {
+          return self::get_properties_map();
+        }
+
         global $wpdb, $wp_properties;
         $defaults = array(
           'per_page' => 10,
