@@ -621,7 +621,8 @@ namespace UsabilityDynamics\WPP {
           'limit_query',
           'starting_row',
           'sort_by',
-          'sort_order'
+          'sort_order',
+          '_map_marker_url',
         );
 
         // Non post_meta fields
@@ -683,12 +684,15 @@ namespace UsabilityDynamics\WPP {
         // Aditional columns
         $fields[] = 'post_name';
         $fields[] = 'post_parent';
+        $fields[] = 'supermap_marker';
         $fields[] = '_thumbnail_id';
 
 
         $mtI = 1;
         $mtID = array();
         foreach ($fields as $key => $field) {
+          if(in_array($field, $_system_keys))
+            continue;
           if(array_key_exists($field, $non_post_meta)){
             $_select_clause[] = "p.$field";
           }
@@ -888,10 +892,16 @@ namespace UsabilityDynamics\WPP {
 
         $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n $inner_join \n";
         $sql .= $where_clause . $sort_clause;
+        $query_time_start =  microtime(true);
         $results = $wpdb->get_results( $sql, ARRAY_A );
+        $query_time = microtime(true) - $query_time_start;
+
         $return = array();
         $return['sql'] = $sql;
+        $start_time = microtime(true);
         $return['data'] = apply_filters('supermap::prepare_property_for_map', $results);
+        $return['microtime']['query'] = $query_time;
+        $return['microtime']['prepare'] = microtime(true) - $start_time;
         $return['total'] = count($return['data']);
         wp_send_json($return);
         die();
@@ -933,7 +943,7 @@ namespace UsabilityDynamics\WPP {
           $slug = $property['post_name'];
         
           if ( $parent_id = $property['post_parent'] ) {
-            $slug = get_parent_slug( $parent_id, $properties ) . '/' . $slug;
+            $slug = self::get_parent_slug( $parent_id, $properties ) . '/' . $slug;
           }
         
           if ( !empty($permastruct)) {
@@ -949,12 +959,17 @@ namespace UsabilityDynamics\WPP {
           $property['permalink'] = $post_link;
           // End permalink
 
-          // Thumbnail
+          // Map marker
 
+          $property['_map_marker_url'] = self::get_marker($property);
 
+          // End Map marker
 
-          // End Thumbnail
-
+          // Remove unnecessary fields
+          unset($property['post_parent']);
+          unset($property['_thumbnail_id']);
+          unset($property['supermap_marker']);
+          // END Remove unnecessary fields
 
         }
 
@@ -973,6 +988,73 @@ namespace UsabilityDynamics\WPP {
 
         return $parent->post_name;
       }
+
+      /**
+       * Returns Supermap marker url for property if exists
+       * If not, returns empty string
+       *
+       * @param string $marker_url
+       * @param integer $post_id
+       * @return string $marker_url
+       *
+       * @author Maxim Peshkov
+       */
+      static public function get_marker( $property ) {
+        global $wp_properties;
+        global $wpp_super_map_upload_dir;
+
+        if(!is_array($wpp_super_map_upload_dir))
+          $wpp_super_map_upload_dir = wp_upload_dir();
+
+        $marker_url = '';
+
+        if(!isset($wp_properties['configuration']['feature_settings']['supermap'])) {
+          return $marker_url;
+        }
+
+        //* Get supermap marker for the current property */
+        $supermap_marker = $property['supermap_marker'];
+
+        //* Return empty string if property uses default marker */
+        if($supermap_marker == 'default_google_map_marker') {
+          return $marker_url;
+        }
+
+        $supermap_configuration = $wp_properties['configuration']['feature_settings']['supermap'];
+        if(empty($supermap_configuration['property_type_markers'])) {
+          $supermap_configuration['property_type_markers'] = array();
+        }
+
+        $property_type = $property['property_type'];
+        if(
+          empty($supermap_marker) &&
+          !empty($property_type) &&
+          !empty( $supermap_configuration['property_type_markers'][$property_type] )
+        ) {
+          $supermap_marker = $supermap_configuration['property_type_markers'][$property_type];
+        }
+
+        $markers_url = $wpp_super_map_upload_dir['baseurl'] . '/supermap_files/markers';
+        $markers_dir = $wpp_super_map_upload_dir['basedir'] . '/supermap_files/markers';
+
+        //* Set default marker image */
+        if(empty($supermap_marker)) {
+          $marker_url = '';
+        } else {
+          if ( preg_match( '/(http|https):\/\//', $supermap_marker ) ) {
+            $marker_url = $supermap_marker;
+          } else {
+            $marker_url = $markers_url . "/" . $supermap_marker;
+            $marker_dir = $markers_dir . "/" . $supermap_marker;
+            if(!file_exists($marker_dir)) {
+              $marker_url = '';
+            }
+          }
+        }
+
+        return $marker_url;
+      }
+
 
       static public function wpp_add_attachment_urls( $properties ) {
 
@@ -999,16 +1081,16 @@ namespace UsabilityDynamics\WPP {
 
       // copied from https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
       static public function wp_get_attachment_url($file_data){
-        global $wpp_super_map_uploads;
+        global $wpp_super_map_upload_dir;
         // Get upload directory.
-        if(!is_array($wpp_super_map_uploads))
-          $wpp_super_map_uploads = wp_upload_dir();
+        if(!is_array($wpp_super_map_upload_dir))
+          $wpp_super_map_upload_dir = wp_upload_dir();
 
         // Doing this for some sort of caching.
         $isSSL = is_ssl() && ! is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'];
 
         $url = '';
-        if ( ($file = $file_data['thumb_url']) && ($uploads = $wpp_super_map_uploads) && false === $wpp_super_map_uploads['error'] ) {
+        if ( ($file = $file_data['thumb_url']) && ($uploads = $wpp_super_map_upload_dir) && false === $wpp_super_map_upload_dir['error'] ) {
             // Check that the upload base exists in the file location.
             if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
                 // Replace file location with url location.
