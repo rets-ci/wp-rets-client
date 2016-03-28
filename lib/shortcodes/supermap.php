@@ -892,16 +892,12 @@ namespace UsabilityDynamics\WPP {
 
         $sql = "SELECT $select_clause \nFROM {$wpdb->posts} as p \n$left_join \n $inner_join \n";
         $sql .= $where_clause . $sort_clause;
-        $query_time_start =  microtime(true);
         $results = $wpdb->get_results( $sql, ARRAY_A );
-        $query_time = microtime(true) - $query_time_start;
 
         $return = array();
-        $return['sql'] = $sql;
-        $start_time = microtime(true);
+        //$return['sql'] = $sql;
         $return['data'] = apply_filters('supermap::prepare_property_for_map', $results);
         $return['microtime']['query'] = $query_time;
-        $return['microtime']['prepare'] = microtime(true) - $start_time;
         $return['total'] = count($return['data']);
         wp_send_json($return);
         die();
@@ -943,7 +939,7 @@ namespace UsabilityDynamics\WPP {
           $slug = $property['post_name'];
         
           if ( $parent_id = $property['post_parent'] ) {
-            $slug = self::get_parent_slug( $parent_id, $properties ) . '/' . $slug;
+            $slug = self::get_parent_slug( $parent_id, $results ) . '/' . $slug;
           }
         
           if ( !empty($permastruct)) {
@@ -983,7 +979,7 @@ namespace UsabilityDynamics\WPP {
         }
         else{
           // Need to improve
-          $parent = get_properties_map(array('ID' => $parent_id));
+          $parent = self::get_properties_map(array('ID' => $parent_id));
         }
 
         return $parent->post_name;
