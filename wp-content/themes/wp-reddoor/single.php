@@ -33,9 +33,15 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
     <section class="featuredImageHeader" style="background: url('<?php echo $_url; ?>');">
       <?php $category = get_the_category(); ?>
       <div class="singleHeroIcon">
-        <svg class="icon icon-<?php echo $category[0]->slug; ?>"><use xlink:href="#icon-<?php echo $category[0]->slug; ?>"></use></svg>
+        <span class="icon-rdc-<?php echo $category[0]->slug; ?>"></span>
       </div>
       <h1 class="singleTitle"><?php the_title(); ?></h1>
+      <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
+      <ul class="singleSocialBlock">
+        <li><a class="icon-social-facebook-symbol" href="#"></a></li>
+        <li><a class="icon-social-twitter-symbol" href="#"></a></li>
+        <li><a class="icon-social-googleplus-symbol" href="#"></a></li>
+      </ul>
     </section>
   </div>
 <?php } ?>

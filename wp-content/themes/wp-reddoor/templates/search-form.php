@@ -46,6 +46,7 @@
 		</li>
 	</ul>
 	<div class="clear"></div>
+
 	<form class="buyForm" id="tabs-1" method="POST" action="">
 		<div class="location">
 			<span class="icon-location-pin-solid sf-icon"></span>
@@ -95,6 +96,7 @@
 						<li><a val="$150k" href="javascript:void(0);">$150k</a></li>
 						<li><a val="$175k" href="javascript:void(0);">$175k</a></li>
 						<li><a val="$200k" href="javascript:void(0);">$200k</a></li>
+						<li><a val="$0" href="javascript:void(0);">Any Amount</a></li>
 					</ul>
 				</div>
 				<div class="right-side">
@@ -106,6 +108,7 @@
 						<li><a val="$500k" href="javascript:void(0);">$500k</a></li>
 						<li><a val="$550k" href="javascript:void(0);">$550k</a></li>
 						<li><a val="$600k" href="javascript:void(0);">$600k</a></li>
+						<li><a val="$0" href="javascript:void(0);">Any Amount</a></li>
 					</ul>
 				</div>
 			</div>
@@ -114,9 +117,10 @@
 		<input type="submit" value="Search" />
 		<div class="sf-property-quantity"><b>!</b> <?php echo $saleTermsQuantity ?> properties for sale</div>
 	</form>
+
 	<form class="rentForm" id="tabs-2"  method="POST" action="">
 		<div class="location">
-			<svg class="icon icon-location"><use xlink:href="#icon-location"></use></svg>
+			<span class="icon-location-pin-solid sf-icon"></span>
 			<select class="citiesSelection" name="_term">
 				<option></option>
 			</select>

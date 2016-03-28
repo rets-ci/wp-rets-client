@@ -44,13 +44,14 @@ jQuery(document).ready(function(){
     jQuery(function () {
         //script for popups
         var popUpWindow = jQuery('span.exitPopup').parent();
-            jQuery('.showContactPopup a').click(function () {
+            jQuery('.showContactPopup a').on('click', function () {
+                console.log('test');
             jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
             jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
             return false;
         });
-        jQuery('span.exitPopup').click(function () {
+        jQuery('span.exitPopup').on('click', function () {
             jQuery(this).parent().fadeOut(100);
             jQuery('#overlay').remove('#overlay');
             return false;

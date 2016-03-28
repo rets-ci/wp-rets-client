@@ -72,7 +72,7 @@
 .ftrdImgGoTop{
   padding: 0 !important;
   position: relative;
-  top: -14px;
+  top: -16px;
 }
 .featuredImageHeader {
   background-size: cover !important;
@@ -86,13 +86,20 @@
     border-radius: 50%;
     font-size: 2.5em;
     height: 70px;
-    left: 50%;
+    left: 47%;
     padding-top: 15px;
     position: absolute;
     text-align: center;
     top: 20%;
     width: 70px;
     color: @buttons;
+    span{
+      display: block;
+      width: 50px;
+      height: 50px;
+      margin-left: 10px;
+      margin-top: 3px;
+    }
   }
 }
 .archiveImageHeader {
@@ -128,6 +135,47 @@
     text-shadow: 1px 1px 5px #000;
     top: 35%;
     width: 60%;
+  }
+  .singleExcerpt{
+    color: #ededed;
+    font-size: 1.4em;
+    font-weight: 400;
+    margin: 2% auto 5%;
+    text-align: center;
+    text-shadow: 1px 1px 5px #000;
+    width: 70%;
+  }
+  .singleSocialBlock{
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    li{
+      display: inline-block;
+      a{
+        border-radius: 50%;
+        color: @white;
+        display: block;
+        font-size: 1.2em;
+        height: 40px;
+        margin-right: 15%;
+        outline: medium none;
+        padding-top: 27%;
+        text-align: center;
+        width: 40px;
+        &:hover{
+          text-decoration: none;
+        }
+        &.icon-social-facebook-symbol{
+          background: #5d82d1 none repeat scroll 0 0;
+        }
+        &.icon-social-twitter-symbol{
+          background: #40BFF5 none repeat scroll 0 0;
+        }
+        &.icon-social-googleplus-symbol{
+          background: #EB5E4C none repeat scroll 0 0;
+        }
+      }
+    }
   }
   .content{
     color: #5a595c;
@@ -247,8 +295,9 @@
   height: 555px;
   padding-top: 15%;
   position: relative;
-  top: -20px;
+  top: -80px;
   margin-bottom: -20px;
+  z-index: 7;
   .searchForm {
     width: 65%;
     min-width: 785px;
@@ -293,6 +342,7 @@
       ul {
         background: #fff none repeat scroll 0 0;
         padding: 1.5em 1em 1em;
+        box-shadow: -1px 7px 12px -5px #000;
         li{
 
         }
@@ -325,7 +375,7 @@
         }
         .select2 {
           height: 41px;
-          padding-left: 25px;
+          padding-left: 35px;
           color: #808285;
           min-width: 100%;
           .select2-selection {
@@ -354,7 +404,7 @@
         }
         .sf-icon{
           font-size: 1.3em;
-          left: 8px;
+          left: 12px;
           position: absolute;
           top: 13px;
         }
@@ -369,7 +419,7 @@
       height: 3em;
       .sf-icon{
         font-size: 1.3em;
-        left: 8px;
+        left: 20px;
         position: absolute;
         top: 13px;
       }
@@ -381,7 +431,7 @@
         color: #808285;
         position: relative;
         cursor: pointer;
-        padding-left: 40px;
+        padding-left: 60px;
         .sf-arrow{
           border-color: #888 transparent transparent;
           border-style: solid;
@@ -429,6 +479,11 @@
       width: 130%;
       ul{
         margin: 0;
+        li{
+          a{
+            color: #7e7e7e;
+          }
+        }
       }
       .sfprInputsBlock{
         background: #fbfaf8;
