@@ -17,6 +17,11 @@ namespace UsabilityDynamics\WPP {
 
         add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
         add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+        add_filter('supermap::prepare_properties_for_map', array(__CLASS__, 'prepare_properties_for_map'));
+
+        add_action( 'save_post', array(__CLASS__, 'delete_cache'), 1);
+        add_action( 'delete_post', array(__CLASS__, 'delete_cache'), 1);
+        // For pre cache existing query.
 
         $custom_attributes = ud_get_wp_property( 'property_stats', array() );
 
@@ -569,30 +574,99 @@ namespace UsabilityDynamics\WPP {
        *
        * @param $query
        */
-      static public function get_properties( $query, $args = array() ) {
+      static public function get_properties( $query, $args = array(), $ignore_cache = false) {
+        global $wpdb;
         $result = array(
           'total' => 0,
           'data' => array(),
         );
 
+        $hashByArguments = md5( serialize( array($query, $args) ) );
+        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
+        $file = $cache_dir . "wpp_smap_" . $hashByArguments . ".js";
+        $cached_time = get_option("wpp_smap_cache_$hashByArguments") + DAY_IN_SECONDS;
+        
+        $ignore_cache = isset($_REQUEST['ignore_cache']) ? $_REQUEST['ignore_cache'] : $ignore_cache;
+
+        if( file_exists($file) && $cached_time > time() && $ignore_cache == false && 1==2) {
+          $result     = file_get_contents($file);
+          $result     = unserialize($result);
+          unset($result['query']);
+          return $result;
+        }
+
         //* Get properties */
         $property_ids = \WPP_F::get_properties( $query , true );
-        if( !empty( $property_ids ) ) {
+
+        if( !empty( $property_ids ) ):
           $properties = array();
-          foreach ($property_ids['results'] as $key => $id) {
-            $property = prepare_property_for_display( $id, wp_parse_args( $args, array(
-              'load_gallery' => 'false',
-              'get_children' => 'false',
-              'load_parent' => 'false',
-              'scope' => 'supermap_sidebar'
-            ) ) );
-            $properties[$id] = $property;
+          $ids = implode(",", $property_ids['results']);
+          $sql = "";
+
+          // Non post_meta fields
+          $non_post_meta = array(
+            'ID'          => 'or',
+            'post_title'  => 'like',
+            'post_date'   => 'date',
+            'post_status' => 'equal',
+            'post_author' => 'equal',
+            'post_parent' => false,
+            'post_name'   => false,
+            //'_thumbnail_id' => false,
+          );
+
+          $fields_ignore = array(
+                                '_map_marker_url',
+                                'featured_image_url',
+                            );
+
+          // Fields that are requested.
+          $fields = explode(',', $_REQUEST['fields']);
+          $fields = array_map('trim', $fields);
+          // Aditional columns
+          $fields[] = 'ID';
+          $fields[] = 'post_name';
+          $fields[] = 'post_parent';
+          $fields[] = 'supermap_marker';
+          $fields[] = '_thumbnail_id';
+
+          $mtI = 0;
+          $left_join = "";
+
+          $_select_clause = array();
+          foreach ($fields as $field) {
+            if(in_array($field, $fields_ignore))
+              continue;
+            if(array_key_exists($field, $non_post_meta)){
+              $_select_clause[] = "p.$field";
+            }
+            else{
+              $_select_clause[] = "GROUP_CONCAT(DISTINCT mt$mtI.meta_value) AS $field";
+              $left_join .= "LEFT JOIN {$wpdb->postmeta} AS mt$mtI ON (p.ID = mt$mtI.post_id AND mt$mtI.meta_key='$field') ";
+              $mtI++;
+            }
           }
+
+          $select_clause = implode(", ", $_select_clause);
+
+          $sql = "SELECT $select_clause FROM {$wpdb->posts} as p $left_join ";
+          $sql .= " WHERE p.ID in ($ids)";
+          $sql .= " GROUP BY p.ID";
+
+          $properties = $wpdb->get_results($sql, ARRAY_A);
+          $properties = apply_filters("supermap::prepare_properties_for_map", $properties, $query, $fields, $property_ids);
+
           $result = array(
             'total' => $property_ids['total'],
             'data' => $properties,
+            'query' => $_REQUEST,
           );
-        }
+        endif;
+
+        update_option("wpp_smap_cache_$hashByArguments", time());
+        // Before return result, save it to cache:
+        file_put_contents($file, serialize($result));
+        unset($result['query']);
         return $result;
       }
 
@@ -602,8 +676,8 @@ namespace UsabilityDynamics\WPP {
        *
        */
       static public function ajax_get_properties() {
-        global $wpdb, $wp_properties;
 
+        global $wpdb, $wp_properties;
         $defaults = array(
           'per_page' => 10,
           'starting_row' => 0,
@@ -751,6 +825,204 @@ namespace UsabilityDynamics\WPP {
         echo \WPP_F::minify_js($result);
 
         exit();
+      }
+
+      /**
+      * Retrieve the permalink for a post with a custom post type.
+      *
+      * @since 3.0.0
+      *
+      * @global WP_Rewrite $wp_rewrite
+      *
+      * @param int $id         Optional. Post ID.
+      * @param bool $leavename Optional, defaults to false. Whether to keep post name.
+      * @param bool $sample    Optional, defaults to false. Is it a sample permalink.
+      * @return string|WP_Error The post permalink.
+      */
+      static function prepare_properties_for_map( $results ) {
+        global $wp_rewrite;
+        $post_type = "property";
+        $fields = isset($_REQUEST['fields'])?$_REQUEST['fields']:"";
+        $permastruct = $wp_rewrite->get_extra_permastruct($post_type);
+        
+        $post_type = get_post_type_object($post_type);
+
+        // Upload dir
+        $uploads_dir = wp_upload_dir();
+
+        // Doing this for some sort of caching.
+        $isSSL = is_ssl() && ! is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'];
+
+        // Only using in get_parent_slug() function.
+        // get_parent_slug() need Property ID as key. To perform quick search.
+        foreach ($results as $key => $property) {
+          $results[$property['ID']] = $property;
+          unset($results[$key]);
+        }
+
+        foreach ($results as $key => &$property) {
+
+          // Doing default optimization;
+          $property = prepare_property_for_display($property);
+
+          // permalink 
+          $slug = $property['post_name'];
+          
+          // If this is a child property, need to prepend the parent slug.
+          if ( $parent_id = $property['post_parent'] ) {
+            $slug = self::get_parent_slug( $parent_id, $results ) . '/' . $slug;
+          }
+        
+          if ( !empty($permastruct)) {
+            $post_link = str_replace("%{$post_type->name}%", $slug, $permastruct);
+            $post_link = home_url( user_trailingslashit($post_link) );
+          } else {
+            if ( $post_type->query_var){
+              $post_link = add_query_arg($post_type->query_var, $slug, '');
+            }
+            else{
+              $post_link = add_query_arg(array('post_type' => $post_type->name, 'p' => $property['ID']), '');
+            }
+            $post_link = home_url($post_link);
+          }
+
+          $property['permalink'] = $post_link;
+          // End permalink
+
+          // Map marker _map_marker_url
+          if(strpos($fields, '_map_marker_url') !== false){
+            $property['_map_marker_url'] = \class_wpp_supermap::get_marker_by_post_id($property['ID'], $property, $uploads_dir);
+          }
+          // End Map marker
+
+          // Get Thumbnail url
+          if(strpos($fields, 'featured_image_url') !== false){
+            $property['featured_image_url'] = self::get_attachment_url($property['ID'], $uploads_dir, $isSSL);
+          }
+          // End Thumbnail
+
+        }
+
+        // Remove unnecessary fields
+        // No in above loop because get_paren_slug() need the post_name field of parent.
+        foreach ($results as $key => &$property) {
+          if(strpos($fields, 'post_name') === false){
+            unset($property['post_name']);
+          }
+          unset($property['post_parent']);
+          unset($property['_thumbnail_id']);
+          unset($property['supermap_marker']);
+          unset($property['system']);
+        }
+        // END Remove unnecessary fields
+        return array_values($results);
+      }
+
+
+      static public function get_parent_slug($parent_id, $properties = array()){
+        if(isset($properties[$parent_id])){
+          $parent = $properties[$parent_id];
+        }
+        else{
+          // Getting slug from database
+          global $wpdb;
+          $sql = "SELECT post_name from {$wpdb->posts} WHERE ID = $parent_id;";
+          $result = $wpdb->get_results($sql, ARRAY_A);
+          $parent = $result[0];
+        }
+        // To avoid warning.
+        $slug = isset($parent['post_name'])?$parent['post_name']:'';
+        return $slug;
+      }
+
+      static public function get_attachment_url( $property_id, $uploads_dir, $isSSL) {
+        global $wpdb, $wp_properties;
+        $return = '';
+        $sql = "
+          SELECT file.meta_value AS thumb_url, p.guid AS guid
+          FROM {$wpdb->posts} AS p
+          LEFT JOIN {$wpdb->postmeta} AS file ON (p.ID = file.post_id AND file.meta_key = '_wp_attached_file')
+          WHERE p.ID IN (
+              SELECT thumb.meta_value as thumbID
+              FROM {$wpdb->posts} AS p
+              LEFT JOIN {$wpdb->postmeta} AS thumb
+              ON (p.ID = thumb.post_id AND thumb.meta_key = '_thumbnail_id')
+              WHERE p.ID  = '$property_id'
+          )";
+        $result = $wpdb->get_results($sql, ARRAY_A);
+        if(!empty($result)){
+          $return = self::wp_get_attachment_url($property_id, $result[0], $uploads_dir, $isSSL);
+        }
+        return $return;
+      }
+
+      // From https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
+      static public function wp_get_attachment_url($ID, $file_data, $uploads, $isSSL){
+        $url = '';
+
+        if ( ($file = $file_data['thumb_url']) && $uploads && false === $uploads['error'] ) {
+            // Check that the upload base exists in the file location.
+            if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
+                // Replace file location with url location.
+                $url = str_replace($uploads['basedir'], $uploads['baseurl'], $file);
+            } elseif ( false !== strpos($file, 'wp-content/uploads') ) {
+                // Get the directory name relative to the basedir (back compat for pre-2.7 uploads)
+                $url = trailingslashit( $uploads['baseurl'] . '/' . _wp_get_attachment_relative_path( $file ) ) . basename( $file );
+            } else {
+                // It's a newly-uploaded file, therefore $file is relative to the basedir.
+                $url = $uploads['baseurl'] . "/$file";
+            }
+        }
+
+        /*
+         * If any of the above options failed, Fallback on the GUID as used pre-2.7,
+         * not recommended to rely upon this.
+         */
+        if ( empty($url) ) {
+            $url = $file_data['guid'];
+        }
+
+        // On SSL front-end, URLs should be HTTPS.
+        if ( $isSSL ) {
+            $url = set_url_scheme( $url );
+        }
+
+        /**
+         * Filter the attachment URL.
+         *
+         * @since 2.1.0
+         *
+         * @param string $url     URL for the given attachment.
+         * @param int    $post_id Attachment ID.
+         */
+        $url = apply_filters( 'wp_get_attachment_url', $url, $ID );
+
+        return $url;
+      }
+
+      static public function delete_cache(){
+        global $wpp_smap_pre_cache;
+        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
+        foreach (glob($cache_dir . "wpp_smap_*") as $file) {
+          $result     = file_get_contents($file);
+          $result     = unserialize($result);
+          $ajax_url   = admin_url('admin-ajax.php?ignore_cache=true&');
+          $query      = build_query($result['query']);
+          $wpp_smap_pre_cache[] = $ajax_url . $query;
+          unlink($file);
+        }
+        // scheduling cache generator at php shutdown.
+        register_shutdown_function(array(__CLASS__, 'shutdown'));
+      }
+
+      // 
+      static public function shutdown(){
+        global $wpp_smap_pre_cache;
+        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
+        if(is_array($wpp_smap_pre_cache))
+          foreach ($wpp_smap_pre_cache as $url) {
+            wp_remote_get( $url, array( 'blocking' => false) );
+          }
       }
 
     }

@@ -693,11 +693,14 @@ class class_wpp_supermap {
    *
    * @param string $marker_url
    * @param integer $post_id
+   * @param array $property
+   * @param wp_upload_dir() $upload_dir
    * @return string $marker_url
    *
    * @author Maxim Peshkov
+   * @author Alim Added ($property, $upload_dir) params
    */
-  static public function get_marker_by_post_id( $post_id ) {
+  static public function get_marker_by_post_id( $post_id, $property = array(), $upload_dir = false ) {
     global $wp_properties;
 
     $marker_url = '';
@@ -707,7 +710,10 @@ class class_wpp_supermap {
     }
 
     //* Get supermap marker for the current property */
-    $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
+    if(isset($property['supermap_marker'])) // Checking if meta privided in $property array.
+      $supermap_marker = $property['supermap_marker'];
+    else
+      $supermap_marker = get_post_meta($post_id, 'supermap_marker', true);
 
     //* Return empty string if property uses default marker */
     if($supermap_marker == 'default_google_map_marker') {
@@ -719,7 +725,11 @@ class class_wpp_supermap {
       $supermap_configuration['property_type_markers'] = array();
     }
 
-    $property_type = get_post_meta($post_id, 'property_type', true);
+    if(isset($property['property_type'])) // Checking if meta privided in $property array.
+      $property_type = $property['property_type'];
+    else
+      $property_type = get_post_meta($post_id, 'property_type', true);
+
     if(
       empty($supermap_marker) &&
       !empty($property_type) &&
@@ -728,7 +738,8 @@ class class_wpp_supermap {
       $supermap_marker = $supermap_configuration['property_type_markers'][$property_type];
     }
 
-    $upload_dir = wp_upload_dir();
+    if($upload_dir == false) // Call wp_upload_dir() if $upload_dir not privided.
+      $upload_dir = wp_upload_dir();
     $markers_url = $upload_dir['baseurl'] . '/supermap_files/markers';
     $markers_dir = $upload_dir['basedir'] . '/supermap_files/markers';
 
