@@ -588,7 +588,7 @@ namespace UsabilityDynamics\WPP {
         
         $ignore_cache = isset($_REQUEST['ignore_cache']) ? $_REQUEST['ignore_cache'] : $ignore_cache;
 
-        if( file_exists($file) && $cached_time > time() && $ignore_cache == false && 1==2) {
+        if( file_exists($file) && $cached_time > time() && $ignore_cache == false) {
           $result     = file_get_contents($file);
           $result     = unserialize($result);
           unset($result['query']);
