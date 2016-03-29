@@ -583,8 +583,10 @@ namespace UsabilityDynamics\WPP {
 
         $hashByArguments = md5( serialize( array($query, $args) ) );
         if ($result = get_transient($hashByArguments)) {
-          $result['cached'] = true;
-          return $result;
+          if(isset($result['data'])){
+            $result['cached'] = true;
+            return $result;
+          }
         }
 
         //* Get properties */
@@ -654,7 +656,7 @@ namespace UsabilityDynamics\WPP {
           );
         endif;
 
-        set_transient($hashByArguments, $result);
+        set_transient($hashByArguments, $result, DAY_IN_SECONDS);
         // Saving $hashByArguments to db so we can clear cache later.
         $cache_ids = get_option('wpp_super_map_cache_ids', array());
         $cache_ids[$hashByArguments] = true;
@@ -945,10 +947,11 @@ namespace UsabilityDynamics\WPP {
       static public function get_attachment_url( $property_id, $uploads_dir, $isSSL) {
         global $wpdb, $wp_properties;
         $return = '';
+        $thumb_size = $wp_properties['configuration']['feature_settings']['supermap']['supermap_thumb'];
         $sql = "
-          SELECT file.meta_value AS thumb_url, p.guid AS guid
+          SELECT meta.meta_value AS meta_data, p.guid AS guid
           FROM {$wpdb->posts} AS p
-          LEFT JOIN {$wpdb->postmeta} AS file ON (p.ID = file.post_id AND file.meta_key = '_wp_attached_file')
+          LEFT JOIN {$wpdb->postmeta} AS meta ON (p.ID = meta.post_id AND meta.meta_key = '_wp_attachment_metadata')
           WHERE p.ID IN (
               SELECT thumb.meta_value as thumbID
               FROM {$wpdb->posts} AS p
@@ -957,17 +960,22 @@ namespace UsabilityDynamics\WPP {
               WHERE p.ID  = '$property_id'
           )";
         $result = $wpdb->get_results($sql, ARRAY_A);
+        if(empty($result))
+          return;
+        $meta_data = unserialize($result[0]['meta_data']);
         if(!empty($result)){
-          $return = self::wp_get_attachment_url($property_id, $result[0], $uploads_dir, $isSSL);
+          $return = self::wp_get_attachment_url($property_id, $meta_data, $uploads_dir, $thumb_size, $isSSL);
         }
         return $return;
       }
 
       // From https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
-      static public function wp_get_attachment_url($ID, $file_data, $uploads, $isSSL){
+      static public function wp_get_attachment_url($ID, $meta_data, $uploads, $thumb_size, $isSSL){
+        global $wp_properties;
         $url = '';
+        $file = isset($meta_data['sizes'][$thumb_size])?$meta_data['sizes'][$thumb_size]['file']:$meta_data['file'];
 
-        if ( ($file = $file_data['thumb_url']) && $uploads && false === $uploads['error'] ) {
+        if ( $file && $uploads && false === $uploads['error'] ) {
             // Check that the upload base exists in the file location.
             if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
                 // Replace file location with url location.
@@ -986,7 +994,7 @@ namespace UsabilityDynamics\WPP {
          * not recommended to rely upon this.
          */
         if ( empty($url) ) {
-            $url = $file_data['guid'];
+            $url = $meta_data['guid'];
         }
 
         // On SSL front-end, URLs should be HTTPS.
