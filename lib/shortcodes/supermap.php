@@ -582,18 +582,6 @@ namespace UsabilityDynamics\WPP {
         );
 
         $hashByArguments = md5( serialize( array($query, $args) ) );
-        //$cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
-        //$file = $cache_dir . "wpp_smap_" . $hashByArguments . ".js";
-        //$cached_time = get_option("wpp_smap_cache_$hashByArguments") + DAY_IN_SECONDS;
-        //
-        //$ignore_cache = isset($_REQUEST['ignore_cache']) ? $_REQUEST['ignore_cache'] : $ignore_cache;
-        //
-        //if( file_exists($file) && $cached_time > time() && $ignore_cache == false) {
-        //  $result     = file_get_contents($file);
-        //  $result     = unserialize($result);
-        //  unset($result['query']);
-        //  return $result;
-        //}
         if ($result = get_transient($hashByArguments)) {
           $result['cached'] = true;
           return $result;
@@ -663,14 +651,15 @@ namespace UsabilityDynamics\WPP {
           $result = array(
             'total' => $property_ids['total'],
             'data' => $properties,
-            'query' => $_REQUEST,
           );
         endif;
+
         set_transient($hashByArguments, $result);
-        //update_option("wpp_smap_cache_$hashByArguments", time());
-        //// Before return result, save it to cache:
-        //file_put_contents($file, serialize($result));
-        //unset($result['query']);
+        // Saving $hashByArguments to db so we can clear cache later.
+        $cache_ids = get_option('wpp_super_map_cache_ids', array());
+        $cache_ids[$hashByArguments] = true;
+        update_option('wpp_super_map_cache_ids', $cache_ids);
+
         return $result;
       }
 
@@ -844,7 +833,7 @@ namespace UsabilityDynamics\WPP {
       * @return string|WP_Error The post permalink.
       */
       static function prepare_properties_for_map( $results ) {
-        global $wp_rewrite;
+        global $wp_rewrite, $wp_properties;
         $post_type = "property";
         $fields = isset($_REQUEST['fields'])?$_REQUEST['fields']:"";
         $permastruct = $wp_rewrite->get_extra_permastruct($post_type);
@@ -855,7 +844,7 @@ namespace UsabilityDynamics\WPP {
         $uploads_dir = wp_upload_dir();
 
         // Doing this for some sort of caching.
-        $isSSL = is_ssl() && ! is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'];
+        $isSSL = is_ssl();
 
         // Only using in get_parent_slug() function.
         // get_parent_slug() need Property ID as key. To perform quick search.
@@ -875,9 +864,11 @@ namespace UsabilityDynamics\WPP {
           }
         
           if ( !empty($permastruct)) {
+            // Prety url
             $post_link = str_replace("%{$post_type->name}%", $slug, $permastruct);
             $post_link = home_url( user_trailingslashit($post_link) );
           } else {
+            // Default query based
             if ( $post_type->query_var){
               $post_link = add_query_arg($post_type->query_var, $slug, '');
             }
@@ -901,6 +892,21 @@ namespace UsabilityDynamics\WPP {
             $property['featured_image_url'] = self::get_attachment_url($property['ID'], $uploads_dir, $isSSL);
           }
           // End Thumbnail
+
+          // From prepare_property_for_display()
+          foreach ($property as $attribute => &$attribute_value) {
+            if(isset($wp_properties[ 'admin_attr_fields' ][ $attribute ])){
+              $data_input_type = $wp_properties[ 'admin_attr_fields' ][ $attribute ];
+              // No display formating is needed for wysiwyg because it's formatted.
+              if($data_input_type == 'wysiwyg'){
+                $attribute_value = do_shortcode( $attribute_value );
+              }
+              else{
+                $attribute_value = do_shortcode( html_entity_decode( $attribute_value ) );
+                $attribute_value = str_replace( "\n", "", nl2br( $attribute_value ) );
+              }
+            }
+          }
 
         }
 
@@ -1002,28 +1008,11 @@ namespace UsabilityDynamics\WPP {
       }
 
       static public function delete_cache(){
-        global $wpp_smap_pre_cache;
-        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
-        foreach (glob($cache_dir . "wpp_smap_*") as $file) {
-          $result     = file_get_contents($file);
-          $result     = unserialize($result);
-          $ajax_url   = admin_url('admin-ajax.php?ignore_cache=true&');
-          $query      = build_query($result['query']);
-          $wpp_smap_pre_cache[] = $ajax_url . $query;
-          unlink($file);
+        $cache_ids = get_option('wpp_super_map_cache_ids', array());
+        foreach ($cache_ids as $id => $value) {
+          delete_transient( $id );
         }
-        // scheduling cache generator at php shutdown.
-        register_shutdown_function(array(__CLASS__, 'shutdown'));
-      }
-
-      // 
-      static public function shutdown(){
-        global $wpp_smap_pre_cache;
-        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
-        if(is_array($wpp_smap_pre_cache))
-          foreach ($wpp_smap_pre_cache as $url) {
-            wp_remote_get( $url, array( 'blocking' => false) );
-          }
+        delete_option('wpp_super_map_cache_ids');
       }
 
     }
