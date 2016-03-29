@@ -582,16 +582,20 @@ namespace UsabilityDynamics\WPP {
         );
 
         $hashByArguments = md5( serialize( array($query, $args) ) );
-        $cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
-        $file = $cache_dir . "wpp_smap_" . $hashByArguments . ".js";
-        $cached_time = get_option("wpp_smap_cache_$hashByArguments") + DAY_IN_SECONDS;
-        
-        $ignore_cache = isset($_REQUEST['ignore_cache']) ? $_REQUEST['ignore_cache'] : $ignore_cache;
-
-        if( file_exists($file) && $cached_time > time() && $ignore_cache == false) {
-          $result     = file_get_contents($file);
-          $result     = unserialize($result);
-          unset($result['query']);
+        //$cache_dir = trailingslashit( ud_get_wp_property( 'cache_dir' ) );
+        //$file = $cache_dir . "wpp_smap_" . $hashByArguments . ".js";
+        //$cached_time = get_option("wpp_smap_cache_$hashByArguments") + DAY_IN_SECONDS;
+        //
+        //$ignore_cache = isset($_REQUEST['ignore_cache']) ? $_REQUEST['ignore_cache'] : $ignore_cache;
+        //
+        //if( file_exists($file) && $cached_time > time() && $ignore_cache == false) {
+        //  $result     = file_get_contents($file);
+        //  $result     = unserialize($result);
+        //  unset($result['query']);
+        //  return $result;
+        //}
+        if ($result = get_transient($hashByArguments)) {
+          $result['cached'] = true;
           return $result;
         }
 
@@ -662,11 +666,11 @@ namespace UsabilityDynamics\WPP {
             'query' => $_REQUEST,
           );
         endif;
-
-        update_option("wpp_smap_cache_$hashByArguments", time());
-        // Before return result, save it to cache:
-        file_put_contents($file, serialize($result));
-        unset($result['query']);
+        set_transient($hashByArguments, $result);
+        //update_option("wpp_smap_cache_$hashByArguments", time());
+        //// Before return result, save it to cache:
+        //file_put_contents($file, serialize($result));
+        //unset($result['query']);
         return $result;
       }
 
@@ -861,9 +865,6 @@ namespace UsabilityDynamics\WPP {
         }
 
         foreach ($results as $key => &$property) {
-
-          // Doing default optimization;
-          $property = prepare_property_for_display($property);
 
           // permalink 
           $slug = $property['post_name'];
