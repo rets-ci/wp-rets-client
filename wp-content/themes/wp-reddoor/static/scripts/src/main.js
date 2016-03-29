@@ -112,6 +112,8 @@ jQuery(document).ready(function(){
     jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
     jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
 
+    jQuery('.home .buyBtnForm').addClass('current-menu-item');
+
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
     jQuery('.formTabs').on('click', function(){

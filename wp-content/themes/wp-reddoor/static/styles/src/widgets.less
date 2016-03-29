@@ -97,7 +97,7 @@
         li{
           border: 1px solid #ededed;
           height: 50px !important;
-          width: 160px !important;
+          width: 170px !important;
           margin-left: -6px;
           &:hover{
             border-bottom: 1px solid #F10D2C;
@@ -114,22 +114,22 @@
           a{
             text-indent: unset !important;
             color: #5a595c !important;
-            width: 146px !important;
+            width: 170px !important;
             height: 48px !important;
             float: left !important;
             outline: none;
+            display: flex;
             div{
               float: left;
               font-size: 0.8em;
-              line-height: 1.4em;
               margin-left: 10px;
-              margin-top: 8px;
-              width: 90px;
+              width: 105px;
+              align-self: center;
+              line-height: 18px;
             }
             span{
               font-size: 2em;
-              margin-top: 9px;
-              margin-left: 9px;
+              margin: 9px 5px 0 15px;
               float: left;
             }
           }
@@ -140,7 +140,7 @@
       float: left;
       width: 50%;
       overflow: hidden;
-
+      padding-right: 4em;
       h3{
         font-size: 3em !important;
         text-shadow: none !important;
@@ -150,12 +150,10 @@
       p{
         color: #5a595c !important;
         text-shadow: none !important;
-        padding-right: 1em;
         margin-bottom: 3em !important;
       }
       .featurePoint{
         margin-bottom: 3em;
-        padding-right: 25px;
         & > span{
           float: left;
           display: block;
@@ -189,19 +187,28 @@
 .menu-home-buying-page-sub-menu-container{
   background: #F3F0E9 none repeat scroll 0 0;
   #menu-home-buying-page-sub-menu{
+    border-bottom: 1px solid #d0d4d9;
+    border-top: 1px solid #d0d4d9;
     margin: 0 auto;
-    width: 70%;
+    text-align: center;
     li{
       border-right: 1px solid #d0d4d9;
-      padding: 1.5em;
+      padding: 1.5em 5em 1.5em 1.5em;
       display: inline-block;
+      line-height: 1.2em;
       &:before{
-        font-size: 1.5em;
-        padding: 0.8em;
+        font-size: 1.8em;
+        padding: 0.9em 1.5em 0.9em 0.9em;
+        position: relative;
+        top: 4px;
+      }
+      &:last-child{
+        border-right: none;
       }
       a{
         color: #5a595c;
-        font-size: 1.5em;
+        font-size: 1.2em;
+        line-height: 1.2em;
         font-family: "Poppins",OpenSans,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
         &:hover{
           text-decoration: none;

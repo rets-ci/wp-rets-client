@@ -193,7 +193,7 @@ if(class_exists('WP_Widget')) {
   include 'widgets/gc-widget/guide-content.php';
 }
 if(class_exists('WP_Widget')) {
-  include 'widgets/rdc-promote-widget/promote.php';
+  include 'widgets/rdc-callout-widget/callout.php';
 }
 
 

@@ -295,7 +295,7 @@
   height: 555px;
   padding-top: 15%;
   position: relative;
-  top: -80px;
+  top: -90px;
   margin-bottom: -20px;
   z-index: 7;
   .searchForm {
@@ -337,7 +337,7 @@
       background: #2f2e31;
       padding: 12px 13px 11px 13px;
       border-radius: 0 5px 5px 5px;
-      height: 70px;
+      height: 85px;
       margin-top: -2px;
       ul {
         background: #fff none repeat scroll 0 0;
@@ -354,7 +354,7 @@
           color: @white;
           font-size: 1.1em;
           font-weight: 400;
-          padding: 11px 20px;
+          padding: 19px 20px;
           border: medium none;
           float: right;
         }
@@ -367,16 +367,16 @@
         padding-top: 3px;
         position: relative;
         width: 40%;
-        height: 3em;
+        height: 4em;
         .citiesSelection{
           background: #f8f8f8 none repeat scroll 0 0;
           border: medium none;
           padding: 0.44em 0.6em;
         }
         .select2 {
-          height: 41px;
+          height: 58px;
           padding-left: 35px;
-          color: #808285;
+          color: #A7A9AC;
           min-width: 100%;
           .select2-selection {
             border: none;
@@ -396,17 +396,21 @@
           &:-ms-input-placeholder      {color:#242526;}
         }
         .select2-selection__arrow{
-          height: 40px;
-          width: 30px;
+          height: 55px;
+          width: 50px;
+          b{
+            border-color: #a7a9ac transparent transparent;
+          }
         }
         .select2-selection__rendered{
-          line-height: 40px !important;
+          line-height: 55px !important;
         }
         .sf-icon{
           font-size: 1.3em;
           left: 12px;
           position: absolute;
-          top: 13px;
+          top: 20px;
+          color: #a7a9ac;
         }
       }
     .sfBeds, .sfBaths, .sfPrice{
@@ -416,29 +420,29 @@
       height: 46px;
       float: left;
       border-left: 1px solid #e6e6e6;
-      height: 3em;
+      height: 4em;
       .sf-icon{
         font-size: 1.3em;
         left: 20px;
         position: absolute;
-        top: 13px;
+        top: 20px;
       }
       span{
         display: block;
-        height: 46px;
-        line-height: 3em;
+        height: 61px;
+        line-height: 4em;
         cursor: context-menu;
-        color: #808285;
+        color: #A7A9AC;
         position: relative;
         cursor: pointer;
         padding-left: 60px;
         .sf-arrow{
-          border-color: #888 transparent transparent;
+          border-color: #a7a9ac transparent transparent;
           border-style: solid;
           border-width: 5px 4px 0;
           position: absolute;
-          right: 15px;
-          top: 22px;
+          right: 22px;
+          top: 29px;
         }
       }
       &>ul{
@@ -465,7 +469,7 @@
         padding-bottom: 0;
         text-align: center;
         width: 20px;
-        margin-right: 0.8em;
+        margin-right: 0.2em;
       }
     }
     }
@@ -653,6 +657,18 @@
       top: 0;
       z-index: 20;
       padding-bottom: 30px;
+      .wpp_agent_stats_agent_image{
+        img {
+          border-radius: 50%;
+          display: block;
+          height: 150px;
+          margin: 5% auto 3%;
+          width: 150px;
+        }
+      }
+      .wpp_agent_stats_display_name{
+
+      }
       .oneAgentLinksBlock{
         padding: 0 40px;
         a{

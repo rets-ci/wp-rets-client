@@ -14,7 +14,7 @@
  *
  * @see WP_Widget
  */
- class Promote_Widget extends WP_Widget {
+ class RDC_Callout_Widget extends WP_Widget {
 
 	/**
 	 * Sets up a new Custom Menu widget instance.
@@ -25,7 +25,7 @@
 	public function __construct()
 	{
 		$widget_ops = array('description' => __('Add a custom block with title, button and background'));
-		parent::__construct('promote', __('Promote widget'), $widget_ops);
+		parent::__construct('callout', __('RDC Callout widget'), $widget_ops);
 
 		if (function_exists('wp_enqueue_media')) {
 			wp_enqueue_media();
@@ -35,14 +35,14 @@
 			wp_enqueue_script('thickbox');
 		}
 
-		wp_enqueue_style('promote-style', get_stylesheet_directory_uri() . '/widgets/rdc-promote-widget/css/promote-style.css?nocache=' . rand(1,200) );
-		wp_enqueue_script('frontend-promote', get_stylesheet_directory_uri() . '/widgets/rdc-promote-widget/js/frontend-promote.js?nocache=' . rand(1,200) );
+		wp_enqueue_style('callout-style', get_stylesheet_directory_uri() . '/widgets/rdc-callout-widget/css/callout-style.css?nocache=' . rand(1,200) );
+		wp_enqueue_script('frontend-callout', get_stylesheet_directory_uri() . '/widgets/rdc-callout-widget/js/frontend-callout.js?nocache=' . rand(1,200) );
 
 
-		function promote_image_dowmload_script(){
-			wp_enqueue_script('promote', get_stylesheet_directory_uri() . '/widgets/rdc-promote-widget/js/promote.js?nocache=' . rand(1,200) );
+		function callout_image_dowmload_script(){
+			wp_enqueue_script('callout', get_stylesheet_directory_uri() . '/widgets/rdc-callout-widget/js/callout.js?nocache=' . rand(1,200) );
 		}
-		add_action('admin_enqueue_scripts', 'promote_image_dowmload_script');
+		add_action('admin_enqueue_scripts', 'callout_image_dowmload_script');
 
 
 	}
@@ -61,12 +61,12 @@
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
 		$instance['title'] = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
-		$promote_image = wp_get_attachment_url( $instance['custom_media_id']);
+		$callout_image = wp_get_attachment_url( $instance['custom_media_id']);
 
 		echo $args['before_widget'];
 
 		if ( !empty($instance['title']) )
-			echo '<div class="widgetBody" style="background: url('. $promote_image .')"><h2>' . $instance['title'] . '</h2>';
+			echo '<div class="widgetBody" style="background: url('. $callout_image .')"><h2>' . $instance['title'] . '</h2>';
 
 
 		/**
@@ -159,4 +159,4 @@
 	}
 }
 
-add_action( 'widgets_init', register_widget('Promote_Widget') );
+add_action( 'widgets_init', register_widget('RDC_Callout_Widget') );

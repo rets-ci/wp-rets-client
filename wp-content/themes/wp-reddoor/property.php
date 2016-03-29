@@ -19,11 +19,9 @@
 
 ?>
 
-<?php get_header(); ?>
+<?php get_header();
 
-
-<?php
-$property = prepare_property_for_display( get_the_ID() );
+global $property;
 // Start the Loop.
 while ( have_posts() ) : the_post();
 
@@ -56,8 +54,8 @@ while ( have_posts() ) : the_post();
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
             </ul>
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/OneAgent.png" alt="" />
-            <h3>Denis Zabelin</h3>
+
+            <?php echo do_shortcode('[agent_card fields=agent_image,display_name]') ?>
             <span>Red Door Company</span>
             <div class="oneAgentLinksBlock">
               <a href="#">Request Information</a>
