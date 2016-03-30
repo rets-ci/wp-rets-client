@@ -9,15 +9,17 @@
 }
 .site-logo img {
   display: block;
-  margin: auto;
+  margin: 10px auto 0;
+  width: 110px;
 }
 .site-logo a {
   color: red;
   text-align: center;
+  outline: none;
 }
 .head-popups {
   float: right;
-  margin-top: 28px;
+  margin-top: 15px;
 }
 .head-popups a {
   font-weight: 400;
@@ -34,19 +36,19 @@
   color: #fff;
 }
 .headerTopMenu {
-  background: transparent url('../images/src/submenuBg.png') repeat-x scroll 0 71px !important;
+  background: transparent url('../images/src/submenuBg.png') repeat-x scroll 0 60px !important;
   position: relative;
   z-index: 10;
 }
 .menu-header-container .menuDesktop {
   position: relative;
   float: left;
-  margin: 28px 0 0 40px;
+  margin: 20px 0 0 40px;
   display: block;
 }
 .menu-header-container .menuDesktop > .current-menu-item {
   font-weight: 400;
-  background: rgba(0, 0, 0, 0) url('../images/src/arrow.png') no-repeat scroll center 42px;
+  background: rgba(0, 0, 0, 0) url('../images/src/arrow.png') no-repeat scroll center 40px;
 }
 .menu-header-container .menuDesktop > .current-menu-item .sub-menu {
   display: block !important;
@@ -58,7 +60,7 @@
   height: 55px;
 }
 .menu-header-container .menuDesktop > li a {
-  font-size: 1.4em;
+  font-size: 1.2em;
   color: #5a595c;
   cursor: pointer;
 }
@@ -67,8 +69,8 @@
   color: #34343a;
 }
 .menu-header-container .menuDesktop .sub-menu {
-  height: 60px;
-  line-height: 60px;
+  height: 54px;
+  line-height: 54px;
   position: absolute;
   top: 45px;
   width: 1000px;
@@ -498,7 +500,7 @@
   height: 555px;
   padding-top: 15%;
   position: relative;
-  top: -80px;
+  top: -90px;
   margin-bottom: -20px;
   z-index: 7;
 }
@@ -542,7 +544,7 @@
   background: #2f2e31;
   padding: 12px 13px 11px 13px;
   border-radius: 0 5px 5px 5px;
-  height: 70px;
+  height: 85px;
   margin-top: -2px;
 }
 .frontPageSearchBlock .searchForm form ul {
@@ -556,7 +558,7 @@
   color: #fff;
   font-size: 1.1em;
   font-weight: 400;
-  padding: 11px 20px;
+  padding: 19px 20px;
   border: medium none;
   float: right;
 }
@@ -568,7 +570,7 @@
   padding-top: 3px;
   position: relative;
   width: 40%;
-  height: 3em;
+  height: 4em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -576,9 +578,9 @@
   padding: 0.44em 0.6em;
 }
 .frontPageSearchBlock .searchForm form .location .select2 {
-  height: 41px;
+  height: 58px;
   padding-left: 35px;
-  color: #808285;
+  color: #A7A9AC;
   min-width: 100%;
 }
 .frontPageSearchBlock .searchForm form .location .select2 .select2-selection {
@@ -608,17 +610,21 @@
   color: #242526;
 }
 .frontPageSearchBlock .searchForm form .location .select2-selection__arrow {
-  height: 40px;
-  width: 30px;
+  height: 55px;
+  width: 50px;
+}
+.frontPageSearchBlock .searchForm form .location .select2-selection__arrow b {
+  border-color: #a7a9ac transparent transparent;
 }
 .frontPageSearchBlock .searchForm form .location .select2-selection__rendered {
-  line-height: 40px !important;
+  line-height: 55px !important;
 }
 .frontPageSearchBlock .searchForm form .location .sf-icon {
   font-size: 1.3em;
   left: 12px;
   position: absolute;
-  top: 13px;
+  top: 20px;
+  color: #a7a9ac;
 }
 .frontPageSearchBlock .searchForm form .sfBeds,
 .frontPageSearchBlock .searchForm form .sfBaths,
@@ -629,7 +635,7 @@
   height: 46px;
   float: left;
   border-left: 1px solid #e6e6e6;
-  height: 3em;
+  height: 4em;
 }
 .frontPageSearchBlock .searchForm form .sfBeds .sf-icon,
 .frontPageSearchBlock .searchForm form .sfBaths .sf-icon,
@@ -637,16 +643,16 @@
   font-size: 1.3em;
   left: 20px;
   position: absolute;
-  top: 13px;
+  top: 20px;
 }
 .frontPageSearchBlock .searchForm form .sfBeds span,
 .frontPageSearchBlock .searchForm form .sfBaths span,
 .frontPageSearchBlock .searchForm form .sfPrice span {
   display: block;
-  height: 46px;
-  line-height: 3em;
+  height: 61px;
+  line-height: 4em;
   cursor: context-menu;
-  color: #808285;
+  color: #A7A9AC;
   position: relative;
   cursor: pointer;
   padding-left: 60px;
@@ -654,12 +660,12 @@
 .frontPageSearchBlock .searchForm form .sfBeds span .sf-arrow,
 .frontPageSearchBlock .searchForm form .sfBaths span .sf-arrow,
 .frontPageSearchBlock .searchForm form .sfPrice span .sf-arrow {
-  border-color: #888 transparent transparent;
+  border-color: #a7a9ac transparent transparent;
   border-style: solid;
   border-width: 5px 4px 0;
   position: absolute;
-  right: 15px;
-  top: 22px;
+  right: 22px;
+  top: 29px;
 }
 .frontPageSearchBlock .searchForm form .sfBeds > ul,
 .frontPageSearchBlock .searchForm form .sfBaths > ul,
@@ -687,7 +693,7 @@
   padding-bottom: 0;
   text-align: center;
   width: 20px;
-  margin-right: 0.8em;
+  margin-right: 0.2em;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange {
   background: #fff;
@@ -855,6 +861,13 @@
   top: 0;
   z-index: 20;
   padding-bottom: 30px;
+}
+.single-property .singlePropertyHeader .oneAgent .wpp_agent_stats_agent_image img {
+  border-radius: 50%;
+  display: block;
+  height: 150px;
+  margin: 5% auto 3%;
+  width: 150px;
 }
 .single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock {
   padding: 0 40px;
@@ -1156,7 +1169,7 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li {
   border: 1px solid #ededed;
   height: 50px !important;
-  width: 160px !important;
+  width: 170px !important;
   margin-left: -6px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
@@ -1174,29 +1187,30 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
   text-indent: unset !important;
   color: #5a595c !important;
-  width: 146px !important;
+  width: 170px !important;
   height: 48px !important;
   float: left !important;
   outline: none;
+  display: flex;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
   font-size: 0.8em;
-  line-height: 1.4em;
   margin-left: 10px;
-  margin-top: 8px;
-  width: 90px;
+  width: 105px;
+  align-self: center;
+  line-height: 18px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a span {
   font-size: 2em;
-  margin-top: 9px;
-  margin-left: 9px;
+  margin: 9px 5px 0 15px;
   float: left;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent {
   float: left;
   width: 50%;
   overflow: hidden;
+  padding-right: 4em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -1207,12 +1221,10 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent p {
   color: #5a595c !important;
   text-shadow: none !important;
-  padding-right: 1em;
   margin-bottom: 3em !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
   margin-bottom: 3em;
-  padding-right: 25px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > span {
   float: left;
@@ -1243,21 +1255,30 @@
   background: #F3F0E9 none repeat scroll 0 0;
 }
 .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu {
+  border-bottom: 1px solid #d0d4d9;
+  border-top: 1px solid #d0d4d9;
   margin: 0 auto;
-  width: 70%;
+  text-align: center;
 }
 .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li {
   border-right: 1px solid #d0d4d9;
-  padding: 1.5em;
+  padding: 1.5em 5em 1.5em 1.5em;
   display: inline-block;
+  line-height: 1.2em;
 }
 .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:before {
-  font-size: 1.5em;
-  padding: 0.8em;
+  font-size: 1.8em;
+  padding: 0.9em 1.5em 0.9em 0.9em;
+  position: relative;
+  top: 4px;
+}
+.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:last-child {
+  border-right: none;
 }
 .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a {
   color: #5a595c;
-  font-size: 1.5em;
+  font-size: 1.2em;
+  line-height: 1.2em;
   font-family: "Poppins", OpenSans, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a:hover {
@@ -1317,6 +1338,8 @@
 }
 .footerWidgetArea1 .sow-image-container img {
   margin-bottom: 45px;
+  margin-top: 25px;
+  width: 175px;
 }
 .footerWidgetArea2 {
   margin-top: 20%;
