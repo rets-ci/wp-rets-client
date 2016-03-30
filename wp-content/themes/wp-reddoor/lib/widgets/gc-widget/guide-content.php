@@ -35,15 +35,14 @@
 			wp_enqueue_script('thickbox');
 		}
 
-		wp_enqueue_style('gc-style', get_stylesheet_directory_uri() . '/widgets/gc-widget/css/gc-style.css?nocache=' . rand(1,200) );
-		wp_enqueue_script('frontend-guide', get_stylesheet_directory_uri() . '/widgets/gc-widget/js/frontend-guide.js?nocache=' . rand(1,200) );
+		wp_enqueue_style('gc-style', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/css/gc-style.css?nocache=' . rand(1,200) );
+		wp_enqueue_script('frontend-guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/frontend-guide.js?nocache=' . rand(1,200) );
 
 
 		function image_dowmload_script(){
-			wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/widgets/gc-widget/js/guide.js?nocache=' . rand(1,200) );
+			wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/guide.js?nocache=' . rand(1,200) );
 		}
 		add_action('admin_enqueue_scripts', 'image_dowmload_script');
-
 
 	}
 	/**

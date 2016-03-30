@@ -75,7 +75,7 @@ class RDC_Widget_PostCarousel_Widget extends SiteOrigin_Widget {
 				),
 				array(
 					'sow-carousel-basic',
-					get_stylesheet_directory_uri() . '/widgets/rdc-post-carousel/js/carousel' . SOW_BUNDLE_JS_SUFFIX . '.js',
+					get_stylesheet_directory_uri() . '/lib/widgets/rdc-post-carousel/js/carousel' . SOW_BUNDLE_JS_SUFFIX . '.js',
 					array( 'jquery', 'touch-swipe' ),
 					SOW_BUNDLE_VERSION,
 					true
@@ -86,7 +86,7 @@ class RDC_Widget_PostCarousel_Widget extends SiteOrigin_Widget {
 			array(
 				array(
 					'sow-carousel-basic',
-					get_stylesheet_directory_uri() . '/widgets/rdc-post-carousel/css/style.css',
+					get_stylesheet_directory_uri() . '/lib/widgets/rdc-post-carousel/css/style.css',
 					array(),
 					SOW_BUNDLE_VERSION
 				)
