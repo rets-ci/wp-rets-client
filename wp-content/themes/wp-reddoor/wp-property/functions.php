@@ -102,7 +102,7 @@ add_filter( 'wpp::advanced_supermap::table_column_classes', function(){
  */
 add_filter( 'wpp::advanced_supermap::property_search::form', function( $content ){
   ob_start();
-  get_template_part('templates/supermap/search-form');
+  get_template_part('static/views/supermap/search-form');
   return ob_get_clean();
 } );
 
@@ -111,7 +111,7 @@ add_filter( 'wpp::advanced_supermap::property_search::form', function( $content 
  */
 add_filter( 'wpp::advanced_supermap::current_property::details', function( $content ) {
   ob_start();
-  get_template_part('templates/supermap/current-property');
+  get_template_part('static/views/supermap/current-property');
   return ob_get_clean();
 } );
 
