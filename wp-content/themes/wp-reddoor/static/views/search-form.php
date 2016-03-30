@@ -49,13 +49,13 @@
 
 	<form class="buyForm" id="tabs-1" method="POST" action="">
 		<div class="location">
-			<span class="icon-location-pin-solid sf-icon"></span>
+			<span class="icon-wpproperty-location-pin-solid sf-icon"></span>
 			<select class="citiesSelection" name="_term" placeholder="Location">
 				<option value="" selected></option>
 			</select>
 		</div>
 		<div class="sfBeds">
-			<span><div class="icon-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input id="bed1" name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label for="bed1">1</label></li>
 				<li><input id="bed15" name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label for="bed15">1.5</label></li>
@@ -67,7 +67,7 @@
 			</ul>
 		</div>
 		<div class="sfBaths">
-			<span><div class="icon-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input id="bath1" name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label for="bath1">1</label></li>
 				<li><input id="bath15" name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label for="bath15">1.5</label></li>
@@ -79,7 +79,7 @@
 			</ul>
 		</div>
 		<div class="sfPrice">
-			<span><div class="icon-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
 
 			<div class="sfPriceRange">
 				<div class="sfprInputsBlock">
@@ -120,13 +120,13 @@
 
 	<form class="rentForm" id="tabs-2"  method="POST" action="">
 		<div class="location">
-			<span class="icon-location-pin-solid sf-icon"></span>
+			<span class="icon-wpproperty-location-pin-solid sf-icon"></span>
 			<select class="citiesSelection" name="_term">
 				<option></option>
 			</select>
 		</div>
 		<div class="sfBeds">
-			<span><div class="icon-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>Beds<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1" /><label>1</label></li>
 				<li><input name="wpp_search[bedrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
@@ -138,7 +138,7 @@
 			</ul>
 		</div>
 		<div class="sfBaths">
-			<span><div class="icon-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>Baths<b class="sf-arrow"></b></span>
 			<ul>
 				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1" /><label>1</label></li>
 				<li><input name="wpp_search[bathrooms][]" type="checkbox" value="1.5" /><label>1.5</label></li>
@@ -150,7 +150,7 @@
 			</ul>
 		</div>
 		<div class="sfPrice">
-			<span><div class="icon-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
+			<span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
 		</div>
 		<input type="submit" value="Search" />
 		<div class="sf-property-quantity"><b>!</b> <?php echo $rentTermsQuantity ?> properties for rent</div>
