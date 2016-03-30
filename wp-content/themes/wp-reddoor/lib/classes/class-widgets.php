@@ -679,7 +679,7 @@ namespace UsabilityDynamics\RDC {
     public function __construct()
     {
       $widget_ops = array('description' => __('Add a custom block with title, button and background'));
-      parent::__construct('callout', __('RDC Callout widget'), $widget_ops);
+      parent::__construct('callout', __('RDC Callout'), $widget_ops);
 
       if (is_admin()) {
         wp_enqueue_media();
@@ -749,7 +749,7 @@ namespace UsabilityDynamics\RDC {
 
       echo '<h3>' . $instance['subtitle'] . '</h3>';
 
-      echo '<a href="' . $instance['buttonlink'] . '">' . $instance['buttonlable'] . '</a>';
+      echo '<a href="' . $instance['buttonlink'] . '">' . $instance['buttonlabel'] . '</a>';
 
       echo '</div>';
 
@@ -786,7 +786,7 @@ namespace UsabilityDynamics\RDC {
     {
       $title = isset($instance['title']) ? $instance['title'] : '';
       $subtitle = isset($instance['subtitle']) ? $instance['subtitle'] : '';
-      $buttonlable = isset($instance['buttonlable']) ? $instance['buttonlable'] : '';
+      $buttonlabel = isset($instance['buttonlabel']) ? $instance['buttonlabel'] : '';
       $buttonlink = isset($instance['buttonlink']) ? $instance['buttonlink'] : '';
       $custom_media_id = isset($instance['custom_media_id']) ? $instance['custom_media_id'] : '';
 
@@ -804,9 +804,9 @@ namespace UsabilityDynamics\RDC {
                name="<?php echo $this->get_field_name('subtitle'); ?>" value="<?php echo esc_attr($subtitle); ?>"/>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id('buttonlable'); ?>"><?php _e('Button lable:') ?></label>
-        <input type="text" class="widefat" id="<?php echo $this->get_field_id('buttonlable'); ?>"
-               name="<?php echo $this->get_field_name('buttonlable'); ?>" value="<?php echo esc_attr($buttonlable); ?>"/>
+        <label for="<?php echo $this->get_field_id('buttonlable'); ?>"><?php _e('Button label:') ?></label>
+        <input type="text" class="widefat" id="<?php echo $this->get_field_id('buttonlabel'); ?>"
+               name="<?php echo $this->get_field_name('buttonlabel'); ?>" value="<?php echo esc_attr($buttonlabel); ?>"/>
       </p>
       <p>
         <label for="<?php echo $this->get_field_id('buttonlink'); ?>"><?php _e('Button link:') ?></label>

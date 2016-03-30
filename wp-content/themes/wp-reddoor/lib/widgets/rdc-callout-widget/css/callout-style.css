@@ -1,14 +1,14 @@
-.widget_promote{
+.widget_callout{
     margin: 15px 0 !important;
 }
-.widget_promote .widgetBody{
+.widget_callout .widgetBody{
     width: 400px;
     height: 300px;
     border-radius: 5%;
-    padding: 10% 5% 5%;
+    padding: 6% 5% 5%;
     background-size: cover !important;
 }
-.widget_promote .widgetBody a{
+.widget_callout .widgetBody a{
     background: #cf3428 none repeat scroll 0 0;
     border-radius: 10px;
     color: #fff;
@@ -17,11 +17,11 @@
     text-align: center;
     width: 150px;
 }
-.widget_promote .widgetBody h2{
+.widget_callout .widgetBody h2{
     color: #fff;
     margin: 0 0 20px;
 }
-.widget_promote .widgetBody h3{
+.widget_callout .widgetBody h3{
     color: #ededed;
     margin: 0 0 20px;
     line-height: 35px;

@@ -49,7 +49,7 @@
 						$categories = get_the_category();
 						if ( ! empty( $categories ) ) {
 							foreach( $categories as $category ) { ?>
-								<svg class="icon icon-<?php if($category->slug){echo $category->slug;} ?>"><use xlink:href="#icon-<?php if($category->slug){echo $category->slug;} ?>"></use></svg>
+								<span class="icon icon-rdc-<?php if($category->slug){echo $category->slug;} ?>"></span>
 							<?php }
 						}
 
