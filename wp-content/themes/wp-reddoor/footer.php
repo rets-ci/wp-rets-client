@@ -57,7 +57,7 @@
                 <?php endif; ?>
             </div>
         </div>
-        <?php get_template_part('templates/popups') ?>
+        <?php get_template_part('static/views/popups') ?>
     </div>
 </div>
 </div>

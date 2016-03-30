@@ -13,7 +13,7 @@
  */
 
 get_header(); ?>
-<?php get_template_part('templates/page-header'); ?>
+<?php get_template_part('static/views/page-header'); ?>
   <div class="container">
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>

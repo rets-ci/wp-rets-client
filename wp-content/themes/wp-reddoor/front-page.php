@@ -17,7 +17,7 @@ get_header(); ?>
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock">
-        <?php get_template_part('templates/search-form'); ?>
+        <?php get_template_part('static/views/search-form'); ?>
       </section>
     </div>
   </div>

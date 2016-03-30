@@ -180,19 +180,13 @@ add_action( 'wp_ajax_TermsSearchable', 'termsSearchable' );
 add_action( 'wp_ajax_nopriv_TermsSearchable', 'termsSearchable' );
 
 if(class_exists('SiteOrigin_Widget')) {
-  include 'widgets/rdc-post-carousel/post-carousel.php';
+  include 'lib/widgets/rdc-post-carousel/post-carousel.php';
+  include 'lib/widgets/rdc-hero/hero.php';
 }
-if(class_exists('SiteOrigin_Widget')) {
-  include 'widgets/rdc-hero/hero.php';
-}
-if(class_exists('SiteOrigin_Widget')) {
-  include 'widgets/rdc-guide-content/image.php';
-}
+
 if(class_exists('WP_Widget')) {
-  include 'widgets/gc-widget/guide-content.php';
-}
-if(class_exists('WP_Widget')) {
-  include 'widgets/rdc-callout-widget/callout.php';
+  include 'lib/widgets/gc-widget/guide-content.php';
+  include 'lib/widgets/rdc-callout-widget/callout.php';
 }
 
 

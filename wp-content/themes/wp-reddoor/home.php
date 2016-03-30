@@ -19,7 +19,7 @@ get_header(); ?>
   </section>
 </div>
 
-<?php get_template_part('templates/blog-content') ?>
+<?php get_template_part('static/views/blog-content') ?>
 
 
 <?php get_footer(); ?>
