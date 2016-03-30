@@ -11,7 +11,7 @@
 								?>
 								<li>
 									<a href="<?php echo get_category_link($_categoriesNew->term_id); ?>">
-										<svg class="icon icon-<?php echo $_categoriesNew->slug; ?>"><use xlink:href="#icon-<?php echo $_categoriesNew->slug; ?>"></use></svg>
+										<span style="display: inline-block; width: 50px; height: 50px; font-size: 2em; position: relative; top: 5px;" class="icon-rdc-<?php echo $_categoriesNew->slug; ?>"></span>
 										<?php echo $_categoriesNew->name; ?>
 									</a>
 								</li>
