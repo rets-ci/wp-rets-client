@@ -1,0 +1,188 @@
+/* Pulse Shrink */
+@-webkit-keyframes loading {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+@keyframes loading {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+.rdc-supermap .section-content {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 80px 20px 70px;
+}
+.rdc-supermap .section-content h3 {
+  font-size: 2em;
+  margin: 0 0 12px 0;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0 0 10px 0;
+}
+.rdc-supermap .section-content p.section-tagline {
+  color: #808285;
+  text-align: center;
+}
+.rdc-supermap .section-content hr.section-delimiter {
+  color: #e2e3e4;
+  background-color: #e2e3e4;
+  width: 200px;
+  margin-bottom: 70px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters {
+  margin-bottom: 40px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form {
+  text-align: center;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul {
+  list-style: none;
+  text-align: center;
+  display: inline-block;
+  margin: 0;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li {
+  list-style: none;
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #808285;
+  padding: 10px 14px;
+  border-right-width: 0;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li:first-child {
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li:last-child {
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-right-width: 1px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label {
+  max-height: 49px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label span.rdc-icon-wrap {
+  display: block;
+  float: left;
+  height: 25px;
+  overflow: hidden;
+  padding-top: 4px;
+  width: 25px;
+  margin-right: 4px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label span.rdc-icon-wrap span.rdc-icon {
+  color: #808285;
+  font-size: 24px;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label input {
+  max-width: 165px;
+  width: auto;
+  border: none;
+  padding: 0;
+  color: #808285;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label select {
+  max-width: 165px;
+  color: #808285;
+  width: auto;
+  border: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url("images/arrow-down.png");
+  background-position: 90% center;
+  background-repeat: no-repeat;
+  padding-right: 30px;
+  background-color: transparent;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button {
+  display: inline-block;
+  padding: 10px;
+  min-width: 130px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button:hover,
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button:focus,
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button:active {
+  color: #fff;
+  background-color: #da4e43 !important;
+}
+.rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.loading {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-animation-name: loading;
+  animation-name: loading;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+}
+@media screen and (max-width: 800px) {
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul {
+    display: block;
+  }
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li {
+    display: inline;
+    border: 0;
+    padding: 0;
+  }
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label {
+    list-style: none;
+    display: inline-block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #808285;
+    padding: 10px 14px;
+    margin-bottom: 4px;
+  }
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button {
+    margin: 10px 0 0 0;
+    width: 50%;
+  }
+  .rdc-supermap .section-content .supermap-section .wpp_supermap_wrapper {
+    margin: 0 -20px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form ul li label {
+    display: block;
+    text-align: left;
+  }
+  .rdc-supermap .section-content .supermap-section .rdc-supemap-filters form input.button {
+    width: 100%;
+  }
+}
