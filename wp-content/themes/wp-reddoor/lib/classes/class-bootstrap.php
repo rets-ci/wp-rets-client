@@ -141,7 +141,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('masked', get_stylesheet_directory_uri() . '/static/scripts/src/masked.js');
         wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.min.js');
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,100));
-        wp_enqueue_style('style-svg', 'https://i.icomoon.io/public/524f31be7a/rdc/style-svg.css');
+        wp_enqueue_style('style2', 'view-source:https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/style.css?1gwudq&ver=4.4.2');
         wp_enqueue_style('style1', 'https://s3.amazonaws.com/icomoon.io/28703/wpproperty/style.css?ob605w');
       }
 

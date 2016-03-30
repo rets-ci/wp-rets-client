@@ -112,7 +112,7 @@ jQuery(document).ready(function(){
     jQuery('.linkedFootIcon a').html('<span class="icon-social-linkedin-symbol"></span>');
     jQuery('.instagramFootIcon a').html('<span class="icon-social-instagram-symbol"></span>');
 
-    jQuery('.home .buyBtnForm').addClass('current-menu-item');
+    jQuery('.home .ourCompanyBtn, .archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn').addClass('current-menu-item');
 
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
