@@ -195,6 +195,8 @@ namespace UsabilityDynamics\RDC {
           register_widget('\UsabilityDynamics\RDC\RDCReferralProgramForm');
           register_widget('\UsabilityDynamics\RDC\RDCApplicationRequestForm');
           register_widget('\UsabilityDynamics\RDC\RDCJobRequestForm');
+          register_widget('\UsabilityDynamics\RDC\Guide_content_Widget');
+          register_widget('\UsabilityDynamics\RDC\RDC_Callout_Widget');
         }
       }
     }
