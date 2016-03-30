@@ -14,15 +14,6 @@
 
 get_header(); ?>
 
-  <script>
-
-  </script>
-  <script>
-
-  </script>
-  <script>
-
-  </script>
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock">
