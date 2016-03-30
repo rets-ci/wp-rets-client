@@ -8,7 +8,6 @@ add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js');
   wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,1000));
   wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
-  wp_enqueue_script('jquery-1.10.2', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-1.10.2.js');
   wp_enqueue_script('jquery-ui.js', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-ui.js');
   wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js');
   wp_enqueue_script('masked', get_stylesheet_directory_uri() . '/static/scripts/src/masked.js');

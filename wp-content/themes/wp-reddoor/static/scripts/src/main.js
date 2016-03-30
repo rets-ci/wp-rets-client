@@ -138,10 +138,10 @@ jQuery(document).ready(function(){
 
     /* Equal height */
     jQuery.fn.equivalent = function (){
-        var $blocks = $(this),
+        var $blocks = jQuery(this),
             maxH    = $blocks.eq(0).height();
         $blocks.each(function(){
-            maxH = ( $(this).height() > maxH ) ? $(this).height() : maxH;
+            maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
         });
         $blocks.height(maxH);
     }
