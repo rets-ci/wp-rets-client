@@ -168,17 +168,15 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 		?>
 		<div class="sow-slider-image-container">
 			<div class="sow-slider-image-wrapper cl<?php  ?>">
-				<?php $dataImage = wp_get_attachment_image_src($frame['image']);
-							$imageLink = $dataImage[0];
-				?>
-				<div class="tabbedWidgetImageArea" style="background-image: url('<?php echo $imageLink ?>'); height: <?php echo $dataImage[1]; ?>px"></div>
+				<?php	$dataImage = wp_get_attachment_image_url($frame['image'], 'full');	?>
+				<div class="tabbedWidgetImageArea" style="background-image: url('<?php echo $dataImage ?>');"></div>
 
 				<div class="tabbedWidgetContent">
 				<h3><?php echo $frame['content_title'] ?></h3>
 					<p><?php echo $frame['content'] ?></p>
 					<div class="featurePoint">
 						<?php echo siteorigin_widget_get_icon($frame['feature_point']['icon_point']); ?>
-						<div>
+						<div style="width: <?php if(empty(siteorigin_widget_get_icon($frame['feature_point']['icon_point']))){echo '100%'; }; ?>">
 							<h4><?php echo $frame['feature_point']['feature_title'] ?></h4>
 							<?php echo $frame['feature_point']['feature_content'] ?>
 						</div>
@@ -187,7 +185,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 					<?php if($frame['feature_point2']['icon_point2'] || $frame['feature_point2']['feature_title2'] || $frame['feature_point2']['feature_content2'] ){ ?>
 					<div class="featurePoint">
 						<?php echo siteorigin_widget_get_icon($frame['feature_point2']['icon_point2']); ?>
-						<div>
+						<div style="width: <?php if(empty(siteorigin_widget_get_icon($frame['feature_point2']['icon_point2']))){echo '100%'; }; ?>">
 							<h4><?php echo $frame['feature_point2']['feature_title2'] ?></h4>
 							<?php echo $frame['feature_point2']['feature_content2'] ?>
 						</div>
@@ -197,7 +195,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 					<?php if($frame['feature_point3']['icon_point3'] || $frame['feature_point3']['feature_title3'] || $frame['feature_point3']['feature_content3'] ){ ?>
 						<div class="featurePoint">
 							<?php echo siteorigin_widget_get_icon($frame['feature_point3']['icon_point3']); ?>
-							<div>
+							<div style="width: <?php if(empty(siteorigin_widget_get_icon($frame['feature_point3']['icon_point3']))){echo '100%'; }; ?>">
 								<h4><?php echo $frame['feature_point3']['feature_title3'] ?></h4>
 								<?php echo $frame['feature_point3']['feature_content3'] ?>
 							</div>

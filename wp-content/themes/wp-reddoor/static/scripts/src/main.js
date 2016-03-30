@@ -106,11 +106,11 @@ jQuery(document).ready(function(){
     jQuery('.location .select2-selection__placeholder').html('Location');
 
     /* Footer social icons */
-    jQuery('.facebookFootIcon a').html('<svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>');
-    jQuery('.twitterFootIcon a').html('<svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>');
-    jQuery('.googleFootIcon a').html('<svg class="icon icon-google-plus"><use xlink:href="#icon-google-plus"></use></svg>');
-    jQuery('.linkedFootIcon a').html('<svg class="icon icon-linkedin2"><use xlink:href="#icon-linkedin2"></use></svg>');
-    jQuery('.instagramFootIcon a').html('<svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg>');
+    jQuery('.facebookFootIcon a').html('<span class="icon-social-facebook-symbol"></span>');
+    jQuery('.twitterFootIcon a').html('<span class="icon-social-twitter-symbol"></span>');
+    jQuery('.googleFootIcon a').html('<span class="icon-social-googleplus-symbol"></span>');
+    jQuery('.linkedFootIcon a').html('<span class="icon-social-linkedin-symbol"></span>');
+    jQuery('.instagramFootIcon a').html('<span class="icon-social-instagram-symbol"></span>');
 
     jQuery('.home .buyBtnForm').addClass('current-menu-item');
 
