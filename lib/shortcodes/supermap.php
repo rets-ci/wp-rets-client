@@ -18,8 +18,8 @@ namespace UsabilityDynamics\WPP {
         add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
         add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
 
-        add_action( 'wp_ajax_/supermap/get_thumbnail_url', array( __CLASS__,'get_thumbnail_url' ) );
-        add_action( 'wp_ajax_nopriv_/supermap/get_thumbnail_url', array( __CLASS__,'get_thumbnail_url' ) );
+        add_action( 'wp_ajax_/supermap/get_gallery', array( __CLASS__,'get_gallery' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_gallery', array( __CLASS__,'get_gallery' ) );
 
         add_filter('supermap::prepare_properties_for_map', array(__CLASS__, 'prepare_properties_for_map'));
 
@@ -599,16 +599,16 @@ namespace UsabilityDynamics\WPP {
        * @queryParam $thumbnail_size
        * @return json feature image url;
        */
-      static public function get_thumbnail_url(){
+      static public function get_gallery(){
         $defaults = array(
           'property_id' => false,
-          'thumbnail_size' => 'thumbnail',
         );
 
         $atts = shortcode_atts($defaults, $_REQUEST);
         extract($atts);
-        $thumb_data = \UsabilityDynamics\WPP\Property_Factory::get_thumbnail($property_id);
-        wp_send_json($thumb_data['images'][$thumbnail_size]);
+        $gallery      = Property_Factory::get_images( $property_id );
+        $thumbnail_id = Property_Factory::get_thumbnail_id($property_id);
+        wp_send_json(array('gallery' => $gallery, 'thumbID' => $thumbnail_id));
         die();
       }
 

@@ -265,9 +265,8 @@
           }
 
           var params = {
-            "action": "/supermap/get_thumbnail_url",
+            "action": "/supermap/get_gallery",
             "property_id": ID,
-            "thumbnail_size": $scope.atts.thumbnail_size,
           };
 
           var getQuery = jQuery.param( params );
@@ -275,9 +274,20 @@
             method: 'GET',
             url: wpp.instance.ajax_url + '?' + getQuery
           }).then(function successCallback(response) {
+            if (response.data == false || response.data.gallery.length == 0) 
+              return;
             $scope.properties.filter(function(property){
               if (property.ID == ID) {
-                property.featured_image_url = response.data;
+                property.gallery = response.data.gallery;
+                property.thumbID = response.data.thumbID;
+                jQuery.each(property.gallery, function(index, attachment){
+                  if(attachment.attachment_id == response.data.thumbID){
+                    if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
+                      property.featured_image_url = attachment[$scope.atts.thumbnail_size];
+                    else
+                      property.featured_image_url = attachment['large'];
+                  }
+                });
                 delete $scope.thumbRequest[ID];
               }
             });
@@ -318,12 +328,15 @@
          * Fired when currentProperty is changed!
          * Opens InfoBubble Window!
          */
-        $scope.$watch( 'currentProperty', function( currentProperty ) {
+        $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
           //console.log( 'currentProperty', currentProperty );
           //console.log( 'dynMarkers', $scope.dynMarkers );
           //console.log( 'currentProperty', currentProperty );
+          // Trying to get previous property ID if there.
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty.ID:false;
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
-            if ( $scope.dynMarkers[i].listingId == currentProperty.ID ) {
+            // Checking whether property changed or not.
+            if (currentProperty.ID != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty.ID ) {
               //console.log( 'Marker', $scope.dynMarkers[i] );
               NgMap.getMap().then( function( map ) {
                 //*
