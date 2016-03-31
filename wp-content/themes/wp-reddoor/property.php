@@ -81,11 +81,18 @@ while ( have_posts() ) : the_post();
 
                 $user_data = get_userdata($agentId);
 
+                if(!empty($image_ids[0])){
+                  $imageId = $image_ids[0];
+                }
+                else{
+                  $imageId = '44331';
+                }
+
                 echo wp_get_attachment_image($image_ids[0], 'thumbnail') . '</br>';
 
                 echo '<h3>' . $user_data->display_name . '</h3></br>';
 
-                echo '<span>Red Door Company</span></li><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div>';
+                echo '<span>Red Door Company</span><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
 
               }
             }
