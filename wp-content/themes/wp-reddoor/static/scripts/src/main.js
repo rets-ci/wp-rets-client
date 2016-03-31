@@ -4,6 +4,10 @@ jQuery(document).ready(function(){
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
     //jQuery( ".speed" ).selectmenu(); // custom select
     //jQuery( "#tabs_search" ).tabs(); //tabs for search form
+    jQuery('#tabs_search ul a').click(function (e) {
+        e.preventDefault();
+        jQuery(this).tab('show');
+    })
 
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){
