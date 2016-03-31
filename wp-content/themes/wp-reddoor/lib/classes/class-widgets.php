@@ -827,4 +827,142 @@ namespace UsabilityDynamics\RDC {
       <?php
     }
   }
+
+  /**
+   * Class RDC_Callout_Widget
+   * @package UsabilityDynamics\RDC
+   */
+  class RDC_Masthead_Widget extends \WP_Widget {
+
+    /**
+     * Sets up a new Custom Menu widget instance.
+     *
+     * @since 3.0.0
+     * @access public
+     */
+    public function __construct()
+    {
+      $widget_ops = array('description' => __('Add a custom block with title, button and background'));
+      parent::__construct('masthead', __('RDC Masthead'), $widget_ops);
+
+      if (is_admin()) {
+        wp_enqueue_media();
+      }
+
+      add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'));
+      add_action('wp_enqueue_scripts', array($this, 'frontend_enqueue'));
+    }
+
+    /**
+     *
+     */
+    public function admin_enqueue()
+    {
+      wp_enqueue_script('masthead', get_stylesheet_directory_uri() . '/lib/widgets/rdc-masthead-widget/js/masthead.js?nocache=' . rand(1, 200));
+    }
+
+    /**
+     *
+     */
+    public function frontend_enqueue()
+    {
+      wp_enqueue_style('masthead-style', get_stylesheet_directory_uri() . '/lib/widgets/rdc-masthead-widget/css/masthead-style.css?nocache=' . rand(1, 200));
+      wp_enqueue_script('frontend-masthead', get_stylesheet_directory_uri() . '/lib/widgets/rdc-masthead-widget/js/frontend-masthead.js?nocache=' . rand(1, 200));
+    }
+
+    /**
+     * Outputs the content for the current Custom Menu widget instance.
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param array $args Display arguments including 'before_title', 'after_title',
+     *                        'before_widget', and 'after_widget'.
+     * @param array $instance Settings for the current Custom Menu widget instance.
+     */
+    public function widget($args, $instance)
+    {
+
+      /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+      $instance['title'] = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $this->id_base);
+
+      $masthead_image = wp_get_attachment_url($instance['custom_media_id']);
+
+      echo $args['before_widget'];
+
+      echo '<div class="container-fluid"><div class="row"><section style="background-image: url(' . $masthead_image . ')" class="frontPageSearchBlock">';
+
+      if (!empty($instance['title'])) {
+        echo '<h2>' . $instance['title'] . '</h2>';
+      }
+
+      if (!empty($instance['subtitle'])) {
+        echo '<h3>' . $instance['subtitle'] . '</h3>';
+      }
+
+        get_template_part('static/views/search-form');
+
+      echo '</section></div></div>';
+
+      echo $args['after_widget'];
+
+    }
+
+    /**
+     * Handles updating settings for the current Custom Menu widget instance.
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param array $new_instance New settings for this instance as input by the user via
+     *                            WP_Widget::form().
+     * @param array $old_instance Old settings for this instance.
+     * @return array Updated settings to save.
+     */
+    public function update($new_instance, $old_instance)
+    {
+
+      return $new_instance;
+    }
+
+    /**
+     * Outputs the settings form for the Custom Menu widget.
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param array $instance Current settings.
+     */
+    public function form($instance)
+    {
+      $title = isset($instance['title']) ? $instance['title'] : '';
+      $subtitle = isset($instance['subtitle']) ? $instance['subtitle'] : '';
+      $custom_media_id = isset($instance['custom_media_id']) ? $instance['custom_media_id'] : '';
+
+      // If no menus exists, direct the user to go and create some.
+      ?>
+
+      <p>
+        <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
+        <input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
+               name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo esc_attr($title); ?>"/>
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id('subtitle'); ?>"><?php _e('Subtitle:') ?></label>
+        <input type="text" class="widefat" id="<?php echo $this->get_field_id('subtitle'); ?>"
+               name="<?php echo $this->get_field_name('subtitle'); ?>" value="<?php echo esc_attr($subtitle); ?>"/>
+      </p>
+
+      <p>
+        <a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select
+          image</a> <br/>
+        <img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>"
+             width="300" style="display: none;"/>
+        <input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id('custom_media_id'); ?>"
+               name="<?php echo $this->get_field_name('custom_media_id'); ?>"
+               value="<?php echo esc_attr($custom_media_id); ?>"/>
+      </p>
+      <?php
+    }
+  }
 }
