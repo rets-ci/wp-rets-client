@@ -184,6 +184,7 @@
     });
 
     jQuery("#powf_E3E9D503C22EE41195286C3BE5BD3B20").submit(function(e){
+      if ( typeof grecaptcha == 'undefined' ) return true;
       var rresult = grecaptcha.getResponse();
       if( !rresult.length > 0 ) {
         return false;

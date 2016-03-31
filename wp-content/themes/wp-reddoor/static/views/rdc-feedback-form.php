@@ -187,6 +187,7 @@
       });
 
       jQuery("#powf_E1FC2444265AE411B3136C3BE5A87DF0").submit(function(e){
+        if ( typeof grecaptcha == 'undefined' ) return true;
         var rresult = grecaptcha.getResponse();
         if( !rresult.length > 0 ) {
           return false;

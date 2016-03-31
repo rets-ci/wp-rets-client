@@ -145,6 +145,7 @@
     });
 
     jQuery("#powf_905AF33FD6D1E511810FC4346BACE18C").submit(function(e){
+      if ( typeof grecaptcha == 'undefined' ) return true;
       var rresult = grecaptcha.getResponse();
       if( !rresult.length > 0 ) {
         return false;

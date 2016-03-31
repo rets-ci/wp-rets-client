@@ -225,6 +225,7 @@
       });
 
       jQuery("#powf_60B61B4E4447E51180FAC4346BB5981C").submit(function(e){
+        if ( typeof grecaptcha == 'undefined' ) return true;
         var rresult = grecaptcha.getResponse();
         if( !rresult.length > 0 ) {
           return false;
