@@ -335,12 +335,21 @@
         border-radius: 5px 5px 0 0;
         border: medium none;
       }
+      .active{
+        background: none;
+        border: none !important;
+      }
       a {
         padding: 0 1.7em !important;
-        color: @white;
+        color: @white !important;
         display: block;
+        line-height: unset;
+        background: rgba(46, 47, 49, 0.6) !important;
+        border: none !important;
         &:hover {
           text-decoration: none;
+          background: rgba(46, 47, 49, 0.6) !important;
+          border: none !important;
         }
         &:focus{
           outline: none;

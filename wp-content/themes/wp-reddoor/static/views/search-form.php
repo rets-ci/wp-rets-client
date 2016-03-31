@@ -29,12 +29,12 @@
 ?>
 
 <div class="searchForm" id="tabs_search">
-	<ul>
-		<li class="formTabs" data-topmenu="buyBtnForm">
-			<a href="#tabs-1" class="active">Buy</a>
+	<ul class="nav nav-tabs">
+		<li class="formTabs active" data-topmenu="buyBtnForm">
+			<a data-toggle="tab" href="#tabs-1">Buy</a>
 		</li>
 		<li class="formTabs" data-topmenu="rentBtnForm">
-			<a href="#tabs-2">Rent</a>
+			<a data-toggle="tab" href="#tabs-2">Rent</a>
 		</li>
 	</ul>
 	<ul>
@@ -46,8 +46,8 @@
 		</li>
 	</ul>
 	<div class="clear"></div>
-
-	<form class="buyForm" id="tabs-1" method="POST" action="">
+	<div class="tab-content">
+	<form class="buyForm active tab-pane fade in " id="tabs-1" method="POST" action="">
 		<div class="location">
 			<span class="icon-wpproperty-location-pin-solid sf-icon"></span>
 			<select class="citiesSelection" name="_term" placeholder="Location">
@@ -118,7 +118,7 @@
 		<div class="sf-property-quantity"><b>!</b> <?php echo $saleTermsQuantity ?> properties for sale</div>
 	</form>
 
-	<form class="rentForm" id="tabs-2"  method="POST" action="">
+	<form class="rentForm tab-pane fade" id="tabs-2"  method="POST" action="">
 		<div class="location">
 			<span class="icon-wpproperty-location-pin-solid sf-icon"></span>
 			<select class="citiesSelection" name="_term">
@@ -155,5 +155,6 @@
 		<input type="submit" value="Search" />
 		<div class="sf-property-quantity"><b>!</b> <?php echo $rentTermsQuantity ?> properties for rent</div>
 	</form>
+	</div>
 </div>
 

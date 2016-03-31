@@ -22,6 +22,10 @@
 <?php get_header();
 
 global $property;
+
+die( '<pre>' . print_r( $property, true ) . '</pre>' );
+
+
 // Start the Loop.
 while ( have_posts() ) : the_post();
 
