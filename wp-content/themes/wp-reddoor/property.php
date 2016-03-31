@@ -85,10 +85,10 @@ while ( have_posts() ) : the_post();
                   $imageId = $image_ids[0];
                 }
                 else{
-                  $imageId = '44331';
+                  $imageId = '14311';
                 }
 
-                echo wp_get_attachment_image($image_ids[0], 'thumbnail') . '</br>';
+                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
 
                 echo '<h3>' . $user_data->display_name . '</h3></br>';
 
