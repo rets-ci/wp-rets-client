@@ -524,6 +524,12 @@
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
 }
+.frontPageSearchBlock .searchForm .nav-tabs {
+  margin-right: 4px;
+}
+.frontPageSearchBlock .searchForm .nav-tabs li {
+  float: none;
+}
 .frontPageSearchBlock .searchForm > ul {
   margin: 0;
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -538,10 +544,6 @@
   line-height: 3.5em;
   border-radius: 5px 5px 0 0;
   border: medium none;
-}
-.frontPageSearchBlock .searchForm > ul .active {
-  background: none;
-  border: none !important;
 }
 .frontPageSearchBlock .searchForm > ul a {
   padding: 0 1.7em !important;
@@ -580,7 +582,7 @@
   color: #fff;
   font-size: 1.1em;
   font-weight: 400;
-  padding: 19px 20px;
+  padding: 21px 20px;
   border: medium none;
   float: right;
 }
@@ -592,7 +594,7 @@
   padding-top: 3px;
   position: relative;
   width: 40%;
-  height: 4em;
+  height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -657,7 +659,7 @@
   height: 46px;
   float: left;
   border-left: 1px solid #e6e6e6;
-  height: 4em;
+  height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .sfBeds .sf-icon,
 .frontPageSearchBlock .searchForm form .sfBaths .sf-icon,
@@ -672,7 +674,7 @@
 .frontPageSearchBlock .searchForm form .sfPrice span {
   display: block;
   height: 61px;
-  line-height: 4em;
+  line-height: 4.5em;
   cursor: context-menu;
   color: #A7A9AC;
   position: relative;
@@ -884,7 +886,7 @@
   z-index: 20;
   padding-bottom: 30px;
 }
-.single-property .singlePropertyHeader .oneAgent .wpp_agent_stats_agent_image img {
+.single-property .singlePropertyHeader .oneAgent img {
   border-radius: 50%;
   display: block;
   height: 150px;

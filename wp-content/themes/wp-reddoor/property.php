@@ -23,9 +23,6 @@
 
 global $property;
 
-die( '<pre>' . print_r( $property, true ) . '</pre>' );
-
-
 // Start the Loop.
 while ( have_posts() ) : the_post();
 
@@ -59,8 +56,389 @@ while ( have_posts() ) : the_post();
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
             </ul>
 
-            <?php echo do_shortcode('[agent_card fields=agent_image,display_name]') ?>
-            <span>Red Door Company</span>
+            <div class="rdc-agents-carousel-container">
+
+            <div class="rdc-agents-carousel-wrapper">
+
+              <div class="rdc-agents-carousel-title">
+
+              <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
+
+              <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+
+              </div>
+
+              <ul class="rdc-agents-carousel-items">
+
+            <?php
+
+            if(!empty($property['wpp_agents'])) {
+              foreach ($property['wpp_agents'] as $agentId) {
+
+                echo '<li class="rdc-agents-carousel-item">';
+
+                $image_ids = get_user_meta($agentId, 'agent_images', true);
+
+                $user_data = get_userdata($agentId);
+
+                echo wp_get_attachment_image($image_ids[0], 'thumbnail') . '</br>';
+
+                echo '<h3>' . $user_data->display_name . '</h3></br>';
+
+                echo '<span>Red Door Company</span></li>';
+
+              }
+            }
+
+            ?>
+
+                </ul>
+            </div>
+
+              </div>
+
+            <script>
+
+              jQuery(document).ready(function(){
+
+                jQuery( function($){
+                  // The carousel widget
+                  jQuery('.rdc-agents-carousel-wrapper').each(function(){
+
+                    var $$ = jQuery(this),
+                      $postsContainer = $$.closest('.rdc-agents-carousel-container'),
+                      $container = $$.closest('.rdc-agents-carousel-container').parent(),
+                      $itemsContainer = $$.find('.rdc-agents-carousel-items'),
+                      $items = $$.find('.rdc-agents-carousel-item'),
+                      $firstItem = $items.eq(0);
+
+                    var position = 0,
+                      page = 1,
+                      fetching = false,
+                      numItems = $items.length,
+                      totalPosts = $$.data('found-posts'),
+                      complete = numItems == totalPosts,
+                      itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) ),
+                      isRTL = $postsContainer.hasClass('js-rtl'),
+                      updateProp = isRTL ? 'margin-right' : 'margin-left';
+
+                    var updatePosition = function() {
+                      if ( position < 0 ) position = 0;
+                      if ( position >= $$.find('.rdc-agents-carousel-item').length - 1 ) {
+                        position = $$.find('.rdc-agents-carousel-item').length - 1;
+                        // Fetch the next batch
+                        if( !fetching &&  !complete ) {
+                          fetching = true;
+                          page++;
+                          $itemsContainer.append('<li class="rdc-agents-carousel-item rdc-agents-carousel-loading"></li>');
+
+                          jQuery.get(
+                            $$.data('ajax-url'),
+                            {
+                              query : $$.data('query'),
+                              action : 'sow_carousel_load',
+                              paged : page
+                            },
+                            function (data, status){
+                              var $items = $(data.html);
+                              $items.appendTo( $itemsContainer ).hide().fadeIn();
+                              $$.find('.rdc-agents-carousel-loading').remove();
+                              numItems = $$.find('.rdc-agents-carousel-item').length;
+                              complete = numItems == totalPosts;
+                              fetching = false;
+                            }
+                          )
+                        }
+                      }
+                      $itemsContainer.css('transition-duration', "0.45s");
+                      $itemsContainer.css(updateProp, -( itemWidth * position) + 'px' );
+                    };
+
+                    $container.on( 'click', 'a.rdc-agents-carousel-previous',
+                      function(e){
+                        e.preventDefault();
+                        position -= isRTL ? -1 : 1;
+                        updatePosition();
+                      }
+                    );
+
+                    $container.on( 'click', 'a.rdc-agents-carousel-next',
+                      function(e){
+                        e.preventDefault();
+                        position += isRTL ? -1 : 1;
+                        updatePosition();
+                      }
+                    );
+                    var validSwipe = false;
+                    var prevDistance = 0;
+                    var startPosition = 0;
+                    var velocity = 0;
+                    var prevTime = 0;
+                    var posInterval;
+                    var negativeDirection = isRTL ? 'right' : 'left';
+
+                    // Verify "swipe" method exists prior to invoking it.
+                    if( 'function' === typeof $$.swipe ) {
+                      $$.swipe( {
+                        excludedElements: "",
+                        triggerOnTouchEnd: true,
+                        threshold: 75,
+                        swipeStatus: function (event, phase, direction, distance, duration, fingerCount, fingerData) {
+                          if ( phase == "start" ) {
+                            startPosition = -( itemWidth * position);
+                            prevTime = new Date().getTime();
+                            clearInterval(posInterval);
+                          }
+                          else if ( phase == "move" ) {
+                            if( direction == negativeDirection ) distance *= -1;
+                            setNewPosition(startPosition + distance);
+                            var newTime = new Date().getTime();
+                            var timeDelta = (newTime - prevTime) / 1000;
+                            velocity = (distance - prevDistance) / timeDelta;
+                            prevTime = newTime;
+                            prevDistance = distance;
+                          }
+                          else if ( phase == "end" ) {
+                            validSwipe = true;
+                            if( direction == negativeDirection ) distance *= -1;
+                            if(Math.abs(velocity) > 400) {
+                              velocity *= 0.1;
+                              var startTime = new Date().getTime();
+                              var cumulativeDistance = 0;
+                              posInterval = setInterval(function () {
+                                var time = (new Date().getTime() - startTime) / 1000;
+                                cumulativeDistance += velocity * time;
+                                var newPos = startPosition + distance + cumulativeDistance;
+                                var decel = 30;
+                                var end = (Math.abs(velocity) - decel) < 0;
+                                if(direction == negativeDirection) {
+                                  velocity += decel;
+                                } else {
+                                  velocity -= decel;
+                                }
+                                if(end || !setNewPosition(newPos)) {
+                                  clearInterval(posInterval);
+                                  setFinalPosition();
+                                }
+                              }, 20);
+                            } else {
+                              setFinalPosition();
+                            }
+                          }
+                          else if( phase == "cancel") {
+                            updatePosition();
+                          }
+                        }
+                      } );
+                    }
+
+
+                    var setNewPosition = function(newPosition) {
+                      if(newPosition < 50 && newPosition >  -( itemWidth * numItems )) {
+                        $itemsContainer.css('transition-duration', "0s");
+                        $itemsContainer.css(updateProp, newPosition + 'px' );
+                        return true;
+                      }
+                      return false;
+                    };
+                    var setFinalPosition = function() {
+                      var finalPosition = parseInt( $itemsContainer.css(updateProp) );
+                      position = Math.abs( Math.round( finalPosition / itemWidth ) );
+                      updatePosition();
+                    };
+                    $$.on('click', '.rdc-agents-carousel-item a',
+                      function (event) {
+                        if(validSwipe) {
+                          event.preventDefault();
+                          validSwipe = false;
+                        }
+                      }
+                    )
+                  } );
+                } );
+
+              });
+
+            </script>
+            <style>
+
+              .rdc-agents-carousel-title {
+                display: inline-block;
+                padding-right: 15px;
+                height: 20px;
+              }
+              .rdc-agents-carousel-title a.rdc-agents-carousel-next,
+              .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+                font-family: 'carousel-arrows';
+                speak: none;
+                display: block;
+                float: right;
+                overflow: hidden;
+                margin-left: 2px;
+                margin-top: 3px;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                text-transform: none;
+                font-size: 8px;
+                line-height: 18px;
+                width: 18px;
+                text-align: center;
+                /* Better Font Rendering =========== */
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-decoration: none;
+                color: #FFFFFF;
+                background: #333333;
+                border-radius: 2px;
+              }
+
+              .rdc-agents-carousel-title a.rdc-agents-carousel-next{
+                position: absolute;
+                right: 15px;
+                top: 50%;
+              }
+              .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+                left: 15px;
+                position: absolute;
+                top: 50%;
+              }
+
+              .rdc-agents-carousel-title a.rdc-agents-carousel-next:hover,
+              .rdc-agents-carousel-title a.rdc-agents-carousel-previous:hover {
+                background: #444444;
+              }
+              .rdc-agents-carousel-title a.rdc-agents-carousel-next:before {
+                content: "\e601";
+              }
+              .rdc-agents-carousel-title a.rdc-agents-carousel-previous:before {
+                content: "\e600";
+              }
+              @media screen and (max-width: 600px) {
+                .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+                  display: none;
+                }
+                .rdc-agents-carousel a.rdc-agents-carousel-next {
+                  display: none;
+                }
+              }
+              .widget_rdc-agents-carousel {
+                overflow-x: hidden;
+                overflow-y: hidden;
+              }
+              .rdc-agents-carousel-wrapper {
+                overflow: hidden;
+                position: relative;
+                left: 0;
+                right: 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items {
+                list-style: none;
+                -webkit-transition: all 0.45s ease;
+                -moz-transition: all 0.45s ease;
+                -o-transition: all 0.45s ease;
+                transition: all 0.45s ease;
+                height: 200px;
+                margin: 0;
+                padding: 0;
+                zoom: 1;
+                width: 99999px;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:before {
+                content: '';
+                display: block;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:after {
+                content: '';
+                display: table;
+                clear: both;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item {
+                list-style: none;
+                margin-left: 0;
+                padding: 0;
+                display: block;
+                float: left;
+                margin-right: 15px;
+                width: 370px;
+                overflow-x: hidden;
+                overflow-y: hidden;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item:last-child {
+                margin-right: 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl {
+                float: right;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl:last-child {
+                margin-right: 15px;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail {
+                line-height: 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a {
+                display: block;
+                width: 370px;
+                height: 162px;
+                background-size: 370px 162px;
+                background-position: center center;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a,
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
+                -webkit-transition: all 0.35s ease;
+                -moz-transition: all 0.35s ease;
+                -o-transition: all 0.35s ease;
+                transition: all 0.35s ease;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
+                display: block;
+                width: 100%;
+                height: 100%;
+                background: #3279BB;
+                opacity: 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a:hover span {
+                opacity: 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-default-thumbnail {
+                display: block;
+                width: 370px;
+                height: 162px;
+                background: #E8E8E8;
+                background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E0E0E0), color-stop(1, #E8E8E8));
+                background: -ms-linear-gradient(bottom, #E0E0E0, #E8E8E8);
+                background: -moz-linear-gradient(center bottom, #E0E0E0 0%, #E8E8E8 100%);
+                background: -o-linear-gradient(#E8E8E8, #E0E0E0);
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 {
+                font-size: 15px;
+                text-align: center;
+                font-weight: 500;
+                color: #474747;
+                margin: 10px 0 0 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 a {
+                text-decoration: none;
+                color: inherit;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-loading {
+                display: block;
+                width: 370px;
+                height: 162px;
+                float: left;
+                background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
+                margin: 0;
+              }
+              a.rdc-agents-carousel-previous {
+                display: none;
+              }
+              a.rdc-agents-carousel-next {
+                display: none;
+              }
+
+
+            </style>
+
             <div class="oneAgentLinksBlock">
               <a href="#">Request Information</a>
             </div>

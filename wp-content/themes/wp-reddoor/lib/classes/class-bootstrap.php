@@ -144,6 +144,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,100));
         wp_enqueue_script( 'rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
         wp_enqueue_script( 'rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
+        wp_enqueue_script('touch-swipe');
 
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
         if( !empty( $recaptcha ) ) {
