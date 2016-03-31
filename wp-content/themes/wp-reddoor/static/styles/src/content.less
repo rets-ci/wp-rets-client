@@ -261,26 +261,29 @@
     color: #5a595c;
   }
 }
-.archiveFilterBg{
+.archiveFilterBg {
   background: #f3f0e9;
   height: 80px;
   position: relative;
   top: -90px;
-  .archiveFilterBody{
+  .archiveFilterBody {
     line-height: 80px;
     text-align: center;
-    ul{
+    ul {
       margin: 0;
-      li{
-        padding: 0 50px 0 50px;
+      li {
+
         position: relative;
         display: inline-block;
         border-right: 1px solid #d0d4d9;
-        a{
+        a {
+          padding: 0 50px 0 50px;
           color: #5a595c;
           display: block;
+          transition: .3s color;
           &:hover{
             text-decoration: none;
+            color: #d03528;
           }
           span{
             display: inline-block;
