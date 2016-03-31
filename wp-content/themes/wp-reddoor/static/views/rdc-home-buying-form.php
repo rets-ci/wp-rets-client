@@ -14,7 +14,7 @@
     <input type="hidden" name="rdc_fyb" value="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_450E34B3E2D0E511810FC4346BACE18C&tver=2013&c=1" />
 
     <div class="field">
-      <input placeholder="First Name *" type="text" id="powf_b54a0bf0e3d0e511811bc4346bad461c" name="powf_b54a0bf0e3d0e511811bc4346bad461c" value="" maxlength="50" />
+      <input placeholder="First Name *" type="text" id="powf_b54a0bf0e3d0e511811bc4346bad461c" name="powf_b54a0bf0e3d0e511811bc4346bad461c" value="" maxlength="50" class="required" />
       <div class="clear"></div>
     </div>
 
@@ -116,6 +116,7 @@
       });
 
       jQuery("#powf_450E34B3E2D0E511810FC4346BACE18C").submit(function(e){
+        if ( typeof grecaptcha == 'undefined' ) return true;
         var rresult = grecaptcha.getResponse();
         if( !rresult.length > 0 ) {
           return false;

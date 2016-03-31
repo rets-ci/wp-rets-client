@@ -3,7 +3,7 @@ jQuery(document).ready(function(){
     jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
     //jQuery( ".speed" ).selectmenu(); // custom select
-    jQuery( "#tabs" ).tabs(); //tabs for search form
+    jQuery( "#tabs_search" ).tabs(); //tabs for search form
 
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){

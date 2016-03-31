@@ -133,6 +133,7 @@
     });
 
     jQuery("#powf_280C1763D278E5118103C4346BB5981C").submit(function(e){
+      if ( typeof grecaptcha == 'undefined' ) return true;
       var rresult = grecaptcha.getResponse();
       if( !rresult.length > 0 ) {
         return false;
