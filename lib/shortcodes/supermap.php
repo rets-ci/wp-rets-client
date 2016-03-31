@@ -625,8 +625,9 @@ namespace UsabilityDynamics\WPP {
         );
 
         $hashByArguments = md5( serialize( array($query, $args) ) );
-        $ignore_cache = isset($_SERVER['HTTP_IGNORE_CACHE'])?$_SERVER['HTTP_IGNORE_CACHE']:false;
-        if (($result = get_transient($hashByArguments)) && $ignore_cache == false) {
+        $headers = getallheaders();
+        $ignore_cache = isset($headers['IGNORE_CACHE'])?$headers['IGNORE_CACHE']:$ignore_cache;
+        if ($ignore_cache == false && ($result = get_transient($hashByArguments))) {
           if(isset($result['data'])){
             $result['cached'] = true;
             return $result;
