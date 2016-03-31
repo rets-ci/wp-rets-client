@@ -133,19 +133,22 @@ namespace UsabilityDynamics\RDC {
        */
       public function frontend_scripts() {
         wp_enqueue_script('jquery');
+        wp_enqueue_script('jquery-ui-core');
+        wp_enqueue_script('jquery-ui-accordion');
         wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js');
         wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,1000));
         wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
-        wp_enqueue_script('jquery-ui.js', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-ui.js');
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js');
         wp_enqueue_script('masked', get_stylesheet_directory_uri() . '/static/scripts/src/masked.js');
         wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.min.js');
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,100));
-        //wp_enqueue_style('rdc-icons', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
-        //wp_enqueue_style('style1', 'https://s3.amazonaws.com/icomoon.io/28703/wpproperty/style.css?ob605w');
-
         wp_enqueue_script( 'rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
         wp_enqueue_script( 'rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
+
+        $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
+        if( !empty( $recaptcha ) ) {
+          wp_enqueue_script( 'google-recaptcha-api', 'https://www.google.com/recaptcha/api.js' );
+        }
       }
 
       /**

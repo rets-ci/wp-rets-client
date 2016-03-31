@@ -28,7 +28,7 @@
 
 ?>
 
-<div class="searchForm" id="tabs">
+<div class="searchForm" id="tabs_search">
 	<ul>
 		<li class="formTabs" data-topmenu="buyBtnForm">
 			<a href="#tabs-1" class="active">Buy</a>
@@ -155,11 +155,5 @@
 		<input type="submit" value="Search" />
 		<div class="sf-property-quantity"><b>!</b> <?php echo $rentTermsQuantity ?> properties for rent</div>
 	</form>
-	<div class="sellForm" id="tabs-3">
-
-	</div>
-	<div class="rentPropForm" id="tabs-4">
-
-	</div>
 </div>
 
