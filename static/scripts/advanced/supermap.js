@@ -248,6 +248,47 @@
         }
 
         /**
+         * Get thumbnail url
+         */
+        $scope.get_thumbnail_url = function get_thumbnail_url(ID) {
+          // If ID isn't set then return;
+          if(typeof ID == 'undefined') return;
+
+          // if thumbRequest is undefined then define it to avoid error.
+          if(typeof $scope.thumbRequest == 'undefined' ){
+            $scope.thumbRequest = {};
+          }
+
+          // If request is in process then return.
+          if(typeof $scope.thumbRequest[ID] != 'undefined'){
+            return;
+          }
+
+          var params = {
+            "action": "/supermap/get_thumbnail_url",
+            "property_id": ID,
+            "thumbnail_size": $scope.atts.thumbnail_size,
+          };
+
+          var getQuery = jQuery.param( params );
+          $scope.thumbRequest[ID] = $http({
+            method: 'GET',
+            url: wpp.instance.ajax_url + '?' + getQuery
+          }).then(function successCallback(response) {
+            $scope.properties.filter(function(property){
+              if (property.ID == ID) {
+                property.featured_image_url = response.data;
+                delete $scope.thumbRequest[ID];
+              }
+            });
+          }, function errorCallback(response) {
+            console.log('Failed to get image');
+          });
+
+          return;
+        }
+
+        /**
          * Fixes selected Row.
          *
          * @param row

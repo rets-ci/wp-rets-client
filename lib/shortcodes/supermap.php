@@ -17,6 +17,10 @@ namespace UsabilityDynamics\WPP {
 
         add_action( 'wp_ajax_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
         add_action( 'wp_ajax_nopriv_/supermap/get_properties', array( __CLASS__,'ajax_get_properties' ) );
+
+        add_action( 'wp_ajax_/supermap/get_thumbnail_url', array( __CLASS__,'get_thumbnail_url' ) );
+        add_action( 'wp_ajax_nopriv_/supermap/get_thumbnail_url', array( __CLASS__,'get_thumbnail_url' ) );
+
         add_filter('supermap::prepare_properties_for_map', array(__CLASS__, 'prepare_properties_for_map'));
 
         add_action( 'save_post', array(__CLASS__, 'delete_cache'), 1);
@@ -39,6 +43,15 @@ namespace UsabilityDynamics\WPP {
               $sort_by[ $attr ] = $custom_attributes[ $attr ] . ' (' . $attr . ')' ;
             }
           }
+        }
+
+        $image_sizes = array( '' => __( 'No Image', ud_get_wp_property( 'domain' ) ) );
+        foreach( get_intermediate_image_sizes() as $name ) {
+          $sizes = \WPP_F::image_sizes($name);
+          if (!$sizes) {
+            continue;
+          }
+          $image_sizes[ $name ] = $name . ' (' . $sizes['width'] . 'x' . $sizes['height'] . 'px)';
         }
 
         $options = array(
@@ -142,6 +155,13 @@ namespace UsabilityDynamics\WPP {
                 'type' => 'custom_attributes',
                 'options' => $custom_attributes,
               ),
+              'thumbnail_size' => array(
+                'name' => __( 'Thumbnail Size', ud_get_wpp_supermap()->domain ),
+                'description' => __( 'Image size on right sidebar in advanced mode.', ud_get_wpp_supermap()->domain ),
+                'type' => 'select',
+                'options' => $image_sizes,
+                'default' => 'thumbnail'
+              ),
 
             ),
             'description' => __( 'Renders Super Map', ud_get_wpp_supermap()->domain ),
@@ -193,6 +213,7 @@ namespace UsabilityDynamics\WPP {
           'silent_failure' => 'true',
           'sort_order' => 'DESC',
           'sort_by' => 'post_date',
+          'thumbnail_size' => 'thumbnail',
           'mode' => 'default'
         );
 
@@ -340,6 +361,7 @@ namespace UsabilityDynamics\WPP {
         $defaults = array(
           'map_height' => '550',
           'per_page' => '10',
+          'thumbnail_size' => '',
         );
         $atts = shortcode_atts( $defaults, $atts );
 
@@ -569,12 +591,33 @@ namespace UsabilityDynamics\WPP {
         return $supermap;
       }
 
+
+      /**
+       * Returns the feature image for given property id.
+       *
+       * @queryParam $property_id
+       * @queryParam $thumbnail_size
+       * @return json feature image url;
+       */
+      static public function get_thumbnail_url(){
+        $defaults = array(
+          'property_id' => false,
+          'thumbnail_size' => 'thumbnail',
+        );
+
+        $atts = shortcode_atts($defaults, $_REQUEST);
+        extract($atts);
+        $thumb_data = \UsabilityDynamics\WPP\Property_Factory::get_thumbnail($property_id);
+        wp_send_json($thumb_data['images'][$thumbnail_size]);
+        die();
+      }
+
       /**
        * Returns the list of all found properties prepared for display.
        *
        * @param $query
        */
-      static public function get_properties( $query, $args = array(), $ignore_cache = false) {
+      static public function get_properties( $query, $args = array()) {
         global $wpdb;
         $result = array(
           'total' => 0,
@@ -582,17 +625,18 @@ namespace UsabilityDynamics\WPP {
         );
 
         $hashByArguments = md5( serialize( array($query, $args) ) );
-        if ($result = get_transient($hashByArguments)) {
+        $ignore_cache = isset($_SERVER['HTTP_IGNORE_CACHE'])?$_SERVER['HTTP_IGNORE_CACHE']:false;
+        if (($result = get_transient($hashByArguments)) && $ignore_cache == false) {
           if(isset($result['data'])){
             $result['cached'] = true;
             return $result;
           }
         }
 
-        //* Get properties */
+        //* Get properties ID */
         $property_ids = \WPP_F::get_properties( $query , true );
 
-        if( !empty( $property_ids ) ):
+        if( !empty( $property_ids ) ){
           $properties = array();
           $ids = implode(",", $property_ids['results']);
           $sql = "";
@@ -606,7 +650,6 @@ namespace UsabilityDynamics\WPP {
             'post_author' => 'equal',
             'post_parent' => false,
             'post_name'   => false,
-            //'_thumbnail_id' => false,
           );
 
           $fields_ignore = array(
@@ -622,7 +665,6 @@ namespace UsabilityDynamics\WPP {
           $fields[] = 'post_name';
           $fields[] = 'post_parent';
           $fields[] = 'supermap_marker';
-          $fields[] = '_thumbnail_id';
 
           $mtI = 0;
           $left_join = "";
@@ -654,9 +696,9 @@ namespace UsabilityDynamics\WPP {
             'total' => $property_ids['total'],
             'data' => $properties,
           );
-        endif;
+        }
 
-        set_transient($hashByArguments, $result, DAY_IN_SECONDS);
+        set_transient($hashByArguments, $result);
         // Saving $hashByArguments to db so we can clear cache later.
         $cache_ids = get_option('wpp_super_map_cache_ids', array());
         $cache_ids[$hashByArguments] = true;
@@ -845,9 +887,6 @@ namespace UsabilityDynamics\WPP {
         // Upload dir
         $uploads_dir = wp_upload_dir();
 
-        // Doing this for some sort of caching.
-        $isSSL = is_ssl();
-
         // Only using in get_parent_slug() function.
         // get_parent_slug() need Property ID as key. To perform quick search.
         foreach ($results as $key => $property) {
@@ -889,12 +928,6 @@ namespace UsabilityDynamics\WPP {
           }
           // End Map marker
 
-          // Get Thumbnail url
-          if(strpos($fields, 'featured_image_url') !== false){
-            $property['featured_image_url'] = self::get_attachment_url($property['ID'], $uploads_dir, $isSSL);
-          }
-          // End Thumbnail
-
           // From prepare_property_for_display()
           foreach ($property as $attribute => &$attribute_value) {
             if(isset($wp_properties[ 'admin_attr_fields' ][ $attribute ])){
@@ -919,7 +952,6 @@ namespace UsabilityDynamics\WPP {
             unset($property['post_name']);
           }
           unset($property['post_parent']);
-          unset($property['_thumbnail_id']);
           unset($property['supermap_marker']);
           unset($property['system']);
         }
@@ -942,77 +974,6 @@ namespace UsabilityDynamics\WPP {
         // To avoid warning.
         $slug = isset($parent['post_name'])?$parent['post_name']:'';
         return $slug;
-      }
-
-      static public function get_attachment_url( $property_id, $uploads_dir, $isSSL) {
-        global $wpdb, $wp_properties;
-        $return = '';
-        $thumb_size = $wp_properties['configuration']['feature_settings']['supermap']['supermap_thumb'];
-        $sql = "
-          SELECT meta.meta_value AS meta_data, p.guid AS guid
-          FROM {$wpdb->posts} AS p
-          LEFT JOIN {$wpdb->postmeta} AS meta ON (p.ID = meta.post_id AND meta.meta_key = '_wp_attachment_metadata')
-          WHERE p.ID IN (
-              SELECT thumb.meta_value as thumbID
-              FROM {$wpdb->posts} AS p
-              LEFT JOIN {$wpdb->postmeta} AS thumb
-              ON (p.ID = thumb.post_id AND thumb.meta_key = '_thumbnail_id')
-              WHERE p.ID  = '$property_id'
-          )";
-        $result = $wpdb->get_results($sql, ARRAY_A);
-        if(empty($result))
-          return;
-        $meta_data = unserialize($result[0]['meta_data']);
-        if(!empty($result)){
-          $return = self::wp_get_attachment_url($property_id, $meta_data, $uploads_dir, $thumb_size, $isSSL);
-        }
-        return $return;
-      }
-
-      // From https://developer.wordpress.org/reference/functions/wp_get_attachment_url/
-      static public function wp_get_attachment_url($ID, $meta_data, $uploads, $thumb_size, $isSSL){
-        global $wp_properties;
-        $url = '';
-        $file = isset($meta_data['sizes'][$thumb_size])?$meta_data['sizes'][$thumb_size]['file']:$meta_data['file'];
-
-        if ( $file && $uploads && false === $uploads['error'] ) {
-            // Check that the upload base exists in the file location.
-            if ( 0 === strpos( $file, $uploads['basedir'] ) ) {
-                // Replace file location with url location.
-                $url = str_replace($uploads['basedir'], $uploads['baseurl'], $file);
-            } elseif ( false !== strpos($file, 'wp-content/uploads') ) {
-                // Get the directory name relative to the basedir (back compat for pre-2.7 uploads)
-                $url = trailingslashit( $uploads['baseurl'] . '/' . _wp_get_attachment_relative_path( $file ) ) . basename( $file );
-            } else {
-                // It's a newly-uploaded file, therefore $file is relative to the basedir.
-                $url = $uploads['baseurl'] . "/$file";
-            }
-        }
-
-        /*
-         * If any of the above options failed, Fallback on the GUID as used pre-2.7,
-         * not recommended to rely upon this.
-         */
-        if ( empty($url) ) {
-            $url = $meta_data['guid'];
-        }
-
-        // On SSL front-end, URLs should be HTTPS.
-        if ( $isSSL ) {
-            $url = set_url_scheme( $url );
-        }
-
-        /**
-         * Filter the attachment URL.
-         *
-         * @since 2.1.0
-         *
-         * @param string $url     URL for the given attachment.
-         * @param int    $post_id Attachment ID.
-         */
-        $url = apply_filters( 'wp_get_attachment_url', $url, $ID );
-
-        return $url;
       }
 
       static public function delete_cache(){
