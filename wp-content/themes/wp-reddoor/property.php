@@ -85,7 +85,7 @@ while ( have_posts() ) : the_post();
 
                 echo '<h3>' . $user_data->display_name . '</h3></br>';
 
-                echo '<span>Red Door Company</span></li>';
+                echo '<span>Red Door Company</span></li><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div>';
 
               }
             }
@@ -438,10 +438,6 @@ while ( have_posts() ) : the_post();
 
 
             </style>
-
-            <div class="oneAgentLinksBlock">
-              <a href="#">Request Information</a>
-            </div>
           </div>
         </div>
       </section>
