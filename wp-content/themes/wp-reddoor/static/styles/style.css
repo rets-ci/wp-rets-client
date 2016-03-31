@@ -539,13 +539,22 @@
   border-radius: 5px 5px 0 0;
   border: medium none;
 }
+.frontPageSearchBlock .searchForm > ul .active {
+  background: none;
+  border: none !important;
+}
 .frontPageSearchBlock .searchForm > ul a {
   padding: 0 1.7em !important;
-  color: #fff;
+  color: #fff !important;
   display: block;
+  line-height: unset;
+  background: rgba(46, 47, 49, 0.6) !important;
+  border: none !important;
 }
 .frontPageSearchBlock .searchForm > ul a:hover {
   text-decoration: none;
+  background: rgba(46, 47, 49, 0.6) !important;
+  border: none !important;
 }
 .frontPageSearchBlock .searchForm > ul a:focus {
   outline: none;
