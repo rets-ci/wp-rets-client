@@ -16,7 +16,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-schedule-showing', __('Schedule Showing Form'));
+      parent::__construct('rdc-schedule-showing', __('RDC Schedule Showing Form'));
     }
 
     /**
@@ -86,7 +86,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-prospect-landlord-form', __('Prospect Landlord Form'));
+      parent::__construct('rdc-prospect-landlord-form', __('RDC Prospect Landlord Form'));
     }
 
     /**
@@ -153,7 +153,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-contact-form', __('Contact Form'));
+      parent::__construct('rdc-contact-form', __('RDC Contact Form'));
     }
 
     /**
@@ -220,7 +220,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-feedback-form', __('Feedback Form'));
+      parent::__construct('rdc-feedback-form', __('RDC Feedback Form'));
     }
 
     /**
@@ -287,7 +287,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-referral-program-form', __('Referral Program Form'));
+      parent::__construct('rdc-referral-program-form', __('RDC Referral Program Form'));
     }
 
     /**
@@ -354,7 +354,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-application-request-form', __('Application Request Form'));
+      parent::__construct('rdc-application-request-form', __('RDC Application Request Form'));
     }
 
     /**
@@ -421,7 +421,7 @@ namespace UsabilityDynamics\RDC {
      * init
      */
     public function __construct() {
-      parent::__construct('rdc-job-request-form', __('Job Request Form'));
+      parent::__construct('rdc-job-request-form', __('RDC Job Request Form'));
     }
 
     /**
