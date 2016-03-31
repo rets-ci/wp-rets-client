@@ -3,7 +3,7 @@ jQuery(document).ready(function(){
     jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
     //jQuery( ".speed" ).selectmenu(); // custom select
-    jQuery( "#tabs" ).tabs(); //tabs for search form
+    //jQuery( "#tabs" ).tabs(); //tabs for search form
 
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){
@@ -44,7 +44,7 @@ jQuery(document).ready(function(){
     jQuery(function () {
         //script for popups
         var popUpWindow = jQuery('span.exitPopup').parent();
-            jQuery('.showContactPopup a').on('click', function () {
+            jQuery('.showContactPopup a, .showContactPopup').on('click', function () {
                 console.log('test');
             jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
