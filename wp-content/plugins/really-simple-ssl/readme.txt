@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.4
-Stable tag: 2.2.20
+Stable tag: 2.3.2
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -13,21 +13,22 @@ No setup required! You only need an SSL certificate, and this plugin will do the
 The really simple ssl plugin automatically detects your settings and configures your website.
 To keep it lightweight, the options are kept to a minimum. The entire site will move to SSL.
 
-= Two simple steps for setup: =
-* Get an SSL certificate from your hosting provider (can't do that for you, sorry).
-* Activate this plugin.
+= Three simple steps for setup: =
+* Get an SSL certificate (can't do that for you, sorry).
+* Activate this plugin
+* Enable SSL with one click
 
-But always backup before you go! If you do not have a sound backup policy, start having one! For a snapshot, install duplicator.
+Aways backup before you go! If you do not have a sound backup policy, start having one! For a snapshot, install duplicator.
 
 = Love Really Simple SSL? =
 Hopefully this plugin saved you at least some hours work. If you want to support the continuing development of this plugin, you could buy me a cup of coffee, or leave a review.
-[To the coffeecorner ;)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=NL&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+[Black, no sugar ;)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=NL&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 = What does the plugin actually do =
 * The plugin handles most issues that Wordpress has with ssl, like the much discussed loadbalancer issue, or when there are no server variables set at all.
 * All incoming requests are redirected to https. If possible with .htaccess, or else with javascript.
 * The site url and home url are changed to https.
-* Your insecure content is fixed by replacing all http:// urls with the protocol-independent //. Dynamically, so no database changes are made (except for the siteurl and homeurl).
+* Your insecure content is fixed by replacing all http:// urls with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
 
 = Feedback is welcome! =
 Though the plugin is extensively tested and currently successfully active on over 15000 websites, it might be possible you have issues with a specific configuration (server/plugins).
@@ -68,7 +69,8 @@ In some cases it happens that you cannot access your admin anymore, which would 
 plugin is shipped with a simple method to uninstall:
 
 1. In the wp-content/plugins/really-simple-ssl folder, rename the file "force-deactivate.txt" to "force-deactivate.php".
-2. In your browser, go to www.yourdomain.com/wp-content/plugins/really-simple-ssl/force-deactivate.php (replace yourdomain.com with your own domain).
+2. In your browser, go to http://www.yourdomain.com/wp-content/plugins/really-simple-ssl/force-deactivate.php (replace yourdomain.com with your own domain).
+Please remember to use http://, and not https://!
 
 The plugin is now deactivated and all changes were removed.
 
@@ -94,14 +96,12 @@ For detailed instructions on how to find mixed content read this [article](https
 2. Add to your wp-config.php:
 define( 'RLRSSSL_DO_NOT_EDIT_HTACCESS', TRUE);
 
-= Parts of my site aren’t loading =
-* If parts of your site aren't loading, you might have external resources that are not able to load on ssl. Check the Google console.
-
 = How to uninstall when website/backend is not accessible =
 Though this plugin is extensively tested, this can still happen. However, this is very easy to fix (you'll need ftp access):
 
 1. In the wp-content/plugins/really-simple-ssl folder, rename the file "force-deactivate.txt" to "force-deactivate.php".
 2. In your browser, go to www.yourdomain.com/wp-content/plugins/really-simple-ssl/force-deactivate.php (replace yourdomain.com with your own domain).
+Please take care to use http://, and not https://. On a domain without certificate, the deactivate won't load on https.
 
 The plugin is now deactivated and all changes were removed.
 
@@ -110,31 +110,26 @@ HSTS means HTTP Strict Transport Security, and makes browsers force your visitor
 As this setting will be remembered by your visitor's browsers for at least a year, you should only enable this when your setup is up and running, and you do not plan
 to revert back to http.
 
-= My hits in Google Analytics have dropped. What happened? =
-After you move to SSL, you should change your domain in Google Analytics as well. In Google Search Console, you should add the https variant.
-If the redirect wasn't set in your .htaccess for some reason, try to add it manually. I've had feedback that GA does not register hits when the redirect was not in place.
-
-= The settings page says redirect could not be set in the .htaccess. Is that a problem? =
-Not really. The plugin also adds some javascript to redirect any non https pages, so your site should load over https without any problems.
-Furthermore, you can enable the HSTS setting to improve security.
-
-Common causes:
-1. The .htaccess is not writable, or not available. To fix it, make writable, or enter the rewriterules manually
-2. Testing of the .htaccess rewrite rules failed, due to missing server variables or not being able to reach the testing page. These issues are caused by your server configuration, contact your hosting provider
-
-= Is it possible to exclude certain urls from the ssl redirect? =
-That is not possible. This plugin simply forces your complete site over https, which keeps it lightweight.
-
 = Is the plugin suitable for wordpress multisite? =
 Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
-= Does the plugin do a seo friendly 301 redirect in the .htaccess? =
-Yes, default the plugin redirects permanently with [R=301].
-
 == Changelog ==
+= 2.3.2 =
+* Changed SSL detection so test page is only needed when not currently on SSL.
+* Some minor bug fixes. 
+
+= 2.3.1 =
+* Removed "activate ssl" option when no ssl is detected.
+* Optimized emptying of cache
+* Fixed some bugs in deactivation and activation of multisite
+
+= 2.3.0 =
+* Given more control over activation process by explicity asking to enable SSL.
+* Added a notice if .htaccess is not writable
+
 = 2.2.20 =
-Fixed bug in SSL detection
+Fixed a bug in SSL detection
 
 = 2.2.19 =
 Changed followlocation in curl to an alternative method, as this gives issues when safemode or open_basedir is enabled.

@@ -1,14 +1,25 @@
 <?php
 defined('ABSPATH') or die("you do not have acces to this page!");
+if ( ! class_exists( 'rsssl_cache' ) ) {
+  class rsssl_cache {
+    private $capability  = 'manage_options';
+    private static $_this;
 
-class rlrsssl_cache {
-  private
-       $capability  = 'manage_options';
+  function __construct() {
+    if ( isset( self::$_this ) )
+        wp_die( sprintf( __( '%s is a singleton class and you cannot create a second instance.','really-simple-ssl' ), get_class( $this ) ) );
+
+    self::$_this = $this;
+  }
+
+  static function this() {
+    return self::$_this;
+  }
 
   /**
    * Flushes the cache for popular caching plugins to prevent mixed content errors
    * When .htaccess is changed, all traffic should flow over https, so clear cache when possible.
-   * supported: W3TC, WP fastest Cache, Zen Cache
+   * supported: W3TC, WP fastest Cache, Zen Cache, wp_rocket
    *
    * @since  2.0
    *
@@ -18,14 +29,11 @@ class rlrsssl_cache {
 
   public function flush() {
     if (!current_user_can($this->capability)) return;
-
-    if (get_option('really_simple_ssl_settings_changed') == 'settings_changed') {
-      delete_option( 'really_simple_ssl_settings_changed');
-      add_action( 'shutdown', array($this,'flush_w3tc_cache'));
-      add_action( 'shutdown', array($this,'flush_fastest_cache'));
-      add_action( 'shutdown', array($this,'flush_zen_cache'));
-      add_action( 'shutdown', array($this,'flush_wp_rocket'));
-    }
+    delete_option( 'really_simple_ssl_settings_changed');
+    add_action( 'shutdown', array($this,'flush_w3tc_cache'));
+    add_action( 'shutdown', array($this,'flush_fastest_cache'));
+    add_action( 'shutdown', array($this,'flush_zen_cache'));
+    add_action( 'shutdown', array($this,'flush_wp_rocket'));
   }
 
   public function flush_w3tc_cache() {
@@ -57,4 +65,5 @@ class rlrsssl_cache {
     }
   }
 
+}//class closure
 }

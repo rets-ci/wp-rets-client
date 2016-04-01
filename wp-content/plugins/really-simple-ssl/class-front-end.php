@@ -1,19 +1,27 @@
 <?php
 defined('ABSPATH') or die("you do not have acces to this page!");
 
-if ( ! class_exists( 'rl_rsssl_front_end' ) ) {
+if ( ! class_exists( 'rsssl_front_end' ) ) {
+  class rsssl_front_end {
+    private static $_this;
+    public $force_ssl_without_detection     = FALSE;
+    public $site_has_ssl                    = FALSE;
+    public $javascript_redirect             = TRUE;
+    public $autoreplace_insecure_links      = TRUE;
+    public $http_urls                       = array();
 
-class rl_rsssl_front_end {
-  public
-   $force_ssl_without_detection     = FALSE,
-   $site_has_ssl                    = FALSE,
-   $javascript_redirect             = TRUE,
-   $autoreplace_insecure_links      = TRUE,
-   $http_urls                       = array();
+  function __construct() {
+    if ( isset( self::$_this ) )
+        wp_die( sprintf( __( '%s is a singleton class and you cannot create a second instance.','really-simple-ssl' ), get_class( $this ) ) );
 
-  public function __construct()
-  {
-      $this->get_options();
+    self::$_this = $this;
+
+    $this->get_options();
+
+  }
+
+  static function this() {
+    return self::$_this;
   }
 
   /**
@@ -27,10 +35,12 @@ class rl_rsssl_front_end {
    */
 
   public function force_ssl() {
-    if ($this->javascript_redirect) add_action('wp_print_scripts', array($this,'force_ssl_with_javascript'));
+    if ($this->ssl_enabled && ($this->site_has_ssl || $this->force_ssl_without_detection) ) {
+      if ($this->javascript_redirect) add_action('wp_print_scripts', array($this,'force_ssl_with_javascript'));
 
-    if (($this->site_has_ssl || $this->force_ssl_without_detection) && $this->autoreplace_insecure_links) {
-      add_action('template_include', array($this, 'replace_insecure_links'), 0);
+      if ($this->autoreplace_insecure_links) {
+        add_action('template_include', array($this, 'replace_insecure_links_buffer'), 0);
+      }
     }
   }
 
@@ -72,8 +82,7 @@ class rl_rsssl_front_end {
       $this->force_ssl_without_detection  = isset($options['force_ssl_without_detection']) ? $options['force_ssl_without_detection'] : FALSE;
       $this->site_has_ssl                 = isset($options['site_has_ssl']) ? $options['site_has_ssl'] : FALSE;
       $this->autoreplace_insecure_links   = isset($options['autoreplace_insecure_links']) ? $options['autoreplace_insecure_links'] : TRUE;
-
-      //@TODO: set to false if .htaccess is writable, otherwise default to true.
+      $this->ssl_enabled                  = isset($options['ssl_enabled']) ? $options['ssl_enabled'] : $this->site_has_ssl;
       $this->javascript_redirect          = isset($options['javascript_redirect']) ? $options['javascript_redirect'] : TRUE;
     }
 
@@ -91,10 +100,8 @@ class rl_rsssl_front_end {
    *
    */
 
-   public function replace_insecure_links($template) {
-     if (($this->site_has_ssl || $this->force_ssl_without_detection) && $this->autoreplace_insecure_links) {
-       ob_start(array($this, 'end_buffer_capture'));  // Start Page Buffer
-     }
+   public function replace_insecure_links_buffer($template) {
+     ob_start(array($this, 'replace_insecure_links'));
      return $template;
    }
 
@@ -107,11 +114,11 @@ class rl_rsssl_front_end {
     *
     */
 
-  public function end_buffer_capture($buffer) {
+  public function replace_insecure_links($str) {
     $search_array = apply_filters('rlrsssl_replace_url_args', $this->http_urls);
     $ssl_array = str_replace ( "http://" , "https://", $search_array);
     //now replace these links
-    $buffer = str_replace ($search_array , $ssl_array , $buffer);
+    $str = str_replace ($search_array , $ssl_array , $str);
 
     //replace all http links except hyperlinks
     //all tags with src attr are already fixed by str_replace
@@ -119,11 +126,12 @@ class rl_rsssl_front_end {
       '/url\([\'"]?\K(http:\/\/)(?=[^)]+)/i',
       '/<link .*?href=[\'"]\K(http:\/\/)(?=[^\'"]+)/i',
       '/<meta property="og:image" .*?content=[\'"]\K(http:\/\/)(?=[^\'"]+)/i',
+      //'/<(?:img|iframe) .*?src=[\'"]\K(http:\/\/)(?=[^\'"]+)/i',
+      //'/<script [^>]*?src=[\'"]\K(http:\/\/)(?=[^\'"]+)/i',
     );
-    $buffer = preg_replace($pattern, 'https://', $buffer);
-    $buffer = $buffer.'<!-- Really Simple SSL mixed content fixer active -->';
-
-    return apply_filters("rsssl_fixer_output", $buffer);;
+    $str = preg_replace($pattern, 'https://', $str);
+    $str = $str.'<!-- Really Simple SSL mixed content fixer active -->';
+    return apply_filters("rsssl_fixer_output", $str);
   }
 
   /**
@@ -136,15 +144,13 @@ class rl_rsssl_front_end {
    */
 
   public function force_ssl_with_javascript() {
-    if ($this->site_has_ssl || $this->force_ssl_without_detection) {
-        ?>
-        <script>
-        if (document.location.protocol != "https:") {
-            document.location = document.URL.replace(/^http:/i, "https:");
-        }
-        </script>
-        <?php
+      ?>
+      <script>
+      if (document.location.protocol != "https:") {
+          document.location = document.URL.replace(/^http:/i, "https:");
       }
+      </script>
+      <?php
   }
 
 }}
