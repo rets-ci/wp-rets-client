@@ -69,6 +69,7 @@ namespace UsabilityDynamics\WPP {
 
         /** Prepare taxonomy's arguments before registering taxonomy. */
         add_filter( 'wpp::register_taxonomy', array( $this, 'prepare_taxonomy' ), 99, 2 );
+        add_filter( 'wpp::register_taxonomy', array( $this, 'register_taxonomy' ), 99, 2 );
 
         /** Add Meta Box to manage taxonomies on Edit Property page. */
         add_filter( 'wpp::meta_boxes', array( $this, 'add_meta_box' ), 99 );
@@ -136,6 +137,12 @@ namespace UsabilityDynamics\WPP {
        *
        */
       public function maybe_remove_native_meta_boxes() {
+        // Removing nativ metabox if  Show in Admin Menu and add native Meta Box isn't set.
+        $taxonomies = $this->get( 'config.taxonomies', array() );
+        foreach ($taxonomies as $taxonomy => $args) {
+          if(!isset($args['show_ui']) || $args['show_ui'] == false)
+            remove_meta_box( "tagsdiv-$taxonomy", 'property', 'side' );
+        }
 
         if( isset( $_REQUEST['post'] ) && is_numeric( $_REQUEST['post'] ) ) {
           $type = get_post_meta( $_REQUEST['post'], 'property_type', true );
@@ -236,8 +243,16 @@ namespace UsabilityDynamics\WPP {
         }
 
         $taxonomies = $this->get( 'config.taxonomies', array() );
+
+
         if( !empty($taxonomies) && is_array($taxonomies) ) {
           foreach( $taxonomies as $k => $v ) {
+
+            // ignore terms that are not explicitly set as searchable
+            if( !isset( $v['admin_searchable'] ) || !$v['admin_searchable'] ) {
+              continue;
+            }
+
             /* Ignore taxonomy if field with the same name already exists */
             if( in_array( $k, $defined ) ) {
               continue;
@@ -716,6 +731,19 @@ namespace UsabilityDynamics\WPP {
 
         }
       }
+
+      /**
+       * Prepare arguments
+       */
+      public function register_taxonomy( $args, $taxonomy ) {
+        // Removing submenu item from menu if  Show in Admin Menu and add native Meta Box isn't set.
+        if(!isset($args['show_ui']) || $args['show_ui'] == false){
+           $args['show_ui'] = true;
+           $args['show_in_menu'] = false;
+        }
+        return $args;
+      }
+
 
       /**
        * Prepare arguments
