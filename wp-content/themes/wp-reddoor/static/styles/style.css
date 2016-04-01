@@ -421,6 +421,7 @@
   -webkit-box-shadow: 0px 0px 3px #f3f0e9;
   box-shadow: 0px 0px 3px #f3f0e9;
   border: 1px solid #f3f0e9;
+  overflow: hidden;
 }
 .oneCategory .oneCategoryImg {
   height: 280px;
@@ -449,7 +450,6 @@
 .oneCategory .catIconLoop .icon {
   color: #cf3428;
   font-size: 2.5em;
-  left: 22px;
   position: relative;
   top: 15px;
 }
@@ -457,10 +457,17 @@
   display: block;
   margin: auto;
   text-align: center;
-  width: 320px;
   font-size: 1.3em;
   line-height: 1.5em;
   color: #5a595c;
+  transition: .5s color;
+}
+.oneCategory > a:hover {
+  text-decoration: none;
+  color: #cf3428;
+}
+.oneCategory > a .one_text {
+  margin: 0 25px;
 }
 .archiveFilterBg {
   background: #f3f0e9;
