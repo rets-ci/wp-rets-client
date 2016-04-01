@@ -38,9 +38,10 @@ while ( have_posts() ) : the_post();
       </section>
       <section id="propertyDetails" class="singlePropertyHeader">
         <div class="container">
+          <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
           <div class="title">
             <span>Active</span>
-            <div>5000 Davitson Ct<span>Parkland, FL 33076</span></div>
+            <div><?php the_title(); ?><span>Parkland, FL 33076</span></div>
             <b class="clear"></b>
           </div>
           <ul>
@@ -84,9 +85,9 @@ while ( have_posts() ) : the_post();
                 if(!empty($image_ids[0])){
                   $imageId = $image_ids[0];
                 }
-                else{
-                  $imageId = '14311';
-                }
+//                else{
+//                  $imageId = '14311';
+//                }
 
                 echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
 
