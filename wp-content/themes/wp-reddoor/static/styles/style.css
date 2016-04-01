@@ -284,12 +284,13 @@
   padding: 0 !important;
   position: relative;
   top: -16px;
+  margin-bottom: -16px;
 }
 .featuredImageHeader {
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  height: 700px;
   position: relative;
   top: -74px;
 }
@@ -345,12 +346,13 @@
   text-shadow: 1px 1px 5px #000;
   top: 35%;
   width: 60%;
+  line-height: 1.5em;
 }
 .single .singleExcerpt {
   color: #ededed;
   font-size: 1.4em;
   font-weight: 400;
-  margin: 2% auto 5%;
+  margin: 1% auto 5%;
   text-align: center;
   text-shadow: 1px 1px 5px #000;
   width: 70%;
@@ -378,13 +380,13 @@
 .single .singleSocialBlock li a:hover {
   text-decoration: none;
 }
-.single .singleSocialBlock li a.icon-social-facebook-symbol {
+.single .singleSocialBlock li a.icon-wpproperty-social-facebook-symbol {
   background: #5d82d1 none repeat scroll 0 0;
 }
-.single .singleSocialBlock li a.icon-social-twitter-symbol {
+.single .singleSocialBlock li a.icon-wpproperty-social-twitter-symbol {
   background: #40BFF5 none repeat scroll 0 0;
 }
-.single .singleSocialBlock li a.icon-social-googleplus-symbol {
+.single .singleSocialBlock li a.icon-wpproperty-social-googleplus-symbol {
   background: #EB5E4C none repeat scroll 0 0;
 }
 .single .content {
@@ -404,6 +406,9 @@
 }
 .single .content p {
   margin: 5% 0;
+}
+.single .content p:first-child {
+  margin-top: 0;
 }
 .single .content a {
   color: #cf3428;
@@ -536,6 +541,12 @@
 .frontPageSearchBlock .searchForm .nav-tabs {
   margin-right: 4px;
 }
+.frontPageSearchBlock .searchForm .nav-tabs .formTabs a {
+  margin-right: 0 !important;
+}
+.frontPageSearchBlock .searchForm .nav-tabs .active {
+  background: #2e2f31 none repeat scroll 0 0;
+}
 .frontPageSearchBlock .searchForm .nav-tabs li {
   float: none;
 }
@@ -548,7 +559,7 @@
 }
 .frontPageSearchBlock .searchForm > ul > li {
   display: inline-block;
-  background: rgba(46, 47, 49, 0.6);
+  background: rgba(46, 47, 49, 0.5);
   height: 45px;
   line-height: 3.5em;
   border-radius: 5px 5px 0 0;
@@ -561,6 +572,7 @@
   line-height: unset;
   background: rgba(46, 47, 49, 0.6) !important;
   border: none !important;
+  border-radius: 5px 5px 0 0;
 }
 .frontPageSearchBlock .searchForm > ul a:hover {
   text-decoration: none;
