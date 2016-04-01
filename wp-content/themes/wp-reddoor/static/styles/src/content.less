@@ -81,12 +81,13 @@
   padding: 0 !important;
   position: relative;
   top: -16px;
+  margin-bottom: -16px;
 }
 .featuredImageHeader {
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  height: 700px;
   position: relative;
   top: -74px;
   .singleHeroIcon{
@@ -143,12 +144,13 @@
     text-shadow: 1px 1px 5px #000;
     top: 35%;
     width: 60%;
+    line-height: 1.5em;
   }
   .singleExcerpt{
     color: #ededed;
     font-size: 1.4em;
     font-weight: 400;
-    margin: 2% auto 5%;
+    margin: 1% auto 5%;
     text-align: center;
     text-shadow: 1px 1px 5px #000;
     width: 70%;
@@ -173,13 +175,13 @@
         &:hover{
           text-decoration: none;
         }
-        &.icon-social-facebook-symbol{
+        &.icon-wpproperty-social-facebook-symbol{
           background: #5d82d1 none repeat scroll 0 0;
         }
-        &.icon-social-twitter-symbol{
+        &.icon-wpproperty-social-twitter-symbol{
           background: #40BFF5 none repeat scroll 0 0;
         }
-        &.icon-social-googleplus-symbol{
+        &.icon-wpproperty-social-googleplus-symbol{
           background: #EB5E4C none repeat scroll 0 0;
         }
       }
@@ -200,6 +202,9 @@
       font-size: 1.2em;
     }
     p{
+      &:first-child{
+        margin-top: 0;
+      }
       margin: 5% 0;
     }
     a{
@@ -326,6 +331,14 @@
     border: medium none;
     .nav-tabs{
       margin-right: 4px;
+      .formTabs{
+          a{
+            margin-right: 0 !important;
+          }
+      }
+      .active{
+        background: rgba(46, 47, 49, 1) none repeat scroll 0 0;
+      }
       li{
         float: none;
       }
@@ -338,7 +351,7 @@
       float: left;
       &>li {
         display: inline-block;
-        background: rgba(46, 47, 49, 0.6);
+        background: rgba(46, 47, 49, 0.5);
         height: 45px;
         line-height: 3.5em;
         border-radius: 5px 5px 0 0;
@@ -352,6 +365,7 @@
         line-height: unset;
         background: rgba(46, 47, 49, 0.6) !important;
         border: none !important;
+        border-radius: 5px 5px 0 0;
         &:hover {
           text-decoration: none;
           background: rgba(46, 47, 49, 0.6) !important;
@@ -699,6 +713,10 @@
         }
       h3{
 
+      }
+      span{
+        display: block;
+        text-align: center;
       }
       .oneAgentLinksBlock{
         padding: 0 40px;

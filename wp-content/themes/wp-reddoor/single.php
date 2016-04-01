@@ -38,9 +38,9 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
       <h1 class="singleTitle"><?php the_title(); ?></h1>
       <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
       <ul class="singleSocialBlock">
-        <li><a class="icon-social-facebook-symbol" href="#"></a></li>
-        <li><a class="icon-social-twitter-symbol" href="#"></a></li>
-        <li><a class="icon-social-googleplus-symbol" href="#"></a></li>
+        <li><a target="_blank" class="icon-wpproperty-social-facebook-symbol" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
+        <li><a target="_blank" class="icon-wpproperty-social-twitter-symbol" href="https://twitter.com/home?status=<?php echo urlencode(get_the_title()); ?><?php echo urlencode(' ' . get_the_permalink()); ?>"></a></li>
+        <li><a target="_blank" class="icon-wpproperty-social-googleplus-symbol" href="https://plus.google.com/share?url=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
       </ul>
     </section>
   </div>
@@ -92,7 +92,7 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
             </div>
             <div class="catIconLoop">
                   <?php if(isset($forCategorySlug)){ ?>
-                  <svg class="icon icon-<?php echo $forCategorySlug->slug; ?>"><use xlink:href="#icon-<?php echo $forCategorySlug->slug; ?>"></use></svg>
+                    <span class="icon icon-rdc-<?php echo $forCategorySlug->slug; ?>"></span>
                   <?php } ?>
             </div>
             <a href="<?php echo the_permalink($oneSingleMorePost->ID); ?>"><?php echo $oneSingleMorePost->post_title; ?></a>

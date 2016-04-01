@@ -47,7 +47,7 @@ namespace UsabilityDynamics\RDC {
           $query = $_GET['q'];
         }
 
-        $_terms = get_terms( array( 'high_school', 'middle_school', 'elementary_school', 'county', 'zip_code', 'neighborhood', 'city' ), array(
+        $_terms = get_terms( array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ), array(
             'search' => $query
         ) );
 

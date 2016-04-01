@@ -90,7 +90,7 @@ while ( have_posts() ) : the_post();
 
                 echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
 
-                echo '<h3>' . $user_data->display_name . '</h3></br>';
+                echo '<h3>' . $user_data->display_name . '</h3>';
 
                 echo '<span>Red Door Company</span><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
 
@@ -133,30 +133,7 @@ while ( have_posts() ) : the_post();
                       if ( position < 0 ) position = 0;
                       if ( position >= $$.find('.rdc-agents-carousel-item').length - 1 ) {
                         position = $$.find('.rdc-agents-carousel-item').length - 1;
-                        // Fetch the next batch
-                        if( !fetching &&  !complete ) {
-                          fetching = true;
-                          page++;
-                          $itemsContainer.append('<li class="rdc-agents-carousel-item rdc-agents-carousel-loading"></li>');
-
-                          jQuery.get(
-                            $$.data('ajax-url'),
-                            {
-                              query : $$.data('query'),
-                              action : 'sow_carousel_load',
-                              paged : page
-                            },
-                            function (data, status){
-                              var $items = $(data.html);
-                              $items.appendTo( $itemsContainer ).hide().fadeIn();
-                              $$.find('.rdc-agents-carousel-loading').remove();
-                              numItems = $$.find('.rdc-agents-carousel-item').length;
-                              complete = numItems == totalPosts;
-                              fetching = false;
-                            }
-                          )
                         }
-                      }
                       $itemsContainer.css('transition-duration', "0.45s");
                       $itemsContainer.css(updateProp, -( itemWidth * position) + 'px' );
                     };
@@ -287,34 +264,26 @@ while ( have_posts() ) : the_post();
                 font-weight: normal;
                 font-variant: normal;
                 text-transform: none;
-                font-size: 8px;
-                line-height: 18px;
-                width: 18px;
+                font-size: 5em;
                 text-align: center;
                 /* Better Font Rendering =========== */
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
                 text-decoration: none;
-                color: #FFFFFF;
-                background: #333333;
-                border-radius: 2px;
+                color: #dedede;
               }
 
               .rdc-agents-carousel-title a.rdc-agents-carousel-next{
                 position: absolute;
                 right: 15px;
-                top: 50%;
+                top: 25%;
               }
               .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
                 left: 15px;
                 position: absolute;
-                top: 50%;
+                top: 25%;
               }
 
-              .rdc-agents-carousel-title a.rdc-agents-carousel-next:hover,
-              .rdc-agents-carousel-title a.rdc-agents-carousel-previous:hover {
-                background: #444444;
-              }
               .rdc-agents-carousel-title a.rdc-agents-carousel-next:before {
                 content: "\e601";
               }
@@ -423,6 +392,11 @@ while ( have_posts() ) : the_post();
                 font-weight: 500;
                 color: #474747;
                 margin: 10px 0 0 0;
+              }
+              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item span {
+                display: block;
+                margin: 15px 0;
+                text-align: center;
               }
               .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 a {
                 text-decoration: none;

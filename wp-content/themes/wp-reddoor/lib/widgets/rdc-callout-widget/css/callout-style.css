@@ -2,11 +2,11 @@
     margin: 15px 0 !important;
 }
 .widget_callout .widgetBody{
-    width: 400px;
-    height: 300px;
-    border-radius: 5%;
-    padding: 6% 5% 5%;
     background-size: cover !important;
+    border-radius: 5%;
+    height: 100%;
+    padding: 6% 5% 5%;
+    width: 100%;
 }
 .widget_callout .widgetBody a{
     background: #cf3428 none repeat scroll 0 0;
@@ -20,11 +20,15 @@
 .widget_callout .widgetBody h2{
     color: #fff;
     margin: 0 0 20px;
+    font-size: 1.7em;
+    text-shadow: 2px 3px 3px #000;
 }
 .widget_callout .widgetBody h3{
     color: #ededed;
     margin: 0 0 20px;
     line-height: 35px;
+    font-size: 1.5em;
+    text-shadow: 2px 3px 3px #000;
 }
 
 
