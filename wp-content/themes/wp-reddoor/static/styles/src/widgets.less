@@ -185,34 +185,53 @@
    }
   }
 }
-.menu-home-buying-page-sub-menu-container{
+.menu-home-buying-page-sub-menu-container {
   background: #F3F0E9 none repeat scroll 0 0;
-  #menu-home-buying-page-sub-menu{
+
+  #menu-home-buying-page-sub-menu {
     border-bottom: 1px solid #d0d4d9;
     border-top: 1px solid #d0d4d9;
     margin: 0 auto;
     text-align: center;
-    li{
+
+    li {
       border-right: 1px solid #d0d4d9;
-      padding: 1.5em 5em 1.5em 1.5em;
       display: inline-block;
       line-height: 1.2em;
-      &:before{
+
+      transition: .5s color;
+
+      &:hover {
+        color: #d03528;
+
+        a {
+          color: #d03528;
+        }
+      }
+
+      &:before {
         font-size: 1.8em;
-        padding: 0.9em 1.5em 0.9em 0.9em;
+        padding-left: 25px;
         position: relative;
         top: 4px;
       }
-      &:last-child{
+
+      &:last-child {
         border-right: none;
       }
-      a{
+
+      a {
+        transition: .5s color;
+        padding: 1.6em 2em 1.6em 1.5em;
+        display: inline-block;
         color: #5a595c;
-        font-size: 1.2em;
+        font-size: 16px;
         line-height: 1.2em;
-        font-family: "Poppins",OpenSans,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
-        &:hover{
+        font-family: 'Poppins', sans-serif;
+
+        &:hover {
           text-decoration: none;
+          color: #d03528;
         }
       }
     }

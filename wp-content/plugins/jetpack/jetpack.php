@@ -2,11 +2,11 @@
 
 /*
  * Plugin Name: Jetpack by WordPress.com
- * Plugin URI: http://jetpack.me
+ * Plugin URI: http://jetpack.com
  * Description: Bring the power of the WordPress.com cloud to your self-hosted WordPress. Jetpack enables you to connect your blog to a WordPress.com account to use the powerful features normally only available to WordPress.com users.
  * Author: Automattic
- * Version: 3.9.2
- * Author URI: http://jetpack.me
+ * Version: 3.9.6
+ * Author URI: http://jetpack.com
  * License: GPL2+
  * Text Domain: jetpack
  * Domain Path: /languages/
@@ -14,7 +14,7 @@
 
 define( 'JETPACK__MINIMUM_WP_VERSION', '4.3' );
 
-define( 'JETPACK__VERSION',            '3.9.2' );
+define( 'JETPACK__VERSION',            '3.9.6' );
 define( 'JETPACK_MASTER_USER',         true );
 define( 'JETPACK__API_VERSION',        1 );
 define( 'JETPACK__PLUGIN_DIR',         plugin_dir_path( __FILE__ ) );
@@ -25,6 +25,7 @@ defined( 'JETPACK_CLIENT__HTTPS' )           or define( 'JETPACK_CLIENT__HTTPS',
 defined( 'JETPACK__GLOTPRESS_LOCALES_PATH' ) or define( 'JETPACK__GLOTPRESS_LOCALES_PATH', JETPACK__PLUGIN_DIR . 'locales.php' );
 defined( 'JETPACK__API_BASE' )               or define( 'JETPACK__API_BASE', 'https://jetpack.wordpress.com/jetpack.' );
 defined( 'JETPACK_PROTECT__API_HOST' )       or define( 'JETPACK_PROTECT__API_HOST', 'https://api.bruteprotect.com/' );
+defined( 'JETPACK__WPCOM_JSON_API_HOST' )    or define( 'JETPACK__WPCOM_JSON_API_HOST', 'public-api.wordpress.com' );
 
 // @todo: Abstract out the admin functions, and only include them if is_admin()
 // @todo: Only include things like class.jetpack-sync.php if we're connected.
@@ -72,7 +73,7 @@ add_filter( 'is_jetpack_site', '__return_true' );
 /**
  * Add an easy way to photon-ize a URL that is safe to call even if Jetpack isn't active.
  *
- * See: http://jetpack.me/2013/07/11/photon-and-themes/
+ * See: http://jetpack.com/2013/07/11/photon-and-themes/
  */
 if ( Jetpack::is_module_active( 'photon' ) ) {
 	add_filter( 'jetpack_photon_url', 'jetpack_photon_url', 10, 3 );
