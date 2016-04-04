@@ -214,8 +214,8 @@
 }
 .upToHeader {
   position: relative;
-  top: -20px;
-  margin-bottom: -20px;
+  top: -30px;
+  margin-bottom: -30px;
 }
 .oneAgent {
   width: 380px;
@@ -413,8 +413,19 @@
 .single .content a {
   color: #cf3428;
 }
+.single .content .singleSocialBlock {
+  margin-bottom: 10%;
+  margin-top: 7%;
+}
+.single .content .singleSocialBlock li a {
+  padding-top: 21%;
+}
 .single .featuredImageHeader {
   padding-top: 15%;
+}
+.single .loadMoreBlockSeparate {
+  border-top: 1px solid #efefef;
+  padding-top: 55px;
 }
 .oneCategory {
   width: 380px;
@@ -457,6 +468,7 @@
   font-size: 2.5em;
   position: relative;
   top: 15px;
+  left: 23px;
 }
 .oneCategory > a {
   display: block;
