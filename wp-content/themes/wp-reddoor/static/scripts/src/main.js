@@ -98,8 +98,8 @@ jQuery(document).ready(function(){
         },
         escapeMarkup: function (markup) { return markup; },
         templateSelection: function formatRepoSelection (city) {
-        return city.name;
-    }
+            return city.name;
+        }
     });
     jQuery('.location .select2-selection__placeholder').html('Location');
 
