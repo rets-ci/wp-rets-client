@@ -93,7 +93,7 @@ jQuery(document).ready(function(){
         templateResult: function formatRepo (city) {
             if (city.loading) return city.text;
 
-            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: red;'>" + city.taxonomy + "</span>";
+            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy + "</span>";
             return html;
         },
         escapeMarkup: function (markup) { return markup; },
