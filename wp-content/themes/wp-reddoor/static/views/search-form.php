@@ -97,26 +97,26 @@ $rentTermsQuantity = count($queryTermsRent->posts);
           <div class="clear"></div>
           <div class="left-side">
             <ul class="firstRangeList">
-              <li><a val="$50k" href="javascript:void(0);">$50k</a></li>
-              <li><a val="$75k" href="javascript:void(0);">$75k</a></li>
-              <li><a val="$100k" href="javascript:void(0);">$100k</a></li>
-              <li><a val="$125k" href="javascript:void(0);">$125k</a></li>
-              <li><a val="$150k" href="javascript:void(0);">$150k</a></li>
-              <li><a val="$175k" href="javascript:void(0);">$175k</a></li>
-              <li><a val="$200k" href="javascript:void(0);">$200k</a></li>
-              <li><a val="$0" href="javascript:void(0);">Any Amount</a></li>
+              <li><a val="50000" href="javascript:void(0);">$50k</a></li>
+              <li><a val="75000" href="javascript:void(0);">$75k</a></li>
+              <li><a val="100000" href="javascript:void(0);">$100k</a></li>
+              <li><a val="125000" href="javascript:void(0);">$125k</a></li>
+              <li><a val="150000" href="javascript:void(0);">$150k</a></li>
+              <li><a val="175000" href="javascript:void(0);">$175k</a></li>
+              <li><a val="200000" href="javascript:void(0);">$200k</a></li>
+              <li><a val="" href="javascript:void(0);">Any Amount</a></li>
             </ul>
           </div>
           <div class="right-side">
             <ul class="lastRangeList">
-              <li><a val="$300k" href="javascript:void(0);">$300k</a></li>
-              <li><a val="$350k" href="javascript:void(0);">$350k</a></li>
-              <li><a val="$400k" href="javascript:void(0);">$400k</a></li>
-              <li><a val="$450k" href="javascript:void(0);">$450k</a></li>
-              <li><a val="$500k" href="javascript:void(0);">$500k</a></li>
-              <li><a val="$550k" href="javascript:void(0);">$550k</a></li>
-              <li><a val="$600k" href="javascript:void(0);">$600k</a></li>
-              <li><a val="$0" href="javascript:void(0);">Any Amount</a></li>
+              <li><a val="300000" href="javascript:void(0);">$300k</a></li>
+              <li><a val="350000" href="javascript:void(0);">$350k</a></li>
+              <li><a val="400000" href="javascript:void(0);">$400k</a></li>
+              <li><a val="450000" href="javascript:void(0);">$450k</a></li>
+              <li><a val="500000" href="javascript:void(0);">$500k</a></li>
+              <li><a val="550000" href="javascript:void(0);">$550k</a></li>
+              <li><a val="600000" href="javascript:void(0);">$600k</a></li>
+              <li><a val="" href="javascript:void(0);">Any Amount</a></li>
             </ul>
           </div>
         </div>
