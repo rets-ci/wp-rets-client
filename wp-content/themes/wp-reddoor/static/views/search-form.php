@@ -48,6 +48,9 @@ $rentTermsQuantity = count($queryTermsRent->posts);
   <div class="clear"></div>
   <div class="tab-content">
     <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
+
+      <input name="wpp_search[sale_type]" type="hidden" value="sale"/>
+
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
         <select class="citiesSelection" name="_term" placeholder="Location">
@@ -127,6 +130,9 @@ $rentTermsQuantity = count($queryTermsRent->posts);
     </form>
 
     <form class="rentForm tab-pane" id="tabs-2" method="POST" action="">
+
+      <input name="wpp_search[sale_type]" type="hidden" value="rent"/>
+
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
         <select class="citiesSelection" name="_term">
