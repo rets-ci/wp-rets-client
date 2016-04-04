@@ -114,15 +114,17 @@ $the_query = new WP_Query( $query );
 							<li class="rdc-carousel-item">
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
-										<?php if( has_post_thumbnail() ) : //$img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large'); ?>
-											<div class="thumb" style="background-image: url(<?php //echo esc_url($img[0]) ?>)">
-												<?php echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
+										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large'); ?>
+											<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>)">
+												<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 												<span class="overlay"></span>
 											</div>
 										<?php else : ?>
 											<div class="rdc-carousel-default-thumbnail"><span class="overlay"></span></div>
 										<?php endif; ?>
+										<?php if(!empty($property[ 'address' ])){ ?>
 										<div class="price"><?php echo $property[ 'address' ] ?></div>
+										<?php } ?>
 									</div>
 									<div class="item-content">
 										<p class="address"><?php echo $property[ 'remarks' ]; ?></p>
