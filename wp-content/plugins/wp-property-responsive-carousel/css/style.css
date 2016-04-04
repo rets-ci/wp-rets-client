@@ -13,7 +13,7 @@
   position: relative;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 40px 40px 60px;
+  padding: 40px 0px 60px 100px;
 }
 .rdc-carousel-title {
   margin-bottom: 15px;
@@ -92,7 +92,8 @@
 }
 .rdc-carousel-title a.rdc-carousel-next,
 .rdc-carousel-title a.rdc-carousel-previous {
-  bottom: 30px;
+  top: 50%;
+  left: 0;
   position: absolute;
   width: 41px;
   height: 41px;
@@ -114,20 +115,18 @@
   text-decoration: none;
   color: #FFFFFF;
   border-radius: 2px;
-  border: 1px solid #bdbcbd;
+  background: #45484c;
+  border: 1px solid #45484c !important;
 }
 .rdc-carousel-title a.rdc-carousel-next:hover,
 .rdc-carousel-title a.rdc-carousel-previous:hover {
-  background: #cf3428;
   color: white !important;
-  border: 1px solid #cf3428 !important;
+  border-radius: 2px;
+  border: 1px solid #fff !important;
   transition: color .3s, background .3s, border .3s;
 }
-.rdc-carousel-title a.rdc-carousel-next {
-  right: 40px;
-}
 .rdc-carousel-title a.rdc-carousel-previous {
-  right: 90px;
+  top: 60%;
 }
 .rdc-carousel-title a.rdc-carousel-next:before {
   content: "\e601";
@@ -181,9 +180,19 @@
   display: block;
   float: left;
   margin-right: 20px;
-  width: 275px;
+  width: 500px;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock a {
+  background: #bf2b1f none repeat scroll 0 0;
+  border-radius: 5px;
+  color: #fff;
+  display: block;
+  padding: 10px;
+  width: 25%;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:last-child {
   margin-right: 0;
@@ -200,7 +209,7 @@
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail div.thumb {
   display: block;
-  width: 275px;
+  width: 500px;
   height: 200px;
   background-size: 275px 200px;
   background-position: center center;
@@ -218,16 +227,6 @@
   height: 100%;
   background: #bf2b1f;
   opacity: 0;
-}
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-thumbnail .price {
-  background: #cf3428;
-  position: absolute;
-  height: 26px;
-  line-height: 26px;
-  left: 0;
-  bottom: 0;
-  padding: 0 8px;
-  color: #fff;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .rdc-carousel-default-thumbnail {
   display: block;
@@ -261,15 +260,21 @@
   min-height: 80px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
-  border-top: 1px solid #e6e6e6;
   margin: 0;
   padding: 20px 20px 12px 20px;
   list-style: none;
+  text-align: center;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li {
   list-style: none;
   display: inline-block;
   margin-right: 16px;
+  color: #a7a9ac;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li .singlePropertyIcon {
+  color: #a7a9ac;
+  font-size: 1.3em;
+  margin-right: 10px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li span.rdc-icon {
   display: inline-block;

@@ -96,7 +96,7 @@ $the_query = new WP_Query( $query );
 				     data-ajax-url="<?php echo esc_url( wp_nonce_url( admin_url('admin-ajax.php'), 'widgets_action', '_widgets_nonce' ) ) ?>"
 					>
 					<ul class="rdc-carousel-items">
-						<li class="rdc-carousel-item" style="width: 500px;">
+						<li class="rdc-carousel-item descriptionBlock" style="width: 500px;">
 							<?php if( !empty( $instance[ 'Description' ] )){
 									echo $instance[ 'Description' ];
 							} ?>
@@ -115,29 +115,20 @@ $the_query = new WP_Query( $query );
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
 										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large'); ?>
-											<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>)">
+											<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>); background-size: cover; background-position: center center;">
 												<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 												<span class="overlay"></span>
 											</div>
 										<?php else : ?>
 											<div class="rdc-carousel-default-thumbnail"><span class="overlay"></span></div>
 										<?php endif; ?>
-										<?php if(!empty($property[ 'address' ])){ ?>
-										<div class="price"><?php echo $property[ 'address' ] ?></div>
-										<?php } ?>
 									</div>
 									<div class="item-content">
-										<p class="address"><?php echo $property[ 'remarks' ]; ?></p>
+										<?php echo $property['post_title'] . ' - '; if(!empty($property[ 'price' ])){ _e( '$' . $property[ 'price' ]); } ?>
 										<ul>
-											<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>
-												<li title="<?php _e( 'Address', 'ud' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'address' ] ?></span></li>
-											<?php endif; ?>
-											<?php if( !empty( $property[ 'bathrooms' ] ) ) : ?>
-												<li title="<?php _e( 'Remarks', 'ud' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'remarks' ] ?></span></li>
-											<?php endif; ?>
-											<?php if( !empty( $property[ 'area' ] ) ) : ?>
-												<li title="<?php _e( 'Directions', 'ud' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'directions' ] ?></span></li>
-											<?php endif; ?>
+											<li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); _e($get_bedrooms_terms[0]->name . ' Beds') ?><li>
+											<li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); _e($get_bathrooms_terms[0]->name . ' Baths') ?></li>
+											<li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' ft.'); ?></li>
 										</ul>
 									</div>
 								</a>

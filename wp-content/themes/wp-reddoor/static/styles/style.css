@@ -911,11 +911,13 @@
 .single-property .singlePropertyHeader .container > ul li {
   display: inline-block;
   font-size: 1.5em;
-  margin-right: 10px;
+  margin-right: 15px;
 }
-.single-property .singlePropertyHeader .container > ul li svg {
-  margin-right: 10px;
+.single-property .singlePropertyHeader .container > ul li .singlePropertyIcon {
   color: #a7a9ac;
+  float: left;
+  font-size: 1.2em;
+  margin-right: 20px;
 }
 .single-property .singlePropertyHeader .oneAgent {
   position: absolute;

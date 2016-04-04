@@ -9,7 +9,7 @@ Author URI: https://www.usabilitydynamics.com
 /**
  * Fix path to template file.
  */
-add_filter( 'siteorigin_widgets_template_file_ud-property-carousel', function( $template_file, $instance, $object ){
+add_filter( 'siteorigin_widgets_template_file_wp-property-responsive-carousel', function( $template_file, $instance, $object ){
 		return untrailingslashit(plugin_dir_path(__FILE__)) . $template_file;
 }, 99, 3 );
 

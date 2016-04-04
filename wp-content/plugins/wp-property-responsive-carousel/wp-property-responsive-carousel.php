@@ -41,8 +41,8 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
     );
 
     parent::__construct(
-      'ud-property-carousel',
-      __('UD Property Carousel', 'ud'),
+      'wp-property-responsive-carousel',
+      __('WP-Property Responsive Carousel', 'ud'),
       array(
         'description' => __('Display your properties as a carousel.', 'ud'),
         'has_preview' => false

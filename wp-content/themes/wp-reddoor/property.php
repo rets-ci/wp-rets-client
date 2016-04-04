@@ -45,11 +45,11 @@ while ( have_posts() ) : the_post();
             <b class="clear"></b>
           </div>
           <ul>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php _e('$'); if($property['price']){echo $property['price'];} ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php if($property['beds']){ echo $property['beds'];} echo ' '; _e('Beds'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php if($property['baths']){ echo $property['baths'];} echo ' '; _e('Baths'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php if($property['apartment_area']){ echo $property['apartment_area'];} echo ' '; _e('Sq.ft'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php if($property['ground_area']){ echo $property['ground_area'];} echo ' '; _e('acres'); ?></span></li>
+            <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$ '); if($property['price']){echo $property['price'];} ?></li>
+            <li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); _e($get_bedrooms_terms[0]->name . ' Beds'); ?></li>
+            <li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); _e($get_bathrooms_terms[0]->name . ' Baths'); ?></li>
+            <li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?></li>
+            <li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?></li>
           </ul>
           <div class="oneAgent">
             <ul class="socialButtons">

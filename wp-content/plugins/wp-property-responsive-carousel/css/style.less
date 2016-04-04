@@ -45,7 +45,7 @@
         position: relative;
         max-width: 1240px;
         margin: 0 auto;
-        padding: 40px 40px 60px;
+        padding: 40px 0px 60px 100px;
     }
 
 }
@@ -162,9 +162,8 @@
 
 	a.rdc-carousel-next,
 	a.rdc-carousel-previous {
-
-        bottom: 30px;
-
+        top: 50%;
+        left: 0;
         position: absolute;
         width: 41px;
         height: 41px;
@@ -189,23 +188,19 @@
 		color: #FFFFFF;
 
 		border-radius: 2px;
-
-        border: 1px solid #bdbcbd;
+    background: #45484c;
+    border: 1px solid #45484c !important;
 
 		&:hover {
-          background: #cf3428;
+          border-radius: 2px;
           color: white !important;
-          border: 1px solid #cf3428 !important;
+          border: 1px solid #fff !important;
           transition: color .3s, background .3s, border .3s;
 		}
 	}
 
-    a.rdc-carousel-next {
-        right: 40px;
-    }
-
     a.rdc-carousel-previous {
-        right: 90px;
+        top: 60%;
     }
 
 	a.rdc-carousel-next:before {
@@ -249,6 +244,20 @@
         .clearfix();
         width: 99999px;
 
+        li.descriptionBlock{
+
+            a{
+                background: #bf2b1f none repeat scroll 0 0;
+                border-radius: 5px;
+                color: #fff;
+                display: block;
+                padding: 10px;
+                width: 25%;
+                margin-bottom: 30px;
+                margin-top: 30px;
+            }
+        }
+
         li.rdc-carousel-item {
             list-style: none;
             margin-left: 0;
@@ -256,7 +265,7 @@
             display: block;
             float: left;
             margin-right: 20px;
-            width: 275px;
+            width: 500px;
             overflow-x: hidden;
             overflow-y: hidden;
 
@@ -285,7 +294,7 @@
 
                 div.thumb {
                     display: block;
-                    width: 275px;
+                    width: 500px;
                     height: 200px;
                     background-size: 275px 200px;
                     background-position: center center;
@@ -301,17 +310,6 @@
                         background: #bf2b1f;
                         opacity: 0;
                     }
-                }
-
-                .price {
-                    background: #cf3428;
-                    position: absolute;
-                    height: 26px;
-                    line-height: 26px;
-                    left: 0;
-                    bottom: 0;
-                    padding: 0 8px;
-                    color: #fff;
                 }
             }
 
@@ -340,22 +338,26 @@
                 }
 
                 p {
-                    margin: 0;
-                    line-height: 20px;
-                    padding: 20px;
-                    min-height: 80px;
+                    margin: 10px;
                 }
 
                 ul {
-                    border-top: 1px solid #e6e6e6;
                     margin: 0;
                     padding: 20px 20px 12px 20px;
                     list-style: none;
+                    text-align: center;
 
                     li {
                         list-style: none;
                         display: inline-block;
                         margin-right: 16px;
+                        color: #a7a9ac;
+
+                        .singlePropertyIcon{
+                            color: #a7a9ac;
+                            font-size: 1.3em;
+                            margin-right: 10px;
+                        }
 
                         span.rdc-icon {
                             display: inline-block;
