@@ -90,6 +90,8 @@ namespace UsabilityDynamics\WPP {
         add_action( 'wpp::clone_property::action', array( $this, 'clone_property_action' ), 99, 2 );
 
         add_action( 'admin_menu' , array( $this, 'maybe_remove_native_meta_boxes' ), 11 );
+
+        add_action( 'wp_ajax_term_autocomplete', array($this, 'ajax_term_autocomplete'));
       }
 
       /**
@@ -336,19 +338,39 @@ namespace UsabilityDynamics\WPP {
           $criteria = explode( ',', trim( $criteria ) );
         }
 
-        $tax_query = array(
-          'relation' => 'OR',
-          array(
-            'taxonomy' => $key,
-            'field'    => 'name',
-            'terms'    => $criteria,
-          ),
-          array(
-            'taxonomy' => $key,
-            'field'    => 'slug',
-            'terms'    => $criteria,
-          ),
-        );
+        $is_numeric = true;
+        foreach($criteria as $i => $v) {
+          $criteria[$i] = trim($v);
+          if( !is_numeric($criteria[$i]) ) {
+            $is_numeric = false;
+          }
+        }
+
+        if($is_numeric) {
+          $tax_query = array(
+              array(
+                  'taxonomy' => $key,
+                  'field'    => 'term_id',
+                  'terms'    => $criteria,
+              )
+          );
+        } else {
+          $tax_query = array(
+              'relation' => 'OR',
+              array(
+                  'taxonomy' => $key,
+                  'field'    => 'name',
+                  'terms'    => $criteria,
+              ),
+              array(
+                  'taxonomy' => $key,
+                  'field'    => 'slug',
+                  'terms'    => $criteria,
+              ),
+          );
+        }
+
+        $tax_query = apply_filters( 'wpp_terms_custom_search_tax_query', $tax_query, $key, $criteria, $matching_ids );
 
         $args = array(
           'post_type' => 'property',
@@ -781,6 +803,16 @@ namespace UsabilityDynamics\WPP {
       public function deactivate() {
         //** flush Object Cache */
         wp_cache_flush();
+      }
+
+      public function ajax_term_autocomplete(){
+        $terms = get_terms($_REQUEST['taxonomy'], array('fields' => 'id=>name'));
+        $new = array();
+        foreach ($terms as $id => $name) {
+          $new[] = array('value' => $id, 'label' => $name);
+        }
+        wp_send_json($new);
+        die();
       }
 
     }
