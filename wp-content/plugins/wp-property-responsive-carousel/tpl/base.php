@@ -124,11 +124,12 @@ $the_query = new WP_Query( $query );
 										<?php endif; ?>
 									</div>
 									<div class="item-content">
-										<?php echo $property['post_title'] . ' - '; if(!empty($property[ 'price' ])){ _e( '$' . $property[ 'price' ]); } ?>
+										<p><?php echo $property['post_title']; if(!empty($property[ 'price' ])){ echo ' - <span>$' . number_format($property[ 'price' ]) . '</span>' ; } ?></p>
+										<span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); _e($get_location_city_terms[0]->name); ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); _e('NC ' . $get_location_zip_terms[0]->name); ?></span>
 										<ul>
 											<li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); _e($get_bedrooms_terms[0]->name . ' Beds') ?><li>
 											<li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); _e($get_bathrooms_terms[0]->name . ' Baths') ?></li>
-											<li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' ft.'); ?></li>
+											<li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php if(!empty($property['approximate_lot_sqft'])) { _e($property['approximate_lot_sqft'] . ' ft<sup>2</sup>.');} ?></li>
 										</ul>
 									</div>
 								</a>

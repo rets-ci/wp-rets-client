@@ -243,8 +243,11 @@
         padding: 0;
         .clearfix();
         width: 99999px;
+        padding-top: 10px;
 
         li.descriptionBlock{
+            border-radius: 0;
+            box-shadow: none;
 
             a{
                 background: #bf2b1f none repeat scroll 0 0;
@@ -268,6 +271,12 @@
             width: 500px;
             overflow-x: hidden;
             overflow-y: hidden;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #ddd;
+
+            &>a{
+                text-decoration: none !important;
+            }
 
             &:last-child {
                 margin-right: 0;
@@ -338,7 +347,21 @@
                 }
 
                 p {
-                    margin: 10px;
+                    color: #747375;
+                    font-size: 1.8em;
+                    margin: 0;
+                    padding: 25px 10px 0px 10px;
+                    text-align: center;
+                    span{
+                        color: #cf3428;
+                    }
+                }
+
+                &>span{
+                    color: #747375;
+                    display: block;
+                    font-size: 1.1em;
+                    text-align: center;
                 }
 
                 ul {

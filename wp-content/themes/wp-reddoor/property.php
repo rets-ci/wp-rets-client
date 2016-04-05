@@ -41,18 +41,20 @@ while ( have_posts() ) : the_post();
           <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
           <div class="title">
             <span>Active</span>
-            <div><?php the_title(); ?><span>Parkland, FL 33076</span></div>
+            <div><?php the_title(); ?><span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); _e($get_location_city_terms[0]->name); ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); _e('NC ' . $get_location_zip_terms[0]->name); ?></span></div>
             <b class="clear"></b>
           </div>
           <ul>
-            <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$ '); if($property['price']){echo $property['price'];} ?></li>
+            <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$'); if($property['price']){echo $property['price'];} ?></li>
             <li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); _e($get_bedrooms_terms[0]->name . ' Beds'); ?></li>
             <li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); _e($get_bathrooms_terms[0]->name . ' Baths'); ?></li>
-            <li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?></li>
-            <li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?></li>
+            <li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?></li>
+            <li><span class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?></li>
           </ul>
           <div class="oneAgent">
             <ul class="socialButtons">
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
             </ul>
@@ -61,13 +63,17 @@ while ( have_posts() ) : the_post();
 
             <div class="rdc-agents-carousel-wrapper">
 
-              <div class="rdc-agents-carousel-title">
+              <?php  if(empty($property['wpp_agents'])) { ?>
 
-              <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
+                <div class="rdc-agents-carousel-title">
 
-              <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+                <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
 
-              </div>
+                <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+
+                </div>
+
+              <?php  } ?>
 
               <ul class="rdc-agents-carousel-items">
 
@@ -81,6 +87,28 @@ while ( have_posts() ) : the_post();
                 $image_ids = get_user_meta($agentId, 'agent_images', true);
 
                 $user_data = get_userdata($agentId);
+
+                if(!empty($image_ids[0])){
+                  $imageId = $image_ids[0];
+                }
+
+                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+
+                echo '<h3>' . $user_data->display_name . '</h3>';
+
+                echo '<span>Red Door Company</span><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
+
+              }
+            }
+            else{
+              $usersAgentsObjects = get_users(array('role' => 'agent'));
+              foreach($usersAgentsObjects as $userAgentId){
+
+                echo '<li class="rdc-agents-carousel-item">';
+
+                $image_ids = get_user_meta($userAgentId->ID, 'agent_images', true);
+
+                $user_data = get_userdata($userAgentId->ID);
 
                 if(!empty($image_ids[0])){
                   $imageId = $image_ids[0];
@@ -101,6 +129,7 @@ while ( have_posts() ) : the_post();
             ?>
 
                 </ul>
+
             </div>
 
               </div>

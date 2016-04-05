@@ -905,6 +905,7 @@
   float: left;
   margin-top: 10px;
   margin-right: 15px;
+  display: none;
 }
 .single-property .singlePropertyHeader .title > div {
   float: left;
@@ -925,7 +926,7 @@
   color: #a7a9ac;
   float: left;
   font-size: 1.2em;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 .single-property .singlePropertyHeader .oneAgent {
   position: absolute;
@@ -958,7 +959,7 @@
   border-radius: 0 !important;
 }
 .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-  width: 49.4%;
+  width: 24.1%;
   color: #a7a9ac;
   font-size: 2em !important;
   padding: 0;
