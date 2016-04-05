@@ -16,6 +16,7 @@ if ( ! class_exists( 'RWMB_Wpp_Taxonomy_Field' ) )
 		{
 			RWMB_Select_Advanced_Field::admin_enqueue_scripts();
 			RWMB_Wpp_Select_Advanced_Field::admin_enqueue_scripts();
+			RWMB_Wpp_Select_Combobox_Field::admin_enqueue_scripts();
 			wp_enqueue_style( 'rwmb-taxonomy', RWMB_CSS_URL . 'taxonomy.css', array(), RWMB_VER );
 			wp_enqueue_script( 'rwmb-taxonomy', RWMB_JS_URL . 'taxonomy.js', array( 'rwmb-select-advanced' ), RWMB_VER, true );
 		}
@@ -31,32 +32,26 @@ if ( ! class_exists( 'RWMB_Wpp_Taxonomy_Field' ) )
 		static function html( $meta, $field )
 		{
 			$options = $field['options'];
-			$terms   = get_terms( $options['taxonomy'], $options['args'] );
-			$field['_options']      = $options;
-			$field['_terms']      	= $terms;
-			$field['options']      = self::get_options( $terms );
 			$field['display_type'] = $options['type'];
+			$field['_options']      = $options;
 
 			$html = '';
 
 			switch ( $options['type'] )
 			{
-				case 'checkbox_list':
-					$html = RWMB_Checkbox_List_Field::html( $meta, $field );
-					break;
-				case 'checkbox_tree':
-					$elements = self::process_terms( $terms );
-					$html .= self::walk_checkbox_tree( $meta, $field, $elements, $options['parent'], true );
-					break;
 				case 'select_tree':
+					$terms   = get_terms( $options['taxonomy'], $options['args'] );
+					$field['options']      = self::get_options( $terms );
 					$elements = self::process_terms( $terms );
 					$html .= self::walk_select_tree( $meta, $field, $elements, $options['parent'], true );
 					break;
 				case 'select_advanced':
-					if($field['multiple'] == true)
+					if($field['multiple'] == true){
 						$html = RWMB_Wpp_Select_Advanced_Field::html( $meta, $field );
-					else // if it's not  multiple using default select advance field
-						$html = RWMB_Select_Advanced_Field::html( $meta, $field );
+					}
+					else{ // if it's not  multiple using default select advance field
+						$html = RWMB_Wpp_Select_Combobox_Field::html( $meta, $field );
+					}
 					break;
 				case 'select':
 				default:
