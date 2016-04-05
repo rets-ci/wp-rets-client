@@ -33,9 +33,11 @@
         </select>
       </div>
 
+      <!-- Buy Bedrooms -->
+
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms]" type="hidden" value="1,2,3,4,5,6" />
+        <input name="wpp_search[bedrooms]" type="hidden" value="<?php echo implode(',', apply_filters('rdc_search_default_bedrooms', array(1,2,3,4,5,6))); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
@@ -43,32 +45,41 @@
           <b class="sf-arrow"></b>
         </span>
         <ul>
-          <li><input id="bed1" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="1,2,3,4,5,6"/><label for="bed1">1+</label></li>
-          <li><input id="bed2" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="2,3,4,5,6"/><label for="bed2">2+</label></li>
-          <li><input id="bed3" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="3,4,5,6"/><label for="bed3">3+</label></li>
-          <li><input id="bed4" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="4,5,6"/><label for="bed4">4+</label></li>
-          <li><input id="bed5" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="5,6"/><label for="bed5">5+</label></li>
-          <li><input id="bed6" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="6"/><label for="bed6">6+</label></li>
+          <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+            $array_values = array();
+            for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
+              $array_values[] = $i;
+            }
+          ?>
+            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php endforeach; ?>
         </ul>
       </div>
 
+      <!-- Buy Bathrooms -->
+
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms]" type="hidden" value="1,2,3,4,5,6" />
+        <input name="wpp_search[bathrooms]" type="hidden" value="<?php echo implode(',', apply_filters('rdc_search_default_bathrooms', array(1,2,3,4,5,6))); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b></span>
+
         <ul>
-          <li><input id="bath1" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="1,2,3,4,5,6"/><label for="bath1">1+</label></li>
-          <li><input id="bath2" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="2,3,4,5,6"/><label for="bath2">2+</label></li>
-          <li><input id="bath3" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="3,4,5,6"/><label for="bath3">3+</label></li>
-          <li><input id="bath4" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="4,5,6"/><label for="bath4">4+</label></li>
-          <li><input id="bath5" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="5,6"/><label for="bath5">5+</label></li>
-          <li><input id="bath6" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="6"/><label for="bath6">6+</label></li>
+          <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+            $array_values = array();
+            for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
+              $array_values[] = $i;
+            }
+            ?>
+            <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php endforeach; ?>
         </ul>
       </div>
+
+      <!-- Buy Price -->
 
       <div class="sfPrice">
         <span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
@@ -130,45 +141,50 @@
 
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms]" type="hidden" value="1,2,3,4,5,6" />
+        <input name="wpp_search[bedrooms]" type="hidden" value="<?php echo implode(',', apply_filters('rdc_search_default_bedrooms', array(1,2,3,4,5,6))); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
+
         <ul>
-          <li><input id="bed1" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="1,2,3,4,5,6"/><label for="bed1">1+</label></li>
-          <li><input id="bed2" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="2,3,4,5,6"/><label for="bed2">2+</label></li>
-          <li><input id="bed3" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="3,4,5,6"/><label for="bed3">3+</label></li>
-          <li><input id="bed4" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="4,5,6"/><label for="bed4">4+</label></li>
-          <li><input id="bed5" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="5,6"/><label for="bed5">5+</label></li>
-          <li><input id="bed6" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="6"/><label for="bed6">6+</label></li>
+          <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+            $array_values = array();
+            for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
+              $array_values[] = $i;
+            }
+            ?>
+            <li><input id="rent_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="rent_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php endforeach; ?>
         </ul>
       </div>
 
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms]" type="hidden" value="1,2,3,4,5,6" />
+        <input name="wpp_search[bathrooms]" type="hidden" value="<?php echo implode(',', apply_filters('rdc_search_default_bathrooms', array(1,2,3,4,5,6))); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b></span>
         <ul>
-          <li><input id="bath1" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="1,2,3,4,5,6"/><label for="bath1">1+</label></li>
-          <li><input id="bath2" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="2,3,4,5,6"/><label for="bath2">2+</label></li>
-          <li><input id="bath3" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="3,4,5,6"/><label for="bath3">3+</label></li>
-          <li><input id="bath4" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="4,5,6"/><label for="bath4">4+</label></li>
-          <li><input id="bath5" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="5,6"/><label for="bath5">5+</label></li>
-          <li><input id="bath6" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="6"/><label for="bath6">6+</label></li>
+          <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+            $array_values = array();
+            for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
+              $array_values[] = $i;
+            }
+            ?>
+            <li><input id="rent_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="rent_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php endforeach; ?>
         </ul>
       </div>
 
       <div class="sfPrice">
         <span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
       </div>
-      <input type="submit" value="Search"/>
+      <input type="submit" value="<?php _e('Search') ?>"/>
       <div class="sf-property-quantity"><b>!</b> <?php echo \UsabilityDynamics\RDC\Utils::get_rent_properties_count(); ?> properties for rent</div>
     </form>
 
