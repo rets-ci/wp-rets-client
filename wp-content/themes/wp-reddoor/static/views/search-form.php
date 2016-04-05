@@ -44,7 +44,7 @@
           <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
-        <ul>
+        <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
             $array_values = array();
             for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
@@ -67,7 +67,7 @@
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b></span>
 
-        <ul>
+        <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
             $array_values = array();
             for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
@@ -81,10 +81,10 @@
 
       <!-- Buy Price -->
 
-      <div class="sfPrice">
+      <div class="sfPrice dropdown-container">
         <span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
 
-        <div class="sfPriceRange">
+        <div class="sfPriceRange dropdown-list">
           <div class="sfprInputsBlock">
             <input type="text" class="firstRange" value="" name="wpp_search[price][min]" placeholder="Min">
             <input type="text" class="lastRange" value="" name="wpp_search[price][max]" placeholder="Max">

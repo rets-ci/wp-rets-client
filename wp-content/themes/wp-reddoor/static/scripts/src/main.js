@@ -48,47 +48,6 @@ jQuery(document).ready(function(){
             }
         });
     });
-    /* Price Range */
-    jQuery('.firstRangeList a').on('click', function(){
-        jQuery('.firstRange').val(jQuery(this).attr('val'));
-        jQuery('.lastRangeList').show();
-        jQuery('.firstRangeList').hide();
-    });
-    jQuery('.lastRangeList a').on('click', function(){
-        jQuery('.lastRange').val(jQuery(this).attr('val'));
-        jQuery('.lastRangeList').hide();
-    });
-    jQuery('.firstRange').on('click', function(){
-       jQuery('.firstRangeList').show();
-       jQuery('.lastRangeList').hide();
-    });
-    jQuery('.lastRange').on('click', function(){
-        jQuery('.lastRangeList').show();
-        jQuery('.firstRangeList').hide();
-    });
-    jQuery('.citiesSelection').select2({
-        placeholder: 'Location',
-        ajax: {
-            url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
-            dataType: 'json',
-            processResults: function(data, page){
-                return {
-                    results: data.data
-                }
-            }
-        },
-        templateResult: function formatRepo (city) {
-            if (city.loading) return city.text;
-
-            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy + "</span>";
-            return html;
-        },
-        escapeMarkup: function (markup) { return markup; },
-        templateSelection: function formatRepoSelection (city) {
-            return city.name;
-        }
-    });
-    jQuery('.location .select2-selection__placeholder').html('Location');
 
     /* Footer social icons */
     jQuery('.facebookFootIcon a').html('<span class="icon-social-facebook-symbol"></span>');

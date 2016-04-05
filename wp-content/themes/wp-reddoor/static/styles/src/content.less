@@ -549,9 +549,7 @@
       color: #a7a9ac;
       font-size: 0.9em;
       position: relative;
-      top: -4px;
-      left: -30%;
-      width: 130%;
+      width: 206px;
       ul{
         margin: 0;
         li{
@@ -563,19 +561,21 @@
       .sfprInputsBlock{
         background: #fbfaf8;
         border-bottom: 1px solid #f2f2f2;
-        height: 65px;
-        padding-left: 18px;
-        padding-top: 17px;
-        input{
+        padding: 16px;
+
+        input {
           background: #fbfaf8 none repeat scroll 0 0;
           border: 1px solid #a7a9ac;
-          float: left;
+          display: inline-block;
           font-size: 0.9em;
           height: 30px;
           padding: 0 5px;
           width: 80px;
           text-align: center;
-          margin-right: 5px;
+
+          &.lastRange {
+            margin-left: 8px;
+          }
         }
       }
       .firstRangeList{
