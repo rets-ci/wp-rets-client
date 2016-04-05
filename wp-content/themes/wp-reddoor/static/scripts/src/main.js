@@ -23,19 +23,6 @@ jQuery(document).ready(function(){
         jQuery( ".menuAdaptive" ).accordion();
     });
 
-    /* Search-form slide selects */
-    jQuery(document).click( function(event){
-        if( jQuery(event.target).closest(".sfBeds ul, .sfBaths ul, .sfPriceRange").length )
-            return;
-        jQuery(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideUp("slow");
-        event.stopPropagation();
-    });
-    jQuery('.sfBeds span, .sfBaths span, .sfPrice span').click( function() {
-        jQuery(this).siblings(".sfBeds ul, .sfBaths ul, .sfPriceRange").slideToggle("slow");
-        return false;
-    });
-    /* Search-form slide selects */
-
     jQuery(function($){
         jQuery("#phone").mask("+919-333-333",{placeholder:"+919-XXX-XXX"});
     })

@@ -702,9 +702,9 @@
   position: absolute;
   top: 20px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds span,
-.frontPageSearchBlock .searchForm form .sfBaths span,
-.frontPageSearchBlock .searchForm form .sfPrice span {
+.frontPageSearchBlock .searchForm form .sfBeds > span,
+.frontPageSearchBlock .searchForm form .sfBaths > span,
+.frontPageSearchBlock .searchForm form .sfPrice > span {
   display: block;
   height: 61px;
   line-height: 4.5em;
@@ -714,9 +714,9 @@
   cursor: pointer;
   padding-left: 60px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfBaths span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfPrice span .sf-arrow {
+.frontPageSearchBlock .searchForm form .sfBeds > span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfBaths > span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfPrice > span .sf-arrow {
   border-color: #a7a9ac transparent transparent;
   border-style: solid;
   border-width: 5px 4px 0;
@@ -809,23 +809,31 @@
 }
 /* Checkboxes */
 .sfBeds input[type="checkbox"],
-.sfBaths input[type="checkbox"] {
+.sfBaths input[type="checkbox"],
+.sfBeds input[type="radio"],
+.sfBaths input[type="radio"] {
   display: none;
 }
 .sfBeds input[type="checkbox"] + label,
-.sfBaths input[type="checkbox"] + label {
+.sfBaths input[type="checkbox"] + label,
+.sfBeds input[type="radio"] + label,
+.sfBaths input[type="radio"] + label {
   color: #808285;
   cursor: pointer;
   font-weight: 400;
   font-size: 0.8em;
 }
 .sfBeds input[type="checkbox"] + label,
-.sfBaths input[type="checkbox"] + label {
+.sfBaths input[type="checkbox"] + label,
+.sfBeds input[type="radio"] + label,
+.sfBaths input[type="radio"] + label {
   cursor: pointer;
   padding-left: 0;
 }
 .sfBeds input[type="checkbox"] + label::before,
-.sfBaths input[type="checkbox"] + label::before {
+.sfBaths input[type="checkbox"] + label::before,
+.sfBeds input[type="radio"] + label::before,
+.sfBaths input[type="radio"] + label::before {
   content: "";
   display: inline-block;
   height: 18px;
@@ -834,7 +842,9 @@
   background: url('../images/src/checkboxes.png') no-repeat;
 }
 .sfBeds input[type="checkbox"]:checked + label::before,
-.sfBaths input[type="checkbox"]:checked + label::before {
+.sfBaths input[type="checkbox"]:checked + label::before,
+.sfBeds input[type="radio"]:checked + label::before,
+.sfBaths input[type="radio"]:checked + label::before {
   background-position: 0 -17px;
 }
 .popupCheckbox input[type="checkbox"] {

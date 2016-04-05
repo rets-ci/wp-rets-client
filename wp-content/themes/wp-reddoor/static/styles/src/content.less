@@ -498,7 +498,7 @@
         position: absolute;
         top: 20px;
       }
-      span{
+      > span{
         display: block;
         height: 61px;
         line-height: 4.5em;
@@ -608,20 +608,20 @@
 /* Checkboxes */
 
 .sfBeds, .sfBaths {
-  input[type="checkbox"] {
+  input[type="checkbox"], input[type="radio"] {
     display: none;
   }
-  input[type="checkbox"] + label {
+  input[type="checkbox"] + label, input[type="radio"] + label {
     color: #808285;
     cursor: pointer;
     font-weight: 400;
     font-size: 0.8em;
   }
-  input[type="checkbox"] + label {
+  input[type="checkbox"] + label, input[type="radio"] + label {
     cursor: pointer;
     padding-left: 0;
   }
-  input[type="checkbox"] + label::before {
+  input[type="checkbox"] + label::before, input[type="radio"] + label::before {
     content: "";
     display: inline-block;
     height: 18px;
@@ -629,7 +629,7 @@
     margin: 0 -5px -6px 0;
     background: url('../images/src/checkboxes.png') no-repeat;
   }
-  input[type="checkbox"]:checked + label::before {
+  input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
     background-position: 0 -17px;
   }
 }
