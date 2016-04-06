@@ -12,19 +12,25 @@
  * @since Twenty Twelve 1.0
  */
 
-get_header(); ?>
+get_header();
+
+while (have_posts()) : the_post(); ?>
 
   <div class="container-fluid">
     <div class="row">
-      <section class="frontPageSearchBlock">
-        <?php //get_template_part('static/views/search-form'); ?>
+      <section class="frontPageSearchBlock" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
+        <h1><?php the_field('home_title'); ?></h1>
+        <h3><?php the_field('home_subtitle'); ?></h3>
+        <?php get_template_part('static/views/search-form'); ?>
       </section>
     </div>
   </div>
 
   <div class="container">
     <div class="row site-content">
-      <?php while (have_posts()) : the_post(); ?>
+
+
+
 
         <?php  the_content(); ?>
 

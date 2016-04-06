@@ -25,6 +25,13 @@ global $property;
 
 // Start the Loop.
 while ( have_posts() ) : the_post();
+  $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
+  $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
+  $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
+  $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+  $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+
+  $_propertyType = $get_sale_type_terms[0]->slug;
 
 ?>
 
@@ -33,7 +40,11 @@ while ( have_posts() ) : the_post();
         <?php if( function_exists('ud_get_wpp_resp_slideshow') ){ ?>
          <?php echo do_shortcode('[property_responsive_slideshow slider_type=12mosaic]'); ?>
       <?php } else { ?>
+          <?php  if(has_post_thumbnail()){ ?>
           <div class="slideshowHeadImage" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
+      <?php } else { ?>
+            <div class="slideshowHeadImage" style="background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/default_property.JPG')"></div>
+    <?php } ?>
         <?php } ?>
       </section>
       <section id="propertyDetails" class="singlePropertyHeader">
@@ -41,29 +52,32 @@ while ( have_posts() ) : the_post();
           <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
           <div class="title">
             <span>Active</span>
-            <div><?php the_title(); ?><span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); _e($get_location_city_terms[0]->name); ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); _e('NC ' . $get_location_zip_terms[0]->name); ?></span></div>
+            <div><?php the_title(); ?><span><?php _e($get_location_city_terms[0]->name); ?>, <?php _e('NC ' . $get_location_zip_terms[0]->name); ?></span></div>
             <b class="clear"></b>
           </div>
+
           <ul>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$'); if($property['price']){echo $property['price'];} ?></li>
-            <li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); _e($get_bedrooms_terms[0]->name . ' Beds'); ?></li>
-            <li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); _e($get_bathrooms_terms[0]->name . ' Baths'); ?></li>
+            <li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); ?></li>
+            <li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); ?></li>
             <li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?></li>
             <li><span class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?></li>
           </ul>
           <div class="oneAgent">
+            <?php if($_propertyType == 'sale'){ ?>
             <ul class="socialButtons">
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
             </ul>
+            <?php } ?>
 
             <div class="rdc-agents-carousel-container">
 
             <div class="rdc-agents-carousel-wrapper">
 
-              <?php  if(empty($property['wpp_agents'])) { ?>
+              <?php  if(empty($property['wpp_agents'])  || $_propertyType == 'rent') { ?>
 
                 <div class="rdc-agents-carousel-title">
 
@@ -102,9 +116,12 @@ while ( have_posts() ) : the_post();
             }
             else{
               $usersAgentsObjects = get_users(array('role' => 'agent'));
+
               foreach($usersAgentsObjects as $userAgentId){
 
                 echo '<li class="rdc-agents-carousel-item">';
+
+                if($_propertyType == 'sale'){
 
                 $image_ids = get_user_meta($userAgentId->ID, 'agent_images', true);
 
@@ -121,7 +138,12 @@ while ( have_posts() ) : the_post();
 
                 echo '<h3>' . $user_data->display_name . '</h3>';
 
-                echo '<span>Red Door Company</span><div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
+                echo '<span>Red Door Company</span>';
+
+                }
+
+                echo '<div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
+
 
               }
             }

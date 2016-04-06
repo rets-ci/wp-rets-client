@@ -24,7 +24,7 @@
 .head-popups a {
   font-weight: 400;
   color: #fff;
-  background: #cf3428;
+  background: #d03528;
   border-radius: 5px;
   padding: 7px 15px;
   text-align: center;
@@ -149,10 +149,10 @@
   background-image: none !important;
 }
 .mobileMenu .menuAdaptive > li .ui-state-active {
-  color: #cf3428;
+  color: #d03528;
 }
 .mobileMenu > a {
-  background: #cf3428 none repeat scroll 0 0;
+  background: #d03528 none repeat scroll 0 0;
   border-radius: 5px;
   color: #fff;
   display: inline-block;
@@ -270,7 +270,7 @@
   text-align: center;
 }
 .oneAgent .oneAgentLinksBlock a {
-  background: #cf3428;
+  background: #d03528;
   width: 150px;
   color: #fff;
   font-size: 1em;
@@ -305,7 +305,7 @@
   text-align: center;
   top: 20%;
   width: 70px;
-  color: #cf3428;
+  color: #d03528;
 }
 .featuredImageHeader .singleHeroIcon span {
   display: block;
@@ -398,7 +398,7 @@
   font-size: 2em;
 }
 .single .content blockquote {
-  border-left: 5px solid #cf3428;
+  border-left: 5px solid #d03528;
   background: #f8f7f7 none repeat scroll 0 0;
   font-style: italic;
   padding: 10px 30px;
@@ -411,7 +411,7 @@
   margin-top: 0;
 }
 .single .content a {
-  color: #cf3428;
+  color: #d03528;
 }
 .single .content .singleSocialBlock {
   margin-bottom: 10%;
@@ -464,7 +464,7 @@
   margin: 11px auto;
 }
 .oneCategory .catIconLoop .icon {
-  color: #cf3428;
+  color: #d03528;
   font-size: 2.5em;
   position: relative;
   top: 15px;
@@ -481,7 +481,7 @@
 }
 .oneCategory > a:hover {
   text-decoration: none;
-  color: #cf3428;
+  color: #d03528;
 }
 .oneCategory > a .one_text {
   margin: 0 25px;
@@ -537,11 +537,19 @@
   background-repeat: no-repeat !important;
   background-position: center center;
   height: 555px;
-  padding-top: 15%;
+  padding-top: 10%;
   position: relative;
   top: -90px;
   margin-bottom: -20px;
   z-index: 7;
+}
+.frontPageSearchBlock > h1 {
+  color: #fff;
+  text-align: center;
+}
+.frontPageSearchBlock > h3 {
+  color: #fff;
+  text-align: center;
 }
 .frontPageSearchBlock .searchForm {
   width: 65%;
@@ -611,7 +619,7 @@
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
   border-radius: 5px;
-  background: #cf3428;
+  background: #d03528;
   color: #fff;
   font-size: 1.1em;
   font-weight: 400;
@@ -1231,6 +1239,8 @@
   text-align: center;
   margin-bottom: 20px !important;
   text-shadow: none !important;
+  font-weight: bold;
+  font-size: 2.4em;
 }
 .so-widget-tabbed-content .sow-slider-base {
   padding-top: 70px;
@@ -1283,11 +1293,15 @@
   margin: 9px 5px 0 15px;
   float: left;
 }
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper {
+  padding: 80px 10px;
+}
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent {
   float: left;
   width: 50%;
   overflow: hidden;
   padding-right: 4em;
+  padding-top: 7em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -1299,6 +1313,7 @@
   color: #5a595c !important;
   text-shadow: none !important;
   margin-bottom: 3em !important;
+  line-height: 1.7em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
   margin-bottom: 3em;
@@ -1314,12 +1329,14 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
   float: right;
   width: 70%;
-  line-height: 1.7em;
+  line-height: 1.8em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
-  font-size: 2em !important;
+  font-size: 1.5em !important;
   text-shadow: none !important;
   color: #5a595c !important;
+  font-weight: 400;
+  margin-bottom: 15px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetImageArea {
   width: 50%;
@@ -1371,6 +1388,12 @@
   text-decoration: none;
   color: #d03528;
 }
+.page .so-widget-sow-hero {
+  position: relative;
+  top: -30px;
+  z-index: 8;
+  margin-bottom: -60px;
+}
 /* =Footer
 ------------------------------------------------- */
 .footerBg1 {
@@ -1406,7 +1429,7 @@
 .footerWidgetArea1 > a {
   border: 1px solid #e4c2b6;
   border-radius: 5px;
-  color: #cf3428;
+  color: #d03528;
   display: block;
   font-size: 1.1em;
   margin: auto;
@@ -1475,7 +1498,7 @@
   padding-left: 5%;
 }
 .footerWidgetArea3 .sow-carousel-item h3 a {
-  color: #cf3428 !important;
+  color: #d03528 !important;
   line-height: 1.1em;
   display: block;
   margin: 20px auto auto;
@@ -1497,7 +1520,7 @@
   width: 100%;
 }
 .footerWidgetArea3 > ul li > a {
-  color: #cf3428;
+  color: #d03528;
   font-size: 1.3em;
   line-height: 1.1em;
   display: block;
@@ -1944,7 +1967,7 @@ input[type="submit"]:active {
   margin: 20% 0;
 }
 .popupLogin ul li a {
-  background: #cf3428 none repeat scroll 0 0;
+  background: #d03528 none repeat scroll 0 0;
   border-radius: 5px;
   color: #fff;
   font-size: 1em;
@@ -1998,7 +2021,7 @@ input[type="submit"]:active {
   padding: 4% 0;
   text-align: center;
   width: 100%;
-  color: #cf3428;
+  color: #d03528;
   margin-top: 10px;
 }
 .popupContactUsMore > div input[type="text"] {
@@ -2009,7 +2032,7 @@ input[type="submit"]:active {
   height: 35px;
 }
 .popupContactUsMore > div input[type="submit"] {
-  background: #cf3428;
+  background: #d03528;
   border: medium none;
   border-radius: 3px;
   color: #fff;

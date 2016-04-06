@@ -30,7 +30,6 @@ jQuery(document).ready(function(){
         //script for popups
         var popUpWindow = jQuery('span.exitPopup').parent();
             jQuery('.showContactPopup a, .showContactPopup').on('click', function () {
-                console.log('test');
             jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
             jQuery("body").append("<div id='overlay'></div>");
             jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
@@ -50,13 +49,14 @@ jQuery(document).ready(function(){
     });
 
     /* Footer social icons */
-    jQuery('.facebookFootIcon a').html('<span class="icon-social-facebook-symbol"></span>');
-    jQuery('.twitterFootIcon a').html('<span class="icon-social-twitter-symbol"></span>');
-    jQuery('.googleFootIcon a').html('<span class="icon-social-googleplus-symbol"></span>');
-    jQuery('.linkedFootIcon a').html('<span class="icon-social-linkedin-symbol"></span>');
-    jQuery('.instagramFootIcon a').html('<span class="icon-social-instagram-symbol"></span>');
+    jQuery('.facebookFootIcon a').html('<span class="icon-wpproperty-social-facebook-symbol"></span>');
+    jQuery('.twitterFootIcon a').html('<span class="icon-wpproperty-social-twitter-symbol"></span>');
+    jQuery('.googleFootIcon a').html('<span class="icon-wpproperty-social-googleplus-symbol"></span>');
+    jQuery('.linkedFootIcon a').html('<span class="icon-wpproperty-social-linkedin-symbol"></span>');
+    jQuery('.instagramFootIcon a').html('<span class="icon-wpproperty-social-instagram-symbol"></span>');
 
-    jQuery('.home .ourCompanyBtn, .archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn').addClass('current-menu-item');
+    jQuery('.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn').addClass('current-menu-item');
+    jQuery('.home .buyBtnForm').addClass('current-menu-item');
 
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
@@ -97,14 +97,15 @@ jQuery(document).ready(function(){
     var imgFeaturePoint = jQuery('.featurePoint div').outerHeight();
     var iconHeight = jQuery('.featurePoint > span').outerHeight();
     var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
+    var tabbedWidgetImageHeight = jQuery('.tabbedWidgetContent').outerHeight();
     jQuery('.featurePoint').css('height', imgFeaturePoint);
     jQuery('.featurePoint > span').css('margin-top', featurePointMarg);
+    jQuery('.tabbedWidgetImageArea').css('height', tabbedWidgetImageHeight);
 
 });
 
 function map_resize() {
     var height = jQuery(window).height()-jQuery("#header").height()-40;
-    console.log(height);
     if ( height < 400 ) {
         height = 400;
     }

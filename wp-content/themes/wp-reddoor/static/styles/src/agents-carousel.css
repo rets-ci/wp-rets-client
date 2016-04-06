@@ -16,7 +16,7 @@
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    font-size: 5em;
+    font-size: 3em;
     text-align: center;
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
@@ -27,11 +27,11 @@
 
 .rdc-agents-carousel-title a.rdc-agents-carousel-next{
     position: absolute;
-    right: 15px;
+    right: 50px;
     top: 25%;
 }
 .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-    left: 15px;
+    left: 50px;
     position: absolute;
     top: 25%;
 }

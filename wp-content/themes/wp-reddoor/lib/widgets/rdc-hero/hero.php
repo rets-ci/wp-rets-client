@@ -167,10 +167,9 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 
 		?>
 		<div class="sow-slider-image-container">
-			<div class="sow-slider-image-wrapper cl<?php  ?>">
+			<div class="sow-slider-image-wrapper">
 				<?php	$dataImage = wp_get_attachment_image_url($frame['image'], 'full');	?>
 				<div class="tabbedWidgetImageArea" style="background-image: url('<?php echo $dataImage ?>');"></div>
-
 				<div class="tabbedWidgetContent">
 				<h3><?php echo $frame['content_title'] ?></h3>
 					<p><?php echo $frame['content'] ?></p>
