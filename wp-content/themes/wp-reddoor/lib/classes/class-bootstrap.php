@@ -73,6 +73,92 @@ namespace UsabilityDynamics\RDC {
          */
         add_filter( "parse_request", array( $this, 'parse_request' ), 1 );
 
+        /**
+         *
+         */
+        add_filter( 'wpp::advanced_supermap::property_fields', array( $this, 'supermap_advanced_fields' ) );
+        add_filter( 'wpp:supermap:query_defaults', array( $this, 'alter_supermap_query' ), 10, 2 );
+
+      }
+
+      /**
+       * @param $query
+       * @param $atts
+       */
+      public function alter_supermap_query( $query, $atts ) {
+
+        $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
+
+        $must_query = array();
+
+        foreach( $query as $field => $value ) {
+          if ( array_key_exists( $field, $taxonomies ) ) {
+
+            if ( !is_array( $value ) ) {
+
+              $values = explode(',', $value);
+
+              $labels = array();
+              foreach ($values as $term) {
+                $labels[] = get_term_by('slug', $term, $field)->name;
+              }
+
+              $must_query[] = array(
+                'terms' => array(
+                  'tax_input.' . $field => $labels
+                )
+              );
+
+            } else {
+
+              if ( array_key_exists( 'min', $value ) && !empty( $value['min'] ) ) {
+                $must_query[] = array(
+                  'range' => array(
+                    'tax_input.' . $field => array(
+                      'gte' => $value['min']
+                    )
+                  )
+                );
+              }
+
+              if ( array_key_exists( 'max', $value ) && !empty( $value['max'] ) ) {
+                $must_query[] = array(
+                  'range' => array(
+                    'tax_input.' . $field => array(
+                      'lte' => $value['max']
+                    )
+                  )
+                );
+              }
+
+            }
+
+          }
+        }
+
+        $_query = array(
+          'bool' => array(
+            'must' => $must_query
+          )
+        );
+
+        return $_query;
+      }
+
+      /**
+       * @param $fields
+       * @return array
+       */
+      public function supermap_advanced_fields( $fields ) {
+        return array_merge( array(
+            'post_title',
+            'tax_input.location_latitude',
+            'tax_input.location_longitude',
+            '_permalink',
+            'tax_input.listing_type',
+            'tax_input.bedrooms',
+            'tax_input.bathrooms'
+        ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
 
       /**

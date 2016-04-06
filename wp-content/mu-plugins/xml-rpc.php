@@ -92,17 +92,17 @@ function WPP_RPC_editProperty( $args ) {
     );
   }
 
-  write_log( 'have request wpp.editProperty request' );
+  write_log( 'Have request wpp.editProperty request' );
 
-  if( $post_data['meta_input']['rets._id'] ) {
-    $post_data['ID'] = find_property_by_rets_id( $post_data['meta_input']['rets._id'] );
+  if( $post_data['meta_input']['rets_id'] ) {
+    $post_data['ID'] = find_property_by_rets_id( $post_data['meta_input']['rets_id'] );
   }
 
   $_post_id = wp_insert_post( $post_data, true );
 
-  write_log( '$_post_id ' . $_post_id  );
+  write_log( 'Inserted property post ' . $_post_id  );
 
-  if ( !empty( $post_data['meta_input']['rets.media'] ) && is_array( $post_data['meta_input']['rets.media'] ) ) {
+  if ( !empty( $post_data['meta_input']['rets_media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
 
     $_already_attached_media = array();
 
@@ -121,7 +121,7 @@ function WPP_RPC_editProperty( $args ) {
       // write_log( '$_post_id ' . $_post_id . ' already has already_attached_media ' . count( $_already_attached_media  ) );
     }
 
-    foreach( $post_data['meta_input']['rets.media'] as $media ) {
+    foreach( $post_data['meta_input']['rets_media'] as $media ) {
 
       if( in_array( $media['url'], $_already_attached_media ) ) {
         // write_log( "Skipping $media[url] because it's already attached to $_post_id" );
@@ -144,7 +144,7 @@ function WPP_RPC_editProperty( $args ) {
 
         update_post_meta( $attach_id, '_is_remote', '1' );
 
-        write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
+        // write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
 
         // set the item with order of 1 as the thumbnail
         if( $media['order'] === 1 ) {
@@ -178,8 +178,12 @@ function WPP_RPC_editProperty( $args ) {
 function find_property_by_rets_id( $rets_id ) {
   global $wpdb;
 
+  $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
 
-  $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets._id' AND meta_value={$rets_id};" );
+  // temp support for old format
+  if( !$_actual_post_id ) {
+    $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
+  }
 
   if( $_actual_post_id ) {
     write_log( 'Found ' . $_actual_post_id . ' using $rets_id: ' . $rets_id);
@@ -200,5 +204,5 @@ function find_property_by_rets_id( $rets_id ) {
  * @param $data
  */
 function write_log( $data ) {
-  file_put_contents( '/var/www/debug-log.log', '' . print_r( $data, true ) . "\n", FILE_APPEND  );
+  file_put_contents( '/var/www/debug-log.log', '' . print_r( $data, true ) . ' in ' . timer_stop() . ' seconds.' . "\n", FILE_APPEND  );
 }
