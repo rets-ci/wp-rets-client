@@ -1,0 +1,171 @@
+.rdc-agents-carousel-title {
+    display: inline-block;
+    padding-right: 15px;
+    height: 20px;
+}
+.rdc-agents-carousel-title a.rdc-agents-carousel-next,
+.rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+    font-family: 'carousel-arrows';
+    speak: none;
+    display: block;
+    float: right;
+    overflow: hidden;
+    margin-left: 2px;
+    margin-top: 3px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    font-size: 3em;
+    text-align: center;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+    color: #dedede;
+}
+
+.rdc-agents-carousel-title a.rdc-agents-carousel-next{
+    position: absolute;
+    right: 50px;
+    top: 25%;
+}
+.rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+    left: 50px;
+    position: absolute;
+    top: 25%;
+}
+
+.rdc-agents-carousel-title a.rdc-agents-carousel-next:before {
+    content: "\e601";
+}
+.rdc-agents-carousel-title a.rdc-agents-carousel-previous:before {
+    content: "\e600";
+}
+@media screen and (max-width: 600px) {
+    .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
+        display: none;
+    }
+    .rdc-agents-carousel a.rdc-agents-carousel-next {
+        display: none;
+    }
+}
+.widget_rdc-agents-carousel {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.rdc-agents-carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+    left: 0;
+    right: 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items {
+    list-style: none;
+    -webkit-transition: all 0.45s ease;
+    -moz-transition: all 0.45s ease;
+    -o-transition: all 0.45s ease;
+    transition: all 0.45s ease;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+    zoom: 1;
+    width: 99999px;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:before {
+    content: '';
+    display: block;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+    display: block;
+    float: left;
+    margin-right: 15px;
+    width: 370px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item:last-child {
+    margin-right: 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl {
+    float: right;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl:last-child {
+    margin-right: 15px;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail {
+    line-height: 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a {
+    display: block;
+    width: 370px;
+    height: 162px;
+    background-size: 370px 162px;
+    background-position: center center;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a,
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
+    -webkit-transition: all 0.35s ease;
+    -moz-transition: all 0.35s ease;
+    -o-transition: all 0.35s ease;
+    transition: all 0.35s ease;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #3279BB;
+    opacity: 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a:hover span {
+    opacity: 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-default-thumbnail {
+    display: block;
+    width: 370px;
+    height: 162px;
+    background: #E8E8E8;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E0E0E0), color-stop(1, #E8E8E8));
+    background: -ms-linear-gradient(bottom, #E0E0E0, #E8E8E8);
+    background: -moz-linear-gradient(center bottom, #E0E0E0 0%, #E8E8E8 100%);
+    background: -o-linear-gradient(#E8E8E8, #E0E0E0);
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 {
+    font-size: 15px;
+    text-align: center;
+    font-weight: 500;
+    color: #474747;
+    margin: 10px 0 0 0;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item span {
+    display: block;
+    margin: 15px 0;
+    text-align: center;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 a {
+    text-decoration: none;
+    color: inherit;
+}
+.rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-loading {
+    display: block;
+    width: 370px;
+    height: 162px;
+    float: left;
+    background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
+    margin: 0;
+}
+a.rdc-agents-carousel-previous {
+    display: none;
+}
+a.rdc-agents-carousel-next {
+    display: none;
+}
+

@@ -24,7 +24,7 @@
 .head-popups a {
   font-weight: 400;
   color: #fff;
-  background: #cf3428;
+  background: #d03528;
   border-radius: 5px;
   padding: 7px 15px;
   text-align: center;
@@ -149,10 +149,10 @@
   background-image: none !important;
 }
 .mobileMenu .menuAdaptive > li .ui-state-active {
-  color: #cf3428;
+  color: #d03528;
 }
 .mobileMenu > a {
-  background: #cf3428 none repeat scroll 0 0;
+  background: #d03528 none repeat scroll 0 0;
   border-radius: 5px;
   color: #fff;
   display: inline-block;
@@ -214,8 +214,8 @@
 }
 .upToHeader {
   position: relative;
-  top: -20px;
-  margin-bottom: -20px;
+  top: -30px;
+  margin-bottom: -30px;
 }
 .oneAgent {
   width: 380px;
@@ -270,7 +270,7 @@
   text-align: center;
 }
 .oneAgent .oneAgentLinksBlock a {
-  background: #cf3428;
+  background: #d03528;
   width: 150px;
   color: #fff;
   font-size: 1em;
@@ -305,7 +305,7 @@
   text-align: center;
   top: 20%;
   width: 70px;
-  color: #cf3428;
+  color: #d03528;
 }
 .featuredImageHeader .singleHeroIcon span {
   display: block;
@@ -398,7 +398,7 @@
   font-size: 2em;
 }
 .single .content blockquote {
-  border-left: 5px solid #cf3428;
+  border-left: 5px solid #d03528;
   background: #f8f7f7 none repeat scroll 0 0;
   font-style: italic;
   padding: 10px 30px;
@@ -411,10 +411,21 @@
   margin-top: 0;
 }
 .single .content a {
-  color: #cf3428;
+  color: #d03528;
+}
+.single .content .singleSocialBlock {
+  margin-bottom: 10%;
+  margin-top: 7%;
+}
+.single .content .singleSocialBlock li a {
+  padding-top: 21%;
 }
 .single .featuredImageHeader {
   padding-top: 15%;
+}
+.single .loadMoreBlockSeparate {
+  border-top: 1px solid #efefef;
+  padding-top: 55px;
 }
 .oneCategory {
   width: 380px;
@@ -453,10 +464,11 @@
   margin: 11px auto;
 }
 .oneCategory .catIconLoop .icon {
-  color: #cf3428;
+  color: #d03528;
   font-size: 2.5em;
   position: relative;
   top: 15px;
+  left: 23px;
 }
 .oneCategory > a {
   display: block;
@@ -469,7 +481,7 @@
 }
 .oneCategory > a:hover {
   text-decoration: none;
-  color: #cf3428;
+  color: #d03528;
 }
 .oneCategory > a .one_text {
   margin: 0 25px;
@@ -525,11 +537,19 @@
   background-repeat: no-repeat !important;
   background-position: center center;
   height: 555px;
-  padding-top: 15%;
+  padding-top: 10%;
   position: relative;
   top: -90px;
   margin-bottom: -20px;
   z-index: 7;
+}
+.frontPageSearchBlock > h1 {
+  color: #fff;
+  text-align: center;
+}
+.frontPageSearchBlock > h3 {
+  color: #fff;
+  text-align: center;
 }
 .frontPageSearchBlock .searchForm {
   width: 65%;
@@ -599,7 +619,7 @@
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
   border-radius: 5px;
-  background: #cf3428;
+  background: #d03528;
   color: #fff;
   font-size: 1.1em;
   font-weight: 400;
@@ -690,9 +710,9 @@
   position: absolute;
   top: 20px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds span,
-.frontPageSearchBlock .searchForm form .sfBaths span,
-.frontPageSearchBlock .searchForm form .sfPrice span {
+.frontPageSearchBlock .searchForm form .sfBeds > span,
+.frontPageSearchBlock .searchForm form .sfBaths > span,
+.frontPageSearchBlock .searchForm form .sfPrice > span {
   display: block;
   height: 61px;
   line-height: 4.5em;
@@ -702,9 +722,9 @@
   cursor: pointer;
   padding-left: 60px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfBaths span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfPrice span .sf-arrow {
+.frontPageSearchBlock .searchForm form .sfBeds > span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfBaths > span .sf-arrow,
+.frontPageSearchBlock .searchForm form .sfPrice > span .sf-arrow {
   border-color: #a7a9ac transparent transparent;
   border-style: solid;
   border-width: 5px 4px 0;
@@ -745,9 +765,7 @@
   color: #a7a9ac;
   font-size: 0.9em;
   position: relative;
-  top: -4px;
-  left: -30%;
-  width: 130%;
+  width: 206px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange ul {
   margin: 0;
@@ -758,20 +776,20 @@
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
   background: #fbfaf8;
   border-bottom: 1px solid #f2f2f2;
-  height: 65px;
-  padding-left: 18px;
-  padding-top: 17px;
+  padding: 16px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
   background: #fbfaf8 none repeat scroll 0 0;
   border: 1px solid #a7a9ac;
-  float: left;
+  display: inline-block;
   font-size: 0.9em;
   height: 30px;
   padding: 0 5px;
   width: 80px;
   text-align: center;
-  margin-right: 5px;
+}
+.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRange {
+  margin-left: 8px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
   padding: 10px 80px 10px 15px;
@@ -787,28 +805,41 @@
 .frontPageSearchBlock .searchForm .sfPriceRange .right-side {
   width: 100%;
 }
+.select2-dropdown {
+  width: 440px !important;
+}
 .select2-dropdown .select2-results__option {
-  height: 30px;
+  height: 48px;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 14px;
 }
 /* Checkboxes */
 .sfBeds input[type="checkbox"],
-.sfBaths input[type="checkbox"] {
+.sfBaths input[type="checkbox"],
+.sfBeds input[type="radio"],
+.sfBaths input[type="radio"] {
   display: none;
 }
 .sfBeds input[type="checkbox"] + label,
-.sfBaths input[type="checkbox"] + label {
+.sfBaths input[type="checkbox"] + label,
+.sfBeds input[type="radio"] + label,
+.sfBaths input[type="radio"] + label {
   color: #808285;
   cursor: pointer;
   font-weight: 400;
   font-size: 0.8em;
 }
 .sfBeds input[type="checkbox"] + label,
-.sfBaths input[type="checkbox"] + label {
+.sfBaths input[type="checkbox"] + label,
+.sfBeds input[type="radio"] + label,
+.sfBaths input[type="radio"] + label {
   cursor: pointer;
   padding-left: 0;
 }
 .sfBeds input[type="checkbox"] + label::before,
-.sfBaths input[type="checkbox"] + label::before {
+.sfBaths input[type="checkbox"] + label::before,
+.sfBeds input[type="radio"] + label::before,
+.sfBaths input[type="radio"] + label::before {
   content: "";
   display: inline-block;
   height: 18px;
@@ -817,7 +848,9 @@
   background: url('../images/src/checkboxes.png') no-repeat;
 }
 .sfBeds input[type="checkbox"]:checked + label::before,
-.sfBaths input[type="checkbox"]:checked + label::before {
+.sfBaths input[type="checkbox"]:checked + label::before,
+.sfBeds input[type="radio"]:checked + label::before,
+.sfBaths input[type="radio"]:checked + label::before {
   background-position: 0 -17px;
 }
 .popupCheckbox input[type="checkbox"] {
@@ -860,7 +893,7 @@
   background-size: cover;
 }
 .single-property .ftrdImgGoTop {
-  top: -20px;
+  top: -30px;
 }
 .single-property .singlePropertyHeader {
   background: #F3F0EA;
@@ -880,6 +913,7 @@
   float: left;
   margin-top: 10px;
   margin-right: 15px;
+  display: none;
 }
 .single-property .singlePropertyHeader .title > div {
   float: left;
@@ -894,11 +928,13 @@
 .single-property .singlePropertyHeader .container > ul li {
   display: inline-block;
   font-size: 1.5em;
-  margin-right: 10px;
+  margin-right: 15px;
 }
-.single-property .singlePropertyHeader .container > ul li svg {
-  margin-right: 10px;
+.single-property .singlePropertyHeader .container > ul li .singlePropertyIcon {
   color: #a7a9ac;
+  float: left;
+  font-size: 1.2em;
+  margin-right: 15px;
 }
 .single-property .singlePropertyHeader .oneAgent {
   position: absolute;
@@ -931,7 +967,7 @@
   border-radius: 0 !important;
 }
 .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-  width: 49.4%;
+  width: 24.1%;
   color: #a7a9ac;
   font-size: 2em !important;
   padding: 0;
@@ -1203,6 +1239,8 @@
   text-align: center;
   margin-bottom: 20px !important;
   text-shadow: none !important;
+  font-weight: bold;
+  font-size: 2.4em;
 }
 .so-widget-tabbed-content .sow-slider-base {
   padding-top: 70px;
@@ -1255,11 +1293,15 @@
   margin: 9px 5px 0 15px;
   float: left;
 }
+.so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper {
+  padding: 80px 10px;
+}
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent {
   float: left;
   width: 50%;
   overflow: hidden;
   padding-right: 4em;
+  padding-top: 7em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -1271,6 +1313,7 @@
   color: #5a595c !important;
   text-shadow: none !important;
   margin-bottom: 3em !important;
+  line-height: 1.7em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
   margin-bottom: 3em;
@@ -1286,12 +1329,14 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
   float: right;
   width: 70%;
-  line-height: 1.7em;
+  line-height: 1.8em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
-  font-size: 2em !important;
+  font-size: 1.5em !important;
   text-shadow: none !important;
   color: #5a595c !important;
+  font-weight: 400;
+  margin-bottom: 15px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetImageArea {
   width: 50%;
@@ -1343,6 +1388,12 @@
   text-decoration: none;
   color: #d03528;
 }
+.page .so-widget-sow-hero {
+  position: relative;
+  top: -30px;
+  z-index: 8;
+  margin-bottom: -60px;
+}
 /* =Footer
 ------------------------------------------------- */
 .footerBg1 {
@@ -1378,7 +1429,7 @@
 .footerWidgetArea1 > a {
   border: 1px solid #e4c2b6;
   border-radius: 5px;
-  color: #cf3428;
+  color: #d03528;
   display: block;
   font-size: 1.1em;
   margin: auto;
@@ -1447,7 +1498,7 @@
   padding-left: 5%;
 }
 .footerWidgetArea3 .sow-carousel-item h3 a {
-  color: #cf3428 !important;
+  color: #d03528 !important;
   line-height: 1.1em;
   display: block;
   margin: 20px auto auto;
@@ -1469,7 +1520,7 @@
   width: 100%;
 }
 .footerWidgetArea3 > ul li > a {
-  color: #cf3428;
+  color: #d03528;
   font-size: 1.3em;
   line-height: 1.1em;
   display: block;
@@ -1916,7 +1967,7 @@ input[type="submit"]:active {
   margin: 20% 0;
 }
 .popupLogin ul li a {
-  background: #cf3428 none repeat scroll 0 0;
+  background: #d03528 none repeat scroll 0 0;
   border-radius: 5px;
   color: #fff;
   font-size: 1em;
@@ -1970,7 +2021,7 @@ input[type="submit"]:active {
   padding: 4% 0;
   text-align: center;
   width: 100%;
-  color: #cf3428;
+  color: #d03528;
   margin-top: 10px;
 }
 .popupContactUsMore > div input[type="text"] {
@@ -1981,7 +2032,7 @@ input[type="submit"]:active {
   height: 35px;
 }
 .popupContactUsMore > div input[type="submit"] {
-  background: #cf3428;
+  background: #d03528;
   border: medium none;
   border-radius: 3px;
   color: #fff;

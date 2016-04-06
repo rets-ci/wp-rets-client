@@ -142,15 +142,25 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('masked', get_stylesheet_directory_uri() . '/static/scripts/src/masked.js');
         wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.min.js');
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,100));
+        wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
         wp_enqueue_script( 'rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
         wp_enqueue_script( 'rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
         wp_enqueue_script('touch-swipe');
+
+        if ( is_singular( 'property' ) ) {
+          wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js');
+        }
+
+        if ( is_front_page() ) {
+          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js', array('jquery'));
+        }
 
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
         if( !empty( $recaptcha ) ) {
           wp_enqueue_script( 'google-recaptcha-api', 'https://www.google.com/recaptcha/api.js' );
         }
       }
+
 
       /**
        *

@@ -11,8 +11,8 @@
 }
 .upToHeader{
   position: relative;
-  top: -20px;
-  margin-bottom: -20px;
+  top: -30px;
+  margin-bottom: -30px;
 }
 .oneAgent{
   width: 380px;
@@ -210,9 +210,22 @@
     a{
       color: @buttons;
     }
+    .singleSocialBlock{
+      margin-bottom: 10%;
+      margin-top: 7%;
+      li{
+        a{
+          padding-top: 21%;
+        }
+      }
+    }
   }
   .featuredImageHeader{
     padding-top: 15%;
+  }
+  .loadMoreBlockSeparate{
+    border-top: 1px solid #efefef;
+    padding-top: 55px;
   }
 }
 .oneCategory{
@@ -235,6 +248,7 @@
     &>img {
       height: 100%;
       width: 100%;
+
     }
   }
   .catIconLoop{
@@ -254,6 +268,7 @@
       font-size: 2.5em;
       position: relative;
       top: 15px;
+      left: 23px;
     }
   }
   &>a{
@@ -263,7 +278,6 @@
     font-size: 1.3em;
     line-height: 1.5em;
     color: #5a595c;
-
     transition: .5s color;
 
     &:hover {
@@ -328,11 +342,19 @@
   background-repeat: no-repeat !important;
   background-position: center center;
   height: 555px;
-  padding-top: 15%;
+  padding-top: 10%;
   position: relative;
   top: -90px;
   margin-bottom: -20px;
   z-index: 7;
+  &>h1{
+    color: #fff;
+    text-align: center;
+  }
+  &>h3{
+    color: #fff;
+    text-align: center;
+  }
   .searchForm {
     width: 65%;
     min-width: 785px;
@@ -483,7 +505,7 @@
         position: absolute;
         top: 20px;
       }
-      span{
+      > span{
         display: block;
         height: 61px;
         line-height: 4.5em;
@@ -534,9 +556,7 @@
       color: #a7a9ac;
       font-size: 0.9em;
       position: relative;
-      top: -4px;
-      left: -30%;
-      width: 130%;
+      width: 206px;
       ul{
         margin: 0;
         li{
@@ -548,19 +568,21 @@
       .sfprInputsBlock{
         background: #fbfaf8;
         border-bottom: 1px solid #f2f2f2;
-        height: 65px;
-        padding-left: 18px;
-        padding-top: 17px;
-        input{
+        padding: 16px;
+
+        input {
           background: #fbfaf8 none repeat scroll 0 0;
           border: 1px solid #a7a9ac;
-          float: left;
+          display: inline-block;
           font-size: 0.9em;
           height: 30px;
           padding: 0 5px;
           width: 80px;
           text-align: center;
-          margin-right: 5px;
+
+          &.lastRange {
+            margin-left: 8px;
+          }
         }
       }
       .firstRangeList{
@@ -581,27 +603,32 @@
   }
 }
 .select2-dropdown{
+
+  width: 440px !important;
+
   .select2-results__option{
-    height: 30px;
+    height: 48px;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 14px;
   }
 }
 /* Checkboxes */
 
 .sfBeds, .sfBaths {
-  input[type="checkbox"] {
+  input[type="checkbox"], input[type="radio"] {
     display: none;
   }
-  input[type="checkbox"] + label {
+  input[type="checkbox"] + label, input[type="radio"] + label {
     color: #808285;
     cursor: pointer;
     font-weight: 400;
     font-size: 0.8em;
   }
-  input[type="checkbox"] + label {
+  input[type="checkbox"] + label, input[type="radio"] + label {
     cursor: pointer;
     padding-left: 0;
   }
-  input[type="checkbox"] + label::before {
+  input[type="checkbox"] + label::before, input[type="radio"] + label::before {
     content: "";
     display: inline-block;
     height: 18px;
@@ -609,7 +636,7 @@
     margin: 0 -5px -6px 0;
     background: url('../images/src/checkboxes.png') no-repeat;
   }
-  input[type="checkbox"]:checked + label::before {
+  input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
     background-position: 0 -17px;
   }
 }
@@ -679,6 +706,7 @@
         float: left;
         margin-top: 10px;
         margin-right: 15px;
+        display: none;
       }
       & > div{
         float: left;
@@ -699,10 +727,12 @@
         li {
           display: inline-block;
           font-size: 1.5em;
-          margin-right: 10px;
-          svg {
-            margin-right: 10px;
+          margin-right: 15px;
+          .singlePropertyIcon {
             color: #a7a9ac;
+            float: left;
+            font-size: 1.2em;
+            margin-right: 15px;
           }
         }
       }
@@ -740,7 +770,7 @@
         border-bottom: 1px solid #eeeaea;
         border-radius: 0 !important;
         li{
-          width: 49.4%;
+          width: 24.1%;
           color: #a7a9ac;
           font-size: 2em !important;
           padding: 0;

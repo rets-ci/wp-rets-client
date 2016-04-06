@@ -34,20 +34,40 @@ namespace UsabilityDynamics\RDC {
 
         }
 
+        add_filter( 'rdc_search_taxonomy_label', array( $this, 'search_taxonomy_label' ) );
+
       }
 
       /**
-       *
+       * @param $taxonomy_slug
+       * @return mixed
+       */
+      public function search_taxonomy_label( $taxonomy_slug ) {
+
+        $labels = apply_filters( 'rdc_taxonomy_labels', array(
+            'high_school' => __('High School'),
+            'middle_school' => __('Middle School'),
+            'elementary_school' => __('Elementary School'),
+            'location_country' => __('County'),
+            'location_zip' => __('Zip'),
+            'neighborhood' => __('Neighborhood'),
+            'location_city' => __('City') ) );
+
+        if ( array_key_exists( $taxonomy_slug, $labels ) ) {
+          return $labels[$taxonomy_slug];
+        }
+
+        return $taxonomy_slug;
+      }
+
+      /**
+       * Autocomplete search for terms
        */
       public function TermsSearchable() {
 
-        if ( empty( $_GET['q'] ) ) {
-          $query = 'a';
-        } else {
-          $query = $_GET['q'];
-        }
+        $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
 
-        $_terms = get_terms( array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ), array(
+        $_terms = get_terms( apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ), array(
             'search' => $query
         ) );
 
@@ -58,14 +78,14 @@ namespace UsabilityDynamics\RDC {
               "slug" => $data->slug,
               "name" => $data->name,
               "count" => $data->count,
-              "taxonomy" => ucfirst(str_replace('_', ' ', $data->taxonomy)),
+              "taxonomy" => apply_filters('rdc_search_taxonomy_label', $data->taxonomy)
           );
 
         }, $_terms );
 
         wp_send_json(array(
             "ok" => true,
-            "data" => $_terms
+            "data" => apply_filters( 'rdc_autocomplete_locations_results', $_terms )
         ));
 
       }

@@ -25,15 +25,26 @@ global $property;
 
 // Start the Loop.
 while ( have_posts() ) : the_post();
+  $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
+  $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
+  $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
+  $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+  $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+
+  $_propertyType = $get_sale_type_terms[0]->slug;
 
 ?>
 
   <div class="container-fluid ftrdImgGoTop">
       <section>
         <?php if( function_exists('ud_get_wpp_resp_slideshow') ){ ?>
-         <?php echo do_shortcode('[property_responsive_slideshow]'); ?>
+         <?php echo do_shortcode('[property_responsive_slideshow slider_type=12mosaic]'); ?>
       <?php } else { ?>
+          <?php  if(has_post_thumbnail()){ ?>
           <div class="slideshowHeadImage" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
+      <?php } else { ?>
+            <div class="slideshowHeadImage" style="background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/default_property.JPG')"></div>
+    <?php } ?>
         <?php } ?>
       </section>
       <section id="propertyDetails" class="singlePropertyHeader">
@@ -41,33 +52,42 @@ while ( have_posts() ) : the_post();
           <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
           <div class="title">
             <span>Active</span>
-            <div><?php the_title(); ?><span>Parkland, FL 33076</span></div>
+            <div><?php the_title(); ?><span><?php _e($get_location_city_terms[0]->name); ?>, <?php _e('NC ' . $get_location_zip_terms[0]->name); ?></span></div>
             <b class="clear"></b>
           </div>
+
           <ul>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php _e('$'); echo $property['price']; ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php print_r($property['beds']); echo ' '; _e('Beds'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php print_r($property['baths']); echo ' '; _e('Baths'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php print_r($property['apartment_area']); echo ' '; _e('Sq.ft'); ?></span></li>
-            <li><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg><span><?php print_r($property['ground_area']); echo ' '; _e('acres'); ?></span></li>
+            <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$'); if($property['price']){echo $property['price'];} ?></li>
+            <li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); ?></li>
+            <li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); ?></li>
+            <li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?></li>
+            <li><span class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?></li>
           </ul>
           <div class="oneAgent">
+            <?php if($_propertyType == 'sale'){ ?>
             <ul class="socialButtons">
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
+              <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li>
             </ul>
+            <?php } ?>
 
             <div class="rdc-agents-carousel-container">
 
             <div class="rdc-agents-carousel-wrapper">
 
-              <div class="rdc-agents-carousel-title">
+              <?php  if(empty($property['wpp_agents'])  || $_propertyType == 'rent') { ?>
 
-              <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
+                <div class="rdc-agents-carousel-title">
 
-              <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+                <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
 
-              </div>
+                <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+
+                </div>
+
+              <?php  } ?>
 
               <ul class="rdc-agents-carousel-items">
 
@@ -85,9 +105,6 @@ while ( have_posts() ) : the_post();
                 if(!empty($image_ids[0])){
                   $imageId = $image_ids[0];
                 }
-//                else{
-//                  $imageId = '14311';
-//                }
 
                 echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
 
@@ -97,329 +114,48 @@ while ( have_posts() ) : the_post();
 
               }
             }
+            else{
+              $usersAgentsObjects = get_users(array('role' => 'agent'));
+
+              foreach($usersAgentsObjects as $userAgentId){
+
+                echo '<li class="rdc-agents-carousel-item">';
+
+                if($_propertyType == 'sale'){
+
+                $image_ids = get_user_meta($userAgentId->ID, 'agent_images', true);
+
+                $user_data = get_userdata($userAgentId->ID);
+
+                if(!empty($image_ids[0])){
+                  $imageId = $image_ids[0];
+                }
+//                else{
+//                  $imageId = '14311';
+//                }
+
+                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+
+                echo '<h3>' . $user_data->display_name . '</h3>';
+
+                echo '<span>Red Door Company</span>';
+
+                }
+
+                echo '<div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
+
+
+              }
+            }
 
             ?>
 
                 </ul>
+
             </div>
 
               </div>
 
-            <script>
-
-              jQuery(document).ready(function(){
-
-                jQuery( function($){
-                  // The carousel widget
-                  jQuery('.rdc-agents-carousel-wrapper').each(function(){
-
-                    var $$ = jQuery(this),
-                      $postsContainer = $$.closest('.rdc-agents-carousel-container'),
-                      $container = $$.closest('.rdc-agents-carousel-container').parent(),
-                      $itemsContainer = $$.find('.rdc-agents-carousel-items'),
-                      $items = $$.find('.rdc-agents-carousel-item'),
-                      $firstItem = $items.eq(0);
-
-                    var position = 0,
-                      page = 1,
-                      fetching = false,
-                      numItems = $items.length,
-                      totalPosts = $$.data('found-posts'),
-                      complete = numItems == totalPosts,
-                      itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) ),
-                      isRTL = $postsContainer.hasClass('js-rtl'),
-                      updateProp = isRTL ? 'margin-right' : 'margin-left';
-
-                    var updatePosition = function() {
-                      if ( position < 0 ) position = 0;
-                      if ( position >= $$.find('.rdc-agents-carousel-item').length - 1 ) {
-                        position = $$.find('.rdc-agents-carousel-item').length - 1;
-                        }
-                      $itemsContainer.css('transition-duration', "0.45s");
-                      $itemsContainer.css(updateProp, -( itemWidth * position) + 'px' );
-                    };
-
-                    $container.on( 'click', 'a.rdc-agents-carousel-previous',
-                      function(e){
-                        e.preventDefault();
-                        position -= isRTL ? -1 : 1;
-                        updatePosition();
-                      }
-                    );
-
-                    $container.on( 'click', 'a.rdc-agents-carousel-next',
-                      function(e){
-                        e.preventDefault();
-                        position += isRTL ? -1 : 1;
-                        updatePosition();
-                      }
-                    );
-                    var validSwipe = false;
-                    var prevDistance = 0;
-                    var startPosition = 0;
-                    var velocity = 0;
-                    var prevTime = 0;
-                    var posInterval;
-                    var negativeDirection = isRTL ? 'right' : 'left';
-
-                    // Verify "swipe" method exists prior to invoking it.
-                    if( 'function' === typeof $$.swipe ) {
-                      $$.swipe( {
-                        excludedElements: "",
-                        triggerOnTouchEnd: true,
-                        threshold: 75,
-                        swipeStatus: function (event, phase, direction, distance, duration, fingerCount, fingerData) {
-                          if ( phase == "start" ) {
-                            startPosition = -( itemWidth * position);
-                            prevTime = new Date().getTime();
-                            clearInterval(posInterval);
-                          }
-                          else if ( phase == "move" ) {
-                            if( direction == negativeDirection ) distance *= -1;
-                            setNewPosition(startPosition + distance);
-                            var newTime = new Date().getTime();
-                            var timeDelta = (newTime - prevTime) / 1000;
-                            velocity = (distance - prevDistance) / timeDelta;
-                            prevTime = newTime;
-                            prevDistance = distance;
-                          }
-                          else if ( phase == "end" ) {
-                            validSwipe = true;
-                            if( direction == negativeDirection ) distance *= -1;
-                            if(Math.abs(velocity) > 400) {
-                              velocity *= 0.1;
-                              var startTime = new Date().getTime();
-                              var cumulativeDistance = 0;
-                              posInterval = setInterval(function () {
-                                var time = (new Date().getTime() - startTime) / 1000;
-                                cumulativeDistance += velocity * time;
-                                var newPos = startPosition + distance + cumulativeDistance;
-                                var decel = 30;
-                                var end = (Math.abs(velocity) - decel) < 0;
-                                if(direction == negativeDirection) {
-                                  velocity += decel;
-                                } else {
-                                  velocity -= decel;
-                                }
-                                if(end || !setNewPosition(newPos)) {
-                                  clearInterval(posInterval);
-                                  setFinalPosition();
-                                }
-                              }, 20);
-                            } else {
-                              setFinalPosition();
-                            }
-                          }
-                          else if( phase == "cancel") {
-                            updatePosition();
-                          }
-                        }
-                      } );
-                    }
-
-
-                    var setNewPosition = function(newPosition) {
-                      if(newPosition < 50 && newPosition >  -( itemWidth * numItems )) {
-                        $itemsContainer.css('transition-duration', "0s");
-                        $itemsContainer.css(updateProp, newPosition + 'px' );
-                        return true;
-                      }
-                      return false;
-                    };
-                    var setFinalPosition = function() {
-                      var finalPosition = parseInt( $itemsContainer.css(updateProp) );
-                      position = Math.abs( Math.round( finalPosition / itemWidth ) );
-                      updatePosition();
-                    };
-                    $$.on('click', '.rdc-agents-carousel-item a',
-                      function (event) {
-                        if(validSwipe) {
-                          event.preventDefault();
-                          validSwipe = false;
-                        }
-                      }
-                    )
-                  } );
-                } );
-
-              });
-
-            </script>
-            <style>
-
-              .rdc-agents-carousel-title {
-                display: inline-block;
-                padding-right: 15px;
-                height: 20px;
-              }
-              .rdc-agents-carousel-title a.rdc-agents-carousel-next,
-              .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-                font-family: 'carousel-arrows';
-                speak: none;
-                display: block;
-                float: right;
-                overflow: hidden;
-                margin-left: 2px;
-                margin-top: 3px;
-                font-style: normal;
-                font-weight: normal;
-                font-variant: normal;
-                text-transform: none;
-                font-size: 5em;
-                text-align: center;
-                /* Better Font Rendering =========== */
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                text-decoration: none;
-                color: #dedede;
-              }
-
-              .rdc-agents-carousel-title a.rdc-agents-carousel-next{
-                position: absolute;
-                right: 15px;
-                top: 25%;
-              }
-              .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-                left: 15px;
-                position: absolute;
-                top: 25%;
-              }
-
-              .rdc-agents-carousel-title a.rdc-agents-carousel-next:before {
-                content: "\e601";
-              }
-              .rdc-agents-carousel-title a.rdc-agents-carousel-previous:before {
-                content: "\e600";
-              }
-              @media screen and (max-width: 600px) {
-                .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-                  display: none;
-                }
-                .rdc-agents-carousel a.rdc-agents-carousel-next {
-                  display: none;
-                }
-              }
-              .widget_rdc-agents-carousel {
-                overflow-x: hidden;
-                overflow-y: hidden;
-              }
-              .rdc-agents-carousel-wrapper {
-                overflow: hidden;
-                position: relative;
-                left: 0;
-                right: 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items {
-                list-style: none;
-                -webkit-transition: all 0.45s ease;
-                -moz-transition: all 0.45s ease;
-                -o-transition: all 0.45s ease;
-                transition: all 0.45s ease;
-                height: 200px;
-                margin: 0;
-                padding: 0;
-                zoom: 1;
-                width: 99999px;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:before {
-                content: '';
-                display: block;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items:after {
-                content: '';
-                display: table;
-                clear: both;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item {
-                list-style: none;
-                margin-left: 0;
-                padding: 0;
-                display: block;
-                float: left;
-                margin-right: 15px;
-                width: 370px;
-                overflow-x: hidden;
-                overflow-y: hidden;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item:last-child {
-                margin-right: 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl {
-                float: right;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item.rtl:last-child {
-                margin-right: 15px;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail {
-                line-height: 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a {
-                display: block;
-                width: 370px;
-                height: 162px;
-                background-size: 370px 162px;
-                background-position: center center;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a,
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
-                -webkit-transition: all 0.35s ease;
-                -moz-transition: all 0.35s ease;
-                -o-transition: all 0.35s ease;
-                transition: all 0.35s ease;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a span.overlay {
-                display: block;
-                width: 100%;
-                height: 100%;
-                background: #3279BB;
-                opacity: 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-thumbnail a:hover span {
-                opacity: 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item .rdc-agents-carousel-default-thumbnail {
-                display: block;
-                width: 370px;
-                height: 162px;
-                background: #E8E8E8;
-                background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E0E0E0), color-stop(1, #E8E8E8));
-                background: -ms-linear-gradient(bottom, #E0E0E0, #E8E8E8);
-                background: -moz-linear-gradient(center bottom, #E0E0E0 0%, #E8E8E8 100%);
-                background: -o-linear-gradient(#E8E8E8, #E0E0E0);
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 {
-                font-size: 15px;
-                text-align: center;
-                font-weight: 500;
-                color: #474747;
-                margin: 10px 0 0 0;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item span {
-                display: block;
-                margin: 15px 0;
-                text-align: center;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 a {
-                text-decoration: none;
-                color: inherit;
-              }
-              .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-loading {
-                display: block;
-                width: 370px;
-                height: 162px;
-                float: left;
-                background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
-                margin: 0;
-              }
-              a.rdc-agents-carousel-previous {
-                display: none;
-              }
-              a.rdc-agents-carousel-next {
-                display: none;
-              }
-
-
-            </style>
           </div>
         </div>
       </section>

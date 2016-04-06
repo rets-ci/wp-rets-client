@@ -1,5 +1,6 @@
 <?php
 
+require_once get_template_directory() . '/lib/classes/class-utils.php';
 require_once get_template_directory() . '/lib/classes/class-bootstrap.php';
 require_once get_template_directory() . '/lib/classes/class-widgets.php';
 require_once get_template_directory() . '/lib/classes/class-property-hooks.php';
