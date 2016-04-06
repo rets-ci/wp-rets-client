@@ -547,7 +547,7 @@
   color: #fff;
   text-align: center;
 }
-.frontPageSearchBlock > h3 {
+.frontPageSearchBlock > h4 {
   color: #fff;
   text-align: center;
 }
@@ -967,7 +967,7 @@
   border-radius: 0 !important;
 }
 .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-  width: 24.1%;
+  width: 49.4%;
   color: #a7a9ac;
   font-size: 2em !important;
   padding: 0;
@@ -1447,8 +1447,7 @@
   margin-bottom: 25px;
 }
 .footerWidgetArea1 .sow-image-container img {
-  margin-bottom: 45px;
-  margin-top: 25px;
+  margin: 25px auto 45px;
   width: 175px;
 }
 .footerWidgetArea2 {

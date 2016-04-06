@@ -20,7 +20,7 @@ while (have_posts()) : the_post(); ?>
     <div class="row">
       <section class="frontPageSearchBlock" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>');">
         <h1><?php the_field('home_title'); ?></h1>
-        <h3><?php the_field('home_subtitle'); ?></h3>
+        <h4><?php the_field('home_subtitle'); ?></h4>
         <?php get_template_part('static/views/search-form'); ?>
       </section>
     </div>
