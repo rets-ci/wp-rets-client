@@ -102,7 +102,7 @@ function WPP_RPC_editProperty( $args ) {
 
   write_log( 'Inserted property post ' . $_post_id  );
 
-  if ( !empty( $post_data['meta_input']['rets.media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
+  if ( !empty( $post_data['meta_input']['rets_media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
 
     $_already_attached_media = array();
 
