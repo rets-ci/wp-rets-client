@@ -319,6 +319,7 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
         wp_enqueue_script( 'gm-markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
         wp_enqueue_script( 'gm-infobubble', ud_get_wpp_supermap()->path( 'bower_components/js-info-bubble/src/infobubble-compiled.js' ), array( 'ng-map' ) );
+        wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ), array( 'angularjs' ) );
         wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ) );
 
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
@@ -351,10 +352,10 @@ namespace UsabilityDynamics\WPP {
           }
         }
 
-        $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
         $query['sort_by'] = $atts['sort_by'];
         $query['sort_order'] = $atts['sort_order'];
         $query[ 'pagination' ] = 'off';
+        $query = apply_filters( 'wpp:supermap:query_defaults', $query, $atts );
 
         //* Prepare out $atts. Leave only necessary data. */
         $atts = array_filter( (array)$atts );

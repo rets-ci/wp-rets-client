@@ -48,7 +48,7 @@
 
         <div class="sm-marker-infobubble">
           <div class="sm-infobubble">
-            <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a href="{{currentProperty.permalink}}">{{currentProperty.post_title}}</a>
+            <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a href="{{currentProperty._source._permalink}}">{{currentProperty._source.post_title}}</a>
           </div>
         </div>
       </div>
@@ -73,17 +73,17 @@
           </div>
 
           <?php ob_start(); ?>
-          <div class="sm-current-property" ng-show="currentProperty">
+          <div class="sm-current-property" ng-show="">
             <div class="row">
               <div class="col-md-6">
-                <a href="{{currentProperty.permalink}}"><div class="sm-current-property-thumb" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div></div></a>
+                <a href="{{currentProperty._source._permalink}}"><div class="sm-current-property-thumb" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div></div></a>
               </div>
               <div class="col-md-6">
                 <div class="sm-current-property-details">
                   <ul>
-                    <li class="sm-current-property-title"><a href="{{currentProperty.permalink}}">{{currentProperty.post_title}}</a></li>
+                    <li class="sm-current-property-title"><a href="{{currentProperty._source._permalink}}">{{currentProperty._source.post_title}}</a></li>
                     <li class="" ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">
-                      <label class="sm-attribute-label">{{wpp.instance.settings.property_stats[column]}}</label><span class="sm-attribute-value">{{currentProperty[column]}}</span>
+                      <label class="sm-attribute-label">{{wpp.instance.settings.property_stats[column]}}</label><span class="sm-attribute-value">{{currentProperty._source[column]}}</span>
                     </li>
                   </ul>
                 </div>
@@ -108,8 +108,8 @@
             <tbody>
             <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)">
               <td><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
-              <td>{{row.post_title}}</td>
-              <td ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">{{row[column]}}</td>
+              <td>{{row._source.post_title}}</td>
+              <td ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">{{row._source[column]}}</td>
             </tr>
             </tbody>
             <tfoot>

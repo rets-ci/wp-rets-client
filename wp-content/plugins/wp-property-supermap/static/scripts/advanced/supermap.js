@@ -88,7 +88,7 @@
 
       .controller( 'main', [ '$scope', '$http', '$filter', 'NgMap', function( $scope, $http, $filter, NgMap ){
 
-        $scope.query = unserialize( decodeURIComponent( vars.query).replace(/\+/g, " ") );
+        $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
@@ -106,46 +106,48 @@
          * Get Properties by provided Query ( filter )
          */
         $scope.getProperties = function getProperties() {
-          var params = {
-            "action": "/supermap/get_properties",
-            "json": true,
-            "wpp_search": $scope.query,
-            "fields": ( typeof $scope.atts.fields !== 'undefined' ? $scope.atts.fields : '' )
-          };
 
-          //console.log( 'query arguments', params );
-
-          var getQuery = jQuery.param( params );
-          $http({
-            method: 'GET',
-            url: wpp.instance.ajax_url + '?' + getQuery
-          }).then(function successCallback(response) {
-
-            jQuery( '.sm-search-layer', ngAppDOM ).show();
-            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
-
-            $scope.loaded = true;
-
-            if( typeof response.data.total == 'undefined' || typeof response.data.data == 'undefined' ) {
-              console.log( 'Error occurred during getting properties data.' );
-            } else {
-              $scope.total = response.data.total;
-              $scope.properties = response.data.data;
-              // Select First Element of Properties Collection
-              if( $scope.properties.length > 0 ) {
-                $scope.properties[0].isSelected = true;
-              }
-              $scope.refreshMarkers();
-            }
-          }, function errorCallback(response) {
-
-            jQuery( '.sm-search-layer', ngAppDOM ).show();
-            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
-
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            console.log( 'Error occurred during getting properties data.' );
+          /**
+           * @todo Unhardcode this
+           * @type {$.es.Client|*}
+           */
+          var client = new jQuery.es.Client({
+            hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
           });
+
+          client.search({
+            index: 'v2',
+            type: 'property',
+            body: {
+              query: $scope.query
+            },
+            _source: $scope.atts.fields,
+            size: 100
+          }, function( error, response ) {
+
+            if ( !error ) {
+              jQuery( '.sm-search-layer', ngAppDOM ).show();
+              jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+
+              $scope.loaded = true;
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                console.log( 'Error occurred during getting properties data.' );
+              } else {
+                $scope.total = response.hits.hits.length;
+                $scope.properties = response.hits.hits;
+                // Select First Element of Properties Collection
+                if( $scope.properties.length > 0 ) {
+                  $scope.properties[0].isSelected = true;
+                }
+                $scope.refreshMarkers();
+              }
+            } else {
+              console.error(error);
+            }
+
+          });
+
         }
 
         /**
@@ -184,13 +186,13 @@
             }
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
-              var latLng = new google.maps.LatLng( $scope.properties[i].latitude, $scope.properties[i].longitude );
-              latLng.listingId = $scope.properties[i].ID;
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
+              latLng.listingId = $scope.properties[i]._id;
               var marker = new google.maps.Marker( {
-                position: latLng,
-                icon: $scope.properties[i]._map_marker_url
+                position: latLng
+                //icon: $scope.properties[i]._map_marker_url
               } );
-              marker.listingId = $scope.properties[i].ID;
+              marker.listingId = $scope.properties[i]._id;
 
               $scope.dynMarkers.push( marker );
               $scope.latLngs.push( latLng );
@@ -206,7 +208,7 @@
                   var index;
                   for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
                     var property = $scope.properties[i];
-                    if ( property.ID == marker.listingId ) {
+                    if ( property._id == marker.listingId ) {
                       property.isSelected = true;
                       index = i;
                     } else {
@@ -333,10 +335,10 @@
           //console.log( 'dynMarkers', $scope.dynMarkers );
           //console.log( 'currentProperty', currentProperty );
           // Trying to get previous property ID if there.
-          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty.ID:false;
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
             // Checking whether property changed or not.
-            if (currentProperty.ID != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty.ID ) {
+            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
               //console.log( 'Marker', $scope.dynMarkers[i] );
               NgMap.getMap().then( function( map ) {
                 //*
