@@ -611,28 +611,6 @@ namespace UsabilityDynamics\WPP {
         wp_send_json(array('gallery' => $gallery, 'thumbID' => $thumbnail_id));
         die();
       }
-      
-      /**
-       * @param $tax_query
-       * @param $key
-       * @param $criteria
-       * @param $matching_ids
-       */
-      static public function fix_numeric_terms( $tax_query, $key, $criteria, $matching_ids ) {
-        return array(
-            'relation' => 'OR',
-            array(
-                'taxonomy' => $key,
-                'field'    => 'name',
-                'terms'    => $criteria,
-            ),
-            array(
-                'taxonomy' => $key,
-                'field'    => 'slug',
-                'terms'    => $criteria,
-            ),
-        );
-      }
 
       /**
        * Returns the list of all found properties prepared for display.
@@ -656,9 +634,7 @@ namespace UsabilityDynamics\WPP {
         }
 
         //* Get properties ID */
-        add_filter( 'wpp_terms_custom_search_tax_query', array( __CLASS__, 'fix_numeric_terms' ), 10, 4 );
         $property_ids = \WPP_F::get_properties( $query , true );
-        remove_filter( 'wpp_terms_custom_search_tax_query', array( __CLASS__, 'fix_numeric_terms' ), 10, 4 );
 
         if( !empty( $property_ids ) ){
           $properties = array();
