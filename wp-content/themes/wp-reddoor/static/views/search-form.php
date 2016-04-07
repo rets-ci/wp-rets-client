@@ -9,10 +9,10 @@
   </ul>
   <ul>
     <li class="sellBtnForm">
-      <a href="http://google.com/"><?php _e('Sell your home') ?></a>
+      <a href="<?php echo site_url( 'sell' ) ?>"><?php _e('Sell Your Home') ?></a>
     </li>
     <li class="rentPropBtnForm">
-      <a href="http://google.com/"><?php _e('Rent your property') ?></a>
+      <a href="<?php echo site_url( 'management' ) ?>"><?php _e('Rent Your Property') ?></a>
     </li>
   </ul>
 
@@ -65,7 +65,8 @@
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
-          <b class="sf-arrow"></b></span>
+          <b class="sf-arrow"></b>
+        </span>
 
         <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
@@ -82,36 +83,49 @@
       <!-- Buy Price -->
 
       <div class="sfPrice dropdown-container">
-        <span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
+        <span data-drop="price">
+          <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
+          <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
+          <b class="sf-arrow"></b>
+        </span>
 
         <div class="sfPriceRange dropdown-list">
           <div class="sfprInputsBlock">
-            <input type="text" class="firstRange" value="" name="wpp_search[price][min]" placeholder="Min">
-            <input type="text" class="lastRange" value="" name="wpp_search[price][max]" placeholder="Max">
+            <input type="text" class="firstRangeLabel" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstRangeValue" value="" name="wpp_search[price][min]" />
+
+            <input type="text" class="lastRangeLabel" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastRangeValue" value="" name="wpp_search[price][max]" />
           </div>
           <div class="clear"></div>
           <div class="left-side">
             <ul class="firstRangeList">
-              <li><a val="50000" href="javascript:void(0);">$50k</a></li>
-              <li><a val="75000" href="javascript:void(0);">$75k</a></li>
-              <li><a val="100000" href="javascript:void(0);">$100k</a></li>
-              <li><a val="125000" href="javascript:void(0);">$125k</a></li>
-              <li><a val="150000" href="javascript:void(0);">$150k</a></li>
-              <li><a val="175000" href="javascript:void(0);">$175k</a></li>
-              <li><a val="200000" href="javascript:void(0);">$200k</a></li>
-              <li><a val="" href="javascript:void(0);">Any Amount</a></li>
+              <li><a data-val="25000" href="javascript:;">$25k</a></li>
+              <li><a data-val="50000" href="javascript:;">$50k</a></li>
+              <li><a data-val="75000" href="javascript:;">$75k</a></li>
+              <li><a data-val="100000" href="javascript:;">$100k</a></li>
+              <li><a data-val="150000" href="javascript:;">$150k</a></li>
+              <li><a data-val="200000" href="javascript:;">$200k</a></li>
+              <li><a data-val="250000" href="javascript:;">$250k</a></li>
+              <li><a data-val="300000" href="javascript:;">$300k</a></li>
+              <li><a data-val="400000" href="javascript:;">$400k</a></li>
+              <li><a data-val="500000" href="javascript:;">$500k</a></li>
+              <li><a data-val="" href="javascript:;">Any Amount</a></li>
             </ul>
           </div>
-          <div class="right-side">
+          <div class="right-side" style="display: none;">
             <ul class="lastRangeList">
-              <li><a val="300000" href="javascript:void(0);">$300k</a></li>
-              <li><a val="350000" href="javascript:void(0);">$350k</a></li>
-              <li><a val="400000" href="javascript:void(0);">$400k</a></li>
-              <li><a val="450000" href="javascript:void(0);">$450k</a></li>
-              <li><a val="500000" href="javascript:void(0);">$500k</a></li>
-              <li><a val="550000" href="javascript:void(0);">$550k</a></li>
-              <li><a val="600000" href="javascript:void(0);">$600k</a></li>
-              <li><a val="" href="javascript:void(0);">Any Amount</a></li>
+              <li><a data-val="25000" href="javascript:;">$25k</a></li>
+              <li><a data-val="50000" href="javascript:;">$50k</a></li>
+              <li><a data-val="75000" href="javascript:;">$75k</a></li>
+              <li><a data-val="100000" href="javascript:;">$100k</a></li>
+              <li><a data-val="150000" href="javascript:;">$150k</a></li>
+              <li><a data-val="200000" href="javascript:;">$200k</a></li>
+              <li><a data-val="250000" href="javascript:;">$250k</a></li>
+              <li><a data-val="300000" href="javascript:;">$300k</a></li>
+              <li><a data-val="400000" href="javascript:;">$400k</a></li>
+              <li><a data-val="500000" href="javascript:;">$500k</a></li>
+              <li><a data-val="" href="javascript:;">Any Amount</a></li>
             </ul>
           </div>
         </div>
@@ -149,7 +163,7 @@
           <b class="sf-arrow"></b>
         </span>
 
-        <ul>
+        <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
             $array_values = array();
             for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
@@ -168,8 +182,10 @@
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
-          <b class="sf-arrow"></b></span>
-        <ul>
+          <b class="sf-arrow"></b>
+        </span>
+
+        <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
             $array_values = array();
             for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
@@ -181,10 +197,58 @@
         </ul>
       </div>
 
-      <div class="sfPrice">
-        <span><div class="icon-wpproperty-attribute-price-solid sf-icon"></div>Price<b class="sf-arrow"></b></span>
+      <div class="sfPrice dropdown-container">
+        <span data-drop="price">
+          <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
+          <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
+          <b class="sf-arrow"></b>
+        </span>
+
+        <div class="sfPriceRange dropdown-list">
+          <div class="sfprInputsBlock">
+            <input type="text" class="firstRangeLabel" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstRangeValue" value="" name="wpp_search[price][min]" />
+
+            <input type="text" class="lastRangeLabel" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastRangeValue" value="" name="wpp_search[price][max]" />
+          </div>
+          <div class="clear"></div>
+          <div class="left-side">
+            <ul class="firstRangeList">
+              <li><a data-val="25000" href="javascript:;">$25k</a></li>
+              <li><a data-val="50000" href="javascript:;">$50k</a></li>
+              <li><a data-val="75000" href="javascript:;">$75k</a></li>
+              <li><a data-val="100000" href="javascript:;">$100k</a></li>
+              <li><a data-val="150000" href="javascript:;">$150k</a></li>
+              <li><a data-val="200000" href="javascript:;">$200k</a></li>
+              <li><a data-val="250000" href="javascript:;">$250k</a></li>
+              <li><a data-val="300000" href="javascript:;">$300k</a></li>
+              <li><a data-val="400000" href="javascript:;">$400k</a></li>
+              <li><a data-val="500000" href="javascript:;">$500k</a></li>
+              <li><a data-val="" href="javascript:;">Any Amount</a></li>
+            </ul>
+          </div>
+          <div class="right-side" style="display: none;">
+            <ul class="lastRangeList">
+              <li><a data-val="25000" href="javascript:;">$25k</a></li>
+              <li><a data-val="50000" href="javascript:;">$50k</a></li>
+              <li><a data-val="75000" href="javascript:;">$75k</a></li>
+              <li><a data-val="100000" href="javascript:;">$100k</a></li>
+              <li><a data-val="150000" href="javascript:;">$150k</a></li>
+              <li><a data-val="200000" href="javascript:;">$200k</a></li>
+              <li><a data-val="250000" href="javascript:;">$250k</a></li>
+              <li><a data-val="300000" href="javascript:;">$300k</a></li>
+              <li><a data-val="400000" href="javascript:;">$400k</a></li>
+              <li><a data-val="500000" href="javascript:;">$500k</a></li>
+              <li><a data-val="" href="javascript:;">Any Amount</a></li>
+            </ul>
+          </div>
+        </div>
+
       </div>
+
       <input type="submit" value="<?php _e('Search') ?>"/>
+
       <div class="sf-property-quantity"><b>!</b> <?php echo \UsabilityDynamics\RDC\Utils::get_rent_properties_count(); ?> properties for rent</div>
     </form>
 
