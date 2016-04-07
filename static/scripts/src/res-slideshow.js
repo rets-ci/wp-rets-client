@@ -280,7 +280,11 @@ jQuery(document).ready(function($){
             var height = this.height;
             $img.attr('width', width)
                 .attr('height', height);
-            s.onResize();
+            if(typeof s.timer != 'undefined')
+                clearTimeout(s.timer);
+            s.timer = setTimeout(function(){
+                s.onResize();
+            }, 500)
         }).attr('src', $img.attr('src'));
         return $img;
     }

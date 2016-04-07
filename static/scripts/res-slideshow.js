@@ -2,7 +2,10 @@ jQuery(document).ready(function($) {
     function setRealWidthHeight($img, s) {
         return $("<img />").load(function() {
             var width = this.width, height = this.height;
-            $img.attr("width", width).attr("height", height), s.onResize();
+            $img.attr("width", width).attr("height", height), "undefined" != typeof s.timer && clearTimeout(s.timer), 
+            s.timer = setTimeout(function() {
+                s.onResize();
+            }, 500);
         }).attr("src", $img.attr("src")), $img;
     }
     var wpprs = $(".property-resp-slideshow");
