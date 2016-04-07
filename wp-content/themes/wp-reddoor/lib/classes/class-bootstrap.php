@@ -300,7 +300,6 @@ namespace UsabilityDynamics\RDC {
           register_widget('\UsabilityDynamics\RDC\RDCJobRequestForm');
           register_widget('\UsabilityDynamics\RDC\Guide_content_Widget');
           register_widget('\UsabilityDynamics\RDC\RDC_Callout_Widget');
-          register_widget('\UsabilityDynamics\RDC\RDC_Masthead_Widget');
           register_widget('\UsabilityDynamics\RDC\RDCHomeBuyingForm');
           register_widget('\UsabilityDynamics\RDC\RDCHomeSellingForm');
         }

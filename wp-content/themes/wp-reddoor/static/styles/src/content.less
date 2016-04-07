@@ -341,7 +341,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  min-height: 555px;
   padding-top: 10%;
   position: relative;
   top: -90px;
@@ -349,11 +349,19 @@
   z-index: 7;
   &>h1{
     color: #fff;
+    font-size: 4em;
+    font-weight: bold;
     text-align: center;
   }
-  &>h3{
+  &>h4{
     color: #fff;
+    font-weight: 300;
+    line-height: 2em;
+    margin: 1.5% auto 3%;
     text-align: center;
+    text-shadow: 0 0 1px #ddd;
+    width: 70%;
+
   }
   .searchForm {
     width: 65%;
@@ -417,6 +425,7 @@
       border-radius: 0 5px 5px 5px;
       height: 85px;
       margin-top: -2px;
+      position: relative;
       ul {
         background: #fff none repeat scroll 0 0;
         padding: 1.5em 1em 1em;
@@ -549,6 +558,7 @@
         text-align: center;
         width: 20px;
         margin-right: 0.2em;
+        padding-top: 1.6px;
       }
     }
     }
@@ -772,7 +782,7 @@
         border-bottom: 1px solid #eeeaea;
         border-radius: 0 !important;
         li{
-          width: 24.1%;
+          width: 49.4%;
           color: #a7a9ac;
           font-size: 2em !important;
           padding: 0;

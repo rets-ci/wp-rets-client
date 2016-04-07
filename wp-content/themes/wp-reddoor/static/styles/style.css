@@ -536,7 +536,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  min-height: 555px;
   padding-top: 10%;
   position: relative;
   top: -90px;
@@ -545,11 +545,18 @@
 }
 .frontPageSearchBlock > h1 {
   color: #fff;
+  font-size: 4em;
+  font-weight: bold;
   text-align: center;
 }
-.frontPageSearchBlock > h3 {
+.frontPageSearchBlock > h4 {
   color: #fff;
+  font-weight: 300;
+  line-height: 2em;
+  margin: 1.5% auto 3%;
   text-align: center;
+  text-shadow: 0 0 1px #ddd;
+  width: 70%;
 }
 .frontPageSearchBlock .searchForm {
   width: 65%;
@@ -611,6 +618,7 @@
   border-radius: 0 5px 5px 5px;
   height: 85px;
   margin-top: -2px;
+  position: relative;
 }
 .frontPageSearchBlock .searchForm form ul {
   background: #fff none repeat scroll 0 0;
@@ -760,6 +768,7 @@
   text-align: center;
   width: 20px;
   margin-right: 0.2em;
+  padding-top: 1.6px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange {
   background: #fff;
@@ -969,7 +978,7 @@
   border-radius: 0 !important;
 }
 .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-  width: 24.1%;
+  width: 49.4%;
   color: #a7a9ac;
   font-size: 2em !important;
   padding: 0;
@@ -1449,12 +1458,12 @@
   margin-bottom: 25px;
 }
 .footerWidgetArea1 .sow-image-container img {
-  margin-bottom: 45px;
-  margin-top: 25px;
+  margin: 0 auto 45px;
+  padding-top: 25px;
   width: 175px;
 }
 .footerWidgetArea2 {
-  margin-top: 20%;
+  margin-top: 15%;
 }
 .footerWidgetArea2 h2 {
   font-size: 1.5em;
@@ -1475,7 +1484,7 @@
   margin-right: 10px;
 }
 .footerWidgetArea3 {
-  margin-top: 20%;
+  margin-top: 15%;
 }
 .footerWidgetArea3 .sow-carousel-title {
   position: relative;
@@ -1532,6 +1541,9 @@
 .footerWidgetArea3 > ul li div {
   padding: 0 25px;
   margin-top: 10px;
+}
+.footerWidgetArea3 .sow-carousel-wrapper {
+  border-radius: 5px;
 }
 /* footer */
 html,
