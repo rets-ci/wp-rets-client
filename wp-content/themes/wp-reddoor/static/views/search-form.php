@@ -9,10 +9,10 @@
   </ul>
   <ul>
     <li class="sellBtnForm">
-      <a href="http://google.com/"><?php _e('Sell your home') ?></a>
+      <a href="<?php echo site_url( 'sell' ) ?>"><?php _e('Sell Your Home') ?></a>
     </li>
     <li class="rentPropBtnForm">
-      <a href="http://google.com/"><?php _e('Rent your property') ?></a>
+      <a href="<?php echo site_url( 'management' ) ?>"><?php _e('Rent Your Property') ?></a>
     </li>
   </ul>
 
