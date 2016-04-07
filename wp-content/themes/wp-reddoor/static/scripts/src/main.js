@@ -103,6 +103,11 @@ jQuery(document).ready(function(){
     jQuery('.featurePoint > span').css('margin-top', featurePointMarg);
     jQuery('.tabbedWidgetImageArea').css('height', tabbedWidgetImageHeight);
 
+    /* Share button */
+    jQuery('.shareButton').on('click', function(){
+        jQuery('.singleShareContainer').toggle('slow');
+    });
+
 });
 
 function map_resize() {

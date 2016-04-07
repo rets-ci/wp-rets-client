@@ -1177,6 +1177,77 @@
   font-style: italic;
   margin: 5% 0;
 }
+.single-property .rdc-agents-carousel-container {
+  z-index: 10;
+}
+.single-property .singleShareContainer {
+  background: #fff none repeat scroll 0 0;
+  display: none;
+  height: 80%;
+  position: absolute;
+  width: 100%;
+  z-index: 8;
+  text-align: center;
+}
+.single-property .singleShareContainer h4 {
+  text-align: center;
+  color: #49484B;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+.single-property .singleShareContainer p {
+  text-align: center;
+  margin-top: 25px;
+}
+.single-property .singleShareContainer input {
+  width: 70%;
+  border: 1px solid #F7F7F7;
+  border-radius: 5px;
+  color: #F7F7F7;
+}
+.single-property .singleShareContainer .icon-wpproperty-social-facebook-symbol {
+  background: #2E5FA9;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  font-size: 1.5em;
+  height: 50px;
+  padding-top: 13px;
+  width: 50px;
+}
+.single-property .singleShareContainer .icon-wpproperty-social-twitter-symbol {
+  background: #42C1F0;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  font-size: 1.5em;
+  height: 50px;
+  padding-top: 13px;
+  width: 50px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.single-property .singleShareContainer .icon-wpproperty-social-linkedin-symbol {
+  background: #32A0C9;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  font-size: 1.5em;
+  height: 50px;
+  padding-top: 13px;
+  width: 50px;
+}
+.single-property .singleShareContainer .goShare {
+  background: #d03528 none repeat scroll 0 0;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  font-size: 1em;
+  margin: 20px;
+  padding: 15px 0;
+  text-align: center;
+  width: 70%;
+}
 .association-carousel .sow-carousel-thumbnail a {
   background-repeat: no-repeat !important;
   background-size: auto auto !important;
