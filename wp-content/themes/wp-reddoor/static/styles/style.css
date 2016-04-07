@@ -775,8 +775,7 @@
   color: #a7a9ac;
   font-size: 0.9em;
   position: relative;
-  width: 206px;
-  right: 27px;
+  width: 215px;
   top: 0;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange ul {
@@ -797,7 +796,7 @@
   font-size: 0.9em;
   height: 30px;
   padding: 0 5px;
-  width: 80px;
+  width: 85px;
   text-align: center;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
