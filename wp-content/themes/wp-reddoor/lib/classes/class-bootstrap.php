@@ -112,22 +112,20 @@ namespace UsabilityDynamics\RDC {
             } else {
 
               if ( array_key_exists( 'min', $value ) && !empty( $value['min'] ) ) {
-                $must_query[] = array(
-                  'range' => array(
-                    'tax_input.' . $field => array(
-                      'gte' => $value['min']
-                    )
-                  )
+                $ranges = array(
+                  'gte' => $value['min']
                 );
               }
 
               if ( array_key_exists( 'max', $value ) && !empty( $value['max'] ) ) {
+                $ranges['lte'] = $value['max'];
+              }
+
+              if ( !empty( $ranges ) ) {
                 $must_query[] = array(
-                  'range' => array(
-                    'tax_input.' . $field => array(
-                      'lte' => $value['max']
+                    'range' => array(
+                        'tax_input.' . $field => $ranges
                     )
-                  )
                 );
               }
 
