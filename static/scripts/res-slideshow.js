@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + containerWidth + "px!important;max-height:" + containerHeight + "px!important;}"), 
                 s.slides.each(function() {
-                    var $this = setRealWidthHeight(jQuery(this).find("img"), galleryTop);
+                    var $this = jQuery(this).find("img");
                     if (width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), 
                     ratio = width / height, s.isLightbox()) width = parseInt($this.data("width")), height = parseInt($this.data("height")), 
                     ratio = width / height; else if (s.params.autoHeight && !s.params.slider_height) return maxHeight = containerWidth / ratio, 

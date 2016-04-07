@@ -168,7 +168,7 @@ jQuery(document).ready(function($){
             $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ containerWidth + 'px!important;max-height:' + containerHeight +'px!important;}');
 
             s.slides.each(function(){
-                var $this   = setRealWidthHeight(jQuery(this).find('img'), galleryTop);
+                var $this   = jQuery(this).find('img');
                     width   = parseInt($this.attr('width')),
                     height  = parseInt($this.attr('height')),
                     ratio   = width/height;
