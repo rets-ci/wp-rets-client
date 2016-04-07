@@ -31,6 +31,7 @@ while ( have_posts() ) : the_post();
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
 
+
   $_propertyType = $get_sale_type_terms[0]->slug;
 
 ?>

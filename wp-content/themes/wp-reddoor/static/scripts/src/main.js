@@ -1,6 +1,7 @@
 jQuery(document).ready(function(){
     jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
     jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
+    jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
 
     /* Mobile menu slide */

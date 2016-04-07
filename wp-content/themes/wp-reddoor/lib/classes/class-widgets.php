@@ -653,7 +653,7 @@ namespace UsabilityDynamics\RDC {
     public function admin_enqueue()
     {
       wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/guide.js?nocache=' . rand(1, 200));
-      wp_enqueue_media();
+      //wp_enqueue_media();
     }
 
     /**
@@ -824,7 +824,7 @@ namespace UsabilityDynamics\RDC {
     public function admin_enqueue()
     {
       wp_enqueue_script('callout', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/js/callout.js?nocache=' . rand(1, 200));
-      wp_enqueue_media();
+      //wp_enqueue_media();
     }
 
     /**
