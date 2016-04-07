@@ -634,7 +634,7 @@
   color: #808285;
   padding-top: 3px;
   position: relative;
-  width: 40%;
+  width: 33%;
   height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
@@ -739,6 +739,7 @@
 }
 .frontPageSearchBlock .searchForm form .sfPrice {
   border-radius: 0 5px 5px 0;
+  width: 24%;
 }
 .frontPageSearchBlock .searchForm form .sfPriceRange {
   display: none;
@@ -766,6 +767,8 @@
   font-size: 0.9em;
   position: relative;
   width: 206px;
+  right: 27px;
+  top: 0;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange ul {
   margin: 0;
@@ -788,14 +791,13 @@
   width: 80px;
   text-align: center;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRange {
+.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
   margin-left: 8px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
   padding: 10px 80px 10px 15px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
-  display: none;
   padding: 10px 15px 10px 80px;
   text-align: right;
 }
