@@ -1,8 +1,8 @@
 jQuery(document).ready(function($) {
-    function setRealWidthHeight($img, triggerResize, s) {
+    function setRealWidthHeight($img, s) {
         return $("<img />").load(function() {
             var width = this.width, height = this.height;
-            $img.attr("width", width).attr("height", height), "undefined" != typeof triggerResize && $img.parent().index == s.slides.length - 1 && s.onResize();
+            $img.attr("width", width).attr("height", height), s.onResize();
         }).attr("src", $img.attr("src")), $img;
     }
     var wpprs = $(".property-resp-slideshow");
@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
                 }, 0);
             }
         }), _galleryTop.find("img").each(function() {
-            setRealWidthHeight($(this), !0, galleryTop);
+            setRealWidthHeight($(this), galleryTop);
         }), _galleryThumbs.length && (galleryThumbs = new Swiper(_galleryThumbs, {
             spaceBetween: 2.5,
             centeredSlides: !0,
@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + containerWidth + "px!important;max-height:" + containerHeight + "px!important;}"), 
                 s.slides.each(function() {
-                    var $this = setRealWidthHeight(jQuery(this).find("img"));
+                    var $this = setRealWidthHeight(jQuery(this).find("img"), galleryTop);
                     if (width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), 
                     ratio = width / height, s.isLightbox()) width = parseInt($this.data("width")), height = parseInt($this.data("height")), 
                     ratio = width / height; else if (s.params.autoHeight && !s.params.slider_height) return maxHeight = containerWidth / ratio, 

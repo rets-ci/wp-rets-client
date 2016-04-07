@@ -81,9 +81,9 @@ jQuery(document).ready(function($){
                                 },
                 //slideToClickedSlide:true
             });
-        
+
         _galleryTop.find('img').each(function(){
-            setRealWidthHeight($(this), true, galleryTop);
+            setRealWidthHeight($(this), galleryTop);
         });
 
         if(_galleryThumbs.length){
@@ -168,7 +168,7 @@ jQuery(document).ready(function($){
             $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ containerWidth + 'px!important;max-height:' + containerHeight +'px!important;}');
 
             s.slides.each(function(){
-                var $this   = setRealWidthHeight(jQuery(this).find('img'));
+                var $this   = setRealWidthHeight(jQuery(this).find('img'), galleryTop);
                     width   = parseInt($this.attr('width')),
                     height  = parseInt($this.attr('height')),
                     ratio   = width/height;
@@ -274,14 +274,13 @@ jQuery(document).ready(function($){
         }
     });
 
-    function setRealWidthHeight($img, triggerResize, s){
+    function setRealWidthHeight($img, s){
         $('<img />').load(function(){
             var width = this.width;
             var height = this.height;
             $img.attr('width', width)
                 .attr('height', height);
-            if(typeof triggerResize != 'undefined' && $img.parent().index == (s.slides.length - 1))
-                s.onResize();
+            s.onResize();
         }).attr('src', $img.attr('src'));
         return $img;
     }
