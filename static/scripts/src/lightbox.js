@@ -102,6 +102,7 @@
         $.each(options.galleryTop.slides, function(index, item){
           var slide = $(item);
           var src = slide.data('src');
+          setRealDataWidthHeight(slide);
           var dataWidth = slide.data('width');
           var dataHidth = slide.data('height');
           if(src){
@@ -154,4 +155,13 @@
     return this;
   };
   
+  function setRealDataWidthHeight($div){
+      $('<img />').load(function(){
+          var width = this.width;
+          var height = this.height;
+          $div.attr('data-width', width)
+              .attr('data-height', height);
+      }).attr('src', $div.attr('data-src'));
+      return $div;
+  }
 })(jQuery);

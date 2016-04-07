@@ -163,7 +163,7 @@ jQuery(document).ready(function($){
             $styler.html('#' + id + '.swiper-container.gallery-top .swiper-slide img{max-width:'+ containerWidth + 'px!important;max-height:' + containerHeight +'px!important;}');
 
             s.slides.each(function(){
-                var $this   = jQuery(this).find('img'),
+                var $this   = setRealWidthHeight(jQuery(this).find('img'));
                     width   = parseInt($this.attr('width')),
                     height  = parseInt($this.attr('height')),
                     ratio   = width/height;
@@ -268,4 +268,15 @@ jQuery(document).ready(function($){
             });
         }
     });
+
+    function setRealWidthHeight($img){
+        $('<img />').load(function(){
+            var width = this.width;
+            var height = this.height;
+            $img.attr('width', width)
+                .attr('height', height);
+        }).attr('src', $img.attr('src'));
+        return $img;
+    }
 });
+
