@@ -1,8 +1,8 @@
 jQuery(document).ready(function($) {
-    function setRealWidthHeight($img) {
+    function setRealWidthHeight($img, triggerResize, s) {
         return $("<img />").load(function() {
             var width = this.width, height = this.height;
-            $img.attr("width", width).attr("height", height);
+            $img.attr("width", width).attr("height", height), "undefined" != typeof triggerResize && $img.parent().index == s.slides.length - 1 && s.onResize();
         }).attr("src", $img.attr("src")), $img;
     }
     var wpprs = $(".property-resp-slideshow");
@@ -57,6 +57,8 @@ jQuery(document).ready(function($) {
                     s.onResize(), setControlSize();
                 }, 0);
             }
+        }), _galleryTop.find("img").each(function() {
+            setRealWidthHeight($(this), !0, galleryTop);
         }), _galleryThumbs.length && (galleryThumbs = new Swiper(_galleryThumbs, {
             spaceBetween: 2.5,
             centeredSlides: !0,

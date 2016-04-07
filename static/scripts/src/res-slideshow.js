@@ -81,6 +81,11 @@ jQuery(document).ready(function($){
                                 },
                 //slideToClickedSlide:true
             });
+        
+        _galleryTop.find('img').each(function(){
+            setRealWidthHeight($(this), true, galleryTop);
+        });
+
         if(_galleryThumbs.length){
             galleryThumbs = new Swiper(_galleryThumbs, {
                 spaceBetween: 2.5,
@@ -269,12 +274,14 @@ jQuery(document).ready(function($){
         }
     });
 
-    function setRealWidthHeight($img){
+    function setRealWidthHeight($img, triggerResize, s){
         $('<img />').load(function(){
             var width = this.width;
             var height = this.height;
             $img.attr('width', width)
                 .attr('height', height);
+            if(typeof triggerResize != 'undefined' && $img.parent().index == (s.slides.length - 1))
+                s.onResize();
         }).attr('src', $img.attr('src'));
         return $img;
     }
