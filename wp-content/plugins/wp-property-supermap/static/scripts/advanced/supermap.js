@@ -37,6 +37,7 @@
       ngAppDOM.css( 'height', vars.atts.map_height );
       jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
       jQuery( '.sm-properties-list-wrap', ngAppDOM).css( 'height', vars.atts.map_height );
+      jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
     }
 
     /**
@@ -113,6 +114,44 @@
           hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
         });
 
+        function getMoreProperties() {
+          client.search({
+            index: index,
+            type: type,
+            body: {
+              query: $scope.query
+            },
+            _source: $scope.atts.fields,
+            size: 500,
+            from: $scope.properties.length,
+            sort: "post_title:asc"
+          }, function( error, response ) {
+
+            if ( !error ) {
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                console.log( 'Error occurred during getting properties data.' );
+              } else {
+                $scope.total = response.hits.total;
+                response.hits.hits.filter(function(r) {
+                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+                });
+                Array.prototype.push.apply($scope.properties, response.hits.hits);
+                $scope.refreshMarkers(false);
+
+                if ( $scope.total > $scope.properties.length ) {
+                  getMoreProperties();
+                }
+              }
+            } else {
+              console.error(error);
+            }
+
+          });
+        }
+
         /**
          * Get Properties by provided Query ( filter )
          */
@@ -125,26 +164,36 @@
               query: $scope.query
             },
             _source: $scope.atts.fields,
-            size: 10000
+            size: 100,
+            sort: "post_title:asc"
           }, function( error, response ) {
 
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
-              jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
 
               $scope.loaded = true;
 
               if( typeof response.hits.hits == 'undefined' ) {
                 console.log( 'Error occurred during getting properties data.' );
               } else {
-                $scope.total = response.hits.hits.length;
+                $scope.total = response.hits.total;
+                response.hits.hits.filter(function(r) {
+                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+                });
                 $scope.properties = response.hits.hits;
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
+                  $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   loadImages($scope.properties[0]);
                 }
-                $scope.refreshMarkers();
+                $scope.refreshMarkers( true );
+
+                if ( $scope.total > $scope.properties.length ) {
+                  getMoreProperties();
+                }
               }
             } else {
               console.error(error);
@@ -157,7 +206,7 @@
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
-        $scope.refreshMarkers = function refreshMarkers() {
+        $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
           NgMap.getMap().then(function( map ) {
             $scope.dynMarkers = [];
             $scope.latLngs = [];
@@ -211,6 +260,7 @@
                     var property = $scope.properties[i];
                     if ( property._id == marker.listingId ) {
                       property.isSelected = true;
+                      $scope.currentProperty = property;
                       loadImages(property);
                       index = i;
                     } else {
@@ -231,12 +281,15 @@
 
             }
 
-            // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-            $scope.latlngbounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < $scope.latLngs.length; i++) {
-              $scope.latlngbounds.extend( $scope.latLngs[i] );
+            if ( update_map_pos ) {
+              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+              $scope.latlngbounds = new google.maps.LatLngBounds();
+              for (var i = 0; i < $scope.latLngs.length; i++) {
+                $scope.latlngbounds.extend($scope.latLngs[i]);
+              }
+              map.fitBounds($scope.latlngbounds);
             }
-            map.fitBounds( $scope.latlngbounds );
+
             // Finally Initialize Marker Cluster
             $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
               styles: [
@@ -309,6 +362,7 @@
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;
           }
+          $scope.currentProperty = row;
           loadImages(row);
           row.isSelected = true;
         }
@@ -316,15 +370,17 @@
         /**
          * Fired when table row is selected
          */
-        $scope.$watch( 'properties', function( rows ) {
-          // get selected row
-          rows.filter(function(r) {
-            r._source.meta_input.price_2 = parseInt(r._source.meta_input.price_2);
-            if (r.isSelected) {
-              $scope.currentProperty = r;
-            }
-          });
-        }, true );
+        //$scope.$watch( 'properties', function( rows ) {
+        //  // get selected row
+        //  rows.filter(function(r) {
+        //    r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+        //    r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+        //    r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+        //    if (r.isSelected) {
+        //      $scope.currentProperty = r;
+        //    }
+        //  });
+        //}, true );
 
         /**
          * Fired when currentProperty is changed!
