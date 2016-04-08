@@ -242,8 +242,28 @@
             map.fitBounds( $scope.latlngbounds );
             // Finally Initialize Marker Cluster
             $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-              imagePath: "//google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/images/m"
-            } );
+              styles: [
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                }
+              ]
+            }
+            );
           } );
         }
 
