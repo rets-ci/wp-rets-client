@@ -35,7 +35,7 @@ add_filter( 'xmlrpc_methods', function( $_methods ) {
 add_filter( 'image_downsize', function( $false, $id, $size ) {
 
   if ( get_post_meta( $id, '_is_remote', 1 ) ) {
-    return array( fix_rets_image_url( $id, $size ) );
+    return array( rdc_fix_rets_image_url( $id, $size ) );
   }
 
   return $false;
@@ -48,7 +48,7 @@ add_filter( 'image_downsize', function( $false, $id, $size ) {
 add_filter( 'wp_get_attachment_url', function( $url, $post_id ) {
 
   if ( get_post_meta( $post_id, '_is_remote', 1 ) ) {
-    return fix_rets_image_url( $post_id, $size );
+    return rdc_fix_rets_image_url( $post_id, $size );
   }
 
   return $url;
@@ -181,7 +181,7 @@ function WPP_RPC_editProperty( $args ) {
 
 }
 
-function fix_rets_image_url( $id, $size = false ) {
+function rdc_fix_rets_image_url( $id, $size = false ) {
 
   // get available image sizes
   $_image_sizes = UsabilityDynamics\Utility::all_image_sizes();
