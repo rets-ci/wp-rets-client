@@ -100,29 +100,32 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
+        var index = 'v4',
+            type = 'property';
+
         console.log( $scope.query );
+
+        /**
+         * @todo Unhardcode this
+         * @type {$.es.Client|*}
+         */
+        var client = new jQuery.es.Client({
+          hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+        });
 
         /**
          * Get Properties by provided Query ( filter )
          */
         $scope.getProperties = function getProperties() {
 
-          /**
-           * @todo Unhardcode this
-           * @type {$.es.Client|*}
-           */
-          var client = new jQuery.es.Client({
-            hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
-          });
-
           client.search({
-            index: 'v2',
-            type: 'property',
+            index: index,
+            type: type,
             body: {
               query: $scope.query
             },
             _source: $scope.atts.fields,
-            size: 100
+            size: 10000
           }, function( error, response ) {
 
             if ( !error ) {
@@ -250,55 +253,84 @@
         }
 
         /**
-         * Get thumbnail url
+         *
+         * @param row
          */
-        $scope.get_thumbnail_url = function get_thumbnail_url(ID) {
-          // If ID isn't set then return;
-          if(typeof ID == 'undefined') return;
+        function loadImages( row ) {
+          if ( typeof row.images == 'undefined' || !row.images.length ) {
+            client.get({
+              index: index,
+              type: type,
+              id: row._id,
+              _source: ['meta_input.rets_media.*']
+            }, function (error, response) {
 
-          // if thumbRequest is undefined then define it to avoid error.
-          if(typeof $scope.thumbRequest == 'undefined' ){
-            $scope.thumbRequest = {};
-          }
+              if ( !error ) {
 
-          // If request is in process then return.
-          if(typeof $scope.thumbRequest[ID] != 'undefined'){
-            return;
-          }
-
-          var params = {
-            "action": "/supermap/get_gallery",
-            "property_id": ID,
-          };
-
-          var getQuery = jQuery.param( params );
-          $scope.thumbRequest[ID] = $http({
-            method: 'GET',
-            url: wpp.instance.ajax_url + '?' + getQuery
-          }).then(function successCallback(response) {
-            if (response.data == false || response.data.gallery.length == 0) 
-              return;
-            $scope.properties.filter(function(property){
-              if (property.ID == ID) {
-                property.gallery = response.data.gallery;
-                property.thumbID = response.data.thumbID;
-                jQuery.each(property.gallery, function(index, attachment){
-                  if(attachment.attachment_id == response.data.thumbID){
-                    if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
-                      property.featured_image_url = attachment[$scope.atts.thumbnail_size];
-                    else
-                      property.featured_image_url = attachment['large'];
-                  }
-                });
-                delete $scope.thumbRequest[ID];
+                if( typeof response._source.meta_input.rets_media == 'undefined' ) {
+                  console.log( 'Error occurred during getting properties data.' );
+                } else {
+                  row.images = response._source.meta_input.rets_media;
+                  $scope.$apply();
+                }
+              } else {
+                console.error(error);
               }
-            });
-          }, function errorCallback(response) {
-            console.log('Failed to get image');
-          });
 
-          return;
+            });
+          }
         }
+
+        ///**
+        // * Get thumbnail url
+        // */
+        //$scope.get_thumbnail_url = function get_thumbnail_url(ID) {
+        //  // If ID isn't set then return;
+        //  if(typeof ID == 'undefined') return;
+        //
+        //  // if thumbRequest is undefined then define it to avoid error.
+        //  if(typeof $scope.thumbRequest == 'undefined' ){
+        //    $scope.thumbRequest = {};
+        //  }
+        //
+        //  // If request is in process then return.
+        //  if(typeof $scope.thumbRequest[ID] != 'undefined'){
+        //    return;
+        //  }
+        //
+        //  var params = {
+        //    "action": "/supermap/get_gallery",
+        //    "property_id": ID,
+        //  };
+        //
+        //  var getQuery = jQuery.param( params );
+        //  $scope.thumbRequest[ID] = $http({
+        //    method: 'GET',
+        //    url: wpp.instance.ajax_url + '?' + getQuery
+        //  }).then(function successCallback(response) {
+        //    if (response.data == false || response.data.gallery.length == 0)
+        //      return;
+        //    $scope.properties.filter(function(property){
+        //      if (property.ID == ID) {
+        //        property.gallery = response.data.gallery;
+        //        property.thumbID = response.data.thumbID;
+        //        jQuery.each(property.gallery, function(index, attachment){
+        //          if(attachment.attachment_id == response.data.thumbID){
+        //            if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
+        //              property.featured_image_url = attachment[$scope.atts.thumbnail_size];
+        //            else
+        //              property.featured_image_url = attachment['large'];
+        //          }
+        //        });
+        //        delete $scope.thumbRequest[ID];
+        //      }
+        //    });
+        //  }, function errorCallback(response) {
+        //    console.log('Failed to get image');
+        //  });
+        //
+        //  return;
+        //}
 
         /**
          * Fixes selected Row.
@@ -309,8 +341,8 @@
           var index = null;
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;
-
           }
+          loadImages(row);
           row.isSelected = true;
         }
 

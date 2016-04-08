@@ -8,7 +8,7 @@
 <div class="sm-current-property" ng-show="currentProperty">
   <div class="row">
     <div class="col-md-6">
-      <a href="{{currentProperty._source._permalink}}"><div class="sm-current-property-thumb" style="background-image: url( {{currentProperty.featured_image_url !== false ? currentProperty.featured_image_url : '' }} );"></div></a>
+      <a href="{{currentProperty._source._permalink}}"><div class="sm-current-property-thumb" style="background-image: url( {{currentProperty.images[0].url !== false ? currentProperty.images[0].url : '' }} );"></div></a>
     </div>
     <div class="col-md-6">
       <div class="sm-current-property-details">
