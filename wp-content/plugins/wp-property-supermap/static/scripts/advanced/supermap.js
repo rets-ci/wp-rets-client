@@ -167,13 +167,10 @@
               $scope.markerClusterer.clearMarkers();
             }
 
-            if( typeof $scope.infoWindow !== 'object' ) {
-              $scope.infoWindow = new google.maps.InfoWindow();
-            }
-
             if( typeof $scope.infoBubble !== 'object' ) {
-              $scope.infoBubble = new InfoBubble({
+              $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
+                maxWidth: 200,
                 shadowStyle: 1,
                 padding: 0,
                 backgroundColor: '#f3f0e9',
@@ -302,57 +299,6 @@
             });
           }
         }
-
-        ///**
-        // * Get thumbnail url
-        // */
-        //$scope.get_thumbnail_url = function get_thumbnail_url(ID) {
-        //  // If ID isn't set then return;
-        //  if(typeof ID == 'undefined') return;
-        //
-        //  // if thumbRequest is undefined then define it to avoid error.
-        //  if(typeof $scope.thumbRequest == 'undefined' ){
-        //    $scope.thumbRequest = {};
-        //  }
-        //
-        //  // If request is in process then return.
-        //  if(typeof $scope.thumbRequest[ID] != 'undefined'){
-        //    return;
-        //  }
-        //
-        //  var params = {
-        //    "action": "/supermap/get_gallery",
-        //    "property_id": ID,
-        //  };
-        //
-        //  var getQuery = jQuery.param( params );
-        //  $scope.thumbRequest[ID] = $http({
-        //    method: 'GET',
-        //    url: wpp.instance.ajax_url + '?' + getQuery
-        //  }).then(function successCallback(response) {
-        //    if (response.data == false || response.data.gallery.length == 0)
-        //      return;
-        //    $scope.properties.filter(function(property){
-        //      if (property.ID == ID) {
-        //        property.gallery = response.data.gallery;
-        //        property.thumbID = response.data.thumbID;
-        //        jQuery.each(property.gallery, function(index, attachment){
-        //          if(attachment.attachment_id == response.data.thumbID){
-        //            if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
-        //              property.featured_image_url = attachment[$scope.atts.thumbnail_size];
-        //            else
-        //              property.featured_image_url = attachment['large'];
-        //          }
-        //        });
-        //        delete $scope.thumbRequest[ID];
-        //      }
-        //    });
-        //  }, function errorCallback(response) {
-        //    console.log('Failed to get image');
-        //  });
-        //
-        //  return;
-        //}
 
         /**
          * Fixes selected Row.
