@@ -1005,9 +1005,15 @@
   margin-top: 0;
   padding: 7px 15px;
 }
-.single-property .propertyAttribute li div svg {
-  margin-top: 5px;
+.single-property .propertyAttribute li div span {
   color: #a7a9ac;
+  display: block;
+  font-size: 1em;
+  height: 25px;
+  margin-bottom: 3px;
+  margin-top: 8px;
+  text-align: center;
+  width: 25px;
 }
 .single-property .propertyAttribute li span {
   display: block;
@@ -1205,8 +1211,11 @@
   width: 70%;
   border: 1px solid #E7E7E8;
   border-radius: 5px;
-  color: #E7E7E8;
+  color: #9e9da0;
   padding: 4%;
+}
+.single-property .singleShareContainer input:focus {
+  border: 1px solid #E7E7E8 !important;
 }
 .single-property .singleShareContainer .icon-wpproperty-social-facebook-symbol {
   background: #2E5FA9;
@@ -1250,6 +1259,9 @@
   padding: 15px 0;
   text-align: center;
   width: 70%;
+}
+.single-property .singleShareContainer .visEmail span {
+  color: #9E9DA0;
 }
 .single-property .shareButtonColor {
   color: #000000;

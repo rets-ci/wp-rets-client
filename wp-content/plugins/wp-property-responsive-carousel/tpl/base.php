@@ -129,7 +129,7 @@ $the_query = new WP_Query( $query );
 										<ul>
 											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); echo '</li>'; } ?>
 											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); echo '</li>'; } ?>
-											<?php if(!empty($property['approximate_lot_sqft'])) {  ?><li><span class="icon-wpproperty-attribute-floorplan-outline singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' ft<sup>2</sup>.'); echo '</li>'; } ?>
+											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' ft<sup>2</sup>.'); echo '</li>'; } ?>
 										</ul>
 									</div>
 								</a>
