@@ -142,6 +142,7 @@
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
                   $scope.properties[0].isSelected = true;
+                  loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers();
               }
@@ -213,6 +214,7 @@
                     var property = $scope.properties[i];
                     if ( property._id == marker.listingId ) {
                       property.isSelected = true;
+                      loadImages(property);
                       index = i;
                     } else {
                       property.isSelected = false;
