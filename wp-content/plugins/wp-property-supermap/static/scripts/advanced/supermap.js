@@ -37,6 +37,7 @@
       ngAppDOM.css( 'height', vars.atts.map_height );
       jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
       jQuery( '.sm-properties-list-wrap', ngAppDOM).css( 'height', vars.atts.map_height );
+      jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
     }
 
     /**
@@ -130,7 +131,6 @@
 
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
-              jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
 
               $scope.loaded = true;
 
@@ -319,7 +319,9 @@
         $scope.$watch( 'properties', function( rows ) {
           // get selected row
           rows.filter(function(r) {
-            r._source.meta_input.price_2 = parseInt(r._source.meta_input.price_2);
+            r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+            r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+            r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
             if (r.isSelected) {
               $scope.currentProperty = r;
             }
