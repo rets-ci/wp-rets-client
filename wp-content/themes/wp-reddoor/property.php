@@ -28,12 +28,29 @@ while (have_posts()) : the_post();
   $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
   $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
   $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
+  $get_full_bathrooms_terms = get_the_terms($property['ID'], 'full_bathrooms');
+  $get_half_bathrooms_terms = get_the_terms($property['ID'], 'half_bathrooms');
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+  $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft');
+  $get_lot_dimensions_terms = get_the_terms($property['ID'], 'lot_dimensions');
+  $get_updated_terms = get_the_terms($property['ID'], 'updated');
+  $get_days_on_market_terms = get_the_terms($property['ID'], 'days_on_market');
+
+
 
   $_propertyType = $get_sale_type_terms[0]->slug;
+
   $singleBedrooms = $get_bedrooms_terms[0]->name;
   $singleBathrooms = $get_bathrooms_terms[0]->name;
+  $singleBathroomsFull = $get_full_bathrooms_terms[0]->name;
+  $singleBathroomsHalf = $get_half_bathrooms_terms[0]->name;
+  $totalLivingArea = $get_living_area_terms[0]->name;
+  $lotDimensionsArea = $get_lot_dimensions_terms[0]->name;
+  $locationCity = $get_location_city_terms[0]->name;
+  $locationZip = $get_location_zip_terms[0]->name;
+  $updatedProperty = $get_updated_terms[0]->name;
+  $daysOnMarket = $get_days_on_market_terms[0]->name;
 
 
   ?>
@@ -57,8 +74,8 @@ while (have_posts()) : the_post();
         <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
         <div class="title">
           <span>Active</span>
-          <div><?php the_title(); ?><span><?php _e($get_location_city_terms[0]->name) . ' ,' ?>
-              <?php if($get_location_zip_terms[0]->name){_e('NC ' . $get_location_zip_terms[0]->name);} ?></span></div>
+          <div><?php the_title(); ?><span><?php _e($locationCity) . ' ,' ?>
+              <?php if($locationZip){_e('NC ' . $locationZip);} ?></span></div>
           <b class="clear"></b>
         </div>
 
@@ -74,13 +91,13 @@ while (have_posts()) : the_post();
             <li><span
               class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($singleBathrooms . ' Baths'); ?>
             </li><?php } ?>
-          <?php if ($property['approximate_acres']) { ?>
+          <?php if ($totalLivingArea) { ?>
             <li><span
-              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($property['approximate_acres'] . ' Sq.ft'); ?>
+              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e(number_format($totalLivingArea) . ' Sq.ft'); ?>
             </li><?php } ?>
-          <?php if ($property['approximate_lot_sqft']) { ?>
+          <?php if ($lotDimensionsArea) { ?>
             <li><span
-              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($property['approximate_lot_sqft'] . ' acres'); ?>
+              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($lotDimensionsArea . ' acres'); ?>
             </li><?php } ?>
         </ul>
         <?php if(!empty($property)){ ?>
@@ -96,12 +113,20 @@ while (have_posts()) : the_post();
               <h4>Share this property</h4>
               <p>
               <a class="icon-wpproperty-social-facebook-symbol" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a>
-              <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . $singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $property['approximate_acres'] . ' sqft in #' . $get_location_city_terms[0]->name . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
-              <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $property['approximate_acres'] . ' sqft in #' . $get_location_city_terms[0]->name); ?>&summary=<AUTOMATED_PROPERTY_DETAIL_DESCRIPTION>&source=Red%20Door%20Company"></a>
+              <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . $singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
+              <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity); ?>&summary=<?php echo urlencode($property['automated_property_detail_description']) ?>&source=Red%20Door%20Company"></a>
               </p>
-              <p>or mail vis email</p>
-              <input type="email" placeholder="Enter email" />
-              <a class="goShare" href="#">Share</a>
+              <p class="visEmail"><span>or mail vis email</span></p>
+              <script>
+              jQuery(document).ready(function(){
+                jQuery('#sharingEmail').keyup(function(){
+                  var value = jQuery(this).val();
+                  jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
+                });
+              });
+              </script>
+              <input type="email" placeholder="Enter email" id="sharingEmail" />
+              <a class="goShare" href="mailto:YOUR_MAIL?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>">Share</a>
             </div>
           <?php } ?>
 
@@ -195,38 +220,30 @@ while (have_posts()) : the_post();
   <div class="container">
     <div class="row">
       <div class="col-lg-7 col-md-7">
-        This brand new home has more features than we can name here but just a few are: 10ft ceilings on the 1st floor &
-        9ft ceilings on the 2nd floor,
-        granite countertops, ceramic tile floors, an enormous sitting room located in the master retreat.
+        <?php echo $property['remarks']; ?>
       </div>
       <div class="col-lg-8 col-md-8">
         <ul class="propertyAttribute">
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-data-checked-outline"></span>
             </div>
             <span>Last Checked</span>
-            <strong>12 minutes ago</strong>
+            <strong>1 minute ago</strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-data-updated-outline"></span>
             </div>
             <span>Last Updated</span>
-            <strong>12 minutes ago</strong>
+            <strong><?php echo $updatedProperty; ?></strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-data-days-outline"></span>
             </div>
-            <span>Publiced on Site</span>
-            <strong>12 minutes ago</strong>
+            <span>Days on Market</span>
+            <strong><?php echo $daysOnMarket; ?></strong>
           </li>
         </ul>
       </div>
@@ -242,7 +259,7 @@ while (have_posts()) : the_post();
               </svg>
             </div>
             <span>Listing Type</span>
-            <strong>3 Full, 1 Half</strong>
+            <strong><?php echo ucfirst($_propertyType); ?></strong>
           </li>
           <li>
             <div>
@@ -264,12 +281,20 @@ while (have_posts()) : the_post();
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-attribute-bathroom-solid"></span>
             </div>
             <span>Bathrooms</span>
-            <strong>2 Full, 1 Half</strong>
+            <strong>
+              <?php
+                if($singleBathroomsFull){
+                  _e($singleBathroomsFull . ' Full');
+                }
+                if($singleBathroomsHalf){
+                  echo ', ';
+                  _e($singleBathroomsHalf . ' Half');
+                }
+              ?>
+            </strong>
           </li>
           <li>
             <div>
@@ -287,7 +312,7 @@ while (have_posts()) : the_post();
               </svg>
             </div>
             <span>Property Type</span>
-            <strong>Condo</strong>
+            <strong><?php echo ucfirst($property['property_type']); ?></strong>
           </li>
         </ul>
       </div>
