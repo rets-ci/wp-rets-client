@@ -170,7 +170,7 @@
             if( typeof $scope.infoBubble !== 'object' ) {
               $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
-                maxWidth: 200,
+                maxWidth: 300,
                 shadowStyle: 1,
                 padding: 0,
                 backgroundColor: '#f3f0e9',
@@ -306,7 +306,6 @@
          * @param row
          */
         $scope.selectRow = function selectRow(row) {
-          var index = null;
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;
           }
@@ -320,10 +319,11 @@
         $scope.$watch( 'properties', function( rows ) {
           // get selected row
           rows.filter(function(r) {
+            r._source.meta_input.price_2 = parseInt(r._source.meta_input.price_2);
             if (r.isSelected) {
               $scope.currentProperty = r;
             }
-          })
+          });
         }, true );
 
         /**

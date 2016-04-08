@@ -101,7 +101,9 @@
             <thead>
             <tr>
               <th></th>
-              <th st-sort="post_title"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Title', ud_get_wpp_supermap()->domain ) ); ?></th>
+              <th st-sort="_source.post_title"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Title', ud_get_wpp_supermap()->domain ) ); ?></th>
+              <th st-sort="_source.meta_input.price_2"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></th>
+
               <th ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes" st-sort="{{column}}">{{wpp.instance.settings.property_stats[column]}}</th>
             </tr>
             </thead>
@@ -109,12 +111,13 @@
             <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)">
               <td><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
               <td>{{row._source.post_title}}</td>
+              <td>{{row._source.meta_input.price_2 | currency}}</td>
               <td ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">{{row._source[column]}}</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-              <td colspan="{{wpp.instance.settings.configuration.feature_settings.supermap.display_attributes.length + 2}}" class="text-center">
+              <td colspan="4" class="text-center">
                 <div class="collection-pagination" st-pagination="" st-items-by-page="per_page" st-displayed-pages="7"></div>
               </td>
             </tr>
