@@ -142,6 +142,7 @@
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
                   $scope.properties[0].isSelected = true;
+                  loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers();
               }
@@ -166,13 +167,10 @@
               $scope.markerClusterer.clearMarkers();
             }
 
-            if( typeof $scope.infoWindow !== 'object' ) {
-              $scope.infoWindow = new google.maps.InfoWindow();
-            }
-
             if( typeof $scope.infoBubble !== 'object' ) {
-              $scope.infoBubble = new InfoBubble({
+              $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
+                maxWidth: 300,
                 shadowStyle: 1,
                 padding: 0,
                 backgroundColor: '#f3f0e9',
@@ -213,6 +211,7 @@
                     var property = $scope.properties[i];
                     if ( property._id == marker.listingId ) {
                       property.isSelected = true;
+                      loadImages(property);
                       index = i;
                     } else {
                       property.isSelected = false;
@@ -240,8 +239,28 @@
             map.fitBounds( $scope.latlngbounds );
             // Finally Initialize Marker Cluster
             $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-              imagePath: "//google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/images/m"
-            } );
+              styles: [
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                }
+              ]
+            }
+            );
           } );
         }
 
@@ -281,64 +300,12 @@
           }
         }
 
-        ///**
-        // * Get thumbnail url
-        // */
-        //$scope.get_thumbnail_url = function get_thumbnail_url(ID) {
-        //  // If ID isn't set then return;
-        //  if(typeof ID == 'undefined') return;
-        //
-        //  // if thumbRequest is undefined then define it to avoid error.
-        //  if(typeof $scope.thumbRequest == 'undefined' ){
-        //    $scope.thumbRequest = {};
-        //  }
-        //
-        //  // If request is in process then return.
-        //  if(typeof $scope.thumbRequest[ID] != 'undefined'){
-        //    return;
-        //  }
-        //
-        //  var params = {
-        //    "action": "/supermap/get_gallery",
-        //    "property_id": ID,
-        //  };
-        //
-        //  var getQuery = jQuery.param( params );
-        //  $scope.thumbRequest[ID] = $http({
-        //    method: 'GET',
-        //    url: wpp.instance.ajax_url + '?' + getQuery
-        //  }).then(function successCallback(response) {
-        //    if (response.data == false || response.data.gallery.length == 0)
-        //      return;
-        //    $scope.properties.filter(function(property){
-        //      if (property.ID == ID) {
-        //        property.gallery = response.data.gallery;
-        //        property.thumbID = response.data.thumbID;
-        //        jQuery.each(property.gallery, function(index, attachment){
-        //          if(attachment.attachment_id == response.data.thumbID){
-        //            if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
-        //              property.featured_image_url = attachment[$scope.atts.thumbnail_size];
-        //            else
-        //              property.featured_image_url = attachment['large'];
-        //          }
-        //        });
-        //        delete $scope.thumbRequest[ID];
-        //      }
-        //    });
-        //  }, function errorCallback(response) {
-        //    console.log('Failed to get image');
-        //  });
-        //
-        //  return;
-        //}
-
         /**
          * Fixes selected Row.
          *
          * @param row
          */
         $scope.selectRow = function selectRow(row) {
-          var index = null;
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;
           }
@@ -352,10 +319,11 @@
         $scope.$watch( 'properties', function( rows ) {
           // get selected row
           rows.filter(function(r) {
+            r._source.meta_input.price_2 = parseInt(r._source.meta_input.price_2);
             if (r.isSelected) {
               $scope.currentProperty = r;
             }
-          })
+          });
         }, true );
 
         /**
