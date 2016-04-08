@@ -1199,21 +1199,23 @@
 .single-property .singleShareContainer p {
   text-align: center;
   margin-top: 25px;
+  margin-bottom: 30px;
 }
 .single-property .singleShareContainer input {
   width: 70%;
-  border: 1px solid #F7F7F7;
+  border: 1px solid #E7E7E8;
   border-radius: 5px;
-  color: #F7F7F7;
+  color: #E7E7E8;
+  padding: 4%;
 }
 .single-property .singleShareContainer .icon-wpproperty-social-facebook-symbol {
   background: #2E5FA9;
   border-radius: 5px;
   color: #fff;
   display: inline-block;
-  font-size: 1.5em;
+  font-size: 1.2em;
   height: 50px;
-  padding-top: 13px;
+  padding-top: 16px;
   width: 50px;
 }
 .single-property .singleShareContainer .icon-wpproperty-social-twitter-symbol {
@@ -1221,9 +1223,9 @@
   border-radius: 5px;
   color: #fff;
   display: inline-block;
-  font-size: 1.5em;
+  font-size: 1.2em;
   height: 50px;
-  padding-top: 13px;
+  padding-top: 16px;
   width: 50px;
   margin-left: 5px;
   margin-right: 5px;
@@ -1233,9 +1235,9 @@
   border-radius: 5px;
   color: #fff;
   display: inline-block;
-  font-size: 1.5em;
+  font-size: 1.2em;
   height: 50px;
-  padding-top: 13px;
+  padding-top: 16px;
   width: 50px;
 }
 .single-property .singleShareContainer .goShare {
@@ -1248,6 +1250,9 @@
   padding: 15px 0;
   text-align: center;
   width: 70%;
+}
+.single-property .shareButtonColor {
+  color: #000000;
 }
 .association-carousel .sow-carousel-thumbnail a {
   background-repeat: no-repeat !important;

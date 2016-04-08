@@ -105,6 +105,7 @@ jQuery(document).ready(function(){
 
     /* Share button */
     jQuery('.shareButton').on('click', function(){
+        jQuery(this).toggleClass('shareButtonColor');
         jQuery('.singleShareContainer').toggle('slow');
     });
 

@@ -32,6 +32,9 @@ while (have_posts()) : the_post();
   $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
 
   $_propertyType = $get_sale_type_terms[0]->slug;
+  $singleBedrooms = $get_bedrooms_terms[0]->name;
+  $singleBathrooms = $get_bathrooms_terms[0]->name;
+
 
   ?>
 
@@ -63,13 +66,13 @@ while (have_posts()) : the_post();
           <?php if ($property['price']) { ?>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$');
             echo $property['price']; ?></li><?php } ?>
-          <?php if ($get_bedrooms_terms[0]->name) { ?>
+          <?php if ($singleBedrooms) { ?>
             <li><span
-              class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); ?>
+              class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($singleBedrooms . ' Beds'); ?>
             </li><?php } ?>
-          <?php if ($get_bathrooms_terms[0]->name) { ?>
+          <?php if ($singleBathrooms) { ?>
             <li><span
-              class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); ?>
+              class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($singleBathrooms . ' Baths'); ?>
             </li><?php } ?>
           <?php if ($property['approximate_acres']) { ?>
             <li><span
@@ -92,9 +95,9 @@ while (have_posts()) : the_post();
             <div class="singleShareContainer">
               <h4>Share this property</h4>
               <p>
-              <a class="icon-wpproperty-social-facebook-symbol" href=""></a>
-              <a class="icon-wpproperty-social-twitter-symbol" href=""></a>
-              <a class="icon-wpproperty-social-linkedin-symbol" href=""></a>
+              <a class="icon-wpproperty-social-facebook-symbol" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a>
+              <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . $singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $property['approximate_acres'] . ' sqft in #' . $get_location_city_terms[0]->name . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
+              <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $property['approximate_acres'] . ' sqft in #' . $get_location_city_terms[0]->name); ?>&summary=<AUTOMATED_PROPERTY_DETAIL_DESCRIPTION>&source=Red%20Door%20Company"></a>
               </p>
               <p>or mail vis email</p>
               <input type="email" placeholder="Enter email" />
