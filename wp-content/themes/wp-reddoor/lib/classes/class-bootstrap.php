@@ -158,7 +158,8 @@ namespace UsabilityDynamics\RDC {
             'tax_input.bathrooms',
             'tax_input.price',
             'tax_input.total_living_area_sqft',
-            'tax_input.days_on_market'
+            'tax_input.days_on_market',
+            'tax_input.acres'
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
 

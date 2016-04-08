@@ -889,6 +889,33 @@
   background-position: 0 -23px;
 }
 /* Checkboxes */
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
+  padding: 15px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-price {
+  color: #d03528;
+  font-size: 20px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-title a {
+  color: #747375;
+  font-size: 16px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats {
+  margin-top: 14px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats li {
+  width: 50%;
+  display: inline-block;
+  float: left;
+  color: #5a595c;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats li i {
+  color: #a7a9ac;
+  font-size: 24px;
+  margin-right: 10px;
+}
 .sow-carousel-wrapper {
   background: #fff;
 }
