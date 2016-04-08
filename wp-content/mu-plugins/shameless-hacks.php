@@ -7,6 +7,24 @@
 // force non-minified version of siteorigin scripts
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
+if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy') {
+  header( 'cache-control:no-cache, private' );
+}
+
+if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' && isset( $_GET[ 'test-stuff' ] ) ) {
+
+
+  add_action('__init', function() {
+    global $_wp_additional_image_sizes;
+
+    die( '<pre>' . print_r( UsabilityDynamics\Utility::all_image_sizes(), true ) . '</pre>' );
+
+
+    die( '<pre>' . print_r( get_intermediate_image_sizes(), true ) . '</pre>' );
+
+  }, 200 );
+};
+
 if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' && isset( $_GET[ 'delete-all-old' ] ) ) {
 
   header( 'cache-control:no-cache, private' );

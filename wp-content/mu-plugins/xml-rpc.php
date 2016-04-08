@@ -1,7 +1,12 @@
 <?php
 /**
  *
+ * 
+ * 
+ * @version 0.5.0
  */
+
+
 
 // add ability to get wpp_settings so we can extra mapping settings
 add_filter( 'xmlrpc_blog_options', function( $options ) {
@@ -30,10 +35,11 @@ add_filter( 'xmlrpc_methods', function( $_methods ) {
 add_filter( 'image_downsize', function( $false, $id, $size ) {
 
   if ( get_post_meta( $id, '_is_remote', 1 ) ) {
-    return array( get_post_meta( $id, '_wp_attached_file', true ) );
+    return array( fix_rets_image_url( $id, $size ) );
   }
 
   return $false;
+
 }, 10, 3);
 
 /**
@@ -42,7 +48,7 @@ add_filter( 'image_downsize', function( $false, $id, $size ) {
 add_filter( 'wp_get_attachment_url', function( $url, $post_id ) {
 
   if ( get_post_meta( $post_id, '_is_remote', 1 ) ) {
-    return get_post_meta( $post_id, '_wp_attached_file', true );
+    return fix_rets_image_url( $post_id, $size );
   }
 
   return $url;
@@ -172,6 +178,26 @@ function WPP_RPC_editProperty( $args ) {
     //"args" => $args,
     //"user" => $user
   );
+
+}
+
+function fix_rets_image_url( $id, $size = false ) {
+
+  // get available image sizes
+  $_image_sizes = UsabilityDynamics\Utility::all_image_sizes();
+
+  // get image url of remote asset
+  $_url = get_post_meta( $id, '_wp_attached_file', true );
+
+  //die('$size'.$size);
+  // if the size exists in image sizes, append the image-size spedific annex to url
+  if( $size && key_exists( $size, $_image_sizes ) ) {
+    $_extension = pathinfo( $_url, PATHINFO_EXTENSION );
+    $_url = str_replace( '.' . $_extension, '-' . $_image_sizes[$size]['width'] . 'x' . $_image_sizes[$size]['height'] . '.' . $_extension, $_url );
+  }
+
+  // return finished url
+  return  $_url;
 
 }
 
