@@ -12,6 +12,7 @@
      * @returns {*}
      */
     var simplifyAmount = function( int ) {
+      if ( !String(int).length ) return '';
       return '$' + ( int / 1000 ) + 'k';
     };
 
@@ -116,26 +117,35 @@
          *
          */
         function applyPlaceholder() {
-          var _string = '';
+          var _separator = '';
           var _first_val = parseInt( $('.firstRangeValue', dropdown).val() );
           var _last_val = parseInt( $('.lastRangeValue', dropdown).val() );
 
-          if ( !isNaN( _first_val ) && _first_val != 0 ) {
-            _string += simplifyAmount( _first_val );
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
           }
 
-          if ( !isNaN( _last_val ) && _last_val != 0 ) {
-            _string += ' - ';
-            _string += simplifyAmount( _last_val );
-          } else {
-            _string += '+';
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
           }
 
           if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
-            _string = 'Price';
+            _separator = 'Any Price';
           }
 
-          $('.dropdown-value', dropdown).html( _string );
+          $('.dropdown-value', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
         };
 
         $('.firstRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
