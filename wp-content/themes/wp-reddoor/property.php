@@ -28,14 +28,25 @@ while (have_posts()) : the_post();
   $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
   $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
   $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
-  $get_full_bathrooms_terms = get_the_terms($property['ID'], 'full_bathrooms');
-  $get_half_bathrooms_terms = get_the_terms($property['ID'], 'half_bathrooms');
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
   $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft');
   $get_lot_dimensions_terms = get_the_terms($property['ID'], 'lot_dimensions');
   $get_updated_terms = get_the_terms($property['ID'], 'updated');
   $get_days_on_market_terms = get_the_terms($property['ID'], 'days_on_market');
+  $get_elementary_school_terms = get_the_terms($property['ID'], 'elementary_school');
+  $get_middle_school_terms = get_the_terms($property['ID'], 'middle_school');
+  $get_high_school_terms = get_the_terms($property['ID'], 'high_school');
+  $get_subdivision_terms = get_the_terms($property['ID'], 'subdivision');
+  $get_inside_city_terms = get_the_terms($property['ID'], 'inside_city');
+  $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+  $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
+  $get_design_terms = get_the_terms($property['ID'], 'design');
+  $get_style_terms = get_the_terms($property['ID'], 'style');
+  $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
+  $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
+
+
 
 
 
@@ -43,14 +54,24 @@ while (have_posts()) : the_post();
 
   $singleBedrooms = $get_bedrooms_terms[0]->name;
   $singleBathrooms = $get_bathrooms_terms[0]->name;
-  $singleBathroomsFull = $get_full_bathrooms_terms[0]->name;
-  $singleBathroomsHalf = $get_half_bathrooms_terms[0]->name;
   $totalLivingArea = $get_living_area_terms[0]->name;
   $lotDimensionsArea = $get_lot_dimensions_terms[0]->name;
   $locationCity = $get_location_city_terms[0]->name;
   $locationZip = $get_location_zip_terms[0]->name;
   $updatedProperty = $get_updated_terms[0]->name;
   $daysOnMarket = $get_days_on_market_terms[0]->name;
+  $elementary_school = $get_elementary_school_terms[0]->name;
+  $middle_school = $get_middle_school_terms[0]->name;
+  $high_school = $get_high_school_terms[0]->name;
+  $subdivision = $get_subdivision_terms[0]->name;
+  $inside_city = $get_inside_city_terms[0]->name;
+  $location_city = $get_location_city_terms[0]->name;
+  $location_county = $get_location_county_terms[0]->name;
+  $design = $get_design_terms[0]->name;
+  $style = $get_style_terms[0]->name;
+  $year_built = $get_year_built_terms[0]->name;
+  $new_construction = $get_new_construction_terms[0]->name;
+
 
 
   ?>
@@ -248,71 +269,88 @@ while (have_posts()) : the_post();
         </ul>
       </div>
       <div class="col-lg-7 col-md-7">
-        <h4>Property Facts</h4>
+        <h4><?php _e('Property Facts') ?></h4>
       </div>
       <div class="col-lg-8 col-md-8 bottomSeparate">
-        <ul class="propertyAttribute">
+        <ul class="propertyFacts">
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-listing-house-outline"></span>
             </div>
-            <span>Listing Type</span>
-            <strong><?php echo ucfirst($_propertyType); ?></strong>
+            <span><?php _e('Design'); ?></span>
+            <strong><?php _e($design); ?></strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
             </div>
-            <span>Lot size</span>
-            <strong>2.23 acres</strong>
+            <span><?php _e('Style'); ?></span>
+            <strong><?php _e($style); ?></strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-attribute-exterior-outline"></span>
             </div>
-            <span></span>
-            <strong>Traditional</strong>
-          </li>
-          <li>
-            <div>
-              <span class="icon-wpproperty-attribute-bathroom-solid"></span>
-            </div>
-            <span>Bathrooms</span>
+            <span><?php _e('Year Built'); ?></span>
             <strong>
               <?php
-                if($singleBathroomsFull){
-                  _e($singleBathroomsFull . ' Full');
-                }
-                if($singleBathroomsHalf){
-                  echo ', ';
-                  _e($singleBathroomsHalf . ' Half');
-                }
+              if($new_construction == 'Yes' ){
+                print_r($year_built . ', ') . _e('New Construction');
+              }
+              ?>
+            </strong>
+          </li>
+        </ul>
+        <ul class="propertyFacts">
+          <li>
+            <div>
+              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
+            </div>
+            <span><?php _e('Subdivision'); ?></span>
+            <strong><?php _e($subdivision); ?></strong>
+          </li>
+          <li>
+            <div>
+              <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
+            </div>
+            <span><?php _e('Inside City'); ?></span>
+            <strong>
+              <?php
+              if($inside_city == 'Yes'){
+                echo $inside_city . ', ' . $location_city;
+              }
               ?>
             </strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-listing-land-outline"></span>
             </div>
-            <span>Consutructed in</span>
-            <strong>in 2014</strong>
+            <span><?php _e('County'); ?></span>
+            <strong><?php _e($location_county); ?></strong>
+          </li>
+        </ul>
+        <ul class="propertyFacts">
+          <li>
+            <div>
+              <span class="icon-wpproperty-school-elementary-outline"></span>
+            </div>
+            <span><?php _e('Elementary School'); ?></span>
+            <strong><?php _e($elementary_school); ?></strong>
           </li>
           <li>
             <div>
-              <svg class="icon icon-management">
-                <use xlink:href="#icon-management"/>
-              </svg>
+              <span class="icon-wpproperty-school-middle-outline"></span>
             </div>
-            <span>Property Type</span>
-            <strong><?php echo ucfirst($property['property_type']); ?></strong>
+            <span><?php _e('Middle School'); ?></span>
+            <strong><?php _e($middle_school); ?></strong>
+          </li>
+          <li>
+            <div>
+              <span class="icon-wpproperty-school-high-outline"></span>
+            </div>
+            <span><?php _e('High School'); ?></span>
+            <strong><?php _e($high_school); ?></strong>
           </li>
         </ul>
       </div>
