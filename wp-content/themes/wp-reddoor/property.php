@@ -46,8 +46,16 @@ while (have_posts()) : the_post();
   $get_style_terms = get_the_terms($property['ID'], 'style');
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
+  $get_listing_agent_name_terms = get_the_terms($property['ID'], 'listing_agent_name');
+  $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
+  $get_listing_agent_phone_extension_terms = get_the_terms($property['ID'], 'listing_agent_phone_extension');
+  $get_listing_office_terms = get_the_terms($property['ID'], 'listing_office');
+  $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
+  $get_mls_id_terms = get_the_terms($property['ID'], 'mls_id');
+  $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
+  $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
 
-  //die( '<pre>' . print_r( $wp_properties, true ) . '</pre>' );
+
 
   $_propertyType = $get_sale_type_terms[0]->slug;
 
@@ -70,6 +78,15 @@ while (have_posts()) : the_post();
   $style = $get_style_terms[0]->name;
   $year_built = $get_year_built_terms[0]->name;
   $new_construction = $get_new_construction_terms[0]->name;
+  $listing_agent_name = $get_listing_agent_name_terms[0]->name;
+  $listing_agent_phone_number = $get_listing_agent_phone_number_terms[0]->name;
+  $listing_agent_phone_extension = $get_listing_agent_phone_extension_terms[0]->name;
+  $listing_office = $get_listing_office_terms[0]->name;
+  $listing_office_phone_number = $get_listing_office_phone_number_terms[0]->name;
+  $mls_id = $get_mls_id_terms[0]->name;
+  $data_source = $get_data_source_terms[0]->name;
+  $listing_id = $get_listing_id_terms[0]->name;
+
 
 
 
@@ -440,13 +457,21 @@ while (have_posts()) : the_post();
               </section>
               <ul>
                 <?php
+                $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'bedrooms'){
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    if ($value == 'bedrooms') {
+                      if(array_key_exists($key, $taxonomies)) {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                      }
+                      else{
+                        if($property["$key"] == true){
+                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                        }
+                      }
                     }
-                  }
                 }
                 ?>
               </ul>
@@ -462,17 +487,25 @@ while (have_posts()) : the_post();
               <ul>
                 <?php
                   foreach($wp_properties['property_stats_groups'] as $key => $value){
+
                     if($value == 'bathrooms'){
+                      if(array_key_exists($key, $taxonomies)) {
                       $get_term_value = get_the_terms($property['ID'], $key);
                       if(!empty($get_term_value[0]->name)) {
                         echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
                       }
+                      }
+                      else{
+                        if($property["$key"] == true){
+                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                        }
+                      }
                     }
+
                   }
                 ?>
               </ul>
             </div>
-            <?php //$get_term_living_area = get_the_terms($property['ID'], 'living_area'); if($get_term_living_area[0]->name){  ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -483,11 +516,18 @@ while (have_posts()) : the_post();
               </section>
               <ul>
                 <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'living_area'){
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+                    if ($value == 'living_area') {
+                      if (array_key_exists($key, $taxonomies)) {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    } else {
+                        if($property["$key"] == true){
+                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                        }
                     }
                   }
                 }
@@ -505,11 +545,18 @@ while (have_posts()) : the_post();
               </section>
               <ul>
                 <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'other_rooms'){
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+                    if ($value == 'other_rooms') {
+                      if (array_key_exists($key, $taxonomies)) {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    } else {
+                        if($property["$key"] == true){
+                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                        }
                     }
                   }
                 }
@@ -526,11 +573,18 @@ while (have_posts()) : the_post();
               </section>
               <ul>
                 <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'kitchen_dining_room'){
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+                  if ($value == 'kitchen_dining_room') {
+                    if (array_key_exists($key, $taxonomies)) {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -551,10 +605,17 @@ while (have_posts()) : the_post();
               <ul>
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'interior'){
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+
+                  if($value == 'interior') {
+                    if (array_key_exists($key, $taxonomies)) {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -573,9 +634,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'exterior'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -594,9 +661,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'heating_cooling'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -615,9 +688,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'utility'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -636,9 +715,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'parking'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -660,9 +745,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'schools'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -681,9 +772,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'homeowners_association'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -703,21 +800,16 @@ while (have_posts()) : the_post();
               </section>
               <ul>
                 <?php
-
-                //print_r($wp_properties['property_stats_groups']); die();
-
                 foreach($wp_properties['property_stats_groups'] as $key => $value) {
                   if ($value == 'pricing_terms') {
-                    if($key == 'rental'){
-                      $get_term_value = get_the_terms($property['ID'], 'rental_terms');
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords('rental_terms')) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
+                    if (array_key_exists($key, $taxonomies)) {
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if (!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
                     }
-                    else {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
                       }
                     }
                   }
@@ -738,9 +830,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'building'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -759,9 +857,15 @@ while (have_posts()) : the_post();
                 <?php
                 foreach($wp_properties['property_stats_groups'] as $key => $value){
                   if($value == 'lot'){
+                    if (array_key_exists($key, $taxonomies)) {
                     $get_term_value = get_the_terms($property['ID'], $key);
                     if(!empty($get_term_value[0]->name)) {
                       echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                    } else {
+                      if($property["$key"] == true){
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                      }
                     }
                   }
                 }
@@ -777,29 +881,34 @@ while (have_posts()) : the_post();
   <div class="container listingProvider">
     <div class="row">
       <div class="col-lg-7 col-md-7">
-        <h4>Listing Provider for 5000 Daviston CT</h4>
+        <h4><?php _e('Listing Provider for '); echo $property['location_address']; ?></h4>
       </div>
       <div class="col-lg-7 col-md-7">
         <ul>
-          <li>Other Room 1 Description: <b>MstrSitRm</b></li>
-          <li>Other Room 1 Level: <b>Second</b></li>
-          <li>Family Room Floor: <b>Main</b></li>
-          <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
-          <li>Living Area Above Grade: <b>3,200</b></li>
+          <li><?php _e('Agent: '); ?><b><?php _e($listing_agent_name); ?></b></li>
+          <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
+          <li><?php _e('Office: '); ?><b><?php _e($listing_office); ?></b></li>
+          <li><?php _e('Office Phone Number: '); ?><b><?php echo $listing_office_phone_number; ?></b></li>
+          <li><?php _e('MLS ID: '); ?><b><?php echo $mls_id; ?></b></li>
         </ul>
         <ul>
-          <li>Other Room 1 Description: <b>MstrSitRm</b></li>
-          <li>Other Room 1 Level: <b>Second</b></li>
-          <li>Family Room Floor: <b>Main</b></li>
-          <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
-          <li>Living Area Above Grade: <b>3,200</b></li>
+          <li><img src="<?php echo $property['data_source_logo_2']; ?>" alt=""></li>
+          <li><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></li>
+          <li><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></li>
+          <li><?php _e('Last Checked: '); ?><b><?php echo date('Y-m-d H:i', current_time('timestamp')-60); ?></b></li>
+          <li><?php _e('Last Updated: '); ?><b><?php
+              $updateTime = str_split($updatedProperty);
+              $updateTime[10] = ' '; $updateTime[16] = ''; $updateTime[17] = ''; $updateTime[18] = '';
+              echo implode($updateTime);
+              ?>
+            </b>
+          </li>
+          <li><?php _e('Days on site: '); ?><b><?php echo human_time_diff(get_the_time('U'), current_time('timestamp'));  ?></b></li>
         </ul>
         <div class="clear"></div>
       </div>
       <div class="col-lg-7 col-md-7 italicText">
-        Information Not Guaranteed. ©2016 Triangle MLS Inc. All rights reserved. Listings marked with an <b
-          style="font-style: normal; color: #000">TMLS IDX&#153;</b>
-        icon are provided courtesy of the Triangle MLS, Inc. of North Carolina, Internet Data Exchange Database.
+        <?php _e($property['data_source_disclaimer']); ?>
       </div>
     </div>
   </div>

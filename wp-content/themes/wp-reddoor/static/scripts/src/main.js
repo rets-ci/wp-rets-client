@@ -91,6 +91,7 @@ jQuery(document).ready(function(){
         $blocks.height(maxH);
     }
     jQuery('.pdRoomsBlock').equivalent();
+
     /* Equal height */
 
 
