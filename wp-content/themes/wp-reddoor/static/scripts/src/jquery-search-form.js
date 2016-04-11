@@ -26,11 +26,12 @@
       return {value:int, label:cur != 'NaN' ? cur : ''};
     };
 
-    $(document).click( function(){
+    $(document).on( 'click', function(){
       $(".dropdown-container .dropdown-list", that).slideUp();
     });
 
     $(".dropdown-container > span", that).click( function(e) {
+      $(".dropdown-container .dropdown-list", that).slideUp();
       $(this).parent().find(".dropdown-list").slideToggle();
       e.stopPropagation();
       $(document).trigger( 'search-dropdown', [$(e.currentTarget).data('drop'), $(e.currentTarget)] );
@@ -43,6 +44,7 @@
     /* Search-form slide selects */
     $(".dropdown-option", that).on( 'change', function(e) {
       $(this).parents('.dropdown-container').find('.dropdown-value').html($('label', $(this).parent()).html());
+      $(".dropdown-container .dropdown-list", that).slideUp();
     });
 
     $('.citiesSelection', that).select2({
