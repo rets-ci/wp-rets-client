@@ -159,8 +159,14 @@
       $('<img />').load(function(){
           var width = this.width;
           var height = this.height;
+          $img = $div.find('img');
           $div.attr('data-width', width)
               .attr('data-height', height);
+          $img.attr('data-width', width)
+              .attr('data-height', height);
+          s.timer = setTimeout(function(){
+              s.onResize();
+          }, 500)
       }).attr('src', $div.attr('data-src'));
       return $div;
   }

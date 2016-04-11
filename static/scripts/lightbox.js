@@ -2,7 +2,10 @@
     function setRealDataWidthHeight($div) {
         return $("<img />").load(function() {
             var width = this.width, height = this.height;
-            $div.attr("data-width", width).attr("data-height", height);
+            $img = $div.find("img"), $div.attr("data-width", width).attr("data-height", height), 
+            $img.attr("data-width", width).attr("data-height", height), s.timer = setTimeout(function() {
+                s.onResize();
+            }, 500);
         }).attr("src", $div.attr("data-src")), $div;
     }
     $.fn.wpp_rs_lb = function(prop) {
