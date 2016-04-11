@@ -37,6 +37,7 @@
       ngAppDOM.css( 'height', vars.atts.map_height );
       jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
       jQuery( '.sm-properties-list-wrap', ngAppDOM).css( 'height', vars.atts.map_height );
+      jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
     }
 
     /**
@@ -88,7 +89,7 @@
 
       .controller( 'main', [ '$scope', '$http', '$filter', 'NgMap', function( $scope, $http, $filter, NgMap ){
 
-        $scope.query = unserialize( decodeURIComponent( vars.query).replace(/\+/g, " ") );
+        $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
@@ -100,58 +101,112 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
+        var index = 'v4',
+            type = 'property';
+
         console.log( $scope.query );
+
+        /**
+         * @todo Unhardcode this
+         * @type {$.es.Client|*}
+         */
+        var client = new jQuery.es.Client({
+          hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+        });
+
+        function getMoreProperties() {
+          client.search({
+            index: index,
+            type: type,
+            body: {
+              query: $scope.query
+            },
+            _source: $scope.atts.fields,
+            size: 500,
+            from: $scope.properties.length,
+            sort: "post_title:asc"
+          }, function( error, response ) {
+
+            if ( !error ) {
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                console.log( 'Error occurred during getting properties data.' );
+              } else {
+                $scope.total = response.hits.total;
+                response.hits.hits.filter(function(r) {
+                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+                });
+                Array.prototype.push.apply($scope.properties, response.hits.hits);
+                $scope.refreshMarkers(false);
+
+                if ( $scope.total > $scope.properties.length ) {
+                  getMoreProperties();
+                }
+              }
+            } else {
+              console.error(error);
+            }
+
+          });
+        }
 
         /**
          * Get Properties by provided Query ( filter )
          */
         $scope.getProperties = function getProperties() {
-          var params = {
-            "action": "/supermap/get_properties",
-            "json": true,
-            "wpp_search": $scope.query,
-            "fields": ( typeof $scope.atts.fields !== 'undefined' ? $scope.atts.fields : '' )
-          };
 
-          //console.log( 'query arguments', params );
+          client.search({
+            index: index,
+            type: type,
+            body: {
+              query: $scope.query
+            },
+            _source: $scope.atts.fields,
+            size: 100,
+            sort: "post_title:asc"
+          }, function( error, response ) {
 
-          var getQuery = jQuery.param( params );
-          $http({
-            method: 'GET',
-            url: wpp.instance.ajax_url + '?' + getQuery
-          }).then(function successCallback(response) {
+            if ( !error ) {
+              jQuery( '.sm-search-layer', ngAppDOM ).show();
 
-            jQuery( '.sm-search-layer', ngAppDOM ).show();
-            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+              $scope.loaded = true;
 
-            $scope.loaded = true;
+              if( typeof response.hits.hits == 'undefined' ) {
+                console.log( 'Error occurred during getting properties data.' );
+              } else {
+                $scope.total = response.hits.total;
+                response.hits.hits.filter(function(r) {
+                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+                });
+                $scope.properties = response.hits.hits;
+                // Select First Element of Properties Collection
+                if( $scope.properties.length > 0 ) {
+                  $scope.currentProperty = $scope.properties[0];
+                  $scope.properties[0].isSelected = true;
+                  loadImages($scope.properties[0]);
+                }
+                $scope.refreshMarkers( true );
 
-            if( typeof response.data.total == 'undefined' || typeof response.data.data == 'undefined' ) {
-              console.log( 'Error occurred during getting properties data.' );
-            } else {
-              $scope.total = response.data.total;
-              $scope.properties = response.data.data;
-              // Select First Element of Properties Collection
-              if( $scope.properties.length > 0 ) {
-                $scope.properties[0].isSelected = true;
+                if ( $scope.total > $scope.properties.length ) {
+                  getMoreProperties();
+                }
               }
-              $scope.refreshMarkers();
+            } else {
+              console.error(error);
             }
-          }, function errorCallback(response) {
 
-            jQuery( '.sm-search-layer', ngAppDOM ).show();
-            jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
-
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            console.log( 'Error occurred during getting properties data.' );
           });
+
         }
 
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
-        $scope.refreshMarkers = function refreshMarkers() {
+        $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
           NgMap.getMap().then(function( map ) {
             $scope.dynMarkers = [];
             $scope.latLngs = [];
@@ -161,13 +216,10 @@
               $scope.markerClusterer.clearMarkers();
             }
 
-            if( typeof $scope.infoWindow !== 'object' ) {
-              $scope.infoWindow = new google.maps.InfoWindow();
-            }
-
             if( typeof $scope.infoBubble !== 'object' ) {
-              $scope.infoBubble = new InfoBubble({
+              $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
+                maxWidth: 300,
                 shadowStyle: 1,
                 padding: 0,
                 backgroundColor: '#f3f0e9',
@@ -184,13 +236,13 @@
             }
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
-              var latLng = new google.maps.LatLng( $scope.properties[i].latitude, $scope.properties[i].longitude );
-              latLng.listingId = $scope.properties[i].ID;
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
+              latLng.listingId = $scope.properties[i]._id;
               var marker = new google.maps.Marker( {
-                position: latLng,
-                icon: $scope.properties[i]._map_marker_url
+                position: latLng
+                //icon: $scope.properties[i]._map_marker_url
               } );
-              marker.listingId = $scope.properties[i].ID;
+              marker.listingId = $scope.properties[i]._id;
 
               $scope.dynMarkers.push( marker );
               $scope.latLngs.push( latLng );
@@ -206,8 +258,10 @@
                   var index;
                   for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
                     var property = $scope.properties[i];
-                    if ( property.ID == marker.listingId ) {
+                    if ( property._id == marker.listingId ) {
                       property.isSelected = true;
+                      $scope.currentProperty = property;
+                      loadImages(property);
                       index = i;
                     } else {
                       property.isSelected = false;
@@ -227,16 +281,39 @@
 
             }
 
-            // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-            $scope.latlngbounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < $scope.latLngs.length; i++) {
-              $scope.latlngbounds.extend( $scope.latLngs[i] );
+            if ( update_map_pos ) {
+              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+              $scope.latlngbounds = new google.maps.LatLngBounds();
+              for (var i = 0; i < $scope.latLngs.length; i++) {
+                $scope.latlngbounds.extend($scope.latLngs[i]);
+              }
+              map.fitBounds($scope.latlngbounds);
             }
-            map.fitBounds( $scope.latlngbounds );
+
             // Finally Initialize Marker Cluster
             $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-              imagePath: "//google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/images/m"
-            } );
+              styles: [
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                }
+              ]
+            }
+            );
           } );
         }
 
@@ -248,54 +325,32 @@
         }
 
         /**
-         * Get thumbnail url
+         *
+         * @param row
          */
-        $scope.get_thumbnail_url = function get_thumbnail_url(ID) {
-          // If ID isn't set then return;
-          if(typeof ID == 'undefined') return;
+        function loadImages( row ) {
+          if ( typeof row.images == 'undefined' || !row.images.length ) {
+            client.get({
+              index: index,
+              type: type,
+              id: row._id,
+              _source: ['meta_input.rets_media.*']
+            }, function (error, response) {
 
-          // if thumbRequest is undefined then define it to avoid error.
-          if(typeof $scope.thumbRequest == 'undefined' ){
-            $scope.thumbRequest = {};
-          }
+              if ( !error ) {
 
-          // If request is in process then return.
-          if(typeof $scope.thumbRequest[ID] != 'undefined'){
-            return;
-          }
-
-          var params = {
-            "action": "/supermap/get_gallery",
-            "property_id": ID,
-          };
-
-          var getQuery = jQuery.param( params );
-          $scope.thumbRequest[ID] = $http({
-            method: 'GET',
-            url: wpp.instance.ajax_url + '?' + getQuery
-          }).then(function successCallback(response) {
-            if (response.data == false || response.data.gallery.length == 0) 
-              return;
-            $scope.properties.filter(function(property){
-              if (property.ID == ID) {
-                property.gallery = response.data.gallery;
-                property.thumbID = response.data.thumbID;
-                jQuery.each(property.gallery, function(index, attachment){
-                  if(attachment.attachment_id == response.data.thumbID){
-                    if(typeof attachment[$scope.atts.thumbnail_size] != 'undefined')
-                      property.featured_image_url = attachment[$scope.atts.thumbnail_size];
-                    else
-                      property.featured_image_url = attachment['large'];
-                  }
-                });
-                delete $scope.thumbRequest[ID];
+                if( typeof response._source.meta_input.rets_media == 'undefined' ) {
+                  console.log( 'Error occurred during getting properties data.' );
+                } else {
+                  row.images = response._source.meta_input.rets_media;
+                  $scope.$apply();
+                }
+              } else {
+                console.error(error);
               }
-            });
-          }, function errorCallback(response) {
-            console.log('Failed to get image');
-          });
 
-          return;
+            });
+          }
         }
 
         /**
@@ -304,25 +359,28 @@
          * @param row
          */
         $scope.selectRow = function selectRow(row) {
-          var index = null;
           for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
             $scope.properties[i].isSelected = false;
-
           }
+          $scope.currentProperty = row;
+          loadImages(row);
           row.isSelected = true;
         }
 
         /**
          * Fired when table row is selected
          */
-        $scope.$watch( 'properties', function( rows ) {
-          // get selected row
-          rows.filter(function(r) {
-            if (r.isSelected) {
-              $scope.currentProperty = r;
-            }
-          })
-        }, true );
+        //$scope.$watch( 'properties', function( rows ) {
+        //  // get selected row
+        //  rows.filter(function(r) {
+        //    r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+        //    r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+        //    r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+        //    if (r.isSelected) {
+        //      $scope.currentProperty = r;
+        //    }
+        //  });
+        //}, true );
 
         /**
          * Fired when currentProperty is changed!
@@ -333,10 +391,10 @@
           //console.log( 'dynMarkers', $scope.dynMarkers );
           //console.log( 'currentProperty', currentProperty );
           // Trying to get previous property ID if there.
-          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty.ID:false;
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
             // Checking whether property changed or not.
-            if (currentProperty.ID != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty.ID ) {
+            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
               //console.log( 'Marker', $scope.dynMarkers[i] );
               NgMap.getMap().then( function( map ) {
                 //*
