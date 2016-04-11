@@ -12,6 +12,7 @@
      * @returns {*}
      */
     var simplifyAmount = function( int ) {
+      if ( !String(int).length ) return '';
       return '$' + ( int / 1000 ) + 'k';
     };
 
@@ -49,6 +50,7 @@
 
     $('.citiesSelection', that).select2({
       placeholder: 'Location',
+      maximumSelectionLength: 1,
       ajax: {
         url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
         dataType: 'json',
@@ -80,6 +82,25 @@
 
         var dropdown = $(element).parent();
 
+        $('.lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+          var selected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( selected_max ) && selected_max != 0 ) {
+            $('.lastRangeValue', dropdown).val( selected_max );
+            var currency = currencyAmount( selected_max );
+            $('.lastRangeLabel', dropdown).val( currency.label );
+            $('.lastRangeValue', dropdown).val( currency.value );
+            applyPlaceholder();
+          } else {
+            $('.lastRangeLabel', dropdown).val( '' );
+            $('.lastRangeValue', dropdown).val( '' );
+            applyPlaceholder();
+          }
+
+          if ( $('.lastRangeLabel', dropdown).val() && $('.firstRangeLabel', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list", that).slideUp();
+          }
+        });
+
         function generateMax(selected_min) {
           var max_values = [];
           for( var i = 1; i < 11; i++ ) {
@@ -90,7 +111,7 @@
           for(var key in max_values) {
             $('.lastRangeList', dropdown).append('<li><a data-val="'+max_values[key]+'" href="javascript:;">'+simplifyAmount(max_values[key])+'</a></li>');
           }
-          $('.lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">Any Amount</a></li>');
+          $('.lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">No Max</a></li>');
 
           $('.lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
             var selected_max = parseInt( $(this).data('val') );
@@ -105,6 +126,10 @@
               $('.lastRangeValue', dropdown).val( '' );
               applyPlaceholder();
             }
+
+            if ( $('.lastRangeLabel', dropdown).val() && $('.firstRangeLabel', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list", that).slideUp();
+            }
           });
         };
 
@@ -112,26 +137,35 @@
          *
          */
         function applyPlaceholder() {
-          var _string = '';
+          var _separator = '';
           var _first_val = parseInt( $('.firstRangeValue', dropdown).val() );
           var _last_val = parseInt( $('.lastRangeValue', dropdown).val() );
 
-          if ( !isNaN( _first_val ) && _first_val != 0 ) {
-            _string += simplifyAmount( _first_val );
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
           }
 
-          if ( !isNaN( _last_val ) && _last_val != 0 ) {
-            _string += ' - ';
-            _string += simplifyAmount( _last_val );
-          } else {
-            _string += '+';
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
           }
 
           if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
-            _string = 'Price';
+            _separator = 'Any Price';
           }
 
-          $('.dropdown-value', dropdown).html( _string );
+          $('.dropdown-value', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
         };
 
         $('.firstRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
@@ -177,6 +211,10 @@
             $('.firstRangeLabel', dropdown).val( '' );
             $('.firstRangeValue', dropdown).val( '' );
             applyPlaceholder();
+          }
+
+          if ( $('.lastRangeLabel', dropdown).val() && $('.firstRangeLabel', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list", that).slideUp();
           }
 
         });
