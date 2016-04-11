@@ -22,6 +22,7 @@
 <?php get_header();
 
 global $property;
+global $wp_properties;
 
 // Start the Loop.
 while (have_posts()) : the_post();
@@ -46,9 +47,7 @@ while (have_posts()) : the_post();
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
 
-
-
-
+  //die( '<pre>' . print_r( $wp_properties, true ) . '</pre>' );
 
   $_propertyType = $get_sale_type_terms[0]->slug;
 
@@ -416,15 +415,10 @@ while (have_posts()) : the_post();
   <div class="container propertyDetails">
     <div class="row">
       <div class="col-lg-7 col-md-7">
-        <h4>Property Details for 5000 Daviston Ct</h4>
+        <h4><?php _e('Property Details for '); echo $property['location_address']; ?></h4>
       </div>
       <div class="col-lg-7  col-md-7">
-        5000 Daviston Ct is house in Fuquay Varina, NC 27526. This 3,200 square foot house sits on a 2.23 acre lot and
-        features
-        4 bedrooms and 4 bathrooms. This house has been listed on Redfin since January 22, 2016 and is currently priced
-        at $499,000.
-        This property was built in 2016. The closest school is West Lake Middle School. 5000 Daviston Ct is near Action
-        Park and South Park.
+        <?php echo $property['automated_property_detail_description']; ?>
       </div>
       <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="nav nav-tabs">
@@ -439,64 +433,342 @@ while (have_posts()) : the_post();
             <div class="pdRoomsBlock">
               <section>
                 <div>
-                  <svg class="icon icon-management">
-                    <use xlink:href="#icon-management"/>
-                  </svg>
+                  <span class="icon-wpproperty-attribute-bedroom-outline"></span>
                 </div>
-                <span>Bedroom Info</span>
+                <span><?php _e('Bedrooms'); ?></span>
                 <b class="clear"></b>
               </section>
               <ul>
-                <li>Master Bedroom Floor: <b>Second</b></li>
-                <li>2nd Bedroom Floor: <b>Second</b></li>
-                <li>3rd Bedroom Floor: <b>Second</b></li>
-                <li>4th Bedroom Floor: <b>Main</b></li>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'bedrooms'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
               </ul>
             </div>
             <div class="pdRoomsBlock">
               <section>
                 <div>
-                  <svg class="icon icon-management">
-                    <use xlink:href="#icon-management"/>
-                  </svg>
+                  <span class="icon-wpproperty-attribute-bathroom-outline"></span>
                 </div>
-                <span>Bathroom Info</span>
+                <span><?php _e('Bathrooms'); ?></span>
                 <b class="clear"></b>
               </section>
               <ul>
-                <li># of Bathrooms (Full): <b>3</b></li>
-                <li># of Bathrooms (1/2): <b>1</b></li>
-                <li>Bath Features: <b>Bath, Shower, Tub</b></li>
+                <?php
+                  foreach($wp_properties['property_stats_groups'] as $key => $value){
+                    if($value == 'bathrooms'){
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if(!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    }
+                  }
+                ?>
+              </ul>
+            </div>
+            <?php //$get_term_living_area = get_the_terms($property['ID'], 'living_area'); if($get_term_living_area[0]->name){  ?>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-livingarea-outline"></span>
+                </div>
+                <span><?php _e('Living Area'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'living_area'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <?php //} ?>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-rooms-outline"></span>
+                </div>
+                <span><?php _e('Other Rooms'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'other_rooms'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
               </ul>
             </div>
             <div class="pdRoomsBlock">
               <section>
                 <div>
-                  <svg class="icon icon-management">
-                    <use xlink:href="#icon-management"/>
-                  </svg>
+                  <span class="icon-wpproperty-attribute-kitchen-outline"></span>
                 </div>
-                <span>Living Area</span>
+                <span><?php _e('Kitchen & Dining Room'); ?></span>
                 <b class="clear"></b>
               </section>
               <ul>
-                <li>Other Room 1 Description: <b>MstrSitRm</b></li>
-                <li>Other Room 1 Level: <b>Second</b></li>
-                <li>Family Room Floor: <b>Main</b></li>
-                <li>Total Other Area Sq. Ft.: <b>1,127</b></li>
-                <li>Living Area Above Grade: <b>3,200</b></li>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'kitchen_dining_room'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
               </ul>
             </div>
             <div class="clear"></div>
           </div>
           <div id="Features" class="tab-pane fade">
-            <p>Some content Features.</p>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-interior-outline"></span>
+                </div>
+                <span><?php _e('Interior'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'interior'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-exterior-outline"></span>
+                </div>
+                <span><?php _e('Exterior'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'exterior'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-solid-outline"></span>
+                </div>
+                <span><?php _e('Heating & Cooling'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'heating_cooling'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-utility-outline"></span>
+                </div>
+                <span><?php _e('Utility'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'utility'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-parking-outline"></span>
+                </div>
+                <span><?php _e('Parking'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'parking'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
           <div id="Neighborhood" class="tab-pane fade">
-            <p>Some content Neighborhood.</p>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-school-outline"></span>
+                </div>
+                <span><?php _e('Schools'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'schools'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-hoa-outline"></span>
+                </div>
+                <span><?php _e('Homeowners Association'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'homeowners_association'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
           <div id="PropertyLot" class="tab-pane fade">
-            <p>Some content PropertyLot.</p>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-price-outline"></span>
+                </div>
+                <span><?php _e('Pricing & Terms'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+
+                //print_r($wp_properties['property_stats_groups']); die();
+
+                foreach($wp_properties['property_stats_groups'] as $key => $value) {
+                  if ($value == 'pricing_terms') {
+                    if($key == 'rental'){
+                      $get_term_value = get_the_terms($property['ID'], 'rental_terms');
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords('rental_terms')) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    }
+                    else {
+                      $get_term_value = get_the_terms($property['ID'], $key);
+                      if (!empty($get_term_value[0]->name)) {
+                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                      }
+                    }
+                  }
+                }
+
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-listing-house-outline"></span>
+                </div>
+                <span><?php _e('Building'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'building'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="pdRoomsBlock">
+              <section>
+                <div>
+                  <span class="icon-wpproperty-attribute-lot-outline"></span>
+                </div>
+                <span><?php _e('Lot'); ?></span>
+                <b class="clear"></b>
+              </section>
+              <ul>
+                <?php
+                foreach($wp_properties['property_stats_groups'] as $key => $value){
+                  if($value == 'lot'){
+                    $get_term_value = get_the_terms($property['ID'], $key);
+                    if(!empty($get_term_value[0]->name)) {
+                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                    }
+                  }
+                }
+                ?>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
         </div>
       </div>
