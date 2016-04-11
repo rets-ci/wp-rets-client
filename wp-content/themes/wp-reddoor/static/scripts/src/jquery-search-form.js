@@ -50,6 +50,7 @@
 
     $('.citiesSelection', that).select2({
       placeholder: 'Location',
+      maximumSelectionLength: 1,
       ajax: {
         url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
         dataType: 'json',
@@ -80,6 +81,25 @@
       if ( typeof kind != 'undefined' && kind == 'price' ) {
 
         var dropdown = $(element).parent();
+
+        $('.lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+          var selected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( selected_max ) && selected_max != 0 ) {
+            $('.lastRangeValue', dropdown).val( selected_max );
+            var currency = currencyAmount( selected_max );
+            $('.lastRangeLabel', dropdown).val( currency.label );
+            $('.lastRangeValue', dropdown).val( currency.value );
+            applyPlaceholder();
+          } else {
+            $('.lastRangeLabel', dropdown).val( '' );
+            $('.lastRangeValue', dropdown).val( '' );
+            applyPlaceholder();
+          }
+
+          if ( $('.lastRangeLabel', dropdown).val() && $('.firstRangeLabel', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list", that).slideUp();
+          }
+        });
 
         function generateMax(selected_min) {
           var max_values = [];
