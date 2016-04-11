@@ -87,10 +87,10 @@
           }
 
           $('.lastRangeList', dropdown).empty();
-          $('.lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">Any Amount</a></li>');
           for(var key in max_values) {
             $('.lastRangeList', dropdown).append('<li><a data-val="'+max_values[key]+'" href="javascript:;">'+simplifyAmount(max_values[key])+'</a></li>');
           }
+          $('.lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">No Max</a></li>');
 
           $('.lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
             var selected_max = parseInt( $(this).data('val') );

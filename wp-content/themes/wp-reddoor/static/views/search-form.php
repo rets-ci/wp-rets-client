@@ -115,7 +115,6 @@
           </div>
           <div class="right-side" style="display: none;">
             <ul class="lastRangeList">
-              <li><a data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
               <li><a data-val="25000" href="javascript:;">$25k</a></li>
               <li><a data-val="50000" href="javascript:;">$50k</a></li>
               <li><a data-val="75000" href="javascript:;">$75k</a></li>
@@ -126,6 +125,7 @@
               <li><a data-val="300000" href="javascript:;">$300k</a></li>
               <li><a data-val="400000" href="javascript:;">$400k</a></li>
               <li><a data-val="500000" href="javascript:;">$500k</a></li>
+              <li><a data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
             </ul>
           </div>
         </div>
