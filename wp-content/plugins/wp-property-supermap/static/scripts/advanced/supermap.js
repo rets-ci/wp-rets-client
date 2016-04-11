@@ -101,6 +101,20 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
 
+        $scope.columns = {
+          post_title:1,
+          price:1,
+          bedrooms:1,
+          bathrooms:1,
+          total_living_area_sqft:1,
+          price_per_sqft:1,
+          approximate_lot_size:1,
+          sale_type:0,
+          days_on_market:0,
+          subdivision:0,
+          neighborhood:0
+        };
+
         var index = 'v4',
             type = 'property';
 
@@ -137,6 +151,14 @@
                   r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
                   r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
                   r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+
+                  if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+                    r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
+                  } else {
+                    r._source.tax_input.price_per_sqft = [0];
+                  }
+
+                  r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
                 });
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
@@ -181,6 +203,14 @@
                   r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
                   r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
                   r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+
+                  if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+                    r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
+                  } else {
+                    r._source.tax_input.price_per_sqft = [0];
+                  }
+
+                  r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
                 });
                 $scope.properties = response.hits.hits;
                 // Select First Element of Properties Collection
