@@ -159,7 +159,10 @@ namespace UsabilityDynamics\RDC {
             'tax_input.price',
             'tax_input.total_living_area_sqft',
             'tax_input.days_on_market',
-            'tax_input.acres'
+            'tax_input.acres',
+            'tax_input.price_per_sqft',
+            'tax_input.approximate_lot_size',
+            'tax_input.subdivision'
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
 
