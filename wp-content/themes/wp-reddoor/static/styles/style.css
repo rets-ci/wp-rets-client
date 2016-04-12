@@ -897,13 +897,77 @@
   background-position: 0 -23px;
 }
 /* Checkboxes */
+.wpp-advanced-supermap .sm-bedrooms,
+.wpp-advanced-supermap .sm-bathrooms,
+.wpp-advanced-supermap .sm-sqft,
+.wpp-advanced-supermap .sm-lot,
+.wpp-advanced-supermap .sm-price-sqft,
+.wpp-advanced-supermap .sm-sale,
+.wpp-advanced-supermap .sm-days {
+  text-align: center;
+}
+.wpp-advanced-supermap table {
+  margin-bottom: 0;
+}
+.wpp-advanced-supermap thead tr {
+  background: #f3f0e9;
+  height: 40px;
+}
+.wpp-advanced-supermap thead tr th {
+  vertical-align: middle;
+  color: #808285;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.wpp-advanced-supermap thead tr th.st-sort-ascent::before {
+  content: none !important;
+}
+.wpp-advanced-supermap thead tr th.st-sort-descent::before {
+  content: none !important;
+}
+.wpp-advanced-supermap thead tr th.st-sort-ascent,
+.wpp-advanced-supermap thead tr th.st-sort-descent {
+  font-weight: 500;
+}
+.wpp-advanced-supermap thead tr th.st-sort-ascent::after {
+  content: "￪";
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+}
+.wpp-advanced-supermap thead tr th.st-sort-descent::after {
+  content: "￬";
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+}
+.wpp-advanced-supermap tbody tr td {
+  vertical-align: middle !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid #eeedeb;
+  padding: 12px !important;
+  font-size: 12px;
+  color: #808285;
+}
+.wpp-advanced-supermap tbody tr.st-selected {
+  background: #fbfaf8 !important;
+}
+.wpp-advanced-supermap tfoot tr td {
+  padding: 0 !;
+}
 .wpp-advanced-supermap .dropdown-columns-options {
   background: white none repeat scroll 0 0;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.33);
   left: 0;
   padding: 10px 20px;
   position: absolute;
-  top: 37px;
+  top: 40px;
   width: 160px;
 }
 .wpp-advanced-supermap .dropdown-columns-options label {
@@ -923,6 +987,9 @@
   background: darkgrey;
   border-radius: 100%;
   margin-bottom: 2px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-map-marker-icon {
+  height: 25px;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
   padding: 15px;

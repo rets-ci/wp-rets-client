@@ -87,6 +87,11 @@ namespace UsabilityDynamics\RDC {
        */
       public function alter_supermap_query( $query, $atts ) {
 
+        /**
+         * @todo: could not find other place for this
+         */
+        wp_dequeue_style('bootstrap-css');
+
         $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
 
         $must_query = array();
