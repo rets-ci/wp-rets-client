@@ -690,8 +690,48 @@
 
 .wpp-advanced-supermap {
 
+  .pagination {
+
+    li {
+      &.active {
+        a {
+          background: @buttons;
+          border: 1px solid #d8d8d8;
+          color: white;
+
+          &:hover {
+            color: white;
+          }
+        }
+      }
+
+      a {
+        transition: .4s color,background;
+        color: #7f7f7f;
+        border: 1px solid #d8d8d8;
+        margin-right: 10px;
+        border-radius: 3px !important;
+        padding: 8px 14px;
+        cursor: pointer;
+
+        &:hover {
+          color: @buttons;
+        }
+      }
+    }
+  }
+
   .sm-bedrooms, .sm-bathrooms, .sm-sqft, .sm-lot, .sm-price-sqft, .sm-sale, .sm-days {
     text-align: center;
+  }
+
+  .sm-properties-list-wrap {
+    box-shadow: 0 0 5px;
+    overflow-y: scroll;
+  }
+
+  .sm-sidebar-top {
+    padding: 15px 20px !important;
   }
 
   table {
@@ -758,6 +798,10 @@
 
       &.st-selected {
         background: #fbfaf8 !important;
+
+        td {
+          color: black !important;
+        }
       }
     }
   }
@@ -765,7 +809,8 @@
   tfoot {
     tr {
       td {
-        padding: 0 !;
+        padding: 0 !important;
+        background: #fbfaf8;
       }
     }
   }

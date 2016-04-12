@@ -64,13 +64,7 @@
 
         <div ng-show="properties.length > 0" class="sm-properties-collection">
 
-          <div class="sm-sidebar-top">
-            <?php
-            /**
-             * Total Results Label can be overwritten via filter as well.
-             */
-            echo apply_filters( 'wpp::advanced_supermap::total_results::label', '{{total}} ' . sprintf( __( '%s found', ud_get_wpp_supermap()->domain ), \WPP_F::property_label('plural') ) ); ?>
-          </div>
+          <div class="sm-sidebar-top">{{total}} Properties</div>
 
           <?php ob_start(); ?>
           <div class="sm-current-property" ng-show="">

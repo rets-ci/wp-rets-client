@@ -182,7 +182,29 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
+          $term_object = get_term( $term );
+
           $_redirect = get_term_link( $term );
+
+          if ( $term_object->taxonomy == 'mls_id' ) {
+            $p_query = new \WP_Query(
+              array(
+                'post_type' => 'property',
+                'tax_query' => array(
+                  array(
+                    'taxonomy' => $term_object->taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $term_object->term_id,
+                  )
+                )
+              )
+            );
+          }
+
+          if ( !empty( $p_query->posts ) && count( $p_query->posts ) == 1 ) {
+            wp_redirect( get_permalink( $p_query->posts[0]->ID ) );
+            exit;
+          }
 
           if( is_wp_error( $_redirect ) ) {
             return $query;

@@ -16,7 +16,7 @@ get_header(); ?>
 
   <div class="container-fluid upToHeader">
     <div class="row">
-      <?php echo do_shortcode("[supermap mode=advanced {$tax_args} per_page=5]"); ?>
+      <?php echo do_shortcode("[supermap mode=advanced {$tax_args}]"); ?>
     </div><!-- .row -->
   </div>
 

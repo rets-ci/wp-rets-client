@@ -51,7 +51,8 @@ namespace UsabilityDynamics\RDC {
             'location_country' => __('County'),
             'location_zip' => __('Zip'),
             'neighborhood' => __('Neighborhood'),
-            'location_city' => __('City') ) );
+            'location_city' => __('City'),
+            'mls_id' => __('MLS ID') ) );
 
         if ( array_key_exists( $taxonomy_slug, $labels ) ) {
           return $labels[$taxonomy_slug];
@@ -67,8 +68,10 @@ namespace UsabilityDynamics\RDC {
 
         $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
 
-        $_terms = get_terms( apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ), array(
-            'search' => $query
+        $_terms = get_terms( apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'mls_id' ) ), array(
+            'search' => $query,
+            'hierarchical' => false,
+            'hide_empty' => true
         ) );
 
         $_terms = array_map( function( $data ) {

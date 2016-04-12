@@ -897,6 +897,26 @@
   background-position: 0 -23px;
 }
 /* Checkboxes */
+.wpp-advanced-supermap .pagination li.active a {
+  background: #d03528;
+  border: 1px solid #d8d8d8;
+  color: white;
+}
+.wpp-advanced-supermap .pagination li.active a:hover {
+  color: white;
+}
+.wpp-advanced-supermap .pagination li a {
+  transition: .4s color,background;
+  color: #7f7f7f;
+  border: 1px solid #d8d8d8;
+  margin-right: 10px;
+  border-radius: 3px !important;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.wpp-advanced-supermap .pagination li a:hover {
+  color: #d03528;
+}
 .wpp-advanced-supermap .sm-bedrooms,
 .wpp-advanced-supermap .sm-bathrooms,
 .wpp-advanced-supermap .sm-sqft,
@@ -905,6 +925,13 @@
 .wpp-advanced-supermap .sm-sale,
 .wpp-advanced-supermap .sm-days {
   text-align: center;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap {
+  box-shadow: 0 0 5px;
+  overflow-y: scroll;
+}
+.wpp-advanced-supermap .sm-sidebar-top {
+  padding: 15px 20px !important;
 }
 .wpp-advanced-supermap table {
   margin-bottom: 0;
@@ -958,8 +985,12 @@
 .wpp-advanced-supermap tbody tr.st-selected {
   background: #fbfaf8 !important;
 }
+.wpp-advanced-supermap tbody tr.st-selected td {
+  color: black !important;
+}
 .wpp-advanced-supermap tfoot tr td {
-  padding: 0 !;
+  padding: 0 !important;
+  background: #fbfaf8;
 }
 .wpp-advanced-supermap .dropdown-columns-options {
   background: white none repeat scroll 0 0;
