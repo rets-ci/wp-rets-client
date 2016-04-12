@@ -48,7 +48,7 @@ add_filter( 'image_downsize', function( $false, $id, $size ) {
 add_filter( 'wp_get_attachment_url', function( $url, $post_id ) {
 
   if ( get_post_meta( $post_id, '_is_remote', 1 ) ) {
-    return rdc_fix_rets_image_url( $post_id, $size );
+    return rdc_fix_rets_image_url( $post_id );
   }
 
   return $url;
