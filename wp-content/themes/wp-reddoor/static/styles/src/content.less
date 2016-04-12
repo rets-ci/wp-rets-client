@@ -690,13 +690,93 @@
 
 .wpp-advanced-supermap {
 
+  .sm-bedrooms, .sm-bathrooms, .sm-sqft, .sm-lot, .sm-price-sqft, .sm-sale, .sm-days {
+    text-align: center;
+  }
+
+  table {
+    margin-bottom: 0;
+  }
+
+  thead {
+    tr {
+      background: #f3f0e9;
+      height: 40px;
+
+      th {
+        vertical-align: middle;
+        color: #808285;
+        font-size: 12px;
+        white-space: nowrap;
+
+        &.st-sort-ascent::before {
+          content: none !important;
+        }
+
+        &.st-sort-descent::before {
+          content: none !important;
+        }
+
+        &.st-sort-ascent, &.st-sort-descent {
+          font-weight: 500;
+        }
+
+        &.st-sort-ascent::after {
+          content: "￪";
+          display: inline-block;
+          font-size: 12px;
+          font-weight: bold;
+          margin-left: 5px;
+          position: relative;
+          top: -2px;
+        }
+
+        &.st-sort-descent::after {
+          content: "￬";
+          display: inline-block;
+          font-size: 12px;
+          font-weight: bold;
+          margin-left: 5px;
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        vertical-align: middle !important;
+        border-top: 0 !important;
+        border-bottom: 1px solid #eeedeb;
+
+        padding: 12px !important;
+        font-size: 12px;
+        color: #808285;
+      }
+
+      &.st-selected {
+        background: #fbfaf8 !important;
+      }
+    }
+  }
+
+  tfoot {
+    tr {
+      td {
+        padding: 0 !;
+      }
+    }
+  }
+
   .dropdown-columns-options {
     background: white none repeat scroll 0 0;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.33);
     left: 0;
     padding: 10px 20px;
     position: absolute;
-    top: 37px;
+    top: 40px;
     width: 160px;
 
     label {
@@ -723,6 +803,11 @@
   }
 
   .sm-properties-collection {
+
+    .sm-map-marker-icon {
+      height: 25px;
+    }
+
     .sm-current-property {
       .sm-current-property-details {
         padding: 15px;
