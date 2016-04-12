@@ -289,6 +289,7 @@ while (have_posts()) : the_post();
       </div>
       <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="propertyFacts">
+          <?php if(!empty($design)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-listing-house-outline"></span>
@@ -296,6 +297,8 @@ while (have_posts()) : the_post();
             <span><?php _e('Design'); ?></span>
             <strong><?php _e($design); ?></strong>
           </li>
+          <?php } ?>
+          <?php if(!empty($style)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
@@ -303,21 +306,21 @@ while (have_posts()) : the_post();
             <span><?php _e('Style'); ?></span>
             <strong><?php _e($style); ?></strong>
           </li>
+          <?php } ?>
+          <?php if($new_construction == 'Yes' ){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-attribute-exterior-outline"></span>
             </div>
             <span><?php _e('Year Built'); ?></span>
             <strong>
-              <?php
-              if($new_construction == 'Yes' ){
-                print_r($year_built . ', ') . _e('New Construction');
-              }
-              ?>
+              <?php print_r($year_built . ', ') . _e('New Construction'); ?>
             </strong>
           </li>
+          <?php } ?>
         </ul>
         <ul class="propertyFacts">
+          <?php if(!empty($subdivision)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
@@ -325,19 +328,19 @@ while (have_posts()) : the_post();
             <span><?php _e('Subdivision'); ?></span>
             <strong><?php _e($subdivision); ?></strong>
           </li>
+          <?php } ?>
+          <?php if($inside_city == 'Yes'){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
             </div>
             <span><?php _e('Inside City'); ?></span>
             <strong>
-              <?php
-              if($inside_city == 'Yes'){
-                echo $inside_city . ', ' . $location_city;
-              }
-              ?>
+              <?php echo $inside_city . ', ' . $location_city; ?>
             </strong>
           </li>
+          <?php } ?>
+          <?php if(!empty($location_county)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-listing-land-outline"></span>
@@ -345,8 +348,10 @@ while (have_posts()) : the_post();
             <span><?php _e('County'); ?></span>
             <strong><?php _e($location_county); ?></strong>
           </li>
+          <?php } ?>
         </ul>
         <ul class="propertyFacts">
+          <?php if(!empty($elementary_school)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-school-elementary-outline"></span>
@@ -354,6 +359,8 @@ while (have_posts()) : the_post();
             <span><?php _e('Elementary School'); ?></span>
             <strong><?php _e($elementary_school); ?></strong>
           </li>
+          <?php } ?>
+          <?php if(!empty($middle_school)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-school-middle-outline"></span>
@@ -361,6 +368,8 @@ while (have_posts()) : the_post();
             <span><?php _e('Middle School'); ?></span>
             <strong><?php _e($middle_school); ?></strong>
           </li>
+          <?php } ?>
+          <?php if(!empty($high_school)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-school-high-outline"></span>
@@ -368,6 +377,7 @@ while (have_posts()) : the_post();
             <span><?php _e('High School'); ?></span>
             <strong><?php _e($high_school); ?></strong>
           </li>
+          <?php } ?>
         </ul>
       </div>
 
@@ -393,14 +403,14 @@ while (have_posts()) : the_post();
         <strong>Very Walkable</strong>
       </div>
       <div class="ambItem col-md-2 col-lg-2">
-        <div>50</div>
+        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
         <span>Transit Score</span>
-        <strong>Good Transit</strong>
+        <strong>Coming Soon</strong>
       </div>
       <div class="ambItem col-md-2 col-lg-2">
-        <div>90</div>
+        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
         <span>Bike Score</span>
-        <strong>Biker’s Paradise</strong>
+        <strong>Coming Soon</strong>
       </div>
     </div>
     <div class="row">
@@ -447,6 +457,26 @@ while (have_posts()) : the_post();
 
         <div class="tab-content">
           <div id="Rooms" class="tab-pane fade in active">
+            <?php
+            $listAttributes = array();
+            $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if ($value == 'bedrooms') {
+                if(array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                }
+                else{
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -456,26 +486,30 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                    if ($value == 'bedrooms') {
-                      if(array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                      }
-                      else{
-                        if($property["$key"] == true){
-                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                        }
-                      }
-                    }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+
+              if($value == 'bathrooms'){
+                if(array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                }
+                else{
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -485,27 +519,29 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                  foreach($wp_properties['property_stats_groups'] as $key => $value){
-
-                    if($value == 'bathrooms'){
-                      if(array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if(!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                      }
-                      else{
-                        if($property["$key"] == true){
-                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                        }
-                      }
-                    }
-
-                  }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+              if ($value == 'living_area') {
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -515,26 +551,29 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value) {
-
-                    if ($value == 'living_area') {
-                      if (array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                    } else {
-                        if($property["$key"] == true){
-                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                        }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
-            <?php //} ?>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+              if ($value == 'other_rooms') {
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -544,25 +583,29 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value) {
-
-                    if ($value == 'other_rooms') {
-                      if (array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                    } else {
-                        if($property["$key"] == true){
-                          echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                        }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value) {
+
+              if ($value == 'kitchen_dining_room') {
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] =  '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -572,28 +615,32 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value) {
-
-                  if ($value == 'kitchen_dining_room') {
-                    if (array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
             <div class="clear"></div>
           </div>
           <div id="Features" class="tab-pane fade">
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+
+              if($value == 'interior') {
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -603,25 +650,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-
-                  if($value == 'interior') {
-                    if (array_key_exists($key, $taxonomies)) {
-                      $get_term_value = get_the_terms($property['ID'], $key);
-                      if (!empty($get_term_value[0]->name)) {
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                      }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'exterior'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] =  '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -631,24 +681,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'exterior'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'heating_cooling'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -658,24 +712,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'heating_cooling'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'utility'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -685,24 +743,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'utility'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'parking'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -712,27 +774,31 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'parking'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
             <div class="clear"></div>
           </div>
           <div id="Neighborhood" class="tab-pane fade">
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'schools'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -742,24 +808,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'schools'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'homeowners_association'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -769,27 +839,31 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'homeowners_association'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
             <div class="clear"></div>
           </div>
           <div id="PropertyLot" class="tab-pane fade">
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value) {
+              if ($value == 'pricing_terms') {
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if (!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -799,25 +873,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value) {
-                  if ($value == 'pricing_terms') {
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if (!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'building'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -827,24 +904,28 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'building'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
+            <?php
+            $listAttributes = array();
+            foreach($wp_properties['property_stats_groups'] as $key => $value){
+              if($value == 'lot'){
+                if (array_key_exists($key, $taxonomies)) {
+                  $get_term_value = get_the_terms($property['ID'], $key);
+                  if(!empty($get_term_value[0]->name)) {
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
+                  }
+                } else {
+                  if($property["$key"] == true){
+                    $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            <?php if(!empty($listAttributes)){ ?>
             <div class="pdRoomsBlock">
               <section>
                 <div>
@@ -854,24 +935,10 @@ while (have_posts()) : the_post();
                 <b class="clear"></b>
               </section>
               <ul>
-                <?php
-                foreach($wp_properties['property_stats_groups'] as $key => $value){
-                  if($value == 'lot'){
-                    if (array_key_exists($key, $taxonomies)) {
-                    $get_term_value = get_the_terms($property['ID'], $key);
-                    if(!empty($get_term_value[0]->name)) {
-                      echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
-                    }
-                    } else {
-                      if($property["$key"] == true){
-                        echo '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
-                      }
-                    }
-                  }
-                }
-                ?>
+                <?php echo implode('', $listAttributes); ?>
               </ul>
             </div>
+            <?php } ?>
             <div class="clear"></div>
           </div>
         </div>

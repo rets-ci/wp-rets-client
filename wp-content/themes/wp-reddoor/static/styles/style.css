@@ -1114,9 +1114,17 @@
   color: #fff;
   font-size: 1.3em;
   margin: auto;
-  padding: 7px 9px;
+  padding: 8px 9px;
   text-align: center;
   width: 45px;
+}
+.single-property .areaMapBlock .ambItem .scoreComing {
+  background: #F3F3F3;
+}
+.single-property .areaMapBlock .ambItem .scoreComing span {
+  color: #a6a9ac;
+  font-size: 1.3em;
+  margin: 2px 0 1px;
 }
 .single-property .areaMapBlock .ambItem span {
   display: block;
@@ -1201,6 +1209,9 @@
   margin: 0 5%;
   float: left;
 }
+.single-property .propertyDetails .pdRoomsBlock section {
+  display: flex;
+}
 .single-property .propertyDetails .pdRoomsBlock section > div {
   border: 1px solid #dedede;
   border-radius: 50%;
@@ -1215,7 +1226,6 @@
 .single-property .propertyDetails .pdRoomsBlock section > div > span {
   align-self: center;
   font-size: 1.3em;
-  margin-top: 0;
   text-align: center;
   width: 100%;
   color: #a6a9ac;
@@ -1223,7 +1233,7 @@
 .single-property .propertyDetails .pdRoomsBlock section span {
   float: left;
   font-size: 1.5em;
-  margin-top: 10px;
+  align-self: center;
 }
 .single-property .propertyDetails .pdRoomsBlock > ul {
   margin-top: 25px;
@@ -1235,6 +1245,9 @@
 }
 .single-property .propertyDetails .pdRoomsBlock > ul li:last-child {
   border-bottom: 0;
+}
+.single-property .propertyDetails .pdRoomsBlock > ul li:first-child {
+  border-bottom: 1px solid #dedede;
 }
 .single-property .listingProvider .col-lg-7 {
   margin: 15px 0;
