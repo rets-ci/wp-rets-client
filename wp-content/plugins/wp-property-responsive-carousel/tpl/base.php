@@ -114,8 +114,8 @@ $the_query = new WP_Query( $query );
 							<li class="rdc-carousel-item">
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
-										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large'); ?>
-											<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>); background-size: cover; background-position: center center;">
+										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'medium'); ?>
+											<div class="thumb" style="background-image: url(<?php echo esc_url($img) ?>); background-size: cover; background-position: center center;">
 												<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 												<span class="overlay"></span>
 											</div>

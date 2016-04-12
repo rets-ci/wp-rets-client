@@ -56,39 +56,34 @@ while (have_posts()) : the_post();
   $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
 
 
-
-  $_propertyType = $get_sale_type_terms[0]->slug;
-
-  $singleBedrooms = $get_bedrooms_terms[0]->name;
-  $singleBathrooms = $get_bathrooms_terms[0]->name;
-  $totalLivingArea = $get_living_area_terms[0]->name;
-  $lotDimensionsArea = $get_lot_dimensions_terms[0]->name;
-  $locationCity = $get_location_city_terms[0]->name;
-  $locationZip = $get_location_zip_terms[0]->name;
-  $updatedProperty = $get_updated_terms[0]->name;
-  $daysOnMarket = $get_days_on_market_terms[0]->name;
-  $elementary_school = $get_elementary_school_terms[0]->name;
-  $middle_school = $get_middle_school_terms[0]->name;
-  $high_school = $get_high_school_terms[0]->name;
-  $subdivision = $get_subdivision_terms[0]->name;
-  $inside_city = $get_inside_city_terms[0]->name;
-  $location_city = $get_location_city_terms[0]->name;
-  $location_county = $get_location_county_terms[0]->name;
-  $design = $get_design_terms[0]->name;
-  $style = $get_style_terms[0]->name;
-  $year_built = $get_year_built_terms[0]->name;
-  $new_construction = $get_new_construction_terms[0]->name;
-  $listing_agent_name = $get_listing_agent_name_terms[0]->name;
-  $listing_agent_phone_number = $get_listing_agent_phone_number_terms[0]->name;
-  $listing_agent_phone_extension = $get_listing_agent_phone_extension_terms[0]->name;
-  $listing_office = $get_listing_office_terms[0]->name;
-  $listing_office_phone_number = $get_listing_office_phone_number_terms[0]->name;
-  $mls_id = $get_mls_id_terms[0]->name;
-  $data_source = $get_data_source_terms[0]->name;
-  $listing_id = $get_listing_id_terms[0]->name;
-
-
-
+  $_propertyType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
+  $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
+  $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
+  $totalLivingArea = ($get_living_area_terms[0]) ? $get_bathrooms_terms[0]->name : '' ;
+  $lotDimensionsArea = ($get_lot_dimensions_terms[0]) ? $get_lot_dimensions_terms[0]->name : '';
+  $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
+  $locationZip = ($get_location_zip_terms[0]) ? $get_location_zip_terms[0]->name : '';
+  $updatedProperty = ($get_updated_terms[0]) ? $get_updated_terms[0]->name : '';
+  $daysOnMarket = ($get_days_on_market_terms[0]) ? $get_days_on_market_terms[0]->name : '';
+  $elementary_school = ($get_elementary_school_terms[0]) ? $get_elementary_school_terms[0]->name : '';
+  $middle_school = ($get_middle_school_terms[0]) ? $get_middle_school_terms[0]->name : '';
+  $high_school = ($get_high_school_terms[0]) ? $get_high_school_terms[0]->name : '';
+  $subdivision = ($get_subdivision_terms[0]) ? $get_subdivision_terms[0]->name : '';
+  $inside_city = ($get_inside_city_terms[0]) ? $get_inside_city_terms[0]->name : '';
+  $location_city = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
+  $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
+  $design = ($get_design_terms[0]) ? $get_design_terms[0]->name : '';
+  $style = ($get_style_terms[0]) ? $get_style_terms[0]->name : '';
+  $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
+  $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
+  $listing_agent_name = ($get_listing_agent_name_terms[0]) ? $get_listing_agent_name_terms[0]->name : '';
+  $listing_agent_phone_number = ($get_listing_agent_phone_number_terms[0]) ? $get_listing_agent_phone_number_terms[0]->name : '';
+  $listing_agent_phone_extension = ($get_listing_agent_phone_extension_terms[0]) ? $get_listing_agent_phone_extension_terms[0]->name : '';
+  $listing_office = ($get_listing_office_terms[0]) ? $get_listing_office_terms[0]->name : '';
+  $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
+  $mls_id = ($get_mls_id_terms[0]) ? $get_mls_id_terms[0]->name : '';
+  $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
+  $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
 
   ?>
 
@@ -117,9 +112,9 @@ while (have_posts()) : the_post();
         </div>
 
         <ul>
-          <?php if ($property['price']) { ?>
+          <?php if (!empty($property['price_2'])) { ?>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$');
-            echo $property['price']; ?></li><?php } ?>
+            echo number_format($property['price_2']); ?></li><?php } ?>
           <?php if ($singleBedrooms) { ?>
             <li><span
               class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($singleBedrooms . ' Beds'); ?>
@@ -268,6 +263,7 @@ while (have_posts()) : the_post();
             <span>Last Checked</span>
             <strong>1 minute ago</strong>
           </li>
+          <?php if(!empty($updatedProperty)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-data-updated-outline"></span>
@@ -275,6 +271,8 @@ while (have_posts()) : the_post();
             <span>Last Updated</span>
             <strong><?php echo $updatedProperty; ?></strong>
           </li>
+          <?php } ?>
+          <?php if(!empty($daysOnMarket)){ ?>
           <li>
             <div>
               <span class="icon-wpproperty-data-days-outline"></span>
@@ -282,6 +280,7 @@ while (have_posts()) : the_post();
             <span>Days on Market</span>
             <strong><?php echo $daysOnMarket; ?></strong>
           </li>
+          <?php } ?>
         </ul>
       </div>
       <div class="col-lg-7 col-md-7">
@@ -397,7 +396,10 @@ while (have_posts()) : the_post();
       </div>
     </div>
     <div class="row">
-      <?php $walkScore = 85;
+      <?php
+      $_post_meta = get_post_meta($property['ID']);
+      $walkScoreMeta = $_post_meta['_ws_walkscore'];
+      $walkScore = $walkScoreMeta[0];
       if($walkScore <= 100 && $walkScore >= 70){
         $walkScoreColor = '#57BD04';
       }
@@ -447,7 +449,7 @@ while (have_posts()) : the_post();
 
         <div class="tab-content">
           <div id="Ameneties" class="tab-pane fade in active">
-            <?php echo do_shortcode('[property_walkscore_neighborhood]'); ?>
+            <?php echo do_shortcode('[property_walkscore_neighborhood var ws_map_modules = "google_map"; var ws_base_map = "google_map";]'); ?>
           </div>
           <div id="Commute" class="tab-pane fade">
             <p>Some content Commute.</p>
