@@ -1,4 +1,13 @@
 jQuery(document).ready(function($) {
+    function setRealWidthHeight($img, s) {
+        return $("<img />").load(function() {
+            var width = this.width, height = this.height;
+            $img.attr("width", width).attr("height", height), "undefined" != typeof s.timer && clearTimeout(s.timer), 
+            s.timer = setTimeout(function() {
+                s.onResize();
+            }, 500);
+        }).attr("src", $img.attr("src")), $img;
+    }
     var wpprs = $(".property-resp-slideshow");
     wpprs.each(function() {
         function setControlSize() {
@@ -51,6 +60,8 @@ jQuery(document).ready(function($) {
                     s.onResize(), setControlSize();
                 }, 0);
             }
+        }), _galleryTop.find("img").each(function() {
+            setRealWidthHeight($(this), galleryTop);
         }), _galleryThumbs.length && (galleryThumbs = new Swiper(_galleryThumbs, {
             spaceBetween: 2.5,
             centeredSlides: !0,
@@ -82,12 +93,13 @@ jQuery(document).ready(function($) {
                 0 == $styler.length && ($styler = jQuery('<style id="' + id + '-img-max-width"></style>').appendTo("body")), 
                 $styler.html("#" + id + ".swiper-container.gallery-top .swiper-slide img{max-width:" + containerWidth + "px!important;max-height:" + containerHeight + "px!important;}"), 
                 s.slides.each(function() {
-                    var $this = jQuery(this).find("img"), width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), ratio = width / height;
-                    if (s.isLightbox()) width = parseInt($this.data("width")), height = parseInt($this.data("height")), 
+                    var $this = jQuery(this).find("img");
+                    if (width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), 
+                    ratio = width / height, s.isLightbox()) width = parseInt($this.data("width")), height = parseInt($this.data("height")), 
                     ratio = width / height; else if (s.params.autoHeight && !s.params.slider_height) return maxHeight = containerWidth / ratio, 
                     height > maxHeight && (height = maxHeight), width = height * ratio, $this.css("height", height), 
                     $this.css("width", width), $this.css("max-width", maxWidth), void jQuery(this).css("height", "100%");
-                    width > maxWidth && height > maxHeight ? maxWidth >= maxHeight * ratio ? (height = maxHeight, 
+                    width > maxWidth && height > maxHeight ? maxHeight * ratio <= maxWidth ? (height = maxHeight, 
                     width = maxHeight * ratio) : (width = maxWidth, height = maxWidth / ratio) : width > maxWidth ? (width = maxWidth, 
                     height = maxWidth / ratio) : height > maxHeight && (height = maxHeight, width = maxHeight * ratio), 
                     $this.width(width), $this.height(height), $this[0].style.setProperty("width", width + "px", "important"), 

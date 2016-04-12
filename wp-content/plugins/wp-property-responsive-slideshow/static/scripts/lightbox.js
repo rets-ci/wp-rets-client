@@ -1,4 +1,13 @@
 !function($) {
+    function setRealDataWidthHeight($div) {
+        return $("<img />").load(function() {
+            var width = this.width, height = this.height;
+            $img = $div.find("img"), $div.attr("data-width", width).attr("data-height", height), 
+            $img.attr("data-width", width).attr("data-height", height), s.timer = setTimeout(function() {
+                s.onResize();
+            }, 500);
+        }).attr("src", $div.attr("data-src")), $div;
+    }
     $.fn.wpp_rs_lb = function(prop) {
         function setViewOriginalHref(s) {
             var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("src");
@@ -19,7 +28,9 @@
         }
         function loadFullImageLazy(index) {
             lb.hasClass("fullLazyInserted") || $.each(options.galleryTop.slides, function(index, item) {
-                var slide = $(item), src = slide.data("src"), dataWidth = slide.data("width"), dataHidth = slide.data("height");
+                var slide = $(item), src = slide.data("src");
+                setRealDataWidthHeight(slide);
+                var dataWidth = slide.data("width"), dataHidth = slide.data("height");
                 if (src) {
                     var img = slide.find("img");
                     img.addClass("swiper-lazy").attr("data-src", src).attr("data-srcset", " ").attr("data-width", dataWidth).attr("data-height", dataHidth);
