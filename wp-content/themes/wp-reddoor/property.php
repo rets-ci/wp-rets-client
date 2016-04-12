@@ -397,10 +397,33 @@ while (have_posts()) : the_post();
       </div>
     </div>
     <div class="row">
+      <?php $walkScore = 85;
+      if($walkScore <= 100 && $walkScore >= 70){
+        $walkScoreColor = '#57BD04';
+      }
+      elseif($walkScore <= 69 && $walkScore >= 50){
+        $walkScoreColor = '#e5af1c';
+        $walkScoreSubtitle = 'Somewhat Walkable';
+      }
+      elseif($walkScore <= 49 && $walkScore >= 25){
+        $walkScoreColor = '#e9822f';
+        $walkScoreSubtitle = 'Car Dependent';
+      }
+      elseif($walkScore <= 24 && $walkScore >= 0){
+        $walkScoreColor = '#e73f3f';
+        $walkScoreSubtitle = 'Car Dependent';
+      }
+      if($walkScore <= 100 && $walkScore >= 90){
+        $walkScoreSubtitle = 'Walker’s Paradise';
+      }
+      if($walkScore <= 89 && $walkScore >= 70){
+        $walkScoreSubtitle = 'Very Walkable';
+      }
+      ?>
       <div class="ambItem col-md-2 col-lg-2">
-        <div>70</div>
+        <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
         <span>Walk Score</span>
-        <strong>Very Walkable</strong>
+        <strong><?php echo $walkScoreSubtitle; ?></strong>
       </div>
       <div class="ambItem col-md-2 col-lg-2">
         <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
@@ -424,7 +447,7 @@ while (have_posts()) : the_post();
 
         <div class="tab-content">
           <div id="Ameneties" class="tab-pane fade in active">
-            <p>Some content Ameneties.</p>
+            <?php echo do_shortcode('[property_walkscore_neighborhood]'); ?>
           </div>
           <div id="Commute" class="tab-pane fade">
             <p>Some content Commute.</p>
