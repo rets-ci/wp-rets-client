@@ -779,7 +779,10 @@ jQuery(document).ready(function($) {
       var transition = $('.transition input[name=transition]:checked').val(); 
       if(transition !== 'slide')
          output += ' transition="'+transition+'"';
-      
+         
+      var transition_speed = $('.transition input[name=transition-speed]').val(); 
+      if(transition_speed !== '250' && transition !== 'none')
+         output += ' transition_speed="'+transition_speed+'"';
       
       var transition_container = $('.transition input[name=remove_container]:checked').val(); 
       if(transition_container === 'f' && seo !== 'true' && previous !== 'true')

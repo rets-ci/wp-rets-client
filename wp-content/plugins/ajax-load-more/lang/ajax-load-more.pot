@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ajax Load More\n"
-"POT-Creation-Date: 2016-02-16 10:13-0500\n"
-"PO-Revision-Date: 2016-02-16 10:13-0500\n"
+"POT-Creation-Date: 2016-04-11 09:45-0500\n"
+"PO-Revision-Date: 2016-04-11 09:45-0500\n"
 "Last-Translator: Darren Cooney <dcooney@ecentricarts.com>\n"
 "Language-Team: \n"
 "Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.7\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
@@ -73,12 +73,12 @@ msgid "Error Writing File"
 msgstr ""
 
 #: ../admin/admin.php:854
-#: ../admin/shortcode-builder/shortcode-builder.php:1229
+#: ../admin/shortcode-builder/shortcode-builder.php:1244
 msgid "Container Type"
 msgstr ""
 
 #: ../admin/admin.php:862
-#: ../admin/shortcode-builder/shortcode-builder.php:1253
+#: ../admin/shortcode-builder/shortcode-builder.php:1268
 msgid "Container Classes"
 msgstr ""
 
@@ -171,6 +171,12 @@ msgstr ""
 
 #: ../admin/admin.php:1225
 msgid "Preview"
+msgstr ""
+
+#: ../admin/admin.php:1225
+#: ../admin/shortcode-builder/shortcode-builder.php:1218
+#: ../ajax-load-more.php:369
+msgid "Older Posts"
 msgstr ""
 
 #: ../admin/admin.php:1244
@@ -330,7 +336,7 @@ msgid ""
 msgstr ""
 
 #: ../admin/includes/cta/reviews.php:4
-msgid "Write a Review"
+msgid "Write Review"
 msgstr ""
 
 #: ../admin/includes/cta/sharing.php:1
@@ -510,7 +516,7 @@ msgstr ""
 #: ../admin/shortcode-builder/shortcode-builder.php:1021
 #: ../admin/shortcode-builder/shortcode-builder.php:1046
 #: ../admin/shortcode-builder/shortcode-builder.php:1093
-#: ../admin/shortcode-builder/shortcode-builder.php:1164
+#: ../admin/shortcode-builder/shortcode-builder.php:1179
 msgid "True"
 msgstr ""
 
@@ -525,7 +531,7 @@ msgstr ""
 #: ../admin/shortcode-builder/shortcode-builder.php:1025
 #: ../admin/shortcode-builder/shortcode-builder.php:1050
 #: ../admin/shortcode-builder/shortcode-builder.php:1097
-#: ../admin/shortcode-builder/shortcode-builder.php:1168
+#: ../admin/shortcode-builder/shortcode-builder.php:1183
 msgid "False"
 msgstr ""
 
@@ -1122,97 +1128,104 @@ msgstr ""
 msgid "Fade"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1134
+#: ../admin/shortcode-builder/shortcode-builder.php:1136
+msgid "Transition Speed"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1136
+msgid "0.5 seconds = 500, 1 second = 1000 etc."
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1137
+msgid "The speed of the loading transition in milliseconds"
+msgstr ""
+
+#: ../admin/shortcode-builder/shortcode-builder.php:1149
 msgid "Transition Container"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1134
+#: ../admin/shortcode-builder/shortcode-builder.php:1149
 msgid ""
 "Removing the transition container may have undesired results and is not "
 "recommended."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1135
+#: ../admin/shortcode-builder/shortcode-builder.php:1150
 msgid "Remove the Ajax Load More (.alm-reveal) loading container."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1152
+#: ../admin/shortcode-builder/shortcode-builder.php:1167
 msgid "Images Loaded"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1155
+#: ../admin/shortcode-builder/shortcode-builder.php:1170
 msgid "Wait for all images to load before displaying ajax loaded content"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1156
+#: ../admin/shortcode-builder/shortcode-builder.php:1171
 msgid "Background images are currently not supported"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1178
+#: ../admin/shortcode-builder/shortcode-builder.php:1193
 msgid "Destroy After"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1181
+#: ../admin/shortcode-builder/shortcode-builder.php:1196
 msgid ""
 "Remove ajax load more functionality after '<em>n</em>' number of pages have "
 "been loaded."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1193
+#: ../admin/shortcode-builder/shortcode-builder.php:1208
 msgid "Button Labels"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1198
+#: ../admin/shortcode-builder/shortcode-builder.php:1213
 msgid "Button Label"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1199
+#: ../admin/shortcode-builder/shortcode-builder.php:1214
 msgid "Customize the text of the <em>Load More</em> button."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1203
-#: ../ajax-load-more.php:363
-msgid "Older Posts"
-msgstr ""
-
-#: ../admin/shortcode-builder/shortcode-builder.php:1211
+#: ../admin/shortcode-builder/shortcode-builder.php:1226
 msgid "Button Loading Label"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1211
+#: ../admin/shortcode-builder/shortcode-builder.php:1226
 msgid "Leave field empty to not update text while loading content"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1212
+#: ../admin/shortcode-builder/shortcode-builder.php:1227
 msgid ""
 "Update the text of the <em>Load More</em> button while content is loading."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1216
+#: ../admin/shortcode-builder/shortcode-builder.php:1231
 msgid "Loading Posts..."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1225
+#: ../admin/shortcode-builder/shortcode-builder.php:1240
 msgid "Container Options"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1229
+#: ../admin/shortcode-builder/shortcode-builder.php:1244
 msgid ""
 "You can define a global container type on the Ajax Load More settings screen"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1230
+#: ../admin/shortcode-builder/shortcode-builder.php:1245
 msgid ""
 "Override the global Container Type that was set on <a href=\"admin.php?"
 "page=ajax-load-more\">ALM Settings page</a>."
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1253
+#: ../admin/shortcode-builder/shortcode-builder.php:1268
 msgid ""
 "You can define global container classes on the Ajax Load More settings screen"
 msgstr ""
 
-#: ../admin/shortcode-builder/shortcode-builder.php:1254
+#: ../admin/shortcode-builder/shortcode-builder.php:1269
 msgid ""
 "Add custom CSS classes to the Ajax Load More container. <br/><br/> e.g. "
 "portfolio-listing large-12 etc"
