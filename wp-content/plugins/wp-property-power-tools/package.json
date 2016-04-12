@@ -1,0 +1,32 @@
+{
+  "name": "wp-property-power-tools",
+  "title": "WP-Property Power Tools",
+  "description": "The WP-Property Power Tools with Capability Management Add-on is the extra functionality which includes capability management, white labeling the control panel, and changes menu titles.",
+  "version": "1.0.0",
+  "homepage": "https://usabilitydynamics.com",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UsabilityDynamics/wp-property-power-tools"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "load-grunt-tasks": "^0.6.0",
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-markdown": "~0.4.0",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-phpunit": "~0.3.3",
+    "grunt-shell": "~0.6.0",
+    "grunt-json-minify": "~0.4.0"
+  }
+}

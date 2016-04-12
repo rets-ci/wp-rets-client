@@ -1,0 +1,32 @@
+{
+  "name": "wp-property-pdf",
+  "title": "WP-Property PDF Flyer",
+  "description": "The WP-Property PDF Flyer Add-on allows the website owner to quickly generate PDF flyers, or brochures, ready for printing or download. The feature comes with a standard PDF format and a user interface allows the administrator to select which information to display, what colors to use, image sizes, and a logo. For more advances users custom PDF template layouts can be used.",
+  "version": "3.0.1",
+  "homepage": "https://usabilitydynamics.com",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UsabilityDynamics/wp-property-pdf"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "load-grunt-tasks": "^0.6.0",
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-markdown": "~0.4.0",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-phpunit": "~0.3.3",
+    "grunt-shell": "~0.6.0",
+    "grunt-json-minify": "~0.4.0"
+  }
+}

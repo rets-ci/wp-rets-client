@@ -348,7 +348,11 @@ namespace UsabilityDynamics\WP {
 
           }
 
-          if( !get_option( $option ) ) {
+          if ( ! function_exists( 'wp_get_current_user' ) ) {
+            require_once( ABSPATH . 'wp-includes/pluggable.php' );
+          }
+
+          if( !get_option( $option ) && current_user_can( 'activate_plugins' ) ) {
             add_action( 'admin_notices',  array( $this, 'render_upgrade_notice' ), 1 );
           }
 

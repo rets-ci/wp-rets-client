@@ -1053,9 +1053,17 @@
         color: @white;
         font-size: 1.3em;
         margin: auto;
-        padding: 7px 9px;
+        padding: 8px 9px;
         text-align: center;
         width: 45px;
+      }
+      .scoreComing{
+        background: #F3F3F3;
+        span{
+          color: #a6a9ac;
+          font-size: 1.3em;
+          margin: 2px 0 1px;
+        }
       }
       span{
         display: block;
@@ -1143,6 +1151,7 @@
       margin: 0 5%;
       float: left;
       section {
+        display: flex;
         & > div {
           border: 1px solid #dedede;
           border-radius: 50%;
@@ -1156,7 +1165,6 @@
           &>span{
             align-self: center;
             font-size: 1.3em;
-            margin-top: 0;
             text-align: center;
             width: 100%;
             color: #a6a9ac;
@@ -1165,7 +1173,7 @@
         span{
           float: left;
           font-size: 1.5em;
-          margin-top: 10px;
+          align-self: center;
         }
       }
       & > ul{
@@ -1176,6 +1184,9 @@
           padding-top: 10px;
           &:last-child{
             border-bottom: 0;
+          }
+          &:first-child{
+            border-bottom: 1px solid #dedede;
           }
         }
       }
