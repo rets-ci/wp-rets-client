@@ -897,6 +897,33 @@
   background-position: 0 -23px;
 }
 /* Checkboxes */
+.wpp-advanced-supermap .dropdown-columns-options {
+  background: white none repeat scroll 0 0;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.33);
+  left: 0;
+  padding: 10px 20px;
+  position: absolute;
+  top: 37px;
+  width: 160px;
+}
+.wpp-advanced-supermap .dropdown-columns-options label {
+  color: #808285;
+  font-size: 12px;
+  font-weight: normal;
+}
+.wpp-advanced-supermap .dropdown-columns-options label input {
+  margin-right: 10px;
+}
+.wpp-advanced-supermap .menu-toggle {
+  padding-left: 4px;
+}
+.wpp-advanced-supermap .menu-toggle .menu-dot {
+  width: 4px;
+  height: 4px;
+  background: darkgrey;
+  border-radius: 100%;
+  margin-bottom: 2px;
+}
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
   padding: 15px;
 }

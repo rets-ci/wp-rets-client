@@ -87,7 +87,7 @@
         };
       })
 
-      .controller( 'main', [ '$scope', '$http', '$filter', 'NgMap', function( $scope, $http, $filter, NgMap ){
+      .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
@@ -102,17 +102,65 @@
         $scope.searchForm = false;
 
         $scope.columns = {
-          post_title:1,
-          price:1,
-          bedrooms:1,
-          bathrooms:1,
-          total_living_area_sqft:1,
-          price_per_sqft:1,
-          approximate_lot_size:1,
-          sale_type:0,
-          days_on_market:0,
-          subdivision:0,
-          neighborhood:0
+          post_title: {
+            label: 'Address',
+            enable: 1
+          },
+          price: {
+            label: 'Price',
+            enable: 1
+          },
+          bedrooms: {
+            label: 'Beds',
+            enable: 1
+          },
+          bathrooms: {
+            label: 'Baths',
+            enable: 1
+          },
+          total_living_area_sqft: {
+            label: 'Sq.Ft.',
+            enable: 1
+          },
+          price_per_sqft: {
+            label: 'Price per Sq.Ft.',
+            enable: 1
+          },
+          approximate_lot_size: {
+            label: 'Lot',
+            enable: 1
+          },
+          sale_type: {
+            label: 'Sale',
+            enable: 0
+          },
+          days_on_market: {
+            label: 'Days',
+            enable: 0
+          },
+          subdivision: {
+            label: 'Subdivision',
+            enable: 0
+          },
+          neighborhood: {
+            label: 'Neighborhood',
+            enable: 0
+          }
+        };
+
+        $scope.show_dropdown_columns = false;
+
+        $document.bind('click', function(event){
+          $scope.show_dropdown_columns = false;
+          $scope.$apply();
+        });
+
+        $scope.pagination_colspan = function(){
+          var i = 0;
+          for(var f in $scope.columns) {
+            i += $scope.columns[f].enable;
+          }
+          return i;
         };
 
         var index = 'v4',
@@ -128,6 +176,27 @@
           hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
         });
 
+        /**
+         *
+         * @param r
+         */
+        function cast_fields(r) {
+          r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+          r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+          r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+
+          if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+            r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
+          } else {
+            r._source.tax_input.price_per_sqft = [0];
+          }
+
+          r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+        }
+
+        /**
+         *
+         */
         function getMoreProperties() {
           client.search({
             index: index,
@@ -147,19 +216,7 @@
                 console.log( 'Error occurred during getting properties data.' );
               } else {
                 $scope.total = response.hits.total;
-                response.hits.hits.filter(function(r) {
-                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
-                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
-                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
-
-                  if (typeof r._source.tax_input.price_per_sqft!='undefined') {
-                    r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
-                  } else {
-                    r._source.tax_input.price_per_sqft = [0];
-                  }
-
-                  r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
-                });
+                response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
 
@@ -199,19 +256,7 @@
                 console.log( 'Error occurred during getting properties data.' );
               } else {
                 $scope.total = response.hits.total;
-                response.hits.hits.filter(function(r) {
-                  r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
-                  r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
-                  r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
-
-                  if (typeof r._source.tax_input.price_per_sqft!='undefined') {
-                    r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
-                  } else {
-                    r._source.tax_input.price_per_sqft = [0];
-                  }
-
-                  r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
-                });
+                response.hits.hits.filter(cast_fields);
                 $scope.properties = response.hits.hits;
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
@@ -396,21 +441,6 @@
           loadImages(row);
           row.isSelected = true;
         }
-
-        /**
-         * Fired when table row is selected
-         */
-        //$scope.$watch( 'properties', function( rows ) {
-        //  // get selected row
-        //  rows.filter(function(r) {
-        //    r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
-        //    r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
-        //    r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
-        //    if (r.isSelected) {
-        //      $scope.currentProperty = r;
-        //    }
-        //  });
-        //}, true );
 
         /**
          * Fired when currentProperty is changed!
