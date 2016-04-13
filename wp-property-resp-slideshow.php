@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP-Property: Responsive Slideshow
- * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-resp-slideshow
+ * Plugin URI: https://www.usabilitydynamics.com/product/wp-property-responsive-slideshow
  * Description: Responsive Slideshow for WP-Property plugin
  * Author: Usability Dynamics, Inc.
  * Version: 1.1.0
