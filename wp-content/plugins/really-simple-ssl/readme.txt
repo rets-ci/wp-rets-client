@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHX
 Tags: mixed content, insecure content, secure website, website security, ssl, https, tls, security, secure socket layers, hsts
 Requires at least: 4.2
 License: GPL2
-Tested up to: 4.5
-Stable tag: 2.3.3
+Tested up to: 4.4
+Stable tag: 2.3.2
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -21,8 +21,8 @@ To keep it lightweight, the options are kept to a minimum. The entire site will 
 Aways backup before you go! If you do not have a sound backup policy, start having one! For a snapshot, install duplicator.
 
 = Love Really Simple SSL? =
-Hopefully this plugin save you some hours of work. If you want to support the continuing development of this plugin, you might consider buying the [premium](https://www.really-simple-ssl.com/pro/), which includes
-some cool features like the mixed content scan, the option to enable HTTP Strict Transport Security and more detailed feedback on the configuration page.
+Hopefully this plugin saved you at least some hours work. If you want to support the continuing development of this plugin, you could buy me a cup of coffee, or leave a review.
+[Black, no sugar ;)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=NL&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 = What does the plugin actually do =
 * The plugin handles most issues that Wordpress has with ssl, like the much discussed loadbalancer issue, or when there are no server variables set at all.
@@ -30,10 +30,25 @@ some cool features like the mixed content scan, the option to enable HTTP Strict
 * The site url and home url are changed to https.
 * Your insecure content is fixed by replacing all http:// urls with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
 
+= Feedback is welcome! =
+Though the plugin is extensively tested and currently successfully active on over 15000 websites, it might be possible you have issues with a specific configuration (server/plugins).
+I would appreciate it if you contact me with the issue, so I can help you fix it and improve the plugin at the same time.
+I will need the following information:
+
+* Debug report: activate debug and copy the results
+* Domain
+
 [contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. More information about me or my work can be found on my [website](https://www.rogierlankhorst.com).
 
 = Like to have this plugin in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/really-simple-ssl).
+
+= Translation credits =
+Thanks for the French translation to [Cédric](http://www.blig.fr/)
+Thanks for the Russian translation to [xsacha](https://news36.org/)
+
+= Under development, expected april/may 2016 =
+* A check for possible external resources that are not available over ssl.
 
 == Installation ==
 To install this plugin:
@@ -44,6 +59,10 @@ To install this plugin:
 4. Upload the plugin to the wp-content/plugins directory,
 5. Go to “plugins” in your wordpress admin, then click activate.
 6. You will get redirected to the login screen. If not, go to the login screen and log on.
+
+= Testing =
+This plugin is tested in standard apache environments, but is built with several fallbacks for situations where non-standard configurations are used.
+If you have issues, please contact me. Maybe we can fix your configuration as well.
 
 = Uninstalling =
 In some cases it happens that you cannot access your admin anymore, which would prevent your from uninstalling. The
@@ -96,12 +115,9 @@ Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
 == Changelog ==
-= 2.3.3 =
-* Fixed bug in force-deactivate script
-
 = 2.3.2 =
 * Changed SSL detection so test page is only needed when not currently on SSL.
-* Some minor bug fixes.
+* Some minor bug fixes. 
 
 = 2.3.1 =
 * Removed "activate ssl" option when no ssl is detected.

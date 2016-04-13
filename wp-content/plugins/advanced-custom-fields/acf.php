@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://www.advancedcustomfields.com/
 Description: Customise WordPress with powerful, professional and intuitive fields
-Version: 4.4.6
+Version: 4.4.5
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -43,7 +43,7 @@ class acf
 			'path'				=> apply_filters('acf/helpers/get_path', __FILE__),
 			'dir'				=> apply_filters('acf/helpers/get_dir', __FILE__),
 			'hook'				=> basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ),
-			'version'			=> '4.4.6',
+			'version'			=> '4.4.5',
 			'upgrade_version'	=> '3.4.1',
 			'include_3rd_party'	=> false
 		);
@@ -161,20 +161,15 @@ class acf
 	
 	function get_post_id( $post_id )
 	{
-		// if not $post_id, load queried object
-		if( !$post_id ) {
+		// set post_id to global
+		if( !$post_id )
+		{
+			global $post;
 			
-			// try for global post (needed for setup_postdata)
-			$post_id = (int) get_the_ID();
-			
-			
-			// try for current screen
-			if( !$post_id ) {
-				
-				$post_id = get_queried_object();
-					
+			if( $post )
+			{
+				$post_id = intval( $post->ID );
 			}
-			
 		}
 		
 		

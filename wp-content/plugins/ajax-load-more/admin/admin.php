@@ -1222,7 +1222,7 @@ function alm_btn_color_callback() {
     $html .= '</optgroup>';
     $html .= '</select>';
      
-    $html .= '<div class="clear"></div><div class="ajax-load-more-wrap core '.$type.'"><span>'.__('Preview', 'ajax-load-more') .'</span><button class="alm-load-more-btn loading" disabled="disabled">'.apply_filters('alm_button_label', __('Older Posts', 'ajax-load-more')).'</button></div>';
+    $html .= '<div class="clear"></div><div class="ajax-load-more-wrap core '.$type.'"><span>'.__('Preview', 'ajax-load-more') .'</span><button class="alm-load-more-btn loading" disabled="disabled">Load More</button></div>';
     echo $html;
 }
 

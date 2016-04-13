@@ -61,6 +61,6 @@ jQuery(function ($) {
         });
     };
 
-	$(window).on('resize panelsStretchRows', resizeMasonry);
+    $(window).resize(resizeMasonry);
     resizeMasonry();
 });

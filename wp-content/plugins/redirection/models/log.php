@@ -9,7 +9,7 @@ class RE_Log {
 	var $ip;
 	var $redirection_id;
 
-	function __construct( $values ) {
+	function RE_Log( $values ) {
 		foreach ( $values AS $key => $value ) {
 		 	$this->$key = $value;
 		}
@@ -145,7 +145,7 @@ class RE_404 {
 	var $referrer;
 	var $ip;
 
-	function __construct( $values ) {
+	function RE_404( $values ) {
 		foreach ( $values AS $key => $value ) {
 		 	$this->$key = $value;
 		 }

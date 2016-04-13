@@ -53,7 +53,6 @@ function siteorigin_widget_post_selector_process_query($query){
 		$tax_queries = explode(',', $query['tax_query']);
 
 		$query['tax_query'] = array();
-		$query['tax_query']['relation'] = 'OR';
 		foreach($tax_queries as $tq) {
 			list($tax, $term) = explode(':', $tq);
 
@@ -91,8 +90,7 @@ function siteorigin_widget_post_selector_process_query($query){
 	}
 
 	if ( ! empty( $query['additional'] ) ) {
-		$additional = implode( '&', explode( ',', $query['additional'] ) );
-		$query = wp_parse_args( $additional, $query );
+		$query = wp_parse_args( $query['additional'], $query );
 		unset( $query['additional'] );
 	}
 

@@ -1111,7 +1111,7 @@
    		 	<p><?php _e('Select a loading transition style.', 'ajax-load-more'); ?></p>
    		 </div>
          <div class="wrap">
-            <div class="inner">	                
+            <div class="inner">	               
                <ul>
                    <li>
                     <input class="alm_element" type="radio" name="transition" value="slide" id="transition-slide" checked="checked">
@@ -1128,23 +1128,8 @@
                </ul>
             </div>
          </div>
-         
          <div class="clear"></div>
          <hr>
-         
-         <div class="section-title">
-            <h4><?php _e('Transition Speed', 'ajax-load-more'); ?> <a href="javascript:void(0)" class="fa fa-question-circle tooltip" title="<?php _e('0.5 seconds = 500, 1 second = 1000 etc.','ajax-load-more'); ?>"></a></h4>
-   		 	<p><?php _e('The speed of the loading transition in milliseconds', 'ajax-load-more'); ?>.<br/></p>
-   		 </div>
-         <div class="wrap">
-            <div class="inner">            
-               <input type="number" class="alm_element numbers-only" name="transition-speed" id="transition-speed" step="50" min="50" value="250">  
-            </div>
-         </div> 
-         
-         <div class="clear"></div>
-         <hr>
-         
          <div class="section-title">
             <h4><?php _e('Transition Container', 'ajax-load-more'); ?> <a href="javascript:void(0)" class="fa fa-question-circle tooltip" title="<?php _e('Removing the transition container may have undesired results and is not recommended.','ajax-load-more'); ?>"></a></h4>
    		 	<p><?php _e('Remove the Ajax Load More (.alm-reveal) loading container.', 'ajax-load-more'); ?></p>

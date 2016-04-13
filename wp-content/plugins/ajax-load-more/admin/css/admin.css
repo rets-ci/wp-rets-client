@@ -1405,9 +1405,9 @@ table.highlight{
    height: 40px;
    line-height: 40px;
    text-align: center;  
-   background: #f7f7f7;
+   background: #fff;
    color: #777;
-   border: 1px solid #e7e7e7;
+   border: 1px dashed #ccc;
    border-right: none;
    border-top: none;
    display: block;
@@ -3058,14 +3058,7 @@ p.cache-stats{
    background: #f7f7f7;
    padding: 20px;
 }
-.share-alm{
-/*    display: none !important; */
-}
-   .share-alm .dotted{
-      border: none;  
-      background: none;
-      padding: 5px 10px 0;
-   }
+.share-alm{}
 .share-alm h3{
    font-size: 16px;
 }

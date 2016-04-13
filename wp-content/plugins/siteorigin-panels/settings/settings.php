@@ -23,7 +23,6 @@ class SiteOrigin_Panels_Settings {
 
 		// Default filters for fields and defaults
 		add_filter( 'siteorigin_panels_settings_defaults', array($this, 'settings_defaults') );
-		add_filter( 'siteorigin_panels_default_add_widget_class', array($this, 'add_widget_class') );
 		add_filter( 'siteorigin_panels_settings_fields', array($this, 'settings_fields') );
 	}
 
@@ -110,7 +109,7 @@ class SiteOrigin_Panels_Settings {
 
 		// Widgets fields
 		$defaults['title-html'] = '<h3 class="widget-title">{{title}}</h3>';
-		$defaults['add-widget-class'] = apply_filters( 'siteorigin_panels_default_add_widget_class', true );
+		$defaults['add-widget-class'] = true;
 		$defaults['bundled-widgets'] = get_option( 'siteorigin_panels_is_using_bundled', false );
 		$defaults['recommended-widgets'] = true;
 
@@ -123,7 +122,6 @@ class SiteOrigin_Panels_Settings {
 		$defaults['tablet-width'] = 1024;
 		$defaults['mobile-width'] = 780;
 		$defaults['margin-bottom'] = 30;
-		$defaults['margin-bottom-last-row'] = false;
 		$defaults['margin-sides'] = 30;
 		$defaults['full-width-container'] = 'body';
 
@@ -131,25 +129,6 @@ class SiteOrigin_Panels_Settings {
 		$defaults['copy-content'] = true;
 
 		return $defaults;
-	}
-
-	/**
-	 * Set the option on whether to add widget classes for known themes
-	 *
-	 * @param $add_class
-	 *
-	 * @return bool
-	 */
-	function add_widget_class( $add_class ){
-
-		switch( get_option('stylesheet') ) {
-			case 'twentysixteen';
-				$add_class = false;
-				break;
-		}
-
-
-		return $add_class;
 	}
 
 	/**
@@ -289,12 +268,6 @@ class SiteOrigin_Panels_Settings {
 			'unit' => 'px',
 			'label' => __('Row Bottom Margin', 'siteorigin-panels'),
 			'description' => __('Default margin below rows.', 'siteorigin-panels'),
-		);
-
-		$fields['layout']['fields']['margin-bottom-last-row'] = array(
-			'type' => 'checkbox',
-			'label' => __('Last Row With Margin', 'siteorigin-panels'),
-			'description' => __('Allow margin in last row.', 'siteorigin-panels'),
 		);
 
 		$fields['layout']['fields']['margin-sides'] = array(

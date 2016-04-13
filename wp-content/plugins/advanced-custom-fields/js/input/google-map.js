@@ -412,36 +412,31 @@
 		
 		
 		// validate
-		if( ! $fields.exists() ) return false;
+		if( ! $fields.exists() )
+		{
+			return;
+		}
 		
 		
-		// no google
-		if( !acf.helpers.isset(window, 'google', 'load') ) {
-			
-			// load API
+		// validate google
+		if( typeof google === 'undefined' )
+		{
 			$.getScript('https://www.google.com/jsapi', function(){
-				
-				// load maps
+			
 			    google.load('maps', '3', { other_params: 'sensor=false&libraries=places', callback: function(){
-			    	
-			    	$fields.each(function(){
+			    
+			        $fields.each(function(){
 					
 						acf.fields.google_map.set({ $el : $(this) }).init();
 						
 					});
 			        
 			    }});
-			    
 			});
 			
-			return false;
-				
 		}
-		
-		
-		// no maps or places
-		if( !acf.helpers.isset(window, 'google', 'maps', 'places') ) {
-			
+		else
+		{
 			google.load('maps', '3', { other_params: 'sensor=false&libraries=places', callback: function(){
 				
 				$fields.each(function(){
@@ -451,14 +446,8 @@
 				});
 		        
 		    }});
-			
-			return false;
 				
 		}
-		
-		
-		// return
-		return true;
 		
 	});
 	
