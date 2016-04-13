@@ -116,6 +116,8 @@ namespace UsabilityDynamics\RDC {
 
             } else {
 
+              $ranges = array();
+
               if ( array_key_exists( 'min', $value ) && !empty( $value['min'] ) ) {
                 $ranges = array(
                   'gte' => $value['min']

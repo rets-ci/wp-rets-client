@@ -485,35 +485,65 @@
           e.preventDefault();
 
           // Get search params from Property Search Form
-          var formQuery = {};
-          parse_str( jQuery( this ).serialize(), formQuery );
+          var formQuery = {},
+              push_counters = {},
+              patterns = {
+                "validate": /^[a-zA-Z][a-zA-Z0-9_\.]*(?:\[(?:\d*|[a-zA-Z0-9_\.]+)\])*$/,
+                "key":      /[a-zA-Z0-9_\.]+|(?=\[\])/g,
+                "push":     /^$/,
+                "fixed":    /^\d+$/,
+                "named":    /^[a-zA-Z0-9_\.]+$/
+              };
 
-          // Get current location params
-          var location = window.location.href.split('?');
-          var locationQuery = {};
-          if( typeof location[1] !== 'undefined' ) {
-            parse_str( location[1], locationQuery );
-          }
+          var build = function(base, key, value){
+            base[key] = value;
+            return base;
+          };
 
-          //console.log( 'location', location );
+          var push_counter = function(key){
+            if(push_counters[key] === undefined){
+              push_counters[key] = 0;
+            }
+            return push_counters[key]++;
+          };
 
-          // Extend scope query with Property Search Form params
-          //angular.extend( $scope.query, formQuery.wpp_search );
-          $scope.query = formQuery.wpp_search;
+          jQuery.each(jQuery( this ).serializeArray(), function(){
 
-          //console.log( '$scope.query', $scope.query );
+            // skip invalid keys
+            if(!patterns.validate.test(this.name)){
+              return;
+            }
 
-          // Redeclare location's wpp_search param with Property Search Form's one
-          // And update browser location href
-          locationQuery.wpp_search = formQuery.wpp_search;
+            var k,
+                keys = this.name.match(patterns.key),
+                merge = this.value,
+                reverse_key = this.name;
 
-          //console.log( 'locationQuery', locationQuery );
+            while((k = keys.pop()) !== undefined){
 
-          locationQuery = jQuery.param( locationQuery );
+              // adjust reverse_key
+              reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
 
-          //console.log( 'window.history.pushState', location[0] + '?' + locationQuery );
+              // push
+              if(k.match(patterns.push)){
+                merge = build([], push_counter(reverse_key), merge);
+              }
 
-          window.history.pushState( null, null, location[0] + '?' + locationQuery );
+              // fixed
+              else if(k.match(patterns.fixed)){
+                merge = build([], k, merge);
+              }
+
+              // named
+              else if(k.match(patterns.named)){
+                merge = build({}, k, merge);
+              }
+            }
+
+            formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
+          });
+          
+          $scope.query = formQuery;
 
           $scope.toggleSearchForm();
           $scope.$apply();
@@ -548,6 +578,17 @@
       } ] );
 
   };
+
+  function removeAllBlankOrNull(JsonObj) {
+    jQuery.each(JsonObj, function(key, value) {
+      if (value === "" || value === null) {
+        delete JsonObj[key];
+      } else if (typeof(value) === "object") {
+        JsonObj[key] = removeAllBlankOrNull(value);
+      }
+    });
+    return JsonObj;
+  }
 
   /**
    *
