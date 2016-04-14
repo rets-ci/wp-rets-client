@@ -49,7 +49,7 @@
               $array_values[] = $i;
             }
           ?>
-            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
         </ul>
       </div>
@@ -73,7 +73,7 @@
               $array_values[] = $i;
             }
             ?>
-            <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+            <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
         </ul>
       </div>

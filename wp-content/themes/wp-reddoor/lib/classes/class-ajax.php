@@ -18,7 +18,8 @@ namespace UsabilityDynamics\RDC {
        */
       private $actions = array(
         // slug => is_private
-        'TermsSearchable' => 0
+        'TermsSearchable' => 0,
+        'mapFilterAutocomplete' => 0
       );
 
       public function __construct() {
@@ -68,10 +69,11 @@ namespace UsabilityDynamics\RDC {
 
         $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
 
-        $_terms = get_terms( apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'mls_id' ) ), array(
-            'search' => $query,
-            'hierarchical' => false,
-            'hide_empty' => true
+        $_terms = get_terms( array(
+          'taxonomy' => apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'mls_id' ) ),
+          'search' => $query,
+          'hierarchical' => false,
+          'hide_empty' => true
         ) );
 
         $_terms = array_map( function( $data ) {
@@ -89,6 +91,40 @@ namespace UsabilityDynamics\RDC {
         wp_send_json(array(
             "ok" => true,
             "data" => apply_filters( 'rdc_autocomplete_locations_results', $_terms )
+        ));
+
+      }
+
+      /**
+       *
+       */
+      public function mapFilterAutocomplete() {
+
+        $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
+
+        $_terms = get_terms( array(
+            'taxonomy' => apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ),
+            'search' => $query,
+            'hierarchical' => false,
+            'hide_empty' => true
+        ) );
+
+        $_terms = array_map( function( $data ) {
+
+          return array(
+            "id" => $data->name,
+            "slug" => $data->slug,
+            "name" => $data->name,
+            "count" => $data->count,
+            "taxonomy_label" => apply_filters('rdc_search_taxonomy_label', $data->taxonomy),
+            "taxonomy" => $data->taxonomy
+          );
+
+        }, $_terms );
+
+        wp_send_json(array(
+            "ok" => true,
+            "data" => apply_filters( 'rdc_autocomplete_map_filter_results', $_terms )
         ));
 
       }
