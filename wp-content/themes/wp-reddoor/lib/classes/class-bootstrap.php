@@ -94,7 +94,21 @@ namespace UsabilityDynamics\RDC {
 
         $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
 
-        $must_query = array();
+        $must_query = array(
+          array(
+            'exists' => array(
+              'field' => 'tax_input'
+            )
+          )
+        );
+
+        $must_not_query = array(
+          array(
+            'term' => array(
+              'tax_input.location_latitude' => '0'
+            )
+          )
+        );
 
         foreach( $query as $field => $value ) {
           if ( array_key_exists( $field, $taxonomies ) ) {
@@ -143,7 +157,8 @@ namespace UsabilityDynamics\RDC {
 
         $_query = array(
           'bool' => array(
-            'must' => $must_query
+            'must' => $must_query,
+            'must_not' => $must_not_query
           )
         );
 

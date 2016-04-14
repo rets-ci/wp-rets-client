@@ -100,6 +100,9 @@
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
+        $scope.map_filter_taxonomy = '';
+
+        $scope._request = null;
 
         $scope.columns = {
           post_title: {
@@ -196,13 +199,22 @@
 
         /**
          *
+         * @returns {*|{}}
+         */
+        function build_query() {
+          // maybe alter something
+          return $scope.query;
+        }
+
+        /**
+         *
          */
         function getMoreProperties() {
-          client.search({
+          $scope._request = client.search({
             index: index,
             type: type,
             body: {
-              query: $scope.query
+              query: build_query()
             },
             _source: $scope.atts.fields,
             size: 500,
@@ -236,11 +248,15 @@
          */
         $scope.getProperties = function getProperties() {
 
-          client.search({
+          if ( $scope._request ) {
+            $scope._request.abort();
+          }
+
+          $scope._request = client.search({
             index: index,
             type: type,
             body: {
-              query: $scope.query
+              query: build_query()
             },
             _source: $scope.atts.fields,
             size: 100,
@@ -475,6 +491,33 @@
         }, true );
 
         /**
+         *
+         */
+        jQuery('.termsSelection').select2({
+          placeholder: 'Location',
+          maximumSelectionLength: 1,
+          ajax: {
+            url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
+            dataType: 'json',
+            processResults: function(data, page){
+              return {
+                results: data.data
+              }
+            }
+          },
+          templateResult: function formatRepo (city) {
+            if (city.loading) return 'Loading...';
+            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
+            return html;
+          },
+          escapeMarkup: function (markup) { return markup; },
+          templateSelection: function formatRepoSelection (term) {
+            $scope.map_filter_taxonomy = term.taxonomy;
+            return term.name;
+          }
+        });
+
+        /**
          * SEARCH FILTER EVENT
          *
          * We're using jQuery instead of AngularJS here because
@@ -484,7 +527,6 @@
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
 
-          // Get search params from Property Search Form
           var formQuery = {},
               push_counters = {},
               patterns = {
@@ -509,7 +551,6 @@
 
           jQuery.each(jQuery( this ).serializeArray(), function(){
 
-            // skip invalid keys
             if(!patterns.validate.test(this.name)){
               return;
             }
@@ -521,20 +562,16 @@
 
             while((k = keys.pop()) !== undefined){
 
-              // adjust reverse_key
               reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
 
-              // push
               if(k.match(patterns.push)){
                 merge = build([], push_counter(reverse_key), merge);
               }
 
-              // fixed
               else if(k.match(patterns.fixed)){
                 merge = build([], k, merge);
               }
 
-              // named
               else if(k.match(patterns.named)){
                 merge = build({}, k, merge);
               }

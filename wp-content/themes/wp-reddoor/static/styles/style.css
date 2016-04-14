@@ -831,6 +831,36 @@
   border-bottom: 1px solid #e6e6e6;
   padding: 14px;
 }
+.rdc-supermap-search-form .rdc-location-section .location .select2 {
+  border: 1px solid #a7a9ac;
+  border-radius: 5px;
+  height: 60px;
+  min-width: 100%;
+  padding: 12px 12px 12px 35px;
+}
+.rdc-supermap-search-form .rdc-location-section .location .select2 .select2-selection {
+  border: none;
+  background: none;
+}
+.rdc-supermap-search-form .rdc-location-section .location .select2 .select2-selection__choice {
+  border: none;
+  background: none;
+  margin-top: 7px;
+}
+.rdc-supermap-search-form .rdc-location-section .location .sf-icon {
+  color: #a7a9ac;
+  font-size: 20px;
+  left: 18px;
+  margin-top: 0;
+  position: absolute;
+  top: 20px;
+}
+.rdc-supermap-search-form .rdc-location-section .location .termsSelection {
+  width: 100%;
+}
+.rdc-supermap-search-form .rdc-location-section .location .select2-selection {
+  border: none;
+}
 /* Checkboxes */
 .sfBeds input[type="checkbox"],
 .sfBaths input[type="checkbox"],

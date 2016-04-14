@@ -20,21 +20,27 @@
 ?>
 <form class="rdc-supermap-search-form" method="post" action="">
 
+  <input type="hidden" name="bool[must][0][exists][field]" value="tax_input" />
+  <input type="hidden" name="bool[must_not][0][term][tax_input.location_latitude]" value="0" />
+
   <!-- Main Search Filters -->
   <div class="rdc-search-main">
 
-<!--    <div class="row rdc-location-section">-->
-<!--      <div class="col-md-12">-->
-<!--        <input type="text" auto-complete ui-items="wpp.instance.search_values.random_75" ng-model="query.random_75" name="wpp_search[random_75]" />-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="row rdc-location-section">
+      <div class="col-md-12">
+        <div class="location">
+          <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
+          <select multiple="multiple" class="termsSelection" name="bool[must][1][terms][tax_input.{{map_filter_taxonomy}}][]"></select>
+        </div>
+      </div>
+    </div>
 
     <div class="row rdc-ranges-section">
       <div class="col-md-4">
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][0][range][tax_input.bedrooms][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+          <select name="bool[must][2][range][tax_input.bedrooms][gte]">
+            <option value="" disabled selected><?php _e( 'Min', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -42,8 +48,8 @@
             <option value="5">5</option>
             <option value="6">6</option>
           </select>
-          <select name="bool[must][0][range][tax_input.bedrooms][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+          <select name="bool[must][2][range][tax_input.bedrooms][lte]">
+            <option value="" disabled selected><?php _e( 'Max', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -56,8 +62,8 @@
       <div class="col-md-4">
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][1][range][tax_input.bathrooms][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+          <select name="bool[must][3][range][tax_input.bathrooms][gte]">
+            <option value="" disabled selected><?php _e( 'Min', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -65,8 +71,8 @@
             <option value="5">5</option>
             <option value="6">6</option>
           </select>
-          <select name="bool[must][1][range][tax_input.bathrooms][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+          <select name="bool[must][3][range][tax_input.bathrooms][lte]">
+            <option value="" disabled selected><?php _e( 'Max', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
