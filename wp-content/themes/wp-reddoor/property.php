@@ -398,8 +398,8 @@ while (have_posts()) : the_post();
     <div class="row">
       <?php
       $_post_meta = get_post_meta($property['ID']);
-      $walkScoreMeta = $_post_meta['_ws_walkscore'];
-      $walkScore = $walkScoreMeta[0];
+      (!empty($_post_meta['_ws_walkscore'])) ? $walkScoreMeta = $_post_meta['_ws_walkscore'] : $walkScoreMeta = '';
+      (!empty($walkScoreMeta[0])) ? $walkScore = $walkScoreMeta[0] : $walkScore = '';
       if($walkScore <= 100 && $walkScore >= 70){
         $walkScoreColor = '#57BD04';
       }
@@ -469,10 +469,10 @@ while (have_posts()) : the_post();
   <div class="container propertyDetails">
     <div class="row">
       <div class="col-lg-7 col-md-7">
-        <h4><?php _e('Property Details for '); echo $property['location_address']; ?></h4>
+        <h4><?php _e('Property Details for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
       <div class="col-lg-7  col-md-7">
-        <?php echo $property['automated_property_detail_description']; ?>
+        <?php echo (!empty($property['automated_property_detail_description'])) ? $property['automated_property_detail_description'] : ''; ?>
       </div>
       <div class="col-lg-8 col-md-8 bottomSeparate">
         <ul class="nav nav-tabs">
@@ -975,7 +975,7 @@ while (have_posts()) : the_post();
   <div class="container listingProvider">
     <div class="row">
       <div class="col-lg-7 col-md-7">
-        <h4><?php _e('Listing Provider for '); echo $property['location_address']; ?></h4>
+        <h4><?php _e('Listing Provider for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
       <div class="col-lg-7 col-md-7">
         <ul>
@@ -986,7 +986,7 @@ while (have_posts()) : the_post();
           <li><?php _e('MLS ID: '); ?><b><?php echo $mls_id; ?></b></li>
         </ul>
         <ul>
-          <li><img src="<?php echo $property['data_source_logo_2']; ?>" alt=""></li>
+          <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
           <li><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></li>
           <li><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></li>
           <li><?php _e('Last Checked: '); ?><b><?php echo date('Y-m-d H:i', current_time('timestamp')-60); ?></b></li>
@@ -1002,7 +1002,7 @@ while (have_posts()) : the_post();
         <div class="clear"></div>
       </div>
       <div class="col-lg-7 col-md-7 italicText">
-        <?php _e($property['data_source_disclaimer']); ?>
+        <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
       </div>
     </div>
   </div>

@@ -5254,97 +5254,118 @@ body .ui-tooltip {
   body {
     background: none !important;
   }
-  .site-logo {
+  body .headerTopMenu {
+    background: none !important;
+  }
+  body .ftrdImgGoTop {
+    top: 0 !important;
+  }
+  body .ftrdImgGoTop .featuredImageHeader {
+    top: -40px !important;
+  }
+  body .frontPageSearchBlock {
+    top: -40px !important;
+  }
+  body .site-logo {
     left: 23%;
   }
-  .site-content {
+  body .site-content {
     padding: 0 2%;
   }
-  .menuDesktop {
+  body .menuDesktop {
     display: none !important;
   }
-  .popUpLoginBtn {
+  body .popUpLoginBtn {
     display: none !important;
   }
-  .popUpContactBtn {
+  body .popUpContactBtn {
     margin-right: 10%;
   }
-  .mobileMenu,
-  .toggle,
-  .menuAdaptive {
+  body .mobileMenu,
+  body .toggle,
+  body .menuAdaptive {
     display: block !important;
   }
-  .frontPageSearchBlock .searchForm {
+  body .frontPageSearchBlock .searchForm {
     min-width: 557px;
   }
-  .frontPageSearchBlock .searchForm form {
+  body .frontPageSearchBlock .searchForm form {
     border-radius: 0 0 5px 5px;
-    height: 200px;
+    height: 280px;
     padding: 9px;
   }
-  .frontPageSearchBlock .searchForm form .location {
+  body .frontPageSearchBlock .searchForm form .location {
     width: 100%;
     border-radius: 5px;
     margin-bottom: 5px;
   }
-  .frontPageSearchBlock .searchForm form .sfBeds {
+  body .frontPageSearchBlock .searchForm form .sfBeds {
     width: 49%;
     border-radius: 5px;
   }
-  .frontPageSearchBlock .searchForm form .sfBaths {
+  body .frontPageSearchBlock .searchForm form .sfBaths {
     width: 49%;
     margin-left: 10px;
     border-radius: 5px;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 100%;
     border-radius: 5px;
     margin-top: 5px;
   }
-  .frontPageSearchBlock .searchForm form input[type="submit"] {
+  body .frontPageSearchBlock .searchForm form input[type="submit"] {
     width: 100%;
     margin-left: 0;
     margin-top: 5px;
     padding: 18px 20px;
   }
-  .frontPageSearchBlock .searchForm form ul {
+  body .frontPageSearchBlock .searchForm form ul {
     position: relative;
     z-index: 20;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
     padding-left: 5px;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
     width: 49%;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
     width: 50%;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .right-side {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .right-side {
     width: 50%;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
     padding-right: 15px;
     text-align: center;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
+  body .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
     padding-left: 15px;
     text-align: center;
   }
-  .contactMenu {
+  body .contactMenu {
     margin-right: 20px;
   }
-  .contactMenu li:last-child {
+  body .contactMenu li {
+    margin-top: 1.4em;
+  }
+  body .contactMenu li a {
+    font-size: 1.3em;
+  }
+  body .contactMenu li:last-child {
     display: none;
   }
-  .popup {
+  body .popup {
     left: 30%;
     top: 15%;
   }
-  .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetImageArea {
+  body footer .footerWidgetArea2 {
+    text-align: center;
+  }
+  body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetImageArea {
     display: none;
   }
-  .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
+  body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
   }
 }
