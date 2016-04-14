@@ -643,8 +643,8 @@ namespace UsabilityDynamics\RDC {
      */
     public function frontend_enqueue()
     {
-      wp_enqueue_style('gc-style', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/css/gc-style.css?nocache=' . rand(1, 200));
-      wp_enqueue_script('frontend-guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/frontend-guide.js?nocache=' . rand(1, 200));
+      wp_enqueue_style('gc-style', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/css/gc-style.css');
+      wp_enqueue_script('frontend-guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/frontend-guide.js');
     }
 
     /**
@@ -652,7 +652,7 @@ namespace UsabilityDynamics\RDC {
      */
     public function admin_enqueue()
     {
-      wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/guide.js?nocache=' . rand(1, 200));
+      wp_enqueue_script('guide', get_stylesheet_directory_uri() . '/lib/widgets/gc-widget/js/guide.js');
       //wp_enqueue_media();
     }
 
@@ -823,7 +823,7 @@ namespace UsabilityDynamics\RDC {
      */
     public function admin_enqueue()
     {
-      wp_enqueue_script('callout', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/js/callout.js?nocache=' . rand(1, 200));
+      wp_enqueue_script('callout', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/js/callout.js');
       //wp_enqueue_media();
     }
 
@@ -832,8 +832,8 @@ namespace UsabilityDynamics\RDC {
      */
     public function frontend_enqueue()
     {
-      wp_enqueue_style('callout-style', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/css/callout-style.css?nocache=' . rand(1, 200));
-      wp_enqueue_script('frontend-callout', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/js/frontend-callout.js?nocache=' . rand(1, 200));
+      wp_enqueue_style('callout-style', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/css/callout-style.css');
+      wp_enqueue_script('frontend-callout', get_stylesheet_directory_uri() . '/lib/widgets/rdc-callout-widget/js/frontend-callout.js');
     }
 
     /**

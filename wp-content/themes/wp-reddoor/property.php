@@ -146,14 +146,14 @@ while (have_posts()) : the_post();
               <p>
               <a class="icon-wpproperty-social-facebook-symbol" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a>
               <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . $singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
-              <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity); ?>&summary=<?php echo urlencode($property['automated_property_detail_description']) ?>&source=Red%20Door%20Company"></a>
+              <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity); ?>&summary=<?php (!empty($property['automated_property_detail_description'])) ? urlencode($property['automated_property_detail_description']) : '' ?>&source=Red%20Door%20Company"></a>
               </p>
               <p class="visEmail"><span>or mail vis email</span></p>
               <script>
               jQuery(document).ready(function(){
                 jQuery('#sharingEmail').keyup(function(){
                   var value = jQuery(this).val();
-                  jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
+                  jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . (!empty($property['automated_property_detail_description'])) ?  urlencode($property['automated_property_detail_description']) : ''  . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
                 });
               });
               </script>
@@ -422,11 +422,13 @@ while (have_posts()) : the_post();
         $walkScoreSubtitle = 'Very Walkable';
       }
       ?>
+      <?php if(!empty($walkScore)){ ?>
       <div class="ambItem col-md-2 col-lg-2">
         <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
         <span>Walk Score</span>
         <strong><?php echo $walkScoreSubtitle; ?></strong>
       </div>
+      <?php } ?>
       <div class="ambItem col-md-2 col-lg-2">
         <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
         <span>Transit Score</span>
@@ -449,10 +451,10 @@ while (have_posts()) : the_post();
 
         <div class="tab-content">
           <div id="Ameneties" class="tab-pane fade in active">
-            <?php echo do_shortcode('[property_walkscore_neighborhood var ws_map_modules = "google_map"; var ws_base_map = "google_map";]'); ?>
+            <?php echo do_shortcode('[property_walkscore_neighborhood ws_map_modules = "google_map";  ws_base_map = "google_map";]'); ?>
           </div>
           <div id="Commute" class="tab-pane fade">
-            <p>Some content Commute.</p>
+            <p>Commute</p>
           </div>
           <div id="Street" class="tab-pane fade">
             <p>Some content Street.</p>

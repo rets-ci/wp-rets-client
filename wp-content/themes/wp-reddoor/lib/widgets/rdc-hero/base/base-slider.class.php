@@ -24,7 +24,7 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 		}
 		$frontend_scripts[] = array(
 			'sow-slider-slider',
-			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/slider/jquery.slider' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			get_stylesheet_directory_uri() . '/lib/widgets/rdc-hero/scripts/slider/jquery.slider.js',
 			array( 'jquery' ),
 			SOW_BUNDLE_VERSION
 		);
