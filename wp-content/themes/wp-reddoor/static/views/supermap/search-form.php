@@ -102,7 +102,25 @@
   <!-- Optional Search Filters -->
   <div class="rdc-search-optional">
 
-
+    <div class="col-md-4">
+      <label><?php _e( 'Listing Type', 'reddoor' ); ?></label>
+      <div class="rdc-range-fields">
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
+              Sale
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
+              Rent
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
 
   </div>
 
