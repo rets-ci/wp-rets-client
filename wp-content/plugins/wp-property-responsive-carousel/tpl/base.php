@@ -114,7 +114,7 @@ $the_query = new WP_Query( $query );
 							<li class="rdc-carousel-item">
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
-										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'medium'); ?>
+										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>
 											<div class="thumb" style="background-image: url(<?php echo esc_url($img) ?>); background-size: cover; background-position: center center;">
 												<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 												<span class="overlay"></span>
@@ -125,11 +125,11 @@ $the_query = new WP_Query( $query );
 									</div>
 									<div class="item-content">
 										<p><?php echo $property['post_title']; if(!empty($property[ 'price' ])){ echo ' - <span>$' . number_format($property[ 'price' ]) . '</span>' ; } ?></p>
-										<span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); _e($get_location_city_terms[0]->name); ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); _e('NC ' . $get_location_zip_terms[0]->name); ?></span>
+										<span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); ($get_location_city_terms[0]) ? _e($get_location_city_terms[0]->name) : '' ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); ($get_location_zip_terms[0]) ? _e('NC ' . $get_location_zip_terms[0]->name) : '' ?></span>
 										<ul>
-											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); echo '</li>'; } ?>
-											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); echo '</li>'; } ?>
-											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]->name){ ?><li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' ft<sup>2</sup>.'); echo '</li>'; } ?>
+											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); echo '</li>'; } ?>
+											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); echo '</li>'; } ?>
+											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' ft<sup>2</sup>.'); echo '</li>'; } ?>
 										</ul>
 									</div>
 								</a>

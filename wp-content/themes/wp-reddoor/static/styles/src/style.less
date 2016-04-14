@@ -100,7 +100,18 @@
 }
 @media screen and (max-width: @adapt768) {
   body {
+  background: none !important;
+  .headerTopMenu{
     background: none !important;
+  }
+  .ftrdImgGoTop{
+      top: 0 !important;
+    .featuredImageHeader{
+      top: -40px !important;
+    }
+  }
+  .frontPageSearchBlock{
+    top: -40px !important;
   }
   .site-logo {
     left: 23%;
@@ -126,7 +137,7 @@
       min-width: 557px;
       form{
         border-radius: 0 0 5px 5px;
-        height: 200px;
+        height: 280px;
         padding: 9px;
         .location{
           width: 100%;
@@ -159,7 +170,6 @@
         }
       }
       .sfPriceRange{
-
         .sfprInputsBlock{
           padding-left: 5px;
           input{
@@ -186,6 +196,10 @@
   .contactMenu{
     margin-right: 20px;
     li {
+      margin-top: 1.4em;
+      a{
+        font-size: 1.3em;
+      }
       &:last-child {
         display: none;
       }
@@ -195,6 +209,9 @@
     left: 30%;
     top: 15%;
   }
+    .footerWidgetArea2{
+      text-align: center;
+    }
   .so-widget-tabbed-content {
     .sow-slider-image-wrapper {
       .tabbedWidgetImageArea {
@@ -204,6 +221,7 @@
         width: 100% !important;
       }
     }
+  }
   }
 }
 
