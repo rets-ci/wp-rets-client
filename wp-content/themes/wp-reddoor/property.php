@@ -883,7 +883,7 @@ while (have_posts()) : the_post();
                     $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>' . $get_term_value[0]->name . '</b></li>';
                   }
                 } else {
-                  if($property["$key"] == true){
+                  if(!empty($property["$key"])){
                     $listAttributes[] = '<li>' . str_replace('_', ' ', ucwords($key)) . ': <b>Yes</b></li>';
                   }
                 }
