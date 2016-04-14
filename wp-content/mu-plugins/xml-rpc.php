@@ -55,6 +55,18 @@ add_filter( 'wp_get_attachment_url', function( $url, $post_id ) {
 }, 10, 2);
 
 /**
+ *
+ */
+add_filter( 'wp_get_attachment_image_src', function( $image, $attachment_id, $size, $icon ){
+
+  if ( get_post_meta( $attachment_id, '_is_remote', 1 ) ) {
+    return array( rdc_fix_rets_image_url( $attachment_id, $size ) );
+  }
+
+  return $image;
+}, 10, 4);
+
+/**
  * Filters in order to make remote images to work
  */
 add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, $meta ){
@@ -191,7 +203,7 @@ function rdc_fix_rets_image_url( $id, $size = false ) {
 
   //die('$size'.$size);
   // if the size exists in image sizes, append the image-size spedific annex to url
-  if( $size && key_exists( $size, $_image_sizes ) ) {
+  if( $size && array_key_exists( $size, $_image_sizes ) ) {
     $_extension = pathinfo( $_url, PATHINFO_EXTENSION );
     $_url = str_replace( '.' . $_extension, '-' . $_image_sizes[$size]['width'] . 'x' . $_image_sizes[$size]['height'] . '.' . $_extension, $_url );
   }
