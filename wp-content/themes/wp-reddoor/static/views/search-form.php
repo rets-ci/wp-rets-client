@@ -44,10 +44,6 @@
         </span>
         <ul class="dropdown-list">
           <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-            $array_values = array();
-            for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
-              $array_values[] = $i;
-            }
           ?>
             <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
@@ -67,12 +63,9 @@
         </span>
 
         <ul class="dropdown-list">
-          <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-            $array_values = array();
-            for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
-              $array_values[] = $i;
-            }
-            ?>
+          <?php
+            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+          ?>
             <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
         </ul>
@@ -160,13 +153,10 @@
         </span>
 
         <ul class="dropdown-list">
-          <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-            $array_values = array();
-            for( $i = $value; $i <= max(apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6))); $i++ ) {
-              $array_values[] = $i;
-            }
-            ?>
-            <li><input id="rent_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="rent_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php
+            foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+          ?>
+            <li><input id="rent_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="<?php echo $value; ?>" /><label for="rent_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
         </ul>
       </div>
@@ -182,13 +172,10 @@
         </span>
 
         <ul class="dropdown-list">
-          <?php foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-            $array_values = array();
-            for( $i = $value; $i <= max(apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6))); $i++ ) {
-              $array_values[] = $i;
-            }
-            ?>
-            <li><input id="rent_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms]" type="radio" value="<?php echo implode(',', $array_values) ?>"/><label for="rent_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php
+            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+          ?>
+            <li><input id="rent_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="rent_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
         </ul>
       </div>

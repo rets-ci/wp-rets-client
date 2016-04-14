@@ -1238,7 +1238,7 @@
   display: block;
   font-size: 1em;
   height: 25px;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   margin-top: 8px;
   text-align: center;
   width: 25px;
@@ -5296,6 +5296,15 @@ body .ui-tooltip {
   body .frontPageSearchBlock {
     top: -40px !important;
   }
+  body .single-property .singlePropertyHeader {
+    z-index: 9;
+  }
+  body .single-property .singlePropertyHeader .oneAgent {
+    display: none;
+  }
+  body .single-property .bottomSeparate {
+    padding-bottom: 5px;
+  }
   body .site-logo {
     left: 23%;
   }
@@ -5389,8 +5398,12 @@ body .ui-tooltip {
     left: 30%;
     top: 15%;
   }
-  body footer .footerWidgetArea2 {
+  body .footerWidgetArea2 {
     text-align: center;
+    margin-top: 30px;
+  }
+  body .footerWidgetArea3 {
+    margin-top: 30px;
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetImageArea {
     display: none;

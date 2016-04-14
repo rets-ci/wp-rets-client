@@ -102,6 +102,9 @@
         $scope.searchForm = false;
         $scope.map_filter_taxonomy = '';
 
+        $scope.min_prices = [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ];
+        $scope.max_prices = [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ];
+
         $scope._request = null;
 
         $scope.columns = {

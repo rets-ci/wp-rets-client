@@ -40,7 +40,7 @@
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <select name="bool[must][2][range][tax_input.bedrooms][gte]">
-            <option value="" disabled selected><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -49,7 +49,7 @@
             <option value="6">6</option>
           </select>
           <select name="bool[must][2][range][tax_input.bedrooms][lte]">
-            <option value="" disabled selected><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -63,7 +63,7 @@
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <select name="bool[must][3][range][tax_input.bathrooms][gte]">
-            <option value="" disabled selected><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -72,7 +72,7 @@
             <option value="6">6</option>
           </select>
           <select name="bool[must][3][range][tax_input.bathrooms][lte]">
-            <option value="" disabled selected><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -82,13 +82,19 @@
           </select>
         </div>
       </div>
-<!--      <div class="col-md-4">-->
-<!--        <label>--><?php //_e( 'Price', 'reddoor' ); ?><!--</label>-->
-<!--        <div class="rdc-range-fields">-->
-<!--          <input type="text" name="wpp_search[price][min]" ng-model="query.price.min" placeholder="--><?php //_e( 'Min', 'reddoor' ); ?><!--" />-->
-<!--          <input type="text" name="wpp_search[price][max]" ng-model="query.price.max" placeholder="--><?php //_e( 'Max', 'reddoor' ); ?><!--" />-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="col-md-4">
+        <label><?php _e( 'Price', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select name="bool[must][4][range][tax_input.price][gte]">
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_price in min_prices" value="{{_price}}">{{_price}}</option>
+          </select>
+          <select name="bool[must][4][range][tax_input.price][lte]">
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option ng-repeat="_price in max_prices" value="{{_price}}">{{_price}}</option>
+          </select>
+        </div>
+      </div>
     </div>
 
   </div>
