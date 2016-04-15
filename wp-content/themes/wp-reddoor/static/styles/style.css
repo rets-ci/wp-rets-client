@@ -831,6 +831,9 @@
   border-bottom: 1px solid #e6e6e6;
   padding: 14px;
 }
+.wpp-advanced-supermap {
+  overflow: visible !important;
+}
 .rdc-supermap-search-form .rdc-location-section .location .select2 {
   border: 1px solid #a7a9ac;
   border-radius: 5px;

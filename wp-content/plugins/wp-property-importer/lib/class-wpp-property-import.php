@@ -55,59 +55,6 @@ class class_wpp_property_import {
   );
 
   /**
-   * Set Job Status
-   *
-   * @param $schedule_id
-   * @param $status
-   * @param $args
-   */
-  static public function set_status( $schedule_id, $status, $args ) {
-
-    // wp_check_post_lock
-    // wp_set_post_lock
-
-    $_result = wp_insert_post(array(
-      'post_title' => "Import $schedule_id",
-      'post_type' => '_wpp-xmli-job',
-      'post_status' => 'publish'
-    ));
-
-    if( !is_wp_error( $_result ) ) {
-      return $_result;
-    }
-
-    return null;
-
-  }
-
-  /**
-   * Add Job Log
-   *
-   * @param $schedule_id
-   * @param $type
-   * @param $args
-   */
-  static public function update_status_log( $job_id, $type, $content, $args ) {
-
-    $_result = wp_insert_comment(array(
-      'comment_post_ID' => $job_id,
-      //'comment_author' => 'admin',
-      'comment_author_email' => 'admin@admin.com',
-      //'comment_author_url' => 'http://',
-      'comment_content' => $content,
-      'comment_type' => $type,
-      //'comment_parent' => 0,
-      'user_id' => 1,
-      'comment_author_IP' => '127.0.0.1',
-      //'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
-      'comment_date' => current_time('mysql'),
-      'comment_approved' => 1,
-    ));
-
-    // die( '<pre>' . print_r( $_result , true ) . '</pre>' );
-  }
-
-  /**
    * Special functions that must be called prior to init
    *
    */
@@ -162,13 +109,6 @@ class class_wpp_property_import {
       add_filter( 'wpp::get_properties::custom_case', array( __CLASS__, 'wpp_get_properties_by_custom_case'), 10, 2 );
       add_filter( 'wpp::get_properties::custom_key', array( __CLASS__, 'wpp_get_properties_by_custom_filter'), 10, 3 );
     }
-
-    register_post_type( '_wpp-xmli-job', array(
-      'label' => 'XMLI Job',
-      'public' => false,
-      'show_ui' => true, // temp
-      'supports' => array( 'comments' )
-    ) );
 
     /* Setup pages */
     add_action( 'admin_menu', array( 'class_wpp_property_import', 'admin_menu' ) );
@@ -1809,13 +1749,6 @@ class class_wpp_property_import {
         @ini_set( 'zlib.output_compression', 0 );
         @ini_set( 'implicit_flush', 1 );
         @ob_implicit_flush( 1 );
-
-        $_job = self::set_status( $schedule_id, 'active', array(
-
-        ));
-
-        self::update_status_log( $_job, 'started', 'Job started' );
-
 
         //** Try to increase memory_limit if it's less than 1024M */
         $memory_limit = @ini_get( 'memory_limit' );

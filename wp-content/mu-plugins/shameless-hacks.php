@@ -32,7 +32,7 @@ if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' &
   function delete_rets_listings() {
     global $wpdb;
 
-    $_old = $wpdb->get_col( "SELECT post_id from $wpdb->postmeta WHERE meta_key='rets._id';" );
+    $_old = $wpdb->get_col( "SELECT post_id from $wpdb->postmeta WHERE meta_key='rets_id';" );
 
     $all_deleted = array();
     foreach( $_old as $_delete_me ) {
