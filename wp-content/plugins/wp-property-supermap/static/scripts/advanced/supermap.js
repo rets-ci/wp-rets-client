@@ -169,7 +169,7 @@
           return i;
         };
 
-        var index = 'v4',
+        var index = 'v5',
             type = 'property';
 
         console.log( $scope.query );

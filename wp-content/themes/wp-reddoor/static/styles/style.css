@@ -834,6 +834,18 @@
 .wpp-advanced-supermap {
   overflow: visible !important;
 }
+.wpp-advanced-supermap .sm-search-form {
+  padding: 30px !important;
+}
+.rdc-supermap-search-form label {
+  color: #5a595c;
+  font-size: 14px;
+  font-weight: normal;
+}
+.rdc-supermap-search-form .rdc-range-fields label {
+  color: #808285;
+  margin-left: 10px;
+}
 .rdc-supermap-search-form .rdc-location-section .location .select2 {
   border: 1px solid #a7a9ac;
   border-radius: 5px;
