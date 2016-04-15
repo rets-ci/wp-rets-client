@@ -166,19 +166,21 @@ while (have_posts()) : the_post();
 
             <div class="rdc-agents-carousel-wrapper">
 
-              <?php if (empty($property['wpp_agents']) || $_propertyType == 'rent') { ?>
+              <?php if (empty($property['wpp_agents']) && $_propertyType == 'rent') { ?>
 
-                <div class="rdc-agents-carousel-title">
+              <?php } else { ?>
 
-                  <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
+              <div class="rdc-agents-carousel-title">
 
-                  <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+                <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
 
-                </div>
+                <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+
+              </div>
 
               <?php } ?>
 
-              <ul class="rdc-agents-carousel-items">
+              <ul class="rdc-agents-carousel-items" <?php echo ($_propertyType == 'rent') ? 'style="height: auto;"' : '' ?>>
 
                 <?php
 
@@ -218,9 +220,6 @@ while (have_posts()) : the_post();
                       if (!empty($image_ids[0])) {
                         $imageId = $image_ids[0];
                       }
-//                else{
-//                  $imageId = '14311';
-//                }
 
                       echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
 
@@ -232,10 +231,8 @@ while (have_posts()) : the_post();
 
                     echo '<div class="oneAgentLinksBlock"><a href="#">Request Information</a></div></li>';
 
-
                   }
                 }
-
                 ?>
 
               </ul>

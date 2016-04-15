@@ -81,18 +81,18 @@ jQuery(document).ready(function(){
 
     jQuery("#propertyDetails").sticky({topSpacing:0});
 
-    /* Equal height */
-    jQuery.fn.equivalent = function (){
-        var $blocks = jQuery(this),
-            maxH    = $blocks.eq(0).height();
-        $blocks.each(function(){
-            maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
-        });
-        $blocks.height(maxH);
-    }
-    jQuery('.pdRoomsBlock').equivalent();
-
-    /* Equal height */
+    ///* Equal height */
+    //jQuery.fn.equivalent = function (){
+    //    var $blocks = jQuery(this),
+    //        maxH    = $blocks.eq(0).height();
+    //    $blocks.each(function(){
+    //        maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
+    //    });
+    //    $blocks.height(maxH);
+    //}
+    //jQuery('.pdRoomsBlock').equivalent();
+    //
+    ///* Equal height */
 
 
     /* Tabbed content widget (feature point) */

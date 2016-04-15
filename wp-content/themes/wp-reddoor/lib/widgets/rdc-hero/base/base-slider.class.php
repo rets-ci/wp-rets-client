@@ -163,8 +163,8 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 
 					<?php foreach($frames as $i => $frame) : ?>
 						<li><a href="#" data-goto="<?php echo $i ?>">
-								<?php echo siteorigin_widget_get_icon($frame['svg']); ?>
-								<div><?php echo $frame['content_title']; ?></div>
+								<?php echo (!empty($frame['svg'])) ? siteorigin_widget_get_icon($frame['svg']) : ''; ?>
+								<div><?php echo (!empty($frame['content_title'])) ? $frame['content_title'] : ''; ?></div>
 							</a></li>
 					<?php endforeach; ?>
 				</ol>
