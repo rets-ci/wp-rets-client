@@ -39,60 +39,32 @@
       <div class="col-md-4">
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][2][range][tax_input.bedrooms][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-          <select name="bool[must][2][range][tax_input.bedrooms][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
+          <ul>
+            <li><input id="buy_beds_0" class="dropdown-option" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
+          <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+            ?>
+            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+          <?php endforeach; ?>
+          </ul>
         </div>
       </div>
       <div class="col-md-4">
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][3][range][tax_input.bathrooms][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-          <select name="bool[must][3][range][tax_input.bathrooms][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
+          <ul>
+            <li><input id="buy_beds_0" class="dropdown-option" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
+            <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+              ?>
+              <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+            <?php endforeach; ?>
+          </ul>
         </div>
       </div>
       <div class="col-md-4">
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][4][range][tax_input.price][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_price in min_prices" value="{{_price}}">{{_price}}</option>
-          </select>
-          <select name="bool[must][4][range][tax_input.price][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_price in max_prices" value="{{_price}}">{{_price}}</option>
-          </select>
+          <input placeholder="<?php _e('Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
+          <input placeholder="<?php _e('Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
         </div>
       </div>
     </div>
@@ -124,14 +96,26 @@
           <ul>
             <li>
               <label>
-                <input type="checkbox" value="Sale" name="bool[must][6][terms][tax_input.listing_type][]" />
-                <?php _e('Sale', 'reddor'); ?>
+                <input type="checkbox" value="condo" checked name="bool[must][6][terms][meta_input.property_type][]" />
+                <?php _e('Condo', 'reddor'); ?>
               </label>
             </li>
             <li>
               <label>
-                <input type="checkbox" value="Rent" name="bool[must][6][terms][tax_input.listing_type][]" />
-                <?php _e('Rent', 'reddor'); ?>
+                <input type="checkbox" value="townhouse" checked name="bool[must][6][terms][meta_input.property_type][]" />
+                <?php _e('Townhouse', 'reddor'); ?>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" value="house" checked name="bool[must][6][terms][meta_input.property_type][]" />
+                <?php _e('House', 'reddor'); ?>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" value="manufactured" checked name="bool[must][6][terms][meta_input.property_type][]" />
+                <?php _e('Manufactured', 'reddor'); ?>
               </label>
             </li>
           </ul>
