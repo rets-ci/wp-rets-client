@@ -585,6 +585,8 @@
           
           $scope.query = formQuery;
 
+          $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
+
           $scope.toggleSearchForm();
           $scope.$apply();
           $scope.getProperties();

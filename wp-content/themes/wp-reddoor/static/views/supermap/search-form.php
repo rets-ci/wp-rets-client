@@ -97,29 +97,132 @@
       </div>
     </div>
 
-  </div>
+    <!-- Optional Search Filters -->
+    <div class="row rdc-search-optional">
 
-  <!-- Optional Search Filters -->
-  <div class="rdc-search-optional">
+      <div class="col-md-4">
+        <label><?php _e( 'Listing Type', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <?php _e('Sale', 'reddor'); ?>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <?php _e('Rent', 'reddor'); ?>
+              </label>
+            </li>
+          </ul>
+        </div>
 
-    <div class="col-md-4">
-      <label><?php _e( 'Listing Type', 'reddoor' ); ?></label>
-      <div class="rdc-range-fields">
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
-              Sale
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
-              Rent
-            </label>
-          </li>
-        </ul>
+        <label><?php _e( 'Home Type', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" value="Sale" name="bool[must][6][terms][tax_input.listing_type][]" />
+                <?php _e('Sale', 'reddor'); ?>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" value="Rent" name="bool[must][6][terms][tax_input.listing_type][]" />
+                <?php _e('Rent', 'reddor'); ?>
+              </label>
+            </li>
+          </ul>
+        </div>
+
       </div>
+
+      <div class="col-md-4">
+
+        <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][gte]">
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+            <option value="3000">3000</option>
+            <option value="4000">4000</option>
+            <option value="5000">5000</option>
+            <option value="6000">6000</option>
+            <option value="7000">7000</option>
+            <option value="8000">8000</option>
+            <option value="9000">9000</option>
+            <option value="10000">10000</option>
+            <option value="15000">15000</option>
+            <option value="20000">20000</option>
+          </select>
+          <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][lte]">
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+            <option value="3000">3000</option>
+            <option value="4000">4000</option>
+            <option value="5000">5000</option>
+            <option value="6000">6000</option>
+            <option value="7000">7000</option>
+            <option value="8000">8000</option>
+            <option value="9000">9000</option>
+            <option value="10000">10000</option>
+            <option value="15000">15000</option>
+            <option value="20000">20000</option>
+          </select>
+        </div>
+
+        <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+            <option value="3000">3000</option>
+            <option value="4000">4000</option>
+            <option value="5000">5000</option>
+          </select>
+          <select name="bool[must][8][range][tax_input.approximate_lot_size][lte]">
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+            <option value="3000">3000</option>
+            <option value="4000">4000</option>
+            <option value="5000">5000</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <label><?php _e( 'Year Built', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select name="bool[must][9][range][tax_input.year_built][gte]">
+            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+            <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
+              <option value="<?php echo $i ?>"><?php echo $i; ?></option>
+            <?php endfor; ?>
+          </select>
+          <select name="bool[must][9][range][tax_input.year_built][lte]">
+            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+            <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
+              <option value="<?php echo $i ?>"><?php echo $i; ?></option>
+            <?php endfor; ?>
+          </select>
+        </div>
+
+      </div>
+
     </div>
 
   </div>
