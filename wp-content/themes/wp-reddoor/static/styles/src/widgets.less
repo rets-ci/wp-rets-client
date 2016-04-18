@@ -76,6 +76,7 @@
   }
 }
 .so-widget-tabbed-content{
+
   .tabbedWidgetTitle{
     color: #5a595c !important;
     text-align: center;
@@ -83,6 +84,60 @@
     text-shadow: none !important;
     font-weight: bold;
     font-size: 2.4em;
+  }
+  .tabbedWidgetMobile{
+    display: none;
+    .ui-accordion-header{
+      background: #fff;
+      border: 1px solid #DCD6CA;
+      border-radius: 0 !important;
+      margin-bottom: -2px;
+      padding: 1em 0.5em 1em 0.7em;
+      font-size: 1.6em;
+      display: flex;
+      &:hover{
+        background: #fff;
+        border: 1px solid #DCD6CA;
+        border-bottom: 1px solid @buttons;
+        .sow-icon-reddoorcompany{
+          color: @buttons;
+        }
+      }
+      .ui-accordion-header-icon{
+        right: 0.5em;
+        left: auto;
+      }
+      .ui-icon{
+
+      }
+      .ui-accordion-icons {
+        padding-left: 0.8em !important;
+      }
+      .sow-icon-reddoorcompany{
+        margin-right: 20px;
+        font-size: 1.4em;
+      }
+      .mobileFrameTitle{
+        align-self: center;
+      }
+    }
+    .ui-accordion-content{
+      border: 1px solid #DCD6CA;
+      border-radius: 0;
+      margin-bottom: -3px;
+      .tabbedMobileImageArea{
+        width: 100%;
+        background-size: cover;
+        min-height: 50px;
+        background-position: center center;
+        margin-top: 15px;
+        img{
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
   }
   .sow-slider-base{
     padding-top: 70px;

@@ -4,9 +4,11 @@ jQuery(document).ready(function(){
     jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
 
-    jQuery(function() {
-        jQuery( "#accordion" ).accordion();
+    jQuery( ".rdc-accordion" ).accordion({
+        active: false,
+        collapsible: true,
     });
+    jQuery('.ui-accordion-content').css('height', jQuery('.ui-accordion-content').outerHeight()-200);
 
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){

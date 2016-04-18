@@ -1635,6 +1635,56 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-weight: bold;
   font-size: 2.4em;
 }
+.so-widget-tabbed-content .tabbedWidgetMobile {
+  display: none;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header {
+  background: #fff;
+  border: 1px solid #DCD6CA;
+  border-radius: 0 !important;
+  margin-bottom: -2px;
+  padding: 1em 0.5em 1em 0.7em;
+  font-size: 1.6em;
+  display: flex;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover {
+  background: #fff;
+  border: 1px solid #DCD6CA;
+  border-bottom: 1px solid #d03528;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover .sow-icon-reddoorcompany {
+  color: #d03528;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .ui-accordion-header-icon {
+  right: 0.5em;
+  left: auto;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .ui-accordion-icons {
+  padding-left: 0.8em !important;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .sow-icon-reddoorcompany {
+  margin-right: 20px;
+  font-size: 1.4em;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .mobileFrameTitle {
+  align-self: center;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content {
+  border: 1px solid #DCD6CA;
+  border-radius: 0;
+  margin-bottom: -3px;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
+  width: 100%;
+  background-size: cover;
+  min-height: 50px;
+  background-position: center center;
+  margin-top: 15px;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
+  height: 100%;
+  width: 100%;
+}
 .so-widget-tabbed-content .sow-slider-base {
   padding-top: 70px;
 }
@@ -5452,6 +5502,9 @@ body .ui-tooltip {
     left: 30%;
     top: 15%;
   }
+  body .tabbedWidgetMobile {
+    display: block !important;
+  }
   body .footerWidgetArea2 {
     text-align: center;
     margin-top: 30px;
@@ -5464,6 +5517,9 @@ body .ui-tooltip {
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
+  }
+  .so-widget-tabbed-content .tabbedWidgetTitle {
+    display: none;
   }
   .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
     display: none;
