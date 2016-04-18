@@ -4,6 +4,10 @@ jQuery(document).ready(function(){
     jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
 
+    jQuery(function() {
+        jQuery( "#accordion" ).accordion();
+    });
+
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){
         jQuery('.mobileMenu').animate({'left':'0'},400).css('position', 'fixed');

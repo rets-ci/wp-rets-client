@@ -5504,4 +5504,10 @@ body .ui-tooltip {
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
   }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
+    display: none;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-images .sow-slider-image-container {
+    display: none;
+  }
 }
