@@ -845,8 +845,47 @@
   font-size: 14px;
   font-weight: normal;
 }
+.rdc-supermap-search-form .rdc-range-fields {
+  margin-bottom: 10px;
+}
 .rdc-supermap-search-form .rdc-range-fields label {
   color: #808285;
+}
+.rdc-supermap-search-form .rdc-range-fields ul {
+  margin-bottom: 0;
+}
+.rdc-supermap-search-form .col-md-4 > label {
+  margin-bottom: 10px;
+}
+.rdc-supermap-search-form .price-input {
+  float: left;
+  width: 47%;
+  border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .price-input + .price-input {
+  margin-left: 6%;
+}
+.rdc-supermap-search-form .price-dropdown {
+  background: white none repeat scroll 0 0;
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+  padding: 5px 10px;
+  position: absolute;
+  top: 62px;
+  width: 100%;
+  z-index: 9;
+}
+.rdc-supermap-search-form .price-dropdown .max-values {
+  text-align: right;
+}
+.rdc-supermap-search-form .price-dropdown ul {
+  margin-bottom: 0;
+}
+.rdc-supermap-search-form .price-dropdown ul li a {
+  color: grey;
+  font-size: 12px;
 }
 .rdc-supermap-search-form .rdc-location-section .location .select2 {
   border: 1px solid #a7a9ac;
