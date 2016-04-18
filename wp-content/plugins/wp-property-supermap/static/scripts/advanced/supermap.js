@@ -241,12 +241,14 @@
          */
         $scope.footage = {
 
+          min:'',
+
           min_feet: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
           max_feet: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
 
           recalculate: function ( current ) {
             var j;
-            j = typeof current == 'number' ? current : 0;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
             for( var i in this.max_feet ) {
               this.max_feet[i] = j += 500;
             }
@@ -260,14 +262,15 @@
          */
         $scope.acrage = {
 
+          min:'',
+
           min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50],
           max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
 
           recalculate: function ( current ) {
-
             for( var i in this.max_acres ) {
-              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
-                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
+              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current*1 )) + parseInt(i) + 1 ] ) {
+                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current*1 )) + parseInt(i) + 1 ];
               } else {
                 this.max_acres[i] = this.max_acres[ i-1 ] + 10;
               }
