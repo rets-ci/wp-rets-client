@@ -117,8 +117,10 @@ jQuery(document).ready(function(){
     });
 
     jQuery('#menu-home-buying-page-sub-menu li:first-child').append('<span class="homeBuyingMenuSpoiler"></span>');
-    jQuery('.homeBuyingMenuSpoiler').toggle('slow', function(){
-        jQuery('#menu-home-buying-page-sub-menu').css('height', '100%');
+    jQuery('.homeBuyingMenuSpoiler').on('click', function() {
+        jQuery('#menu-home-buying-page-sub-menu').animate({
+            height: "100%"
+        }, 'slow' );
     });
 
 });
