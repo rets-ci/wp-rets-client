@@ -640,6 +640,10 @@
 }
 .rdc-supermap-search-form {
 
+  .row {
+    margin-bottom: 20px;
+  }
+
   label {
     color: #5a595c;
     font-size: 14px;
@@ -649,7 +653,6 @@
   .rdc-range-fields {
     label {
       color: #808285;
-      margin-left: 10px;
     }
   }
 
@@ -956,6 +959,32 @@
       }
     }
   }
+}
+
+input[type="checkbox"].styled-checkbox-radio, input[type="radio"].styled-checkbox-radio {
+  display: none;
+}
+input[type="checkbox"].styled-checkbox-radio + label, input[type="radio"].styled-checkbox-radio + label {
+  color: #808285;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.8em;
+}
+input[type="checkbox"].styled-checkbox-radio + label, input[type="radio"].styled-checkbox-radio + label {
+  cursor: pointer;
+  padding-left: 0;
+}
+input[type="checkbox"].styled-checkbox-radio + label::before, input[type="radio"].styled-checkbox-radio + label::before {
+  content: "";
+  display: inline-block;
+  height: 18px;
+  width: 27px;
+  margin: 0 -5px -6px 0;
+  background: url('../images/src/checkboxes2.png') no-repeat;
+  background-size: 59%;
+}
+input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type="radio"].styled-checkbox-radio:checked + label::before {
+  background-position: 0 -18px;
 }
 
 .sow-carousel-wrapper{

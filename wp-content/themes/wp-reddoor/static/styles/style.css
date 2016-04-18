@@ -837,6 +837,9 @@
 .wpp-advanced-supermap .sm-search-form {
   padding: 30px !important;
 }
+.rdc-supermap-search-form .row {
+  margin-bottom: 20px;
+}
 .rdc-supermap-search-form label {
   color: #5a595c;
   font-size: 14px;
@@ -844,7 +847,6 @@
 }
 .rdc-supermap-search-form .rdc-range-fields label {
   color: #808285;
-  margin-left: 10px;
 }
 .rdc-supermap-search-form .rdc-location-section .location .select2 {
   border: 1px solid #a7a9ac;
@@ -1094,6 +1096,36 @@
   font-size: 24px;
   margin-right: 10px;
 }
+input[type="checkbox"].styled-checkbox-radio,
+input[type="radio"].styled-checkbox-radio {
+  display: none;
+}
+input[type="checkbox"].styled-checkbox-radio + label,
+input[type="radio"].styled-checkbox-radio + label {
+  color: #808285;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.8em;
+}
+input[type="checkbox"].styled-checkbox-radio + label,
+input[type="radio"].styled-checkbox-radio + label {
+  cursor: pointer;
+  padding-left: 0;
+}
+input[type="checkbox"].styled-checkbox-radio + label::before,
+input[type="radio"].styled-checkbox-radio + label::before {
+  content: "";
+  display: inline-block;
+  height: 18px;
+  width: 27px;
+  margin: 0 -5px -6px 0;
+  background: url('../images/src/checkboxes2.png') no-repeat;
+  background-size: 59%;
+}
+input[type="checkbox"].styled-checkbox-radio:checked + label::before,
+input[type="radio"].styled-checkbox-radio:checked + label::before {
+  background-position: 0 -18px;
+}
 .sow-carousel-wrapper {
   background: #fff;
 }
@@ -1171,6 +1203,7 @@
 }
 .single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock {
   padding: 0 40px;
+  margin-top: 25px;
 }
 .single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock a {
   width: 100%;
@@ -1615,8 +1648,8 @@
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li {
   border: 1px solid #ededed;
-  height: 50px !important;
-  width: 170px !important;
+  height: 60px !important;
+  width: 220px !important;
   margin-left: -6px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
@@ -1634,23 +1667,24 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
   text-indent: unset !important;
   color: #5a595c !important;
-  width: 170px !important;
-  height: 48px !important;
+  width: 220px !important;
+  height: 58px !important;
   float: left !important;
   outline: none;
   display: flex;
+  padding: 5px 10px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
-  font-size: 0.8em;
+  font-size: 1em;
   margin-left: 10px;
   width: 105px;
   align-self: center;
-  line-height: 18px;
+  line-height: 23px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a span {
-  font-size: 2em;
-  margin: 9px 5px 0 15px;
+  font-size: 1.6em;
+  margin: 13px 5px 0 15px;
   float: left;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper {
@@ -1668,6 +1702,7 @@
   text-shadow: none !important;
   color: #5a595c !important;
   margin-bottom: 0.5em !important;
+  font-weight: bold;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent p {
   color: #5a595c !important;
@@ -5303,6 +5338,7 @@ body .ui-tooltip {
     background: none !important;
   }
   body .ftrdImgGoTop {
+    margin-bottom: 16px;
     top: 0 !important;
   }
   body .ftrdImgGoTop .featuredImageHeader {
@@ -5311,13 +5347,13 @@ body .ui-tooltip {
   body .frontPageSearchBlock {
     top: -40px !important;
   }
-  body .single-property .singlePropertyHeader {
+  body.single-property .singlePropertyHeader {
     z-index: 9;
   }
-  body .single-property .singlePropertyHeader .oneAgent {
+  body.single-property .singlePropertyHeader .oneAgent {
     display: none;
   }
-  body .single-property .bottomSeparate {
+  body.single-property .bottomSeparate {
     padding-bottom: 5px;
   }
   body .site-logo {
@@ -5396,6 +5432,9 @@ body .ui-tooltip {
   body .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
     padding-left: 15px;
     text-align: center;
+  }
+  body .oneCategory {
+    margin: auto;
   }
   body .contactMenu {
     margin-right: 20px;
