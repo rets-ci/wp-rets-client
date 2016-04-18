@@ -207,6 +207,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 				<div class="clear"></div>
 			</div>
 		</div>
+
 		<?php
 	}
 

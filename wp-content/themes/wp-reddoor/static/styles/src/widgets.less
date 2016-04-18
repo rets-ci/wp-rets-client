@@ -76,6 +76,7 @@
   }
 }
 .so-widget-tabbed-content{
+
   .tabbedWidgetTitle{
     color: #5a595c !important;
     text-align: center;
@@ -83,6 +84,60 @@
     text-shadow: none !important;
     font-weight: bold;
     font-size: 2.4em;
+  }
+  .tabbedWidgetMobile{
+    display: none;
+    .ui-accordion-header{
+      background: #fff;
+      border: 1px solid #DCD6CA;
+      border-radius: 0 !important;
+      margin-bottom: -2px;
+      padding: 1em 0.5em 1em 0.7em;
+      font-size: 1.6em;
+      display: flex;
+      &:hover{
+        background: #fff;
+        border: 1px solid #DCD6CA;
+        border-bottom: 1px solid @buttons;
+        .sow-icon-reddoorcompany{
+          color: @buttons;
+        }
+      }
+      .ui-accordion-header-icon{
+        right: 0.5em;
+        left: auto;
+      }
+      .ui-icon{
+
+      }
+      .ui-accordion-icons {
+        padding-left: 0.8em !important;
+      }
+      .sow-icon-reddoorcompany{
+        margin-right: 20px;
+        font-size: 1.4em;
+      }
+      .mobileFrameTitle{
+        align-self: center;
+      }
+    }
+    .ui-accordion-content{
+      border: 1px solid #DCD6CA;
+      border-radius: 0;
+      margin-bottom: -3px;
+      .tabbedMobileImageArea{
+        width: 100%;
+        background-size: cover;
+        min-height: 50px;
+        background-position: center center;
+        margin-top: 15px;
+        img{
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
   }
   .sow-slider-base{
     padding-top: 70px;
@@ -98,8 +153,8 @@
       height: 80px;
         li{
           border: 1px solid #ededed;
-          height: 50px !important;
-          width: 170px !important;
+          height: 60px !important;
+          width: 220px !important;
           margin-left: -6px;
           &:hover{
             border-bottom: 1px solid #F10D2C;
@@ -112,26 +167,30 @@
             span{
               color: #F10D2C;
             }
+            div{
+
+            }
           }
           a{
             text-indent: unset !important;
             color: #5a595c !important;
-            width: 170px !important;
-            height: 48px !important;
+            width: 220px !important;
+            height: 58px !important;
             float: left !important;
             outline: none;
             display: flex;
+            padding: 5px 10px;
             div{
               float: left;
-              font-size: 0.8em;
+              font-size: 1em;
               margin-left: 10px;
               width: 105px;
               align-self: center;
-              line-height: 18px;
+              line-height: 23px;
             }
             span{
-              font-size: 2em;
-              margin: 9px 5px 0 15px;
+              font-size: 1.6em;
+              margin: 13px 5px 0 15px;
               float: left;
             }
           }
@@ -150,6 +209,7 @@
         text-shadow: none !important;
         color: #5a595c !important;
         margin-bottom: 0.5em !important;
+        font-weight: bold;
       }
       p{
         color: #5a595c !important;

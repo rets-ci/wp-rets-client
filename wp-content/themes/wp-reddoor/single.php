@@ -15,13 +15,13 @@ if( is_home() ) {
 }else{
   $currentId = get_the_ID();
 }
-$post_thumbnail_id = get_post_thumbnail_id( $currentId );
 
-if(!($post_thumbnail_id)) {
-  return;
+if(!empty($currentId)) {
+  $post_thumbnail_id = get_post_thumbnail_id($currentId);
 }
-$_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
-
+if(!empty($post_thumbnail_id)) {
+  $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
+}
 ?>
   <?php
   // Start the Loop.

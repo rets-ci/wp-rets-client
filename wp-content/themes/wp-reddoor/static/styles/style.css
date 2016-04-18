@@ -834,6 +834,103 @@
 .wpp-advanced-supermap {
   overflow: visible !important;
 }
+.wpp-advanced-supermap .sm-search-filter {
+  background: #d03528;
+  color: white;
+  opacity: .7;
+}
+.wpp-advanced-supermap .sm-search-filter i {
+  margin-right: 10px;
+}
+.wpp-advanced-supermap .sm-search-filter:hover {
+  color: white;
+  opacity: 1;
+}
+.wpp-advanced-supermap .sm-search-form {
+  padding: 30px !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+}
+.rdc-supermap-search-form .rdc-action {
+  text-align: right;
+}
+.rdc-supermap-search-form .rdc-action [type="submit"] {
+  background: #d03528;
+  border: medium none;
+  color: white;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 6px 12px;
+  transition: 0.5s background;
+}
+.rdc-supermap-search-form .rdc-action [type="submit"]:hover {
+  background: #dd594e;
+}
+.rdc-supermap-search-form .row {
+  margin-bottom: 20px;
+}
+.rdc-supermap-search-form label {
+  color: #5a595c;
+  font-size: 14px;
+  font-weight: normal;
+}
+.rdc-supermap-search-form .rdc-range-fields {
+  margin-bottom: 10px;
+}
+.rdc-supermap-search-form .rdc-range-fields label {
+  color: #808285;
+}
+.rdc-supermap-search-form .rdc-range-fields ul {
+  margin-bottom: 0;
+}
+.rdc-supermap-search-form .rdc-range-fields > select {
+  -moz-appearance: none;
+  border: 1px solid lightgray;
+  padding: 2px 6px;
+  width: 47%;
+}
+.rdc-supermap-search-form .rdc-range-fields > select + select {
+  margin-left: 3%;
+}
+.rdc-supermap-search-form .col-md-4 {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.rdc-supermap-search-form .col-md-4 > label {
+  margin-bottom: 10px;
+}
+.rdc-supermap-search-form .price-input {
+  float: left;
+  width: 47%;
+  border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .price-input:focus {
+  border: 1px solid grey;
+}
+.rdc-supermap-search-form .price-input + .price-input {
+  margin-left: 6%;
+}
+.rdc-supermap-search-form .price-dropdown {
+  background: white none repeat scroll 0 0;
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+  padding: 5px 10px;
+  position: absolute;
+  top: 62px;
+  width: calc(100% - 10px);
+  z-index: 9;
+}
+.rdc-supermap-search-form .price-dropdown .max-values {
+  text-align: right;
+}
+.rdc-supermap-search-form .price-dropdown ul {
+  margin-bottom: 0;
+}
+.rdc-supermap-search-form .price-dropdown ul li a {
+  color: grey;
+  font-size: 12px;
+}
 .rdc-supermap-search-form .rdc-location-section .location .select2 {
   border: 1px solid #a7a9ac;
   border-radius: 5px;
@@ -1082,6 +1179,36 @@
   font-size: 24px;
   margin-right: 10px;
 }
+input[type="checkbox"].styled-checkbox-radio,
+input[type="radio"].styled-checkbox-radio {
+  display: none;
+}
+input[type="checkbox"].styled-checkbox-radio + label,
+input[type="radio"].styled-checkbox-radio + label {
+  color: #808285;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.8em;
+}
+input[type="checkbox"].styled-checkbox-radio + label,
+input[type="radio"].styled-checkbox-radio + label {
+  cursor: pointer;
+  padding-left: 0;
+}
+input[type="checkbox"].styled-checkbox-radio + label::before,
+input[type="radio"].styled-checkbox-radio + label::before {
+  content: "";
+  display: inline-block;
+  height: 18px;
+  width: 27px;
+  margin: 0 -5px -6px 0;
+  background: url('../images/src/checkboxes2.png') no-repeat;
+  background-size: 59%;
+}
+input[type="checkbox"].styled-checkbox-radio:checked + label::before,
+input[type="radio"].styled-checkbox-radio:checked + label::before {
+  background-position: 0 -18px;
+}
 .sow-carousel-wrapper {
   background: #fff;
 }
@@ -1159,6 +1286,7 @@
 }
 .single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock {
   padding: 0 40px;
+  margin-top: 25px;
 }
 .single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock a {
   width: 100%;
@@ -1590,6 +1718,56 @@
   font-weight: bold;
   font-size: 2.4em;
 }
+.so-widget-tabbed-content .tabbedWidgetMobile {
+  display: none;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header {
+  background: #fff;
+  border: 1px solid #DCD6CA;
+  border-radius: 0 !important;
+  margin-bottom: -2px;
+  padding: 1em 0.5em 1em 0.7em;
+  font-size: 1.6em;
+  display: flex;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover {
+  background: #fff;
+  border: 1px solid #DCD6CA;
+  border-bottom: 1px solid #d03528;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover .sow-icon-reddoorcompany {
+  color: #d03528;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .ui-accordion-header-icon {
+  right: 0.5em;
+  left: auto;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .ui-accordion-icons {
+  padding-left: 0.8em !important;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .sow-icon-reddoorcompany {
+  margin-right: 20px;
+  font-size: 1.4em;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header .mobileFrameTitle {
+  align-self: center;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content {
+  border: 1px solid #DCD6CA;
+  border-radius: 0;
+  margin-bottom: -3px;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
+  width: 100%;
+  background-size: cover;
+  min-height: 50px;
+  background-position: center center;
+  margin-top: 15px;
+}
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
+  height: 100%;
+  width: 100%;
+}
 .so-widget-tabbed-content .sow-slider-base {
   padding-top: 70px;
 }
@@ -1603,8 +1781,8 @@
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li {
   border: 1px solid #ededed;
-  height: 50px !important;
-  width: 170px !important;
+  height: 60px !important;
+  width: 220px !important;
   margin-left: -6px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
@@ -1622,23 +1800,24 @@
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
   text-indent: unset !important;
   color: #5a595c !important;
-  width: 170px !important;
-  height: 48px !important;
+  width: 220px !important;
+  height: 58px !important;
   float: left !important;
   outline: none;
   display: flex;
+  padding: 5px 10px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
-  font-size: 0.8em;
+  font-size: 1em;
   margin-left: 10px;
   width: 105px;
   align-self: center;
-  line-height: 18px;
+  line-height: 23px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a span {
-  font-size: 2em;
-  margin: 9px 5px 0 15px;
+  font-size: 1.6em;
+  margin: 13px 5px 0 15px;
   float: left;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper {
@@ -1656,6 +1835,7 @@
   text-shadow: none !important;
   color: #5a595c !important;
   margin-bottom: 0.5em !important;
+  font-weight: bold;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent p {
   color: #5a595c !important;
@@ -5291,6 +5471,7 @@ body .ui-tooltip {
     background: none !important;
   }
   body .ftrdImgGoTop {
+    margin-bottom: 16px;
     top: 0 !important;
   }
   body .ftrdImgGoTop .featuredImageHeader {
@@ -5299,13 +5480,13 @@ body .ui-tooltip {
   body .frontPageSearchBlock {
     top: -40px !important;
   }
-  body .single-property .singlePropertyHeader {
+  body.single-property .singlePropertyHeader {
     z-index: 9;
   }
-  body .single-property .singlePropertyHeader .oneAgent {
+  body.single-property .singlePropertyHeader .oneAgent {
     display: none;
   }
-  body .single-property .bottomSeparate {
+  body.single-property .bottomSeparate {
     padding-bottom: 5px;
   }
   body .site-logo {
@@ -5385,6 +5566,9 @@ body .ui-tooltip {
     padding-left: 15px;
     text-align: center;
   }
+  body .oneCategory {
+    margin: auto;
+  }
   body .contactMenu {
     margin-right: 20px;
   }
@@ -5401,6 +5585,9 @@ body .ui-tooltip {
     left: 30%;
     top: 15%;
   }
+  body .tabbedWidgetMobile {
+    display: block !important;
+  }
   body .footerWidgetArea2 {
     text-align: center;
     margin-top: 30px;
@@ -5413,5 +5600,14 @@ body .ui-tooltip {
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
+  }
+  .so-widget-tabbed-content .tabbedWidgetTitle {
+    display: none;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
+    display: none;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-images .sow-slider-image-container {
+    display: none;
   }
 }

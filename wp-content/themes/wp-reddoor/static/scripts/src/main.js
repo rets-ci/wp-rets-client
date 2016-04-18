@@ -4,6 +4,12 @@ jQuery(document).ready(function(){
     jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
 
+    jQuery( ".rdc-accordion" ).accordion({
+        active: false,
+        collapsible: true,
+    });
+    jQuery('.ui-accordion-content').css('height', jQuery('.ui-accordion-content').outerHeight()-200);
+
     /* Mobile menu slide */
     jQuery('.toggle').on('click', function(){
         jQuery('.mobileMenu').animate({'left':'0'},400).css('position', 'fixed');
@@ -81,18 +87,18 @@ jQuery(document).ready(function(){
 
     jQuery("#propertyDetails").sticky({topSpacing:0});
 
-    /* Equal height */
-    jQuery.fn.equivalent = function (){
-        var $blocks = jQuery(this),
-            maxH    = $blocks.eq(0).height();
-        $blocks.each(function(){
-            maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
-        });
-        $blocks.height(maxH);
-    }
-    jQuery('.pdRoomsBlock').equivalent();
-
-    /* Equal height */
+    ///* Equal height */
+    //jQuery.fn.equivalent = function (){
+    //    var $blocks = jQuery(this),
+    //        maxH    = $blocks.eq(0).height();
+    //    $blocks.each(function(){
+    //        maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
+    //    });
+    //    $blocks.height(maxH);
+    //}
+    //jQuery('.pdRoomsBlock').equivalent();
+    //
+    ///* Equal height */
 
 
     /* Tabbed content widget (feature point) */

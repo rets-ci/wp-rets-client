@@ -87,6 +87,46 @@
         };
       })
 
+      .filter('simpleAmount', function() {
+        return function( int ) {
+          if ( !String(int).length ) return '';
+          return '$' + ( int / 1000 ) + 'k';
+        };
+      })
+
+      .directive('clickOut', ['$window', '$parse', function ($window, $parse) {
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            var clickOutHandler = $parse(attrs.clickOut);
+
+            angular.element($window).on('click', function (event) {
+              if (element[0].contains(event.target)) return;
+              clickOutHandler(scope, {$event: event});
+              scope.$apply();
+            });
+          }
+        };
+      }])
+
+      .directive('onlyDigits', function () {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function (scope, element, attrs, modelCtrl) {
+            modelCtrl.$parsers.push(function (inputValue) {
+              if (inputValue == undefined) return '';
+              var transformedInput = inputValue.replace(/[^0-9]/g, '');
+              if (transformedInput !== inputValue) {
+                modelCtrl.$setViewValue(transformedInput);
+                modelCtrl.$render();
+              }
+              return transformedInput;
+            });
+          }
+        };
+      })
+
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
@@ -101,9 +141,6 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
         $scope.map_filter_taxonomy = '';
-
-        $scope.min_prices = [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ];
-        $scope.max_prices = [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ];
 
         $scope._request = null;
 
@@ -161,6 +198,88 @@
           $scope.$apply();
         });
 
+        /**
+         *
+         * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
+         */
+        $scope.pricing = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+
+          min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
+          max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
+
+          set_min: function(_price) {
+            this.current_min = _price;
+            this.recalculate();
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            this.current_max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function() {
+            var j;
+            j = typeof this.current_min == 'number' ? this.current_min : 0;
+            for( var i in this.max_prices ) {
+              this.max_prices[i] = j += 25000;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_feet: number[], max_feet: number[]}}
+         */
+        $scope.footage = {
+
+          min_feet: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
+          max_feet: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof current == 'number' ? current : 0;
+            for( var i in this.max_feet ) {
+              this.max_feet[i] = j += 500;
+            }
+          }
+
+        };
+
+        /**
+         *
+         * @type {{min_feet: number[], max_feet: number[]}}
+         */
+        $scope.acrage = {
+
+          min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50],
+          max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
+
+          recalculate: function ( current ) {
+
+            for( var i in this.max_acres ) {
+              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
+                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
+              } else {
+                this.max_acres[i] = this.max_acres[ i-1 ] + 10;
+              }
+            }
+          }
+
+        };
+
+        /**
+         *
+         * @returns {number}
+         */
         $scope.pagination_colspan = function(){
           var i = 0;
           for(var f in $scope.columns) {
@@ -169,13 +288,12 @@
           return i;
         };
 
-        var index = 'v4',
+        var index = 'v5',
             type = 'property';
 
         console.log( $scope.query );
 
         /**
-         * @todo Unhardcode this
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
@@ -202,6 +320,17 @@
 
         /**
          *
+         * @param int
+         * @returns {string}
+         */
+        var currencyAmount = function( int ) {
+          var int = Math.round( parseInt( int.toString().replace(/,/g,"")) / 5000 ) * 5000;
+          var cur = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          return {value:int, label:cur != 'NaN' ? cur : ''};
+        };
+
+        /**
+         *
          * @returns {*|{}}
          */
         function build_query() {
@@ -220,7 +349,7 @@
               query: build_query()
             },
             _source: $scope.atts.fields,
-            size: 500,
+            size: 800,
             from: $scope.properties.length,
             sort: "post_title:asc"
           }, function( error, response ) {
@@ -466,27 +595,13 @@
          * Opens InfoBubble Window!
          */
         $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
-          //console.log( 'currentProperty', currentProperty );
-          //console.log( 'dynMarkers', $scope.dynMarkers );
-          //console.log( 'currentProperty', currentProperty );
-          // Trying to get previous property ID if there.
           var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
-            // Checking whether property changed or not.
             if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
-              //console.log( 'Marker', $scope.dynMarkers[i] );
               NgMap.getMap().then( function( map ) {
-                //*
                 $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
                 $scope.infoBubble.setPosition( $scope.latLngs[i] );
-                //map.setCenter( $scope.latLngs[i] );
                 $scope.infoBubble.open( map );
-                //*/
-                /*
-                $scope.infoWindow.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
-                $scope.infoWindow.setPosition( $scope.latLngs[i] );
-                $scope.infoWindow.open( map );
-                //*/
               } );
               break;
             }
@@ -605,10 +720,6 @@
             parse_str( location[1], locationQuery );
           }
 
-          // Extend scope query with Property Search Form params
-          //angular.extend( $scope.query, formQuery.wpp_search );
-          //$scope.query = typeof locationQuery.wpp_search !== 'undefined' ? locationQuery.wpp_search : {};
-
           $scope.$apply();
           $scope.getProperties();
 
@@ -638,33 +749,8 @@
    * @returns {*}
    */
   function unserialize(data) {
-    //  discuss at: http://phpjs.org/functions/unserialize/
-    // original by: Arpad Ray (mailto:arpad@php.net)
-    // improved by: Pedro Tainha (http://www.pedrotainha.com)
-    // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // improved by: Chris
-    // improved by: James
-    // improved by: Le Torbi
-    // improved by: Eli Skeggs
-    // bugfixed by: dptr1988
-    // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // bugfixed by: Brett Zamir (http://brett-zamir.me)
-    //  revised by: d3x
-    //    input by: Brett Zamir (http://brett-zamir.me)
-    //    input by: Martin (http://www.erlenwiese.de/)
-    //    input by: kilops
-    //    input by: Jaroslaw Czarniak
-    //        note: We feel the main purpose of this function should be to ease the transport of data between php & js
-    //        note: Aiming for PHP-compatibility, we have to translate objects to arrays
-    //   example 1: unserialize('a:3:{i:0;s:5:"Kevin";i:1;s:3:"van";i:2;s:9:"Zonneveld";}');
-    //   returns 1: ['Kevin', 'van', 'Zonneveld']
-    //   example 2: unserialize('a:3:{s:9:"firstName";s:5:"Kevin";s:7:"midName";s:3:"van";s:7:"surName";s:9:"Zonneveld";}');
-    //   returns 2: {firstName: 'Kevin', midName: 'van', surName: 'Zonneveld'}
-
     var that = this,
       utf8Overhead = function(chr) {
-        // http://phpjs.org/functions/unserialize:571#comment_95906
         var code = chr.charCodeAt(0);
         if (  code < 0x0080
           || 0x00A0 <= code && code <= 0x00FF
@@ -821,36 +907,6 @@
    * @param array
    */
   function parse_str(str, array) {
-    //       discuss at: http://phpjs.org/functions/parse_str/
-    //      original by: Cagri Ekin
-    //      improved by: Michael White (http://getsprink.com)
-    //      improved by: Jack
-    //      improved by: Brett Zamir (http://brett-zamir.me)
-    //      bugfixed by: Onno Marsman
-    //      bugfixed by: Brett Zamir (http://brett-zamir.me)
-    //      bugfixed by: stag019
-    //      bugfixed by: Brett Zamir (http://brett-zamir.me)
-    //      bugfixed by: MIO_KODUKI (http://mio-koduki.blogspot.com/)
-    // reimplemented by: stag019
-    //         input by: Dreamer
-    //         input by: Zaide (http://zaidesthings.com/)
-    //         input by: David Pesta (http://davidpesta.com/)
-    //         input by: jeicquest
-    //             note: When no argument is specified, will put variables in global scope.
-    //             note: When a particular argument has been passed, and the returned value is different parse_str of PHP. For example, a=b=c&d====c
-    //             test: skip
-    //        example 1: var arr = {};
-    //        example 1: parse_str('first=foo&second=bar', arr);
-    //        example 1: $result = arr
-    //        returns 1: { first: 'foo', second: 'bar' }
-    //        example 2: var arr = {};
-    //        example 2: parse_str('str_a=Jack+and+Jill+didn%27t+see+the+well.', arr);
-    //        example 2: $result = arr
-    //        returns 2: { str_a: "Jack and Jill didn't see the well." }
-    //        example 3: var abc = {3:'a'};
-    //        example 3: parse_str('abc[a][b]["c"]=def&abc[q]=t+5');
-    //        returns 3: {"3":"a","a":{"b":{"c":"def"}},"q":"t 5"}
-
     var strArr = String(str)
         .replace(/^&/, '')
         .replace(/&$/, '')
