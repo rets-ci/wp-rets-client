@@ -219,7 +219,7 @@ namespace UsabilityDynamics\RDC {
             );
           }
 
-          if ( !empty( $p_query->posts ) && count( $p_query->posts ) == 1 ) {
+          if ( !empty( $p_query->posts ) && count( $p_query->posts ) > 0 ) {
             wp_redirect( get_permalink( $p_query->posts[0]->ID ) );
             exit;
           }
