@@ -63,37 +63,43 @@
       <div class="col-md-4">
 
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <input placeholder="<?php _e('Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
-          <input placeholder="<?php _e('Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
+        <div class="rdc-range-fields" click-out="pricing.mode = ''">
+
+          <input only-digits ng-model="pricing.current_min" ng-focus="pricing.focus('min')" class="price-input" placeholder="<?php _e('No Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
+          <input only-digits ng-model="pricing.current_max" ng-focus="pricing.focus('max')" class="price-input" placeholder="<?php _e('No Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
+
+          <div class="price-dropdown" ng-show="pricing.mode">
+            <ul class="min-values" ng-show="pricing.mode == 'min'">
+              <li><a href="javascript:;" ng-click="pricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="pricing.mode == 'max'">
+              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+              <li><a href="javascript:;" ng-click="pricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
         </div>
 
         <label><?php _e( 'Home Type', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <ul>
             <li>
-              <label>
                 <input id="property_type_condo" class="styled-checkbox-radio" type="checkbox" value="condo" checked name="bool[must][6][terms][meta_input.property_type][]" />
                 <label for="property_type_condo"><?php _e('Condo', 'reddor'); ?></label>
-              </label>
             </li>
             <li>
-              <label>
                 <input id="property_type_townhouse" class="styled-checkbox-radio" type="checkbox" value="townhouse" checked name="bool[must][6][terms][meta_input.property_type][]" />
                 <label for="property_type_townhouse"><?php _e('Townhouse', 'reddor'); ?></label>
-              </label>
             </li>
             <li>
-              <label>
                 <input id="property_type_house" class="styled-checkbox-radio" type="checkbox" value="house" checked name="bool[must][6][terms][meta_input.property_type][]" />
                 <label for="property_type_house"><?php _e('House', 'reddor'); ?></label>
-              </label>
             </li>
             <li>
-              <label>
                 <input id="property_type_manufactured" class="styled-checkbox-radio" type="checkbox" value="manufactured" checked name="bool[must][6][terms][meta_input.property_type][]" />
                 <label for="property_type_manufactured"><?php _e('Manufactured', 'reddor'); ?></label>
-              </label>
             </li>
           </ul>
         </div>
@@ -109,16 +115,12 @@
         <div class="rdc-range-fields">
           <ul>
             <li>
-              <label>
                 <input id="sale_type_sale" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_sale"><?php _e('Sale', 'reddor'); ?></label>
-              </label>
             </li>
             <li>
-              <label>
                 <input id="sale_type_rent" class="styled-checkbox-radio" type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_rent"><?php _e('Rent', 'reddor'); ?></label>
-              </label>
             </li>
           </ul>
         </div>
@@ -130,60 +132,24 @@
         <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-            <option value="2000">2000</option>
-            <option value="3000">3000</option>
-            <option value="4000">4000</option>
-            <option value="5000">5000</option>
-            <option value="6000">6000</option>
-            <option value="7000">7000</option>
-            <option value="8000">8000</option>
-            <option value="9000">9000</option>
-            <option value="10000">10000</option>
-            <option value="15000">15000</option>
-            <option value="20000">20000</option>
+            <option value="" ng-click="footage.recalculate('')"><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_feet in footage.min_feet" ng-click="footage.recalculate(_feet)" value="{{_feet}}">{{_feet}}</option>
           </select>
           <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-            <option value="2000">2000</option>
-            <option value="3000">3000</option>
-            <option value="4000">4000</option>
-            <option value="5000">5000</option>
-            <option value="6000">6000</option>
-            <option value="7000">7000</option>
-            <option value="8000">8000</option>
-            <option value="9000">9000</option>
-            <option value="10000">10000</option>
-            <option value="15000">15000</option>
-            <option value="20000">20000</option>
+            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
+            <option ng-repeat="_feet in footage.max_feet track by $index" value="{{_feet}}">{{_feet}}</option>
           </select>
         </div>
 
         <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <select name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
-            <option value="100">100</option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-            <option value="2000">2000</option>
-            <option value="3000">3000</option>
-            <option value="4000">4000</option>
-            <option value="5000">5000</option>
+            <option ng-click="acrage.recalculate('')" value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_acres in acrage.min_acres" ng-click="acrage.recalculate(_acres)" value="{{_acres}}">{{_acres}}</option>
           </select>
           <select name="bool[must][8][range][tax_input.approximate_lot_size][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
-            <option value="100">100</option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-            <option value="2000">2000</option>
-            <option value="3000">3000</option>
-            <option value="4000">4000</option>
-            <option value="5000">5000</option>
+            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
+            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres}}</option>
           </select>
         </div>
 
@@ -194,13 +160,13 @@
         <label><?php _e( 'Year Built', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <select name="bool[must][9][range][tax_input.year_built][gte]">
-            <option value=""><?php _e( 'Min', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
             <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
               <option value="<?php echo $i ?>"><?php echo $i; ?></option>
             <?php endfor; ?>
           </select>
           <select name="bool[must][9][range][tax_input.year_built][lte]">
-            <option value=""><?php _e( 'Max', 'reddoor' ); ?></option>
+            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
             <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
               <option value="<?php echo $i ?>"><?php echo $i; ?></option>
             <?php endfor; ?>
