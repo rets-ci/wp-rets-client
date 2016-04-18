@@ -634,11 +634,45 @@
 .wpp-advanced-supermap {
   overflow: visible !important;
 
+  .sm-search-filter {
+    background: @buttons;
+    color: white;
+    opacity: .7;
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      color: white;
+      opacity: 1;
+    }
+  }
+
   .sm-search-form {
     padding: 30px !important;
+    box-shadow: 0px 0px 5px rgba(0,0,0,.25);
   }
 }
 .rdc-supermap-search-form {
+
+  .rdc-action {
+    text-align: right;
+
+    [type="submit"] {
+      background: @buttons;
+      border: medium none;
+      color: white;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 6px 12px;
+      transition: 0.5s background;
+
+      &:hover {
+        background: lighten(@buttons, 10%);
+      }
+    }
+  }
 
   .row {
     margin-bottom: 20px;
@@ -661,9 +695,22 @@
     ul {
       margin-bottom: 0;
     }
+
+    > select {
+      -moz-appearance: none;
+      border: 1px solid lightgray;
+      padding: 2px 6px;
+      width: 47%;
+
+      &+select {
+        margin-left: 3%;
+      }
+    }
   }
 
   .col-md-4 {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
     > label {
       margin-bottom: 10px;
     }
@@ -673,6 +720,10 @@
     float: left;
     width: 47%;
     border: 1px solid lightgrey;
+
+    &:focus {
+      border: 1px solid grey;
+    }
 
     &+.price-input {
       margin-left: 6%;
@@ -688,7 +739,7 @@
     padding: 5px 10px;
     position: absolute;
     top: 62px;
-    width: 100%;
+    width: ~"calc(100% - 10px)";
     z-index: 9;
 
     .max-values {

@@ -219,6 +219,25 @@
 
         /**
          *
+         * @type {{min_feet: number[], max_feet: number[]}}
+         */
+        $scope.footage = {
+
+          min_feet: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
+          max_feet: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof current == 'number' ? current : 0;
+            for( var i in this.max_feet ) {
+              this.max_feet[i] = j += 500;
+            }
+          }
+
+        };
+
+        /**
+         *
          * @returns {number}
          */
         $scope.pagination_colspan = function(){

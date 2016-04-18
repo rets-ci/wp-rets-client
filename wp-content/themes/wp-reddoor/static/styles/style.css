@@ -834,8 +834,36 @@
 .wpp-advanced-supermap {
   overflow: visible !important;
 }
+.wpp-advanced-supermap .sm-search-filter {
+  background: #d03528;
+  color: white;
+  opacity: .7;
+}
+.wpp-advanced-supermap .sm-search-filter i {
+  margin-right: 10px;
+}
+.wpp-advanced-supermap .sm-search-filter:hover {
+  color: white;
+  opacity: 1;
+}
 .wpp-advanced-supermap .sm-search-form {
   padding: 30px !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+}
+.rdc-supermap-search-form .rdc-action {
+  text-align: right;
+}
+.rdc-supermap-search-form .rdc-action [type="submit"] {
+  background: #d03528;
+  border: medium none;
+  color: white;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 6px 12px;
+  transition: 0.5s background;
+}
+.rdc-supermap-search-form .rdc-action [type="submit"]:hover {
+  background: #dd594e;
 }
 .rdc-supermap-search-form .row {
   margin-bottom: 20px;
@@ -854,6 +882,19 @@
 .rdc-supermap-search-form .rdc-range-fields ul {
   margin-bottom: 0;
 }
+.rdc-supermap-search-form .rdc-range-fields > select {
+  -moz-appearance: none;
+  border: 1px solid lightgray;
+  padding: 2px 6px;
+  width: 47%;
+}
+.rdc-supermap-search-form .rdc-range-fields > select + select {
+  margin-left: 3%;
+}
+.rdc-supermap-search-form .col-md-4 {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
 .rdc-supermap-search-form .col-md-4 > label {
   margin-bottom: 10px;
 }
@@ -861,6 +902,9 @@
   float: left;
   width: 47%;
   border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .price-input:focus {
+  border: 1px solid grey;
 }
 .rdc-supermap-search-form .price-input + .price-input {
   margin-left: 6%;
@@ -874,7 +918,7 @@
   padding: 5px 10px;
   position: absolute;
   top: 62px;
-  width: 100%;
+  width: calc(100% - 10px);
   z-index: 9;
 }
 .rdc-supermap-search-form .price-dropdown .max-values {

@@ -185,6 +185,7 @@ namespace UsabilityDynamics\RDC {
             'tax_input.price_per_sqft',
             'tax_input.approximate_lot_size',
             'tax_input.subdivision',
+            'tax_input.neighborhood',
             'tax_input.sale_type'
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
