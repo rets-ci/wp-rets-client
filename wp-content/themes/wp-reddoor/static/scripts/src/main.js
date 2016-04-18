@@ -116,6 +116,11 @@ jQuery(document).ready(function(){
         jQuery('.singleShareContainer').toggle('slow');
     });
 
+    jQuery('#menu-home-buying-page-sub-menu li:first-child').append('<span class="homeBuyingMenuSpoiler"></span>');
+    jQuery('.homeBuyingMenuSpoiler').toggle('slow', function(){
+        jQuery('#menu-home-buying-page-sub-menu').css('height', '100%');
+    });
+
 });
 
 function map_resize() {
