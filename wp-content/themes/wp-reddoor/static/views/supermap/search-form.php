@@ -131,9 +131,9 @@
 
         <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][gte]">
-            <option value="" ng-click="footage.recalculate('')"><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_feet in footage.min_feet" ng-click="footage.recalculate(_feet)" value="{{_feet}}">{{_feet}}</option>
+          <select ng-model="footage.min" ng-change="footage.recalculate(footage.min)" name="bool[must][7][range][meta_input.total_living_area_sqft_2][gte]">
+            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_feet in footage.min_feet" value="{{_feet}}">{{_feet}}</option>
           </select>
           <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][lte]">
             <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
@@ -143,9 +143,9 @@
 
         <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <select name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
-            <option ng-click="acrage.recalculate('')" value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.min_acres" ng-click="acrage.recalculate(_acres)" value="{{_acres}}">{{_acres}}</option>
+          <select ng-model="acrage.min" ng-change="acrage.recalculate(acrage.min)" name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
+            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres}}</option>
           </select>
           <select name="bool[must][8][range][tax_input.approximate_lot_size][lte]">
             <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
