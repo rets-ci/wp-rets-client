@@ -65,8 +65,8 @@
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="pricing.mode = ''">
 
-          <input ng-model="pricing.current_min" ng-change="pricing.change()" ng-focus="pricing.focus('min')" class="price-input" placeholder="<?php _e('No Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
-          <input ng-model="pricing.current_max" ng-change="pricing.change()" ng-focus="pricing.focus('max')" class="price-input" placeholder="<?php _e('No Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
+          <input only-digits ng-model="pricing.current_min" ng-focus="pricing.focus('min')" class="price-input" placeholder="<?php _e('No Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
+          <input only-digits ng-model="pricing.current_max" ng-focus="pricing.focus('max')" class="price-input" placeholder="<?php _e('No Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
 
           <div class="price-dropdown" ng-show="pricing.mode">
             <ul class="min-values" ng-show="pricing.mode == 'min'">
