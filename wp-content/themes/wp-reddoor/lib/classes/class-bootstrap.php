@@ -87,6 +87,8 @@ namespace UsabilityDynamics\RDC {
        */
       public function alter_supermap_query( $query, $atts ) {
 
+        wp_localize_script( 'supermap-advanced', 'sm_current_filter', $_REQUEST['wpp_search'] );
+
         /**
          * @todo: could not find other place for this
          */
@@ -110,6 +112,8 @@ namespace UsabilityDynamics\RDC {
           )
         );
 
+        $_location_selected = array();
+
         foreach( $query as $field => $value ) {
           if ( array_key_exists( $field, $taxonomies ) ) {
 
@@ -127,6 +131,13 @@ namespace UsabilityDynamics\RDC {
                   'tax_input.' . $field => $labels
                 )
               );
+
+              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ) ) ) {
+                $_location_selected = array(
+                  'key' => $field,
+                  'values' => $labels
+                );
+              }
 
             } else {
 
@@ -154,6 +165,8 @@ namespace UsabilityDynamics\RDC {
 
           }
         }
+
+        wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
 
         $_query = array(
           'bool' => array(

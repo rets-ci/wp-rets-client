@@ -40,10 +40,10 @@
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <ul>
-            <li><input id="buy_beds_0" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
+            <li><input id="buy_beds_0" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
           <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
             ?>
-            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+            <li><input id="buy_beds_<?php echo $value; ?>" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
           <?php endforeach; ?>
           </ul>
         </div>
@@ -52,10 +52,10 @@
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <ul>
-            <li><input id="buy_baths_0" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_baths_0"><?php _e('No min'); ?></label></li>
+            <li><input id="buy_baths_0" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_baths_0"><?php _e('No min'); ?></label></li>
             <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
               ?>
-              <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+              <li><input id="buy_baths_<?php echo $value; ?>" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
             <?php endforeach; ?>
           </ul>
         </div>
@@ -65,8 +65,8 @@
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="pricing.mode = ''">
 
-          <input only-digits ng-model="pricing.current_min" ng-focus="pricing.focus('min')" class="price-input" placeholder="<?php _e('No Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
-          <input only-digits ng-model="pricing.current_max" ng-focus="pricing.focus('max')" class="price-input" placeholder="<?php _e('No Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
+          <input only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" ng-focus="pricing.focus('min')" class="price-input" placeholder="<?php _e('No Min'); ?>" type="text" name="bool[must][4][range][tax_input.price][gte]" />
+          <input only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" ng-focus="pricing.focus('max')" class="price-input" placeholder="<?php _e('No Max'); ?>" type="text" name="bool[must][4][range][tax_input.price][lte]" />
 
           <div class="price-dropdown" ng-show="pricing.mode">
             <ul class="min-values" ng-show="pricing.mode == 'min'">
@@ -115,11 +115,11 @@
         <div class="rdc-range-fields">
           <ul>
             <li>
-                <input id="sale_type_sale" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <input id="sale_type_sale" ng-checked="current_filter.sale_type=='sale'" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_sale"><?php _e('Sale', 'reddor'); ?></label>
             </li>
             <li>
-                <input id="sale_type_rent" class="styled-checkbox-radio" type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <input id="sale_type_rent" ng-checked="current_filter.sale_type=='rent'" class="styled-checkbox-radio" type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_rent"><?php _e('Rent', 'reddor'); ?></label>
             </li>
           </ul>

@@ -140,7 +140,8 @@
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
-        $scope.map_filter_taxonomy = '';
+        $scope.map_filter_taxonomy = window.sm_current_terms.key;
+        $scope.current_filter = window.sm_current_filter;
 
         $scope._request = null;
 
@@ -619,7 +620,7 @@
         /**
          *
          */
-        jQuery('.termsSelection').select2({
+        var $select = jQuery('.termsSelection').select2({
           placeholder: 'Location',
           maximumSelectionLength: 1,
           ajax: {
@@ -639,9 +640,15 @@
           escapeMarkup: function (markup) { return markup; },
           templateSelection: function formatRepoSelection (term) {
             $scope.map_filter_taxonomy = term.taxonomy;
-            return term.name;
+            return term.text || term.name;
           }
+        }).on('change', function(){
+          $scope.map_filter_taxonomy = window.sm_current_terms.key;
         });
+
+        var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
+
+        $select.append($option).trigger('change');
 
         /**
          * SEARCH FILTER EVENT
