@@ -23,7 +23,6 @@ $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 		<div class="singleHeroIcon">
 			<svg class="icon icon-<?php if($category[0]->slug){echo $category[0]->slug;} ?>"><use xlink:href="#icon-<?php if($category[0]->slug){echo $category[0]->slug;} ?>"></use></svg>
 		</div>
-
 	</section>
 </div>
 <?php } ?>

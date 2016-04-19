@@ -575,7 +575,7 @@
       color: #a7a9ac;
       font-size: 0.9em;
       position: relative;
-      width: 215px;
+      width: 100%;
       top: 0;
       ul{
         margin: 0;
@@ -597,7 +597,7 @@
           font-size: 0.9em;
           height: 30px;
           padding: 0 5px;
-          width: 85px;
+          width: 47%;
           text-align: center;
 
           &.lastRangeLabel {
@@ -813,7 +813,7 @@
     color: #808285;
     cursor: pointer;
     font-weight: 400;
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
   input[type="checkbox"] + label, input[type="radio"] + label {
     cursor: pointer;
@@ -822,13 +822,13 @@
   input[type="checkbox"] + label::before, input[type="radio"] + label::before {
     content: "";
     display: inline-block;
-    height: 18px;
+    height: 20px;
     width: 27px;
-    margin: 0 -5px -6px 0;
-    background: url('../images/src/checkboxes.png') no-repeat;
+    margin: 0 0 -5px 0;
+    background: url('../images/src/checkboxes2.png') no-repeat;
   }
   input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
-    background-position: 0 -17px;
+    background-position: 0 -23px;
   }
 }
 .popupCheckbox{
@@ -1372,6 +1372,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           margin-right: 0;
           color: #b1b1b1;
           outline: none;
+          padding: 20px 0;
           &:hover{
             background: @white !important;
           }
@@ -1388,7 +1389,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     .tab-content{
       border: 1px solid #d8d8d8;
       border-top: 1px solid transparent;
-      padding: 20px 15px 15px;
+      padding: 35px 15px 15px;
     }
     .pdRoomsBlock{
       width: 40%;
@@ -1422,10 +1423,10 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       }
       & > ul{
         margin-top: 25px;
+        margin-bottom: 50px;
         li{
           border-bottom: 1px solid #dedede;
-          padding-bottom: 10px;
-          padding-top: 10px;
+          padding: 13px 0;
           text-transform: capitalize;
           &:last-child{
             border-bottom: 0;
