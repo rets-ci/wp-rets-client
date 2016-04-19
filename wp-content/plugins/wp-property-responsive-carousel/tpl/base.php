@@ -124,7 +124,7 @@ $the_query = new WP_Query( $query );
 										<?php endif; ?>
 									</div>
 									<div class="item-content">
-										<p><?php echo $property['post_title']; if(!empty($property[ 'price' ])){ echo ' - <span>$' . number_format($property[ 'price' ]) . '</span>' ; } ?></p>
+										<p><?php echo $property['post_title']; if(!empty($property[ 'price_2' ])){ echo ' - <span>$' . number_format($property[ 'price_2' ]) . '</span>' ; } ?></p>
 										<span><?php $get_location_city_terms = get_the_terms($property['ID'], 'location_city'); ($get_location_city_terms[0]) ? _e($get_location_city_terms[0]->name) : '' ?>, <?php $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip'); ($get_location_zip_terms[0]) ? _e('NC ' . $get_location_zip_terms[0]->name) : '' ?></span>
 										<ul>
 											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); echo '</li>'; } ?>
