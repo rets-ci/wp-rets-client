@@ -35,7 +35,7 @@
 
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 1); ?>" />
+        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
@@ -54,7 +54,7 @@
 
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 1); ?>" />
+        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
@@ -144,7 +144,7 @@
 
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 1); ?>" />
+        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
@@ -163,7 +163,7 @@
 
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 1); ?>" />
+        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
 
         <span>
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
