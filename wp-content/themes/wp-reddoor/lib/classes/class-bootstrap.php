@@ -87,6 +87,12 @@ namespace UsabilityDynamics\RDC {
        */
       public function alter_supermap_query( $query, $atts ) {
 
+//        echo '<pre>';
+//        print_r( $atts );
+//        echo '</pre>';
+
+        wp_localize_script( 'supermap-advanced', 'sm_current_filter', $_REQUEST['wpp_search'] );
+
         /**
          * @todo: could not find other place for this
          */
