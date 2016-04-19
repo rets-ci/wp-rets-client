@@ -116,11 +116,15 @@ jQuery(document).ready(function(){
         jQuery('.singleShareContainer').toggle('slow');
     });
 
-    jQuery('#menu-home-buying-page-sub-menu li:first-child').append('<span class="homeBuyingMenuSpoiler"></span>');
+    jQuery('#menu-home-buying-page-sub-menu li:first-child').append('<span class="homeBuyingMenuSpoiler arrow-down"></span>');
     jQuery('.homeBuyingMenuSpoiler').on('click', function() {
-        jQuery('#menu-home-buying-page-sub-menu').animate({
-            height: "100%"
-        }, 'slow' );
+        jQuery('#menu-home-buying-page-sub-menu li+li').slideToggle();
+        jQuery(this).toggleClass('arrow-down');
+    });
+    jQuery('.archiveFilterBody ul li:first-child').append('<span class="archiveFilterMenuSpoiler arrow-down"></span>');
+    jQuery('.archiveFilterMenuSpoiler').on('click', function() {
+        jQuery('.archiveFilterBody ul li+li').slideToggle();
+        jQuery(this).toggleClass('arrow-down');
     });
 
 });

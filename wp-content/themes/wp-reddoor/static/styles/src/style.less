@@ -100,190 +100,243 @@
 }
 @media screen and (max-width: @adapt768) {
   body {
-  background: none !important;
-  .headerTopMenu{
     background: none !important;
-  }
-  .ftrdImgGoTop{
+    .headerTopMenu {
+      background: none !important;
+    }
+    .ftrdImgGoTop {
       margin-bottom: 16px;
       top: 0 !important;
-    .featuredImageHeader{
+      .featuredImageHeader {
+        top: -40px !important;
+      }
+    }
+    .frontPageSearchBlock {
       top: -40px !important;
     }
-  }
-  .frontPageSearchBlock{
-    top: -40px !important;
-  }
-    &.single-property{
-      .singlePropertyHeader{
+    &.single-property {
+      .singlePropertyHeader {
         z-index: 9;
-        .oneAgent{
+        .oneAgent {
           display: none;
         }
       }
-      .bottomSeparate{
+      .bottomSeparate {
         padding-bottom: 5px;
       }
     }
-  .site-logo {
-    left: 23%;
-  }
-  .site-content {
-    padding: 0 2%;
-  }
-  .menuDesktop {
-    display: none !important;
-  }
-  .popUpLoginBtn {
-    display: none !important;
-  }
-  .popUpContactBtn{
-    margin-right: 10%;
-  }
-  .mobileMenu, .toggle, .menuAdaptive{
-    display: block !important;
-  }
-  .frontPageSearchBlock {
-
-    .searchForm{
-      min-width: 557px;
-      form{
-        border-radius: 0 0 5px 5px;
-        height: 280px;
-        padding: 9px;
-        .location{
-          width: 100%;
-          border-radius: 5px;
-          margin-bottom: 5px;
-        }
-        .sfBeds{
-          width: 49%;
-          border-radius: 5px;
-        }
-        .sfBaths{
-          width: 49%;
-          margin-left: 10px;
-          border-radius: 5px;
-        }
-        .sfPrice{
-          width: 100%;
-          border-radius: 5px;
-          margin-top: 5px;
-        }
-        input[type="submit"]{
-          width: 100%;
-          margin-left: 0;
-          margin-top: 5px;
-          padding: 18px 20px;
-        }
-        ul{
-          position: relative;
-          z-index: 20;
-        }
-      }
-      .sfPriceRange{
-        .sfprInputsBlock{
-          padding-left: 5px;
-          input{
-            width: 49%;
-          }
-        }
-        .left-side{
-          width: 50%;
-        }
-        .right-side{
-          width: 50%;
-        }
-        .firstRangeList{
-          padding-right: 15px;
-          text-align: center;
-        }
-        .lastRangeList{
-          padding-left: 15px;
-          text-align: center;
-        }
-      }
+    .site-logo {
+      left: 23%;
     }
-  }
-  .oneCategory{
-    margin: auto;
-  }
-  .contactMenu{
-    margin-right: 20px;
-    li {
-      margin-top: 1.4em;
-      a{
-        font-size: 1.3em;
-      }
-      &:last-child {
-        display: none;
-      }
+    .site-content {
+      padding: 0 2%;
     }
-  }
-  .popup {
-    left: 30%;
-    top: 15%;
-  }
-    .tabbedWidgetMobile{
+    .menuDesktop {
+      display: none !important;
+    }
+    .popUpLoginBtn {
+      display: none !important;
+    }
+    .popUpContactBtn {
+      margin-right: 10%;
+    }
+    .mobileMenu, .toggle, .menuAdaptive {
       display: block !important;
     }
-    .footerWidgetArea2{
+    .frontPageSearchBlock {
+
+      .searchForm {
+        min-width: 557px;
+        form {
+          border-radius: 0 0 5px 5px;
+          height: 280px;
+          padding: 9px;
+          .location {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 5px;
+          }
+          .sfBeds {
+            width: 49%;
+            border-radius: 5px;
+          }
+          .sfBaths {
+            width: 49%;
+            margin-left: 10px;
+            border-radius: 5px;
+          }
+          .sfPrice {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 5px;
+          }
+          input[type="submit"] {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 5px;
+            padding: 18px 20px;
+          }
+          ul {
+            position: relative;
+            z-index: 20;
+          }
+        }
+        .sfPriceRange {
+          .sfprInputsBlock {
+            padding-left: 5px;
+            input {
+              width: 49%;
+            }
+          }
+          .left-side {
+            width: 50%;
+          }
+          .right-side {
+            width: 50%;
+          }
+          .firstRangeList {
+            padding-right: 15px;
+            text-align: center;
+          }
+          .lastRangeList {
+            padding-left: 15px;
+            text-align: center;
+          }
+        }
+      }
+    }
+    .oneCategory {
+      margin: auto;
+    }
+    .contactMenu {
+      margin-right: 20px;
+      li {
+        margin-top: 1.4em;
+        a {
+          font-size: 1.3em;
+        }
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+    .popup {
+      left: 30%;
+      top: 15%;
+    }
+    .tabbedWidgetMobile {
+      display: block !important;
+    }
+    .footerWidgetArea2 {
       text-align: center;
       margin-top: 30px;
     }
-    .footerWidgetArea3{
+    .footerWidgetArea3 {
       margin-top: 30px;
     }
-  .so-widget-tabbed-content {
-    .sow-slider-image-wrapper {
-      .tabbedWidgetImageArea {
-        display: none;
-      }
-      .tabbedWidgetContent{
-        width: 100% !important;
+    .so-widget-tabbed-content {
+      .sow-slider-image-wrapper {
+        .tabbedWidgetImageArea {
+          display: none;
+        }
+        .tabbedWidgetContent {
+          width: 100% !important;
+        }
       }
     }
   }
-  }
-  .so-widget-tabbed-content  {
-    .tabbedWidgetTitle{
+
+  .so-widget-tabbed-content {
+    .tabbedWidgetTitle {
       display: none;
     }
     .sow-slider-base {
-      .sow-slider-pagination{
+      .sow-slider-pagination {
         display: none;
       }
-      .sow-slider-images{
-        .sow-slider-image-container{
+      .sow-slider-images {
+        .sow-slider-image-container {
           display: none;
         }
       }
     }
   }
-  #menu-home-buying-page-sub-menu{
-    overflow: hidden;
-    transition: 2s;
-    height: 72px;
-    .homeBuyingMenuFull{
-      height: auto;
-    }
-    .menu-item{
-      display: block !important;
-      border-bottom: 1px solid #d0d4d9;
-      position: relative;
-      .homeBuyingMenuSpoiler{
-        background: #000 none repeat scroll 0 0;
-        height: 20px;
-        position: absolute;
-        right: 3%;
-        top: 30%;
-        width: 20px;
-        cursor: pointer;
-        transition: 2s;
+
+  .menu-home-buying-page-sub-menu-container {
+    #menu-home-buying-page-sub-menu {
+      overflow: hidden;
+      border-bottom: 1px solid #fff;
+      .menu-item {
+        display: list-item;
+        border-bottom: 1px solid #fff;
+        position: relative;
+        text-align: left;
+        border-right: 0;
+        & + .menu-item {
+          display: none;
+        }
+        .homeBuyingMenuSpoiler {
+          background: url('../images/src/icon-arrow.png');
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 60% auto;
+          height: 24px;
+          position: absolute;
+          right: 3%;
+          top: 30%;
+          width: 40px;
+          cursor: pointer;
+          transition: 0.5s;
+          transform: rotate(180deg);
+          color: #5a595c;
+          &.arrow-down {
+            transform: rotate(0);
+          }
+        }
       }
     }
-
   }
 
+  .archiveFilterBg{
+    height: auto;
+    padding: 0;
+    .archiveFilterBody {
+      ul {
+        border-bottom: 1px solid #fff;
+        li {
+          display: list-item;
+          border-bottom: 1px solid #fff;
+          position: relative;
+          text-align: left;
+          border-right: 0;
+          & + li {
+            display: none;
+          }
+          .archiveFilterMenuSpoiler {
+            background: url('../images/src/icon-arrow.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 60% auto;
+            height: 24px;
+            position: absolute;
+            right: 3%;
+            top: 30%;
+            width: 40px;
+            cursor: pointer;
+            transition: 0.5s;
+            transform: rotate(180deg);
+            color: #5a595c;
+            &.arrow-down {
+              transform: rotate(0);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .archiveImageHeader {
+    top: -24px;
+  }
 }
 

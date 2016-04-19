@@ -142,23 +142,23 @@ while (have_posts()) : the_post();
               <li><a href="#"><svg class="icon icon-management"><use xlink:href="#icon-management"/></svg></a></li> -->
             </ul>
             <div class="singleShareContainer">
-              <h4>Share this property</h4>
+              <h4>Share This Property</h4>
               <p>
               <a class="icon-wpproperty-social-facebook-symbol" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a>
               <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . $singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
               <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in #' . $locationCity); ?>&summary=<?php (!empty($property['automated_property_detail_description'])) ? urlencode($property['automated_property_detail_description']) : '' ?>&source=Red%20Door%20Company"></a>
               </p>
-              <p class="visEmail"><span>or mail vis email</span></p>
+              <p class="visEmail"><span>or send via email</span></p>
               <script>
               jQuery(document).ready(function(){
                 jQuery('#sharingEmail').keyup(function(){
                   var value = jQuery(this).val();
-                  jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . (!empty($property['automated_property_detail_description'])) ?  urlencode($property['automated_property_detail_description']) : ''  . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
+                  jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo ($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . (!empty($property['automated_property_detail_description'])) ?  ($property['automated_property_detail_description']) : ''  . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
                 });
               });
               </script>
-              <input type="email" placeholder="Enter email" id="sharingEmail" />
-              <a class="goShare" href="mailto:YOUR_MAIL?&subject=<?php echo urlencode($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>">Share</a>
+              <input type="email" placeholder="enter email address" id="sharingEmail" />
+              <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?&subject=<?php echo ($singleBedrooms . ' bed ' . $singleBathrooms . ' bath ' . $totalLivingArea . ' sqft in ' . $locationCity . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>">Send Email</a>
             </div>
           <?php } ?>
 
@@ -266,7 +266,11 @@ while (have_posts()) : the_post();
               <span class="icon-wpproperty-data-updated-outline"></span>
             </div>
             <span>Last Updated</span>
-            <strong><?php echo $updatedProperty; ?></strong>
+            <strong>
+              <?php $dateUpdt = strtotime("$updatedProperty GMT");
+              echo date('F j, Y g:i A T', $dateUpdt);
+              ?>
+            </strong>
           </li>
           <?php } ?>
           <?php if(!empty($daysOnMarket)){ ?>
@@ -974,7 +978,7 @@ while (have_posts()) : the_post();
       <div class="col-lg-7 col-md-7">
         <h4><?php _e('Listing Provider for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
-      <div class="col-lg-7 col-md-7">
+      <div class="col-lg-8 col-md-8">
         <ul>
           <li><?php _e('Agent: '); ?><b><?php _e($listing_agent_name); ?></b></li>
           <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
@@ -986,11 +990,11 @@ while (have_posts()) : the_post();
           <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
           <li><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></li>
           <li><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></li>
-          <li><?php _e('Last Checked: '); ?><b><?php echo date('Y-m-d H:i', current_time('timestamp')-60); ?></b></li>
+          <li><?php _e('Last Checked: '); ?><b><?php echo date('F j, Y g:i A T', current_time('timestamp')-60); ?></b></li>
           <li><?php _e('Last Updated: '); ?><b><?php
-              $updateTime = str_split($updatedProperty);
-              $updateTime[10] = ' '; $updateTime[16] = ''; $updateTime[17] = ''; $updateTime[18] = '';
-              echo implode($updateTime);
+              $dateUpdt = '';
+              $dateUpdt = strtotime("$updatedProperty GMT");
+              echo date('F j, Y g:i A T', $dateUpdt);
               ?>
             </b>
           </li>
