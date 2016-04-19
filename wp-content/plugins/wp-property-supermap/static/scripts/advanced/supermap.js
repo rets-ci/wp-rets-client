@@ -94,6 +94,12 @@
         };
       })
 
+      .filter('acreage', function() {
+        return function( int ) {
+          return int > 1 ? int + ' acres' : int + ' acre';
+        };
+      })
+
       .directive('clickOut', ['$window', '$parse', function ($window, $parse) {
         return {
           restrict: 'A',
@@ -140,8 +146,9 @@
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
-        $scope.map_filter_taxonomy = window.sm_current_terms.key;
-        $scope.current_filter = window.sm_current_filter;
+
+        $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
+        $scope.current_filter = window.sm_current_filter || {};
 
         $scope._request = null;
 
@@ -643,12 +650,13 @@
             return term.text || term.name;
           }
         }).on('change', function(){
-          $scope.map_filter_taxonomy = window.sm_current_terms.key;
+          $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         });
 
-        var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
-
-        $select.append($option).trigger('change');
+        if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+          var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
+          $select.append($option).trigger('change');
+        }
 
         /**
          * SEARCH FILTER EVENT
