@@ -264,15 +264,20 @@
 
           min:'',
 
-          min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50],
+          min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
           max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
 
           recalculate: function ( current ) {
+            current = current*1;
             for( var i in this.max_acres ) {
-              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current*1 )) + parseInt(i) + 1 ] ) {
-                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current*1 )) + parseInt(i) + 1 ];
+              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
+                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
               } else {
-                this.max_acres[i] = this.max_acres[ i-1 ] + 10;
+                if (this.max_acres[i - 1]) {
+                  this.max_acres[i] = this.max_acres[i - 1] + 10;
+                } else {
+                  this.max_acres[i] = current + 10;
+                }
               }
             }
           }
