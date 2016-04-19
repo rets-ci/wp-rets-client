@@ -144,8 +144,6 @@
 
         $scope.current_filter = window.sm_current_filter;
 
-        console.log($scope.current_filter);
-
         $scope._request = null;
 
         $scope.columns = {
