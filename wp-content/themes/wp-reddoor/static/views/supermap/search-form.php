@@ -145,11 +145,11 @@
         <div class="rdc-range-fields">
           <select ng-model="acrage.min" ng-change="acrage.recalculate(acrage.min)" name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
             <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres}}</option>
+            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres | acreage}}</option>
           </select>
           <select name="bool[must][8][range][tax_input.approximate_lot_size][lte]">
             <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres}}</option>
+            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres | acreage}}</option>
           </select>
         </div>
 
