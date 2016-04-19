@@ -32,7 +32,7 @@ while (have_posts()) : the_post();
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
   $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft');
-  $get_lot_dimensions_terms = get_the_terms($property['ID'], 'lot_dimensions');
+  $get_approximate_lot_size_terms = get_the_terms($property['ID'], 'approximate_lot_size');
   $get_updated_terms = get_the_terms($property['ID'], 'updated');
   $get_days_on_market_terms = get_the_terms($property['ID'], 'days_on_market');
   $get_elementary_school_terms = get_the_terms($property['ID'], 'elementary_school');
@@ -60,7 +60,7 @@ while (have_posts()) : the_post();
   $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
   $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
   $totalLivingArea = ($get_living_area_terms[0]) ? $get_bathrooms_terms[0]->name : '' ;
-  $lotDimensionsArea = ($get_lot_dimensions_terms[0]) ? $get_lot_dimensions_terms[0]->name : '';
+  $approximateLotSize = ($get_approximate_lot_size_terms[0]) ? $get_approximate_lot_size_terms[0]->name : '';
   $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $locationZip = ($get_location_zip_terms[0]) ? $get_location_zip_terms[0]->name : '';
   $updatedProperty = ($get_updated_terms[0]) ? $get_updated_terms[0]->name : '';
@@ -127,9 +127,9 @@ while (have_posts()) : the_post();
             <li><span
               class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e(number_format($totalLivingArea) . ' Sq.ft'); ?>
             </li><?php } ?>
-          <?php if ($lotDimensionsArea) { ?>
+          <?php if ($approximateLotSize) { ?>
             <li><span
-              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($lotDimensionsArea . ' acres'); ?>
+              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($approximateLotSize . ' acres'); ?>
             </li><?php } ?>
         </ul>
         <?php if(!empty($property)){ ?>
@@ -452,7 +452,7 @@ while (have_posts()) : the_post();
 
         <div class="tab-content">
           <div id="Ameneties" class="tab-pane fade in active">
-            <?php echo do_shortcode('[property_walkscore_neighborhood ws_map_modules = "google_map";  ws_base_map = "google_map";]'); ?>
+            <?php //echo do_shortcode('[property_walkscore_neighborhood ws_map_modules = "google_map";  ws_base_map = "google_map";]'); ?>
           </div>
           <div id="Commute" class="tab-pane fade">
             <p>Commute</p>
@@ -484,7 +484,7 @@ while (have_posts()) : the_post();
         </ul>
 
         <div class="tab-content">
-          <div id="Rooms" class="tab-pane fade in active">
+          <div id="Rooms" class="tab-pane fade in active grid">
             <?php
             $listAttributes = array();
             $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
@@ -505,7 +505,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-bedroom-outline"></span>
@@ -538,7 +538,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-bathroom-outline"></span>
@@ -570,7 +570,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-livingarea-outline"></span>
@@ -602,7 +602,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-rooms-outline"></span>
@@ -634,7 +634,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-kitchen-outline"></span>
@@ -649,7 +649,7 @@ while (have_posts()) : the_post();
             <?php } ?>
             <div class="clear"></div>
           </div>
-          <div id="Features" class="tab-pane fade">
+          <div id="Features" class="tab-pane fade grid">
             <?php
             $listAttributes = array();
             foreach($wp_properties['property_stats_groups'] as $key => $value){
@@ -669,7 +669,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-interior-outline"></span>
@@ -700,7 +700,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-exterior-outline"></span>
@@ -731,7 +731,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-solid-outline"></span>
@@ -762,7 +762,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-utility-outline"></span>
@@ -793,7 +793,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-parking-outline"></span>
@@ -808,7 +808,7 @@ while (have_posts()) : the_post();
             <?php } ?>
             <div class="clear"></div>
           </div>
-          <div id="Neighborhood" class="tab-pane fade">
+          <div id="Neighborhood" class="tab-pane fade grid">
             <?php
             $listAttributes = array();
             foreach($wp_properties['property_stats_groups'] as $key => $value){
@@ -827,7 +827,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-school-outline"></span>
@@ -858,7 +858,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-hoa-outline"></span>
@@ -873,7 +873,7 @@ while (have_posts()) : the_post();
             <?php } ?>
             <div class="clear"></div>
           </div>
-          <div id="PropertyLot" class="tab-pane fade">
+          <div id="PropertyLot" class="tab-pane fade grid">
             <?php
             $listAttributes = array();
             foreach($wp_properties['property_stats_groups'] as $key => $value) {
@@ -892,7 +892,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-price-outline"></span>
@@ -923,7 +923,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-listing-house-outline"></span>
@@ -954,7 +954,7 @@ while (have_posts()) : the_post();
             }
             ?>
             <?php if(!empty($listAttributes)){ ?>
-            <div class="pdRoomsBlock">
+            <div class="pdRoomsBlock grid-item">
               <section>
                 <div>
                   <span class="icon-wpproperty-attribute-lot-outline"></span>

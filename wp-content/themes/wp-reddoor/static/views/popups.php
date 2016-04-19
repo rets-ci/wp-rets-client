@@ -29,12 +29,12 @@
 			<li>
 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/landlord.png" alt="" />
 				<span>Lanlord</span>
-				<a href="">Landlord Login</a>
+				<a targethref="https://app.propertyware.com/pw/portals/reddoorcompany/owner.action">Landlord Login</a>
 			</li>
 			<li>
 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/tenant.png" alt="" />
 				<span>Tenant</span>
-				<a href="">Tenant Login</a>
+				<a href="https://app.propertyware.com/pw/portals/reddoorcompany/tenant.action">Tenant Login</a>
 			</li>
 		</ul>
 	</div>

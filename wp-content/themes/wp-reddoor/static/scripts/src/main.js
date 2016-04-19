@@ -127,6 +127,19 @@ jQuery(document).ready(function(){
         jQuery(this).toggleClass('arrow-down');
     });
 
+    var $grid = jQuery('.grid').masonry({
+        // options
+        itemSelector: '.grid-item',
+        singleMode: true,
+        isResizable: true,
+        transitionDuration: 0,
+    });
+
+    jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $grid.masonry('layout');
+    })
+
+
 });
 
 function map_resize() {
