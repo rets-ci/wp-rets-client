@@ -881,6 +881,8 @@ namespace UsabilityDynamics\RDC {
 
       echo '<a href="' . $instance['buttonlink'] . '">' . $instance['buttonlabel'] . '</a>';
 
+      echo '<div class="callout-overlay"></div>';
+
       echo '</div>';
 
       echo $args['after_widget'];

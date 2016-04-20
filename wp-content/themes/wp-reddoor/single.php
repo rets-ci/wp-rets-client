@@ -48,12 +48,12 @@ if(!empty($post_thumbnail_id)) {
 <?php } ?>
 <div class="container">
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <?php if (!dynamic_sidebar('Single-sidebar')) : ?>
         [ do default stuff if no widgets ]
       <?php endif; ?>
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-8">
       <article class="content">
         <?php the_content(); endwhile; ?>
         <ul class="singleSocialBlock">

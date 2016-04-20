@@ -1,34 +1,56 @@
 .widget_callout{
-    margin: 15px 0 !important;
+    margin: 0 0 20px 0 !important;
+    position: relative;
+    width: 80%;
+    left: 35px;
 }
 .widget_callout .widgetBody{
     background-size: cover !important;
-    border-radius: 5%;
+    border-radius: 2%;
     height: 100%;
-    padding: 6% 5% 5%;
+    padding: 6% 10% 5%;
     width: 100%;
 }
 .widget_callout .widgetBody a{
     background: #cf3428 none repeat scroll 0 0;
-    border-radius: 10px;
+    border-radius: 4px;
     color: #fff;
     display: block;
-    padding: 10px 20px;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    position: relative;
     text-align: center;
-    width: 150px;
+    width: 120px;
+    z-index: 9;
+    font-size: 1.1em;
 }
 .widget_callout .widgetBody h2{
     color: #fff;
-    margin: 0 0 20px;
-    font-size: 1.7em;
+    font-size: 1.3em;
+    margin: 60px 0 7px;
+    position: relative;
     text-shadow: 2px 3px 3px #000;
+    z-index: 9;
 }
 .widget_callout .widgetBody h3{
     color: #ededed;
-    margin: 0 0 20px;
-    line-height: 35px;
-    font-size: 1.5em;
+    font-size: 1.1em;
+    line-height: 25px;
+    margin: 0 0 15px;
+    position: relative;
     text-shadow: 2px 3px 3px #000;
+    z-index: 9;
+}
+.callout-overlay{
+    background: #000 none repeat scroll 0 0;
+    bottom: 0;
+    opacity: 0.2;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8;
+    left: 0;
+    border-radius: 2%;
 }
 
 

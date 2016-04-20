@@ -72,8 +72,14 @@ while (have_posts()) : the_post();
   $inside_city = ($get_inside_city_terms[0]) ? $get_inside_city_terms[0]->name : '';
   $location_city = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
-  $design = ($get_design_terms[0]) ? $get_design_terms[0]->name : '';
-  $style = ($get_style_terms[0]) ? $get_style_terms[0]->name : '';
+  $design = array();
+  foreach($get_design_terms as $designTermObj){
+    $design[] = $designTermObj->name;
+  }
+  $style = array();
+  foreach($get_style_terms as $styleTermObj){
+    $style[] = $styleTermObj->name;
+  }
   $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
   $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
   $listing_agent_name = ($get_listing_agent_name_terms[0]) ? $get_listing_agent_name_terms[0]->name : '';
@@ -269,7 +275,7 @@ while (have_posts()) : the_post();
             <span>Last Updated</span>
             <strong>
               <?php $dateUpdt = strtotime("$updatedProperty GMT");
-              echo date('F j, Y g:i A T', $dateUpdt);
+              echo date('F j, Y', $dateUpdt);
               ?>
             </strong>
           </li>
@@ -296,7 +302,13 @@ while (have_posts()) : the_post();
               <span class="icon-wpproperty-listing-house-outline"></span>
             </div>
             <span><?php _e('Design'); ?></span>
-            <strong><?php _e($design); ?></strong>
+            <strong><?php
+              $countElements = count($design);
+              for($i = 0; $i < $countElements; $i++){
+                $styleDesign .= $design[$i] . ', ';
+              }
+              echo substr($styleDesign, 0, -2);
+            ?></strong>
           </li>
           <?php } ?>
           <?php if(!empty($style)){ ?>
@@ -305,20 +317,29 @@ while (have_posts()) : the_post();
               <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
             </div>
             <span><?php _e('Style'); ?></span>
-            <strong><?php _e($style); ?></strong>
+            <strong><?php
+              $countElements = count($style);
+              for($i = 0; $i < $countElements; $i++){
+                $styleString .= $style[$i] . ', ';
+              }
+              echo substr($styleString, 0, -2);
+              ?></strong>
           </li>
           <?php } ?>
-          <?php if($new_construction == 'Yes' ){ ?>
+
           <li>
             <div>
               <span class="icon-wpproperty-attribute-exterior-outline"></span>
             </div>
             <span><?php _e('Year Built'); ?></span>
             <strong>
-              <?php print_r($year_built . ', ') . _e('New Construction'); ?>
+              <?php if($new_construction == 'Yes' ){
+               print_r($year_built . ', ') . _e('New Construction');
+               } else {
+                 _e($year_built);
+               } ?>
             </strong>
           </li>
-          <?php } ?>
         </ul>
         <ul class="propertyFacts">
           <?php if(!empty($subdivision)){ ?>
@@ -330,17 +351,22 @@ while (have_posts()) : the_post();
             <strong><?php _e($subdivision); ?></strong>
           </li>
           <?php } ?>
-          <?php if($inside_city == 'Yes'){ ?>
+
           <li>
             <div>
               <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
             </div>
             <span><?php _e('Inside City'); ?></span>
             <strong>
-              <?php echo $inside_city . ', ' . $location_city; ?>
+              <?php if($inside_city == 'Yes'){
+                echo $inside_city . ', ' . $location_city;
+               } else {
+                echo $inside_city;
+               }
+              ?>
             </strong>
           </li>
-          <?php } ?>
+
           <?php if(!empty($location_county)){ ?>
           <li>
             <div>
