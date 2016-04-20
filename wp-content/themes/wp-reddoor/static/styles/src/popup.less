@@ -3,12 +3,33 @@
 
 .popup {
   position:fixed;
-  top:15%;
-  left:40%;
-  display:none;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  display:flex;
   overflow:hidden;
-  z-index:100;
+  z-index:999999;
   behavior: url(PIE.htc);
+
+  .popup-inner-wrapper {
+    width: 600px;
+    max-height: 500px;
+    height: 85%;
+    margin: auto;
+    align-self: center;
+    z-index: 9999999;
+  }
+
+  .popup-overlay {
+    opacity: .8;
+    background: black;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+  }
 
 }
 .popup h2 {
@@ -26,16 +47,14 @@
   z-index: 20;
 }
 
-/* Modal Window */
+.exitPopup{
+  color: @white;
+  display: block;
+  text-align: right;
+}
 
+.popupContactUsMore {
 
-.popupContactUs{
-  width: 32%;
-  .exitPopup{
-    color: @white;
-    display: block;
-    text-align: right;
-  }
   ul{
     background: @white;
     border-radius: 5px;
@@ -56,8 +75,8 @@
         div {
           float: left;
           font-size: 1.3em;
-          font-weight: 600;
-          margin: 10% 5% 0 10%;
+          font-weight: 500;
+          margin: 9% 5% 0 6%;
         }
         .icon-circle-right {
           float: right;
@@ -68,20 +87,15 @@
     }
   }
 }
-.popupLogin{
-  width: 25%;
-  min-width: 270px;
-  .exitPopup{
-    color: @white;
-    display: block;
-    text-align: right;
-  }
-  ul{
+
+.popupLogin {
+
+  ul {
+    min-height: 323px;
     border-radius: 5px;
     margin: 0;
-    height: 265px;
     background: @white;
-    li{
+    li {
       float: left;
       padding: 7% 6%;
       border-right: 1px solid #e6e4dd;
@@ -118,81 +132,76 @@
     }
   }
 }
-.popupContactUsMore{
-  width: 22%;
-  min-width: 280px;
-  .exitPopup{
-    color: @white;
+
+.popup-form-wrapper {
+  background: #fff none repeat scroll 0 0;
+  border-radius: 5px;
+  max-height: 100%;
+  overflow-y: scroll;
+  padding: 10% 7% 2%;
+
+  img {
     display: block;
-    text-align: right;
+    margin: auto;
+    margin-bottom: 2%;
   }
-  &>div {
-    background: @white;
-    border-radius: 5px;
-    padding: 10% 7% 2%;
-    img {
-      display: block;
-      margin: auto;
-      margin-bottom: 2%;
-    }
-    h3 {
-      font-size: 1em;
-      margin-bottom: 2%;
-      text-align: center;
-    }
-    p {
-      line-height: 2em;
-      margin-bottom: 3%;
-      text-align: center;
-      font-size: 0.9em;
-    }
-    .clickToView{
-      display: block;
-      margin: 5% 0;
-      text-align: center;
-    }
-    .ui-selectmenu-button{
+  h3 {
+    font-size: 1em;
+    margin-bottom: 2%;
+    text-align: center;
+  }
+  p {
+    line-height: 2em;
+    margin-bottom: 3%;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  .clickToView{
+    display: block;
+    margin: 5% 0;
+    text-align: center;
+  }
+  .ui-selectmenu-button{
 
-    }
-    input {
-      &[type="tel"]{
-        border: 3px solid #d8d8d8;
-        border-radius: 1px;
-        font-size: 1.5em;
-        letter-spacing: 0.1em;
-        padding: 4% 0;
-        text-align: center;
-        width: 100%;
-        color: @buttons;
-        margin-top: 10px;
-      }
-      &[type="text"]{
-        border: 1px solid #d8d8d8;
-        margin: 4% 0 3%;
-        width: 100%;
-        border-radius: 1px;
-        height: 35px;
-      }
-      &[type="submit"]{
-        background: @buttons;
-        border: medium none;
-        border-radius: 3px;
-        color: @white;
-        font-weight: 500;
-        margin: 5% 0;
-        padding: 6% 0;
-        width: 100%;
-      }
-      &[type="checkbox"]{
-
-      }
-    }
-    select{
-      border: 1px solid #d8d8d8;
+  }
+  input {
+    &[type="tel"]{
+      border: 3px solid #d8d8d8;
+      border-radius: 1px;
+      font-size: 1.5em;
+      letter-spacing: 0.1em;
+      padding: 2% 0;
+      text-align: center;
       width: 100%;
-      margin: 0 0 5%;
+      color: @buttons;
+      margin-top: 10px;
+    }
+    &[type="text"]{
+      border: 1px solid #d8d8d8;
+      margin: 2% 0;
+      width: 100%;
       border-radius: 1px;
       height: 35px;
     }
+    &[type="submit"]{
+      background: @buttons;
+      border: medium none;
+      border-radius: 3px;
+      color: @white;
+      font-weight: 500;
+      margin: 5% 0;
+      padding: 6% 0;
+      width: 100%;
+    }
+    &[type="checkbox"]{
+
+    }
+  }
+  select{
+    border: 1px solid #d8d8d8;
+    width: 100%;
+    margin: 0 0 5%;
+    border-radius: 1px;
+    height: 35px;
   }
 }

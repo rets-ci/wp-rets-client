@@ -31,31 +31,6 @@ jQuery(document).ready(function(){
         jQuery( ".menuAdaptive" ).accordion();
     });
 
-    jQuery(function($){
-        jQuery("#phone").mask("+919-333-333",{placeholder:"+919-XXX-XXX"});
-    })
-    jQuery(function () {
-        //script for popups
-        var popUpWindow = jQuery('span.exitPopup').parent();
-            jQuery('.showContactPopup a, .showContactPopup').on('click', function () {
-            jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
-            jQuery("body").append("<div id='overlay'></div>");
-            jQuery('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
-            return false;
-        });
-        jQuery('span.exitPopup').on('click', function () {
-            jQuery(this).parent().fadeOut(100);
-            jQuery('#overlay').remove('#overlay');
-            return false;
-        });
-        jQuery('body').keydown(function(eventObject){
-            if (eventObject.which == 27) {
-                popUpWindow.fadeOut(100);
-                jQuery('#overlay').remove('#overlay');
-            }
-        });
-    });
-
     /* Footer social icons */
     jQuery('.facebookFootIcon a').html('<span class="icon-wpproperty-social-facebook-symbol"></span>');
     jQuery('.twitterFootIcon a').html('<span class="icon-wpproperty-social-twitter-symbol"></span>');

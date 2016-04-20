@@ -16,14 +16,14 @@
         <div class="col-md-4 col-lg-4">
             <div class="footerWidgetArea1">
                 <?php if (!dynamic_sidebar('Footer area 1')) : ?>
-                [ do default stuff if no widgets ]
+                <p><?php _e( 'No widgets for display' ); ?></p>
                 <?php endif; ?>
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
             <div class="footerWidgetArea2">
                 <?php if (!dynamic_sidebar('Footer area 2')) : ?>
-                    [ do default stuff if no widgets ]
+                    <p><?php _e( 'No widgets for display' ); ?></p>
                 <?php endif; ?>
                 <span>In Association with</span><br/>
                 <?php
@@ -44,20 +44,11 @@
         </div>
         <div class="col-md-4 col-lg-4">
             <div class="footerWidgetArea3">
-             <!--   <h3>Latest Blogs</h3>
-                <ul>
-                    <li>
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sliderFootImg.png" alt="" />
-                        <a href="#">How to Make Your Small Space Work for You</a>
-                        <div>Posted on <span>20 Aug 2015</span></div>
-                    </li>
-                </ul> -->
                 <?php if (!dynamic_sidebar('Footer area 3')) : ?>
-                    [ do default stuff if no widgets ]
+                    <p><?php _e( 'No widgets for display' ); ?></p>
                 <?php endif; ?>
             </div>
         </div>
-        <?php get_template_part('static/views/popups') ?>
     </div>
 </div>
 </div>
@@ -74,8 +65,8 @@
     </div>
 </div>
 
+<?php get_template_part('static/views/popups') ?>
+
 <?php wp_footer(); ?>
-
-
 </body>
 </html>
