@@ -2520,55 +2520,53 @@ input[type="submit"]:active {
 .popupLogin ul li a:hover {
   text-decoration: none;
 }
-.popupContactUs {
-  width: 22%;
-  min-width: 280px;
-}
-.popupContactUs > div {
-  background: #fff;
+.popup-form-wrapper {
+  background: #fff none repeat scroll 0 0;
   border-radius: 5px;
+  max-height: 100%;
+  overflow-y: scroll;
   padding: 10% 7% 2%;
 }
-.popupContactUs > div img {
+.popup-form-wrapper img {
   display: block;
   margin: auto;
   margin-bottom: 2%;
 }
-.popupContactUs > div h3 {
+.popup-form-wrapper h3 {
   font-size: 1em;
   margin-bottom: 2%;
   text-align: center;
 }
-.popupContactUs > div p {
+.popup-form-wrapper p {
   line-height: 2em;
   margin-bottom: 3%;
   text-align: center;
   font-size: 0.9em;
 }
-.popupContactUs > div .clickToView {
+.popup-form-wrapper .clickToView {
   display: block;
   margin: 5% 0;
   text-align: center;
 }
-.popupContactUs > div input[type="tel"] {
+.popup-form-wrapper input[type="tel"] {
   border: 3px solid #d8d8d8;
   border-radius: 1px;
   font-size: 1.5em;
   letter-spacing: 0.1em;
-  padding: 4% 0;
+  padding: 2% 0;
   text-align: center;
   width: 100%;
   color: #d03528;
   margin-top: 10px;
 }
-.popupContactUs > div input[type="text"] {
+.popup-form-wrapper input[type="text"] {
   border: 1px solid #d8d8d8;
-  margin: 4% 0 3%;
+  margin: 2% 0;
   width: 100%;
   border-radius: 1px;
   height: 35px;
 }
-.popupContactUs > div input[type="submit"] {
+.popup-form-wrapper input[type="submit"] {
   background: #d03528;
   border: medium none;
   border-radius: 3px;
@@ -2578,7 +2576,7 @@ input[type="submit"]:active {
   padding: 6% 0;
   width: 100%;
 }
-.popupContactUs > div select {
+.popup-form-wrapper select {
   border: 1px solid #d8d8d8;
   width: 100%;
   margin: 0 0 5%;

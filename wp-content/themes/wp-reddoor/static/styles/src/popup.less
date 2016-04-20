@@ -133,78 +133,75 @@
   }
 }
 
+.popup-form-wrapper {
+  background: #fff none repeat scroll 0 0;
+  border-radius: 5px;
+  max-height: 100%;
+  overflow-y: scroll;
+  padding: 10% 7% 2%;
 
-.popupContactUs {
-  width: 22%;
-  min-width: 280px;
+  img {
+    display: block;
+    margin: auto;
+    margin-bottom: 2%;
+  }
+  h3 {
+    font-size: 1em;
+    margin-bottom: 2%;
+    text-align: center;
+  }
+  p {
+    line-height: 2em;
+    margin-bottom: 3%;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  .clickToView{
+    display: block;
+    margin: 5% 0;
+    text-align: center;
+  }
+  .ui-selectmenu-button{
 
-  &>div {
-    background: @white;
-    border-radius: 5px;
-    padding: 10% 7% 2%;
-    img {
-      display: block;
-      margin: auto;
-      margin-bottom: 2%;
-    }
-    h3 {
-      font-size: 1em;
-      margin-bottom: 2%;
+  }
+  input {
+    &[type="tel"]{
+      border: 3px solid #d8d8d8;
+      border-radius: 1px;
+      font-size: 1.5em;
+      letter-spacing: 0.1em;
+      padding: 2% 0;
       text-align: center;
-    }
-    p {
-      line-height: 2em;
-      margin-bottom: 3%;
-      text-align: center;
-      font-size: 0.9em;
-    }
-    .clickToView{
-      display: block;
-      margin: 5% 0;
-      text-align: center;
-    }
-    .ui-selectmenu-button{
-
-    }
-    input {
-      &[type="tel"]{
-        border: 3px solid #d8d8d8;
-        border-radius: 1px;
-        font-size: 1.5em;
-        letter-spacing: 0.1em;
-        padding: 4% 0;
-        text-align: center;
-        width: 100%;
-        color: @buttons;
-        margin-top: 10px;
-      }
-      &[type="text"]{
-        border: 1px solid #d8d8d8;
-        margin: 4% 0 3%;
-        width: 100%;
-        border-radius: 1px;
-        height: 35px;
-      }
-      &[type="submit"]{
-        background: @buttons;
-        border: medium none;
-        border-radius: 3px;
-        color: @white;
-        font-weight: 500;
-        margin: 5% 0;
-        padding: 6% 0;
-        width: 100%;
-      }
-      &[type="checkbox"]{
-
-      }
-    }
-    select{
-      border: 1px solid #d8d8d8;
       width: 100%;
-      margin: 0 0 5%;
+      color: @buttons;
+      margin-top: 10px;
+    }
+    &[type="text"]{
+      border: 1px solid #d8d8d8;
+      margin: 2% 0;
+      width: 100%;
       border-radius: 1px;
       height: 35px;
     }
+    &[type="submit"]{
+      background: @buttons;
+      border: medium none;
+      border-radius: 3px;
+      color: @white;
+      font-weight: 500;
+      margin: 5% 0;
+      padding: 6% 0;
+      width: 100%;
+    }
+    &[type="checkbox"]{
+
+    }
+  }
+  select{
+    border: 1px solid #d8d8d8;
+    width: 100%;
+    margin: 0 0 5%;
+    border-radius: 1px;
+    height: 35px;
   }
 }

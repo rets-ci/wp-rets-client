@@ -2,8 +2,10 @@ jQuery(function () {
 
   var popUpWindow = jQuery('span.exitPopup').parent().parent();
 
-  jQuery('.showContactPopup a, .showContactPopup').on('click', function () {
-    jQuery('div.'+jQuery(this).attr("rel")).fadeIn(500);
+  jQuery('.showContactPopup a').on('click', function () {
+    var that = this;
+    jQuery('div.popup').fadeOut(300);
+    jQuery('div.popup.'+jQuery(that).attr("rel")).fadeIn(200);
     return false;
   });
 

@@ -3,18 +3,18 @@
 		<div class="popup-inner-wrapper">
 			<span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
 			<ul>
-				<li class="pupBuy">
-					<a href="#">
+				<li class="pupBuy showContactPopup">
+					<a href="javascript:;" rel="popupBuyHome">
 						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" /><div>I want to buy a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
-				<li class="pupRent">
-					<a href="#">
+				<li class="pupRent showContactPopup">
+					<a href="javascript:;" rel="popupRentHome">
 						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentHome.png" alt="" /><div>I want to rent a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
-				<li class="pupSell">
-					<a href="#">
+				<li class="pupSell showContactPopup">
+					<a href="javascript:;" rel="popupSellHome">
 						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sellHome.png" alt="" /><div>I want to sell my home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
@@ -46,29 +46,7 @@
 		</div>
 	</div>
 
-	<div class="popupContactUs popup" style="display: none;">
-		<div class="popup-overlay"></div>
-		<div class="popup-inner-wrapper">
-			<span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
-			<div>
-				<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" />
-				<h3>I want to buy a home</h3>
-				<p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming.</p>
-				<input id="phone" type="tel" placeholder="+919-XXX-XXX" />
-				<span class="clickToView">click to view the full number</span>
-				<input type="text" />
-				<select class="">
-					<option>Dropdown</option>
-					<option></option>
-					<option></option>
-				</select>
-				<div class="popupCheckbox">
-					<input id="checkbox1" type="checkbox" />
-					<label for="checkbox1">Checkbox</label>
-					<input id="checkbox2" type="checkbox" />
-					<label for="checkbox2">Checkbox</label>
-				</div>
-				<input type="submit" value="Contact Us" />
-			</div>
-		</div>
-	</div>
+	<?php get_template_part('static/views/popups/home-buying'); ?>
+	<?php get_template_part('static/views/popups/home-buying-listing'); ?>
+	<?php get_template_part('static/views/popups/home-renting'); ?>
+	<?php get_template_part('static/views/popups/home-selling'); ?>
