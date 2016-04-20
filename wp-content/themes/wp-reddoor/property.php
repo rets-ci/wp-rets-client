@@ -88,9 +88,9 @@ while (have_posts()) : the_post();
   ?>
 
   <div class="container-fluid ftrdImgGoTop">
-    <section>
+    <section class="sp-slideshow-block">
       <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
-        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12mosaic]'); ?>
+        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12mosaic slideshow_layout=fullwidth slider_height=660]'); ?>
       <?php } else { ?>
         <?php if (has_post_thumbnail()) { ?>
           <div class="slideshowHeadImage"
@@ -100,6 +100,7 @@ while (have_posts()) : the_post();
                style="background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/default_property.JPG')"></div>
         <?php } ?>
       <?php } ?>
+      <div class="hero-overlay"></div>
     </section>
     <section id="propertyDetails" class="singlePropertyHeader">
       <div class="container">

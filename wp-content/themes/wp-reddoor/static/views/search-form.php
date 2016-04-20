@@ -125,7 +125,7 @@
 
       <input type="submit" value="<?php _e('Search') ?>" />
 
-      <div class="sf-property-quantity"><b>!</b> <?php echo \UsabilityDynamics\RDC\Utils::get_sale_properties_count(); ?> properties for sale</div>
+      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <?php echo \UsabilityDynamics\RDC\Utils::get_sale_properties_count(); ?> properties for sale</div>
 
     </form>
 
@@ -232,7 +232,7 @@
 
       <input type="submit" value="<?php _e('Search') ?>"/>
 
-      <div class="sf-property-quantity"><b>!</b> <?php echo \UsabilityDynamics\RDC\Utils::get_rent_properties_count(); ?> properties for rent</div>
+      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <?php echo \UsabilityDynamics\RDC\Utils::get_rent_properties_count(); ?> properties for rent</div>
     </form>
 
     <!-- /Rent -->

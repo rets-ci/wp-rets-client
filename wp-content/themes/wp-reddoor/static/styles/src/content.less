@@ -14,6 +14,25 @@
   top: -30px;
   margin-bottom: -30px;
 }
+.full-width-totop{
+  position: relative;
+  top: -60px;
+  margin-bottom: -60px;
+}
+.sp-slideshow-block{
+  position: relative;
+  top: -60px;
+  margin-bottom: -60px;
+  .hero-overlay {
+    background: #000 none repeat scroll 0 0;
+    bottom: 0;
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8;
+  }
+}
 .oneAgent{
   width: 380px;
   border: 1px solid #dcddde;
@@ -87,7 +106,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 700px;
+  height: 660px;
   position: relative;
   top: -74px;
   .singleHeroIcon{
@@ -102,6 +121,7 @@
     top: 20%;
     width: 70px;
     color: @buttons;
+    z-index: 9;
     span{
       display: block;
       width: 50px;
@@ -110,13 +130,22 @@
       margin-top: 3px;
     }
   }
+  .hero-overlay {
+    background: #000 none repeat scroll 0 0;
+    bottom: 0;
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8;
+  }
 }
 .archiveImageHeader {
-  background-image: url('../images/src/archive-header.jpg');
+  //background-image: url('../images/src/archive-header.jpg');
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  height: 660px;
   padding-top: 10%;
   position: relative;
   top: -74px;
@@ -126,12 +155,28 @@
     font-size: 5em;
     text-align: center;
     font-weight: 600;
+    text-shadow: 1px 1px 3px #000;
+    position: relative;
+    z-index: 9;
   }
   h3{
     color: @white;
     line-height: 1.8em;
     padding: 0 20%;
     text-align: center;
+    text-shadow: 1px 1px 3px #000;
+    position: relative;
+    z-index: 9;
+  }
+  .hero-overlay{
+    background: #000 none repeat scroll 0 0;
+    bottom: 0;
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8;
+    margin-bottom: 17px;
   }
 }
 .single {
@@ -154,11 +199,15 @@
     text-align: center;
     text-shadow: 1px 1px 5px #000;
     width: 70%;
+    position: sticky;
+    z-index: 9;
   }
   .singleSocialBlock{
-    width: 30%;
     margin: auto;
+    position: relative;
     text-align: center;
+    width: 30%;
+    z-index: 9;
     li{
       display: inline-block;
       a{
@@ -264,11 +313,11 @@
       margin: 11px auto;
     }
     .icon{
-      color: @buttons;
-      font-size: 2.5em;
-      position: relative;
-      top: 15px;
+      color: #d03528;
+      font-size: 2.2em;
       left: 23px;
+      position: absolute;
+      top: 15px;
     }
   }
   &>a{
@@ -341,7 +390,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  min-height: 555px;
+  min-height: 660px;
   padding-top: 10%;
   position: relative;
   top: -90px;
@@ -557,23 +606,19 @@
       position: absolute;
       opacity: 0.8;
       b{
-        border: 2px solid;
-        border-radius: 50%;
         display: inline-block;
-        height: 20px;
-        line-height: 16px;
-        padding-bottom: 0;
-        text-align: center;
-        width: 20px;
+        font-size: 1.3em;
+        font-weight: bold;
         margin-right: 0.2em;
-        padding-top: 1.6px;
+        position: relative;
+        top: 2px;
       }
     }
     }
     .sfPriceRange {
       background: @white;
       color: #a7a9ac;
-      font-size: 0.9em;
+      font-size: 1em;
       position: relative;
       width: 100%;
       top: 0;
@@ -607,10 +652,16 @@
       }
       .firstRangeList{
         padding: 10px 80px 10px 15px;
+        a{
+          letter-spacing: 1px;
+        }
       }
       .lastRangeList {
         padding: 10px 15px 10px 80px;
         text-align: right;
+        a{
+          letter-spacing: 1px;
+        }
       }
       .left-side{
         width: 100%;
@@ -619,6 +670,15 @@
         width: 100%;
       }
     }
+  }
+  .hero-overlay{
+    background: #000 none repeat scroll 0 0;
+    bottom: 0;
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 8;
   }
 }
 .select2-dropdown{
@@ -824,7 +884,7 @@
     display: inline-block;
     height: 20px;
     width: 27px;
-    margin: 0 0 -5px 0;
+    margin: 0 3px -5px 0;
     background: url('../images/src/checkboxes2.png') no-repeat;
   }
   input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
@@ -1105,6 +1165,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    height: 660px;
   }
   .ftrdImgGoTop {
     top: -30px;
@@ -1210,7 +1271,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     margin-top: 20px;
     li{
       display: inline-block;
-      width: 33%;
+      width: 35%;
       margin-bottom: 20px;
       div{
         border: 1px solid #dedede;

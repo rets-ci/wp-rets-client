@@ -42,6 +42,7 @@ if(!empty($post_thumbnail_id)) {
         <li><a target="_blank" class="icon-wpproperty-social-twitter-symbol" href="https://twitter.com/home?status=<?php echo urlencode(get_the_title()); ?><?php echo urlencode(' ' . get_the_permalink()); ?>"></a></li>
         <li><a target="_blank" class="icon-wpproperty-social-googleplus-symbol" href="https://plus.google.com/share?url=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
       </ul>
+      <div class="hero-overlay"></div>
     </section>
   </div>
 <?php } ?>

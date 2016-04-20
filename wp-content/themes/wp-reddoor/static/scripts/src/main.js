@@ -1,7 +1,8 @@
 jQuery(document).ready(function(){
-    jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
-    jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
-    jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
+    //jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
+    //jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
+    //jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
+    //jQuery('.page-template .so-widget-sow-hero, .page-template .sow-slider-image-cover, .page-template .sow-slider-images').css('height', jQuery(window).height()-132);
     jQuery('.mobileMenu').css('min-height', jQuery(window).height());
 
     jQuery( ".rdc-accordion" ).accordion({
@@ -63,7 +64,11 @@ jQuery(document).ready(function(){
     jQuery('.instagramFootIcon a').html('<span class="icon-wpproperty-social-instagram-symbol"></span>');
 
     jQuery('.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn').addClass('current-menu-item');
-    jQuery('.home .buyBtnForm').addClass('current-menu-item');
+
+    if(jQuery('body.page').hasClass('home')){
+        jQuery('#menu-header li').removeClass('current-menu-item');
+        jQuery('.home .buyBtnForm').addClass('current-menu-item');
+    }
 
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
@@ -86,20 +91,6 @@ jQuery(document).ready(function(){
     jQuery('.association-carousel .sow-carousel-wrapper').append('<div class="assocCarouselBg"></div>');
 
     jQuery("#propertyDetails").sticky({topSpacing:0});
-
-    ///* Equal height */
-    //jQuery.fn.equivalent = function (){
-    //    var $blocks = jQuery(this),
-    //        maxH    = $blocks.eq(0).height();
-    //    $blocks.each(function(){
-    //        maxH = ( jQuery(this).height() > maxH ) ? jQuery(this).height() : maxH;
-    //    });
-    //    $blocks.height(maxH);
-    //}
-    //jQuery('.pdRoomsBlock').equivalent();
-    //
-    ///* Equal height */
-
 
     /* Tabbed content widget (feature point) */
     var imgFeaturePoint = jQuery('.featurePoint div').outerHeight();
