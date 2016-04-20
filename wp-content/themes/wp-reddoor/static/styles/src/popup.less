@@ -3,12 +3,33 @@
 
 .popup {
   position:fixed;
-  top:15%;
-  left:40%;
-  display:none;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  display:flex;
   overflow:hidden;
-  z-index:100;
+  z-index:999999;
   behavior: url(PIE.htc);
+
+  .popup-inner-wrapper {
+    width: 600px;
+    max-height: 500px;
+    height: 85%;
+    margin: auto;
+    align-self: center;
+    z-index: 9999999;
+  }
+
+  .popup-overlay {
+    opacity: .8;
+    background: black;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+  }
 
 }
 .popup h2 {
@@ -26,16 +47,14 @@
   z-index: 20;
 }
 
-/* Modal Window */
+.exitPopup{
+  color: @white;
+  display: block;
+  text-align: right;
+}
 
+.popupContactUsMore {
 
-.popupContactUs{
-  width: 32%;
-  .exitPopup{
-    color: @white;
-    display: block;
-    text-align: right;
-  }
   ul{
     background: @white;
     border-radius: 5px;
@@ -56,8 +75,8 @@
         div {
           float: left;
           font-size: 1.3em;
-          font-weight: 600;
-          margin: 10% 5% 0 10%;
+          font-weight: 500;
+          margin: 9% 5% 0 6%;
         }
         .icon-circle-right {
           float: right;
@@ -68,20 +87,15 @@
     }
   }
 }
-.popupLogin{
-  width: 25%;
-  min-width: 270px;
-  .exitPopup{
-    color: @white;
-    display: block;
-    text-align: right;
-  }
-  ul{
+
+.popupLogin {
+
+  ul {
+    min-height: 323px;
     border-radius: 5px;
     margin: 0;
-    height: 265px;
     background: @white;
-    li{
+    li {
       float: left;
       padding: 7% 6%;
       border-right: 1px solid #e6e4dd;
@@ -118,14 +132,12 @@
     }
   }
 }
-.popupContactUsMore{
+
+
+.popupContactUs {
   width: 22%;
   min-width: 280px;
-  .exitPopup{
-    color: @white;
-    display: block;
-    text-align: right;
-  }
+
   &>div {
     background: @white;
     border-radius: 5px;

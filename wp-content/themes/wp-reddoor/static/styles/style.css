@@ -783,7 +783,7 @@
   color: #a7a9ac;
   font-size: 0.9em;
   position: relative;
-  width: 215px;
+  width: 100%;
   top: 0;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange ul {
@@ -804,7 +804,7 @@
   font-size: 0.9em;
   height: 30px;
   padding: 0 5px;
-  width: 85px;
+  width: 47%;
   text-align: center;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
@@ -975,7 +975,7 @@
   color: #808285;
   cursor: pointer;
   font-weight: 400;
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 .sfBeds input[type="checkbox"] + label,
 .sfBaths input[type="checkbox"] + label,
@@ -990,16 +990,16 @@
 .sfBaths input[type="radio"] + label::before {
   content: "";
   display: inline-block;
-  height: 18px;
+  height: 20px;
   width: 27px;
-  margin: 0 -5px -6px 0;
-  background: url('../images/src/checkboxes.png') no-repeat;
+  margin: 0 0 -5px 0;
+  background: url('../images/src/checkboxes2.png') no-repeat;
 }
 .sfBeds input[type="checkbox"]:checked + label::before,
 .sfBaths input[type="checkbox"]:checked + label::before,
 .sfBeds input[type="radio"]:checked + label::before,
 .sfBaths input[type="radio"]:checked + label::before {
-  background-position: 0 -17px;
+  background-position: 0 -23px;
 }
 .popupCheckbox input[type="checkbox"] {
   display: none;
@@ -1314,7 +1314,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .propertyAttribute li {
   display: inline-block;
-  width: 32%;
+  width: 33%;
   margin-bottom: 20px;
 }
 .single-property .propertyAttribute li div {
@@ -1474,6 +1474,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-right: 0;
   color: #b1b1b1;
   outline: none;
+  padding: 20px 0;
 }
 .single-property .propertyDetails .nav-tabs li a:hover {
   background: #fff !important;
@@ -1488,7 +1489,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .propertyDetails .tab-content {
   border: 1px solid #d8d8d8;
   border-top: 1px solid transparent;
-  padding: 20px 15px 15px;
+  padding: 35px 15px 15px;
 }
 .single-property .propertyDetails .pdRoomsBlock {
   width: 40%;
@@ -1523,11 +1524,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .propertyDetails .pdRoomsBlock > ul {
   margin-top: 25px;
+  margin-bottom: 50px;
 }
 .single-property .propertyDetails .pdRoomsBlock > ul li {
   border-bottom: 1px solid #dedede;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding: 13px 0;
+  text-transform: capitalize;
 }
 .single-property .propertyDetails .pdRoomsBlock > ul li:last-child {
   border-bottom: 0;
@@ -1535,25 +1537,25 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .propertyDetails .pdRoomsBlock > ul li:first-child {
   border-bottom: 1px solid #dedede;
 }
-.single-property .listingProvider .col-lg-7 {
+.single-property .listingProvider .col-lg-8 {
   margin: 15px 0;
 }
-.single-property .listingProvider .col-lg-7 ul {
+.single-property .listingProvider .col-lg-8 ul {
   width: 40%;
   float: left;
 }
-.single-property .listingProvider .col-lg-7 ul:nth-child(odd) {
+.single-property .listingProvider .col-lg-8 ul:nth-child(odd) {
   margin-right: 10%;
 }
-.single-property .listingProvider .col-lg-7 ul:nth-child(even) {
+.single-property .listingProvider .col-lg-8 ul:nth-child(even) {
   margin-left: 10%;
 }
-.single-property .listingProvider .col-lg-7 ul li {
+.single-property .listingProvider .col-lg-8 ul li {
   border-bottom: 1px solid #dedede;
   padding-bottom: 10px;
   padding-top: 10px;
 }
-.single-property .listingProvider .col-lg-7 ul li:last-child {
+.single-property .listingProvider .col-lg-8 ul li:last-child {
   border-bottom: 0;
 }
 .single-property .listingProvider .italicText {
@@ -1806,6 +1808,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   outline: none;
   display: flex;
   padding: 5px 10px;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a:hover {
+  text-decoration: none;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
@@ -2397,12 +2402,31 @@ input[type="submit"]:active {
 /* Modal Window */
 .popup {
   position: fixed;
-  top: 15%;
-  left: 40%;
-  display: none;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
   overflow: hidden;
-  z-index: 100;
+  z-index: 999999;
   behavior: url(PIE.htc);
+}
+.popup .popup-inner-wrapper {
+  width: 600px;
+  max-height: 500px;
+  height: 85%;
+  margin: auto;
+  align-self: center;
+  z-index: 9999999;
+}
+.popup .popup-overlay {
+  opacity: .8;
+  background: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 .popup h2 {
   font: bold 18px/32px Arial, san-serif;
@@ -2418,59 +2442,46 @@ input[type="submit"]:active {
   opacity: 0.85;
   z-index: 20;
 }
-/* Modal Window */
-.popupContactUs {
-  width: 32%;
-}
-.popupContactUs .exitPopup {
+.exitPopup {
   color: #fff;
   display: block;
   text-align: right;
 }
-.popupContactUs ul {
+.popupContactUsMore ul {
   background: #fff;
   border-radius: 5px;
   margin: 0;
 }
-.popupContactUs ul li {
+.popupContactUsMore ul li {
   height: 120px;
   border-bottom: 1px solid #ece9e4;
   min-width: 500px;
 }
-.popupContactUs ul li a {
+.popupContactUsMore ul li a {
   color: #5a595c;
   display: block;
   height: 100%;
   padding: 0 5%;
 }
-.popupContactUs ul li a img {
+.popupContactUsMore ul li a img {
   float: left;
   margin-top: 6%;
 }
-.popupContactUs ul li a div {
+.popupContactUsMore ul li a div {
   float: left;
   font-size: 1.3em;
-  font-weight: 600;
-  margin: 10% 5% 0 10%;
+  font-weight: 500;
+  margin: 9% 5% 0 6%;
 }
-.popupContactUs ul li a .icon-circle-right {
+.popupContactUsMore ul li a .icon-circle-right {
   float: right;
   font-size: 2em;
   margin-top: 9%;
 }
-.popupLogin {
-  width: 25%;
-  min-width: 270px;
-}
-.popupLogin .exitPopup {
-  color: #fff;
-  display: block;
-  text-align: right;
-}
 .popupLogin ul {
+  min-height: 323px;
   border-radius: 5px;
   margin: 0;
-  height: 265px;
   background: #fff;
 }
 .popupLogin ul li {
@@ -2509,42 +2520,37 @@ input[type="submit"]:active {
 .popupLogin ul li a:hover {
   text-decoration: none;
 }
-.popupContactUsMore {
+.popupContactUs {
   width: 22%;
   min-width: 280px;
 }
-.popupContactUsMore .exitPopup {
-  color: #fff;
-  display: block;
-  text-align: right;
-}
-.popupContactUsMore > div {
+.popupContactUs > div {
   background: #fff;
   border-radius: 5px;
   padding: 10% 7% 2%;
 }
-.popupContactUsMore > div img {
+.popupContactUs > div img {
   display: block;
   margin: auto;
   margin-bottom: 2%;
 }
-.popupContactUsMore > div h3 {
+.popupContactUs > div h3 {
   font-size: 1em;
   margin-bottom: 2%;
   text-align: center;
 }
-.popupContactUsMore > div p {
+.popupContactUs > div p {
   line-height: 2em;
   margin-bottom: 3%;
   text-align: center;
   font-size: 0.9em;
 }
-.popupContactUsMore > div .clickToView {
+.popupContactUs > div .clickToView {
   display: block;
   margin: 5% 0;
   text-align: center;
 }
-.popupContactUsMore > div input[type="tel"] {
+.popupContactUs > div input[type="tel"] {
   border: 3px solid #d8d8d8;
   border-radius: 1px;
   font-size: 1.5em;
@@ -2555,14 +2561,14 @@ input[type="submit"]:active {
   color: #d03528;
   margin-top: 10px;
 }
-.popupContactUsMore > div input[type="text"] {
+.popupContactUs > div input[type="text"] {
   border: 1px solid #d8d8d8;
   margin: 4% 0 3%;
   width: 100%;
   border-radius: 1px;
   height: 35px;
 }
-.popupContactUsMore > div input[type="submit"] {
+.popupContactUs > div input[type="submit"] {
   background: #d03528;
   border: medium none;
   border-radius: 3px;
@@ -2572,7 +2578,7 @@ input[type="submit"]:active {
   padding: 6% 0;
   width: 100%;
 }
-.popupContactUsMore > div select {
+.popupContactUs > div select {
   border: 1px solid #d8d8d8;
   width: 100%;
   margin: 0 0 5%;
@@ -5610,22 +5616,74 @@ body .ui-tooltip {
   .so-widget-tabbed-content .sow-slider-base .sow-slider-images .sow-slider-image-container {
     display: none;
   }
-  #menu-home-buying-page-sub-menu {
-    height: 72px;
+  .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu {
     overflow: hidden;
+    border-bottom: 1px solid #fff;
   }
-  #menu-home-buying-page-sub-menu .menu-item {
-    display: block !important;
-    border-bottom: 1px solid #d0d4d9;
+  .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu .menu-item {
+    display: list-item;
+    border-bottom: 1px solid #fff;
     position: relative;
+    text-align: left;
+    border-right: 0;
   }
-  #menu-home-buying-page-sub-menu .menu-item .homeBuyingMenuSpoiler {
-    background: #000 none repeat scroll 0 0;
-    height: 20px;
+  .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu .menu-item + .menu-item {
+    display: none;
+  }
+  .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu .menu-item .homeBuyingMenuSpoiler {
+    background: url('../images/src/icon-arrow.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60% auto;
+    height: 24px;
     position: absolute;
     right: 3%;
     top: 30%;
-    width: 20px;
+    width: 40px;
     cursor: pointer;
+    transition: 0.5s;
+    transform: rotate(180deg);
+    color: #5a595c;
+  }
+  .menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu .menu-item .homeBuyingMenuSpoiler.arrow-down {
+    transform: rotate(0);
+  }
+  .archiveFilterBg {
+    height: auto;
+    padding: 0;
+  }
+  .archiveFilterBg .archiveFilterBody ul {
+    border-bottom: 1px solid #fff;
+  }
+  .archiveFilterBg .archiveFilterBody ul li {
+    display: list-item;
+    border-bottom: 1px solid #fff;
+    position: relative;
+    text-align: left;
+    border-right: 0;
+  }
+  .archiveFilterBg .archiveFilterBody ul li + li {
+    display: none;
+  }
+  .archiveFilterBg .archiveFilterBody ul li .archiveFilterMenuSpoiler {
+    background: url('../images/src/icon-arrow.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60% auto;
+    height: 24px;
+    position: absolute;
+    right: 3%;
+    top: 30%;
+    width: 40px;
+    cursor: pointer;
+    transition: 0.5s;
+    transform: rotate(180deg);
+    color: #5a595c;
+  }
+  .archiveFilterBg .archiveFilterBody ul li .archiveFilterMenuSpoiler.arrow-down {
+    transform: rotate(0);
+  }
+  .archiveImageHeader {
+    top: -24px;
   }
 }
