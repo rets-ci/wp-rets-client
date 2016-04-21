@@ -5690,6 +5690,9 @@ body .ui-tooltip {
   body.single-property .bottomSeparate {
     padding-bottom: 5px;
   }
+  body.single-property .areaMapBlock .ambItem {
+    margin: 0 0 30px 0;
+  }
   body .site-logo {
     left: 23%;
   }
