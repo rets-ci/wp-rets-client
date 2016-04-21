@@ -237,10 +237,10 @@
   z-index: 8;
 }
 .oneAgent {
-  width: 380px;
+  width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 20px 0;
+  margin: 64px 0;
   background: #fff;
 }
 .oneAgent > img {
@@ -1321,6 +1321,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-left: 15px;
   color: #7A787D;
 }
+.single-property .singlePropertyHeader .container {
+  position: relative;
+}
 .single-property .singlePropertyHeader .container > ul li {
   display: inline-block;
   font-size: 1.5em;
@@ -1334,7 +1337,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .singlePropertyHeader .oneAgent {
   position: absolute;
-  right: 13%;
+  right: 15px;
   top: 0;
   z-index: 20;
   padding-bottom: 30px;
