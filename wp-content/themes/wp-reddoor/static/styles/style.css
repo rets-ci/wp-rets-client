@@ -383,24 +383,25 @@
 }
 .single .singleTitle {
   color: #fff;
-  font-size: 2.2em;
-  font-weight: 600;
+  font-size: 2.9em;
+  font-weight: 500;
+  line-height: 1.3em;
   margin: auto;
+  position: relative;
   text-align: center;
-  text-shadow: 1px 1px 5px #000;
-  top: 35%;
+  text-shadow: 2px 8px 10px #625d5d;
   width: 60%;
-  line-height: 1.5em;
+  z-index: 9;
 }
 .single .singleExcerpt {
-  color: #ededed;
+  color: #F5F2F2;
   font-size: 1.4em;
   font-weight: 400;
-  margin: 1% auto 5%;
+  margin: 1.5% auto 5%;
   text-align: center;
   text-shadow: 1px 1px 5px #000;
   width: 70%;
-  position: sticky;
+  position: relative;
   z-index: 9;
 }
 .single .singleSocialBlock {
@@ -417,13 +418,13 @@
   border-radius: 50%;
   color: #fff;
   display: block;
-  font-size: 1.2em;
-  height: 40px;
+  font-size: 1.5em;
+  height: 50px;
   margin-right: 15%;
   outline: medium none;
   padding-top: 27%;
   text-align: center;
-  width: 40px;
+  width: 50px;
 }
 .single .singleSocialBlock li a:hover {
   text-decoration: none;
@@ -469,7 +470,7 @@
   padding-top: 21%;
 }
 .single .featuredImageHeader {
-  padding-top: 15%;
+  padding-top: 13%;
 }
 .single .loadMoreBlockSeparate {
   border-top: 1px solid #efefef;
@@ -595,7 +596,9 @@
   color: #fff;
   font-size: 4em;
   font-weight: bold;
+  position: relative;
   text-align: center;
+  z-index: 9;
 }
 .frontPageSearchBlock > h4 {
   color: #fff;
@@ -605,6 +608,8 @@
   text-align: center;
   text-shadow: 0 0 1px #ddd;
   width: 70%;
+  position: relative;
+  z-index: 9;
 }
 .frontPageSearchBlock .searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -672,8 +677,11 @@
 }
 .frontPageSearchBlock .searchForm form ul {
   background: #fff none repeat scroll 0 0;
-  padding: 1.5em 1em 1em;
+  padding: 1.5em 1.4em 1em;
   box-shadow: -1px 7px 12px -5px #000;
+}
+.frontPageSearchBlock .searchForm form ul li {
+  padding-bottom: 5px;
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
   border-radius: 5px;
@@ -5563,6 +5571,29 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock {
     top: -40px !important;
+    min-height: 800px;
+  }
+  body .frontPageSearchBlock > h1 {
+    font-size: 3em;
+    font-weight: 600;
+  }
+  body .frontPageSearchBlock > h4 {
+    margin-bottom: 45px;
+    margin-top: 25px;
+    line-height: 1.8em;
+  }
+  body .frontPageSearchBlock .searchForm > ul {
+    width: 49.6%;
+  }
+  body .frontPageSearchBlock .searchForm > ul > li {
+    width: 49.2%;
+  }
+  body .frontPageSearchBlock .searchForm > ul > li > a {
+    padding: 0 !important;
+    text-align: center;
+  }
+  body .frontPageSearchBlock .sf-property-quantity {
+    display: none;
   }
   body.single-property .singlePropertyHeader {
     z-index: 9;
@@ -5598,13 +5629,13 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock .searchForm form {
     border-radius: 0 0 5px 5px;
-    height: 280px;
+    height: 296px;
     padding: 9px;
   }
   body .frontPageSearchBlock .searchForm form .location {
     width: 100%;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   body .frontPageSearchBlock .searchForm form .sfBeds {
     width: 49%;
@@ -5618,23 +5649,20 @@ body .ui-tooltip {
   body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 100%;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px;
   }
   body .frontPageSearchBlock .searchForm form input[type="submit"] {
     width: 100%;
     margin-left: 0;
-    margin-top: 5px;
+    margin-top: 10px;
     padding: 18px 20px;
   }
   body .frontPageSearchBlock .searchForm form ul {
     position: relative;
     z-index: 20;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
-    padding-left: 5px;
-  }
   body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
-    width: 49%;
+    width: 48.7%;
   }
   body .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
     width: 50%;
@@ -5684,6 +5712,10 @@ body .ui-tooltip {
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
+  }
+  .home .select2-dropdown {
+    margin-top: -1px;
+    width: 539px !important;
   }
   .so-widget-tabbed-content .tabbedWidgetTitle {
     display: none;
