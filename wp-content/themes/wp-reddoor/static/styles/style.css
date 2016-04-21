@@ -5561,6 +5561,29 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock {
     top: -40px !important;
+    min-height: 800px;
+  }
+  body .frontPageSearchBlock > h1 {
+    font-size: 3em;
+    font-weight: 600;
+  }
+  body .frontPageSearchBlock > h4 {
+    margin-bottom: 45px;
+    margin-top: 25px;
+    line-height: 1.8em;
+  }
+  body .frontPageSearchBlock .searchForm > ul {
+    width: 49.6%;
+  }
+  body .frontPageSearchBlock .searchForm > ul > li {
+    width: 49.2%;
+  }
+  body .frontPageSearchBlock .searchForm > ul > li > a {
+    padding: 0 !important;
+    text-align: center;
+  }
+  body .frontPageSearchBlock .sf-property-quantity {
+    display: none;
   }
   body.single-property .singlePropertyHeader {
     z-index: 9;
@@ -5596,13 +5619,13 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock .searchForm form {
     border-radius: 0 0 5px 5px;
-    height: 280px;
+    height: 296px;
     padding: 9px;
   }
   body .frontPageSearchBlock .searchForm form .location {
     width: 100%;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   body .frontPageSearchBlock .searchForm form .sfBeds {
     width: 49%;
@@ -5616,23 +5639,20 @@ body .ui-tooltip {
   body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 100%;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px;
   }
   body .frontPageSearchBlock .searchForm form input[type="submit"] {
     width: 100%;
     margin-left: 0;
-    margin-top: 5px;
+    margin-top: 10px;
     padding: 18px 20px;
   }
   body .frontPageSearchBlock .searchForm form ul {
     position: relative;
     z-index: 20;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
-    padding-left: 5px;
-  }
   body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
-    width: 49%;
+    width: 48.7%;
   }
   body .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
     width: 50%;
@@ -5682,6 +5702,10 @@ body .ui-tooltip {
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
+  }
+  .home .select2-dropdown {
+    margin-top: -1px;
+    width: 539px !important;
   }
   .so-widget-tabbed-content .tabbedWidgetTitle {
     display: none;
