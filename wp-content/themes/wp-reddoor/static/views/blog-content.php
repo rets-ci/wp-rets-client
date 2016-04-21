@@ -1,3 +1,13 @@
+<?php
+/**
+ *
+ *
+ *
+ */
+
+$category = get_the_category();
+
+?>
 <div class="container-fluid archiveFilterBg">
 	<div class="container">
 		<div class="row">
@@ -30,11 +40,18 @@
 		// Start the Loop.
 		while ( have_posts() ) : the_post(); ?>
 
-			<div class="col-lg-4">
+			<div class="col-lg-4" data-element-kind="singleCategoryCard">
         <?php get_template_part('static/views/category-card') ?>
 			</div>
 
 		<?php endwhile; ?>
 
 	</div>
+
+  <div class="row loadMoreContainer">
+    <div class="col-lg-4 col-lg-offset-5">
+      <button type="button" class="btn btn-primary btn-lg	btn-danger" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?>
+    </div>
+  </div>
+
 </div>

@@ -476,6 +476,10 @@
   border-top: 1px solid #efefef;
   padding-top: 55px;
 }
+.loadMoreContainer {
+  margin-top: 4em;
+  margin-bottom: 8em;
+}
 .oneCategory {
   width: 380px;
   height: 445px;

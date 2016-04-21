@@ -73,12 +73,12 @@ if(!empty($post_thumbnail_id)) {
 
     query_posts(array(
       'post_type' => 'post',
-      'numberposts' => '40',
+      'posts_per_page' => '3',
       'category' => $category[0]->term_id
     ));
 
     if (have_posts()) : while (have_posts()) : the_post(); ?>
-    <div class="col-lg-4">
+    <div class="col-lg-4" data-element-kind="singleCategoryCard">
       <?php get_template_part('static/views/category-card') ?>
     </div>
     <?php endwhile; endif; ?>
@@ -87,10 +87,13 @@ if(!empty($post_thumbnail_id)) {
     <?php rewind_posts(); ?>
 
   </div>
-  <div class="row load-more-container">
+
+  <div class="row loadMoreContainer">
     <div class="col-lg-4 col-lg-offset-5">
-      <button type="button" class="btn btn-primary btn-lg	btn-danger "><?php _e( 'Load More' ); ?></div>
+      <button type="button" class="btn btn-primary btn-lg	btn-danger" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?>
     </div>
+  </div>
+
 </div>
 
 <?php get_footer(); ?>
