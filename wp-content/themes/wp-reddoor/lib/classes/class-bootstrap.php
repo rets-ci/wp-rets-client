@@ -86,11 +86,23 @@ namespace UsabilityDynamics\RDC {
          */
         add_filter( 'ud:warnings:admin_notices', function( $errors ){ return array(); } );
 
+        add_filter( 'wpp_post_type', array( $this, 'wpp_post_type_alter' ) );
+
+      }
+
+      /**
+       * @param $post_type_object
+       * @return mixed
+       */
+      public function wpp_post_type_alter( $post_type_object ) {
+        $post_type_object['rewrite']['with_front'] = false;
+        return $post_type_object;
       }
 
       /**
        * @param $query
        * @param $atts
+       * @return array
        */
       public function alter_supermap_query( $query, $atts ) {
 

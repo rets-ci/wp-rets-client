@@ -3,6 +3,9 @@
  * Shameless Hacks
  */
 
+add_filter( 'ud:errors:admin_notices', function() { return null; });
+add_filter( 'ud:messages:admin_notices', function() { return null; });
+add_filter( 'ud:warnings:admin_notices', function() { return null; });
 
 // force non-minified version of siteorigin scripts
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
