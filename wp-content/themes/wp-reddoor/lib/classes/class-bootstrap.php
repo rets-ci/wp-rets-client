@@ -88,13 +88,14 @@ namespace UsabilityDynamics\RDC {
        * @return mixed
        */
       public function wpp_post_type_alter( $post_type_object ) {
-        $post_type_object['with_front'] = false;
+        $post_type_object['rewrite']['with_front'] = false;
         return $post_type_object;
       }
 
       /**
        * @param $query
        * @param $atts
+       * @return array
        */
       public function alter_supermap_query( $query, $atts ) {
 
