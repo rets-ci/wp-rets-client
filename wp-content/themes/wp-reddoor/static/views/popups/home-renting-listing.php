@@ -1,4 +1,4 @@
-<div class="popupRentHome popup" style="display: none;">
+<div class="popupRentHomeListing popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -10,7 +10,7 @@
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
-      <form id="powf_32455D6F7216E411811D6C3BE5A87DF0_" class=""
+      <form id="powf_32455D6F7216E411811D6C3BE5A87DF0" class=""
             enctype="multipart/form-data"
             action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_32455D6F7216E411811D6C3BE5A87DF0&tver=2013&c=1"
             method="post">
@@ -65,6 +65,17 @@
           <div class="clear"></div>
         </div>
 
+        <?php global $property; $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true ) ?>
+
+        <!-- Broker -->
+        <input type="hidden" id="powf_fc06a4670318e411bcfc6c3be5a8dd60" name="powf_fc06a4670318e411bcfc6c3be5a8dd60" value="<?php echo $agent->user_email; ?>"/>
+
+        <!-- Property Address -->
+        <input type="hidden" id="powf_9b14049e0318e411bcfc6c3be5a8dd60" name="powf_9b14049e0318e411bcfc6c3be5a8dd60" value="<?php echo $property['location_address']; ?>"/>
+
+        <!-- MLS ID -->
+        <input type="hidden" id="powf_c7e7e0c3a424e5118103fc15b4289e3c" name="powf_c7e7e0c3a424e5118103fc15b4289e3c" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>"/>
+
         <!-- Origin -->
         <input type="hidden" id="powf_d7ce13400318e411bcfc6c3be5a8dd60" name="powf_d7ce13400318e411bcfc6c3be5a8dd60"
                value="Tenant"/>
@@ -102,7 +113,7 @@
             email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
           });
 
-          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0_").validate({
+          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0").validate({
             errorPlacement: function(error, element) {
               error.appendTo( element.parents("div.field:first").find("div.clear:first") );
             },
@@ -121,7 +132,7 @@
 
           jQuery("#powf_131a927d0218e411bcfc6c3be5a8dd60").datepicker();
 
-          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0_").submit(function(e){
+          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0").submit(function(e){
             if ( typeof grecaptcha == 'undefined' ) return true;
             var rresult = grecaptcha.getResponse();
             if( !rresult.length > 0 ) {

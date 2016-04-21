@@ -75,7 +75,7 @@ namespace UsabilityDynamics\RDC {
        * @param string $field_to_compare
        * @return bool
        */
-      public static function get_matched_agent( $rets_agent_id, $users = array(), $field_to_compare = 'agent_mls_id' ) {
+      public static function get_matched_agent( $rets_agent_id, $random_agent = false, $users = array(), $field_to_compare = 'agent_mls_id' ) {
 
         if ( empty( $users ) ) {
           $users = get_users( array( 'role' => 'agent' ) );
@@ -91,7 +91,7 @@ namespace UsabilityDynamics\RDC {
 
         }
 
-        return false;
+        return $random_agent ? $users[0] : false;
 
       }
     }

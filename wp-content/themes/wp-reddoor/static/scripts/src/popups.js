@@ -21,8 +21,11 @@ jQuery(function () {
 
   jQuery('body').keydown(function(eventObject){
     if (eventObject.which == 27) {
-      console.log(popUpWindow);
       popUpWindow.fadeOut(100);
     }
+  });
+
+  jQuery('.popup .clickToView').on('click', function(){
+    jQuery( this ).parent().find('.hidden-phone').attr('placeholder', jQuery( this ).parent().find('.hidden-phone').data('phone'));
   });
 });

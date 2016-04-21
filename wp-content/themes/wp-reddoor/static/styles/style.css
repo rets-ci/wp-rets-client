@@ -1736,6 +1736,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .shareButtonColor {
   color: #000000;
 }
+.ui-datepicker {
+  background: white;
+}
 .association-carousel {
   margin: 0 100px;
 }
@@ -2679,6 +2682,13 @@ input[type="submit"]:active {
   margin: 5% 0;
   padding: 6% 0;
   width: 100%;
+}
+.popup-form-wrapper textarea {
+  border: 1px solid #d8d8d8;
+  margin: 2% 0;
+  width: 100%;
+  border-radius: 1px;
+  height: 100px;
 }
 .popup-form-wrapper select {
   border: 1px solid #d8d8d8;
