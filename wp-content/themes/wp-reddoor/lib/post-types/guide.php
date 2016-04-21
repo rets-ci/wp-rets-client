@@ -137,3 +137,64 @@ function rdc_guide_category_permalink( $permalink, $post_id, $leavename ) {
 add_action( 'init', 'register_rdc_guide_category_taxonomy', 0 );
 
 add_action( 'init', 'guide_post_type', 0 );
+
+/**
+ * Get posts and find their categories and then group
+ * Or, get categories, then find posts within them
+ *
+ * @author potanin@UD
+ */
+function rdc_generate_guide_overview() {
+
+  $result = array();
+
+  // get all top-level Guide categories
+  $top_categories = get_terms( array(
+    'taxonomy' => 'rdc_guide_category',
+    'hide_empty' => true,
+    'parent' => 0
+  ) );
+
+  // iterate over each top-level Gudie category
+  foreach( (array) $top_categories as $category ) {
+
+    $result[ $category->term_id ] = array(
+      "term_id" => $category->term_id,
+      "name" => $category->name,
+      "slug" => $category->slug,
+      "group" => $category->term_group,
+      "description" => $category->description,
+      "image" => null,
+      "posts" => array()
+    );
+
+    $_posts = get_posts(array(
+      'post_type' => 'rdc_guide',
+      'rdc_guide_category' => $category->slug,
+      'posts_per_page' => 10,
+      'orderby' => 'rand'
+    ));
+
+    foreach( (array) $_posts as $_post ) {
+      $_thumbnail_id = get_post_thumbnail_id( $_post->ID );
+      $_attachment_image_url = wp_get_attachment_image_url( $_thumbnail_id, 'full' );
+
+      array_push($result[ $category->term_id ]['posts'], array(
+        "ID" => $_post->ID,
+        "title" => $_post->post_title,
+        "image" => $_attachment_image_url,
+      ));
+
+      // add an existing image URL to the category image
+      if( $_attachment_image_url ) {
+        $result[ $category->term_id ]['image'] = $_attachment_image_url;
+      }
+
+    }
+
+  }
+
+  // die( '<pre>' . print_r( $result, true ) . '</pre>' );
+  return $result;
+  
+}
