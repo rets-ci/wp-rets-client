@@ -6,7 +6,7 @@
 
       <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentHome.png" alt="" />
       <h3><?php _e('I want to rent a home', 'reddoor'); ?></h3>
-      <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming.</p>
+      <p>Please submit your information below. We’re ready to help you find the perfect rental home!</p>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
