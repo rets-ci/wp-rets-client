@@ -18,8 +18,8 @@
 						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sellHome.png" alt="" /><div>I want to sell my home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
-				<li class="pupRentProp">
-					<a href="#">
+				<li class="pupRentProp showContactPopup">
+					<a href="javascript:;" rel="popupManage">
 						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentMyProp.png" alt="" /><div>I went to rent my property</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
@@ -31,4 +31,5 @@
 	<?php get_template_part('static/views/popups/home-buying'); ?>
 	<?php get_template_part('static/views/popups/home-buying-listing'); ?>
 	<?php get_template_part('static/views/popups/home-renting'); ?>
+	<?php get_template_part('static/views/popups/home-renting-listing'); ?>
 	<?php get_template_part('static/views/popups/home-selling'); ?>
