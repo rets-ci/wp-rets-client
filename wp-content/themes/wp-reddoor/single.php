@@ -68,40 +68,23 @@ if(!empty($post_thumbnail_id)) {
     <div class="col-lg-12">
       <h3><?php $category = get_the_category($post->ID);  _e('More ' . $category[0]->name . ' Articles'); ?></h3>
     </div>
+
+    <div class="btn btn-primary	btn-danger"><?php _e( 'Load More' ); ?></div>
     <?php
-    $args = array(
+
+    query_posts(array(
       'post_type' => 'post',
-      'numberposts' => '40'
-    );
-    $singleMorePosts = get_posts($args);
-    //die( '<pre>' . print_r( $singleMorePosts, true ) . '</pre>' );
-    if ( ! empty( $singleMorePosts ) ) {
-    foreach( $singleMorePosts as $oneSingleMorePost ) { ?>
-        <div class="col-lg-4">
-          <div class="oneCategory">
-            <?php
-            $post_thumbnail_id = get_post_thumbnail_id( $oneSingleMorePost->ID );
-            $_url = wp_get_attachment_image_url($post_thumbnail_id, 'medium');
-            $allCategories = get_the_category($oneSingleMorePost->ID);
-            if(is_array($allCategories)){
-              $forCategorySlug = array_shift($allCategories);
-            }
-            //die( '<pre>' . print_r( $forCategorySlug, true ) . '</pre>' );
-            ?>
+      'numberposts' => '40',
+      'category' => $category[0]->term_id
+    ));
 
-            <div class="oneCategoryImg">
-              <img src="<?php echo $_url ?>" alt="<?php echo $oneSingleMorePost->post_title; ?>" />
-            </div>
-            <div class="catIconLoop">
-                  <?php if(isset($forCategorySlug)){ ?>
-                    <span class="icon icon-rdc-<?php echo $forCategorySlug->slug; ?>"></span>
-                  <?php } ?>
-            </div>
-            <a href="<?php echo the_permalink($oneSingleMorePost->ID); ?>"><?php echo $oneSingleMorePost->post_title; ?></a>
-          </div>
-        </div>
+    if (have_posts()) : while (have_posts()) : the_post(); ?>
+    <div class="col-lg-4">
+      <?php get_template_part('static/views/category-card') ?>
+    </div>
+    <?php endwhile; endif; ?>
+    <?php rewind_posts(); ?>
 
-    <?php } }  ?>
   </div>
   </div>
 </div>

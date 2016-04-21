@@ -32,36 +32,7 @@
 
 			<div class="col-lg-4">
 				<div class="oneCategory">
-					<a href="<?php the_permalink(); ?>">
-						<?php
-						$currentId = get_the_ID();
-						$post_thumbnail_id = get_post_thumbnail_id( $currentId );
-						$_url = wp_get_attachment_image_url($post_thumbnail_id, 'medium');
-						?>
-
-						<div class="oneCategoryImg">
-							<img src="<?php echo $_url ?>" alt="<?php the_title(); ?>" />
-						</div>
-						<div class="catIconLoop">
-							<!-- <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/categoryIcon.png" alt="" /> -->
-							<!-- <svg class="icon icon-<?php //echo $_categoriesNew->slug; ?>"><use xlink:href="#icon-<?php //echo $_categoriesNew->slug; ?>"></use></svg> -->
-							<?php
-
-							$categories = get_the_category();
-							if ( ! empty( $categories ) ) {
-								foreach( $categories as $category ) { ?>
-									<span class="icon icon-rdc-<?php if($category->slug){echo $category->slug;} ?>"></span>
-								<?php }
-							}
-
-							?>
-
-
-						</div>
-						<div class="one_text">
-							<?php the_title(); ?>
-						</div>
-					</a>
+					<?php get_template_part('static/views/category-card') ?>
 				</div>
 			</div>
 
