@@ -697,7 +697,7 @@
   box-shadow: -1px 7px 12px -5px #000;
 }
 .frontPageSearchBlock .searchForm form ul li {
-  padding-bottom: 5px;
+  padding-bottom: 2px;
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
   border-radius: 5px;
@@ -881,13 +881,13 @@
   margin-left: 8px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
-  padding: 10px 80px 10px 15px;
+  padding: 20px 80px 20px 22px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList a {
   letter-spacing: 1px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
-  padding: 10px 15px 10px 80px;
+  padding: 20px 22px 20px 80px;
   text-align: right;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList a {
@@ -1908,7 +1908,10 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   padding: 5px 10px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a:hover {
-  text-decoration: none;
+  text-decoration: none !important;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a:focus {
+  text-decoration: none !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
