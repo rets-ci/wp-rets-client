@@ -1,11 +1,13 @@
 <?php
 /**
  *
- * 
- * 
+ *
+ * To debug, tail:
+ * - /var/www/wp-content/debug.log
+ * - /var/www/debug-log.log
+ *
  * @version 0.5.0
  */
-
 
 
 // add ability to get wpp_settings so we can extra mapping settings
@@ -91,6 +93,10 @@ add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, 
   return $response;
 } , 10, 3  );
 
+/**
+ * @param $args
+ * @return array
+ */
 function WPP_RPC_editProperty( $args ) {
   global $wp_xmlrpc_server;
 
@@ -112,13 +118,23 @@ function WPP_RPC_editProperty( $args ) {
 
   write_log( 'Have request wpp.editProperty request' );
 
+  // write_log( '<pre>' . print_r( $post_data['meta_input'], true ) . '</pre>' );
+
   if( $post_data['meta_input']['rets_id'] ) {
     $post_data['ID'] = find_property_by_rets_id( $post_data['meta_input']['rets_id'] );
+  } else {
+    return array( 'ok' => false, 'error' => "Property missing RETS ID." );
   }
 
   $_post_id = wp_insert_post( $post_data, true );
 
-  write_log( 'Inserted property post ' . $_post_id  );
+  if( is_wp_error( $_post_id ) ) {
+    write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>' );
+    write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>' );
+  } else {
+    write_log( 'Inserted property post ' . $_post_id  );
+  }
+
 
   if ( !empty( $post_data['meta_input']['rets_media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
 
