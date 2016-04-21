@@ -51,9 +51,61 @@ use \UsabilityDynamics\RDC\Utils;
           case 'rent':
 
             if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ) ) ) {
-              echo $agent->ID;
+
+              ?>
+
+              <ul class="rdc-agents-carousel-items">
+
+              <?php
+
+                echo '<li class="rdc-agents-carousel-item">';
+
+                $image_ids = get_user_meta($agent->ID, 'agent_images', true);
+
+                $user_data = get_userdata($agent->ID);
+
+                if (!empty($image_ids[0])) {
+                  $imageId = $image_ids[0];
+                }
+
+                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+
+                echo '<h3>' . $user_data->display_name . '</h3>';
+
+                echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+
+              ?>
+
+              </ul>
+
+              <?php
+
             } else {
-              echo 'No';
+
+              ?>
+
+              <ul class="rdc-agents-carousel-items" style="padding-top: 20px;">
+
+                <?php
+
+                echo '<li class="rdc-agents-carousel-item">';
+
+                echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
+
+                echo '<span>'. Utils::get_single_term( 'listing_office', $property['ID'] ) .'</span>';
+
+                echo '<span>'. Utils::get_single_term( 'listing_agent_phone_number', $property['ID'] ) .'</span>';
+
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+
+                ?>
+
+              </ul>
+
+              <?php
+
             }
 
             break;
