@@ -2031,8 +2031,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .so-widget-sow-hero .sow-slider-pagination {
   display: none;
 }
-.so-widget-wp-property-responsive-carousel {
-  margin-top: 40px;
+.property-resp-slideshow {
+  z-index: 9;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -5704,6 +5704,9 @@ body .ui-tooltip {
     width: 100%;
     border-radius: 5px;
     margin-bottom: 10px;
+  }
+  body .frontPageSearchBlock .searchForm form .location .select2 {
+    min-width: 99%;
   }
   body .frontPageSearchBlock .searchForm form .sfBeds {
     width: 49%;
