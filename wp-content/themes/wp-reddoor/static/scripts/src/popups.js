@@ -21,7 +21,6 @@ jQuery(function () {
 
   jQuery('body').keydown(function(eventObject){
     if (eventObject.which == 27) {
-      console.log(popUpWindow);
       popUpWindow.fadeOut(100);
     }
   });

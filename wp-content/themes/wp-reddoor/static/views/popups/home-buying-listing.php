@@ -5,12 +5,10 @@
     <div class="popup-form-wrapper">
 
       <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" />
-      <h3>I want to buy a home</h3>
+      <h3><?php _e('I want to buy a home', 'reddoor') ?></h3>
       <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming.</p>
       <input id="phone" type="tel" placeholder="919-321-0128 x2" />
       <span class="clickToView">click to view the full number</span>
-
-      listing
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
@@ -73,16 +71,18 @@
 
         <div class="clear"></div>
 
+        <?php global $property; $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true ) ?>
+
         <!-- Origin -->
         <input type="hidden" id="powf_35ff73d9fbe9e511811afc15b42886e8" name="powf_35ff73d9fbe9e511811afc15b42886e8" value="Buyer" />
         <!-- topic -->
         <input type="hidden" id="powf_44ff73d9fbe9e511811afc15b42886e8" name="powf_44ff73d9fbe9e511811afc15b42886e8" value="Buyer Webform Lead" />
         <!-- Property Address -->
-        <input type="hidden" id="powf_fc8e60252af8e51180e2fc15b4286ffc" name="powf_fc8e60252af8e51180e2fc15b4286ffc" value="" />
+        <input type="hidden" id="powf_fc8e60252af8e51180e2fc15b4286ffc" name="powf_fc8e60252af8e51180e2fc15b4286ffc" value="<?php echo $property['location_address']; ?>" />
         <!-- Broker Email -->
-        <input type="hidden" id="powf_36ff73d9fbe9e511811afc15b42886e8" name="powf_36ff73d9fbe9e511811afc15b42886e8" value="" />
+        <input type="hidden" class="rdc-listing-broker-email" id="powf_36ff73d9fbe9e511811afc15b42886e8" name="powf_36ff73d9fbe9e511811afc15b42886e8" value="<?php echo $agent->user_email; ?>" />
         <!-- MLS ID -->
-        <input type="hidden" id="powf_a0fb31f729f8e51180e2fc15b4286ffc" name="powf_a0fb31f729f8e51180e2fc15b4286ffc" value="" />
+        <input type="hidden" id="powf_a0fb31f729f8e51180e2fc15b4286ffc" name="powf_a0fb31f729f8e51180e2fc15b4286ffc" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>" />
 
         <input type="hidden" name="ignore_submitmessage" value="" />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
