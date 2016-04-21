@@ -45,7 +45,7 @@
         position: relative;
         max-width: 1240px;
         margin: 0 auto;
-        padding: 40px 0px 60px 100px;
+        padding: 40px 0px 60px 200px;
     }
 
 }
@@ -151,19 +151,14 @@
                     input, select {
                         max-width: 130px;
                     }
-
                 }
-
             }
-
         }
-
     }
-
 	a.rdc-carousel-next,
 	a.rdc-carousel-previous {
-        top: 50%;
-        left: 0;
+        top: 40%;
+        left: 60px;
         position: absolute;
         width: 41px;
         height: 41px;
@@ -192,15 +187,14 @@
     border: 1px solid #45484c !important;
 
 		&:hover {
-          border-radius: 2px;
+          border-radius: 3px;
           color: white !important;
-          border: 1px solid #fff !important;
           transition: color .3s, background .3s, border .3s;
 		}
 	}
 
     a.rdc-carousel-previous {
-        top: 60%;
+        top: 50%;
     }
 
 	a.rdc-carousel-next:before {
@@ -255,7 +249,8 @@
                 color: #fff;
                 display: block;
                 padding: 10px;
-                width: 25%;
+                width: 30%;
+                text-align: center;
                 margin-bottom: 30px;
                 margin-top: 30px;
             }
@@ -268,7 +263,7 @@
             display: block;
             float: left;
             margin-right: 20px;
-            width: 500px;
+            width: 450px;
             overflow-x: hidden;
             overflow-y: hidden;
             border-radius: 5px;
