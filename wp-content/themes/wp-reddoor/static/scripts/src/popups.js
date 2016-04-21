@@ -24,4 +24,8 @@ jQuery(function () {
       popUpWindow.fadeOut(100);
     }
   });
+
+  jQuery('.popup .clickToView').on('click', function(){
+    jQuery( this ).parent().find('.hidden-phone').attr('placeholder', jQuery( this ).parent().find('.hidden-phone').data('phone'));
+  });
 });
