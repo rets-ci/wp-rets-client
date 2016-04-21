@@ -125,12 +125,12 @@ function map_resize() {
  * @author peshkov@UD
  */
 function frontPageSearchBlock_resize() {
-    var height = jQuery(window).height()-jQuery("#header").height()-jQuery('.association-carousel').height()-132;
-    console.log( 'BEFORE', height );
-    if ( height < 660 ) {
-        height = 660;
+    var height = jQuery(window).height()-jQuery("#header").height()-jQuery('.association-carousel').height()-95;
+    if( jQuery( '#wpadminbar').length > 0 ) {
+        height = height - jQuery( '#wpadminbar').height();
     }
     jQuery('.frontPageSearchBlock').height(height);
+    console.log( jQuery('.frontPageSearchBlock').height() );
 }
 
 jQuery(window).load(function(){
