@@ -217,6 +217,25 @@
   top: -30px;
   margin-bottom: -30px;
 }
+.full-width-totop {
+  position: relative;
+  top: -60px;
+  margin-bottom: -60px;
+}
+.sp-slideshow-block {
+  position: relative;
+  top: -60px;
+  margin-bottom: -60px;
+}
+.sp-slideshow-block .hero-overlay {
+  background: #000 none repeat scroll 0 0;
+  bottom: 0;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 8;
+}
 .oneAgent {
   width: 380px;
   border: 1px solid #dcddde;
@@ -290,7 +309,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 700px;
+  height: 660px;
   position: relative;
   top: -74px;
 }
@@ -306,6 +325,7 @@
   top: 20%;
   width: 70px;
   color: #d03528;
+  z-index: 9;
 }
 .featuredImageHeader .singleHeroIcon span {
   display: block;
@@ -314,12 +334,20 @@
   margin-left: 10px;
   margin-top: 3px;
 }
+.featuredImageHeader .hero-overlay {
+  background: #000 none repeat scroll 0 0;
+  bottom: 0;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 8;
+}
 .archiveImageHeader {
-  background-image: url('../images/src/archive-header.jpg');
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  height: 555px;
+  height: 660px;
   padding-top: 10%;
   position: relative;
   top: -74px;
@@ -330,12 +358,28 @@
   font-size: 5em;
   text-align: center;
   font-weight: 600;
+  text-shadow: 1px 1px 3px #000;
+  position: relative;
+  z-index: 9;
 }
 .archiveImageHeader h3 {
   color: #fff;
   line-height: 1.8em;
   padding: 0 20%;
   text-align: center;
+  text-shadow: 1px 1px 3px #000;
+  position: relative;
+  z-index: 9;
+}
+.archiveImageHeader .hero-overlay {
+  background: #000 none repeat scroll 0 0;
+  bottom: 0;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 8;
+  margin-bottom: 17px;
 }
 .single .singleTitle {
   color: #fff;
@@ -356,11 +400,15 @@
   text-align: center;
   text-shadow: 1px 1px 5px #000;
   width: 70%;
+  position: sticky;
+  z-index: 9;
 }
 .single .singleSocialBlock {
-  width: 30%;
   margin: auto;
+  position: relative;
   text-align: center;
+  width: 30%;
+  z-index: 9;
 }
 .single .singleSocialBlock li {
   display: inline-block;
@@ -429,20 +477,20 @@
 }
 .oneCategory {
   width: 380px;
-  height: 460px;
+  height: 445px;
   border-radius: 5px;
   position: relative;
   margin: 20px 0;
-  -moz-box-shadow: 0px 0px 3px #f3f0e9;
-  -webkit-box-shadow: 0px 0px 3px #f3f0e9;
-  box-shadow: 0px 0px 3px #f3f0e9;
+  -moz-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  -webkit-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
 }
 .oneCategory .oneCategoryImg {
   height: 280px;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 42px;
   text-align: center;
   background: #efefef none repeat scroll 0 0;
 }
@@ -453,11 +501,11 @@
 .oneCategory .catIconLoop {
   background: #fff;
   border-radius: 50%;
-  height: 80px;
-  left: 40%;
+  height: 75px;
+  width: 75px;
   position: absolute;
+  left: 40%;
   top: 245px;
-  width: 80px;
 }
 .oneCategory .catIconLoop img {
   display: block;
@@ -465,12 +513,12 @@
 }
 .oneCategory .catIconLoop .icon {
   color: #d03528;
-  font-size: 2.5em;
-  position: relative;
-  top: 15px;
+  font-size: 2.2em;
   left: 23px;
+  position: absolute;
+  top: 15px;
 }
-.oneCategory > a {
+.oneCategory a.oneCategoryTitle {
   display: block;
   margin: auto;
   text-align: center;
@@ -478,12 +526,13 @@
   line-height: 1.5em;
   color: #5a595c;
   transition: .5s color;
+  padding: 0 2em;
 }
-.oneCategory > a:hover {
+.oneCategory a.oneCategoryTitle:hover {
   text-decoration: none;
   color: #d03528;
 }
-.oneCategory > a .one_text {
+.oneCategory a.oneCategoryTitle .one_text {
   margin: 0 25px;
 }
 .archiveFilterBg {
@@ -536,7 +585,7 @@
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center center;
-  min-height: 555px;
+  min-height: 660px;
   padding-top: 10%;
   position: relative;
   top: -90px;
@@ -767,21 +816,17 @@
   opacity: 0.8;
 }
 .frontPageSearchBlock .searchForm form .sf-property-quantity b {
-  border: 2px solid;
-  border-radius: 50%;
   display: inline-block;
-  height: 20px;
-  line-height: 16px;
-  padding-bottom: 0;
-  text-align: center;
-  width: 20px;
+  font-size: 1.3em;
+  font-weight: bold;
   margin-right: 0.2em;
-  padding-top: 1.6px;
+  position: relative;
+  top: 2px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange {
   background: #fff;
   color: #a7a9ac;
-  font-size: 0.9em;
+  font-size: 1em;
   position: relative;
   width: 100%;
   top: 0;
@@ -813,15 +858,30 @@
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
   padding: 10px 80px 10px 15px;
 }
+.frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList a {
+  letter-spacing: 1px;
+}
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
   padding: 10px 15px 10px 80px;
   text-align: right;
+}
+.frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList a {
+  letter-spacing: 1px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
   width: 100%;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .right-side {
   width: 100%;
+}
+.frontPageSearchBlock .hero-overlay {
+  background: #000 none repeat scroll 0 0;
+  bottom: 0;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 8;
 }
 .select2-dropdown {
   width: 440px !important;
@@ -992,7 +1052,7 @@
   display: inline-block;
   height: 20px;
   width: 27px;
-  margin: 0 0 -5px 0;
+  margin: 0 3px -5px 0;
   background: url('../images/src/checkboxes2.png') no-repeat;
 }
 .sfBeds input[type="checkbox"]:checked + label::before,
@@ -1221,6 +1281,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  height: 660px;
 }
 .single-property .ftrdImgGoTop {
   top: -30px;
@@ -1314,7 +1375,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .propertyAttribute li {
   display: inline-block;
-  width: 33%;
+  width: 32%;
   margin-bottom: 20px;
 }
 .single-property .propertyAttribute li div {
@@ -1324,7 +1385,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-size: 1.5em;
   margin-right: 15px;
   margin-top: 0;
-  padding: 7px 15px;
+  padding: 9px 15px;
 }
 .single-property .propertyAttribute li div span {
   color: #a7a9ac;
@@ -1402,7 +1463,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin: auto;
   padding: 8px 9px;
   text-align: center;
-  width: 45px;
+  width: 42px;
+  line-height: 24px;
 }
 .single-property .areaMapBlock .ambItem .scoreComing {
   background: #F3F3F3;
@@ -1927,6 +1989,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   z-index: 8;
   margin-bottom: -60px;
 }
+.so-widget-sow-hero .sow-slider-pagination {
+  display: none;
+}
 /* =Footer
 ------------------------------------------------- */
 .footerBg1 {
@@ -2352,7 +2417,7 @@ a {
 }
 a:hover {
   color: #2B0853;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 /* INPUTS */
 input[type="text"],
