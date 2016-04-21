@@ -290,17 +290,24 @@
   border: 1px solid #f3f0e9;
   overflow: hidden;
 
+
   .oneCategoryImg{
     height: 280px;
     width: 100%;
     margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
+
     &>img {
       height: 100%;
       width: 100%;
-
     }
+
+    img.category-image {
+      height: 100%;
+      width: 100%;
+    }
+
   }
 
   .catIconLoop{
@@ -336,6 +343,10 @@
     transition: .5s color;
     padding: 0 2em;
 
+    // hide anything beyond three lines
+    max-height: 4.5em;
+    overflow: hidden;
+
     &:hover {
       text-decoration: none;
       color: @buttons;
@@ -346,6 +357,18 @@
     }
   }
 }
+
+/* darken background shadow on hover, removed, needs refining
+.oneCategory:hover {
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.13);
+  cursor: pointer;
+  -webkit-transition: box-shadow 2s ease-out;
+  -moz-transition: box-shadow 2s ease-out;
+  -o-transition: box-shadow 2s ease-out;
+  transition: box-shadow 2s ease-out;
+}
+*/
+
 .archiveFilterBg {
   background: #f3f0e9;
   height: 80px;
