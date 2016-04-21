@@ -498,6 +498,10 @@
   height: 100%;
   width: 100%;
 }
+.oneCategory .oneCategoryImg img.category-image {
+  height: 100%;
+  width: 100%;
+}
 .oneCategory .catIconLoop {
   background: #fff;
   border-radius: 50%;
@@ -527,6 +531,8 @@
   color: #5a595c;
   transition: .5s color;
   padding: 0 2em;
+  max-height: 4.5em;
+  overflow: hidden;
 }
 .oneCategory a.oneCategoryTitle:hover {
   text-decoration: none;
@@ -535,6 +541,16 @@
 .oneCategory a.oneCategoryTitle .one_text {
   margin: 0 25px;
 }
+/* darken background shadow on hover, removed, needs refining
+.oneCategory:hover {
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.13);
+  cursor: pointer;
+  -webkit-transition: box-shadow 2s ease-out;
+  -moz-transition: box-shadow 2s ease-out;
+  -o-transition: box-shadow 2s ease-out;
+  transition: box-shadow 2s ease-out;
+}
+*/
 .archiveFilterBg {
   background: #f3f0e9;
   height: 80px;
