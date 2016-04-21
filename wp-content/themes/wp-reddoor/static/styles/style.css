@@ -701,7 +701,7 @@
   box-shadow: -1px 7px 12px -5px #000;
 }
 .frontPageSearchBlock .searchForm form ul li {
-  padding-bottom: 5px;
+  padding-bottom: 2px;
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
   border-radius: 5px;
@@ -885,13 +885,13 @@
   margin-left: 8px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
-  padding: 10px 80px 10px 15px;
+  padding: 20px 80px 20px 22px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList a {
   letter-spacing: 1px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
-  padding: 10px 15px 10px 80px;
+  padding: 20px 22px 20px 80px;
   text-align: right;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList a {
@@ -1304,7 +1304,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 /* Property page */
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
-  padding-bottom: 30px;
+  margin: 40px 0;
 }
 .single-property .slideshowHeadImage {
   background-position: center center;
@@ -1314,6 +1314,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .ftrdImgGoTop {
   top: -30px;
+}
+.single-property .singleRemarks {
+  font-size: 1.2em;
+  line-height: 1.6em;
+  margin-bottom: 25px;
+  margin-top: 40px;
 }
 .single-property .singlePropertyHeader {
   background: #F3F0EA;
@@ -1432,13 +1438,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .propertyAttribute li span {
   display: block;
   color: #919093;
-  font-size: 0.8em;
+  font-size: 1em;
   margin-top: 5px;
   margin-bottom: 3px;
 }
 .single-property .propertyAttribute li strong {
   font-weight: 400;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 .single-property .propertyFacts {
   margin-top: 20px;
@@ -1470,16 +1476,19 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .propertyFacts li span {
   display: block;
   color: #919093;
-  font-size: 0.8em;
+  font-size: 1em;
   margin-top: 5px;
   margin-bottom: 3px;
 }
 .single-property .propertyFacts li strong {
   font-weight: 400;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 .single-property .areaMapBlock .col-lg-7 {
   margin: 15px 0;
+}
+.single-property .areaMapBlock .singleWalkScore {
+  margin: 40px 0;
 }
 .single-property .areaMapBlock .ambItem {
   border: 1px solid #dedede;
@@ -1549,6 +1558,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border: 1px solid #d8d8d8;
   border-top: 1px solid transparent;
   padding: 20px 15px 15px;
+  margin-bottom: 20px;
 }
 .single-property .propertyDetails .col-lg-7 {
   margin: 15px 0;
@@ -1915,7 +1925,10 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   padding: 5px 10px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a:hover {
-  text-decoration: none;
+  text-decoration: none !important;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a:focus {
+  text-decoration: none !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a div {
   float: left;
