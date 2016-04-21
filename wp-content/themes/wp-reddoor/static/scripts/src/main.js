@@ -45,6 +45,9 @@ jQuery(document).ready(function(){
         jQuery('.home .buyBtnForm').addClass('current-menu-item');
     }
 
+    jQuery('.page .ourCompanyBtn.current_page_parent').addClass('current-menu-item');
+
+
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
     jQuery('.formTabs').on('click', function(){

@@ -37,7 +37,7 @@
                 $query = new WP_Query($args);
                 while ($query->have_posts()) : $query->the_post();
                 global $post;
-                echo get_the_post_thumbnail($post->ID);
+                echo get_the_post_thumbnail($post->ID, 'footer_association');
                 endwhile;
                 ?>
             </div>
