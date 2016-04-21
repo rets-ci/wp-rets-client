@@ -1,25 +1,26 @@
 <?php
 /**
- * The main template file.
+ * Root blog page template
+ *
  * @package
- * @subpackage Wp-reddoor
+ * @subpackage WP-Reddoor
  * @since Wp-reddoor 1.0
  */
+
+
+$_page_for_posts = get_option('page_for_posts');
+
 get_header();
 
-$heroImageUrl = wp_get_attachment_url(get_field('hero_image', 8), 'full');
 ?>
-
-
 <div class="container-fluid ftrdImgGoTop">
-  <section class="archiveImageHeader" style="background-image: url('<?php echo $heroImageUrl; ?>'); ">
-    <h1><?php echo get_post_meta(8, 'rdcPageTitle', 1); ?></h1>
-    <h3><?php echo get_post_meta(8, 'rdcPageSubtitle', 1); ?></h3>
+  <section class="archiveImageHeader" style="<?php if( has_post_thumbnail( $_page_for_posts ) ) { ?>background-image: url('<?php echo get_the_post_thumbnail_url( $_page_for_posts, 'full' ); ?>'); "<?php } ?>>
+    <h1><?php echo get_post_meta($_page_for_posts , 'rdcPageTitle', 1); ?></h1>
+    <h3><?php echo get_post_meta($_page_for_posts , 'rdcPageSubtitle', 1); ?></h3>
     <div class="hero-overlay"></div>
   </section>
 </div>
 
 <?php get_template_part('static/views/blog-content') ?>
-
 
 <?php get_footer(); ?>
