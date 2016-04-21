@@ -318,7 +318,8 @@
   border-radius: 50%;
   font-size: 2.5em;
   height: 70px;
-  left: 47%;
+  left: 50%;
+  margin-left: -35px;
   padding-top: 15px;
   position: absolute;
   text-align: center;
@@ -590,10 +591,11 @@
   position: relative;
   margin-top: -90px;
   z-index: 7;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 .frontPageSearchBlock > h1 {
   color: #fff;
-  font-size: 4em;
+  font-size: 3.5em;
   font-weight: bold;
   text-align: center;
 }
@@ -603,8 +605,8 @@
   line-height: 2em;
   margin: 1.5% auto 3%;
   text-align: center;
-  text-shadow: 0 0 1px #ddd;
-  width: 70%;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  width: 50%;
 }
 .frontPageSearchBlock .searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -1999,7 +2001,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   top: -30px;
   z-index: 8;
-  margin-bottom: -60px;
 }
 .so-widget-sow-hero .sow-slider-pagination {
   display: none;
