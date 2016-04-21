@@ -114,7 +114,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-decoration: none;
   color: #FFFFFF;
-  border-radius: 2px;
+  border-radius: 5px;
   background: #45484c;
   border: 1px solid #45484c !important;
 }
@@ -157,7 +157,7 @@
   -moz-transition: all 0.45s ease;
   -o-transition: all 0.45s ease;
   transition: all 0.45s ease;
-  height: 200px;
+  min-height: 200px;
   margin: 0;
   padding: 0;
   zoom: 1;
@@ -185,6 +185,19 @@
   overflow-y: hidden;
   border-radius: 5px;
   box-shadow: 0 0 10px #ddd;
+  color: #5A595C;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item h2{
+  font-size: 2.7em;
+  font-weight: bold;
+  line-height: 1.5em;
+  margin-bottom: 20px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
+  color: #929194;
+  font-size: 1.3em;
+  line-height: 1.55em;
+  margin-bottom: 30px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item > a:hover{
   text-decoration: none !important;
@@ -202,7 +215,7 @@
   width: 30%;
   text-align: center;
   margin-bottom: 30px;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:last-child {
   margin-right: 0;
