@@ -291,7 +291,7 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
-       *
+       * Front End Scripts Loading
        */
       public function frontend_scripts() {
         wp_enqueue_script('jquery');

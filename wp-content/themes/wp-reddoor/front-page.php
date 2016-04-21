@@ -19,10 +19,10 @@ while (have_posts()) : the_post(); ?>
   <div class="container-fluid">
     <div class="row">
       <section class="frontPageSearchBlock" <?php if(has_post_thumbnail()){ ?> style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>')" <?php } ?>>
+        <div class="hero-overlay"></div>
         <h1><?php echo get_post_meta(get_the_ID(), 'rdcPageTitle', 1); ?></h1>
         <h4><?php echo get_post_meta(get_the_ID(), 'rdcPageSubtitle', 1); ?></h4>
         <?php get_template_part('static/views/search-form'); ?>
-        <div class="hero-overlay"></div>
       </section>
     </div>
   </div>
