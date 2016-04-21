@@ -291,7 +291,7 @@
   .oneCategoryImg{
     height: 280px;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
     &>img {
@@ -300,15 +300,18 @@
 
     }
   }
+
   .catIconLoop{
     background: @white;
     border-radius: 50%;
-    height: 80px;
-    left: 40%;
+    height: 75px;
+    width: 75px;
     position: absolute;
+    left: 40%;
     top: 245px;
-    width: 80px;
+
     img{
+
       display: block;
       margin: 11px auto;
     }
@@ -320,7 +323,8 @@
       top: 15px;
     }
   }
-  &>a{
+
+  a.oneCategoryTitle{
     display: block;
     margin: auto;
     text-align: center;
@@ -328,6 +332,7 @@
     line-height: 1.5em;
     color: #5a595c;
     transition: .5s color;
+    padding: 0 1em;
 
     &:hover {
       text-decoration: none;
