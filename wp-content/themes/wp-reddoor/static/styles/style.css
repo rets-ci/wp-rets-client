@@ -477,13 +477,13 @@
 }
 .oneCategory {
   width: 380px;
-  height: 460px;
+  height: 445px;
   border-radius: 5px;
   position: relative;
   margin: 20px 0;
-  -moz-box-shadow: 0px 0px 3px #f3f0e9;
-  -webkit-box-shadow: 0px 0px 3px #f3f0e9;
-  box-shadow: 0px 0px 3px #f3f0e9;
+  -moz-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  -webkit-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
 }

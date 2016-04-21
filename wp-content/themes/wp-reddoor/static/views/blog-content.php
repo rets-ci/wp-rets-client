@@ -31,9 +31,7 @@
 		while ( have_posts() ) : the_post(); ?>
 
 			<div class="col-lg-4">
-				<div class="oneCategory">
-					<?php get_template_part('static/views/category-card') ?>
-				</div>
+        <?php get_template_part('static/views/category-card') ?>
 			</div>
 
 		<?php endwhile; ?>

@@ -69,7 +69,6 @@ if(!empty($post_thumbnail_id)) {
       <h3><?php $category = get_the_category($post->ID);  _e('More ' . $category[0]->name . ' Articles'); ?></h3>
     </div>
 
-    <div class="btn btn-primary	btn-danger"><?php _e( 'Load More' ); ?></div>
     <?php
 
     query_posts(array(
@@ -83,6 +82,7 @@ if(!empty($post_thumbnail_id)) {
       <?php get_template_part('static/views/category-card') ?>
     </div>
     <?php endwhile; endif; ?>
+    <div class="btn btn-primary	btn-danger"><?php _e( 'Load More' ); ?></div>
     <?php rewind_posts(); ?>
 
   </div>
