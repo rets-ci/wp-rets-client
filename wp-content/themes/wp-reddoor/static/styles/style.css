@@ -382,6 +382,11 @@
   z-index: 8;
   margin-bottom: 17px;
 }
+.single .h3,
+.single h3 {
+  font-size: 28px;
+  color: #5A595C;
+}
 .single .singleTitle {
   color: #fff;
   font-size: 2.9em;
