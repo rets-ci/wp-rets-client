@@ -396,7 +396,7 @@ while (have_posts()) : the_post();
       <div class="col-lg-8 col-md-8">
         <h4><?php _e('Property Details for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
-      <div class="col-lg-7  col-md-7">
+      <div class="col-lg-8  col-md-8 singleRemarks">
         <?php echo (!empty($property['automated_property_detail_description'])) ? $property['automated_property_detail_description'] : ''; ?>
       </div>
       <div class="col-lg-8 col-md-8">
