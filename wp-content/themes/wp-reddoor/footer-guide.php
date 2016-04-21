@@ -10,6 +10,8 @@
  */
 ?>
 
+<?php get_template_part('static/views/popups') ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
