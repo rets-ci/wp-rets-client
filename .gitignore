@@ -16,3 +16,4 @@ cache
 node_modules
 nohup.out
 wp-content/plugins/wp-responsive-jquery-slider/README.txt
+.maintenance
