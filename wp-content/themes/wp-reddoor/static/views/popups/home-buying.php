@@ -6,8 +6,8 @@
 
       <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" />
       <h3>I want to buy a home</h3>
-      <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming.</p>
-      <input id="phone" type="tel" placeholder="919-321-0128 x2" />
+      <p>Buy your dream home on your terms! Please submit your information below or call us by phone. We’re ready to assist you with your new home purchase.</p>
+      <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView">click to view the full number</span>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
