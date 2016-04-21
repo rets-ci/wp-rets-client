@@ -25,7 +25,7 @@ jQuery(function () {
     }
   });
 
-  jQuery('.popup .clickToView').on('click', function(){
-    jQuery( this ).parent().find('.hidden-phone').attr('placeholder', jQuery( this ).parent().find('.hidden-phone').data('phone'));
+  jQuery('.popup .hidden-phone').on('click', function(){
+    jQuery( this ).val(jQuery( this ).data('phone'));
   });
 });
