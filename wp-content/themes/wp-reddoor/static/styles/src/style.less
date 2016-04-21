@@ -113,6 +113,33 @@
     }
     .frontPageSearchBlock {
       top: -40px !important;
+      min-height: 800px;
+      &>h1{
+        font-size: 3em;
+        font-weight: 600;
+      }
+      &>h4{
+        margin-bottom: 45px;
+        margin-top: 25px;
+        line-height: 1.8em;
+      }
+      .searchForm{
+        &>ul{
+          width: 49.6%;
+          &>li{
+            width: 49.2%;
+            &>a{
+              padding: 0 !important;
+              text-align: center;
+
+            }
+          }
+        }
+      }
+
+      .sf-property-quantity{
+        display: none;
+      }
     }
     &.single-property {
       .singlePropertyHeader {
@@ -149,12 +176,12 @@
         min-width: 557px;
         form {
           border-radius: 0 0 5px 5px;
-          height: 280px;
+          height: 296px;
           padding: 9px;
           .location {
             width: 100%;
             border-radius: 5px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
           }
           .sfBeds {
             width: 49%;
@@ -168,12 +195,12 @@
           .sfPrice {
             width: 100%;
             border-radius: 5px;
-            margin-top: 5px;
+            margin-top: 10px;
           }
           input[type="submit"] {
             width: 100%;
             margin-left: 0;
-            margin-top: 5px;
+            margin-top: 10px;
             padding: 18px 20px;
           }
           ul {
@@ -183,9 +210,9 @@
         }
         .sfPriceRange {
           .sfprInputsBlock {
-            padding-left: 5px;
+
             input {
-              width: 49%;
+              width: 48.7%;
             }
           }
           .left-side {
@@ -244,6 +271,11 @@
         }
       }
     }
+
+  }
+  .home .select2-dropdown{
+    margin-top: -1px;
+    width: 539px !important;
   }
 
   .so-widget-tabbed-content {
