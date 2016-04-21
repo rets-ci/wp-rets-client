@@ -19,7 +19,8 @@ namespace UsabilityDynamics\RDC {
       private $actions = array(
         // slug => is_private
         'TermsSearchable' => 0,
-        'mapFilterAutocomplete' => 0
+        'mapFilterAutocomplete' => 0,
+        'categoryCard' => 0
       );
 
       public function __construct() {
@@ -128,6 +129,36 @@ namespace UsabilityDynamics\RDC {
         ));
 
       }
+
+      /**
+       * AJAX handler for showing category cards
+       *
+       * @author potanin@UD
+       * @todo Make col-lg-4 configurable if ever needed. - potanin@UD
+       */
+      static public function categoryCard() {
+
+        // @note Does not seem to work.
+        header( 'cache-control:public,max-age=30' );
+
+        query_posts(array(
+          'post_type' => 'post',
+          'posts_per_page' => $_GET['per_page'] ? $_GET['per_page'] : 3,
+          'offset' => $_GET['offset'] ? $_GET['offset'] : 0,
+          'category' =>  $_GET['category'] ? (int) $_GET['category'] : null
+        ));
+
+        if (have_posts()) { while (have_posts()) {
+          the_post();
+          echo '<div class="col-lg-4" data-element-kind="' . $_GET['kind'] . '">';
+          get_template_part( 'static/views/category-card' );
+          echo '</div>';
+        } }
+
+        die();
+
+      }
+
     }
   }
 }

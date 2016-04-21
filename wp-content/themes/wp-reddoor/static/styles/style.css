@@ -318,7 +318,8 @@
   border-radius: 50%;
   font-size: 2.5em;
   height: 70px;
-  left: 47%;
+  left: 50%;
+  margin-left: -35px;
   padding-top: 15px;
   position: absolute;
   text-align: center;
@@ -476,6 +477,10 @@
   border-top: 1px solid #efefef;
   padding-top: 55px;
 }
+.loadMoreContainer {
+  margin-top: 4em;
+  margin-bottom: 8em;
+}
 .oneCategory {
   width: 380px;
   height: 445px;
@@ -607,10 +612,11 @@
   position: relative;
   margin-top: -90px;
   z-index: 7;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 .frontPageSearchBlock > h1 {
   color: #fff;
-  font-size: 4em;
+  font-size: 3.5em;
   font-weight: bold;
   position: relative;
   text-align: center;
@@ -622,10 +628,8 @@
   line-height: 2em;
   margin: 1.5% auto 3%;
   text-align: center;
-  text-shadow: 0 0 1px #ddd;
-  width: 70%;
-  position: relative;
-  z-index: 9;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  width: 50%;
 }
 .frontPageSearchBlock .searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -2040,7 +2044,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   top: -30px;
   z-index: 8;
-  margin-bottom: -60px;
 }
 .so-widget-sow-hero .sow-slider-pagination {
   display: none;
@@ -5626,6 +5629,34 @@ body .ui-tooltip {
 
 /* colors */
 /* colors */
+.btn-rdc {
+  background-color: #CF3428;
+  border-color: #CF3428;
+  color: #FAE9E8;
+  font-size: 1.1em;
+  padding: 8px 17px;
+}
+.btn-rdc:hover {
+  color: #FFF;
+}
+.btn-rdc.btn-lg {
+  padding: 1.3em 4em;
+}
+.btn-rdc-wire {
+  background-color: transparent;
+  border-color: #E4C6BA;
+  color: #D55D52;
+  font-size: 1.1em;
+  padding: 8px 17px;
+  border-width: 2px;
+  font-weight: 500;
+}
+.btn-rdc-wire:hover {
+  color: #D55D52;
+}
+.btn-rdc-wire.btn-lg {
+  padding: 1.3em 4em;
+}
 /* Adaptive */
 @media screen and (max-width: 1200px) {
   .head-popups a {
