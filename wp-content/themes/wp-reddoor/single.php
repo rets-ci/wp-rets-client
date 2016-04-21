@@ -82,11 +82,15 @@ if(!empty($post_thumbnail_id)) {
       <?php get_template_part('static/views/category-card') ?>
     </div>
     <?php endwhile; endif; ?>
-    <div class="btn btn-primary	btn-danger"><?php _e( 'Load More' ); ?></div>
+
+
     <?php rewind_posts(); ?>
 
   </div>
-  </div>
+  <div class="row load-more-container">
+    <div class="col-lg-4 col-lg-offset-5">
+      <button type="button" class="btn btn-primary btn-lg	btn-danger "><?php _e( 'Load More' ); ?></div>
+    </div>
 </div>
 
 <?php get_footer(); ?>

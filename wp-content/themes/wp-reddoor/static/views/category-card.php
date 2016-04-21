@@ -18,14 +18,14 @@
     ?>
 
   <div class="oneCategoryImg">
-    <img src="<?php echo $_url ?>" alt="<?php echo $post->post_title; ?>"/>
+    <a href="<?php the_permalink( $post->ID ); ?>"><img src="<?php echo $_url ?>" alt="<?php echo $post->post_title; ?>" class="category-image"/></a>
   </div>
-    <div class="catIconLoop">
+  <div class="catIconLoop">
     <?php if( isset( $forCategorySlug ) ) { ?>
       <span class="icon icon-rdc-<?php echo $forCategorySlug->slug; ?>"></span>
     <?php } ?>
   </div>
-  <a href="<?php echo the_permalink( $post->ID ); ?>" class="oneCategoryTitle"><?php echo $post->post_title; ?></a>
+  <a href="<?php the_permalink( $post->ID ); ?>" class="oneCategoryTitle"><?php echo $post->post_title; ?></a>
 
 </div>
 
