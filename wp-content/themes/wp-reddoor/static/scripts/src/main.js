@@ -119,10 +119,27 @@ function map_resize() {
     jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
 }
 
+/**
+ * Resizes Search Block on Home page to fit the Viewport
+ *
+ * @author peshkov@UD
+ */
+function frontPageSearchBlock_resize() {
+    var height = jQuery(window).height()-jQuery("#header").height()-jQuery('.association-carousel').height()-132;
+    console.log( 'BEFORE', height );
+    if ( height < 660 ) {
+        height = 660;
+    }
+    jQuery('.frontPageSearchBlock').height(height);
+}
+
 jQuery(window).load(function(){
     var resizeTimer;
     jQuery(window).on('resize', function() {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(map_resize, 250);
+        resizeTimer = setTimeout( function(){
+            map_resize();
+            frontPageSearchBlock_resize();
+        }, 250);
     }).resize();
 });

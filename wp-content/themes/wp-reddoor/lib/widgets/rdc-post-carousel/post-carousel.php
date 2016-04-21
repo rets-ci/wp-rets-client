@@ -38,7 +38,15 @@ add_action( 'wp_ajax_rdc_carousel_load', 'rdc_carousel_get_next_posts_page' );
 add_action( 'wp_ajax_nopriv_rdc_carousel_load', 'rdc_carousel_get_next_posts_page' );
 
 class RDC_Widget_PostCarousel_Widget extends SiteOrigin_Widget {
+
+
 	function __construct() {
+
+		$sizes = array_flip( get_intermediate_image_sizes() );
+		foreach( $sizes as $i => $v ) {
+			$sizes[$i] = $i;
+		}
+
 		parent::__construct(
 			'rdc-post-carousel',
 			__('RDC Post Carousel', 'so-widgets-bundle'),
@@ -54,7 +62,11 @@ class RDC_Widget_PostCarousel_Widget extends SiteOrigin_Widget {
 					'type' => 'text',
 					'label' => __('Title', 'so-widgets-bundle'),
 				),
-
+				'image_size' => array(
+					'type' => 'select',
+					'label' => __('Image Size', 'reddoor'),
+					'options' => $sizes
+				),
 				'posts' => array(
 					'type' => 'posts',
 					'label' => __('Posts query', 'so-widgets-bundle'),

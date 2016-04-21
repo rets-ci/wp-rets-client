@@ -588,8 +588,7 @@
   min-height: 660px;
   padding-top: 10%;
   position: relative;
-  top: -90px;
-  margin-bottom: -20px;
+  margin-top: -90px;
   z-index: 7;
 }
 .frontPageSearchBlock > h1 {
@@ -1716,11 +1715,19 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .ui-datepicker {
   background: white;
 }
+.association-carousel {
+  margin: 0 100px;
+}
+.association-carousel .sow-carousel-title {
+  display: none;
+}
 .association-carousel .sow-carousel-thumbnail a {
+  background-position: center center !important;
   background-repeat: no-repeat !important;
-  background-size: auto auto !important;
-  height: 60px !important;
-  width: 100px !important;
+  background-size: cover !important;
+  margin: 20px 40px !important;
+  height: 61px !important;
+  width: 108px !important;
 }
 .association-carousel .sow-carousel-thumbnail a:hover {
   background-size: auto auto !important;
@@ -1729,7 +1736,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background: none !important;
 }
 .association-carousel .sow-carousel-wrapper {
-  height: 60px;
+  height: 96px;
 }
 .association-carousel .sow-carousel-items {
   height: 60px;
@@ -1747,7 +1754,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin: auto;
 }
 .association-carousel .assocCarouselBg {
-  height: 60px;
+  height: 96px;
   position: absolute;
   top: 0;
   width: 100%;
