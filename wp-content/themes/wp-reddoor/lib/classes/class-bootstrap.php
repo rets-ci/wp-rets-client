@@ -79,6 +79,13 @@ namespace UsabilityDynamics\RDC {
         add_filter( 'wpp::advanced_supermap::property_fields', array( $this, 'supermap_advanced_fields' ) );
         add_filter( 'wpp:supermap:query_defaults', array( $this, 'alter_supermap_query' ), 10, 2 );
 
+        /**
+         * Disables all 'license activation' warnings.
+         *
+         * @author peshkov@UD
+         */
+        add_filter( 'ud:warnings:admin_notices', function( $errors ){ return array(); } );
+
       }
 
       /**
