@@ -101,19 +101,27 @@ function register_rdc_guide_category_taxonomy() {
 add_filter( 'post_link', 'rdc_guide_category_permalink', 1, 3 );
 add_filter( 'post_type_link', 'rdc_guide_category_permalink', 1, 3 );
 add_action( 'manage_rdc_guide_posts_custom_column', 'guide_custom_columns', 10, 2 );
-add_filter( 'manage_rdc_guide_posts_columns', 'set_custom_edit_book_columns' );
+add_filter( 'manage_rdc_guide_posts_columns', 'set_custom_edit_guide_columns' );
 
-function set_custom_edit_book_columns( $columns ) {
-  $columns[ 'thumbnail' ] = __( 'Thumbnail', 'your_text_domain' );
+function set_custom_edit_guide_columns( $columns ) {
+
+  // hide date to add it later after thumbnail
+  //unset( $columns[ 'date' ] );
+  $columns[ 'guide_thumbnail' ] = __( 'Thumbnail', 'rdc' );
+  //$columns[ 'date' ] = __( 'Date', 'rdc' );
 
   return $columns;
 }
 
 function guide_custom_columns( $column, $post_id ) {
   switch( $column ) {
-    case 'thumbnail':
-      echo "<img src='" . get_the_post_thumbnail_url( $post_id, 'thumbnail' ) . "' width=100 />";
-      break;
+    case 'guide_thumbnail':
+
+      if( get_the_post_thumbnail_url( $post_id, 'thumbnail' ) ) {
+        echo "<img src='" . get_the_post_thumbnail_url( $post_id, 'thumbnail' ) . "' width=100 />";
+      }
+
+    break;
 
   }
 }
