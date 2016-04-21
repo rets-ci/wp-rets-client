@@ -17,12 +17,24 @@ module.exports = function(grunt) {
     watch: {
       styles: {
         files: ['static/styles/src/*'], // which files to watch
-        tasks: ['less'],
+        tasks: ['lessDelayed'],
         options: {
-          nospawn: true
+          nospawn: true,
+          debounceDelay: 500
         }
       }
     }
+  });
+
+  grunt.registerTask('lessDelayed', 'Delay LESS processing', function lessDelayed() {
+    console.log( 'less delayed');
+
+    // delay before runnign less
+    setTimeout(function() {
+      grunt.task.run('less');
+    }, 2000 );
+
+
   });
 
   grunt.registerTask('default', ['less']);
