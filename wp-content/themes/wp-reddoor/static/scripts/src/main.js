@@ -38,12 +38,15 @@ jQuery(document).ready(function(){
     jQuery('.linkedFootIcon a').html('<span class="icon-wpproperty-social-linkedin-symbol"></span>');
     jQuery('.instagramFootIcon a').html('<span class="icon-wpproperty-social-instagram-symbol"></span>');
 
-    jQuery('.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn, .page .ourCompanyBtn').addClass('current-menu-item');
+    jQuery('.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn').addClass('current-menu-item');
 
     if(jQuery('body.page').hasClass('home')){
         jQuery('#menu-header li').removeClass('current-menu-item');
         jQuery('.home .buyBtnForm').addClass('current-menu-item');
     }
+
+    jQuery('.page .ourCompanyBtn.current_page_parent').addClass('current-menu-item');
+
 
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
