@@ -121,7 +121,7 @@
 .rdc-carousel-title a.rdc-carousel-next:hover,
 .rdc-carousel-title a.rdc-carousel-previous:hover {
   color: white !important;
-  border-radius: 3px;
+  border-radius: 5px;
   transition: color .3s, background .3s, border .3s;
 }
 .rdc-carousel-title a.rdc-carousel-previous {

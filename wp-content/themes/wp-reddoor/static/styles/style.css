@@ -383,24 +383,25 @@
 }
 .single .singleTitle {
   color: #fff;
-  font-size: 2.2em;
-  font-weight: 600;
+  font-size: 2.9em;
+  font-weight: 500;
+  line-height: 1.3em;
   margin: auto;
+  position: relative;
   text-align: center;
-  text-shadow: 1px 1px 5px #000;
-  top: 35%;
+  text-shadow: 2px 8px 10px #625d5d;
   width: 60%;
-  line-height: 1.5em;
+  z-index: 9;
 }
 .single .singleExcerpt {
-  color: #ededed;
+  color: #F5F2F2;
   font-size: 1.4em;
   font-weight: 400;
-  margin: 1% auto 5%;
+  margin: 1.5% auto 5%;
   text-align: center;
   text-shadow: 1px 1px 5px #000;
   width: 70%;
-  position: sticky;
+  position: relative;
   z-index: 9;
 }
 .single .singleSocialBlock {
@@ -417,13 +418,13 @@
   border-radius: 50%;
   color: #fff;
   display: block;
-  font-size: 1.2em;
-  height: 40px;
+  font-size: 1.5em;
+  height: 50px;
   margin-right: 15%;
   outline: medium none;
   padding-top: 27%;
   text-align: center;
-  width: 40px;
+  width: 50px;
 }
 .single .singleSocialBlock li a:hover {
   text-decoration: none;
@@ -469,7 +470,7 @@
   padding-top: 21%;
 }
 .single .featuredImageHeader {
-  padding-top: 15%;
+  padding-top: 13%;
 }
 .single .loadMoreBlockSeparate {
   border-top: 1px solid #efefef;
@@ -596,7 +597,9 @@
   color: #fff;
   font-size: 4em;
   font-weight: bold;
+  position: relative;
   text-align: center;
+  z-index: 9;
 }
 .frontPageSearchBlock > h4 {
   color: #fff;
@@ -606,6 +609,8 @@
   text-align: center;
   text-shadow: 0 0 1px #ddd;
   width: 70%;
+  position: relative;
+  z-index: 9;
 }
 .frontPageSearchBlock .searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -1999,9 +2004,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .so-widget-sow-hero .sow-slider-pagination {
   display: none;
-}
-.so-widget-wp-property-responsive-carousel {
-  margin-top: 40px;
 }
 /* =Footer
 ------------------------------------------------- */
