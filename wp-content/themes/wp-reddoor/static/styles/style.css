@@ -526,7 +526,7 @@
   line-height: 1.5em;
   color: #5a595c;
   transition: .5s color;
-  padding: 0 1em;
+  padding: 0 2em;
 }
 .oneCategory a.oneCategoryTitle:hover {
   text-decoration: none;
