@@ -126,15 +126,26 @@ function WPP_RPC_editProperty( $args ) {
     return array( 'ok' => false, 'error' => "Property missing RETS ID." );
   }
 
+  // set post status to draft since it may be inserting for a while due to large amount of terms
+  $post_data[ 'post_status' ] = 'draft';
+
   $_post_id = wp_insert_post( $post_data, true );
 
   if( is_wp_error( $_post_id ) ) {
     write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>' );
     write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>' );
-  } else {
-    write_log( 'Inserted property post ' . $_post_id  );
-  }
 
+    return array(
+      "ok" => false,
+      "message" => "Unable to insert post",
+      "error" => $_post_id->get_error_message()
+    );
+
+  } else {
+
+    write_log( 'Inserted property post as draft ' . $_post_id  );
+
+  }
 
   if ( !empty( $post_data['meta_input']['rets_media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
 
@@ -191,12 +202,20 @@ function WPP_RPC_editProperty( $args ) {
 
     }
 
-    //array_values($array)[0];
+  }
 
-    // write_log( 'already_attached_media' . print_r($_already_attached_media, true));
-    // write_log( 'new media' . print_r($post_data['meta_input']['rets.media'], true));
+  write_log( 'Publishing property post ' . $_post_id  );
 
+  $_update_post = wp_update_post(array(
+    'ID'           => $_post_id,
+    'post_status'  => 'publish'
+  ));
 
+  if( !is_wp_error( $_update_post ) ) {
+    write_log( 'Published property post ' . $_post_id  );
+  } else {
+    write_log( 'Error publishign post ' . $_post_id  );
+    write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
   }
 
   return array(
