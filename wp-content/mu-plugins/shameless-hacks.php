@@ -83,3 +83,4 @@ if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === '__andy'
     die( 'test from template_redirect' );
   } );
 }
+
