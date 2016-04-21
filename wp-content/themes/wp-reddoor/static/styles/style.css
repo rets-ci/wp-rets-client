@@ -5602,6 +5602,34 @@ body .ui-tooltip {
 
 /* colors */
 /* colors */
+.btn-rdc {
+  background-color: #CF3428;
+  border-color: #CF3428;
+  color: #FAE9E8;
+  font-size: 1.1em;
+  padding: 8px 17px;
+}
+.btn-rdc:hover {
+  color: #FFF;
+}
+.btn-rdc.btn-lg {
+  padding: 1.3em 4em;
+}
+.btn-rdc-wire {
+  background-color: transparent;
+  border-color: #E4C6BA;
+  color: #D55D52;
+  font-size: 1.1em;
+  padding: 8px 17px;
+  border-width: 2px;
+  font-weight: 500;
+}
+.btn-rdc-wire:hover {
+  color: #D55D52;
+}
+.btn-rdc-wire.btn-lg {
+  padding: 1.3em 4em;
+}
 /* Adaptive */
 @media screen and (max-width: 1200px) {
   .head-popups a {

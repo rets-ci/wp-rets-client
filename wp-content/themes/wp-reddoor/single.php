@@ -90,7 +90,7 @@ if(!empty($post_thumbnail_id)) {
 
   <div class="row loadMoreContainer">
     <div class="col-lg-4 col-lg-offset-5">
-      <button type="button" class="btn btn-primary btn-lg	btn-danger" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?>
+      <button type="button" class="btn btn-lg	btn-rdc" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?></button>
     </div>
   </div>
 
