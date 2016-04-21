@@ -34,10 +34,10 @@
   }
 }
 .oneAgent{
-  width: 380px;
+  width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 20px 0;
+  margin: 64px 0;
   background: @white;
   &> img{
     display: block;
@@ -419,11 +419,13 @@
 
   }
   .searchForm {
-    width: 65%;
-    min-width: 785px;
-    margin: auto;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
+    margin: auto;
+    min-width: 785px;
+    position: relative;
+    width: 65%;
+    z-index: 9;
     .nav-tabs{
       margin-right: 4px;
       .formTabs{
@@ -1211,6 +1213,8 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 
     }
     .container {
+      position: relative;
+
       & > ul {
         li {
           display: inline-block;
@@ -1227,7 +1231,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     }
     .oneAgent{
       position: absolute;
-      right: 13%;
+      right: 15px;
       top: 0;
       z-index: 20;
       padding-bottom: 30px;
