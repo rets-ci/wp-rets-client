@@ -237,10 +237,10 @@
   z-index: 8;
 }
 .oneAgent {
-  width: 380px;
+  width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 20px 0;
+  margin: 64px 0;
   background: #fff;
 }
 .oneAgent > img {
@@ -477,20 +477,20 @@
 }
 .oneCategory {
   width: 380px;
-  height: 460px;
+  height: 445px;
   border-radius: 5px;
   position: relative;
   margin: 20px 0;
-  -moz-box-shadow: 0px 0px 3px #f3f0e9;
-  -webkit-box-shadow: 0px 0px 3px #f3f0e9;
-  box-shadow: 0px 0px 3px #f3f0e9;
+  -moz-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  -webkit-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
 }
 .oneCategory .oneCategoryImg {
   height: 280px;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 42px;
   text-align: center;
   background: #efefef none repeat scroll 0 0;
 }
@@ -501,11 +501,11 @@
 .oneCategory .catIconLoop {
   background: #fff;
   border-radius: 50%;
-  height: 80px;
-  left: 40%;
+  height: 75px;
+  width: 75px;
   position: absolute;
+  left: 40%;
   top: 245px;
-  width: 80px;
 }
 .oneCategory .catIconLoop img {
   display: block;
@@ -518,7 +518,7 @@
   position: absolute;
   top: 15px;
 }
-.oneCategory > a {
+.oneCategory a.oneCategoryTitle {
   display: block;
   margin: auto;
   text-align: center;
@@ -526,12 +526,13 @@
   line-height: 1.5em;
   color: #5a595c;
   transition: .5s color;
+  padding: 0 2em;
 }
-.oneCategory > a:hover {
+.oneCategory a.oneCategoryTitle:hover {
   text-decoration: none;
   color: #d03528;
 }
-.oneCategory > a .one_text {
+.oneCategory a.oneCategoryTitle .one_text {
   margin: 0 25px;
 }
 .archiveFilterBg {
@@ -1314,6 +1315,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-left: 15px;
   color: #7A787D;
 }
+.single-property .singlePropertyHeader .container {
+  position: relative;
+}
 .single-property .singlePropertyHeader .container > ul li {
   display: inline-block;
   font-size: 1.5em;
@@ -1327,7 +1331,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .singlePropertyHeader .oneAgent {
   position: absolute;
-  right: 13%;
+  right: 15px;
   top: 0;
   z-index: 20;
   padding-bottom: 30px;

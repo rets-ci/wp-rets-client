@@ -34,10 +34,10 @@
   }
 }
 .oneAgent{
-  width: 380px;
+  width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 20px 0;
+  margin: 64px 0;
   background: @white;
   &> img{
     display: block;
@@ -279,19 +279,20 @@
 }
 .oneCategory{
   width: 380px;
-  height: 460px;
+  height: 445px;
   border-radius: 5px;
   position: relative;
   margin: 20px 0;
-  -moz-box-shadow: 0px 0px 3px #f3f0e9;
-  -webkit-box-shadow: 0px 0px 3px #f3f0e9;
-  box-shadow: 0px 0px 3px #f3f0e9;
+  -moz-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  -webkit-box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
+
   .oneCategoryImg{
     height: 280px;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
     &>img {
@@ -300,15 +301,18 @@
 
     }
   }
+
   .catIconLoop{
     background: @white;
     border-radius: 50%;
-    height: 80px;
-    left: 40%;
+    height: 75px;
+    width: 75px;
     position: absolute;
+    left: 40%;
     top: 245px;
-    width: 80px;
+
     img{
+
       display: block;
       margin: 11px auto;
     }
@@ -320,7 +324,8 @@
       top: 15px;
     }
   }
-  &>a{
+
+  a.oneCategoryTitle{
     display: block;
     margin: auto;
     text-align: center;
@@ -328,6 +333,7 @@
     line-height: 1.5em;
     color: #5a595c;
     transition: .5s color;
+    padding: 0 2em;
 
     &:hover {
       text-decoration: none;
@@ -412,11 +418,13 @@
 
   }
   .searchForm {
-    width: 65%;
-    min-width: 785px;
-    margin: auto;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
+    margin: auto;
+    min-width: 785px;
+    position: relative;
+    width: 65%;
+    z-index: 9;
     .nav-tabs{
       margin-right: 4px;
       .formTabs{
@@ -1204,6 +1212,8 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 
     }
     .container {
+      position: relative;
+
       & > ul {
         li {
           display: inline-block;
@@ -1220,7 +1230,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     }
     .oneAgent{
       position: absolute;
-      right: 13%;
+      right: 15px;
       top: 0;
       z-index: 20;
       padding-bottom: 30px;

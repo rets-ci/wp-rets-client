@@ -45,6 +45,9 @@ jQuery(document).ready(function(){
         jQuery('.home .buyBtnForm').addClass('current-menu-item');
     }
 
+    jQuery('.page .ourCompanyBtn.current_page_parent').addClass('current-menu-item');
+
+
     jQuery('.menuDesktop > .menu-item > a').removeAttr('href');
 
     jQuery('.formTabs').on('click', function(){
@@ -65,7 +68,7 @@ jQuery(document).ready(function(){
 
     jQuery('.association-carousel .sow-carousel-wrapper').append('<div class="assocCarouselBg"></div>');
 
-    jQuery("#propertyDetails").sticky({topSpacing:0});
+    jQuery("#propertyDetails").sticky({topSpacing:0,bottomSpacing:1000});
 
     /* Tabbed content widget (feature point) */
     var imgFeaturePoint = jQuery('.featurePoint div').outerHeight();

@@ -298,7 +298,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-accordion');
         wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), '1.0.0');
-        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,100) . '', array('jquery'), '1.0.0');
         wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('jquery'), '1.0.0');
         wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
