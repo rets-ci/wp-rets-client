@@ -88,7 +88,9 @@ function register_rdc_guide_category_taxonomy() {
     'public' => true,
     'query_var' => 'rdc_guide_category',
     'rewrite' => array(
-      'slug' => 'rdc_guide_category'
+      'slug' => 'guides',
+      'with_front' => false,
+      'hierarchical' => true
     ),
     'show_ui' => true,
     'show_admin_column' => true,
@@ -151,16 +153,20 @@ add_action( 'init', 'guide_post_type', 0 );
  * Or, get categories, then find posts within them
  *
  * @author potanin@UD
+ * @param $options
+ * @param $options.parent - Parent Guide Category.
+ * @return array
  */
-function rdc_generate_guide_overview() {
+function rdc_generate_guide_overview( $options = false ) {
 
+  $options = is_array($options) ? $options : array();
   $result = array();
 
   // get all top-level Guide categories
   $top_categories = get_terms( array(
     'taxonomy' => 'rdc_guide_category',
     'hide_empty' => true,
-    'parent' => 0
+    'parent' => $options['parent'] ? $options['parent'] : 0
   ) );
 
   // iterate over each top-level Gudie category
@@ -186,16 +192,21 @@ function rdc_generate_guide_overview() {
     foreach( (array) $_posts as $_post ) {
       $_thumbnail_id = get_post_thumbnail_id( $_post->ID );
       $_attachment_image_url = wp_get_attachment_image_url( $_thumbnail_id, 'full' );
+      $_attachment_thumbnail_url = wp_get_attachment_image_url( $_thumbnail_id, 'thumbnail' );
 
       array_push($result[ $category->term_id ]['posts'], array(
         "ID" => $_post->ID,
         "title" => $_post->post_title,
         "image" => $_attachment_image_url,
+        "thumbnail" => $_attachment_thumbnail_url,
       ));
 
       // add an existing image URL to the category image
       if( $_attachment_image_url ) {
         $result[ $category->term_id ]['image'] = $_attachment_image_url;
+      }
+      if( $_attachment_thumbnail_url ) {
+        $result[ $category->term_id ]['thumbnail'] = $_attachment_thumbnail_url;
       }
 
     }
