@@ -125,7 +125,7 @@ function map_resize() {
  * @author peshkov@UD
  */
 function frontPageSearchBlock_resize() {
-    var height = jQuery(window).height()-jQuery("#header").height()-jQuery('.association-carousel').height()-95;
+    var height = jQuery(window).height()-jQuery("#header").height()-jQuery('.association-carousel').height()-100;
     if( jQuery( '#wpadminbar').length > 0 ) {
         height = height - jQuery( '#wpadminbar').height();
     }
