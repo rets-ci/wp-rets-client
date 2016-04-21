@@ -12,6 +12,6 @@ while($posts->have_posts()) : $posts->the_post(); ?>
 			<?php endif; ?>
 		</div>
 		<h3><a href="<?php the_permalink() ?>"><?php the_title() ?></a></h3>
-		<h4>Posted on <?php the_date('j M Y', '<span>', '</span>'); ?></h4>
+		<?php /*// <h4>Posted on <?php the_date('j M Y', '<span>', '</span>'); ?></h4> */ ?>
 	</li>
 <?php endwhile; wp_reset_postdata(); ?>
