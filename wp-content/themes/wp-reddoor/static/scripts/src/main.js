@@ -65,7 +65,7 @@ jQuery(document).ready(function(){
 
     jQuery('.association-carousel .sow-carousel-wrapper').append('<div class="assocCarouselBg"></div>');
 
-    jQuery("#propertyDetails").sticky({topSpacing:0});
+    jQuery("#propertyDetails").sticky({topSpacing:0,bottomSpacing:1000});
 
     /* Tabbed content widget (feature point) */
     var imgFeaturePoint = jQuery('.featurePoint div').outerHeight();
