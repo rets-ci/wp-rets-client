@@ -607,11 +607,13 @@
   width: 70%;
 }
 .frontPageSearchBlock .searchForm {
-  width: 65%;
-  min-width: 785px;
-  margin: auto;
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
+  margin: auto;
+  min-width: 785px;
+  position: relative;
+  width: 65%;
+  z-index: 9;
 }
 .frontPageSearchBlock .searchForm .nav-tabs {
   margin-right: 4px;
@@ -2001,6 +2003,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .so-widget-sow-hero .sow-slider-pagination {
   display: none;
+}
+.so-widget-wp-property-responsive-carousel {
+  margin-top: 40px;
 }
 /* =Footer
 ------------------------------------------------- */
