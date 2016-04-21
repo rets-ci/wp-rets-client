@@ -2749,6 +2749,12 @@ input[type="submit"]:active {
   -o-background-size: cover;
   background-size: cover;
   background: no-repeat 50% 30%;
+  -moz-transition: all 4.5s;
+  -webkit-transition: all 4.5s;
+  transition: all 4.5s;
+}
+.post-type-archive-rdc_guide .guide-block:hover {
+  background: no-repeat 50% 33%;
 }
 .post-type-archive-rdc_guide .guide-block .guide-title {
   margin: 0 0 20px 0;
