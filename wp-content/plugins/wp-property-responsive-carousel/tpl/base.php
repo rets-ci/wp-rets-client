@@ -1,11 +1,14 @@
 <?php
 
+$query = siteorigin_widget_post_selector_process_query( $instance['posts'] );
 
-$query = $_query = array(
-	'post_status' => 'publish',
+$query = $_query = array_merge( $query, array(
 	'post_type' => 'property',
-	'posts_per_page' => 50,
-);
+) );
+
+if( empty( $query[ 'posts_per_page' ] ) ) {
+	$query[ 'posts_per_page' ] = 50;
+}
 
 $filters = array();
 
