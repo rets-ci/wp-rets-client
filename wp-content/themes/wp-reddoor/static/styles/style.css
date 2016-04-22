@@ -729,7 +729,7 @@
   border-radius: 5px 0 0 5px;
   color: #808285;
   position: relative;
-  width: 33%;
+  width: 30%;
   height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
@@ -879,7 +879,7 @@
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
   background: #fbfaf8;
   border-bottom: 1px solid #f2f2f2;
-  padding: 16px;
+  padding: 10px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
   background: #fbfaf8 none repeat scroll 0 0;
@@ -892,7 +892,7 @@
   text-align: center;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
-  margin-left: 8px;
+  margin-left: 4px;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
   padding: 20px 80px 20px 22px;
@@ -5777,20 +5777,21 @@ body .ui-tooltip {
 }
 @media screen and (min-width: 1280px) {
   .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  .frontPageSearchBlock .searchForm form .sfBaths {
     width: 18%;
   }
   .frontPageSearchBlock .searchForm form .sfBeds > span,
-  .frontPageSearchBlock .searchForm form .sfBaths > span,
+  .frontPageSearchBlock .searchForm form .sfBaths > span {
+    padding-left: 50px;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 21%;
+  }
   .frontPageSearchBlock .searchForm form .sfPrice > span {
     padding-left: 50px;
   }
   .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
     width: 45%;
-  }
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 18%;
   }
 }
 @media screen and (max-width: 1200px) {
@@ -5867,9 +5868,11 @@ body .ui-tooltip {
     display: none;
   }
   .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  .frontPageSearchBlock .searchForm form .sfBaths {
     width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 21%;
   }
   .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
     width: 43%;
