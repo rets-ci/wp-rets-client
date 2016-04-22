@@ -581,7 +581,7 @@
               index: index,
               type: type,
               id: row._id,
-              _source: ['meta_input.rets_media.*']
+              _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
 
               if ( !error ) {
@@ -592,6 +592,14 @@
                   row.images = response._source.meta_input.rets_media;
                   $scope.$apply();
                 }
+
+                if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
+                  console.log( 'Error occurred during getting properties data.' );
+                } else {
+                  row.data_source_logo = response._source.meta_input.data_source_logo;
+                  $scope.$apply();
+                }
+
               } else {
                 console.error(error);
               }
