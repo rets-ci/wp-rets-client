@@ -1,4 +1,4 @@
-.post-type-archive-rdc_guide {
+.post-type-archive-rdc_guide, .tax-rdc_guide_category {
 
   // hide dark bar below navigation
   .headerTopMenu {
@@ -16,8 +16,8 @@
   }
 
   .row {
-    margin-right: -15px;
-    margin-left: -15px;
+    margin-right: 0px;
+    margin-left: 0px;
   }
 
   .guide-block {
@@ -26,29 +26,56 @@
     padding-top: 200px;
     padding-left: 0;
     padding-right: 0;
-    height: 650px;
+    min-height: 600px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    background: no-repeat 50% 30%;
+    background: no-repeat 50% 29%;
 
-    .guide-title {
-      margin: 0 0 20px 0;
-      color: #fff;
-      font-size: 3.5em;
-      text-align: center;
-      font-weight: 600;
-      text-shadow: 1px 1px 3px rgba(72, 72, 72, 0.67);
-    }
+    //transition: all .2s ease-in-out;
+    -moz-transition: all 4.5s;
+    -webkit-transition: all 4.5s;
+    transition: all 4.5s;
 
-    .guide-description {
-      padding: 0 5em;
-      line-height: 2em;
-      font-size: 1.1em;
-      text-shadow: 1px 1px 3px rgba(72, 72, 72, 0.67);
+    &:hover {
+      background: no-repeat 50% 31%;
     }
 
   }
 
+  .guide-overview-list {
+    padding-top: 2em;
+    background-color: #F3F0E9;
+    min-height: 600px;
+  }
+
+  .guide-group-image {
+    max-width: 100%;
+  }
+
+  .guide-group-wrapper {
+    margin: 1em;
+    background: #FFF;
+    padding: 0;
+  }
+
+  .guide-title {
+    margin: 0 0 20px 0;
+    color: #fff;
+    font-size: 3.5em;
+    text-align: center;
+    font-weight: 600;
+    text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
+  }
+
+  .guide-description {
+    padding: 0 5em;
+    line-height: 2em;
+    font-size: 1.1em;
+    text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
+  }
+
+
 }
+

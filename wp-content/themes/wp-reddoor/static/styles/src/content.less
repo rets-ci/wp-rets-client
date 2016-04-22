@@ -1,3 +1,4 @@
+
 .panel-grid {
   margin: 0 !important;
 }
@@ -181,6 +182,12 @@
   }
 }
 .single {
+
+  .h3, h3 {
+    font-size: 28px;
+    color: #5A595C;
+  }
+
   .singleTitle {
     color: @white;
     font-size: 3.5em;
@@ -279,7 +286,16 @@
     border-top: 1px solid #efefef;
     padding-top: 55px;
   }
+
 }
+
+
+// load more container on bottom of page, lots of spacing below
+.loadMoreContainer {
+  margin-top: 4em;
+  margin-bottom: 8em;
+}
+
 .oneCategory{
   width: 380px;
   height: 445px;
@@ -519,7 +535,7 @@
         padding: 1.5em 1.4em 1em;
         box-shadow: -1px 7px 12px -5px #000;
         li{
-          padding-bottom: 5px;
+          padding-bottom: 2px;
         }
       }
       input {
@@ -690,13 +706,13 @@
         }
       }
       .firstRangeList{
-        padding: 10px 80px 10px 15px;
+        padding: 20px 80px 20px 22px;
         a{
           letter-spacing: 1px;
         }
       }
       .lastRangeList {
-        padding: 10px 15px 10px 80px;
+        padding: 20px 22px 20px 80px;
         text-align: right;
         a{
           letter-spacing: 1px;
@@ -1198,7 +1214,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 .single-property {
   .bottomSeparate{
     border-bottom: 1px solid #dedede;
-    padding-bottom: 30px;
+    margin: 40px 0;
   }
   .slideshowHeadImage {
     background-position: center center;
@@ -1208,6 +1224,12 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
   }
   .ftrdImgGoTop {
     top: -30px;
+  }
+  .singleRemarks{
+    font-size: 1.2em;
+    line-height: 1.6em;
+    margin-bottom: 25px;
+    margin-top: 30px;
   }
   .singlePropertyHeader{
     background: #F3F0EA;
@@ -1336,13 +1358,13 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       span{
         display: block;
         color: #919093;
-        font-size: 0.8em;
+        font-size: 1em;
         margin-top: 5px;
         margin-bottom: 3px;
       }
       strong{
         font-weight: 400;
-        font-size: 1em;
+        font-size: 1.2em;
       }
     }
   }
@@ -1374,19 +1396,22 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       span{
         display: block;
         color: #919093;
-        font-size: 0.8em;
+        font-size: 1em;
         margin-top: 5px;
         margin-bottom: 3px;
       }
       strong{
         font-weight: 400;
-        font-size: 1em;
+        font-size: 1.2em;
       }
     }
   }
   .areaMapBlock{
     .col-lg-7{
       margin: 15px 0;
+    }
+    .singleWalkScore{
+      margin: 40px 0;
     }
     .ambItem{
       border: 1px solid #dedede;
@@ -1439,6 +1464,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           margin-right: 0;
           color: #b1b1b1;
           outline: none;
+          padding: 20px 0;
           &:hover{
             background: @white !important;
           }
@@ -1456,6 +1482,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       border: 1px solid #d8d8d8;
       border-top: 1px solid transparent;
       padding: 20px 15px 15px;
+      margin-bottom: 20px;
     }
   }
   .propertyDetails{

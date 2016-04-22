@@ -15,7 +15,6 @@ if(class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-hero/hero.php';
 }
 
-
 add_action( 'admin_enqueue_scripts', function () {
   wp_enqueue_style( 'rdc-admin', get_template_directory_uri() . '/static/styles/admin/style.css', false, '1.0.0' );
 } );

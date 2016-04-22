@@ -147,7 +147,7 @@ while (have_posts()) : the_post();
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-lg-7 col-md-7">
+      <div class="col-lg-8 col-md-8 singleRemarks">
         <?php echo $property['remarks']; ?>
       </div>
       <div class="col-lg-8 col-md-8">
@@ -186,7 +186,7 @@ while (have_posts()) : the_post();
       <div class="col-lg-7 col-md-7">
         <h4><?php _e('Property Facts') ?></h4>
       </div>
-      <div class="col-lg-8 col-md-8 bottomSeparate">
+      <div class="col-lg-8 col-md-8">
         <ul class="propertyFacts">
           <?php if(!empty($design)){ ?>
           <li>
@@ -299,7 +299,9 @@ while (have_posts()) : the_post();
           <?php } ?>
         </ul>
       </div>
-
+      <div class="col-md-8 col-lg-8">
+        <div class="bottomSeparate"></div>
+      </div>
     </div>
   </div>
   <div class="container areaMapBlock">
@@ -307,7 +309,7 @@ while (have_posts()) : the_post();
       <div class="col-md-7 col-lg-7">
         <h4>Area Map for 5000 Daviston Ct</h4>
       </div>
-      <div class="col-md-7 col-lg-7">
+      <div class="col-md-8 col-lg-8 singleRemarks">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua.
         Utsa laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
@@ -315,7 +317,7 @@ while (have_posts()) : the_post();
         eurev fugiat nulla pariatur.
       </div>
     </div>
-    <div class="row">
+    <div class="row singleWalkScore">
       <?php
       $_post_meta = get_post_meta($property['ID']);
       (!empty($_post_meta['_ws_walkscore'])) ? $walkScoreMeta = $_post_meta['_ws_walkscore'] : $walkScoreMeta = '';
@@ -361,7 +363,7 @@ while (have_posts()) : the_post();
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-8 col-md-8 bottomSeparate">
+      <div class="col-lg-8 col-md-8">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Ameneties">Ameneties</a></li>
           <li><a data-toggle="tab" href="#Commute">Commute</a></li>
@@ -384,17 +386,20 @@ while (have_posts()) : the_post();
           </div>
         </div>
       </div>
+      <div class="col-md-8 col-lg-8">
+        <div class="bottomSeparate"></div>
+      </div>
     </div>
   </div>
   <div class="container propertyDetails">
     <div class="row">
-      <div class="col-lg-7 col-md-7">
+      <div class="col-lg-8 col-md-8">
         <h4><?php _e('Property Details for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
-      <div class="col-lg-7  col-md-7">
+      <div class="col-lg-8  col-md-8 singleRemarks">
         <?php echo (!empty($property['automated_property_detail_description'])) ? $property['automated_property_detail_description'] : ''; ?>
       </div>
-      <div class="col-lg-8 col-md-8 bottomSeparate">
+      <div class="col-lg-8 col-md-8">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
@@ -890,6 +895,9 @@ while (have_posts()) : the_post();
           </div>
         </div>
       </div>
+      <div class="col-md-8 col-lg-8">
+        <div class="bottomSeparate"></div>
+      </div>
     </div>
   </div>
   <div class="container listingProvider">
@@ -921,7 +929,7 @@ while (have_posts()) : the_post();
         </ul>
         <div class="clear"></div>
       </div>
-      <div class="col-lg-7 col-md-7 italicText">
+      <div class="col-lg-8 col-md-8 italicText">
         <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
       </div>
     </div>
