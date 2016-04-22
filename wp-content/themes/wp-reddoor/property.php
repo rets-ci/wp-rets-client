@@ -92,11 +92,11 @@ while (have_posts()) : the_post();
   $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
 
   ?>
-
+<div class="single-property">
   <div class="container-fluid ftrdImgGoTop">
     <section class="sp-slideshow-block">
       <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
-        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12mosaic slideshow_layout=fullwidth slider_height=660]'); ?>
+        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660]'); ?>
       <?php } else { ?>
         <?php if (has_post_thumbnail()) { ?>
           <div class="slideshowHeadImage"
@@ -936,6 +936,6 @@ while (have_posts()) : the_post();
   </div>
 
 <?php endwhile; ?>
-
+</div>
 
 <?php get_footer(); ?>
