@@ -71,18 +71,34 @@
 
         <div class="clear"></div>
 
-        <?php global $property; $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true ) ?>
+        <?php global $property;
+
+        if( $property && isset( $property['ID'] ) ) {
+          $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true );
+        } else {
+          $agent = null;
+        }
+        ?>
 
         <!-- Origin -->
         <input type="hidden" id="powf_35ff73d9fbe9e511811afc15b42886e8" name="powf_35ff73d9fbe9e511811afc15b42886e8" value="Buyer" />
         <!-- topic -->
         <input type="hidden" id="powf_44ff73d9fbe9e511811afc15b42886e8" name="powf_44ff73d9fbe9e511811afc15b42886e8" value="Buyer Webform Lead" />
+
+        <?php if( $property && isset( $property['location_address'] ) ) { ?>
         <!-- Property Address -->
         <input type="hidden" id="powf_fc8e60252af8e51180e2fc15b4286ffc" name="powf_fc8e60252af8e51180e2fc15b4286ffc" value="<?php echo $property['location_address']; ?>" />
-        <!-- Broker Email -->
+        <?php } ?>
+
+        <?php if( $agent ) { ?>
+          <!-- Broker Email -->
         <input type="hidden" class="rdc-listing-broker-email" id="powf_36ff73d9fbe9e511811afc15b42886e8" name="powf_36ff73d9fbe9e511811afc15b42886e8" value="<?php echo $agent->user_email; ?>" />
+        <?php } ?>
+
+        <?php if( isset( $property['ID'] ) ) { ?>
         <!-- MLS ID -->
         <input type="hidden" id="powf_a0fb31f729f8e51180e2fc15b4286ffc" name="powf_a0fb31f729f8e51180e2fc15b4286ffc" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>" />
+        <?php } ?>
 
         <input type="hidden" name="ignore_submitmessage" value="" />
         <input type="hidden" name="ignore_linkbuttontext" value="" />

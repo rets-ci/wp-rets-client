@@ -713,14 +713,15 @@
   padding-bottom: 2px;
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
-  border-radius: 5px;
   background: #d03528;
+  border: medium none;
+  border-radius: 5px;
   color: #fff;
+  float: right;
   font-size: 1.1em;
   font-weight: 400;
-  padding: 21px 20px;
-  border: medium none;
-  float: right;
+  padding: 1.31em 0;
+  width: 11%;
 }
 .frontPageSearchBlock .searchForm form .location {
   float: left;
@@ -935,7 +936,7 @@
 .wpp-advanced-supermap .sm-search-filter {
   background: #d03528;
   color: white;
-  opacity: .7;
+  padding: 6px 15px;
 }
 .wpp-advanced-supermap .sm-search-filter i {
   margin-right: 10px;
@@ -1250,8 +1251,24 @@
 .wpp-advanced-supermap .sm-properties-collection .sm-map-marker-icon {
   height: 25px;
 }
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-days-on-market {
+  color: lightgrey;
+  font-size: 12px;
+}
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
   padding: 15px;
+  background-color: #fbfaf8;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons {
+  position: absolute;
+  right: 15px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons a {
+  transition: color .5s;
+  color: grey;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons a:hover {
+  color: #d03528;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-price {
   color: #d03528;
@@ -1262,7 +1279,7 @@
   font-size: 16px;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats {
-  margin-top: 14px;
+  margin-top: 8px;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats li {
   width: 50%;
@@ -2006,37 +2023,61 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-size: cover;
   float: right;
 }
-.menu-home-buying-page-sub-menu-container {
+.menu-home-buying-page-sub-menu-container,
+.menu-home-selling-page-sub-menu-container,
+.menu-property-management-page-sub-menu-container,
+.menu-home-renting-page-sub-menu-container {
   background: #F3F0E9 none repeat scroll 0 0;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu {
+.menu-home-buying-page-sub-menu-container ul,
+.menu-home-selling-page-sub-menu-container ul,
+.menu-property-management-page-sub-menu-container ul,
+.menu-home-renting-page-sub-menu-container ul {
   border-bottom: 1px solid #d0d4d9;
   border-top: 1px solid #d0d4d9;
   margin: 0 auto;
   text-align: center;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li {
+.menu-home-buying-page-sub-menu-container ul li,
+.menu-home-selling-page-sub-menu-container ul li,
+.menu-property-management-page-sub-menu-container ul li,
+.menu-home-renting-page-sub-menu-container ul li {
   border-right: 1px solid #d0d4d9;
   display: inline-block;
   line-height: 1.2em;
   transition: .5s color;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:hover {
+.menu-home-buying-page-sub-menu-container ul li:hover,
+.menu-home-selling-page-sub-menu-container ul li:hover,
+.menu-property-management-page-sub-menu-container ul li:hover,
+.menu-home-renting-page-sub-menu-container ul li:hover {
   color: #d03528;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:hover a {
+.menu-home-buying-page-sub-menu-container ul li:hover a,
+.menu-home-selling-page-sub-menu-container ul li:hover a,
+.menu-property-management-page-sub-menu-container ul li:hover a,
+.menu-home-renting-page-sub-menu-container ul li:hover a {
   color: #d03528;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:before {
+.menu-home-buying-page-sub-menu-container ul li:before,
+.menu-home-selling-page-sub-menu-container ul li:before,
+.menu-property-management-page-sub-menu-container ul li:before,
+.menu-home-renting-page-sub-menu-container ul li:before {
   font-size: 1.8em;
   padding-left: 25px;
   position: relative;
   top: 4px;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:last-child {
+.menu-home-buying-page-sub-menu-container ul li:last-child,
+.menu-home-selling-page-sub-menu-container ul li:last-child,
+.menu-property-management-page-sub-menu-container ul li:last-child,
+.menu-home-renting-page-sub-menu-container ul li:last-child {
   border-right: none;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a {
+.menu-home-buying-page-sub-menu-container ul li a,
+.menu-home-selling-page-sub-menu-container ul li a,
+.menu-property-management-page-sub-menu-container ul li a,
+.menu-home-renting-page-sub-menu-container ul li a {
   transition: .5s color;
   padding: 1.6em 2em 1.6em 1.5em;
   display: inline-block;
@@ -2045,7 +2086,10 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   line-height: 1.2em;
   font-family: 'Poppins', sans-serif;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a:hover {
+.menu-home-buying-page-sub-menu-container ul li a:hover,
+.menu-home-selling-page-sub-menu-container ul li a:hover,
+.menu-property-management-page-sub-menu-container ul li a:hover,
+.menu-home-renting-page-sub-menu-container ul li a:hover {
   text-decoration: none;
   color: #d03528;
 }
@@ -2742,27 +2786,31 @@ input[type="submit"]:active {
   border-radius: 1px;
   height: 35px;
 }
-.post-type-archive-rdc_guide .headerTopMenu,
-.tax-rdc_guide_category .headerTopMenu {
-  background-image: none !important;
+.post-type-archive-rdc_guide {
+  margin-bottom: -90px;
+  overflow: hidden;
 }
-.post-type-archive-rdc_guide .content-wrapper,
-.tax-rdc_guide_category .content-wrapper {
+.post-type-archive-rdc_guide .guide-wrapper {
   position: relative;
   top: -90px;
 }
-.post-type-archive-rdc_guide .container-fluid,
-.tax-rdc_guide_category .container-fluid {
+body.tax-rdc_guide_category .guide-wrapper {
+  position: fixed;
+  top: 60px;
+  overflow: hidden;
+}
+body.post-type-archive-rdc_guide .container-fluid,
+body.tax-rdc_guide_category .container-fluid {
   padding-left: 0;
   padding-right: 0;
 }
-.post-type-archive-rdc_guide .row,
-.tax-rdc_guide_category .row {
-  margin-right: 0px;
-  margin-left: 0px;
+body.post-type-archive-rdc_guide .row,
+body.tax-rdc_guide_category .row {
+  margin-right: 0;
+  margin-left: 0;
 }
-.post-type-archive-rdc_guide .guide-block,
-.tax-rdc_guide_category .guide-block {
+body.post-type-archive-rdc_guide .guide-block,
+body.tax-rdc_guide_category .guide-block {
   color: #FFF;
   text-align: center;
   padding-top: 200px;
@@ -2778,28 +2826,30 @@ input[type="submit"]:active {
   -webkit-transition: all 4.5s;
   transition: all 4.5s;
 }
-.post-type-archive-rdc_guide .guide-block:hover,
-.tax-rdc_guide_category .guide-block:hover {
+body.post-type-archive-rdc_guide .guide-block:hover,
+body.tax-rdc_guide_category .guide-block:hover {
   background: no-repeat 50% 31%;
 }
-.post-type-archive-rdc_guide .guide-overview-list,
-.tax-rdc_guide_category .guide-overview-list {
-  padding-top: 2em;
+body.post-type-archive-rdc_guide .guide-overview-list,
+body.tax-rdc_guide_category .guide-overview-list {
+  padding-top: 6em;
+  padding-bottom: 28em;
   background-color: #F3F0E9;
   min-height: 600px;
+  overflow: scroll;
 }
-.post-type-archive-rdc_guide .guide-group-image,
-.tax-rdc_guide_category .guide-group-image {
+body.post-type-archive-rdc_guide .guide-group-image,
+body.tax-rdc_guide_category .guide-group-image {
   max-width: 100%;
 }
-.post-type-archive-rdc_guide .guide-group-wrapper,
-.tax-rdc_guide_category .guide-group-wrapper {
+body.post-type-archive-rdc_guide .guide-group-wrapper,
+body.tax-rdc_guide_category .guide-group-wrapper {
   margin: 1em;
   background: #FFF;
   padding: 0;
 }
-.post-type-archive-rdc_guide .guide-title,
-.tax-rdc_guide_category .guide-title {
+body.post-type-archive-rdc_guide .guide-title,
+body.tax-rdc_guide_category .guide-title {
   margin: 0 0 20px 0;
   color: #fff;
   font-size: 3.5em;
@@ -2807,8 +2857,8 @@ input[type="submit"]:active {
   font-weight: 600;
   text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
 }
-.post-type-archive-rdc_guide .guide-description,
-.tax-rdc_guide_category .guide-description {
+body.post-type-archive-rdc_guide .guide-description,
+body.tax-rdc_guide_category .guide-description {
   padding: 0 5em;
   line-height: 2em;
   font-size: 1.1em;
@@ -5712,6 +5762,37 @@ body .ui-tooltip {
   padding: 1.3em 4em;
 }
 /* Adaptive */
+@media screen and (min-width: 1360px) {
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 15.5%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 45%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 24%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfBeds > span,
+  .frontPageSearchBlock .searchForm form .sfBaths > span,
+  .frontPageSearchBlock .searchForm form .sfPrice > span {
+    padding-left: 50px;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 45%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+}
 @media screen and (max-width: 1200px) {
   .head-popups a {
     font-size: 0.8em;
@@ -5784,6 +5865,17 @@ body .ui-tooltip {
   }
   body .contactMenu li:last-child {
     display: none;
+  }
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 43%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
   }
 }
 @media screen and (max-width: 768px) {

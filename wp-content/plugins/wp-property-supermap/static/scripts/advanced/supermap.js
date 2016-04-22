@@ -135,6 +135,16 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
+        var resizeTimer;
+        jQuery( window ).on( 'resize', function () {
+          clearTimeout( resizeTimer );
+          resizeTimer = setTimeout( function () {
+            NgMap.getMap().then(function(map){
+              google.maps.event.trigger(map, "resize");
+            });
+          }, 250 );
+        } ).resize();
+
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
         $scope.total = 0;
@@ -306,8 +316,6 @@
 
         var index = 'v5',
             type = 'property';
-
-        console.log( $scope.query );
 
         /**
          * @type {$.es.Client|*}
@@ -573,7 +581,7 @@
               index: index,
               type: type,
               id: row._id,
-              _source: ['meta_input.rets_media.*']
+              _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
 
               if ( !error ) {
@@ -584,6 +592,14 @@
                   row.images = response._source.meta_input.rets_media;
                   $scope.$apply();
                 }
+
+                if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
+                  console.log( 'Error occurred during getting properties data.' );
+                } else {
+                  row.data_source_logo = response._source.meta_input.data_source_logo;
+                  $scope.$apply();
+                }
+
               } else {
                 console.error(error);
               }
@@ -639,8 +655,16 @@
               }
             }
           },
+          language: {
+            noResults: function(){
+              return "No results found. Try something else";
+            },
+            errorLoading: function(){
+              return "Searching...";
+            }
+          },
           templateResult: function formatRepo (city) {
-            if (city.loading) return 'Loading...';
+            if (city.loading) return 'Searching...';
             var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
             return html;
           },

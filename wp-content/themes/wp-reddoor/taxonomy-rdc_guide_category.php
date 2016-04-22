@@ -22,10 +22,13 @@ foreach( $_all_categories as $_maybe_this_category ) {
 
 $_this_category_guides = rdc_generate_guide_overview( array( 'parent' => $_term->term_id ) );
 
+// @hack to double number of guides
+$_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide_overview( array( 'parent' => $_term->term_id ) ) );
+
 //die( '<pre>' . print_r( $_all_categories, true ) . '</pre>' );
 ?>
-<?php get_header('guide'); ?>
-<div class="container-fluid content-wrapper">
+<?php get_header(''); ?>
+<div class="container-fluid guide-wrapper">
   <div class="row site-content">
 
       <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_this_category['image']; ?>');">

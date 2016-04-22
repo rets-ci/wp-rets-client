@@ -9,8 +9,8 @@ $_guide_overview = rdc_generate_guide_overview();
 
 //die( '<pre>' . print_r( $_guide_overview , true ) . '</pre>' );
 ?>
-<?php get_header('guide'); ?>
-<div class="container-fluid content-wrapper">
+<?php get_header(''); ?>
+<div class="container-fluid guide-wrapper">
   <div class="row site-content">
 
     <?php foreach( rdc_generate_guide_overview() as $_guide ) { ?>

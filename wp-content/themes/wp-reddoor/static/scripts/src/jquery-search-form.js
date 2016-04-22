@@ -54,13 +54,27 @@
       ajax: {
         url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
         dataType: 'json',
+        data: function (params) {
+          return {
+            q: params.term
+          };
+        },
         processResults: function(data, page){
           return {
             results: data.data
           }
         }
       },
+      language: {
+        noResults: function(){
+          return "No results found. Try something else";
+        },
+        errorLoading: function(){
+          return "Searching...";
+        }
+      },
       templateResult: function formatRepo (city) {
+
         if (city.loading) return city.text;
 
         var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy + "</span>";
@@ -91,7 +105,7 @@
             $('.lastRangeValue', dropdown).val( currency.value );
             applyPlaceholder();
           } else {
-            $('.lastRangeLabel', dropdown).val( '' );
+            $('.lastRangeLabel', dropdown).val( 'No Max' );
             $('.lastRangeValue', dropdown).val( '' );
             applyPlaceholder();
           }
@@ -122,7 +136,7 @@
               $('.lastRangeValue', dropdown).val( currency.value );
               applyPlaceholder();
             } else {
-              $('.lastRangeLabel', dropdown).val( '' );
+              $('.lastRangeLabel', dropdown).val( 'No Max' );
               $('.lastRangeValue', dropdown).val( '' );
               applyPlaceholder();
             }
@@ -208,9 +222,10 @@
 
             $('.left-side, .right-side', dropdown).toggle();
           } else {
-            $('.firstRangeLabel', dropdown).val( '' );
+            $('.firstRangeLabel', dropdown).val( 'No Min' );
             $('.firstRangeValue', dropdown).val( '' );
             applyPlaceholder();
+            $('.left-side, .right-side', dropdown).toggle();
           }
 
           if ( $('.lastRangeLabel', dropdown).val() && $('.firstRangeLabel', dropdown).val() ) {

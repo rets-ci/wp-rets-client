@@ -1,14 +1,32 @@
-.post-type-archive-rdc_guide, .tax-rdc_guide_category {
 
-  // hide dark bar below navigation
-  .headerTopMenu {
-    background-image: none !important;
-  }
+// guide main page with 4 big blocks
+.post-type-archive-rdc_guide {
 
-  .content-wrapper {
+  // offset negative margin in bottom of page
+  margin-bottom: -90px;
+  overflow: hidden;
+
+
+  .guide-wrapper {
     position: relative;
     top: -90px;
   }
+
+
+}
+
+// single guide page with several categories on right
+body.tax-rdc_guide_category {
+
+  .guide-wrapper {
+    position: fixed;
+    top: 60px;
+    overflow: hidden;
+  }
+
+}
+
+body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
 
   .container-fluid {
     padding-left: 0;
@@ -16,8 +34,8 @@
   }
 
   .row {
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .guide-block {
@@ -45,9 +63,11 @@
   }
 
   .guide-overview-list {
-    padding-top: 2em;
+    padding-top: 6em;
+    padding-bottom: 28em;
     background-color: #F3F0E9;
     min-height: 600px;
+    overflow: scroll;
   }
 
   .guide-group-image {
