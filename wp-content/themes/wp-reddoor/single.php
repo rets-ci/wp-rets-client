@@ -6,7 +6,8 @@
  * @since Wp-reddoor 1.0
  */
 
-get_header(); ?>
+
+get_header( get_post_type() ); ?>
 <?php
 
 //die( '<pre>' . print_r( $post, true ) . '</pre>' );
@@ -96,4 +97,4 @@ if(!empty($post_thumbnail_id)) {
 
 </div>
 
-<?php get_footer(); ?>
+<?php get_footer( get_post_type() ); ?>
