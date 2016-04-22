@@ -115,11 +115,11 @@
         <div class="rdc-range-fields">
           <ul>
             <li>
-                <input id="sale_type_sale" ng-checked="current_filter.sale_type=='sale'" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <input id="sale_type_sale" ng-checked="'{{current_filter.sale_type | lowercase}}' == 'sale'" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_sale"><?php _e('Sale', 'reddor'); ?></label>
             </li>
             <li>
-                <input id="sale_type_rent" ng-checked="current_filter.sale_type=='rent'" class="styled-checkbox-radio" type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
+                <input id="sale_type_rent" ng-checked="'{{current_filter.sale_type | lowercase}}' == 'rent'" class="styled-checkbox-radio" type="checkbox" value="Rent" name="bool[must][5][terms][tax_input.sale_type][]" />
                 <label for="sale_type_rent"><?php _e('Rent', 'reddor'); ?></label>
             </li>
           </ul>
