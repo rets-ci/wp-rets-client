@@ -1324,7 +1324,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-size: 1.2em;
   line-height: 1.6em;
   margin-bottom: 25px;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 .single-property .singlePropertyHeader {
   background: #F3F0EA;
@@ -1548,6 +1548,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-right: 0;
   color: #b1b1b1;
   outline: none;
+  padding: 20px 0;
 }
 .single-property .areaMapBlock .nav-tabs li a:hover {
   background: #fff !important;
@@ -5754,6 +5755,9 @@ body .ui-tooltip {
   }
   body.single-property .bottomSeparate {
     padding-bottom: 5px;
+  }
+  body.single-property .areaMapBlock .ambItem {
+    margin: 0 0 30px 0;
   }
   body .site-logo {
     left: 23%;
