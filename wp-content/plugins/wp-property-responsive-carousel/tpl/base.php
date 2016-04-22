@@ -145,10 +145,10 @@ $the_query = new WP_Query( $query );
 											?>
 										</span>
 										<ul>
-											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name); echo '</li>'; } ?>
-											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name); echo '</li>'; } ?>
-											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' Sq.ft.'); echo '</li>'; } ?>
-											<?php if(!empty($property[ 'price_2' ])){ echo '<li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span>$'. number_format($property[ 'price_2' ]); echo '</li>'; } ?>
+											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-outline singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name); echo '</li>'; } ?>
+											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-outline singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name); echo '</li>'; } ?>
+											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-outline singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' Sq.ft.'); echo '</li>'; } ?>
+											<?php if(!empty($property[ 'price_2' ])){ echo '<li><span class="icon-wpproperty-status-rented-outline singlePropertyIcon"></span>$'. number_format($property[ 'price_2' ]); echo '</li>'; } ?>
 
 										</ul>
 									</div>
