@@ -28,7 +28,7 @@
           <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{currentProperty._source.tax_input.approximate_lot_size[0]}} Acres</li>
         </ul>
         <div class="sm-days-on-market">
-          <img src="{{currentProperty.data_source_logo}}" /><span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>
+          <img ng-src="{{currentProperty.data_source_logo}}" /><span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>
         </div>
       </div>
     </div>
