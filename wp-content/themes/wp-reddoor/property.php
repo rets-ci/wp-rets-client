@@ -92,7 +92,7 @@ while (have_posts()) : the_post();
   $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
 
   ?>
-
+<div class="single-property">
   <div class="container-fluid ftrdImgGoTop">
     <section class="sp-slideshow-block">
       <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
@@ -936,6 +936,6 @@ while (have_posts()) : the_post();
   </div>
 
 <?php endwhile; ?>
-
+</div>
 
 <?php get_footer(); ?>
