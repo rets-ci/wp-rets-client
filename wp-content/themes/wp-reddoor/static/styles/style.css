@@ -936,7 +936,7 @@
 .wpp-advanced-supermap .sm-search-filter {
   background: #d03528;
   color: white;
-  opacity: .7;
+  padding: 6px 15px;
 }
 .wpp-advanced-supermap .sm-search-filter i {
   margin-right: 10px;
