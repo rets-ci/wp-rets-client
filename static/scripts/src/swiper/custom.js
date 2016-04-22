@@ -42,6 +42,10 @@ s.setSlideSize_12mosaic = function(slide, s){
 }
 
 s.setSlideSize_12grid = function(slide, s){
+    if( typeof slide == 'undefined' ) {
+        return 0;
+    }
+    
     var width, height;
     var top = 0, left = 0;
     var slideWidth, slideHeight, slideRatio;
@@ -49,6 +53,10 @@ s.setSlideSize_12grid = function(slide, s){
     var slide = jQuery(slide);
     var img = slide.find('img');
     var maxHeight = (s.container.height() - s.params.spaceBetween) / s.params.slidesPerColumn;
+
+    if( typeof img[0] == 'undefined' ) {
+        return 0;
+    }
 
     var attrWidth  = parseInt(img.attr('width'));
     var attrHeight  = parseInt(img.attr('height'));
