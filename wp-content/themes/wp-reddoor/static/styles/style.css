@@ -936,7 +936,7 @@
 .wpp-advanced-supermap .sm-search-filter {
   background: #d03528;
   color: white;
-  opacity: .7;
+  padding: 6px 15px;
 }
 .wpp-advanced-supermap .sm-search-filter i {
   margin-right: 10px;
@@ -1251,6 +1251,10 @@
 .wpp-advanced-supermap .sm-properties-collection .sm-map-marker-icon {
   height: 25px;
 }
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-days-on-market {
+  color: lightgrey;
+  font-size: 12px;
+}
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
   padding: 15px;
 }
@@ -1263,7 +1267,7 @@
   font-size: 16px;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats {
-  margin-top: 14px;
+  margin-top: 8px;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-stats li {
   width: 50%;
