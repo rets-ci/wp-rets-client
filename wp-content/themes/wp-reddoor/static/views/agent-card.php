@@ -6,10 +6,6 @@
 global $property;
 
 use \UsabilityDynamics\RDC\Utils;
-//
-//echo '<pre>';
-//print_r( $property );
-//echo '</pre>';
 
 ?>
 

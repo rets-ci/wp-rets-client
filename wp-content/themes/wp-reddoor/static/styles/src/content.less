@@ -26,7 +26,7 @@
   .hero-overlay {
     background: #000 none repeat scroll 0 0;
     bottom: 0;
-    opacity: 0.1;
+    opacity: 0.15;
     position: absolute;
     top: 0;
     width: 100%;
@@ -134,7 +134,7 @@
   .hero-overlay {
     background: #000 none repeat scroll 0 0;
     bottom: 0;
-    opacity: 0.1;
+    opacity: 0.15;
     position: absolute;
     top: 0;
     width: 100%;
@@ -172,7 +172,7 @@
   .hero-overlay{
     background: #000 none repeat scroll 0 0;
     bottom: 0;
-    opacity: 0.1;
+    opacity: 0.15;
     position: absolute;
     top: 0;
     width: 100%;
@@ -183,24 +183,26 @@
 .single {
   .singleTitle {
     color: @white;
-    font-size: 2.2em;
-    font-weight: 600;
+    font-size: 3.5em;
+    font-weight: bold;
+    line-height: 1.3em;
     margin: auto;
+    position: relative;
     text-align: center;
-    text-shadow: 1px 1px 5px #000;
-    top: 35%;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
     width: 60%;
-    line-height: 1.5em;
+    z-index: 9;
   }
   .singleExcerpt{
-    color: #ededed;
-    font-size: 1.4em;
+    color: @white;
     font-weight: 400;
-    margin: 1% auto 5%;
+    font-size: 1.5em;
+    line-height: 1.75em;
+    margin: 1.5% auto 5%;
     text-align: center;
-    text-shadow: 1px 1px 5px #000;
-    width: 70%;
-    position: sticky;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    position: relative;
     z-index: 9;
   }
   .singleSocialBlock{
@@ -213,15 +215,15 @@
       display: inline-block;
       a{
         border-radius: 50%;
-        color: @white;
+        color: #fff;
         display: block;
-        font-size: 1.2em;
-        height: 40px;
+        font-size: 1.5em;
+        height: 50px;
         margin-right: 15%;
         outline: medium none;
         padding-top: 27%;
         text-align: center;
-        width: 40px;
+        width: 50px;
         &:hover{
           text-decoration: none;
         }
@@ -271,7 +273,7 @@
     }
   }
   .featuredImageHeader{
-    padding-top: 15%;
+    padding-top: 13%;
   }
   .loadMoreBlockSeparate{
     border-top: 1px solid #efefef;
@@ -290,17 +292,24 @@
   border: 1px solid #f3f0e9;
   overflow: hidden;
 
+
   .oneCategoryImg{
     height: 280px;
     width: 100%;
     margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
+
     &>img {
       height: 100%;
       width: 100%;
-
     }
+
+    img.category-image {
+      height: 100%;
+      width: 100%;
+    }
+
   }
 
   .catIconLoop{
@@ -336,6 +345,10 @@
     transition: .5s color;
     padding: 0 2em;
 
+    // hide anything beyond three lines
+    max-height: 4.5em;
+    overflow: hidden;
+
     &:hover {
       text-decoration: none;
       color: @buttons;
@@ -346,6 +359,18 @@
     }
   }
 }
+
+/* darken background shadow on hover, removed, needs refining
+.oneCategory:hover {
+  box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.13);
+  cursor: pointer;
+  -webkit-transition: box-shadow 2s ease-out;
+  -moz-transition: box-shadow 2s ease-out;
+  -o-transition: box-shadow 2s ease-out;
+  transition: box-shadow 2s ease-out;
+}
+*/
+
 .archiveFilterBg {
   background: #f3f0e9;
   height: 80px;
@@ -404,10 +429,12 @@
   z-index: 7;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
   &>h1{
-    color: #fff;
+    color: @white;
     font-size: 3.5em;
     font-weight: bold;
+    position: relative;
     text-align: center;
+    z-index: 9;
   }
   &>h4{
     color: #fff;
@@ -417,7 +444,8 @@
     text-align: center;
     text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
     width: 50%;
-
+    position: relative;
+    z-index: 9;
   }
   .searchForm {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -486,10 +514,10 @@
       position: relative;
       ul {
         background: #fff none repeat scroll 0 0;
-        padding: 1.5em 1em 1em;
+        padding: 1.5em 1.4em 1em;
         box-shadow: -1px 7px 12px -5px #000;
         li{
-
+          padding-bottom: 5px;
         }
       }
       input {
@@ -683,7 +711,7 @@
   .hero-overlay{
     background: #000 none repeat scroll 0 0;
     bottom: 0;
-    opacity: 0.1;
+    opacity: 0.15;
     position: absolute;
     top: 0;
     width: 100%;
@@ -1627,4 +1655,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     color: #000000;
 
   }
+}
+.ui-datepicker {
+  background: white;
 }
