@@ -135,6 +135,16 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
+        var resizeTimer;
+        jQuery( window ).on( 'resize', function () {
+          clearTimeout( resizeTimer );
+          resizeTimer = setTimeout( function () {
+            NgMap.getMap().then(function(map){
+              google.maps.event.trigger(map, "resize");
+            });
+          }, 250 );
+        } ).resize();
+
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
         $scope.total = 0;
