@@ -713,14 +713,15 @@
   padding-bottom: 2px;
 }
 .frontPageSearchBlock .searchForm form input[type="submit"] {
-  border-radius: 5px;
   background: #d03528;
+  border: medium none;
+  border-radius: 5px;
   color: #fff;
+  float: right;
   font-size: 1.1em;
   font-weight: 400;
-  padding: 21px 20px;
-  border: medium none;
-  float: right;
+  padding: 1.31em 0;
+  width: 11%;
 }
 .frontPageSearchBlock .searchForm form .location {
   float: left;
@@ -5709,6 +5710,37 @@ body .ui-tooltip {
   padding: 1.3em 4em;
 }
 /* Adaptive */
+@media screen and (min-width: 1360px) {
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 15.5%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 45%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 24%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfBeds > span,
+  .frontPageSearchBlock .searchForm form .sfBaths > span,
+  .frontPageSearchBlock .searchForm form .sfPrice > span {
+    padding-left: 50px;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 45%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+}
 @media screen and (max-width: 1200px) {
   .head-popups a {
     font-size: 0.8em;
@@ -5724,6 +5756,31 @@ body .ui-tooltip {
   }
 }
 @media screen and (max-width: 1024px) {
+<<<<<<< HEAD
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 43%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 43%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+=======
   body #header {
     height: 160px;
   }
@@ -5781,6 +5838,7 @@ body .ui-tooltip {
   }
   body .contactMenu li:last-child {
     display: none;
+>>>>>>> origin/develop
   }
 }
 @media screen and (max-width: 768px) {
