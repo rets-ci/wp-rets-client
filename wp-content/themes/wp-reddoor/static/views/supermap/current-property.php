@@ -20,7 +20,7 @@
           <li class="beds"><i class="icon-wpproperty-attribute-bedroom-solid"></i>{{currentProperty._source.tax_input.bedrooms[0]}} Beds</li>
           <li class="baths"><i class="icon-wpproperty-attribute-bathroom-solid"></i>{{currentProperty._source.tax_input.bathrooms[0]}} Baths</li>
           <li class="sqft"><i class="icon-wpproperty-attribute-size-solid"></i>{{currentProperty._source.tax_input.total_living_area_sqft[0]}} SqFt</li>
-          <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{currentProperty._source.tax_input.acres[0]}}</li>
+          <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{currentProperty._source.tax_input.approximate_lot_size[0]}} Acres</li>
         </ul>
       </div>
     </div>
