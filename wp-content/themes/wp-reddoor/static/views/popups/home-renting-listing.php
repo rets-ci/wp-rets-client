@@ -65,24 +65,35 @@
           <div class="clear"></div>
         </div>
 
-        <?php global $property; $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true ) ?>
+        <?php
+        global $property;
 
+        if( $property && isset( $property['ID'] ) ) {
+          $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property[ 'ID' ] ), true );
+        }
+
+        ?>
+
+        <?php if( isset( $agent ) ) { ?>
         <!-- Broker -->
         <input type="hidden" id="powf_fc06a4670318e411bcfc6c3be5a8dd60" name="powf_fc06a4670318e411bcfc6c3be5a8dd60" value="<?php echo $agent->user_email; ?>"/>
+        <?php } ?>
 
+        <?php if( isset( $property ) && isset( $property['location_address'] ) ) { ?>
         <!-- Property Address -->
         <input type="hidden" id="powf_9b14049e0318e411bcfc6c3be5a8dd60" name="powf_9b14049e0318e411bcfc6c3be5a8dd60" value="<?php echo $property['location_address']; ?>"/>
+        <?php } ?>
 
+        <?php if( isset( $property['ID'] ) ) { ?>
         <!-- MLS ID -->
         <input type="hidden" id="powf_c7e7e0c3a424e5118103fc15b4289e3c" name="powf_c7e7e0c3a424e5118103fc15b4289e3c" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>"/>
+        <?php } ?>
 
         <!-- Origin -->
-        <input type="hidden" id="powf_d7ce13400318e411bcfc6c3be5a8dd60" name="powf_d7ce13400318e411bcfc6c3be5a8dd60"
-               value="Tenant"/>
+        <input type="hidden" id="powf_d7ce13400318e411bcfc6c3be5a8dd60" name="powf_d7ce13400318e411bcfc6c3be5a8dd60" value="Tenant"/>
 
         <!-- Lead Source -->
-        <input type="hidden" id="powf_72de01e26d6fe411807f6c3be5a87df0" name="powf_72de01e26d6fe411807f6c3be5a87df0"
-               value="RedDoorCompany.com"/>
+        <input type="hidden" id="powf_72de01e26d6fe411807f6c3be5a87df0" name="powf_72de01e26d6fe411807f6c3be5a87df0" value="RedDoorCompany.com"/>
 
         <!-- tver -->
         <input type="hidden" id="tver" name="tver" value="2013"/>
