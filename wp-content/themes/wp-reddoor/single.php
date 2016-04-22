@@ -33,7 +33,7 @@ if(!empty($post_thumbnail_id)) {
     <section class="featuredImageHeader" style="background: url('<?php echo $_url; ?>');">
       <?php $category = get_the_category(); ?>
       <div class="singleHeroIcon">
-        <span class="icon-rdc-<?php echo $category[0]->slug; ?>"></span>
+        <span class="icon-rdc-<?php echo $category && $category[0] ? $category[0]->slug : ''; ?>"></span>
       </div>
       <h1 class="singleTitle"><?php the_title(); ?></h1>
       <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
@@ -66,7 +66,7 @@ if(!empty($post_thumbnail_id)) {
   </div>
   <div class="row loadMoreBlockSeparate">
     <div class="col-lg-12">
-      <h3><?php $category = get_the_category($post->ID);  _e('More ' . $category[0]->name . ' Articles'); ?></h3>
+      <h3><?php $category = get_the_category($post->ID);  _e('More ' . ( $category && $category[0] ? $category[0]->name : '' ). ' Articles'); ?></h3>
     </div>
 
     <?php
@@ -74,7 +74,7 @@ if(!empty($post_thumbnail_id)) {
     query_posts(array(
       'post_type' => 'post',
       'posts_per_page' => '3',
-      'category' => $category[0]->term_id
+      'category' => $category && $category[0] ? $category[0]->term_id : null
     ));
 
     if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -90,7 +90,7 @@ if(!empty($post_thumbnail_id)) {
 
   <div class="row loadMoreContainer">
     <div class="col-lg-4 col-lg-offset-5">
-      <button type="button" class="btn btn-lg	btn-rdc" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?></button>
+      <button type="button" class="btn btn-lg	btn-rdc" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo ( $category && $category[0] ? $category[0]->term_id : '' ); ?>"><?php _e( 'Load More' ); ?></button>
     </div>
   </div>
 

@@ -1,7 +1,10 @@
 jQuery(function () {
 
 
-  // hack for now
-  jQuery('.tax-rdc_guide_category .guide-block').height( 800 );
-  jQuery('.tax-rdc_guide_category .guide-overview-list').height( 800 );
+  // set height to total height of window minus the very top white menu
+  var _height = ( jQuery(window).height() ) - 60;
+  jQuery('.tax-rdc_guide_category .guide-guide-block').height( _height );
+
+  console.log( 'height set to', _height );
+
 });

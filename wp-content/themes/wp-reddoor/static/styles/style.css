@@ -2790,8 +2790,8 @@ input[type="submit"]:active {
 .tax-rdc_guide_category .headerTopMenu {
   background-image: none !important;
 }
-.post-type-archive-rdc_guide .content-wrapper,
-.tax-rdc_guide_category .content-wrapper {
+.post-type-archive-rdc_guide .guide-wrapper,
+.tax-rdc_guide_category .guide-wrapper {
   position: relative;
   top: -90px;
 }
