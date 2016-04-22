@@ -307,8 +307,6 @@
         var index = 'v5',
             type = 'property';
 
-        console.log( $scope.query );
-
         /**
          * @type {$.es.Client|*}
          */
@@ -639,8 +637,16 @@
               }
             }
           },
+          language: {
+            noResults: function(){
+              return "No results found. Try something else";
+            },
+            errorLoading: function(){
+              return "Searching...";
+            }
+          },
           templateResult: function formatRepo (city) {
-            if (city.loading) return 'Loading...';
+            if (city.loading) return 'Searching...';
             var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
             return html;
           },
