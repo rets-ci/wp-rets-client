@@ -180,6 +180,7 @@ function siteorigin_widget_search_posts_action(){
 	) );
 	unset($post_types['attachment']);
 
+	$post_types = apply_filters( 'siteorigin_widgets_search_posts_post_types', $post_types );
 
 	global $wpdb;
 	if( !empty($_GET['query']) ) {
@@ -200,7 +201,7 @@ function siteorigin_widget_search_posts_action(){
 		LIMIT 20
 	", ARRAY_A );
 
-	echo json_encode( $results );
+	echo json_encode( apply_filters( 'siteorigin_widgets_search_posts_results', $results ) );
 	wp_die();
 }
 add_action('wp_ajax_so_widgets_search_posts', 'siteorigin_widget_search_posts_action');
@@ -235,6 +236,7 @@ function sow_esc_url( $url ) {
 	if( preg_match('/^post: *([0-9]+)/', $url, $matches) ) {
 		// Convert the special post URL into a permalink
 		$url = get_the_permalink( intval($matches[1]) );
+		if( empty($url) ) return '';
 	}
 
 	$protocols = wp_allowed_protocols();
