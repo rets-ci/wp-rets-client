@@ -2007,37 +2007,61 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-size: cover;
   float: right;
 }
-.menu-home-buying-page-sub-menu-container {
+.menu-home-buying-page-sub-menu-container,
+.menu-home-selling-page-sub-menu-container,
+.menu-property-management-page-sub-menu-container,
+.menu-home-renting-page-sub-menu-container {
   background: #F3F0E9 none repeat scroll 0 0;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu {
+.menu-home-buying-page-sub-menu-container ul,
+.menu-home-selling-page-sub-menu-container ul,
+.menu-property-management-page-sub-menu-container ul,
+.menu-home-renting-page-sub-menu-container ul {
   border-bottom: 1px solid #d0d4d9;
   border-top: 1px solid #d0d4d9;
   margin: 0 auto;
   text-align: center;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li {
+.menu-home-buying-page-sub-menu-container ul li,
+.menu-home-selling-page-sub-menu-container ul li,
+.menu-property-management-page-sub-menu-container ul li,
+.menu-home-renting-page-sub-menu-container ul li {
   border-right: 1px solid #d0d4d9;
   display: inline-block;
   line-height: 1.2em;
   transition: .5s color;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:hover {
+.menu-home-buying-page-sub-menu-container ul li:hover,
+.menu-home-selling-page-sub-menu-container ul li:hover,
+.menu-property-management-page-sub-menu-container ul li:hover,
+.menu-home-renting-page-sub-menu-container ul li:hover {
   color: #d03528;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:hover a {
+.menu-home-buying-page-sub-menu-container ul li:hover a,
+.menu-home-selling-page-sub-menu-container ul li:hover a,
+.menu-property-management-page-sub-menu-container ul li:hover a,
+.menu-home-renting-page-sub-menu-container ul li:hover a {
   color: #d03528;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:before {
+.menu-home-buying-page-sub-menu-container ul li:before,
+.menu-home-selling-page-sub-menu-container ul li:before,
+.menu-property-management-page-sub-menu-container ul li:before,
+.menu-home-renting-page-sub-menu-container ul li:before {
   font-size: 1.8em;
   padding-left: 25px;
   position: relative;
   top: 4px;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li:last-child {
+.menu-home-buying-page-sub-menu-container ul li:last-child,
+.menu-home-selling-page-sub-menu-container ul li:last-child,
+.menu-property-management-page-sub-menu-container ul li:last-child,
+.menu-home-renting-page-sub-menu-container ul li:last-child {
   border-right: none;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a {
+.menu-home-buying-page-sub-menu-container ul li a,
+.menu-home-selling-page-sub-menu-container ul li a,
+.menu-property-management-page-sub-menu-container ul li a,
+.menu-home-renting-page-sub-menu-container ul li a {
   transition: .5s color;
   padding: 1.6em 2em 1.6em 1.5em;
   display: inline-block;
@@ -2046,7 +2070,10 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   line-height: 1.2em;
   font-family: 'Poppins', sans-serif;
 }
-.menu-home-buying-page-sub-menu-container #menu-home-buying-page-sub-menu li a:hover {
+.menu-home-buying-page-sub-menu-container ul li a:hover,
+.menu-home-selling-page-sub-menu-container ul li a:hover,
+.menu-property-management-page-sub-menu-container ul li a:hover,
+.menu-home-renting-page-sub-menu-container ul li a:hover {
   text-decoration: none;
   color: #d03528;
 }
@@ -5756,31 +5783,6 @@ body .ui-tooltip {
   }
 }
 @media screen and (max-width: 1024px) {
-<<<<<<< HEAD
-  .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 18%;
-  }
-  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
-    width: 43%;
-  }
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 18%;
-  }
-}
-@media screen and (min-width: 1024px) {
-  .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 18%;
-  }
-  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
-    width: 43%;
-  }
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 18%;
-=======
   body #header {
     height: 160px;
   }
@@ -5838,7 +5840,17 @@ body .ui-tooltip {
   }
   body .contactMenu li:last-child {
     display: none;
->>>>>>> origin/develop
+  }
+  .frontPageSearchBlock .searchForm form .sfBeds,
+  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
+  }
+  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+    width: 43%;
+  }
+  .frontPageSearchBlock .searchForm form .sfPrice {
+    width: 18%;
   }
 }
 @media screen and (max-width: 768px) {
