@@ -1151,6 +1151,19 @@
 
       .sm-current-property-details {
         padding: 15px;
+        background-color: #fbfaf8;
+
+        .icon-buttons {
+          position: absolute;
+          right: 15px;
+          a {
+            transition: color .5s;
+            color: grey;
+            &:hover {
+              color: @buttons;
+            }
+          }
+        }
 
         .sm-current-property-price {
           color: @buttons;

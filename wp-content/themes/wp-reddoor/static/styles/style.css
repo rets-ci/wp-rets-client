@@ -1257,6 +1257,18 @@
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details {
   padding: 15px;
+  background-color: #fbfaf8;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons {
+  position: absolute;
+  right: 15px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons a {
+  transition: color .5s;
+  color: grey;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .icon-buttons a:hover {
+  color: #d03528;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-current-property .sm-current-property-details .sm-current-property-price {
   color: #d03528;
