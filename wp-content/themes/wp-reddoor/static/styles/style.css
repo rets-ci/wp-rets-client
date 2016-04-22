@@ -179,10 +179,10 @@
 }
 .toggle {
   float: left;
-  font-size: 4em;
+  font-size: 3em;
   transition: 1s;
   display: none;
-  margin: 5% 0 0 5%;
+  margin: 5% 3% 0 5%;
 }
 .contactMenu {
   color: red;
@@ -5723,6 +5723,66 @@ body .ui-tooltip {
     font-size: 1em;
   }
 }
+@media screen and (max-width: 1024px) {
+  body #header {
+    height: 160px;
+  }
+  body.home #header {
+    height: 210px;
+  }
+  body.page #header {
+    height: 210px;
+  }
+  body.single #header {
+    height: 160px;
+  }
+  body .headerTopMenu {
+    background: none !important;
+  }
+  body .ftrdImgGoTop {
+    margin-bottom: 16px;
+    top: 0 !important;
+  }
+  body .ftrdImgGoTop .featuredImageHeader {
+    top: -40px !important;
+  }
+  body .toggle {
+    font-size: 42px;
+    margin: 35px 0 0 20px;
+  }
+  body .site-logo {
+    position: absolute;
+    margin-left: -81px;
+    width: 162px;
+    left: 50%;
+  }
+  body .menuDesktop {
+    display: none !important;
+  }
+  body .popUpLoginBtn {
+    display: none !important;
+  }
+  body .popUpContactBtn {
+    margin-right: 10%;
+  }
+  body .mobileMenu,
+  body .toggle,
+  body .menuAdaptive {
+    display: block !important;
+  }
+  body .contactMenu {
+    margin-right: 35px;
+  }
+  body .contactMenu li {
+    margin-top: 25px;
+  }
+  body .contactMenu li a {
+    font-size: 1.3em;
+  }
+  body .contactMenu li:last-child {
+    display: none;
+  }
+}
 @media screen and (max-width: 768px) {
   body {
     background: none !important;
@@ -5774,9 +5834,6 @@ body .ui-tooltip {
   }
   body.single-property .areaMapBlock .ambItem {
     margin: 0 0 30px 0;
-  }
-  body .site-logo {
-    left: 23%;
   }
   body .site-content {
     padding: 0 2%;
@@ -5854,18 +5911,6 @@ body .ui-tooltip {
   }
   body .oneCategory {
     margin: auto;
-  }
-  body .contactMenu {
-    margin-right: 20px;
-  }
-  body .contactMenu li {
-    margin-top: 1.4em;
-  }
-  body .contactMenu li a {
-    font-size: 1.3em;
-  }
-  body .contactMenu li:last-child {
-    display: none;
   }
   body .popup {
     left: 30%;
