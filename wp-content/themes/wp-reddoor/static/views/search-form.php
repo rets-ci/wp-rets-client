@@ -125,7 +125,7 @@
 
       <input type="submit" value="<?php _e('Search') ?>" />
 
-      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <?php echo \UsabilityDynamics\RDC\Utils::get_sale_properties_count(); ?> properties for sale</div>
+      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <span class="totals_properties_sale"><span class="value">Loading</span> properties for sale</span></div>
 
     </form>
 
@@ -232,7 +232,7 @@
 
       <input type="submit" value="<?php _e('Search') ?>"/>
 
-      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <?php echo \UsabilityDynamics\RDC\Utils::get_rent_properties_count(); ?> properties for rent</div>
+      <div class="sf-property-quantity"><b class="icon-wpproperty-interface-info-outline"></b> <span class="totals_properties_rent"><span class="value">Loading</span> properties for rent</span></div>
     </form>
 
     <!-- /Rent -->
@@ -240,11 +240,101 @@
   </div>
 </div>
 
+<?php
+  if ( function_exists('ud_get_wpp_supermap') ) {
+    wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ) );
+  }
+?>
+
 <script type="text/javascript">
   jQuery(document).ready(function(){
     if ( 'undefined' != typeof jQuery().rdc_search_form ) {
       jQuery('#tabs_search').rdc_search_form();
     }
+
+    if ( typeof jQuery.es.Client != 'undefined') {
+
+      var client = new jQuery.es.Client({
+        hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+      });
+
+      var index = 'v5',
+          type = 'property';
+
+      client.count({
+        index: index,
+        type: type,
+        body: {
+          query: {
+            bool: {
+              must: [
+                {
+                  exists: {
+                    field: "tax_input"
+                  }
+                },
+                {
+                  terms: {
+                    "tax_input.sale_type": ["Rent"]
+                  }
+                }
+              ],
+              must_not: [
+                {
+                  term: {
+                    "tax_input.location_latitude": "0"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }, function (err, response) {
+        if ( !err ) {
+          jQuery('.totals_properties_rent .value').html(response.count);
+        } else {
+          console.error(err);
+        }
+      });
+
+      client.count({
+        index: index,
+        type: type,
+        body: {
+          query: {
+            bool: {
+              must: [
+                {
+                  exists: {
+                    field: "tax_input"
+                  }
+                },
+                {
+                  terms: {
+                    "tax_input.sale_type": ["Sale"]
+                  }
+                }
+              ],
+              must_not: [
+                {
+                  term: {
+                    "tax_input.location_latitude": "0"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }, function (err, response) {
+        if ( !err ) {
+          jQuery('.totals_properties_sale .value').html(response.count);
+        } else {
+          console.error(err);
+        }
+      });
+
+    }
+
   });
 </script>
 
