@@ -89,6 +89,7 @@
 
       .filter('simpleAmount', function() {
         return function( int ) {
+          int = Math.round(int/1000)*1000
           if ( !String(int).length ) return '';
           return '$' + ( int / 1000 ) + 'k';
         };
@@ -220,23 +221,36 @@
          *
          * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
          */
-        $scope.pricing = {
+        $scope.pricing = window.pricing = {
           mode: false,
 
           current_min:'',
           current_max:'',
+          current_min_label:'',
+          current_max_label:'',
 
           min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
           max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
 
+          format: function(target, mode) {
+            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            }
+          },
+
           set_min: function(_price) {
             this.current_min = _price;
+            $scope.current_filter.price.min = _price;
             this.recalculate();
             this.mode = 'max';
           },
 
           set_max: function(_price) {
             this.current_max = _price;
+            $scope.current_filter.price.max = _price;
             this.mode = false;
           },
 
