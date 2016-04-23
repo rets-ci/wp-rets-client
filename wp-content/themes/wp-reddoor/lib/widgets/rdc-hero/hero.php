@@ -47,6 +47,11 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 							'fallback' => true,
 						),
 
+						'bgcolor' => array(
+							'type' => 'color',
+							'label' => __( 'Background Color', 'so-widgets-bundle' ),
+						),
+
 						'content_title' => array(
 							'type' => 'text',
 							'label' => __( 'Content title', 'so-widgets-bundle' ),
@@ -165,13 +170,12 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 	 * @param $frame
 	 */
 	function render_frame_contents($i, $frame) {
-
 		?>
 		<div class="sow-slider-image-container">
 			<div class="sow-slider-image-wrapper">
 				<?php	$dataImage = wp_get_attachment_image_url($frame['image'], 'full');	?>
 				<div class="tabbedWidgetImageArea" style="background-image: url('<?php echo $dataImage ?>');"></div>
-				<div class="tabbedWidgetContent">
+				<div class="tabbedWidgetContent" style="<?php echo (!empty( $frame['bgcolor'] ) ? "background-color:" . $frame['bgcolor'] : ""); ?>">
 				<h3><?php echo $frame['content_title'] ?></h3>
 					<p><?php echo $frame['content'] ?></p>
 					<div class="featurePoint">
