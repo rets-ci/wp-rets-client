@@ -1168,6 +1168,83 @@
 
   .sm-properties-collection {
 
+    .sm-properties-grid {
+
+      .sm-columns-sorter {
+
+        background: #f3f0e9 none repeat scroll 0 0;
+        border-top: 1px solid white;
+        height: 40px;
+        line-height: 40px;
+        margin: 0;
+
+        li {
+          cursor: pointer;
+          line-height: 37px;
+          margin: 0 10px;
+          float: left;
+          vertical-align: middle;
+          color: #808285;
+          font-size: 12px;
+          white-space: nowrap;
+
+          &.st-sort-ascent::before {
+            content: none !important;
+          }
+
+          &.st-sort-descent::before {
+            content: none !important;
+          }
+
+          &.st-sort-ascent, &.st-sort-descent {
+            font-weight: 500;
+            color: @buttons;
+            border-bottom: 2px solid @buttons;
+          }
+
+          &.st-sort-ascent::after {
+            content: "￪";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
+
+          &.st-sort-descent::after {
+            content: "￬";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
+        }
+      }
+
+      .st-selected {
+        .sm-current-property-details {
+          background: white;
+        }
+      }
+
+      .sm-current-property-thumb {
+        border-bottom: 1px solid white;
+      }
+      .sm-current-property {
+        .sm-current-property-details {
+          border-bottom: 1px solid #eeedeb;
+          border-right: 0;
+        }
+      }
+      .collection-pagination {
+        background: #fbfaf8 none repeat scroll 0 0;
+        text-align: center;
+      }
+    }
+
     .sm-map-marker-icon {
       height: 25px;
     }

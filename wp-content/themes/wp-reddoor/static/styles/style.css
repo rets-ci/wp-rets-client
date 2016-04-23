@@ -1273,6 +1273,67 @@
   border-radius: 100%;
   margin-bottom: 2px;
 }
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter {
+  background: #f3f0e9 none repeat scroll 0 0;
+  border-top: 1px solid white;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li {
+  cursor: pointer;
+  line-height: 37px;
+  margin: 0 10px;
+  float: left;
+  vertical-align: middle;
+  color: #808285;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent::before {
+  content: none !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent::before {
+  content: none !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent,
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent {
+  font-weight: 500;
+  color: #d03528;
+  border-bottom: 2px solid #d03528;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent::after {
+  content: "￪";
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent::after {
+  content: "￬";
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .st-selected .sm-current-property-details {
+  background: white;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-current-property-thumb {
+  border-bottom: 1px solid white;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-current-property .sm-current-property-details {
+  border-bottom: 1px solid #eeedeb;
+  border-right: 0;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .collection-pagination {
+  background: #fbfaf8 none repeat scroll 0 0;
+  text-align: center;
+}
 .wpp-advanced-supermap .sm-properties-collection .sm-map-marker-icon {
   height: 25px;
 }
