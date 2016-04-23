@@ -857,7 +857,7 @@ namespace UsabilityDynamics\RDC {
       echo $args['before_widget'];
 
       if (!empty($instance['title']))
-        echo '<div class="widgetBody" style="background: url(' . $callout_image . ')"><h2>' . $instance['title'] . '</h2>';
+        echo '<div class="widgetBody" style="background-image: url(' . $callout_image . ')"><h2>' . $instance['title'] . '</h2>';
 
 
       /**
@@ -879,7 +879,7 @@ namespace UsabilityDynamics\RDC {
 
       echo '<h3>' . $instance['subtitle'] . '</h3>';
 
-      echo '<a href="' . $instance['buttonlink'] . '">' . $instance['buttonlabel'] . '</a>';
+      echo '<a href="' . $instance['buttonlink'] . '" class="callout-action-button">' . $instance['buttonlabel'] . '</a>';
 
       echo '<div class="callout-overlay"></div>';
 
