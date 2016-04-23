@@ -205,9 +205,6 @@
   color: #fff;
   cursor: pointer;
 }
-.panel-grid {
-  margin: 0 !important;
-}
 .page-template-rdc-guide .site-content .panel-grid-cell {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -2096,6 +2093,55 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .property-resp-slideshow {
   z-index: 9;
+}
+/******************************************
+ * CUSTOM CLASSES FOR ROWS AND WIDGETS
+ ******************************************/
+/**
+ * ROW class
+ *
+ * Removes padding for row and all its columns
+ * Usage: http://screencast.com/t/1bv842U3YSB
+ */
+.no-padding {
+  padding: 0 !important;
+}
+.no-padding .panel-grid-cell {
+  padding: 0 !important;
+}
+/**
+ * WIDGET class
+ *
+ * Used for empty block which contains only background image
+ * It sets block height to be equal with ROW
+ * Usage: http://screencast.com/t/XAfp9hxqwv
+ */
+/**
+ * WIDGET class
+ *
+ * Centers content in widget.
+ * Supported widgets: SiteOrigin Editor
+ * Usage: http://screencast.com/t/6sJuDdVs2rWo
+ */
+.hero-content .so-widget-sow-editor {
+  margin: 15% auto;
+  width: 50%;
+}
+.hero-content .so-widget-sow-editor h2 {
+  color: #5a595c !important;
+  font-size: 2.75em;
+  font-weight: bold;
+  line-height: 1.5em;
+}
+.hero-content .so-widget-sow-editor p.lead {
+  margin: 25px 0;
+  font-size: 1.3em;
+  line-height: 1.55em;
+  color: #a7a9ac;
+}
+.hero-content .so-widget-sow-editor p {
+  font-size: 1.1em;
+  line-height: 2em;
 }
 /* =Footer
 ------------------------------------------------- */
