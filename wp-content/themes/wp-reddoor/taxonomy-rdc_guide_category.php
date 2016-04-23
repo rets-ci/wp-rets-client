@@ -60,7 +60,7 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
 
                 </div>
 
-                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['thumbnail']; ?>');"></div>
+                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['image']; ?>');"></div>
 
             </div>
 
