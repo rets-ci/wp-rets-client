@@ -1160,6 +1160,30 @@
   box-shadow: 0 0 5px;
   overflow-y: scroll;
 }
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
+  height: 50px;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li {
+  border-left: 1px solid #e4e2dd;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i {
+  transition: .4s color;
+  display: block;
+  height: 50px;
+  line-height: 47px;
+  text-align: center;
+  width: 50px;
+  cursor: pointer;
+  color: #c2c0bb;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
+  color: #5a595c;
+}
 .wpp-advanced-supermap .sm-sidebar-top {
   padding: 15px 20px !important;
 }
