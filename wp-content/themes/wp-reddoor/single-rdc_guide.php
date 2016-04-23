@@ -5,6 +5,7 @@
  *
  */
 
+$_term = rdc_get_guide_category();
 $currentId = get_the_ID();
 
 if(!empty($currentId)) {
@@ -20,11 +21,18 @@ if(!empty($post_thumbnail_id)) {
   <div class="row site-content">
 
       <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_background_url; ?>');">
-        <h1 class="guide-article-title"><?php the_title(); ?></h1>
-        <div class="guide-article-description"><?php the_excerpt(); ?></div>
+        <div class="guide-block-inner">
+          <h1 class="guide-article-title"><?php the_title(); ?></h1>
+          <div class="guide-article-description"><?php the_excerpt(); ?></div>
+        </div>
 
-        <div class="guide-actions">
-          <?php next_post_link( '<strong>%link</strong>', __( 'Go to Next Article ->' ) ); ?>
+        <div class="row guide-actions">
+          <div class="col-lg-6 guide-action-button navigation-black">
+            <a href="<?php echo $_term->permalink; ?>" class="back-to-guide"><?php printf( __('<- Back to %s ', 'rdc' ), $_term->name ); ?></a>
+          </div>
+          <div class="col-lg-6 guide-action-button navigation-red">
+            <?php next_post_link( '%link', __( 'Go to Next Article ->' ) ); ?>
+          </div>
         </div>
 
       </div>

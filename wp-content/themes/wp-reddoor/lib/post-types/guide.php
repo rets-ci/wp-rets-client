@@ -218,3 +218,18 @@ function rdc_generate_guide_overview( $options = false ) {
   return $result;
   
 }
+
+function rdc_get_guide_category() {
+  global $wp_query;
+
+  $_rdc_guide_category = $wp_query->query_vars['rdc_guide_category'];
+
+  $_term = get_term_by( 'slug', $_rdc_guide_category, 'rdc_guide_category' );
+
+  if( is_object( $_term ) ) {
+    $_term->permalink = get_term_link( $_term, 'rdc_guide_category' );
+  }
+
+  return $_term;
+
+}

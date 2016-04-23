@@ -50,7 +50,7 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
   .guide-block {
     color: #FFF;
     text-align: center;
-    padding-top: 200px;
+    padding-top: 0;
     padding-left: 0;
     padding-right: 0;
     min-height: 600px;
@@ -67,6 +67,28 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
 
     &:hover {
       background: no-repeat 50% 31%;
+    }
+
+  }
+
+  .guide-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .guide-action-button.navigation-black {
+      background-color: rgba(2, 2, 2, 0.8);
+    }
+
+    .guide-action-button.navigation-red {
+      background-color: rgba(208, 53, 40, 0.93);
+    }
+
+    .guide-action-button > a {
+      display: block;
+      color: #FFF;
+      height: 5em;
+      line-height: 5em;
     }
 
   }
@@ -147,6 +169,11 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
     text-align: center;
     font-weight: 600;
     text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
+  }
+
+  // try to vertically center the text in the guide blocks
+  .guide-block-inner {
+    padding-top: 200px;
   }
 
   h1.guide-article-title {
