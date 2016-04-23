@@ -946,6 +946,7 @@
   opacity: 1;
 }
 .wpp-advanced-supermap .sm-search-form {
+  max-width: 620px;
   padding: 30px !important;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 }
