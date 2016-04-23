@@ -75,7 +75,23 @@
 
             <div class="sm-properties-grid" st-table="propertiesGridCollection" st-safe-src="properties">
 
-              <div ng-repeat="row in propertiesGridCollection" class="sm-current-property" ng-show="currentProperty && loadImages(row)">
+              <ul class="sm-columns-sorter">
+                <li class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Address', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-price" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-bedrooms" ng-show="columns.bedrooms.enable" st-sort="_source.tax_input.bedrooms[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::bedrooms::label", __( 'Beds', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-bathrooms" ng-show="columns.bathrooms.enable" st-sort="_source.tax_input.bathrooms[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::bathrooms::label", __( 'Baths', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-sqft" ng-show="columns.total_living_area_sqft.enable" st-sort="_source.tax_input.total_living_area_sqft[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::sqft::label", __( 'Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::approximate_lot_size::label", __( 'Lot', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></li>
+                <li class="sm-neighborhood" ng-show="columns.neighborhood.enable" st-sort="_source.tax_input.neighborhood[0]"><?php echo apply_filters( "wpp::advanced_supermap::column::neighborhood::label", __( 'Neighborhood', ud_get_wpp_supermap()->domain ) ); ?></li>
+              </ul>
+
+              <div class="clear" style="height: 0"></div>
+
+              <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && loadImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
                     <a target="_blank" href="/?p={{row._id}}"><div class="sm-current-property-thumb" style="background-image: url( {{row.images[0].url !== false ? row.images[0].url : '' }} );"></div></a>
