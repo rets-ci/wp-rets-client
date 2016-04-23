@@ -78,12 +78,20 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
   .guide-group-wrapper {
     margin: 1em;
     background: #FFF;
-    padding-bottom: 0.5em;
+    padding: 0.6em 0.9em 1.2em;
+
+    // transparent border to create a space for the red border that shows on hover
+    border-top: 2px solid #F3F0E9;
+
+    &:hover {
+      border-top: 2px solid #CE3124;
+    }
 
     .guide-group-title {
       font-weight: 600;
       color: #58575A;
       font-size: 22px;
+      margin-bottom: 0.8em;
     }
 
     ul.guide-list {

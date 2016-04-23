@@ -2833,7 +2833,7 @@ body.tax-rdc_guide_category .guide-block:hover {
 body.post-type-archive-rdc_guide .guide-overview-list,
 body.tax-rdc_guide_category .guide-overview-list {
   padding-top: 6em;
-  padding-bottom: 28em;
+  padding-bottom: 0;
   background-color: #F3F0E9;
   min-height: 600px;
   overflow: scroll;
@@ -2846,7 +2846,32 @@ body.post-type-archive-rdc_guide .guide-group-wrapper,
 body.tax-rdc_guide_category .guide-group-wrapper {
   margin: 1em;
   background: #FFF;
-  padding: 0;
+  padding: 0.6em 0.9em 1.2em;
+  border-top: 2px solid #F3F0E9;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper:hover,
+body.tax-rdc_guide_category .guide-group-wrapper:hover {
+  border-top: 2px solid #CE3124;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper .guide-group-title,
+body.tax-rdc_guide_category .guide-group-wrapper .guide-group-title {
+  font-weight: 600;
+  color: #58575A;
+  font-size: 22px;
+  margin-bottom: 0.8em;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list {
+  margin-left: 1.2em;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li {
+  list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOElEQVQYV2NkIAIwIqtpamz+D+PX1dfC5eAMkAJkCWQ+WBG6AphpMHEqK8JmJYabkN2A13f4ggsAAt8wCodw+UcAAAAASUVORK5CYII=);
+  margin-bottom: 0.3em;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li a,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li a {
+  color: #727174;
 }
 body.post-type-archive-rdc_guide .guide-title,
 body.tax-rdc_guide_category .guide-title {

@@ -44,7 +44,7 @@ $_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide
             <div class="row">
 
                 <div class="col-lg-8">
-                  <div class="guide-group-wrapper">
+                  <div class="guide-group-inner-wrapper">
                     <h3 class="guide-group-title"><?php echo $_some_guide[ 'name' ]; ?></h3>
   
                     <ul class="guide-list">
