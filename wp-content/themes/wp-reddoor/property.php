@@ -150,42 +150,44 @@ while (have_posts()) : the_post();
       <div class="col-lg-8 col-md-8 singleRemarks">
         <?php echo $property['remarks']; ?>
       </div>
-      <div class="col-lg-8 col-md-8">
-        <ul class="propertyAttribute">
-          <li>
+    </div>
+  <div class="row propertyAttribute">
+      <div class="col-xs-12 col-lg-3 col-md-3">
             <div>
               <span class="icon-wpproperty-data-checked-outline"></span>
             </div>
             <span>Last Checked</span>
             <strong>1 minute ago</strong>
-          </li>
+      </div>
           <?php if(!empty($updatedProperty)){ ?>
-          <li>
-            <div>
-              <span class="icon-wpproperty-data-updated-outline"></span>
-            </div>
-            <span>Last Updated</span>
-            <strong>
-              <?php $dateUpdt = strtotime("$updatedProperty GMT");
-              echo date('F j, Y', $dateUpdt);
-              ?>
-            </strong>
-          </li>
+      <div  class="col-xs-12 col-lg-3 col-md-3">
+          <div>
+            <span class="icon-wpproperty-data-updated-outline"></span>
+          </div>
+          <span>Last Updated</span>
+          <strong>
+            <?php $dateUpdt = strtotime("$updatedProperty GMT");
+            echo date('F j, Y', $dateUpdt);
+            ?>
+          </strong>
+      </div>
           <?php } ?>
           <?php if(!empty($daysOnMarket)){ ?>
-          <li>
-            <div>
-              <span class="icon-wpproperty-data-days-outline"></span>
-            </div>
-            <span>Days on Market</span>
-            <strong><?php echo $daysOnMarket; ?></strong>
-          </li>
-          <?php } ?>
-        </ul>
+      <div  class="col-xs-12 col-lg-3 col-md-3">
+        <div>
+          <span class="icon-wpproperty-data-days-outline"></span>
+        </div>
+        <span>Days on Market</span>
+        <strong><?php echo $daysOnMarket; ?></strong>
       </div>
+      <?php } ?>
+      </div>
+      <div class="row">
       <div class="col-lg-7 col-md-7">
         <h4><?php _e('Property Facts') ?></h4>
       </div>
+      </div>
+      <div class="row">
       <div class="col-lg-8 col-md-8">
         <ul class="propertyFacts">
           <?php if(!empty($design)){ ?>
@@ -299,6 +301,8 @@ while (have_posts()) : the_post();
           <?php } ?>
         </ul>
       </div>
+      </div>
+    <div class="row">
       <div class="col-md-8 col-lg-8">
         <div class="bottomSeparate"></div>
       </div>
