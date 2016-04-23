@@ -206,7 +206,8 @@
   cursor: pointer;
 }
 .panel-grid {
-  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 .page-template-rdc-guide .site-content .panel-grid-cell {
   padding-left: 0 !important;
@@ -1160,6 +1161,30 @@
   box-shadow: 0 0 5px;
   overflow-y: scroll;
 }
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
+  height: 50px;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li {
+  border-left: 1px solid #e4e2dd;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i {
+  transition: .4s color;
+  display: block;
+  height: 50px;
+  line-height: 47px;
+  text-align: center;
+  width: 50px;
+  cursor: pointer;
+  color: #c2c0bb;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
+  color: #5a595c;
+}
 .wpp-advanced-supermap .sm-sidebar-top {
   padding: 15px 20px !important;
 }
@@ -2048,6 +2073,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .widget_nav_menu.panel-last-child {
   margin-top: -30px;
+  margin-bottom: -30px !important;
 }
 .widget_nav_menu ul.menu {
   border-bottom: 1px solid #d0d4d9;
@@ -2116,6 +2142,55 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .property-resp-slideshow {
   z-index: 9;
+}
+/******************************************
+ * CUSTOM CLASSES FOR ROWS AND WIDGETS
+ ******************************************/
+/**
+ * ROW class
+ *
+ * Removes padding for row and all its columns
+ * Usage: http://screencast.com/t/1bv842U3YSB
+ */
+.no-padding {
+  padding: 0 !important;
+}
+.no-padding .panel-grid-cell {
+  padding: 0 !important;
+}
+/**
+ * WIDGET class
+ *
+ * Used for empty block which contains only background image
+ * It sets block height to be equal with ROW
+ * Usage: http://screencast.com/t/XAfp9hxqwv
+ */
+/**
+ * WIDGET class
+ *
+ * Centers content in widget.
+ * Supported widgets: SiteOrigin Editor
+ * Usage: http://screencast.com/t/6sJuDdVs2rWo
+ */
+.hero-content .so-widget-sow-editor {
+  margin: 15% auto;
+  width: 50%;
+}
+.hero-content .so-widget-sow-editor h2 {
+  color: #5a595c !important;
+  font-size: 2.75em;
+  font-weight: bold;
+  line-height: 1.5em;
+}
+.hero-content .so-widget-sow-editor p.lead {
+  margin: 25px 0;
+  font-size: 1.3em;
+  line-height: 1.55em;
+  color: #a7a9ac;
+}
+.hero-content .so-widget-sow-editor p {
+  font-size: 1.1em;
+  line-height: 2em;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -2932,6 +3007,14 @@ body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
 body.single-rdc_guide .guide-group-image {
   min-height: 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper,
 body.tax-rdc_guide_category .guide-group-wrapper,
@@ -2953,6 +3036,7 @@ body.post-type-archive-rdc_guide .guide-group-wrapper:hover,
 body.tax-rdc_guide_category .guide-group-wrapper:hover,
 body.single-rdc_guide .guide-group-wrapper:hover {
   border-top: 2px solid #CE3124;
+  box-shadow: -2px 4px 5px rgba(136, 136, 136, 0.17);
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper .guide-group-title,
 body.tax-rdc_guide_category .guide-group-wrapper .guide-group-title,

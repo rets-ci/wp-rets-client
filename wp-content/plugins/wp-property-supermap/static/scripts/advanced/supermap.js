@@ -163,6 +163,25 @@
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
 
+        $scope.view = {
+          mode: {
+            table: true,
+            preview: false
+          },
+          toggle: function() {
+            this.mode.table = !this.mode.table;
+            this.mode.preview = !this.mode.preview;
+          },
+          set: function(mode) {
+            for(var i in this.mode) {
+              if ( this.mode[i] == true ) {
+                this.mode[i] = false;
+              }
+            }
+            this.mode[mode] = true;
+          }
+        };
+
         $scope._request = null;
 
         $scope.columns = {
@@ -468,7 +487,7 @@
                 if( $scope.properties.length > 0 ) {
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
-                  loadImages($scope.properties[0]);
+                  $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( true );
 
@@ -542,7 +561,7 @@
                     if ( property._id == marker.listingId ) {
                       property.isSelected = true;
                       $scope.currentProperty = property;
-                      loadImages(property);
+                      $scope.loadImages(property);
                       index = i;
                     } else {
                       property.isSelected = false;
@@ -609,8 +628,9 @@
          *
          * @param row
          */
-        function loadImages( row ) {
-          if ( typeof row.images == 'undefined' || !row.images.length ) {
+        $scope.loadImages = function loadImages( row ) {
+          if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
+            row._is_loading_images = true;
             client.get({
               index: index,
               type: type,
@@ -619,6 +639,8 @@
             }, function (error, response) {
 
               if ( !error ) {
+
+                row._is_loading_images = false;
 
                 if( typeof response._source.meta_input.rets_media == 'undefined' ) {
                   console.log( 'Error occurred during getting properties data.' );
@@ -640,6 +662,7 @@
 
             });
           }
+          return true;
         }
 
         /**
@@ -652,7 +675,7 @@
             $scope.properties[i].isSelected = false;
           }
           $scope.currentProperty = row;
-          loadImages(row);
+          $scope.loadImages(row);
           row.isSelected = true;
         }
 

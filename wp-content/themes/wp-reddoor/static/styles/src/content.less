@@ -1,7 +1,8 @@
-
 .panel-grid {
-  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
+
 .page-template-rdc-guide{
   .site-content{
     .panel-grid-cell{
@@ -1018,6 +1019,35 @@
   .sm-properties-list-wrap {
     box-shadow: 0 0 5px;
     overflow-y: scroll;
+
+    .sm-list-controls {
+      height: 50px;
+      margin: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 10;
+
+      li {
+
+        border-left: 1px solid #e4e2dd;
+
+        i {
+          transition: .4s color;
+          display: block;
+          height: 50px;
+          line-height: 47px;
+          text-align: center;
+          width: 50px;
+          cursor: pointer;
+          color: #c2c0bb;
+
+          &:hover {
+            color: #5a595c;
+          }
+        }
+      }
+    }
   }
 
   .sm-sidebar-top {

@@ -14,7 +14,7 @@
 
 get_header(); ?>
 <?php get_template_part('static/views/page-header'); ?>
-  <div class="container-fluid">
+  <div class="container-fluid upToHeader">
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>
         <?php
