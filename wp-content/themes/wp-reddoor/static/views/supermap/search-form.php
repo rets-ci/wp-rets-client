@@ -35,6 +35,70 @@
       </div>
     </div>
 
+    <!-- Optional Search Filters -->
+    <div class="row rdc-search-optional">
+
+      <div class="col-md-4">
+
+        <label><?php _e( 'Price', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields" click-out="pricing.mode = ''">
+
+          <input onchange="pricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="pricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="pricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="pricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
+
+          <div class="price-dropdown" ng-show="pricing.mode">
+            <ul class="min-values" ng-show="pricing.mode == 'min'">
+              <li><a href="javascript:;" ng-click="pricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="pricing.mode == 'max'">
+              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+              <li><a href="javascript:;" ng-click="pricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select ng-model="footage.min" ng-change="footage.recalculate(footage.min)" name="bool[must][3][range][meta_input.total_living_area_sqft_2][gte]">
+            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_feet in footage.min_feet" value="{{_feet}}">{{_feet}}</option>
+          </select>
+          <select name="bool[must][3][range][meta_input.total_living_area_sqft_2][lte]">
+            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
+            <option ng-repeat="_feet in footage.max_feet track by $index" value="{{_feet}}">{{_feet}}</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <select ng-model="acrage.min" ng-change="acrage.recalculate(acrage.min)" name="bool[must][4][range][tax_input.approximate_lot_size][gte]">
+            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
+            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres | acreage}}</option>
+          </select>
+          <select name="bool[must][4][range][tax_input.approximate_lot_size][lte]">
+            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
+            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres | acreage}}</option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+
     <div class="row rdc-ranges-section">
       <div class="col-md-4">
 
@@ -80,10 +144,10 @@
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <ul>
-            <li><input id="buy_beds_0" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
+            <li><input id="buy_beds_0" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][7][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
             <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
               ?>
-              <li><input id="buy_beds_<?php echo $value; ?>" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][2][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+              <li><input id="buy_beds_<?php echo $value; ?>" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][7][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
             <?php endforeach; ?>
           </ul>
         </div>
@@ -94,95 +158,15 @@
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
           <ul>
-            <li><input id="buy_baths_0" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_baths_0"><?php _e('No min'); ?></label></li>
+            <li><input id="buy_baths_0" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][8][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_baths_0"><?php _e('No min'); ?></label></li>
             <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
               ?>
-              <li><input id="buy_baths_<?php echo $value; ?>" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][3][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
+              <li><input id="buy_baths_<?php echo $value; ?>" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][8][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
             <?php endforeach; ?>
           </ul>
         </div>
 
       </div>
-    </div>
-
-    <!-- Optional Search Filters -->
-    <div class="row rdc-search-optional">
-
-      <div class="col-md-4">
-
-        <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <select ng-model="footage.min" ng-change="footage.recalculate(footage.min)" name="bool[must][7][range][meta_input.total_living_area_sqft_2][gte]">
-            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_feet in footage.min_feet" value="{{_feet}}">{{_feet}}</option>
-          </select>
-          <select name="bool[must][7][range][meta_input.total_living_area_sqft_2][lte]">
-            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_feet in footage.max_feet track by $index" value="{{_feet}}">{{_feet}}</option>
-          </select>
-        </div>
-
-        <label><?php _e( 'Price', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields" click-out="pricing.mode = ''">
-
-          <input onchange="pricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="pricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="pricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="pricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
-
-          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" type="text" name="bool[must][4][range][tax_input.price][gte]" />
-          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" type="text" name="bool[must][4][range][tax_input.price][lte]" />
-
-          <div class="price-dropdown" ng-show="pricing.mode">
-            <ul class="min-values" ng-show="pricing.mode == 'min'">
-              <li><a href="javascript:;" ng-click="pricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
-            </ul>
-            <ul class="max-values" ng-show="pricing.mode == 'max'">
-              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
-              <li><a href="javascript:;" ng-click="pricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
-            </ul>
-          </div>
-
-          <div class="clear"></div>
-        </div>
-
-      </div>
-
-      <div class="col-md-4">
-
-        <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <select ng-model="acrage.min" ng-change="acrage.recalculate(acrage.min)" name="bool[must][8][range][tax_input.approximate_lot_size][gte]">
-            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres | acreage}}</option>
-          </select>
-          <select name="bool[must][8][range][tax_input.approximate_lot_size][lte]">
-            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres | acreage}}</option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="col-md-4">
-
-        <label><?php _e( 'Year Built', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <select name="bool[must][9][range][tax_input.year_built][gte]">
-            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
-              <option value="<?php echo $i ?>"><?php echo $i; ?></option>
-            <?php endfor; ?>
-          </select>
-          <select name="bool[must][9][range][tax_input.year_built][lte]">
-            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <?php for( $i=date('Y', time());$i>=1900;$i-- ): ?>
-              <option value="<?php echo $i ?>"><?php echo $i; ?></option>
-            <?php endfor; ?>
-          </select>
-        </div>
-
-      </div>
-
     </div>
 
   </div>
