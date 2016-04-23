@@ -1160,6 +1160,30 @@
   box-shadow: 0 0 5px;
   overflow-y: scroll;
 }
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
+  height: 50px;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li {
+  border-left: 1px solid #e4e2dd;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i {
+  transition: .4s color;
+  display: block;
+  height: 50px;
+  line-height: 47px;
+  text-align: center;
+  width: 50px;
+  cursor: pointer;
+  color: #c2c0bb;
+}
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
+  color: #5a595c;
+}
 .wpp-advanced-supermap .sm-sidebar-top {
   padding: 15px 20px !important;
 }
@@ -1435,15 +1459,18 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   padding: 22px 0 15px;
   outline: none;
 }
+.single-property .singlePropertyHeader .oneAgent .socialButtons li a:focus {
+  text-decoration: none !important;
+}
 .single-property .propertyAttribute {
   margin-top: 20px;
 }
-.single-property .propertyAttribute div {
+.single-property .propertyAttribute > div {
   display: inline-block;
   width: 32%;
   margin-bottom: 20px;
 }
-.single-property .propertyAttribute div div {
+.single-property .propertyAttribute > div div {
   border: 1px solid #dedede;
   border-radius: 50%;
   float: left;
@@ -1452,7 +1479,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-top: 0;
   padding: 9px 15px;
 }
-.single-property .propertyAttribute div div span {
+.single-property .propertyAttribute > div div span {
   color: #a7a9ac;
   display: block;
   font-size: 1em;
@@ -1462,14 +1489,14 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   text-align: center;
   width: 25px;
 }
-.single-property .propertyAttribute div span {
+.single-property .propertyAttribute > div span {
   display: block;
   color: #919093;
   font-size: 1em;
   margin-top: 5px;
   margin-bottom: 3px;
 }
-.single-property .propertyAttribute div strong {
+.single-property .propertyAttribute > div strong {
   font-weight: 400;
   font-size: 1.2em;
 }
