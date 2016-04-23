@@ -23,6 +23,7 @@
 
 global $property;
 global $wp_properties;
+use \UsabilityDynamics\RDC\Utils;
 
 // Start the Loop.
 while (have_posts()) : the_post();
@@ -42,16 +43,10 @@ while (have_posts()) : the_post();
   $get_inside_city_terms = get_the_terms($property['ID'], 'inside_city');
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
-  $get_design_terms = get_the_terms($property['ID'], 'design');
-  $get_style_terms = get_the_terms($property['ID'], 'style');
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
-  $get_listing_agent_name_terms = get_the_terms($property['ID'], 'listing_agent_name');
-  $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
   $get_listing_agent_phone_extension_terms = get_the_terms($property['ID'], 'listing_agent_phone_extension');
-  $get_listing_office_terms = get_the_terms($property['ID'], 'listing_office');
   $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
-  $get_mls_id_terms = get_the_terms($property['ID'], 'mls_id');
   $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
   $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
 
@@ -72,22 +67,10 @@ while (have_posts()) : the_post();
   $inside_city = ($get_inside_city_terms[0]) ? $get_inside_city_terms[0]->name : '';
   $location_city = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
-  $design = array();
-  foreach($get_design_terms as $designTermObj){
-    $design[] = $designTermObj->name;
-  }
-  $style = array();
-  foreach($get_style_terms as $styleTermObj){
-    $style[] = $styleTermObj->name;
-  }
   $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
   $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
-  $listing_agent_name = ($get_listing_agent_name_terms[0]) ? $get_listing_agent_name_terms[0]->name : '';
-  $listing_agent_phone_number = ($get_listing_agent_phone_number_terms[0]) ? $get_listing_agent_phone_number_terms[0]->name : '';
   $listing_agent_phone_extension = ($get_listing_agent_phone_extension_terms[0]) ? $get_listing_agent_phone_extension_terms[0]->name : '';
-  $listing_office = ($get_listing_office_terms[0]) ? $get_listing_office_terms[0]->name : '';
   $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
-  $mls_id = ($get_mls_id_terms[0]) ? $get_mls_id_terms[0]->name : '';
   $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
   $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
 
@@ -197,38 +180,25 @@ while (have_posts()) : the_post();
         <div class="col-md-7 col-lg-8">
           <div class="container-fluid">
             <div class="row">
-          <?php if(!empty($design)){ ?>
+          <?php if(!empty(Utils::get_multiple_terms('design', $property['ID'], 'name'))){ ?>
           <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-listing-house-outline"></span>
             </div>
             <span><?php _e('Design'); ?></span>
-            <strong><?php
-              $countElements = count($design);
-              for($i = 0; $i < $countElements; $i++){
-                $styleDesign .= $design[$i] . ', ';
-              }
-              echo substr($styleDesign, 0, -2);
-            ?></strong>
+            <strong><?php echo Utils::get_multiple_terms('design', $property['ID'], 'name', 'a'); ?></strong>
           </div>
           <?php } ?>
-          <?php if(!empty($style)){ ?>
+          <?php if(!empty(Utils::get_multiple_terms('style', $property['ID'], 'name'))){ ?>
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
             </div>
             <span><?php _e('Style'); ?></span>
-            <strong><?php
-              $countElements = count($style);
-              for($i = 0; $i < $countElements; $i++){
-                $styleString .= $style[$i] . ', ';
-              }
-              echo substr($styleString, 0, -2);
-              ?></strong>
+            <strong><?php echo Utils::get_multiple_terms('style', $property['ID'], 'name', 'a'); ?></strong>
           </div>
           <?php } ?>
-
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-attribute-exterior-outline"></span>
@@ -967,11 +937,11 @@ while (have_posts()) : the_post();
     <div class="row">
       <div class="col-xs-6 col-lg-8 col-md-7">
         <ul>
-          <li><?php _e('Agent: '); ?><b><?php _e($listing_agent_name); ?></b></li>
+          <li><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
-          <li><?php _e('Office: '); ?><b><?php _e($listing_office); ?></b></li>
-          <li><?php _e('Office Phone Number: '); ?><b><?php echo $listing_office_phone_number; ?></b></li>
-          <li><?php _e('MLS ID: '); ?><b><?php echo $mls_id; ?></b></li>
+          <li><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></li>
+          <li><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></li>
+          <li><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></li>
         </ul>
         <ul>
           <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
