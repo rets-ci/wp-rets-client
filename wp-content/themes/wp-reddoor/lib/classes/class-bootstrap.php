@@ -370,6 +370,15 @@ namespace UsabilityDynamics\RDC {
               'after_title' => '</h2>',
           ));
 
+          register_sidebar(array(
+              'name' => 'Guide Article Footer',
+              'id' => 'guide-article-footer',
+              'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+              'after_widget' => '</aside>',
+              'before_title' => '<h2 class="offscreen">',
+              'after_title' => '</h2>',
+          ));
+
         }
 
         if ( function_exists( 'register_widget' ) ) {

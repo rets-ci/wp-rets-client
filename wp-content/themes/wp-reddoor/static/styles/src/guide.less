@@ -108,9 +108,12 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
     min-height: 600px;
     overflow: scroll;
 
-    article {
+    .guide-article-container {
       padding-bottom: 15em;
       color: rgb(58, 58, 58);
+    }
+
+    article {
       font-size: 1.2em;
       line-height: 1.8em;
 
@@ -129,6 +132,51 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
         margin-bottom: 2em;
       }
 
+      // set special spacing for social block shortcode
+      ul.singleSocialBlock {
+        margin: 0 auto 2em auto;
+        padding: 0;
+      }
+
+      .widget_callout {
+        left: 0;
+        width: 100%;
+
+        .widgetBody {
+          padding: 1.8em;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          border-radius: 0.5em;
+
+          .callout-overlay {
+            border-radius: 0.5em;
+          }
+
+          h2 {
+            text-shadow: none;
+            font-weight: 100;
+            font-size: 1.5em;
+          }
+
+          h3 {
+            text-shadow: none;
+            font-weight: 100;
+            margin: 0 0 25px;
+          }
+
+          a.callout-action-button {
+            display: inline-block;
+            width: auto;
+            font-size: 0.9em;
+            font-weight: 100;
+            padding: 0.5em 1.5em;
+          }
+
+        }
+
+      }
+
     }
 
   }
@@ -137,7 +185,7 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
     min-height: 100px;
     background-repeat: no-repeat;
     background-size: cover;
-
+    background-position: center;
     -webkit-border-top-right-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
     -moz-border-radius-topright: 5px;
@@ -147,7 +195,7 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
   }
 
   .guide-group-wrapper {
-    margin: 1em;
+    margin: 0 1em 2em 1em;
     background: #FFF;
     padding: 0;
 
@@ -219,6 +267,8 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
     line-height: 2em;
     font-size: 1.2em;
     text-shadow: -1px 2px 6px rgba(72, 72, 72, 0.97);
+    max-height: 6em;
+    overflow: hidden;
   }
 
   .guide-description {
@@ -228,7 +278,17 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
     text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
   }
 
-
-
 }
 
+// Smal Screen Support for Guides, we fix nothing and allow for regular scrolling.
+@media (max-width: 1200px) {
+
+  .guide-wrapper {
+    position: initial !important;
+  }
+
+  .guide-article-wrapper {
+    overflow: visible !important;
+  }
+
+}

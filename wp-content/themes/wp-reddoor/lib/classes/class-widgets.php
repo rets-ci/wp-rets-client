@@ -857,7 +857,7 @@ namespace UsabilityDynamics\RDC {
       echo $args['before_widget'];
 
       if (!empty($instance['title']))
-        echo '<div class="widgetBody" style="background: url(' . $callout_image . ')"><h2>' . $instance['title'] . '</h2>';
+        echo '<div class="widgetBody" style="background-image: url(' . $callout_image . ')"><h2>' . $instance['title'] . '</h2>';
 
 
       /**
@@ -879,7 +879,7 @@ namespace UsabilityDynamics\RDC {
 
       echo '<h3>' . $instance['subtitle'] . '</h3>';
 
-      echo '<a href="' . $instance['buttonlink'] . '">' . $instance['buttonlabel'] . '</a>';
+      echo '<a href="' . $instance['buttonlink'] . '" class="callout-action-button">' . $instance['buttonlabel'] . '</a>';
 
       echo '<div class="callout-overlay"></div>';
 
@@ -913,6 +913,7 @@ namespace UsabilityDynamics\RDC {
      * @access public
      *
      * @param array $instance Current settings.
+     * @return string|void
      */
     public function form($instance)
     {
@@ -948,13 +949,9 @@ namespace UsabilityDynamics\RDC {
 
 
       <p>
-        <a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select
-          image</a> <br/>
-        <img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>"
-             width="300" style="display: none;"/>
-        <input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id('custom_media_id'); ?>"
-               name="<?php echo $this->get_field_name('custom_media_id'); ?>"
-               value="<?php echo esc_attr($custom_media_id); ?>"/>
+        <a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select Image</a> <br/>
+        <img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>" width="300" style=""/>
+        <input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id('custom_media_id'); ?>" name="<?php echo $this->get_field_name('custom_media_id'); ?>" value="<?php echo esc_attr($custom_media_id); ?>"/>
       </p>
       <?php
     }
