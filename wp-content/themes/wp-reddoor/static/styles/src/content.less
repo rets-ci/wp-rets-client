@@ -1346,6 +1346,9 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
             display: block;
             padding: 22px 0 15px;
             outline: none;
+            &:focus{
+              text-decoration: none !important;
+            }
           }
         }
       }
@@ -1353,7 +1356,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
   }
   .propertyAttribute{
     margin-top: 20px;
-    div{
+    &>div{
       display: inline-block;
       width: 32%;
       margin-bottom: 20px;
