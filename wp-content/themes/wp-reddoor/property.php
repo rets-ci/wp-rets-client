@@ -364,7 +364,7 @@ while (have_posts()) : the_post();
     </div>
     <div class="row">
       <div class="col-lg-8 col-md-8">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs ws_nmaps">
           <li class="active"><a data-toggle="tab" href="#Ameneties">Ameneties</a></li>
           <li><a data-toggle="tab" href="#Commute">Commute</a></li>
           <li><a data-toggle="tab" href="#Street">Street View</a></li>
@@ -372,18 +372,50 @@ while (have_posts()) : the_post();
         </ul>
 
         <div class="tab-content">
-          <div id="Ameneties" class="tab-pane fade in active">
-            <?php //echo do_shortcode('[property_walkscore_neighborhood ws_map_modules = "google_map";  ws_base_map = "google_map";]'); ?>
-          </div>
-          <div id="Commute" class="tab-pane fade">
-            <p>Commute</p>
-          </div>
-          <div id="Street" class="tab-pane fade">
-            <p>Some content Street.</p>
-          </div>
-          <div id="Satellite" class="tab-pane fade">
-            <p>Some content Satellite.</p>
-          </div>
+          <div id="Ameneties" class="tab-pane fade in active" data-nmap-options="<?php echo urldecode( http_build_query( array(
+            "property_id" => $property[ 'ID' ],
+            "ws_commute" => "false",
+            "ws_map_modules" => "all",
+            "ws_base_map" => "google_map",
+            "ws_show_reviews" => "false",
+            "ws_hide_bigger_map" => "true",
+            "ws_no_link_info_bubbles" => "true",
+            "ws_map_icon_type" => "house",
+            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
+          ) ) ); ?>"></div>
+          <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+            "property_id" => $property[ 'ID' ],
+            "ws_commute" => "true",
+            "ws_map_modules" => "all",
+            "ws_base_map" => "google_map",
+            "ws_show_reviews" => "false",
+            "ws_hide_bigger_map" => "true",
+            "ws_no_link_info_bubbles" => "true",
+            "ws_map_icon_type" => "house",
+            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
+          ) ) ); ?>"></div>
+          <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+            "property_id" => $property[ 'ID' ],
+            "ws_commute" => "false",
+            "ws_map_modules" => "all",
+            "ws_base_map" => "street_view",
+            "ws_show_reviews" => "false",
+            "ws_hide_bigger_map" => "true",
+            "ws_no_link_info_bubbles" => "true",
+            "ws_map_icon_type" => "house",
+            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
+          ) ) ); ?>"></div>
+          <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+            "property_id" => $property[ 'ID' ],
+            "ws_commute" => "false",
+            "ws_map_modules" => "all",
+            "ws_base_map" => "satellite",
+            "ws_show_reviews" => "false",
+            "ws_hide_bigger_map" => "true",
+            "ws_no_link_info_bubbles" => "true",
+            "ws_map_icon_type" => "house",
+            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
+          ) ) ); ?>"></div>
         </div>
       </div>
       <div class="col-md-8 col-lg-8">

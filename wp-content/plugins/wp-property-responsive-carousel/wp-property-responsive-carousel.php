@@ -47,8 +47,15 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
         'description' => __('Display your properties as a carousel.', 'ud'),
         'has_preview' => false
       ),
-      array(),
       array(
+
+      ),
+      array(
+        'posts' => array(
+          'type' => 'posts',
+          'label' => __('Posts query', 'so-widgets-bundle'),
+          'description' => __('Note, only properties are available. Other posts types will be replaced with property type', 'ud'),
+        ),
         'Description' => array(
           'type' => 'tinymce',
           'label' => __( 'Description', 'ud' ),
