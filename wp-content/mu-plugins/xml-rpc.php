@@ -98,13 +98,23 @@ add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, 
  * @return array
  */
 function WPP_RPC_editProperty( $args ) {
-  global $wp_xmlrpc_server;
+  global $wp_xmlrpc_server, $wp_filter;
 
   $wp_xmlrpc_server->escape( $args );
 
   //$rest_json = file_get_contents("php://input");
+  //rdc_write_log($rest_json);
 
-  //write_log($rest_json);
+  // remove filter which slows down updates significantly. (experimental)
+  remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+
+  //remove_filter( 'transition_post_status', '_transition_post_status', 5 );
+  //remove_filter( 'transition_post_status', '_wp_auto_add_pages_to_menu', 10 );
+  //remove_filter( 'transition_post_status', '__clear_multi_author_cache', 10 );
+
+
+  // view used transition_post_status actiosn
+  // rdc_write_log( $wp_filter['transition_post_status'] );
 
   $username = $args[1];
   $password = $args[2];
@@ -120,9 +130,9 @@ function WPP_RPC_editProperty( $args ) {
     );
   }
 
-  write_log( 'Have request wpp.editProperty request' );
+  rdc_write_log( 'Have request wpp.editProperty request' );
 
-  // write_log( '<pre>' . print_r( $post_data['meta_input'], true ) . '</pre>' );
+  // rdc_write_log( '<pre>' . print_r( $post_data['meta_input'], true ) . '</pre>' );
 
   if( $post_data['meta_input']['rets_id'] ) {
     $post_data['ID'] = find_property_by_rets_id( $post_data['meta_input']['rets_id'] );
@@ -136,8 +146,8 @@ function WPP_RPC_editProperty( $args ) {
   $_post_id = wp_insert_post( $post_data, true );
 
   if( is_wp_error( $_post_id ) ) {
-    write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>' );
-    write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>' );
+    rdc_write_log( 'wp_insert_post error <pre>' . print_r( $_post_id, true ) . '</pre>' );
+    rdc_write_log( 'wp_insert_post $post_data <pre>' . print_r( $post_data, true ) . '</pre>' );
 
     return array(
       "ok" => false,
@@ -147,7 +157,7 @@ function WPP_RPC_editProperty( $args ) {
 
   } else {
 
-    write_log( 'Inserted property post as draft ' . $_post_id  );
+    rdc_write_log( 'Inserted property post as draft ' . $_post_id  );
 
   }
 
@@ -158,7 +168,7 @@ function WPP_RPC_editProperty( $args ) {
     // get simple url litst of already attached media
     if( $attached_media = get_attached_media( 'image', $_post_id ) ) {
 
-      // write_log( 'attached_media' . print_r($_already_attached_media, true ) );
+      // rdc_write_log( 'attached_media' . print_r($_already_attached_media, true ) );
 
       foreach( (array) $attached_media as $_attached_media_id => $_media ) {
         $_already_attached_media[ $_attached_media_id ] = $_media->guid;
@@ -167,13 +177,13 @@ function WPP_RPC_editProperty( $args ) {
     }
 
     if( !empty( $_already_attached_media ) ) {
-      // write_log( '$_post_id ' . $_post_id . ' already has already_attached_media ' . count( $_already_attached_media  ) );
+      // rdc_write_log( '$_post_id ' . $_post_id . ' already has already_attached_media ' . count( $_already_attached_media  ) );
     }
 
     foreach( $post_data['meta_input']['rets_media'] as $media ) {
 
       if( in_array( $media['url'], $_already_attached_media ) ) {
-        // write_log( "Skipping $media[url] because it's already attached to $_post_id" );
+        // rdc_write_log( "Skipping $media[url] because it's already attached to $_post_id" );
       }
 
       // attach media if a URL is set and it isn't already attached
@@ -194,12 +204,12 @@ function WPP_RPC_editProperty( $args ) {
 
         update_post_meta( $attach_id, '_is_remote', '1' );
 
-        // write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
+        // rdc_write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
 
         // set the item with order of 1 as the thumbnail
         if( $media['order'] === 1 ) {
           set_post_thumbnail( $_post_id, $attach_id );
-          write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
+          rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
         }
 
       }
@@ -209,7 +219,7 @@ function WPP_RPC_editProperty( $args ) {
 
   }
 
-  write_log( 'Publishing property post ' . $_post_id  );
+  rdc_write_log( 'Publishing property post ' . $_post_id  );
 
   $_update_post = wp_update_post(array(
     'ID'           => $_post_id,
@@ -217,10 +227,10 @@ function WPP_RPC_editProperty( $args ) {
   ));
 
   if( !is_wp_error( $_update_post ) ) {
-    write_log( 'Published property post ' . $_post_id  );
+    rdc_write_log( 'Published property post ' . $_post_id  );
   } else {
-    write_log( 'Error publishign post ' . $_post_id  );
-    write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
+    rdc_write_log( 'Error publishign post ' . $_post_id  );
+    rdc_write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
   }
 
   return array(
@@ -264,7 +274,7 @@ function find_property_by_rets_id( $rets_id ) {
   }
 
   if( $_actual_post_id ) {
-    write_log( 'Found ' . $_actual_post_id . ' using $rets_id: ' . $rets_id);
+    rdc_write_log( 'Found ' . $_actual_post_id . ' using $rets_id: ' . $rets_id);
     return $_actual_post_id;
   }
 
@@ -281,6 +291,6 @@ function find_property_by_rets_id( $rets_id ) {
  * - all post meta/terms added by this thing are attached to the original post, it seems
  * @param $data
  */
-function write_log( $data ) {
+function rdc_write_log( $data ) {
   file_put_contents( '/var/www/debug-log.log', '' . print_r( $data, true ) . ' in ' . timer_stop() . ' seconds.' . "\n", FILE_APPEND  );
 }
