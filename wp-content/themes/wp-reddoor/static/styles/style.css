@@ -2911,6 +2911,14 @@ body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
 body.single-rdc_guide .guide-group-image {
   min-height: 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper,
 body.tax-rdc_guide_category .guide-group-wrapper,
@@ -2932,6 +2940,7 @@ body.post-type-archive-rdc_guide .guide-group-wrapper:hover,
 body.tax-rdc_guide_category .guide-group-wrapper:hover,
 body.single-rdc_guide .guide-group-wrapper:hover {
   border-top: 2px solid #CE3124;
+  box-shadow: -2px 4px 5px rgba(136, 136, 136, 0.17);
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper .guide-group-title,
 body.tax-rdc_guide_category .guide-group-wrapper .guide-group-title,
