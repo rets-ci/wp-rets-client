@@ -2800,6 +2800,10 @@ body.single-rdc_guide .guide-wrapper {
   top: 60px;
   overflow: hidden;
 }
+body.tax-rdc_guide_category.admin-bar .guide-wrapper,
+body.single-rdc_guide.admin-bar .guide-wrapper {
+  top: 92px !important;
+}
 body.post-type-archive-rdc_guide .guide-wrapper,
 body.tax-rdc_guide_category .guide-wrapper,
 body.single-rdc_guide .guide-wrapper {

@@ -22,6 +22,11 @@ if(!empty($post_thumbnail_id)) {
       <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_background_url; ?>');">
         <h1 class="guide-article-title"><?php the_title(); ?></h1>
         <div class="guide-article-description"><?php the_excerpt(); ?></div>
+
+        <div class="guide-actions">
+          <?php next_post_link( '<strong>%link</strong>', __( 'Go to Next Article ->' ) ); ?>
+        </div>
+
       </div>
 
       <div class="col-lg-6 guide-article-wrapper">
