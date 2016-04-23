@@ -72,14 +72,21 @@
 
     jQuery( "#propertyDetails" ).sticky( { topSpacing: 0, bottomSpacing: 1000 } );
 
-    /* Tabbed content widget (feature point) */
+    /**
+     * Tabbed content widget (feature point)
+     */
     var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
     var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
     var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
-    var tabbedWidgetImageHeight = jQuery( '.tabbedWidgetContent' ).outerHeight();
     jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
     jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
-    jQuery( '.tabbedWidgetImageArea' ).css( 'height', tabbedWidgetImageHeight );
+
+    /**
+     * Set row height for tabbed Widget Image Area
+     */
+    jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea' ), function eachColumn( index, element ){
+      jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
+    } );
 
     /* Share button */
     jQuery( '.shareButton' ).on( 'click', function () {

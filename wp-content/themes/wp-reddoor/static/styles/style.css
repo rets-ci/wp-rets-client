@@ -2077,14 +2077,14 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   float: left;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper {
-  padding: 80px 10px;
+  padding: 80px 0px !important;
+  max-width: 100% !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent {
   float: left;
   width: 50%;
   overflow: hidden;
-  padding-right: 4em;
-  padding-top: 7em;
+  padding: 10em 7em 10em 10em !important;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -2176,14 +2176,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   text-decoration: none;
   color: #d03528;
 }
-.page .full-width-totop .so-widget-sow-hero {
-  top: -30px;
-  margin-bottom: -30px;
-}
 .page .so-widget-sow-hero {
   position: relative;
-  top: -90px;
-  margin-bottom: -90px;
   z-index: 8;
 }
 .page .so-widget-sow-hero .sow-slider-image-container h1 {
@@ -2208,7 +2202,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
  * CUSTOM CLASSES FOR ROWS AND WIDGETS
  ******************************************/
 /**
- * ROW class
+ * ROW class 'no-padding'
  *
  * Removes padding for row and all its columns
  * Usage: http://screencast.com/t/1bv842U3YSB
@@ -2220,14 +2214,31 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   padding: 0 !important;
 }
 /**
- * WIDGET class
+ * WIDGET class 'bg-image'
  *
  * Used for empty block which contains only background image
  * It sets block height to be equal with ROW
  * Usage: http://screencast.com/t/XAfp9hxqwv
  */
+.bg-image {
+  background-position: center center;
+}
 /**
- * WIDGET class
+ * WIDGET class 'masthead'
+ *
+ * Used for SiteOrigin Hero widget when it's set as masthead
+ * Usage: http://screencast.com/t/0N7AGYGW
+ */
+.masthead .so-widget-sow-hero {
+  top: -90px;
+  margin-bottom: -90px;
+}
+.full-width-totop .masthead .so-widget-sow-hero {
+  top: -30px;
+  margin-bottom: -30px;
+}
+/**
+ * WIDGET class 'hero-content'
  *
  * Centers content in widget.
  * Supported widgets: SiteOrigin Editor
