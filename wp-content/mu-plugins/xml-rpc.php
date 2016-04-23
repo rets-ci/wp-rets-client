@@ -102,6 +102,10 @@ function WPP_RPC_editProperty( $args ) {
 
   $wp_xmlrpc_server->escape( $args );
 
+  //$rest_json = file_get_contents("php://input");
+
+  //write_log($rest_json);
+
   $username = $args[1];
   $password = $args[2];
   $post_data = $args[3];
