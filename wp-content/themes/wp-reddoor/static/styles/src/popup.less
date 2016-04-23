@@ -68,20 +68,38 @@
         display: block;
         height: 100%;
         padding: 0 5%;
-        img {
+        i {
+          background: #f3f0e9 none repeat scroll 0 0;
+          border-radius: 100%;
+          color: #5a595c;
           float: left;
-          margin-top: 6%;
+          font-size: 35px;
+          height: 70px;
+          line-height: 65px;
+          position: relative;
+          text-align: center;
+          top: 24px;
+          width: 70px;
         }
         div {
           float: left;
           font-size: 1.3em;
           font-weight: 500;
-          margin: 9% 5% 0 6%;
+          line-height: 120px;
+          margin-left: 25px;
         }
         .icon-circle-right {
           float: right;
           font-size: 2em;
           margin-top: 9%;
+        }
+
+        &:hover {
+          color: @buttons;
+
+          i {
+            color: @buttons;
+          }
         }
       }
     }
