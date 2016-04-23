@@ -4,11 +4,12 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sellHome.png" alt="" />
-      <h3>I want to sell a home</h3>
-      <p>Sell your home on your terms! Please submit your information below or call us by phone. We’re ready to assist you with selling your home.</p>
+      <i class="icon icon-rdc-home-selling"></i>
+
+      <h3><?php _e('I want to sell a home', 'reddoor'); ?></h3>
+      <p><?php _e('Sell your home on your terms! Please submit your information below or call us by phone. We\'re ready to assist you with selling your home.'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
-      <span class="clickToView">click to view the full number</span>
+      <span class="clickToView"><?php _e('click to view the full number', 'reddoor'); ?></span>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 

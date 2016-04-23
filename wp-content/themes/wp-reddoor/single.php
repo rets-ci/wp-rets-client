@@ -6,7 +6,8 @@
  * @since Wp-reddoor 1.0
  */
 
-get_header(); ?>
+
+get_header( get_post_type() ); ?>
 <?php
 
 //die( '<pre>' . print_r( $post, true ) . '</pre>' );
@@ -37,11 +38,7 @@ if(!empty($post_thumbnail_id)) {
       </div>
       <h1 class="singleTitle"><?php the_title(); ?></h1>
       <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
-      <ul class="singleSocialBlock">
-        <li><a target="_blank" class="icon-wpproperty-social-facebook-symbol" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
-        <li><a target="_blank" class="icon-wpproperty-social-twitter-symbol" href="https://twitter.com/home?status=<?php echo urlencode(get_the_title()); ?><?php echo urlencode(' ' . get_the_permalink()); ?>"></a></li>
-        <li><a target="_blank" class="icon-wpproperty-social-googleplus-symbol" href="https://plus.google.com/share?url=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
-      </ul>
+      <?php echo do_shortcode( '[share_this_article]' ); ?>
       <div class="hero-overlay"></div>
     </section>
   </div>
@@ -56,11 +53,7 @@ if(!empty($post_thumbnail_id)) {
     <div class="col-lg-8">
       <article class="content">
         <?php the_content(); endwhile; ?>
-        <ul class="singleSocialBlock">
-          <li><a target="_blank" class="icon-wpproperty-social-facebook-symbol" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
-          <li><a target="_blank" class="icon-wpproperty-social-twitter-symbol" href="https://twitter.com/home?status=<?php echo urlencode(get_the_title()); ?><?php echo urlencode(' ' . get_the_permalink()); ?>"></a></li>
-          <li><a target="_blank" class="icon-wpproperty-social-googleplus-symbol" href="https://plus.google.com/share?url=<?php echo urlencode(get_the_permalink()); ?>"></a></li>
-        </ul>
+        <?php echo do_shortcode( '[share_this_article]' ); ?>
       </article>
     </div>
   </div>
@@ -96,4 +89,4 @@ if(!empty($post_thumbnail_id)) {
 
 </div>
 
-<?php get_footer(); ?>
+<?php get_footer( get_post_type() ); ?>

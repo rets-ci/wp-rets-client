@@ -6,7 +6,6 @@
   margin-bottom: -90px;
   overflow: hidden;
 
-
   .guide-wrapper {
     position: relative;
     top: -90px;
@@ -15,8 +14,8 @@
 
 }
 
-// single guide page with several categories on right
-body.tax-rdc_guide_category {
+// single guide page with several categories on right or a single article with a 50/50 split
+body.tax-rdc_guide_category, body.single-rdc_guide {
 
   .guide-wrapper {
     position: fixed;
@@ -26,11 +25,12 @@ body.tax-rdc_guide_category {
 
 }
 
-body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
+body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_guide {
 
-  .container-fluid {
+  .guide-wrapper {
     padding-left: 0;
     padding-right: 0;
+    width: 100%;
   }
 
   .row {
@@ -64,10 +64,31 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
 
   .guide-overview-list {
     padding-top: 6em;
-    padding-bottom: 28em;
+    // set to 0, then increased by JS
+    padding-bottom: 0;
     background-color: #F3F0E9;
     min-height: 600px;
     overflow: scroll;
+  }
+
+  .guide-article-wrapper {
+    padding: 9em 4.5em;
+    background-color: #F3F0E9;
+    min-height: 600px;
+    overflow: scroll;
+
+    article {
+      padding-bottom: 15em;
+      color: rgb(58, 58, 58);
+      font-size: 1.2em;
+      line-height: 1.8em;
+
+      p {
+        margin-bottom: 2em;
+      }
+
+    }
+
   }
 
   .guide-group-image {
@@ -77,10 +98,40 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
   .guide-group-wrapper {
     margin: 1em;
     background: #FFF;
-    padding: 0;
+    padding: 0.6em 0.9em 1.2em;
+
+    // transparent border to create a space for the red border that shows on hover
+    border-top: 2px solid #F3F0E9;
+
+    &:hover {
+      border-top: 2px solid #CE3124;
+    }
+
+    .guide-group-title {
+      font-weight: 600;
+      color: #58575A;
+      font-size: 22px;
+      margin-bottom: 0.8em;
+    }
+
+    ul.guide-list {
+      margin-left: 1.2em;
+
+      li {
+        list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOElEQVQYV2NkIAIwIqtpamz+D+PX1dfC5eAMkAJkCWQ+WBG6AphpMHEqK8JmJYabkN2A13f4ggsAAt8wCodw+UcAAAAASUVORK5CYII=);
+        margin-bottom: 0.3em;
+
+        a {
+          color: #727174;
+        }
+
+      }
+
+    }
+
   }
 
-  .guide-title {
+  h2.guide-title {
     margin: 0 0 20px 0;
     color: #fff;
     font-size: 3.5em;
@@ -89,12 +140,29 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category {
     text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
   }
 
+  h1.guide-article-title {
+    margin: 1em 2.2em;
+    color: #fff;
+    font-size: 2.5em;
+    text-align: center;
+    font-weight: 600;
+    text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
+  }
+
+  .guide-article-description {
+    padding: 0 5em;
+    line-height: 2em;
+    font-size: 1.2em;
+    text-shadow: -1px 2px 6px rgba(72, 72, 72, 0.97);
+  }
+
   .guide-description {
     padding: 0 5em;
     line-height: 2em;
     font-size: 1.1em;
     text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
   }
+
 
 
 }

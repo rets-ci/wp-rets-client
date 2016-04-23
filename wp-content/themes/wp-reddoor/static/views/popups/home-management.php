@@ -4,11 +4,12 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" />
-      <h3>I want to rent my home</h3>
-      <p>Grown your investment with Red Door Company! Please submit your information below or call us by phone. We’re ready to assist you with renting your property.</p>
+      <i class="icon icon-rdc-property-management"></i>
+
+      <h3><?php _e('I want to rent my home', 'reddoor'); ?></h3>
+      <p><?php _e('Grown your investment with Red Door Company! Please submit your information below or call us by phone. We\'re ready to assist you with renting your property.', 'reddoor'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
-      <span class="clickToView">click to view the full number</span>
+      <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 

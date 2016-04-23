@@ -148,8 +148,12 @@
 
         </div>
 
-        <div ng-show="!loaded" class="sm-no-results">
+        <div ng-show="!loaded && !error" class="sm-no-results">
           Loading...
+        </div>
+
+        <div ng-show="error" class="sm-no-results">
+          Connection Error
         </div>
 
         <div ng-show="properties.length == 0 && loaded" class="sm-no-results">

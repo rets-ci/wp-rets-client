@@ -166,8 +166,8 @@ function rdc_generate_guide_overview( $options = false ) {
   // get all top-level Guide categories
   $top_categories = get_terms( array(
     'taxonomy' => 'rdc_guide_category',
-    'hide_empty' => true,
-    'parent' => $options['parent'] ? $options['parent'] : 0
+    'hide_empty' => isset( $options['hide_empty'] ) && $options['hide_empty'] ? $options['hide_empty'] : true,
+    'parent' => isset( $options['parent'] ) && $options['parent'] ? $options['parent'] : 0
   ) );
 
   // iterate over each top-level Gudie category

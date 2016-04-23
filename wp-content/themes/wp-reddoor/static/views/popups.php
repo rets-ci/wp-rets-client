@@ -5,22 +5,22 @@
 			<ul>
 				<li class="pupBuy showContactPopup">
 					<a href="javascript:;" rel="<?php echo is_singular('property') ? 'popupBuyHomeListing' : 'popupBuyHome'; ?>">
-						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" /><div>I want to buy a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-home-buying"></i><div><?php _e('I want to buy a home','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupRent showContactPopup">
 					<a href="javascript:;" rel="<?php echo is_singular('property') ? 'popupRentHomeListing' : 'popupRentHome'; ?>">
-						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentHome.png" alt="" /><div>I want to rent a home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-home-renting"></i><div><?php _e('I want to rent a home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupSell showContactPopup">
 					<a href="javascript:;" rel="popupSellHome">
-						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/sellHome.png" alt="" /><div>I want to sell my home</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-home-selling"></i><div><?php _e('I want to sell my home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupRentProp showContactPopup">
 					<a href="javascript:;" rel="popupManage">
-						<img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentMyProp.png" alt="" /><div>I went to rent my property</div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-property-management"></i><div><?php _e('I went to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 			</ul>
