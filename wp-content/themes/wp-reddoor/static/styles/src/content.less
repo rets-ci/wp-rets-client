@@ -1359,8 +1359,8 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     margin-top: 20px;
     &>div{
       display: inline-block;
-      width: 32%;
       margin-bottom: 20px;
+      padding: 0;
       div{
         border: 1px solid #dedede;
         border-radius: 50%;
@@ -1392,12 +1392,15 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         font-size: 1.2em;
       }
     }
+
   }
   .propertyFacts{
     margin-top: 20px;
-    float: left;
-    width: 33%;
-    li{
+    padding: 0;
+    .col-md-12{
+      padding: 0;
+    }
+    &>div{
       margin-bottom: 37px;
       div{
         border: 1px solid #dedede;
@@ -1406,7 +1409,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         font-size: 1.5em;
         margin-right: 15px;
         margin-top: 0;
-        padding: 7px 15px;
+        padding: 9px 15px;
         span{
           color: #a7a9ac;
           display: block;
