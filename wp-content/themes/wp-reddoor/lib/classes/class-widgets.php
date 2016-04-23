@@ -950,13 +950,9 @@ namespace UsabilityDynamics\RDC {
 
 
       <p>
-        <a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select
-          image</a> <br/>
-        <img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>"
-             width="300" style="display: none;"/>
-        <input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id('custom_media_id'); ?>"
-               name="<?php echo $this->get_field_name('custom_media_id'); ?>"
-               value="<?php echo esc_attr($custom_media_id); ?>"/>
+        <a href="javascript:void(0);" class="custom_media_upload button button-primary" style="margin-bottom: 15px;">Select Image</a> <br/>
+        <img class="custom_media_url" src="<?php echo wp_get_attachment_image_url($custom_media_id, 'thumbnail'); ?>" width="300" style=""/>
+        <input type="hidden" class="custom_media_id" id="<?php echo $this->get_field_id('custom_media_id'); ?>" name="<?php echo $this->get_field_name('custom_media_id'); ?>" value="<?php echo esc_attr($custom_media_id); ?>"/>
       </p>
       <?php
     }
