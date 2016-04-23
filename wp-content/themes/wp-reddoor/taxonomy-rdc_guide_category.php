@@ -21,8 +21,11 @@ foreach( $_all_categories as $_maybe_this_category ) {
 
 $_this_category_guides = rdc_generate_guide_overview( array( 'parent' => ( is_object( $_term ) ? $_term->term_id : null ) ) );
 
-// @hack to double number of guides
-$_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide_overview( array( 'parent' => ( is_object( $_term ) ? $_term->term_id : null ) ) ) );
+// Try to detect a second-level child Guide category and redirect to parent if possible.
+if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent ) {
+  wp_redirect( get_term_link( $_term->parent, 'rdc_guide_category' ) );
+  die();
+}
 
 //die( '<pre>' . print_r( $_all_categories, true ) . '</pre>' );
 ?>
@@ -57,7 +60,7 @@ $_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide
 
                 </div>
 
-                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['thumbnail']; ?>');"></div>
+                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['image']; ?>');"></div>
 
             </div>
 
