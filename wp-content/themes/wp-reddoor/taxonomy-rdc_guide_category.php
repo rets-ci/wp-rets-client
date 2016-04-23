@@ -57,9 +57,7 @@ $_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide
 
                 </div>
 
-                <div class="col-lg-4">
-                  <img src="<?php echo $_some_guide['thumbnail']; ?>" class="guide-group-image"/>
-                </div>
+                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['thumbnail']; ?>');"></div>
 
             </div>
 

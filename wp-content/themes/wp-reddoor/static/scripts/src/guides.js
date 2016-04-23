@@ -4,6 +4,12 @@ jQuery(function () {
 
   jQuery( window ).resize( rdc_set_guide_heights );
 
+
+  // Iterate over all "guide group images" that have a parent row, and set their height to row height
+  jQuery.each( jQuery( '.row .guide-group-image' ), function eachGroupImage( index, element ){
+    jQuery( element ).height( jQuery( element ).closest( '.row' ).height() );
+  });
+
 });
 
 /**

@@ -114,6 +114,17 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
       font-size: 1.2em;
       line-height: 1.8em;
 
+      ul {
+        margin-left: 1.2em;
+        margin-bottom: 2em;
+
+        li {
+          list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOElEQVQYV2NkIAIwIqtpamz+D+PX1dfC5eAMkAJkCWQ+WBG6AphpMHEqK8JmJYabkN2A13f4ggsAAt8wCodw+UcAAAAASUVORK5CYII=);
+          margin-bottom: 0.3em;
+        }
+
+      }
+
       p {
         margin-bottom: 2em;
       }
@@ -123,13 +134,21 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
   }
 
   .guide-group-image {
-    max-width: 100%;
+    min-height: 100px;
   }
 
   .guide-group-wrapper {
     margin: 1em;
     background: #FFF;
-    padding: 0.6em 0.9em 1.2em;
+    padding: 0;
+
+    .guide-group-inner-wrapper {
+      padding: 0.6em 0.9em 1.2em;
+    }
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 
     // transparent border to create a space for the red border that shows on hover
     border-top: 2px solid #F3F0E9;
