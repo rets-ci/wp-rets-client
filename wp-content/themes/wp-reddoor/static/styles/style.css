@@ -2882,11 +2882,15 @@ body.single-rdc_guide .guide-article-wrapper {
   min-height: 600px;
   overflow: scroll;
 }
+body.post-type-archive-rdc_guide .guide-article-wrapper .guide-article-container,
+body.tax-rdc_guide_category .guide-article-wrapper .guide-article-container,
+body.single-rdc_guide .guide-article-wrapper .guide-article-container {
+  padding-bottom: 15em;
+  color: #3a3a3a;
+}
 body.post-type-archive-rdc_guide .guide-article-wrapper article,
 body.tax-rdc_guide_category .guide-article-wrapper article,
 body.single-rdc_guide .guide-article-wrapper article {
-  padding-bottom: 15em;
-  color: #3a3a3a;
   font-size: 1.2em;
   line-height: 1.8em;
 }

@@ -38,9 +38,13 @@ if(!empty($post_thumbnail_id)) {
       </div>
 
       <div class="col-lg-6 guide-article-wrapper">
-        <article>
-        <?php the_content(); ?>
-        </article>
+        <div class="guide-article-container">
+          <article>
+          <?php the_content(); ?>
+          </article>
+          <?php dynamic_sidebar('guide-article-footer'); ?>
+        </div>
+
       </div>
 
     </div>
