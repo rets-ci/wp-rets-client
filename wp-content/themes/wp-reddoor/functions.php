@@ -6,6 +6,7 @@ require_once get_template_directory() . '/lib/classes/class-widgets.php';
 require_once get_template_directory() . '/lib/classes/class-property-hooks.php';
 require_once get_template_directory() . '/lib/classes/class-customizer.php';
 require_once get_template_directory() . '/lib/classes/class-ajax.php';
+require_once get_template_directory() . '/lib/classes/class-shortcodes.php';
 
 ## Post Types
 require_once get_template_directory() . '/lib/post-types/guide.php';
