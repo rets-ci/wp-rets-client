@@ -151,6 +151,7 @@
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
+        $scope.error = false;
         $scope.properties = [];
         $scope.propertiesTableCollection = [];
         $scope.wpp = wpp;
@@ -703,11 +704,11 @@
           },
           escapeMarkup: function (markup) { return markup; },
           templateSelection: function formatRepoSelection (term) {
-            $scope.map_filter_taxonomy = term.taxonomy;
+            if ( typeof term.taxonomy != 'undefined' ) {
+              $scope.map_filter_taxonomy = term.taxonomy;
+            }
             return term.text || term.name;
           }
-        }).on('change', function(){
-          $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         });
 
         if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
