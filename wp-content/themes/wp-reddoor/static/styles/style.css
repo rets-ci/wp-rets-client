@@ -2857,6 +2857,14 @@ body.post-type-archive-rdc_guide .guide-article-wrapper article,
 body.tax-rdc_guide_category .guide-article-wrapper article,
 body.single-rdc_guide .guide-article-wrapper article {
   padding-bottom: 15em;
+  color: #3a3a3a;
+  font-size: 1.2em;
+  line-height: 1.8em;
+}
+body.post-type-archive-rdc_guide .guide-article-wrapper article p,
+body.tax-rdc_guide_category .guide-article-wrapper article p,
+body.single-rdc_guide .guide-article-wrapper article p {
+  margin-bottom: 2em;
 }
 body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
