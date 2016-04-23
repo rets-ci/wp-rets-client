@@ -182,7 +182,8 @@ function WPP_RPC_editProperty( $args ) {
           'post_mime_type' => $filetype['type'],
           'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $media['url'] ) ),
           'post_content'   => '',
-          'post_status'    => 'inherit'
+          'post_status'    => 'inherit',
+          'menu_order'     => $media['order'] ? ( (int) $media['order'] ) : null
         );
 
         $attach_id = wp_insert_attachment( $attachment, $media['url'], $_post_id );
