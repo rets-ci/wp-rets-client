@@ -923,7 +923,6 @@ namespace UsabilityDynamics\RDC {
       $buttonlink = isset($instance['buttonlink']) ? $instance['buttonlink'] : '';
       $custom_media_id = isset($instance['custom_media_id']) ? $instance['custom_media_id'] : '';
 
-      echo( '<pre>' . print_r( $instance, true ) . '</pre>' );
       // If no menus exists, direct the user to go and create some.
       ?>
 
