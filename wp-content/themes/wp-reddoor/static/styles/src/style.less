@@ -129,25 +129,40 @@
 
 }
 @media screen and (max-width: @adapt1200) {
-  .head-popups{
-    a{
+  .head-popups {
+    a {
       font-size: 0.8em;
     }
   }
+
   .menu-header-container {
-    .menuDesktop{
-      &>li{
-        a{
+    .menuDesktop {
+      & > li {
+        a {
           font-size: 1.15em;
         }
       }
-      .sub-menu{
+      .sub-menu {
         width: 865px;
-        li{
-          a{
+        li {
+          a {
             font-size: 1em;
           }
         }
+      }
+
+    }
+  }
+
+    .single-property{
+    .areaMapBlock {
+      .ambItem {
+        margin-left: -15px;
+        margin-right: 0;
+        & + .ambItem {
+          margin-left: 7px;
+        }
+
       }
     }
   }

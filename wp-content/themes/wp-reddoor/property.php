@@ -253,6 +253,7 @@ while (have_posts()) : the_post();
             <strong><?php _e($subdivision); ?></strong>
           </div>
           <?php } ?>
+          <?php if(!empty($inside_city)){ ?>
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
@@ -267,7 +268,7 @@ while (have_posts()) : the_post();
               ?>
             </strong>
           </div>
-
+           <?php } ?>
           <?php if(!empty($location_county)){ ?>
           <div class="col-md-12">
             <div>
@@ -407,22 +408,28 @@ while (have_posts()) : the_post();
         $walkScoreSubtitle = 'Very Walkable';
       }
       ?>
-      <?php if(!empty($walkScore)){ ?>
-        <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-          <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
-          <span>Walk Score</span>
-          <strong><?php echo $walkScoreSubtitle; ?></strong>
+      <div class="col-xs-6 col-lg-8 col-md-7">
+        <div class="container-fluid">
+          <div class="row">
+        <?php if(!empty($walkScore)){ ?>
+          <div class="ambItem col-xs-12 col-md-4 col-lg-3">
+            <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
+            <span>Walk Score</span>
+            <strong><?php echo $walkScoreSubtitle; ?></strong>
+          </div>
+        <?php } ?>
+        <div class="ambItem col-xs-12 col-md-4 col-lg-3">
+          <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+          <span>Transit Score</span>
+          <strong>Coming Soon</strong>
         </div>
-      <?php } ?>
-      <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-        <span>Transit Score</span>
-        <strong>Coming Soon</strong>
-      </div>
-      <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-        <span>Bike Score</span>
-        <strong>Coming Soon</strong>
+        <div class="ambItem col-xs-12 col-md-4 col-lg-3">
+          <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+          <span>Bike Score</span>
+          <strong>Coming Soon</strong>
+        </div>
+        </div>
+        </div>
       </div>
       </div>
     <div class="row">
@@ -448,7 +455,7 @@ while (have_posts()) : the_post();
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
           <li><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
-          <li><a data-toggle="tab" href="#PropertyLot">Property & Lot</a></li>
+          <li><a data-toggle="tab" href="#PropertyLot">Property & Pricing</a></li>
         </ul>
 
         <div class="tab-content">
@@ -953,6 +960,11 @@ while (have_posts()) : the_post();
       </div>
     </div>
     <div class="row">
+      <div class="col-xs-6 col-lg-8 col-md-7 singleRemarks">
+        <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-xs-6 col-lg-8 col-md-7">
         <ul>
           <li><?php _e('Agent: '); ?><b><?php _e($listing_agent_name); ?></b></li>
@@ -977,10 +989,7 @@ while (have_posts()) : the_post();
         </ul>
         <div class="clear"></div>
       </div>
-      <div class="col-lg-8 col-md-7 italicText">
-        <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
       </div>
-    </div>
   </div>
 
 <?php endwhile; ?>

@@ -1525,7 +1525,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .areaMapBlock .ambItem {
   border: 1px solid #dedede;
   border-radius: 5px;
-  margin-right: 20px;
+  margin: 5px 30px;
   padding: 30px;
 }
 .single-property .areaMapBlock .ambItem div {
@@ -1568,6 +1568,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   width: 25%;
   text-align: center;
   background: #f3f3f3;
+  margin-left: -1px;
+}
+.single-property .areaMapBlock .nav-tabs li:first-child {
+  margin-left: 0;
+}
+.single-property .areaMapBlock .nav-tabs li:last-child {
+  width: 25.35%;
 }
 .single-property .areaMapBlock .nav-tabs li a {
   border-radius: 0;
@@ -1604,6 +1611,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   width: 25%;
   text-align: center;
   background: #f3f3f3;
+  margin-left: -1px;
+}
+.single-property .propertyDetails .nav-tabs li:first-child {
+  margin-left: 0;
+}
+.single-property .propertyDetails .nav-tabs li:last-child {
+  width: 25.35%;
 }
 .single-property .propertyDetails .nav-tabs li a {
   border-radius: 0;
@@ -5947,6 +5961,13 @@ body .ui-tooltip {
   }
   .menu-header-container .menuDesktop .sub-menu li a {
     font-size: 1em;
+  }
+  .single-property .areaMapBlock .ambItem {
+    margin-left: -15px;
+    margin-right: 0;
+  }
+  .single-property .areaMapBlock .ambItem + .ambItem {
+    margin-left: 7px;
   }
 }
 @media screen and (max-width: 1024px) {

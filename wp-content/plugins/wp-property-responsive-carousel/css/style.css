@@ -193,11 +193,15 @@
   line-height: 1.5em;
   margin-bottom: 20px;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .lead{
   color: #929194;
   font-size: 1.3em;
   line-height: 1.55em;
   margin-bottom: 30px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
+  font-size: 1.2em;
+  line-height: 1.55em;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item > a:hover{
   text-decoration: none !important;
