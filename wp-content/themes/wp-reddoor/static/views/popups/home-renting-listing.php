@@ -4,9 +4,10 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/rentHome.png" alt="" />
+      <i class="icon icon-rdc-home-renting"></i>
+
       <h3><?php _e('I want to rent a home', 'reddoor'); ?></h3>
-      <p>Please submit your information below. We’re ready to help you find the perfect rental home!</p>
+      <p><?php _e('Please submit your information below. We\'re ready to help you find the perfect rental home!', 'reddoor'); ?></p>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 

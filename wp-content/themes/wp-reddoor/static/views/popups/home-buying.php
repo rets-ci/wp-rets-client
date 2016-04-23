@@ -4,11 +4,12 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/buyHome.png" alt="" />
-      <h3>I want to buy a home</h3>
-      <p>Buy your dream home on your terms! Please submit your information below or call us by phone. We’re ready to assist you with your new home purchase.</p>
+      <i class="icon icon-rdc-home-buying"></i>
+
+      <h3><?php _e('I want to buy a home', 'reddoor'); ?></h3>
+      <p><?php _e('Buy your dream home on your terms! Please submit your information below or call us by phone. We’re ready to assist you with your new home purchase.', 'reddoor'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
-      <span class="clickToView">click to view the full number</span>
+      <span class="clickToView"><?php _e('click to view the full number'); ?></span>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 

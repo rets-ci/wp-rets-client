@@ -27,7 +27,7 @@ while (have_posts()) : the_post(); ?>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container-fluid">
     <div class="row site-content">
         <?php  the_content(); ?>
       <?php endwhile; // end of the loop. ?>

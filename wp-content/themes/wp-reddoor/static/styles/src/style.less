@@ -100,8 +100,17 @@
     .searchForm{
 
       form{
-        .sfBeds, .sfBaths, .sfPrice{
+        .sfBeds, .sfBaths {
           width: 18%;
+          &>span{
+            padding-left: 50px;
+          }
+          .sf-icon{
+
+          }
+        }
+        .sfPrice{
+          width: 21%;
           &>span{
             padding-left: 50px;
           }
@@ -114,10 +123,6 @@
             width: 45%;
           }
         }
-        .sfPrice{
-          width: 18%;
-        }
-
       }
     }
   }
@@ -215,13 +220,33 @@
     }
 
   }
+  .propertyDetails {
+    .nav-tabs {
+      li{
+        font-size: 0.8em;
+      }
+    }
+  }
+
+    .areaMapBlock{
+      .ambItem{
+        margin: 15px 0 0 0;
+      }
+    }
+
 
   .frontPageSearchBlock {
     .searchForm{
 
       form{
-        .sfBeds, .sfBaths, .sfPrice{
+        .sfBeds, .sfBaths {
           width: 18%;
+          .sf-icon{
+
+          }
+        }
+        .sfPrice{
+          width: 21%;
           .sf-icon{
 
           }
@@ -285,9 +310,6 @@
     &.single-property {
       .singlePropertyHeader {
         z-index: 9;
-        .oneAgent {
-          display: none;
-        }
       }
       .bottomSeparate {
         padding-bottom: 5px;
@@ -428,8 +450,8 @@
     }
   }
 
-  .menu-home-buying-page-sub-menu-container {
-    #menu-home-buying-page-sub-menu {
+  .widget_nav_menu {
+    ul.menu {
       overflow: hidden;
       border-bottom: 1px solid #fff;
       .menu-item {
@@ -441,7 +463,7 @@
         & + .menu-item {
           display: none;
         }
-        .homeBuyingMenuSpoiler {
+        .menu-spoiler {
           background: url('../images/src/icon-arrow.png');
           background-position: center center;
           background-repeat: no-repeat;
@@ -477,24 +499,6 @@
           border-right: 0;
           & + li {
             display: none;
-          }
-          .archiveFilterMenuSpoiler {
-            background: url('../images/src/icon-arrow.png');
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: 60% auto;
-            height: 24px;
-            position: absolute;
-            right: 3%;
-            top: 30%;
-            width: 40px;
-            cursor: pointer;
-            transition: 0.5s;
-            transform: rotate(180deg);
-            color: #5a595c;
-            &.arrow-down {
-              transform: rotate(0);
-            }
           }
         }
       }

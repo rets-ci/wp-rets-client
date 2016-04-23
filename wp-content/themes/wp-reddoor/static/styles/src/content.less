@@ -1,7 +1,8 @@
-
 .panel-grid {
-  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
+
 .page-template-rdc-guide{
   .site-content{
     .panel-grid-cell{
@@ -558,7 +559,7 @@
         border-radius: 5px 0 0 5px;
         color: #808285;
         position: relative;
-        width: 33%;
+        width: 30%;
         height: 4.5em;
         .citiesSelection{
           background: #f8f8f8 none repeat scroll 0 0;
@@ -690,7 +691,7 @@
       .sfprInputsBlock{
         background: #fbfaf8;
         border-bottom: 1px solid #f2f2f2;
-        padding: 16px;
+        padding: 10px;
 
         input {
           background: #fbfaf8 none repeat scroll 0 0;
@@ -703,7 +704,7 @@
           text-align: center;
 
           &.lastRangeLabel {
-            margin-left: 8px;
+            margin-left: 4px;
           }
         }
       }
@@ -767,6 +768,7 @@
   }
 
   .sm-search-form {
+    max-width: 620px;
     padding: 30px !important;
     box-shadow: 0px 0px 5px rgba(0,0,0,.25);
   }
@@ -1017,6 +1019,35 @@
   .sm-properties-list-wrap {
     box-shadow: 0 0 5px;
     overflow-y: scroll;
+
+    .sm-list-controls {
+      height: 50px;
+      margin: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 10;
+
+      li {
+
+        border-left: 1px solid #e4e2dd;
+
+        i {
+          transition: .4s color;
+          display: block;
+          height: 50px;
+          line-height: 47px;
+          text-align: center;
+          width: 50px;
+          cursor: pointer;
+          color: #c2c0bb;
+
+          &:hover {
+            color: #5a595c;
+          }
+        }
+      }
+    }
   }
 
   .sm-sidebar-top {
@@ -1346,6 +1377,9 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
             display: block;
             padding: 22px 0 15px;
             outline: none;
+            &:focus{
+              text-decoration: none !important;
+            }
           }
         }
       }
@@ -1353,10 +1387,10 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
   }
   .propertyAttribute{
     margin-top: 20px;
-    li{
+    &>div{
       display: inline-block;
-      width: 32%;
       margin-bottom: 20px;
+      padding: 0;
       div{
         border: 1px solid #dedede;
         border-radius: 50%;
@@ -1388,12 +1422,15 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         font-size: 1.2em;
       }
     }
+
   }
   .propertyFacts{
     margin-top: 20px;
-    float: left;
-    width: 33%;
-    li{
+    padding: 0;
+    .col-md-12{
+      padding: 0;
+    }
+    &>div{
       margin-bottom: 37px;
       div{
         border: 1px solid #dedede;
@@ -1402,7 +1439,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         font-size: 1.5em;
         margin-right: 15px;
         margin-top: 0;
-        padding: 7px 15px;
+        padding: 9px 15px;
         span{
           color: #a7a9ac;
           display: block;

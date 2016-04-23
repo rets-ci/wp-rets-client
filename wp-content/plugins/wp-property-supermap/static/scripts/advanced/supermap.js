@@ -89,6 +89,8 @@
 
       .filter('simpleAmount', function() {
         return function( int ) {
+          if ( !int || int == 0 ) return '';
+          int = Math.round(int/1000)*1000
           if ( !String(int).length ) return '';
           return '$' + ( int / 1000 ) + 'k';
         };
@@ -149,6 +151,7 @@
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
+        $scope.error = false;
         $scope.properties = [];
         $scope.propertiesTableCollection = [];
         $scope.wpp = wpp;
@@ -159,6 +162,25 @@
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
+
+        $scope.view = {
+          mode: {
+            table: true,
+            preview: false
+          },
+          toggle: function() {
+            this.mode.table = !this.mode.table;
+            this.mode.preview = !this.mode.preview;
+          },
+          set: function(mode) {
+            for(var i in this.mode) {
+              if ( this.mode[i] == true ) {
+                this.mode[i] = false;
+              }
+            }
+            this.mode[mode] = true;
+          }
+        };
 
         $scope._request = null;
 
@@ -220,23 +242,54 @@
          *
          * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
          */
-        $scope.pricing = {
+        $scope.pricing = window.pricing = {
           mode: false,
 
           current_min:'',
           current_max:'',
+          current_min_label:'',
+          current_max_label:'',
 
           min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
           max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
 
+          format: function(target, mode) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
+            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            }
+          },
+
           set_min: function(_price) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
             this.current_min = _price;
+            $scope.current_filter.price.min = _price;
             this.recalculate();
             this.mode = 'max';
           },
 
           set_max: function(_price) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
             this.current_max = _price;
+            $scope.current_filter.price.max = _price;
             this.mode = false;
           },
 
@@ -434,7 +487,7 @@
                 if( $scope.properties.length > 0 ) {
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
-                  loadImages($scope.properties[0]);
+                  $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( true );
 
@@ -508,7 +561,7 @@
                     if ( property._id == marker.listingId ) {
                       property.isSelected = true;
                       $scope.currentProperty = property;
-                      loadImages(property);
+                      $scope.loadImages(property);
                       index = i;
                     } else {
                       property.isSelected = false;
@@ -575,8 +628,9 @@
          *
          * @param row
          */
-        function loadImages( row ) {
-          if ( typeof row.images == 'undefined' || !row.images.length ) {
+        $scope.loadImages = function loadImages( row ) {
+          if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
+            row._is_loading_images = true;
             client.get({
               index: index,
               type: type,
@@ -585,6 +639,8 @@
             }, function (error, response) {
 
               if ( !error ) {
+
+                row._is_loading_images = false;
 
                 if( typeof response._source.meta_input.rets_media == 'undefined' ) {
                   console.log( 'Error occurred during getting properties data.' );
@@ -606,6 +662,7 @@
 
             });
           }
+          return true;
         }
 
         /**
@@ -618,7 +675,7 @@
             $scope.properties[i].isSelected = false;
           }
           $scope.currentProperty = row;
-          loadImages(row);
+          $scope.loadImages(row);
           row.isSelected = true;
         }
 
@@ -670,11 +727,11 @@
           },
           escapeMarkup: function (markup) { return markup; },
           templateSelection: function formatRepoSelection (term) {
-            $scope.map_filter_taxonomy = term.taxonomy;
+            if ( typeof term.taxonomy != 'undefined' ) {
+              $scope.map_filter_taxonomy = term.taxonomy;
+            }
             return term.text || term.name;
           }
-        }).on('change', function(){
-          $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         });
 
         if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {

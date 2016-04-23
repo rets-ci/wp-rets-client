@@ -1,11 +1,14 @@
 <?php
 
+$query = siteorigin_widget_post_selector_process_query( $instance['posts'] );
 
-$query = $_query = array(
-	'post_status' => 'publish',
+$query = $_query = array_merge( $query, array(
 	'post_type' => 'property',
-	'posts_per_page' => 50,
-);
+) );
+
+if( empty( $query[ 'posts_per_page' ] ) ) {
+	$query[ 'posts_per_page' ] = 50;
+}
 
 $filters = array();
 
@@ -131,9 +134,6 @@ $the_query = new WP_Query( $query );
 												echo ' ';
 												$get_location_street_terms = get_the_terms($property['ID'], 'location_street');
 												($get_location_street_terms[0]) ? _e($get_location_street_terms[0]->name) : '';
-												if(!empty($property[ 'price_2' ])){
-													echo ' - <span>$' . number_format($property[ 'price_2' ]) . '</span>';
-												}
 											?>
 										</p>
 										<span>
@@ -148,9 +148,11 @@ $the_query = new WP_Query( $query );
 											?>
 										</span>
 										<ul>
-											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name . ' Beds'); echo '</li>'; } ?>
-											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name . ' Baths'); echo '</li>'; } ?>
-											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' ft<sup>2</sup>.'); echo '</li>'; } ?>
+											<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-outline singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name); echo '</li>'; } ?>
+											<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-outline singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name); echo '</li>'; } ?>
+											<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-outline singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' Sq.ft.'); echo '</li>'; } ?>
+											<?php if(!empty($property[ 'price_2' ])){ echo '<li><span class="icon-wpproperty-status-rented-outline singlePropertyIcon"></span>$'. number_format($property[ 'price_2' ]); echo '</li>'; } ?>
+
 										</ul>
 									</div>
 								</a>
