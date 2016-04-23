@@ -15,9 +15,11 @@ $_guide_overview = rdc_generate_guide_overview();
 
     <?php foreach( rdc_generate_guide_overview() as $_guide ) { ?>
     <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_guide['image']; ?>');">
-      <h2 class="guide-title"><?php echo $_guide['name']; ?></h2>
-      <p class="guide-description"><?php echo $_guide['description']; ?></p>
-      <a class="btn btn-rdc btn-lg" href="<?php echo get_category_link( $_guide['term_id'] ); ?>"><?php _e( 'Get Started Now', 'rdc' ) ?></a>
+      <div class="guide-block-inner">
+        <h2 class="guide-title"><?php echo $_guide['name']; ?></h2>
+        <p class="guide-description"><?php echo $_guide['description']; ?></p>
+        <a class="btn btn-rdc btn-lg" href="<?php echo get_category_link( $_guide['term_id'] ); ?>"><?php _e( 'Get Started Now', 'rdc' ) ?></a>
+      </div>
     </div>
     <?php } ?>
 
