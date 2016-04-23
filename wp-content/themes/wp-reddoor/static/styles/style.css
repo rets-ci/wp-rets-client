@@ -2829,6 +2829,10 @@ body.single-rdc_guide .guide-wrapper {
   top: 60px;
   overflow: hidden;
 }
+body.tax-rdc_guide_category.admin-bar .guide-wrapper,
+body.single-rdc_guide.admin-bar .guide-wrapper {
+  top: 92px !important;
+}
 body.post-type-archive-rdc_guide .guide-wrapper,
 body.tax-rdc_guide_category .guide-wrapper,
 body.single-rdc_guide .guide-wrapper {
@@ -2847,7 +2851,7 @@ body.tax-rdc_guide_category .guide-block,
 body.single-rdc_guide .guide-block {
   color: #FFF;
   text-align: center;
-  padding-top: 200px;
+  padding-top: 0;
   padding-left: 0;
   padding-right: 0;
   min-height: 600px;
@@ -2864,6 +2868,31 @@ body.post-type-archive-rdc_guide .guide-block:hover,
 body.tax-rdc_guide_category .guide-block:hover,
 body.single-rdc_guide .guide-block:hover {
   background: no-repeat 50% 31%;
+}
+body.post-type-archive-rdc_guide .guide-actions,
+body.tax-rdc_guide_category .guide-actions,
+body.single-rdc_guide .guide-actions {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+body.post-type-archive-rdc_guide .guide-actions .guide-action-button.navigation-black,
+body.tax-rdc_guide_category .guide-actions .guide-action-button.navigation-black,
+body.single-rdc_guide .guide-actions .guide-action-button.navigation-black {
+  background-color: rgba(2, 2, 2, 0.8);
+}
+body.post-type-archive-rdc_guide .guide-actions .guide-action-button.navigation-red,
+body.tax-rdc_guide_category .guide-actions .guide-action-button.navigation-red,
+body.single-rdc_guide .guide-actions .guide-action-button.navigation-red {
+  background-color: rgba(208, 53, 40, 0.93);
+}
+body.post-type-archive-rdc_guide .guide-actions .guide-action-button > a,
+body.tax-rdc_guide_category .guide-actions .guide-action-button > a,
+body.single-rdc_guide .guide-actions .guide-action-button > a {
+  display: block;
+  color: #FFF;
+  height: 5em;
+  line-height: 5em;
 }
 body.post-type-archive-rdc_guide .guide-overview-list,
 body.tax-rdc_guide_category .guide-overview-list,
@@ -2890,6 +2919,18 @@ body.single-rdc_guide .guide-article-wrapper article {
   font-size: 1.2em;
   line-height: 1.8em;
 }
+body.post-type-archive-rdc_guide .guide-article-wrapper article ul,
+body.tax-rdc_guide_category .guide-article-wrapper article ul,
+body.single-rdc_guide .guide-article-wrapper article ul {
+  margin-left: 1.2em;
+  margin-bottom: 2em;
+}
+body.post-type-archive-rdc_guide .guide-article-wrapper article ul li,
+body.tax-rdc_guide_category .guide-article-wrapper article ul li,
+body.single-rdc_guide .guide-article-wrapper article ul li {
+  list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOElEQVQYV2NkIAIwIqtpamz+D+PX1dfC5eAMkAJkCWQ+WBG6AphpMHEqK8JmJYabkN2A13f4ggsAAt8wCodw+UcAAAAASUVORK5CYII=);
+  margin-bottom: 0.3em;
+}
 body.post-type-archive-rdc_guide .guide-article-wrapper article p,
 body.tax-rdc_guide_category .guide-article-wrapper article p,
 body.single-rdc_guide .guide-article-wrapper article p {
@@ -2898,20 +2939,37 @@ body.single-rdc_guide .guide-article-wrapper article p {
 body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
 body.single-rdc_guide .guide-group-image {
-  max-width: 100%;
+  min-height: 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper,
 body.tax-rdc_guide_category .guide-group-wrapper,
 body.single-rdc_guide .guide-group-wrapper {
   margin: 1em;
   background: #FFF;
-  padding: 0.6em 0.9em 1.2em;
+  padding: 0;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   border-top: 2px solid #F3F0E9;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper .guide-group-inner-wrapper,
+body.tax-rdc_guide_category .guide-group-wrapper .guide-group-inner-wrapper,
+body.single-rdc_guide .guide-group-wrapper .guide-group-inner-wrapper {
+  padding: 0.6em 0.9em 1.2em;
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper:hover,
 body.tax-rdc_guide_category .guide-group-wrapper:hover,
 body.single-rdc_guide .guide-group-wrapper:hover {
   border-top: 2px solid #CE3124;
+  box-shadow: -2px 4px 5px rgba(136, 136, 136, 0.17);
 }
 body.post-type-archive-rdc_guide .guide-group-wrapper .guide-group-title,
 body.tax-rdc_guide_category .guide-group-wrapper .guide-group-title,
@@ -2946,6 +3004,11 @@ body.single-rdc_guide h2.guide-title {
   text-align: center;
   font-weight: 600;
   text-shadow: -1px 2px 5px rgba(72, 72, 72, 0.67);
+}
+body.post-type-archive-rdc_guide .guide-block-inner,
+body.tax-rdc_guide_category .guide-block-inner,
+body.single-rdc_guide .guide-block-inner {
+  padding-top: 200px;
 }
 body.post-type-archive-rdc_guide h1.guide-article-title,
 body.tax-rdc_guide_category h1.guide-article-title,

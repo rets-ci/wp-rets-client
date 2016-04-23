@@ -8,9 +8,7 @@
  * @todo make sure https://www.reddoorcompany.com/guides/home-buyers/assembling-your-real-estate-team redirects to parent
  */
 
-global $wp_query;
-$_rdc_guide_category = $wp_query->query_vars['rdc_guide_category'];
-$_term = get_term_by( 'slug', $_rdc_guide_category, 'rdc_guide_category' );
+$_term  = rdc_get_guide_category();
 $_all_categories = rdc_generate_guide_overview();
 $_this_category = null;
 
@@ -23,8 +21,11 @@ foreach( $_all_categories as $_maybe_this_category ) {
 
 $_this_category_guides = rdc_generate_guide_overview( array( 'parent' => ( is_object( $_term ) ? $_term->term_id : null ) ) );
 
-// @hack to double number of guides
-$_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide_overview( array( 'parent' => ( is_object( $_term ) ? $_term->term_id : null ) ) ) );
+// Try to detect a second-level child Guide category and redirect to parent if possible.
+if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent ) {
+  wp_redirect( get_term_link( $_term->parent, 'rdc_guide_category' ) );
+  die();
+}
 
 //die( '<pre>' . print_r( $_all_categories, true ) . '</pre>' );
 ?>
@@ -33,8 +34,10 @@ $_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide
   <div class="row site-content">
 
       <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_this_category['image']; ?>');">
-        <h2 class="guide-title"><?php echo $_this_category['name']; ?></h2>
-        <p class="guide-description"><?php echo $_this_category['description']; ?></p>
+        <div class="guide-block-inner">
+          <h2 class="guide-title"><?php echo $_this_category['name']; ?></h2>
+          <p class="guide-description"><?php echo $_this_category['description']; ?></p>
+        </div>
       </div>
 
       <div class="col-lg-6 guide-overview-list">
@@ -57,9 +60,7 @@ $_this_category_guides = array_merge( $_this_category_guides, rdc_generate_guide
 
                 </div>
 
-                <div class="col-lg-4">
-                  <img src="<?php echo $_some_guide['thumbnail']; ?>" class="guide-group-image"/>
-                </div>
+                <div class="col-lg-4 guide-group-image" style="background-image: url('<?php echo $_some_guide['image']; ?>');"></div>
 
             </div>
 
