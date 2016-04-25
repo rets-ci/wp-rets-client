@@ -70,7 +70,13 @@
 
     jQuery( '.association-carousel .sow-carousel-wrapper' ).append( '<div class="assocCarouselBg"></div>' );
 
-    jQuery( "#propertyDetails" ).sticky( { topSpacing: 0, bottomSpacing: 1000 } );
+    jQuery( window ).resize( rdc_property_stycky );
+
+    function rdc_property_stycky() {
+      if (jQuery(window).width() > 1200) {
+        jQuery("#propertyDetails").sticky({topSpacing: 0, bottomSpacing: 1000});
+      }
+    }
 
     /**
      * Tabbed content widget (feature point)
@@ -100,17 +106,21 @@
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    var $grid = jQuery( '.grid' ).masonry( {
-      // options
-      itemSelector: '.grid-item',
-      singleMode: true,
-      isResizable: true,
-      transitionDuration: 0,
-    } );
+    if(jQuery(window).width() > 620) {
 
-    jQuery( 'a[data-toggle="tab"]' ).on( 'shown.bs.tab', function ( e ) {
-      $grid.masonry( 'layout' );
-    } )
+      var $grid = jQuery('.grid').masonry({
+        // options
+        itemSelector: '.grid-item',
+        singleMode: true,
+        isResizable: true,
+        transitionDuration: 0,
+      });
+
+      jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $grid.masonry('layout');
+      })
+
+    }
 
     /**
      * Load "More" elements of same kind.

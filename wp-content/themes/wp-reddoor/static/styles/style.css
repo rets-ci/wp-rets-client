@@ -1432,6 +1432,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background: #fff;
 }
 /* Property page */
+.single-property h4 {
+  font-size: 1.6em;
+}
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
   margin: 40px 0;
@@ -1623,12 +1626,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin: 15px 0;
 }
 .single-property .areaMapBlock .singleWalkScore {
-  margin: 40px 0;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 .single-property .areaMapBlock .ambItem {
   border: 1px solid #dedede;
   border-radius: 5px;
-  margin-right: 20px;
+  margin: 5px 30px;
   padding: 30px;
 }
 .single-property .areaMapBlock .ambItem div {
@@ -1671,6 +1675,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   width: 25%;
   text-align: center;
   background: #f3f3f3;
+  margin-left: -1px;
+}
+.single-property .areaMapBlock .nav-tabs li:first-child {
+  margin-left: 0;
+}
+.single-property .areaMapBlock .nav-tabs li:last-child {
+  width: 25.35%;
 }
 .single-property .areaMapBlock .nav-tabs li a {
   border-radius: 0;
@@ -1707,6 +1718,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   width: 25%;
   text-align: center;
   background: #f3f3f3;
+  margin-left: -1px;
+}
+.single-property .propertyDetails .nav-tabs li:first-child {
+  margin-left: 0;
+}
+.single-property .propertyDetails .nav-tabs li:last-child {
+  width: 25.35%;
 }
 .single-property .propertyDetails .nav-tabs li a {
   border-radius: 0;
@@ -6185,6 +6203,31 @@ body .ui-tooltip {
   .menu-header-container .menuDesktop .sub-menu li a {
     font-size: 1em;
   }
+  .single-property .singlePropertyHeader .oneAgent {
+    position: inherit;
+    margin: 20px 0 0;
+    width: 100%;
+    left: 0;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
+    padding: 0 50px;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
+    margin-right: 110px;
+    margin-left: 110px;
+  }
+  .single-property .areaMapBlock .nav-tabs li {
+    margin-left: 0;
+  }
+  .single-property .areaMapBlock .nav-tabs li:last-child {
+    width: 25%;
+  }
+  .single-property .propertyDetails .nav-tabs li {
+    margin-left: 0;
+  }
+  .single-property .propertyDetails .nav-tabs li:last-child {
+    width: 25%;
+  }
 }
 @media screen and (max-width: 1024px) {
   body #header {
@@ -6245,23 +6288,30 @@ body .ui-tooltip {
   body .contactMenu li:last-child {
     display: none;
   }
-  .propertyDetails .nav-tabs li {
+  body .oneAgent .rdc-agents-carousel-container {
+    padding: 0 50px;
+  }
+  body .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+  body .propertyDetails .nav-tabs li {
     font-size: 0.8em;
   }
-  .areaMapBlock .ambItem {
+  body .areaMapBlock .ambItem {
     margin: 15px 0 0 0;
   }
-  .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths {
+  body .frontPageSearchBlock .searchForm form .sfBeds,
+  body .frontPageSearchBlock .searchForm form .sfBaths {
     width: 18%;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 21%;
   }
-  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+  body .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
     width: 43%;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 18%;
   }
 }
@@ -6475,5 +6525,71 @@ body .ui-tooltip {
   }
   .archiveImageHeader {
     top: -24px;
+  }
+}
+@media screen and (max-width: 620px) {
+  .single-property .propertyDetails .pdRoomsBlock {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 360px) {
+  body .site-logo {
+    height: 120px;
+    width: 130px;
+  }
+  body .site-logo img {
+    width: 80px;
+  }
+  .head-popups ul {
+    margin-right: 0;
+  }
+  .head-popups ul li a {
+    font-size: 1em;
+  }
+  .single-property .singlePropertyHeader .container .title {
+    text-align: center;
+  }
+  .single-property .singlePropertyHeader .container .title > div {
+    font-size: 2em;
+  }
+  .single-property .singlePropertyHeader .container > ul {
+    text-align: center;
+  }
+  .single-property .singlePropertyHeader .container > ul li {
+    margin: 5px;
+  }
+  .single-property .singlePropertyHeader .oneAgent .socialButtons li {
+    width: 49%;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
+    padding: 0;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
+    width: 362px;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-previous {
+    left: 25px;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-next {
+    right: 25px;
+  }
+  .single-property .singlePropertyHeader .oneAgentLinksBlock {
+    padding: 0;
+  }
+  .single-property .singlePropertyHeader .oneAgentLinksBlock a {
+    width: 55%;
+  }
+  .single-property .propertyAttribute .col-xs-4 {
+    width: 100%;
+  }
+  .single-property .propertyFacts.col-xs-4 {
+    width: 100%;
+  }
+  .single-property .propertyDetails .nav-tabs li,
+  .single-property .area .nav-tabs li {
+    font-size: 0.6em;
+  }
+  .single-property .listingProvider ul li img {
+    width: 100%;
   }
 }

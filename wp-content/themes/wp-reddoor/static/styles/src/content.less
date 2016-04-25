@@ -1357,6 +1357,9 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 /* Property page */
 
 .single-property {
+  h4{
+    font-size: 1.6em;
+  }
   .bottomSeparate{
     border-bottom: 1px solid #dedede;
     margin: 40px 0;
@@ -1562,12 +1565,13 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       margin: 15px 0;
     }
     .singleWalkScore{
-      margin: 40px 0;
+      margin-top: 40px;
+      margin-bottom: 40px;
     }
     .ambItem{
       border: 1px solid #dedede;
       border-radius: 5px;
-      margin-right: 20px;
+      margin: 5px 30px;
       padding: 30px;
       div{
         background: #89c11e none repeat scroll 0 0;
@@ -1609,6 +1613,13 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         width: 25%;
         text-align: center;
         background: #f3f3f3;
+        margin-left: -1px;
+        &:first-child{
+          margin-left: 0;
+        }
+        &:last-child{
+          width: 25.35%;
+        }
         a{
           border-radius: 0;
           border-color: #d8d8d8;
@@ -1647,6 +1658,13 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
         width: 25%;
         text-align: center;
         background: #f3f3f3;
+        margin-left: -1px;
+        &:first-child{
+          margin-left: 0;
+        }
+        &:last-child{
+          width: 25.35%;
+        }
         a{
           border-radius: 0;
           border-color: #d8d8d8;

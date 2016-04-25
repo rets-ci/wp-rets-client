@@ -43,12 +43,7 @@
     content: "\e600";
 }
 @media screen and (max-width: 600px) {
-    .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-        display: none;
-    }
-    .rdc-agents-carousel a.rdc-agents-carousel-next {
-        display: none;
-    }
+
 }
 .widget_rdc-agents-carousel {
     overflow-x: hidden;
