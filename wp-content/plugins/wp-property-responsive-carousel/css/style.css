@@ -92,11 +92,11 @@
 }
 .rdc-carousel-title a.rdc-carousel-next,
 .rdc-carousel-title a.rdc-carousel-previous {
-  top: 40%;
+  top: 39%;
   left: 60px;
   position: absolute;
-  width: 41px;
-  height: 41px;
+  width: 60px;
+  height: 60px;
   font-family: 'carousel-arrows';
   speak: none;
   display: block;
@@ -107,7 +107,7 @@
   font-variant: normal;
   text-transform: none;
   font-size: 14px;
-  line-height: 38px;
+  line-height: 56px;
   text-align: center;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -125,7 +125,7 @@
   transition: color .3s, background .3s, border .3s;
 }
 .rdc-carousel-title a.rdc-carousel-previous {
-  top: 50%;
+  top: 51%;
 }
 .rdc-carousel-title a.rdc-carousel-next:before {
   content: "\e601";
@@ -193,11 +193,15 @@
   line-height: 1.5em;
   margin-bottom: 20px;
 }
-.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .lead{
   color: #929194;
   font-size: 1.3em;
   line-height: 1.55em;
   margin-bottom: 30px;
+}
+.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
+  font-size: 1.2em;
+  line-height: 1.55em;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item > a:hover{
   text-decoration: none !important;
@@ -211,11 +215,12 @@
   border-radius: 5px;
   color: #fff;
   display: block;
-  padding: 10px;
-  width: 30%;
+  padding: 18px;
+  width: 45%;
   text-align: center;
   margin-bottom: 30px;
   margin-top: 50px;
+  font-size: 1.2em;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item:last-child {
   margin-right: 0;
