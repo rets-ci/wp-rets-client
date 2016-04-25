@@ -23,6 +23,7 @@
 
 global $property;
 global $wp_properties;
+use \UsabilityDynamics\RDC\Utils;
 
 // Start the Loop.
 while (have_posts()) : the_post();
@@ -42,16 +43,10 @@ while (have_posts()) : the_post();
   $get_inside_city_terms = get_the_terms($property['ID'], 'inside_city');
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
-  $get_design_terms = get_the_terms($property['ID'], 'design');
-  $get_style_terms = get_the_terms($property['ID'], 'style');
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
-  $get_listing_agent_name_terms = get_the_terms($property['ID'], 'listing_agent_name');
-  $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
   $get_listing_agent_phone_extension_terms = get_the_terms($property['ID'], 'listing_agent_phone_extension');
-  $get_listing_office_terms = get_the_terms($property['ID'], 'listing_office');
   $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
-  $get_mls_id_terms = get_the_terms($property['ID'], 'mls_id');
   $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
   $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
 
@@ -72,22 +67,10 @@ while (have_posts()) : the_post();
   $inside_city = ($get_inside_city_terms[0]) ? $get_inside_city_terms[0]->name : '';
   $location_city = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
-  $design = array();
-  foreach($get_design_terms as $designTermObj){
-    $design[] = $designTermObj->name;
-  }
-  $style = array();
-  foreach($get_style_terms as $styleTermObj){
-    $style[] = $styleTermObj->name;
-  }
   $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
   $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
-  $listing_agent_name = ($get_listing_agent_name_terms[0]) ? $get_listing_agent_name_terms[0]->name : '';
-  $listing_agent_phone_number = ($get_listing_agent_phone_number_terms[0]) ? $get_listing_agent_phone_number_terms[0]->name : '';
   $listing_agent_phone_extension = ($get_listing_agent_phone_extension_terms[0]) ? $get_listing_agent_phone_extension_terms[0]->name : '';
-  $listing_office = ($get_listing_office_terms[0]) ? $get_listing_office_terms[0]->name : '';
   $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
-  $mls_id = ($get_mls_id_terms[0]) ? $get_mls_id_terms[0]->name : '';
   $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
   $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
 
@@ -132,11 +115,11 @@ while (have_posts()) : the_post();
             </li><?php } ?>
           <?php if ($totalLivingArea) { ?>
             <li><span
-              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e(number_format($totalLivingArea) . ' Sq.ft'); ?>
+              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e(number_format($totalLivingArea) . ' Sq.Ft'); ?>
             </li><?php } ?>
           <?php if ($approximateLotSize) { ?>
             <li><span
-              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($approximateLotSize . ' acres'); ?>
+              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($approximateLotSize . ' Acres'); ?>
             </li><?php } ?>
         </ul>
 
@@ -147,15 +130,15 @@ while (have_posts()) : the_post();
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7 singleRemarks">
+      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php echo $property['remarks']; ?>
       </div>
     </div>
   <div class="row">
-    <div class="col-md-8 col-lg-8">
+    <div class="col-md-12 col-lg-8 col-xs-12">
       <div class="container-fluid">
         <div class="row propertyAttribute">
-      <div class="col-xs-12 col-lg-4 col-md-4">
+      <div class="col-xs-4 col-lg-4 col-md-4">
             <div>
               <span class="icon-wpproperty-data-checked-outline"></span>
             </div>
@@ -163,7 +146,7 @@ while (have_posts()) : the_post();
             <strong>1 minute ago</strong>
       </div>
           <?php if(!empty($updatedProperty)){ ?>
-      <div  class="col-xs-12 col-lg-4 col-md-4">
+      <div  class="col-xs-4 col-lg-4 col-md-4">
           <div>
             <span class="icon-wpproperty-data-updated-outline"></span>
           </div>
@@ -176,7 +159,7 @@ while (have_posts()) : the_post();
       </div>
           <?php } ?>
           <?php if(!empty($daysOnMarket)){ ?>
-      <div  class="col-xs-12 col-lg-4 col-md-4">
+      <div  class="col-xs-4 col-lg-4 col-md-4">
         <div>
           <span class="icon-wpproperty-data-days-outline"></span>
         </div>
@@ -189,46 +172,33 @@ while (have_posts()) : the_post();
       </div>
       </div>
       <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <h4><?php _e('Property Facts') ?></h4>
       </div>
       </div>
       <div class="row">
-        <div class="col-md-7 col-lg-8">
+        <div class="col-md-12 col-lg-8 col-xs-12">
           <div class="container-fluid">
             <div class="row">
-          <?php if(!empty($design)){ ?>
-          <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+          <?php if(!empty(Utils::get_multiple_terms('design', $property['ID'], 'name'))){ ?>
+          <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-listing-house-outline"></span>
             </div>
             <span><?php _e('Design'); ?></span>
-            <strong><?php
-              $countElements = count($design);
-              for($i = 0; $i < $countElements; $i++){
-                $styleDesign .= $design[$i] . ', ';
-              }
-              echo substr($styleDesign, 0, -2);
-            ?></strong>
+            <strong><?php echo Utils::get_multiple_terms('design', $property['ID'], 'name', 'a'); ?></strong>
           </div>
           <?php } ?>
-          <?php if(!empty($style)){ ?>
+          <?php if(!empty(Utils::get_multiple_terms('style', $property['ID'], 'name'))){ ?>
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
             </div>
             <span><?php _e('Style'); ?></span>
-            <strong><?php
-              $countElements = count($style);
-              for($i = 0; $i < $countElements; $i++){
-                $styleString .= $style[$i] . ', ';
-              }
-              echo substr($styleString, 0, -2);
-              ?></strong>
+            <strong><?php echo Utils::get_multiple_terms('style', $property['ID'], 'name', 'a'); ?></strong>
           </div>
           <?php } ?>
-
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-attribute-exterior-outline"></span>
@@ -243,7 +213,7 @@ while (have_posts()) : the_post();
             </strong>
           </div>
         </div>
-        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+        <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
           <?php if(!empty($subdivision)){ ?>
             <div class="col-md-12">
             <div>
@@ -253,6 +223,7 @@ while (have_posts()) : the_post();
             <strong><?php _e($subdivision); ?></strong>
           </div>
           <?php } ?>
+          <?php if(!empty($inside_city)){ ?>
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
@@ -267,7 +238,7 @@ while (have_posts()) : the_post();
               ?>
             </strong>
           </div>
-
+           <?php } ?>
           <?php if(!empty($location_county)){ ?>
           <div class="col-md-12">
             <div>
@@ -278,7 +249,7 @@ while (have_posts()) : the_post();
           </div>
           <?php } ?>
         </div>
-        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+        <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
           <?php if(!empty($elementary_school)){ ?>
           <div class="col-md-12">
             <div>
@@ -312,19 +283,19 @@ while (have_posts()) : the_post();
         </div>
       </div>
     <div class="row">
-      <div class="col-xs-6 col-md-7 col-lg-8">
+      <div class="col-xs-12 col-md-12 col-lg-8">
         <div class="bottomSeparate"></div>
       </div>
     </div>
   </div>
   <div class="container areaMapBlock">
     <div class="row">
-      <div class="col-xs-6 col-md-7 col-lg-7">
+      <div class="col-xs-12 col-md-12 col-lg-7">
         <h4>Area Map for 5000 Daviston Ct</h4>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="nav nav-tabs ws_nmaps">
           <li class="active"><a data-toggle="tab" href="#Ameneties">Ameneties</a></li>
           <li><a data-toggle="tab" href="#Commute">Commute</a></li>
@@ -407,48 +378,68 @@ while (have_posts()) : the_post();
         $walkScoreSubtitle = 'Very Walkable';
       }
       ?>
-      <?php if(!empty($walkScore)){ ?>
-        <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-          <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
-          <span>Walk Score</span>
-          <strong><?php echo $walkScoreSubtitle; ?></strong>
+      <div class="col-xs-12 col-lg-8 col-md-12">
+        <div class="container-fluid">
+          <div class="row">
+        <?php if(!empty($walkScore)){ ?>
+          <div class="col-xs-12 col-md-4 col-lg-3">
+            <div class="ambItem">
+              <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
+              <span>Walk Score</span>
+              <strong><?php echo $walkScoreSubtitle; ?></strong>
+            </div>
+          </div>
+        <?php } else { ?>
+          <div class="col-xs-12 col-md-4 col-lg-3">
+            <div class="ambItem">
+            <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+            <span>Walk Score</span>
+            <strong>Not available now</strong>
+            </div>
+          </div>
+        <?php }  ?>
+        <div class="col-xs-12 col-md-4 col-lg-3">
+          <div class="ambItem">
+          <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+          <span>Transit Score</span>
+          <strong>Coming Soon</strong>
+          </div>
         </div>
-      <?php } ?>
-      <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-        <span>Transit Score</span>
-        <strong>Coming Soon</strong>
-      </div>
-      <div class="ambItem col-xs-6 col-md-2 col-lg-2">
-        <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-        <span>Bike Score</span>
-        <strong>Coming Soon</strong>
+        <div class=" col-xs-12 col-md-4 col-lg-3">
+          <div class="ambItem">
+            <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+            <span>Bike Score</span>
+            <strong>Coming Soon</strong>
+          </div>
+        </div>
+        </div>
+        </div>
       </div>
       </div>
     <div class="row">
-      <div class="col-xs-6 col-md-7 col-lg-8">
+      <div class="col-xs-12 col-md-12 col-lg-8">
         <div class="bottomSeparate"></div>
       </div>
     </div>
   </div>
   <div class="container propertyDetails">
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <h4><?php _e('Property Details for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
     </div>
       <div class="row">
-      <div class="col-xs-6 col-lg-8  col-md-7 singleRemarks">
+      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php echo (!empty($property['automated_property_detail_description'])) ? $property['automated_property_detail_description'] : ''; ?>
       </div>
       </div>
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
           <li><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
-          <li><a data-toggle="tab" href="#PropertyLot">Property & Lot</a></li>
+          <li><a data-toggle="tab" href="#PropertyLot">Property & Pricing</a></li>
         </ul>
 
         <div class="tab-content">
@@ -941,25 +932,30 @@ while (have_posts()) : the_post();
       </div>
       </div>
     <div class="row">
-      <div class="col-xs-6 col-md-7 col-lg-8">
+      <div class="col-xs-12 col-md-12 col-lg-8">
         <div class="bottomSeparate"></div>
       </div>
     </div>
   </div>
   <div class="container listingProvider">
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <h4><?php _e('Listing Provider for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-lg-8 col-md-7">
+      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+        <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-lg-8 col-md-12">
         <ul>
-          <li><?php _e('Agent: '); ?><b><?php _e($listing_agent_name); ?></b></li>
+          <li><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
-          <li><?php _e('Office: '); ?><b><?php _e($listing_office); ?></b></li>
-          <li><?php _e('Office Phone Number: '); ?><b><?php echo $listing_office_phone_number; ?></b></li>
-          <li><?php _e('MLS ID: '); ?><b><?php echo $mls_id; ?></b></li>
+          <li><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></li>
+          <li><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></li>
+          <li><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></li>
         </ul>
         <ul>
           <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
@@ -977,10 +973,7 @@ while (have_posts()) : the_post();
         </ul>
         <div class="clear"></div>
       </div>
-      <div class="col-lg-8 col-md-7 italicText">
-        <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
       </div>
-    </div>
   </div>
 
 <?php endwhile; ?>
