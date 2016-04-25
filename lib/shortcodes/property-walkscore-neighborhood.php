@@ -16,6 +16,9 @@ namespace UsabilityDynamics\WPP {
        */
       public function __construct() {
 
+        add_action( "wp_ajax_wpp_walkscore_nmap", array( $this, "ajax_handler" ) );
+        add_action( "wp_ajax_nopriv_wpp_walkscore_nmap", array( $this, "ajax_handler" ) );
+
         $options = array(
           'id' => 'property_walkscore_neighborhood',
           'params' => array(
@@ -176,6 +179,16 @@ namespace UsabilityDynamics\WPP {
 
         parent::__construct( $options );
 
+      }
+
+      /**
+       *
+       */
+      function ajax_handler() {
+        $options = $_REQUEST;
+        unset( $options['action'] );
+        $data = $this->call( $options );
+        die( $data );
       }
 
       /**
