@@ -70,13 +70,6 @@
 
     jQuery( '.association-carousel .sow-carousel-wrapper' ).append( '<div class="assocCarouselBg"></div>' );
 
-    jQuery( window ).resize( rdc_property_stycky );
-
-    function rdc_property_stycky() {
-      if (jQuery(window).width() > 1200) {
-        jQuery("#propertyDetails").sticky({topSpacing: 0, bottomSpacing: 1000});
-      }
-    }
 
     /**
      * Tabbed content widget (feature point)
@@ -219,6 +212,18 @@
     jQuery('.frontPageSearchBlock').height(height);
     console.log( jQuery('.frontPageSearchBlock').height() );
   }
+  function rdc_property_stycky() {
+    if (jQuery(window).width() > 1200) {
+      jQuery("#propertyDetails").sticky({topSpacing: 0, bottomSpacing: 1000});
+    }
+  }
+  rdc_property_stycky();
+  function rdc_agent_carousel_item_width(){
+    if (jQuery(window).width() < 1200) {
+      jQuery('.rdc-agents-carousel-item').width(jQuery('.rdc-agents-carousel-wrapper').width());
+    }
+  }
+  rdc_agent_carousel_item_width();
 
   jQuery( window ).load( function () {
     var resizeTimer;
@@ -227,6 +232,8 @@
       resizeTimer = setTimeout( function () {
         map_resize();
         frontPageSearchBlock_resize();
+        rdc_property_stycky();
+        rdc_agent_carousel_item_width();
       }, 250 );
     } ).resize();
   } );
