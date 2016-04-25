@@ -6186,9 +6186,12 @@ body .ui-tooltip {
   .menu-header-container .menuDesktop .sub-menu li a {
     font-size: 1em;
   }
+<<<<<<< HEAD
   .single-property h4 {
     text-align: center;
   }
+=======
+>>>>>>> origin/develop
   .single-property .singlePropertyHeader .oneAgent {
     position: inherit;
     margin: 20px 0 0;
@@ -6196,11 +6199,19 @@ body .ui-tooltip {
     left: 0;
   }
   .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
+<<<<<<< HEAD
     padding: 0 6%;
   }
   .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
     margin-left: 0.1%;
     margin-right: 0.1%;
+=======
+    padding: 0 50px;
+  }
+  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
+    margin-right: 110px;
+    margin-left: 110px;
+>>>>>>> origin/develop
   }
   .single-property .areaMapBlock .nav-tabs li {
     margin-left: 0;
@@ -6214,6 +6225,7 @@ body .ui-tooltip {
   .single-property .propertyDetails .nav-tabs li:last-child {
     width: 25%;
   }
+<<<<<<< HEAD
   .single-property .propertyFacts > div {
     text-align: center;
   }
@@ -6230,6 +6242,8 @@ body .ui-tooltip {
     float: none;
     display: inline-block;
   }
+=======
+>>>>>>> origin/develop
 }
 @media screen and (max-width: 1024px) {
   body #header {
@@ -6548,9 +6562,12 @@ body .ui-tooltip {
   .head-popups ul li a {
     font-size: 1em;
   }
+<<<<<<< HEAD
   .frontPageSearchBlock .searchForm {
     width: 360px;
   }
+=======
+>>>>>>> origin/develop
   .single-property .singlePropertyHeader .container .title {
     text-align: center;
   }
