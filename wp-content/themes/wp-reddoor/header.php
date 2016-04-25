@@ -31,10 +31,11 @@
             </div>
         <?php endif; ?>
         <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuDesktop')); ?>
-        <div class="mobileMenu">
+        <div class="mobileMenu showContactPopup">
           <span class="closeMobileMenu"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
           <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuAdaptive')); ?>
           <a href="#">Login to your Account</a>
+          <a class="mobileContactUs" href="javasript:void(0);" rel="popupContactUsMore">Contact Us</a>
         </div>
         <div class="head-popups">
           <?php wp_nav_menu(array('menu' => 'RightSide Menu', 'menu_class' => 'contactMenu')); ?>

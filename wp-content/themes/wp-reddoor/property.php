@@ -138,7 +138,7 @@ while (have_posts()) : the_post();
     <div class="col-md-12 col-lg-8 col-xs-12">
       <div class="container-fluid">
         <div class="row propertyAttribute">
-      <div class="col-xs-4 col-lg-4 col-md-4">
+      <div class="col-xs-12 col-lg-4 col-md-4">
             <div>
               <span class="icon-wpproperty-data-checked-outline"></span>
             </div>
@@ -146,7 +146,7 @@ while (have_posts()) : the_post();
             <strong>1 minute ago</strong>
       </div>
           <?php if(!empty($updatedProperty)){ ?>
-      <div  class="col-xs-4 col-lg-4 col-md-4">
+      <div  class="col-xs-12 col-lg-4 col-md-4">
           <div>
             <span class="icon-wpproperty-data-updated-outline"></span>
           </div>
@@ -159,7 +159,7 @@ while (have_posts()) : the_post();
       </div>
           <?php } ?>
           <?php if(!empty($daysOnMarket)){ ?>
-      <div  class="col-xs-4 col-lg-4 col-md-4">
+      <div  class="col-xs-12 col-lg-4 col-md-4">
         <div>
           <span class="icon-wpproperty-data-days-outline"></span>
         </div>
@@ -215,7 +215,7 @@ while (have_posts()) : the_post();
             </strong>
           </div>
         </div>
-        <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
+        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
           <?php if(!empty($subdivision)){ ?>
             <div class="col-md-12">
             <div>
@@ -251,7 +251,7 @@ while (have_posts()) : the_post();
           </div>
           <?php } ?>
         </div>
-        <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
+        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
           <?php if(!empty($elementary_school)){ ?>
           <div class="col-md-12">
             <div>
@@ -960,14 +960,14 @@ while (have_posts()) : the_post();
     </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
-        <ul>
+        <ul class="col-xs-12">
           <li><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
           <li><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></li>
         </ul>
-        <ul>
+        <ul class="col-xs-12">
           <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
           <li><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></li>
           <li><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></li>
