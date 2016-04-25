@@ -115,12 +115,3 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRA
   add_filter('pre_site_transient_update_themes','rdc_remove_core_updates');
 
 }
-
-// Redirect to https mode.c
-if( empty($_SERVER['HTTPS']) ) {
-  header( "HTTP/1.1 301 Moved Permanently" );
-  header( 'Cache-Control:no-cache' );
-  header( 'Location:' . home_url( $_SERVER['REQUEST_URI'] ));
-  die();
-}
-
