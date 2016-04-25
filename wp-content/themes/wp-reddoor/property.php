@@ -181,7 +181,9 @@ while (have_posts()) : the_post();
           <div class="container-fluid">
             <div class="row">
           <?php if(!empty(Utils::get_multiple_terms('design', $property['ID'], 'name'))){ ?>
-          <div class="col-xs-4 col-md-4 col-lg-4 propertyFacts">
+
+          <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+
           <div class="col-md-12">
             <div>
               <span class="icon-wpproperty-listing-house-outline"></span>
@@ -382,7 +384,9 @@ while (have_posts()) : the_post();
         <div class="container-fluid">
           <div class="row">
         <?php if(!empty($walkScore)){ ?>
-          <div class="col-xs-12 col-md-4 col-lg-3">
+
+          <div class="col-xs-12 col-md-4 col-lg-4">
+
             <div class="ambItem">
               <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
               <span>Walk Score</span>
@@ -390,7 +394,9 @@ while (have_posts()) : the_post();
             </div>
           </div>
         <?php } else { ?>
-          <div class="col-xs-12 col-md-4 col-lg-3">
+
+          <div class="col-xs-12 col-md-4 col-lg-4">
+
             <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
             <span>Walk Score</span>
@@ -398,14 +404,18 @@ while (have_posts()) : the_post();
             </div>
           </div>
         <?php }  ?>
-        <div class="col-xs-12 col-md-4 col-lg-3">
+
+        <div class="col-xs-12 col-md-4 col-lg-4">
+
           <div class="ambItem">
           <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
           <span>Transit Score</span>
           <strong>Coming Soon</strong>
           </div>
         </div>
-        <div class=" col-xs-12 col-md-4 col-lg-3">
+
+        <div class=" col-xs-12 col-md-4 col-lg-4">
+
           <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
             <span>Bike Score</span>
