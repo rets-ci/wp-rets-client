@@ -6204,16 +6204,6 @@ body .ui-tooltip {
     width: 100%;
     left: 0;
   }
-<<<<<<< HEAD
-=======
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
-    padding: 0 6%;
-  }
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
-    margin-left: 0.1%;
-    margin-right: 0.1%;
-  }
->>>>>>> origin/develop
   .single-property .areaMapBlock .nav-tabs li {
     margin-left: 0;
   }
