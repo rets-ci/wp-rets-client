@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Varnish Purge
+ * Plugin Name: Cache Purge
  * Plugin URI: http://usabilitydynamics.com/plugins/
  * Description: Fflushes Varnish cache on post updates.
  * Author: Usability Dynamics, Inc.
@@ -46,3 +46,15 @@ add_action( 'save_post', function( $post_id ) {
 
 }, 100);
 
+
+/**
+ * Purge Object Cache upon completion of XMLI import
+ *
+ */
+add_action('wpp_xml_import_complete', function() {
+
+  if( function_exists( 'wp_cache_flush' ) ) {
+    wp_cache_flush();
+  }
+
+});
