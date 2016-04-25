@@ -161,6 +161,9 @@
   }
 
     .single-property{
+        h4{
+          text-align: center;
+        }
       .singlePropertyHeader{
         .oneAgent{
           position: inherit;
@@ -168,10 +171,10 @@
           width: 100%;
           left: 0;
           .rdc-agents-carousel-container{
-            padding: 0 50px;
+            padding: 0 6%;
             .rdc-agents-carousel-item{
-              margin-right: 110px;
-              margin-left: 110px;
+              margin-left: 0.1%;
+              margin-right: 0.1%;
             }
           }
         }
@@ -194,6 +197,26 @@
             &:last-child{
               width: 25%;
             }
+          }
+        }
+      }
+      .propertyFacts {
+        &>div{
+          text-align: center;
+          div{
+            margin-right: 0;
+            float: none;
+            display: inline-block;
+          }
+        }
+      }
+      .propertyAttribute  {
+        &>div{
+          text-align: center;
+          div{
+            margin-right: 0;
+            float: none;
+            display: inline-block;
           }
         }
       }
@@ -367,7 +390,9 @@
         display: none;
       }
     }
+
     &.single-property {
+
       .singlePropertyHeader {
         z-index: 9;
       }
@@ -379,6 +404,7 @@
           margin: 0 0 30px 0;
         }
       }
+
     }
     .site-content {
       padding: 0 2%;
@@ -594,6 +620,11 @@
           font-size: 1em;
         }
       }
+    }
+  }
+  .frontPageSearchBlock{
+    .searchForm{
+      width: 360px;
     }
   }
   .single-property {
