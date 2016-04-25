@@ -56,8 +56,8 @@
 // Mode adaptive 620
 @adapt620: 620px;
 
-// Mode adaptive 360
-@adapt360: 360px;
+// Mode adaptive 400
+@adapt400: 400px;
 
 @media screen and (min-width: @adapt1920) {
 
@@ -171,13 +171,6 @@
           margin: 20px 0 0;
           width: 100%;
           left: 0;
-          .rdc-agents-carousel-container{
-            padding: 0 6%;
-            .rdc-agents-carousel-item{
-              margin-left: 0.1%;
-              margin-right: 0.1%;
-            }
-          }
         }
       }
     .areaMapBlock {
@@ -352,6 +345,11 @@
 @media screen and (max-width: @adapt768) {
   body {
     background: none !important;
+    .site-logo {
+      left: auto;
+      margin-left: 0;
+      right: 5px;
+    }
     .headerTopMenu {
       background: none !important;
     }
@@ -362,24 +360,27 @@
         top: -40px !important;
       }
     }
+    .head-popups {
+      display: none;
+    }
     .frontPageSearchBlock {
       top: -40px !important;
       min-height: 800px;
-      &>h1{
+      & > h1 {
         font-size: 3em;
         font-weight: 600;
       }
-      &>h4{
+      & > h4 {
         margin-bottom: 45px;
         margin-top: 25px;
         line-height: 1.8em;
       }
-      .searchForm{
-        &>ul{
+      .searchForm {
+        & > ul {
           width: 49.6%;
-          &>li{
+          & > li {
             width: 49.2%;
-            &>a{
+            & > a {
               padding: 0 !important;
               text-align: center;
 
@@ -388,7 +389,7 @@
         }
       }
 
-      .sf-property-quantity{
+      .sf-property-quantity {
         display: none;
       }
     }
@@ -401,12 +402,20 @@
       .bottomSeparate {
         padding-bottom: 5px;
       }
-      .areaMapBlock{
-        .ambItem{
+      .areaMapBlock {
+        .ambItem {
           margin: 0 0 30px 0;
         }
       }
-
+      .listingProvider {
+        .col-lg-8 {
+          ul {
+            float: none;
+            width: 100%;
+            margin-left: 0 !important;
+          }
+        }
+      }
     }
     .site-content {
       padding: 0 2%;
@@ -435,7 +444,7 @@
             width: 100%;
             border-radius: 5px;
             margin-bottom: 10px;
-            .select2{
+            .select2 {
               min-width: 99%;
             }
           }
@@ -515,6 +524,37 @@
         }
       }
     }
+    .mobileMenu {
+      .closeMobileMenu{
+        font-size: 1.2em !important;
+      }
+    .menu-header-container {
+      & > ul {
+        & > li {
+          & > a {
+            font-size: 1.7em !important;
+          }
+          & > ul {
+            & > li {
+              & > a {
+                font-size: 1.2em !important;
+              }
+            }
+          }
+        }
+      }
+    }
+      &>a{
+        font-size: 1.5em;
+        &:focus{
+          text-decoration: none;
+          color: #fff;
+        }
+      }
+      .mobileContactUs {
+        display: block;
+      }
+  }
 
   }
   .home .select2-dropdown{
@@ -606,7 +646,7 @@
     }
   }
 }
-@media screen and (max-width: @adapt360) {
+@media screen and (max-width: @adapt400) {
   body .site-logo{
     height: 120px;
     width: 130px;
@@ -614,14 +654,9 @@
       width: 80px;
     }
   }
-  .head-popups{
-    ul{
-      margin-right: 0;
-      li{
-        a{
-          font-size: 1em;
-        }
-      }
+  .frontPageSearchBlock{
+    .searchForm{
+      width: 360px;
     }
   }
   .frontPageSearchBlock{
@@ -655,6 +690,8 @@
           padding: 0;
           .rdc-agents-carousel-item{
             width: 362px;
+            margin-left: 0;
+            margin-right: 0;
           }
           .rdc-agents-carousel-previous{
             left: 25px;
