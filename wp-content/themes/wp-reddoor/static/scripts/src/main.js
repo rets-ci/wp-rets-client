@@ -212,7 +212,9 @@
     jQuery('.frontPageSearchBlock').height(height);
     console.log( jQuery('.frontPageSearchBlock').height() );
   }
+
   function rdc_property_sticky() {
+
     if (jQuery(window).width() > 1200) {
       jQuery("#propertyDetails").sticky({topSpacing: 0, bottomSpacing: 1000});
     }
@@ -235,6 +237,7 @@
         rdc_property_sticky();
         rdc_agent_carousel_item_width();
         rdc_init_agents_carousel();
+
       }, 250 );
     } ).resize();
   } );
