@@ -14,7 +14,7 @@ This Required install wp property installed**.
 This plugin contains a ```composer.json``` file for those of you who manage your PHP dependencies with [Composer](https://getcomposer.org).
 
 ## Shortcode Reference
-Shortcode: `[property_responsive_slideshow parameters]`
+Shortcode: `[property_responsive_slideshow]`
 # Usage
 
 #### parameters
