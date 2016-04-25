@@ -951,6 +951,11 @@
   padding: 30px !important;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 }
+@media screen and (max-width: 990px) {
+  .wpp-advanced-supermap .sm-search-form {
+    max-width: none;
+  }
+}
 .rdc-supermap-search-form .rdc-action {
   text-align: right;
 }
@@ -1009,6 +1014,11 @@
 }
 .rdc-supermap-search-form .price-input + .price-input {
   margin-left: 6%;
+}
+@media screen and (max-width: 990px) {
+  .rdc-supermap-search-form .price-input + .price-input {
+    margin-left: 4%;
+  }
 }
 .rdc-supermap-search-form .price-dropdown {
   background: white none repeat scroll 0 0;
@@ -1171,6 +1181,7 @@
 }
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li {
   border-left: 1px solid #e4e2dd;
+  float: left;
 }
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i {
   transition: .4s color;

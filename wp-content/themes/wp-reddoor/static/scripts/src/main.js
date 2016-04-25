@@ -189,11 +189,15 @@
   } );
 
   function map_resize() {
-    var height = jQuery( window ).height() - jQuery( "#header" ).height() - 40;
-    if( height < 400 ) {
-      height = 400;
+    if ( jQuery( window ).width() < 990 ) {
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
+    } else {
+      var height = jQuery(window).height() - jQuery("#header").height() - 40;
+      if (height < 400) {
+        height = 400;
+      }
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
     }
-    jQuery( '.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map' ).height( height );
   }
 
   /**
