@@ -6203,6 +6203,9 @@ body .ui-tooltip {
   .menu-header-container .menuDesktop .sub-menu li a {
     font-size: 1em;
   }
+  .single-property h4 {
+    text-align: center;
+  }
   .single-property .singlePropertyHeader .oneAgent {
     position: inherit;
     margin: 20px 0 0;
@@ -6210,11 +6213,11 @@ body .ui-tooltip {
     left: 0;
   }
   .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
-    padding: 0 50px;
+    padding: 0 6%;
   }
   .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
-    margin-right: 110px;
-    margin-left: 110px;
+    margin-left: 0.1%;
+    margin-right: 0.1%;
   }
   .single-property .areaMapBlock .nav-tabs li {
     margin-left: 0;
@@ -6227,6 +6230,22 @@ body .ui-tooltip {
   }
   .single-property .propertyDetails .nav-tabs li:last-child {
     width: 25%;
+  }
+  .single-property .propertyFacts > div {
+    text-align: center;
+  }
+  .single-property .propertyFacts > div div {
+    margin-right: 0;
+    float: none;
+    display: inline-block;
+  }
+  .single-property .propertyAttribute > div {
+    text-align: center;
+  }
+  .single-property .propertyAttribute > div div {
+    margin-right: 0;
+    float: none;
+    display: inline-block;
   }
 }
 @media screen and (max-width: 1024px) {
@@ -6545,6 +6564,9 @@ body .ui-tooltip {
   }
   .head-popups ul li a {
     font-size: 1em;
+  }
+  .frontPageSearchBlock .searchForm {
+    width: 360px;
   }
   .single-property .singlePropertyHeader .container .title {
     text-align: center;
