@@ -18,12 +18,13 @@ use \UsabilityDynamics\RDC\Utils;
     <div class="row">
 
       <?php
+
       /**
        * Map column styles can be overwritten via filter.
        * For example, you could want to use another map column's width:
        * col-md-7 ( instead of col-md-6 )
        */
-      if ( !Utils::device_is_mobile() ) :
+      if ( Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == false ) :
 
         ?>
         <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap hidden-xs hidden-sm">
@@ -66,7 +67,7 @@ use \UsabilityDynamics\RDC\Utils;
        * col-md-5 ( instead of col-md-6 )
        */
       ?>
-      <div class="<?php echo Utils::device_is_mobile() ? 'col-md-12' : 'col-md-5'; ?> sm-properties-list-wrap">
+      <div class="<?php echo Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == false ? 'col-md-5' : 'col-md-12'; ?> sm-properties-list-wrap">
 
         <ul class="sm-list-controls">
           <li class="hidden-md hidden-lg" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>

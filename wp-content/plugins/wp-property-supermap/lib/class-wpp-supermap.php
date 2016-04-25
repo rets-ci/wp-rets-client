@@ -40,6 +40,7 @@ class class_wpp_supermap {
 
     //* Load admin header scripts */
     add_action('admin_enqueue_scripts', array('class_wpp_supermap', 'admin_enqueue_scripts'));
+    add_action( 'admin_print_scripts', array('class_wpp_supermap', 'admin_inline_js') );
 
     //* Handles map markers */
     add_filter('wpp_supermap_marker', array('class_wpp_supermap', 'get_marker_by_post_id'), 10 );
@@ -492,10 +493,15 @@ class class_wpp_supermap {
     if($current_screen->id == 'property_page_property_settings') {
       wp_enqueue_script('wpp-supermap-settings');
     }
+  }
 
+  /**
+   * Admin inline assets
+   */
+  static public function admin_inline_js() {
     //* Add custom supermap styles */
     ?>
-    <style>
+    <style type="text/css">
       .supermap_marker_settings .wpp_supermap_marker_image {
         float:left;
         position:relative;
