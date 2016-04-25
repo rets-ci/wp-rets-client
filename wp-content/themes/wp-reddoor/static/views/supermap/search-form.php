@@ -41,7 +41,7 @@
       <div class="col-md-4">
 
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields" click-out="pricing.mode = ''">
+        <div class="rdc-range-fields" click-out="pricing.click_out($event)">
 
           <input onchange="pricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="pricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
           <input onchange="pricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="pricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
