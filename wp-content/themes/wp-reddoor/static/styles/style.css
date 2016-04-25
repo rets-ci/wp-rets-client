@@ -954,6 +954,7 @@
 @media screen and (max-width: 990px) {
   .wpp-advanced-supermap .sm-search-form {
     max-width: none;
+    padding-top: 50px !important;
   }
 }
 .rdc-supermap-search-form .rdc-action {
@@ -1195,6 +1196,11 @@
 }
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
   color: #5a595c;
+}
+@media screen and (max-width: 990px) {
+  .wpp-advanced-supermap .sm-properties-list-wrap .sm-no-results {
+    padding: 30px 0;
+  }
 }
 .wpp-advanced-supermap .sm-sidebar-top {
   padding: 15px 20px !important;

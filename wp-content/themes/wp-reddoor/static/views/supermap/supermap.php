@@ -26,7 +26,7 @@ use \UsabilityDynamics\RDC\Utils;
       if ( !Utils::device_is_mobile() ) :
 
         ?>
-        <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap">
+        <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap hidden-xs hidden-sm">
 
           <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false">
 
@@ -68,19 +68,19 @@ use \UsabilityDynamics\RDC\Utils;
       ?>
       <div class="<?php echo Utils::device_is_mobile() ? 'col-md-12' : 'col-md-5'; ?> sm-properties-list-wrap">
 
+        <ul class="sm-list-controls">
+          <li class="hidden-md hidden-lg" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
+          <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
+          <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
+        </ul>
+
+        <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
+          <?php echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) ); ?>
+        </div>
+
         <div ng-show="properties.length > 0" class="sm-properties-collection">
 
           <div class="sm-sidebar-top">{{total}} Properties</div>
-
-          <ul class="sm-list-controls">
-            <li class="hidden-md hidden-lg" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
-            <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
-            <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
-          </ul>
-
-          <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
-            <?php echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) ); ?>
-          </div>
 
           <div ng-show="view.mode.preview">
 
