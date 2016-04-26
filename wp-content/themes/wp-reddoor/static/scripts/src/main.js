@@ -11,8 +11,10 @@
     jQuery( ".rdc-accordion" ).accordion( {
       active: false,
       collapsible: true,
+      heightStyle: "content"
     } );
-    jQuery( '.ui-accordion-content' ).css( 'height', jQuery( '.ui-accordion-content' ).outerHeight() - 200 );
+
+    //jQuery( '.ui-accordion-content' ).css( 'height', jQuery( '.ui-accordion-content' ).outerHeight() - 200 );
 
     /* Mobile menu slide */
     jQuery( '.toggle' ).on( 'click', function () {

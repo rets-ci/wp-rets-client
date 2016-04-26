@@ -21,7 +21,7 @@ $this->render_template($instance['controls'], $instance['frames']);
       echo '<p class="counter">' . $value['content'] . '</p>';
       if($value['feature_point']['icon_point'] || $value['feature_point']['feature_title'] || $value['feature_point']['feature_content'] ) {
         echo '<div class="counter mobileFeaturePoint">'; //Feature Point
-        echo siteorigin_widget_get_icon($frame['feature_point']['icon_point']);
+        echo siteorigin_widget_get_icon($value['feature_point']['icon_point']);
         echo '<div>';
         echo '<h4>' . $value['feature_point']['feature_title'] . '</h4>';
         echo $value['feature_point']['feature_content'];
