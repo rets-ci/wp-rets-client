@@ -79,7 +79,7 @@ while (have_posts()) : the_post();
   <div class="container-fluid ftrdImgGoTop">
     <section class="sp-slideshow-block">
       <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
-        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660]'); ?>
+        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660 grid_image_size=thumbnail]'); ?>
       <?php } else { ?>
         <?php if (has_post_thumbnail()) { ?>
           <div class="slideshowHeadImage"
@@ -400,7 +400,7 @@ while (have_posts()) : the_post();
             <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
             <span>Walk Score</span>
-            <strong>Not available now</strong>
+            <strong><?php _e('Temporarily Unavailable'); ?></strong>
             </div>
           </div>
         <?php }  ?>
