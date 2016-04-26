@@ -1446,7 +1446,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 /* Property page */
 .single-property h4 {
-  font-size: 1.6em;
+  font-size: 1.9em;
+  font-weight: 400;
+  color: #5A595C;
 }
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
@@ -1463,7 +1465,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .singleRemarks {
   font-size: 1.2em;
-  line-height: 1.6em;
+  line-height: 1.75em;
   margin-bottom: 25px;
   margin-top: 30px;
 }

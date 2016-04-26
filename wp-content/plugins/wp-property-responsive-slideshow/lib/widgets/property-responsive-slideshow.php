@@ -56,6 +56,7 @@ namespace UsabilityDynamics\WPP {
      * @param array $instance
      */
     public function form( $instance ) {
+      $grid_image_size = isset( $instance[ 'grid_image_size' ] ) ? esc_attr( $instance[ 'grid_image_size' ] ) : 'medium';
       ?>
       <p>
         <label class="widefat" for="<?php echo $this->get_field_id( '_widget_title' ); ?>"><?php _e( 'Title', ud_get_wpp_resp_slideshow()->domain ); ?></label>
@@ -66,6 +67,14 @@ namespace UsabilityDynamics\WPP {
       </p>
       <?php
       parent::form( $instance );
+      ?>
+      <p>
+        <label for="<?php echo $this->get_field_id( 'grid_image_size' ); ?>"><?php _e( 'Image size for grid:', ud_get_wp_property()->domain ); ?>
+          <?php \WPP_F::image_sizes_dropdown( "name=" . $this->get_field_name( 'grid_image_size' ) . "&selected=" . $grid_image_size ); ?>
+        </label>
+        <span class="description"><?php _e( 'Image size for 12grid and 12mosaic. Will not apply on first image.', ud_get_wpp_resp_slideshow()->domain ); ?></span>
+      </p>
+      <?php
     }
 
     /**

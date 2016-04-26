@@ -135,6 +135,7 @@ namespace UsabilityDynamics\WPP {
           'slideshow_type' => 'thumbnailCarousel',
           'slideshow_layout' => 'auto',
           'slider_type' => 'standard',
+          'grid_image_size' => 'medium',
           'lb_title_1' => '',
           'lb_title_2' => '',
           'slider_width' => '',
