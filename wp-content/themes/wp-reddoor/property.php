@@ -316,7 +316,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "true",
@@ -327,7 +327,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -338,7 +338,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -349,7 +349,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
         </div>
       </div>
     </div>
