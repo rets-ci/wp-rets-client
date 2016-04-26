@@ -135,3 +135,13 @@ jQuery(document).ready(function(){
     rdc_init_agents_carousel();
 
 });
+
+jQuery( window ).load( function () {
+    var resizeTimer;
+    jQuery( window ).on( 'resize', function () {
+        clearTimeout( resizeTimer );
+        resizeTimer = setTimeout( function () {
+            rdc_init_agents_carousel();
+        }, 100 );
+    } ).resize();
+} );
