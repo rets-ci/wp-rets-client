@@ -2,7 +2,7 @@ jQuery(function () {
 
   var popUpWindow = jQuery('span.exitPopup').parent().parent();
 
-  jQuery('.showContactPopup a, button.showContactPopup').on('click', function showContactPopup() {
+  jQuery('.showContactPopup > a, button.showContactPopup').on('click', function showContactPopup() {
     var that = this;
     jQuery('div.popup').fadeOut(300);
     jQuery('div.popup.'+jQuery(that).attr("rel")).fadeIn(200);

@@ -16,18 +16,12 @@
 
     /* Mobile menu slide */
     jQuery( '.toggle' ).on( 'click', function () {
-      jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 400 ).css( 'position', 'fixed' );
+      jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 400 ).css( 'position', 'absolute' );
     } );
     jQuery( '.closeMobileMenu' ).on( 'click', function () {
       jQuery( '.mobileMenu' ).animate( { 'left': '-80%' }, 400 );
     } );
     /* Mobile menu slide */
-
-    /* Mobile slide sub-menu */
-    jQuery( '.menuAdaptive li' ).on( 'click', function () {
-      var ourItem = jQuery( this );
-      jQuery( '.menuAdaptive' + ourItem + '.sub-menu' ).css( 'display', 'block' );
-    } );
 
     /* Mobile slide sub-menu */
     jQuery( function () {
