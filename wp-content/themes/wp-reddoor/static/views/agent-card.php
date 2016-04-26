@@ -50,7 +50,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'rent':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ) ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_rent_id' ) ) {
 
               ?>
 
@@ -94,11 +94,11 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
-                echo '<span>'. Utils::get_single_term( 'listing_office', $property['ID'] ) .'</span>';
+                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
 
                 echo '<span>'. Utils::get_single_term( 'listing_agent_phone_number', $property['ID'] ) .'</span>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+                //echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -112,7 +112,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'sale':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ) ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_sale_id' ) ) {
 
               ?>
 
@@ -161,6 +161,8 @@ use \UsabilityDynamics\RDC\Utils;
                 <?php
 
                   $usersAgentsObjects = get_users(array('role' => 'agent'));
+
+                  shuffle($usersAgentsObjects);
 
                   foreach ($usersAgentsObjects as $userAgentId) {
 

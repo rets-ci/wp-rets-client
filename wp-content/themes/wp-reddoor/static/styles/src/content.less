@@ -1,3 +1,10 @@
+a {
+  &:focus {
+    outline: medium none !important;
+    text-decoration: none !important;
+  }
+}
+
 .panel-grid {
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -771,6 +778,11 @@
     max-width: 620px;
     padding: 30px !important;
     box-shadow: 0px 0px 5px rgba(0,0,0,.25);
+
+    @media screen and (max-width: 990px) {
+      max-width: none;
+      padding-top: 50px !important;
+    }
   }
 }
 .rdc-supermap-search-form {
@@ -846,6 +858,10 @@
 
     &+.price-input {
       margin-left: 6%;
+
+      @media screen and (max-width: 990px) {
+        margin-left: 4%;
+      }
     }
   }
 
@@ -1031,6 +1047,7 @@
       li {
 
         border-left: 1px solid #e4e2dd;
+        float: left;
 
         i {
           transition: .4s color;
@@ -1046,6 +1063,12 @@
             color: #5a595c;
           }
         }
+      }
+    }
+
+    .sm-no-results {
+      @media screen and (max-width: 990px) {
+        padding: 30px 0;
       }
     }
   }

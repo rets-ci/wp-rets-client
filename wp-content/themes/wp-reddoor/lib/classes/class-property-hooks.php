@@ -72,6 +72,20 @@ namespace UsabilityDynamics\RDC {
          *
          */
         add_action( 'template_redirect', array( $this, 'rdc_form_action' ) );
+
+        /**
+         *
+         */
+        add_filter( 'wpp::supermap::template_path', array( $this, 'supermap_template_paths' ) );
+      }
+
+      /**
+       * @param $paths
+       * @return array
+       */
+      public function supermap_template_paths($paths) {
+        array_unshift( $paths, get_stylesheet_directory() . '/static/views/supermap' );
+        return $paths;
       }
 
       /**

@@ -66,6 +66,22 @@ namespace UsabilityDynamics\RDC {
             'type'    => 'text',
             'settings' => 'rdc_recaptcha_secret'
         ));
+
+        $wp_customize->add_section( 'rdc_supermap', array(
+            'title'       => __( 'Supermap', 'rdc' ),
+            'priority'    => 61
+        ));
+
+        $wp_customize->add_setting( 'rdc_hide_supermap_mobile', array(
+            'default'              => ''
+        ));
+
+        $wp_customize->add_control( 'rdc_hide_supermap_mobile', array(
+            'label'   => __( 'Hide Supermap on Mobile', 'rdc' ),
+            'section' => 'rdc_supermap',
+            'type'    => 'checkbox',
+            'settings' => 'rdc_hide_supermap_mobile'
+        ));
       }
     }
   }

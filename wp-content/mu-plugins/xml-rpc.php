@@ -90,6 +90,13 @@ add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, 
 
   }
 
+  $response['sizes']['full'] = array(
+      'height' => 'auto',
+      'width' => 'auto',
+      'url' => $attachment_url,
+      'orientation' => 'landscape'
+  );
+
   return $response;
 } , 10, 3  );
 

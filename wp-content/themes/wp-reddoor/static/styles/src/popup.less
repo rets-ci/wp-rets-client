@@ -242,3 +242,96 @@
     height: 35px;
   }
 }
+
+@media screen and (max-width: @adapt768) {
+  .popup.contact-popup {
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .exitPopup {
+      padding: 12px 14px;
+    }
+
+    .popup-inner-wrapper {
+      height: 100%;
+      max-height: none;
+      width: 100%;
+    }
+
+    &.popupContactUsMore {
+
+      .popup-inner-wrapper {
+
+        ul {
+          height: 100%;
+
+          li {
+
+            min-width: 0;
+
+            div {
+              font-size: 14px;
+            }
+
+            .icon {
+              margin-top: 45px;
+            }
+          }
+        }
+      }
+
+    }
+
+    &.popupLogin {
+      .popup-inner-wrapper {
+
+        ul {
+          height: 100%;
+
+          li {
+            width: 100%;
+            display: block;
+            float: none;
+            border-right: 0;
+
+            &+ li {
+              border-top: 1px solid #e6e4dd;
+            }
+
+            span {
+              margin: 10px 0;
+            }
+
+            a {
+              width: 150px;
+              margin: 0 auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @adapt360) {
+  .popup.contact-popup {
+
+    &.popupContactUsMore {
+
+      .popup-inner-wrapper {
+
+        ul {
+
+          li {
+
+            .icon {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
