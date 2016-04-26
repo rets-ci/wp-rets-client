@@ -24,6 +24,7 @@ Parameter                                 | Name                  | Short Descri
 [slideshow_layout](#slideshow_layout)     | Slideshow layout      | Slideshow layout                              | auto, strict, fullwidth               | auto
 [slideshow_type](#slideshow_type)         | Slideshow Types       | Type of slideshow                             | standard, thumbnailCarousel           | thumbnailCarousel
 [slider_type](#slider_type)               | Slider Type           | Type of slider                                | standard, carousel, 12grid, 12mosaic  |  standard
+[grid_imgage_size](#grid_imgage_size)	    | Image size for grid   | Image size for 12grid and 12mosaic.           | Image sizes							  |  medium
 [slider_width](#slider_width)             | Slider Width          | Set width of the slideshow                    | in px or %                            | none
 [slider_auto_height](#slider_auto_height) | Slider Auto Height    | Automatic height based on image size.         | true, false                           | false
 [slider_height](#slider_height)           | Slider Height         | Set Slider height                             | in px or %                            | 16:9
@@ -56,6 +57,10 @@ standard          | Standard Slider               | The Standard Slider shows on
 carousel          | Carousel Slider               | It shows previews of the previous and next images. If have space.
 12grid            | 1:2 Grid Slider               | One large image followed by stacked smaller images.
 12mosaic          | 1:2 Mosaic Slider             | Same as 1:2 Grid Slider but slide with be automatic based on aspect ration.
+
+#### grid_imgage_size
+##### Image size for grid
+Image size for 12grid and 12mosaic. Will not apply on first image.
 
 #### slider_width
 ##### Slider Width

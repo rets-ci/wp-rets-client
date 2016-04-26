@@ -9,15 +9,16 @@ $title = get_the_title($property_id);
 $images = UsabilityDynamics\WPP\Property_Factory::get_images($property_id);
 $imgs = array();
 $property_resp_slideshow_counter++;
+$img_size = "large";
 foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
 	$full = wp_get_attachment_image_src( $attach_id, "full");
     if(!wp_is_mobile()){
-        $large = wp_get_attachment_image($attach_id, 'large');
+        $large = wp_get_attachment_image($attach_id, $img_size);
         $thumb = wp_get_attachment_image($attach_id);
     }
     else{
-        $large_src = wp_get_attachment_image_src($attach_id, 'large');
+        $large_src = wp_get_attachment_image_src($attach_id, $img_size);
         $large = "<img data-src='{$large_src[0]}' class='swiper-lazy' width='{$large_src[1]}' height='{$large_src[2]}' /><div class='swiper-lazy-preloader'></div>";
         $thumb = '';
     }
@@ -26,6 +27,9 @@ foreach ($images as $img) {
 								'large' => $large,
 								'thumb' => $thumb
 							);
+  if($slider_type == "12grid" || $slider_type == "12mosaic"){
+    $img_size = $grid_imgage_size;
+  }
 }
 ?>
 <?php if(count($imgs)>0):?>
@@ -64,7 +68,7 @@ echo "<div id='wpprs-$property_resp_slideshow_counter'
     }
     ?>
       <div class="pull-right">
-        <a class="viewOriginal" class="button" aria-label="Close" href="javascript:void(0);" target="_blank">
+        <a class="viewOriginal button" aria-label="View Original" href="javascript:void(0);" target="_blank">
           View Original <i class="dashicons dashicons-external"></i>
         </a>
         <a class="close" aria-label="Close"><i class="dashicons dashicons-no"></i></a>
