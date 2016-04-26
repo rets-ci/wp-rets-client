@@ -6472,7 +6472,7 @@ body .ui-tooltip {
     display: block !important;
   }
   body .frontPageSearchBlock .searchForm {
-    min-width: 557px;
+    min-width: 560px;
   }
   body .frontPageSearchBlock .searchForm form {
     border-radius: 0 0 5px 5px;
@@ -6641,6 +6641,24 @@ body .ui-tooltip {
     width: 90%;
   }
 }
+@media screen and (max-width: 560px) {
+  body .frontPageSearchBlock .searchForm {
+    min-width: 100%;
+  }
+  body .frontPageSearchBlock .searchForm form .sfBeds {
+    width: 48.3%;
+  }
+  body .frontPageSearchBlock .searchForm form .sfBaths {
+    width: 48.3%;
+  }
+  body .frontPageSearchBlock .searchForm > ul {
+    width: 49.2%;
+    display: flex;
+  }
+  body .frontPageSearchBlock .searchForm > ul > li {
+    width: 48.3%;
+  }
+}
 @media screen and (max-width: 400px) {
   body .site-logo {
     height: 120px;
@@ -6649,11 +6667,18 @@ body .ui-tooltip {
   body .site-logo img {
     width: 80px;
   }
-  .frontPageSearchBlock .searchForm {
-    width: 360px;
+  body .site-logo .frontPageSearchBlock .searchForm {
+    min-width: 100%;
   }
-  .frontPageSearchBlock .searchForm {
-    width: 360px;
+  body .site-logo .frontPageSearchBlock .searchForm form .sfBeds {
+    width: 48.1%;
+  }
+  body .site-logo .frontPageSearchBlock .searchForm form .sfBaths {
+    width: 48.1%;
+  }
+  body .site-logo .frontPageSearchBlock .searchForm > ulli {
+    font-size: 0.9em;
+    width: 47.3%;
   }
   .single-property .singlePropertyHeader .container .title {
     text-align: center;
@@ -6702,5 +6727,10 @@ body .ui-tooltip {
   }
   .single-property .listingProvider ul li img {
     width: 100%;
+  }
+}
+@media screen and (max-width: 320px) {
+  body .frontPageSearchBlock .searchForm {
+    min-width: 320px;
   }
 }

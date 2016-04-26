@@ -11,10 +11,14 @@ use \UsabilityDynamics\RDC\Utils;
 
 <div class="oneAgent">
 
+  <?php if(Utils::get_single_term( 'sale_type', $property['ID'], 'slug' ) == 'sale') : ?>
+
   <ul class="socialButtons">
     <li><a href="javascript:void(0);"><span class="icon-wpproperty-interface-share-solid shareButton"></span></a></li>
     <li><a target="_blank" href="<?php echo do_shortcode('[property_flyer urlonly=yes]'); ?>"><span class="icon-wpproperty-interface-print-solid"></span></a></li>
   </ul>
+
+  <?php endif; ?>
 
   <div class="singleShareContainer">
     <h4><?php _e('Share This Property','reddoor'); ?></h4>
