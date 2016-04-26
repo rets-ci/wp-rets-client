@@ -79,7 +79,7 @@ while (have_posts()) : the_post();
   <div class="container-fluid ftrdImgGoTop">
     <section class="sp-slideshow-block">
       <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
-        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660]'); ?>
+        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660 grid_image_size=thumbnail]'); ?>
       <?php } else { ?>
         <?php if (has_post_thumbnail()) { ?>
           <div class="slideshowHeadImage"
@@ -316,7 +316,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "true",
@@ -327,7 +327,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -338,7 +338,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
           <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -349,7 +349,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
         </div>
       </div>
     </div>
@@ -400,7 +400,7 @@ while (have_posts()) : the_post();
             <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
             <span>Walk Score</span>
-            <strong>Not available now</strong>
+            <strong><?php _e('Temporarily Unavailable'); ?></strong>
             </div>
           </div>
         <?php }  ?>

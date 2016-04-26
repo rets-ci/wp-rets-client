@@ -255,7 +255,7 @@ a:focus {
   width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 64px 0;
+  margin: 79px 0;
   background: #fff;
 }
 .oneAgent > img {
@@ -311,7 +311,6 @@ a:focus {
   border-radius: 5px;
   display: inline-block;
   padding: 15px 0;
-  margin: 0 5px;
 }
 /* Go featured image */
 .ftrdImgGoTop {
@@ -1447,7 +1446,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 /* Property page */
 .single-property h4 {
-  font-size: 1.6em;
+  font-size: 1.9em;
+  font-weight: 400;
+  color: #5A595C;
 }
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
@@ -1464,7 +1465,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .singleRemarks {
   font-size: 1.2em;
-  line-height: 1.6em;
+  line-height: 1.75em;
   margin-bottom: 25px;
   margin-top: 30px;
 }
@@ -1475,6 +1476,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border-bottom: 1px solid #dedede;
   position: relative;
   z-index: 9;
+}
+.single-property .singlePropertyHeader .title {
+  margin-bottom: 15px;
 }
 .single-property .singlePropertyHeader .title > span {
   background: #18C2B8;
@@ -1640,33 +1644,37 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin: 15px 0;
 }
 .single-property .areaMapBlock .singleWalkScore {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+.single-property .areaMapBlock .singleWalkScore .container-fluid {
+  padding: 0;
 }
 .single-property .areaMapBlock .ambItem {
   border: 1px solid #dedede;
   border-radius: 5px;
-  margin: 5px 30px;
   padding: 30px 20px;
 }
 .single-property .areaMapBlock .ambItem div {
   background: #89c11e none repeat scroll 0 0;
   border-radius: 50%;
   color: #fff;
-  font-size: 1.3em;
+  font-size: 1.5em;
+  height: 54px;
+  line-height: 42px;
   margin: auto;
-  padding: 8px 9px;
+  padding: 8px;
   text-align: center;
-  width: 42px;
-  line-height: 24px;
+  width: 54px;
+  font-weight: 500;
 }
 .single-property .areaMapBlock .ambItem .scoreComing {
   background: #F3F3F3;
 }
 .single-property .areaMapBlock .ambItem .scoreComing span {
   color: #a6a9ac;
-  font-size: 1.3em;
-  margin: 2px 0 1px;
+  font-size: 1.6em;
+  margin: 3px 0 2px;
 }
 .single-property .areaMapBlock .ambItem span {
   display: block;
@@ -1720,6 +1728,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border-top: 1px solid transparent;
   padding: 20px 15px 15px;
   margin-bottom: 20px;
+  height: 420px;
+  background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
 }
 .single-property .propertyDetails .col-lg-7 {
   margin: 15px 0;
@@ -2375,7 +2385,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   display: block;
 }
 .footerWidgetArea2 img {
-  margin-right: 10px;
+  margin-right: 25px;
+  height: 50px;
 }
 .footerWidgetArea3 {
   margin-top: 15%;

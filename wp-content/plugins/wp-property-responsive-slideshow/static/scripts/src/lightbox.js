@@ -102,7 +102,7 @@
         $.each(options.galleryTop.slides, function(index, item){
           var slide = $(item);
           var src = slide.data('src');
-          setRealDataWidthHeight(slide);
+          setRealDataWidthHeight(slide, options.galleryTop);
           var dataWidth = slide.data('width');
           var dataHidth = slide.data('height');
           if(src){
@@ -150,12 +150,14 @@
           break;
       }
     }
-    
 
-    return this;
-  };
-  
-  function setRealDataWidthHeight($div){
+    function setRealDataWidthHeight($div, s){
+      if(typeof s.lbDataWidthHeightLoaded != 'undefined' && s.lbDataWidthHeightLoaded == true)
+        return;
+      if(typeof s.noOfLBimgageLoaded == 'undefined')
+          s.noOfLBimgageLoaded = 0;
+      s.noOfLBimgageLoaded += 1;
+
       $('<img />').load(function(){
           var width = this.width;
           var height = this.height;
@@ -164,10 +166,15 @@
               .attr('data-height', height);
           $img.attr('data-width', width)
               .attr('data-height', height);
-          s.timer = setTimeout(function(){
-              s.onResize();
-          }, 500)
+          if(s.noOfLBimgageLoaded == s.slides.length){
+              s.lbDataWidthHeightLoaded = true;
+          }
       }).attr('src', $div.attr('data-src'));
       return $div;
-  }
+    }
+    
+
+    return this;
+  };
+
 })(jQuery);
