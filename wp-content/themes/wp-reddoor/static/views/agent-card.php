@@ -68,7 +68,7 @@ use \UsabilityDynamics\RDC\Utils;
                   $imageId = $image_ids[0];
                 }
 
-                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                 echo '<h3>' . $user_data->display_name . '</h3>';
 
@@ -130,7 +130,7 @@ use \UsabilityDynamics\RDC\Utils;
                     $imageId = $image_ids[0];
                   }
 
-                  echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                  echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                   echo '<h3>' . $user_data->display_name . '</h3>';
 
@@ -174,7 +174,7 @@ use \UsabilityDynamics\RDC\Utils;
                       $imageId = $image_ids[0];
                     }
 
-                    echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                    echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                     echo '<h3>' . $user_data->display_name . '</h3>';
 
