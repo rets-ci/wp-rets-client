@@ -14,14 +14,6 @@ namespace UsabilityDynamics\WPP {
        * Constructor
        */
       public function __construct() {
-        $image_sizes = array();
-        foreach( get_intermediate_image_sizes() as $name ) {
-          $sizes = \WPP_F::image_sizes($name);
-          if (!$sizes) {
-            continue;
-          }
-          $image_sizes[ $name ] = $name . ' (' . $sizes['width'] . 'x' . $sizes['height'] . 'px)';
-        }
 
         $attributes = (array) \WPP_F::get_total_attribute_array();
         $options = array(
@@ -69,14 +61,6 @@ namespace UsabilityDynamics\WPP {
                   '12mosaic' => '1:2 Mosaic Slider'
                 ),
                 'default' => 'standard',
-              ),
-              //Image size for grid
-              'grid_imgage_size' => array(
-                'name' => __( 'Image size for grid', ud_get_wp_property( 'domain' ) ),
-                'description' => __( 'Image size for 12grid and 12mosaic. Will not apply on first image.', ud_get_wp_property( 'domain' ) ),
-                'type' => 'select',
-                'options' => $image_sizes,
-                'default' => 'medium',
               ),
               // Slider Width
               'slider_width' => array(
@@ -151,7 +135,7 @@ namespace UsabilityDynamics\WPP {
           'slideshow_type' => 'thumbnailCarousel',
           'slideshow_layout' => 'auto',
           'slider_type' => 'standard',
-          'grid_imgage_size' => 'medium',
+          'grid_image_size' => 'medium',
           'lb_title_1' => '',
           'lb_title_2' => '',
           'slider_width' => '',

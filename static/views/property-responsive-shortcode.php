@@ -9,7 +9,12 @@ $title = get_the_title($property_id);
 $images = UsabilityDynamics\WPP\Property_Factory::get_images($property_id);
 $imgs = array();
 $property_resp_slideshow_counter++;
-$img_size = "large";
+
+if($slider_type == "12grid" || $slider_type == "12mosaic")
+  $img_size = "full";
+else
+  $img_size = "large";
+
 foreach ($images as $img) {
 	$attach_id = $img['attachment_id'];
 	$full = wp_get_attachment_image_src( $attach_id, "full");
@@ -28,7 +33,7 @@ foreach ($images as $img) {
 								'thumb' => $thumb
 							);
   if($slider_type == "12grid" || $slider_type == "12mosaic"){
-    $img_size = $grid_imgage_size;
+    $img_size = $grid_image_size;
   }
 }
 ?>
