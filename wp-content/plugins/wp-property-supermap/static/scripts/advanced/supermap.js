@@ -253,6 +253,12 @@
           min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
           max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
 
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('price-input') ) {
+              this.mode = '';
+            }
+          },
+
           format: function(target, mode) {
             if ( !$scope.current_filter.price ) {
               $scope.current_filter.price = {
@@ -302,6 +308,7 @@
           },
 
           focus: function( mode ) {
+            console.log(mode);
             this.mode = mode;
           }
         };

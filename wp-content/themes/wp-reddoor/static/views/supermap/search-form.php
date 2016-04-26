@@ -41,13 +41,13 @@
       <div class="col-md-4">
 
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields" click-out="pricing.mode = ''">
+        <div class="rdc-range-fields" click-out="pricing.click_out($event)">
 
           <input onchange="pricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="pricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
           <input onchange="pricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="pricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
-          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
-          <input style="opacity:0;position:absolute;z-index:-1;" only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
 
           <div class="price-dropdown" ng-show="pricing.mode">
             <ul class="min-values" ng-show="pricing.mode == 'min'">
@@ -100,7 +100,7 @@
     </div>
 
     <div class="row rdc-ranges-section">
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Listing Type', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
@@ -139,7 +139,7 @@
         </div>
 
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
@@ -153,7 +153,7 @@
         </div>
 
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">

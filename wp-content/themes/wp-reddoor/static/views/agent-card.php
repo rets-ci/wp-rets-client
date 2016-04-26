@@ -50,7 +50,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'rent':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ) ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_rent_id' ) ) {
 
               ?>
 
@@ -68,7 +68,7 @@ use \UsabilityDynamics\RDC\Utils;
                   $imageId = $image_ids[0];
                 }
 
-                echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                 echo '<h3>' . $user_data->display_name . '</h3>';
 
@@ -94,11 +94,11 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
-                echo '<span>'. Utils::get_single_term( 'listing_office', $property['ID'] ) .'</span>';
+                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
 
                 echo '<span>'. Utils::get_single_term( 'listing_agent_phone_number', $property['ID'] ) .'</span>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+                //echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -112,7 +112,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'sale':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ) ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_sale_id' ) ) {
 
               ?>
 
@@ -130,7 +130,7 @@ use \UsabilityDynamics\RDC\Utils;
                     $imageId = $image_ids[0];
                   }
 
-                  echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                  echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                   echo '<h3>' . $user_data->display_name . '</h3>';
 
@@ -162,6 +162,8 @@ use \UsabilityDynamics\RDC\Utils;
 
                   $usersAgentsObjects = get_users(array('role' => 'agent'));
 
+                  shuffle($usersAgentsObjects);
+
                   foreach ($usersAgentsObjects as $userAgentId) {
 
                     echo '<li class="rdc-agents-carousel-item">';
@@ -174,7 +176,7 @@ use \UsabilityDynamics\RDC\Utils;
                       $imageId = $image_ids[0];
                     }
 
-                    echo wp_get_attachment_image($imageId, 'thumbnail') . '</br>';
+                    echo wp_get_attachment_image($imageId, 'agent_card') . '</br>';
 
                     echo '<h3>' . $user_data->display_name . '</h3>';
 

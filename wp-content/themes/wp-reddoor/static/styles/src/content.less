@@ -1,3 +1,10 @@
+a {
+  &:focus {
+    outline: medium none !important;
+    text-decoration: none !important;
+  }
+}
+
 .panel-grid {
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -93,7 +100,6 @@
       border-radius: 5px;
       display: inline-block;
       padding: 15px 0;
-      margin: 0 5px;
     }
   }
 }
@@ -771,6 +777,11 @@
     max-width: 620px;
     padding: 30px !important;
     box-shadow: 0px 0px 5px rgba(0,0,0,.25);
+
+    @media screen and (max-width: 990px) {
+      max-width: none;
+      padding-top: 50px !important;
+    }
   }
 }
 .rdc-supermap-search-form {
@@ -846,6 +857,10 @@
 
     &+.price-input {
       margin-left: 6%;
+
+      @media screen and (max-width: 990px) {
+        margin-left: 4%;
+      }
     }
   }
 
@@ -1031,6 +1046,7 @@
       li {
 
         border-left: 1px solid #e4e2dd;
+        float: left;
 
         i {
           transition: .4s color;
@@ -1046,6 +1062,12 @@
             color: #5a595c;
           }
         }
+      }
+    }
+
+    .sm-no-results {
+      @media screen and (max-width: 990px) {
+        padding: 30px 0;
       }
     }
   }
@@ -1374,6 +1396,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     position: relative;
     z-index: 9;
     .title{
+      margin-bottom: 15px;
       & > span{
         background: #18C2B8;
         text-transform: uppercase;
@@ -1552,31 +1575,35 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       margin: 15px 0;
     }
     .singleWalkScore{
-      margin-top: 40px;
-      margin-bottom: 40px;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      .container-fluid{
+        padding: 0;
+      }
     }
     .ambItem{
       border: 1px solid #dedede;
       border-radius: 5px;
-      margin: 5px 5px;
-      padding: 35px 20px;
+      padding: 30px 20px;
       div{
         background: #89c11e none repeat scroll 0 0;
         border-radius: 50%;
         color: @white;
-        font-size: 1.3em;
+        font-size: 1.5em;
+        height: 54px;
+        line-height: 42px;
         margin: auto;
-        padding: 8px 9px;
+        padding: 8px;
         text-align: center;
-        width: 42px;
-        line-height: 24px;
+        width: 54px;
+        font-weight: 500;
       }
       .scoreComing{
         background: #F3F3F3;
         span{
           color: #a6a9ac;
-          font-size: 1.3em;
-          margin: 2px 0 1px;
+          font-size: 1.6em;
+          margin: 3px 0 2px;
         }
       }
       span{
