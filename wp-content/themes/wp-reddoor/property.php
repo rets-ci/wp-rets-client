@@ -316,7 +316,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
+          ) ) ); ?>"></div>
           <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "true",
@@ -327,7 +327,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
+          ) ) ); ?>"></div>
           <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -338,7 +338,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
+          ) ) ); ?>"></div>
           <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
@@ -349,7 +349,7 @@ while (have_posts()) : the_post();
             "ws_no_link_info_bubbles" => "true",
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"><span><img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/loading.gif"></span></div>
+          ) ) ); ?>"></div>
         </div>
       </div>
     </div>
@@ -962,7 +962,7 @@ while (have_posts()) : the_post();
       <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="col-xs-12">
           <li><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></li>
-          <li><?php _e('Agent Phone Number: '); ?><b><?php echo $listing_agent_phone_number; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
+          <li><?php _e('Agent Phone Number: '); ?><b><?php echo (!empty($listing_agent_phone_number)) ? $listing_agent_phone_number : ''; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
           <li><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></li>
           <li><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></li>
