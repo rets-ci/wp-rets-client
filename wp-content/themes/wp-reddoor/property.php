@@ -414,7 +414,7 @@ while (have_posts()) : the_post();
           </div>
         </div>
 
-        <div class=" col-xs-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-md-4 col-lg-4">
 
           <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
