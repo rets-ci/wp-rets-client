@@ -1425,7 +1425,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 /* Property page */
 .single-property h4 {
-  font-size: 1.6em;
+  font-size: 1.9em;
+  font-weight: 400;
+  color: #5A595C;
 }
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
@@ -1442,7 +1444,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .singleRemarks {
   font-size: 1.2em;
-  line-height: 1.6em;
+  line-height: 1.75em;
   margin-bottom: 25px;
   margin-top: 30px;
 }
@@ -1624,8 +1626,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .areaMapBlock .ambItem {
   border: 1px solid #dedede;
   border-radius: 5px;
-  margin: 5px 30px;
-  padding: 30px;
+  margin: 5px 5px;
+  padding: 35px 20px;
 }
 .single-property .areaMapBlock .ambItem div {
   background: #89c11e none repeat scroll 0 0;
@@ -6654,6 +6656,9 @@ body .ui-tooltip {
   }
   .single-property .listingProvider ul li img {
     width: 100%;
+  }
+  .rdc-property-carousel .section-content {
+    padding: 5px 0 50px;
   }
 }
 @media screen and (max-width: 320px) {

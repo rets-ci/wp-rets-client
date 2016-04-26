@@ -400,7 +400,7 @@ while (have_posts()) : the_post();
             <div class="ambItem">
             <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
             <span>Walk Score</span>
-            <strong>Not available now</strong>
+            <strong><?php _e('Temporarily Unavailable'); ?></strong>
             </div>
           </div>
         <?php }  ?>
