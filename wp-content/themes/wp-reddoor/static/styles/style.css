@@ -255,7 +255,7 @@ a:focus {
   width: 367px;
   border: 1px solid #dcddde;
   border-radius: 5px;
-  margin: 64px 0;
+  margin: 79px 0;
   background: #fff;
 }
 .oneAgent > img {
@@ -1729,14 +1729,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   padding: 20px 15px 15px;
   margin-bottom: 20px;
   height: 420px;
-}
-.single-property .areaMapBlock .tab-content > div > span {
-  left: 40%;
-  position: absolute;
-  top: 40%;
-}
-.single-property .areaMapBlock .tab-content > div > span img {
-  width: 50%;
+  background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
 }
 .single-property .propertyDetails .col-lg-7 {
   margin: 15px 0;
@@ -2392,7 +2385,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   display: block;
 }
 .footerWidgetArea2 img {
-  margin-right: 10px;
+  margin-right: 25px;
+  height: 50px;
 }
 .footerWidgetArea3 {
   margin-top: 15%;
@@ -6747,9 +6741,6 @@ body .ui-tooltip {
   }
   .single-property .singlePropertyHeader .oneAgentLinksBlock a {
     width: 55%;
-  }
-  .single-property .areaMapBlock .tab-content > div > span {
-    display: none;
   }
   .single-property .propertyAttribute .col-xs-4 {
     width: 100%;

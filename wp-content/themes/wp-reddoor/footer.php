@@ -27,19 +27,22 @@
                 <?php endif; ?>
               <span>In Association with</span><br/>
               <?php
-              $args = array(
-                'posts_per_page' => 3,
-                'orderby' => 'post_date',
-                'order' => 'ASC',
-                'post_type' => 'associations',
-                'post_status' => 'publish',
-                'suppress_filters' => true );
-              $query = new WP_Query( $args );
-              while( $query->have_posts() ) : $query->the_post();
-                global $post;
-                echo get_the_post_thumbnail( $post->ID, 'footer_association' );
-              endwhile;
+//              $args = array(
+//                'posts_per_page' => 3,
+//                'orderby' => 'post_date',
+//                'order' => 'ASC',
+//                'post_type' => 'associations',
+//                'post_status' => 'publish',
+//                'suppress_filters' => true );
+//              $query = new WP_Query( $args );
+//              while( $query->have_posts() ) : $query->the_post();
+//                global $post;
+//                echo get_the_post_thumbnail( $post->ID, 'footer_association' );
+//              endwhile;
               ?>
+              <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/logo-realtor.png" alt="Realtor" title="Realtor" />
+              <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/logo-better-business-bureau.png" alt="Better Business Bureau" title="Better Business Bureau" />
+              <img src="<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/logo-equal-housing-opportunity.png" alt="Equal Housing Opportunity" title="Equal Housing Opportunity" />
             </div>
         </div>
         <div class="col-md-4 col-lg-4">

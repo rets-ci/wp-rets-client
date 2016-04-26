@@ -315,9 +315,9 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,10000));
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
-        if ( is_singular( 'property' ) ) {
+        //if ( is_singular( 'property' ) ) {
           wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js', array('jquery'), '1.0.0');
-        }
+       // }
 
         if ( is_front_page() ) {
           wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
