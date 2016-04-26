@@ -214,6 +214,10 @@
   color: #fff;
   cursor: pointer;
 }
+a:focus {
+  outline: medium none !important;
+  text-decoration: none !important;
+}
 .panel-grid {
   margin-left: 0 !important;
   margin-right: 0 !important;
