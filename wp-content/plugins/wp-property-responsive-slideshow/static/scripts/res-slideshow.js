@@ -1,11 +1,10 @@
 jQuery(document).ready(function($) {
     function setRealWidthHeight($img, s) {
-        return $("<img />").load(function() {
+        return "undefined" == typeof s.noOfimgageLoaded && (s.noOfimgageLoaded = 0), s.noOfimgageLoaded += 1, 
+        $("<img />").load(function() {
             var width = this.width, height = this.height;
-            $img.attr("width", width).attr("height", height), "undefined" != typeof s.timer && clearTimeout(s.timer), 
-            s.timer = setTimeout(function() {
-                s.onResize();
-            }, 500);
+            $img.attr("width", width).attr("height", height), s.noOfimgageLoaded == s.slides.length && (s.destroy(!1, !0), 
+            s.init(), s.onResize());
         }).attr("src", $img.attr("src")), $img;
     }
     var wpprs = $(".property-resp-slideshow");

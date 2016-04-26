@@ -1,13 +1,4 @@
 !function($) {
-    function setRealDataWidthHeight($div) {
-        return $("<img />").load(function() {
-            var width = this.width, height = this.height;
-            $img = $div.find("img"), $div.attr("data-width", width).attr("data-height", height), 
-            $img.attr("data-width", width).attr("data-height", height), s.timer = setTimeout(function() {
-                s.onResize();
-            }, 500);
-        }).attr("src", $div.attr("data-src")), $div;
-    }
     $.fn.wpp_rs_lb = function(prop) {
         function setViewOriginalHref(s) {
             var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("src");
@@ -29,7 +20,7 @@
         function loadFullImageLazy(index) {
             lb.hasClass("fullLazyInserted") || $.each(options.galleryTop.slides, function(index, item) {
                 var slide = $(item), src = slide.data("src");
-                setRealDataWidthHeight(slide);
+                setRealDataWidthHeight(slide, options.galleryTop);
                 var dataWidth = slide.data("width"), dataHidth = slide.data("height");
                 if (src) {
                     var img = slide.find("img");
@@ -52,6 +43,14 @@
               case 27:
                 hideLightbox(e), e.preventDefault && e.preventDefault();
             }
+        }
+        function setRealDataWidthHeight($div, s) {
+            return "undefined" == typeof s.lbDataWidthHeightLoaded || 1 != s.lbDataWidthHeightLoaded ? ("undefined" == typeof s.noOfLBimgageLoaded && (s.noOfLBimgageLoaded = 0), 
+            s.noOfLBimgageLoaded += 1, $("<img />").load(function() {
+                var width = this.width, height = this.height;
+                $img = $div.find("img"), $div.attr("data-width", width).attr("data-height", height), 
+                $img.attr("data-width", width).attr("data-height", height), s.noOfLBimgageLoaded == s.slides.length && (s.lbDataWidthHeightLoaded = !0);
+            }).attr("src", $div.attr("data-src")), $div) : void 0;
         }
         var slideActiveClass, lb = this, options = $.extend({
             galleryTop: [],

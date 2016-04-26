@@ -275,16 +275,20 @@ jQuery(document).ready(function($){
     });
 
     function setRealWidthHeight($img, s){
+        if(typeof s.noOfimgageLoaded == 'undefined')
+            s.noOfimgageLoaded = 0;
+        s.noOfimgageLoaded += 1;
+
         $('<img />').load(function(){
             var width = this.width;
             var height = this.height;
             $img.attr('width', width)
                 .attr('height', height);
-            if(typeof s.timer != 'undefined')
-                clearTimeout(s.timer);
-            s.timer = setTimeout(function(){
+            if(s.noOfimgageLoaded == s.slides.length){
+                s.destroy(false, true);
+                s.init();
                 s.onResize();
-            }, 500)
+            }
         }).attr('src', $img.attr('src'));
         return $img;
     }
