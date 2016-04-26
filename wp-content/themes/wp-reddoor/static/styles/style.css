@@ -1728,6 +1728,15 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border-top: 1px solid transparent;
   padding: 20px 15px 15px;
   margin-bottom: 20px;
+  height: 420px;
+}
+.single-property .areaMapBlock .tab-content > div > span {
+  left: 40%;
+  position: absolute;
+  top: 40%;
+}
+.single-property .areaMapBlock .tab-content > div > span img {
+  width: 50%;
 }
 .single-property .propertyDetails .col-lg-7 {
   margin: 15px 0;
@@ -2020,7 +2029,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border-radius: 0 !important;
   margin-bottom: -2px;
   padding: 1em 0.5em 1em 0.7em;
-  font-size: 1.6em;
+  font-size: 1em;
   display: flex;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover {
@@ -6547,6 +6556,21 @@ body .ui-tooltip {
   body .tabbedWidgetMobile {
     display: block !important;
   }
+  body .tabbedWidgetMobile .ui-widget-content {
+    padding-bottom: 40px;
+    font-size: 14px;
+  }
+  body .tabbedWidgetMobile .ui-widget-content h4 {
+    font-size: 2em;
+  }
+  body .tabbedWidgetMobile .ui-widget-content .sow-icon-reddoorcompany {
+    color: #d03528;
+    display: block;
+    float: none;
+    font-size: 6em;
+    margin: 35px 0;
+    text-align: center;
+  }
   body .footerWidgetArea2 {
     text-align: center;
     margin-top: 30px;
@@ -6583,8 +6607,8 @@ body .ui-tooltip {
     margin-top: -1px;
     width: 539px !important;
   }
-  .so-widget-tabbed-content .tabbedWidgetTitle {
-    display: none;
+  .so-widget-tabbed-content .sow-slider-base {
+    display: none !important;
   }
   .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
     display: none;
@@ -6723,6 +6747,9 @@ body .ui-tooltip {
   }
   .single-property .singlePropertyHeader .oneAgentLinksBlock a {
     width: 55%;
+  }
+  .single-property .areaMapBlock .tab-content > div > span {
+    display: none;
   }
   .single-property .propertyAttribute .col-xs-4 {
     width: 100%;

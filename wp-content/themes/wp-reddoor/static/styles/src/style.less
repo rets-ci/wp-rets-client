@@ -515,6 +515,22 @@
     }
     .tabbedWidgetMobile {
       display: block !important;
+
+      .ui-widget-content {
+        padding-bottom: 40px;
+        font-size: 14px;
+        h4 {
+          font-size: 2em;
+        }
+        .sow-icon-reddoorcompany {
+          color: @buttons;
+          display: block;
+          float: none;
+          font-size: 6em;
+          margin: 35px 0;
+          text-align: center;
+        }
+      }
     }
     .footerWidgetArea2 {
       text-align: center;
@@ -572,10 +588,8 @@
   }
 
   .so-widget-tabbed-content {
-    .tabbedWidgetTitle {
-      display: none;
-    }
     .sow-slider-base {
+      display: none !important;
       .sow-slider-pagination {
         display: none;
       }

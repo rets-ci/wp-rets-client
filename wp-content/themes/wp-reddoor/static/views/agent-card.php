@@ -32,12 +32,12 @@ use \UsabilityDynamics\RDC\Utils;
       jQuery(document).ready(function(){
         jQuery('#sharingEmail').keyup(function(){
           var value = jQuery(this).val();
-          jQuery('.goShare').attr('href', 'mailto:' + value + '?&subject=<?php echo ($bedrooms . ' bed ' . $bathrooms . ' bath ' . $total_living_area . ' sqft in ' . $location_city . '&body=' . (!empty($property['automated_property_detail_description'])) ?  ($property['automated_property_detail_description']) : ''  . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>');
+          jQuery('.goShare').attr('href', 'mailto:' + value + '?subject=<?php echo $bedrooms . ' bed ' . $bathrooms . ' bath ' . $total_living_area . ' sqft in ' . $location_city . '&body=' . ( !empty($property['automated_property_detail_description']) ? $property['automated_property_detail_description'] : '' )  . "%0A%0ACheck%20it%20out%20at%20" . get_the_permalink() ?>');
         });
       });
     </script>
     <input type="email" placeholder="enter email address" id="sharingEmail" />
-    <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?&subject=<?php echo ($bedrooms . ' bed ' . $bathrooms . ' bath ' . $total_living_area . ' sqft in ' . $location_city . '&body=' . $property['automated_property_detail_description'] . '0A%0ACheck%20it%20out%20at%20' . get_the_permalink()) ?>"><?php _e('Send Email', 'reddoor') ?></a>
+    <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?subject=<?php echo $bedrooms . ' bed ' . $bathrooms . ' bath ' . $total_living_area . ' sqft in ' . $location_city . '&body=' . $property['automated_property_detail_description'] . '%0ACheck%20it%20out%20at%20' . get_the_permalink(); ?>"><?php _e('Send Email', 'reddoor') ?></a>
   </div>
 
   <div class="rdc-agents-carousel-container">
