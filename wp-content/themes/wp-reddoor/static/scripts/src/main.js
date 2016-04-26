@@ -238,8 +238,6 @@
           rdc_property_sticky();
         }
         rdc_agent_carousel_item_width();
-        rdc_init_agents_carousel();
-
       }, 250 );
     } ).resize();
   } );
