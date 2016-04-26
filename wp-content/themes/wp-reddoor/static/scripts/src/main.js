@@ -2,10 +2,6 @@
 
   jQuery( document ).ready( function () {
 
-    //jQuery('.archive .featuredImageHeader').css('height', jQuery(window).height()-212);
-    //jQuery('.single .featuredImageHeader, .blog .featuredImageHeader, .single-property .slideshowHeadImage').css('height', jQuery(window).height()-132);
-    //jQuery('.home .frontPageSearchBlock').css('height', jQuery(window).height()-90);
-    //jQuery('.page-template .so-widget-sow-hero, .page-template .sow-slider-image-cover, .page-template .sow-slider-images').css('height', jQuery(window).height()-132);
     jQuery( '.mobileMenu' ).css( 'min-height', jQuery( window ).height() );
 
     jQuery( ".rdc-accordion" ).accordion( {
@@ -13,8 +9,6 @@
       collapsible: true,
       heightStyle: "content"
     } );
-
-    //jQuery( '.ui-accordion-content' ).css( 'height', jQuery( '.ui-accordion-content' ).outerHeight() - 200 );
 
     /* Mobile menu slide */
     jQuery( '.toggle' ).on( 'click', function () {
