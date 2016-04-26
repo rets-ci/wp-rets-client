@@ -137,14 +137,15 @@
   text-decoration: none;
   font-size: 1.5em;
   outline: none;
+  line-height: 40px;
 }
 .mobileMenu .menuAdaptive > li > a {
   border-bottom: 1px solid #dcddde;
   color: #48474a;
   display: block;
   font-size: 2.5em;
-  padding-bottom: 3%;
-  padding-top: 3%;
+  padding-bottom: 6%;
+  padding-top: 5%;
   padding-left: 0;
   border: none;
   background: #fff;
@@ -171,7 +172,7 @@
   float: left;
   border-bottom: 2px solid;
   margin-top: 3%;
-  width: 70%;
+  width: 100%;
 }
 .mobileMenu > a:hover {
   text-decoration: none;
@@ -6415,7 +6416,7 @@ body .ui-tooltip {
     display: none;
   }
   body .frontPageSearchBlock {
-    top: -40px !important;
+    /*top: -40px !important;*/
     min-height: 800px;
   }
   body .frontPageSearchBlock > h1 {
