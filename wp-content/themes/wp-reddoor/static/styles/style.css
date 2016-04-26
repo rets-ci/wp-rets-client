@@ -2988,6 +2988,58 @@ input[type="submit"]:active {
   border-radius: 1px;
   height: 35px;
 }
+@media screen and (max-width: 768px) {
+  .popup.contact-popup {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .popup.contact-popup .exitPopup {
+    padding: 12px 14px;
+  }
+  .popup.contact-popup .popup-inner-wrapper {
+    height: 100%;
+    max-height: none;
+    width: 100%;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
+    height: 100%;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li {
+    min-width: 0;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li div {
+    font-size: 14px;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
+    margin-top: 45px;
+  }
+  .popup.contact-popup.popupLogin .popup-inner-wrapper ul {
+    height: 100%;
+  }
+  .popup.contact-popup.popupLogin .popup-inner-wrapper ul li {
+    width: 100%;
+    display: block;
+    float: none;
+    border-right: 0;
+  }
+  .popup.contact-popup.popupLogin .popup-inner-wrapper ul li + li {
+    border-top: 1px solid #e6e4dd;
+  }
+  .popup.contact-popup.popupLogin .popup-inner-wrapper ul li span {
+    margin: 10px 0;
+  }
+  .popup.contact-popup.popupLogin .popup-inner-wrapper ul li a {
+    width: 150px;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 360px) {
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
+    display: none;
+  }
+}
 .post-type-archive-rdc_guide {
   margin-bottom: -90px;
   overflow: hidden;
