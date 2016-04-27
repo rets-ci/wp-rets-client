@@ -6466,9 +6466,6 @@ body .ui-tooltip {
     width: 100%;
     margin-left: 0 !important;
   }
-  body .site-content {
-    padding: 0 2%;
-  }
   body .menuDesktop {
     display: none !important;
   }
@@ -6551,7 +6548,7 @@ body .ui-tooltip {
     display: block !important;
   }
   body .tabbedWidgetMobile .ui-widget-content {
-    padding-bottom: 40px;
+    padding: 10px 10px 40px;
     font-size: 14px;
   }
   body .tabbedWidgetMobile .ui-widget-content h4 {
@@ -6769,6 +6766,9 @@ body .ui-tooltip {
   }
   .rdc-property-carousel .section-content {
     padding: 5px 0 50px;
+  }
+  .rdc-property-carousel .rdc-carousel-container {
+    margin-left: 2%;
   }
 }
 @media screen and (max-width: 320px) {
