@@ -96,8 +96,8 @@ while (have_posts()) : the_post();
         <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
         <div class="title">
           <span>Active</span>
-          <div><?php the_title(); ?><span><?php _e($locationCity) . ' ,' ?>
-              <?php if($locationZip){_e(', NC ' . $locationZip);} ?></span></div>
+          <div><?php the_title(); ?><span><?php echo _e($locationCity) . ',' ?>
+              <?php if($locationZip){_e('NC ' . $locationZip);} ?></span></div>
           <b class="clear"></b>
         </div>
 

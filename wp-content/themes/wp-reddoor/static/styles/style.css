@@ -1197,6 +1197,11 @@ a:focus {
   top: 0;
   z-index: 10;
 }
+@media screen and (max-width: 768px) {
+  .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
+    z-index: 9;
+  }
+}
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li {
   border-left: 1px solid #e4e2dd;
   float: left;
@@ -2230,8 +2235,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   z-index: 8;
   top: -60px;
 <<<<<<< HEAD
+<<<<<<< HEAD
   margin-bottom: -60px;
 =======
+>>>>>>> origin/develop
+=======
+  margin-bottom: -60px;
 >>>>>>> origin/develop
 }
 .page .so-widget-sow-hero .sow-slider-image-container h1 {

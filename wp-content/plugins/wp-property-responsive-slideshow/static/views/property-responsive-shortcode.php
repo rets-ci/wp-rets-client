@@ -39,10 +39,19 @@ foreach ($images as $img) {
 ?>
 <?php if(count($imgs)>0):?>
 <!-- Swiper -->
+<style type="text/css">
+/* ajax loader */
+.property-resp-slideshow.wpp-responsive-slideshow-loading {
+  background: rgba(179, 179, 179, 0.31) url(<?php echo ud_get_wpp_resp_slideshow()->path('static/images/ajax-loader.gif', 'url');?>) no-repeat scroll center center;
+}
+.property-resp-slideshow.wpp-responsive-slideshow-loading > * {
+  visibility: hidden;
+}
+</style>
 <?php 
 $mobile_class = wp_is_mobile()?'mobile':'';
 echo "<div id='wpprs-$property_resp_slideshow_counter' 
-                 class='property-resp-slideshow slider-type-$slider_type slideshow-type-$slideshow_type $mobile_class' 
+                 class='property-resp-slideshow slider-type-$slider_type slideshow-type-$slideshow_type $mobile_class wpp-responsive-slideshow-loading' 
                  data-slideshow-type='$slideshow_type' 
                  data-slider-type='$slider_type'>";?>
     <div class="modal-header">

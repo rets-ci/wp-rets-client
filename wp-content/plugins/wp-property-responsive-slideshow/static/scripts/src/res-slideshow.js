@@ -272,25 +272,37 @@ jQuery(document).ready(function($){
                 margin:'0 auto'
             });
         }
-    });
 
-    function setRealWidthHeight($img, s){
-        if(typeof s.noOfimgageLoaded == 'undefined')
-            s.noOfimgageLoaded = 0;
-        s.noOfimgageLoaded += 1;
-
-        $('<img />').load(function(){
-            var width = this.width;
-            var height = this.height;
-            $img.attr('width', width)
-                .attr('height', height);
-            if(s.noOfimgageLoaded == s.slides.length){
+        function setRealWidthHeight($img, s){
+            if(typeof s.noOfimgageLoaded == 'undefined')
+                s.noOfimgageLoaded = 0;
+            var allImgLoaded = function(){
                 s.destroy(false, true);
                 s.init();
                 s.onResize();
+                console.log("wpp-responsive-slideshow-ready");
+                $this.removeClass('wpp-responsive-slideshow-loading');
+                $this.addClass('wpp-responsive-slideshow-ready');
             }
-        }).attr('src', $img.attr('src'));
-        return $img;
-    }
+            $('<img />').load(function(){
+                var width = this.width;
+                var height = this.height;
+                s.noOfimgageLoaded += 1;
+                $img.attr('width', width)
+                    .attr('height', height);
+                if(s.noOfimgageLoaded == s.slides.length){
+                    allImgLoaded();
+                }
+            }).error(function(){ // When image not exist or not loaded
+                s.noOfimgageLoaded += 1;
+                if(s.noOfimgageLoaded == s.slides.length){
+                    allImgLoaded();
+                }
+            }).attr('src', $img.attr('src'));
+
+            return $img;
+        }
+    });
+
 });
 
