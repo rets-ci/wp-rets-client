@@ -1313,14 +1313,36 @@ a:focus {
   border-radius: 100%;
   margin-bottom: 2px;
 }
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options {
+  z-index: 1;
+  top: 89px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options li {
+  line-height: 24px;
+  margin: 0;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options li label {
+  margin: 0;
+}
 .wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter {
   background: #f3f0e9 none repeat scroll 0 0;
   border-top: 1px solid white;
-  height: 40px;
+  display: flex;
+  height: 54px;
   line-height: 40px;
   margin: 0;
+  overflow-x: scroll;
+  -webkit-appearance: none;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter .sm-columns-toggle {
+  margin: 0;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter .sm-columns-toggle .menu-toggle {
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li {
   cursor: pointer;
   line-height: 37px;
   margin: 0 10px;
@@ -1330,19 +1352,19 @@ a:focus {
   font-size: 12px;
   white-space: nowrap;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent::before {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent::before {
   content: none !important;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent::before {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent::before {
   content: none !important;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent,
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent,
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent {
   font-weight: 500;
   color: #d03528;
   border-bottom: 2px solid #d03528;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-ascent::after {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent::after {
   content: "￪";
   display: inline-block;
   font-size: 12px;
@@ -1351,7 +1373,7 @@ a:focus {
   position: relative;
   top: -2px;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter li.st-sort-descent::after {
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent::after {
   content: "￬";
   display: inline-block;
   font-size: 12px;

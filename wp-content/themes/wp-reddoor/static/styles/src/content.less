@@ -1203,15 +1203,42 @@ a {
 
     .sm-properties-grid {
 
+      .dropdown-columns-options {
+        z-index: 1;
+        top: 89px;
+
+        li {
+          line-height: 24px;
+          margin: 0;
+
+          label {
+            margin: 0;
+          }
+        }
+      }
+
       .sm-columns-sorter {
 
         background: #f3f0e9 none repeat scroll 0 0;
         border-top: 1px solid white;
-        height: 40px;
+        display: flex;
+        height: 54px;
         line-height: 40px;
         margin: 0;
+        overflow-x: scroll;
+        -webkit-appearance: none;
 
-        li {
+        .sm-columns-toggle {
+          margin: 0;
+
+          .menu-toggle {
+            margin-top: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+        }
+
+        > li {
           cursor: pointer;
           line-height: 37px;
           margin: 0 10px;

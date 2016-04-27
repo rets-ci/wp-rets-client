@@ -89,7 +89,22 @@ use \UsabilityDynamics\RDC\Utils;
 
             <div class="sm-properties-grid" st-table="propertiesGridCollection" st-safe-src="properties">
 
+              <ul class="dropdown-columns-options" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
+                <li ng-repeat="col in columns">
+                  <label>
+                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
+                  </label>
+                </li>
+              </ul>
+
               <ul class="sm-columns-sorter">
+                <li class="sm-columns-toggle">
+                  <div class="menu-toggle" ng-click="show_dropdown_columns=!show_dropdown_columns; $event.stopPropagation();">
+                    <div class="menu-dot"></div>
+                    <div class="menu-dot"></div>
+                    <div class="menu-dot"></div>
+                  </div>
+                </li>
                 <li class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Address', ud_get_wpp_supermap()->domain ) ); ?></li>
                 <li class="sm-price" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
                 <li class="sm-bedrooms" ng-show="columns.bedrooms.enable" st-sort="_source.tax_input.bedrooms[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::bedrooms::label", __( 'Beds', ud_get_wpp_supermap()->domain ) ); ?></li>
