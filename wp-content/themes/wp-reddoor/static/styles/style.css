@@ -1491,6 +1491,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-size: cover;
   height: 660px;
 }
+.single-property .wpp-google-streetview-image {
+  height: 660px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .single-property .ftrdImgGoTop {
   top: -30px;
 }
