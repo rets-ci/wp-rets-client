@@ -80,6 +80,7 @@ namespace UsabilityDynamics\RDC {
         add_filter( 'wpp:supermap:query_defaults', array( $this, 'alter_supermap_query' ), 10, 2 );
 
         add_filter( 'wpp_post_type', array( $this, 'wpp_post_type_alter' ) );
+        add_filter( 'wpp::register_taxonomy', array( $this, 'wpp_post_type_alter' ) );
 
         // facebook/twitter/google shortcode
         add_shortcode( 'share_this_article', array( 'UsabilityDynamics\RDC\Shortcodes', 'share_this_article' ) );
