@@ -10,6 +10,8 @@
       heightStyle: "content"
     } );
 
+    jQuery('.home .select2-dropdown').width(jQuery(jQuery( window ).width()));
+
     /* Mobile menu slide */
     jQuery( '.toggle' ).on( 'click', function () {
       jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 400 ).css( 'position', 'absolute' );

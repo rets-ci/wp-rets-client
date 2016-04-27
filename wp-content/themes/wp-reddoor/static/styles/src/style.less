@@ -584,7 +584,6 @@
   }
   .home .select2-dropdown{
     margin-top: -1px;
-    width: 539px !important;
   }
 
   .so-widget-tabbed-content {
@@ -672,6 +671,7 @@
 @media screen and (max-width: @adapt560) {
   body {
     .frontPageSearchBlock {
+      min-height: 900px;
       .searchForm {
         min-width: 100%;
         form{
@@ -685,10 +685,19 @@
         &>ul{
           width: 49.2%;
           display: flex;
+          &:first-child{
+            width: 100%;
+            &>li{
+              width: 50%;
+            }
+          }
           &>li{
             width: 48.3%;
 
           }
+        }
+        .sellBtnForm, .rentPropBtnForm{
+          display: none;
         }
       }
     }
