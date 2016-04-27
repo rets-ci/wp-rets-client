@@ -3072,6 +3072,13 @@ body.tax-rdc_guide_category.admin-bar .guide-wrapper,
 body.single-rdc_guide.admin-bar .guide-wrapper {
   top: 92px !important;
 }
+@media screen and (max-width: 768px) {
+  body.post-type-archive-rdc_guide .headerTopMenu,
+  body.tax-rdc_guide_category .headerTopMenu,
+  body.single-rdc_guide .headerTopMenu {
+    margin-bottom: 0 !important;
+  }
+}
 body.post-type-archive-rdc_guide .guide-wrapper,
 body.tax-rdc_guide_category .guide-wrapper,
 body.single-rdc_guide .guide-wrapper {
@@ -6798,12 +6805,9 @@ body .ui-tooltip {
   .rdc-property-carousel .rdc-carousel-container {
     margin-left: 2%;
   }
-<<<<<<< HEAD
   .rdc-property-carousel .descriptionBlock > a {
     width: 50%;
   }
-=======
->>>>>>> origin/develop
 }
 @media screen and (max-width: 320px) {
   body .frontPageSearchBlock .searchForm {
