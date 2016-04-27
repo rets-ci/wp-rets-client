@@ -1,6 +1,6 @@
 <?php
 
-$query = siteorigin_widget_post_selector_process_query( $instance['posts'] );
+$query = wp_property_siteorigin_widget_post_selector_process_query( $instance['posts'] );
 
 $query = $_query = array_merge( $query, array(
 	'post_type' => 'property',
