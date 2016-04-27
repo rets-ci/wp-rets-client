@@ -1047,7 +1047,11 @@ a {
       position: absolute;
       right: 0;
       top: 0;
-      z-index: 9;
+      z-index: 10;
+
+      @media screen and (max-width: @adapt768) {
+        z-index: 9;
+      }
 
       li {
 
