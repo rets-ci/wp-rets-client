@@ -10,7 +10,10 @@
       heightStyle: "content"
     } );
 
-    jQuery('.home .select2-dropdown').width(jQuery(jQuery( window ).width()));
+    if(jQuery( window ).width() < 768 ) {
+      jQuery('.rdc-carousel-wrapper .descriptionBlock').width(jQuery(window).width() - 10);
+    }
+
 
     /* Mobile menu slide */
     jQuery( '.toggle' ).on( 'click', function () {
