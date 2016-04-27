@@ -1,18 +1,23 @@
 jQuery(document).ready(function($) {
-    function setRealWidthHeight($img, s) {
-        return "undefined" == typeof s.noOfimgageLoaded && (s.noOfimgageLoaded = 0), s.noOfimgageLoaded += 1, 
-        $("<img />").load(function() {
-            var width = this.width, height = this.height;
-            $img.attr("width", width).attr("height", height), s.noOfimgageLoaded == s.slides.length && (s.destroy(!1, !0), 
-            s.init(), s.onResize());
-        }).attr("src", $img.attr("src")), $img;
-    }
     var wpprs = $(".property-resp-slideshow");
     wpprs.each(function() {
         function setControlSize() {
             var cWidth = galleryTop.container.width(), control = $(galleryTop.container).find(".swiper-button-prev, .swiper-button-next");
             cWidth > 900 ? width = 36 : 400 > cWidth ? width = 20 : width = cWidth / 100 * 6, 
             control.css("font-size", width);
+        }
+        function setRealWidthHeight($img, s) {
+            "undefined" == typeof s.noOfimgageLoaded && (s.noOfimgageLoaded = 0);
+            var allImgLoaded = function() {
+                s.destroy(!1, !0), s.init(), s.onResize(), console.log("wpp-responsive-slideshow-ready"), 
+                $this.removeClass("wpp-responsive-slideshow-loading"), $this.addClass("wpp-responsive-slideshow-ready");
+            };
+            return $("<img />").load(function() {
+                var width = this.width, height = this.height;
+                s.noOfimgageLoaded += 1, $img.attr("width", width).attr("height", height), s.noOfimgageLoaded == s.slides.length && allImgLoaded();
+            }).error(function() {
+                s.noOfimgageLoaded += 1, s.noOfimgageLoaded == s.slides.length && allImgLoaded();
+            }).attr("src", $img.attr("src")), $img;
         }
         var slidesPerView, slidesPerColumn, pagination, galleryTop, galleryThumbs, $this = $(this), id = $this.attr("id"), sliderType = $this.attr("data-slider-type"), autoHeight = !1, centeredSlides = !0, slidesPerColumnFill = "column", _galleryTop = $this.find(".gallery-top"), _galleryThumbs = $this.find(".gallery-thumbs"), slideshow_layout = _galleryTop.data("slideshow_layout"), slider_width = _galleryTop.data("slider_width"), slider_height = _galleryTop.data("slider_height"), slider_auto_height = _galleryTop.data("slider_auto_height").toString();
         slider_auto_height = "true" == slider_auto_height ? !0 : !1;
