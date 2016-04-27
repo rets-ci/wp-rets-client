@@ -2256,7 +2256,14 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   z-index: 8;
   top: -60px;
+<<<<<<< HEAD
+<<<<<<< HEAD
   margin-bottom: -60px;
+=======
+>>>>>>> origin/develop
+=======
+  margin-bottom: -60px;
+>>>>>>> origin/develop
 }
 .page .so-widget-sow-hero .sow-slider-image-container h1 {
   font-size: 3.5em !important;
