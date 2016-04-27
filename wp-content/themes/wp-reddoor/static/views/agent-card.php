@@ -166,9 +166,9 @@ use \UsabilityDynamics\RDC\Utils;
 
               <div class="rdc-agents-carousel-title">
 
-                <a href="#" class="rdc-agents-carousel-previous" title="Previous"></a>
+                <a href="#" class="rdc-agents-carousel-previous" title="Previous"><i class="dashicons dashicons-arrow-left-alt2"></i></a>
 
-                <a href="#" class="rdc-agents-carousel-next" title="Next"></a>
+                <a href="#" class="rdc-agents-carousel-next" title="Next"><i class="dashicons dashicons-arrow-right-alt2"></i></a>
 
               </div>
 
