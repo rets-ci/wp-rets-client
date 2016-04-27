@@ -86,6 +86,16 @@ use \UsabilityDynamics\RDC\Utils;
 
               ?>
 
+
+              <style>
+                a[rel="popupContactUsMore"] {
+                  display: none !important;
+                }
+                button[rel="popupContactUsMore"] {
+                  display: none !important;
+                }
+              </style>
+
               <ul class="rdc-agents-carousel-items" style="padding-top: 20px;">
 
                 <?php
