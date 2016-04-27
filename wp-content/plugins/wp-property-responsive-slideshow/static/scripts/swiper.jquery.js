@@ -2290,6 +2290,7 @@ s.setSlideSize_12mosaic = function(slide, s){
     if( typeof slide == 'undefined' ) {
         return 0;
     }
+    
     var width, height;
     var slide = jQuery(slide);
     var img = slide.find('img');
@@ -2379,7 +2380,8 @@ s.setSlideSize_12grid = function(slide, s){
     slide.height(slideHeight);
     
     return slideWidth;
-};
+}
+;
 /*=========================
   Images Lazy Loading
   ===========================*/
