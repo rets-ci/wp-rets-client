@@ -2228,6 +2228,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .page .so-widget-sow-hero {
   position: relative;
   z-index: 8;
+  top: -60px;
 }
 .page .so-widget-sow-hero .sow-slider-image-container h1 {
   font-size: 3.5em !important;
@@ -2278,16 +2279,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
  * Used for SiteOrigin Hero widget when it's set as masthead
  * Usage: http://screencast.com/t/0N7AGYGW
  */
-.masthead .so-widget-sow-hero {
-  top: -90px;
-  margin-bottom: -90px;
-}
 .full-width-totop .masthead .so-widget-sow-hero {
   top: -30px;
   margin-bottom: -30px;
-}
-.page-id-283651 .upToHeader {
-  top: 0;
 }
 /**
  * WIDGET class 'hero-content'
