@@ -97,7 +97,7 @@ while (have_posts()) : the_post();
         <div class="title">
           <span>Active</span>
           <div><?php the_title(); ?><span><?php _e($locationCity) . ' ,' ?>
-              <?php if($locationZip){_e('NC ' . $locationZip);} ?></span></div>
+              <?php if($locationZip){_e(', NC ' . $locationZip);} ?></span></div>
           <b class="clear"></b>
         </div>
 

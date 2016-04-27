@@ -36,6 +36,15 @@ body.tax-rdc_guide_category.admin-bar, body.single-rdc_guide.admin-bar {
 
 body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_guide {
 
+  @media screen and (max-width: @adapt768) {
+
+    // on guides we remove the extra margin below the top mobile menu
+    .headerTopMenu{
+      margin-bottom: 0 !important;
+    }
+
+  }
+
   .guide-wrapper {
     padding-left: 0;
     padding-right: 0;
