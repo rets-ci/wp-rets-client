@@ -6414,7 +6414,6 @@ body .ui-tooltip {
     background: none !important;
   }
   body .site-logo {
-<<<<<<< HEAD
     left: 23px;
     top: 5px;
     width: 60px;
@@ -6433,21 +6432,6 @@ body .ui-tooltip {
     background: #F3F0E9 !important;
     height: 100px;
     margin-bottom: 15px;
-=======
-    left: auto;
-    margin-left: 0;
-    left: 5px;
-  }
-  body .toggle {
-    position: relative;
-    right: 28px;
-    top: 13px;
-  }
-  body .headerTopMenu {
-    background: #F3F0E9 !important;
-    height: 150px;
-    margin-bottom: 90px;
->>>>>>> origin/develop-anton
   }
   body .ftrdImgGoTop {
     margin-bottom: 16px;
