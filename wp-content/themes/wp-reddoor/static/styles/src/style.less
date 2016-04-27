@@ -225,7 +225,10 @@
         }
       }
   }
-
+  .hero-content .so-widget-sow-editor {
+        margin: 5% auto;
+        width: 50%;
+  }
 
 
 }
@@ -268,7 +271,6 @@
     .site-logo {
       position: absolute;
       margin-left: -81px;
-      width: 162px;
       left: 50%;
     }
     .menuDesktop {
@@ -357,11 +359,22 @@
     .site-logo {
       left: auto;
       margin-left: 0;
-      right: 5px;
+      left: 5px;
     }
+
+    .toggle {
+      position: relative;
+      right: 28px;
+      top: 13px;
+    }
+
+    // match the background color of the rdc logo
     .headerTopMenu {
-      background: none !important;
+      background: #F3F0E9 !important;
+      height: 150px;
+      margin-bottom: 90px;
     }
+
     .ftrdImgGoTop {
       margin-bottom: 16px;
       top: 0 !important;
@@ -425,9 +438,6 @@
           }
         }
       }
-    }
-    .site-content {
-      padding: 0 2%;
     }
     .menuDesktop {
       display: none !important;
@@ -517,10 +527,13 @@
       display: block !important;
 
       .ui-widget-content {
-        padding-bottom: 40px;
-        font-size: 14px;
+        padding: 10px 10px 40px;
+        color: #6d6e71;
+        line-height: 2em;
+
         h4 {
           font-size: 2em;
+          color: #5a595c;
         }
         .sow-icon-reddoorcompany {
           color: @buttons;
@@ -547,6 +560,9 @@
         .tabbedWidgetContent {
           width: 100% !important;
         }
+      }
+      .tabbedMobileImageArea{
+        
       }
     }
     .mobileMenu {
@@ -580,6 +596,11 @@
         display: block;
       }
   }
+    .hero-content .so-widget-sow-editor {
+      margin: 0 auto;
+      padding: 2% 0;
+      width: 90%;
+    }
 
   }
   .home .select2-dropdown{
@@ -705,12 +726,6 @@
 }
 @media screen and (max-width: @adapt400) {
   body .site-logo{
-    height: 120px;
-    width: 130px;
-
-    img{
-      width: 80px;
-    }
 
     .frontPageSearchBlock {
       .searchForm {
@@ -808,6 +823,9 @@
   .rdc-property-carousel{
     .section-content{
       padding: 5px 0 50px;
+    }
+    .rdc-carousel-container{
+      margin-left: 2%;
     }
   }
 

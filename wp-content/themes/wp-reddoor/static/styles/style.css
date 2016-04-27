@@ -111,7 +111,7 @@
   background: #fff;
   width: 100%;
   padding: 5%;
-  border-right: 5em solid rgba(0, 0, 0, 0.89);
+  border-right: 1em solid rgba(179, 179, 179, 0.63);
   position: absolute;
   min-height: 200px;
   z-index: 999;
@@ -122,6 +122,7 @@
 .mobileMenu .menuAdaptive {
   float: left;
   width: 100%;
+  margin-bottom: 1em;
 }
 .mobileMenu .menuAdaptive > li {
   border-bottom: 1px solid #ededed;
@@ -131,22 +132,22 @@
   padding: 0;
   display: none;
   border: none;
-  padding-bottom: 5%;
+}
+.mobileMenu .menuAdaptive > li .sub-menu li {
+  padding-bottom: 0.8em;
 }
 .mobileMenu .menuAdaptive > li .sub-menu li a {
   color: #919093;
   text-decoration: none;
   font-size: 1.5em;
   outline: none;
-  line-height: 40px;
+  line-height: 1.2em;
 }
 .mobileMenu .menuAdaptive > li > a {
   border-bottom: 1px solid #dcddde;
   color: #48474a;
   display: block;
   font-size: 2.5em;
-  padding-bottom: 6%;
-  padding-top: 5%;
   padding-left: 0;
   border: none;
   background: #fff;
@@ -189,7 +190,7 @@
   z-index: 20;
 }
 .toggle {
-  float: left;
+  float: right;
   font-size: 3em;
   transition: 1s;
   display: none;
@@ -6318,6 +6319,10 @@ body .ui-tooltip {
     float: none;
     display: inline-block;
   }
+  .hero-content .so-widget-sow-editor {
+    margin: 5% auto;
+    width: 50%;
+  }
 }
 @media screen and (max-width: 1024px) {
   body #header {
@@ -6349,7 +6354,6 @@ body .ui-tooltip {
   body .site-logo {
     position: absolute;
     margin-left: -81px;
-    width: 162px;
     left: 50%;
   }
   body .menuDesktop {
@@ -6412,10 +6416,17 @@ body .ui-tooltip {
   body .site-logo {
     left: auto;
     margin-left: 0;
-    right: 5px;
+    left: 5px;
+  }
+  body .toggle {
+    position: relative;
+    right: 28px;
+    top: 13px;
   }
   body .headerTopMenu {
-    background: none !important;
+    background: #F3F0E9 !important;
+    height: 150px;
+    margin-bottom: 90px;
   }
   body .ftrdImgGoTop {
     margin-bottom: 16px;
@@ -6466,9 +6477,6 @@ body .ui-tooltip {
     float: none;
     width: 100%;
     margin-left: 0 !important;
-  }
-  body .site-content {
-    padding: 0 2%;
   }
   body .menuDesktop {
     display: none !important;
@@ -6552,11 +6560,13 @@ body .ui-tooltip {
     display: block !important;
   }
   body .tabbedWidgetMobile .ui-widget-content {
-    padding-bottom: 40px;
-    font-size: 14px;
+    padding: 10px 10px 40px;
+    color: #6d6e71;
+    line-height: 2em;
   }
   body .tabbedWidgetMobile .ui-widget-content h4 {
     font-size: 2em;
+    color: #5a595c;
   }
   body .tabbedWidgetMobile .ui-widget-content .sow-icon-reddoorcompany {
     color: #d03528;
@@ -6597,6 +6607,11 @@ body .ui-tooltip {
   }
   body .mobileMenu .mobileContactUs {
     display: block;
+  }
+  body .hero-content .so-widget-sow-editor {
+    margin: 0 auto;
+    padding: 2% 0;
+    width: 90%;
   }
   .home .select2-dropdown {
     margin-top: -1px;
@@ -6700,13 +6715,6 @@ body .ui-tooltip {
   }
 }
 @media screen and (max-width: 400px) {
-  body .site-logo {
-    height: 120px;
-    width: 130px;
-  }
-  body .site-logo img {
-    width: 80px;
-  }
   body .site-logo .frontPageSearchBlock .searchForm {
     min-width: 100%;
   }
@@ -6770,6 +6778,9 @@ body .ui-tooltip {
   }
   .rdc-property-carousel .section-content {
     padding: 5px 0 50px;
+  }
+  .rdc-property-carousel .rdc-carousel-container {
+    margin-left: 2%;
   }
 }
 @media screen and (max-width: 320px) {
