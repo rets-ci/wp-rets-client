@@ -28,7 +28,10 @@
 
     /* Mobile slide sub-menu */
     jQuery( function () {
-      jQuery( ".menuAdaptive" ).accordion();
+      jQuery( ".menuAdaptive" ).accordion({
+        autoHeight: false,
+        heightStyle: "content"
+      });
     } );
 
     /* Footer social icons */

@@ -271,7 +271,6 @@
     .site-logo {
       position: absolute;
       margin-left: -81px;
-      width: 162px;
       left: 50%;
     }
     .menuDesktop {
@@ -360,11 +359,22 @@
     .site-logo {
       left: auto;
       margin-left: 0;
-      right: 5px;
+      left: 5px;
     }
+
+    .toggle {
+      position: relative;
+      right: 28px;
+      top: 13px;
+    }
+
+    // match the background color of the rdc logo
     .headerTopMenu {
-      background: none !important;
+      background: #F3F0E9 !important;
+      height: 150px;
+      margin-bottom: 90px;
     }
+
     .ftrdImgGoTop {
       margin-bottom: 16px;
       top: 0 !important;
@@ -551,6 +561,9 @@
           width: 100% !important;
         }
       }
+      .tabbedMobileImageArea{
+        
+      }
     }
     .mobileMenu {
       .closeMobileMenu{
@@ -730,12 +743,6 @@
 }
 @media screen and (max-width: @adapt400) {
   body .site-logo{
-    height: 120px;
-    width: 130px;
-
-    img{
-      width: 80px;
-    }
 
     .frontPageSearchBlock {
       .searchForm {

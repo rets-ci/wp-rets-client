@@ -111,7 +111,7 @@
   background: #fff;
   width: 100%;
   padding: 5%;
-  border-right: 5em solid rgba(0, 0, 0, 0.89);
+  border-right: 1em solid rgba(179, 179, 179, 0.63);
   position: absolute;
   min-height: 200px;
   z-index: 999;
@@ -122,6 +122,7 @@
 .mobileMenu .menuAdaptive {
   float: left;
   width: 100%;
+  margin-bottom: 1em;
 }
 .mobileMenu .menuAdaptive > li {
   border-bottom: 1px solid #ededed;
@@ -131,22 +132,22 @@
   padding: 0;
   display: none;
   border: none;
-  padding-bottom: 5%;
+}
+.mobileMenu .menuAdaptive > li .sub-menu li {
+  padding-bottom: 0.8em;
 }
 .mobileMenu .menuAdaptive > li .sub-menu li a {
   color: #919093;
   text-decoration: none;
   font-size: 1.5em;
   outline: none;
-  line-height: 40px;
+  line-height: 1.2em;
 }
 .mobileMenu .menuAdaptive > li > a {
   border-bottom: 1px solid #dcddde;
   color: #48474a;
   display: block;
   font-size: 2.5em;
-  padding-bottom: 6%;
-  padding-top: 5%;
   padding-left: 0;
   border: none;
   background: #fff;
@@ -189,7 +190,7 @@
   z-index: 20;
 }
 .toggle {
-  float: left;
+  float: right;
   font-size: 3em;
   transition: 1s;
   display: none;
@@ -6353,7 +6354,6 @@ body .ui-tooltip {
   body .site-logo {
     position: absolute;
     margin-left: -81px;
-    width: 162px;
     left: 50%;
   }
   body .menuDesktop {
@@ -6416,10 +6416,17 @@ body .ui-tooltip {
   body .site-logo {
     left: auto;
     margin-left: 0;
-    right: 5px;
+    left: 5px;
+  }
+  body .toggle {
+    position: relative;
+    right: 28px;
+    top: 13px;
   }
   body .headerTopMenu {
-    background: none !important;
+    background: #F3F0E9 !important;
+    height: 150px;
+    margin-bottom: 90px;
   }
   body .ftrdImgGoTop {
     margin-bottom: 16px;
@@ -6719,13 +6726,6 @@ body .ui-tooltip {
   }
 }
 @media screen and (max-width: 400px) {
-  body .site-logo {
-    height: 120px;
-    width: 130px;
-  }
-  body .site-logo img {
-    width: 80px;
-  }
   body .site-logo .frontPageSearchBlock .searchForm {
     min-width: 100%;
   }
@@ -6793,9 +6793,12 @@ body .ui-tooltip {
   .rdc-property-carousel .rdc-carousel-container {
     margin-left: 2%;
   }
+<<<<<<< HEAD
   .rdc-property-carousel .descriptionBlock > a {
     width: 50%;
   }
+=======
+>>>>>>> origin/develop
 }
 @media screen and (max-width: 320px) {
   body .frontPageSearchBlock .searchForm {

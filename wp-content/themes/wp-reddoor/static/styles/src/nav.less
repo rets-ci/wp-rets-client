@@ -65,7 +65,7 @@
   background: @white;
   width: 100%;
   padding: 5%;
-  border-right: 5em solid rgba(0, 0, 0, 0.89);
+  border-right: 1em solid rgba(179, 179, 179, 0.63);
   position: absolute;
   min-height: 200px;
   z-index: 999;
@@ -76,6 +76,8 @@
   .menuAdaptive{
     float: left;
     width: 100%;
+    margin-bottom: 1em;
+
 
     &>li{
       border-bottom: 1px solid #ededed;
@@ -84,15 +86,16 @@
         padding: 0;
         display: none;
         border: none;
-        padding-bottom: 5%;
         li{
+
+          padding-bottom: 0.8em;
 
           a{
             color: #919093;
             text-decoration: none;
             font-size: 1.5em;
             outline: none;
-            line-height: 40px;
+            line-height: 1.2em;
           }
         }
       }
@@ -101,8 +104,6 @@
         color: #48474a;
         display: block;
         font-size: 2.5em;
-        padding-bottom: 6%;
-        padding-top: 5%;
         padding-left: 0;
         border: none;
         background: @white;
@@ -148,7 +149,7 @@
   }
 }
 .toggle{
-  float: left;
+  float: right;
   font-size: 3em;
   transition: 1s;
   display: none;
