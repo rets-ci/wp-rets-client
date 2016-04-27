@@ -6569,6 +6569,7 @@ body .ui-tooltip {
     color: #5a595c;
   }
   body .tabbedWidgetMobile .ui-widget-content h5 {
+    margin-top: 30px;
     font-size: 1.4em;
     color: #5a595c;
   }
