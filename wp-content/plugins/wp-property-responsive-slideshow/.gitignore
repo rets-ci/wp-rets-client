@@ -5,7 +5,7 @@ static/codex
 npm-debug.log
 wp-test-config.php
 composer.lock
-
+grunt-watch.bat
 .git
 .svn
 .idea
