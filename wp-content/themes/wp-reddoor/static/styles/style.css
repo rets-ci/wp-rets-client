@@ -314,7 +314,7 @@ a:focus {
   background: #d03528;
   width: 150px;
   color: #fff;
-  font-size: 1em;
+  font-size: 1.1em;
   border-radius: 5px;
   display: inline-block;
   padding: 15px 0;
@@ -1552,7 +1552,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   right: 15px;
   top: 0;
   z-index: 20;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 .single-property .singlePropertyHeader .oneAgent img {
   border-radius: 50%;
