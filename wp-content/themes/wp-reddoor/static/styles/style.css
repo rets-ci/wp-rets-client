@@ -6667,6 +6667,13 @@ body .ui-tooltip {
   .archiveFilterBg .archiveFilterBody ul li + li {
     display: none;
   }
+  .popup .popup-overlay {
+    background: #fff none repeat scroll 0 0;
+    opacity: 1;
+  }
+  .popup .exitPopup svg {
+    color: #000;
+  }
   .archiveImageHeader {
     top: -24px;
   }
@@ -6695,6 +6702,10 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock .searchForm > ul:first-child {
     width: 100%;
+  }
+  body .frontPageSearchBlock .searchForm > ul:first-child li:last-child {
+    width: 49.7%;
+    margin-left: 2px;
   }
   body .frontPageSearchBlock .searchForm > ul:first-child > li {
     width: 50%;
@@ -6781,6 +6792,9 @@ body .ui-tooltip {
   }
   .rdc-property-carousel .rdc-carousel-container {
     margin-left: 2%;
+  }
+  .rdc-property-carousel .descriptionBlock > a {
+    width: 50%;
   }
 }
 @media screen and (max-width: 320px) {

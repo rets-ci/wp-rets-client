@@ -551,9 +551,6 @@
           width: 100% !important;
         }
       }
-      .tabbedMobileImageArea{
-        
-      }
     }
     .mobileMenu {
       .closeMobileMenu{
@@ -665,6 +662,17 @@
       }
     }
   }
+  .popup {
+    .popup-overlay {
+      background: #fff none repeat scroll 0 0;
+      opacity: 1;
+    }
+    .exitPopup{
+      svg{
+        color: #000;
+      }
+    }
+  }
 
   .archiveImageHeader {
     top: -24px;
@@ -698,6 +706,12 @@
           display: flex;
           &:first-child{
             width: 100%;
+            li{
+            &:last-child {
+              width: 49.7%;
+              margin-left: 2px;
+            }
+            }
             &>li{
               width: 50%;
             }
@@ -822,6 +836,11 @@
     }
     .rdc-carousel-container{
       margin-left: 2%;
+    }
+    .descriptionBlock{
+      &>a{
+        width: 50%;
+      }
     }
   }
 
