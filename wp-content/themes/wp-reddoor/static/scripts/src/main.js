@@ -203,7 +203,7 @@
     if ( jQuery( window ).width() < 990 ) {
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
     } else {
-      var height = jQuery(window).height() - jQuery("#header").height() - 40;
+      var height = jQuery(window).height() - jQuery("#header").height() + 29;
       if (height < 400) {
         height = 400;
       }
