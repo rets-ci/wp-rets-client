@@ -6319,6 +6319,10 @@ body .ui-tooltip {
     float: none;
     display: inline-block;
   }
+  .hero-content .so-widget-sow-editor {
+    margin: 5% auto;
+    width: 50%;
+  }
 }
 @media screen and (max-width: 1024px) {
   body #header {
@@ -6410,6 +6414,7 @@ body .ui-tooltip {
     background: none !important;
   }
   body .site-logo {
+<<<<<<< HEAD
     left: 23px;
     top: 5px;
     width: 60px;
@@ -6428,6 +6433,21 @@ body .ui-tooltip {
     background: #F3F0E9 !important;
     height: 100px;
     margin-bottom: 15px;
+=======
+    left: auto;
+    margin-left: 0;
+    left: 5px;
+  }
+  body .toggle {
+    position: relative;
+    right: 28px;
+    top: 13px;
+  }
+  body .headerTopMenu {
+    background: #F3F0E9 !important;
+    height: 150px;
+    margin-bottom: 90px;
+>>>>>>> origin/develop-anton
   }
   body .ftrdImgGoTop {
     margin-bottom: 16px;
@@ -6478,9 +6498,6 @@ body .ui-tooltip {
     float: none;
     width: 100%;
     margin-left: 0 !important;
-  }
-  body .site-content {
-    padding: 0 2%;
   }
   body .menuDesktop {
     display: none !important;
@@ -6564,11 +6581,13 @@ body .ui-tooltip {
     display: block !important;
   }
   body .tabbedWidgetMobile .ui-widget-content {
-    padding-bottom: 40px;
-    font-size: 14px;
+    padding: 10px 10px 40px;
+    color: #6d6e71;
+    line-height: 2em;
   }
   body .tabbedWidgetMobile .ui-widget-content h4 {
     font-size: 2em;
+    color: #5a595c;
   }
   body .tabbedWidgetMobile .ui-widget-content .sow-icon-reddoorcompany {
     color: #d03528;
@@ -6609,6 +6628,11 @@ body .ui-tooltip {
   }
   body .mobileMenu .mobileContactUs {
     display: block;
+  }
+  body .hero-content .so-widget-sow-editor {
+    margin: 0 auto;
+    padding: 2% 0;
+    width: 90%;
   }
   .home .select2-dropdown {
     margin-top: -1px;
@@ -6775,6 +6799,9 @@ body .ui-tooltip {
   }
   .rdc-property-carousel .section-content {
     padding: 5px 0 50px;
+  }
+  .rdc-property-carousel .rdc-carousel-container {
+    margin-left: 2%;
   }
 }
 @media screen and (max-width: 320px) {

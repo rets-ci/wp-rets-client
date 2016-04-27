@@ -21,6 +21,74 @@ function ud_carousel_register_image_sizes(){
 }
 add_action('init', 'ud_carousel_register_image_sizes');
 
+function wp_property_siteorigin_widget_post_selector_process_query($query){
+	$query = wp_parse_args($query,
+			array(
+					'post_status' => 'publish',
+					'posts_per_page' => 10,
+			)
+	);
+
+	if(!empty($query['post_type'])) {
+		if($query['post_type'] == '_all') $query['post_type'] = siteorigin_widget_post_selector_all_post_types();
+		$query['post_type'] = explode(',', $query['post_type']);
+	}
+
+	if(!empty($query['post__in'])) {
+		$query['post__in'] = explode(',', $query['post__in']);
+		array_map('intval', $query['post__in']);
+	}
+
+	if(!empty($query['tax_query'])) {
+		$tax_queries = explode(',', $query['tax_query']);
+
+		$query['tax_query'] = array();
+		$query['tax_query']['relation'] = 'AND';
+		foreach($tax_queries as $tq) {
+			list($tax, $term) = explode(':', $tq);
+
+			if( empty($tax) || empty($term) ) continue;
+			$query['tax_query'][] = array(
+					'taxonomy' => $tax,
+					'field' => 'slug',
+					'terms' => $term
+			);
+		}
+	}
+
+	if ( ! empty( $query['date_query'] ) ) {
+		$query['date_query'] = json_decode( $query['date_query'], true );
+	}
+
+	if ( ! empty( $query['sticky'] ) ) {
+		switch($query['sticky']){
+			case 'ignore' :
+				$query['ignore_sticky_posts'] = 1;
+				break;
+			//TODO: Revisit this. Not sure if it makes sense to have this as an option in a separate dropdown, but am
+			//TODO: trying to stay as close as possible to Page Builder Post Loop widget post selection options.
+			//TODO: It's probably better in the long run to make this work well and just cope with issues that come up in
+			//TODO: Page Builder Post Loop migrations until it dies.
+			case 'only' :
+				$post_in = empty( $query['post__in'] ) ? array() : $query['post__in'];
+				$query['post__in'] = array_merge( $post_in, get_option( 'sticky_posts' ) );
+				break;
+			case 'exclude' :
+				$query['post__not_in'] = get_option( 'sticky_posts' );
+				break;
+		}
+		unset( $query['sticky'] );
+	}
+
+	if ( ! empty( $query['additional'] ) ) {
+		$additional = implode( '&', explode( ',', $query['additional'] ) );
+		$query = wp_parse_args( $additional, $query );
+		unset( $query['additional'] );
+	}
+
+	return $query;
+}
+
 /**
  * Prevent function redeclaration
  */
