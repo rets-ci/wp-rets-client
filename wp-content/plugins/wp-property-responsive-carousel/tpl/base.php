@@ -99,7 +99,7 @@ $the_query = new WP_Query( $query );
 				     data-ajax-url="<?php echo esc_url( wp_nonce_url( admin_url('admin-ajax.php'), 'widgets_action', '_widgets_nonce' ) ) ?>"
 					>
 					<ul class="rdc-carousel-items">
-						<li class="rdc-carousel-item descriptionBlock" style="width: 500px;">
+						<li class="rdc-carousel-item descriptionBlock">
 							<?php if( !empty( $instance[ 'Description' ] )){
 									echo $instance[ 'Description' ];
 							} ?>
