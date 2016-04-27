@@ -16,9 +16,11 @@
     jQuery( '.toggle' ).on( 'click', function () {
       jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 400 ).css( 'position', 'absolute' );
     } );
+
     jQuery( '.closeMobileMenu' ).on( 'click', function () {
-      jQuery( '.mobileMenu' ).animate( { 'left': '-80%' }, 400 );
+      jQuery( '.mobileMenu' ).animate( { 'left': '-100%' }, 400 );
     } );
+
     /* Mobile menu slide */
 
     /* Mobile slide sub-menu */

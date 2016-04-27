@@ -109,12 +109,13 @@
 /* Mobile menu */
 .mobileMenu {
   background: #fff;
-  width: 80%;
+  width: 100%;
   padding: 5%;
+  border-right: 5em solid rgba(0, 0, 0, 0.89);
   position: absolute;
   min-height: 200px;
   z-index: 999;
-  left: -80%;
+  left: -100%;
   trasition: 1s;
   display: none;
 }
