@@ -183,8 +183,8 @@
 .mobileMenu .closeMobileMenu {
   font-size: 1.7em;
   position: absolute;
-  right: 20px;
-  top: 15px;
+  right: 26px;
+  top: 34px;
   color: #48474a;
   cursor: pointer;
   z-index: 20;
@@ -233,6 +233,11 @@ a:focus {
   position: relative;
   top: -30px;
   margin-bottom: -30px;
+}
+@media screen and (max-width: 768px) {
+  .upToHeader {
+    top: -12px !important;
+  }
 }
 .full-width-totop {
   position: relative;
@@ -2223,6 +2228,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .page .so-widget-sow-hero {
   position: relative;
   z-index: 8;
+  top: -60px;
 }
 .page .so-widget-sow-hero .sow-slider-image-container h1 {
   font-size: 3.5em !important;
@@ -2273,16 +2279,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
  * Used for SiteOrigin Hero widget when it's set as masthead
  * Usage: http://screencast.com/t/0N7AGYGW
  */
-.masthead .so-widget-sow-hero {
-  top: -90px;
-  margin-bottom: -90px;
-}
 .full-width-totop .masthead .so-widget-sow-hero {
   top: -30px;
   margin-bottom: -30px;
-}
-.page-id-283651 .upToHeader {
-  top: 0;
 }
 /**
  * WIDGET class 'hero-content'
@@ -3071,6 +3070,13 @@ body.single-rdc_guide .guide-wrapper {
 body.tax-rdc_guide_category.admin-bar .guide-wrapper,
 body.single-rdc_guide.admin-bar .guide-wrapper {
   top: 92px !important;
+}
+@media screen and (max-width: 768px) {
+  body.post-type-archive-rdc_guide .headerTopMenu,
+  body.tax-rdc_guide_category .headerTopMenu,
+  body.single-rdc_guide .headerTopMenu {
+    margin-bottom: 0 !important;
+  }
 }
 body.post-type-archive-rdc_guide .guide-wrapper,
 body.tax-rdc_guide_category .guide-wrapper,
@@ -6414,19 +6420,24 @@ body .ui-tooltip {
     background: none !important;
   }
   body .site-logo {
-    left: auto;
-    margin-left: 0;
-    left: 5px;
+    left: 23px;
+    top: 5px;
+    width: 60px;
+    margin: 0;
+    height: 60px;
+  }
+  body .site-logo img {
+    max-width: 100%;
   }
   body .toggle {
     position: relative;
-    right: 28px;
-    top: 13px;
+    right: 23px;
+    top: -6px;
   }
   body .headerTopMenu {
     background: #F3F0E9 !important;
-    height: 150px;
-    margin-bottom: 90px;
+    height: 100px;
+    margin-bottom: 15px;
   }
   body .ftrdImgGoTop {
     margin-bottom: 16px;
@@ -6568,13 +6579,17 @@ body .ui-tooltip {
     font-size: 2em;
     color: #5a595c;
   }
+  body .tabbedWidgetMobile .ui-widget-content h5 {
+    margin-top: 30px;
+    font-size: 1.4em;
+    color: #5a595c;
+  }
   body .tabbedWidgetMobile .ui-widget-content .sow-icon-reddoorcompany {
     color: #d03528;
     display: block;
     float: none;
-    font-size: 6em;
+    font-size: 4em;
     margin: 35px 0;
-    text-align: center;
   }
   body .footerWidgetArea2 {
     text-align: center;
@@ -6590,7 +6605,7 @@ body .ui-tooltip {
     width: 100% !important;
   }
   body .mobileMenu .closeMobileMenu {
-    font-size: 1.2em !important;
+    font-size: 2em !important;
   }
   body .mobileMenu .menu-header-container > ul > li > a {
     font-size: 1.7em !important;
@@ -6674,6 +6689,13 @@ body .ui-tooltip {
   .archiveFilterBg .archiveFilterBody ul li + li {
     display: none;
   }
+  .popup .popup-overlay {
+    background: #fff none repeat scroll 0 0;
+    opacity: 1;
+  }
+  .popup .exitPopup svg {
+    color: #000;
+  }
   .archiveImageHeader {
     top: -24px;
   }
@@ -6702,6 +6724,10 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock .searchForm > ul:first-child {
     width: 100%;
+  }
+  body .frontPageSearchBlock .searchForm > ul:first-child li:last-child {
+    width: 49.7%;
+    margin-left: 2px;
   }
   body .frontPageSearchBlock .searchForm > ul:first-child > li {
     width: 50%;
@@ -6781,6 +6807,9 @@ body .ui-tooltip {
   }
   .rdc-property-carousel .rdc-carousel-container {
     margin-left: 2%;
+  }
+  .rdc-property-carousel .descriptionBlock > a {
+    width: 50%;
   }
 }
 @media screen and (max-width: 320px) {
