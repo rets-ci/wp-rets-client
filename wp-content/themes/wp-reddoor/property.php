@@ -305,7 +305,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Commute" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "true",
             "ws_map_modules" => "all",
@@ -316,7 +316,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Street" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
             "ws_map_modules" => "all",
@@ -327,7 +327,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Satellite" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
             "ws_map_modules" => "all",
