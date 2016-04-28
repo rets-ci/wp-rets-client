@@ -50,7 +50,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'rent':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_rent_id' ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' ) ) {
 
               ?>
 
@@ -128,7 +128,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'sale':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_sale_id' ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' ) ) {
 
               ?>
 
@@ -182,7 +182,10 @@ use \UsabilityDynamics\RDC\Utils;
 
                   foreach ($usersAgentsObjects as $userAgentId) {
 
-                    if ( !get_user_meta( $userAgentId->ID, 'mls_sale_id', 1 ) ) continue;
+                    if ( $agent_types = get_user_meta( $userAgentId->ID, 'sale_type', 1 ) ) {
+                      $_types = explode(', ', $agent_types);
+                      if ( !in_array( 'Sale', $_types ) ) continue;
+                    }
 
                     echo '<li class="rdc-agents-carousel-item">';
 
