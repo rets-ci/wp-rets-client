@@ -1,7 +1,6 @@
 .rdc-agents-carousel-title {
     display: inline-block;
     padding-right: 15px;
-    height: 20px;
 }
 .rdc-agents-carousel-title a.rdc-agents-carousel-next,
 .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
@@ -22,26 +21,26 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-decoration: none;
-    color: #dedede;
+    color: #A9ABAD;
+    width: 45px;
+    text-align: left;
 }
 
 .rdc-agents-carousel-title a.rdc-agents-carousel-next{
     position: absolute;
-    right: 50px;
+    right: 25px;
     top: 25%;
 }
 .rdc-agents-carousel-title a.rdc-agents-carousel-previous {
-    left: 50px;
+    left: 25px;
     position: absolute;
     top: 25%;
 }
+.rdc-agents-carousel-title .dashicons, .rdc-agents-carousel-title .dashicons{
+    font-size: 1.1em;
+}
 
-.rdc-agents-carousel-title a.rdc-agents-carousel-next:before {
-    content: "\e601";
-}
-.rdc-agents-carousel-title a.rdc-agents-carousel-previous:before {
-    content: "\e600";
-}
+
 @media screen and (max-width: 600px) {
 
 }
@@ -134,16 +133,19 @@
     background: -o-linear-gradient(#E8E8E8, #E0E0E0);
 }
 .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 {
-    font-size: 15px;
+    font-size: 22px;
     text-align: center;
     font-weight: 500;
-    color: #474747;
+    color: #757476;
     margin: 10px 0 0 0;
 }
 .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item span {
     display: block;
-    margin: 15px 0 0 0;
+    margin: 8px 0 15px;
     text-align: center;
+    font-size: 17px;
+    letter-spacing: 1px;
+    color: #5A595C;
 }
 .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item h3 a {
     text-decoration: none;
