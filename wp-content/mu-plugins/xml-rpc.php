@@ -171,9 +171,13 @@ function WPP_RPC_editProperty( $args ) {
   if ( !empty( $post_data['meta_input']['rets_media'] ) && is_array( $post_data['meta_input']['rets_media'] ) ) {
 
     $_already_attached_media = array();
+    $_new_media = array();
+
+    $attached_media = get_attached_media( 'image', $_post_id );
+
 
     // get simple url litst of already attached media
-    if( $attached_media = get_attached_media( 'image', $_post_id ) ) {
+    if( $attached_media  ) {
 
       // rdc_write_log( 'attached_media' . print_r($_already_attached_media, true ) );
 
@@ -183,9 +187,17 @@ function WPP_RPC_editProperty( $args ) {
 
     }
 
-    if( !empty( $_already_attached_media ) ) {
-      // rdc_write_log( '$_post_id ' . $_post_id . ' already has already_attached_media ' . count( $_already_attached_media  ) );
+    // delete all old attachments if the count of new media doesn't match up with old media
+    // rdc_write_log( 'Deleting old media because count does not match.' );
+
+    foreach( $attached_media as $_single_media_item ) {
+      rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
+      wp_delete_attachment( $_single_media_item->ID, true );
     }
+
+    if( count( $attached_media ) != count( $post_data['meta_input']['rets_media'] ) ) {
+    }
+
 
     foreach( $post_data['meta_input']['rets_media'] as $media ) {
 
@@ -193,36 +205,43 @@ function WPP_RPC_editProperty( $args ) {
         // rdc_write_log( "Skipping $media[url] because it's already attached to $_post_id" );
       }
 
-      // attach media if a URL is set and it isn't already attached
+    // attach media if a URL is set and it isn't already attached
+
+      $filetype = wp_check_filetype( basename( $media['url'] ), null );
+
+      $attachment = array(
+        'guid'           => $media['url'],
+        'post_mime_type' => $filetype['type'],
+        'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $media['url'] ) ),
+        'post_content'   => '',
+        'post_status'    => 'inherit',
+        'menu_order'     => $media['order'] ? ( (int) $media['order'] ) : null
+      );
+
+      $attach_id = wp_insert_attachment( $attachment, $media['url'], $_post_id );
+
+      $_new_media[] = $media['url'];
+
+      update_post_meta( $attach_id, '_is_remote', '1' );
+
+      // rdc_write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
+
+      // set the item with order of 1 as the thumbnail
+      if( (int) $media['order'] === 1 ) {
+        set_post_thumbnail( $_post_id, $attach_id );
+        rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
+      }
+
+      // old logic of first checking that a new media url exists
       if ( !empty( $media['url'] ) && !in_array( $media['url'], $_already_attached_media ) ) {
-
-        $filetype = wp_check_filetype( basename( $media['url'] ), null );
-
-        $attachment = array(
-          'guid'           => $media['url'],
-          'post_mime_type' => $filetype['type'],
-          'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $media['url'] ) ),
-          'post_content'   => '',
-          'post_status'    => 'inherit',
-          'menu_order'     => $media['order'] ? ( (int) $media['order'] ) : null
-        );
-
-        $attach_id = wp_insert_attachment( $attachment, $media['url'], $_post_id );
-
-        update_post_meta( $attach_id, '_is_remote', '1' );
-
-        // rdc_write_log( '$attach_id ' . $attach_id  . ' to ' . $_post_id );
-
-        // set the item with order of 1 as the thumbnail
-        if( $media['order'] === 1 ) {
-          set_post_thumbnail( $_post_id, $attach_id );
-          rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
-        }
-
       }
 
 
     }
+
+    // newly inserted media is in $_new_media
+    // old media is in $_already_attached_media
+    // we get media that was attached before but not in new media
 
   }
 
