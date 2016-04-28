@@ -182,6 +182,8 @@ use \UsabilityDynamics\RDC\Utils;
 
                   foreach ($usersAgentsObjects as $userAgentId) {
 
+                    if ( !get_user_meta( $userAgentId->ID, 'mls_sale_id', 1 ) ) continue;
+
                     echo '<li class="rdc-agents-carousel-item">';
 
                     $image_ids = get_user_meta($userAgentId->ID, 'agent_images', true);
