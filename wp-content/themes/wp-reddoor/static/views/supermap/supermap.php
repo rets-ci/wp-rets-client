@@ -55,7 +55,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           <div class="sm-marker-infobubble">
             <div class="sm-infobubble">
-              <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a href="/?p={{row._id}}">{{currentProperty._source.post_title}}</a>
+              <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a target="_blank" href="/?p={{currentProperty._id}}">{{currentProperty._source.post_title}}</a>
             </div>
           </div>
         </div>
