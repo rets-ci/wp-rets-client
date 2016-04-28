@@ -34,3 +34,4 @@
 	<?php get_template_part('static/views/popups/home-renting-listing'); ?>
 	<?php get_template_part('static/views/popups/home-selling'); ?>
 	<?php get_template_part('static/views/popups/home-management'); ?>
+	<?php get_template_part('static/views/popups/request-application'); ?>

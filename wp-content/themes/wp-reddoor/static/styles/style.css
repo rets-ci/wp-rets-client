@@ -6262,12 +6262,11 @@ body .ui-tooltip {
   padding: 1.3em 4em;
 }
 .btn-rdc-wire {
-  background-color: transparent;
-  border-color: #E4C6BA;
-  color: #D55D52;
+  background: none !important;
+  border: 2px solid #E4C6BA;
+  color: #D55D52 !important;
   font-size: 1.1em;
   padding: 8px 17px;
-  border-width: 2px;
   font-weight: 500;
 }
 .btn-rdc-wire:hover {
