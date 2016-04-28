@@ -115,7 +115,6 @@ use \UsabilityDynamics\RDC\Utils;
                 <li class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::approximate_lot_size::label", __( 'Lot', ud_get_wpp_supermap()->domain ) ); ?></li>
                 <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
                 <li class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></li>
-                <li class="sm-neighborhood" ng-show="columns.neighborhood.enable" st-sort="_source.tax_input.neighborhood[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::neighborhood::label", __( 'Neighborhood', ud_get_wpp_supermap()->domain ) ); ?></li>
               </ul>
 
               <div class="clear" style="height: 0"></div>
@@ -210,7 +209,6 @@ use \UsabilityDynamics\RDC\Utils;
                   <th class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::approximate_lot_size::label", __( 'Lot', ud_get_wpp_supermap()->domain ) ); ?></th>
                   <th class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></th>
                   <th class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></th>
-                  <th class="sm-neighborhood" ng-show="columns.neighborhood.enable" st-sort="_source.tax_input.neighborhood[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::neighborhood::label", __( 'Neighborhood', ud_get_wpp_supermap()->domain ) ); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -226,7 +224,6 @@ use \UsabilityDynamics\RDC\Utils;
                   <td class="sm-lot" ng-show="columns.approximate_lot_size.enable">{{row._source.tax_input.approximate_lot_size[0]}}</td>
                   <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
                   <td class="sm-subdivision" ng-show="columns.subdivision.enable">{{row._source.tax_input.subdivision[0]}}</td>
-                  <td class="sm-neighborhood" ng-show="columns.neighborhood.enable">{{row._source.tax_input.neighborhood[0]}}</td>
                 </tr>
                 </tbody>
                 <tfoot>

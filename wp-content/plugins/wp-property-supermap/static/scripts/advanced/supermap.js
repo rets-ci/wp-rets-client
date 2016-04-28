@@ -224,10 +224,6 @@
           subdivision: {
             label: 'Subdivision',
             enable: 0
-          },
-          neighborhood: {
-            label: 'Neighborhood',
-            enable: 0
           }
         };
 
