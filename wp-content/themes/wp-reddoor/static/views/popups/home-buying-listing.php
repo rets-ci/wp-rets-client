@@ -75,12 +75,17 @@
         <?php global $property;
 
         if( $property && isset( $property['ID'] ) ) {
-          $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), true );
 
           $usersAgentsObjects = get_users(array('role' => 'agent'));
 
           foreach ($usersAgentsObjects as $userAgent) {
-            if (!get_user_meta($userAgent->ID, 'mls_sale_id', 1)) continue;
+
+            if ( $agent_types = get_user_meta( $userAgent->ID, 'sale_type', 1 ) ) {
+              $_types = explode(', ', $agent_types);
+              if ( !in_array( 'Sale', $_types ) ) continue;
+            }
+
+            if (!get_user_meta($userAgent->ID, 'triangle_mls_id', 1)) continue;
             $agent = $userAgent;
           }
 
