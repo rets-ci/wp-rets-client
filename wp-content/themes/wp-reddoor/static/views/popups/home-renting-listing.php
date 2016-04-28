@@ -70,7 +70,7 @@
         global $property;
 
         if( $property && isset( $property['ID'] ) ) {
-          $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property[ 'ID' ] ), true );
+          $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' );
         }
 
         ?>
