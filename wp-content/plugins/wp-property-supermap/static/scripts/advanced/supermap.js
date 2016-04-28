@@ -224,14 +224,27 @@
           subdivision: {
             label: 'Subdivision',
             enable: 0
-          },
-          neighborhood: {
-            label: 'Neighborhood',
-            enable: 0
           }
         };
 
         $scope.show_dropdown_columns = false;
+
+        /**
+         *
+         * @param current
+         * @returns {boolean}
+         */
+        $scope.sale_type_checked = function(current) {
+          var _types = [];
+
+          if ( _types = $scope.current_filter.sale_type.split(',') ) {
+            for (var i in _types) {
+              if ( _types[i] == current ) return true;
+            }
+          }
+
+          return false;
+        };
 
         $document.bind('click', function(event){
           $scope.show_dropdown_columns = false;
