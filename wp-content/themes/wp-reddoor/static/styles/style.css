@@ -1037,6 +1037,38 @@ a:focus {
     margin-left: 4%;
   }
 }
+.rdc-supermap-search-form .feet-input {
+  float: left;
+  width: 47%;
+  border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .feet-input:focus {
+  border: 1px solid grey;
+}
+.rdc-supermap-search-form .feet-input + .feet-input {
+  margin-left: 6%;
+}
+@media screen and (max-width: 990px) {
+  .rdc-supermap-search-form .feet-input + .feet-input {
+    margin-left: 4%;
+  }
+}
+.rdc-supermap-search-form .acres-input {
+  float: left;
+  width: 47%;
+  border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .acres-input:focus {
+  border: 1px solid grey;
+}
+.rdc-supermap-search-form .acres-input + .acres-input {
+  margin-left: 6%;
+}
+@media screen and (max-width: 990px) {
+  .rdc-supermap-search-form .acres-input + .acres-input {
+    margin-left: 4%;
+  }
+}
 .rdc-supermap-search-form .price-dropdown {
   background: white none repeat scroll 0 0;
   border-bottom: 1px solid lightgrey;
@@ -1489,6 +1521,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-repeat: no-repeat;
   background-size: cover;
   height: 660px;
+}
+.single-property .wpp-google-streetview-image {
+  height: 660px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .single-property .ftrdImgGoTop {
   top: -30px;
@@ -6256,12 +6294,11 @@ body .ui-tooltip {
   padding: 1.3em 4em;
 }
 .btn-rdc-wire {
-  background-color: transparent;
-  border-color: #E4C6BA;
-  color: #D55D52;
+  background: none !important;
+  border: 2px solid #E4C6BA;
+  color: #D55D52 !important;
   font-size: 1.1em;
   padding: 8px 17px;
-  border-width: 2px;
   font-weight: 500;
 }
 .btn-rdc-wire:hover {

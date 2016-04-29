@@ -24,7 +24,7 @@
 
     <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
 
-      <input name="wpp_search[sale_type]" type="hidden" value="sale"/>
+      <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
 
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
@@ -135,7 +135,7 @@
 
     <form class="rentForm tab-pane" id="tabs-2" method="POST" action="">
 
-      <input name="wpp_search[sale_type]" type="hidden" value="rent"/>
+      <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
 
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>

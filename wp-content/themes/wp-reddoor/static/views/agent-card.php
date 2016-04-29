@@ -50,7 +50,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'rent':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_rent_id' ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' ) ) {
 
               ?>
 
@@ -74,7 +74,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div>';
+
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a class="btn-rdc-wire" href="javascript:;" rel="popupRequestApplication">'.__('Request Application', 'reddoor').'</a></div></li>';
 
               ?>
 
@@ -128,7 +130,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           case 'sale':
 
-            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'mls_sale_id' ) ) {
+            if ( $agent = Utils::get_matched_agent( Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' ) ) {
 
               ?>
 
@@ -181,6 +183,11 @@ use \UsabilityDynamics\RDC\Utils;
                   shuffle($usersAgentsObjects);
 
                   foreach ($usersAgentsObjects as $userAgentId) {
+
+                    if ( $agent_types = get_user_meta( $userAgentId->ID, 'sale_type', 1 ) ) {
+                      $_types = explode(', ', $agent_types);
+                      if ( !in_array( 'Sale', $_types ) ) continue;
+                    }
 
                     echo '<li class="rdc-agents-carousel-item">';
 

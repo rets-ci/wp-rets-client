@@ -17,13 +17,12 @@
  * @package WP-Property
  */
 
-?>
-
-<?php get_header();
+use UsabilityDynamics\RDC\Utils;
 
 global $property;
 global $wp_properties;
-use \UsabilityDynamics\RDC\Utils;
+
+get_header();
 
 // Start the Loop.
 while (have_posts()) : the_post();
@@ -77,20 +76,9 @@ while (have_posts()) : the_post();
   ?>
 <div class="single-property">
   <div class="container-fluid ftrdImgGoTop">
-    <section class="sp-slideshow-block">
-      <?php if (function_exists('ud_get_wpp_resp_slideshow')) { ?>
-        <?php echo do_shortcode('[property_responsive_slideshow slider_type=12grid slideshow_type=standard slideshow_layout=fullwidth slider_width=50% slider_height=660 grid_image_size=thumbnail]'); ?>
-      <?php } else { ?>
-        <?php if (has_post_thumbnail()) { ?>
-          <div class="slideshowHeadImage"
-               style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>')"></div>
-        <?php } else { ?>
-          <div class="slideshowHeadImage"
-               style="background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/static/images/src/default_property.JPG')"></div>
-        <?php } ?>
-      <?php } ?>
-      <div class="hero-overlay"></div>
-    </section>
+
+    <?php get_template_part('static/views/property/slideshow'); ?>
+    
     <section id="propertyDetails" class="singlePropertyHeader">
       <div class="container">
         <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
@@ -317,7 +305,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Commute" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Commute" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "true",
             "ws_map_modules" => "all",
@@ -328,7 +316,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Street" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Street" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
             "ws_map_modules" => "all",
@@ -339,7 +327,7 @@ while (have_posts()) : the_post();
             "ws_map_icon_type" => "house",
             "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
           ) ) ); ?>"></div>
-          <div id="Satellite" class="tab-pane fade"data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Satellite" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
             "ws_map_modules" => "all",
