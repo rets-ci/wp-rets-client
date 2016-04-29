@@ -827,6 +827,7 @@
          */
         var $select = jQuery('.termsSelection').select2({
           placeholder: 'Location',
+          minimumInputLength: 3,
           maximumSelectionLength: 1,
           ajax: {
             url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
