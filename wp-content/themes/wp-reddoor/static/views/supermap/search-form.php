@@ -68,15 +68,26 @@
       <div class="col-md-4">
 
         <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <select ng-model="footage.min" ng-change="footage.recalculate(footage.min)" name="bool[must][3][range][meta_input.total_living_area_sqft_2][gte]">
-            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_feet in footage.min_feet" value="{{_feet}}">{{_feet}}</option>
-          </select>
-          <select name="bool[must][3][range][meta_input.total_living_area_sqft_2][lte]">
-            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_feet in footage.max_feet track by $index" value="{{_feet}}">{{_feet}}</option>
-          </select>
+        <div class="rdc-range-fields" click-out="footage.click_out($event)">
+
+          <input onchange="footage.format(this, 'min')" value="{{current_filter.feet.min}}" class="feet-input" ng-focus="footage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="footage.format(this, 'max')" value="{{current_filter.feet.max}}" class="feet-input" ng-focus="footage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.feet.min}}" ng-model="footage.current_min" type="text" name="bool[must][3][range][meta_input.total_living_area_sqft_2][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.feet.max}}" ng-model="footage.current_max" type="text" name="bool[must][3][range][meta_input.total_living_area_sqft_2][lte]" />
+
+          <div class="price-dropdown" ng-show="footage.mode">
+            <ul class="min-values" ng-show="footage.mode == 'min'">
+              <li><a href="javascript:;" ng-click="footage.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_foot in footage.min_foot track by $index"><a ng-click="footage.set_min(_foot)" href="javascript:;">{{_foot}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="footage.mode == 'max'">
+              <li ng-repeat="_foot in footage.max_foot track by $index"><a ng-click="footage.set_max(_foot)" href="javascript:;">{{_foot}}</a></li>
+              <li><a href="javascript:;" ng-click="footage.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
         </div>
 
       </div>

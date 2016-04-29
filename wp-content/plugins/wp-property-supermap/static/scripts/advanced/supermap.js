@@ -321,7 +321,6 @@
           },
 
           focus: function( mode ) {
-            console.log(mode);
             this.mode = mode;
           }
         };
@@ -330,7 +329,7 @@
          *
          * @type {{min_feet: number[], max_feet: number[]}}
          */
-        $scope.footage = {
+        $scope._footage = {
 
           min:'',
 
@@ -345,6 +344,76 @@
             }
           }
 
+        };
+
+        $scope.footage = window.footage = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_foot: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
+          max_foot: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('feet-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:0,
+                max:0
+              }
+            }
+            $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:0,
+                max:0
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.feet.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:0,
+                max:0
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.feet.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_foot ) {
+              this.max_foot[i] = j += 500;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
         };
 
         /**
