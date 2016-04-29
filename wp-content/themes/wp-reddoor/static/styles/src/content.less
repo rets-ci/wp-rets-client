@@ -870,6 +870,42 @@ a {
     }
   }
 
+  .feet-input {
+    float: left;
+    width: 47%;
+    border: 1px solid lightgrey;
+
+    &:focus {
+      border: 1px solid grey;
+    }
+
+    &+.feet-input {
+      margin-left: 6%;
+
+      @media screen and (max-width: 990px) {
+        margin-left: 4%;
+      }
+    }
+  }
+
+  .acres-input {
+    float: left;
+    width: 47%;
+    border: 1px solid lightgrey;
+
+    &:focus {
+      border: 1px solid grey;
+    }
+
+    &+.acres-input {
+      margin-left: 6%;
+
+      @media screen and (max-width: 990px) {
+        margin-left: 4%;
+      }
+    }
+  }
+
   .price-dropdown {
     background: white none repeat scroll 0 0;
     border-bottom: 1px solid lightgrey;
