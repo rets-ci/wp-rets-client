@@ -329,23 +329,6 @@
          *
          * @type {{min_feet: number[], max_feet: number[]}}
          */
-        $scope._footage = {
-
-          min:'',
-
-          min_feet: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
-          max_feet: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
-
-          recalculate: function ( current ) {
-            var j;
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_feet ) {
-              this.max_feet[i] = j += 500;
-            }
-          }
-
-        };
-
         $scope.footage = window.footage = {
           mode: false,
 
@@ -366,8 +349,8 @@
           format: function(target, mode) {
             if ( !$scope.current_filter.feet ) {
               $scope.current_filter.feet = {
-                min:0,
-                max:0
+                min:'',
+                max:''
               }
             }
             $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
@@ -381,8 +364,8 @@
           set_min: function(_price) {
             if ( !$scope.current_filter.feet ) {
               $scope.current_filter.feet = {
-                min:0,
-                max:0
+                min:'',
+                max:''
               }
             }
             this.current_min = _price;
@@ -394,8 +377,8 @@
           set_max: function(_price) {
             if ( !$scope.current_filter.feet ) {
               $scope.current_filter.feet = {
-                min:0,
-                max:0
+                min:'',
+                max:''
               }
             }
             this.current_max = _price;
@@ -420,12 +403,62 @@
          *
          * @type {{min_feet: number[], max_feet: number[]}}
          */
-        $scope.acrage = {
+        $scope.acrage = window.acrage = {
+          mode: false,
 
-          min:'',
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
 
           min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
           max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('acres-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.acrage.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.acrage.max = _price;
+            this.mode = false;
+          },
 
           recalculate: function ( current ) {
             current = current*1;
@@ -440,8 +473,11 @@
                 }
               }
             }
-          }
+          },
 
+          focus: function( mode ) {
+            this.mode = mode;
+          }
         };
 
         /**

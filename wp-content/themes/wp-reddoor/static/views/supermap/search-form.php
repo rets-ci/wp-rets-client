@@ -95,15 +95,26 @@
       <div class="col-md-4">
 
         <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <select ng-model="acrage.min" ng-change="acrage.recalculate(acrage.min)" name="bool[must][4][range][tax_input.approximate_lot_size][gte]">
-            <option value=""><?php _e( 'No Min', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.min_acres" value="{{_acres}}">{{_acres | acreage}}</option>
-          </select>
-          <select name="bool[must][4][range][tax_input.approximate_lot_size][lte]">
-            <option value=""><?php _e( 'No Max', 'reddoor' ); ?></option>
-            <option ng-repeat="_acres in acrage.max_acres track by $index" value="{{_acres}}">{{_acres | acreage}}</option>
-          </select>
+        <div class="rdc-range-fields" click-out="acrage.click_out($event)">
+
+          <input onchange="acrage.format(this, 'min')" value="{{current_filter.acrage.min}}" class="acres-input" ng-focus="acrage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="acrage.format(this, 'max')" value="{{current_filter.acrage.max}}" class="acres-input" ng-focus="acrage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.acrage.min}}" ng-model="acrage.current_min" type="text" name="bool[must][4][range][tax_input.approximate_lot_size][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.acrage.max}}" ng-model="acrage.current_max" type="text" name="bool[must][4][range][tax_input.approximate_lot_size][lte]" />
+
+          <div class="price-dropdown" ng-show="acrage.mode">
+            <ul class="min-values" ng-show="acrage.mode == 'min'">
+              <li><a href="javascript:;" ng-click="acrage.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_acre in acrage.min_acres track by $index"><a ng-click="acrage.set_min(_acre)" href="javascript:;">{{_acre | acreage}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="acrage.mode == 'max'">
+              <li ng-repeat="_acre in acrage.max_acres track by $index"><a ng-click="acrage.set_max(_acre)" href="javascript:;">{{_acre | acreage}}</a></li>
+              <li><a href="javascript:;" ng-click="acrage.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
         </div>
 
       </div>

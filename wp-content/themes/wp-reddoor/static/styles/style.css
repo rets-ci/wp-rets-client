@@ -1054,6 +1054,22 @@ a:focus {
     margin-left: 4%;
   }
 }
+.rdc-supermap-search-form .acres-input {
+  float: left;
+  width: 47%;
+  border: 1px solid lightgrey;
+}
+.rdc-supermap-search-form .acres-input:focus {
+  border: 1px solid grey;
+}
+.rdc-supermap-search-form .acres-input + .acres-input {
+  margin-left: 6%;
+}
+@media screen and (max-width: 990px) {
+  .rdc-supermap-search-form .acres-input + .acres-input {
+    margin-left: 4%;
+  }
+}
 .rdc-supermap-search-form .price-dropdown {
   background: white none repeat scroll 0 0;
   border-bottom: 1px solid lightgrey;
