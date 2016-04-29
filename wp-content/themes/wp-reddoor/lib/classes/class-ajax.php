@@ -68,7 +68,7 @@ namespace UsabilityDynamics\RDC {
        */
       public function TermsSearchable() {
 
-        $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
+        $query = $_GET['q'];
 
         $_terms = get_terms( array(
           'taxonomy' => apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'mls_id' ) ),
@@ -101,7 +101,7 @@ namespace UsabilityDynamics\RDC {
        */
       public function mapFilterAutocomplete() {
 
-        $query = !empty( $_GET['q'] ) ? $_GET['q'] : 'a';
+        $query = $_GET['q'];
 
         $_terms = get_terms( array(
             'taxonomy' => apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ),

@@ -293,20 +293,20 @@ while (have_posts()) : the_post();
   <div class="container areaMapBlock">
     <div class="row">
       <div class="col-xs-12 col-md-12 col-lg-7">
-        <h4>Area Map for 5000 Daviston Ct</h4>
+        <h4><?php _e('Area Map for '); echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="nav nav-tabs ws_nmaps">
-          <li class="active"><a data-toggle="tab" href="#Ameneties">Ameneties</a></li>
+          <li class="active"><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
           <li><a data-toggle="tab" href="#Commute">Commute</a></li>
           <li><a data-toggle="tab" href="#Street">Street View</a></li>
           <li><a data-toggle="tab" href="#Satellite">Satellite</a></li>
         </ul>
 
         <div class="tab-content">
-          <div id="Ameneties" class="tab-pane fade in active" data-nmap-options="<?php echo urldecode( http_build_query( array(
+          <div id="Neighborhood" class="tab-pane fade in active" data-nmap-options="<?php echo urldecode( http_build_query( array(
             "property_id" => $property[ 'ID' ],
             "ws_commute" => "false",
             "ws_map_modules" => "all",
@@ -449,7 +449,7 @@ while (have_posts()) : the_post();
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
           <li><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
-          <li><a data-toggle="tab" href="#PropertyLot">Property & Pricing</a></li>
+          <li><a data-toggle="tab" href="#PropertyLot">Property <span class="hideTabMobile">& Pricing</span></a></li>
         </ul>
 
         <div class="tab-content">
@@ -961,25 +961,25 @@ while (have_posts()) : the_post();
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="col-xs-12">
-          <li><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></li>
-          <li><?php _e('Agent Phone Number: '); ?><b><?php echo (!empty($listing_agent_phone_number)) ? $listing_agent_phone_number : ''; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></li>
-          <li><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></li>
-          <li><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></li>
-          <li><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></li>
+          <li><div><?php _e('Agent: '); ?><b><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Agent Phone Number: '); ?><b><?php echo (!empty($listing_agent_phone_number)) ? $listing_agent_phone_number : ''; if($listing_agent_phone_extension){ echo ', ' . $listing_agent_phone_extension;} ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Office: '); ?><b><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Office Phone Number: '); ?><b><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('MLS ID: '); ?><b><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></b></div><b class="clear"></b></li>
         </ul>
         <ul class="col-xs-12">
-          <li><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></li>
-          <li><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></li>
-          <li><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></li>
-          <li><?php _e('Last Checked: '); ?><b><?php echo date('F j, Y g:i A T', current_time('timestamp')-60); ?></b></li>
-          <li><?php _e('Last Updated: '); ?><b><?php
+          <li><div><img src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>" alt=""></div><b class="clear"></b></li>
+          <li><div><?php _e('Data Source: '); ?><b><?php _e($data_source); ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Data Property ID: '); ?><b><?php echo $listing_id; ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Last Checked: '); ?><b><?php echo date('F j, Y g:i A T', current_time('timestamp')-60); ?></b></div><b class="clear"></b></li>
+          <li><div><?php _e('Last Updated: '); ?><b><?php
               $dateUpdt = '';
               $dateUpdt = strtotime("$updatedProperty GMT");
               echo date('F j, Y g:i A T', $dateUpdt);
               ?>
             </b>
-          </li>
-          <li><?php _e('Days on site: '); ?><b><?php echo human_time_diff(get_the_time('U'), current_time('timestamp'));  ?></b></li>
+          </div><b class="clear"></b></li>
+          <li><div><?php _e('Days on site: '); ?><b><?php echo human_time_diff(get_the_time('U'), current_time('timestamp'));  ?></b></div><b class="clear"></b></li>
         </ul>
         <div class="clear"></div>
       </div>

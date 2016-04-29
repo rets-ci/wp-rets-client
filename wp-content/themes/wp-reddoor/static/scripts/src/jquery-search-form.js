@@ -51,6 +51,7 @@
     $('.citiesSelection', that).select2({
       placeholder: 'Location',
       maximumSelectionLength: 1,
+      minimumInputLength: 3,
       ajax: {
         url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
         dataType: 'json',
