@@ -77,46 +77,52 @@
 @media screen and (min-width: @adapt1600) {
 
 }
-@media screen and (min-width: @adapt1440) {
-
+@media screen and (max-width: @adapt1440) {
 }
 @media screen and (min-width: @adapt1366) {
 
 }
-@media screen and (min-width: @adapt1360) {
+@media screen and (max-width: @adapt1360) {
 
   .frontPageSearchBlock {
     .searchForm{
 
-      form{
-        .sfBeds, .sfBaths, .sfPrice{
+      form {
+        .sfBeds, .sfBaths, .sfPrice {
           width: 15.5%;
-          .sf-icon{
+          .sf-icon {
 
           }
         }
-        .sfprInputsBlock{
-          input{
+        .sfPriceRange{
+        .sfprInputsBlock {
+          input {
             width: 45%;
           }
         }
-        .sfPrice{
-          width: 24%;
-        }
+      }
 
+      }
+      .sfPriceRange{
+        .firstRangeList{
+          padding: 10px 0 10px 35px;
+        }
+        .lastRangeList{
+          padding: 10px 35px 10px 0;
+        }
       }
     }
   }
 
 }
-@media screen and (min-width: @adapt1280) {
+@media screen and (max-width: @adapt1280) {
 
   .frontPageSearchBlock {
     .searchForm{
 
       form{
         .sfBeds, .sfBaths {
-          width: 18%;
+          width: 16%;
           &>span{
             padding-left: 50px;
           }
@@ -125,7 +131,7 @@
           }
         }
         .sfPrice{
-          width: 21%;
+          width: 16%;
           &>span{
             padding-left: 50px;
           }
@@ -170,9 +176,7 @@
   }
 
     .single-property{
-        h4{
-          text-align: center;
-        }
+
 
       .singlePropertyHeader{
         .oneAgent{
@@ -205,24 +209,10 @@
       }
 
       .propertyFacts {
-        &>div{
-          text-align: center;
-          div{
-            margin-right: 0;
-            float: none;
-            display: inline-block;
-          }
-        }
+
       }
       .propertyAttribute  {
-        &>div{
-          text-align: center;
-          div{
-            margin-right: 0;
-            float: none;
-            display: inline-block;
-          }
-        }
+
       }
   }
   .hero-content .so-widget-sow-editor {
@@ -308,14 +298,6 @@
       }
     }
 
-  .propertyDetails {
-    .nav-tabs {
-      li{
-        font-size: 0.8em;
-      }
-    }
-  }
-
     .areaMapBlock{
       .ambItem{
         margin: 15px 0 0 0;
@@ -327,6 +309,9 @@
     .searchForm{
 
       form{
+        .location{
+          width: 34%;
+        }
         .sfBeds, .sfBaths {
           width: 18%;
           .sf-icon{
@@ -352,6 +337,13 @@
   }
   }
 
+}
+@media screen and (min-width: 769px) {
+  .home{
+    .select2-dropdown{
+      width: 400px !important;
+    }
+  }
 }
 @media screen and (max-width: @adapt768) {
   body {
@@ -615,8 +607,10 @@
     }
 
   }
-  .home .select2-dropdown{
-    margin-top: -1px;
+  .home{
+    .select2-dropdown{
+      margin-top: -1px;
+    }
   }
 
   .so-widget-tabbed-content {
@@ -701,6 +695,9 @@
 
   .archiveImageHeader {
     top: -24px;
+  }
+  .hideTabMobile{
+    display: none;
   }
 }
 @media screen and (max-width: @adapt620) {
@@ -829,13 +826,6 @@
     .propertyFacts{
       &.col-xs-4{
         width: 100%;
-      }
-    }
-    .propertyDetails, .area{
-      .nav-tabs {
-        li{
-          font-size: 0.6em;
-        }
       }
     }
     .listingProvider{

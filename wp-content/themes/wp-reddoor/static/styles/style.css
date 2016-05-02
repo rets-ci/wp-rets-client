@@ -750,7 +750,7 @@ a:focus {
   border-radius: 5px 0 0 5px;
   color: #808285;
   position: relative;
-  width: 30%;
+  width: 40%;
   height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
@@ -864,7 +864,6 @@ a:focus {
 }
 .frontPageSearchBlock .searchForm form .sfPrice {
   border-radius: 0 5px 5px 0;
-  width: 24%;
 }
 .frontPageSearchBlock .searchForm form .sfPriceRange {
   display: none;
@@ -909,7 +908,7 @@ a:focus {
   font-size: 0.9em;
   height: 30px;
   padding: 0 5px;
-  width: 47%;
+  width: 46%;
   text-align: center;
 }
 .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
@@ -1901,12 +1900,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .listingProvider .col-lg-8 ul:nth-child(even) {
   margin-left: 10%;
 }
-.single-property .listingProvider .col-lg-8 ul li {
+.single-property .listingProvider .col-lg-8 ul li div {
   border-bottom: 1px solid #dedede;
+  float: left;
   padding-bottom: 10px;
   padding-top: 10px;
 }
-.single-property .listingProvider .col-lg-8 ul li:last-child {
+.single-property .listingProvider .col-lg-8 ul li:last-child div {
   border-bottom: 0;
 }
 .single-property .listingProvider .italicText {
@@ -6308,30 +6308,33 @@ body .ui-tooltip {
   padding: 1.3em 4em;
 }
 /* Adaptive */
-@media screen and (min-width: 1360px) {
+@media screen and (max-width: 1360px) {
   .frontPageSearchBlock .searchForm form .sfBeds,
   .frontPageSearchBlock .searchForm form .sfBaths,
   .frontPageSearchBlock .searchForm form .sfPrice {
     width: 15.5%;
   }
-  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+  .frontPageSearchBlock .searchForm form .sfPriceRange .sfprInputsBlock input {
     width: 45%;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 24%;
+  .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
+    padding: 10px 0 10px 35px;
+  }
+  .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
+    padding: 10px 35px 10px 0;
   }
 }
-@media screen and (min-width: 1280px) {
+@media screen and (max-width: 1280px) {
   .frontPageSearchBlock .searchForm form .sfBeds,
   .frontPageSearchBlock .searchForm form .sfBaths {
-    width: 18%;
+    width: 16%;
   }
   .frontPageSearchBlock .searchForm form .sfBeds > span,
   .frontPageSearchBlock .searchForm form .sfBaths > span {
     padding-left: 50px;
   }
   .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 21%;
+    width: 16%;
   }
   .frontPageSearchBlock .searchForm form .sfPrice > span {
     padding-left: 50px;
@@ -6353,9 +6356,6 @@ body .ui-tooltip {
   .menu-header-container .menuDesktop .sub-menu li a {
     font-size: 1em;
   }
-  .single-property h4 {
-    text-align: center;
-  }
   .single-property .singlePropertyHeader .oneAgent {
     position: inherit;
     margin: 20px 0 0;
@@ -6373,22 +6373,6 @@ body .ui-tooltip {
   }
   .single-property .propertyDetails .nav-tabs li:last-child {
     width: 25%;
-  }
-  .single-property .propertyFacts > div {
-    text-align: center;
-  }
-  .single-property .propertyFacts > div div {
-    margin-right: 0;
-    float: none;
-    display: inline-block;
-  }
-  .single-property .propertyAttribute > div {
-    text-align: center;
-  }
-  .single-property .propertyAttribute > div div {
-    margin-right: 0;
-    float: none;
-    display: inline-block;
   }
   .hero-content .so-widget-sow-editor {
     margin: 5% auto;
@@ -6460,11 +6444,11 @@ body .ui-tooltip {
     margin-right: 30px;
     margin-left: 30px;
   }
-  body .propertyDetails .nav-tabs li {
-    font-size: 0.8em;
-  }
   body .areaMapBlock .ambItem {
     margin: 15px 0 0 0;
+  }
+  body .frontPageSearchBlock .searchForm form .location {
+    width: 34%;
   }
   body .frontPageSearchBlock .searchForm form .sfBeds,
   body .frontPageSearchBlock .searchForm form .sfBaths {
@@ -6478,6 +6462,11 @@ body .ui-tooltip {
   }
   body .frontPageSearchBlock .searchForm form .sfPrice {
     width: 18%;
+  }
+}
+@media screen and (min-width: 769px) {
+  .home .select2-dropdown {
+    width: 400px !important;
   }
 }
 @media screen and (max-width: 768px) {
@@ -6764,6 +6753,9 @@ body .ui-tooltip {
   .archiveImageHeader {
     top: -24px;
   }
+  .hideTabMobile {
+    display: none;
+  }
 }
 @media screen and (max-width: 620px) {
   .single-property .propertyDetails .pdRoomsBlock {
@@ -6859,10 +6851,6 @@ body .ui-tooltip {
   }
   .single-property .propertyFacts.col-xs-4 {
     width: 100%;
-  }
-  .single-property .propertyDetails .nav-tabs li,
-  .single-property .area .nav-tabs li {
-    font-size: 0.6em;
   }
   .single-property .listingProvider ul li img {
     width: 100%;

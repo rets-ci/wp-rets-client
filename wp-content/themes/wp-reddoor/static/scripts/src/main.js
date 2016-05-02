@@ -232,8 +232,8 @@
   function rdc_agent_carousel_item_width(){
       jQuery('.rdc-agents-carousel-item').width(jQuery('.rdc-agents-carousel-wrapper').width());
   }
-
   jQuery( window ).load( function () {
+    rdc_agent_carousel_item_width();
     var resizeTimer;
     jQuery( window ).on( 'resize', function () {
       clearTimeout( resizeTimer );
