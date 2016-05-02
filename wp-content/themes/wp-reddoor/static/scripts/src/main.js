@@ -1,6 +1,7 @@
 (function(){
 
   jQuery( document ).ready( function () {
+    console.log( "RDC version 1.1.3" );
 
     jQuery( '.mobileMenu' ).css( 'min-height', jQuery( window ).height() );
 
@@ -15,13 +16,22 @@
     }
 
 
-    /* Mobile menu slide */
-    jQuery( '.toggle' ).on( 'click', function () {
-      jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 400 ).css( 'position', 'absolute' );
+    // Open Mobile Menu
+    jQuery( '#header').find('.toggle' ).on( 'click', function () {
+
+      jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 300, function menuOpened() {
+
+        // After meny is done opening, we remove scrolling from HTML element via our class.
+        jQuery( 'html' ).addClass( 'rdc-mobile-menu-opened' );
+      }).css( 'position', 'absolute' );
+
     } );
 
+    // Close Mobile Menu
     jQuery( '.closeMobileMenu' ).on( 'click', function () {
-      jQuery( '.mobileMenu' ).animate( { 'left': '-100%' }, 400 );
+      jQuery( '.mobileMenu' ).animate( { 'left': '-100%' }, 300 );
+      // allow scrolling om DOM right away, no waiting for animation to complete.
+      jQuery( 'html' ).removeClass( 'rdc-mobile-menu-opened' );
     } );
 
     /* Mobile menu slide */
@@ -222,7 +232,7 @@
       height = height - jQuery( '#wpadminbar').height();
     }
     jQuery('.frontPageSearchBlock').height(height);
-    console.log( jQuery('.frontPageSearchBlock').height() );
+    //console.log( jQuery('.frontPageSearchBlock').height() );
   }
 
   function rdc_property_sticky() {
