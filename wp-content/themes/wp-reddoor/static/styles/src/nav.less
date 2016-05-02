@@ -65,13 +65,15 @@
   background: @white;
   width: 100%;
   padding: 5%;
-  border-right: 1em solid rgba(179, 179, 179, 0.63);
   position: absolute;
   min-height: 200px;
   z-index: 999;
   left: -100%;
   trasition: 1s;
   display: none;
+
+  // enable scrolling on mobile menu
+  overflow: auto;
 
   .menuAdaptive{
     float: left;
