@@ -85,7 +85,6 @@
 }
 @media screen and (max-width: @adapt1360) {
 
-  .frontPageSearchBlock {
     .searchForm{
 
       form {
@@ -113,12 +112,10 @@
         }
       }
     }
-  }
 
 }
 @media screen and (max-width: @adapt1280) {
 
-  .frontPageSearchBlock {
     .searchForm{
 
       form{
@@ -147,7 +144,6 @@
         }
       }
     }
-  }
 
 }
 @media screen and (max-width: @adapt1200) {
@@ -306,7 +302,6 @@
     }
 
 
-  .frontPageSearchBlock {
     .searchForm{
 
       form{
@@ -335,7 +330,6 @@
         }
       }
     }
-  }
   }
 
 }
@@ -398,22 +392,23 @@
         margin-top: 25px;
         line-height: 1.8em;
       }
-      .searchForm {
-        & > ul {
-          width: 49.6%;
-          & > li {
-            width: 49.2%;
-            & > a {
-              padding: 0 !important;
-              text-align: center;
-
-            }
-          }
-        }
-      }
 
       .sf-property-quantity {
         display: none;
+      }
+    }
+
+    .searchForm {
+      & > ul {
+        width: 49.6%;
+        & > li {
+          width: 49.2%;
+          & > a {
+            padding: 0 !important;
+            text-align: center;
+
+          }
+        }
       }
     }
 
@@ -452,71 +447,69 @@
     .mobileMenu, .toggle, .menuAdaptive {
       display: block !important;
     }
-    .frontPageSearchBlock {
-
-      .searchForm {
-        min-width: 560px;
-        form {
-          border-radius: 0 0 5px 5px;
-          height: 296px;
-          padding: 9px;
-          .location {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            .select2 {
-              min-width: 99%;
-            }
-          }
-          .sfBeds {
-            width: 49%;
-            border-radius: 5px;
-          }
-          .sfBaths {
-            width: 49%;
-            margin-left: 10px;
-            border-radius: 5px;
-          }
-          .sfPrice {
-            width: 100%;
-            border-radius: 5px;
-            margin-top: 10px;
-          }
-          input[type="submit"] {
-            width: 100%;
-            margin-left: 0;
-            margin-top: 10px;
-            padding: 18px 20px;
-          }
-          ul {
-            position: relative;
-            z-index: 20;
+    .searchForm {
+      min-width: 560px;
+      form {
+        border-radius: 0 0 5px 5px;
+        height: 296px;
+        padding: 9px;
+        .location {
+          width: 100%;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          .select2 {
+            min-width: 99%;
           }
         }
-        .sfPriceRange {
-          .sfprInputsBlock {
+        .sfBeds {
+          width: 49%;
+          border-radius: 5px;
+        }
+        .sfBaths {
+          width: 49%;
+          margin-left: 10px;
+          border-radius: 5px;
+        }
+        .sfPrice {
+          width: 100%;
+          border-radius: 5px;
+          margin-top: 10px;
+        }
+        input[type="submit"] {
+          width: 100%;
+          margin-left: 0;
+          margin-top: 10px;
+          padding: 18px 20px;
+        }
+        ul {
+          position: relative;
+          z-index: 20;
+        }
+      }
+      .sfPriceRange {
+        .sfprInputsBlock {
 
-            input {
-              width: 48.7%;
-            }
+          input {
+            width: 48.7%;
           }
-          .left-side {
-            width: 50%;
-          }
-          .right-side {
-            width: 50%;
-          }
-          .firstRangeList {
-            padding-right: 15px;
-            text-align: center;
-          }
-          .lastRangeList {
-            padding-left: 15px;
-            text-align: center;
-          }
+        }
+        .left-side {
+          width: 50%;
+        }
+        .right-side {
+          width: 50%;
+        }
+        .firstRangeList {
+          padding-right: 15px;
+          text-align: center;
+        }
+        .lastRangeList {
+          padding-left: 15px;
+          text-align: center;
         }
       }
     }
+
     .oneCategory {
       margin: auto;
     }
@@ -714,48 +707,49 @@
   body {
     .frontPageSearchBlock {
       min-height: 900px;
-      .searchForm {
-        min-width: 100%;
-        form{
-          .sfBeds{
-            width: 48.3%;
-          }
-          .sfBaths{
-            width: 48.3%;
-          }
+    }
+
+    .searchForm {
+      min-width: 100%;
+      form{
+        .sfBeds{
+          width: 48.3%;
         }
-        &>ul{
-          width: 49.2%;
-          display: flex;
-          &:first-child{
-            width: 100%;
-            li{
+        .sfBaths{
+          width: 48.3%;
+        }
+      }
+      &>ul{
+        width: 49.2%;
+        display: flex;
+        &:first-child{
+          width: 100%;
+          li{
             &:last-child {
               width: 49.7%;
               margin-left: 2px;
             }
-            }
-            &>li{
-              width: 50%;
-            }
           }
           &>li{
-            width: 48.3%;
-
+            width: 50%;
           }
         }
-        .sellBtnForm, .rentPropBtnForm{
-          display: none;
+        &>li{
+          width: 48.3%;
+
         }
       }
+      .sellBtnForm, .rentPropBtnForm{
+        display: none;
+      }
     }
+
   }
 }
 @media screen and (max-width: @adapt400) {
   body .site-logo{
 
-    .frontPageSearchBlock {
-      .searchForm {
+    .searchForm {
         min-width: 100%;
         form{
           .sfBeds{
@@ -772,7 +766,6 @@
           }
         }
       }
-    }
 
   }
   .single-property {
@@ -857,10 +850,8 @@
 }
 @media screen and (max-width: @adapt320) {
   body  {
-    .frontPageSearchBlock {
       .searchForm {
         min-width: 320px;
       }
-    }
   }
 }

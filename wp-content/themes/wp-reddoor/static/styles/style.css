@@ -661,7 +661,16 @@ a:focus {
   position: relative;
   z-index: 9;
 }
-.frontPageSearchBlock .searchForm {
+.frontPageSearchBlock .hero-overlay {
+  background: #000 none repeat scroll 0 0;
+  bottom: 0;
+  opacity: 0.15;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 8;
+}
+.searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
   margin: auto;
@@ -670,26 +679,26 @@ a:focus {
   width: 65%;
   z-index: 9;
 }
-.frontPageSearchBlock .searchForm .nav-tabs {
+.searchForm .nav-tabs {
   margin-right: 4px;
 }
-.frontPageSearchBlock .searchForm .nav-tabs .formTabs a {
+.searchForm .nav-tabs .formTabs a {
   margin-right: 0 !important;
 }
-.frontPageSearchBlock .searchForm .nav-tabs .active {
+.searchForm .nav-tabs .active {
   background: #2e2f31 none repeat scroll 0 0;
 }
-.frontPageSearchBlock .searchForm .nav-tabs li {
+.searchForm .nav-tabs li {
   float: none;
 }
-.frontPageSearchBlock .searchForm > ul {
+.searchForm > ul {
   margin: 0;
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
   padding: 0;
   float: left;
 }
-.frontPageSearchBlock .searchForm > ul > li {
+.searchForm > ul > li {
   display: inline-block;
   background: rgba(46, 47, 49, 0.5);
   height: 45px;
@@ -697,7 +706,7 @@ a:focus {
   border-radius: 5px 5px 0 0;
   border: medium none;
 }
-.frontPageSearchBlock .searchForm > ul a {
+.searchForm > ul a {
   padding: 0 1.7em !important;
   color: #fff !important;
   display: block;
@@ -706,18 +715,18 @@ a:focus {
   border: none !important;
   border-radius: 5px 5px 0 0;
 }
-.frontPageSearchBlock .searchForm > ul a:hover {
+.searchForm > ul a:hover {
   text-decoration: none;
   background: rgba(46, 47, 49, 0.6) !important;
   border: none !important;
 }
-.frontPageSearchBlock .searchForm > ul a:focus {
+.searchForm > ul a:focus {
   outline: none;
 }
-.frontPageSearchBlock .searchForm .ui-state-active {
+.searchForm .ui-state-active {
   background: #2f2e31;
 }
-.frontPageSearchBlock .searchForm form {
+.searchForm form {
   background: #2f2e31;
   padding: 12px 13px 11px 13px;
   border-radius: 0 5px 5px 5px;
@@ -725,15 +734,15 @@ a:focus {
   margin-top: -2px;
   position: relative;
 }
-.frontPageSearchBlock .searchForm form ul {
+.searchForm form ul {
   background: #fff none repeat scroll 0 0;
   padding: 1.5em 1.4em 1em;
   box-shadow: -1px 7px 12px -5px #000;
 }
-.frontPageSearchBlock .searchForm form ul li {
+.searchForm form ul li {
   padding-bottom: 2px;
 }
-.frontPageSearchBlock .searchForm form input[type="submit"] {
+.searchForm form input[type="submit"] {
   background: #d03528;
   border: medium none;
   border-radius: 5px;
@@ -744,7 +753,7 @@ a:focus {
   padding: 1.31em 0;
   width: 11%;
 }
-.frontPageSearchBlock .searchForm form .location {
+.searchForm form .location {
   float: left;
   background: #f8f8f8 none repeat scroll 0 0;
   border-radius: 5px 0 0 5px;
@@ -753,72 +762,72 @@ a:focus {
   width: 40%;
   height: 4.5em;
 }
-.frontPageSearchBlock .searchForm form .location .citiesSelection {
+.searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
   border: medium none;
   padding: 0.44em 0.6em;
 }
-.frontPageSearchBlock .searchForm form .location .select2 {
+.searchForm form .location .select2 {
   height: 63px;
   padding-left: 35px;
   color: #A7A9AC;
   min-width: 100%;
 }
-.frontPageSearchBlock .searchForm form .location .select2 .select2-selection {
+.searchForm form .location .select2 .select2-selection {
   border: none;
   background: none;
   height: 43px !important;
 }
-.frontPageSearchBlock .searchForm form .location .icon-location {
+.searchForm form .location .icon-location {
   bottom: 15px;
   left: 10px;
   position: absolute;
 }
-.frontPageSearchBlock .searchForm form .location .tags {
+.searchForm form .location .tags {
   /* Firefox 19+ */
   /* Firefox 18- */
 }
-.frontPageSearchBlock .searchForm form .location .tags::-webkit-input-placeholder {
+.searchForm form .location .tags::-webkit-input-placeholder {
   color: #242526;
 }
-.frontPageSearchBlock .searchForm form .location .tags::-moz-placeholder {
+.searchForm form .location .tags::-moz-placeholder {
   color: #242526;
 }
-.frontPageSearchBlock .searchForm form .location .tags:-moz-placeholder {
+.searchForm form .location .tags:-moz-placeholder {
   color: #242526;
 }
-.frontPageSearchBlock .searchForm form .location .tags:-ms-input-placeholder {
+.searchForm form .location .tags:-ms-input-placeholder {
   color: #242526;
 }
-.frontPageSearchBlock .searchForm form .location .select2-selection__arrow {
+.searchForm form .location .select2-selection__arrow {
   height: 55px;
   width: 50px;
 }
-.frontPageSearchBlock .searchForm form .location .select2-selection__arrow b {
+.searchForm form .location .select2-selection__arrow b {
   border-color: #a7a9ac transparent transparent;
 }
-.frontPageSearchBlock .searchForm form .location .select2-selection__rendered {
+.searchForm form .location .select2-selection__rendered {
   line-height: 52px !important;
   background: #f8f8f8;
   box-shadow: none;
 }
-.frontPageSearchBlock .searchForm form .location .select2-selection__choice {
+.searchForm form .location .select2-selection__choice {
   border: none;
   background: none;
 }
-.frontPageSearchBlock .searchForm form .location .select2-selection__choice__remove {
+.searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
 }
-.frontPageSearchBlock .searchForm form .location .sf-icon {
+.searchForm form .location .sf-icon {
   font-size: 1.3em;
   left: 12px;
   position: absolute;
   top: 20px;
   color: #a7a9ac;
 }
-.frontPageSearchBlock .searchForm form .sfBeds,
-.frontPageSearchBlock .searchForm form .sfBaths,
-.frontPageSearchBlock .searchForm form .sfPrice {
+.searchForm form .sfBeds,
+.searchForm form .sfBaths,
+.searchForm form .sfPrice {
   border-radius: 0;
   background: #f8f8f8 none repeat scroll 0 0;
   width: 15.5%;
@@ -827,17 +836,17 @@ a:focus {
   border-left: 1px solid #e6e6e6;
   height: 4.5em;
 }
-.frontPageSearchBlock .searchForm form .sfBeds .sf-icon,
-.frontPageSearchBlock .searchForm form .sfBaths .sf-icon,
-.frontPageSearchBlock .searchForm form .sfPrice .sf-icon {
+.searchForm form .sfBeds .sf-icon,
+.searchForm form .sfBaths .sf-icon,
+.searchForm form .sfPrice .sf-icon {
   font-size: 1.3em;
   left: 20px;
   position: absolute;
   top: 20px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds > span,
-.frontPageSearchBlock .searchForm form .sfBaths > span,
-.frontPageSearchBlock .searchForm form .sfPrice > span {
+.searchForm form .sfBeds > span,
+.searchForm form .sfBaths > span,
+.searchForm form .sfPrice > span {
   display: block;
   height: 61px;
   line-height: 4.5em;
@@ -847,9 +856,9 @@ a:focus {
   cursor: pointer;
   padding-left: 60px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds > span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfBaths > span .sf-arrow,
-.frontPageSearchBlock .searchForm form .sfPrice > span .sf-arrow {
+.searchForm form .sfBeds > span .sf-arrow,
+.searchForm form .sfBaths > span .sf-arrow,
+.searchForm form .sfPrice > span .sf-arrow {
   border-color: #a7a9ac transparent transparent;
   border-style: solid;
   border-width: 5px 4px 0;
@@ -857,24 +866,24 @@ a:focus {
   right: 22px;
   top: 29px;
 }
-.frontPageSearchBlock .searchForm form .sfBeds > ul,
-.frontPageSearchBlock .searchForm form .sfBaths > ul,
-.frontPageSearchBlock .searchForm form .sfPrice > ul {
+.searchForm form .sfBeds > ul,
+.searchForm form .sfBaths > ul,
+.searchForm form .sfPrice > ul {
   display: none;
 }
-.frontPageSearchBlock .searchForm form .sfPrice {
+.searchForm form .sfPrice {
   border-radius: 0 5px 5px 0;
 }
-.frontPageSearchBlock .searchForm form .sfPriceRange {
+.searchForm form .sfPriceRange {
   display: none;
 }
-.frontPageSearchBlock .searchForm form .sf-property-quantity {
+.searchForm form .sf-property-quantity {
   bottom: -45px;
   color: #fff;
   position: absolute;
   opacity: 0.8;
 }
-.frontPageSearchBlock .searchForm form .sf-property-quantity b {
+.searchForm form .sf-property-quantity b {
   display: inline-block;
   font-size: 1.3em;
   font-weight: bold;
@@ -882,7 +891,7 @@ a:focus {
   position: relative;
   top: 2px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange {
+.searchForm .sfPriceRange {
   background: #fff;
   color: #a7a9ac;
   font-size: 1em;
@@ -890,18 +899,18 @@ a:focus {
   width: 100%;
   top: 0;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange ul {
+.searchForm .sfPriceRange ul {
   margin: 0;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange ul li a {
+.searchForm .sfPriceRange ul li a {
   color: #7e7e7e;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock {
+.searchForm .sfPriceRange .sfprInputsBlock {
   background: #fbfaf8;
   border-bottom: 1px solid #f2f2f2;
   padding: 10px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
+.searchForm .sfPriceRange .sfprInputsBlock input {
   background: #fbfaf8 none repeat scroll 0 0;
   border: 1px solid #a7a9ac;
   display: inline-block;
@@ -911,36 +920,27 @@ a:focus {
   width: 46%;
   text-align: center;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
+.searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
   margin-left: 4px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
+.searchForm .sfPriceRange .firstRangeList {
   padding: 20px 80px 20px 22px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList a {
+.searchForm .sfPriceRange .firstRangeList a {
   letter-spacing: 1px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
+.searchForm .sfPriceRange .lastRangeList {
   padding: 20px 22px 20px 80px;
   text-align: right;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList a {
+.searchForm .sfPriceRange .lastRangeList a {
   letter-spacing: 1px;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .left-side {
+.searchForm .sfPriceRange .left-side {
   width: 100%;
 }
-.frontPageSearchBlock .searchForm .sfPriceRange .right-side {
+.searchForm .sfPriceRange .right-side {
   width: 100%;
-}
-.frontPageSearchBlock .hero-overlay {
-  background: #000 none repeat scroll 0 0;
-  bottom: 0;
-  opacity: 0.15;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 8;
 }
 .select2-dropdown .select2-results__option {
   height: 48px;
@@ -6316,37 +6316,37 @@ body .ui-tooltip {
 }
 /* Adaptive */
 @media screen and (max-width: 1360px) {
-  .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  .searchForm form .sfBeds,
+  .searchForm form .sfBaths,
+  .searchForm form .sfPrice {
     width: 15.5%;
   }
-  .frontPageSearchBlock .searchForm form .sfPriceRange .sfprInputsBlock input {
+  .searchForm form .sfPriceRange .sfprInputsBlock input {
     width: 45%;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
+  .searchForm .sfPriceRange .firstRangeList {
     padding: 10px 0 10px 35px;
   }
-  .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
+  .searchForm .sfPriceRange .lastRangeList {
     padding: 10px 35px 10px 0;
   }
 }
 @media screen and (max-width: 1280px) {
-  .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths {
+  .searchForm form .sfBeds,
+  .searchForm form .sfBaths {
     width: 16%;
   }
-  .frontPageSearchBlock .searchForm form .sfBeds > span,
-  .frontPageSearchBlock .searchForm form .sfBaths > span {
+  .searchForm form .sfBeds > span,
+  .searchForm form .sfBaths > span {
     padding-left: 50px;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice {
+  .searchForm form .sfPrice {
     width: 16%;
   }
-  .frontPageSearchBlock .searchForm form .sfPrice > span {
+  .searchForm form .sfPrice > span {
     padding-left: 50px;
   }
-  .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+  .searchForm form .sfprInputsBlock input {
     width: 45%;
   }
 }
@@ -6454,20 +6454,20 @@ body .ui-tooltip {
   body .areaMapBlock .ambItem {
     margin: 15px 0 0 0;
   }
-  body .frontPageSearchBlock .searchForm form .location {
+  body .searchForm form .location {
     width: 34%;
   }
-  body .frontPageSearchBlock .searchForm form .sfBeds,
-  body .frontPageSearchBlock .searchForm form .sfBaths {
+  body .searchForm form .sfBeds,
+  body .searchForm form .sfBaths {
     width: 18%;
   }
-  body .frontPageSearchBlock .searchForm form .sfPrice {
+  body .searchForm form .sfPrice {
     width: 21%;
   }
-  body .frontPageSearchBlock .searchForm form .sfprInputsBlock input {
+  body .searchForm form .sfprInputsBlock input {
     width: 43%;
   }
-  body .frontPageSearchBlock .searchForm form .sfPrice {
+  body .searchForm form .sfPrice {
     width: 18%;
   }
 }
@@ -6523,18 +6523,18 @@ body .ui-tooltip {
     margin-top: 25px;
     line-height: 1.8em;
   }
-  body .frontPageSearchBlock .searchForm > ul {
-    width: 49.6%;
-  }
-  body .frontPageSearchBlock .searchForm > ul > li {
-    width: 49.2%;
-  }
-  body .frontPageSearchBlock .searchForm > ul > li > a {
-    padding: 0 !important;
-    text-align: center;
-  }
   body .frontPageSearchBlock .sf-property-quantity {
     display: none;
+  }
+  body .searchForm > ul {
+    width: 49.6%;
+  }
+  body .searchForm > ul > li {
+    width: 49.2%;
+  }
+  body .searchForm > ul > li > a {
+    padding: 0 !important;
+    text-align: center;
   }
   body.single-property .singlePropertyHeader {
     z-index: 9;
@@ -6564,60 +6564,60 @@ body .ui-tooltip {
   body .menuAdaptive {
     display: block !important;
   }
-  body .frontPageSearchBlock .searchForm {
+  body .searchForm {
     min-width: 560px;
   }
-  body .frontPageSearchBlock .searchForm form {
+  body .searchForm form {
     border-radius: 0 0 5px 5px;
     height: 296px;
     padding: 9px;
   }
-  body .frontPageSearchBlock .searchForm form .location {
+  body .searchForm form .location {
     width: 100%;
     border-radius: 5px;
     margin-bottom: 10px;
   }
-  body .frontPageSearchBlock .searchForm form .location .select2 {
+  body .searchForm form .location .select2 {
     min-width: 99%;
   }
-  body .frontPageSearchBlock .searchForm form .sfBeds {
+  body .searchForm form .sfBeds {
     width: 49%;
     border-radius: 5px;
   }
-  body .frontPageSearchBlock .searchForm form .sfBaths {
+  body .searchForm form .sfBaths {
     width: 49%;
     margin-left: 10px;
     border-radius: 5px;
   }
-  body .frontPageSearchBlock .searchForm form .sfPrice {
+  body .searchForm form .sfPrice {
     width: 100%;
     border-radius: 5px;
     margin-top: 10px;
   }
-  body .frontPageSearchBlock .searchForm form input[type="submit"] {
+  body .searchForm form input[type="submit"] {
     width: 100%;
     margin-left: 0;
     margin-top: 10px;
     padding: 18px 20px;
   }
-  body .frontPageSearchBlock .searchForm form ul {
+  body .searchForm form ul {
     position: relative;
     z-index: 20;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .sfprInputsBlock input {
+  body .searchForm .sfPriceRange .sfprInputsBlock input {
     width: 48.7%;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .left-side {
+  body .searchForm .sfPriceRange .left-side {
     width: 50%;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .right-side {
+  body .searchForm .sfPriceRange .right-side {
     width: 50%;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .firstRangeList {
+  body .searchForm .sfPriceRange .firstRangeList {
     padding-right: 15px;
     text-align: center;
   }
-  body .frontPageSearchBlock .searchForm .sfPriceRange .lastRangeList {
+  body .searchForm .sfPriceRange .lastRangeList {
     padding-left: 15px;
     text-align: center;
   }
@@ -6773,48 +6773,48 @@ body .ui-tooltip {
   body .frontPageSearchBlock {
     min-height: 900px;
   }
-  body .frontPageSearchBlock .searchForm {
+  body .searchForm {
     min-width: 100%;
   }
-  body .frontPageSearchBlock .searchForm form .sfBeds {
+  body .searchForm form .sfBeds {
     width: 48.3%;
   }
-  body .frontPageSearchBlock .searchForm form .sfBaths {
+  body .searchForm form .sfBaths {
     width: 48.3%;
   }
-  body .frontPageSearchBlock .searchForm > ul {
+  body .searchForm > ul {
     width: 49.2%;
     display: flex;
   }
-  body .frontPageSearchBlock .searchForm > ul:first-child {
+  body .searchForm > ul:first-child {
     width: 100%;
   }
-  body .frontPageSearchBlock .searchForm > ul:first-child li:last-child {
+  body .searchForm > ul:first-child li:last-child {
     width: 49.7%;
     margin-left: 2px;
   }
-  body .frontPageSearchBlock .searchForm > ul:first-child > li {
+  body .searchForm > ul:first-child > li {
     width: 50%;
   }
-  body .frontPageSearchBlock .searchForm > ul > li {
+  body .searchForm > ul > li {
     width: 48.3%;
   }
-  body .frontPageSearchBlock .searchForm .sellBtnForm,
-  body .frontPageSearchBlock .searchForm .rentPropBtnForm {
+  body .searchForm .sellBtnForm,
+  body .searchForm .rentPropBtnForm {
     display: none;
   }
 }
 @media screen and (max-width: 400px) {
-  body .site-logo .frontPageSearchBlock .searchForm {
+  body .site-logo .searchForm {
     min-width: 100%;
   }
-  body .site-logo .frontPageSearchBlock .searchForm form .sfBeds {
+  body .site-logo .searchForm form .sfBeds {
     width: 48.1%;
   }
-  body .site-logo .frontPageSearchBlock .searchForm form .sfBaths {
+  body .site-logo .searchForm form .sfBaths {
     width: 48.1%;
   }
-  body .site-logo .frontPageSearchBlock .searchForm > ulli {
+  body .site-logo .searchForm > ulli {
     font-size: 0.9em;
     width: 47.3%;
   }
@@ -6873,7 +6873,7 @@ body .ui-tooltip {
   }
 }
 @media screen and (max-width: 320px) {
-  body .frontPageSearchBlock .searchForm {
+  body .searchForm {
     min-width: 320px;
   }
 }

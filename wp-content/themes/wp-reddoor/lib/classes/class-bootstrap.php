@@ -85,6 +85,9 @@ namespace UsabilityDynamics\RDC {
         // facebook/twitter/google shortcode
         add_shortcode( 'share_this_article', array( 'UsabilityDynamics\RDC\Shortcodes', 'share_this_article' ) );
 
+        // get any template part
+        add_shortcode( 'template_part', array( 'UsabilityDynamics\RDC\Shortcodes', 'template_part' ) );
+
       }
 
       /**
