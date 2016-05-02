@@ -3,8 +3,6 @@
   jQuery( document ).ready( function () {
     console.log( "RDC version 1.1.3" );
 
-    jQuery( '.mobileMenu' ).css( 'min-height', jQuery( window ).height() );
-
     jQuery( ".rdc-accordion" ).accordion( {
       active: false,
       collapsible: true,
@@ -18,6 +16,9 @@
 
     // Open Mobile Menu
     jQuery( '#header').find('.toggle' ).on( 'click', function () {
+
+      // When opening the menu, set its height to be slightly above viewport
+      jQuery( '.mobileMenu' ).css( 'height', ( jQuery( window ).height() + 30 ));
 
       jQuery( '.mobileMenu' ).animate( { 'left': '0' }, 300, function menuOpened() {
 
