@@ -3,6 +3,7 @@ jQuery(document).ready(function($){
     wpprs.each(function(){
         var $this = $(this);
         var id = $this.attr('id');
+        var isMobile = $this.hasClass('mobile');
         var sliderType = $this.attr('data-slider-type');
         var slidesPerView;
         var slidesPerColumn;
@@ -16,7 +17,7 @@ jQuery(document).ready(function($){
         var _galleryThumbs = $this.find('.gallery-thumbs');
         var slideshow_layout = _galleryTop.data('slideshow_layout');
         var slider_width = _galleryTop.data('slider_width');
-        var slider_height = _galleryTop.data('slider_height');
+        var slider_height = isMobile ? '' : _galleryTop.data('slider_height');
         var slider_auto_height = _galleryTop.data('slider_auto_height').toString();
             slider_auto_height = slider_auto_height == 'true' ? true : false;
         var slider_min_height = _galleryTop.data('slider_min_height');
@@ -145,8 +146,8 @@ jQuery(document).ready(function($){
             }
             else if(s.params.slideshow_layout == 'fullwidth'){
                 forceSlideshowFullWidth();
-                if(jQuery('#wprs-fullwidth-spacer').length == 0)
-                    jQuery("<div />").attr('id', 'wprs-fullwidth-spacer').width('100%').height($this.height()).insertAfter($this);
+                if(jQuery('#wprs-fullwidth-spacer-' + id).length == 0)
+                    jQuery("<div />").attr('id', 'wprs-fullwidth-spacer-' + id).width('100%').height($this.height()).insertAfter($this);
             }
 
             if(s.params.slideshow_layout == 'auto' && s.params.slider_width && s.params.slider_height && !s.params.slider_auto_height){
@@ -276,30 +277,26 @@ jQuery(document).ready(function($){
         function setRealWidthHeight($img, s){
             if(typeof s.noOfimgageLoaded == 'undefined')
                 s.noOfimgageLoaded = 0;
-            var allImgLoaded = function(){
-                s.destroy(false, true);
-                s.init();
-                s.onResize();
-                console.log("wpp-responsive-slideshow-ready");
-                $this.removeClass('wpp-responsive-slideshow-loading');
-                $this.addClass('wpp-responsive-slideshow-ready');
+            var isAllImgLoaded = function(){
+                s.noOfimgageLoaded += 1;
+                if(s.noOfimgageLoaded == s.slides.length){
+                    s.destroy(false, true);
+                    s.init();
+                    s.onResize();
+                    $this.removeClass('wpp-responsive-slideshow-loading');
+                    $this.addClass('wpp-responsive-slideshow-ready');
+                }
             }
+
             $('<img />').load(function(){
                 var width = this.width;
                 var height = this.height;
-                s.noOfimgageLoaded += 1;
                 $img.attr('width', width)
                     .attr('height', height);
-                if(s.noOfimgageLoaded == s.slides.length){
-                    allImgLoaded();
-                }
+                isAllImgLoaded();
             }).error(function(){ // When image not exist or not loaded
-                s.noOfimgageLoaded += 1;
-                if(s.noOfimgageLoaded == s.slides.length){
-                    allImgLoaded();
-                }
-            }).attr('src', $img.attr('src'));
-
+                isAllImgLoaded();
+            }).attr('src', $img.attr('src') || $img.data('src'));
             return $img;
         }
     });

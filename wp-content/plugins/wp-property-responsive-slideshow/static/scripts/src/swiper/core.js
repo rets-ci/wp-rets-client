@@ -439,7 +439,7 @@ s.imagesLoaded = 0;
 s.loadImage = function (imgElement, src, srcset, checkForComplete, callback) {
     var image;
     function onReady () {
-        if (callback) callback();
+        if (callback) callback(image.width, image.height);
     }
     if (!imgElement.complete || !checkForComplete) {
         if (src) {
@@ -1775,7 +1775,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     if (typeof slideIndex === 'undefined') slideIndex = 0;
     if (slideIndex < 0) slideIndex = 0;
     s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
-    if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
+    if (s.snapIndex >= s.snapGrid.length) slideIndex = s.snapIndex = s.snapGrid.length - 1;
 
     
     if(s.isGrid()){

@@ -21,7 +21,11 @@ s.lazy = {
             var background = _img.attr('data-background');
             var src = _img.attr('data-src'),
                 srcset = _img.attr('data-srcset');
-            s.loadImage(_img[0], (src || background), srcset, false, function () {
+            s.loadImage(_img[0], (src || background), srcset, false, function (width, height) {
+                _img.attr('width', width)
+                    .attr('height', height)
+                    .attr('data-width', width)
+                    .attr('data-height', height);
                 if (background) {
                     _img.css('background-image', 'url(' + background + ')');
                     _img.removeAttr('data-background');

@@ -10,6 +10,8 @@ $images = UsabilityDynamics\WPP\Property_Factory::get_images($property_id);
 $imgs = array();
 $property_resp_slideshow_counter++;
 
+$slider_type = wp_is_mobile() ? 'standard' : $slider_type;
+
 if($slider_type == "12grid" || $slider_type == "12mosaic")
   $img_size = "full";
 else
