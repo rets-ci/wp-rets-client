@@ -147,7 +147,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 	 */
 	function get_frame_background( $i, $frame ){
 		$background_image = siteorigin_widgets_get_attachment_image_src(
-			$frame['background']['image'],
+			isset( $frame['background'] ) ? $frame['background']['image'] : null,
 			'full',
 			!empty( $frame['background']['image_fallback'] ) ? $frame['background']['image_fallback'] : ''
 		);
@@ -159,7 +159,7 @@ class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 			'url' => !empty( $frame['background']['url'] ) ? $frame['background']['url'] : false,
 			'new_window' => !empty( $frame['background']['new_window'] ),
 			'video-sizing' => 'background',
-			'opacity' => intval($frame['background']['opacity'])/100,
+			'opacity' => isset( $frame['background'] ) ? ( intval($frame['background']['opacity'])/100 ) : 1,
 		);
 	}
 
