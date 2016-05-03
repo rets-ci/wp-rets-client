@@ -14,7 +14,7 @@
 ?>
 <?php get_header(); ?>
 
-<div class="container-fluid" data-template="front-page">
+<div class="container-fluid upToHeader" data-template="front-page">
   <div class="row site-content">
   <?php while (have_posts()) : the_post(); ?>
     <?php  the_content(); ?>
