@@ -764,16 +764,62 @@ a:focus {
 }
 .searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
+  border-radius: 5px 0 0 5px;
+  color: #808285;
+  position: relative;
+  width: 38%;
+  height: 4.5em;
+}
+.searchForm form .location .citiesSelection .citiesSelection {
+  background: #f8f8f8 none repeat scroll 0 0;
   border: medium none;
   padding: 0.44em 0.6em;
 }
-.searchForm form .location .select2 {
+.searchForm form .location .citiesSelection .select2 {
   height: 63px;
   padding-left: 35px;
   color: #A7A9AC;
   min-width: 100%;
 }
-.searchForm form .location .select2 .select2-selection {
+.searchForm form .location .citiesSelection .select2 .select2-selection {
+  border: none;
+  background: none;
+  height: 43px !important;
+}
+.searchForm form .location .citiesSelection .icon-location {
+  bottom: 15px;
+  left: 10px;
+  position: absolute;
+}
+.searchForm form .location .citiesSelection .tags {
+  /* Firefox 19+ */
+  /* Firefox 18- */
+}
+.searchForm form .location .citiesSelection .tags::-webkit-input-placeholder {
+  color: #242526;
+}
+.searchForm form .location .citiesSelection .tags::-moz-placeholder {
+  color: #242526;
+}
+.searchForm form .location .citiesSelection .tags:-moz-placeholder {
+  color: #242526;
+}
+.searchForm form .location .citiesSelection .tags:-ms-input-placeholder {
+  color: #242526;
+}
+.searchForm form .location .citiesSelection .select2-selection__arrow {
+  height: 55px;
+  width: 50px;
+}
+.searchForm form .location .citiesSelection .select2-selection__arrow b {
+  border-color: #a7a9ac transparent transparent;
+}
+.searchForm form .location .citiesSelection .select2-selection__rendered {
+  line-height: 52px !important;
+  background: #f8f8f8;
+  box-shadow: none;
+}
+.searchForm form .location .citiesSelection .select2-selection__choice {
   border: none;
   background: none;
   height: 43px !important;
@@ -830,7 +876,7 @@ a:focus {
 .searchForm form .sfPrice {
   border-radius: 0;
   background: #f8f8f8 none repeat scroll 0 0;
-  width: 15.5%;
+  width: 15%;
   height: 46px;
   float: left;
   border-left: 1px solid #e6e6e6;
@@ -873,6 +919,7 @@ a:focus {
 }
 .searchForm form .sfPrice {
   border-radius: 0 5px 5px 0;
+  width: 20%;
 }
 .searchForm form .sfPriceRange {
   display: none;
@@ -1216,9 +1263,39 @@ a:focus {
 .wpp-advanced-supermap .sm-days {
   text-align: center;
 }
+.wpp-advanced-supermap .sm-table-header {
+  background: white !important;
+}
+.wpp-advanced-supermap .sm-table-header th {
+  height: 0;
+  line-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: transparent;
+  border: none;
+  white-space: nowrap;
+}
+.wpp-advanced-supermap .sm-table-header th > div {
+  position: absolute;
+  background: transparent;
+  padding: 10px 25px;
+  top: 0;
+  color: #808285;
+  font-size: 12px;
+  margin-left: -25px;
+  line-height: normal;
+}
+.wpp-advanced-supermap .sm-scrollable-table {
+  padding-top: 40px;
+  position: relative;
+  background: #f3f0e9;
+  overflow: hidden;
+}
+.wpp-advanced-supermap .sm-scrollable-table table {
+  background: white;
+}
 .wpp-advanced-supermap .sm-properties-list-wrap {
   box-shadow: 0 0 5px;
-  overflow-y: scroll;
 }
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
   height: 50px;
@@ -1261,27 +1338,23 @@ a:focus {
 .wpp-advanced-supermap table {
   margin-bottom: 0;
 }
-.wpp-advanced-supermap thead tr {
-  background: #f3f0e9;
-  height: 40px;
-}
 .wpp-advanced-supermap thead tr th {
   vertical-align: middle;
   color: #808285;
   font-size: 12px;
   white-space: nowrap;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent::before {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div::before {
   content: none !important;
 }
-.wpp-advanced-supermap thead tr th.st-sort-descent::before {
+.wpp-advanced-supermap thead tr th.st-sort-descent > div::before {
   content: none !important;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent,
-.wpp-advanced-supermap thead tr th.st-sort-descent {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div,
+.wpp-advanced-supermap thead tr th.st-sort-descent > div {
   font-weight: 500;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent::after {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div::after {
   content: "￪";
   display: inline-block;
   font-size: 12px;
@@ -1290,7 +1363,7 @@ a:focus {
   position: relative;
   top: -2px;
 }
-.wpp-advanced-supermap thead tr th.st-sort-descent::after {
+.wpp-advanced-supermap thead tr th.st-sort-descent > div::after {
   content: "￬";
   display: inline-block;
   font-size: 12px;
@@ -1323,8 +1396,10 @@ a:focus {
   left: 0;
   padding: 10px 20px;
   position: absolute;
-  top: 40px;
   width: 160px;
+}
+.wpp-advanced-supermap .dropdown-columns-options.mode-table {
+  top: 40px !important;
 }
 .wpp-advanced-supermap .dropdown-columns-options label {
   color: #808285;
@@ -1344,18 +1419,20 @@ a:focus {
   border-radius: 100%;
   margin-bottom: 2px;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options {
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
   z-index: 1;
-  top: 89px;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options li {
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options.mode-preview {
+  top: 89px !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options li {
   line-height: 24px;
   margin: 0;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options li label {
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options li label {
   margin: 0;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter {
   background: #f3f0e9 none repeat scroll 0 0;
   border-top: 1px solid white;
   display: flex;
@@ -1365,15 +1442,15 @@ a:focus {
   overflow-x: scroll;
   -webkit-appearance: none;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter .sm-columns-toggle {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter .sm-columns-toggle {
   margin: 0;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter .sm-columns-toggle .menu-toggle {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter .sm-columns-toggle .menu-toggle {
   margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li {
   cursor: pointer;
   line-height: 37px;
   margin: 0 10px;
@@ -1383,19 +1460,19 @@ a:focus {
   font-size: 12px;
   white-space: nowrap;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent::before {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-ascent::before {
   content: none !important;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent::before {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-descent::before {
   content: none !important;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent,
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-ascent,
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-descent {
   font-weight: 500;
   color: #d03528;
   border-bottom: 2px solid #d03528;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-ascent::after {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-ascent::after {
   content: "￪";
   display: inline-block;
   font-size: 12px;
@@ -1404,7 +1481,7 @@ a:focus {
   position: relative;
   top: -2px;
 }
-.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .sm-columns-sorter > li.st-sort-descent::after {
+.wpp-advanced-supermap .sm-properties-collection .sm-columns-sorter > li.st-sort-descent::after {
   content: "￬";
   display: inline-block;
   font-size: 12px;
@@ -1412,6 +1489,9 @@ a:focus {
   margin-left: 5px;
   position: relative;
   top: -2px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid {
+  overflow-y: scroll;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .st-selected .sm-current-property-details {
   background: white;
@@ -6313,9 +6393,11 @@ body .ui-tooltip {
 /* Adaptive */
 @media screen and (max-width: 1360px) {
   .searchForm form .sfBeds,
-  .searchForm form .sfBaths,
+  .searchForm form .sfBaths {
+    width: 15%;
+  }
   .searchForm form .sfPrice {
-    width: 15.5%;
+    width: 20%;
   }
   .searchForm form .sfPriceRange .sfprInputsBlock input {
     width: 45%;
@@ -6330,14 +6412,14 @@ body .ui-tooltip {
 @media screen and (max-width: 1280px) {
   .searchForm form .sfBeds,
   .searchForm form .sfBaths {
-    width: 16%;
+    width: 15%;
   }
   .searchForm form .sfBeds > span,
   .searchForm form .sfBaths > span {
     padding-left: 50px;
   }
   .searchForm form .sfPrice {
-    width: 16%;
+    width: 20%;
   }
   .searchForm form .sfPrice > span {
     padding-left: 50px;
@@ -6475,6 +6557,9 @@ body .ui-tooltip {
 @media screen and (max-width: 768px) {
   body {
     background: none !important;
+  }
+  body #header {
+    height: 103px;
   }
   body .site-logo {
     left: 23px;

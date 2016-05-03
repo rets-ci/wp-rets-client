@@ -589,15 +589,51 @@ a {
       height: 4.5em;
       .citiesSelection{
         background: #f8f8f8 none repeat scroll 0 0;
-        border: medium none;
-        padding: 0.44em 0.6em;
-      }
-      .select2 {
-        height: 63px;
-        padding-left: 35px;
-        color: #A7A9AC;
-        min-width: 100%;
-        .select2-selection {
+        border-radius: 5px 0 0 5px;
+        color: #808285;
+        position: relative;
+        width: 38%;
+        height: 4.5em;
+        .citiesSelection{
+          background: #f8f8f8 none repeat scroll 0 0;
+          border: medium none;
+          padding: 0.44em 0.6em;
+        }
+        .select2 {
+          height: 63px;
+          padding-left: 35px;
+          color: #A7A9AC;
+          min-width: 100%;
+          .select2-selection {
+            border: none;
+            background: none;
+            height: 43px !important;
+          }
+        }
+        .icon-location{
+          bottom: 15px;
+          left: 10px;
+          position: absolute;
+        }
+        .tags{
+          &::-webkit-input-placeholder {color:#242526;}
+          &::-moz-placeholder          {color:#242526;}/* Firefox 19+ */
+          &:-moz-placeholder           {color:#242526;}/* Firefox 18- */
+          &:-ms-input-placeholder      {color:#242526;}
+        }
+        .select2-selection__arrow{
+          height: 55px;
+          width: 50px;
+          b{
+            border-color: #a7a9ac transparent transparent;
+          }
+        }
+        .select2-selection__rendered{
+          line-height: 52px !important;
+          background: #f8f8f8;
+          box-shadow: none;
+        }
+        .select2-selection__choice {
           border: none;
           background: none;
           height: 43px !important;
@@ -644,7 +680,7 @@ a {
     .sfBeds, .sfBaths, .sfPrice{
       border-radius: 0;
       background: #f8f8f8 none repeat scroll 0 0;
-      width: 15.5%;
+      width: 15%;
       height: 46px;
       float: left;
       border-left: 1px solid #e6e6e6;
@@ -679,6 +715,7 @@ a {
     }
     .sfPrice{
       border-radius: 0 5px 5px 0;
+      width: 20%;
     }
     .sfPriceRange{
       display: none;
@@ -1076,9 +1113,46 @@ a {
     text-align: center;
   }
 
+  .sm-table-header {
+
+    background: white !important;
+
+    th {
+
+      height: 0;
+      line-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      color: transparent;
+      border: none;
+      white-space: nowrap;
+
+      > div {
+        position: absolute;
+        background: transparent;
+        padding: 10px 25px;
+        top: 0;
+        color: #808285;
+        font-size: 12px;
+        margin-left: -25px;
+        line-height: normal;
+      }
+    }
+  }
+
+  .sm-scrollable-table {
+    padding-top: 40px;
+    position: relative;
+    background: #f3f0e9;
+    overflow: hidden;
+
+    table {
+      background: white;
+    }
+  }
+
   .sm-properties-list-wrap {
     box-shadow: 0 0 5px;
-    overflow-y: scroll;
 
     .sm-list-controls {
       height: 50px;
@@ -1131,8 +1205,6 @@ a {
 
   thead {
     tr {
-      background: #f3f0e9;
-      height: 40px;
 
       th {
         vertical-align: middle;
@@ -1140,36 +1212,46 @@ a {
         font-size: 12px;
         white-space: nowrap;
 
-        &.st-sort-ascent::before {
-          content: none !important;
+        &.st-sort-ascent {
+          > div::before {
+            content: none !important;
+          }
         }
 
-        &.st-sort-descent::before {
-          content: none !important;
+        &.st-sort-descent {
+          > div::before {
+            content: none !important;
+          }
         }
 
         &.st-sort-ascent, &.st-sort-descent {
-          font-weight: 500;
+          > div {
+            font-weight: 500;
+          }
         }
 
-        &.st-sort-ascent::after {
-          content: "￪";
-          display: inline-block;
-          font-size: 12px;
-          font-weight: bold;
-          margin-left: 5px;
-          position: relative;
-          top: -2px;
+        &.st-sort-ascent {
+          > div::after {
+            content: "￪";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
         }
 
-        &.st-sort-descent::after {
-          content: "￬";
-          display: inline-block;
-          font-size: 12px;
-          font-weight: bold;
-          margin-left: 5px;
-          position: relative;
-          top: -2px;
+        &.st-sort-descent {
+          > div::after {
+            content: "￬";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
         }
       }
     }
@@ -1212,8 +1294,11 @@ a {
     left: 0;
     padding: 10px 20px;
     position: absolute;
-    top: 40px;
     width: 160px;
+
+    &.mode-table {
+      top: 40px !important;
+    }
 
     label {
       color: #808285;
@@ -1240,88 +1325,93 @@ a {
 
   .sm-properties-collection {
 
+    .dropdown-columns-options {
+      z-index: 1;
+
+      &.mode-preview {
+        top: 89px !important;
+      }
+
+      li {
+        line-height: 24px;
+        margin: 0;
+
+        label {
+          margin: 0;
+        }
+      }
+    }
+
+    .sm-columns-sorter {
+
+      background: #f3f0e9 none repeat scroll 0 0;
+      border-top: 1px solid white;
+      display: flex;
+      height: 54px;
+      line-height: 40px;
+      margin: 0;
+      overflow-x: scroll;
+      -webkit-appearance: none;
+
+      .sm-columns-toggle {
+        margin: 0;
+
+        .menu-toggle {
+          margin-top: 10px;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+
+      > li {
+        cursor: pointer;
+        line-height: 37px;
+        margin: 0 10px;
+        float: left;
+        vertical-align: middle;
+        color: #808285;
+        font-size: 12px;
+        white-space: nowrap;
+
+        &.st-sort-ascent::before {
+          content: none !important;
+        }
+
+        &.st-sort-descent::before {
+          content: none !important;
+        }
+
+        &.st-sort-ascent, &.st-sort-descent {
+          font-weight: 500;
+          color: @buttons;
+          border-bottom: 2px solid @buttons;
+        }
+
+        &.st-sort-ascent::after {
+          content: "￪";
+          display: inline-block;
+          font-size: 12px;
+          font-weight: bold;
+          margin-left: 5px;
+          position: relative;
+          top: -2px;
+        }
+
+        &.st-sort-descent::after {
+          content: "￬";
+          display: inline-block;
+          font-size: 12px;
+          font-weight: bold;
+          margin-left: 5px;
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+
     .sm-properties-grid {
 
-      .dropdown-columns-options {
-        z-index: 1;
-        top: 89px;
-
-        li {
-          line-height: 24px;
-          margin: 0;
-
-          label {
-            margin: 0;
-          }
-        }
-      }
-
-      .sm-columns-sorter {
-
-        background: #f3f0e9 none repeat scroll 0 0;
-        border-top: 1px solid white;
-        display: flex;
-        height: 54px;
-        line-height: 40px;
-        margin: 0;
-        overflow-x: scroll;
-        -webkit-appearance: none;
-
-        .sm-columns-toggle {
-          margin: 0;
-
-          .menu-toggle {
-            margin-top: 10px;
-            padding-left: 10px;
-            padding-right: 10px;
-          }
-        }
-
-        > li {
-          cursor: pointer;
-          line-height: 37px;
-          margin: 0 10px;
-          float: left;
-          vertical-align: middle;
-          color: #808285;
-          font-size: 12px;
-          white-space: nowrap;
-
-          &.st-sort-ascent::before {
-            content: none !important;
-          }
-
-          &.st-sort-descent::before {
-            content: none !important;
-          }
-
-          &.st-sort-ascent, &.st-sort-descent {
-            font-weight: 500;
-            color: @buttons;
-            border-bottom: 2px solid @buttons;
-          }
-
-          &.st-sort-ascent::after {
-            content: "￪";
-            display: inline-block;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 5px;
-            position: relative;
-            top: -2px;
-          }
-
-          &.st-sort-descent::after {
-            content: "￬";
-            display: inline-block;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 5px;
-            position: relative;
-            top: -2px;
-          }
-        }
-      }
+      overflow-y: scroll;
 
       .st-selected {
         .sm-current-property-details {
