@@ -13,337 +13,26 @@
 @import (inline) "select2.min.css";
 @import (inline) "icons-pack.css";
 
-/* colors */
+// Variables
 @orange: #FF8100;
 @black: #262626;
 @white: #fff;
 @buttons: #d03528;
-/* colors */
+@adaptMobile: 992px;
 
 @import "buttons.less";
 
-/* Adaptive */
-
-// Mode adaptive 1920
-@adapt1920: 1920px;
-
-// Mode adaptive 1680
-@adapt1680: 1680px;
-
-// Mode adaptive 1600
-@adapt1600: 1600px;
-
-// Mode adaptive 1440
-@adapt1440: 1440px;
-
-// Mode adaptive 1366
-@adapt1366: 1366px;
-
-// Mode adaptive 1360
-@adapt1360: 1360px;
-
-// Mode adaptive 1280
-@adapt1280: 1280px;
-
-// Mode adaptive 1200
-@adapt1200: 1200px;
-
-// Mode adaptive 1024
-@adapt1024: 1024px;
-
-// Mode adaptive 768
-@adapt768: 768px;
-
-// Mode adaptive 620
-@adapt620: 620px;
-
-// Mode adaptive 560
-@adapt560: 560px;
-
-// Mode adaptive 400
-@adapt400: 400px;
-
-// Mode adaptive 360
-@adapt360: 360px;
-
-// Mode adaptive 320
-@adapt320: 320px;
-
-@media screen and (min-width: @adapt1920) {
-
-}
-@media screen and (min-width: @adapt1680) {
-
-}
-@media screen and (min-width: @adapt1600) {
-
-}
-@media screen and (max-width: @adapt1440) {
-}
-@media screen and (min-width: @adapt1366) {
-
-}
-@media screen and (max-width: @adapt1360) {
-
-    .searchForm{
-
-      form {
-        .sfBeds, .sfBaths {
-          width: 15%;
-          .sf-icon {
-
-          }
-        }
-        .sfPrice {
-          width: 20%;
-        }
-        .sfPriceRange{
-        .sfprInputsBlock {
-          input {
-            width: 45%;
-          }
-        }
-      }
-
-      }
-      .sfPriceRange{
-        .firstRangeList{
-          padding: 10px 0 10px 35px;
-        }
-        .lastRangeList{
-          padding: 10px 35px 10px 0;
-        }
-      }
-    }
-
-}
-@media screen and (max-width: @adapt1280) {
-
-    .searchForm{
-
-      form{
-        .sfBeds, .sfBaths {
-          width: 15%;
-          &>span{
-            padding-left: 50px;
-          }
-          .sf-icon{
-
-          }
-        }
-        .sfPrice{
-          width: 20%;
-          &>span{
-            padding-left: 50px;
-          }
-          .sf-icon{
-
-          }
-        }
-        .sfprInputsBlock{
-          input{
-            width: 45%;
-          }
-        }
-      }
-    }
-
-}
-@media screen and (max-width: @adapt1200) {
-  .head-popups {
-    a {
-      font-size: 0.8em;
-    }
-  }
-
-  .menu-header-container {
-    .menuDesktop {
-      & > li {
-        a {
-          font-size: 1.15em;
-        }
-      }
-      .sub-menu {
-        width: 865px;
-        li {
-          a {
-            font-size: 1em;
-          }
-        }
-      }
-
-    }
-  }
-
-    .single-property{
-
-
-      .singlePropertyHeader{
-        .oneAgent{
-          position: inherit;
-          margin: 20px 0 0;
-          width: 100%;
-          left: 0;
-        }
-      }
-    .areaMapBlock {
-
-      .nav-tabs{
-        li{
-          margin-left: 0;
-          &:last-child{
-            width: 25%;
-          }
-        }
-      }
-    }
-      .propertyDetails{
-        .nav-tabs{
-          li{
-            margin-left: 0;
-            &:last-child{
-              width: 25%;
-            }
-          }
-        }
-      }
-
-      .propertyFacts {
-
-      }
-      .propertyAttribute  {
-
-      }
-  }
-  .hero-content .so-widget-sow-editor {
-        margin: 5% auto;
-        width: 50%;
-  }
-
-
-}
-
-@media screen and (max-width: @adapt1024) {
-
-  body {
-    #header {
-      height: 160px;
-    }
-    &.home {
-      #header {
-        height: 210px;
-      }
-    }
-    &.page {
-      #header {
-        height: 210px;
-      }
-    }
-    &.single {
-       #header {
-         height: 160px;
-       }
-     }
-    .headerTopMenu {
-      background: none !important;
-    }
-    .ftrdImgGoTop {
-      margin-bottom: 16px;
-      top: 0 !important;
-      .featuredImageHeader {
-        top: -40px !important;
-      }
-    }
-    .toggle {
-      font-size: 42px;
-      margin: 35px 0 0 20px;
-    }
-    .site-logo {
-      position: absolute;
-      margin-left: -81px;
-      left: 50%;
-    }
-    .menuDesktop {
-      display: none !important;
-    }
-    .popUpLoginBtn {
-      display: none !important;
-    }
-    .popUpContactBtn {
-      margin-right: 10%;
-    }
-    .mobileMenu, .toggle, .menuAdaptive {
-      display: block !important;
-    }
-    .contactMenu {
-      margin-right: 35px;
-      li {
-        margin-top: 25px;
-        a {
-          font-size: 1.3em;
-        }
-        &:last-child {
-          display: none;
-        }
-      }
-    }
-
-    .oneAgent{
-      .rdc-agents-carousel-container{
-        padding: 0 50px;
-        .rdc-agents-carousel-item{
-          margin-right: 30px;
-          margin-left: 30px;
-        }
-      }
-    }
-
-    .areaMapBlock{
-      .ambItem{
-        margin: 15px 0 0 0;
-      }
-    }
-
-
-    .searchForm{
-
-      form{
-        .location{
-          width: 34%;
-        }
-        .sfBeds, .sfBaths {
-          width: 18%;
-          .sf-icon{
-
-          }
-        }
-        .sfPrice{
-          width: 21%;
-          .sf-icon{
-
-          }
-        }
-        .sfprInputsBlock{
-          input{
-            width: 43%;
-          }
-        }
-        .sfPrice{
-          width: 18%;
-        }
-      }
-    }
-  }
-
-}
-@media screen and (min-width: 769px) {
-  .home{
-    .select2-dropdown{
+// Large Screens Only
+@media screen and (min-width: @adaptMobile) {
+  .home {
+    .select2-dropdown {
       width: 400px !important;
     }
   }
 }
-@media screen and (max-width: @adapt768) {
+
+// Small Screens Only
+@media screen and (max-width: @adaptMobile) {
   body {
 
     #header {
@@ -567,33 +256,33 @@
           width: 100% !important;
         }
       }
-      .tabbedMobileImageArea{
-        
+      .tabbedMobileImageArea {
+
       }
     }
     .mobileMenu {
-      .closeMobileMenu{
+      .closeMobileMenu {
         font-size: 2em !important;
       }
-    .menu-header-container {
-      & > ul {
-        & > li {
-          & > a {
-            font-size: 1.7em !important;
-          }
-          & > ul {
-            & > li {
-              & > a {
-                font-size: 1.2em !important;
+      .menu-header-container {
+        & > ul {
+          & > li {
+            & > a {
+              font-size: 1.7em !important;
+            }
+            & > ul {
+              & > li {
+                & > a {
+                  font-size: 1.2em !important;
+                }
               }
             }
           }
         }
       }
-    }
-      &>a{
+      & > a {
         font-size: 1.5em;
-        &:focus{
+        &:focus {
           text-decoration: none;
           color: #fff;
         }
@@ -601,7 +290,7 @@
       .mobileContactUs {
         display: block;
       }
-  }
+    }
     .hero-content .so-widget-sow-editor {
       margin: 0 auto;
       padding: 2% 0;
@@ -609,8 +298,9 @@
     }
 
   }
-  .home{
-    .select2-dropdown{
+
+  .home {
+    .select2-dropdown {
       margin-top: -1px;
     }
   }
@@ -664,7 +354,7 @@
     }
   }
 
-  .archiveFilterBg{
+  .archiveFilterBg {
     height: auto;
     padding: 0;
     .archiveFilterBody {
@@ -683,13 +373,14 @@
       }
     }
   }
+
   .popup {
     .popup-overlay {
       background: #fff none repeat scroll 0 0;
       opacity: 1;
     }
-    .exitPopup{
-      svg{
+    .exitPopup {
+      svg {
         color: #000;
       }
     }
@@ -698,168 +389,12 @@
   .archiveImageHeader {
     top: -24px;
   }
-  .hideTabMobile{
+
+  .hideTabMobile {
     display: none;
   }
 }
-@media screen and (max-width: @adapt620) {
-  .single-property {
-    .propertyDetails {
-      .pdRoomsBlock {
-        width: 90%;
-      }
-    }
-  }
-}
-@media screen and (max-width: @adapt560) {
-  body {
-    .frontPageSearchBlock {
-      min-height: 900px;
-    }
 
-    .searchForm {
-      min-width: 100%;
-      form{
-        .sfBeds{
-          width: 48.3%;
-        }
-        .sfBaths{
-          width: 48.3%;
-        }
-      }
-      &>ul{
-        width: 49.2%;
-        display: flex;
-        &:first-child{
-          width: 100%;
-          li{
-            &:last-child {
-              width: 49.7%;
-              margin-left: 2px;
-            }
-          }
-          &>li{
-            width: 50%;
-          }
-        }
-        &>li{
-          width: 48.3%;
 
-        }
-      }
-      .sellBtnForm, .rentPropBtnForm{
-        display: none;
-      }
-    }
 
-  }
-}
-@media screen and (max-width: @adapt400) {
-  body .site-logo{
 
-    .searchForm {
-        min-width: 100%;
-        form{
-          .sfBeds{
-            width: 48.1%;
-          }
-          .sfBaths{
-            width: 48.1%;
-          }
-        }
-        &>ul{
-          &li>{
-            font-size: 0.9em;
-            width: 47.3%;
-          }
-        }
-      }
-
-  }
-  .single-property {
-    .singlePropertyHeader{
-      .container{
-        .title{
-          text-align: center;
-          & > div{
-            font-size: 2em;
-          }
-        }
-        &>ul{
-          text-align: center;
-          li{
-            margin: 5px;
-          }
-        }
-      }
-      .oneAgent{
-        .socialButtons{
-          li{
-            width: 49%;
-          }
-        }
-        .rdc-agents-carousel-container {
-          padding: 0;
-          .rdc-agents-carousel-item{
-            width: 362px;
-            margin-left: 0;
-            margin-right: 0;
-          }
-          .rdc-agents-carousel-previous{
-            left: 25px;
-          }
-          .rdc-agents-carousel-next{
-            right: 25px;
-          }
-        }
-      }
-      .oneAgentLinksBlock{
-        padding: 0;
-        a{
-          width: 55%;
-        }
-      }
-    }
-    .propertyAttribute{
-      .col-xs-4{
-        width: 100%;
-      }
-    }
-    .propertyFacts{
-      &.col-xs-4{
-        width: 100%;
-      }
-    }
-    .listingProvider{
-      ul{
-        li{
-          img{
-            width: 100%;
-          }
-        }
-      }
-    }
-
-  }
-  .rdc-property-carousel{
-    .section-content{
-      padding: 5px 0 50px;
-    }
-    .rdc-carousel-container{
-      margin-left: 2%;
-    }
-    .descriptionBlock{
-      &>a{
-        width: 50%;
-      }
-    }
-  }
-
-}
-@media screen and (max-width: @adapt320) {
-  body  {
-      .searchForm {
-        min-width: 320px;
-      }
-  }
-}

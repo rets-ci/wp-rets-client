@@ -234,7 +234,7 @@ a:focus {
   top: -30px;
   margin-bottom: -30px;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   .upToHeader {
     top: -12px !important;
   }
@@ -1014,7 +1014,7 @@ a:focus {
   padding: 30px !important;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 992px) {
   .wpp-advanced-supermap .sm-search-form {
     max-width: none;
     padding-top: 50px !important;
@@ -1079,7 +1079,7 @@ a:focus {
 .rdc-supermap-search-form .price-input + .price-input {
   margin-left: 6%;
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 992px) {
   .rdc-supermap-search-form .price-input + .price-input {
     margin-left: 4%;
   }
@@ -1095,7 +1095,7 @@ a:focus {
 .rdc-supermap-search-form .feet-input + .feet-input {
   margin-left: 6%;
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 992px) {
   .rdc-supermap-search-form .feet-input + .feet-input {
     margin-left: 4%;
   }
@@ -1111,7 +1111,7 @@ a:focus {
 .rdc-supermap-search-form .acres-input + .acres-input {
   margin-left: 6%;
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 992px) {
   .rdc-supermap-search-form .acres-input + .acres-input {
     margin-left: 4%;
   }
@@ -1305,7 +1305,7 @@ a:focus {
   top: 0;
   z-index: 10;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
     z-index: 9;
   }
@@ -1327,7 +1327,7 @@ a:focus {
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
   color: #5a595c;
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 992px) {
   .wpp-advanced-supermap .sm-properties-list-wrap .sm-no-results {
     padding: 30px 0;
   }
@@ -3143,7 +3143,7 @@ input[type="submit"]:active {
   border-radius: 1px;
   height: 35px;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   .popup.contact-popup {
     top: 0;
     bottom: 0;
@@ -3190,7 +3190,7 @@ input[type="submit"]:active {
     margin: 0 auto;
   }
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 992px) {
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
     display: none;
   }
@@ -3213,7 +3213,7 @@ body.tax-rdc_guide_category.admin-bar .guide-wrapper,
 body.single-rdc_guide.admin-bar .guide-wrapper {
   top: 92px !important;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   body.post-type-archive-rdc_guide .headerTopMenu,
   body.tax-rdc_guide_category .headerTopMenu,
   body.single-rdc_guide .headerTopMenu {
@@ -6361,8 +6361,6 @@ body .ui-tooltip {
 
 
 
-/* colors */
-/* colors */
 .btn-rdc {
   background-color: #CF3428;
   border-color: #CF3428;
@@ -6390,171 +6388,12 @@ body .ui-tooltip {
 .btn-rdc-wire.btn-lg {
   padding: 1.3em 4em;
 }
-/* Adaptive */
-@media screen and (max-width: 1360px) {
-  .searchForm form .sfBeds,
-  .searchForm form .sfBaths {
-    width: 15%;
-  }
-  .searchForm form .sfPrice {
-    width: 20%;
-  }
-  .searchForm form .sfPriceRange .sfprInputsBlock input {
-    width: 45%;
-  }
-  .searchForm .sfPriceRange .firstRangeList {
-    padding: 10px 0 10px 35px;
-  }
-  .searchForm .sfPriceRange .lastRangeList {
-    padding: 10px 35px 10px 0;
-  }
-}
-@media screen and (max-width: 1280px) {
-  .searchForm form .sfBeds,
-  .searchForm form .sfBaths {
-    width: 15%;
-  }
-  .searchForm form .sfBeds > span,
-  .searchForm form .sfBaths > span {
-    padding-left: 50px;
-  }
-  .searchForm form .sfPrice {
-    width: 20%;
-  }
-  .searchForm form .sfPrice > span {
-    padding-left: 50px;
-  }
-  .searchForm form .sfprInputsBlock input {
-    width: 45%;
-  }
-}
-@media screen and (max-width: 1200px) {
-  .head-popups a {
-    font-size: 0.8em;
-  }
-  .menu-header-container .menuDesktop > li a {
-    font-size: 1.15em;
-  }
-  .menu-header-container .menuDesktop .sub-menu {
-    width: 865px;
-  }
-  .menu-header-container .menuDesktop .sub-menu li a {
-    font-size: 1em;
-  }
-  .single-property .singlePropertyHeader .oneAgent {
-    position: inherit;
-    margin: 20px 0 0;
-    width: 100%;
-    left: 0;
-  }
-  .single-property .areaMapBlock .nav-tabs li {
-    margin-left: 0;
-  }
-  .single-property .areaMapBlock .nav-tabs li:last-child {
-    width: 25%;
-  }
-  .single-property .propertyDetails .nav-tabs li {
-    margin-left: 0;
-  }
-  .single-property .propertyDetails .nav-tabs li:last-child {
-    width: 25%;
-  }
-  .hero-content .so-widget-sow-editor {
-    margin: 5% auto;
-    width: 50%;
-  }
-}
-@media screen and (max-width: 1024px) {
-  body #header {
-    height: 160px;
-  }
-  body.home #header {
-    height: 210px;
-  }
-  body.page #header {
-    height: 210px;
-  }
-  body.single #header {
-    height: 160px;
-  }
-  body .headerTopMenu {
-    background: none !important;
-  }
-  body .ftrdImgGoTop {
-    margin-bottom: 16px;
-    top: 0 !important;
-  }
-  body .ftrdImgGoTop .featuredImageHeader {
-    top: -40px !important;
-  }
-  body .toggle {
-    font-size: 42px;
-    margin: 35px 0 0 20px;
-  }
-  body .site-logo {
-    position: absolute;
-    margin-left: -81px;
-    left: 50%;
-  }
-  body .menuDesktop {
-    display: none !important;
-  }
-  body .popUpLoginBtn {
-    display: none !important;
-  }
-  body .popUpContactBtn {
-    margin-right: 10%;
-  }
-  body .mobileMenu,
-  body .toggle,
-  body .menuAdaptive {
-    display: block !important;
-  }
-  body .contactMenu {
-    margin-right: 35px;
-  }
-  body .contactMenu li {
-    margin-top: 25px;
-  }
-  body .contactMenu li a {
-    font-size: 1.3em;
-  }
-  body .contactMenu li:last-child {
-    display: none;
-  }
-  body .oneAgent .rdc-agents-carousel-container {
-    padding: 0 50px;
-  }
-  body .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
-    margin-right: 30px;
-    margin-left: 30px;
-  }
-  body .areaMapBlock .ambItem {
-    margin: 15px 0 0 0;
-  }
-  body .searchForm form .location {
-    width: 34%;
-  }
-  body .searchForm form .sfBeds,
-  body .searchForm form .sfBaths {
-    width: 18%;
-  }
-  body .searchForm form .sfPrice {
-    width: 21%;
-  }
-  body .searchForm form .sfprInputsBlock input {
-    width: 43%;
-  }
-  body .searchForm form .sfPrice {
-    width: 18%;
-  }
-}
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 992px) {
   .home .select2-dropdown {
     width: 400px !important;
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   body {
     background: none !important;
   }
@@ -6843,118 +6682,5 @@ body .ui-tooltip {
   }
   .hideTabMobile {
     display: none;
-  }
-}
-@media screen and (max-width: 620px) {
-  .single-property .propertyDetails .pdRoomsBlock {
-    width: 90%;
-  }
-}
-@media screen and (max-width: 560px) {
-  body .frontPageSearchBlock {
-    min-height: 900px;
-  }
-  body .searchForm {
-    min-width: 100%;
-  }
-  body .searchForm form .sfBeds {
-    width: 48.3%;
-  }
-  body .searchForm form .sfBaths {
-    width: 48.3%;
-  }
-  body .searchForm > ul {
-    width: 49.2%;
-    display: flex;
-  }
-  body .searchForm > ul:first-child {
-    width: 100%;
-  }
-  body .searchForm > ul:first-child li:last-child {
-    width: 49.7%;
-    margin-left: 2px;
-  }
-  body .searchForm > ul:first-child > li {
-    width: 50%;
-  }
-  body .searchForm > ul > li {
-    width: 48.3%;
-  }
-  body .searchForm .sellBtnForm,
-  body .searchForm .rentPropBtnForm {
-    display: none;
-  }
-}
-@media screen and (max-width: 400px) {
-  body .site-logo .searchForm {
-    min-width: 100%;
-  }
-  body .site-logo .searchForm form .sfBeds {
-    width: 48.1%;
-  }
-  body .site-logo .searchForm form .sfBaths {
-    width: 48.1%;
-  }
-  body .site-logo .searchForm > ulli {
-    font-size: 0.9em;
-    width: 47.3%;
-  }
-  .single-property .singlePropertyHeader .container .title {
-    text-align: center;
-  }
-  .single-property .singlePropertyHeader .container .title > div {
-    font-size: 2em;
-  }
-  .single-property .singlePropertyHeader .container > ul {
-    text-align: center;
-  }
-  .single-property .singlePropertyHeader .container > ul li {
-    margin: 5px;
-  }
-  .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-    width: 49%;
-  }
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
-    padding: 0;
-  }
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-item {
-    width: 362px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-previous {
-    left: 25px;
-  }
-  .single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-next {
-    right: 25px;
-  }
-  .single-property .singlePropertyHeader .oneAgentLinksBlock {
-    padding: 0;
-  }
-  .single-property .singlePropertyHeader .oneAgentLinksBlock a {
-    width: 55%;
-  }
-  .single-property .propertyAttribute .col-xs-4 {
-    width: 100%;
-  }
-  .single-property .propertyFacts.col-xs-4 {
-    width: 100%;
-  }
-  .single-property .listingProvider ul li img {
-    width: 100%;
-  }
-  .rdc-property-carousel .section-content {
-    padding: 5px 0 50px;
-  }
-  .rdc-property-carousel .rdc-carousel-container {
-    margin-left: 2%;
-  }
-  .rdc-property-carousel .descriptionBlock > a {
-    width: 50%;
-  }
-}
-@media screen and (max-width: 320px) {
-  body .searchForm {
-    min-width: 320px;
   }
 }
