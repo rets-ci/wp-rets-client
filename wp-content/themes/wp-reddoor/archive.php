@@ -22,7 +22,7 @@ get_header(); ?>
 <?php if(is_category() || is_archive()){ ?>
 
 	<div class="container-fluid ftrdImgGoTop">
-		<section class="archiveImageHeader">
+		<section class="archiveImageHeader" style="background-image: url(<?php echo UsabilityDynamics\RDC\Utils::get_a_post_image_for_archive(); ?>); opacity: 1;">
 			<h1><?php single_cat_title(); ?></h1>
 			<h3><?php echo category_description(); ?></h3>
 		</section>
@@ -30,6 +30,5 @@ get_header(); ?>
 <?php } ?>
 
 <?php get_template_part('static/views/blog-content') ?>
-
 
 <?php get_footer(); ?>

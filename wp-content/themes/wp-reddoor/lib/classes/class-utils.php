@@ -77,6 +77,32 @@ namespace UsabilityDynamics\RDC {
         return $random_agent ? $users[0] : false;
 
       }
+
+      /**
+       * Given the current query, return a randon image from one of the posts.
+       *
+       * @todo Could add support for a default image.
+       *
+       * @return mixed
+       */
+      public static function get_a_post_image_for_archive() {
+        global $wp_query;
+
+        $_images = array();
+
+        foreach( $wp_query->posts as $_post ) {
+
+          $_thumbnail_id = get_post_thumbnail_id( $_post->ID );
+          $_images[] = wp_get_attachment_image_url( $_thumbnail_id, 'full' );
+
+        }
+
+        $_random_image = $_images[array_rand( $_images )];
+
+        return $_random_image ? $_random_image : '';
+
+      }
+
     }
   }
 
