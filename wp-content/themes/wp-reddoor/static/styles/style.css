@@ -1242,13 +1242,13 @@ a:focus {
   padding-top: 40px;
   position: relative;
   background: #f3f0e9;
+  overflow: hidden;
 }
 .wpp-advanced-supermap .sm-scrollable-table table {
   background: white;
 }
 .wpp-advanced-supermap .sm-properties-list-wrap {
   box-shadow: 0 0 5px;
-  overflow-y: scroll;
 }
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls {
   height: 50px;
@@ -1369,6 +1369,9 @@ a:focus {
   background: darkgrey;
   border-radius: 100%;
   margin-bottom: 2px;
+}
+.wpp-advanced-supermap .sm-properties-collection .sm-properties-grid {
+  overflow-y: scroll;
 }
 .wpp-advanced-supermap .sm-properties-collection .sm-properties-grid .dropdown-columns-options {
   z-index: 1;
@@ -6505,6 +6508,9 @@ body .ui-tooltip {
 @media screen and (max-width: 768px) {
   body {
     background: none !important;
+  }
+  body #header {
+    height: 103px;
   }
   body .site-logo {
     left: 23px;

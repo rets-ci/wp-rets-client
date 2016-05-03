@@ -92,7 +92,7 @@ use \UsabilityDynamics\RDC\Utils;
               <ul class="dropdown-columns-options" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
                 <li ng-repeat="col in columns">
                   <label>
-                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
+                    <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
                   </label>
                 </li>
               </ul>
@@ -182,7 +182,7 @@ use \UsabilityDynamics\RDC\Utils;
              */
             echo apply_filters( 'wpp::advanced_supermap::current_property::details', ob_get_clean() ); ?>
             <section class="sm-scrollable-table">
-              <div style="overflow:scroll;height:500px;">
+              <div style="overflow:scroll;min-height:110px;">
                 <table st-table="propertiesTableCollection" st-safe-src="properties" class="table table-striped sm-properties-list">
                   <thead>
                   <tr class="sm-table-header">
@@ -195,7 +195,7 @@ use \UsabilityDynamics\RDC\Utils;
                       <ul class="dropdown-columns-options" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
                         <li ng-repeat="col in columns">
                           <label>
-                            <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
+                            <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
                           </label>
                         </li>
                       </ul>

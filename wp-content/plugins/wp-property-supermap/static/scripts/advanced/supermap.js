@@ -626,7 +626,14 @@
 
           });
 
-        }
+        };
+
+        /**
+         *
+         */
+        $scope.col_changed = function() {
+          jQuery(document).trigger('rdc_cols_changed');
+        };
 
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
