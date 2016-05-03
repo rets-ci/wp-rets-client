@@ -750,7 +750,7 @@ a:focus {
   border-radius: 5px 0 0 5px;
   color: #808285;
   position: relative;
-  width: 40%;
+  width: 38%;
   height: 4.5em;
 }
 .frontPageSearchBlock .searchForm form .location .citiesSelection {
@@ -821,7 +821,7 @@ a:focus {
 .frontPageSearchBlock .searchForm form .sfPrice {
   border-radius: 0;
   background: #f8f8f8 none repeat scroll 0 0;
-  width: 15.5%;
+  width: 15%;
   height: 46px;
   float: left;
   border-left: 1px solid #e6e6e6;
@@ -864,6 +864,7 @@ a:focus {
 }
 .frontPageSearchBlock .searchForm form .sfPrice {
   border-radius: 0 5px 5px 0;
+  width: 20%;
 }
 .frontPageSearchBlock .searchForm form .sfPriceRange {
   display: none;
@@ -6350,9 +6351,11 @@ body .ui-tooltip {
 /* Adaptive */
 @media screen and (max-width: 1360px) {
   .frontPageSearchBlock .searchForm form .sfBeds,
-  .frontPageSearchBlock .searchForm form .sfBaths,
+  .frontPageSearchBlock .searchForm form .sfBaths {
+    width: 15%;
+  }
   .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 15.5%;
+    width: 20%;
   }
   .frontPageSearchBlock .searchForm form .sfPriceRange .sfprInputsBlock input {
     width: 45%;
@@ -6367,14 +6370,14 @@ body .ui-tooltip {
 @media screen and (max-width: 1280px) {
   .frontPageSearchBlock .searchForm form .sfBeds,
   .frontPageSearchBlock .searchForm form .sfBaths {
-    width: 16%;
+    width: 15%;
   }
   .frontPageSearchBlock .searchForm form .sfBeds > span,
   .frontPageSearchBlock .searchForm form .sfBaths > span {
     padding-left: 50px;
   }
   .frontPageSearchBlock .searchForm form .sfPrice {
-    width: 16%;
+    width: 20%;
   }
   .frontPageSearchBlock .searchForm form .sfPrice > span {
     padding-left: 50px;
