@@ -171,6 +171,7 @@
           toggle: function() {
             this.mode.table = !this.mode.table;
             this.mode.preview = !this.mode.preview;
+            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
           },
           set: function(mode) {
             for(var i in this.mode) {
@@ -179,6 +180,7 @@
               }
             }
             this.mode[mode] = true;
+            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
           }
         };
 
