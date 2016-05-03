@@ -1073,6 +1073,43 @@ a {
     text-align: center;
   }
 
+  .sm-table-header {
+
+    background: white !important;
+
+    th {
+
+      height: 0;
+      line-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      color: transparent;
+      border: none;
+      white-space: nowrap;
+
+      > div {
+        position: absolute;
+        background: transparent;
+        padding: 10px 25px;
+        top: 0;
+        color: #808285;
+        font-size: 12px;
+        margin-left: -25px;
+        line-height: normal;
+      }
+    }
+  }
+
+  .sm-scrollable-table {
+    padding-top: 40px;
+    position: relative;
+    background: #f3f0e9;
+
+    table {
+      background: white;
+    }
+  }
+
   .sm-properties-list-wrap {
     box-shadow: 0 0 5px;
     overflow-y: scroll;
@@ -1128,8 +1165,6 @@ a {
 
   thead {
     tr {
-      background: #f3f0e9;
-      height: 40px;
 
       th {
         vertical-align: middle;
@@ -1137,36 +1172,46 @@ a {
         font-size: 12px;
         white-space: nowrap;
 
-        &.st-sort-ascent::before {
-          content: none !important;
+        &.st-sort-ascent {
+          > div::before {
+            content: none !important;
+          }
         }
 
-        &.st-sort-descent::before {
-          content: none !important;
+        &.st-sort-descent {
+          > div::before {
+            content: none !important;
+          }
         }
 
         &.st-sort-ascent, &.st-sort-descent {
-          font-weight: 500;
+          > div {
+            font-weight: 500;
+          }
         }
 
-        &.st-sort-ascent::after {
-          content: "￪";
-          display: inline-block;
-          font-size: 12px;
-          font-weight: bold;
-          margin-left: 5px;
-          position: relative;
-          top: -2px;
+        &.st-sort-ascent {
+          > div::after {
+            content: "￪";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
         }
 
-        &.st-sort-descent::after {
-          content: "￬";
-          display: inline-block;
-          font-size: 12px;
-          font-weight: bold;
-          margin-left: 5px;
-          position: relative;
-          top: -2px;
+        &.st-sort-descent {
+          > div::after {
+            content: "￬";
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+            position: relative;
+            top: -2px;
+          }
         }
       }
     }

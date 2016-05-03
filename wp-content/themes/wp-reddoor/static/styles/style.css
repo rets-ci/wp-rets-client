@@ -1217,6 +1217,36 @@ a:focus {
 .wpp-advanced-supermap .sm-days {
   text-align: center;
 }
+.wpp-advanced-supermap .sm-table-header {
+  background: white !important;
+}
+.wpp-advanced-supermap .sm-table-header th {
+  height: 0;
+  line-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: transparent;
+  border: none;
+  white-space: nowrap;
+}
+.wpp-advanced-supermap .sm-table-header th > div {
+  position: absolute;
+  background: transparent;
+  padding: 10px 25px;
+  top: 0;
+  color: #808285;
+  font-size: 12px;
+  margin-left: -25px;
+  line-height: normal;
+}
+.wpp-advanced-supermap .sm-scrollable-table {
+  padding-top: 40px;
+  position: relative;
+  background: #f3f0e9;
+}
+.wpp-advanced-supermap .sm-scrollable-table table {
+  background: white;
+}
 .wpp-advanced-supermap .sm-properties-list-wrap {
   box-shadow: 0 0 5px;
   overflow-y: scroll;
@@ -1262,27 +1292,23 @@ a:focus {
 .wpp-advanced-supermap table {
   margin-bottom: 0;
 }
-.wpp-advanced-supermap thead tr {
-  background: #f3f0e9;
-  height: 40px;
-}
 .wpp-advanced-supermap thead tr th {
   vertical-align: middle;
   color: #808285;
   font-size: 12px;
   white-space: nowrap;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent::before {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div::before {
   content: none !important;
 }
-.wpp-advanced-supermap thead tr th.st-sort-descent::before {
+.wpp-advanced-supermap thead tr th.st-sort-descent > div::before {
   content: none !important;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent,
-.wpp-advanced-supermap thead tr th.st-sort-descent {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div,
+.wpp-advanced-supermap thead tr th.st-sort-descent > div {
   font-weight: 500;
 }
-.wpp-advanced-supermap thead tr th.st-sort-ascent::after {
+.wpp-advanced-supermap thead tr th.st-sort-ascent > div::after {
   content: "￪";
   display: inline-block;
   font-size: 12px;
@@ -1291,7 +1317,7 @@ a:focus {
   position: relative;
   top: -2px;
 }
-.wpp-advanced-supermap thead tr th.st-sort-descent::after {
+.wpp-advanced-supermap thead tr th.st-sort-descent > div::after {
   content: "￬";
   display: inline-block;
   font-size: 12px;
