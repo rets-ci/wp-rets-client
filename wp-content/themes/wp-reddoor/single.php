@@ -31,7 +31,7 @@ if(!empty($post_thumbnail_id)) {
     ?>
 <?php if(!(empty($_url))) { ?>
   <div class="container-fluid ftrdImgGoTop">
-    <section class="featuredImageHeader" style="background: url('<?php echo $_url; ?>');">
+    <section class="featuredImageHeader" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_url; ?>');">
       <?php $category = get_the_category(); ?>
       <div class="singleHeroIcon">
         <span class="icon-rdc-<?php echo $category && $category[0] ? $category[0]->slug : ''; ?>"></span>
@@ -39,7 +39,7 @@ if(!empty($post_thumbnail_id)) {
       <h1 class="singleTitle"><?php the_title(); ?></h1>
       <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
       <?php echo do_shortcode( '[share_this_article]' ); ?>
-      <div class="hero-overlay"></div>
+
     </section>
   </div>
 <?php } ?>

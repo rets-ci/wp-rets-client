@@ -22,7 +22,7 @@ get_header(); ?>
 <?php if(is_category() || is_archive()){ ?>
 
 	<div class="container-fluid ftrdImgGoTop">
-		<section class="archiveImageHeader" style="background-image: url(<?php echo UsabilityDynamics\RDC\Utils::get_a_post_image_for_archive(); ?>); opacity: 1;">
+		<section class="archiveImageHeader" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url(<?php echo UsabilityDynamics\RDC\Utils::get_a_post_image_for_archive(); ?>); opacity: 1;">
 			<h1><?php single_cat_title(); ?></h1>
 			<h3><?php echo category_description(); ?></h3>
 		</section>

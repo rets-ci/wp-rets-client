@@ -40,7 +40,7 @@ $category = get_the_category();
 		// Start the Loop.
 		while ( have_posts() ) : the_post(); ?>
 
-			<div class="col-lg-4" data-element-kind="singleCategoryCard">
+			<div class="col-md-4" data-element-kind="singleCategoryCard">
         <?php get_template_part('static/views/category-card') ?>
 			</div>
 
@@ -49,7 +49,7 @@ $category = get_the_category();
 	</div>
 
   <div class="row loadMoreContainer">
-    <div class="col-lg-4 col-lg-offset-5">
+    <div class="col-md-4 col-lg-offset-5">
       <button type="button" class="btn btn-lg	btn-rdc" data-kind="singleCategoryCard" data-handler="load-more" data-action="categoryCard" data-category="<?php echo $category[0]->term_id; ?>"><?php _e( 'Load More' ); ?></button>
     </div>
   </div>
