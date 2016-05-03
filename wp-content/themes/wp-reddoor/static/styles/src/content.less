@@ -573,7 +573,7 @@ a {
         border-radius: 5px 0 0 5px;
         color: #808285;
         position: relative;
-        width: 30%;
+        width: 40%;
         height: 4.5em;
         .citiesSelection{
           background: #f8f8f8 none repeat scroll 0 0;
@@ -667,7 +667,6 @@ a {
     }
     .sfPrice{
       border-radius: 0 5px 5px 0;
-      width: 24%;
     }
     .sfPriceRange{
       display: none;
@@ -714,7 +713,7 @@ a {
           font-size: 0.9em;
           height: 30px;
           padding: 0 5px;
-          width: 47%;
+          width: 46%;
           text-align: center;
 
           &.lastRangeLabel {
@@ -1893,11 +1892,16 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           margin-left: 10%;
         }
         li{
-          border-bottom: 1px solid #dedede;
-          padding-bottom: 10px;
-          padding-top: 10px;
+          div{
+            border-bottom: 1px solid rgb(222, 222, 222);
+            float: left;
+            padding-bottom: 10px;
+            padding-top: 10px;
+          }
           &:last-child{
-            border-bottom: 0;
+            div {
+              border-bottom: 0;
+            }
           }
         }
       }

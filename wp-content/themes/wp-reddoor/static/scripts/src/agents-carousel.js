@@ -132,11 +132,12 @@ function rdc_init_agents_carousel(){
 
 jQuery(document).ready(function(){
         // The carousel widget
-    rdc_init_agents_carousel();
+
 
 });
 
 jQuery( window ).load( function () {
+    rdc_init_agents_carousel();
     var resizeTimer;
     jQuery( window ).on( 'resize', function () {
         clearTimeout( resizeTimer );
