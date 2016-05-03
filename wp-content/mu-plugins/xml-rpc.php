@@ -62,7 +62,23 @@ add_filter( 'wp_get_attachment_url', function( $url, $post_id ) {
 add_filter( 'wp_get_attachment_image_src', function( $image, $attachment_id, $size, $icon ){
 
   if ( get_post_meta( $attachment_id, '_is_remote', 1 ) ) {
-    return array( rdc_fix_rets_image_url( $attachment_id, $size ) );
+
+    // get available image sizes
+    $_image_sizes = UsabilityDynamics\Utility::all_image_sizes();
+
+    // add "full" and "medium_large" sizes which are now standard
+    if( !isset( $_image_sizes['full'] ) ) {
+      $_image_sizes['full']['width'] = get_option('large_size_w');
+      $_image_sizes['full']['height'] = get_option('large_size_h');
+    }
+
+    if( !isset( $_image_sizes['medium_large'] ) ) {
+      $_image_sizes['medium_large']['width'] = get_option('medium_large_size_w');
+      $_image_sizes['medium_large']['height'] = get_option('medium_large_size_h');
+    }
+
+    // return expected array of url, width, height
+    return array( rdc_fix_rets_image_url( $attachment_id, $size ), $_image_sizes[$size]['width'], $_image_sizes[$size]['height'] );
   }
 
   return $image;
@@ -99,6 +115,84 @@ add_filter ( 'wp_prepare_attachment_for_js',  function( $response, $attachment, 
 
   return $response;
 } , 10, 3  );
+
+add_filter( 'wp_get_attachment_metadata', function( $data, $post_id ) {
+  global $_wp_additional_image_sizes;
+
+  //die( '<pre>' . print_r( $_wp_additional_image_sizes, true ) . '</pre>' );
+  // already have data, do nothing
+  if( !empty( $data ) ) {
+    return $data;
+  }
+
+  // check if this is one of our "remote files", if not, do nothing
+  if ( !get_post_meta( $post_id, '_is_remote', 1 ) ) {
+    return $data;
+  }
+
+  $_wp_attached_file = get_post_meta( $post_id, '_wp_attached_file', 1 );
+  // get URL of attached file
+  //_wp_attached_file
+  $_intermediate_image_sizes = get_intermediate_image_sizes();
+
+
+  $data = array(
+    'width' => get_option('large_size_w'),
+    'height' => get_option('large_size_h'),
+    'file' => $_wp_attached_file,
+    'sizes' => array(
+      'thumbnail' => array(
+        'file' => $_wp_attached_file,
+        'width' => get_option('thumbnail_size_w'),
+        'height' => get_option('thumbnail_size_h'),
+      ),
+      'medium' => array(
+        'file' => $_wp_attached_file,
+        'width' => get_option('medium_size_w'),
+        'height' => get_option('medium_size_h'),
+      ),
+      'large' => array(
+        'file' => $_wp_attached_file,
+        'width' => get_option('large_size_w'),
+        'height' => get_option('large_size_h'),
+      ),
+      'medium_large' => array(
+        'file' => $_wp_attached_file,
+        'width' => get_option('medium_large_size_w'),
+        'height' => get_option('medium_large_size_h'),
+      ),
+    ),
+    'image_meta' => array(
+      'aperture' => '0',
+      'credit' => '',
+      'camera' => '',
+      'caption' => '',
+      'created_timestamp' => '0',
+      'copyright' => '',
+      'focal_length' => '0',
+      'iso' => '0',
+      'shutter_speed' => '0',
+      'title' => '',
+      'orientation' => '0',
+      'keywords' => array()
+    )
+  );
+
+  // add our intermediate image sizes
+  foreach( $_wp_additional_image_sizes as $_size_name => $_size_detail ) {
+    $data['sizes'][$_size_name] = array(
+      'file' => $_wp_attached_file,
+      'width' => $_size_detail['width'],
+      'height' => $_size_detail['height'],
+    );
+
+  }
+
+  //die( '<pre>' . print_r( $_intermediate_image_sizes, true ) . '</pre>' );
+  //die( '<pre>' . print_r( $post_id, true ) . '</pre>' );
+  return $data;
+
+}, 10, 2 );
 
 /**
  * @param $args
@@ -220,6 +314,8 @@ function WPP_RPC_editProperty( $args ) {
 
       $attach_id = wp_insert_attachment( $attachment, $media['url'], $_post_id );
 
+      //rdc_update_media_metadata();
+
       $_new_media[] = $media['url'];
 
       update_post_meta( $attach_id, '_is_remote', '1' );
@@ -309,6 +405,108 @@ function find_property_by_rets_id( $rets_id ) {
 
 
 }
+
+/**
+ * May need to do this to update metadata for images.
+ *
+ */
+function rdc_update_media_metadata() {
+  update_post_meta( $attach_id, '_wp_attachment_metadata', array(
+    'width' => 2048,
+    'height' => 1365,
+    'file' => '2015/11/4738fd40-mature-real-estate-agent-meeting-future-homeowner.jpg',
+    'sizes' =>
+      array(
+        'thumbnail' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-380x280.jpg',
+            'width' => 380,
+            'height' => 280,
+            'mime-type' => 'image/jpeg',
+          ),
+        'medium' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-1200x800.jpg',
+            'width' => 1200,
+            'height' => 800,
+            'mime-type' => 'image/jpeg',
+          ),
+        'large' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-2000x1333.jpg',
+            'width' => 2000,
+            'height' => 1333,
+            'mime-type' => 'image/jpeg',
+          ),
+        'alm-thumbnail' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-150x150.jpg',
+            'width' => 150,
+            'height' => 150,
+            'mime-type' => 'image/jpeg',
+          ),
+        'supermap_marker' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-32x21.jpg',
+            'width' => 32,
+            'height' => 21,
+            'mime-type' => 'image/jpeg',
+          ),
+        'rdc-carousel-default' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-272x182.jpg',
+            'width' => 272,
+            'height' => 182,
+            'mime-type' => 'image/jpeg',
+          ),
+        'sow-carousel-default' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-272x182.jpg',
+            'width' => 272,
+            'height' => 182,
+            'mime-type' => 'image/jpeg',
+          ),
+        'ud-carousel-default' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-255x186.jpg',
+            'width' => 255,
+            'height' => 186,
+            'mime-type' => 'image/jpeg',
+          ),
+        'slideshow' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-800x250.jpg',
+            'width' => 800,
+            'height' => 250,
+            'mime-type' => 'image/jpeg',
+          ),
+        'property_carousel' =>
+          array(
+            'file' => '4738fd40-mature-real-estate-agent-meeting-future-homeowner-275x200.jpg',
+            'width' => 275,
+            'height' => 200,
+            'mime-type' => 'image/jpeg',
+          ),
+      ),
+    'image_meta' =>
+      array(
+        'aperture' => '0',
+        'credit' => '',
+        'camera' => '',
+        'caption' => '',
+        'created_timestamp' => '0',
+        'copyright' => '',
+        'focal_length' => '0',
+        'iso' => '0',
+        'shutter_speed' => '0',
+        'title' => '',
+        'orientation' => '0',
+        'keywords' =>
+          array(),
+      ),
+  ) );
+}
+
 
 /**
  * By the time the post_data gets here it already has an ID because get_default_post_to_edit() is used to create it

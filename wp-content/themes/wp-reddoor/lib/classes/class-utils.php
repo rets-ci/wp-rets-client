@@ -82,7 +82,7 @@ namespace UsabilityDynamics\RDC {
        * Given the current query, return a randon image from one of the posts.
        *
        * @todo Could add support for a default image.
-       *
+       * 
        * @return mixed
        */
       public static function get_a_post_image_for_archive() {
