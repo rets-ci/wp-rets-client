@@ -75,7 +75,7 @@
 
         ?>
 
-        <?php if( isset( $agent ) ) { ?>
+        <?php if( isset( $agent ) && is_object( $agent ) && isset( $agent->user_email ) ) { ?>
         <!-- Broker -->
         <input type="hidden" id="powf_fc06a4670318e411bcfc6c3be5a8dd60" name="powf_fc06a4670318e411bcfc6c3be5a8dd60" value="<?php echo $agent->user_email; ?>"/>
         <?php } ?>
