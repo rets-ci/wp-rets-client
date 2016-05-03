@@ -1,6 +1,10 @@
+/**
+ * We treat everything that is 992px and smaller as "mobile" while everything above as "desktop".
+ *
+ */
 (function(){
 
-  jQuery( document ).ready( function () {
+  jQuery( document ).ready( function rdcReady() {
     console.log( "RDC version 1.1.3" );
 
     jQuery( ".rdc-accordion" ).accordion( {
@@ -9,10 +13,9 @@
       heightStyle: "content"
     } );
 
-    if(jQuery( window ).width() < 768 ) {
+    if(jQuery( window ).width() < 992 ) {
       jQuery('.rdc-carousel-wrapper .descriptionBlock').width(jQuery(window).width() - 10);
     }
-
 
     // Open Mobile Menu
     jQuery( '#header').find('.toggle' ).on( 'click', function () {
@@ -81,11 +84,11 @@
 
     jQuery( '.association-carousel .sow-carousel-wrapper' ).append( '<div class="assocCarouselBg"></div>' );
 
-    if (jQuery(window).width() > 1200) {
+    if (jQuery(window).width() >= 992) {
       rdc_property_sticky();
     }
 
-    if (jQuery(window).width() < 1200) {
+    if (jQuery(window).width() < 992) {
       rdc_agent_carousel_item_width();
     }
 
@@ -118,7 +121,7 @@
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    if(jQuery(window).width() > 620) {
+    if(jQuery(window).width() >= 992) {
 
       var $grid = jQuery('.grid').masonry({
         // options
@@ -218,7 +221,7 @@
   } );
 
   function map_resize() {
-    if ( jQuery( window ).width() < 990 ) {
+    if ( jQuery( window ).width() < 992 ) {
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
       jQuery('.sm-scrollable-table > div').height('100%');
       jQuery('.sm-properties-grid').height('100%');
@@ -268,7 +271,7 @@
       resizeTimer = setTimeout( function () {
         map_resize();
         frontPageSearchBlock_resize();
-        if (jQuery(window).width() > 1200) {
+        if (jQuery(window).width() >= 992) {
           rdc_property_sticky();
         }
         rdc_agent_carousel_item_width();
