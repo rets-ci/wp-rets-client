@@ -34,16 +34,16 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
    *
    */
 
-  public function force_ssl() {
-    if ($this->ssl_enabled && ($this->site_has_ssl || $this->force_ssl_without_detection) ) {
-      if ($this->javascript_redirect) add_action('wp_print_scripts', array($this,'force_ssl_with_javascript'));
+   public function force_ssl() {
+     if ($this->ssl_enabled && ($this->site_has_ssl || $this->force_ssl_without_detection) ) {
+       if ($this->javascript_redirect) add_action('wp_print_scripts', array($this,'force_ssl_with_javascript'));
+     }
 
-      if ($this->autoreplace_insecure_links) {
-        add_action('template_include', array($this, 'replace_insecure_links_buffer'), 0);
-      }
-    }
-  }
+     if (is_ssl() && $this->autoreplace_insecure_links) {
+         add_filter('template_include', array($this,'replace_insecure_links_buffer'));
+     }
 
+   }
 
   /**
    * Creates an array of insecure links that should be https and an array of secure links to replace with

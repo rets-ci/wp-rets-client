@@ -85,6 +85,7 @@ defined('ABSPATH') or die("you do not have acces to this page!");
    */
 
   public function init() {
+    if (!current_user_can($this->capability)) return;
     $is_on_settings_page = $this->is_settings_page();
     $this->get_plugin_url();//has to be after the domain list was built.
 
@@ -92,7 +93,7 @@ defined('ABSPATH') or die("you do not have acces to this page!");
       Detect configuration when:
       - SSL activation just confirmed.
       - on settings page
-      - No SSL detected -> check again
+      - No SSL detected
     */
 
     if ($this->clicked_activate_ssl() || !$this->ssl_enabled || !$this->site_has_ssl || $is_on_settings_page) {
@@ -291,8 +292,7 @@ defined('ABSPATH') or die("you do not have acces to this page!");
 
   public function show_pro(){
     ?>
-  <p ><?php _e('For an extensive scan of your website for possible issues, premium support and more','really-simple-ssl');?>
-    , <a target="_blank" href="<?php echo $this->pro_url;?>"><?php _e("check out Really Simple SSL Premium","really-simple-ssl");?></a></p>
+  <p ><?php _e('You can also let the automatic scan of the pro version handle this for you, and get premium support and increased security with HSTS included','really-simple-ssl');?>, <a target="_blank" href="<?php echo $this->pro_url;?>"><?php _e("check out Really Simple SSL Premium","really-simple-ssl");?></a></p>
     <?php
   }
 
@@ -459,7 +459,6 @@ defined('ABSPATH') or die("you do not have acces to this page!");
       if (!current_user_can($this->capability)) return;
       $this->trace_log("** Configuring SSL **");
       if ($this->site_has_ssl || $this->force_ssl_without_detection) {
-
         //when a known ssl_type was found, test if the redirect works
         if ($this->ssl_type != "NA")
             $this->test_htaccess_redirect();
@@ -493,6 +492,8 @@ defined('ABSPATH') or die("you do not have acces to this page!");
    */
 
   public function is_settings_page() {
+    if (!isset($_SERVER['QUERY_STRING'])) return false;
+
     parse_str($_SERVER['QUERY_STRING'], $params);
     if (array_key_exists("page", $params) && ($params["page"]=="rlrsssl_really_simple_ssl")) {
         return true;
@@ -1141,6 +1142,7 @@ protected function get_server_variable_fix_code(){
     $this->save_options();
   }
 
+
   /**
    * Test if the htaccess redirect will work
    * This way, no redirect loops should occur.
@@ -1195,6 +1197,7 @@ protected function get_server_variable_fix_code(){
     }
 
   }
+
 
   /**
    * Get the url of this plugin
@@ -1893,7 +1896,6 @@ public function dismiss_yoasterror_callback() {
   wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-
   /**
    * Adds the admin options page
    *
@@ -1903,19 +1905,20 @@ public function dismiss_yoasterror_callback() {
    *
    */
 
-public function add_settings_page() {
-  if (!current_user_can($this->capability)) return;
-  $admin_page = add_options_page(
-    __("SSL settings","really-simple-ssl"), //link title
-    __("SSL","really-simple-ssl"), //page title
-    $this->capability, //capability
-    'rlrsssl_really_simple_ssl', //url
-    array($this,'settings_page')); //function
+ public function add_settings_page() {
+   if (!current_user_can($this->capability)) return;
+   global $rsssl_admin_page;
+   $rsssl_admin_page = add_options_page(
+     __("SSL settings","really-simple-ssl"), //link title
+     __("SSL","really-simple-ssl"), //page title
+     $this->capability, //capability
+     'rlrsssl_really_simple_ssl', //url
+     array($this,'settings_page')); //function
 
-    // Adds my_help_tab when my_admin_page loads
-    add_action('load-'.$admin_page, array($this,'admin_add_help_tab'));
+     // Adds my_help_tab when my_admin_page loads
+     add_action('load-'.$rsssl_admin_page, array($this,'admin_add_help_tab'));
 
-}
+ }
 
   /**
    * Admin help tab
@@ -2161,10 +2164,14 @@ public function img($type) {
    *
    */
 
-public function enqueue_assets(){
-  wp_register_style( 'rlrsssl-css', $this->plugin_url . 'css/main.css');
-  wp_enqueue_style( 'rlrsssl-css');
-}
+   public function enqueue_assets($hook){
+       //prevent from loading on other pages than settings page.
+       global $rsssl_admin_page;
+       if( $hook != $rsssl_admin_page && $this->ssl_enabled )
+           return;
+       wp_register_style( 'rlrsssl-css', $this->plugin_url . 'css/main.css');
+       wp_enqueue_style( 'rlrsssl-css');
+   }
 
   /**
    * Initialize admin errormessage, settings page
@@ -2192,6 +2199,7 @@ public function setup_admin_page(){
 
 public function configuration_page_more(){
   //HSTS on per site activated multisite is not possible.
+  global $really_simple_ssl;
   if (!(is_multisite() && !$really_simple_ssl->ssl_enabled_networkwide)) {
   ?>
   <table>
@@ -2251,10 +2259,6 @@ public function create_form(){
         add_settings_field('id_autoreplace_insecure_links', __("Auto replace mixed content","really-simple-ssl"), array($this,'get_option_autoreplace_insecure_links'), 'rlrsssl', 'rlrsssl_settings');
         add_settings_field('id_javascript_redirect', __("Enable javascript redirection to ssl","really-simple-ssl"), array($this,'get_option_javascript_redirect'), 'rlrsssl', 'rlrsssl_settings');
       }
-
-    //  if($this->site_has_ssl && file_exists($this->ABSpath.".htaccess")) {
-    //    add_settings_field('id_hsts', __("Turn HTTP Strict Transport Security on","really-simple-ssl"), array($this,'get_option_hsts'), 'rlrsssl', 'rlrsssl_settings');
-    //  }
 
       if(!$this->site_has_ssl) {
         //no sense in showing force or ignore warning options when ssl is detected: everything should work fine
