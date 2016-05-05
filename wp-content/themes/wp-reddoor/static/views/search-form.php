@@ -1,4 +1,4 @@
-<div class="searchForm" id="tabs_search">
+<div class="searchForm container" id="tabs_search">
   <ul class="nav nav-tabs">
     <li class="formTabs active" data-topmenu="buyBtnForm">
       <a data-toggle="tab" href="#tabs-1">Buy</a>
@@ -7,7 +7,7 @@
       <a data-toggle="tab" href="#tabs-2">Rent</a>
     </li>
   </ul>
-  <ul>
+  <ul class="sellRentBtns">
     <li class="sellBtnForm">
       <a href="<?php echo site_url( 'sell' ) ?>"><?php _e('Sell Your Home') ?></a>
     </li>
@@ -22,7 +22,7 @@
 
     <!-- Buy -->
 
-    <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
+    <form class="buyForm active tab-pane container" id="tabs-1" method="POST" action="">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
 
@@ -37,7 +37,7 @@
         <!-- default search value -->
         <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
 
-        <span>
+        <span class="searchTrigger">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
@@ -56,7 +56,7 @@
         <!-- default search value -->
         <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
 
-        <span>
+        <span class="searchTrigger">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b>
@@ -74,7 +74,7 @@
       <!-- Buy Price -->
 
       <div class="sfPrice dropdown-container">
-        <span data-drop="price">
+        <span class="searchTrigger" data-drop="price">
           <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
           <b class="sf-arrow"></b>
@@ -133,7 +133,7 @@
 
     <!-- Rent -->
 
-    <form class="rentForm tab-pane" id="tabs-2" method="POST" action="">
+    <form class="rentForm tab-pane container" id="tabs-2" method="POST" action="">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
 
@@ -146,7 +146,7 @@
         <!-- default search value -->
         <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
 
-        <span>
+        <span class="searchTrigger">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
@@ -165,7 +165,7 @@
         <!-- default search value -->
         <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
 
-        <span>
+        <span class="searchTrigger">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b>
@@ -181,7 +181,7 @@
       </div>
 
       <div class="sfPrice dropdown-container">
-        <span data-drop="price">
+        <span class="searchTrigger" data-drop="price">
           <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
           <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
           <b class="sf-arrow"></b>

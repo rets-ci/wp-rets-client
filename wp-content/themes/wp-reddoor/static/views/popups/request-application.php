@@ -6,8 +6,8 @@
 
       <i class="icon icon-rdc-home-renting"></i>
 
-      <h3><?php _e('Submit Your Application', 'reddoor'); ?></h3>
-      <p><?php _e('You found your new home - that\'s great! Please submit your application below and we will followup with you within 24 business hours.', 'reddoor'); ?></p>
+      <h3><?php _e('Request an Application', 'reddoor'); ?></h3>
+      <p><?php _e('You found your new home - that\'s great! Please request an application using the below form.', 'reddoor'); ?></p>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 

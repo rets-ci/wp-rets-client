@@ -95,19 +95,7 @@
       }
     }
 
-    .searchForm {
-      & > ul {
-        width: 49.6%;
-        & > li {
-          width: 49.2%;
-          & > a {
-            padding: 0 !important;
-            text-align: center;
 
-          }
-        }
-      }
-    }
 
     &.single-property {
 
@@ -145,10 +133,9 @@
       display: block !important;
     }
     .searchForm {
-      min-width: 560px;
       form {
         border-radius: 0 0 5px 5px;
-        height: 296px;
+        height: 370px;
         padding: 9px;
         .location {
           width: 100%;
@@ -159,12 +146,12 @@
           }
         }
         .sfBeds {
-          width: 49%;
+          width: 100%;
           border-radius: 5px;
         }
         .sfBaths {
-          width: 49%;
-          margin-left: 10px;
+          width: 100%;
+          margin-top: 10px;
           border-radius: 5px;
         }
         .sfPrice {
@@ -204,6 +191,16 @@
           padding-left: 15px;
           text-align: center;
         }
+      }
+      &>ul{
+        float: none;
+        &>li{
+          width: 100%;
+          text-align: center;
+        }
+      }
+      .sellRentBtns{
+        display: none;
       }
     }
 
@@ -392,6 +389,9 @@
 
   .hideTabMobile {
     display: none;
+  }
+  .footerWidgetArea1{
+    margin-top: 18px;
   }
 }
 
