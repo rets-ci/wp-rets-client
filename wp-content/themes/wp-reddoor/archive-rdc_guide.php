@@ -14,7 +14,7 @@ $_guide_overview = rdc_generate_guide_overview();
   <div class="row site-content">
 
     <?php foreach( rdc_generate_guide_overview() as $_guide ) { ?>
-    <div class="col-lg-6 guide-block" style="background-image: url('<?php echo $_guide['image']; ?>');">
+    <div class="col-md-6 guide-block" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_guide['image']; ?>');">
       <div class="guide-block-inner">
         <h2 class="guide-title"><?php echo $_guide['name']; ?></h2>
         <p class="guide-description"><?php echo $_guide['description']; ?></p>

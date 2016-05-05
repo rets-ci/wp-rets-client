@@ -40,10 +40,6 @@
     font-size: 1.1em;
 }
 
-
-@media screen and (max-width: 600px) {
-
-}
 .widget_rdc-agents-carousel {
     overflow-x: hidden;
     overflow-y: hidden;

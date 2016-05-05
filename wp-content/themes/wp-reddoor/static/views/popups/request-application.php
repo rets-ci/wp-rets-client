@@ -6,8 +6,8 @@
 
       <i class="icon icon-rdc-home-renting"></i>
 
-      <h3><?php _e('Submit Your Application', 'reddoor'); ?></h3>
-      <p><?php _e('You found your new home - that\'s great! Please submit your application below and we will followup with you within 24 business hours.', 'reddoor'); ?></p>
+      <h3><?php _e('Request an Application', 'reddoor'); ?></h3>
+      <p><?php _e('You found your new home - that\'s great! Please request an application using the below form.', 'reddoor'); ?></p>
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
@@ -68,10 +68,9 @@
           if( $property && isset( $property['ID'] ) ) :
             $agent = \UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' );
         ?>
-        <?php if( isset( $agent ) ) { ?>
+        <?php if( isset( $agent ) && is_object( $agent ) && isset( $agent->user_email ) ) { ?>
           <!-- Brokers Email -->
-          <input type="hidden" id="powf_2e230323d378e5118103c4346bb5981c" name="powf_2e230323d378e5118103c4346bb5981c"
-                 value="<?php echo esc_attr( $agent->user_email ); ?>" />
+          <input type="hidden" id="powf_2e230323d378e5118103c4346bb5981c" name="powf_2e230323d378e5118103c4346bb5981c" value="<?php echo esc_attr( $agent->user_email ); ?>" />
         <?php } ?>
         <?php endif; ?>
 

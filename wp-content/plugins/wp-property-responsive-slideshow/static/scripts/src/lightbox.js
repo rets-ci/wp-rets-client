@@ -93,29 +93,20 @@
       if(options.galleryThumbs.onResize)
         options.galleryThumbs.onResize();
 
+      options.galleryTop.enableKeyboardControl();
       $(document).on('keydown', lbHandleKeyboard);
       $('body').css({'overflow':'hidden'});
     }
 
     function loadFullImageLazy(index){
-      if(!lb.hasClass('fullLazyInserted')){
-        $.each(options.galleryTop.slides, function(index, item){
-          var slide = $(item);
-          var src = slide.data('src');
-          setRealDataWidthHeight(slide, options.galleryTop);
-          var dataWidth = slide.data('width');
-          var dataHidth = slide.data('height');
-          if(src){
-            var img = slide.find('img');
-            img.addClass('swiper-lazy')
-               .attr('data-src', src)
-               .attr('data-srcset', " ")
-               .attr('data-width', dataWidth)
-               .attr('data-height', dataHidth);
-          }
-        });
-      }
-      lb.addClass('fullLazyInserted');
+      $.each(options.galleryTop.slides, function(index, item){
+        var slide = $(item);
+        var src = slide.data('src');
+        var img = slide.find('img').addClass('swiper-lazy')
+                       .attr('data-src', src)
+                       .attr('srcset', "")
+                       .attr('sizes', "")
+      });
     }
 
     function hideLightbox(e){
@@ -126,6 +117,7 @@
       options.galleryTop.params.initialSlide = activeIndex;
       options.galleryTop.params.lightBox = false;
 
+      $(options.galleryTop.slides).removeClass('swiper-lazy');
       lb.removeClass('lightbox');
       $('#wpadminbar').show();
 
@@ -150,29 +142,6 @@
           break;
       }
     }
-
-    function setRealDataWidthHeight($div, s){
-      if(typeof s.lbDataWidthHeightLoaded != 'undefined' && s.lbDataWidthHeightLoaded == true)
-        return;
-      if(typeof s.noOfLBimgageLoaded == 'undefined')
-          s.noOfLBimgageLoaded = 0;
-      s.noOfLBimgageLoaded += 1;
-
-      $('<img />').load(function(){
-          var width = this.width;
-          var height = this.height;
-          $img = $div.find('img');
-          $div.attr('data-width', width)
-              .attr('data-height', height);
-          $img.attr('data-width', width)
-              .attr('data-height', height);
-          if(s.noOfLBimgageLoaded == s.slides.length){
-              s.lbDataWidthHeightLoaded = true;
-          }
-      }).attr('src', $div.attr('data-src'));
-      return $div;
-    }
-    
 
     return this;
   };

@@ -20,7 +20,7 @@ function rdc_set_guide_heights() {
   var _body = jQuery('body');
 
   // if screen appears large, and we're on a Guide page, do things with guide heights.
-  if( jQuery(window).width() < 1199 || ( !_body.hasClass('tax-rdc_guide_category') && !_body.hasClass('post-type-archive-rdc_guide') && !_body.hasClass('single-rdc_guide') ) ) {
+  if( jQuery(window).width() < 992 || ( !_body.hasClass('tax-rdc_guide_category') && !_body.hasClass('post-type-archive-rdc_guide') && !_body.hasClass('single-rdc_guide') ) ) {
     return;
   }
 

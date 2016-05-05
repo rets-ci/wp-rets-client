@@ -60,6 +60,25 @@ namespace UsabilityDynamics\RDC {
 
       }
 
+      /**
+       * Get Template Part
+       *
+       * Show search form:
+       *
+       *    [template_part name=static/views/search-form]
+       *
+       * @param $atts
+       * @param string $content
+       * @return
+       */
+      static public function template_part( $atts, $content = "" ) {
+
+        ob_start();
+        get_template_part( $atts['name'] );
+        return ob_get_clean();
+
+      }
+      
     }
   }
 }

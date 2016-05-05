@@ -134,7 +134,7 @@ namespace UsabilityDynamics\RDC {
        * AJAX handler for showing category cards
        *
        * @author potanin@UD
-       * @todo Make col-lg-4 configurable if ever needed. - potanin@UD
+       * @todo Make col-md-4 configurable if ever needed. - potanin@UD
        */
       static public function categoryCard() {
 
@@ -150,7 +150,7 @@ namespace UsabilityDynamics\RDC {
 
         if (have_posts()) { while (have_posts()) {
           the_post();
-          echo '<div class="col-lg-4" data-element-kind="' . $_GET['kind'] . '">';
+          echo '<div class="col-md-4" data-element-kind="' . $_GET['kind'] . '">';
           get_template_part( 'static/views/category-card' );
           echo '</div>';
         } }

@@ -29,18 +29,20 @@
 
     $(document).on( 'click', function(){
       $(".dropdown-container .dropdown-list", that).slideUp();
+      console.log('slideUp');
     });
 
-    $(".dropdown-container > span", that).click( function(e) {
+    $(".dropdown-container .searchTrigger", that).on('click', ( function(e) {
       $(".dropdown-container .dropdown-list", that).slideUp();
       $(this).parent().find(".dropdown-list").slideToggle();
       e.stopPropagation();
       $(document).trigger( 'search-dropdown', [$(e.currentTarget).data('drop'), $(e.currentTarget)] );
-    });
+      console.log('slideToggle');
+    }));
 
-    $(".dropdown-container .dropdown-list", that).click( function(e) {
+    $(".dropdown-container .dropdown-list", that).on('click', ( function(e) {
       e.stopPropagation();
-    });
+    }));
 
     /* Search-form slide selects */
     $(".dropdown-option", that).on( 'change', function(e) {

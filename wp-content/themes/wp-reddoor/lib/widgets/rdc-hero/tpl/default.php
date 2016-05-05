@@ -2,7 +2,7 @@
 
 echo '<h2 class="tabbedWidgetTitle">' . $instance['title'] . '</h2>';
 
-$this->render_template($instance['controls'], $instance['frames']);
+$this->render_template( isset( $instance['controls'] ) ? $instance['controls'] : null, $instance['frames']);
 
 ?>
 

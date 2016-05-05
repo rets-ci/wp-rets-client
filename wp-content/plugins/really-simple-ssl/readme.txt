@@ -1,11 +1,11 @@
 === Really Simple SSL ===
 Contributors:RogierLankhorst
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=NL&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ZEQHXWTSQVAZJ&lc=en_us&item_name=rogierlankhorst%2ecom&item_number=really%2dsimple%2dssl%2dplugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: mixed content, insecure content, secure website, website security, ssl, https, tls, security, secure socket layers, hsts
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.5
-Stable tag: 2.3.3
+Stable tag: 2.3.5
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -33,7 +33,7 @@ some cool features like the mixed content scan, the option to enable HTTP Strict
 [contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. More information about me or my work can be found on my [website](https://www.rogierlankhorst.com).
 
 = Like to have this plugin in your language? =
-Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/really-simple-ssl).
+Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/really-simple-ssl). If you do, I can get you added as translation editor to approve the translations.
 
 == Installation ==
 To install this plugin:
@@ -86,16 +86,19 @@ Please take care to use http://, and not https://. On a domain without certifica
 
 The plugin is now deactivated and all changes were removed.
 
-= What does the option "HSTS" mean? =
-HSTS means HTTP Strict Transport Security, and makes browsers force your visitors over https.
-As this setting will be remembered by your visitor's browsers for at least a year, you should only enable this when your setup is up and running, and you do not plan
-to revert back to http.
-
 = Is the plugin suitable for wordpress multisite? =
 Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
 == Changelog ==
+= 2.3.5 =
+* Fixed: javascript redirect insertion
+
+= 2.3.4 =
+* Tweak: load css stylesheet only on options page and before enabling ssl
+* Tweak: mixed content fixer triggered by is_ssl(), which prevents fixing content on http.
+* Start detection and configuration only for users with "manage_options" capability
+
 = 2.3.3 =
 * Fixed bug in force-deactivate script
 

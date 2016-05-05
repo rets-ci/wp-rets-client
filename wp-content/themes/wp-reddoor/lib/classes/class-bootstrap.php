@@ -85,6 +85,9 @@ namespace UsabilityDynamics\RDC {
         // facebook/twitter/google shortcode
         add_shortcode( 'share_this_article', array( 'UsabilityDynamics\RDC\Shortcodes', 'share_this_article' ) );
 
+        // get any template part
+        add_shortcode( 'template_part', array( 'UsabilityDynamics\RDC\Shortcodes', 'template_part' ) );
+
       }
 
       /**
@@ -103,7 +106,7 @@ namespace UsabilityDynamics\RDC {
        */
       public function alter_supermap_query( $query, $atts ) {
 
-        wp_localize_script( 'supermap-advanced', 'sm_current_filter', array_merge($atts, (array)$_REQUEST['wpp_search']) );
+        wp_localize_script( 'supermap-advanced', 'sm_current_filter', array_merge($atts, ( isset( $_REQUEST['wpp_search'] ) ? (array) $_REQUEST['wpp_search'] : array() ) ) );
 
         /**
          * @todo: could not find other place for this
@@ -317,11 +320,11 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
         //if ( is_singular( 'property' ) ) {
-          wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js?nocache='.rand(0,100) . '', array('jquery'), '1.0.0');
+          wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js', array('jquery'), '1.0.0');
        // }
 
         if ( is_front_page() ) {
-          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
+          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
         }
 
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );

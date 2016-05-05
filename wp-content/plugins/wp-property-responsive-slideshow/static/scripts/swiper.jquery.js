@@ -447,7 +447,7 @@ s.imagesLoaded = 0;
 s.loadImage = function (imgElement, src, srcset, checkForComplete, callback) {
     var image;
     function onReady () {
-        if (callback) callback();
+        if (callback) callback(image.width, image.height);
     }
     if (!imgElement.complete || !checkForComplete) {
         if (src) {
@@ -1783,7 +1783,7 @@ s.slideTo = function (slideIndex, speed, runCallbacks, internal) {
     if (typeof slideIndex === 'undefined') slideIndex = 0;
     if (slideIndex < 0) slideIndex = 0;
     s.snapIndex = Math.floor(slideIndex / s.params.slidesPerGroup);
-    if (s.snapIndex >= s.snapGrid.length) s.snapIndex = s.snapGrid.length - 1;
+    if (s.snapIndex >= s.snapGrid.length) slideIndex = s.snapIndex = s.snapGrid.length - 1;
 
     
     if(s.isGrid()){
@@ -2405,7 +2405,11 @@ s.lazy = {
             var background = _img.attr('data-background');
             var src = _img.attr('data-src'),
                 srcset = _img.attr('data-srcset');
-            s.loadImage(_img[0], (src || background), srcset, false, function () {
+            s.loadImage(_img[0], (src || background), srcset, false, function (width, height) {
+                _img.attr('width', width)
+                    .attr('height', height)
+                    .attr('data-width', width)
+                    .attr('data-height', height);
                 if (background) {
                     _img.css('background-image', 'url(' + background + ')');
                     _img.removeAttr('data-background');
