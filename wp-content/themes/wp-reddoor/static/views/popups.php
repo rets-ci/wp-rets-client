@@ -20,7 +20,7 @@
 				</li>
 				<li class="pupRentProp showContactPopup">
 					<a href="javascript:;" rel="popupManage">
-						<i class="icon-rdc-property-management"></i><div><?php _e('I went to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-property-management"></i><div><?php _e('I want to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 			</ul>

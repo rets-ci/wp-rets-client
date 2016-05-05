@@ -324,7 +324,7 @@ namespace UsabilityDynamics\RDC {
        // }
 
         if ( is_front_page() ) {
-          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
+          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
         }
 
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );

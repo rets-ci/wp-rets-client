@@ -44,6 +44,7 @@ while (have_posts()) : the_post();
   $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
+  $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
   $get_listing_agent_phone_extension_terms = get_the_terms($property['ID'], 'listing_agent_phone_extension');
   $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
   $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
@@ -68,6 +69,7 @@ while (have_posts()) : the_post();
   $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
   $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
   $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
+  $listing_agent_phone_number = ($get_listing_agent_phone_number_terms[0]) ? $get_listing_agent_phone_number_terms[0]->name : '';
   $listing_agent_phone_extension = ($get_listing_agent_phone_extension_terms[0]) ? $get_listing_agent_phone_extension_terms[0]->name : '';
   $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
   $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
@@ -436,7 +438,7 @@ while (have_posts()) : the_post();
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
           <li><a data-toggle="tab" href="#Features">Features</a></li>
-          <li><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
+          <li><a data-toggle="tab" href="#NeighborhoodDetail">Neighborhood</a></li>
           <li><a data-toggle="tab" href="#PropertyLot">Property <span class="hideTabMobile">& Pricing</span></a></li>
         </ul>
 
@@ -765,7 +767,7 @@ while (have_posts()) : the_post();
             <?php } ?>
             <div class="clear"></div>
           </div>
-          <div id="Neighborhood" class="tab-pane fade grid">
+          <div id="NeighborhoodDetail" class="tab-pane fade grid">
             <?php
             $listAttributes = array();
             foreach($wp_properties['property_stats_groups'] as $key => $value){
