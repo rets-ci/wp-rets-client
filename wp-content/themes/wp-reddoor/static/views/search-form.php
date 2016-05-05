@@ -248,7 +248,7 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
-    if ( 'undefined' != typeof jQuery().rdc_search_form ) {
+    if ( 'undefined' !== typeof jQuery().rdc_search_form ) {
       jQuery('#tabs_search').rdc_search_form();
     }
 
