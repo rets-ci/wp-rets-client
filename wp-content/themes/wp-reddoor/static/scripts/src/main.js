@@ -12,7 +12,7 @@ var rdc = {
    */
   client: function getClient() {
 
-    if ( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'undefined') {
+    if ( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'function' ) {
       console.log( "ElasticSearch client not loaded." );
       return false;
     }
