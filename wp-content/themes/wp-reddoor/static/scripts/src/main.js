@@ -44,7 +44,7 @@ var rdc = {
 
       // trigger callback if everything come sback okay.
       if( 'function' === typeof callback && response && response.hits && response.hits.total ) {
-        return callback( null, response.hits.total );
+        return callback( null, rdc.numberWithCommas( response.hits.total ) );
       }
 
       if( 'function' === typeof callback ) {
@@ -54,6 +54,16 @@ var rdc = {
 
     })
 
+  },
+
+  /**
+   * Format Number to have commas.
+   *
+   * @param x
+   * @returns {*}
+   */
+  numberWithCommas: function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
   __client: null
