@@ -194,7 +194,7 @@
   font-size: 3em;
   transition: 1s;
   display: none;
-  margin: 5% 3% 0 5%;
+  margin: 37px 22px 0 37px;
 }
 .contactMenu {
   color: red;
@@ -6465,6 +6465,13 @@ body .ui-tooltip {
     float: none;
     width: 100%;
     margin-left: 0 !important;
+  }
+  body.single-property .oneAgent {
+    position: inherit !important;
+    width: 100%;
+    margin: 20px 0 0 0;
+    right: 0 !important;
+    top: 0 !important;
   }
   body .menuDesktop {
     display: none !important;
