@@ -33,7 +33,7 @@ function guide_post_type() {
       'items_list_navigation' => __( 'Guides list navigation', 'rdc' ),
       'filter_items_list' => __( 'Filter items list', 'rdc' ),
     ),
-    'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', ),
+    'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', 'excerpt', 'page-attributes' ),
     'taxonomies' => array( 'rdc_guide_category' ),
     'hierarchical' => true,
     'public' => true,
@@ -187,7 +187,8 @@ function rdc_generate_guide_overview( $options = false ) {
       'post_type' => 'rdc_guide',
       'rdc_guide_category' => $category->slug,
       'posts_per_page' => 10,
-      'orderby' => 'rand'
+      'order' => 'ASC',
+      'orderby' => 'menu_order'
     ));
 
     foreach( (array) $_posts as $_post ) {
