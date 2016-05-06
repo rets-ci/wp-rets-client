@@ -241,10 +241,10 @@ function ud_carousel_get_next_posts_page() {
 //			echo '<pre>';
 //			print_r($posts);
 //			echo '</pre>';
-			?>git 
+			?>
 			<a href="<?php the_permalink() ?>">
 				<div class="rdc-carousel-thumbnail">
-					<?php if( has_post_thumbnail('1766133') ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>
+					<?php if( has_post_thumbnail($posts->current_post) ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id($posts->current_post), 'thumbnail'); ?>
 						<div class="thumb" style="background-image: url(<?php echo esc_url($img) ?>); background-size: cover; background-position: center center;">
 							<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 							<span class="overlay"></span>
