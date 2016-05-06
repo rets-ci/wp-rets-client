@@ -216,6 +216,13 @@ var rdc = {
 
     }
 
+    rdc.getCount( 'Sale', function( error, count ) {
+      jQuery('#wpprc-home-buy').prepend(count + ' ');
+    });
+    rdc.getCount( 'Rent', function( error, count ) {
+      jQuery('#wpprc-home-rent').prepend(count + ' ');
+    });
+
     /**
      * Load "More" elements of same kind.
      *
