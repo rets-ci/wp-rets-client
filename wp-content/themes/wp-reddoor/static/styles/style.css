@@ -370,14 +370,14 @@ a:focus {
   background-repeat: no-repeat !important;
   background-position: center center;
   height: 660px;
-  padding-top: 10%;
+  padding-top: 13.5%;
   position: relative;
   top: -74px;
 }
 .archiveImageHeader h1 {
   margin: 0 0 20px 0;
   color: #fff;
-  font-size: 5em;
+  font-size: 3.5em;
   text-align: center;
   font-weight: 600;
   text-shadow: 1px 1px 3px #000;
@@ -392,6 +392,7 @@ a:focus {
   text-shadow: 1px 1px 3px #000;
   position: relative;
   z-index: 9;
+  font-size: 1.5em;
 }
 .archiveImageHeader .hero-overlay {
   background: #000 none repeat scroll 0 0;
@@ -499,7 +500,7 @@ a:focus {
   padding-top: 21%;
 }
 .single .featuredImageHeader {
-  padding-top: 8%;
+  padding-top: 7.5%;
 }
 .single .loadMoreBlockSeparate {
   border-top: 1px solid #efefef;

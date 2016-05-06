@@ -1,4 +1,66 @@
 /**
+ * Global RDC Object
+ *
+ * @type {{client: rdc.getClient, getCount: rdc.getCount}}
+ */
+var rdc = {
+
+  /**
+   * Get Elasticsearch client.
+   *
+   * @returns {*}
+   */
+  client: function getClient() {
+
+    if ( typeof jQuery.es.Client === 'undefined') {
+      console.log( "ElasticSearch client not loaded." );
+      return false;
+    }
+
+    // return stored client or create new one
+    return rdc.__client = ( rdc.__client || new jQuery.es.Client({
+      hosts: 'site:quw42xelwvbp5gbcdgcqqgtx4vz5txeb@dori-us-east-1.searchly.com',
+      index: 'v5'
+    }));
+
+  },
+
+  /**
+   * Get sale_type count
+   *
+   *  rdc.getCount('Rent', callback );
+   *
+   * @param type
+   * @param callback
+   */
+  getCount: function getCount( type, callback ) {
+
+    rdc.client().search({
+      index: 'v5',
+      type: 'property',
+      q: 'tax_input.sale_type:' + type,
+      size: 0
+    }, function (err, response) {
+
+      // trigger callback if everything come sback okay.
+      if( 'function' === typeof callback && response && response.hits && response.hits.total ) {
+        return callback( null, response.hits.total );
+      }
+
+      if( 'function' === typeof callback ) {
+        console.error( "Unable get rd.getCount()" );
+        return callback( err || new Error( "Unexpected response." ) );
+      }
+
+    })
+
+  },
+
+  __client: null
+
+};
+
+/**
  * We treat everything that is 992px and smaller as "mobile" while everything above as "desktop".
  *
  */
@@ -6,6 +68,25 @@
 
   jQuery( document ).ready( function rdcReady() {
     console.log( "RDC version 1.1.3" );
+
+    // Invoke RDC Search Form, if tabs_search element exists.
+    if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
+      jQuery('#tabs_search').rdc_search_form();
+    }
+
+    // If we have a .totals_properties_rent class on page, fetch Rent count.
+    if( jQuery('.totals_properties_rent .value').length ) {
+      rdc.getCount( 'Rent', function( error, count ) {
+        jQuery('.totals_properties_rent .value').html(count);
+      });
+    }
+
+    // If we have a .totals_properties_rent class on page, fetch Sale count.
+    if( jQuery('.totals_properties_sale .value').length ) {
+      rdc.getCount( 'Sale', function( error, count ) {
+        jQuery('.totals_properties_sale .value').html(count);
+      });
+    }
 
     jQuery( ".rdc-accordion" ).accordion( {
       active: false,
@@ -37,8 +118,6 @@
       // allow scrolling om DOM right away, no waiting for animation to complete.
       jQuery( 'html' ).removeClass( 'rdc-mobile-menu-opened' );
     } );
-
-    /* Mobile menu slide */
 
     /* Mobile slide sub-menu */
     jQuery( function () {
@@ -218,6 +297,9 @@
       });
     });
 
+    //console.log( rdc.client );
+
+
   } );
 
   function map_resize() {
@@ -359,6 +441,8 @@
       }
     });
   }
+
+
 
 })();
 

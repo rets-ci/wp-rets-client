@@ -1,6 +1,7 @@
 (function( $ ) {
 
   $.fn.rdc_search_form = function( options ) {
+    console.debug( 'rdc_search_form', 'invoked', options );
 
     var settings = $.extend({}, options );
 
@@ -29,7 +30,7 @@
 
     $(document).on( 'click', function(){
       $(".dropdown-container .dropdown-list", that).slideUp();
-      console.log('slideUp');
+      console.debug('slideUp');
     });
 
     $(".dropdown-container .searchTrigger", that).on('click', ( function(e) {
@@ -37,7 +38,7 @@
       $(this).parent().find(".dropdown-list").slideToggle();
       e.stopPropagation();
       $(document).trigger( 'search-dropdown', [$(e.currentTarget).data('drop'), $(e.currentTarget)] );
-      console.log('slideToggle');
+      console.debug('slideToggle');
     }));
 
     $(".dropdown-container .dropdown-list", that).on('click', ( function(e) {
