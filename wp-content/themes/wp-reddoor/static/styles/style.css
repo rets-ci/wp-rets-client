@@ -194,7 +194,7 @@
   font-size: 3em;
   transition: 1s;
   display: none;
-  margin: 5% 3% 0 5%;
+  margin: 37px 22px 0 37px;
 }
 .contactMenu {
   color: red;
@@ -2225,7 +2225,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border: 1px solid #ededed;
   height: 60px !important;
   width: 220px !important;
-  margin-left: -6px;
+  margin-left: -5px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
   border-bottom: 1px solid #F10D2C;
@@ -3385,7 +3385,7 @@ body.single-rdc_guide .guide-article-wrapper article .widget_callout .widgetBody
 body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
 body.single-rdc_guide .guide-group-image {
-  min-height: 100px;
+  min-height: 230px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -6465,6 +6465,13 @@ body .ui-tooltip {
     float: none;
     width: 100%;
     margin-left: 0 !important;
+  }
+  body.single-property .oneAgent {
+    position: inherit !important;
+    width: 100%;
+    margin: 20px 0 0 0;
+    right: 0 !important;
+    top: 0 !important;
   }
   body .menuDesktop {
     display: none !important;
