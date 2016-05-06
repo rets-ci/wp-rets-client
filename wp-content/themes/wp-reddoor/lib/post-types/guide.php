@@ -33,7 +33,7 @@ function guide_post_type() {
       'items_list_navigation' => __( 'Guides list navigation', 'rdc' ),
       'filter_items_list' => __( 'Filter items list', 'rdc' ),
     ),
-    'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', 'excerpt' ),
+    'supports' => array( 'title', 'editor', 'thumbnail', 'revisions', 'excerpt', 'page-attributes' ),
     'taxonomies' => array( 'rdc_guide_category' ),
     'hierarchical' => true,
     'public' => true,
