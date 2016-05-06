@@ -80,6 +80,7 @@
     width: 370px;
     overflow-x: hidden;
     overflow-y: hidden;
+    padding-top: 15px;
 }
 .rdc-agents-carousel-wrapper ul.rdc-agents-carousel-items li.rdc-agents-carousel-item:last-child {
     margin-right: 0;
