@@ -2417,6 +2417,11 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   top: -30px;
   margin-bottom: -30px;
 }
+@media screen and (max-width: 780px) {
+  .panel-row-style-widgetRowBgsellRentMainWidgets .panel-grid-cell {
+    margin-bottom: 25px !important;
+  }
+}
 /**
  * WIDGET class 'hero-content'
  *
@@ -2443,6 +2448,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .hero-content .so-widget-sow-editor p {
   font-size: 1.1em;
   line-height: 2em;
+}
+.hero-content .so-widget-sow-editor p:last-child {
+  margin-top: 35px;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -6522,6 +6530,7 @@ body .ui-tooltip {
   }
   body .searchForm > ul {
     float: none;
+    width: 100%;
   }
   body .searchForm > ul > li {
     width: 100%;

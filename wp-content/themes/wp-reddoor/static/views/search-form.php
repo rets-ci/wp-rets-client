@@ -22,7 +22,7 @@
 
     <!-- Buy -->
 
-    <form class="buyForm active tab-pane container" id="tabs-1" method="POST" action="">
+    <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
 
@@ -133,7 +133,7 @@
 
     <!-- Rent -->
 
-    <form class="rentForm tab-pane container" id="tabs-2" method="POST" action="">
+    <form class="rentForm tab-pane" id="tabs-2" method="POST" action="">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
 

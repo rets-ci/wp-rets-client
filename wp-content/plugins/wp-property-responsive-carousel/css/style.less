@@ -243,6 +243,7 @@
         li.descriptionBlock{
             border-radius: 0;
             box-shadow: none;
+            margin-top: 0;
 
             a{
                 background: #bf2b1f none repeat scroll 0 0;
@@ -271,6 +272,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px #ddd;
             color: #5A595C;
+            margin-top: 0.065%;
 
             h2{
                 font-size: 2.7em;
@@ -317,7 +319,7 @@
                 div.thumb {
                     display: block;
                     width: 500px;
-                    height: 360px;
+                    height: 250px;
                     background-size: 275px 200px;
                     background-position: center center;
 
@@ -329,7 +331,6 @@
                         display: block;
                         width: 100%;
                         height: 100%;
-                        background: #bf2b1f;
                         opacity: 0;
                     }
                 }
@@ -440,4 +441,15 @@ a.rdc-carousel-previous {
 
 a.rdc-carousel-next {
     display: none;
+}
+@media screen and (max-width: 700px) {
+
+    .rdc-carousel-title {
+        display: none;
+    }
+    .rdc-property-carousel .section-content {
+        padding: 40px 0 60px 40px;
+    }
+
+
 }
