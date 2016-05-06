@@ -52,11 +52,11 @@ function siteorigin_widgets_icons_reddoorcompany_filter($icons) {
 		'profile' => '&#xe92f;',
 		'reliable' => '&#xe930;',
 		'supportive-environment' => '&#xe931;',
-		'technology' => '&#xe927;',
-		'top-commission' => '&#xe932;',
-		'transparent' => '&#xe933;',
-		'what-we-do' => '&#xe934;',
-		'who-we-are' => '&#xe935;',
+		'technology' => '&#xe932;',
+		'top-commission' => '&#xe933;',
+		'transparent' => '&#xe934;',
+		'what-we-do' => '&#xe935;',
+		'who-we-are' => '&#xe936;',
 
 	));
 }
