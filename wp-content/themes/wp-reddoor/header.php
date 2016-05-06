@@ -17,7 +17,7 @@
   <div id="header" class="container">
     <div class="row">
       <header>
-        <span class="toggle" data-type="menu-toggle"><svg class="icon icon-list"><use xlink:href="#icon-list"></use></svg></span>
+        <span class="toggle" data-type="menu-toggle"><svg class="icon icon-list mobile-menu-toggle"><use xlink:href="#icon-list"></use></svg></span>
         <?php if (get_theme_mod('rdc_logo')) : ?>
           <div class='site-logo'>
             <a href='<?php echo esc_url(home_url('/')); ?>'
