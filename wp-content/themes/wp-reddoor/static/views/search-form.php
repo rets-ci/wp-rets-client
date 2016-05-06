@@ -1,4 +1,4 @@
-<div class="searchForm container" id="tabs_search">
+<div class="searchForm container" id="tabs_search" data-template="static/views/search-form">
   <ul class="nav nav-tabs">
     <li class="formTabs active" data-topmenu="buyBtnForm">
       <a data-toggle="tab" href="#tabs-1">Buy</a>
@@ -240,101 +240,7 @@
   </div>
 </div>
 
-<?php
-  if ( function_exists('ud_get_wpp_supermap') ) {
-    wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ) );
-  }
+<?php if ( function_exists('ud_get_wpp_supermap') ) {
+  wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ) );
+}
 ?>
-
-<script type="text/javascript">
-  jQuery(document).ready(function(){
-    if ( 'undefined' !== typeof jQuery().rdc_search_form ) {
-      jQuery('#tabs_search').rdc_search_form();
-    }
-
-    if ( typeof jQuery.es.Client != 'undefined') {
-
-      var client = new jQuery.es.Client({
-        hosts: 'site:quw42xelwvbp5gbcdgcqqgtx4vz5txeb@dori-us-east-1.searchly.com'
-      });
-
-      var index = 'v5',
-          type = 'property';
-
-      client.count({
-        index: index,
-        type: type,
-        body: {
-          query: {
-            bool: {
-              must: [
-                {
-                  exists: {
-                    field: "tax_input"
-                  }
-                },
-                {
-                  terms: {
-                    "tax_input.sale_type": ["Rent"]
-                  }
-                }
-              ],
-              must_not: [
-                {
-                  term: {
-                    "tax_input.location_latitude": "0"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }, function (err, response) {
-        if ( !err ) {
-          jQuery('.totals_properties_rent .value').html(response.count);
-        } else {
-          console.error(err);
-        }
-      });
-
-      client.count({
-        index: index,
-        type: type,
-        body: {
-          query: {
-            bool: {
-              must: [
-                {
-                  exists: {
-                    field: "tax_input"
-                  }
-                },
-                {
-                  terms: {
-                    "tax_input.sale_type": ["Sale"]
-                  }
-                }
-              ],
-              must_not: [
-                {
-                  term: {
-                    "tax_input.location_latitude": "0"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }, function (err, response) {
-        if ( !err ) {
-          jQuery('.totals_properties_sale .value').html(response.count);
-        } else {
-          console.error(err);
-        }
-      });
-
-    }
-
-  });
-</script>
-
