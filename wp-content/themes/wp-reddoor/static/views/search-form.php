@@ -255,7 +255,7 @@
     if ( typeof jQuery.es.Client != 'undefined') {
 
       var client = new jQuery.es.Client({
-        hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+        hosts: 'site:quw42xelwvbp5gbcdgcqqgtx4vz5txeb@dori-us-east-1.searchly.com'
       });
 
       var index = 'v5',
