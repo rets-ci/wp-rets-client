@@ -12,7 +12,7 @@ var rdc = {
    */
   client: function getClient() {
 
-    if ( typeof jQuery.es.Client === 'undefined') {
+    if ( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'undefined') {
       console.log( "ElasticSearch client not loaded." );
       return false;
     }
@@ -75,14 +75,14 @@ var rdc = {
     }
 
     // If we have a .totals_properties_rent class on page, fetch Rent count.
-    if( jQuery('.totals_properties_rent .value').length ) {
+    if( rdc.client() && jQuery('.totals_properties_rent .value').length ) {
       rdc.getCount( 'Rent', function( error, count ) {
         jQuery('.totals_properties_rent .value').html(count);
       });
     }
 
     // If we have a .totals_properties_rent class on page, fetch Sale count.
-    if( jQuery('.totals_properties_sale .value').length ) {
+    if( rdc.client() && jQuery('.totals_properties_sale .value').length ) {
       rdc.getCount( 'Sale', function( error, count ) {
         jQuery('.totals_properties_sale .value').html(count);
       });
@@ -216,12 +216,19 @@ var rdc = {
 
     }
 
-    rdc.getCount( 'Sale', function( error, count ) {
-      jQuery('#wpprc-home-buy').prepend(count + ' ');
-    });
-    rdc.getCount( 'Rent', function( error, count ) {
-      jQuery('#wpprc-home-rent').prepend(count + ' ');
-    });
+    // get buy count if buy element exists
+    if( jQuery('#wpprc-home-buy').length ) {
+      rdc.getCount( 'Sale', function( error, count ) {
+        jQuery('#wpprc-home-buy').prepend(count + ' ');
+      });
+    }
+
+    // get rent value of target element exists
+    if( jQuery('#wpprc-home-rent').length ) {
+      rdc.getCount( 'Rent', function ( error, count ) {
+        jQuery( '#wpprc-home-rent' ).prepend( count + ' ' );
+      } );
+    }
 
     /**
      * Load "More" elements of same kind.
