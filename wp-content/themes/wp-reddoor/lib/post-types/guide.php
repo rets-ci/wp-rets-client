@@ -187,7 +187,8 @@ function rdc_generate_guide_overview( $options = false ) {
       'post_type' => 'rdc_guide',
       'rdc_guide_category' => $category->slug,
       'posts_per_page' => 10,
-      'orderby' => 'rand'
+      'order' => 'ASC',
+      'orderby' => 'menu_order'
     ));
 
     foreach( (array) $_posts as $_post ) {
