@@ -67,6 +67,19 @@ $alt_cron_timers = array(
   ( 24 * 7 * HOUR_IN_SECONDS ) => __( 'weekly', ud_get_wpp_importer()->domain ),
 );
 
+
+$_taxonomies = $wp_properties[ 'taxonomies' ];
+$_attributes = WPP_F::get_total_attribute_array();
+
+// sort attributes by value
+// asort( $_attributes );
+
+// Sort taxonomies by label
+//usort($_taxonomies, function( $a, $b ) {
+//  if ($a['label'] == $b['label']) return 0;
+//  return ($a['label'] < $b['label']) ? -1 : 1;
+//});
+
 ?>
 <style type="text/css">
   <?php if( $settings[ 'source_type' ] == "gs" ): ?>
@@ -520,13 +533,13 @@ $alt_cron_timers = array(
                 <option value="featured-image" <?php echo ( $attr[ 'wpp_attribute' ] == 'featured-image' ) ? 'selected="selected"' : ''; ?> >Featured Image</option>
               </optgroup>
               <optgroup label="<?php _e( 'Taxonomies', ud_get_wpp_importer()->domain ); ?>">
-                <?php foreach( $wp_properties[ 'taxonomies' ] as $tax_slug => $tax ) { ?>
+                <?php foreach( $_taxonomies as $tax_slug => $tax ) { ?>
                   <option value="<?php echo $tax_slug; ?>" <?php echo ( $attr[ 'wpp_attribute' ] == $tax_slug ) ? 'selected="selected"' : ''; ?> ><?php echo $tax[ 'label' ]; ?>
                     ( allows multiple )</option>
                 <?php } ?>
               </optgroup>
               <optgroup label="<?php _e( 'Attributes', ud_get_wpp_importer()->domain ); ?>">
-                <?php foreach( WPP_F::get_total_attribute_array() as $property_stat_slug => $property_stat_label ): ?>
+                <?php foreach( $_attributes as $property_stat_slug => $property_stat_label ): ?>
                   <option value="<?php echo $property_stat_slug; ?>" <?php echo ( $attr[ 'wpp_attribute' ] == $property_stat_slug ) ? 'selected="selected"' : ''; ?> ><?php echo $property_stat_label; ?></option>
                 <?php endforeach; ?>
               </optgroup>
