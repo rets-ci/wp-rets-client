@@ -2225,7 +2225,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border: 1px solid #ededed;
   height: 60px !important;
   width: 220px !important;
-  margin-left: -6px;
+  margin-left: -5px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
   border-bottom: 1px solid #F10D2C;
@@ -3385,7 +3385,7 @@ body.single-rdc_guide .guide-article-wrapper article .widget_callout .widgetBody
 body.post-type-archive-rdc_guide .guide-group-image,
 body.tax-rdc_guide_category .guide-group-image,
 body.single-rdc_guide .guide-group-image {
-  min-height: 100px;
+  min-height: 230px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
