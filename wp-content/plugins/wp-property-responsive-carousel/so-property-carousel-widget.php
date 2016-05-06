@@ -239,27 +239,42 @@ function ud_carousel_get_next_posts_page() {
 		<li class="rdc-carousel-item">
 			<a href="<?php the_permalink() ?>">
 				<div class="rdc-carousel-thumbnail">
-					<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'ud-carousel-default'); ?>
-						<div class="thumb" style="background-image: url(<?php echo esc_url($img[0]) ?>)">
+					<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>
+						<div class="thumb" style="background-image: url(<?php echo esc_url($img) ?>); background-size: cover; background-position: center center;">
+							<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 							<span class="overlay"></span>
 						</div>
 					<?php else : ?>
 						<div class="rdc-carousel-default-thumbnail"><span class="overlay"></span></div>
 					<?php endif; ?>
-					<div class="price"><?php echo $property[ 'price' ] ?></div>
 				</div>
 				<div class="item-content">
-					<p class="address"><?php echo $property[ 'location' ]; ?></p>
+					<p>
+						<?php
+						$get_location_street_number_terms = get_the_terms($property['ID'], 'location_street_number');
+						($get_location_street_number_terms[0]) ? _e($get_location_street_number_terms[0]->name) : '';
+						echo ' ';
+						$get_location_street_terms = get_the_terms($property['ID'], 'location_street');
+						($get_location_street_terms[0]) ? _e($get_location_street_terms[0]->name) : '';
+						?>
+					</p>
+										<span>
+											<?php
+											$get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+											($get_location_city_terms[0]) ? _e($get_location_city_terms[0]->name) : '';
+											echo ', ';
+											$get_location_state_terms = get_the_terms($property['ID'], 'location_state');
+											($get_location_state_terms[0]) ? _e($get_location_state_terms[0]->name . ' ') : '';
+											$get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+											($get_location_zip_terms[0]) ? _e($get_location_zip_terms[0]->name) : ''
+											?>
+										</span>
 					<ul>
-						<?php if( !empty( $property[ 'bedrooms' ] ) ) : ?>
-							<li title="<?php _e( 'Bedrooms', 'ud' ); ?>"><span class="rdc-icon icon-bed-a"></span><span class="val"><?php echo $property[ 'bedrooms' ] ?></span></li>
-						<?php endif; ?>
-						<?php if( !empty( $property[ 'bathrooms' ] ) ) : ?>
-							<li title="<?php _e( 'Bathrooms', 'ud' ); ?>"><span class="rdc-icon icon-shower"></span><span class="val"><?php echo $property[ 'bathrooms' ] ?></span></li>
-						<?php endif; ?>
-						<?php if( !empty( $property[ 'area' ] ) ) : ?>
-							<li title="<?php _e( 'SQFT', 'ud' ); ?>"><span class="rdc-icon icon-area"></span><span class="val"><?php echo $property[ 'area' ] ?></span></li>
-						<?php endif; ?>
+						<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-outline singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name); echo '</li>'; } ?>
+						<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-outline singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name); echo '</li>'; } ?>
+						<?php $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft'); if($get_living_area_terms[0]){ ?><li><span class="icon-wpproperty-attribute-size-outline singlePropertyIcon"></span><?php _e($get_living_area_terms[0]->name . ' Sq.ft.'); echo '</li>'; } ?>
+							<?php if(!empty($property[ 'price_2' ])){ echo '<li><span class="icon-wpproperty-status-rented-outline singlePropertyIcon"></span>$'. number_format($property[ 'price_2' ]); echo '</li>'; } ?>
+
 					</ul>
 				</div>
 			</a>

@@ -676,6 +676,7 @@ a:focus {
   border: medium none;
   position: relative;
   z-index: 9;
+  margin-top: 40px;
 }
 .searchForm .nav-tabs {
   margin-right: 4px;
@@ -2147,6 +2148,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .sellRentMainWidgets .widget_sow-button a {
   border: none;
 }
+.so-widget-tabbed-content {
+  padding-top: 25px;
+}
 .so-widget-tabbed-content .tabbedWidgetTitle {
   color: #5a595c !important;
   text-align: center;
@@ -2210,6 +2214,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .so-widget-tabbed-content .sow-slider-base ul li {
   background: #fff !important;
+  max-height: 930px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination {
   top: 20px !important;
@@ -2237,7 +2242,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
   text-indent: unset !important;
   color: #5a595c !important;
-  width: 220px !important;
+  width: 217px !important;
   height: 58px !important;
   float: left !important;
   outline: none;

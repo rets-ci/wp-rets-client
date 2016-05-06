@@ -54,7 +54,7 @@ while (have_posts()) : the_post();
   $_propertyType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
   $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
   $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
-  $totalLivingArea = ($get_living_area_terms[0]) ? $get_bathrooms_terms[0]->name : '' ;
+  $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '' ;
   $approximateLotSize = ($get_approximate_lot_size_terms[0]) ? $get_approximate_lot_size_terms[0]->name : '';
   $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $locationZip = ($get_location_zip_terms[0]) ? $get_location_zip_terms[0]->name : '';
