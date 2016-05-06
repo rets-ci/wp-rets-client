@@ -673,10 +673,7 @@ a:focus {
 .searchForm {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
-  margin: auto;
-  min-width: 785px;
   position: relative;
-  width: 65%;
   z-index: 9;
 }
 .searchForm .nav-tabs {
@@ -690,6 +687,9 @@ a:focus {
 }
 .searchForm .nav-tabs li {
   float: none;
+}
+.searchForm .nav-tabs li a {
+  line-height: 3.5em;
 }
 .searchForm > ul {
   margin: 0;
@@ -759,67 +759,59 @@ a:focus {
   border-radius: 5px 0 0 5px;
   color: #808285;
   position: relative;
-  width: 40%;
+  width: 37%;
   height: 4.5em;
 }
 .searchForm form .location .citiesSelection {
   background: #f8f8f8 none repeat scroll 0 0;
-  border-radius: 5px 0 0 5px;
-  color: #808285;
-  position: relative;
-  width: 38%;
-  height: 4.5em;
-}
-.searchForm form .location .citiesSelection .citiesSelection {
-  background: #f8f8f8 none repeat scroll 0 0;
   border: medium none;
   padding: 0.44em 0.6em;
 }
-.searchForm form .location .citiesSelection .select2 {
+.searchForm form .location .select2 {
   height: 63px;
   padding-left: 35px;
   color: #A7A9AC;
   min-width: 100%;
 }
-.searchForm form .location .citiesSelection .select2 .select2-selection {
+.searchForm form .location .select2 .select2-selection {
   border: none;
   background: none;
   height: 43px !important;
 }
-.searchForm form .location .citiesSelection .icon-location {
+.searchForm form .location .icon-location {
   bottom: 15px;
   left: 10px;
   position: absolute;
 }
-.searchForm form .location .citiesSelection .tags {
+.searchForm form .location .tags {
   /* Firefox 19+ */
   /* Firefox 18- */
 }
-.searchForm form .location .citiesSelection .tags::-webkit-input-placeholder {
+.searchForm form .location .tags::-webkit-input-placeholder {
   color: #242526;
 }
-.searchForm form .location .citiesSelection .tags::-moz-placeholder {
+.searchForm form .location .tags::-moz-placeholder {
   color: #242526;
 }
-.searchForm form .location .citiesSelection .tags:-moz-placeholder {
+.searchForm form .location .tags:-moz-placeholder {
   color: #242526;
 }
-.searchForm form .location .citiesSelection .tags:-ms-input-placeholder {
+.searchForm form .location .tags:-ms-input-placeholder {
   color: #242526;
 }
-.searchForm form .location .citiesSelection .select2-selection__arrow {
+.searchForm form .location .select2-selection__arrow {
   height: 55px;
   width: 50px;
 }
-.searchForm form .location .citiesSelection .select2-selection__arrow b {
+.searchForm form .location .select2-selection__arrow b {
   border-color: #a7a9ac transparent transparent;
 }
-.searchForm form .location .citiesSelection .select2-selection__rendered {
+.searchForm form .location .select2-selection__rendered {
   line-height: 52px !important;
   background: #f8f8f8;
   box-shadow: none;
 }
-.searchForm form .location .citiesSelection .select2-selection__choice {
+.searchForm form .location .select2-selection__choice {
   border: none;
   background: none;
   height: 43px !important;
@@ -900,7 +892,7 @@ a:focus {
   color: #A7A9AC;
   position: relative;
   cursor: pointer;
-  padding-left: 60px;
+  padding-left: 45px;
 }
 .searchForm form .sfBeds > span .sf-arrow,
 .searchForm form .sfBaths > span .sf-arrow,
@@ -2425,6 +2417,11 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   top: -30px;
   margin-bottom: -30px;
 }
+@media screen and (max-width: 780px) {
+  .panel-row-style-widgetRowBgsellRentMainWidgets .panel-grid-cell {
+    margin-bottom: 25px !important;
+  }
+}
 /**
  * WIDGET class 'hero-content'
  *
@@ -2451,6 +2448,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .hero-content .so-widget-sow-editor p {
   font-size: 1.1em;
   line-height: 2em;
+}
+.hero-content .so-widget-sow-editor p:last-child {
+  margin-top: 35px;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -6446,16 +6446,6 @@ body .ui-tooltip {
   body .frontPageSearchBlock .sf-property-quantity {
     display: none;
   }
-  body .searchForm > ul {
-    width: 49.6%;
-  }
-  body .searchForm > ul > li {
-    width: 49.2%;
-  }
-  body .searchForm > ul > li > a {
-    padding: 0 !important;
-    text-align: center;
-  }
   body.single-property .singlePropertyHeader {
     z-index: 9;
   }
@@ -6484,12 +6474,9 @@ body .ui-tooltip {
   body .menuAdaptive {
     display: block !important;
   }
-  body .searchForm {
-    min-width: 560px;
-  }
   body .searchForm form {
     border-radius: 0 0 5px 5px;
-    height: 296px;
+    height: 370px;
     padding: 9px;
   }
   body .searchForm form .location {
@@ -6501,12 +6488,12 @@ body .ui-tooltip {
     min-width: 99%;
   }
   body .searchForm form .sfBeds {
-    width: 49%;
+    width: 100%;
     border-radius: 5px;
   }
   body .searchForm form .sfBaths {
-    width: 49%;
-    margin-left: 10px;
+    width: 100%;
+    margin-top: 10px;
     border-radius: 5px;
   }
   body .searchForm form .sfPrice {
@@ -6540,6 +6527,17 @@ body .ui-tooltip {
   body .searchForm .sfPriceRange .lastRangeList {
     padding-left: 15px;
     text-align: center;
+  }
+  body .searchForm > ul {
+    float: none;
+    width: 100%;
+  }
+  body .searchForm > ul > li {
+    width: 100%;
+    text-align: center;
+  }
+  body .searchForm .sellRentBtns {
+    display: none;
   }
   body .oneCategory {
     margin: auto;
@@ -6682,5 +6680,8 @@ body .ui-tooltip {
   }
   .hideTabMobile {
     display: none;
+  }
+  .footerWidgetArea1 {
+    margin-top: 18px;
   }
 }

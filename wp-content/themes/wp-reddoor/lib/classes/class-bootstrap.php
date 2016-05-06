@@ -106,7 +106,7 @@ namespace UsabilityDynamics\RDC {
        */
       public function alter_supermap_query( $query, $atts ) {
 
-        wp_localize_script( 'supermap-advanced', 'sm_current_filter', array_merge($atts, (array)$_REQUEST['wpp_search']) );
+        wp_localize_script( 'supermap-advanced', 'sm_current_filter', array_merge($atts, ( isset( $_REQUEST['wpp_search'] ) ? (array) $_REQUEST['wpp_search'] : array() ) ) );
 
         /**
          * @todo: could not find other place for this

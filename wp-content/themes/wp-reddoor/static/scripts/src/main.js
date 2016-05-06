@@ -13,9 +13,9 @@
       heightStyle: "content"
     } );
 
-    if(jQuery( window ).width() < 992 ) {
-      jQuery('.rdc-carousel-wrapper .descriptionBlock').width(jQuery(window).width() - 10);
-    }
+    // if(jQuery( window ).width() < 992 ) {
+    //   jQuery('.rdc-carousel-wrapper .descriptionBlock').width(jQuery(window).width() - 10);
+    // }
 
     // Open Mobile Menu
     jQuery( '#header').find('.toggle' ).on( 'click', function () {
