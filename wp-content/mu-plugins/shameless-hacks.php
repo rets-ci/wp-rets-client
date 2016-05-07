@@ -12,6 +12,25 @@ define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
 if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy') {
   header( 'cache-control:no-cache, private' );
+
+  add_action('init', function() {
+
+
+    return;
+    
+    delete_post_meta(3280379, '_thumbnail_id');
+    $test = add_post_meta( 3280379, '_thumbnail_id', 3280427 );
+    //$test = set_post_thumbnail( 3280379, 3280427 );
+
+    if( !$test ) {
+      die('failed!' );
+    } else {
+      die( 'worked!' );
+    }
+
+  });
+
+
 }
 
 if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' && isset( $_GET[ 'test-stuff' ] ) ) {

@@ -267,6 +267,12 @@ function WPP_RPC_editProperty( $args ) {
   // set post status to draft since it may be inserting for a while due to large amount of terms
   $post_data[ 'post_status' ] = 'draft';
 
+  if( $post_idata['ID'] ) {
+    rdc_write_log( 'Running wp_insert_post for [' . $post_idata['ID'] . '].' );
+  } else {
+    rdc_write_log( 'Running wp_insert_post for [new post].' );
+  }
+
   $_post_id = wp_insert_post( $post_data, true );
 
   if( is_wp_error( $_post_id ) ) {
@@ -296,8 +302,6 @@ function WPP_RPC_editProperty( $args ) {
     // get simple url litst of already attached media
     if( $attached_media  ) {
 
-      // rdc_write_log( 'attached_media' . print_r($_already_attached_media, true ) );
-
       foreach( (array) $attached_media as $_attached_media_id => $_media ) {
         $_already_attached_media[ $_attached_media_id ] = $_media->guid;
       }
@@ -305,7 +309,7 @@ function WPP_RPC_editProperty( $args ) {
     }
 
     // delete all old attachments if the count of new media doesn't match up with old media
-    // rdc_write_log( 'Deleting old media because count does not match.' );
+    rdc_write_log( 'Deleting old media because count does not match.' );
 
     foreach( $attached_media as $_single_media_item ) {
       // rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
@@ -347,8 +351,19 @@ function WPP_RPC_editProperty( $args ) {
 
       // set the item with order of 1 as the thumbnail
       if( (int) $media['order'] === 1 ) {
-        set_post_thumbnail( $_post_id, $attach_id );
-        // rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
+        //set_post_thumbnail( $_post_id, $attach_id );
+
+        // No idea why but set_post_thumbnail() fails routinely as does update_post_meta, testing this method.
+        delete_post_meta($_post_id, '_thumbnail_id');
+        $_thumbnail_setting = add_post_meta( $_post_id, '_thumbnail_id', (int) $attach_id );
+
+        if( $_thumbnail_setting ) {
+          rdc_write_log( 'setting thumbnail [' . $attach_id  . '] to post [' . $_post_id . '] because it has order of 1, result: ' );
+        } else {
+          rdc_write_log( 'Error! Failured at setting thumbnail [' . $attach_id  . '] to post [' . $_post_id . ']'  );
+        }
+
+        //die('dying early!' );
       }
 
       // old logic of first checking that a new media url exists
@@ -420,6 +435,7 @@ function find_property_by_rets_id( $rets_id ) {
 
   // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
   $query = new WP_Query( array(
+    'post_status' => array( 'publish', 'draft' ),
     'post_type'   => 'property',
     'meta_key'    => 'rets_id',
     'meta_value'  => $rets_id,
@@ -427,7 +443,7 @@ function find_property_by_rets_id( $rets_id ) {
 
   // what if there is two - we fucked up somewhere before...
   if( count( $query->posts ) > 0 ) {
-    rdc_write_log( "Error! Multiple matches found for rets_id [" . $rets_id . "]." );
+    rdc_write_log( "Error! Multiple (".count( $query->posts ).") matches found for rets_id [" . $rets_id . "]." );
   }
 
   if( count( $query->posts ) > 0 ) {
