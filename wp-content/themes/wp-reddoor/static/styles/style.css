@@ -6434,8 +6434,12 @@ body .ui-tooltip {
   }
   body .toggle {
     position: relative;
-    right: 23px;
-    top: -6px;
+    right: -7px;
+    top: -12px;
+  }
+  body .toggle .icon.mobile-menu-toggle {
+    width: 30px;
+    height: 30px;
   }
   body .headerTopMenu {
     background: #F3F0E9 !important;
