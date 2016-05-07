@@ -20,7 +20,7 @@ if(!empty($post_thumbnail_id)) {
   <div class="container-fluid guide-wrapper">
   <div class="row site-content">
 
-      <div class="col-md-6 guide-block" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_background_url; ?>');">
+      <div class="col-md-6 guide-block" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_background_url; ?>'); background-size: cover;">
         <div class="guide-block-inner">
           <h1 class="guide-article-title"><?php the_title(); ?></h1>
           <div class="guide-article-description hidden-xs hidden-sm"><?php the_excerpt(); ?></div>
