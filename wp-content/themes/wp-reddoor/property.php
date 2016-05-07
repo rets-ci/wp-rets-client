@@ -75,14 +75,14 @@ while( have_posts() ) : the_post();
   $listing_id = ( $get_listing_id_terms[ 0 ] ) ? $get_listing_id_terms[ 0 ]->name : '';
 
   ?>
-  <div class="single-property">
+<div class="single-property">
   <div class="container-fluid ftrdImgGoTop">
 
     <?php get_template_part( 'static/views/property/slideshow' ); ?>
 
     <section id="propertyDetails" class="singlePropertyHeader">
       <div class="container">
-        <?php //die( '<pre>' . print_r( $property, true ) . '</pre>' ); ?>
+
         <div class="title">
           <span>Active</span>
           <div data-content-type="title"><?php the_title(); ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
@@ -121,80 +121,81 @@ while( have_posts() ) : the_post();
   </div>
 
   <div class="container">
+
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php echo $property[ 'remarks' ]; ?>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 col-lg-8 col-xs-12">
-      <div class="container-fluid">
-        <div class="row propertyAttribute">
-      <div class="col-xs-12 col-lg-4 col-md-4">
-            <div>
+
+    <div class="row no-gutter">
+      <div class="col-md-8 col-lg-8 col-xs-12">
+        <div class="container-fluid">
+
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-data-checked-outline"></span>
             </div>
             <span>Last Checked</span>
             <strong>1 minute ago</strong>
-      </div>
-          <?php if( !empty( $updatedProperty ) ) { ?>
-            <div class="col-xs-12 col-lg-4 col-md-4">
-          <div>
-            <span class="icon-wpproperty-data-updated-outline"></span>
           </div>
-          <span>Last Updated</span>
-          <strong>
-            <?php $dateUpdt = strtotime( "$updatedProperty GMT" );
-            echo date( 'F j, Y', $dateUpdt );
-            ?>
-          </strong>
-      </div>
+
+          <?php if( !empty( $updatedProperty ) ) { ?>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
+              <span class="icon-wpproperty-data-updated-outline"></span>
+            </div>
+            <span>Last Updated</span>
+            <strong><?php echo date( 'F j, Y', strtotime( "$updatedProperty GMT" ) ); ?></strong>
+          </div>
           <?php } ?>
+
           <?php if( !empty( $daysOnMarket ) ) { ?>
-            <div class="col-xs-12 col-lg-4 col-md-4">
-        <div>
-          <span class="icon-wpproperty-data-days-outline"></span>
-        </div>
-        <span>Days on Market</span>
-        <strong><?php echo $daysOnMarket; ?></strong>
-      </div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
+              <span class="icon-wpproperty-data-days-outline"></span>
+            </div>
+            <span>Days on Market</span>
+            <strong><?php echo $daysOnMarket; ?></strong>
+          </div>
           <?php } ?>
-      </div>
-      </div>
+
+        </div>
       </div>
     </div>
-    <div class="row">
+
+    <div class="row" data-row-type="property-facts">
       <div class="col-xs-12 col-lg-8 col-md-12">
-        <h4><?php _e( 'Property Facts' ) ?></h4>
+        <h4><?php _e( 'Property Highlights' ) ?></h4>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 col-lg-8 col-xs-12">
-          <div class="container-fluid">
-            <div class="row">
+
+    <div class="row no-gutter" data-row-type="property-facts">
+      <div class="col-md-8 col-lg-8 col-xs-12">
+        <div class="container-fluid">
+
           <?php if( !empty( Utils::get_multiple_terms( 'design', $property[ 'ID' ], 'name' ) ) ){ ?>
-
-              <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
-
-          <div class="col-md-12">
-            <div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-listing-house-outline"></span>
             </div>
             <span><?php _e( 'Design' ); ?></span>
             <strong><?php echo Utils::get_multiple_terms( 'design', $property[ 'ID' ], 'name', 'a' ); ?></strong>
           </div>
-                <?php } ?>
-                <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
-                  <div class="col-md-12">
-            <div>
-              <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
+          <?php } ?>
+
+          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
+          <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
+              </div>
+              <span><?php _e( 'Style' ); ?></span>
+              <strong><?php echo Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name', 'a' ); ?></strong>
             </div>
-            <span><?php _e( 'Style' ); ?></span>
-            <strong><?php echo Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name', 'a' ); ?></strong>
-          </div>
-                <?php } ?>
-                <div class="col-md-12">
-            <div>
+          <?php } ?>
+
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-attribute-exterior-outline"></span>
             </div>
             <span><?php _e( 'Year Built' ); ?></span>
@@ -206,20 +207,20 @@ while( have_posts() ) : the_post();
               } ?>
             </strong>
           </div>
-        </div>
-        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+
           <?php if( !empty( $subdivision ) ) { ?>
-            <div class="col-md-12">
-            <div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
             </div>
             <span><?php _e( 'Subdivision' ); ?></span>
             <strong><?php _e( $subdivision ); ?></strong>
           </div>
           <?php } ?>
+
           <?php if( !empty( $inside_city ) ) { ?>
-            <div class="col-md-12">
-            <div>
+            <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
             </div>
             <span><?php _e( 'Inside City' ); ?></span>
@@ -233,45 +234,47 @@ while( have_posts() ) : the_post();
             </strong>
           </div>
           <?php } ?>
+
           <?php if( !empty( $location_county ) ) { ?>
-            <div class="col-md-12">
-            <div>
+            <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-listing-land-outline"></span>
             </div>
             <span><?php _e( 'County' ); ?></span>
             <strong><?php _e( $location_county ); ?></strong>
           </div>
           <?php } ?>
-        </div>
-        <div class="col-xs-12 col-md-4 col-lg-4 propertyFacts">
+
           <?php if( !empty( $elementary_school ) ) { ?>
-            <div class="col-md-12">
-            <div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-school-elementary-outline"></span>
             </div>
             <span><?php _e( 'Elementary School' ); ?></span>
             <strong><?php _e( $elementary_school ); ?></strong>
           </div>
           <?php } ?>
+
           <?php if( !empty( $middle_school ) ) { ?>
-            <div class="col-md-12">
-            <div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-school-middle-outline"></span>
             </div>
             <span><?php _e( 'Middle School' ); ?></span>
             <strong><?php _e( $middle_school ); ?></strong>
           </div>
           <?php } ?>
+
           <?php if( !empty( $high_school ) ) { ?>
-            <div class="col-md-12">
-            <div>
+          <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-school-high-outline"></span>
             </div>
             <span><?php _e( 'High School' ); ?></span>
             <strong><?php _e( $high_school ); ?></strong>
           </div>
           <?php } ?>
-        </div>
+
         </div>
       </div>
     </div>
@@ -395,7 +398,7 @@ while( have_posts() ) : the_post();
           </div>
         <?php } ?>
 
-            <div class="col-xs-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-md-4 col-lg-4">
 
           <div class="ambItem">
           <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
@@ -949,44 +952,77 @@ while( have_posts() ) : the_post();
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <ul class="col-xs-12">
-          <li><div><?php _e( 'Agent: ' ); ?>
-              <b><?php echo Utils::get_multiple_terms( 'listing_agent_name', $property[ 'ID' ], 'name', 'a' ); ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Agent Phone Number: ' ); ?>
-              <b><?php echo ( !empty( $listing_agent_phone_number ) ) ? $listing_agent_phone_number : '';
-                if( $listing_agent_phone_extension ) {
-                  echo ', ' . $listing_agent_phone_extension;
-                } ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Office: ' ); ?>
-              <b><?php echo Utils::get_multiple_terms( 'listing_office', $property[ 'ID' ], 'name', 'a' ); ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Office Phone Number: ' ); ?>
-              <b><?php echo Utils::get_multiple_terms( 'listing_office_phone_number', $property[ 'ID' ], 'name', 'a' ); ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'MLS ID: ' ); ?>
-              <b><?php echo Utils::get_multiple_terms( 'mls_id', $property[ 'ID' ], 'name', 'a' ); ?></b></div><b class="clear"></b></li>
-        </ul>
-        <ul class="col-xs-12">
-          <li><div><img src="<?php echo ( !empty( $property[ 'data_source_logo_2' ] ) ) ? $property[ 'data_source_logo_2' ] : ''; ?>" alt=""></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Data Source: ' ); ?><b><?php _e( $data_source ); ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Data Property ID: ' ); ?><b><?php echo $listing_id; ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Last Checked: ' ); ?>
-              <b><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></b></div><b class="clear"></b></li>
-          <li><div><?php _e( 'Last Updated: ' ); ?><b><?php
-                $dateUpdt = '';
-                $dateUpdt = strtotime( "$updatedProperty GMT" );
-                echo date( 'F j, Y g:i A T', $dateUpdt );
-                ?>
-            </b>
-          </div><b class="clear"></b></li>
-          <li><div><?php _e( 'Days on site: ' ); ?>
-              <b><?php echo human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ); ?></b></div><b class="clear"></b></li>
-        </ul>
-        <div class="clear"></div>
+
+      <div class="col-md-8">
+
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <ul class="underlined-list">
+              <li>
+                <span class="field-label"><?php _e( 'Agent: ' ); ?></span>
+                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_agent_name', $property[ 'ID' ], 'name', 'a' ); ?></span>
+              </li>
+
+              <li>
+                <span class="field-label"><?php _e( 'Agent Phone Number: ' ); ?></span>
+                <span class="field-value"><?php echo ( !empty( $listing_agent_phone_number ) ) ? $listing_agent_phone_number : ''; if( $listing_agent_phone_extension ) { echo ', ' . $listing_agent_phone_extension;} ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'Office: ' ); ?></span>
+                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_office', $property[ 'ID' ], 'name', 'a' ); ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'Office Phone Number: ' ); ?></span>
+                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_office_phone_number', $property[ 'ID' ], 'name', 'a' ); ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'MLS ID: ' ); ?></span>
+                <span class="field-value"><?php echo Utils::get_multiple_terms( 'mls_id', $property[ 'ID' ], 'name', 'a' ); ?></span>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <ul class="underlined-list">
+              <li>
+                <span class="field-label"><?php _e( 'Data Source: ' ); ?></span>
+                <span class="field-value"><?php _e( $data_source ); ?></span>
+              </li>
+              <li class="hidden">
+                <span class="field-label"><?php _e( 'Data Property ID: ' ); ?></span>
+                <span class="field-value"><?php echo $listing_id; ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'Last Checked: ' ); ?></span>
+                <span class="field-value"><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'Last Updated: ' ); ?>
+                <span class="field-value"><?php echo date( 'F j, Y g:i A T', strtotime( "$updatedProperty GMT" ) ); ?></span>
+              </li>
+              <li>
+                <span class="field-label"><?php _e( 'Days on site: ' ); ?></span>
+                <span class="field-value"><?php echo human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ); ?></span>
+              </li>
+              <li>
+                <span class="field-label"><img src="<?php echo ( !empty( $property[ 'data_source_logo_2' ] ) ) ? $property[ 'data_source_logo_2' ] : ''; ?>" alt=""></span>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
       </div>
-      </div>
+    </div>
   </div>
 
+</div>
 <?php endwhile; ?>
-  </div>
 
 <?php get_footer(); ?>

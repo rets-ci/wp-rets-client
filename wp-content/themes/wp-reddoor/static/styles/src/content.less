@@ -1528,6 +1528,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     font-size: 1.9em;
     font-weight: 400;
     color: #5A595C;
+    margin-bottom: 1.5em;
   }
 
   .bottomSeparate{
@@ -1548,16 +1549,17 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     background-size: cover;
   }
 
-
   .ftrdImgGoTop {
     top: -30px;
+    margin-bottom: 2em;
   }
+
   .singleRemarks{
     font-size: 1.2em;
     line-height: 1.75em;
-    margin-bottom: 25px;
-    margin-top: 30px;
+    margin-bottom: 2em;
   }
+
   .singlePropertyHeader{
     background: #F3F0EA;
     padding: 30px 0;
@@ -1700,12 +1702,54 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     }
 
   }
-  .propertyFacts{
-    margin-top: 20px;
-    padding: 0;
-    .col-md-12{
-      padding: 0;
+
+
+  // card that shows an icon for the attribute, label and text
+  div.property-detail-wrapper {
+
+    // minimum height so icon fits nicely vertically
+    min-height: 80px;
+
+    div.property-detail-icon-wrapper {
+      border: 1px solid #dedede;
+      border-radius: 50%;
+      float: left;
+      font-size: 1.5em;
+      margin-right: 15px;
+      margin-top: 0;
+      padding: 9px 15px;
+      span {
+        color: #a7a9ac;
+        display: block;
+        font-size: 1em;
+        height: 25px;
+        margin-bottom: 5px;
+        margin-top: 8px;
+        text-align: center;
+        width: 25px;
+      }
     }
+
+    &>span{
+      display: block;
+      font-weight: 100;
+      color: #919093;
+      font-size: 1em;
+      margin-top: 5px;
+      margin-bottom: 3px;
+    }
+
+    &>strong{
+      font-weight: 300;
+      font-size: 1.2em;
+      color: #5F5F5F;
+    }
+
+  }
+
+
+  .propertyFacts{
+
     &>div{
       margin-bottom: 37px;
       div{
@@ -1727,23 +1771,12 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           width: 25px;
         }
       }
-      span{
-        display: block;
-        color: #919093;
-        font-size: 1em;
-        margin-top: 5px;
-        margin-bottom: 3px;
-      }
-      strong{
-        font-weight: 400;
-        font-size: 1.2em;
-      }
     }
+
+
   }
   .areaMapBlock{
-    .col-lg-7{
-      margin: 0 0 15px 0;
-    }
+
     .singleWalkScore{
       margin-top: 25px;
       margin-bottom: 15px;
@@ -1792,7 +1825,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     }
     .nav-tabs{
       border-bottom-width: 0px;
-      margin-top: 20px;
+
       li{
         width: 25%;
         text-align: center;
@@ -1835,8 +1868,8 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
   }
   .propertyDetails{
     .col-lg-7{
-      margin: 15px 0;
     }
+
     .nav-tabs{
       border-bottom-width: 0px;
       margin-top: 20px;
@@ -1923,39 +1956,51 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       }
     }
   }
-  .listingProvider{
-    .col-lg-8{
-      margin: 0 0 15px 0;
-      ul{
-        width: 40%;
-        float: left;
-        &:nth-child(odd){
-          margin-right: 10%;
+
+  ul.underlined-list {
+
+    > li {
+      border-bottom: 1px solid #dedede;
+      line-height: 1.3em;
+      padding: 1em 0;
+      font-size: 1.1em;
+
+      &:last-child{
+
+        // hide the last line on big screens only
+        @media screen and (min-width: @adaptMobile) {
+          border-bottom: 0;
         }
-        &:nth-child(even){
-          margin-left: 10%;
-        }
-        li{
-          div{
-            border-bottom: 1px solid rgb(222, 222, 222);
-            float: left;
-            padding-bottom: 10px;
-            padding-top: 10px;
-          }
-          &:last-child{
-            div {
-              border-bottom: 0;
-            }
-          }
-        }
+
       }
+
+      .field-label {
+        color: #919093;
+        font-weight: 100;
+      }
+
+      .field-value {
+        color: #5A595C;
+        font-weight: 500;
+      }
+
     }
+
+  }
+
+
+  .listingProvider{
+
+    // last thing on single property page
+    margin-bottom: 3em;
+
     .italicText{
       color: #919093;
       font-style: italic;
       margin: 5% 0;
       line-height: 1.8em;
     }
+
   }
   .rdc-agents-carousel-container{
     z-index: 10;
