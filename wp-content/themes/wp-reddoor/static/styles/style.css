@@ -67,6 +67,9 @@
   font-weight: 300;
   height: 55px;
 }
+.menu-header-container .menuDesktop > li:last-child {
+  margin-right: 0;
+}
 .menu-header-container .menuDesktop > li a {
   font-size: 1.2em;
   color: #5a595c;
