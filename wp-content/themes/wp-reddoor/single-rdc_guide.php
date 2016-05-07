@@ -15,6 +15,9 @@ if(!empty($post_thumbnail_id)) {
   $_background_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 }
 
+// check if there is a next post link
+$have_next_post_link = get_next_post_link() ? true : false;
+
 ?>
 <?php get_header(''); ?>
   <div class="container-fluid guide-wrapper">
@@ -27,12 +30,20 @@ if(!empty($post_thumbnail_id)) {
         </div>
 
         <div class="row guide-actions">
+
+          <?php if( get_next_post_link() ) { ?>
           <div class="col-md-6 guide-action-button navigation-black">
             <a href="<?php echo $_term->permalink; ?>" class="back-to-guide"><?php printf( __('<- Back to %s ', 'rdc' ), $_term->name ); ?></a>
           </div>
           <div class="col-md-6 guide-action-button navigation-red">
             <?php next_post_link( '%link', __( 'Go to Next Article ->' ) ); ?>
           </div>
+          <?php } else { ?>
+          <div class="col-md-12 guide-action-button navigation-black">
+            <a href="<?php echo $_term->permalink; ?>" class="back-to-guide"><?php printf( __('<- Back to %s ', 'rdc' ), $_term->name ); ?></a>
+          </div>
+          <?php } ?>
+
         </div>
 
       </div>
