@@ -1588,6 +1588,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-size: 1.9em;
   font-weight: 400;
   color: #5A595C;
+  margin-bottom: 1.5em;
 }
 .single-property .bottomSeparate {
   border-bottom: 1px solid #dedede;
@@ -1607,12 +1608,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .ftrdImgGoTop {
   top: -30px;
+  margin-bottom: 2em;
 }
 .single-property .singleRemarks {
   font-size: 1.2em;
   line-height: 1.75em;
-  margin-bottom: 25px;
-  margin-top: 30px;
+  margin-bottom: 2em;
 }
 .single-property .singlePropertyHeader {
   background: #F3F0EA;
@@ -1745,12 +1746,40 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-weight: 400;
   font-size: 1.2em;
 }
-.single-property .propertyFacts {
-  margin-top: 20px;
-  padding: 0;
+.single-property div.property-detail-wrapper {
+  min-height: 80px;
 }
-.single-property .propertyFacts .col-md-12 {
-  padding: 0;
+.single-property div.property-detail-wrapper div.property-detail-icon-wrapper {
+  border: 1px solid #dedede;
+  border-radius: 50%;
+  float: left;
+  font-size: 1.5em;
+  margin-right: 15px;
+  margin-top: 0;
+  padding: 9px 15px;
+}
+.single-property div.property-detail-wrapper div.property-detail-icon-wrapper span {
+  color: #a7a9ac;
+  display: block;
+  font-size: 1em;
+  height: 25px;
+  margin-bottom: 5px;
+  margin-top: 8px;
+  text-align: center;
+  width: 25px;
+}
+.single-property div.property-detail-wrapper > span {
+  display: block;
+  font-weight: 100;
+  color: #919093;
+  font-size: 1em;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+.single-property div.property-detail-wrapper > strong {
+  font-weight: 300;
+  font-size: 1.2em;
+  color: #5F5F5F;
 }
 .single-property .propertyFacts > div {
   margin-bottom: 37px;
@@ -1773,20 +1802,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-top: 8px;
   text-align: center;
   width: 25px;
-}
-.single-property .propertyFacts > div span {
-  display: block;
-  color: #919093;
-  font-size: 1em;
-  margin-top: 5px;
-  margin-bottom: 3px;
-}
-.single-property .propertyFacts > div strong {
-  font-weight: 400;
-  font-size: 1.2em;
-}
-.single-property .areaMapBlock .col-lg-7 {
-  margin: 0 0 15px 0;
 }
 .single-property .areaMapBlock .singleWalkScore {
   margin-top: 25px;
@@ -1836,7 +1851,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .areaMapBlock .nav-tabs {
   border-bottom-width: 0px;
-  margin-top: 20px;
 }
 .single-property .areaMapBlock .nav-tabs li {
   width: 25%;
@@ -1875,9 +1889,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-bottom: 20px;
   height: 420px;
   background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
-}
-.single-property .propertyDetails .col-lg-7 {
-  margin: 15px 0;
 }
 .single-property .propertyDetails .nav-tabs {
   border-bottom-width: 0px;
@@ -1964,27 +1975,27 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .single-property .propertyDetails .pdRoomsBlock > ul li:first-child {
   border-bottom: 1px solid #dedede;
 }
-.single-property .listingProvider .col-lg-8 {
-  margin: 0 0 15px 0;
-}
-.single-property .listingProvider .col-lg-8 ul {
-  width: 40%;
-  float: left;
-}
-.single-property .listingProvider .col-lg-8 ul:nth-child(odd) {
-  margin-right: 10%;
-}
-.single-property .listingProvider .col-lg-8 ul:nth-child(even) {
-  margin-left: 10%;
-}
-.single-property .listingProvider .col-lg-8 ul li div {
+.single-property ul.underlined-list > li {
   border-bottom: 1px solid #dedede;
-  float: left;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  line-height: 1.3em;
+  padding: 1em 0;
+  font-size: 1.1em;
 }
-.single-property .listingProvider .col-lg-8 ul li:last-child div {
-  border-bottom: 0;
+@media screen and (min-width: 992px) {
+  .single-property ul.underlined-list > li:last-child {
+    border-bottom: 0;
+  }
+}
+.single-property ul.underlined-list > li .field-label {
+  color: #919093;
+  font-weight: 100;
+}
+.single-property ul.underlined-list > li .field-value {
+  color: #5A595C;
+  font-weight: 500;
+}
+.single-property .listingProvider {
+  margin-bottom: 3em;
 }
 .single-property .listingProvider .italicText {
   color: #919093;
@@ -6419,6 +6430,10 @@ a.btn-rdc {
 }
 .btn-rdc-wire.btn-lg {
   padding: 1.3em 4em;
+}
+.row.no-gutter [class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 @media screen and (min-width: 992px) {
   .home .select2-dropdown {
