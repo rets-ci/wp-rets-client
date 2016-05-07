@@ -93,9 +93,24 @@
   }
   .tabbedWidgetMobile{
     display: none;
+
     .ui-accordion-header{
       background: #fff;
-      border: 1px solid #DCD6CA;
+
+      border-top: 1px solid #DCD6CA;
+      border-right: 1px solid #DCD6CA;
+      border-left: 1px solid #DCD6CA;
+
+      // explicitly disable top border since its being added for all tabs elsewhere.
+      // we can't use bottom border because the last-child is not a tab
+      border-top: 0;
+
+      // Only add the bottom border if its the last item to avoid double-stacked borders on mobile tabs
+      &:first-child {
+        border-top: 1px solid #DCD6CA;
+      }
+
+
       border-radius: 0 !important;
       margin-bottom: -2px;
       padding: 1em 0.5em 1em 0.7em;
@@ -103,7 +118,7 @@
       display: flex;
       &:hover{
         background: #fff;
-        border: 1px solid #DCD6CA;
+        border-color: #DCD6CA;
         border-bottom: 1px solid @buttons;
         .sow-icon-reddoorcompany{
           color: @buttons;
@@ -157,26 +172,36 @@
       top: 20px !important;
       text-align: center !important;
       height: 80px;
+
         li{
-          border: 1px solid #ededed;
+
+          border-top: 1px solid #ededed;
+          border-bottom: 1px solid #ededed;
+          border-left: 1px solid #ededed;
+
+          &:last-child {
+            border-right: 1px solid #ededed;
+          }
+
+
           height: 60px !important;
           width: 220px !important;
           margin-left: -5px;
+
           &:hover{
             border-bottom: 1px solid #F10D2C;
             span{
               color: #F10D2C;
             }
           }
+
           &.sow-active{
             border-bottom: 1px solid #F10D2C;
             span{
               color: #F10D2C;
             }
-            div{
-
-            }
           }
+
           a{
             text-indent: unset !important;
             color: #5a595c !important;
@@ -206,7 +231,9 @@
               float: left;
             }
           }
-      }
+        }
+
+
     }
   .sow-slider-image-wrapper{
     padding: 80px 0px !important;

@@ -2164,16 +2164,22 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header {
   background: #fff;
-  border: 1px solid #DCD6CA;
+  border-top: 1px solid #DCD6CA;
+  border-right: 1px solid #DCD6CA;
+  border-left: 1px solid #DCD6CA;
+  border-top: 0;
   border-radius: 0 !important;
   margin-bottom: -2px;
   padding: 1em 0.5em 1em 0.7em;
   font-size: 1em;
   display: flex;
 }
+.so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:first-child {
+  border-top: 1px solid #DCD6CA;
+}
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover {
   background: #fff;
-  border: 1px solid #DCD6CA;
+  border-color: #DCD6CA;
   border-bottom: 1px solid #d03528;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-header:hover .sow-icon-reddoorcompany {
@@ -2222,10 +2228,15 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   height: 80px;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li {
-  border: 1px solid #ededed;
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+  border-left: 1px solid #ededed;
   height: 60px !important;
   width: 220px !important;
   margin-left: -5px;
+}
+.so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:last-child {
+  border-right: 1px solid #ededed;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li:hover {
   border-bottom: 1px solid #F10D2C;
