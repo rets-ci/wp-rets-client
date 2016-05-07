@@ -67,6 +67,9 @@
   font-weight: 300;
   height: 55px;
 }
+.menu-header-container .menuDesktop > li:last-child {
+  margin-right: 0;
+}
 .menu-header-container .menuDesktop > li a {
   font-size: 1.2em;
   color: #5a595c;
@@ -2465,9 +2468,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 .hero-content .so-widget-sow-editor p {
   font-size: 1.1em;
   line-height: 2em;
-}
-.hero-content .so-widget-sow-editor p:last-child {
-  margin-top: 35px;
 }
 /* =Footer
 ------------------------------------------------- */
@@ -6390,6 +6390,9 @@ body .ui-tooltip {
 
 
 
+a.btn-rdc {
+  display: inline-block;
+}
 .btn-rdc {
   background-color: #CF3428;
   border-color: #CF3428;
