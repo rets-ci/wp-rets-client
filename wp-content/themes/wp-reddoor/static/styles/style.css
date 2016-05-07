@@ -2469,9 +2469,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-size: 1.1em;
   line-height: 2em;
 }
-.hero-content .so-widget-sow-editor p:last-child {
-  margin-top: 35px;
-}
 /* =Footer
 ------------------------------------------------- */
 .footerBg1 {
@@ -6393,6 +6390,9 @@ body .ui-tooltip {
 
 
 
+a.btn-rdc {
+  display: inline-block;
+}
 .btn-rdc {
   background-color: #CF3428;
   border-color: #CF3428;
