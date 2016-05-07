@@ -32,6 +32,26 @@ if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' &
 
   header( 'cache-control:no-cache, private' );
 
+  function delete_rets_duplicates() {
+    global $wpdb;
+
+    
+    // Find all RETS IDs that have multiple posts associated with them.
+    $_duplicates = $wpdb->get_col( "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC;" );
+
+    $all_deleted = array();
+    foreach( $_duplicates as $_has_duplicates ) {
+
+      if( $_deleted = wp_delete_post( $_delete_me, true ) ) {
+        $all_deleted[] = $_deleted ;
+      }
+
+      // die( '<pre>' . print_r( $_deleted, true ) . '</pre>' );
+    }
+
+    return $all_deleted;
+  }
+
   function delete_rets_listings() {
     global $wpdb;
 

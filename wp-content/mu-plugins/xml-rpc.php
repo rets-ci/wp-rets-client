@@ -9,6 +9,29 @@
  * @version 0.5.0
  */
 
+/**
+ * Delete Elasticsearch documents when RETS properties are deleted.
+ *
+ * curl -XDELETE https://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/v5/property/3215457
+ *
+ */
+add_action('before_delete_post', function( $post_id ) {
+
+  // Do nothing if does not have a "rets_index"
+  if( !$_rets_index = get_post_meta( $post_id, 'rets_index', true ) ) {
+    return;
+  }
+
+  // temporary hack to get post deletion/updates to work faster globally
+  remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+
+  // this is a fire-and-forget event, we should be recording failure son our end to keep the WP process quicker
+  wp_remote_request('https://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/' . $_rets_index . '/property/' . $post_id, array(
+    'method' => 'DELETE',
+    'blocking' => false
+  ));
+
+});
 
 // add ability to get wpp_settings so we can extra mapping settings
 add_filter( 'xmlrpc_blog_options', function( $options ) {
@@ -285,7 +308,7 @@ function WPP_RPC_editProperty( $args ) {
     // rdc_write_log( 'Deleting old media because count does not match.' );
 
     foreach( $attached_media as $_single_media_item ) {
-      rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
+      // rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
       wp_delete_attachment( $_single_media_item->ID, true );
     }
 
@@ -325,7 +348,7 @@ function WPP_RPC_editProperty( $args ) {
       // set the item with order of 1 as the thumbnail
       if( (int) $media['order'] === 1 ) {
         set_post_thumbnail( $_post_id, $attach_id );
-        rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
+        // rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
       }
 
       // old logic of first checking that a new media url exists
@@ -388,21 +411,33 @@ function rdc_fix_rets_image_url( $id, $size = false ) {
 function find_property_by_rets_id( $rets_id ) {
   global $wpdb;
 
-  $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
+  $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
 
   // temp support for old format
-  if( !$_actual_post_id ) {
-    $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
+  if( empty( $_actual_post_id ) ) {
+    $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
   }
 
-  if( $_actual_post_id ) {
-    rdc_write_log( 'Found ' . $_actual_post_id . ' using $rets_id: ' . $rets_id);
-    return $_actual_post_id;
+  // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
+  $query = new WP_Query( array(
+    'post_type'   => 'property',
+    'meta_key'    => 'rets_id',
+    'meta_value'  => $rets_id,
+  ) );
+
+  // what if there is two - we fucked up somewhere before...
+  if( count( $query->posts ) > 0 ) {
+    rdc_write_log( "Error! Multiple matches found for rets_id [" . $rets_id . "]." );
   }
 
+  if( count( $query->posts ) > 0 ) {
+    rdc_write_log( 'Found ' . $query->posts[0]->ID . ' using $rets_id: ' . $rets_id);
+    return $query->posts[0]->ID;
+  } else {
+    rdc_write_log( 'Did not find any post ID using $rets_id [' . $rets_id . '].' );
+  }
 
   return null;
-
 
 }
 
