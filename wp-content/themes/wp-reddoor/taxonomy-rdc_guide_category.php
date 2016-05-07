@@ -41,7 +41,8 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
     </div>
 
     <div class="col-md-6 guide-overview-list">
-      <?php foreach( $_this_category_guides as $_some_guide ) { ?>
+      <div class="guide-overview-list-inner-wrapper">
+        <?php foreach( $_this_category_guides as $_some_guide ) { ?>
         <div class="guide-group-wrapper">
 
           <div class="row">
@@ -65,7 +66,8 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
           </div>
 
         </div>
-      <?php } ?>
+        <?php } ?>
+      </div>
     </div>
 
   </div>

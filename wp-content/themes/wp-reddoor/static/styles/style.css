@@ -3290,11 +3290,16 @@ body.single-rdc_guide .guide-actions .guide-action-button > a {
 body.post-type-archive-rdc_guide .guide-overview-list,
 body.tax-rdc_guide_category .guide-overview-list,
 body.single-rdc_guide .guide-overview-list {
-  padding-top: 6em;
+  padding-top: 0em;
   padding-bottom: 0;
   background-color: #F3F0E9;
   min-height: 600px;
   overflow: scroll;
+}
+body.post-type-archive-rdc_guide .guide-overview-list .guide-overview-list-inner-wrapper,
+body.tax-rdc_guide_category .guide-overview-list .guide-overview-list-inner-wrapper,
+body.single-rdc_guide .guide-overview-list .guide-overview-list-inner-wrapper {
+  padding-top: 6em;
 }
 body.post-type-archive-rdc_guide .guide-article-wrapper,
 body.tax-rdc_guide_category .guide-article-wrapper,

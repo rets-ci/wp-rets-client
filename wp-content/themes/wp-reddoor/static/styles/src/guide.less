@@ -103,12 +103,20 @@ body.post-type-archive-rdc_guide, body.tax-rdc_guide_category, body.single-rdc_g
   }
 
   .guide-overview-list {
-    padding-top: 6em;
+
+    // be sure not to give any top padding here, it'll break the JS set height
+    padding-top: 0em;
     // set to 0, then increased by JS
     padding-bottom: 0;
     background-color: #F3F0E9;
     min-height: 600px;
     overflow: scroll;
+
+    // enough to lower the guide lists so that the subnavigation overflow doesn't cover them
+    .guide-overview-list-inner-wrapper {
+      padding-top: 6em;
+    }
+
   }
 
   .guide-article-wrapper {
