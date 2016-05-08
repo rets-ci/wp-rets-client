@@ -1667,13 +1667,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   right: 15px;
   top: 0;
   z-index: 20;
-  padding-bottom: 40px;
+  padding-bottom: 38px;
 }
 .single-property .singlePropertyHeader .oneAgent img {
   border-radius: 50%;
   display: block;
   height: 150px;
-  margin: 5% auto 3%;
+  margin: 3px auto 0;
   width: 150px;
 }
 .single-property .singlePropertyHeader .oneAgent span {
@@ -1974,6 +1974,32 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .propertyDetails .pdRoomsBlock > ul li:first-child {
   border-bottom: 1px solid #dedede;
+}
+.single-property section.attribute-group-title {
+  display: flex;
+}
+.single-property section.attribute-group-title > div {
+  border: 1px solid #dedede;
+  border-radius: 50%;
+  float: left;
+  font-size: 1.5em;
+  height: 50px;
+  margin-right: 15px;
+  margin-top: 0;
+  width: 50px;
+  display: flex;
+}
+.single-property section.attribute-group-title > div > span {
+  align-self: center;
+  font-size: 1.3em;
+  text-align: center;
+  width: 100%;
+  color: #a6a9ac;
+}
+.single-property section.attribute-group-title span {
+  float: left;
+  font-size: 1.5em;
+  align-self: center;
 }
 .single-property ul.underlined-list > li {
   border-bottom: 1px solid #dedede;

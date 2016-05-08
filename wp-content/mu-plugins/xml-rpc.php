@@ -9,6 +9,34 @@
  * @version 0.5.0
  */
 
+add_action('init', function() {
+
+  // Needed for import associationa and tracking of what schedule a listing came from
+  register_taxonomy( 'rets_schedule', array( 'property' ), array(
+    'hierarchical'      => false,
+    'update_count_callback' => null,
+    'labels'            => array(
+      'name'              => _x( 'Schedules', 'taxonomy general name' ),
+      'singular_name'     => _x( 'Schedule', 'taxonomy singular name' ),
+      'search_items'      => __( 'Search Schedules' ),
+      'all_items'         => __( 'All Schedules' ),
+      'parent_item'       => __( 'Parent Schedule' ),
+      'parent_item_colon' => __( 'Parent Schedule:' ),
+      'edit_item'         => __( 'Edit Schedule' ),
+      'update_item'       => __( 'Update Schedule' ),
+      'add_new_item'      => __( 'Add New Schedule' ),
+      'new_item_name'     => __( 'New Schedule Name' ),
+      'menu_name'         => __( 'Schedules' ),
+    ),
+    'show_ui'           => true,
+    'show_admin_column' => false,
+    'query_var'         => false,
+    'rewrite'           => false
+  ) );
+
+});
+
+
 /**
  * Delete Elasticsearch documents when RETS properties are deleted.
  *
