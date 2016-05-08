@@ -84,7 +84,7 @@
 
         <input name="ignore_submitmessage" type="hidden" value="Thank you. We will be in touch with you shortly."/>
         <input name="ignore_linkbuttontext" type="hidden" value=""/>
-        <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('success'); ?>"/>
+        <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
         <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
         <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
