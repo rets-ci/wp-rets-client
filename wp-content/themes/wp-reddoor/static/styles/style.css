@@ -2994,7 +2994,6 @@ input[type="submit"]:active {
 }
 .popup .popup-inner-wrapper {
   width: 600px;
-  max-height: 500px;
   height: 85%;
   margin: auto;
   align-self: center;
