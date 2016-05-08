@@ -3569,6 +3569,11 @@ html.rdc-mobile-menu-opened {
 .attribute-content .attributer-inner-wrapper {
   padding: 3em 2em 1em 2em;
 }
+@media screen and (max-width: 992px) {
+  .attribute-content .wpp-attribute-wrapper {
+    width: 100%;
+  }
+}
 .attribute-content .wpp-attribute-wrapper .attribute-group-title {
   margin-bottom: 1em;
 }

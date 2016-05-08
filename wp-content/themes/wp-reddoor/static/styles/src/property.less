@@ -13,6 +13,11 @@
 
   .wpp-attribute-wrapper {
 
+    // go to full width on mobile, for some reason it doesn't do it automatically, perhaps to do isotope
+    @media screen and (max-width: @adaptMobile) {
+      width: 100%;
+    }
+
     //padding: 1em;
 
     .attribute-group-title {
