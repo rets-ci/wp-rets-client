@@ -1,4 +1,4 @@
-<div class="generalContact popup contact-popup" style="display: none;">
+<div class="popupGeneralContact popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -42,7 +42,7 @@
         <input type="hidden" id="tver" name="tver" value="2013"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you.  We will be in touch with you shortly."/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
-        <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/form-submitted/"/>
+        <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
         <div align="center">
           <input class="button" type="submit" value="Submit" />

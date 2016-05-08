@@ -24,7 +24,7 @@
 					</a>
 				</li>
 				<li class="pupContact showContactPopup">
-					<a href="javascript:;" rel="generalContact">
+					<a href="javascript:;" rel="popupGeneralContact">
 						<i class="icon-rdc-who-we-are"></i><div><?php _e('I have a general inquiry', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
