@@ -24,6 +24,46 @@ global $wp_properties;
 
 get_header();
 
+// Organization for property details laid out in tabs
+$_property_detail_map = array(
+  "Rooms" => array(
+    "label" => "Rooms",
+    "groups" => array(
+      "bedrooms" => array( "label" => "Bedrooms", "icon" => "attribute-bedroom" ),
+      "bathrooms" => array( "label" => "Bathrooms", "icon" => "attribute-bathroom" ),
+      "kitchen_dining_room" => array( "label" => "Heating & Cooling", "icon" => "attribute-kitchen" ),
+      "living_area" => array( "label" => "Utility", "icon" => "attribute-livingarea" ),
+      "other_rooms" => array( "label" => "Exterior", "icon" => "attribute-rooms" )
+    )
+  ),
+  "Features" => array(
+    "label" => "Features",
+    "groups" => array(
+      "interior" => array( "label" => "Interior", "icon" => "attribute-interior" ),
+      "exterior" => array( "label" => "Exterior", "icon" => "attribute-exterior" ),
+      "heating_cooling" => array( "label" => "Heating & Cooling", "icon" => "attribute-solid" ),
+      "utility" => array( "label" => "Utility", "icon" => "attribute-utility" ),
+      "parking" => array( "label" => "Parking", "icon" => "attribute-parking" )
+    )
+  ),
+  "NeighborhoodDetail" => array(
+    "label" => "Neighborhood",
+    "groups" => array(
+      "schools" => array( "label" => "Schools", "icon" => "school" ),
+      "homeowners_association" => array( "label" => "Homeowners Association", "icon" => "attribute-hoa" )
+    )
+  ),
+  "PropertyLot" => array(
+    "label" => "Property <span class='hidden-sm	hidden-xs'>& Pricing</span>",
+    "groups" => array(
+      "pricing_terms" => array( "label" => "Pricing & Terms", "icon" => "attribute-price" ),
+      "building" => array( "label" => "Building", "icon" => "listing-house" ),
+      "lot" => array( "label" => "Lot", "icon" => "attribute-lot" )
+    )
+  ),
+);
+
+
 // Start the Loop.
 while( have_posts() ) : the_post();
   $get_sale_type_terms = get_the_terms( $property[ 'ID' ], 'sale_type' );
@@ -425,6 +465,7 @@ while( have_posts() ) : the_post();
       </div>
     </div>
   </div>
+
   <div class="container propertyDetails">
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
@@ -436,501 +477,39 @@ while( have_posts() ) : the_post();
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php echo ( !empty( $property[ 'automated_property_detail_description' ] ) ) ? $property[ 'automated_property_detail_description' ] : ''; ?>
       </div>
-      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#Rooms">Rooms</a></li>
-          <li><a data-toggle="tab" href="#Features">Features</a></li>
-          <li><a data-toggle="tab" href="#NeighborhoodDetail">Neighborhood</a></li>
-          <li><a data-toggle="tab" href="#PropertyLot">Property <span class="hideTabMobile">& Pricing</span></a></li>
+
+        <ul class="nav nav-tabs attribute-filter">
+          <?php foreach( $_property_detail_map as $tab_slug => $tab_detail ) { ?>
+            <li class="attribute-filter-single-wrapper"><a data-filter=".wpp-category-<?php echo $tab_slug; ?>" href="#<?php echo $tab_slug; ?>" class="attribute-filter-single"><?php echo $tab_detail['label']; ?></a></li>
+          <?php } ?>
+          <li class="attribute-filter-single-wrapper active"><a data-filter="" href="#Rooms" class="attribute-filter-single">All</a></li>
         </ul>
 
-        <div class="tab-content">
-          <div id="Rooms" class="tab-pane fade in active grid">
-            <?php
-            $listAttributes = array();
-            $taxonomies = ud_get_wpp_terms( 'config.taxonomies', array() );
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'bedrooms' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-bedroom-outline"></span>
+        <div class="attribute-content">
+          <div class="container-fluid">
+          <div class="row">
+          <?php foreach( $_property_detail_map as $tab_slug => $tab_detail ) { ?>
+            <?php foreach( $tab_detail['groups'] as $group_slug => $group_detail ) { ?>
+              <?php if( !empty( rdc_get_attribute_group( $group_slug) ) ) { ?>
+              <div class="wpp-attribute-wrapper col-md-6 wpp-category-<?php echo $tab_slug; ?> wpp-group-<?php echo $group_slug; ?>" data-attribute-group="<?php echo $group_slug; ?>" data-attribute-category="<?php echo $group_slug; ?>">
+                <div class="attributer-inner-wrapper">
+                  <section class="attribute-group-title">
+                    <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
+                    <span><?php echo $group_detail['label']; ?></span>
+                  </section>
+                  <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
                 </div>
-                <span><?php _e( 'Bedrooms' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
+              </div>
+              <?php } ?>
             <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-
-              if( $value == 'bathrooms' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-bathroom-outline"></span>
-                </div>
-                <span><?php _e( 'Bathrooms' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-
-              if( $value == 'living_area' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-livingarea-outline"></span>
-                </div>
-                <span><?php _e( 'Living Area' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-
-              if( $value == 'other_rooms' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-rooms-outline"></span>
-                </div>
-                <span><?php _e( 'Other Rooms' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-
-              if( $value == 'kitchen_dining_room' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-kitchen-outline"></span>
-                </div>
-                <span><?php _e( 'Kitchen & Dining Room' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <div class="clear"></div>
+          <?php } ?>
           </div>
-          <div id="Features" class="tab-pane fade grid">
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-
-              if( $value == 'interior' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-interior-outline"></span>
-                </div>
-                <span><?php _e( 'Interior' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'exterior' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-exterior-outline"></span>
-                </div>
-                <span><?php _e( 'Exterior' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'heating_cooling' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-solid-outline"></span>
-                </div>
-                <span><?php _e( 'Heating & Cooling' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'utility' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-utility-outline"></span>
-                </div>
-                <span><?php _e( 'Utility' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'parking' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-parking-outline"></span>
-                </div>
-                <span><?php _e( 'Parking' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <div class="clear"></div>
-          </div>
-          <div id="NeighborhoodDetail" class="tab-pane fade grid">
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'schools' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-school-outline"></span>
-                </div>
-                <span><?php _e( 'Schools' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'homeowners_association' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-hoa-outline"></span>
-                </div>
-                <span><?php _e( 'Homeowners Association' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <div class="clear"></div>
-          </div>
-          <div id="PropertyLot" class="tab-pane fade grid">
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'pricing_terms' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( !empty( $property[ "$key" ] ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-price-outline"></span>
-                </div>
-                <span><?php _e( 'Pricing & Terms' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'building' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-listing-house-outline"></span>
-                </div>
-                <span><?php _e( 'Building' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <?php
-            $listAttributes = array();
-            foreach( $wp_properties[ 'property_stats_groups' ] as $key => $value ) {
-              if( $value == 'lot' ) {
-                if( array_key_exists( $key, $taxonomies ) ) {
-                  $get_term_value = get_the_terms( $property[ 'ID' ], $key );
-                  if( !empty( $get_term_value[ 0 ]->name ) ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>' . $get_term_value[ 0 ]->name . '</b></li>';
-                  }
-                } else {
-                  if( $property[ "$key" ] == true ) {
-                    $listAttributes[] = '<li>' . str_replace( '_', ' ', ucwords( $key ) ) . ': <b>Yes</b></li>';
-                  }
-                }
-              }
-            }
-            ?>
-            <?php if( !empty( $listAttributes ) ) { ?>
-              <div class="pdRoomsBlock grid-item">
-              <section>
-                <div>
-                  <span class="icon-wpproperty-attribute-lot-outline"></span>
-                </div>
-                <span><?php _e( 'Lot' ); ?></span>
-                <b class="clear"></b>
-              </section>
-              <ul>
-                <?php echo implode( '', $listAttributes ); ?>
-              </ul>
-            </div>
-            <?php } ?>
-            <div class="clear"></div>
           </div>
         </div>
+
       </div>
       </div>
     <div class="row">
@@ -939,6 +518,7 @@ while( have_posts() ) : the_post();
       </div>
     </div>
   </div>
+
   <div class="container listingProvider">
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">

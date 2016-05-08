@@ -14,7 +14,7 @@ add_action('init', function() {
   // Needed for import associationa and tracking of what schedule a listing came from
   register_taxonomy( 'rets_schedule', array( 'property' ), array(
     'hierarchical'      => false,
-    'update_count_callback' => null,
+    //'update_count_callback' => null,
     'labels'            => array(
       'name'              => _x( 'Schedules', 'taxonomy general name' ),
       'singular_name'     => _x( 'Schedule', 'taxonomy singular name' ),

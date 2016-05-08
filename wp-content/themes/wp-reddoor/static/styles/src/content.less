@@ -1617,15 +1617,16 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       right: 15px;
       top: 0;
       z-index: 20;
-      padding-bottom: 40px;
+      padding-bottom: 38px;
 
         img {
           border-radius: 50%;
           display: block;
           height: 150px;
-          margin: 5% auto 3%;
+          margin: 3px auto 0;
           width: 150px;
         }
+
       h3{
 
       }
@@ -1874,19 +1875,28 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       border-bottom-width: 0px;
       margin-top: 20px;
       li{
-        width: 25%;
+        width: 20%;
         text-align: center;
         background: #f3f3f3;
-        margin-left: -1px;
+
         &:first-child{
           margin-left: 0;
         }
         &:last-child{
-          width: 25.35%;
+          //width: 25.35%;
+          a {
+            border-right: 1px solid #d8d8d8;
+          }
+
         }
+
         a{
           border-radius: 0;
-          border-color: #d8d8d8;
+
+          border-top: 1px solid #d8d8d8;
+          border-left: 1px solid #d8d8d8;
+          border-bottom: 1px solid #d8d8d8;
+
           margin-right: 0;
           color: #b1b1b1;
           outline: none;
@@ -1909,10 +1919,12 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       border-top: 1px solid transparent;
       padding: 35px 15px 15px;
     }
+
     .pdRoomsBlock{
       width: 40%;
       margin: 0 5%;
       float: left;
+
       section {
         display: flex;
         & > div {
@@ -1939,6 +1951,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           align-self: center;
         }
       }
+
       & > ul{
         margin-top: 25px;
         margin-bottom: 50px;
@@ -1954,6 +1967,34 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
           }
         }
       }
+    }
+  }
+
+
+  section.attribute-group-title {
+    display: flex;
+    & > div {
+      border: 1px solid #dedede;
+      border-radius: 50%;
+      float: left;
+      font-size: 1.5em;
+      height: 50px;
+      margin-right: 15px;
+      margin-top: 0;
+      width: 50px;
+      display: flex;
+      &>span{
+        align-self: center;
+        font-size: 1.3em;
+        text-align: center;
+        width: 100%;
+        color: #a6a9ac;
+      }
+    }
+    span{
+      float: left;
+      font-size: 1.5em;
+      align-self: center;
     }
   }
 
