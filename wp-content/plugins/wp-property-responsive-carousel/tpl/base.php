@@ -72,6 +72,14 @@ if( !empty( $meta_query ) ) {
 	$query[ 'meta_query' ] = $meta_query;
 }
 
+// Require a thumbnail. - potanin@UD
+$query[ 'meta_query' ][] = array(
+  'key'     => '_thumbnail_id',
+  'value'   => '0',
+  'compare' => '>',
+);
+
+//die( '<pre>' . print_r( $query, true ) . '</pre>' );
 $the_query = new WP_Query( $query );
 
 
@@ -114,7 +122,7 @@ $the_query = new WP_Query( $query );
 							) ) );
 
 							?>
-							<li class="rdc-carousel-item">
+							<li class="rdc-carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
 										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>

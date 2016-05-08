@@ -41,12 +41,16 @@ namespace UsabilityDynamics\RDC {
        * @return array|string
        */
       public static function get_multiple_terms( $taxonomy = false, $property_id = false, $field = 'name', $format = 'array', $separator = ', ' ) {
-        if ( !$taxonomy || !$property_id ) return array();
+        if( !$taxonomy || !$property_id ) return array();
         $_terms = get_the_terms( $property_id, $taxonomy );
         $_return = array();
-        foreach( $_terms as $_term ) {
-          $_return[] = $_term->$field;
+
+        if( is_array( $_terms ) ) {
+          foreach( $_terms as $_term ) {
+            $_return[] = $_term->$field;
+          }
         }
+
         return $format == 'array' ? $_return : implode( $separator, $_return );
       }
 

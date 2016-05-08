@@ -224,7 +224,15 @@ function ud_carousel_get_next_posts_page() {
 		}
 	}
 
-	query_posts($query);
+  // Require a thumbnail. - potanin@UD
+  $query[ 'meta_query' ][] = array(
+    'key'     => '_thumbnail_id',
+    'value'   => '0',
+    'compare' => '>',
+  );
+
+  
+  query_posts($query);
 
   ob_start();
 	while(have_posts()) : the_post(); ?>
