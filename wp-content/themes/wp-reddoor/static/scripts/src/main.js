@@ -84,6 +84,27 @@ var rdc = {
       jQuery('#tabs_search').rdc_search_form();
     }
 
+    // Property Attribute Lists Filter
+    if( jQuery('.attribute-content').length ) {
+
+      jQuery('.attribute-content').isotope({
+        itemSelector: '.col-md-6',
+        transitionDuration: '0'
+      });
+
+      jQuery('.attribute-filter a.attribute-filter-single' ).on( 'click', function onClick() {
+
+        jQuery('li.attribute-filter-single-wrapper').removeClass('active');
+        jQuery(this).closest('li.attribute-filter-single-wrapper').addClass( 'active' );
+
+        jQuery('.attribute-content').isotope({
+          filter: jQuery(this).attr('data-filter')
+        });
+
+      });
+
+    }
+
     // If we have a .totals_properties_rent class on page, fetch Rent count.
     if( rdc.client() && jQuery('.totals_properties_rent .value').length ) {
       rdc.getCount( 'Rent', function( error, count ) {
