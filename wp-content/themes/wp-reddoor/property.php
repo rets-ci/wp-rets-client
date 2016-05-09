@@ -75,7 +75,7 @@ while (have_posts()) : the_post();
   $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft');
   $get_approximate_lot_size_terms = get_the_terms($property['ID'], 'approximate_lot_size');
   $get_updated_terms = get_the_terms($property['ID'], 'updated');
-  $get_days_on_market_terms = get_the_terms($property['ID'], 'added');
+  $get_added_terms = get_the_terms($property['ID'], 'added');
   $get_elementary_school_terms = get_the_terms($property['ID'], 'elementary_school');
   $get_middle_school_terms = get_the_terms($property['ID'], 'middle_school');
   $get_high_school_terms = get_the_terms($property['ID'], 'high_school');
@@ -83,6 +83,7 @@ while (have_posts()) : the_post();
   $get_inside_city_terms = get_the_terms($property['ID'], 'inside_city');
   $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
   $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
+  $get_location_state_terms = get_the_terms($property['ID'], 'location_state');
   $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
   $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
   $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
@@ -97,10 +98,11 @@ while (have_posts()) : the_post();
   $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
   $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '' ;
   $approximateLotSize = ($get_approximate_lot_size_terms[0]) ? $get_approximate_lot_size_terms[0]->name : '';
+  $locationState = ($get_location_state_terms[0]) ? $get_location_state_terms[0]->name : '';
   $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
   $locationZip = ($get_location_zip_terms[0]) ? $get_location_zip_terms[0]->name : '';
   $updatedProperty = ($get_updated_terms[0]) ? $get_updated_terms[0]->name : '';
-  $daysOnMarket = ($get_days_on_market_terms[0]) ? $get_days_on_market_terms[0]->name : '';
+  $added = ($get_added_terms[0]) ? $get_added_terms[0]->name : '';
   $elementary_school = ($get_elementary_school_terms[0]) ? $get_elementary_school_terms[0]->name : '';
   $middle_school = ($get_middle_school_terms[0]) ? $get_middle_school_terms[0]->name : '';
   $high_school = ($get_high_school_terms[0]) ? $get_high_school_terms[0]->name : '';
@@ -192,14 +194,15 @@ while (have_posts()) : the_post();
           </div>
           <?php } ?>
 
-          <?php if( !empty( $daysOnMarket ) ) { ?>
+          <?php if( !empty( $added ) ) { ?>
           <div class="col-md-4 property-detail-wrapper">
             <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-data-days-outline"></span>
             </div>
             <span>Days on Market</span>
             <strong><?php
-                echo human_time_diff(strtotime($daysOnMarket), current_time('timestamp'));
+                $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
+              echo $daysOnMarket;
               ?></strong>
           </div>
           <?php } ?>
@@ -479,7 +482,28 @@ while (have_posts()) : the_post();
     </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php echo ( !empty( $property[ 'automated_property_detail_description' ] ) ) ? $property[ 'automated_property_detail_description' ] : ''; ?>
+        <?php 
+          $propertyDetailsAttrs = array(
+            'property_type' => $_propertyType,
+            'location_address' => $property['location_address'],
+            'city' => $locationCity,
+            'state' => $locationState,
+            'postal_code' => $locationZip,
+            'total_living_area_sqft' => $property['total_living_area_sqft_2'],
+            'approximate_lot_size' => $property['approximate_lot_size_2'],
+            'bedrooms' => $property['bedrooms'],
+            'bathrooms' => $property['bathrooms'],
+            'year_built' => $year_built,
+            'cumulative_days_on_market' => $daysOnMarket,
+            'price' => $property['price_2']
+          );
+        echo $propertyDetailsAttrs['location_address'] . 'is a' . $propertyDetailsAttrs['property_type'] .'in' . $propertyDetailsAttrs['property_type'] .
+            ', ' . $propertyDetailsAttrs['state'] . ' ' . $propertyDetailsAttrs['postal_code'] . '. This ' . $propertyDetailsAttrs['total_living_area_sqft'] .
+            ' square foot condo sits on a '  .$propertyDetailsAttrs['approximate_lot_size'] . ' lot and features ' . $propertyDetailsAttrs['bedrooms'] .
+            ' bedrooms and ' . $propertyDetailsAttrs['bathrooms'] .' bathrooms. Built in ' . $propertyDetailsAttrs['year_built'] .
+            ', this ' . $propertyDetailsAttrs['property_type'] . ' has been on the market for a total of ' . $propertyDetailsAttrs['cumulative_days_on_market'] .
+            ' days and is currently priced at ' . $propertyDetailsAttrs['price'] . '.';
+        ?>
       </div>
     </div>
     <div class="row">
