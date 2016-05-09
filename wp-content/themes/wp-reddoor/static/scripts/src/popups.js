@@ -19,6 +19,7 @@ jQuery(function () {
   jQuery('body').keydown(function(eventObject){
     if (eventObject.which == 27) {
       popUpWindow.fadeOut(100);
+      jQuery('html').css('overflow-y','scroll');
     }
   });
 

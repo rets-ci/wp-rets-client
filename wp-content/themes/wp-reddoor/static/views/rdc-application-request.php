@@ -90,7 +90,7 @@
 
   <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
   <input type="hidden" name="ignore_linkbuttontext" value=""/>
-  <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/application"/>
+  <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/application-success'); ?>"/>
   <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
   <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>

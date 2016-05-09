@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.5
-Stable tag: 2.3.5
+Stable tag: 2.3.6
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -91,6 +91,9 @@ Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
 == Changelog ==
+= 2.3.6 =
+* Fixed: missing priority in template_include hook caused not activating mixed content fixer in some themes
+
 = 2.3.5 =
 * Fixed: javascript redirect insertion
 

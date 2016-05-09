@@ -224,10 +224,18 @@ function ud_carousel_get_next_posts_page() {
 		}
 	}
 
-	$posts = new WP_Query($query);
+  // Require a thumbnail. - potanin@UD
+  $query[ 'meta_query' ][] = array(
+    'key'     => '_thumbnail_id',
+    'value'   => '0',
+    'compare' => '>',
+  );
 
-	ob_start();
-	while($posts->have_posts()) : $posts->the_post(); ?>
+  
+  query_posts($query);
+
+  ob_start();
+	while(have_posts()) : the_post(); ?>
 		<?php $property = prepare_property_for_display( get_property( get_the_ID(), array(
 			'get_children'          => 'false',
 			'load_gallery'          => 'false',
@@ -236,7 +244,7 @@ function ud_carousel_get_next_posts_page() {
 			'cache'                 => 'true',
 		) ) );
 		?>
-		<li class="rdc-carousel-item">
+		<li class="rdc-carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
 			<?php
 //			echo '<pre>';
 //			print_r($posts);
@@ -244,7 +252,7 @@ function ud_carousel_get_next_posts_page() {
 			?>
 			<a href="<?php the_permalink() ?>">
 				<div class="rdc-carousel-thumbnail">
-					<?php if( has_post_thumbnail($posts->current_post) ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id($posts->current_post), 'thumbnail'); ?>
+					<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>
 						<div class="thumb" style="background-image: url(<?php echo esc_url($img) ?>); background-size: cover; background-position: center center;">
 							<?php //echo get_the_post_thumbnail($property['ID'], 'property_carousel'); ?>
 							<span class="overlay"></span>

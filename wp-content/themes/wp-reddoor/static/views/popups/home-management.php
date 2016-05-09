@@ -11,8 +11,6 @@
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
-      <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
-
       <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20" class=""
             action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&amp;formId=powf_E3E9D503C22EE41195286C3BE5BD3B20&amp;tver=2013&amp;c=1"
             enctype="multipart/form-data" method="post" novalidate="novalidate">
@@ -86,7 +84,7 @@
 
         <input name="ignore_submitmessage" type="hidden" value="Thank you. We will be in touch with you shortly."/>
         <input name="ignore_linkbuttontext" type="hidden" value=""/>
-        <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('success'); ?>"/>
+        <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
         <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
         <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>

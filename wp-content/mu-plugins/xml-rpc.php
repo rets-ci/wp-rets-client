@@ -9,6 +9,57 @@
  * @version 0.5.0
  */
 
+add_action('init', function() {
+
+  // Needed for import associationa and tracking of what schedule a listing came from
+  register_taxonomy( 'rets_schedule', array( 'property' ), array(
+    'hierarchical'      => false,
+    //'update_count_callback' => null,
+    'labels'            => array(
+      'name'              => _x( 'Schedules', 'taxonomy general name' ),
+      'singular_name'     => _x( 'Schedule', 'taxonomy singular name' ),
+      'search_items'      => __( 'Search Schedules' ),
+      'all_items'         => __( 'All Schedules' ),
+      'parent_item'       => __( 'Parent Schedule' ),
+      'parent_item_colon' => __( 'Parent Schedule:' ),
+      'edit_item'         => __( 'Edit Schedule' ),
+      'update_item'       => __( 'Update Schedule' ),
+      'add_new_item'      => __( 'Add New Schedule' ),
+      'new_item_name'     => __( 'New Schedule Name' ),
+      'menu_name'         => __( 'Schedules' ),
+    ),
+    'show_ui'           => true,
+    'show_admin_column' => false,
+    'query_var'         => false,
+    'rewrite'           => false
+  ) );
+
+});
+
+
+/**
+ * Delete Elasticsearch documents when RETS properties are deleted.
+ *
+ * curl -XDELETE https://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/v5/property/3215457
+ *
+ */
+add_action('before_delete_post', function( $post_id ) {
+
+  // Do nothing if does not have a "rets_index"
+  if( !$_rets_index = get_post_meta( $post_id, 'rets_index', true ) ) {
+    return;
+  }
+
+  // temporary hack to get post deletion/updates to work faster globally
+  remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+
+  // this is a fire-and-forget event, we should be recording failure son our end to keep the WP process quicker
+  wp_remote_request('https://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/' . $_rets_index . '/property/' . $post_id, array(
+    'method' => 'DELETE',
+    'blocking' => false
+  ));
+
+});
 
 // add ability to get wpp_settings so we can extra mapping settings
 add_filter( 'xmlrpc_blog_options', function( $options ) {
@@ -244,6 +295,12 @@ function WPP_RPC_editProperty( $args ) {
   // set post status to draft since it may be inserting for a while due to large amount of terms
   $post_data[ 'post_status' ] = 'draft';
 
+  if( $post_idata['ID'] ) {
+    rdc_write_log( 'Running wp_insert_post for [' . $post_idata['ID'] . '].' );
+  } else {
+    rdc_write_log( 'Running wp_insert_post for [new post].' );
+  }
+
   $_post_id = wp_insert_post( $post_data, true );
 
   if( is_wp_error( $_post_id ) ) {
@@ -273,8 +330,6 @@ function WPP_RPC_editProperty( $args ) {
     // get simple url litst of already attached media
     if( $attached_media  ) {
 
-      // rdc_write_log( 'attached_media' . print_r($_already_attached_media, true ) );
-
       foreach( (array) $attached_media as $_attached_media_id => $_media ) {
         $_already_attached_media[ $_attached_media_id ] = $_media->guid;
       }
@@ -282,10 +337,10 @@ function WPP_RPC_editProperty( $args ) {
     }
 
     // delete all old attachments if the count of new media doesn't match up with old media
-    // rdc_write_log( 'Deleting old media because count does not match.' );
+    rdc_write_log( 'Deleting old media because count does not match.' );
 
     foreach( $attached_media as $_single_media_item ) {
-      rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
+      // rdc_write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.' );
       wp_delete_attachment( $_single_media_item->ID, true );
     }
 
@@ -324,8 +379,19 @@ function WPP_RPC_editProperty( $args ) {
 
       // set the item with order of 1 as the thumbnail
       if( (int) $media['order'] === 1 ) {
-        set_post_thumbnail( $_post_id, $attach_id );
-        rdc_write_log( 'setting thumbnail ' . $attach_id  . ' to ' . $_post_id . ' because it has order of 1' );
+        //set_post_thumbnail( $_post_id, $attach_id );
+
+        // No idea why but set_post_thumbnail() fails routinely as does update_post_meta, testing this method.
+        delete_post_meta($_post_id, '_thumbnail_id');
+        $_thumbnail_setting = add_post_meta( $_post_id, '_thumbnail_id', (int) $attach_id );
+
+        if( $_thumbnail_setting ) {
+          rdc_write_log( 'setting thumbnail [' . $attach_id  . '] to post [' . $_post_id . '] because it has order of 1, result: ' );
+        } else {
+          rdc_write_log( 'Error! Failured at setting thumbnail [' . $attach_id  . '] to post [' . $_post_id . ']'  );
+        }
+
+        //die('dying early!' );
       }
 
       // old logic of first checking that a new media url exists
@@ -388,21 +454,34 @@ function rdc_fix_rets_image_url( $id, $size = false ) {
 function find_property_by_rets_id( $rets_id ) {
   global $wpdb;
 
-  $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
+  $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
 
   // temp support for old format
-  if( !$_actual_post_id ) {
-    $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
+  if( empty( $_actual_post_id ) ) {
+    $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
   }
 
-  if( $_actual_post_id ) {
-    rdc_write_log( 'Found ' . $_actual_post_id . ' using $rets_id: ' . $rets_id);
-    return $_actual_post_id;
+  // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
+  $query = new WP_Query( array(
+    'post_status' => array( 'publish', 'draft' ),
+    'post_type'   => 'property',
+    'meta_key'    => 'rets_id',
+    'meta_value'  => $rets_id,
+  ) );
+
+  // what if there is two - we fucked up somewhere before...
+  if( count( $query->posts ) > 0 ) {
+    rdc_write_log( "Error! Multiple (".count( $query->posts ).") matches found for rets_id [" . $rets_id . "]." );
   }
 
+  if( count( $query->posts ) > 0 ) {
+    rdc_write_log( 'Found ' . $query->posts[0]->ID . ' using $rets_id: ' . $rets_id);
+    return $query->posts[0]->ID;
+  } else {
+    rdc_write_log( 'Did not find any post ID using $rets_id [' . $rets_id . '].' );
+  }
 
   return null;
-
 
 }
 

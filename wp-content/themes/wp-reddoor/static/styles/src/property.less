@@ -1,0 +1,33 @@
+.attribute-content {
+  border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+
+ // padding: 2em;
+  //padding: 2em;
+
+  // not best practice to do a higher upper-padding but these blocks are tricky to space out using isotope
+  .attributer-inner-wrapper {
+    padding: 3em 2em 1em 2em;
+  }
+
+  .wpp-attribute-wrapper {
+
+    // go to full width on mobile, for some reason it doesn't do it automatically, perhaps to do isotope
+    @media screen and (max-width: @adaptMobile) {
+      width: 100%;
+    }
+
+    //padding: 1em;
+
+    .attribute-group-title {
+      margin-bottom: 1em;
+    }
+
+    .underlined-list {
+      //  margin-bottom: 1em;
+    }
+
+  }
+
+}

@@ -23,11 +23,17 @@
 						<i class="icon-rdc-property-management"></i><div><?php _e('I want to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
+				<li class="pupContact showContactPopup">
+					<a href="javascript:;" rel="popupGeneralContact">
+						<i class="icon-rdc-who-we-are"></i><div><?php _e('I have a general inquiry', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
 
 	<?php get_template_part('static/views/popups/login'); ?>
+	<?php get_template_part('static/views/popups/contact-us'); ?>
 	<?php get_template_part('static/views/popups/home-buying'); ?>
 	<?php get_template_part('static/views/popups/home-buying-listing'); ?>
 	<?php get_template_part('static/views/popups/home-renting'); ?>

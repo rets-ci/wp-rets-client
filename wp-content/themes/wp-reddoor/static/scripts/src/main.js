@@ -44,7 +44,7 @@ var rdc = {
 
       // trigger callback if everything come sback okay.
       if( 'function' === typeof callback && response && response.hits && response.hits.total ) {
-        return callback( null, response.hits.total );
+        return callback( null, rdc.numberWithCommas( response.hits.total ) );
       }
 
       if( 'function' === typeof callback ) {
@@ -54,6 +54,16 @@ var rdc = {
 
     })
 
+  },
+
+  /**
+   * Format Number to have commas.
+   *
+   * @param x
+   * @returns {*}
+   */
+  numberWithCommas: function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
   __client: null
@@ -72,6 +82,27 @@ var rdc = {
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
       jQuery('#tabs_search').rdc_search_form();
+    }
+
+    // Property Attribute Lists Filter
+    if( jQuery('.attribute-content').length ) {
+
+      jQuery('.attribute-content').isotope({
+        itemSelector: '.col-md-6',
+        transitionDuration: '0'
+      });
+
+      jQuery('.attribute-filter a.attribute-filter-single' ).on( 'click', function onClick() {
+
+        jQuery('li.attribute-filter-single-wrapper').removeClass('active');
+        jQuery(this).closest('li.attribute-filter-single-wrapper').addClass( 'active' );
+
+        jQuery('.attribute-content').isotope({
+          filter: jQuery(this).attr('data-filter')
+        });
+
+      });
+
     }
 
     // If we have a .totals_properties_rent class on page, fetch Rent count.

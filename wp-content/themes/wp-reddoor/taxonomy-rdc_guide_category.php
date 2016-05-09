@@ -33,7 +33,7 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
 <div class="container-fluid guide-wrapper">
   <div class="row site-content">
 
-    <div class="col-md-6 guide-block" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_this_category['image']; ?>');">
+    <div class="col-md-6 guide-block" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_this_category['image']; ?>'); background-size:cover">
       <div class="guide-block-inner">
         <h2 class="guide-title"><?php echo $_this_category['name']; ?></h2>
         <p class="guide-description"><?php echo $_this_category['description']; ?></p>
@@ -41,7 +41,8 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
     </div>
 
     <div class="col-md-6 guide-overview-list">
-      <?php foreach( $_this_category_guides as $_some_guide ) { ?>
+      <div class="guide-overview-list-inner-wrapper">
+        <?php foreach( $_this_category_guides as $_some_guide ) { ?>
         <div class="guide-group-wrapper">
 
           <div class="row">
@@ -65,7 +66,8 @@ if( empty( $_this_category_guides ) && isset( $_term->parent ) && $_term->parent
           </div>
 
         </div>
-      <?php } ?>
+        <?php } ?>
+      </div>
     </div>
 
   </div>

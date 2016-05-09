@@ -36,7 +36,7 @@
       },
       "db": [
         {
-          "name": "www.reddoorcompany.com.develop",
+          "name": "www.reddoorcompany.com.production",
           "user": "rdc",
           "password": "wpcvdvwyocbhnrfj",
           "host": "api.wpcloud.io:13038",

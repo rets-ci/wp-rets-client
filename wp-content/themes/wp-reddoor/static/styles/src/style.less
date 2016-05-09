@@ -7,6 +7,8 @@
 @import "popup.less";
 @import "guide.less";
 @import "mobile.less";
+@import "property.less";
+
 @import (inline) "bootstrap.min.css";
 @import (inline) "bootstrap-theme.min.css";
 @import (inline) "jquery-ui.css";
@@ -21,6 +23,14 @@
 @adaptMobile: 992px;
 
 @import "buttons.less";
+
+
+// All child columns will not have a gutter
+.row.no-gutter [class*="col-"] {
+  padding-left:0;
+  padding-right:0;
+}
+
 
 // Large Screens Only
 @media screen and (min-width: @adaptMobile) {
@@ -56,8 +66,14 @@
 
     .toggle {
       position: relative;
-      right: 23px;
-      top: -6px;
+      right: -7px;
+      top: -12px;
+
+      .icon.mobile-menu-toggle {
+        width: 30px;
+        height: 30px;
+      }
+
     }
 
     // match the background color of the rdc logo
@@ -125,8 +141,6 @@
         margin: 20px 0 0 0;
         right: 0 !important;
         top: 0 !important;
-
-
       }
     }
     .menuDesktop {

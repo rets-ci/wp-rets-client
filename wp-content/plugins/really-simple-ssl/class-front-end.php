@@ -40,7 +40,7 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
      }
 
      if (is_ssl() && $this->autoreplace_insecure_links) {
-         add_filter('template_include', array($this,'replace_insecure_links_buffer'));
+         add_filter('template_include', array($this,'replace_insecure_links_buffer'),0);
      }
 
    }

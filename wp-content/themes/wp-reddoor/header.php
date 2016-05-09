@@ -38,6 +38,8 @@
           <a class="mobileContactUs" href="javasript:void(0);" rel="popupContactUsMore">Contact Us</a>
           <a href="javasript:void(0);" rel="popupLogin">Account Login</a>
 
+          <p class="mobile-copyright">&copy; Red Door Company</p>
+
         </div>
         <div class="head-popups">
           <?php wp_nav_menu(array('menu' => 'RightSide Menu', 'menu_class' => 'contactMenu')); ?>

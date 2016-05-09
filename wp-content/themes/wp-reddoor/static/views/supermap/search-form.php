@@ -21,7 +21,7 @@
 <form class="rdc-supermap-search-form" method="post" action="">
 
   <input type="hidden" name="bool[must][0][exists][field]" value="tax_input" />
-  <input type="hidden" name="bool[must_not][0][term][tax_input.location_latitude]" value="0" />
+  <input type="hidden" name="bool[must][9][exists][field]" value="_system.location" />
 
   <!-- Main Search Filters -->
   <div class="rdc-search-main">

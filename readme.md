@@ -1,3 +1,19 @@
+### Test URLs
+
+* https://www.reddoorcompany.com/
+* https://www.reddoorcompany.com/listing/506-n-mangum-street-407
+* https://www.reddoorcompany.com/buy
+* https://www.reddoorcompany.com/listing/3329-granville-drive
+* https://www.reddoorcompany.com/buy/buy-with-red-door-company
+* https://www.reddoorcompany.com/about/careers
+* https://www.reddoorcompany.com/blog
+* https://www.reddoorcompany.com/blog/category/home-renting
+* https://www.reddoorcompany.com/blog/5-questions-tenants-often-ask-property-managers-prior-to-signing-a-lease
+* https://www.reddoorcompany.com/guides
+* https://www.reddoorcompany.com/guide/assembling-your-real-estate-team/tips-for-choosing-a-mortgage-lender-for-your-home-loan
+* https://www.reddoorcompany.com/guide/home-buyers/protect-yourself-with-buyer-contingencies-in-your-purchase-contract - Last guide in category.
+ 
+
 ### Licenses
 Order #213613 has most of the licenses, terms is in order #228849. 
 
