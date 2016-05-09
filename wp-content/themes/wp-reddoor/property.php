@@ -155,9 +155,11 @@ while (have_posts()) : the_post();
         </div>
         <span>Days on Market</span>
         <strong><?php
+
           if(!empty($daysOnMarket)) {
             echo human_time_diff(strtotime($daysOnMarket), current_time('timestamp'));
           }
+          
           ?></strong>
       </div>
       <?php } ?>
