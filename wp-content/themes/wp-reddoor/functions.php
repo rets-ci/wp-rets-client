@@ -56,6 +56,7 @@ function rdc_get_attribute_group( $name ) {
  * @author kavaribes@UD
  * @param $propertyDetailsAttrs
  * @return string
+ * call in property.php
  */
 
 function rdc_get_property_details_description($propertyDetailsAttrs){
@@ -89,7 +90,7 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
         ' and is currently priced at $' .
         number_format($propertyDetailsAttrs['price']) .
         '.';
-    
+
     return $propertyDetailsDescription;
   }
 }
