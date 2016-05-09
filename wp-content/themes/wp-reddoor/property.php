@@ -74,7 +74,7 @@ while( have_posts() ) : the_post();
   $get_living_area_terms = get_the_terms( $property[ 'ID' ], 'total_living_area_sqft' );
   $get_approximate_lot_size_terms = get_the_terms( $property[ 'ID' ], 'approximate_lot_size' );
   $get_updated_terms = get_the_terms( $property[ 'ID' ], 'updated' );
-  $get_days_on_market_terms = get_the_terms( $property[ 'ID' ], 'days_on_market' );
+  $get_days_on_market_terms = get_the_terms( $property[ 'ID' ], 'added' );
   $get_elementary_school_terms = get_the_terms( $property[ 'ID' ], 'elementary_school' );
   $get_middle_school_terms = get_the_terms( $property[ 'ID' ], 'middle_school' );
   $get_high_school_terms = get_the_terms( $property[ 'ID' ], 'high_school' );
@@ -196,7 +196,12 @@ while( have_posts() ) : the_post();
               <span class="icon-wpproperty-data-days-outline"></span>
             </div>
             <span>Days on Market</span>
-            <strong><?php echo $daysOnMarket; ?></strong>
+            <strong><?php
+              if(!empty($daysOnMarket)) {
+                echo human_time_diff(strtotime($daysOnMarket), current_time('timestamp'));
+              }
+              ?></strong>
+
           </div>
           <?php } ?>
 
