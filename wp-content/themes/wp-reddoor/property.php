@@ -482,8 +482,8 @@ while (have_posts()) : the_post();
     </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php 
-          $propertyDetailsAttrs = array(
+        <?php
+        $propertyDetailsAttrs = array(
             'property_type' => $_propertyType,
             'location_address' => $property['location_address'],
             'city' => $locationCity,
@@ -496,13 +496,10 @@ while (have_posts()) : the_post();
             'year_built' => $year_built,
             'cumulative_days_on_market' => $daysOnMarket,
             'price' => $property['price_2']
-          );
-        echo $propertyDetailsAttrs['location_address'] . 'is a' . $propertyDetailsAttrs['property_type'] .'in' . $propertyDetailsAttrs['property_type'] .
-            ', ' . $propertyDetailsAttrs['state'] . ' ' . $propertyDetailsAttrs['postal_code'] . '. This ' . $propertyDetailsAttrs['total_living_area_sqft'] .
-            ' square foot condo sits on a '  .$propertyDetailsAttrs['approximate_lot_size'] . ' lot and features ' . $propertyDetailsAttrs['bedrooms'] .
-            ' bedrooms and ' . $propertyDetailsAttrs['bathrooms'] .' bathrooms. Built in ' . $propertyDetailsAttrs['year_built'] .
-            ', this ' . $propertyDetailsAttrs['property_type'] . ' has been on the market for a total of ' . $propertyDetailsAttrs['cumulative_days_on_market'] .
-            ' days and is currently priced at ' . $propertyDetailsAttrs['price'] . '.';
+        );
+
+        echo rdc_get_property_details_description($propertyDetailsAttrs);
+        
         ?>
       </div>
     </div>
