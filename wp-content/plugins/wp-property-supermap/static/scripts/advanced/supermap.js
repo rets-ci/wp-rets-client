@@ -572,6 +572,7 @@
                   getMoreProperties();
                 }
               }
+              $scope.col_changed();
             } else {
               console.error(error);
             }
@@ -622,6 +623,7 @@
                   getMoreProperties();
                 }
               }
+              $scope.col_changed();
             } else {
               console.error(error);
             }
@@ -749,6 +751,8 @@
             }
             );
           } );
+
+          $scope.col_changed();
         }
 
         /**

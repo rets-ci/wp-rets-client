@@ -119,17 +119,14 @@ namespace UsabilityDynamics\RDC {
           array(
             'exists' => array(
               'field' => 'tax_input'
+            ),
+            'exists' => array(
+                'field' => '_system.location'
             )
           )
         );
 
-        $must_not_query = array(
-          array(
-            'term' => array(
-              'tax_input.location_latitude' => '0'
-            )
-          )
-        );
+        $must_not_query = array();
 
         $_location_selected = array();
 
