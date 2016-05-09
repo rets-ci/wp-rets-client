@@ -41,7 +41,7 @@ function rdc_get_attribute_group( $name ) {
           $listAttributes[] = '<li><span class="field-label">' . str_replace( '_', ' ', ucwords( $key ) ) . ':</span> <span class="field-value">' . $get_term_value[ 0 ]->name . '</span></li>';
         }
       } else {
-        if( $property[ "$key" ] == true ) {
+        if( isset( $property[ "$key" ] ) && $property[ $key ] == true ) {
           $listAttributes[] = '<li><span class="field-label">' . str_replace( '_', ' ', ucwords( $key ) ) . ':</span> <span class="field-value">Yes</span></li>';
         }
       }
