@@ -231,13 +231,60 @@ while (have_posts()) : the_post();
           </div>
           <?php } ?>
 
-          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
+          <?php if( !empty( $subdivision ) ) { ?>
           <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
+              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
+            </div>
+            <span><?php _e( 'Subdivision' ); ?></span>
+            <strong><?php _e( $subdivision ); ?></strong>
+          </div>
+          <?php } ?>
+
+          <?php if( !empty( $elementary_school ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-school-elementary-outline"></span>
+              </div>
+              <span><?php _e( 'Elementary School' ); ?></span>
+              <strong><?php _e( $elementary_school ); ?></strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
               <div class="property-detail-icon-wrapper">
                 <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
               </div>
               <span><?php _e( 'Style' ); ?></span>
               <strong><?php echo Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name', 'a' ); ?></strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( $inside_city ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
+              </div>
+              <span><?php _e( 'Inside City' ); ?></span>
+              <strong>
+                <?php if( $inside_city == 'Yes' ) {
+                  echo $inside_city . ', ' . $location_city;
+                } else {
+                  echo $inside_city;
+                }
+                ?>
+              </strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( $middle_school ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-school-middle-outline"></span>
+              </div>
+              <span><?php _e( 'Middle School' ); ?></span>
+              <strong><?php _e( $middle_school ); ?></strong>
             </div>
           <?php } ?>
 
@@ -255,61 +302,14 @@ while (have_posts()) : the_post();
             </strong>
           </div>
 
-          <?php if( !empty( $subdivision ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
-            </div>
-            <span><?php _e( 'Subdivision' ); ?></span>
-            <strong><?php _e( $subdivision ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $inside_city ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
-            </div>
-            <span><?php _e( 'Inside City' ); ?></span>
-            <strong>
-              <?php if( $inside_city == 'Yes' ) {
-                echo $inside_city . ', ' . $location_city;
-              } else {
-                echo $inside_city;
-              }
-              ?>
-            </strong>
-          </div>
-          <?php } ?>
-
           <?php if( !empty( $location_county ) ) { ?>
             <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-listing-land-outline"></span>
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-listing-land-outline"></span>
+              </div>
+              <span><?php _e( 'County' ); ?></span>
+              <strong><?php _e( $location_county ); ?></strong>
             </div>
-            <span><?php _e( 'County' ); ?></span>
-            <strong><?php _e( $location_county ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $elementary_school ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-school-elementary-outline"></span>
-            </div>
-            <span><?php _e( 'Elementary School' ); ?></span>
-            <strong><?php _e( $elementary_school ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $middle_school ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-school-middle-outline"></span>
-            </div>
-            <span><?php _e( 'Middle School' ); ?></span>
-            <strong><?php _e( $middle_school ); ?></strong>
-          </div>
           <?php } ?>
 
           <?php if( !empty( $high_school ) ) { ?>
