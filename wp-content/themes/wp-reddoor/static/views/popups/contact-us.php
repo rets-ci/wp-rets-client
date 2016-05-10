@@ -6,7 +6,7 @@
 
       <i class="icon icon-rdc-who-we-are"></i>
 
-      <h3><?php _e( 'I have a general inquiry', 'reddoor' ); ?></h3>
+      <h3><?php _e( 'I have a different question', 'reddoor' ); ?></h3>
       <p><?php _e( 'Please submit your information below or call us by phone. We\'re ready to assist you with your real estate matters!', 'reddoor' ); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
