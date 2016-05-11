@@ -21,27 +21,40 @@
         <!-- <input type="hidden" name="rdc_fyb" value="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_450E34B3E2D0E511810FC4346BACE18C&tver=2013&c=1" /> -->
 
         <div class="field">
-          <input placeholder="First Name *" type="text" id="powf_b54a0bf0e3d0e511811bc4346bad461c" name="powf_b54a0bf0e3d0e511811bc4346bad461c" value="" maxlength="50" class="required" />
+          <input placeholder="First Name *" type="text" id="powf_b8ba60f3be16e61180e9c4346bace2d4" name="powf_b8ba60f3be16e61180e9c4346bace2d4" value="" maxlength="50" class="required" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Last Name *" type="text" id="powf_4ff9760ee4d0e511811bc4346bad461c" name="powf_4ff9760ee4d0e511811bc4346bad461c" value="" maxlength="50" class="required" />
+          <input placeholder="Last Name *" type="text" id="powf_a1a3591ebf16e61180e9c4346bace2d4" name="powf_a1a3591ebf16e61180e9c4346bace2d4" value="" maxlength="50" class="required" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Email Address *" type="text" id="powf_8f564241e4d0e511811bc4346bad461c" name="powf_8f564241e4d0e511811bc4346bad461c" value="" maxlength="100" class="required email" />
+          <input placeholder="Email Address *" type="text" id="powf_91ac4542bf16e61180e9c4346bace2d4" name="powf_8f564241e4d0e511811bc4346bad461c" value="" maxlength="100" class="required email" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Phone" type="text" id="powf_3aff73d9fbe9e511811afc15b42886e8" name="powf_3aff73d9fbe9e511811afc15b42886e8" value="" maxlength="20" class="digits" />
+          <input placeholder="Phone number" type="text" id="powf_59dd697ebf16e61180e9c4346bace2d4" name="powf_59dd697ebf16e61180e9c4346bace2d4" value="" maxlength="20" class="digits" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <textarea placeholder="Comments" id="powf_b62d13821a12e61180e4fc15b428cd78" name="powf_b62d13821a12e61180e4fc15b428cd78" cols="" rows=""></textarea>
+          <label for="powf_7bdf7695bf16e61180e9c4346bace2d4">Area of Interest</label>
+          <select id="powf_7bdf7695bf16e61180e9c4346bace2d4" name="powf_7bdf7695bf16e61180e9c4346bace2d4">
+            <option value=""></option>
+            <option selected="selected" value="Triangle Area">Triangle Area</option>
+            <option value="Durham Area">Durham Area</option>
+            <option value="Chapel Hill Area">Chapel Hill Area</option>
+            <option value="Raleigh Area">Raleigh Area</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="clear"></div>
+        </div>
+
+        <div class="field">
+          <textarea placeholder="Comments" id="powf_c79126adbf16e61180e9c4346bace2d4" name="powf_c79126adbf16e61180e9c4346bace2d4" cols="" rows=""></textarea>
           <div class="clear"></div>
         </div>
 
