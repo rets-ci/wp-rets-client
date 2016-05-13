@@ -1,88 +1,66 @@
 {
-  "name": "usabilitydynamics/www.reddoorcompany.com",
-  "type": "wordpress-site",
-  "description": "A wpCloud/Site.",
+  "name": "wp-property/wp-property-responsive-slideshow",
+  "type": "wordpress-plugin",
+  "minimum-stability": "dev",
+  "homepage": "https://www.usabilitydynamics.com/product/wp-property-responsive-slideshow",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
+  },
   "repositories": [
     {
       "type": "composer",
       "url": "https://repository.usabilitydynamics.com"
     }
   ],
-  "extra": {
-    "settings": {
-      "wp_siteurl": "https://www.reddoorcompany.com",
-      "wp_home": "https://www.reddoorcompany.com",
-      "wp_debug": true,
-      "wp_debug_log": true,
-      "wp_debug_display": false,
-      "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
-      "wp_cache": true,
-      "concatenate_scripts": true,
-      "sunrise": false,
-      "multisite": false,
-      "empty_trash_days": 7,
-      "alternate_wp_cron": false,
-      "wp_cron_lock_timeout": 0,
-      "wp": {
-        "upstream_automatic_push": true,
-        "upstream_debug": false,
-        "post_revisions": 30,
-        "media_trash": true,
-        "allow_repair": true,
-        "force_ssl_admin": true,
-        "force_ssl_login": true,
-        "auto_core_update": true,
-        "use_themes": true
-      },
-      "db": [
-        {
-          "name": "www.reddoorcompany.com.develop",
-          "user": "rdc",
-          "password": "wpcvdvwyocbhnrfj",
-          "host": "api.wpcloud.io:13038",
-          "read": 5,
-          "write": 5,
-          "charset": "utf8"
-        }
-      ]
-    }
-  },
-  "config": {
-    "preferred-install": "dist",
-    "github-protocols": [
-      "ssh"
-    ],
-    "vendor-dir": "wp-vendor",
-    "bin-dir": "wp-vendor/bin",
-    "optimize-autoloader": true,
-    "docker": {
-      "scripts": {
-        "start": [
-          "ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git",
-          "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa",
-          "ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php.ini  /etc/php5/fpm/php.ini",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php-fpm.conf  /etc/php5/fpm/php-fpm.conf",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/pool.d/www.conf  /etc/php5/fpm/pool.d/www.conf",
-          "sudo service php5-fpm stop",
-          "sudo service hhvm start",
-          "sudo service nginx reload"
-        ]
-      }
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wp-property/wp-property-responsive-slideshow.git"
   },
   "require": {
-    "php": "~5.3",
-    "composer/installers": "~1.0"
+    "php": ">=5.3",
+    "usabilitydynamics/lib-utility": "0.3.6",
+    "usabilitydynamics/lib-wp-bootstrap": "1.2.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "~2.0",
-    "phpunit/phpunit": "~3.7"
+    "usabilitydynamics/lib-wp-phpunit": "~0.2",
+    "codeclimate/php-test-reporter": "~0.1"
   },
-  "keywords": [
-    "wordpress",
-    "wpcloud.io"
-  ],
-  "minimum-stability": "dev",
-  "license": "proprietary"
+  "autoload": {
+    "classmap": [ "lib/classes" ]
+  },
+  "archive": {
+    "exclude": [
+      "vendor",
+      "node_modules",
+      ".gitignore",
+      "test",
+      "circle.yml",
+      "composer.lock",
+      "gruntfile.js",
+      "package.json"
+    ]
+  },
+  "extra": {
+    "schemas": {
+      "dependencies" : {
+        "modules": {},
+        "plugins": [
+          {
+            "name": "WP-Property",
+            "slug": "wp-property",
+            "version": "2.1.4",
+            "required": true
+          }
+        ]
+      },
+      "licenses" : {
+        "client" : false,
+        "product" : {
+          "referrer": "wp-property/wp-property",
+          "product_id": "wp-property/wp-property-responsive-slideshow"
+        }
+      }
+    }
+  }
 }
