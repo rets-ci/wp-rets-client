@@ -165,6 +165,20 @@ if( isset( $_REQUEST[ 'message' ] ) ) {
               <li><?php _e( 'Source URL:', ud_get_wpp_importer()->domain ); ?>
                 <span class="wpp_i_overview_special_data"><?php echo $sch[ 'url' ]; ?></span>
               </li>
+
+
+              <?php if( isset( $sch['source_type'] ) && $sch['source_type']  === 'rets' ) { ?>
+
+              <li><?php _e( 'RETS Classification:', ud_get_wpp_importer()->domain ); ?>
+                <span class="wpp_i_overview_special_data"><?php echo $sch[ 'rets_resource' ]; ?> / <?php echo $sch[ 'rets_class' ]; ?></span>
+              </li>
+
+              <li><?php _e( 'RETS Query:', ud_get_wpp_importer()->domain ); ?>
+                <span class="wpp_i_overview_special_data"><?php echo $sch[ 'rets_query' ]; ?></span>
+              </li>
+
+              <?php } ?>
+
               <li>
                 <?php _e( 'Cron Command:', ud_get_wpp_importer()->domain ); ?>
                 <?php if( !empty( $sch[ 'hash' ] ) ) : ?>
@@ -173,9 +187,13 @@ if( isset( $_REQUEST[ 'message' ] ) ) {
                   <span class="wpp_i_overview_special_data"><?php _e( 'There is an issue with your schedule. Please, re-save it.', ud_get_wpp_importer()->domain ); ?></span>
                 <?php endif; ?>
               </li>
+
+              <?php if( isset( $sch[ 'alt_cron_enabled' ] ) && $sch[ 'alt_cron_enabled' ] === 'true' ) {?>
               <li>
                 <?php _e( 'Alternative Cron:', ud_get_wpp_importer()->domain ); ?> <span class="wpp_i_overview_special_data"><?php echo $alt_cron; ?></span>
               </li>
+              <?php } ?>
+
               <?php if( !empty( $vital_stats[ $sch_id ] ) && is_array( $vital_stats[ $sch_id ] ) ) : ?>
                 <li>
                   <span class="wpp_i_overview_special_data"><?php echo implode( ' | ', $vital_stats[ $sch_id ] ); ?></span>
