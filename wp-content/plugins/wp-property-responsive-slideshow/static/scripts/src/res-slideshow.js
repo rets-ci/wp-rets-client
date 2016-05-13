@@ -287,6 +287,11 @@ jQuery(document).ready(function($){
                     $this.addClass('wpp-responsive-slideshow-ready');
                 }
             }
+            
+            if($img.attr('width')>1){
+                isAllImgLoaded();
+                return;
+            }
 
             $('<img />').load(function(){
                 var width = this.width;
