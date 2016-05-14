@@ -59,9 +59,6 @@ namespace UsabilityDynamics\WPP {
           if( !file_exists( $file ) ) {
             return;
           }
-          
-          // Load file for image advacne field to override original.
-          include_once ud_get_wp_property()->path("lib/classes/fields/image-advanced.php", 'dir');
           include_once( $file );
         }
       }
@@ -336,6 +333,7 @@ namespace UsabilityDynamics\WPP {
           //* Ignore Hidden Attributes */
           if (
             !empty( $post->property_type )
+            && ( ! is_object( $post->property_type ) || ! is_array( $post->property_type ) )
             && !empty( $hidden_attributes[ $post->property_type ] )
             && in_array( $slug, (array)$hidden_attributes[ $post->property_type ] )
           ) {

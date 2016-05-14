@@ -31,42 +31,17 @@
         </div>
 
         <div class="field">
-          <input placeholder="Email Address *" type="text" id="powf_39ff73d9fbe9e511811afc15b42886e8" name="powf_39ff73d9fbe9e511811afc15b42886e8" value="" maxlength="100" class="required email" />
+          <input placeholder="Email Address *" type="text" id="powf_71f56036c216e61180e9c4346bace2d4" name="powf_71f56036c216e61180e9c4346bace2d4" value="" maxlength="100" class="required email" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Mobile Number" type="text" id="powf_3aff73d9fbe9e511811afc15b42886e8" name="powf_3aff73d9fbe9e511811afc15b42886e8" value="" maxlength="20" class="digits" />
+          <input placeholder="Phone" type="text" id="powf_3aff73d9fbe9e511811afc15b42886e8" name="powf_3aff73d9fbe9e511811afc15b42886e8" value="" maxlength="20" class="digits" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Business Phone" type="text" id="powf_3dff73d9fbe9e511811afc15b42886e8" name="powf_3dff73d9fbe9e511811afc15b42886e8" value="" maxlength="100" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="Street 1" type="text" id="powf_3eff73d9fbe9e511811afc15b42886e8" name="powf_3eff73d9fbe9e511811afc15b42886e8" value="" maxlength="250" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="Street 2" type="text" id="powf_3fff73d9fbe9e511811afc15b42886e8" name="powf_3fff73d9fbe9e511811afc15b42886e8" value="" maxlength="250" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="City" type="text" id="powf_41ff73d9fbe9e511811afc15b42886e8" name="powf_41ff73d9fbe9e511811afc15b42886e8" value="" maxlength="80" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="State" type="text" id="powf_42ff73d9fbe9e511811afc15b42886e8" name="powf_42ff73d9fbe9e511811afc15b42886e8" value="" maxlength="50" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="Zip/Postal Code" type="text" id="powf_46ff73d9fbe9e511811afc15b42886e8" name="powf_46ff73d9fbe9e511811afc15b42886e8" value="" maxlength="20" class="digits" />
+          <textarea placeholder="Comments" id="powf_b62d13821a12e61180e4fc15b428cd78" name="powf_b62d13821a12e61180e4fc15b428cd78" cols="" rows=""></textarea>
           <div class="clear"></div>
         </div>
 

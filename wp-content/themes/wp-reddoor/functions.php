@@ -51,3 +51,46 @@ function rdc_get_attribute_group( $name ) {
   return $listAttributes;
 
 }
+
+/**
+ * @author kavaribes@UD
+ * @param $propertyDetailsAttrs
+ * @return string
+ * call in property.php
+ */
+
+function rdc_get_property_details_description($propertyDetailsAttrs){
+  if(empty($propertyDetailsAttrs)){
+    return;
+  }
+  else{
+        $propertyDetailsDescription = $propertyDetailsAttrs['location_address'] .
+        ' is a ' .
+        $propertyDetailsAttrs['property_type'] .
+        ' in ' .
+        $propertyDetailsAttrs['city'] .
+        ', '
+        . $propertyDetailsAttrs['state'] .
+        ' ' .
+        $propertyDetailsAttrs['postal_code'] .
+        '. This ' .
+        $propertyDetailsAttrs['total_living_area_sqft'] .
+        ' square foot condo sits on a ' .
+        $propertyDetailsAttrs['approximate_lot_size'] .
+        ' lot and features '
+        . $propertyDetailsAttrs['bedrooms'] .
+        ' bedrooms and ' .
+        $propertyDetailsAttrs['bathrooms'] .
+        ' bathrooms. Built in ' .
+        $propertyDetailsAttrs['year_built'] .
+        ', this ' .
+        $propertyDetailsAttrs['property_type'] .
+        ' has been on the market for a total of ' .
+        $propertyDetailsAttrs['cumulative_days_on_market'] .
+        ' and is currently priced at $' .
+        number_format($propertyDetailsAttrs['price']) .
+        '.';
+
+    return $propertyDetailsDescription;
+  }
+}

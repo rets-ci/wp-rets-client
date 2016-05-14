@@ -982,9 +982,13 @@ a:focus {
 }
 .searchForm .sfPriceRange .left-side {
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 .searchForm .sfPriceRange .right-side {
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 .select2-dropdown .select2-results__option {
   height: 48px;
@@ -3380,6 +3384,11 @@ body.tax-rdc_guide_category .guide-article-wrapper article ul li,
 body.single-rdc_guide .guide-article-wrapper article ul li {
   list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOElEQVQYV2NkIAIwIqtpamz+D+PX1dfC5eAMkAJkCWQ+WBG6AphpMHEqK8JmJYabkN2A13f4ggsAAt8wCodw+UcAAAAASUVORK5CYII=);
   margin-bottom: 0.3em;
+}
+body.post-type-archive-rdc_guide .guide-article-wrapper article ol,
+body.tax-rdc_guide_category .guide-article-wrapper article ol,
+body.single-rdc_guide .guide-article-wrapper article ol {
+  list-style: inside none numeric;
 }
 body.post-type-archive-rdc_guide .guide-article-wrapper article p,
 body.tax-rdc_guide_category .guide-article-wrapper article p,
@@ -6612,7 +6621,7 @@ a.btn-rdc {
     z-index: 20;
   }
   body .searchForm .sfPriceRange .sfprInputsBlock input {
-    width: 48.7%;
+    width: 48%;
   }
   body .searchForm .sfPriceRange .left-side {
     width: 50%;
@@ -6633,8 +6642,9 @@ a.btn-rdc {
     width: 100%;
   }
   body .searchForm > ul > li {
-    width: 100%;
+    width: 49.999%;
     text-align: center;
+    float: left !important;
   }
   body .searchForm .sellRentBtns {
     display: none;

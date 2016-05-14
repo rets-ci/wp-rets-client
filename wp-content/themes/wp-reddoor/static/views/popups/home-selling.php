@@ -36,27 +36,17 @@
         </div>
 
         <div class="field">
-          <input placeholder="Mobile Number" type="text" id="powf_bc80c09604dbe5118114c4346bb5981c" name="powf_bc80c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
+          <input placeholder="Phone" type="text" id="powf_bc80c09604dbe5118114c4346bb5981c" name="powf_bc80c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Business Phone" type="text" id="powf_c480c09604dbe5118114c4346bb5981c" name="powf_c480c09604dbe5118114c4346bb5981c" value="" maxlength="100" />
+          <input placeholder="Subject Property" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="100" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="Street 1" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="Street 2" type="text" id="powf_c980c09604dbe5118114c4346bb5981c" name="powf_c980c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
-          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="80" />
+          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
           <div class="clear"></div>
         </div>
 
@@ -67,6 +57,11 @@
 
         <div class="field">
           <input placeholder="Zip/Postal Code" type="text" id="powf_d880c09604dbe5118114c4346bb5981c" name="powf_d880c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
+          <div class="clear"></div>
+        </div>
+
+        <div class="field">
+          <textarea placeholder="Comments" class="digits" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78" cols="" rows=""></textarea>
           <div class="clear"></div>
         </div>
 
