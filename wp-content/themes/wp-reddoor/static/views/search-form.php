@@ -76,7 +76,7 @@
       <div class="sfPrice dropdown-container">
         <span class="searchTrigger" data-drop="price">
           <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
+          <span class="dropdown-value buyBlock"><?php _e( 'Price' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
 
@@ -183,7 +183,7 @@
       <div class="sfPrice dropdown-container">
         <span class="searchTrigger" data-drop="price">
           <div class="icon-wpproperty-attribute-price-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Price' ); ?></span>
+          <span class="dropdown-value rentBlock"><?php _e( 'Price' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
 
@@ -199,29 +199,29 @@
             <ul class="firstRangeList rentBlock">
               <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Min') ?></a></li>
               <li><a class="rentFormItem" data-val="750" href="javascript:;">$750</a></li>
-              <li><a class="rentFormItem" data-val="1000" href="javascript:;">$1000</a></li>
-              <li><a class="rentFormItem" data-val="1250" href="javascript:;">$1250</a></li>
-              <li><a class="rentFormItem" data-val="1500" href="javascript:;">$1500</a></li>
-              <li><a class="rentFormItem" data-val="1750" href="javascript:;">$1750</a></li>
-              <li><a class="rentFormItem" data-val="2000" href="javascript:;">$2000</a></li>
-              <li><a class="rentFormItem" data-val="2250" href="javascript:;">$2250</a></li>
-              <li><a class="rentFormItem" data-val="2500" href="javascript:;">$2500</a></li>
-              <li><a class="rentFormItem" data-val="2750" href="javascript:;">$2750</a></li>
-              <li><a class="rentFormItem" data-val="3000" href="javascript:;">$3000</a></li>
+              <li><a class="rentFormItem" data-val="1000" href="javascript:;">$1,000</a></li>
+              <li><a class="rentFormItem" data-val="1250" href="javascript:;">$1,250</a></li>
+              <li><a class="rentFormItem" data-val="1500" href="javascript:;">$1,500</a></li>
+              <li><a class="rentFormItem" data-val="1750" href="javascript:;">$1,750</a></li>
+              <li><a class="rentFormItem" data-val="2000" href="javascript:;">$2,000</a></li>
+              <li><a class="rentFormItem" data-val="2250" href="javascript:;">$2,250</a></li>
+              <li><a class="rentFormItem" data-val="2500" href="javascript:;">$2,500</a></li>
+              <li><a class="rentFormItem" data-val="2750" href="javascript:;">$2,750</a></li>
+              <li><a class="rentFormItem" data-val="3000" href="javascript:;">$3,000</a></li>
             </ul>
           </div>
           <div class="right-side rentBlock" style="display: none;">
             <ul class="lastRangeList rentBlock">
-              <li><a class="rentFormItem" data-val="1750" href="javascript:;">$1750</a></li>
-              <li><a class="rentFormItem" data-val="2000" href="javascript:;">$2000</a></li>
-              <li><a class="rentFormItem" data-val="2250" href="javascript:;">$2250</a></li>
-              <li><a class="rentFormItem" data-val="2500" href="javascript:;">$2500</a></li>
-              <li><a class="rentFormItem" data-val="2750" href="javascript:;">$2750</a></li>
-              <li><a class="rentFormItem" data-val="3000" href="javascript:;">$3000</a></li>
-              <li><a class="rentFormItem" data-val="3250" href="javascript:;">$3250</a></li>
-              <li><a class="rentFormItem" data-val="3500" href="javascript:;">$3500</a></li>
-              <li><a class="rentFormItem" data-val="3750" href="javascript:;">$3750</a></li>
-              <li><a class="rentFormItem" data-val="4000" href="javascript:;">$4000</a></li>
+              <li><a class="rentFormItem" data-val="1750" href="javascript:;">$1,750</a></li>
+              <li><a class="rentFormItem" data-val="2000" href="javascript:;">$2,000</a></li>
+              <li><a class="rentFormItem" data-val="2250" href="javascript:;">$2,250</a></li>
+              <li><a class="rentFormItem" data-val="2500" href="javascript:;">$2,500</a></li>
+              <li><a class="rentFormItem" data-val="2750" href="javascript:;">$2,750</a></li>
+              <li><a class="rentFormItem" data-val="3000" href="javascript:;">$3,000</a></li>
+              <li><a class="rentFormItem" data-val="3250" href="javascript:;">$3,250</a></li>
+              <li><a class="rentFormItem" data-val="3500" href="javascript:;">$3,500</a></li>
+              <li><a class="rentFormItem" data-val="3750" href="javascript:;">$3,750</a></li>
+              <li><a class="rentFormItem" data-val="4000" href="javascript:;">$4,000</a></li>
               <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
             </ul>
           </div>

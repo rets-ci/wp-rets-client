@@ -112,11 +112,11 @@
             var buyCurrency = buyCurrencyAmount( buyselected_max );
             $('.lastRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
             $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
-            applyPlaceholder();
+            applyPlaceholderBuy();
           } else {
             $('.lastRangeLabel.buyBlock', dropdown).val( 'No Max' );
             $('.lastRangeValue.buyBlock', dropdown).val( '' );
-            applyPlaceholder();
+            applyPlaceholderBuy();
           }
 
           if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
@@ -130,11 +130,11 @@
             var rentCurrency = rentCurrencyAmount( rentselected_max );
             $('.lastRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
             $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
-            applyPlaceholder();
+            applyPlaceholderRent();
           } else {
             $('.lastRangeLabel.rentBlock', dropdown).val( 'No Max' );
             $('.lastRangeValue.rentBlock', dropdown).val( '' );
-            applyPlaceholder();
+            applyPlaceholderRent();
           }
 
           if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
@@ -161,11 +161,11 @@
               var buyCurrency = buyCurrencyAmount( selected_max );
               $('.lastRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
               $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
-              applyPlaceholder();
+              applyPlaceholderBuy();
             } else {
               $('.lastRangeLabel.buyBlock', dropdown).val( 'No Max' );
               $('.lastRangeValue.buyBlock', dropdown).val( '' );
-              applyPlaceholder();
+              applyPlaceholderBuy();
             }
 
             if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
@@ -193,11 +193,11 @@
               var rentCurrency = rentCurrencyAmount( selected_max );
               $('.lastRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
               $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
-              applyPlaceholder();
+              applyPlaceholderRent();
             } else {
               $('.lastRangeLabel.rentBlock', dropdown).val( 'No Max' );
               $('.lastRangeValue.rentBlock', dropdown).val( '' );
-              applyPlaceholder();
+              applyPlaceholderRent();
             }
 
             if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
@@ -209,10 +209,10 @@
         /**
          *
          */
-        function applyPlaceholder() {
+        function applyPlaceholderBuy() {
           var _separator = '';
-          var _first_val = parseInt( $('.firstRangeValue', dropdown).val() );
-          var _last_val = parseInt( $('.lastRangeValue', dropdown).val() );
+          var _first_val = parseInt( $('.firstRangeValue.buyBlock', dropdown).val() );
+          var _last_val = parseInt( $('.lastRangeValue.buyBlock', dropdown).val() );
 
           if ( isNaN( _first_val ) || _first_val == 0 ) {
             _first_val = '';
@@ -238,7 +238,47 @@
             _separator = 'Any Price';
           }
 
-          $('.dropdown-value', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
+          $('.dropdown-value.buyBlock', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
+        };
+
+        function applyPlaceholderRent() {
+          var _separator = '';
+          var _first_val = parseInt( $('.firstRangeValue.rentBlock', dropdown).val() );
+          var _last_val = parseInt( $('.lastRangeValue.rentBlock', dropdown).val() );
+
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
+          }
+
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
+          }
+
+          if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
+            _separator = 'Any Price';
+          }
+          function rentPriceDisplay(value) {
+            if(value) {
+              return '$' + value;
+            }
+            else{
+              return '';
+            }
+          }
+
+          $('.dropdown-value.rentBlock', dropdown).html( rentPriceDisplay( _first_val ) + _separator + rentPriceDisplay( _last_val ) );
         };
 
         $('.firstRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
@@ -255,7 +295,7 @@
           var buyCurrency = buyCurrencyAmount( $(this).val() );
           $(this).val( buyCurrency.label );
           $('.firstRangeValue.buyBlock', dropdown).val( buyCurrency.value );
-          applyPlaceholder();
+          applyPlaceholderBuy();
           buyGenerateMax( buyCurrency.value );
         });
 
@@ -263,7 +303,7 @@
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
           $('.firstRangeValue.rentBlock', dropdown).val( rentCurrency.value );
-          applyPlaceholder();
+          applyPlaceholderRent();
           rentGenerateMax( rentCurrency.value );
         });
 
@@ -271,14 +311,14 @@
           var buyCurrency = buyCurrencyAmount( $(this).val() );
           $(this).val( buyCurrency.label );
           $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
-          applyPlaceholder();
+          applyPlaceholderBuy();
         });
 
         $('.lastRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
           $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
-          applyPlaceholder();
+          applyPlaceholderRent();
         });
 
         $('.lastRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
@@ -292,8 +332,6 @@
         });
 
         $('.firstRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
-          console.log('loh');
-
           var selected_min = parseInt( $(this).data('val') );
 
           if ( !isNaN( selected_min ) && selected_min != 0 ) {
@@ -301,7 +339,7 @@
             var buyCurrency = buyCurrencyAmount( selected_min );
             $('.firstRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
             $('.firstRangeValue.buyBlock', dropdown).val( buyCurrency.value );
-            applyPlaceholder();
+            applyPlaceholderBuy();
 
             buyGenerateMax( buyCurrency.value );
 
@@ -309,7 +347,7 @@
           } else {
             $('.firstRangeLabel.buyBlock', dropdown).val( 'No Min' );
             $('.firstRangeValue.buyBlock', dropdown).val( '' );
-            applyPlaceholder();
+            applyPlaceholderBuy();
             $('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
           }
 
@@ -328,7 +366,7 @@
             var rentCurrency = rentCurrencyAmount( selected_min );
             $('.firstRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
             $('.firstRangeValue.rentBlock', dropdown).val( rentCurrency.value );
-            applyPlaceholder();
+            applyPlaceholderRent();
 
             rentGenerateMax( rentCurrency.value );
 
@@ -336,7 +374,7 @@
           } else {
             $('.firstRangeLabel.rentBlock', dropdown).val( 'No Min' );
             $('.firstRangeValue.rentBlock', dropdown).val( '' );
-            applyPlaceholder();
+            applyPlaceholderRent();
             $('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           }
 
