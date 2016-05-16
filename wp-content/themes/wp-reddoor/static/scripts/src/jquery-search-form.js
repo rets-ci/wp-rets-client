@@ -105,40 +105,40 @@
 
         var dropdown = $(element).parent();
 
-        $('.buyForm .lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+        $('.lastRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
           var buyselected_max = parseInt( $(this).data('val') );
           if ( !isNaN( buyselected_max ) && buyselected_max != 0 ) {
-            $('.buyForm .lastRangeValue', dropdown).val( buyselected_max );
+            $('.lastRangeValue.buyBlock', dropdown).val( buyselected_max );
             var buyCurrency = buyCurrencyAmount( buyselected_max );
-            $('.buyForm .lastRangeLabel', dropdown).val( buyCurrency.label );
-            $('.buyForm .lastRangeValue', dropdown).val( buyCurrency.value );
+            $('.lastRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
+            $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
             applyPlaceholder();
           } else {
-            $('.buyForm .lastRangeLabel', dropdown).val( 'No Max' );
-            $('.buyForm .lastRangeValue', dropdown).val( '' );
+            $('.lastRangeLabel.buyBlock', dropdown).val( 'No Max' );
+            $('.lastRangeValue.buyBlock', dropdown).val( '' );
             applyPlaceholder();
           }
 
-          if ( $('.buyForm .lastRangeLabel', dropdown).val() && $('.buyForm .firstRangeLabel', dropdown).val() ) {
-            $(".buyForm .dropdown-container .dropdown-list", that).slideUp();
+          if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
           }
         });
-        $('.rentForm .lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+        $('.lastRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
           var rentselected_max = parseInt( $(this).data('val') );
           if ( !isNaN( rentselected_max ) && rentselected_max != 0 ) {
-            $('.rentForm .lastRangeValue', dropdown).val( rentselected_max );
+            $('.lastRangeValue.rentBlock', dropdown).val( rentselected_max );
             var rentCurrency = rentCurrencyAmount( rentselected_max );
-            $('.rentForm .lastRangeLabel', dropdown).val( rentCurrency.label );
-            $('.rentForm .lastRangeValue', dropdown).val( rentCurrency.value );
+            $('.lastRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
+            $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
             applyPlaceholder();
           } else {
-            $('.rentForm .lastRangeLabel', dropdown).val( 'No Max' );
-            $('.rentForm .lastRangeValue', dropdown).val( '' );
+            $('.lastRangeLabel.rentBlock', dropdown).val( 'No Max' );
+            $('.lastRangeValue.rentBlock', dropdown).val( '' );
             applyPlaceholder();
           }
 
-          if ( $('.rentForm .lastRangeLabel', dropdown).val() && $('.rentForm .firstRangeLabel', dropdown).val() ) {
-            $(".rentForm .dropdown-container .dropdown-list", that).slideUp();
+          if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
           }
         });
 
@@ -148,28 +148,28 @@
             max_values.push( selected_min + 25000 * i );
           }
 
-          $('.buyForm .lastRangeList', dropdown).empty();
+          $('.lastRangeList.buyBlock', dropdown).empty();
           for(var key in max_values) {
-            $('.buyForm .lastRangeList', dropdown).append('<li><a data-val="'+max_values[key]+'" href="javascript:;">'+simplifyAmount(max_values[key])+'</a></li>');
+            $('.lastRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="'+max_values[key]+'" href="javascript:;">'+simplifyAmount(max_values[key])+'</a></li>');
           }
-          $('.buyForm .lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">No Max</a></li>');
+          $('.lastRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="" href="javascript:;">No Max</a></li>');
 
-          $('.buyForm .lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+          $('.buyFormItem', dropdown).off('click').on( 'click', function(e) {
             var selected_max = parseInt( $(this).data('val') );
             if ( !isNaN( selected_max ) && selected_max != 0 ) {
-              $('.buyForm .lastRangeValue', dropdown).val( selected_max );
+              $('.lastRangeValue.buyBlock', dropdown).val( selected_max );
               var buyCurrency = buyCurrencyAmount( selected_max );
-              $('.buyForm .lastRangeLabel', dropdown).val( buyCurrency.label );
-              $('.buyForm .lastRangeValue', dropdown).val( buyCurrency.value );
+              $('.lastRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
+              $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
               applyPlaceholder();
             } else {
-              $('.buyForm .lastRangeLabel', dropdown).val( 'No Max' );
-              $('.buyForm .lastRangeValue', dropdown).val( '' );
+              $('.lastRangeLabel.buyBlock', dropdown).val( 'No Max' );
+              $('.lastRangeValue.buyBlock', dropdown).val( '' );
               applyPlaceholder();
             }
 
-            if ( $('.buyForm .lastRangeLabel', dropdown).val() && $('.buyForm .firstRangeLabel', dropdown).val() ) {
-              $(".buyForm .dropdown-container .dropdown-list", that).slideUp();
+            if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
             }
           });
         };
@@ -180,28 +180,28 @@
             max_values.push( selected_min + 250 * i );
           }
 
-          $('.rentForm .lastRangeList', dropdown).empty();
+          $('.lastRangeList.rentBlock', dropdown).empty();
           for(var key in max_values) {
-            $('.rentForm .lastRangeList', dropdown).append('<li><a data-val="'+max_values[key]+'" href="javascript:;">$'+max_values[key]+'</a></li>');
+            $('.lastRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="'+max_values[key]+'" href="javascript:;">$'+max_values[key]+'</a></li>');
           }
-          $('.rentForm .lastRangeList', dropdown).append('<li><a data-val="" href="javascript:;">No Max</a></li>');
+          $('.lastRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="" href="javascript:;">No Max</a></li>');
 
-          $('.rentForm .lastRangeList li a', dropdown).off('click').on( 'click', function(e) {
+          $('.rentFormItem', dropdown).off('click').on( 'click', function(e) {
             var selected_max = parseInt( $(this).data('val') );
             if ( !isNaN( selected_max ) && selected_max != 0 ) {
-              $('.rentForm .lastRangeValue', dropdown).val( selected_max );
+              $('.lastRangeValue.rentBlock', dropdown).val( selected_max );
               var rentCurrency = rentCurrencyAmount( selected_max );
-              $('.rentForm .lastRangeLabel', dropdown).val( rentCurrency.label );
-              $('.rentForm .lastRangeValue', dropdown).val( rentCurrency.value );
+              $('.lastRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
+              $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
               applyPlaceholder();
             } else {
-              $('.rentForm .lastRangeLabel', dropdown).val( 'No Max' );
-              $('.rentForm .lastRangeValue', dropdown).val( '' );
+              $('.lastRangeLabel.rentBlock', dropdown).val( 'No Max' );
+              $('.lastRangeValue.rentBlock', dropdown).val( '' );
               applyPlaceholder();
             }
 
-            if ( $('.rentForm .lastRangeLabel', dropdown).val() && $('.rentForm .firstRangeLabel', dropdown).val() ) {
-              $(".rentForm .dropdown-container .dropdown-list", that).slideUp();
+            if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
             }
           });
         };
@@ -241,114 +241,116 @@
           $('.dropdown-value', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
         };
 
-        $('.buyForm .firstRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
-          $('.buyForm .left-side', dropdown).show();
-          $('.buyForm .right-side', dropdown).hide();
+        $('.firstRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $('.left-side.buyBlock', dropdown).show();
+          $('.right-side.buyBlock', dropdown).hide();
         });
 
-        $('.rentForm .firstRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
-          $('.rentForm .left-side', dropdown).show();
-          $('.rentForm .right-side', dropdown).hide();
+        $('.firstRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $('.left-side.rentBlock', dropdown).show();
+          $('.right-side.rentBlock', dropdown).hide();
         });
 
-        $('.buyForm .firstRangeLabel', dropdown).off('change').on( 'change', function(e) {
+        $('.firstRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
           var buyCurrency = buyCurrencyAmount( $(this).val() );
           $(this).val( buyCurrency.label );
-          $('.rentForm .firstRangeValue', dropdown).val( buyCurrency.value );
+          $('.firstRangeValue.buyBlock', dropdown).val( buyCurrency.value );
           applyPlaceholder();
           buyGenerateMax( buyCurrency.value );
         });
 
-        $('.rentForm .firstRangeLabel', dropdown).off('change').on( 'change', function(e) {
+        $('.firstRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
-          $('.firstRangeValue', dropdown).val( rentCurrency.value );
+          $('.firstRangeValue.rentBlock', dropdown).val( rentCurrency.value );
           applyPlaceholder();
           rentGenerateMax( rentCurrency.value );
         });
 
-        $('.buyForm .lastRangeLabel', dropdown).off('change').on( 'change', function(e) {
+        $('.lastRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
           var buyCurrency = buyCurrencyAmount( $(this).val() );
           $(this).val( buyCurrency.label );
-          $('.buyForm .lastRangeValue', dropdown).val( buyCurrency.value );
+          $('.lastRangeValue.buyBlock', dropdown).val( buyCurrency.value );
           applyPlaceholder();
         });
 
-        $('.rentForm .lastRangeLabel', dropdown).off('change').on( 'change', function(e) {
+        $('.lastRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
-          $('.rentForm .lastRangeValue', dropdown).val( rentCurrency.value );
+          $('.lastRangeValue.rentBlock', dropdown).val( rentCurrency.value );
           applyPlaceholder();
         });
 
-        $('.buyForm .lastRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
-          $('.left-side', dropdown).hide();
-          $('.right-side', dropdown).show();
+        $('.lastRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $('.left-side.buyBlock', dropdown).hide();
+          $('.right-side.buyBlock', dropdown).show();
         });
 
-        $('.rentForm .lastRangeLabel', dropdown).off('focus').on( 'focus', function(e) {
-          $('.left-side', dropdown).hide();
-          $('.right-side', dropdown).show();
+        $('.lastRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $('.left-side.rentBlock', dropdown).hide();
+          $('.right-side.rentBlock', dropdown).show();
         });
 
-        $('.buyForm .firstRangeList li a', dropdown).off('click').on( 'click', function(e) {
+        $('.firstRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
           console.log('loh');
 
           var selected_min = parseInt( $(this).data('val') );
 
           if ( !isNaN( selected_min ) && selected_min != 0 ) {
-            $('.firstRangeValue', dropdown).val( selected_min );
+            $('.firstRangeValue.buyBlock', dropdown).val( selected_min );
             var buyCurrency = buyCurrencyAmount( selected_min );
-            $('.firstRangeLabel', dropdown).val( buyCurrency.label );
-            $('.firstRangeValue', dropdown).val( buyCurrency.value );
+            $('.firstRangeLabel.buyBlock', dropdown).val( buyCurrency.label );
+            $('.firstRangeValue.buyBlock', dropdown).val( buyCurrency.value );
             applyPlaceholder();
 
             buyGenerateMax( buyCurrency.value );
 
-            $('.buyForm .left-side, .buyForm .right-side', dropdown).toggle();
+            $('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
           } else {
-            $('.buyForm .firstRangeLabel', dropdown).val( 'No Min' );
-            $('.buyForm .firstRangeValue', dropdown).val( '' );
+            $('.firstRangeLabel.buyBlock', dropdown).val( 'No Min' );
+            $('.firstRangeValue.buyBlock', dropdown).val( '' );
             applyPlaceholder();
-            $('.buyForm .left-side, .buyForm .right-side', dropdown).toggle();
+            $('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
           }
 
-          if ( $('.buyForm .lastRangeLabel', dropdown).val() && $('.buyForm .firstRangeLabel', dropdown).val() ) {
-            $(".buyForm .dropdown-container .dropdown-list", that).slideUp();
+          if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
           }
 
         });
 
-        $('.rentForm .firstRangeList li a', dropdown).off('click').on( 'click', function(e) {
+        $('.firstRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
 
           var selected_min = parseInt( $(this).data('val') );
 
           if ( !isNaN( selected_min ) && selected_min != 0 ) {
-            $('.rentForm .firstRangeValue', dropdown).val( selected_min );
+            $('.firstRangeValue.rentBlock', dropdown).val( selected_min );
             var rentCurrency = rentCurrencyAmount( selected_min );
-            $('.rentForm .firstRangeLabel', dropdown).val( rentCurrency.label );
-            $('.rentForm .firstRangeValue', dropdown).val( rentCurrency.value );
+            $('.firstRangeLabel.rentBlock', dropdown).val( rentCurrency.label );
+            $('.firstRangeValue.rentBlock', dropdown).val( rentCurrency.value );
             applyPlaceholder();
 
             rentGenerateMax( rentCurrency.value );
 
-            $('.rentForm .left-side, .rentForm .right-side', dropdown).toggle();
+            $('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           } else {
-            $('.rentForm .firstRangeLabel', dropdown).val( 'No Min' );
-            $('.rentForm .firstRangeValue', dropdown).val( '' );
+            $('.firstRangeLabel.rentBlock', dropdown).val( 'No Min' );
+            $('.firstRangeValue.rentBlock', dropdown).val( '' );
             applyPlaceholder();
-            $('.rentForm .left-side, .rentForm .right-side', dropdown).toggle();
+            $('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           }
 
-          if ( $('.rentForm .lastRangeLabel', dropdown).val() && $('.rentForm .firstRangeLabel', dropdown).val() ) {
-            $(".rentForm .dropdown-container .dropdown-list", that).slideUp();
+          if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
           }
+
 
         });
 
-        $('.buyForm .firstRangeLabel', dropdown).focus();
+        $('.firstRangeLabel.buyBlock', dropdown).focus();
 
-        $('.rentForm .firstRangeLabel', dropdown).focus();
+        $('.firstRangeLabel.rentBlock', dropdown).focus();
+
       }
 
     });
