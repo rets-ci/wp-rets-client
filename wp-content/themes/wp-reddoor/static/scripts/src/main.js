@@ -84,6 +84,12 @@ var rdc = {
       jQuery('#tabs_search').rdc_search_form();
     }
 
+
+    // add datepicker to all input elements with "rdc-datepicker" class
+    if( 'function' === typeof jQuery.fn.datepicker && jQuery('input.rdc-datepicker' ).length ) {
+      jQuery('input.rdc-datepicker' ).datepicker();
+    }
+    
     // Property Attribute Lists Filter
     if( jQuery('.attribute-content').length ) {
 

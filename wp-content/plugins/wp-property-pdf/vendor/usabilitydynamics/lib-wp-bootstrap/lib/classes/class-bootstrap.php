@@ -73,7 +73,9 @@ namespace UsabilityDynamics\WP {
       protected function __construct( $args ) {
         parent::__construct( $args );
         //** Define our Admin Notices handler object */
-        $this->errors = new Errors( $args );
+        $this->errors = new Errors( array_merge( $args, array(
+          'type' => $this->type
+        ) ) );
         //** Determine if Composer autoloader is included and modules classes are up to date */
         $this->composer_dependencies();
         //** Determine if plugin/theme requires or recommends another plugin(s) */
@@ -89,6 +91,7 @@ namespace UsabilityDynamics\WP {
         if ( !has_action( 'admin_menu', array( Dashboard::get_instance(), 'add_ud_splash_page') ) ) {
           add_action( 'admin_menu', array( Dashboard::get_instance(), 'add_ud_splash_page') );
         }
+        add_action( 'wp_ajax_ud_bootstrap_dismiss_notice', array( $this, 'ud_bootstrap_dismiss_notice' ) );
       }
       
       /**
@@ -348,11 +351,7 @@ namespace UsabilityDynamics\WP {
 
           }
 
-          if ( ! function_exists( 'wp_get_current_user' ) ) {
-            require_once( ABSPATH . 'wp-includes/pluggable.php' );
-          }
-
-          if( !get_option( $option ) && current_user_can( 'activate_plugins' ) ) {
+          if( !get_option( $option ) ) {
             add_action( 'admin_notices',  array( $this, 'render_upgrade_notice' ), 1 );
           }
 
@@ -401,10 +400,16 @@ namespace UsabilityDynamics\WP {
        *
        */
       public function render_upgrade_notice() {
-
+        
         if( $this->type == 'theme' ) {
+          if( !current_user_can( 'switch_themes' ) ) {
+            return;
+          }
           $icon = file_exists( get_template_directory() . '/static/images/icon.png' ) ? get_template_directory_uri() . '/static/images/icon.png' : false;
         } else {
+          if( !current_user_can( 'activate_plugins' ) ) {
+            return;
+          }
           $icon = file_exists( $this->path( 'static/images/icon.png', 'dir' ) ) ? $this->path( 'static/images/icon.png', 'url' ) : false;
         }
 
@@ -414,6 +419,8 @@ namespace UsabilityDynamics\WP {
           'icon' => $icon,
           'name' => $this->name,
           'type' => $this->type,
+          'slug' => $this->slug,
+          'version' => $this->args['version'],
           'dashboard_link' => admin_url( 'index.php?page='. Dashboard::get_instance()->page_slug . '&slug=' . $this->slug ),
           'dismiss_link' => admin_url( 'index.php?page='. Dashboard::get_instance()->page_slug . '&slug=' . $this->slug . '&dismiss=1' ),
           'home_link' => !empty( $this->schema[ 'homepage' ] ) ? $this->schema[ 'homepage' ] : false,
@@ -494,7 +501,7 @@ namespace UsabilityDynamics\WP {
          * 
          * The condition belongs to WordPress 4.3 and higher.
          */
-        if( did_action( 'plugins_loaded' ) ) {
+        if( did_action( 'plugins_loaded' ) && $this->type == 'plugin' ) {
           return;
         }
         $plugins = $this->get_schema( 'extra.schemas.dependencies.plugins' );
@@ -576,6 +583,29 @@ namespace UsabilityDynamics\WP {
         }
         $this->license_manager = new \UsabilityDynamics\UD_API\Manager( $schema );
         return true;
+      }
+
+      public function ud_bootstrap_dismiss_notice() {
+        $response = array(
+            'success' => '0',
+            'error' => __( 'There was an error in request.', $this->domain ),
+        );
+        $error = false;
+
+        if( empty($_POST['key']) || empty($_POST['slug'] || empty($_POST['type']) || empty($_POST['version']) )) {
+          $response['error'] = __( 'Invalid values', $this->domain );
+          $error = true;
+        }
+
+        if ( ! $error && update_option( ( $_POST['key'] ), array(
+                'slug' => $_POST['slug'],
+                'type' => $_POST['type'],
+                'version' => $_POST['version'],
+            ) ) ) {
+          $response['success'] = '1';
+        }
+
+        wp_send_json( $response );
       }
       
     }

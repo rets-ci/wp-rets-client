@@ -12,12 +12,12 @@ jQuery(document).ready(function($) {
                 s.noOfimgageLoaded += 1, s.noOfimgageLoaded == s.slides.length && (s.destroy(!1, !0), 
                 s.init(), s.onResize(), $this.removeClass("wpp-responsive-slideshow-loading"), $this.addClass("wpp-responsive-slideshow-ready"));
             };
-            return $("<img />").load(function() {
+            return $img.attr("width") > 1 ? void isAllImgLoaded() : ($("<img />").load(function() {
                 var width = this.width, height = this.height;
                 $img.attr("width", width).attr("height", height), isAllImgLoaded();
             }).error(function() {
                 isAllImgLoaded();
-            }).attr("src", $img.attr("src") || $img.data("src")), $img;
+            }).attr("src", $img.attr("src") || $img.data("src")), $img);
         }
         var slidesPerView, slidesPerColumn, pagination, galleryTop, galleryThumbs, $this = $(this), id = $this.attr("id"), isMobile = $this.hasClass("mobile"), sliderType = $this.attr("data-slider-type"), autoHeight = !1, centeredSlides = !0, slidesPerColumnFill = "column", _galleryTop = $this.find(".gallery-top"), _galleryThumbs = $this.find(".gallery-thumbs"), slideshow_layout = _galleryTop.data("slideshow_layout"), slider_width = _galleryTop.data("slider_width"), slider_height = isMobile ? "" : _galleryTop.data("slider_height"), slider_auto_height = _galleryTop.data("slider_auto_height").toString();
         slider_auto_height = "true" == slider_auto_height ? !0 : !1;

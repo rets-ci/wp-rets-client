@@ -534,8 +534,7 @@ $_attributes = WPP_F::get_total_attribute_array();
               </optgroup>
               <optgroup label="<?php _e( 'Taxonomies', ud_get_wpp_importer()->domain ); ?>">
                 <?php foreach( $_taxonomies as $tax_slug => $tax ) { ?>
-                  <option value="<?php echo $tax_slug; ?>" <?php echo ( $attr[ 'wpp_attribute' ] == $tax_slug ) ? 'selected="selected"' : ''; ?> ><?php echo $tax[ 'label' ]; ?>
-                    ( allows multiple )</option>
+                  <option value="<?php echo $tax_slug; ?>" <?php echo ( $attr[ 'wpp_attribute' ] == $tax_slug ) ? 'selected="selected"' : ''; ?> ><?php echo $tax[ 'label' ]; ?> ( allows multiple )</option>
                 <?php } ?>
               </optgroup>
               <optgroup label="<?php _e( 'Attributes', ud_get_wpp_importer()->domain ); ?>">
@@ -549,7 +548,7 @@ $_attributes = WPP_F::get_total_attribute_array();
                 <option value='city' <?php selected( $attr[ 'wpp_attribute' ], 'city' ); ?>><?php _e( 'City', ud_get_wpp_importer()->domain ); ?></option>
                 <option value='county' <?php selected( $attr[ 'wpp_attribute' ], 'county' ); ?>><?php _e( 'County', ud_get_wpp_importer()->domain ); ?></option>
                 <option value='state' <?php selected( $attr[ 'wpp_attribute' ], 'state' ); ?>><?php _e( 'State', ud_get_wpp_importer()->domain ); ?></option>
-                <option value='country <?php selected( $attr[ 'wpp_attribute' ], 'country' ); ?>'><?php _e( 'Country', ud_get_wpp_importer()->domain ); ?></option>
+                <option value='country' <?php selected( $attr[ 'wpp_attribute' ], 'country' ); ?>><?php _e( 'Country', ud_get_wpp_importer()->domain ); ?></option>
                 <option value='postal_code' <?php selected( $attr[ 'wpp_attribute' ], 'postal_code' ); ?>><?php _e( 'Postal Code', ud_get_wpp_importer()->domain ); ?></option>
                 <option value='latitude' <?php selected( $attr[ 'wpp_attribute' ], 'latitude' ); ?>><?php _e( 'Latitude', ud_get_wpp_importer()->domain ); ?></option>
                 <option value='longitude' <?php selected( $attr[ 'wpp_attribute' ], 'longitude' ); ?>><?php _e( 'Longitude', ud_get_wpp_importer()->domain ); ?></option>

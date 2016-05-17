@@ -51,3 +51,60 @@ function rdc_get_attribute_group( $name ) {
   return $listAttributes;
 
 }
+
+/**
+ * @author kavaribes@UD
+ * @param $propertyDetailsAttrs
+ * @return string
+ * call in property.php
+ */
+
+function rdc_get_property_details_description($propertyDetailsAttrs){
+  if(empty($propertyDetailsAttrs)){
+    return;
+  }
+  else{
+        $propertyDetailsDescription = $propertyDetailsAttrs['location_address'];
+        $propertyDetailsDescription .= ' is a ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
+        $propertyDetailsDescription .= ' for ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['sale_type'];
+        $propertyDetailsDescription .= ' in ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['city'];
+        $propertyDetailsDescription .= ', ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['state'];
+        $propertyDetailsDescription .= ' ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['postal_code'];
+        $propertyDetailsDescription .= '. This ';
+        if($propertyDetailsAttrs['total_living_area_sqft']){
+            $propertyDetailsDescription .= $propertyDetailsAttrs['total_living_area_sqft'] . ' square foot ';
+        }
+        else{
+            $propertyDetailsDescription .= ' ';
+        }
+        $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
+        $propertyDetailsDescription .= ' sits on a ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
+        $propertyDetailsDescription .= ' lot and features ';
+        $propertyDetailsDescription .=  $propertyDetailsAttrs['bedrooms'];
+        $propertyDetailsDescription .= ' bedrooms and ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['bathrooms'];
+        $propertyDetailsDescription .= ' bathrooms. Built in ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['year_built'];
+        $propertyDetailsDescription .= ', this ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
+        $propertyDetailsDescription .= ' has been on the market for a total of ';
+        $propertyDetailsDescription .= $propertyDetailsAttrs['cumulative_days_on_market'];
+        $propertyDetailsDescription .= ' and is currently priced at $';
+        $propertyDetailsDescription .= number_format($propertyDetailsAttrs['price']);
+
+      if($propertyDetailsAttrs['sale_type'] == 'rent'){
+          $propertyDetailsDescription .= ' a month.';
+      }
+      else{
+          $propertyDetailsDescription .= '.';
+      }
+
+    return $propertyDetailsDescription;
+  }
+}

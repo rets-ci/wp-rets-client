@@ -65,54 +65,68 @@ $_property_detail_map = array(
 
 
 // Start the Loop.
-while( have_posts() ) : the_post();
-  $get_sale_type_terms = get_the_terms( $property[ 'ID' ], 'sale_type' );
-  $get_bedrooms_terms = get_the_terms( $property[ 'ID' ], 'bedrooms' );
-  $get_bathrooms_terms = get_the_terms( $property[ 'ID' ], 'bathrooms' );
-  $get_location_city_terms = get_the_terms( $property[ 'ID' ], 'location_city' );
-  $get_location_zip_terms = get_the_terms( $property[ 'ID' ], 'location_zip' );
-  $get_living_area_terms = get_the_terms( $property[ 'ID' ], 'total_living_area_sqft' );
-  $get_approximate_lot_size_terms = get_the_terms( $property[ 'ID' ], 'approximate_lot_size' );
-  $get_updated_terms = get_the_terms( $property[ 'ID' ], 'updated' );
-  $get_days_on_market_terms = get_the_terms( $property[ 'ID' ], 'added' );
-  $get_elementary_school_terms = get_the_terms( $property[ 'ID' ], 'elementary_school' );
-  $get_middle_school_terms = get_the_terms( $property[ 'ID' ], 'middle_school' );
-  $get_high_school_terms = get_the_terms( $property[ 'ID' ], 'high_school' );
-  $get_subdivision_terms = get_the_terms( $property[ 'ID' ], 'subdivision' );
-  $get_inside_city_terms = get_the_terms( $property[ 'ID' ], 'inside_city' );
-  $get_location_city_terms = get_the_terms( $property[ 'ID' ], 'location_city' );
-  $get_location_county_terms = get_the_terms( $property[ 'ID' ], 'location_county' );
-  $get_year_built_terms = get_the_terms( $property[ 'ID' ], 'year_built' );
-  $get_new_construction_terms = get_the_terms( $property[ 'ID' ], 'new_construction' );
-  $get_listing_agent_phone_number_terms = get_the_terms( $property[ 'ID' ], 'listing_agent_phone_number' );
-  $get_listing_agent_phone_extension_terms = get_the_terms( $property[ 'ID' ], 'listing_agent_phone_extension' );
-  $get_listing_office_phone_number_terms = get_the_terms( $property[ 'ID' ], 'listing_office_phone_number' );
-  $get_data_source_terms = get_the_terms( $property[ 'ID' ], 'data_source' );
-  $get_listing_id_terms = get_the_terms( $property[ 'ID' ], 'listing_id' );
 
-  $_propertyType = ( $get_sale_type_terms[ 0 ] ) ? $get_sale_type_terms[ 0 ]->slug : '';
-  $singleBedrooms = ( $get_bedrooms_terms[ 0 ] ) ? $get_bedrooms_terms[ 0 ]->name : '';
-  $singleBathrooms = ( $get_bathrooms_terms[ 0 ] ) ? $get_bathrooms_terms[ 0 ]->name : '';
-  $totalLivingArea = ( $get_living_area_terms[ 0 ] ) ? $get_living_area_terms[ 0 ]->name : '';
-  $approximateLotSize = ( $get_approximate_lot_size_terms[ 0 ] ) ? $get_approximate_lot_size_terms[ 0 ]->name : '';
-  $locationCity = ( $get_location_city_terms[ 0 ] ) ? $get_location_city_terms[ 0 ]->name : '';
-  $locationZip = ( $get_location_zip_terms[ 0 ] ) ? $get_location_zip_terms[ 0 ]->name : '';
-  $updatedProperty = ( $get_updated_terms[ 0 ] ) ? $get_updated_terms[ 0 ]->name : '';
-  $daysOnMarket = ( $get_days_on_market_terms[ 0 ] ) ? $get_days_on_market_terms[ 0 ]->name : '';
-  $elementary_school = ( $get_elementary_school_terms[ 0 ] ) ? $get_elementary_school_terms[ 0 ]->name : '';
-  $middle_school = ( $get_middle_school_terms[ 0 ] ) ? $get_middle_school_terms[ 0 ]->name : '';
-  $high_school = ( $get_high_school_terms[ 0 ] ) ? $get_high_school_terms[ 0 ]->name : '';
-  $subdivision = ( $get_subdivision_terms[ 0 ] ) ? $get_subdivision_terms[ 0 ]->name : '';
-  $inside_city = ( $get_inside_city_terms[ 0 ] ) ? $get_inside_city_terms[ 0 ]->name : '';
-  $location_city = ( $get_location_city_terms[ 0 ] ) ? $get_location_city_terms[ 0 ]->name : '';
-  $location_county = ( $get_location_county_terms[ 0 ] ) ? $get_location_county_terms[ 0 ]->name : '';
-  $year_built = ( $get_year_built_terms[ 0 ] ) ? $get_year_built_terms[ 0 ]->name : '';
-  $new_construction = ( $get_new_construction_terms[ 0 ] ) ? $get_new_construction_terms[ 0 ]->name : '';
-  $listing_agent_phone_number = ( $get_listing_agent_phone_number_terms[ 0 ] ) ? $get_listing_agent_phone_number_terms[ 0 ]->name : '';
-  $listing_agent_phone_extension = ( $get_listing_agent_phone_extension_terms[ 0 ] ) ? $get_listing_agent_phone_extension_terms[ 0 ]->name : '';
-  $listing_office_phone_number = ( $get_listing_office_phone_number_terms[ 0 ] ) ? $get_listing_office_phone_number_terms[ 0 ]->name : '';
-  $data_source = ( $get_data_source_terms[ 0 ] ) ? $get_data_source_terms[ 0 ]->name : '';
-  $listing_id = ( $get_listing_id_terms[ 0 ] ) ? $get_listing_id_terms[ 0 ]->name : '';
+while (have_posts()) : the_post();
+  $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
+  $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
+  $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
+  $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+  $get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+  $get_living_area_terms = get_the_terms($property['ID'], 'total_living_area_sqft');
+  $get_approximate_lot_size_terms = get_the_terms($property['ID'], 'approximate_lot_size');
+  $get_updated_terms = get_the_terms($property['ID'], 'updated');
+  $get_added_terms = get_the_terms($property['ID'], 'added');
+  $get_elementary_school_terms = get_the_terms($property['ID'], 'elementary_school');
+  $get_middle_school_terms = get_the_terms($property['ID'], 'middle_school');
+  $get_high_school_terms = get_the_terms($property['ID'], 'high_school');
+  $get_subdivision_terms = get_the_terms($property['ID'], 'subdivision');
+  $get_inside_city_terms = get_the_terms($property['ID'], 'inside_city');
+  $get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+  $get_location_county_terms = get_the_terms($property['ID'], 'location_county');
+  $get_location_state_terms = get_the_terms($property['ID'], 'location_state');
+  $get_year_built_terms = get_the_terms($property['ID'], 'year_built');
+  $get_new_construction_terms = get_the_terms($property['ID'], 'new_construction');
+  $get_listing_agent_phone_number_terms = get_the_terms($property['ID'], 'listing_agent_phone_number');
+  $get_listing_agent_phone_extension_terms = get_the_terms($property['ID'], 'listing_agent_phone_extension');
+  $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
+  $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
+  $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
+  $get_date_available_terms = get_the_terms($property['ID'], 'date_available');
+  $get_location_street_number_terms = get_the_terms($property['ID'], 'location_street_number');
+  $get_location_direction_terms = get_the_terms($property['ID'], 'location_direction');
+  $get_location_street_terms = get_the_terms($property['ID'], 'location_street');
+  $get_location_unit_terms = get_the_terms($property['ID'], 'location_unit');
+
+
+  $_propertySaleType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
+  $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
+  $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
+  $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '' ;
+  $approximateLotSize = ($get_approximate_lot_size_terms[0]) ? $get_approximate_lot_size_terms[0]->name : '';
+  $locationState = ($get_location_state_terms[0]) ? $get_location_state_terms[0]->name : '';
+  $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
+  $locationZip = ($get_location_zip_terms[0]) ? $get_location_zip_terms[0]->name : '';
+  $updatedProperty = ($get_updated_terms[0]) ? $get_updated_terms[0]->name : '';
+  $added = ($get_added_terms[0]) ? $get_added_terms[0]->name : '';
+  $elementary_school = ($get_elementary_school_terms[0]) ? $get_elementary_school_terms[0]->name : '';
+  $middle_school = ($get_middle_school_terms[0]) ? $get_middle_school_terms[0]->name : '';
+  $high_school = ($get_high_school_terms[0]) ? $get_high_school_terms[0]->name : '';
+  $subdivision = ($get_subdivision_terms[0]) ? $get_subdivision_terms[0]->name : '';
+  $inside_city = ($get_inside_city_terms[0]) ? $get_inside_city_terms[0]->name : '';
+  $location_city = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
+  $location_county = ($get_location_county_terms[0]) ? $get_location_county_terms[0]->name : '';
+  $year_built = ($get_year_built_terms[0]) ? $get_year_built_terms[0]->name : '';
+  $new_construction = ($get_new_construction_terms[0]) ? $get_new_construction_terms[0]->name : '';
+  $listing_agent_phone_number = ($get_listing_agent_phone_number_terms[0]) ? $get_listing_agent_phone_number_terms[0]->name : '';
+  $listing_agent_phone_extension = ($get_listing_agent_phone_extension_terms[0]) ? $get_listing_agent_phone_extension_terms[0]->name : '';
+  $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
+  $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
+  $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
+  $date_available = ($get_date_available_terms[0]) ? $get_date_available_terms[0]->name : '';
+  $location_street_number = ($get_location_street_number_terms[0]) ? $get_location_street_number_terms[0]->name : '';
+  $location_direction = ($get_location_direction_terms[0]) ? $get_location_direction_terms[0]->name : '';
+  $location_street = ($get_location_street_terms[0]) ? $get_location_street_terms[0]->name : '';
+  $location_unit = ($get_location_unit_terms[0]) ? $get_location_unit_terms[0]->name : '';
 
   ?>
 <div class="single-property">
@@ -125,7 +139,13 @@ while( have_posts() ) : the_post();
 
         <div class="title">
           <span>Active</span>
-          <div data-content-type="title"><?php the_title(); ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
+          <div data-content-type="title"><?php
+            echo ($location_street_number) ? $location_street_number : '';
+            echo ($location_direction) ? ' ' . $location_direction : '';
+            echo ($location_street) ? ' ' . $location_street : '';
+            echo ($location_unit) ? ' ' . $location_unit : '';
+
+          ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
               <?php if( $locationZip ) {
                 _e( 'NC ' . $locationZip );
               } ?></span></div>
@@ -164,6 +184,11 @@ while( have_posts() ) : the_post();
 
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+        <?php
+        if($date_available) {
+          echo 'Available ' . date( 'F j, Y', strtotime( $date_available ) ) . '. ';
+        }
+        ?>
         <?php echo $property[ 'remarks' ]; ?>
       </div>
     </div>
@@ -190,18 +215,16 @@ while( have_posts() ) : the_post();
           </div>
           <?php } ?>
 
-          <?php if( !empty( $daysOnMarket ) ) { ?>
+          <?php if( !empty( $added ) ) { ?>
           <div class="col-md-4 property-detail-wrapper">
             <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-data-days-outline"></span>
             </div>
             <span>Days on Market</span>
             <strong><?php
-              if(!empty($daysOnMarket)) {
-                echo human_time_diff(strtotime($daysOnMarket), current_time('timestamp'));
-              }
+                $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
+              echo $daysOnMarket;
               ?></strong>
-
           </div>
           <?php } ?>
 
@@ -229,13 +252,60 @@ while( have_posts() ) : the_post();
           </div>
           <?php } ?>
 
-          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
+          <?php if( !empty( $subdivision ) ) { ?>
           <div class="col-md-4 property-detail-wrapper">
+            <div class="property-detail-icon-wrapper">
+              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
+            </div>
+            <span><?php _e( 'Subdivision' ); ?></span>
+            <strong><?php _e( $subdivision ); ?></strong>
+          </div>
+          <?php } ?>
+
+          <?php if( !empty( $elementary_school ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-school-elementary-outline"></span>
+              </div>
+              <span><?php _e( 'Elementary School' ); ?></span>
+              <strong><?php _e( $elementary_school ); ?></strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
               <div class="property-detail-icon-wrapper">
                 <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
               </div>
               <span><?php _e( 'Style' ); ?></span>
               <strong><?php echo Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name', 'a' ); ?></strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( $inside_city ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
+              </div>
+              <span><?php _e( 'Inside City' ); ?></span>
+              <strong>
+                <?php if( $inside_city == 'Yes' ) {
+                  echo $inside_city . ', ' . $location_city;
+                } else {
+                  echo $inside_city;
+                }
+                ?>
+              </strong>
+            </div>
+          <?php } ?>
+
+          <?php if( !empty( $middle_school ) ) { ?>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-school-middle-outline"></span>
+              </div>
+              <span><?php _e( 'Middle School' ); ?></span>
+              <strong><?php _e( $middle_school ); ?></strong>
             </div>
           <?php } ?>
 
@@ -253,61 +323,14 @@ while( have_posts() ) : the_post();
             </strong>
           </div>
 
-          <?php if( !empty( $subdivision ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
-            </div>
-            <span><?php _e( 'Subdivision' ); ?></span>
-            <strong><?php _e( $subdivision ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $inside_city ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
-            </div>
-            <span><?php _e( 'Inside City' ); ?></span>
-            <strong>
-              <?php if( $inside_city == 'Yes' ) {
-                echo $inside_city . ', ' . $location_city;
-              } else {
-                echo $inside_city;
-              }
-              ?>
-            </strong>
-          </div>
-          <?php } ?>
-
           <?php if( !empty( $location_county ) ) { ?>
             <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-listing-land-outline"></span>
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-listing-land-outline"></span>
+              </div>
+              <span><?php _e( 'County' ); ?></span>
+              <strong><?php _e( $location_county ); ?></strong>
             </div>
-            <span><?php _e( 'County' ); ?></span>
-            <strong><?php _e( $location_county ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $elementary_school ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-school-elementary-outline"></span>
-            </div>
-            <span><?php _e( 'Elementary School' ); ?></span>
-            <strong><?php _e( $elementary_school ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $middle_school ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-school-middle-outline"></span>
-            </div>
-            <span><?php _e( 'Middle School' ); ?></span>
-            <strong><?php _e( $middle_school ); ?></strong>
-          </div>
           <?php } ?>
 
           <?php if( !empty( $high_school ) ) { ?>
@@ -480,7 +503,26 @@ while( have_posts() ) : the_post();
     </div>
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php echo ( !empty( $property[ 'automated_property_detail_description' ] ) ) ? $property[ 'automated_property_detail_description' ] : ''; ?>
+        <?php
+        $propertyDetailsAttrs = array(
+            'property_type' => $property['property_type'],
+            'location_address' => $property['location_address'],
+            'city' => $locationCity,
+            'state' => $locationState,
+            'postal_code' => $locationZip,
+            'total_living_area_sqft' => $property['total_living_area_sqft_2'],
+            'approximate_lot_size' => $property['approximate_lot_size_2'],
+            'bedrooms' => $property['bedrooms'],
+            'bathrooms' => $property['bathrooms'],
+            'year_built' => $year_built,
+            'cumulative_days_on_market' => $daysOnMarket,
+            'price' => $property['price_2'],
+            'sale_type' => $_propertySaleType
+        );
+
+        echo rdc_get_property_details_description($propertyDetailsAttrs);
+        
+        ?>
       </div>
     </div>
     <div class="row">

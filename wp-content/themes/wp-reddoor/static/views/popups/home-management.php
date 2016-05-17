@@ -6,8 +6,8 @@
 
       <i class="icon icon-rdc-property-management"></i>
 
-      <h3><?php _e('I want to rent my home', 'reddoor'); ?></h3>
-      <p><?php _e('Grown your investment with Red Door Company! Please submit your information below or call us by phone. We\'re ready to assist you with renting your property.', 'reddoor'); ?></p>
+      <h3><?php _e('I want to rent my property', 'reddoor'); ?></h3>
+      <p><?php _e('Grow your investment with Red Door Company! Please submit your information below or call us by phone. We\'re ready to assist you with renting your property.', 'reddoor'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 

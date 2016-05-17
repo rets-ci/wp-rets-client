@@ -423,11 +423,16 @@ class class_wpp_pdf_flyer {
                   $html .= '<br/><br/>';
                 }
 
+                if($group_by_key == 'property_type')
+                  $group_by_label = WPP_F::property_label() . " Type";
+                else
+                  $group_by_label = WPP_F::de_slug($group_by_key);
+                
                 //** Render Label of Group */
                 $html .= '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr>';
                 $html .= '<td width="2%">$nbsp;</td>';
                 $html .= '<td width="98%" align="left" valign="middle">';
-                $html .= '<b style="font-size:1.1em;color:'. $list_data['background'] .'">'. WPP_F::de_slug($group_by_key) .': '. WPP_F::de_slug($group['label']) . '</b>';
+                $html .= '<b style="font-size:1.1em;color:'. $list_data['background'] .'">'. $group_by_label .': '. WPP_F::de_slug($group['label']) . '</b>';
                 $html .= '<table cellspacing="0" cellpadding="5" width="100%"><tr><td>';
                 $html .= '<div style="font-size:5px;height:5px;line-height:5px;">$nbsp;</div>'. $hr;
                 $html .= '</td></tr></table>';
@@ -1117,7 +1122,7 @@ class class_wpp_pdf_flyer {
                   <ul>
                     <li>
                       <label><?php _e('Group by:', ud_get_wpp_pdf()->domain); ?></label>
-                      <?php echo WPP_F::draw_attribute_dropdown("name=wpp_flyer_list_settings[{$slug}][group_by]&selected={$list['group_by']}", array('property_type' => __('Property Type', ud_get_wpp_pdf()->domain ))); ?>
+                      <?php echo WPP_F::draw_attribute_dropdown("name=wpp_flyer_list_settings[{$slug}][group_by]&selected={$list['group_by']}", array('property_type' => sprintf(__('%1s Type', ud_get_wpp_pdf()->domain ), WPP_F::property_label()))); ?>
                     </li>
 
                     <li>

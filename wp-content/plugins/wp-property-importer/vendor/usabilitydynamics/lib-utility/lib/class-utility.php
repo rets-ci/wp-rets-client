@@ -575,7 +575,7 @@ namespace UsabilityDynamics {
           $url = $image_attributes[ 0 ];
         }
 
-        $result = wp_remote_get( $url, array( 'sslverify'   => false, 'timeout' => 10 ) );
+        $result = wp_remote_get( $url, array( 'timeout' => 10 ) );
 
         if( is_wp_error( $result ) ) {
           return false;
