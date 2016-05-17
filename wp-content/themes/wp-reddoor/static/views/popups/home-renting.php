@@ -57,7 +57,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Target Move In Date" type="text" id="powf_131a927d0218e411bcfc6c3be5a8dd60" name="powf_131a927d0218e411bcfc6c3be5a8dd60" value="" maxlength="100" class="date"/>
+          <input placeholder="Target Move In Date" type="text" id="powf_131a927d0218e411bcfc6c3be5a8dd60" name="powf_131a927d0218e411bcfc6c3be5a8dd60" value="" maxlength="100" class="date rdc-datepicker"/>
           <div class="clear"></div>
         </div>
 
