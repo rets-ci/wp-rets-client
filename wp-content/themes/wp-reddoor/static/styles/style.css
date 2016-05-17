@@ -2377,6 +2377,15 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   background-size: cover;
   float: right;
 }
+.masthead .sow-slider-base {
+  overflow: visible;
+}
+.masthead .sow-slider-base .sow-slider-images {
+  overflow: visible;
+}
+.masthead .sow-slider-base .sow-slider-images .sow-slider-image {
+  overflow: visible;
+}
 .widget_nav_menu {
   background: #F3F0E9 none repeat scroll 0 0;
 }
@@ -3388,7 +3397,15 @@ body.single-rdc_guide .guide-article-wrapper article ul li {
 body.post-type-archive-rdc_guide .guide-article-wrapper article ol,
 body.tax-rdc_guide_category .guide-article-wrapper article ol,
 body.single-rdc_guide .guide-article-wrapper article ol {
-  list-style: inside none numeric;
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  body.post-type-archive-rdc_guide .guide-article-wrapper article ol,
+  body.tax-rdc_guide_category .guide-article-wrapper article ol,
+  body.single-rdc_guide .guide-article-wrapper article ol {
+    list-style: inside none numeric;
+  }
 }
 body.post-type-archive-rdc_guide .guide-article-wrapper article p,
 body.tax-rdc_guide_category .guide-article-wrapper article p,
