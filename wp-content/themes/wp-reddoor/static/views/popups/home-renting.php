@@ -45,13 +45,6 @@
         </div>
 
         <div class="field">
-          <label for="powf_625ecfcdbb16e61180e9c4346bace2d4">Driven By</label> <br />
-          <input id="powf_625ecfcdbb16e61180e9c4346bace2d40" name="powf_625ecfcdbb16e61180e9c4346bace2d4" type="radio" value="Yes"/><label for="powf_625ecfcdbb16e61180e9c4346bace2d40" class="lab_radio">Yes</label> <br />
-          <input id="powf_625ecfcdbb16e61180e9c4346bace2d41" name="powf_625ecfcdbb16e61180e9c4346bace2d4" type="radio" value="No"/><label for="powf_625ecfcdbb16e61180e9c4346bace2d41" class="lab_radio">No</label>
-          <div class="clear"></div>
-        </div>
-
-        <div class="field">
           <input placeholder="Available Times to Show" type="text" id="powf_ed13baf1bb16e61180e9c4346bace2d4" name="powf_ed13baf1bb16e61180e9c4346bace2d4" value="" maxlength="100"/>
           <div class="clear"></div>
         </div>
