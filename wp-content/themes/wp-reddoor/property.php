@@ -143,7 +143,7 @@ while (have_posts()) : the_post();
             echo ($location_street_number) ? $location_street_number : '';
             echo ($location_direction) ? ' ' . $location_direction : '';
             echo ($location_street) ? ' ' . $location_street : '';
-            echo ($location_unit) ? ' ' . $location_unit . ',' : '';
+            echo ($location_unit) ? ' ' . $location_unit : '';
 
           ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
               <?php if( $locationZip ) {
@@ -186,7 +186,7 @@ while (have_posts()) : the_post();
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php
         if($date_available) {
-          echo 'Available ' . $date_available . '. ';
+          echo 'Available ' . date( 'F j, Y', strtotime( $date_available ) ) . '. ';
         }
         ?>
         <?php echo $property[ 'remarks' ]; ?>
