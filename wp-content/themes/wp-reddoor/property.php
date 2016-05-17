@@ -484,7 +484,7 @@ while (have_posts()) : the_post();
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
         <?php
         $propertyDetailsAttrs = array(
-            'property_type' => $_propertyType,
+            'property_type' => $property['property_type'],
             'location_address' => $property['location_address'],
             'city' => $locationCity,
             'state' => $locationState,
@@ -495,7 +495,8 @@ while (have_posts()) : the_post();
             'bathrooms' => $property['bathrooms'],
             'year_built' => $year_built,
             'cumulative_days_on_market' => $daysOnMarket,
-            'price' => $property['price_2']
+            'price' => $property['price_2'],
+            'sale_type' => $_propertyType
         );
 
         echo rdc_get_property_details_description($propertyDetailsAttrs);
