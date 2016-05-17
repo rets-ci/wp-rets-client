@@ -93,7 +93,7 @@ while (have_posts()) : the_post();
   $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
 
 
-  $_propertyType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
+  $_propertySaleType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
   $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
   $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
   $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '' ;
@@ -496,7 +496,7 @@ while (have_posts()) : the_post();
             'year_built' => $year_built,
             'cumulative_days_on_market' => $daysOnMarket,
             'price' => $property['price_2'],
-            'sale_type' => $_propertyType
+            'sale_type' => $_propertySaleType
         );
 
         echo rdc_get_property_details_description($propertyDetailsAttrs);
