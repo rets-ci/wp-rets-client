@@ -9,14 +9,7 @@
       <h3><?php _e('I want to rent a home', 'reddoor'); ?></h3>
       <p><?php _e('Please submit your information below. We\'re ready to help you find the perfect rental home!', 'reddoor'); ?></p>
 
-      <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
-
-      <form id="powf_D138DC53B916E61180E9C4346BACE2D4" class=""
-            enctype="multipart/form-data"
-            action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_D138DC53B916E61180E9C4346BACE2D4&tver=2013&c=1"
-            method="post">
-
-        <!-- <input type="hidden" name="rdc_fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_32455D6F7216E411811D6C3BE5A87DF0&tver=2013&c=1" /> -->
+      <form id="powf_D138DC53B916E61180E9C4346BACE2D4" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_D138DC53B916E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
 
         <div class="field">
           <input required placeholder="First Name *" type="text" id="powf_fafb666fb916e61180e9c4346bace2d4" name="powf_fafb666fb916e61180e9c4346bace2d4" value="" maxlength="100" class="required"/>
@@ -52,8 +45,8 @@
         </div>
 
         <div class="field">
-          <label for="powf_625ecfcdbb16e61180e9c4346bace2d4">Driven By</label>
-          <input id="powf_625ecfcdbb16e61180e9c4346bace2d40" name="powf_625ecfcdbb16e61180e9c4346bace2d4" type="radio" value="Yes"/><label for="powf_625ecfcdbb16e61180e9c4346bace2d40" class="lab_radio">Yes</label>
+          <label for="powf_625ecfcdbb16e61180e9c4346bace2d4">Driven By</label> <br />
+          <input id="powf_625ecfcdbb16e61180e9c4346bace2d40" name="powf_625ecfcdbb16e61180e9c4346bace2d4" type="radio" value="Yes"/><label for="powf_625ecfcdbb16e61180e9c4346bace2d40" class="lab_radio">Yes</label> <br />
           <input id="powf_625ecfcdbb16e61180e9c4346bace2d41" name="powf_625ecfcdbb16e61180e9c4346bace2d4" type="radio" value="No"/><label for="powf_625ecfcdbb16e61180e9c4346bace2d41" class="lab_radio">No</label>
           <div class="clear"></div>
         </div>
@@ -67,7 +60,6 @@
           <input placeholder="Target Move In Date" type="text" id="powf_131a927d0218e411bcfc6c3be5a8dd60" name="powf_131a927d0218e411bcfc6c3be5a8dd60" value="" maxlength="100" class="date"/>
           <div class="clear"></div>
         </div>
-
 
         <div class="field">
           <input placeholder="Pet Info" type="text" id="powf_7063c18bbc16e61180e9c4346bace2d4" name="powf_7063c18bbc16e61180e9c4346bace2d4" value="" maxlength="100"/>
@@ -133,11 +125,10 @@
       <script type="text/javascript">
         jQuery(document).ready(function () {
           jQuery.extend(jQuery.validator.messages, {
-
             email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
           });
 
-          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0").validate({
+          jQuery("#powf_D138DC53B916E61180E9C4346BACE2D4").validate({
             errorPlacement: function(error, element) {
               error.appendTo( element.parents("div.field:first").find("div.clear:first") );
             },
@@ -154,9 +145,7 @@
             debug: false
           });
 
-          jQuery("#powf_131a927d0218e411bcfc6c3be5a8dd60").datepicker();
-
-          jQuery("#powf_32455D6F7216E411811D6C3BE5A87DF0").submit(function(e){
+          jQuery("#powf_D138DC53B916E61180E9C4346BACE2D4").submit(function(e){
             if ( typeof grecaptcha == 'undefined' ) return true;
             var rresult = grecaptcha.getResponse();
             if( !rresult.length > 0 ) {
