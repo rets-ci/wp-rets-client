@@ -91,6 +91,11 @@ while (have_posts()) : the_post();
   $get_listing_office_phone_number_terms = get_the_terms($property['ID'], 'listing_office_phone_number');
   $get_data_source_terms = get_the_terms($property['ID'], 'data_source');
   $get_listing_id_terms = get_the_terms($property['ID'], 'listing_id');
+  $get_date_available_terms = get_the_terms($property['ID'], 'date_available');
+  $get_location_street_number_terms = get_the_terms($property['ID'], 'location_street_number');
+  $get_location_direction_terms = get_the_terms($property['ID'], 'location_direction');
+  $get_location_street_terms = get_the_terms($property['ID'], 'location_street');
+  $get_location_unit_terms = get_the_terms($property['ID'], 'location_unit');
 
 
   $_propertySaleType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
@@ -117,6 +122,11 @@ while (have_posts()) : the_post();
   $listing_office_phone_number = ($get_listing_office_phone_number_terms[0]) ? $get_listing_office_phone_number_terms[0]->name : '';
   $data_source = ($get_data_source_terms[0]) ? $get_data_source_terms[0]->name : '';
   $listing_id = ($get_listing_id_terms[0]) ? $get_listing_id_terms[0]->name : '';
+  $date_available = ($get_date_available_terms[0]) ? $get_date_available_terms[0]->name : '';
+  $location_street_number = ($get_location_street_number_terms[0]) ? $get_location_street_number_terms[0]->name : '';
+  $location_direction = ($get_location_direction_terms[0]) ? $get_location_direction_terms[0]->name : '';
+  $location_street = ($get_location_street_terms[0]) ? $get_location_street_terms[0]->name : '';
+  $location_unit = ($get_location_unit_terms[0]) ? $get_location_unit_terms[0]->name : '';
 
   ?>
 <div class="single-property">
@@ -129,7 +139,13 @@ while (have_posts()) : the_post();
 
         <div class="title">
           <span>Active</span>
-          <div data-content-type="title"><?php the_title(); ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
+          <div data-content-type="title"><?php
+            echo ($location_street_number) ? $location_street_number : '';
+            echo ($location_direction) ? ' ' . $location_direction : '';
+            echo ($location_street) ? ' ' . $location_street : '';
+            echo ($location_unit) ? ' ' . $location_unit . ',' : '';
+
+          ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
               <?php if( $locationZip ) {
                 _e( 'NC ' . $locationZip );
               } ?></span></div>
@@ -168,6 +184,11 @@ while (have_posts()) : the_post();
 
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+        <?php
+        if($date_available) {
+          echo 'Available ' . $date_available . '. ';
+        }
+        ?>
         <?php echo $property[ 'remarks' ]; ?>
       </div>
     </div>
