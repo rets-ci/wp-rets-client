@@ -110,11 +110,13 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<li class="rdc-agents-carousel-item">';
 
+                echo '<div class="nonRdcRentProp icon icon-wpproperty-contact-name-outline"></div>';
+
                 echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
                 echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
 
-                echo '<span>'. $_phone .'</span>';
+                echo '<span>'. $_phone .'</span></li>';
 
                 //echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
 
