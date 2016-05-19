@@ -259,6 +259,15 @@ var rdc = {
       jQuery('.popupBuyHomeListing .hidden-phone').val('919-XXX-XXXX');
     });
 
+    jQuery('.oneAgent .showContactPopup a[rel="popupNonRdcRentListing"]').on('click', function(){
+      var agentphone = jQuery(this).data('nonrdcagentphone');
+      var agentname = jQuery(this).data('nonrdcagentname');
+      var agentoffice = jQuery(this).data('nonrdcagentoffice');
+      jQuery('.popupNonRdcRentListing .nonrdcagentname').html(agentname);
+      jQuery('.popupNonRdcRentListing .nonrdcagentoffice').html(agentoffice);
+      jQuery('.popupNonRdcRentListing .nonrdcagentphone').val(agentphone);
+    });
+
     // get buy count if buy element exists
     if( jQuery('#wpprc-home-buy').length ) {
       rdc.getCount( 'Sale', function( error, count ) {
