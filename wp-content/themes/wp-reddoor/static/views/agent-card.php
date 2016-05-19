@@ -203,9 +203,11 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo '<h3>' . $user_data->display_name . '</h3>';
 
+                    echo '<b class="agentPhoneNumber">' . get_user_meta($userAgentId->ID, 'phone_number', 1) . '</b>';
+
                     echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
+                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                   }
                 ?>
