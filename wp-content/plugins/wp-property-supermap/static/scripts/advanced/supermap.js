@@ -717,6 +717,17 @@
 
             }
 
+            map.addListener('dragend', function() {
+              var bounds = map.getBounds();
+              jQuery('#rdc-latitude-gte').val(bounds.getSouthWest().lat());
+              jQuery('#rdc-latitude-lte').val(bounds.getNorthEast().lat());
+              jQuery('#rdc-longitude-gte').val(bounds.getNorthEast().lng());
+              jQuery('#rdc-longitude-lte').val(bounds.getSouthWest().lng());
+              setTimeout(function(){
+                jQuery( '.sm-search-form form').submit();
+              },1000);
+            });
+
             if ( update_map_pos ) {
               // Set Map 'Zoom' and 'Center On' automatically using existing markers.
               $scope.latlngbounds = new google.maps.LatLngBounds();
