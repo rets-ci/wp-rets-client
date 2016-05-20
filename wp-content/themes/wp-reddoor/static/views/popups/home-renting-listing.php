@@ -50,7 +50,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Target Move In Date" type="text" id="powf_ac668f2abc16e61180e9c4346bace2d4" name="powf_ac668f2abc16e61180e9c4346bace2d4" value="" maxlength="100" class="date rdc-datepicker"/>
+          <input placeholder="Target Move In Date" type="text" name="powf_ac668f2abc16e61180e9c4346bace2d4" value="" maxlength="100" class="date rdc-datepicker"/>
           <div class="clear"></div>
         </div>
 
@@ -85,8 +85,7 @@
 
         <?php if( isset( $property['ID'] ) ) { ?>
         <!-- MLS ID -->
-        <input type="hidden" id="powf_2315c462bd16e61180e9c4346bace2d4" name="powf_162dae9ebc16e61180e9c4346bace2d4" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>"/>
-        <input type="hidden" id="powf_162dae9ebc16e61180e9c4346bace2d4" name="powf_162dae9ebc16e61180e9c4346bace2d4" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>"/>
+        <input type="hidden" id="powf_2315c462bd16e61180e9c4346bace2d4" name="powf_2315c462bd16e61180e9c4346bace2d4" value="<?php echo \UsabilityDynamics\RDC\Utils::get_single_term( 'mls_id', $property['ID'] ); ?>"/>
         <?php } ?>
 
         <!-- Origin -->
