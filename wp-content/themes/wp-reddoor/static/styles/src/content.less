@@ -56,6 +56,19 @@ a {
   border-radius: 5px;
   margin: 79px 0;
   background: @white;
+  .nonRdcRentProp{
+    background: #f3f0e9 none repeat scroll 0 0;
+    border-radius: 100%;
+    color: #5a595c;
+    display: block;
+    font-size: 75px;
+    height: 150px;
+    line-height: 140px;
+    margin: 0 auto 25px;
+    text-align: center;
+    width: 150px;
+  }
+
   &> img{
     display: block;
     margin: 40px auto;
@@ -264,11 +277,12 @@ a {
     }
   }
   .content{
-    color: #5a595c;
+    color: #6d6e71;
     font-size: 1.2em;
-    letter-spacing: 1px;
     h2{
-      font-size: 2em;
+      color: #5a595c;
+      font-size: 1.9em;
+      font-weight: 400;
     }
     blockquote{
       border-left: 5px solid @buttons;
@@ -281,7 +295,7 @@ a {
       &:first-child{
         margin-top: 0;
       }
-      margin: 5% 0;
+      margin: 0 0 4% 0;
     }
     a{
       color: @buttons;
@@ -727,6 +741,7 @@ a {
         margin-right: 0.2em;
         position: relative;
         top: 2px;
+        left: 1px;
       }
     }
   }
