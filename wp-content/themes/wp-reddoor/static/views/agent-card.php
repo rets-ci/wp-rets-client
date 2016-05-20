@@ -205,7 +205,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
+                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                   }
                 ?>
