@@ -267,8 +267,14 @@ function ud_carousel_get_next_posts_page() {
 						$get_location_street_number_terms = get_the_terms($property['ID'], 'location_street_number');
 						($get_location_street_number_terms[0]) ? _e($get_location_street_number_terms[0]->name) : '';
 						echo ' ';
+						$get_location_direction_terms = get_the_terms($property['ID'], 'location_direction');
+						($get_location_direction_terms[0]) ? _e($get_location_direction_terms[0]->name) : '';
+						echo ' ';
 						$get_location_street_terms = get_the_terms($property['ID'], 'location_street');
 						($get_location_street_terms[0]) ? _e($get_location_street_terms[0]->name) : '';
+						echo ' ';
+						$get_location_unit_terms = get_the_terms($property['ID'], 'location_unit');
+						($get_location_unit_terms[0]) ? _e($get_location_unit_terms[0]->name) : '';
 						?>
 					</p>
 										<span>

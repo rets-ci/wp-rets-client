@@ -31,9 +31,9 @@ $_property_detail_map = array(
     "groups" => array(
       "bedrooms" => array( "label" => "Bedrooms", "icon" => "attribute-bedroom" ),
       "bathrooms" => array( "label" => "Bathrooms", "icon" => "attribute-bathroom" ),
-      "kitchen_dining_room" => array( "label" => "Heating & Cooling", "icon" => "attribute-kitchen" ),
-      "living_area" => array( "label" => "Utility", "icon" => "attribute-livingarea" ),
-      "other_rooms" => array( "label" => "Exterior", "icon" => "attribute-rooms" )
+      "kitchen_dining_room" => array( "label" => "Kitchen & Dining", "icon" => "attribute-kitchen" ),
+      "living_area" => array( "label" => "Living Area", "icon" => "attribute-livingarea" ),
+      "other_rooms" => array( "label" => "Other Rooms", "icon" => "attribute-rooms" )
     )
   ),
   "Features" => array(
@@ -512,8 +512,8 @@ while (have_posts()) : the_post();
             'postal_code' => $locationZip,
             'total_living_area_sqft' => $property['total_living_area_sqft_2'],
             'approximate_lot_size' => $property['approximate_lot_size_2'],
-            'bedrooms' => $property['bedrooms'],
-            'bathrooms' => $property['bathrooms'],
+            'bedrooms' => $singleBedrooms,
+            'bathrooms' => $singleBathrooms,
             'year_built' => $year_built,
             'cumulative_days_on_market' => $daysOnMarket,
             'price' => $property['price_2'],
