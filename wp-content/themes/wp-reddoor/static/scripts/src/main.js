@@ -225,6 +225,7 @@ var rdc = {
       jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
     } );
 
+
     /* Share button */
     jQuery( '.shareButton' ).on( 'click', function () {
       jQuery( this ).toggleClass( 'shareButtonColor' );
@@ -237,21 +238,21 @@ var rdc = {
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    if(jQuery(window).width() >= 992) {
-
-      var $grid = jQuery('.grid').masonry({
-        // options
-        itemSelector: '.grid-item',
-        singleMode: true,
-        isResizable: true,
-        transitionDuration: 0,
-      });
-
-      jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        $grid.masonry('layout');
-      })
-
-    }
+    // if(jQuery(window).width() >= 992) {
+    //
+    //   var $grid = jQuery('.grid').masonry({
+    //     // options
+    //     itemSelector: '.grid-item',
+    //     singleMode: true,
+    //     isResizable: true,
+    //     transitionDuration: 0,
+    //   });
+    //
+    //   jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     $grid.masonry('layout');
+    //   })
+    //
+    // }
 
     jQuery('.oneAgent .showContactPopup a').on('click', function(){
       var agentphone = jQuery(this).data('agentphone');
