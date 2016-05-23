@@ -640,15 +640,13 @@
         };
 
         NgMap.getMap().then(function( map ) {
-          map.addListener('bounds_changed', function() {
+          map.addListener('zoom_changed', function() {
             var bounds = map.getBounds();
-            jQuery('#rdc-latitude-gte').val(bounds.getSouthWest().lat());
-            jQuery('#rdc-latitude-lte').val(bounds.getNorthEast().lat());
-            jQuery('#rdc-longitude-gte').val(bounds.getNorthEast().lng());
-            jQuery('#rdc-longitude-lte').val(bounds.getSouthWest().lng());
-            setTimeout(function(){
-              jQuery( '.sm-search-form form').submit();
-            },1000);
+            jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
+            jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
+            jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
+            jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
+            jQuery( '.sm-search-form form').submit();
           });
         });
 
