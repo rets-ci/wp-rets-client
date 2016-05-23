@@ -137,7 +137,7 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
-        var resizeTimer;
+        var resizeTimer, idle_listener;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
           resizeTimer = setTimeout( function () {
@@ -570,6 +570,8 @@
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
+                }else{
+                  $scope.map_changed();
                 }
               }
               $scope.col_changed();
@@ -621,6 +623,8 @@
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
+                }else{
+                  $scope.map_changed();
                 }
               }
               $scope.col_changed();
@@ -642,16 +646,18 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        NgMap.getMap().then(function( map ) {
-          map.addListener('idle', function() {
-            var bounds = map.getBounds();
-            jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
-            jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
-            jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
-            jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
-            jQuery( '.sm-search-form form').submit();
+        $scope.map_changed = function() {
+          NgMap.getMap().then(function( map ) {
+            idle_listener = map.addListener('idle', function() {
+              var bounds = map.getBounds();
+              jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
+              jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
+              jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
+              jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
+              jQuery( '.sm-search-form form').submit();
+            });
           });
-        });
+        };
 
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
@@ -901,6 +907,8 @@
          */
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
+
+          google.maps.event.removeListener(idle_listener);
 
           var formQuery = {},
               push_counters = {},
