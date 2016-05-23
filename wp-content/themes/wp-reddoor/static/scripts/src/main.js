@@ -209,21 +209,27 @@ var rdc = {
     }
 
 
-    /**
-     * Tabbed content widget (feature point)
-     */
-    var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
-    var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
-    var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
-    jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
-    jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
 
     /**
      * Set row height for tabbed Widget Image Area
      */
-    jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea' ), function eachColumn( index, element ){
-      jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
-    } );
+    setTimeout(function(){
+
+      /**
+       * Tabbed content widget (feature point)
+       */
+      var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
+      var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
+      var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
+      jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
+      jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
+      jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea:visible' ), function eachColumn( index, element ){
+        jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
+      } );
+
+    }, 500);
 
 
     /* Share button */
