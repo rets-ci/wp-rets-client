@@ -639,8 +639,11 @@
           jQuery(document).trigger('rdc_cols_changed');
         };
 
+        /**
+         * map zoom or drag event listener for search results refresh
+         */
         NgMap.getMap().then(function( map ) {
-          map.addListener('zoom_changed', function() {
+          map.addListener('idle', function() {
             var bounds = map.getBounds();
             jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
             jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
