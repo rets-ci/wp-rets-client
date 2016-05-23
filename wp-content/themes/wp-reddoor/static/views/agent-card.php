@@ -110,13 +110,13 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<li class="rdc-agents-carousel-item">';
 
+                echo '<div class="nonRdcRentProp icon icon-wpproperty-contact-name-outline"></div>';
+
                 echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
                 echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
 
-                echo '<span>'. $_phone .'</span>';
-
-                //echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupContactUsMore">'.__('Request Information', 'reddoor').'</a></div></li>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupNonRdcRentListing" data-nonrdcagentphone="'. $_phone .'" data-nonrdcagentname="'. Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) .'" data-nonrdcagentoffice="'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'" >'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -154,7 +154,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                   echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                  echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
+                  echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" data-agentphone="'. get_user_meta($agent->ID, 'phone_number', 1)  .'" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -205,7 +205,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
+                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'" rel="popupBuyHomeListing">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                   }
                 ?>

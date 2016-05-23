@@ -268,6 +268,18 @@ a:focus {
   margin: 79px 0;
   background: #fff;
 }
+.oneAgent .nonRdcRentProp {
+  background: #f3f0e9 none repeat scroll 0 0;
+  border-radius: 100%;
+  color: #5a595c;
+  display: block;
+  font-size: 75px;
+  height: 150px;
+  line-height: 140px;
+  margin: 0 auto 25px;
+  text-align: center;
+  width: 150px;
+}
 .oneAgent > img {
   display: block;
   margin: 40px auto;
@@ -472,12 +484,13 @@ a:focus {
   background: #EB5E4C none repeat scroll 0 0;
 }
 .single .content {
-  color: #5a595c;
+  color: #6d6e71;
   font-size: 1.2em;
-  letter-spacing: 1px;
 }
 .single .content h2 {
-  font-size: 2em;
+  color: #5a595c;
+  font-size: 1.9em;
+  font-weight: 400;
 }
 .single .content blockquote {
   border-left: 5px solid #d03528;
@@ -487,7 +500,7 @@ a:focus {
   font-size: 1.2em;
 }
 .single .content p {
-  margin: 5% 0;
+  margin: 0 0 4% 0;
 }
 .single .content p:first-child {
   margin-top: 0;
@@ -934,6 +947,7 @@ a:focus {
   margin-right: 0.2em;
   position: relative;
   top: 2px;
+  left: 1px;
 }
 .searchForm .sfPriceRange {
   background: #fff;
@@ -3087,6 +3101,9 @@ input[type="submit"]:active {
 .popupContactUsMore ul li a:hover i {
   color: #d03528;
 }
+.popupNonRdcRentListing .popup-form-wrapper {
+  padding: 7% 7% 10%;
+}
 .popupLogin ul {
   min-height: 323px;
   border-radius: 5px;
@@ -3209,6 +3226,12 @@ input[type="submit"]:active {
   margin: 0 0 5%;
   border-radius: 1px;
   height: 35px;
+}
+.popup-form-wrapper a {
+  color: #d03528;
+}
+.popup-form-wrapper a:hover {
+  color: #d03528;
 }
 @media screen and (max-width: 992px) {
   .popup.contact-popup {
@@ -3520,6 +3543,21 @@ body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li a,
 body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li a,
 body.single-rdc_guide .guide-group-wrapper ul.guide-list li a {
   color: #727174;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li a:hover,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li a:hover,
+body.single-rdc_guide .guide-group-wrapper ul.guide-list li a:hover {
+  color: #d03528;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li a:focus,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li a:focus,
+body.single-rdc_guide .guide-group-wrapper ul.guide-list li a:focus {
+  color: #d03528;
+}
+body.post-type-archive-rdc_guide .guide-group-wrapper ul.guide-list li a:active,
+body.tax-rdc_guide_category .guide-group-wrapper ul.guide-list li a:active,
+body.single-rdc_guide .guide-group-wrapper ul.guide-list li a:active {
+  color: #d03528;
 }
 body.post-type-archive-rdc_guide h2.guide-title,
 body.tax-rdc_guide_category h2.guide-title,
