@@ -384,17 +384,8 @@ namespace UsabilityDynamics\RDC {
         }
 
         if ( function_exists( 'register_widget' ) ) {
-          register_widget('\UsabilityDynamics\RDC\RDCScheduleShowing');
-          register_widget('\UsabilityDynamics\RDC\RDCProspectLandlordForm');
-          register_widget('\UsabilityDynamics\RDC\RDCContactForm');
-          register_widget('\UsabilityDynamics\RDC\RDCFeedbackForm');
-          register_widget('\UsabilityDynamics\RDC\RDCReferralProgramForm');
-          register_widget('\UsabilityDynamics\RDC\RDCApplicationRequestForm');
-          register_widget('\UsabilityDynamics\RDC\RDCJobRequestForm');
           register_widget('\UsabilityDynamics\RDC\Guide_content_Widget');
           register_widget('\UsabilityDynamics\RDC\RDC_Callout_Widget');
-          register_widget('\UsabilityDynamics\RDC\RDCHomeBuyingForm');
-          register_widget('\UsabilityDynamics\RDC\RDCHomeSellingForm');
         }
       }
     }
