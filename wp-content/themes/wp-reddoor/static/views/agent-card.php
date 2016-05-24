@@ -74,7 +74,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupRentHomeListing">'.__('Request Information', 'reddoor').'</a></div>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="javascript:;" rel="popupRentHome">'.__('Request Information', 'reddoor').'</a></div>';
 
                 echo '<div class="oneAgentLinksBlock showContactPopup"><a class="btn-rdc-wire" href="javascript:;" rel="popupRequestApplication">'.__('Request Application', 'reddoor').'</a></div></li>';
 

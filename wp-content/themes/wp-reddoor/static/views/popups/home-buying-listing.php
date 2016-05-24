@@ -81,10 +81,10 @@
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
         <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-          <div class="recaptcha" id="home-buying-recaptcha"></div>
+          <div class="recaptcha" id="home-renting-recaptcha"></div>
           <script type="text/javascript">
             jQuery(window).load(function(){
-              grecaptcha.render('home-buying-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+              grecaptcha.render('home-renting-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
             });
           </script>
         <?php endif; ?>

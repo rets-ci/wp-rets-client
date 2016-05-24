@@ -9,7 +9,7 @@
 					</a>
 				</li>
 				<li class="pupRent showContactPopup">
-					<a href="javascript:;" rel="<?php echo is_singular('property') ? 'popupRentHomeListing' : 'popupRentHome'; ?>">
+					<a href="javascript:;" rel="popupRentHome">
 						<i class="icon-rdc-home-renting"></i><div><?php _e('I want to rent a home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
