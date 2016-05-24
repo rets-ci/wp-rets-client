@@ -88,7 +88,7 @@
           </script>
         <?php endif; ?>
 
-        <div align="center">
+        <div>
           <input class="button" type="submit" value="Submit"
                  onclick="javascript:;"/>
         </div>

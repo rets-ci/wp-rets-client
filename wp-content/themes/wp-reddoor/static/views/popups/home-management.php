@@ -69,8 +69,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Questions/Comments" id="powf_672f7c42c32ee41195286c3be5bd3b20" cols="" name="powf_672f7c42c32ee41195286c3be5bd3b20"
-              rows=""></textarea>
+          <textarea placeholder="Questions/Comments" id="powf_672f7c42c32ee41195286c3be5bd3b20" name="powf_672f7c42c32ee41195286c3be5bd3b20"></textarea>
         </div>
 
         <div class="field">
@@ -97,7 +96,7 @@
           </script>
         <?php endif; ?>
 
-        <div align="center"><input class="button" type="submit" value="Submit"/></div>
+        <div><input class="button" type="submit" value="Submit"/></div>
       </form>
 
     </div>

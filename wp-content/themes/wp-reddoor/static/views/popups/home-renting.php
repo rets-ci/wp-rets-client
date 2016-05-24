@@ -60,7 +60,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Comments/Questions" id="powf_7e1aec73bc16e61180e9c4346bace2d4" name="powf_7e1aec73bc16e61180e9c4346bace2d4" cols="" rows=""></textarea>
+          <textarea placeholder="Comments/Questions" id="powf_7e1aec73bc16e61180e9c4346bace2d4" name="powf_7e1aec73bc16e61180e9c4346bace2d4"></textarea>
           <div class="clear"></div>
         </div>
 
@@ -111,7 +111,7 @@
           </script>
         <?php endif; ?>
 
-        <div align="center">
+        <div>
           <input class="button" type="submit" value="Send"
                  onclick="javascript:;"/>
         </div>

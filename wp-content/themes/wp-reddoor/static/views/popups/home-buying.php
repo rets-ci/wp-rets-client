@@ -55,7 +55,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Comments" id="powf_c79126adbf16e61180e9c4346bace2d4" name="powf_c79126adbf16e61180e9c4346bace2d4" cols="" rows=""></textarea>
+          <textarea placeholder="Comments" id="powf_c79126adbf16e61180e9c4346bace2d4" name="powf_c79126adbf16e61180e9c4346bace2d4"></textarea>
           <div class="clear"></div>
         </div>
 

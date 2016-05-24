@@ -628,7 +628,7 @@ while (have_posts()) : the_post();
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></span>
               </li>
               <li>
-                <span class="field-label"><?php _e( 'Last Updated: ' ); ?>
+                <span class="field-label"><?php _e( 'Last Updated: ' ); ?></span>
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', strtotime( "$updatedProperty GMT" ) ); ?></span>
               </li>
               <li>
