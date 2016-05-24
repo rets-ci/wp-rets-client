@@ -14,6 +14,7 @@
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
       <form id="powf_629EB2C7BE16E61180E9C4346BACE2D4"
+            class="form-validate"
             enctype="multipart/form-data" class="contact_form"
             action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1"
             method="post">
@@ -31,7 +32,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Email Address *" type="text" id="powf_91ac4542bf16e61180e9c4346bace2d4" name="powf_8f564241e4d0e511811bc4346bad461c" value="" maxlength="100" class="required email" />
+          <input placeholder="Email Address *" type="text" id="powf_91ac4542bf16e61180e9c4346bace2d4" name="powf_91ac4542bf16e61180e9c4346bace2d4" value="" maxlength="100" class="required email" />
           <div class="clear"></div>
         </div>
 
@@ -84,43 +85,6 @@
         </div>
 
       </form>
-
-      <script type="text/javascript">
-        jQuery(document).ready(function () {
-          jQuery.extend(jQuery.validator.messages, {
-
-            email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
-          });
-
-          jQuery("#powf_450E34B3E2D0E511810FC4346BACE18C").validate({
-            errorPlacement: function(error, element) {
-              error.appendTo( element.parents("div.field:first").find("div.clear:first") );
-            },
-
-            invalidHandler: function(event, validator) {
-              var errors = validator.numberOfInvalids();
-              if (errors) {
-                jQuery("input[type=submit]").removeAttr("disabled");
-              }
-            },
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            debug: false
-          });
-
-          jQuery("#powf_450E34B3E2D0E511810FC4346BACE18C").submit(function(e){
-            if ( typeof grecaptcha == 'undefined' ) return true;
-            var rresult = grecaptcha.getResponse();
-            if( !rresult.length > 0 ) {
-              return false;
-            }
-            return true;
-          });
-
-        });
-
-      </script>
 
     </div>
   </div>

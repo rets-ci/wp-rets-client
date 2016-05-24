@@ -9,7 +9,7 @@
       <h3><?php _e('I want to rent a home', 'reddoor'); ?></h3>
       <p><?php _e('Please submit your information below. We\'re ready to help you find the perfect rental home!', 'reddoor'); ?></p>
 
-      <form id="powf_D138DC53B916E61180E9C4346BACE2D4-global" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_D138DC53B916E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
+      <form id="powf_D138DC53B916E61180E9C4346BACE2D4-global" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_D138DC53B916E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
 
         <div class="field">
           <input required placeholder="First Name *" type="text" id="powf_fafb666fb916e61180e9c4346bace2d4" name="powf_fafb666fb916e61180e9c4346bace2d4" value="" maxlength="100" class="required"/>
@@ -93,42 +93,7 @@
 
       </form>
 
-      <script type="text/javascript">
-        jQuery(document).ready(function () {
-          jQuery.extend(jQuery.validator.messages, {
-
-            email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
-          });
-
-          jQuery("#powf_D138DC53B916E61180E9C4346BACE2D4-global").validate({
-            errorPlacement: function(error, element) {
-              error.appendTo( element.parents("div.field:first").find("div.clear:first") );
-            },
-
-            invalidHandler: function(event, validator) {
-              var errors = validator.numberOfInvalids();
-              if (errors) {
-                jQuery("input[type=submit]").removeAttr("disabled");
-              }
-            },
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            debug: false
-          });
-
-          jQuery("#powf_D138DC53B916E61180E9C4346BACE2D4-global").submit(function(e){
-            if ( typeof grecaptcha == 'undefined' ) return true;
-            var rresult = grecaptcha.getResponse();
-            if( !rresult.length > 0 ) {
-              return false;
-            }
-            return true;
-          });
-        });
-
-      </script>
-
+      
     </div>
   </div>
 </div>
