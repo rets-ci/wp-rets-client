@@ -578,9 +578,30 @@
             } else {
               console.error(error);
             }
-
           });
         }
+
+        /**
+         * toggle search filter button loading icon and search icon
+         */
+        $scope.toggleSearchButton = function () {
+          var button_icon_desktop = jQuery('.sm-search-filter').find('i');
+          button_icon_desktop.toggleClass(function() {
+            if ( jQuery( this ).is( ".icon-wpproperty-interface-search-solid" ) ) {
+              return "icon-wpproperty-interface-time-outline";
+            } else {
+              return "icon-wpproperty-interface-search-solid";
+            }
+          });
+          var button_icon_mobile = jQuery('.sm-list-controls').find('.icon-wpproperty-interface-search-solid');
+          button_icon_mobile.toggleClass(function() {
+            if ( jQuery( this ).is( ".icon-wpproperty-interface-search-solid" ) ) {
+              return "icon-wpproperty-interface-time-outline";
+            } else {
+              return "icon-wpproperty-interface-search-solid";
+            }
+          });
+        };
 
         /**
          * Get Properties by provided Query ( filter )
@@ -590,6 +611,8 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
+
+          $scope.toggleSearchButton();
 
           $scope._request = client.search({
             index: index,
@@ -631,6 +654,8 @@
             } else {
               console.error(error);
             }
+
+            $scope.toggleSearchButton();
 
           });
 
