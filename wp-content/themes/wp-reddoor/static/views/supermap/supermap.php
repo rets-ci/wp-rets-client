@@ -265,7 +265,7 @@ use \UsabilityDynamics\RDC\Utils;
                   <tbody>
                   <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
-                    <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.post_title}}</td>
+                    <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</td>
                     <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
                     <td class="sm-bedrooms" ng-show="columns.bedrooms.enable">{{row._source.tax_input.bedrooms[0]}}</td>
                     <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>
