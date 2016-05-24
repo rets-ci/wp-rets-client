@@ -133,7 +133,7 @@ use \UsabilityDynamics\RDC\Utils;
                       </div>
                       <ul>
                         <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency}}</li>
-                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.post_title}}</a></li>
+                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
                         <li class="beds"><i class="icon-wpproperty-attribute-bedroom-solid"></i>{{row._source.tax_input.bedrooms[0]}} Beds</li>
