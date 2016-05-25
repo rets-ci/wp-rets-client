@@ -142,7 +142,7 @@ if ( !function_exists( 'ud_carousel_filters' ) ) {
 		?>
 		<div class="ud-carousel-filters">
 			<div class="column-wrapper">
-				<form action="" class="" class="ud-carousel-filter">
+				<form action="" class="ud-carousel-filter">
 					<?php if( !empty( $fields ) ) : ?>
 						<ul>
 							<?php foreach( $fields as $field ) : ?>

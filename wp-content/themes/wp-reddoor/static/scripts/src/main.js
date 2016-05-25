@@ -79,6 +79,46 @@ var rdc = {
   jQuery( document ).ready( function rdcReady() {
     console.log( "RDC version 1.1.3" );
 
+    /**
+     * Validate popup forms.
+     *
+     */
+
+    jQuery.extend(jQuery.validator.messages, {
+
+      email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
+    });
+
+    jQuery(".form-validate").validate({
+      errorPlacement: function(error, element) {
+        error.appendTo( element.parents("div.field:first").find("div.clear:first") );
+      },
+
+      invalidHandler: function(event, validator) {
+        var errors = validator.numberOfInvalids();
+        if (errors) {
+          jQuery("input[type=submit]").removeAttr("disabled");
+        }
+      },
+      onfocusout: false,
+      onkeyup: false,
+      onclick: false,
+      debug: false
+    });
+
+    jQuery(".form-validate").submit(function(e){
+      if ( typeof grecaptcha == 'undefined' ) return true;
+      var rresult = grecaptcha.getResponse();
+      if( !rresult.length > 0 ) {
+        return false;
+      }
+      return true;
+    });
+    
+
+    /**Validate popup forms.*/
+    
+
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
       jQuery('#tabs_search').rdc_search_form();
@@ -180,7 +220,7 @@ var rdc = {
 
     jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
 
-    jQuery( '.menuDesktop > .menu-item > a' ).removeAttr( 'href' );
+    jQuery( '.menuDesktop > .removeLink > a' ).removeAttr( 'href' );
 
     jQuery( '.formTabs' ).on( 'click', function () {
       var menuItem = jQuery( this ).data( 'topmenu' );
@@ -194,7 +234,10 @@ var rdc = {
     } );
 
     jQuery( '.itemData > a' ).on( 'click', function () {
-      var itemTopMenu = (jQuery( this ).attr( 'rel' ));
+      var firsthref = jQuery(this).attr("href");
+      var lasthref = firsthref.substr(1);
+      var itemTopMenu = lasthref;
+
       jQuery( '[data-topmenu="' + itemTopMenu + '"] > a' ).click();
     } );
 
@@ -266,7 +309,7 @@ var rdc = {
       jQuery('.popupBuyHomeListing .hidden-phone').val('919-XXX-XXXX');
     });
 
-    jQuery('.oneAgent .showContactPopup a[rel="popupNonRdcRentListing"]').on('click', function(){
+    jQuery('.oneAgent .showContactPopup a[href="#popupNonRdcRentListing"]').on('click', function(){
       var agentphone = jQuery(this).data('nonrdcagentphone');
       var agentname = jQuery(this).data('nonrdcagentname');
       var agentoffice = jQuery(this).data('nonrdcagentoffice');

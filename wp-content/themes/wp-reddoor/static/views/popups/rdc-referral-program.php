@@ -1,6 +1,6 @@
 <div class="rdc-referral-program-form">
 
-  <form id="powf_60B61B4E4447E51180FAC4346BB5981C" class="contact_form"
+  <form id="powf_60B61B4E4447E51180FAC4346BB5981C" class="contact_form form-validate"
         enctype="multipart/form-data"
         action="<?php echo home_url() ?>?rdc_action=submit_form"
         method="post">
@@ -178,9 +178,7 @@
     </div>
 
     <div class="clear"></div>
-
-    <!-- tver -->
-    <input type="hidden" id="tver" name="tver" value="2013" />
+    
     <input type="hidden" name="ignore_submitmessage" value="Thank you for your submission." />
     <input type="hidden" name="ignore_linkbuttontext" value="" />
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/referral" />
@@ -200,40 +198,6 @@
     </div>
 
   </form>
-  <script type="text/javascript">
-    jQuery(document).ready(function () {
-      jQuery.extend(jQuery.validator.messages, {
-
-        email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
-      });
-
-      jQuery("#powf_60B61B4E4447E51180FAC4346BB5981C").validate({
-        errorPlacement: function(error, element) {
-          error.appendTo( element.parents("div.field:first").find("div.clear:first") );
-        },
-
-        invalidHandler: function(event, validator) {
-          var errors = validator.numberOfInvalids();
-          if (errors) {
-            jQuery("input[type=submit]").removeAttr("disabled");
-          }
-        },
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        debug: false
-      });
-
-      jQuery("#powf_60B61B4E4447E51180FAC4346BB5981C").submit(function(e){
-        if ( typeof grecaptcha == 'undefined' ) return true;
-        var rresult = grecaptcha.getResponse();
-        if( !rresult.length > 0 ) {
-          return false;
-        }
-        return true;
-      });
-    });
-
-  </script>
+  
   <!-- PowerWebForm </body> -->
 </div>

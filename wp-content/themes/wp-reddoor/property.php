@@ -545,7 +545,7 @@ while (have_posts()) : the_post();
                 <div class="attributer-inner-wrapper">
                   <section class="attribute-group-title">
                     <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
-                    <span><?php echo $group_detail['label']; ?></span>
+                    <h4><?php echo $group_detail['label']; ?></h4>
                   </section>
                   <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
                 </div>
@@ -628,7 +628,7 @@ while (have_posts()) : the_post();
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></span>
               </li>
               <li>
-                <span class="field-label"><?php _e( 'Last Updated: ' ); ?>
+                <span class="field-label"><?php _e( 'Last Updated: ' ); ?></span>
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', strtotime( "$updatedProperty GMT" ) ); ?></span>
               </li>
               <li>
