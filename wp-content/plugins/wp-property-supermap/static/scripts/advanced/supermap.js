@@ -676,26 +676,27 @@
          * map zoom or drag event listener for search results refresh
          */
         NgMap.getMap().then(function( map ) {
-          if( ! is_mobile() ) {
-            idle_listener = map.addListener('idle', function () {
-              var bounds = map.getBounds();
-              var SouthWestLatitude = bounds.getSouthWest().lat();
-              var NorthEastLatitude = bounds.getNorthEast().lat();
-              var NorthEastLongitude = bounds.getNorthEast().lng();
-              var SouthWestLongitude = bounds.getSouthWest().lng();
-              if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
-                jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
-                jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
-                jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
-                jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-                clearTimeout(mapChangedTimer);
-                mapChangedTimer = setTimeout(function () {
-                  jQuery('.sm-search-form form').addClass('mapChanged');
-                  jQuery('.sm-search-form form').submit();
-                }, 250);
-              }
-            });
+          if( isMobile == true ) {
+            return false;
           }
+          idle_listener = map.addListener('idle', function () {
+            var bounds = map.getBounds();
+            var SouthWestLatitude = bounds.getSouthWest().lat();
+            var NorthEastLatitude = bounds.getNorthEast().lat();
+            var NorthEastLongitude = bounds.getNorthEast().lng();
+            var SouthWestLongitude = bounds.getSouthWest().lng();
+            if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+              jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+              jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+              jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+              jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
+              clearTimeout(mapChangedTimer);
+              mapChangedTimer = setTimeout(function () {
+                jQuery('.sm-search-form form').addClass('mapChanged');
+                jQuery('.sm-search-form form').submit();
+              }, 250);
+            }
+          });
         });
 
         /**
@@ -1294,17 +1295,6 @@
         lastObj[key] = value;
       }
     }
-  }
-
-  function is_mobile(){
-    var isMobile = {
-      Android: function() { return navigator.userAgent.match(/Android/i); },
-      BlackBerry: function() { return navigator.userAgent.match(/BlackBerry/i); },
-      iOS: function() { return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
-      Opera: function() { return navigator.userAgent.match(/Opera Mini/i); },
-      Windows: function() { return navigator.userAgent.match(/IEMobile/i); },
-      any: function() { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
-    return isMobile;
   }
 
   /**
