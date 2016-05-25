@@ -72,7 +72,7 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="<?php echo Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == true ? 'col-md-12' : 'col-md-5'; ?> sm-properties-list-wrap">
 
         <ul class="sm-list-controls">
-          <li class="hidden-md hidden-lg" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
+          <li class="hidden-md hidden-lg mobile-toggle-search-icon" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
           <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
           <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
         </ul>
@@ -133,7 +133,7 @@ use \UsabilityDynamics\RDC\Utils;
                       </div>
                       <ul>
                         <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency}}</li>
-                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.post_title}}</a></li>
+                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
                         <li class="beds"><i class="icon-wpproperty-attribute-bedroom-solid"></i>{{row._source.tax_input.bedrooms[0]}} Beds</li>
@@ -265,7 +265,7 @@ use \UsabilityDynamics\RDC\Utils;
                   <tbody>
                   <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
-                    <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.post_title}}</td>
+                    <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</td>
                     <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
                     <td class="sm-bedrooms" ng-show="columns.bedrooms.enable">{{row._source.tax_input.bedrooms[0]}}</td>
                     <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>

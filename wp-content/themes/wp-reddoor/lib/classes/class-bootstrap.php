@@ -215,7 +215,11 @@ namespace UsabilityDynamics\RDC {
             'tax_input.approximate_lot_size',
             'tax_input.subdivision',
             'tax_input.neighborhood',
-            'tax_input.sale_type'
+            'tax_input.sale_type',
+            'tax_input.location_street_number',
+            'tax_input.location_direction',
+            'tax_input.location_street',
+            'tax_input.location_unit',
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
 
