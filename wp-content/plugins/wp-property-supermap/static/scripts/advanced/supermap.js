@@ -137,7 +137,7 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
-        var resizeTimer, idle_listener;
+        var resizeTimer, idle_listener, mapChangedTimer;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
           resizeTimer = setTimeout( function () {
@@ -546,6 +546,8 @@
          *
          */
         function getMoreProperties() {
+          jQuery( '.sm-search-form form').addClass('processing');
+          $scope.toggleSearchButton();
           $scope._request = client.search({
             index: index,
             type: type,
@@ -571,16 +573,37 @@
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else{
-                  $scope.map_changed();
+                  jQuery( '.sm-search-form form').removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
+              jQuery( '.sm-search-form form').removeClass('mapChanged');
             }
-
+            jQuery( '.sm-search-form form').removeClass('processing');
+            $scope.toggleSearchButton();
           });
         }
+
+        /**
+         * toggle search filter button loading icon and search icon
+         */
+        $scope.toggleSearchButton = function () {
+          var button_icon_desktop = jQuery('.sm-search-filter').find('i');
+          var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
+          if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
+            button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-search-solid");
+          } else {
+            button_icon_desktop.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.addClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.addClass("icon-wpproperty-interface-search-solid");
+          }
+        };
 
         /**
          * Get Properties by provided Query ( filter )
@@ -590,6 +613,8 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
+          jQuery( '.sm-search-form form').addClass('processing');
+          $scope.toggleSearchButton();
 
           $scope._request = client.search({
             index: index,
@@ -619,18 +644,22 @@
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
                 }
-                $scope.refreshMarkers( true );
+                $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else{
-                  $scope.map_changed();
+                  jQuery( '.sm-search-form form').removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
+              jQuery( '.sm-search-form form').removeClass('mapChanged');
             }
+
+            jQuery( '.sm-search-form form').removeClass('processing');
+            $scope.toggleSearchButton();
 
           });
 
@@ -646,18 +675,29 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.map_changed = function() {
-          NgMap.getMap().then(function( map ) {
-            idle_listener = map.addListener('idle', function() {
-              var bounds = map.getBounds();
-              jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
-              jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
-              jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
-              jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
-              jQuery( '.sm-search-form form').submit();
-            });
+        NgMap.getMap().then(function( map ) {
+          if( isMobile == true ) {
+            return false;
+          }
+          idle_listener = map.addListener('idle', function () {
+            var bounds = map.getBounds();
+            var SouthWestLatitude = bounds.getSouthWest().lat();
+            var NorthEastLatitude = bounds.getNorthEast().lat();
+            var NorthEastLongitude = bounds.getNorthEast().lng();
+            var SouthWestLongitude = bounds.getSouthWest().lng();
+            if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+              jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+              jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+              jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+              jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
+              clearTimeout(mapChangedTimer);
+              mapChangedTimer = setTimeout(function () {
+                jQuery('.sm-search-form form').addClass('mapChanged');
+                jQuery('.sm-search-form form').submit();
+              }, 250);
+            }
           });
-        };
+        });
 
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
@@ -907,8 +947,6 @@
          */
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
-
-          google.maps.event.removeListener(idle_listener);
 
           var formQuery = {},
               push_counters = {},
