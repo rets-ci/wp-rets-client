@@ -566,9 +566,7 @@
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
-                if( ! jQuery( '.sm-search-form form').hasClass('mapChanged') ) {
-                  $scope.refreshMarkers(false);
-                }
+                $scope.refreshMarkers(false);
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
@@ -642,9 +640,7 @@
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
                 }
-                if( ! jQuery( '.sm-search-form form').hasClass('mapChanged') ) {
-                  $scope.refreshMarkers( true );
-                }
+                $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
