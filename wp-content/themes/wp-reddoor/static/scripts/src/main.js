@@ -220,7 +220,7 @@ var rdc = {
 
     jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
 
-    jQuery( '.menuDesktop > .menu-item > a' ).removeAttr( 'href' );
+    jQuery( '.menuDesktop > .removeLink > a' ).removeAttr( 'href' );
 
     jQuery( '.formTabs' ).on( 'click', function () {
       var menuItem = jQuery( this ).data( 'topmenu' );
@@ -234,7 +234,10 @@ var rdc = {
     } );
 
     jQuery( '.itemData > a' ).on( 'click', function () {
-      var itemTopMenu = (jQuery( this ).attr( 'rel' ));
+      var firsthref = jQuery(this).attr("href");
+      var lasthref = firsthref.substr(1);
+      var itemTopMenu = lasthref;
+
       jQuery( '[data-topmenu="' + itemTopMenu + '"] > a' ).click();
     } );
 
