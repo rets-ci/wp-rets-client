@@ -4,27 +4,27 @@
 			<span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
 			<ul>
 				<li class="pupBuy showContactPopup">
-					<a href="javascript:;" rel="<?php echo is_singular('property') ? 'popupBuyHomeListing' : 'popupBuyHome'; ?>">
+					<a href="#<?php echo is_singular('property') ? 'popupBuyHomeListing' : 'popupBuyHome'; ?>">
 						<i class="icon-rdc-home-buying"></i><div><?php _e('I want to buy a home','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupRent showContactPopup">
-					<a href="javascript:;" rel="<?php echo is_singular('property') ? 'popupRentHomeListing' : 'popupRentHome'; ?>">
+					<a href="#popupRentHome">
 						<i class="icon-rdc-home-renting"></i><div><?php _e('I want to rent a home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupSell showContactPopup">
-					<a href="javascript:;" rel="popupSellHome">
+					<a href="#popupSellHome">
 						<i class="icon-rdc-home-selling"></i><div><?php _e('I want to sell my home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupRentProp showContactPopup">
-					<a href="javascript:;" rel="popupManage">
+					<a href="#popupManage">
 						<i class="icon-rdc-property-management"></i><div><?php _e('I want to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupContact showContactPopup">
-					<a href="javascript:;" rel="popupGeneralContact">
+					<a href="#popupGeneralContact">
 						<i class="icon-rdc-who-we-are"></i><div><?php _e('I have a different question', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>

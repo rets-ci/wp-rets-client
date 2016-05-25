@@ -37,11 +37,17 @@ jQuery(function () {
 
     var that = this;
 
+    var firsthref = jQuery(that).attr("href");
+    if (typeof firsthref != 'undefined'){
+      var lasthref = firsthref.substr(1);
+    }
+    var dataaction = jQuery(that).data("action");
+
     // prevent actual click from going through
     event.preventDefault();
 
     // determine type of action we're making with the click
-    var _type = jQuery(that).attr("rel") || jQuery(that).attr("data-action");
+    var _type = dataaction || lasthref ;
 
     jQuery('div.popup').fadeOut(300);
     jQuery('div.popup.'+ _type ).fadeIn(200);

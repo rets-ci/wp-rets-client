@@ -14,6 +14,7 @@
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
       <form id="powf_C15751CDFBE9E511811AFC15B42886E8"
+            class="form-validate"
             enctype="multipart/form-data" class="contact_form"
             action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_C15751CDFBE9E511811AFC15B42886E8&tver=2013&c=1"
             method="post">
@@ -41,7 +42,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Comments" id="powf_b62d13821a12e61180e4fc15b428cd78" name="powf_b62d13821a12e61180e4fc15b428cd78" cols="" rows=""></textarea>
+          <textarea placeholder="Comments" id="powf_b62d13821a12e61180e4fc15b428cd78" name="powf_b62d13821a12e61180e4fc15b428cd78"></textarea>
           <div class="clear"></div>
         </div>
 
@@ -80,10 +81,10 @@
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
         <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-          <div class="recaptcha" id="home-buying-recaptcha"></div>
+          <div class="recaptcha" id="home-renting-recaptcha"></div>
           <script type="text/javascript">
             jQuery(window).load(function(){
-              grecaptcha.render('home-buying-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
+              grecaptcha.render('home-renting-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
             });
           </script>
         <?php endif; ?>
@@ -93,43 +94,6 @@
         </div>
 
       </form>
-
-      <script type="text/javascript">
-        jQuery(document).ready(function () {
-          jQuery.extend(jQuery.validator.messages, {
-
-            email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
-          });
-
-          jQuery("#powf_C15751CDFBE9E511811AFC15B42886E8").validate({
-            errorPlacement: function(error, element) {
-              error.appendTo( element.parents("div.field:first").find("div.clear:first") );
-            },
-
-            invalidHandler: function(event, validator) {
-              var errors = validator.numberOfInvalids();
-              if (errors) {
-                jQuery("input[type=submit]").removeAttr("disabled");
-              }
-            },
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            debug: false
-          });
-
-          jQuery("#powf_C15751CDFBE9E511811AFC15B42886E8").submit(function(e){
-            if ( typeof grecaptcha == 'undefined' ) return true;
-            var rresult = grecaptcha.getResponse();
-            if( !rresult.length > 0 ) {
-              return false;
-            }
-            return true;
-          });
-
-        });
-
-      </script>
 
     </div>
   </div>

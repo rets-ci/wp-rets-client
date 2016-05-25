@@ -11,7 +11,7 @@
 
       <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
-      <form id="powf_280C1763D278E5118103C4346BB5981C" class=""
+      <form id="powf_280C1763D278E5118103C4346BB5981C" class="form-validate"
             enctype="multipart/form-data"
             action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1"
             method="post">
@@ -88,47 +88,11 @@
           </script>
         <?php endif; ?>
 
-        <div align="center">
+        <div>
           <input class="button" type="submit" value="Submit"
                  onclick="javascript:;"/>
         </div>
       </form>
-
-      <script type="text/javascript">
-        jQuery(document).ready(function () {
-          jQuery.extend(jQuery.validator.messages, {
-
-            email: "Please enter a valid email address. Make sure there are no leading or trailing spaces."
-          });
-
-          jQuery("#powf_280C1763D278E5118103C4346BB5981C").validate({
-            errorPlacement: function (error, element) {
-              error.appendTo(element.parents("div.field:first").find("div.clear:first"));
-            },
-
-            invalidHandler: function (event, validator) {
-              var errors = validator.numberOfInvalids();
-              if (errors) {
-                jQuery("input[type=submit]").removeAttr("disabled");
-              }
-            },
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            debug: false
-          });
-
-          jQuery("#powf_280C1763D278E5118103C4346BB5981C").submit(function(e){
-            if ( typeof grecaptcha == 'undefined' ) return true;
-            var rresult = grecaptcha.getResponse();
-            if( !rresult.length > 0 ) {
-              return false;
-            }
-            return true;
-          });
-        });
-
-      </script>
 
     </div>
   </div>
