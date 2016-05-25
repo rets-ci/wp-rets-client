@@ -546,6 +546,8 @@
          *
          */
         function getMoreProperties() {
+          jQuery( '.sm-search-form form').addClass('processing');
+          $scope.toggleSearchButton();
           $scope._request = client.search({
             index: index,
             type: type,
@@ -572,13 +574,15 @@
                   getMoreProperties();
                 }else{
                   jQuery( '.sm-search-form form').removeClass('mapChanged');
-                  $scope.map_changed();
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
+              jQuery( '.sm-search-form form').removeClass('mapChanged');
             }
+            jQuery( '.sm-search-form form').removeClass('processing');
+            $scope.toggleSearchButton();
           });
         }
 
@@ -646,12 +650,12 @@
                   getMoreProperties();
                 }else{
                   jQuery( '.sm-search-form form').removeClass('mapChanged');
-                  $scope.map_changed();
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
+              jQuery( '.sm-search-form form').removeClass('mapChanged');
             }
 
             jQuery( '.sm-search-form form').removeClass('processing');
@@ -671,22 +675,20 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.map_changed = function() {
-          NgMap.getMap().then(function( map ) {
-            idle_listener = map.addListener('idle', function() {
-              var bounds = map.getBounds();
-              jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
-              jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
-              jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
-              jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
-              clearTimeout( mapChangedTimer );
-              mapChangedTimer = setTimeout( function () {
-                jQuery( '.sm-search-form form').addClass('mapChanged');
-                jQuery( '.sm-search-form form').submit();
-              }, 250 );
-            });
+        NgMap.getMap().then(function( map ) {
+          idle_listener = map.addListener('idle', function() {
+            var bounds = map.getBounds();
+            jQuery('.rdc-latitude-gte').val(bounds.getSouthWest().lat());
+            jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
+            jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
+            jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
+            clearTimeout( mapChangedTimer );
+            mapChangedTimer = setTimeout( function () {
+              jQuery( '.sm-search-form form').addClass('mapChanged');
+              jQuery( '.sm-search-form form').submit();
+            }, 250 );
           });
-        };
+        });
 
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
@@ -936,8 +938,6 @@
          */
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
-
-          google.maps.event.removeListener(idle_listener);
 
           var formQuery = {},
               push_counters = {},
