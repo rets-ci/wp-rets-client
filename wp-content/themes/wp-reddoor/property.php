@@ -31,9 +31,9 @@ $_property_detail_map = array(
     "groups" => array(
       "bedrooms" => array( "label" => "Bedrooms", "icon" => "attribute-bedroom" ),
       "bathrooms" => array( "label" => "Bathrooms", "icon" => "attribute-bathroom" ),
-      "kitchen_dining_room" => array( "label" => "Heating & Cooling", "icon" => "attribute-kitchen" ),
-      "living_area" => array( "label" => "Utility", "icon" => "attribute-livingarea" ),
-      "other_rooms" => array( "label" => "Exterior", "icon" => "attribute-rooms" )
+      "kitchen_dining_room" => array( "label" => "Kitchen & Dining", "icon" => "attribute-kitchen" ),
+      "living_area" => array( "label" => "Living Area", "icon" => "attribute-livingarea" ),
+      "other_rooms" => array( "label" => "Other Rooms", "icon" => "attribute-rooms" )
     )
   ),
   "Features" => array(
@@ -512,8 +512,8 @@ while (have_posts()) : the_post();
             'postal_code' => $locationZip,
             'total_living_area_sqft' => $property['total_living_area_sqft_2'],
             'approximate_lot_size' => $property['approximate_lot_size_2'],
-            'bedrooms' => $property['bedrooms'],
-            'bathrooms' => $property['bathrooms'],
+            'bedrooms' => $singleBedrooms,
+            'bathrooms' => $singleBathrooms,
             'year_built' => $year_built,
             'cumulative_days_on_market' => $daysOnMarket,
             'price' => $property['price_2'],
@@ -545,7 +545,7 @@ while (have_posts()) : the_post();
                 <div class="attributer-inner-wrapper">
                   <section class="attribute-group-title">
                     <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
-                    <span><?php echo $group_detail['label']; ?></span>
+                    <h4><?php echo $group_detail['label']; ?></h4>
                   </section>
                   <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
                 </div>
@@ -628,7 +628,7 @@ while (have_posts()) : the_post();
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></span>
               </li>
               <li>
-                <span class="field-label"><?php _e( 'Last Updated: ' ); ?>
+                <span class="field-label"><?php _e( 'Last Updated: ' ); ?></span>
                 <span class="field-value"><?php echo date( 'F j, Y g:i A T', strtotime( "$updatedProperty GMT" ) ); ?></span>
               </li>
               <li>

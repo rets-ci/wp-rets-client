@@ -11,7 +11,8 @@
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
-      <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20" class=""
+      <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20"
+            class="form-validate"
             action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&amp;formId=powf_E3E9D503C22EE41195286C3BE5BD3B20&amp;tver=2013&amp;c=1"
             enctype="multipart/form-data" method="post" novalidate="novalidate">
 
@@ -68,8 +69,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Questions/Comments" id="powf_672f7c42c32ee41195286c3be5bd3b20" cols="" name="powf_672f7c42c32ee41195286c3be5bd3b20"
-              rows=""></textarea>
+          <textarea placeholder="Questions/Comments" id="powf_672f7c42c32ee41195286c3be5bd3b20" name="powf_672f7c42c32ee41195286c3be5bd3b20"></textarea>
         </div>
 
         <div class="field">
@@ -80,8 +80,6 @@
                value="Owner"/>
         <input id="powf_5e9a8095f35ae411afef6c3be5a87df0" name="powf_5e9a8095f35ae411afef6c3be5a87df0" type="hidden"
                value="RedDoorCompany.com"/>
-        <input id="tver" name="tver" type="hidden" value="2013"/>
-
         <input name="ignore_submitmessage" type="hidden" value="Thank you. We will be in touch with you shortly."/>
         <input name="ignore_linkbuttontext" type="hidden" value=""/>
         <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
@@ -96,44 +94,8 @@
           </script>
         <?php endif; ?>
 
-        <div align="center"><input class="button" type="submit" value="Submit"/></div>
+        <div><input class="button" type="submit" value="Submit"/></div>
       </form>
-
-      <script type="text/javascript">
-        jQuery(document).ready(function () {
-          jQuery.extend(jQuery.validator.messages, {
-
-            email: "Please enter a valid email address. Make sure there are no leading or trailing spaces."
-          });
-
-          jQuery("#powf_E3E9D503C22EE41195286C3BE5BD3B20").validate({
-            errorPlacement: function (error, element) {
-              error.appendTo(element.parents("div.field:first").find("div.clear:first"));
-            },
-
-            invalidHandler: function (event, validator) {
-              var errors = validator.numberOfInvalids();
-              if (errors) {
-                jQuery("input[type=submit]").removeAttr("disabled");
-              }
-            },
-            onfocusout: false,
-            onkeyup: false,
-            onclick: false,
-            debug: false
-          });
-
-          jQuery("#powf_E3E9D503C22EE41195286C3BE5BD3B20").submit(function(e){
-            if ( typeof grecaptcha == 'undefined' ) return true;
-            var rresult = grecaptcha.getResponse();
-            if( !rresult.length > 0 ) {
-              return false;
-            }
-            return true;
-          });
-        });
-
-      </script>
 
     </div>
   </div>

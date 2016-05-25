@@ -1,4 +1,5 @@
 <form id="powf_905AF33FD6D1E511810FC4346BACE18C"
+      class="form-validate"
       enctype="multipart/form-data"
       action="<?php echo home_url() ?>?rdc_action=submit_form"
       method="post"
@@ -119,38 +120,3 @@
     <input class="button" type="submit" value="Submit"/>
   </div>
 </form>
-
-<script type="text/javascript">
-  jQuery(document).ready(function () {
-    jQuery.extend(jQuery.validator.messages, {
-
-      email: "Please enter a valid email address. Make sure there are no leading or trailing spaces."
-    });
-
-    jQuery("#powf_905AF33FD6D1E511810FC4346BACE18C").validate({
-      errorPlacement: function (error, element) {
-        error.appendTo(element.parents("div.field:first"));
-      },
-
-      invalidHandler: function (event, validator) {
-        var errors = validator.numberOfInvalids();
-        if (errors) {
-          jQuery("input[type=submit]").removeAttr("disabled");
-        }
-      },
-      onfocusout: false,
-      onkeyup: false,
-      onclick: false,
-      debug: false
-    });
-
-    jQuery("#powf_905AF33FD6D1E511810FC4346BACE18C").submit(function(e){
-      if ( typeof grecaptcha == 'undefined' ) return true;
-      var rresult = grecaptcha.getResponse();
-      if( !rresult.length > 0 ) {
-        return false;
-      }
-      return true;
-    });
-  });
-</script>

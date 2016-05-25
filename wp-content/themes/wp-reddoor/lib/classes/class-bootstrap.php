@@ -215,7 +215,11 @@ namespace UsabilityDynamics\RDC {
             'tax_input.approximate_lot_size',
             'tax_input.subdivision',
             'tax_input.neighborhood',
-            'tax_input.sale_type'
+            'tax_input.sale_type',
+            'tax_input.location_street_number',
+            'tax_input.location_direction',
+            'tax_input.location_street',
+            'tax_input.location_unit',
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
       }
 
@@ -303,7 +307,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery-ui-accordion');
         wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), '1.0.0');
         wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,100) . '', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
         wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js', array('jquery'), '1.0.0');
         wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
@@ -384,17 +388,8 @@ namespace UsabilityDynamics\RDC {
         }
 
         if ( function_exists( 'register_widget' ) ) {
-          register_widget('\UsabilityDynamics\RDC\RDCScheduleShowing');
-          register_widget('\UsabilityDynamics\RDC\RDCProspectLandlordForm');
-          register_widget('\UsabilityDynamics\RDC\RDCContactForm');
-          register_widget('\UsabilityDynamics\RDC\RDCFeedbackForm');
-          register_widget('\UsabilityDynamics\RDC\RDCReferralProgramForm');
-          register_widget('\UsabilityDynamics\RDC\RDCApplicationRequestForm');
-          register_widget('\UsabilityDynamics\RDC\RDCJobRequestForm');
           register_widget('\UsabilityDynamics\RDC\Guide_content_Widget');
           register_widget('\UsabilityDynamics\RDC\RDC_Callout_Widget');
-          register_widget('\UsabilityDynamics\RDC\RDCHomeBuyingForm');
-          register_widget('\UsabilityDynamics\RDC\RDCHomeSellingForm');
         }
       }
     }

@@ -79,6 +79,46 @@ var rdc = {
   jQuery( document ).ready( function rdcReady() {
     console.log( "RDC version 1.1.3" );
 
+    /**
+     * Validate popup forms.
+     *
+     */
+
+    jQuery.extend(jQuery.validator.messages, {
+
+      email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
+    });
+
+    jQuery(".form-validate").validate({
+      errorPlacement: function(error, element) {
+        error.appendTo( element.parents("div.field:first").find("div.clear:first") );
+      },
+
+      invalidHandler: function(event, validator) {
+        var errors = validator.numberOfInvalids();
+        if (errors) {
+          jQuery("input[type=submit]").removeAttr("disabled");
+        }
+      },
+      onfocusout: false,
+      onkeyup: false,
+      onclick: false,
+      debug: false
+    });
+
+    jQuery(".form-validate").submit(function(e){
+      if ( typeof grecaptcha == 'undefined' ) return true;
+      var rresult = grecaptcha.getResponse();
+      if( !rresult.length > 0 ) {
+        return false;
+      }
+      return true;
+    });
+    
+
+    /**Validate popup forms.*/
+    
+
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
       jQuery('#tabs_search').rdc_search_form();
@@ -180,7 +220,7 @@ var rdc = {
 
     jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
 
-    jQuery( '.menuDesktop > .menu-item > a' ).removeAttr( 'href' );
+    jQuery( '.menuDesktop > .removeLink > a' ).removeAttr( 'href' );
 
     jQuery( '.formTabs' ).on( 'click', function () {
       var menuItem = jQuery( this ).data( 'topmenu' );
@@ -194,7 +234,10 @@ var rdc = {
     } );
 
     jQuery( '.itemData > a' ).on( 'click', function () {
-      var itemTopMenu = (jQuery( this ).attr( 'rel' ));
+      var firsthref = jQuery(this).attr("href");
+      var lasthref = firsthref.substr(1);
+      var itemTopMenu = lasthref;
+
       jQuery( '[data-topmenu="' + itemTopMenu + '"] > a' ).click();
     } );
 
@@ -209,21 +252,28 @@ var rdc = {
     }
 
 
-    /**
-     * Tabbed content widget (feature point)
-     */
-    var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
-    var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
-    var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
-    jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
-    jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
 
     /**
      * Set row height for tabbed Widget Image Area
      */
-    jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea' ), function eachColumn( index, element ){
-      jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
-    } );
+    setTimeout(function(){
+
+      /**
+       * Tabbed content widget (feature point)
+       */
+      var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
+      var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
+      var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
+      jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
+      jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
+      jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea:visible' ), function eachColumn( index, element ){
+        jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
+      } );
+
+    }, 500);
+
 
     /* Share button */
     jQuery( '.shareButton' ).on( 'click', function () {
@@ -237,21 +287,36 @@ var rdc = {
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    if(jQuery(window).width() >= 992) {
+    // if(jQuery(window).width() >= 992) {
+    //
+    //   var $grid = jQuery('.grid').masonry({
+    //     // options
+    //     itemSelector: '.grid-item',
+    //     singleMode: true,
+    //     isResizable: true,
+    //     transitionDuration: 0,
+    //   });
+    //
+    //   jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     $grid.masonry('layout');
+    //   })
+    //
+    // }
 
-      var $grid = jQuery('.grid').masonry({
-        // options
-        itemSelector: '.grid-item',
-        singleMode: true,
-        isResizable: true,
-        transitionDuration: 0,
-      });
+    jQuery('.oneAgent .showContactPopup a').on('click', function(){
+      var agentphone = jQuery(this).data('agentphone');
+      jQuery('.popupBuyHomeListing .hidden-phone').data('phone', agentphone);
+      jQuery('.popupBuyHomeListing .hidden-phone').val('919-XXX-XXXX');
+    });
 
-      jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        $grid.masonry('layout');
-      })
-
-    }
+    jQuery('.oneAgent .showContactPopup a[href="#popupNonRdcRentListing"]').on('click', function(){
+      var agentphone = jQuery(this).data('nonrdcagentphone');
+      var agentname = jQuery(this).data('nonrdcagentname');
+      var agentoffice = jQuery(this).data('nonrdcagentoffice');
+      jQuery('.popupNonRdcRentListing .nonrdcagentname').html(agentname);
+      jQuery('.popupNonRdcRentListing .nonrdcagentoffice').html(agentoffice);
+      jQuery('.popupNonRdcRentListing .nonrdcagentphone').val(agentphone);
+    });
 
     // get buy count if buy element exists
     if( jQuery('#wpprc-home-buy').length ) {

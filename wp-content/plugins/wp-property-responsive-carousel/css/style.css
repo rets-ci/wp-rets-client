@@ -183,7 +183,7 @@
   overflow-y: hidden;
   border-radius: 5px;
   box-shadow: 0 0 10px #ddd;
-  color: #5A595C;
+  color: #6d6e71;
   align-self: center;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item h2{
@@ -193,14 +193,14 @@
   margin-bottom: 20px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .lead{
-  color: #929194;
+  color: #6d6e71;
   font-size: 1.3em;
-  line-height: 1.55em;
-  margin-bottom: 30px;
+  line-height: 1.75em;
+  margin-bottom: 20px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p{
   font-size: 1.2em;
-  line-height: 1.55em;
+  line-height: 1.75em;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item > a:hover{
   text-decoration: none !important;

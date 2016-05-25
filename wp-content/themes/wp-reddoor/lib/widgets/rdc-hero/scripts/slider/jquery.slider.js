@@ -227,6 +227,6 @@ jQuery( function($){
         }
     });
 } );
-//jQuery(document).on('activeSlideChange', function(){
-//   jQuery('.tabbedWidgetImageArea').css('height', jQuery('.tabbedWidgetContent').height());
-//});
+// jQuery(document).on('activeSlideChange', function(){
+//     jQuery('.tabbedWidgetImageArea').height( jQuery('.sow-slider-image-wrapper').height() );
+// });

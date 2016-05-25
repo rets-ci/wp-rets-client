@@ -142,7 +142,7 @@ if ( !function_exists( 'ud_carousel_filters' ) ) {
 		?>
 		<div class="ud-carousel-filters">
 			<div class="column-wrapper">
-				<form action="" class="" class="ud-carousel-filter">
+				<form action="" class="ud-carousel-filter">
 					<?php if( !empty( $fields ) ) : ?>
 						<ul>
 							<?php foreach( $fields as $field ) : ?>
@@ -267,8 +267,14 @@ function ud_carousel_get_next_posts_page() {
 						$get_location_street_number_terms = get_the_terms($property['ID'], 'location_street_number');
 						($get_location_street_number_terms[0]) ? _e($get_location_street_number_terms[0]->name) : '';
 						echo ' ';
+						$get_location_direction_terms = get_the_terms($property['ID'], 'location_direction');
+						($get_location_direction_terms[0]) ? _e($get_location_direction_terms[0]->name) : '';
+						echo ' ';
 						$get_location_street_terms = get_the_terms($property['ID'], 'location_street');
 						($get_location_street_terms[0]) ? _e($get_location_street_terms[0]->name) : '';
+						echo ' ';
+						$get_location_unit_terms = get_the_terms($property['ID'], 'location_unit');
+						($get_location_unit_terms[0]) ? _e($get_location_unit_terms[0]->name) : '';
 						?>
 					</p>
 										<span>
