@@ -44,7 +44,7 @@
         <div class="field">
           <label for="powf_7bdf7695bf16e61180e9c4346bace2d4">Area of Interest</label>
           <select id="powf_7bdf7695bf16e61180e9c4346bace2d4" name="powf_7bdf7695bf16e61180e9c4346bace2d4">
-            <option value=""></option>
+            <option value=""><label></label></option>
             <option selected="selected" value="Triangle Area">Triangle Area</option>
             <option value="Durham Area">Durham Area</option>
             <option value="Chapel Hill Area">Chapel Hill Area</option>

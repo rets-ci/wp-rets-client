@@ -34,7 +34,7 @@
         <div class="field">
           <label for="powf_0981b910bc16e61180e9c4346bace2d4">Area Of Interest</label>
           <select id="powf_0981b910bc16e61180e9c4346bace2d4" name="powf_0981b910bc16e61180e9c4346bace2d4">
-            <option value=""></option>
+            <option value=""><label></label></option>
             <option selected="selected" value="Triangle Area">Triangle Area</option>
             <option value="Durham Area">Durham Area</option>
             <option value="Chapel Hill Area">Chapel Hill Area</option>
@@ -94,9 +94,7 @@
 
         <!-- Lead Source -->
         <input type="hidden" id="powf_1298204ebd16e61180e9c4346bace2d4" name="powf_1298204ebd16e61180e9c4346bace2d4" value="RedDoorCompany.com"/>
-
-        <!-- tver -->
-        <input type="hidden" id="tver" name="tver" value="2013"/>
+        
         <input type="hidden" name="ignore_submitmessage" value="<?php _e('Thank you. We will be in touch with you shortly.', 'reddoor'); ?>"/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/inquiry-success'); ?>"/>

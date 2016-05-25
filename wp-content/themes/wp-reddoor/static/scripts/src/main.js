@@ -116,7 +116,7 @@ var rdc = {
     });
     
 
-    /**V alidate popup forms.*/
+    /**Validate popup forms.*/
     
 
     // Invoke RDC Search Form, if tabs_search element exists.
@@ -306,7 +306,7 @@ var rdc = {
       jQuery('.popupBuyHomeListing .hidden-phone').val('919-XXX-XXXX');
     });
 
-    jQuery('.oneAgent .showContactPopup a[rel="popupNonRdcRentListing"]').on('click', function(){
+    jQuery('.oneAgent .showContactPopup a[href="#popupNonRdcRentListing"]').on('click', function(){
       var agentphone = jQuery(this).data('nonrdcagentphone');
       var agentname = jQuery(this).data('nonrdcagentname');
       var agentoffice = jQuery(this).data('nonrdcagentoffice');

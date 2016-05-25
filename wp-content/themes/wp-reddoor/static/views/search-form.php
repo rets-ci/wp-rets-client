@@ -133,7 +133,7 @@
 
     <!-- Rent -->
 
-    <form class="rentForm tab-pane" id="tabs-2" method="POST" action="">
+    <form class="rentForm tab-pane" id="tabs-2" method="POST" action="%20">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
 

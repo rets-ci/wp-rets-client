@@ -80,8 +80,6 @@
                value="Owner"/>
         <input id="powf_5e9a8095f35ae411afef6c3be5a87df0" name="powf_5e9a8095f35ae411afef6c3be5a87df0" type="hidden"
                value="RedDoorCompany.com"/>
-        <input id="tver" name="tver" type="hidden" value="2013"/>
-
         <input name="ignore_submitmessage" type="hidden" value="Thank you. We will be in touch with you shortly."/>
         <input name="ignore_linkbuttontext" type="hidden" value=""/>
         <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>

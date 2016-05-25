@@ -178,9 +178,7 @@
     </div>
 
     <div class="clear"></div>
-
-    <!-- tver -->
-    <input type="hidden" id="tver" name="tver" value="2013" />
+    
     <input type="hidden" name="ignore_submitmessage" value="Thank you for your submission." />
     <input type="hidden" name="ignore_linkbuttontext" value="" />
     <input type="hidden" name="ignore_redirecturl" value="http://www.reddoorcompany.com/success/referral" />

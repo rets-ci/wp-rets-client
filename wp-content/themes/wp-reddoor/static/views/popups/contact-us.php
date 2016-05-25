@@ -39,7 +39,6 @@
 
         <input type="hidden" id="powf_5ffe4125bf5be411afef6c3be5a87df0" name="powf_5ffe4125bf5be411afef6c3be5a87df0" value="General"/>
         <input type="hidden" id="powf_0953b84abf5be411afef6c3be5a87df0" name="powf_0953b84abf5be411afef6c3be5a87df0" value="RedDoorCompany.com"/>
-        <input type="hidden" id="tver" name="tver" value="2013"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you.  We will be in touch with you shortly."/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />
