@@ -137,7 +137,7 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
-        var resizeTimer, idle_listener;
+        var resizeTimer, idle_listener, mapChangedTimer;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
           resizeTimer = setTimeout( function () {
@@ -566,11 +566,14 @@
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
-                $scope.refreshMarkers(false);
+                if( ! jQuery( '.sm-search-form form').hasClass('mapChanged') ) {
+                  $scope.refreshMarkers(false);
+                }
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else{
+                  jQuery( '.sm-search-form form').removeClass('mapChanged');
                   $scope.map_changed();
                 }
               }
@@ -586,21 +589,18 @@
          */
         $scope.toggleSearchButton = function () {
           var button_icon_desktop = jQuery('.sm-search-filter').find('i');
-          button_icon_desktop.toggleClass(function() {
-            if ( jQuery( this ).is( ".icon-wpproperty-interface-search-solid" ) ) {
-              return "icon-wpproperty-interface-time-outline";
-            } else {
-              return "icon-wpproperty-interface-search-solid";
-            }
-          });
           var button_icon_mobile = jQuery('.sm-list-controls').find('.icon-wpproperty-interface-search-solid');
-          button_icon_mobile.toggleClass(function() {
-            if ( jQuery( this ).is( ".icon-wpproperty-interface-search-solid" ) ) {
-              return "icon-wpproperty-interface-time-outline";
-            } else {
-              return "icon-wpproperty-interface-search-solid";
-            }
-          });
+          if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
+            button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-search-solid");
+          } else {
+            button_icon_desktop.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.addClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.addClass("icon-wpproperty-interface-search-solid");
+          }
         };
 
         /**
@@ -611,7 +611,7 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
-
+          jQuery( '.sm-search-form form').addClass('processing');
           $scope.toggleSearchButton();
 
           $scope._request = client.search({
@@ -642,11 +642,14 @@
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
                 }
-                $scope.refreshMarkers( true );
+                if( ! jQuery( '.sm-search-form form').hasClass('mapChanged') ) {
+                  $scope.refreshMarkers( true );
+                }
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else{
+                  jQuery( '.sm-search-form form').removeClass('mapChanged');
                   $scope.map_changed();
                 }
               }
@@ -655,6 +658,7 @@
               console.error(error);
             }
 
+            jQuery( '.sm-search-form form').removeClass('processing');
             $scope.toggleSearchButton();
 
           });
@@ -679,7 +683,11 @@
               jQuery('.rdc-latitude-lte').val(bounds.getNorthEast().lat());
               jQuery('.rdc-longitude-gte').val(bounds.getNorthEast().lng());
               jQuery('.rdc-longitude-lte').val(bounds.getSouthWest().lng());
-              jQuery( '.sm-search-form form').submit();
+              clearTimeout( mapChangedTimer );
+              mapChangedTimer = setTimeout( function () {
+                jQuery( '.sm-search-form form').addClass('mapChanged');
+                jQuery( '.sm-search-form form').submit();
+              }, 250 );
             });
           });
         };
