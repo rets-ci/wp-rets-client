@@ -49,24 +49,9 @@
 
         <?php global $property;
 
-        if( $property && isset( $property['ID'] ) ) {
+            $agent = UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' );
 
-          $usersAgentsObjects = get_users(array('role' => 'agent'));
-
-          foreach ($usersAgentsObjects as $userAgent) {
-
-            if ( $agent_types = get_user_meta( $userAgent->ID, 'sale_type', 1 ) ) {
-              $_types = explode(', ', $agent_types);
-              if ( !in_array( 'Sale', $_types ) ) continue;
-            }
-
-            if (!get_user_meta($userAgent->ID, 'triangle_mls_id', 1)) continue;
-            $agent = $userAgent;
-          }
-
-        } else {
-          $agent = null;
-        }
+            //print_r($agent);
         ?>
 
         <!-- Origin -->
@@ -79,7 +64,7 @@
         <input type="hidden" id="powf_fc8e60252af8e51180e2fc15b4286ffc" name="powf_fc8e60252af8e51180e2fc15b4286ffc" value="<?php echo $property['location_address']; ?>" />
         <?php } ?>
 
-        <?php if( $agent ) { ?>
+        <?php if( !empty($agent) ) { ?>
           <!-- Broker Email -->
         <input type="hidden" class="rdc-listing-broker-email" id="powf_36ff73d9fbe9e511811afc15b42886e8" name="powf_36ff73d9fbe9e511811afc15b42886e8" value="<?php echo $agent->user_email; ?>" />
         <?php } ?>

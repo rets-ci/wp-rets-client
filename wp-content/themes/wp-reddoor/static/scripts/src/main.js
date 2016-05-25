@@ -209,21 +209,28 @@ var rdc = {
     }
 
 
-    /**
-     * Tabbed content widget (feature point)
-     */
-    var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
-    var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
-    var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
-    jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
-    jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
 
     /**
      * Set row height for tabbed Widget Image Area
      */
-    jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea' ), function eachColumn( index, element ){
-      jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
-    } );
+    setTimeout(function(){
+
+      /**
+       * Tabbed content widget (feature point)
+       */
+      var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
+      var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
+      var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
+      jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
+      jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
+
+      jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea:visible' ), function eachColumn( index, element ){
+        jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
+      } );
+
+    }, 500);
+
 
     /* Share button */
     jQuery( '.shareButton' ).on( 'click', function () {
@@ -237,21 +244,21 @@ var rdc = {
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    if(jQuery(window).width() >= 992) {
-
-      var $grid = jQuery('.grid').masonry({
-        // options
-        itemSelector: '.grid-item',
-        singleMode: true,
-        isResizable: true,
-        transitionDuration: 0,
-      });
-
-      jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        $grid.masonry('layout');
-      })
-
-    }
+    // if(jQuery(window).width() >= 992) {
+    //
+    //   var $grid = jQuery('.grid').masonry({
+    //     // options
+    //     itemSelector: '.grid-item',
+    //     singleMode: true,
+    //     isResizable: true,
+    //     transitionDuration: 0,
+    //   });
+    //
+    //   jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     $grid.masonry('layout');
+    //   })
+    //
+    // }
 
     jQuery('.oneAgent .showContactPopup a').on('click', function(){
       var agentphone = jQuery(this).data('agentphone');
