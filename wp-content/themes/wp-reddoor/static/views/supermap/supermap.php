@@ -72,7 +72,7 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="<?php echo Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == true ? 'col-md-12' : 'col-md-5'; ?> sm-properties-list-wrap">
 
         <ul class="sm-list-controls">
-          <li class="hidden-md hidden-lg" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
+          <li class="hidden-md hidden-lg mobile-toggle-search-icon" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
           <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
           <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
         </ul>

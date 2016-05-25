@@ -591,7 +591,7 @@
          */
         $scope.toggleSearchButton = function () {
           var button_icon_desktop = jQuery('.sm-search-filter').find('i');
-          var button_icon_mobile = jQuery('.sm-list-controls').find('.icon-wpproperty-interface-search-solid');
+          var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
           if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
             button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
             button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
