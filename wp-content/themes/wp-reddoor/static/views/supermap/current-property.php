@@ -8,7 +8,11 @@
 <div class="sm-current-property" ng-show="currentProperty">
   <div class="row">
     <div class="col-md-6">
-      <a target="_blank" href="/?p={{currentProperty._id}}"><div class="sm-current-property-thumb" style="background-image: url( {{currentProperty.images[0].url !== false ? currentProperty.images[0].url : '' }} );"></div></a>
+      <a target="_blank" href="/?p={{currentProperty._id}}">
+        <div class="sm-current-property-thumb" style="background-image: url( {{currentProperty.images[0].url !== false ? currentProperty.images[0].url : '' }} );">
+          <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{currentProperty.data_source_logo}}" />
+        </div>
+      </a>
     </div>
     <div class="col-md-6">
       <div class="sm-current-property-details">
@@ -28,7 +32,7 @@
           <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{currentProperty._source.tax_input.approximate_lot_size[0]}} Acres</li>
         </ul>
 <!--        <div class="sm-days-on-market">-->
-<!--          <img ng-src="{{currentProperty.data_source_logo}}" /><span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>-->
+<!--          <span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>-->
 <!--        </div>-->
       </div>
     </div>
