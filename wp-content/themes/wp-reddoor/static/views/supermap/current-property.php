@@ -17,9 +17,9 @@
     <div class="col-md-6">
       <div class="sm-current-property-details">
         <div class="icon-buttons">
-          <ul>
-            <li><a class="icon-wpproperty-interface-expand-outline" target="_blank" href="/?p={{currentProperty._id}}"></a></li>
-          </ul>
+<!--          <ul>-->
+<!--            <li><a class="icon-wpproperty-interface-expand-outline" target="_blank" href="/?p={{currentProperty._id}}"></a></li>-->
+<!--          </ul>-->
         </div>
         <ul>
           <li class="sm-current-property-price">{{currentProperty._source.tax_input.price[0] | currency}}</li>
@@ -31,6 +31,12 @@
           <li class="sqft"><i class="icon-wpproperty-attribute-size-solid"></i>{{currentProperty._source.tax_input.total_living_area_sqft[0]}} SqFt</li>
           <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{currentProperty._source.tax_input.approximate_lot_size[0]}} Acres</li>
         </ul>
+        <div class="sm-current-property-buttons">
+          <a class="open-listing" target="_blank" href="/?p={{currentProperty._id}}">
+            <i class="icon-wpproperty-interface-expand-outline"></i>
+            <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
+          </a>
+        </div>
 <!--        <div class="sm-days-on-market">-->
 <!--          <span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>-->
 <!--        </div>-->
