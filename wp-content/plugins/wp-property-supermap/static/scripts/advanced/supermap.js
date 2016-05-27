@@ -191,8 +191,12 @@
             label: 'Address',
             enable: 1
           },
-          price: {
-            label: 'Price',
+          subdivision: {
+            label: 'Subdivision',
+            enable: 0
+          },
+          city: {
+            label: 'City',
             enable: 1
           },
           bedrooms: {
@@ -207,13 +211,17 @@
             label: 'Sq.Ft.',
             enable: 1
           },
-          price_per_sqft: {
-            label: 'Price per Sq.Ft.',
-            enable: 1
-          },
           approximate_lot_size: {
             label: 'Lot',
+            enable: 0
+          },
+          price: {
+            label: 'Price',
             enable: 1
+          },
+          price_per_sqft: {
+            label: '$/Sq.Ft.',
+            enable: 0
           },
           sale_type: {
             label: 'Sale',
@@ -223,10 +231,6 @@
             label: 'Days',
             enable: 0
           },
-          subdivision: {
-            label: 'Subdivision',
-            enable: 0
-          }
         };
 
         $scope.show_dropdown_columns = false;
