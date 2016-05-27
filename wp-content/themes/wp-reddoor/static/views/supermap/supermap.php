@@ -143,7 +143,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{row._source.tax_input.approximate_lot_size[0]}} Acres</li>
                       </ul>
                       <div class="sm-days-on-market">
-                        <img ng-src="{{row.data_source_logo}}" /><span>{{row._source.tax_input.days_on_market[0]}} Days on Market</span>
+                        <img ng-src="{{row.data_source_logo}}" /><span>{{row._source.tax_input.added[0]}} Days on Market</span>
                       </div>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
                     <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency}}</td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
-                    <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.days_on_market[0]}}</td>
+                    <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.added[0]}}</td>
                   </tr>
                   </tbody>
                   <tfoot>

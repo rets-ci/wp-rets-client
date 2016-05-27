@@ -215,6 +215,7 @@ namespace UsabilityDynamics\RDC {
             'tax_input.approximate_lot_size',
             'tax_input.subdivision',
             'tax_input.neighborhood',
+            'tax_input.added',
             'tax_input.sale_type',
             'tax_input.location_city',
             'tax_input.location_street_number',
