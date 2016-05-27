@@ -6855,3 +6855,17 @@ a.btn-rdc {
     margin-top: 18px;
   }
 }
+/* Only for IE11 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ie11-attr-position {
+    float: left;
+    margin-top: 15px;
+  }
+  .searchForm .select2-search__field {
+    height: 30px;
+  }
+  .searchForm .select2-search {
+    height: 45px;
+    margin-top: 15px;
+  }
+}
