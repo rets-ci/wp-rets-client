@@ -122,7 +122,7 @@ use \UsabilityDynamics\RDC\Utils;
               <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && loadImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
-                    <a target="_blank" href="/?p={{row._id}}"><div class="sm-current-property-thumb" style="background-image: url( {{row.images[0].url !== false ? row.images[0].url : '' }} );"></div></a>
+                    <a target="_blank" href="/?p={{row._id}}"><div class="sm-current-property-thumb" ng-style="{'background-image':'url('+row.images[0].url+')'}"></div></a>
                   </div>
                   <div class="col-md-6">
                     <div class="sm-current-property-details">
