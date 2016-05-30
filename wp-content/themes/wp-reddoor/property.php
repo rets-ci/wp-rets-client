@@ -152,7 +152,7 @@ while (have_posts()) : the_post();
           <b class="clear"></b>
         </div>
 
-        <ul>
+        <ul class="ie11-attr-position">
           <?php if( !empty( $property[ 'price_2' ] ) ) { ?>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e( '$' );
             echo number_format( $property[ 'price_2' ] ); ?></li><?php } ?>
