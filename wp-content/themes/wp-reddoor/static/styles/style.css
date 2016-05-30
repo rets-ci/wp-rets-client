@@ -6868,4 +6868,10 @@ a.btn-rdc {
     height: 45px;
     margin-top: 15px;
   }
+  .wpp-advanced-supermap .sm-scrollable-table {
+    overflow: visible !important;
+  }
+  .wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
+    z-index: 2 !important;
+  }
 }
