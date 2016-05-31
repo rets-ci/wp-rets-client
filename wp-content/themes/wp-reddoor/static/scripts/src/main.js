@@ -429,7 +429,13 @@ var rdc = {
         height = 400;
       }
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
-      jQuery('.sm-scrollable-table > div').height(height - 290);
+      if(navigator.userAgent.indexOf('MSIE')!==-1
+          || navigator.appVersion.indexOf('Trident/') > 0){
+        jQuery('.sm-scrollable-table > div').height(height - 299);
+      }
+      else{
+        jQuery('.sm-scrollable-table > div').height(height - 290);
+      }
       jQuery('.sm-properties-grid').height(height - 103);
     }
   }
