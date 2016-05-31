@@ -486,11 +486,14 @@ a:focus {
 .single .content {
   color: #6d6e71;
   font-size: 1.2em;
+  line-height: 1.75em;
 }
 .single .content h2 {
   color: #5a595c;
   font-size: 1.9em;
   font-weight: 400;
+  margin: 0 0 3% 0;
+  padding-top: 1.5%;
 }
 .single .content blockquote {
   border-left: 5px solid #d03528;
@@ -500,7 +503,7 @@ a:focus {
   font-size: 1.2em;
 }
 .single .content p {
-  margin: 0 0 4% 0;
+  margin: 0 0 3% 0;
 }
 .single .content p:first-child {
   margin-top: 0;
@@ -2015,10 +2018,11 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   width: 100%;
   color: #a6a9ac;
 }
-.single-property section.attribute-group-title span {
+.single-property section.attribute-group-title h4 {
   float: left;
   font-size: 1.5em;
   align-self: center;
+  margin: 0;
 }
 .single-property ul.underlined-list > li {
   border-bottom: 1px solid #dedede;
@@ -2129,6 +2133,12 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .single-property .shareButtonColor {
   color: #000000;
+}
+.wpp-advanced-supermap .sm-scrollable-table {
+  overflow: visible !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
+  z-index: 2 !important;
 }
 .ui-datepicker {
   background: white;
@@ -2269,6 +2279,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   min-height: 50px;
   background-position: center center;
   margin-top: 15px;
+  min-height: 700px;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
   height: 100%;
@@ -6848,5 +6859,19 @@ a.btn-rdc {
   }
   .footerWidgetArea1 {
     margin-top: 18px;
+  }
+}
+/* Only for IE11 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ie11-attr-position {
+    float: left;
+    margin-top: 15px;
+  }
+  .searchForm .select2-search__field {
+    height: 30px;
+  }
+  .searchForm .select2-search {
+    height: 45px;
+    margin-top: 15px;
   }
 }

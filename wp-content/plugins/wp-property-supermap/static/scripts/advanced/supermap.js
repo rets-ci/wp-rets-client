@@ -191,8 +191,12 @@
             label: 'Address',
             enable: 1
           },
-          price: {
-            label: 'Price',
+          subdivision: {
+            label: 'Subdivision',
+            enable: 0
+          },
+          city: {
+            label: 'City',
             enable: 1
           },
           bedrooms: {
@@ -207,13 +211,17 @@
             label: 'Sq.Ft.',
             enable: 1
           },
-          price_per_sqft: {
-            label: 'Price per Sq.Ft.',
-            enable: 1
-          },
           approximate_lot_size: {
             label: 'Lot',
+            enable: 0
+          },
+          price: {
+            label: 'Price',
             enable: 1
+          },
+          price_per_sqft: {
+            label: '$/Sq.Ft.',
+            enable: 0
           },
           sale_type: {
             label: 'Sale',
@@ -223,10 +231,6 @@
             label: 'Days',
             enable: 0
           },
-          subdivision: {
-            label: 'Subdivision',
-            enable: 0
-          }
         };
 
         $scope.show_dropdown_columns = false;
@@ -512,6 +516,7 @@
           r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
           r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
           r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+          r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
 
           if (typeof r._source.tax_input.price_per_sqft!='undefined') {
             r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
@@ -520,6 +525,15 @@
           }
 
           r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+        }
+
+        function calculate_days(date) {
+          var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+          var mdy = date.split('-');
+          var firstDate = new Date(mdy[0],mdy[1],mdy[2]);
+          var currentDate = new Date();
+
+          return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime())/(oneDay)));
         }
 
         /**

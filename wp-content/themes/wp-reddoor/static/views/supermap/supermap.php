@@ -104,15 +104,16 @@ use \UsabilityDynamics\RDC\Utils;
                 </div>
               </li>
               <li class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Address', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-city" ng-show="columns.city.enable" st-sort="_source.tax_input.location_city[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::city::label", __( 'City', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-bedrooms" ng-show="columns.bedrooms.enable" st-sort="_source.tax_input.bedrooms[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::bedrooms::label", __( 'Beds', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-bathrooms" ng-show="columns.bathrooms.enable" st-sort="_source.tax_input.bathrooms[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::bathrooms::label", __( 'Baths', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sqft" ng-show="columns.total_living_area_sqft.enable" st-sort="_source.tax_input.total_living_area_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sqft::label", __( 'Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::approximate_lot_size::label", __( 'Lot', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
             </ul>
 
             <div class="sm-properties-grid">
@@ -122,7 +123,7 @@ use \UsabilityDynamics\RDC\Utils;
               <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && loadImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
-                    <a target="_blank" href="/?p={{row._id}}"><div class="sm-current-property-thumb" style="background-image: url( {{row.images[0].url !== false ? row.images[0].url : '' }} );"></div></a>
+                    <a target="_blank" href="/?p={{row._id}}"><div class="sm-current-property-thumb" ng-style="{'background-image':'url('+row.images[0].url+')'}"></div></a>
                   </div>
                   <div class="col-md-6">
                     <div class="sm-current-property-details">
@@ -142,7 +143,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{row._source.tax_input.approximate_lot_size[0]}} Acres</li>
                       </ul>
                       <div class="sm-days-on-market">
-                        <img ng-src="{{row.data_source_logo}}" /><span>{{row._source.tax_input.days_on_market[0]}} Days on Market</span>
+                        <img ng-src="{{row.data_source_logo}}" /><span>{{row._source.tax_input.added[0]}} Days on Market</span>
                       </div>
                     </div>
                   </div>
@@ -206,10 +207,16 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Address', 'reddoor' ); ?>
                       </div>
                     </th>
-                    <th class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true">
-                      <?php _e( 'Price', 'reddoor' ); ?>
+                    <th class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true">
+                      <?php _e( 'Subdivision', 'reddoor' ); ?>
                       <div>
-                        <?php _e( 'Price', 'reddoor' ); ?>
+                        <?php _e( 'Subdivision', 'reddoor' ); ?>
+                      </div>
+                    </th>
+                    <th class="sm-city" ng-show="columns.city.enable" st-sort="_source.tax_input.location_city[0]" st-skip-natural="true">
+                      <?php _e( 'City', 'reddoor' ); ?>
+                      <div>
+                        <?php _e( 'City', 'reddoor' ); ?>
                       </div>
                     </th>
                     <th class="sm-bedrooms" ng-show="columns.bedrooms.enable" st-sort="_source.tax_input.bedrooms[0]" st-skip-natural="true">
@@ -230,22 +237,22 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Sq.Ft.', 'reddoor' ); ?>
                       </div>
                     </th>
-                    <th class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true">
-                      <?php _e( '$/Sq.Ft.', 'reddoor' ); ?>
-                      <div>
-                        <?php _e( '$/Sq.Ft.', 'reddoor' ); ?>
-                      </div>
-                    </th>
-                    <th class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true">
-                      <?php _e( 'Days', 'reddoor' ); ?>
-                      <div>
-                        <?php _e( 'Days', 'reddoor' ); ?>
-                      </div>
-                    </th>
                     <th class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]" st-skip-natural="true">
                       <?php _e( 'Lot', 'reddoor' ); ?>
                       <div>
                         <?php _e( 'Lot', 'reddoor' ); ?>
+                      </div>
+                    </th>
+                    <th class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true">
+                      <?php _e( 'Price', 'reddoor' ); ?>
+                      <div>
+                        <?php _e( 'Price', 'reddoor' ); ?>
+                      </div>
+                    </th>
+                    <th class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true">
+                      <?php _e( '$/Sq.Ft.', 'reddoor' ); ?>
+                      <div>
+                        <?php _e( '$/Sq.Ft.', 'reddoor' ); ?>
                       </div>
                     </th>
                     <th class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true">
@@ -254,10 +261,10 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Sale', 'reddoor' ); ?>
                       </div>
                     </th>
-                    <th class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true">
-                      <?php _e( 'Subdivision', 'reddoor' ); ?>
+                    <th class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true">
+                      <?php _e( 'Days', 'reddoor' ); ?>
                       <div>
-                        <?php _e( 'Subdivision', 'reddoor' ); ?>
+                        <?php _e( 'Days', 'reddoor' ); ?>
                       </div>
                     </th>
                   </tr>
@@ -266,15 +273,16 @@ use \UsabilityDynamics\RDC\Utils;
                   <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
                     <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</td>
-                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
+                    <td class="sm-subdivision" ng-show="columns.subdivision.enable">{{row._source.tax_input.subdivision[0]}}</td>
+                    <td class="sm-city" ng-show="columns.city.enable">{{row._source.tax_input.location_city[0]}}</td>
                     <td class="sm-bedrooms" ng-show="columns.bedrooms.enable">{{row._source.tax_input.bedrooms[0]}}</td>
                     <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>
                     <td class="sm-sqft" ng-show="columns.total_living_area_sqft.enable">{{row._source.tax_input.total_living_area_sqft[0]}}</td>
-                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency}}</td>
-                    <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.days_on_market[0]}}</td>
                     <td class="sm-lot" ng-show="columns.approximate_lot_size.enable">{{row._source.tax_input.approximate_lot_size[0]}}</td>
+                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
+                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency}}</td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
-                    <td class="sm-subdivision" ng-show="columns.subdivision.enable">{{row._source.tax_input.subdivision[0]}}</td>
+                    <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.added[0]}}</td>
                   </tr>
                   </tbody>
                   <tfoot>
