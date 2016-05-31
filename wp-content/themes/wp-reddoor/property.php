@@ -34,7 +34,8 @@ $_property_detail_map = array(
       "kitchen_dining_room" => array( "label" => "Kitchen & Dining", "icon" => "attribute-kitchen" ),
       "living_area" => array( "label" => "Living Area", "icon" => "attribute-livingarea" ),
       "other_rooms" => array( "label" => "Other Rooms", "icon" => "attribute-rooms" )
-    )
+    ),
+    "icon-class" => "iconRooms"
   ),
   "Features" => array(
     "label" => "Features",
@@ -44,14 +45,16 @@ $_property_detail_map = array(
       "heating_cooling" => array( "label" => "Heating & Cooling", "icon" => "attribute-solid" ),
       "utility" => array( "label" => "Utility", "icon" => "attribute-utility" ),
       "parking" => array( "label" => "Parking", "icon" => "attribute-parking" )
-    )
+    ),
+      "icon-class" => "iconFeatures"
   ),
   "NeighborhoodDetail" => array(
     "label" => "Neighborhood",
     "groups" => array(
       "schools" => array( "label" => "Schools", "icon" => "school" ),
       "homeowners_association" => array( "label" => "Homeowners Association", "icon" => "attribute-hoa" )
-    )
+    ),
+    "icon-class" => "iconNeighborhoodDetail"
   ),
   "PropertyLot" => array(
     "label" => "Property <span class='hidden-sm	hidden-xs'>& Pricing</span>",
@@ -59,7 +62,8 @@ $_property_detail_map = array(
       "pricing_terms" => array( "label" => "Pricing & Terms", "icon" => "attribute-price" ),
       "building" => array( "label" => "Building", "icon" => "listing-house" ),
       "lot" => array( "label" => "Lot", "icon" => "attribute-lot" )
-    )
+    ),
+      "icon-class" => "iconPropertyLot"
   ),
 );
 
@@ -363,10 +367,10 @@ while (have_posts()) : the_post();
     <div class="row">
       <div class="col-xs-12 col-lg-8 col-md-12">
         <ul class="nav nav-tabs ws_nmaps">
-          <li class="active"><a data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
-          <li><a data-toggle="tab" href="#Commute">Commute</a></li>
-          <li><a data-toggle="tab" href="#Street">Street View</a></li>
-          <li><a data-toggle="tab" href="#Satellite">Satellite</a></li>
+          <li class="active"><a class="iconNeighborhood" data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
+          <li><a class="iconCommute" data-toggle="tab" href="#Commute">Commute</a></li>
+          <li><a class="iconStreet" data-toggle="tab" href="#Street">Street View</a></li>
+          <li><a class="iconSatellite" data-toggle="tab" href="#Satellite">Satellite</a></li>
         </ul>
 
         <div class="tab-content">
@@ -530,7 +534,7 @@ while (have_posts()) : the_post();
 
         <ul class="nav nav-tabs attribute-filter">
           <?php foreach( $_property_detail_map as $tab_slug => $tab_detail ) { ?>
-            <li class="attribute-filter-single-wrapper"><a data-filter=".wpp-category-<?php echo $tab_slug; ?>" href="#<?php echo $tab_slug; ?>" class="attribute-filter-single"><?php echo $tab_detail['label']; ?></a></li>
+            <li class="attribute-filter-single-wrapper"><a data-filter=".wpp-category-<?php echo $tab_slug; ?>" href="#<?php echo $tab_slug; ?>" class="attribute-filter-single <?php echo $tab_detail['icon-class']; ?>"><?php echo $tab_detail['label']; ?></a></li>
           <?php } ?>
           <li class="attribute-filter-single-wrapper active"><a data-filter="" href="#Rooms" class="attribute-filter-single">All</a></li>
         </ul>
