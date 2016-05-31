@@ -251,7 +251,7 @@ var rdc = {
       rdc_agent_carousel_item_width();
     }
 
-    if (jQuery(window).width() <= 1000) {
+    if (jQuery(window).width() <= 992) {
       /* Walk score map icons on mobile */
       jQuery('.single-property .iconNeighborhood').addClass('icon-wpproperty-attribute-neighborhood-solid').html('');
       jQuery('.single-property .iconCommute').addClass('icon-wpproperty-navigation-car-solid').html('');
@@ -259,7 +259,7 @@ var rdc = {
       jQuery('.single-property .iconSatellite').addClass('icon-wpproperty-navigation-satelliteview-solid').html('');
 
       /* Property Details icons on mobile */
-      jQuery('.single-property .iconRooms').addClass('icon-wpproperty-attribute-bedroom-solid').html('');
+      jQuery('.single-property .iconRooms').addClass('icon-wpproperty-attribute-bedroom-outline').html('');
       jQuery('.single-property .iconFeatures').addClass('icon-wpproperty-attribute-features-solid').html('');
       jQuery('.single-property .iconNeighborhoodDetail').addClass('icon-wpproperty-attribute-neighborhood-solid').html('');
       jQuery('.single-property .iconPropertyLot').addClass('icon-wpproperty-attribute-lot-solid').html('');
