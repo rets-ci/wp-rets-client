@@ -274,7 +274,20 @@ var rdc = {
       rdc_agent_carousel_item_width();
     }
 
+    if (jQuery(window).width() <= 992) {
+      /* Walk score map icons on mobile */
+      jQuery('.single-property .iconNeighborhood').addClass('icon-wpproperty-attribute-neighborhood-solid').html('');
+      jQuery('.single-property .iconCommute').addClass('icon-wpproperty-navigation-car-solid').html('');
+      jQuery('.single-property .iconStreet').addClass('icon-wpproperty-navigation-streetview-solid').html('');
+      jQuery('.single-property .iconSatellite').addClass('icon-wpproperty-navigation-satelliteview-solid').html('');
 
+      /* Property Details icons on mobile */
+      jQuery('.single-property .iconRooms').addClass('icon-wpproperty-attribute-bedroom-outline').html('');
+      jQuery('.single-property .iconFeatures').addClass('icon-wpproperty-attribute-features-solid').html('');
+      jQuery('.single-property .iconNeighborhoodDetail').addClass('icon-wpproperty-attribute-neighborhood-solid').html('');
+      jQuery('.single-property .iconPropertyLot').addClass('icon-wpproperty-attribute-lot-solid').html('');
+      
+    }
 
 
     /**
@@ -452,7 +465,13 @@ var rdc = {
         height = 400;
       }
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
-      jQuery('.sm-scrollable-table > div').height(height - 290);
+      if(navigator.userAgent.indexOf('MSIE')!==-1
+          || navigator.appVersion.indexOf('Trident/') > 0){
+        jQuery('.sm-scrollable-table > div').height(height - 299);
+      }
+      else{
+        jQuery('.sm-scrollable-table > div').height(height - 290);
+      }
       jQuery('.sm-properties-grid').height(height - 103);
     }
   }
