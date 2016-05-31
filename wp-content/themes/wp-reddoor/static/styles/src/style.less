@@ -435,6 +435,29 @@
     margin-top: 18px;
   }
 }
+@media screen and (max-width: 600px) {
+
+  .single-property {
+
+    .singlePropertyHeader {
+      .container {
+        &>ul {
+          li {
+            display: block;
+          }
+        }
+        .title{
+          div{
+            span{
+              display: block;
+              margin-left: 0;
+            }
+          }
+        }
+    }
+    }
+  }
+}
 
 /* Only for IE11 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -451,7 +474,5 @@
       height: 45px;
     }
   }
-
-
 }
 

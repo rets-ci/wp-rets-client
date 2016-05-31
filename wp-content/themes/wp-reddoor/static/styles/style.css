@@ -6867,6 +6867,15 @@ a.btn-rdc {
     margin-top: 18px;
   }
 }
+@media screen and (max-width: 600px) {
+  .single-property .singlePropertyHeader .container > ul li {
+    display: block;
+  }
+  .single-property .singlePropertyHeader .container .title div span {
+    display: block;
+    margin-left: 0;
+  }
+}
 /* Only for IE11 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie11-attr-position {
