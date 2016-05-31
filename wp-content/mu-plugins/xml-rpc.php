@@ -462,7 +462,7 @@ function find_property_by_rets_id( $rets_id ) {
     $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
   }
 
-  rdc_write_log( "Starting doing WP_Query" );
+  rdc_write_log( "Starting to search property by RETS ID using WP_Query" );
 
   // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
   $query = new WP_Query( array(
@@ -471,8 +471,6 @@ function find_property_by_rets_id( $rets_id ) {
     'meta_key'    => 'rets_id',
     'meta_value'  => $rets_id,
   ) );
-
-  rdc_write_log( "Finished doing WP_Query" );
 
   // what if there is two - we fucked up somewhere before...
   if( count( $query->posts ) > 1 ) {
