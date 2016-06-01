@@ -242,6 +242,11 @@ a:focus {
     top: -12px !important;
   }
 }
+.page404 {
+  position: relative;
+  z-index: 1;
+  top: -90px;
+}
 .full-width-totop {
   position: relative;
   top: -60px;
