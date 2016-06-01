@@ -204,6 +204,20 @@
 .wpp-advanced-supermap .sm-current-property .sm-current-property-details span.sm-attribute-value {
   display: inline-block;
 }
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details .sm-current-property-buttons a {
+  font-weight: 400;
+  color: #ffffff;
+  background: #d03528;
+  border-radius: 5px;
+  padding: 7px 15px;
+  text-align: center;
+  display: inline-block;
+  font-size: 1em;
+}
+.wpp-advanced-supermap .sm-current-property .sm-current-property-details .sm-current-property-buttons a:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
 .wpp-advanced-supermap .sm-no-results {
   padding: 30% 10px 10px 10px;
   text-align: center;

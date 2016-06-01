@@ -84,26 +84,49 @@ var rdc = {
      *
      */
 
-    jQuery.extend(jQuery.validator.messages, {
+    // jQuery.extend(jQuery.validator.messages, {
+    //
+    //   email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
+    // });
 
-      email:"Please enter a valid email address. Make sure there are no leading or trailing spaces."
+    jQuery.validator.addClassRules({
+      required:{
+        required: true
+      },
+      email:{
+        email: true
+      },
+      digits:{
+        digits: true
+      }
     });
 
-    jQuery(".form-validate").validate({
-      errorPlacement: function(error, element) {
-        error.appendTo( element.parents("div.field:first").find("div.clear:first") );
-      },
+    jQuery(".form-validate").each(function(){
+      var form = jQuery(this);
+      form.validate({
+        errorPlacement: function(error, element) {
+          error.insertBefore(element);
+          //error.appendTo( element.parents("div.field:first").find("div.clear:first") );
+        },
 
-      invalidHandler: function(event, validator) {
-        var errors = validator.numberOfInvalids();
-        if (errors) {
-          jQuery("input[type=submit]").removeAttr("disabled");
-        }
-      },
-      onfocusout: false,
-      onkeyup: false,
-      onclick: false,
-      debug: false
+        invalidHandler: function(event, validator) {
+          var errors = validator.numberOfInvalids();
+          if (errors) {
+            jQuery("input[type=submit]").removeAttr("disabled");
+          }
+        },
+        messages: {
+          name: "Please specify your name",
+          email: {
+            required: "We need your email address to contact you",
+            email: "Your email address must be in the format of name@domain.com"
+          }
+        },
+        onfocusout: false,
+        onkeyup: false,
+        onclick: false,
+        debug: false
+      });
     });
 
     jQuery(".form-validate").submit(function(e){

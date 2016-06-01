@@ -354,7 +354,7 @@ function WPP_RPC_editProperty( $args ) {
         // rdc_write_log( "Skipping $media[url] because it's already attached to $_post_id" );
       }
 
-    // attach media if a URL is set and it isn't already attached
+      // attach media if a URL is set and it isn't already attached
 
       $filetype = wp_check_filetype( basename( $media['url'] ), null );
 
@@ -424,6 +424,7 @@ function WPP_RPC_editProperty( $args ) {
   return array(
     "ok" => true,
     "post_id" => $_post_id,
+    "post" => get_post( $_post_id ),
     "permalink" => get_the_permalink( $_post_id ),
     //"args" => $args,
     //"user" => $user
@@ -461,6 +462,8 @@ function find_property_by_rets_id( $rets_id ) {
     $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
   }
 
+  rdc_write_log( "Starting to search property by RETS ID using WP_Query" );
+
   // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
   $query = new WP_Query( array(
     'post_status' => array( 'publish', 'draft' ),
@@ -470,7 +473,7 @@ function find_property_by_rets_id( $rets_id ) {
   ) );
 
   // what if there is two - we fucked up somewhere before...
-  if( count( $query->posts ) > 0 ) {
+  if( count( $query->posts ) > 1 ) {
     rdc_write_log( "Error! Multiple (".count( $query->posts ).") matches found for rets_id [" . $rets_id . "]." );
   }
 
