@@ -1014,7 +1014,16 @@
 
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
-          
+
+          //merging the previous query inputs to work with taxonomy variables
+          var form_bool_must = JSON.stringify(formQuery.bool.must);
+          jQuery.each($scope.query.bool.must,function(k,v){
+            var elem_str = JSON.stringify(v);
+            if(form_bool_must.indexOf(elem_str)<=0){
+              formQuery.bool.must.push(v);
+            }
+          });
+
           $scope.query = formQuery;
 
           $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
