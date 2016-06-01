@@ -1650,9 +1650,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   z-index: 9;
 }
-.single-property .singlePropertyHeader .ie11-attr-position {
-  float: left;
-}
 .single-property .singlePropertyHeader .title {
   margin-bottom: 15px;
 }
@@ -1919,6 +1916,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-bottom: 20px;
   height: 420px;
   background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
+}
+.single-property .areaMapBlock .tab-content .tab-pane frame {
+  background: #fff none repeat scroll 0 0;
 }
 .single-property .propertyDetails .nav-tabs {
   border-bottom-width: 0px;
@@ -6890,6 +6890,7 @@ a.btn-rdc {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie11-attr-position {
     margin-top: 15px;
+    float: left;
   }
   .searchForm .select2-search__field {
     height: 30px;
@@ -6900,6 +6901,9 @@ a.btn-rdc {
 }
 /* Only for Safari */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .class .ie11-attr-position {
+    float: left;
+  }
   .class .searchForm .select2-search__field {
     height: 30px;
   }
