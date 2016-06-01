@@ -362,12 +362,32 @@ a.rdc-carousel-next {
 @media screen and (max-width: 480px) {
   .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
     width: 440px;
+    padding: 0 15px;
+  }
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock a {
+    width: 100%;
+  }
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p {
+    line-height: 1.1em;
+  }
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
+    padding: 0 0 25px 30px;
+  }
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li{
+    display: block;
+    margin-top: 5px;
   }
 }
 @media screen and (max-width: 400px) {
   .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
     width: 380px;
   }
+}
+@media screen and (max-width: 360px) {
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
+    width: 340px;
+  }
+
 }
 @media screen and (max-width: 352px) {
   .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
@@ -379,3 +399,4 @@ a.rdc-carousel-next {
     width: 300px;
   }
 }
+

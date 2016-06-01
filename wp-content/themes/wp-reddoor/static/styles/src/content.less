@@ -30,6 +30,12 @@ a {
     top: -12px !important;
   }
 }
+.page404{
+  position: relative;
+  z-index: 1;
+  top: -90px;
+  margin-bottom: -90px;
+}
 
 .full-width-totop{
   position: relative;
@@ -1887,6 +1893,11 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       margin-bottom: 20px;
       height: 420px;
       background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
+      .tab-pane{
+        frame{
+          background: #fff none repeat scroll 0 0;
+        }
+      }
     }
   }
   .propertyDetails{
@@ -2156,7 +2167,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 }
 .wpp-advanced-supermap {
   .sm-scrollable-table {
-    overflow: visible !important;
+    overflow-y: visible !important;
   }
   .sm-properties-collection {
     .dropdown-columns-options{
