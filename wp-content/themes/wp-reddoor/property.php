@@ -550,6 +550,7 @@ while (have_posts()) : the_post();
                   <section class="attribute-group-title">
                     <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
                     <h4><?php echo $group_detail['label']; ?></h4>
+                    <b class="clear"></b>
                   </section>
                   <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
                 </div>

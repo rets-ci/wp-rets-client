@@ -246,6 +246,7 @@ a:focus {
   position: relative;
   z-index: 1;
   top: -90px;
+  margin-bottom: -90px;
 }
 .full-width-totop {
   position: relative;
@@ -1649,6 +1650,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   z-index: 9;
 }
+.single-property .singlePropertyHeader .ie11-attr-position {
+  float: left;
+}
 .single-property .singlePropertyHeader .title {
   margin-bottom: 15px;
 }
@@ -3041,6 +3045,7 @@ input[type="submit"]:active {
   margin: auto;
   align-self: center;
   z-index: 9999999;
+  position: relative;
 }
 .popup .popup-overlay {
   opacity: .8;
@@ -6884,7 +6889,6 @@ a.btn-rdc {
 /* Only for IE11 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie11-attr-position {
-    float: left;
     margin-top: 15px;
   }
   .searchForm .select2-search__field {
@@ -6892,5 +6896,23 @@ a.btn-rdc {
   }
   .searchForm .select2-search {
     height: 45px;
+  }
+}
+/* Only for Safari */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .class .searchForm .select2-search__field {
+    height: 30px;
+  }
+  .class .searchForm .select2-search {
+    height: 45px;
+  }
+  .class input[type="checkbox"].styled-checkbox-radio + label::before,
+  .class input[type="radio"].styled-checkbox-radio + label::before {
+    width: 29px;
+  }
+  .class .single-property section.attribute-group-title > div > span {
+    position: relative;
+    top: 8px;
+    margin-left: 11px;
   }
 }
