@@ -2144,7 +2144,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   color: #000000;
 }
 .wpp-advanced-supermap .sm-scrollable-table {
-  overflow: visible !important;
+  overflow-y: visible !important;
 }
 .wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
   z-index: 2 !important;
