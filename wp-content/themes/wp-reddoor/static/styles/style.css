@@ -1721,7 +1721,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   border-radius: 0 !important;
 }
 .single-property .singlePropertyHeader .oneAgent .socialButtons li {
-  width: 49.3%;
+  width: 49.2%;
   color: #a7a9ac;
   font-size: 2em !important;
   padding: 0;
@@ -6875,6 +6875,9 @@ a.btn-rdc {
   }
   .footerWidgetArea1 {
     margin-top: 18px;
+  }
+  .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
+    min-height: auto;
   }
 }
 @media screen and (max-width: 600px) {
