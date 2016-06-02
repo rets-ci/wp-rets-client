@@ -68,7 +68,7 @@
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
         <div class="submit-wrapper">
-          <input class="button" type="submit" value="Send" />
+          <input class="button" type="submit" value="Submit" />
         </div>
 
       </form>
