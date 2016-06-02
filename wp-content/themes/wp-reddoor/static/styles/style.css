@@ -6876,6 +6876,9 @@ a.btn-rdc {
   .footerWidgetArea1 {
     margin-top: 18px;
   }
+  .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
+    min-height: auto;
+  }
 }
 @media screen and (max-width: 600px) {
   .single-property .singlePropertyHeader .container > ul li {
