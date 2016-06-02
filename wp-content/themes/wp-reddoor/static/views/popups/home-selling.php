@@ -10,8 +10,8 @@
       <p><?php _e('Sell your home on your terms! Please submit your information below or call us by phone. We\'re ready to assist you with selling your home.'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number', 'reddoor'); ?></span>
-
-	    <form id="powf_33C92B8F04DBE5118114C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" method="post">
+			
+		  <form id="powf_33C92B8F04DBE5118114C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_ae80c09604dbe5118114c4346bb5981c" name="powf_ae80c09604dbe5118114c4346bb5981c" value="" maxlength="50" class="required" />
@@ -34,12 +34,12 @@
         </div>
 
         <div class="field">
-          <input placeholder="Subject Property" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="100" />
+          <input placeholder="Property Street Address" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
+          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="80" />
           <div class="clear"></div>
         </div>
 
@@ -49,7 +49,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Zip/Postal Code" type="text" id="powf_d880c09604dbe5118114c4346bb5981c" name="powf_d880c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
+          <input placeholder="Zip" type="text" id="powf_d880c09604dbe5118114c4346bb5981c" name="powf_d880c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
           <div class="clear"></div>
         </div>
 
