@@ -55,15 +55,6 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="clear"></div>
-				<!-- URL -->
-				<input type="hidden" id="powf_8e5f38f8d7d1e511810fc4346bace18c" name="powf_8e5f38f8d7d1e511810fc4346bace18c" value="" />
-				<div class="label">
-					<label for="powf_183a105923d4e5118112c4346bb5981c">Resume</label>
-					<span class="tip">PDF Only</span>
-					<div class="clear"></div>
-				</div>
-				
 				<div class="field">
 					Resume Upload (PDF Only)
 					<input id="powf_183a105923d4e5118112c4346bb5981c" name="powf_183a105923d4e5118112c4346bb5981c"  type="file" class="file" maxsize="1024" fileextension="pdf"  />
