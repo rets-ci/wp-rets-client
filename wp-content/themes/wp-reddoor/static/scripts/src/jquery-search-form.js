@@ -8,6 +8,17 @@
     var that = this;
 
     /**
+     * A bit hacky fix for safari form validation
+     */
+    $('form', that).on('submit', function(e){
+      if ( !e.target.checkValidity() ) {
+        $('.select2-search__field', e.target).focus().click();
+        return false;
+      }
+      return true;
+    });
+
+    /**
      *
      * @param int
      * @returns {*}
