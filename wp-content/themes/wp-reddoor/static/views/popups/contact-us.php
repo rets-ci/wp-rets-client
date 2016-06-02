@@ -61,7 +61,7 @@
         </div>
 
         <input type="hidden" id="powf_26bab857b716e61180e9c4346bace2d4" name="powf_26bab857b716e61180e9c4346bace2d4" value="General"/>
-        <input type="hidden" id="powf_d0a7e78bb716e61180e9c4346bace2d4" name="powf_d0a7e78bb716e61180e9c4346bace2d4" value="RedDoorCompany.com"/>
+        <input type="hidden" id="powf_d0a7e78bb716e61180e9c4346bace2d4" name="powf_d0a7e78bb716e61180e9c4346bace2d4" value="reddoorcompany.com"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />

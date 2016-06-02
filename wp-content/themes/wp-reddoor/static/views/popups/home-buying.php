@@ -53,7 +53,7 @@
         <input type="hidden" id="powf_98ef9eccbf16e61180e9c4346bace2d4" name="powf_98ef9eccbf16e61180e9c4346bace2d4" value="Buyer General" />
         <input type="hidden" id="powf_bce1ec13c016e61180e9c4346bace2d4" name="powf_bce1ec13c016e61180e9c4346bace2d4" value="" />
         <input type="hidden" id="powf_b6d11d30c016e61180e9c4346bace2d4" name="powf_b6d11d30c016e61180e9c4346bace2d4" value="Buyer (General) Webform Lead" />
-        <input type="hidden" id="powf_642031a9d316e61180e6fc15b4286ffc" name="powf_642031a9d316e61180e6fc15b4286ffc" value="RedDoorCompany.com" />
+        <input type="hidden" id="powf_642031a9d316e61180e6fc15b4286ffc" name="powf_642031a9d316e61180e6fc15b4286ffc" value="reddoorcompany.com" />
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/buy/inquiry-success'); ?>" />
