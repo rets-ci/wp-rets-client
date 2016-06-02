@@ -528,12 +528,15 @@
         }
 
         function calculate_days(date) {
-          var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-          var mdy = date.split('-');
-          var firstDate = new Date(mdy[0],mdy[1],mdy[2]);
-          var currentDate = new Date();
+          if ( date != 'undefined' && date != null ) {
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            var firstDate = new Date(date);
+            var currentDate = new Date();
 
-          return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime())/(oneDay)));
+            return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime()) / (oneDay)));
+          } else {
+            return 0;
+          }
         }
 
         /**

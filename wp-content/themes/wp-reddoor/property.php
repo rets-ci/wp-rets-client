@@ -224,7 +224,7 @@ while (have_posts()) : the_post();
             <div class="property-detail-icon-wrapper">
               <span class="icon-wpproperty-data-days-outline"></span>
             </div>
-            <span>Days on Market</span>
+            <span>Days on Website</span>
             <strong><?php
                 $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
               echo $daysOnMarket;
