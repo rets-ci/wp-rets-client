@@ -10,16 +10,8 @@
       <p><?php _e('Sell your home on your terms! Please submit your information below or call us by phone. We\'re ready to assist you with selling your home.'); ?></p>
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number', 'reddoor'); ?></span>
-
-      <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
-
-      <form id="powf_33C92B8F04DBE5118114C4346BB5981C"
-            class="form-validate"
-            enctype="multipart/form-data" class="contact_form"
-            action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1"
-            method="post">
-
-        <!-- <input type="hidden" name="rdc_fyb" value="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" /> -->
+			
+		  <form id="powf_33C92B8F04DBE5118114C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_ae80c09604dbe5118114c4346bb5981c" name="powf_ae80c09604dbe5118114c4346bb5981c" value="" maxlength="50" class="required" />
@@ -32,7 +24,7 @@
         </div>
 
         <div class="field">
-          <input type="text" placeholder="Email Address *" id="powf_bb80c09604dbe5118114c4346bb5981c" name="powf_bb80c09604dbe5118114c4346bb5981c" value="" maxlength="100" class="required email" />
+          <input type="text" placeholder="Email *" id="powf_bb80c09604dbe5118114c4346bb5981c" name="powf_bb80c09604dbe5118114c4346bb5981c" value="" maxlength="100" class="required email" />
           <div class="clear"></div>
         </div>
 
@@ -42,12 +34,12 @@
         </div>
 
         <div class="field">
-          <input placeholder="Subject Property" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="100" />
+          <input placeholder="Property Street Address" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
+          <input placeholder="City" type="text" id="powf_d480c09604dbe5118114c4346bb5981c" name="powf_d480c09604dbe5118114c4346bb5981c" value="" maxlength="80" />
           <div class="clear"></div>
         </div>
 
@@ -57,35 +49,23 @@
         </div>
 
         <div class="field">
-          <input placeholder="Zip/Postal Code" type="text" id="powf_d880c09604dbe5118114c4346bb5981c" name="powf_d880c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
+          <input placeholder="Zip" type="text" id="powf_d880c09604dbe5118114c4346bb5981c" name="powf_d880c09604dbe5118114c4346bb5981c" value="" maxlength="20" class="digits" />
           <div class="clear"></div>
         </div>
 
         <div class="field">
-          <textarea placeholder="Comments" class="digits" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78"></textarea>
+          <textarea placeholder="Message" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78"></textarea>
           <div class="clear"></div>
         </div>
 
-        <div class="clear"></div>
-
         <!-- Origin -->
-        <input type="hidden" id="powf_ac80c09604dbe5118114c4346bb5981c" name="powf_ac80c09604dbe5118114c4346bb5981c" value="Seller" />
-        <!-- topic -->
         <input type="hidden" id="powf_d780c09604dbe5118114c4346bb5981c" name="powf_d780c09604dbe5118114c4346bb5981c" value="Seller Webform Lead" />
-
-        <input type="hidden" name="ignore_submitmessage" value="" />
+        <input type="hidden" id="powf_ac80c09604dbe5118114c4346bb5981c" name="powf_ac80c09604dbe5118114c4346bb5981c" value="Seller" />
+        <input type="hidden" id="powf_ad80c09604dbe5118114c4346bb5981c" name="powf_ad80c09604dbe5118114c4346bb5981c" value="" />
+        <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/sell/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
-
-        <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-          <div class="recaptcha" id="home-selling-recaptcha"></div>
-          <script type="text/javascript">
-            jQuery(window).load(function(){
-              grecaptcha.render('home-selling-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
-            });
-          </script>
-        <?php endif; ?>
 
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />
