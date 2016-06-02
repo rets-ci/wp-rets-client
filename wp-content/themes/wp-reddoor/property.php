@@ -226,7 +226,7 @@ while (have_posts()) : the_post();
             </div>
             <span>Days on Website</span>
             <strong><?php
-                $daysOnMarket = human_time_diff(strtotime($property['post_date']), current_time('timestamp'));
+                $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
               echo $daysOnMarket;
               ?></strong>
           </div>
