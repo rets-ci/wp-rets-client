@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-md-6">
       <a target="_blank" href="/?p={{currentProperty._id}}">
-        <div class="sm-current-property-thumb" style="background-image: url( {{currentProperty.images[0].url !== false ? currentProperty.images[0].url : '' }} );">
+        <div class="sm-current-property-thumb" ng-style="{'background-image':'url('+currentProperty.images[0].url+')'}">
           <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{currentProperty.data_source_logo}}" />
         </div>
       </a>
