@@ -34,7 +34,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Subject Property Street Address" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
+          <input placeholder="Street address of property to be sold" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
           <div class="clear"></div>
         </div>
 
@@ -64,6 +64,7 @@
 	<input type="hidden" id="powf_ad80c09604dbe5118114c4346bb5981c" name="powf_ad80c09604dbe5118114c4346bb5981c" value="" />
 <!-- Origin -->
 	<input type="hidden" id="powf_ac80c09604dbe5118114c4346bb5981c" name="powf_ac80c09604dbe5118114c4346bb5981c" value="Seller" />
+
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/sell/inquiry-success'); ?>" />
