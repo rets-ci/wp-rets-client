@@ -54,7 +54,7 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Message" class="digits" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78"></textarea>
+          <textarea placeholder="Message" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78"></textarea>
           <div class="clear"></div>
         </div>
 
