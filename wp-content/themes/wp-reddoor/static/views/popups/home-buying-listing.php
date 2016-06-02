@@ -39,10 +39,7 @@
         </div>
 
         <?php global $property;
-
             $agent = UsabilityDynamics\RDC\Utils::get_matched_agent( \UsabilityDynamics\RDC\Utils::get_single_term( 'listing_agent_id', $property['ID'] ), false, array(), 'triangle_mls_id' );
-
-            //print_r($agent);
         ?>
 
         <?php if( $property && isset( $property['location_address'] ) ) { ?>
@@ -66,7 +63,7 @@
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
         <div class="submit-wrapper">
-          <input class="button" type="submit" value="Send" />
+          <input class="button" type="submit" value="Request Showing" />
         </div>
 
       </form>
