@@ -9,14 +9,8 @@
       <h3><?php _e('Request an Application', 'reddoor'); ?></h3>
       <p><?php _e('You found your new home - that\'s great! Please request an application using the below form.', 'reddoor'); ?></p>
 
-      <!-- action="<?php echo home_url() ?>?rdc_action=submit_form" -->
 
-      <form id="powf_280C1763D278E5118103C4346BB5981C" class="form-validate"
-            enctype="multipart/form-data"
-            action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1"
-            method="post">
-
-        <!-- <input type="hidden" name="rdc_fyb" value="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1" /> -->
+      <form id="powf_280C1763D278E5118103C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_c4351aadd278e5118103c4346bb5981c" name="powf_c4351aadd278e5118103c4346bb5981c" value=""
@@ -89,10 +83,11 @@
         <?php endif; ?>
 
         <div>
-          <input class="button" type="submit" value="Submit"
-                 onclick="javascript:;"/>
+          <input class="button" type="submit" value="Submit" onclick="javascript:;"/>
         </div>
       </form>
+      
+      <!-- request-application.php -->
 
     </div>
   </div>

@@ -64,6 +64,8 @@
         </div>
 
       </form>
+      
+      <!-- home-buying.php -->
 
     </div>
   </div>
