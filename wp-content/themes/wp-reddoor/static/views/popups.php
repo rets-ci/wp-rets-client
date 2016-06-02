@@ -42,3 +42,4 @@
 	<?php get_template_part('static/views/popups/home-management'); ?>
 	<?php get_template_part('static/views/popups/request-application'); ?>
 	<?php get_template_part('static/views/popups/non-rdc-renting-listing'); ?>
+	<?php get_template_part('static/views/popups/career'); ?>
