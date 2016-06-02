@@ -295,8 +295,14 @@ function WPP_RPC_editProperty( $args ) {
   // set post status to draft since it may be inserting for a while due to large amount of terms
   $post_data[ 'post_status' ] = 'draft';
 
-  if( $post_idata['ID'] ) {
-    rdc_write_log( 'Running wp_insert_post for [' . $post_idata['ID'] . '].' );
+  if( $post_data['ID'] ) {
+    rdc_write_log( 'Running wp_insert_post for [' . $post_data['ID'] . '].' );
+
+    // If post_date is not set wp_insert_post function sets the current datetime.
+    // So we are preventing to do it by setting already existing post_date. peshkov@UD
+    $_post = get_post( $post_data['ID'] );
+    $post_data[ 'post_date' ] = $_post->post_date;
+
   } else {
     rdc_write_log( 'Running wp_insert_post for [new post].' );
   }
