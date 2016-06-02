@@ -37,7 +37,7 @@
 				</div>
 				
 				<div class="field">
-					<input placeholder="State" type="text" id="powf_63a6a346d7d1e511810fc4346bace18c" name="powf_63a6a346d7d1e511810fc4346bace18c" value="NC" maxlength="100" />
+					<input placeholder="State" type="text" id="powf_63a6a346d7d1e511810fc4346bace18c" name="powf_63a6a346d7d1e511810fc4346bace18c" value="" maxlength="100" />
 					<div class="clear"></div>
 				</div>
 				
@@ -65,6 +65,7 @@
 				</div>
 				
 				<div class="field">
+					Resume Upload (PDF Only)
 					<input id="powf_183a105923d4e5118112c4346bb5981c" name="powf_183a105923d4e5118112c4346bb5981c"  type="file" class="file" maxsize="1024" fileextension="pdf"  />
 					<div class="clear"></div>
 				</div>
