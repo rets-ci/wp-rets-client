@@ -6558,6 +6558,24 @@ a.btn-rdc {
 .btn-rdc-wire.btn-lg {
   padding: 1.3em 4em;
 }
+.btn-rdc-white {
+  background-color: #fff;
+  color: #CF3428;
+  padding: 8px 17px;
+  font-size: 1.1em;
+}
+.btn-rdc-white.btn-lg {
+  padding: 1.3em 4em;
+}
+.btn-rdc-wire-white {
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 8px 17px;
+  font-size: 1.1em;
+}
+.btn-rdc-wire-white.btn-lg {
+  padding: 1.3em 4em;
+}
 .row.no-gutter [class*="col-"] {
   padding-left: 0;
   padding-right: 0;
