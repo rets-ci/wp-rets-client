@@ -11,7 +11,7 @@
       <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number', 'reddoor'); ?></span>
 			
-			<form id="powf_33C92B8F04DBE5118114C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" method="post">
+<form id="powf_33C92B8F04DBE5118114C4346BB5981C" class="left" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_33C92B8F04DBE5118114C4346BB5981C&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_ae80c09604dbe5118114c4346bb5981c" name="powf_ae80c09604dbe5118114c4346bb5981c" value="" maxlength="50" class="required" />
@@ -24,7 +24,7 @@
         </div>
 
         <div class="field">
-          <input type="text" placeholder="Email *" id="powf_bb80c09604dbe5118114c4346bb5981c" name="powf_bb80c09604dbe5118114c4346bb5981c" value="" maxlength="100" class="required email" />
+          <input placeholder="Email *" type="text" id="powf_794eeb11c216e61180e9c4346bace2d4" name="powf_794eeb11c216e61180e9c4346bace2d4" value="" maxlength="100" class="required email" />
           <div class="clear"></div>
         </div>
 
@@ -34,7 +34,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="Property Street Address" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
+          <input placeholder="Street address of property to be sold" type="text" id="powf_c780c09604dbe5118114c4346bb5981c" name="powf_c780c09604dbe5118114c4346bb5981c" value="" maxlength="250" />
           <div class="clear"></div>
         </div>
 
@@ -44,7 +44,7 @@
         </div>
 
         <div class="field">
-          <input placeholder="State" type="text" id="powf_d580c09604dbe5118114c4346bb5981c" name="powf_d580c09604dbe5118114c4346bb5981c" value="" maxlength="50" />
+          <input placeholder="State" type="text" id="powf_d580c09604dbe5118114c4346bb5981c" name="powf_d580c09604dbe5118114c4346bb5981c" value="North Carolina" maxlength="50" />
           <div class="clear"></div>
         </div>
 
@@ -54,14 +54,17 @@
         </div>
 
         <div class="field">
-          <textarea placeholder="Message" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78"></textarea>
+          <textarea placeholder="Message" id="powf_62c06e431a12e61180e4fc15b428cd78" name="powf_62c06e431a12e61180e4fc15b428cd78" cols="" rows=""></textarea>
           <div class="clear"></div>
         </div>
 
-        <!-- Origin -->
-        <input type="hidden" id="powf_d780c09604dbe5118114c4346bb5981c" name="powf_d780c09604dbe5118114c4346bb5981c" value="Seller Webform Lead" />
-        <input type="hidden" id="powf_ac80c09604dbe5118114c4346bb5981c" name="powf_ac80c09604dbe5118114c4346bb5981c" value="Seller" />
-        <input type="hidden" id="powf_ad80c09604dbe5118114c4346bb5981c" name="powf_ad80c09604dbe5118114c4346bb5981c" value="" />
+<!-- topic -->
+	<input type="hidden" id="powf_d780c09604dbe5118114c4346bb5981c" name="powf_d780c09604dbe5118114c4346bb5981c" value="Seller Webform Lead" />
+<!-- Broker Email -->
+	<input type="hidden" id="powf_ad80c09604dbe5118114c4346bb5981c" name="powf_ad80c09604dbe5118114c4346bb5981c" value="" />
+<!-- Origin -->
+	<input type="hidden" id="powf_ac80c09604dbe5118114c4346bb5981c" name="powf_ac80c09604dbe5118114c4346bb5981c" value="Seller" />
+
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/sell/inquiry-success'); ?>" />
