@@ -2330,7 +2330,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   color: #F10D2C;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
-  text-indent: unset !important;
+  text-indent: 0 !important;
   color: #5a595c !important;
   width: 217px !important;
   height: 58px !important;
