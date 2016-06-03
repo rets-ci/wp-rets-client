@@ -155,7 +155,7 @@ while (have_posts()) : the_post();
               } ?></span></div>
           <b class="clear"></b>
         </div>
-
+        <b class="clear"></b>
         <ul class="ie11-attr-position">
           <?php if( !empty( $property[ 'price_2' ] ) ) { ?>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e( '$' );
@@ -177,7 +177,7 @@ while (have_posts()) : the_post();
               class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e( $approximateLotSize . ' Acres' ); ?>
             </li><?php } ?>
         </ul>
-
+        <b class="clear"></b>
         <?php get_template_part( 'static/views/agent-card' ); ?>
 
       </div>

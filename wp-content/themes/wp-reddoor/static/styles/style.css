@@ -1650,6 +1650,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   z-index: 9;
 }
+.single-property .singlePropertyHeader .ie11-attr-position {
+  float: left;
+}
 .single-property .singlePropertyHeader .title {
   margin-bottom: 15px;
 }
@@ -1679,7 +1682,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
 }
 .single-property .singlePropertyHeader .container > ul li {
-  display: inline-block;
+  float: left;
   font-size: 1.5em;
   margin-right: 15px;
 }
@@ -6897,6 +6900,12 @@ a.btn-rdc {
   .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
     min-height: auto;
   }
+}
+.searchForm .select2-search__field {
+  height: 52px;
+}
+.searchForm .select2-search {
+  height: 52px;
 }
 @media screen and (max-width: 600px) {
   .single-property .singlePropertyHeader .container > ul li {
