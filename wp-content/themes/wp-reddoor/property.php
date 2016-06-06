@@ -155,7 +155,7 @@ while (have_posts()) : the_post();
               } ?></span></div>
           <b class="clear"></b>
         </div>
-
+        <b class="clear"></b>
         <ul class="ie11-attr-position">
           <?php if( !empty( $property[ 'price_2' ] ) ) { ?>
             <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e( '$' );
@@ -170,14 +170,14 @@ while (have_posts()) : the_post();
             </li><?php } ?>
           <?php if( $totalLivingArea ) { ?>
             <li><span
-              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e( number_format( $totalLivingArea ) . ' Sq.Ft.' ); ?>
+              class="icon-wpproperty-attribute-rooms-outline singlePropertyIcon"></span><?php _e( number_format( $totalLivingArea ) . ' Sq.Ft.' ); ?>
             </li><?php } ?>
           <?php if( $approximateLotSize ) { ?>
             <li><span
               class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e( $approximateLotSize . ' Acres' ); ?>
             </li><?php } ?>
         </ul>
-
+        <b class="clear"></b>
         <?php get_template_part( 'static/views/agent-card' ); ?>
 
       </div>
@@ -550,7 +550,7 @@ while (have_posts()) : the_post();
                   <section class="attribute-group-title">
                     <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
                     <h4><?php echo $group_detail['label']; ?></h4>
-                    <b class="clear"></b>
+                    <p class="clear"></p>
                   </section>
                   <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
                 </div>
