@@ -45,6 +45,7 @@ jQuery( function($){
                   numItems = $$.find('.rdc-carousel-item').length;
                   complete = numItems == totalPosts;
                   fetching = false;
+                  jQuery(document).trigger('rdc-carousel-ajax-complete');
               }
             )
         };
@@ -183,6 +184,7 @@ jQuery( function($){
                     validSwipe = false;
                 }
             }
+        
         )
 
     } );

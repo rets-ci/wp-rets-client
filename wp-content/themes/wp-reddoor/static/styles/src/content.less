@@ -622,6 +622,7 @@ a {
           padding-left: 35px;
           color: #A7A9AC;
           min-width: 100%;
+          line-height: 95px;
           .select2-selection {
             border: none;
             background: none;
@@ -683,6 +684,9 @@ a {
       .select2-selection__choice {
         border: none;
         background: none;
+      }
+      .select2-search__field{
+        line-height: 5px;
       }
       .select2-selection__choice__remove {
         margin-right: 8px;
@@ -1595,6 +1599,9 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
     border-bottom: 1px solid #dedede;
     position: relative;
     z-index: 9;
+    .ie11-attr-position{
+      float: left;
+    }
     .title{
       margin-bottom: 15px;
       & > span{
@@ -1628,7 +1635,7 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
 
       & > ul {
         li {
-          display: inline-block;
+          float: left;
           font-size: 1.5em;
           margin-right: 15px;
           .singlePropertyIcon {
@@ -1894,8 +1901,8 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       height: 420px;
       background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
       .tab-pane{
-        frame{
-          background: #fff none repeat scroll 0 0;
+        iframe{
+          background: #fff none repeat scroll 0 0 !important;
         }
       }
     }
@@ -2015,13 +2022,14 @@ input[type="checkbox"].styled-checkbox-radio:checked + label::before, input[type
       margin-right: 15px;
       margin-top: 0;
       width: 50px;
-      display: flex;
       &>span{
-        align-self: center;
         font-size: 1.3em;
         text-align: center;
         width: 100%;
         color: #a6a9ac;
+        position: relative;
+        top: 8px;
+        margin-left: 11px;
       }
     }
     h4{
