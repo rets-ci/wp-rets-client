@@ -2025,14 +2025,15 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-right: 15px;
   margin-top: 0;
   width: 50px;
-  display: flex;
 }
 .single-property section.attribute-group-title > div > span {
-  align-self: center;
   font-size: 1.3em;
   text-align: center;
   width: 100%;
   color: #a6a9ac;
+  position: relative;
+  top: 8px;
+  margin-left: 11px;
 }
 .single-property section.attribute-group-title h4 {
   float: left;
@@ -6924,7 +6925,6 @@ a.btn-rdc {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie11-attr-position {
     margin-top: 15px;
-    float: left;
   }
   .searchForm .select2-search__field {
     height: 30px;
@@ -6937,9 +6937,4 @@ a.btn-rdc {
 input[type="checkbox"].styled-checkbox-radio + label::before,
 input[type="radio"].styled-checkbox-radio + label::before {
   width: 29px;
-}
-.single-property section.attribute-group-title > div > span {
-  position: relative;
-  top: 8px;
-  margin-left: 11px;
 }
