@@ -25,7 +25,7 @@
         
         <div class="field">
           <input placeholder="Email *" type="text" id="powf_2eb5375ab616e61180e9c4346bace2d4" name="powf_2eb5375ab616e61180e9c4346bace2d4" value="" maxlength="100" class="required email"/>
-          <div class="clear"></div>
+          <div class="clear"></div><div></div>
         </div>
         
         <div class="field">
@@ -67,11 +67,13 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
         
-        <div>
+        <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />
         </div>
         
       </form>
+      
+      <!-- contact-us.php -->
 
     </div>
   </div>

@@ -97,6 +97,8 @@
         </div>
 
       </form>
+      
+      <!-- home-renting.php -->
 
     </div>
   </div>
