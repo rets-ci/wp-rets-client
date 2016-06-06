@@ -166,8 +166,8 @@
 
         $scope.view = {
           mode: {
-            table: true,
-            preview: false
+            table: isMobile == true ? false : true,
+            preview: isMobile == true ? true : false,
           },
           toggle: function() {
             this.mode.table = !this.mode.table;
