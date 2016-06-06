@@ -1020,7 +1020,9 @@
           });
 
           //merging the current taxonomy if tax archieve page
-          formQuery.bool.must.push($scope.tax_must_query);
+          if( $scope.tax_must_query.length ) {
+            formQuery.bool.must.push($scope.tax_must_query);
+          }
 
           $scope.query = formQuery;
 
