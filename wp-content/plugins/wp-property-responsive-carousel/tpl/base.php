@@ -172,6 +172,21 @@ $the_query = new WP_Query( $query );
 								</a>
 							</li>
 						<?php endwhile; wp_reset_postdata(); ?>
+						<?php
+//						$query_posts = $the_query->query['posts_per_page'];
+//							if($query_posts <= 10 || $instance[ 'Callout_card' ]['available']){ ?>
+<!--						<li class="rdc-carousel-item descriptionBlock">-->
+<!--							--><?php
+//
+//							echo  (!empty( $instance[ 'Callout_card' ]['title'] )) ? $instance[ 'Callout_card' ]['title'] : '';
+//							echo  (!empty( $instance[ 'Callout_card' ]['primary-button-label'] )) ? $instance[ 'Callout_card' ]['primary-button-label'] : '';
+//							echo  (!empty( $instance[ 'Callout_card' ]['primary-button-url'] )) ? $instance[ 'Callout_card' ]['primary-button-url'] : '';
+//							echo  (!empty( $instance[ 'Callout_card' ]['secondary-button-label'] )) ? $instance[ 'Callout_card' ]['secondary-button-label'] : '';
+//							echo  (!empty( $instance[ 'Callout_card' ]['secondary-button-url'] )) ? $instance[ 'Callout_card' ]['secondary-button-url'] : '';
+
+							?>
+<!--						--><?php //} ?>
+						</li>
 					</ul>
 				</div>
 			</div>
