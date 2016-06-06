@@ -1924,8 +1924,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   height: 420px;
   background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
 }
-.single-property .areaMapBlock .tab-content .tab-pane frame {
-  background: #fff none repeat scroll 0 0;
+.single-property .areaMapBlock .tab-content .tab-pane iframe {
+  background: #fff none repeat scroll 0 0 !important;
 }
 .single-property .propertyDetails .nav-tabs {
   border-bottom-width: 0px;
