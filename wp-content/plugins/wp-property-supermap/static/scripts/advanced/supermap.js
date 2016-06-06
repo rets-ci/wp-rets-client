@@ -162,6 +162,7 @@
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
+        $scope.tax_must_query = window.sm_must_tax_query || {};
 
         $scope.view = {
           mode: {
@@ -1018,14 +1019,8 @@
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
 
-          //merging the previous query inputs to work with taxonomy variables
-          var form_bool_must = JSON.stringify(formQuery.bool.must);
-          jQuery.each($scope.query.bool.must,function(k,v){
-            var elem_str = JSON.stringify(v);
-            if(form_bool_must.indexOf(elem_str)<=0){
-              formQuery.bool.must.push(v);
-            }
-          });
+          //merging the current taxonomy if tax archieve page
+          formQuery.bool.must.push($scope.tax_must_query);
 
           $scope.query = formQuery;
 
