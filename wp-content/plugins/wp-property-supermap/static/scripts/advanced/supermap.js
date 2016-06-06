@@ -1028,7 +1028,7 @@
           });
 
           //merging the current taxonomy if tax archieve page
-          if( $scope.tax_must_query.length ) {
+          if( ! jQuery.isEmptyObject( $scope.tax_must_query ) ) {
             formQuery.bool.must.push($scope.tax_must_query);
           }
 
