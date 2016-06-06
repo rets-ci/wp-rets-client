@@ -170,7 +170,7 @@ while (have_posts()) : the_post();
             </li><?php } ?>
           <?php if( $totalLivingArea ) { ?>
             <li><span
-              class="icon-wpproperty-attribute-size-solid singlePropertyIcon"></span><?php _e( number_format( $totalLivingArea ) . ' Sq.Ft.' ); ?>
+              class="icon-wpproperty-attribute-rooms-outline singlePropertyIcon"></span><?php _e( number_format( $totalLivingArea ) . ' Sq.Ft.' ); ?>
             </li><?php } ?>
           <?php if( $approximateLotSize ) { ?>
             <li><span
