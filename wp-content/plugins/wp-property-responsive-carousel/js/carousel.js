@@ -5,16 +5,18 @@ jQuery( function($){
         var $$ = $(this),
             $container = $$.closest('.rdc-carousel-container').parent(),
             $itemsContainer = $$.find('.rdc-carousel-items'),
-            $items = $$.find('.rdc-carousel-item'),
+            $items = $$.find('.rdc-carousel-item.carousel-item'),
             $filters = $$.parents('.rdc-property-carousel').find('form'),
-            $firstItem = $items.eq(0);
+            $firstItem = $items.eq(0),
+            maxCount = $$.data('max-count'),
+            cardAvailable = $$.data('card-available');
 
         var position = 0,
             page = 1,
             fetching = false,
             numItems = $items.length,
             totalPosts = $$.data('found-posts'),
-            complete = numItems == totalPosts,
+            complete = numItems == totalPosts || (cardAvailable && maxCount >= numItems),
             itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) ),
             timer;
 
@@ -42,8 +44,8 @@ jQuery( function($){
                   $$.find('.rdc-carousel-loading').remove();
                   totalPosts = data.found_posts;
                   $$.data( 'found-posts', totalPosts );
-                  numItems = $$.find('.rdc-carousel-item').length;
-                  complete = numItems == totalPosts;
+                  numItems = $$.find('.rdc-carousel-item.carousel-item').length;
+                  complete = numItems == totalPosts || (cardAvailable && maxCount >= numItems);
                   fetching = false;
                   jQuery(document).trigger('rdc-carousel-ajax-complete');
               }
