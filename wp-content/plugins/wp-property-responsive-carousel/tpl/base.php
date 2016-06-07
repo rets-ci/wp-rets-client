@@ -105,6 +105,8 @@ $the_query = new WP_Query( $query );
 				     data-query="<?php echo http_build_query($_query); ?>"
 				     data-found-posts="<?php echo esc_attr($the_query->found_posts) ?>"
 				     data-ajax-url="<?php echo esc_url( wp_nonce_url( admin_url('admin-ajax.php'), 'widgets_action', '_widgets_nonce' ) ) ?>"
+					 data-max-count="<?php echo $the_query->query['posts_per_page']; ?>"
+					 data-card-available="<?php echo $instance[ 'Callout_card' ]['available']; ?>"
 					>
 					<ul class="rdc-carousel-items">
 						<li class="rdc-carousel-item descriptionBlock">
@@ -122,7 +124,7 @@ $the_query = new WP_Query( $query );
 							) ) );
 
 							?>
-							<li class="rdc-carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
+							<li class="rdc-carousel-item carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
 								<a href="<?php the_permalink() ?>">
 									<div class="rdc-carousel-thumbnail">
 										<?php if( has_post_thumbnail() ) : $img = wp_get_attachment_image_url(get_post_thumbnail_id(), 'thumbnail'); ?>
@@ -173,19 +175,20 @@ $the_query = new WP_Query( $query );
 							</li>
 						<?php endwhile; wp_reset_postdata(); ?>
 						<?php
-//						$query_posts = $the_query->query['posts_per_page'];
-//							if($query_posts <= 10 || $instance[ 'Callout_card' ]['available']){ ?>
-<!--						<li class="rdc-carousel-item descriptionBlock">-->
-<!--							--><?php
-//
-//							echo  (!empty( $instance[ 'Callout_card' ]['title'] )) ? $instance[ 'Callout_card' ]['title'] : '';
-//							echo  (!empty( $instance[ 'Callout_card' ]['primary-button-label'] )) ? $instance[ 'Callout_card' ]['primary-button-label'] : '';
-//							echo  (!empty( $instance[ 'Callout_card' ]['primary-button-url'] )) ? $instance[ 'Callout_card' ]['primary-button-url'] : '';
-//							echo  (!empty( $instance[ 'Callout_card' ]['secondary-button-label'] )) ? $instance[ 'Callout_card' ]['secondary-button-label'] : '';
-//							echo  (!empty( $instance[ 'Callout_card' ]['secondary-button-url'] )) ? $instance[ 'Callout_card' ]['secondary-button-url'] : '';
+							if($instance[ 'Callout_card' ]['available']){ ?>
+						<li class="rdc-carousel-item calloutcard">
 
-							?>
-<!--						--><?php //} ?>
+							<h2><?php echo (!empty( $instance[ 'Callout_card' ]['title'] )) ? $instance[ 'Callout_card' ]['title'] : ''; ?></h2>
+							<div>
+								<?php if(!empty( $instance[ 'Callout_card' ]['primary-button-url'] ) || !empty( $instance[ 'Callout_card' ]['primary-button-label'] ) ){ ?>
+								<a href="<?php echo $instance[ 'Callout_card' ]['primary-button-url']; ?>"><?php echo $instance[ 'Callout_card' ]['primary-button-label']; ?></a>
+								<?php } ?>
+
+								<?php if(!empty( $instance[ 'Callout_card' ]['secondary-button-url'] ) || !empty( $instance[ 'Callout_card' ]['secondary-button-label'] ) ){ ?>
+									<a href="<?php echo $instance[ 'Callout_card' ]['secondary-button-url']; ?>"><?php echo $instance[ 'Callout_card' ]['secondary-button-label']; ?></a>
+								<?php } ?>
+							</div>
+						<?php } ?>
 						</li>
 					</ul>
 				</div>

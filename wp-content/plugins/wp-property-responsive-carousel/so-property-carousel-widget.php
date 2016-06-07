@@ -24,8 +24,7 @@ add_action('init', 'ud_carousel_register_image_sizes');
 function wp_property_siteorigin_widget_post_selector_process_query($query){
 	$query = wp_parse_args($query,
 			array(
-					'post_status' => 'publish',
-					'posts_per_page' => 10,
+					'post_status' => 'publish'
 			)
 	);
 
@@ -39,7 +38,7 @@ function wp_property_siteorigin_widget_post_selector_process_query($query){
 		array_map('intval', $query['post__in']);
 	}
 
-	if(!empty($query['tax_query'])) {
+	if(!empty($query['tax_query']) && !is_array($query['tax_query'])) {
 		$tax_queries = explode(',', $query['tax_query']);
 
 		$query['tax_query'] = array();
@@ -173,7 +172,7 @@ if ( !function_exists( 'ud_carousel_filters' ) ) {
 function ud_carousel_get_next_posts_page() {
 	if ( empty( $_REQUEST['_widgets_nonce'] ) || !wp_verify_nonce( $_REQUEST['_widgets_nonce'], 'widgets_action' ) ) return;
 	$query = wp_parse_args(
-		siteorigin_widget_post_selector_process_query($_GET['query']),
+		wp_property_siteorigin_widget_post_selector_process_query($_GET['query']),
 		array(
 			'post_status' => 'publish',
 			'posts_per_page' => 10,
@@ -231,11 +230,13 @@ function ud_carousel_get_next_posts_page() {
     'compare' => '>',
   );
 
-  
-  query_posts($query);
+//	echo '<pre>';
+//	print_r($query);
+
+  $the_query = new WP_Query($query);
 
   ob_start();
-	while(have_posts()) : the_post(); ?>
+	while($the_query->have_posts()) : $the_query->the_post(); ?>
 		<?php $property = prepare_property_for_display( get_property( get_the_ID(), array(
 			'get_children'          => 'false',
 			'load_gallery'          => 'false',
@@ -244,7 +245,7 @@ function ud_carousel_get_next_posts_page() {
 			'cache'                 => 'true',
 		) ) );
 		?>
-		<li class="rdc-carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
+		<li class="rdc-carousel-item carousel-item" data-property-id="<?php echo get_the_ID(); ?>">
 			<?php
 //			echo '<pre>';
 //			print_r($posts);
@@ -277,17 +278,17 @@ function ud_carousel_get_next_posts_page() {
 						($get_location_unit_terms[0]) ? _e($get_location_unit_terms[0]->name) : '';
 						?>
 					</p>
-										<span>
-											<?php
-											$get_location_city_terms = get_the_terms($property['ID'], 'location_city');
-											($get_location_city_terms[0]) ? _e($get_location_city_terms[0]->name) : '';
-											echo ', ';
-											$get_location_state_terms = get_the_terms($property['ID'], 'location_state');
-											($get_location_state_terms[0]) ? _e($get_location_state_terms[0]->name . ' ') : '';
-											$get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
-											($get_location_zip_terms[0]) ? _e($get_location_zip_terms[0]->name) : ''
-											?>
-										</span>
+						<span>
+							<?php
+							$get_location_city_terms = get_the_terms($property['ID'], 'location_city');
+							($get_location_city_terms[0]) ? _e($get_location_city_terms[0]->name) : '';
+							echo ', ';
+							$get_location_state_terms = get_the_terms($property['ID'], 'location_state');
+							($get_location_state_terms[0]) ? _e($get_location_state_terms[0]->name . ' ') : '';
+							$get_location_zip_terms = get_the_terms($property['ID'], 'location_zip');
+							($get_location_zip_terms[0]) ? _e($get_location_zip_terms[0]->name) : ''
+							?>
+						</span>
 					<ul>
 						<?php $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms'); if($get_bedrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bedroom-outline singlePropertyIcon"></span><?php _e($get_bedrooms_terms[0]->name); echo '</li>'; } ?>
 						<?php $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms'); if($get_bathrooms_terms[0]){ ?><li><span class="icon-wpproperty-attribute-bathroom-outline singlePropertyIcon"></span><?php _e($get_bathrooms_terms[0]->name); echo '</li>'; } ?>
@@ -298,15 +299,17 @@ function ud_carousel_get_next_posts_page() {
 				</div>
 			</a>
 		</li>
-	<?php endwhile; wp_reset_postdata();
-	$result = array( 'html' => ob_get_clean(), 'found_posts' => $posts->found_posts );
+	<?php endwhile;
+
+	$result = array( 'html' => ob_get_clean(), 'found_posts' => $the_query->found_posts );
+	wp_reset_postdata();
 	header('content-type: application/json');
 	echo json_encode( $result );
 
 	exit();
 }
-add_action( 'wp_ajax_ud_carousel_load', 'ud_carousel_get_next_posts_page' );
-add_action( 'wp_ajax_nopriv_ud_carousel_load', 'ud_carousel_get_next_posts_page' );
+	add_action('wp_ajax_ud_carousel_load', 'ud_carousel_get_next_posts_page');
+	add_action('wp_ajax_nopriv_ud_carousel_load', 'ud_carousel_get_next_posts_page');
 
 
 
