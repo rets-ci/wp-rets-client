@@ -323,21 +323,12 @@ var rdc = {
       jQuery( this ).toggleClass( 'arrow-down' );
     } );
 
-    // if(jQuery(window).width() >= 992) {
-    //
-    //   var $grid = jQuery('.grid').masonry({
-    //     // options
-    //     itemSelector: '.grid-item',
-    //     singleMode: true,
-    //     isResizable: true,
-    //     transitionDuration: 0,
-    //   });
-    //
-    //   jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    //     $grid.masonry('layout');
-    //   })
-    //
-    // }
+    if(jQuery(window).width() <= 560) {
+      jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
+      jQuery(document).on('rdc-carousel-ajax-complete', function(){
+        jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
+      });
+    }
 
     jQuery('.oneAgent .showContactPopup a').on('click', function(){
       var agentphone = jQuery(this).data('agentphone');

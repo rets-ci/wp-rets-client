@@ -799,6 +799,7 @@ a:focus {
   padding-left: 35px;
   color: #A7A9AC;
   min-width: 100%;
+  line-height: 95px;
 }
 .searchForm form .location .select2 .select2-selection {
   border: none;
@@ -879,6 +880,9 @@ a:focus {
 .searchForm form .location .select2-selection__choice {
   border: none;
   background: none;
+}
+.searchForm form .location .select2-search__field {
+  line-height: 5px;
 }
 .searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
@@ -1650,6 +1654,9 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
   z-index: 9;
 }
+.single-property .singlePropertyHeader .ie11-attr-position {
+  float: left;
+}
 .single-property .singlePropertyHeader .title {
   margin-bottom: 15px;
 }
@@ -1679,7 +1686,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   position: relative;
 }
 .single-property .singlePropertyHeader .container > ul li {
-  display: inline-block;
+  float: left;
   font-size: 1.5em;
   margin-right: 15px;
 }
@@ -1917,8 +1924,8 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   height: 420px;
   background: url('../images/src/ajax-loader.gif') no-repeat scroll center center;
 }
-.single-property .areaMapBlock .tab-content .tab-pane frame {
-  background: #fff none repeat scroll 0 0;
+.single-property .areaMapBlock .tab-content .tab-pane iframe {
+  background: #fff none repeat scroll 0 0 !important;
 }
 .single-property .propertyDetails .nav-tabs {
   border-bottom-width: 0px;
@@ -2018,14 +2025,15 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-right: 15px;
   margin-top: 0;
   width: 50px;
-  display: flex;
 }
 .single-property section.attribute-group-title > div > span {
-  align-self: center;
   font-size: 1.3em;
   text-align: center;
   width: 100%;
   color: #a6a9ac;
+  position: relative;
+  top: 8px;
+  margin-left: 11px;
 }
 .single-property section.attribute-group-title h4 {
   float: left;
@@ -2330,7 +2338,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   color: #F10D2C;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-pagination li a {
-  text-indent: unset !important;
+  text-indent: 0 !important;
   color: #5a595c !important;
   width: 217px !important;
   height: 58px !important;
@@ -6898,6 +6906,12 @@ a.btn-rdc {
     min-height: auto;
   }
 }
+.searchForm .select2-search__field {
+  height: 52px;
+}
+.searchForm .select2-search {
+  height: 52px;
+}
 @media screen and (max-width: 600px) {
   .single-property .singlePropertyHeader .container > ul li {
     display: block;
@@ -6911,7 +6925,6 @@ a.btn-rdc {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie11-attr-position {
     margin-top: 15px;
-    float: left;
   }
   .searchForm .select2-search__field {
     height: 30px;
@@ -6921,23 +6934,7 @@ a.btn-rdc {
   }
 }
 /* Only for Safari */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .class .ie11-attr-position {
-    float: left;
-  }
-  .class .searchForm .select2-search__field {
-    height: 30px;
-  }
-  .class .searchForm .select2-search {
-    height: 45px;
-  }
-  .class input[type="checkbox"].styled-checkbox-radio + label::before,
-  .class input[type="radio"].styled-checkbox-radio + label::before {
-    width: 29px;
-  }
-  .class .single-property section.attribute-group-title > div > span {
-    position: relative;
-    top: 8px;
-    margin-left: 11px;
-  }
+input[type="checkbox"].styled-checkbox-radio + label::before,
+input[type="radio"].styled-checkbox-radio + label::before {
+  width: 29px;
 }
