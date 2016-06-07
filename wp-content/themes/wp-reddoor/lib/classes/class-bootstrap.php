@@ -182,7 +182,16 @@ namespace UsabilityDynamics\RDC {
           }
         }
 
+        if( is_tax() && ! empty( $queried_object = get_queried_object() ) ) {
+          $must_tax_query = array(
+              'terms' => array(
+                  'tax_input.' . $queried_object->taxonomy => array( $queried_object->name ),
+              ),
+          );
+        }
+
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
+        wp_localize_script( 'supermap-advanced', 'sm_must_tax_query', $must_tax_query );
 
         $_query = array(
           'bool' => array(

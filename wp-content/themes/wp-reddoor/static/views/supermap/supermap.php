@@ -103,14 +103,14 @@ use \UsabilityDynamics\RDC\Utils;
                   <div class="menu-dot"></div>
                 </div>
               </li>
-              <li class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Address', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-sort-default="true" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::title::label", __( 'Address', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-subdivision" ng-show="columns.subdivision.enable" st-sort="_source.tax_input.subdivision[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::subdivision::label", __( 'Subdivision', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-city" ng-show="columns.city.enable" st-sort="_source.tax_input.location_city[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::city::label", __( 'City', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-bedrooms" ng-show="columns.bedrooms.enable" st-sort="_source.tax_input.bedrooms[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::bedrooms::label", __( 'Beds', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-bathrooms" ng-show="columns.bathrooms.enable" st-sort="_source.tax_input.bathrooms[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::bathrooms::label", __( 'Baths', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sqft" ng-show="columns.total_living_area_sqft.enable" st-sort="_source.tax_input.total_living_area_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sqft::label", __( 'Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-lot" ng-show="columns.approximate_lot_size.enable" st-sort="_source.tax_input.approximate_lot_size[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::approximate_lot_size::label", __( 'Lot', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-price" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price::label", __( 'Price', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
@@ -211,7 +211,7 @@ use \UsabilityDynamics\RDC\Utils;
                         </li>
                       </ul>
                     </th>
-                    <th class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-skip-natural="true">
+                    <th class="sm-post-title" ng-show="columns.post_title.enable" st-sort="_source.post_title" st-sort-default="true" st-skip-natural="true">
                       <?php _e( 'Address', 'reddoor' ); ?>
                       <div>
                         <?php _e( 'Address', 'reddoor' ); ?>
@@ -253,7 +253,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Lot', 'reddoor' ); ?>
                       </div>
                     </th>
-                    <th class="sm-price" st-sort-default="reverse" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true">
+                    <th class="sm-price" ng-show="columns.price.enable" st-sort="_source.tax_input.price[0]" st-skip-natural="true">
                       <?php _e( 'Price', 'reddoor' ); ?>
                       <div>
                         <?php _e( 'Price', 'reddoor' ); ?>

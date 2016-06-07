@@ -17,15 +17,20 @@
  * See: 'wpp::get_instance' filter for mor details
  * {theme_root}/wp-property/functions.php
  */
+
+use \UsabilityDynamics\RDC\Utils;
 ?>
 <form class="rdc-supermap-search-form" method="post" action="">
 
   <input type="hidden" name="bool[must][0][exists][field]" value="tax_input" />
   <input type="hidden" name="bool[must][9][exists][field]" value="_system.location" />
-  <input type="hidden" name="bool[must][10][range][meta_input.latitude][gte]" class="rdc-latitude-gte" value="" />
-  <input type="hidden" name="bool[must][10][range][meta_input.latitude][lte]" class="rdc-latitude-lte" value="" />
-  <input type="hidden" name="bool[must][11][range][meta_input.longitude][gte]" class="rdc-longitude-gte" value="" />
-  <input type="hidden" name="bool[must][11][range][meta_input.longitude][lte]" class="rdc-longitude-lte" value="" />
+
+  <?php if( ! Utils::device_is_mobile() ) : ?>
+    <input type="hidden" name="bool[must][10][range][meta_input.latitude][gte]" class="rdc-latitude-gte" value="" />
+    <input type="hidden" name="bool[must][10][range][meta_input.latitude][lte]" class="rdc-latitude-lte" value="" />
+    <input type="hidden" name="bool[must][11][range][meta_input.longitude][gte]" class="rdc-longitude-gte" value="" />
+    <input type="hidden" name="bool[must][11][range][meta_input.longitude][lte]" class="rdc-longitude-lte" value="" />
+  <?php endif; ?>
 
   <!-- Main Search Filters -->
   <div class="rdc-search-main">
