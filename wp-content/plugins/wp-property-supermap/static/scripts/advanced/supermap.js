@@ -721,11 +721,19 @@
               clearTimeout(mapChangedTimer);
               mapChangedTimer = setTimeout(function () {
                 jQuery('.sm-search-form form').addClass('mapChanged');
+                $scope.rdc_listing = true;
                 jQuery('.sm-search-form form').submit();
               }, 250);
             }
           });
         });
+
+        $scope.resetMapBounds = function resetMapBounds() {
+          jQuery('.rdc-latitude-gte').val('');
+          jQuery('.rdc-latitude-lte').val('');
+          jQuery('.rdc-longitude-gte').val('');
+          jQuery('.rdc-longitude-lte').val('');
+        };
 
         jQuery('table.sm-properties-list,ul.sm-columns-sorter').bind("DOMSubtreeModified", function(){
           if( $scope.propertiesTableCollection.length > 0 ) {
@@ -981,6 +989,10 @@
          */
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
+
+          if ( ! jQuery(this).hasClass('mapChanged') ) {
+            $scope.resetMapBounds();
+          }
 
           var formQuery = {},
               push_counters = {},
