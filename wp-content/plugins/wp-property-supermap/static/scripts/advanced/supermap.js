@@ -159,10 +159,12 @@
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
+        $scope.rdc_listing = window.sm_rdc_listing || true;
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
         $scope.tax_must_query = window.sm_must_tax_query || {};
+        $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
 
         $scope.view = {
           mode: {
@@ -666,6 +668,9 @@
 
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
+                }else if($scope.rdc_listing){
+                  $scope.rdc_listing = false;
+                  jQuery('.sm-search-form form').submit();
                 }else{
                   jQuery( '.sm-search-form form').removeClass('mapChanged');
                 }
@@ -1025,8 +1030,12 @@
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
 
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
+            formQuery.bool.must.push($scope.rdc_listing_query);
+          }
+
           //merging the current taxonomy if tax archieve page
-          if( ! jQuery.isEmptyObject( $scope.tax_must_query ) ) {
+          if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
             formQuery.bool.must.push($scope.tax_must_query);
           }
 
