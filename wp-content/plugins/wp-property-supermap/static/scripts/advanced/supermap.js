@@ -655,9 +655,14 @@
               if( typeof response.hits.hits == 'undefined' ) {
                 console.log( 'Error occurred during getting properties data.' );
               } else {
-                $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
-                $scope.properties = response.hits.hits;
+                if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+                  $scope.total = $scope.total + response.hits.total;
+                  Array.prototype.push.apply($scope.properties, response.hits.hits);
+                }else{
+                  $scope.total = response.hits.total;
+                  $scope.properties = response.hits.hits;
+                }
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
                   $scope.currentProperty = $scope.properties[0];
@@ -665,7 +670,7 @@
                   $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
-
+                console.log($scope.total);
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else if($scope.rdc_listing){
@@ -1032,6 +1037,10 @@
 
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
             formQuery.bool.must.push($scope.rdc_listing_query);
+          }
+
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+            formQuery.bool.must_not = [ $scope.rdc_listing_query ];
           }
 
           //merging the current taxonomy if tax archieve page
