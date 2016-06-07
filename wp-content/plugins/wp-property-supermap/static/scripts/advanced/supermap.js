@@ -719,9 +719,7 @@
 
         jQuery('table.sm-properties-list,ul.sm-columns-sorter').bind("DOMSubtreeModified", function(){
           if( $scope.propertiesTableCollection.length > 0 ) {
-            $scope.currentProperty = $scope.propertiesTableCollection[0];
-            $scope.propertiesTableCollection[0].isSelected = true;
-            $scope.loadImages($scope.propertiesTableCollection[0]);
+            $scope.selectRow($scope.propertiesTableCollection[0]);
           }
         });
 
