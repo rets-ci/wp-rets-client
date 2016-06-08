@@ -60,6 +60,42 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
           'type' => 'tinymce',
           'label' => __( 'Description', 'ud' ),
         ),
+        'Callout_card' => array(
+            'type' => 'section',
+            'label' => __('Callout card', 'ud'),
+            'fields' => array(
+                'available' => array(
+                    'type' => 'checkbox',
+                    'label' => __( 'Enabled/Disabled callout card', 'ud' ),
+                ),
+
+                'title' => array(
+                    'type' => 'text',
+                    'label' => __( 'Title', 'ud' ),
+                ),
+
+                'primary-button-label' => array(
+                    'type' => 'text',
+                    'label' => __( 'Primary button label', 'ud' ),
+                ),
+
+                'primary-button-url' => array(
+                    'type' => 'text',
+                    'label' => __( 'Primary button url', 'ud' ),
+                ),
+
+                'secondary-button-label' => array(
+                    'type' => 'text',
+                    'label' => __( 'Secondary button label', 'ud' ),
+                ),
+
+                'secondary-button-url' => array(
+                    'type' => 'text',
+                    'label' => __( 'Secondary button url', 'ud' ),
+                ),
+
+            ),
+          ),
       )
     );
   }
