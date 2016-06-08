@@ -256,10 +256,12 @@ var rdc = {
       jQuery( jQuery( this ) ).addClass( 'current-menu-item' );
     } );
 
-    jQuery( '.itemData > a' ).on( 'click', function () {
+    jQuery( '.itemData > a' ).on( 'click', function ( event ) {
       var firsthref = jQuery(this).attr("href");
       var lasthref = firsthref.substr(1);
       var itemTopMenu = lasthref;
+
+      event.preventDefault();
 
       jQuery( '[data-topmenu="' + itemTopMenu + '"] > a' ).click();
     } );
