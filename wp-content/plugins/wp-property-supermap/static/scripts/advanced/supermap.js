@@ -159,10 +159,12 @@
         $scope.latLngs = [];
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
+        $scope.rdc_listing = window.sm_rdc_listing || true;
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
         $scope.tax_must_query = window.sm_must_tax_query || {};
+        $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
 
         $scope.view = {
           mode: {
@@ -653,9 +655,14 @@
               if( typeof response.hits.hits == 'undefined' ) {
                 console.log( 'Error occurred during getting properties data.' );
               } else {
-                $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
-                $scope.properties = response.hits.hits;
+                if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+                  $scope.total = $scope.total + response.hits.total;
+                  Array.prototype.push.apply($scope.properties, response.hits.hits);
+                }else{
+                  $scope.total = response.hits.total;
+                  $scope.properties = response.hits.hits;
+                }
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
                   $scope.currentProperty = $scope.properties[0];
@@ -663,9 +670,12 @@
                   $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
-
+                console.log($scope.total);
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
+                }else if($scope.rdc_listing){
+                  $scope.rdc_listing = false;
+                  jQuery('.sm-search-form form').submit();
                 }else{
                   jQuery( '.sm-search-form form').removeClass('mapChanged');
                 }
@@ -711,17 +721,23 @@
               clearTimeout(mapChangedTimer);
               mapChangedTimer = setTimeout(function () {
                 jQuery('.sm-search-form form').addClass('mapChanged');
+                $scope.rdc_listing = true;
                 jQuery('.sm-search-form form').submit();
               }, 250);
             }
           });
         });
 
+        $scope.resetMapBounds = function resetMapBounds() {
+          jQuery('.rdc-latitude-gte').val('');
+          jQuery('.rdc-latitude-lte').val('');
+          jQuery('.rdc-longitude-gte').val('');
+          jQuery('.rdc-longitude-lte').val('');
+        };
+
         jQuery('table.sm-properties-list,ul.sm-columns-sorter').bind("DOMSubtreeModified", function(){
           if( $scope.propertiesTableCollection.length > 0 ) {
-            $scope.currentProperty = $scope.propertiesTableCollection[0];
-            $scope.propertiesTableCollection[0].isSelected = true;
-            $scope.loadImages($scope.propertiesTableCollection[0]);
+            $scope.selectRow($scope.propertiesTableCollection[0]);
           }
         });
 
@@ -974,6 +990,10 @@
         jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
           e.preventDefault();
 
+          if ( ! jQuery(this).hasClass('mapChanged') ) {
+            $scope.resetMapBounds();
+          }
+
           var formQuery = {},
               push_counters = {},
               patterns = {
@@ -1027,8 +1047,16 @@
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
 
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
+            formQuery.bool.must.push($scope.rdc_listing_query);
+          }
+
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+            formQuery.bool.must_not = [ $scope.rdc_listing_query ];
+          }
+
           //merging the current taxonomy if tax archieve page
-          if( ! jQuery.isEmptyObject( $scope.tax_must_query ) ) {
+          if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
             formQuery.bool.must.push($scope.tax_must_query);
           }
 

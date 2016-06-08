@@ -182,6 +182,7 @@ namespace UsabilityDynamics\RDC {
           }
         }
 
+        $must_tax_query = array();
         if( is_tax() && ! empty( $queried_object = get_queried_object() ) ) {
           $must_tax_query = array(
               'terms' => array(
@@ -189,9 +190,22 @@ namespace UsabilityDynamics\RDC {
               ),
           );
         }
+        $rdc_listing = true;
+        $rdc_listing_query = array(
+            'terms' => array(
+                'tax_input.listing_office' => array( 'Red Door Company' ),
+            ),
+        );
+        //check if current page is rdc listing or not - tax query can tell us on which page we are on currently
+        if( $rdc_listing_query == $must_tax_query ) {
+          $rdc_listing_query = array();
+          $rdc_listing = false;
+        }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
         wp_localize_script( 'supermap-advanced', 'sm_must_tax_query', $must_tax_query );
+        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', $rdc_listing );
+        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
 
         $_query = array(
           'bool' => array(
