@@ -31,7 +31,7 @@ use \UsabilityDynamics\RDC\Utils;
         ?>
         <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap hidden-xs hidden-sm">
 
-          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false" map-type-control="false">
+          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false" map-type-control="false" street-view-control="false">
 
             <div class="sm-search-layer">
               <div class="sm-search-filter-layer clearfix">
