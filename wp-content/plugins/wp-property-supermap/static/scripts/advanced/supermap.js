@@ -670,7 +670,6 @@
                   $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
-                console.log($scope.total);
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else if($scope.rdc_listing){
@@ -721,7 +720,9 @@
               clearTimeout(mapChangedTimer);
               mapChangedTimer = setTimeout(function () {
                 jQuery('.sm-search-form form').addClass('mapChanged');
-                $scope.rdc_listing = true;
+                if( jQuery.isEmptyObject($scope.tax_must_query) ) {
+                  $scope.rdc_listing = true;
+                }
                 jQuery('.sm-search-form form').submit();
               }, 250);
             }
