@@ -3310,6 +3310,12 @@ input[type="submit"]:active {
   }
 }
 @media screen and (max-width: 992px) {
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
+    overflow: scroll;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li a div {
+    margin-left: 15px;
+  }
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
     display: none;
   }
@@ -3408,6 +3414,7 @@ body.single-rdc_guide .guide-overview-list {
   background-color: #F3F0E9;
   min-height: 600px;
   overflow: scroll;
+  -ms-overflow-style: scrollbar;
 }
 body.post-type-archive-rdc_guide .guide-overview-list .guide-overview-list-inner-wrapper,
 body.tax-rdc_guide_category .guide-overview-list .guide-overview-list-inner-wrapper,
@@ -6911,6 +6918,15 @@ a.btn-rdc {
 }
 .searchForm .select2-search {
   height: 52px;
+}
+.wpp-advanced-supermap .sm-scrollable-table {
+  overflow: visible !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
+  z-index: 2 !important;
+}
+.sm-properties-list-wrap {
+  overflow-y: hidden;
 }
 @media screen and (max-width: 600px) {
   .single-property .singlePropertyHeader .container > ul li {

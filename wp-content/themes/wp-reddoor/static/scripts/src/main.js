@@ -459,6 +459,8 @@ var rdc = {
       }
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
 
+
+
         jQuery('.sm-scrollable-table > div').height(height - 303);
 
       jQuery('.sm-properties-grid').height(height - 103);
