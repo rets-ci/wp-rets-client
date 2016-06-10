@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.5
-Stable tag: 2.3.6
+Stable tag: 2.3.8
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -91,6 +91,14 @@ Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
 == Changelog ==
+= 2.3.8 =
+* Tweak: Fallback redirect changed into internal wp redirect, which is faster
+* Tweak: When no .htaccess rules are detected, redirect option is enabled automatically
+* Tweak: Url request falls back to file_get_contents when curl does not give a result
+
+= 2.3.7 =
+* Updated screenshots
+
 = 2.3.6 =
 * Fixed: missing priority in template_include hook caused not activating mixed content fixer in some themes
 
@@ -287,9 +295,7 @@ documentation update
 
 == Upgrade notice ==
 Always back up before any upgrade. Especially .htaccess, wp-config.php and the plugin folder. This way you can easily roll back.
-In general I would always recommend a solid backup policy, as that will prevent a lot of stress, yelling, and hitting yourself.
 
 == Screenshots ==
-1. After activation, your ssl will be detected if present
+1. After activation, if SSL was detected, you can enable SSL.
 2. View your configuration on the settings page
-3. Check if your site has mixed content. If you want you can just leave it that way, because of the built in mixed content fixer.
