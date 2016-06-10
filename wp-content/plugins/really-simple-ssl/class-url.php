@@ -73,6 +73,7 @@ if ( ! class_exists( 'rsssl_url' ) ) {
 
         curl_close($ch);
         if ($this->error_number==0 && $http_code != 200) { //301, 302, 403, 404, etc.
+            //if it's redirected, follow the redirect.
             if ($http_code == 301 || $http_code == 302) {
                 list($header) = explode("\r\n\r\n", $filecontents, 2);
                 $matches = array();
@@ -87,8 +88,13 @@ if ( ! class_exists( 'rsssl_url' ) ) {
                   return "";
                 }
             } else { //403, 404
-              $this->error_number = $http_code;
-              return "";
+              //we seem to be getting an error code.
+              //so give it a last try with file_get_contents
+              set_error_handler(array($this,'custom_error_handling'));
+              $filecontents = file_get_contents($url);
+              //errors back to normal
+              restore_error_handler();
+              return $filecontents;
             }
         }
       } else {
@@ -110,6 +116,7 @@ if ( ! class_exists( 'rsssl_url' ) ) {
    */
 
   private function is_curl_installed() {
+
     if  (in_array  ('curl', get_loaded_extensions())) {
       return true;
     }
@@ -203,7 +210,7 @@ if ( ! class_exists( 'rsssl_url' ) ) {
       403 => 'FORBIDDEN',
       404 => 'NOT FOUND',
     );
-      if (!isset($error_codes[$error_no])) return "Unknown error";
+      if (!isset($error_codes[$error_no])) return "Not listed errornr: ".$error_no;
       return $error_codes[$error_no];
     }
   }
