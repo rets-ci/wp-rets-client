@@ -6948,30 +6948,30 @@ a.btn-rdc {
   body .searchForm .select2-search {
     height: 45px;
   }
-  body .post-type-archive-rdc_guide .guide-overview-list {
+  body.post-type-archive-rdc_guide .guide-overview-list {
     position: relative;
     right: 17px;
   }
-  body .tax-rdc_guide_category .guide-overview-list {
+  body.tax-rdc_guide_category .guide-overview-list {
     position: relative;
     right: 17px;
   }
-  body .single-rdc_guide .guide-overview-list {
+  body.single-rdc_guide .guide-overview-list {
     position: relative;
     right: 17px;
   }
 }
 /* Edge 12+ */
 @supports (-ms-accelerator:true) {
-  body .post-type-archive-rdc_guide .guide-overview-list {
+  body.post-type-archive-rdc_guide .guide-overview-list {
     position: relative;
     right: 17px;
   }
-  body .tax-rdc_guide_category .guide-overview-list {
+  body.tax-rdc_guide_category .guide-overview-list {
     position: relative;
     right: 17px;
   }
-  body .single-rdc_guide .guide-overview-list {
+  body.single-rdc_guide .guide-overview-list {
     position: relative;
     right: 17px;
   }
