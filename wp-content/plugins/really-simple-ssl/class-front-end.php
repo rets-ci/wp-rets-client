@@ -15,9 +15,7 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
         wp_die( sprintf( __( '%s is a singleton class and you cannot create a second instance.','really-simple-ssl' ), get_class( $this ) ) );
 
     self::$_this = $this;
-
     $this->get_options();
-
   }
 
   static function this() {
@@ -25,7 +23,7 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
   }
 
   /**
-   * Javascript redirect, when ssl is true.
+   * wp internal redirect redirect, when ssl is true.
    * Mixed content replacement when ssl is true and fixer is enabled.
    *
    * @since  2.2
@@ -36,7 +34,8 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
 
    public function force_ssl() {
      if ($this->ssl_enabled && ($this->site_has_ssl || $this->force_ssl_without_detection) ) {
-       if ($this->javascript_redirect) add_action('wp_print_scripts', array($this,'force_ssl_with_javascript'));
+       //javascript redirect is changed into wp internal redirect.
+       if ($this->javascript_redirect) add_action('wp', array($this,'redirect_to_ssl'));
      }
 
      if (is_ssl() && $this->autoreplace_insecure_links) {
@@ -134,23 +133,22 @@ if ( ! class_exists( 'rsssl_front_end' ) ) {
     return apply_filters("rsssl_fixer_output", $str);
   }
 
+
   /**
-   * Adds some javascript to redirect to https.
+   * Redirect to https when not ssl.
    *
-   * @since  1.0
+   * @since  2.3
    *
    * @access public
    *
    */
 
-  public function force_ssl_with_javascript() {
-      ?>
-      <script>
-      if (document.location.protocol != "https:") {
-          document.location = document.URL.replace(/^http:/i, "https:");
-      }
-      </script>
-      <?php
-  }
+  public function redirect_to_ssl() {
+      if (!is_ssl()) {
+    		$redirect_url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        wp_redirect($redirect_url, 301);
+        exit;
+    	}
+    }
 
 }}

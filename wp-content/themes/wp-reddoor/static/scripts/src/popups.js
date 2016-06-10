@@ -28,6 +28,18 @@ jQuery(function () {
   });
 
   /**
+   *
+   Substitution contact popups on careers page.
+   *
+   */
+
+  setTimeout(function(){
+    jQuery('.careers .headContact a').attr('href', '#popupCareersInquiry');
+    jQuery('.careers .footerContact').data('action', 'popupCareersInquiry');
+  }, 20);
+
+
+  /**
    * Show Popup Box
    *
    * @param event

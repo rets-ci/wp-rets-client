@@ -223,22 +223,26 @@
   font-size: 1.2em;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard {
-  background: #e12524 url("./images/calloutcard.png") no-repeat scroll 0 bottom / 101% auto;
+  background-color: #e12524;
+  background-image: url("./images/calloutcard.png");
+  background-repeat: no-repeat;
+  background-position: 0 bottom;
+  background-size: 101% auto;
   color: #fff;
   min-height: 415px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard h2{
-  font-size: 2em;
+  font-size: 1.7em;
   font-weight: 500;
+  margin: 45px 10px 25px;
+  padding: 0 2.5em;
   text-align: center;
-  padding: 0 2em;
-  margin: 35px 10px 25px 10px;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard div{
   text-align: center;
 }
 .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard a{
-  border: 1px solid #f49793;
+  border: 2px solid #f49793;
   border-radius: 3px;
   color: #fff;
   display: inline-block;

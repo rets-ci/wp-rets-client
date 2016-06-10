@@ -15,13 +15,28 @@
 get_header(); ?>
 <?php get_template_part('static/views/page-header'); ?>
   <div class="container-fluid upToHeader">
+
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>
+        <?php $_permalink = get_the_permalink();
+              $_careers_slug = substr($_permalink, -8, 7);
+        ?>
         <?php
           the_content();
         ?>
+
       <?php endwhile; // end of the loop. ?>
     </div><!-- .row -->
   </div>
+
+<!-- For call career popups on career page by clicking contact button in header and footer @kavaribes -->
+<?php if ($_careers_slug == 'careers'){ ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('body').addClass('<?php echo $_careers_slug; ?>');
+    });
+  </script>
+<?php } ?>
+<!-- -->
 
 <?php get_footer(); ?>
