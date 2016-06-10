@@ -163,7 +163,7 @@ use \UsabilityDynamics\RDC\Utils;
               <label for="property_type_house"><?php _e('House', 'reddor'); ?></label>
             </li>
             <li>
-              <input id="property_type_manufactured" class="styled-checkbox-radio" type="checkbox" value="manufactured" checked name="bool[must][6][terms][meta_input.property_type][]" />
+              <input id="property_type_manufactured" class="styled-checkbox-radio" type="checkbox" value="manufactured" name="bool[must][6][terms][meta_input.property_type][]" />
               <label for="property_type_manufactured"><?php _e('Manufactured', 'reddor'); ?></label>
             </li>
           </ul>

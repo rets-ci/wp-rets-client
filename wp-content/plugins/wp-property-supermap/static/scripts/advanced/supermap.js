@@ -137,7 +137,7 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
-        var resizeTimer, idle_listener, mapChangedTimer;
+        var resizeTimer, idle_listener;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
           resizeTimer = setTimeout( function () {
@@ -670,7 +670,6 @@
                   $scope.loadImages($scope.properties[0]);
                 }
                 $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
-                console.log($scope.total);
                 if ( $scope.total > $scope.properties.length ) {
                   getMoreProperties();
                 }else if($scope.rdc_listing){
@@ -718,12 +717,11 @@
               jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
               jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
               jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-              clearTimeout(mapChangedTimer);
-              mapChangedTimer = setTimeout(function () {
-                jQuery('.sm-search-form form').addClass('mapChanged');
+              jQuery('.sm-search-form form').addClass('mapChanged');
+              if (jQuery.isEmptyObject($scope.tax_must_query)) {
                 $scope.rdc_listing = true;
-                jQuery('.sm-search-form form').submit();
-              }, 250);
+              }
+              jQuery('.sm-search-form form').submit();
             }
           });
         });
@@ -1064,7 +1062,9 @@
 
           $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
 
-          $scope.toggleSearchForm();
+          if( $scope.searchForm ) {
+            $scope.toggleSearchForm();
+          }
           $scope.$apply();
           $scope.getProperties();
 

@@ -33,7 +33,8 @@ function rdc_set_guide_heights() {
   }
 
   // set this to max height so it reaches the bottom
-  jQuery('body.tax-rdc_guide_category .guide-block, body.tax-rdc_guide_category .guide-overview-list').height( _height );
+  jQuery('body.tax-rdc_guide_category .guide-block').height( _height );
+  jQuery('body.tax-rdc_guide_category .guide-overview-list').height( _height - 120 );
 
   // add extra padding to the bottom, this can't be done in CSS because then the height calculation (or something) doesn't work and cuts off the bottom
   jQuery('body.tax-rdc_guide_category .guide-overview-list').css( 'padding-bottom', '10em' );

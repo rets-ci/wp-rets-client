@@ -882,7 +882,7 @@ a:focus {
   background: none;
 }
 .searchForm form .location .select2-search__field {
-  line-height: 5px;
+  line-height: 45px;
 }
 .searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
@@ -3310,6 +3310,12 @@ input[type="submit"]:active {
   }
 }
 @media screen and (max-width: 992px) {
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
+    overflow: scroll;
+  }
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li a div {
+    margin-left: 15px;
+  }
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
     display: none;
   }
@@ -3408,6 +3414,7 @@ body.single-rdc_guide .guide-overview-list {
   background-color: #F3F0E9;
   min-height: 600px;
   overflow: scroll;
+  -ms-overflow-style: scrollbar;
 }
 body.post-type-archive-rdc_guide .guide-overview-list .guide-overview-list-inner-wrapper,
 body.tax-rdc_guide_category .guide-overview-list .guide-overview-list-inner-wrapper,
@@ -6912,6 +6919,15 @@ a.btn-rdc {
 .searchForm .select2-search {
   height: 52px;
 }
+.wpp-advanced-supermap .sm-scrollable-table {
+  overflow: visible !important;
+}
+.wpp-advanced-supermap .sm-properties-collection .dropdown-columns-options {
+  z-index: 2 !important;
+}
+.sm-properties-list-wrap {
+  overflow-y: hidden;
+}
 @media screen and (max-width: 600px) {
   .single-property .singlePropertyHeader .container > ul li {
     display: block;
@@ -6922,15 +6938,42 @@ a.btn-rdc {
   }
 }
 /* Only for IE11 */
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .ie11-attr-position {
+@media (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ie11-attr-position {
     margin-top: 15px;
   }
-  .searchForm .select2-search__field {
+  body .searchForm .select2-search__field {
     height: 30px;
   }
-  .searchForm .select2-search {
+  body .searchForm .select2-search {
     height: 45px;
+  }
+  body.post-type-archive-rdc_guide .guide-overview-list {
+    position: relative;
+    right: 17px;
+  }
+  body.tax-rdc_guide_category .guide-overview-list {
+    position: relative;
+    right: 17px;
+  }
+  body.single-rdc_guide .guide-overview-list {
+    position: relative;
+    right: 17px;
+  }
+}
+/* Edge 12+ */
+@supports (-ms-accelerator:true) {
+  body.post-type-archive-rdc_guide .guide-overview-list {
+    position: relative;
+    right: 17px;
+  }
+  body.tax-rdc_guide_category .guide-overview-list {
+    position: relative;
+    right: 17px;
+  }
+  body.single-rdc_guide .guide-overview-list {
+    position: relative;
+    right: 17px;
   }
 }
 /* Only for Safari */

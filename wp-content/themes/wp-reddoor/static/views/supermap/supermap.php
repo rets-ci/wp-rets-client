@@ -31,7 +31,7 @@ use \UsabilityDynamics\RDC\Utils;
         ?>
         <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap hidden-xs hidden-sm">
 
-          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false">
+          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false" map-type-control="false" street-view-control="false">
 
             <div class="sm-search-layer">
               <div class="sm-search-filter-layer clearfix">
@@ -78,7 +78,11 @@ use \UsabilityDynamics\RDC\Utils;
         </ul>
 
         <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
-          <?php echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) ); ?>
+          <?php
+          if ( Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == true ) {
+            echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) );
+          }
+          ?>
         </div>
 
         <div ng-show="properties.length > 0" class="sm-properties-collection">
@@ -147,7 +151,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{row._source.tax_input.approximate_lot_size[0]}} Acres</li>
                       </ul>
                       <div class="sm-current-property-buttons">
-                        <a class="open-listing" target="_blank" href="/?p={{currentProperty._id}}">
+                        <a class="open-listing" target="_blank" href="/?p={{row._id}}">
                           <i class="icon-wpproperty-interface-expand-outline"></i>
                           <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
                         </a>
