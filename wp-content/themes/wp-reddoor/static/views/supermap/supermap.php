@@ -78,7 +78,11 @@ use \UsabilityDynamics\RDC\Utils;
         </ul>
 
         <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
-          <?php echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) ); ?>
+          <?php
+          if ( Utils::device_is_mobile() && get_theme_mod( 'rdc_hide_supermap_mobile' ) == true ) {
+            echo apply_filters( 'wpp::advanced_supermap::property_search::form', do_shortcode( '[property_search]', $query, $atts ) );
+          }
+          ?>
         </div>
 
         <div ng-show="properties.length > 0" class="sm-properties-collection">

@@ -137,7 +137,7 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
-        var resizeTimer, idle_listener, mapChangedTimer;
+        var resizeTimer, idle_listener;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
           resizeTimer = setTimeout( function () {
@@ -712,18 +712,16 @@
             var NorthEastLatitude = bounds.getNorthEast().lat();
             var NorthEastLongitude = bounds.getNorthEast().lng();
             var SouthWestLongitude = bounds.getSouthWest().lng();
-            if( ! jQuery( '.sm-search-form form').hasClass('mapChanged') ) {
-              if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
-                jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
-                jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
-                jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
-                jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-                jQuery('.sm-search-form form').addClass('mapChanged');
-                if (jQuery.isEmptyObject($scope.tax_must_query)) {
-                  $scope.rdc_listing = true;
-                }
-                jQuery('.sm-search-form form').submit();
+            if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+              jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+              jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+              jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+              jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
+              jQuery('.sm-search-form form').addClass('mapChanged');
+              if (jQuery.isEmptyObject($scope.tax_must_query)) {
+                $scope.rdc_listing = true;
               }
+              jQuery('.sm-search-form form').submit();
             }
           });
         });
@@ -1064,7 +1062,9 @@
 
           $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
 
-          $scope.toggleSearchForm();
+          if( $scope.searchForm ) {
+            $scope.toggleSearchForm();
+          }
           $scope.$apply();
           $scope.getProperties();
 
