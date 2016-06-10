@@ -140,7 +140,7 @@ var rdc = {
     
 
     /**Validate popup forms.*/
-    
+
 
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
