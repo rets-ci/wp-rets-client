@@ -1,10 +1,10 @@
-﻿=== Simple History ===
+=== Simple History ===
 Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
-Requires at least: 3.6.0
-Tested up to: 4.4
-Stable tag: 2.5.5
+Requires at least: 4.5.1
+Tested up to: 4.5.2
+Stable tag: 2.7
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -108,6 +108,7 @@ So far Simple History is translated to:
 * Dutch
 * Finnish
 * French
+* Russian
 
 I'm looking for translations of Simple History in more languages! If you want to translate Simple History
 to your language then read about how this is done over at the [Polyglots handbook](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/#translating-themes-plugins).
@@ -139,12 +140,33 @@ initiated by a specific user.
 
 6. See even more details about a logged event (by clicking on the date and time of the event).
 
+7. A chart with some quick statistics is available, so you can see the number of events that has been logged each day. 
+A simple way to see any uncommon activity, for example an increased number of logins or similar.
+
+8. When users are created or changed you can see details on what have changed.
 
 == Changelog ==
 
 ## Changelog
 
-= 2.5.5 (March 2016) =
+= 2.7 (May 2016) =
+
+- Added: When a user is created or edited the log now shows what fields have changed and from what old value to what new value. A much requested feature!
+- Fixed: If you edited your own profile the log would say that you edited "their profile". Now it says that you edited "your profile" instead.
+- Changed: Post diffs could get very tall. Now they are max approx 8 rows by default, but if you hover the diff (or give it focus with your keyboard) you get a scrollbar and can scroll the contents. Fixes https://wordpress.org/support/topic/dashboard-max-length-of-content and https://wordpress.org/support/topic/feature-request-make-content-diff-report-expandable-and-closed-by-default.
+- Fixed: Maybe fix a notice varning if a transient was missing a name or value.
+
+= 2.6 (May 2016) =
+
+- Added: A nice little graph in the sidebar that displays the number of logged events per day the last 28 days. Graph is powered by [Chart.js](http://www.chartjs.org/).
+- Added: Function `get_num_events_last_n_days()`
+- Added: Function `get_num_events_per_day_last_n_days()`
+- Changed: Switched to transients from cache at some places, because more people will benefit from transients instead of cache (that requires object cache to be installed).
+- Changed: New constant `SETTINGS_GENERAL_OPTION_GROUP`. Fixes https://wordpress.org/support/topic/constant-for-settings-option-group-name-option_group.
+- Fixed: Long log messages with no spaces would get cut of. Now all the message is shown, but with one or several line breaks. Fixes https://github.com/bonny/WordPress-Simple-History/pull/112.
+- Fixed: Some small CSS modification to make the page less "jumpy" while loading (for example setting a default height to the select2 input box).
+
+= 2.5.5 (April 2016) =
 
 - Changed: The logger for Enable Media Replace required the capability `edit_files` to view the logged events, but since this also made it impossible to view events if the constant `DISALLOW_FILE_EDIT` was true. Now Enable Media Replace requires the capability `upload_files` instead. Makes more sense. Fixes https://wordpress.org/support/topic/simple-history-and-disallow_file_edit.
 - Changed: No longer log spam trackbacks or comments. Before this version these where logged, but not shown.
