@@ -2406,7 +2406,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   float: left;
   width: 50%;
   overflow: hidden;
-  padding: 10em 7em 10em 10em !important;
+  padding: 5%;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -2428,8 +2428,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   float: left;
   display: block;
   font-size: 5em;
-  margin-top: 0.5em;
-  margin-left: 0.5em;
+  margin-left: 10%;
   color: #F10D2C;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
@@ -2576,7 +2575,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
  */
 .hero-content .so-widget-sow-editor {
   margin: 15% auto;
-  width: 50%;
+  width: 60%;
 }
 .hero-content .so-widget-sow-editor h2 {
   color: #5a595c !important;
@@ -5019,10 +5018,10 @@ body .ui-tooltip {
 .icon-rdc-high-exposure-marketing:before {
     content: "\e909";
 }
-.icon-rdc-home-buying:before {
+.icon-rdc-buy:before {
     content: "\e90a";
 }
-.icon-rdc-home-renting:before {
+.icon-rdc-rent:before {
     content: "\e90b";
 }
 .icon-rdc-home-selling:before {
@@ -5061,7 +5060,7 @@ body .ui-tooltip {
 .icon-rdc-prompt-maintenance:before {
     content: "\e917";
 }
-.icon-rdc-property-management:before {
+.icon-rdc-management:before {
     content: "\e918";
 }
 .icon-rdc-proven:before {
