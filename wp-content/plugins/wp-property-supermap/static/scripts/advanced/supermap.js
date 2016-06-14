@@ -410,6 +410,154 @@
 
         /**
          *
+         * @type {{min_bedroom: number[], max_bedroom: number[]}}
+         */
+        $scope.bedrange = window.bedrange = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_bedroom: [1, 2, 3, 4, 5, 6],
+          max_bedroom: [3, 4, 5, 6, 7, 8],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('bed-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.bedrange ) {
+              $scope.current_filter.bedrange = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.bedrange[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.bedrange ) {
+              $scope.current_filter.bedrange = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.bedrange.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.bedrange ) {
+              $scope.current_filter.bedrange = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.bedrange.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_bedroom ) {
+              this.max_bedroom[i] = j += 1;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_bathroom: number[], max_bathroom: number[]}}
+         */
+        $scope.bathrange = window.bathrange = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_bathroom: [1, 2, 3, 4, 5, 6],
+          max_bathroom: [3, 4, 5, 6, 7, 8],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('bath-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.bathrange ) {
+              $scope.current_filter.bathrange = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.bathrange[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.bathrange ) {
+              $scope.current_filter.bathrange = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.bathrange.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.bathrange ) {
+              $scope.current_filter.bathrange = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.bathrange.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_bathroom ) {
+              this.max_bathroom[i] = j += 1;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
          * @type {{min_feet: number[], max_feet: number[]}}
          */
         $scope.acrage = window.acrage = {
@@ -733,7 +881,7 @@
           jQuery('.rdc-longitude-lte').val('');
         };
 
-        jQuery('table.sm-properties-list,ul.sm-columns-sorter').bind("DOMSubtreeModified", function(){
+        $document.bind("st_sort_done",function(){
           if( $scope.propertiesTableCollection.length > 0 ) {
             $scope.selectRow($scope.propertiesTableCollection[0]);
           }
