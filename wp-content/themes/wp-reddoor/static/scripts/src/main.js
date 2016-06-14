@@ -191,7 +191,8 @@ var rdc = {
     jQuery( ".rdc-accordion" ).accordion( {
       active: false,
       collapsible: true,
-      heightStyle: "content"
+      heightStyle: "content",
+      animate: 300,
     } );
 
     // if(jQuery( window ).width() < 992 ) {
