@@ -4,7 +4,7 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <i class="icon icon-rdc-home-renting"></i>
+      <i class="icon icon-rdc-rent"></i>
 
       <h3><?php _e('Request an Application', 'reddoor'); ?></h3>
       <p><?php _e('You found your new home - that\'s great! Please request an application using the below form.', 'reddoor'); ?></p>
