@@ -2374,7 +2374,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   float: left;
   width: 50%;
   overflow: hidden;
-  padding: 10em 7em 10em 10em !important;
+  padding: 5%;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent h3 {
   font-size: 3em !important;
@@ -2396,8 +2396,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   float: left;
   display: block;
   font-size: 5em;
-  margin-top: 0.5em;
-  margin-left: 0.5em;
+  margin-left: 10%;
   color: #F10D2C;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
@@ -2544,7 +2543,7 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
  */
 .hero-content .so-widget-sow-editor {
   margin: 15% auto;
-  width: 50%;
+  width: 60%;
 }
 .hero-content .so-widget-sow-editor h2 {
   color: #5a595c !important;
