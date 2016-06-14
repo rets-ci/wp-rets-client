@@ -6659,6 +6659,9 @@ a.btn-rdc {
   body.single-property .singlePropertyHeader {
     z-index: 9;
   }
+  body.single-property .singlePropertyHeader .container > ul li {
+    float: none;
+  }
   body.single-property .bottomSeparate {
     padding-bottom: 5px;
   }
