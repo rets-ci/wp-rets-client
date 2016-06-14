@@ -3309,8 +3309,8 @@ input[type="submit"]:active {
   }
 }
 @media screen and (max-width: 992px) {
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
-    overflow: scroll;
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper {
+    overflow-y: scroll;
   }
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li a div {
     margin-left: 15px;
