@@ -413,6 +413,7 @@ ng.module('smart-table')
 							.removeClass(stateClasses[index % 2])
 							.addClass(stateClasses[index - 1]);
 					}
+                    jQuery(document).trigger('st_sort_done');
 				}, true);
 			}
 		};
