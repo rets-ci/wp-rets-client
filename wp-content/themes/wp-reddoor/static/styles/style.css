@@ -3318,6 +3318,9 @@ input[type="submit"]:active {
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
     display: none;
   }
+  .popup.contact-popup input[type="tel"] {
+    font-size: 1.8em;
+  }
 }
 .post-type-archive-rdc_guide {
   margin-bottom: -90px;
