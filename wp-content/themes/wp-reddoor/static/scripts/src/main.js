@@ -191,7 +191,13 @@ var rdc = {
     jQuery( ".rdc-accordion" ).accordion( {
       active: false,
       collapsible: true,
-      heightStyle: "content"
+      heightStyle: "content",
+      animate: 300,
+      activate: function( event, ui ) {
+        if (!jQuery.isEmptyObject(ui.newHeader.offset())) {
+          jQuery('html:not(:animated), body:not(:animated)').animate({scrollTop: ui.newHeader.offset().top}, 'slow');
+        }
+      }
     } );
 
     // if(jQuery( window ).width() < 992 ) {

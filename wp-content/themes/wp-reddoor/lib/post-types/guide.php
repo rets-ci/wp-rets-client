@@ -138,8 +138,14 @@ function rdc_guide_category_permalink( $permalink, $post_id, $leavename ) {
 
   // Get taxonomy terms
   $terms = wp_get_object_terms( $post->ID, 'rdc_guide_category' );
-  if( !is_wp_error( $terms ) && !empty( $terms ) && is_object( $terms[ 0 ] ) )
+  if( !is_wp_error( $terms ) && !empty( $terms ) && is_object( $terms[ 0 ] ) ){
     $taxonomy_slug = $terms[ 0 ]->slug;
+    foreach($terms as $term){
+      if($term->parent == 0){
+        $taxonomy_slug = $term->slug;
+      }
+    }
+  }
   else $taxonomy_slug = 'other';
 
   return str_replace( '%rdc_guide_category%', $taxonomy_slug, $permalink );
@@ -235,140 +241,3 @@ function rdc_get_guide_category() {
 
 }
 
-
-/* Rewrite urls */
-//
-//add_filter('rewrite_rules_array', 'rdc_guide_rewrite_rules');
-//function rdc_guide_rewrite_rules($rules) {
-//  $newRules  = array();
-//  $newRules[''. get_home_url() .'/(.+)/(.+)/?$'] = 'index.php?rdc_guide=$matches[2]'; // my custom structure will always have the post name as the 5th uri segment
-//  $newRules[''. get_home_url() .'/(.+)/?$']      = 'index.php?rdc_guide_category=$matches[1]';
-//
-//  return array_merge($newRules, $rules);
-//}
-//
-//function rdc_guide_filter_post_type_link($link, $post)
-//{
-//  if ($post->post_type != 'rdc_guide')
-//    return $link;
-//
-//  if ($cats = get_the_terms($post->ID, 'rdc_guide_category'))
-//  {
-//    $link = str_replace('%rdc_guide_category%', get_taxonomy_parents(array_pop($cats)->term_id, 'rdc_guide_category', false, '/', true), $link); // see custom function defined below
-//  }
-//  return $link;
-//}
-//add_filter('post_type_link', 'rdc_guide_filter_post_type_link', 10, 2);
-//
-//
-//// my own function to do what get_category_parents does for other taxonomies
-//function get_taxonomy_parents($id, $taxonomy, $link = false, $separator = '/', $nicename = false, $visited = array()) {
-//  $chain = '';
-//  $parent = &get_term($id, $taxonomy);
-//
-//  if (is_wp_error($parent)) {
-//    return $parent;
-//  }
-//
-//  if ($nicename)
-//    $name = $parent -> slug;
-//  else
-//    $name = $parent -> name;
-//
-//  if ($parent -> parent && ($parent -> parent != $parent -> term_id) && !in_array($parent -> parent, $visited)) {
-//    $visited[] = $parent -> parent;
-//    $chain .= get_taxonomy_parents($parent -> parent, $taxonomy, $link, $separator, $nicename, $visited);
-//
-//  }
-//
-//  if ($link) {
-//    // nothing, can't get this working :(
-//  } else
-//    $chain .= $name . $separator;
-//  return $chain;
-//}
-
-
-
-
-
-
-
-
-
-
-
-//add_action( 'generate_rewrite_rules', 'register_rdc_guide_rewrite_rules' );
-//function register_rdc_guide_rewrite_rules( $wp_rewrite ) {
-//  $new_rules = array(
-//      'guides/([^/]+)/?$' => 'index.php?rdc_guide_category=' . $wp_rewrite->preg_index( 1 ),
-//      'guides/([^/]+)/([^/]+)/?$' => 'index.php?post_type=rdc_guide&rdc_guide_category=' . $wp_rewrite->preg_index( 1 ) . '&rdc_guide=' . $wp_rewrite->preg_index( 2 ),
-//      'guides/([^/]+)/([^/]+)/page/(\d{1,})/?$' => 'index.php?post_type=rdc_guide&rdc_guide_category=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 3 ),
-//      'guides/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=rdc_guide&rdc_guide_category=' . $wp_rewrite->preg_index( 2 ) . '&rdc_guide=' . $wp_rewrite->preg_index( 3 ),
-//  );
-//  $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
-//}
-//// A hacky way of adding support for flexible custom permalinks
-//// There is one case in which the rewrite rules from register_kb_rewrite_rules() fail:
-//// When you visit the archive page for a child section(for example: http://example.com/faq/category/child-category)
-//// The deal is that in this situation, the URL is parsed as a Knowledgebase post with slug "child-category" from the "category" section
-//function fix_rdc_guide_subcategory_query($query) {
-//  if ( isset( $query['post_type'] ) && 'rdc_guide' == $query['post_type'] ) {
-//    if ( isset( $query['rdc_guide'] ) && $query['rdc_guide'] && isset( $query['rdc_guide_category'] ) && $query['rdc_guide_category'] ) {
-//      $query_old = $query;
-//      // Check if this is a paginated result(like search results)
-//      if ( 'page' == $query['rdc_guide_category'] ) {
-//        $query['paged'] = $query['name'];
-//        unset( $query['rdc_guide_category'], $query['name'], $query['rdc_guide'] );
-//      }
-//      // Make it easier on the DB
-//      $query['fields'] = 'ids';
-//      $query['posts_per_page'] = 1;
-//      // See if we have results or not
-//      $_query = new WP_Query( $query );
-//      if ( ! $_query->posts ) {
-//        $query = array( 'rdc_guide_category' => $query['rdc_guide'] );
-//        if ( isset( $query_old['rdc_guide_category'] ) && 'page' == $query_old['rdc_guide_category'] ) {
-//          $query['paged'] = $query_old['name'];
-//        }
-//      }
-//    }
-//  }
-//  return $query;
-//}
-//add_filter( 'request', 'fix_rdc_guide_subcategory_query', 10 );
-//
-//
-//
-//function rdc_guide_article_permalink( $article_id, $section_id = false, $leavename = false, $only_permalink = false ) {
-//  $taxonomy = 'rdc_guide_category';
-//  $article = get_post( $article_id );
-//  $return = '<a href="';
-//  $permalink = ( $section_id ) ? trailingslashit( get_term_link( intval( $section_id ), 'rdc_guide_category' ) ) : home_url( '/guides/' );
-//  $permalink .= trailingslashit( ( $leavename ? "%$article->post_type%" : $article->post_name ) );
-//  $return .= $permalink . '/" >' . get_the_title( $article->ID ) . '</a>';
-//  return ( $only_permalink ) ? $permalink : $return;
-//}
-//function filter_rdc_guide_post_link( $permalink, $post, $leavename ) {
-//  if ( get_post_type( $post->ID ) == 'rdc_guide' ) {
-//    $terms = wp_get_post_terms( $post->ID, 'rdc_guide_category' );
-//    $term = ( $terms ) ? $terms[0]->term_id : false;
-//    $permalink = rdc_guide_article_permalink( $post->ID, $term, $leavename, true );
-//  }
-//  return $permalink;
-//}
-//add_filter( 'post_type_link', 'filter_rdc_guide_post_link', 100, 3 );
-//function filter_rdc_guide_section_terms_link( $termlink, $term, $taxonomy = false ) {
-//  if ( $taxonomy == 'rdc_guide_category' ) {
-//    $section_ancestors = get_ancestors( $term->term_id, $taxonomy );
-//    krsort( $section_ancestors );
-//    $termlink =  home_url( '/guides/' );
-//    foreach ( $section_ancestors as $ancestor ) {
-//      $section_ancestor = get_term( $ancestor, $taxonomy );
-//      $termlink .= $section_ancestor->slug . '/';
-//    }
-//    $termlink .= trailingslashit( $term->slug );
-//  }
-//  return $termlink;
-//}
-//add_filter( 'term_link', 'filter_rdc_guide_section_terms_link', 100, 3 );
