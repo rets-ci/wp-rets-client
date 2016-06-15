@@ -35,40 +35,105 @@
 
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
+<!--        <input name="wpp_search[bedrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bedrooms', 0); ?><!--" />-->
 
-        <span class="searchTrigger">
+        <span class="searchTrigger" data-drop="bed">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
+          <span class="dropdown-value buyBlock"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
-        <ul class="dropdown-list">
-          <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-          ?>
-            <li><input id="buy_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-          <?php endforeach; ?>
-        </ul>
+        <div class="sfBedRange dropdown-list buyBlock">
+          <div class="sfprInputsBlock">
+            <input type="text" class="firstBedRangeLabel buyBlock" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstBedRangeValue buyBlock" value="" name="wpp_search[bedrooms][min]" />
+
+            <input type="text" class="lastBedRangeLabel buyBlock" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastBedRangeValue buyBlock" value="" name="wpp_search[bedrooms][max]" />
+          </div>
+          <div class="clear"></div>
+          <div class="left-side buyBlock">
+            <ul class="firstBedRangeList buyBlock">
+              <li><a class="buyFormItem" data-val="" href="javascript:;"><?php _e('No Min') ?></a></li>
+              <li><a class="buyFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="buyFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="buyFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="buyFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="buyFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="buyFormItem" data-val="6" href="javascript:;">6</a></li>
+            </ul>
+          </div>
+          <div class="right-side buyBlock" style="display: none;">
+            <ul class="lastBedRangeList buyBlock">
+              <li><a class="buyFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="buyFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="buyFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="buyFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="buyFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="buyFormItem" data-val="6" href="javascript:;">6</a></li>
+              <li><a class="buyFormItem" data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
+            </ul>
+          </div>
+        </div>
+<!--        <ul class="dropdown-list">-->
+<!--          --><?php //foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+//          ?>
+<!--            <li><input id="buy_beds_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="buy_beds_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
+<!--          --><?php //endforeach; ?>
+<!--        </ul>-->
       </div>
 
       <!-- Buy Bathrooms -->
 
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
+<!--        <input name="wpp_search[bathrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bathrooms', 0); ?><!--" />-->
 
-        <span class="searchTrigger">
+        <span class="searchTrigger" data-drop="bath">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
+          <span class="dropdown-value buyBlock"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
 
-        <ul class="dropdown-list">
-          <?php
-            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-          ?>
-            <li><input id="buy_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-          <?php endforeach; ?>
-        </ul>
+        <div class="sfBathRange dropdown-list buyBlock">
+          <div class="sfprInputsBlock">
+            <input type="text" class="firstBathRangeLabel buyBlock" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstBathRangeValue buyBlock" value="" name="wpp_search[bathrooms][min]" />
+
+            <input type="text" class="lastBathRangeLabel buyBlock" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastBathRangeValue buyBlock" value="" name="wpp_search[bathrooms][max]" />
+          </div>
+          <div class="clear"></div>
+          <div class="left-side buyBlock">
+            <ul class="firstBathRangeList buyBlock">
+              <li><a class="buyFormItem" data-val="" href="javascript:;"><?php _e('No Min') ?></a></li>
+              <li><a class="buyFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="buyFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="buyFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="buyFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="buyFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="buyFormItem" data-val="6" href="javascript:;">6</a></li>
+            </ul>
+          </div>
+          <div class="right-side buyBlock" style="display: none;">
+            <ul class="lastBathRangeList buyBlock">
+              <li><a class="buyFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="buyFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="buyFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="buyFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="buyFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="buyFormItem" data-val="6" href="javascript:;">6</a></li>
+              <li><a class="buyFormItem" data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
+            </ul>
+          </div>
+        </div>
+
+<!--        <ul class="dropdown-list">-->
+<!--          --><?php
+//            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+//          ?>
+<!--            <li><input id="buy_baths_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="buy_baths_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
+<!--          --><?php //endforeach; ?>
+<!--        </ul>-->
       </div>
 
       <!-- Buy Price -->
@@ -144,40 +209,106 @@
 
       <div class="sfBeds dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bedrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bedrooms', 0); ?>" />
+<!--        <input name="wpp_search[bedrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bedrooms', 0); ?><!--" />-->
 
-        <span class="searchTrigger">
+        <span class="searchTrigger" data-drop="bed">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Beds' ); ?></span>
+          <span class="dropdown-value rentBlock"><?php _e( 'Beds' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
 
-        <ul class="dropdown-list">
-          <?php
-            foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-          ?>
-            <li><input id="rent_beds_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="<?php echo $value; ?>" /><label for="rent_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-          <?php endforeach; ?>
-        </ul>
+        <div class="sfBedRange dropdown-list rentBlock">
+          <div class="sfprInputsBlock">
+            <input type="text" class="firstBedRangeLabel rentBlock" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][min]" />
+
+            <input type="text" class="lastBathRangeLabel rentBlock" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][max]" />
+          </div>
+          <div class="clear"></div>
+          <div class="left-side rentBlock">
+            <ul class="firstBedRangeList rentBlock">
+              <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Min') ?></a></li>
+              <li><a class="rentFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="rentFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="rentFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="rentFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="rentFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="rentFormItem" data-val="6" href="javascript:;">6</a></li>
+            </ul>
+          </div>
+          <div class="right-side rentBlock" style="display: none;">
+            <ul class="lastBedRangeList rentBlock">
+              <li><a class="rentFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="rentFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="rentFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="rentFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="rentFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="rentFormItem" data-val="6" href="javascript:;">6</a></li>
+              <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
+            </ul>
+          </div>
+        </div>
+
+<!--        <ul class="dropdown-list">-->
+<!--          --><?php
+//            foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
+//          ?>
+<!--            <li><input id="rent_beds_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="--><?php //echo $value; ?><!--" /><label for="rent_beds_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
+<!--          --><?php //endforeach; ?>
+<!--        </ul>-->
       </div>
 
       <div class="sfBaths dropdown-container">
         <!-- default search value -->
-        <input name="wpp_search[bathrooms][min]" type="hidden" value="<?php echo apply_filters('rdc_search_default_bathrooms', 0); ?>" />
+<!--        <input name="wpp_search[bathrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bathrooms', 0); ?><!--" />-->
 
-        <span class="searchTrigger">
+        <span class="searchTrigger" data-drop="bath">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
-          <span class="dropdown-value"><?php _e( 'Baths' ); ?></span>
+          <span class="dropdown-value rentBlock"><?php _e( 'Baths' ); ?></span>
           <b class="sf-arrow"></b>
         </span>
 
-        <ul class="dropdown-list">
-          <?php
-            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-          ?>
-            <li><input id="rent_baths_<?php echo $value; ?>" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="<?php echo $value; ?>"/><label for="rent_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-          <?php endforeach; ?>
-        </ul>
+        <div class="sfBathRange dropdown-list rentBlock">
+          <div class="sfprInputsBlock">
+            <input type="text" class="firstBathRangeLabel rentBlock" value="" placeholder="<?php _e('Min') ?>" />
+            <input type="hidden" class="firstBathRangeValue rentBlock" value="" name="wpp_search[bathrooms][min]" />
+
+            <input type="text" class="lastBathRangeLabel rentBlock" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="hidden" class="lastBathRangeValue rentBlock" value="" name="wpp_search[bathrooms][max]" />
+          </div>
+          <div class="clear"></div>
+          <div class="left-side rentBlock">
+            <ul class="firstBathRangeList rentBlock">
+              <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Min') ?></a></li>
+              <li><a class="rentFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="rentFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="rentFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="rentFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="rentFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="rentFormItem" data-val="6" href="javascript:;">6</a></li>
+            </ul>
+          </div>
+          <div class="right-side rentBlock" style="display: none;">
+            <ul class="lastBathRangeList rentBlock">
+              <li><a class="rentFormItem" data-val="1" href="javascript:;">1</a></li>
+              <li><a class="rentFormItem" data-val="2" href="javascript:;">2</a></li>
+              <li><a class="rentFormItem" data-val="3" href="javascript:;">3</a></li>
+              <li><a class="rentFormItem" data-val="4" href="javascript:;">4</a></li>
+              <li><a class="rentFormItem" data-val="5" href="javascript:;">5</a></li>
+              <li><a class="rentFormItem" data-val="6" href="javascript:;">6</a></li>
+              <li><a class="rentFormItem" data-val="" href="javascript:;"><?php _e('No Max') ?></a></li>
+            </ul>
+          </div>
+        </div>
+
+<!--        <ul class="dropdown-list">-->
+<!--          --><?php
+//            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
+//          ?>
+<!--            <li><input id="rent_baths_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="rent_baths_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
+<!--          --><?php //endforeach; ?>
+<!--        </ul>-->
       </div>
 
       <div class="sfPrice dropdown-container">

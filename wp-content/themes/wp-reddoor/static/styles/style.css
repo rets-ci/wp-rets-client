@@ -947,6 +947,12 @@ a:focus {
 .searchForm form .sfPriceRange {
   display: none;
 }
+.searchForm form .sfBathRange {
+  display: none;
+}
+.searchForm form .sfBedRange {
+  display: none;
+}
 .searchForm form .sf-property-quantity {
   bottom: -45px;
   color: #fff;
@@ -962,7 +968,9 @@ a:focus {
   top: 2px;
   left: 1px;
 }
-.searchForm .sfPriceRange {
+.searchForm .sfPriceRange,
+.searchForm .sfBathRange,
+.searchForm .sfBedRange {
   background: #fff;
   color: #a7a9ac;
   font-size: 1em;
@@ -970,18 +978,26 @@ a:focus {
   width: 100%;
   top: 0;
 }
-.searchForm .sfPriceRange ul {
+.searchForm .sfPriceRange ul,
+.searchForm .sfBathRange ul,
+.searchForm .sfBedRange ul {
   margin: 0;
 }
-.searchForm .sfPriceRange ul li a {
+.searchForm .sfPriceRange ul li a,
+.searchForm .sfBathRange ul li a,
+.searchForm .sfBedRange ul li a {
   color: #7e7e7e;
 }
-.searchForm .sfPriceRange .sfprInputsBlock {
+.searchForm .sfPriceRange .sfprInputsBlock,
+.searchForm .sfBathRange .sfprInputsBlock,
+.searchForm .sfBedRange .sfprInputsBlock {
   background: #fbfaf8;
   border-bottom: 1px solid #f2f2f2;
   padding: 10px;
 }
-.searchForm .sfPriceRange .sfprInputsBlock input {
+.searchForm .sfPriceRange .sfprInputsBlock input,
+.searchForm .sfBathRange .sfprInputsBlock input,
+.searchForm .sfBedRange .sfprInputsBlock input {
   background: #fbfaf8 none repeat scroll 0 0;
   border: 1px solid #a7a9ac;
   display: inline-block;
@@ -991,28 +1007,42 @@ a:focus {
   width: 46%;
   text-align: center;
 }
-.searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel {
+.searchForm .sfPriceRange .sfprInputsBlock input.lastRangeLabel,
+.searchForm .sfBathRange .sfprInputsBlock input.lastRangeLabel,
+.searchForm .sfBedRange .sfprInputsBlock input.lastRangeLabel {
   margin-left: 4px;
 }
-.searchForm .sfPriceRange .firstRangeList {
+.searchForm .sfPriceRange .firstRangeList,
+.searchForm .sfBathRange .firstRangeList,
+.searchForm .sfBedRange .firstRangeList {
   padding: 20px 80px 20px 22px;
 }
-.searchForm .sfPriceRange .firstRangeList a {
+.searchForm .sfPriceRange .firstRangeList a,
+.searchForm .sfBathRange .firstRangeList a,
+.searchForm .sfBedRange .firstRangeList a {
   letter-spacing: 1px;
 }
-.searchForm .sfPriceRange .lastRangeList {
+.searchForm .sfPriceRange .lastRangeList,
+.searchForm .sfBathRange .lastRangeList,
+.searchForm .sfBedRange .lastRangeList {
   padding: 20px 22px 20px 80px;
   text-align: right;
 }
-.searchForm .sfPriceRange .lastRangeList a {
+.searchForm .sfPriceRange .lastRangeList a,
+.searchForm .sfBathRange .lastRangeList a,
+.searchForm .sfBedRange .lastRangeList a {
   letter-spacing: 1px;
 }
-.searchForm .sfPriceRange .left-side {
+.searchForm .sfPriceRange .left-side,
+.searchForm .sfBathRange .left-side,
+.searchForm .sfBedRange .left-side {
   width: 100%;
   position: relative;
   z-index: 10;
 }
-.searchForm .sfPriceRange .right-side {
+.searchForm .sfPriceRange .right-side,
+.searchForm .sfBathRange .right-side,
+.searchForm .sfBedRange .right-side {
   width: 100%;
   position: relative;
   z-index: 10;
