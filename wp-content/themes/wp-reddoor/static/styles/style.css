@@ -1014,23 +1014,47 @@ a:focus {
 }
 .searchForm .sfPriceRange .firstRangeList,
 .searchForm .sfBathRange .firstRangeList,
-.searchForm .sfBedRange .firstRangeList {
+.searchForm .sfBedRange .firstRangeList,
+.searchForm .sfPriceRange .firstBathRangeList,
+.searchForm .sfBathRange .firstBathRangeList,
+.searchForm .sfBedRange .firstBathRangeList,
+.searchForm .sfPriceRange .firstBedRangeList,
+.searchForm .sfBathRange .firstBedRangeList,
+.searchForm .sfBedRange .firstBedRangeList {
   padding: 20px 80px 20px 22px;
 }
 .searchForm .sfPriceRange .firstRangeList a,
 .searchForm .sfBathRange .firstRangeList a,
-.searchForm .sfBedRange .firstRangeList a {
+.searchForm .sfBedRange .firstRangeList a,
+.searchForm .sfPriceRange .firstBathRangeList a,
+.searchForm .sfBathRange .firstBathRangeList a,
+.searchForm .sfBedRange .firstBathRangeList a,
+.searchForm .sfPriceRange .firstBedRangeList a,
+.searchForm .sfBathRange .firstBedRangeList a,
+.searchForm .sfBedRange .firstBedRangeList a {
   letter-spacing: 1px;
 }
 .searchForm .sfPriceRange .lastRangeList,
 .searchForm .sfBathRange .lastRangeList,
-.searchForm .sfBedRange .lastRangeList {
+.searchForm .sfBedRange .lastRangeList,
+.searchForm .sfPriceRange .lastBathRangeList,
+.searchForm .sfBathRange .lastBathRangeList,
+.searchForm .sfBedRange .lastBathRangeList,
+.searchForm .sfPriceRange .lastBedRangeList,
+.searchForm .sfBathRange .lastBedRangeList,
+.searchForm .sfBedRange .lastBedRangeList {
   padding: 20px 22px 20px 80px;
   text-align: right;
 }
 .searchForm .sfPriceRange .lastRangeList a,
 .searchForm .sfBathRange .lastRangeList a,
-.searchForm .sfBedRange .lastRangeList a {
+.searchForm .sfBedRange .lastRangeList a,
+.searchForm .sfPriceRange .lastBathRangeList a,
+.searchForm .sfBathRange .lastBathRangeList a,
+.searchForm .sfBedRange .lastBathRangeList a,
+.searchForm .sfPriceRange .lastBedRangeList a,
+.searchForm .sfBathRange .lastBedRangeList a,
+.searchForm .sfBedRange .lastBedRangeList a {
   letter-spacing: 1px;
 }
 .searchForm .sfPriceRange .left-side,
