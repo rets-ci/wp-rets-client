@@ -175,11 +175,11 @@ use \UsabilityDynamics\RDC\Utils;
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="bedrange.click_out($event)">
 
-          <input onchange="bedrange.format(this, 'min')" value="{{current_filter.bedrange.min}}" class="bed-input" ng-focus="bedrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="bedrange.format(this, 'max')" value="{{current_filter.bedrange.max}}" class="bed-input" ng-focus="bedrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="bedrange.format(this, 'min')" value="{{current_filter.bedrooms.min}}" class="bed-input" ng-focus="bedrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="bedrange.format(this, 'max')" value="{{current_filter.bedrooms.max}}" class="bed-input" ng-focus="bedrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrange.min}}" ng-model="bedrange.current_min" type="text" name="bool[must][7][range][tax_input.bedrooms][gte]" />
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrange.max}}" ng-model="bedrange.current_max" type="text" name="bool[must][7][range][tax_input.bedrooms][lte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrooms.min}}" ng-model="bedrange.current_min" type="text" name="bool[must][7][range][tax_input.bedrooms][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrooms.max}}" ng-model="bedrange.current_max" type="text" name="bool[must][7][range][tax_input.bedrooms][lte]" />
 
           <div class="price-dropdown" ng-show="bedrange.mode">
             <ul class="min-values" ng-show="bedrange.mode == 'min'">
@@ -201,11 +201,11 @@ use \UsabilityDynamics\RDC\Utils;
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="bathrange.click_out($event)">
 
-          <input onchange="bathrange.format(this, 'min')" value="{{current_filter.bathrange.min}}" class="bath-input" ng-focus="bathrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="bathrange.format(this, 'max')" value="{{current_filter.bathrange.max}}" class="bath-input" ng-focus="bathrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="bathrange.format(this, 'min')" value="{{current_filter.bathrooms.min}}" class="bath-input" ng-focus="bathrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="bathrange.format(this, 'max')" value="{{current_filter.bathrooms.max}}" class="bath-input" ng-focus="bathrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrange.min}}" ng-model="bathrange.current_min" type="text" name="bool[must][8][range][tax_input.bathrooms][gte]" />
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrange.max}}" ng-model="bathrange.current_max" type="text" name="bool[must][8][range][tax_input.bathrooms][lte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrooms.min}}" ng-model="bathrange.current_min" type="text" name="bool[must][8][range][tax_input.bathrooms][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrooms.max}}" ng-model="bathrange.current_max" type="text" name="bool[must][8][range][tax_input.bathrooms][lte]" />
 
           <div class="price-dropdown" ng-show="bathrange.mode">
             <ul class="min-values" ng-show="bathrange.mode == 'min'">

@@ -430,13 +430,13 @@
           },
 
           format: function(target, mode) {
-            if ( !$scope.current_filter.bedrange ) {
-              $scope.current_filter.bedrange = {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
                 min:'',
                 max:''
               }
             }
-            $scope.current_filter.bedrange[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
             if ( mode == 'min' ) {
               this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
             } else {
@@ -445,27 +445,27 @@
           },
 
           set_min: function(_price) {
-            if ( !$scope.current_filter.bedrange ) {
-              $scope.current_filter.bedrange = {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
                 min:'',
                 max:''
               }
             }
             this.current_min = _price;
-            $scope.current_filter.bedrange.min = _price;
+            $scope.current_filter.bedrooms.min = _price;
             this.recalculate(_price);
             this.mode = 'max';
           },
 
           set_max: function(_price) {
-            if ( !$scope.current_filter.bedrange ) {
-              $scope.current_filter.bedrange = {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
                 min:'',
                 max:''
               }
             }
             this.current_max = _price;
-            $scope.current_filter.bedrange.max = _price;
+            $scope.current_filter.bedrooms.max = _price;
             this.mode = false;
           },
 
@@ -504,13 +504,13 @@
           },
 
           format: function(target, mode) {
-            if ( !$scope.current_filter.bathrange ) {
-              $scope.current_filter.bathrange = {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
                 min:'',
                 max:''
               }
             }
-            $scope.current_filter.bathrange[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
             if ( mode == 'min' ) {
               this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
             } else {
@@ -519,27 +519,27 @@
           },
 
           set_min: function(_price) {
-            if ( !$scope.current_filter.bathrange ) {
-              $scope.current_filter.bathrange = {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
                 min:'',
                 max:''
               }
             }
             this.current_min = _price;
-            $scope.current_filter.bathrange.min = _price;
+            $scope.current_filter.bathrooms.min = _price;
             this.recalculate(_price);
             this.mode = 'max';
           },
 
           set_max: function(_price) {
-            if ( !$scope.current_filter.bathrange ) {
-              $scope.current_filter.bathrange = {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
                 min:'',
                 max:''
               }
             }
             this.current_max = _price;
-            $scope.current_filter.bathrange.max = _price;
+            $scope.current_filter.bathrooms.max = _price;
             this.mode = false;
           },
 
