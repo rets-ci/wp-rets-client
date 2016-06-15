@@ -5,12 +5,12 @@
 			<ul>
 				<li class="pupBuy showContactPopup">
 					<a href="#<?php echo is_singular('property') ? 'popupBuyHomeListing' : 'popupBuyHome'; ?>">
-						<i class="icon-rdc-home-buying"></i><div><?php _e('I want to buy a home','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-buy"></i><div><?php _e('I want to buy a home','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupRent showContactPopup">
 					<a href="#popupRentHome">
-						<i class="icon-rdc-home-renting"></i><div><?php _e('I want to rent a home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-rent"></i><div><?php _e('I want to rent a home', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupSell showContactPopup">
@@ -20,7 +20,7 @@
 				</li>
 				<li class="pupRentProp showContactPopup">
 					<a href="#popupManage">
-						<i class="icon-rdc-property-management"></i><div><?php _e('I want to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+						<i class="icon-rdc-management"></i><div><?php _e('I want to rent my property', 'reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 					</a>
 				</li>
 				<li class="pupContact showContactPopup">

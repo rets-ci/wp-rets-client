@@ -332,10 +332,13 @@ var rdc = {
     } );
 
     if(jQuery(window).width() <= 560) {
-      jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
+      jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width() - 20);
       jQuery(document).on('rdc-carousel-ajax-complete', function(){
         jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
       });
+      if(jQuery('.rdc-carousel-item').hasClass('calloutcard')){
+        jQuery('.calloutcard').addClass('carousel-item')
+      }
     }
 
     jQuery('.oneAgent .showContactPopup a').on('click', function(){

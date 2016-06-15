@@ -3395,14 +3395,17 @@ input[type="submit"]:active {
   }
 }
 @media screen and (max-width: 992px) {
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
-    overflow: scroll;
+  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper {
+    overflow-y: scroll;
   }
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li a div {
     margin-left: 15px;
   }
   .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
     display: none;
+  }
+  .popup.contact-popup input[type="tel"] {
+    font-size: 1.8em;
   }
 }
 .post-type-archive-rdc_guide {
@@ -6744,6 +6747,9 @@ a.btn-rdc {
   }
   body.single-property .singlePropertyHeader {
     z-index: 9;
+  }
+  body.single-property .singlePropertyHeader .container > ul li {
+    float: none;
   }
   body.single-property .bottomSeparate {
     padding-bottom: 5px;
