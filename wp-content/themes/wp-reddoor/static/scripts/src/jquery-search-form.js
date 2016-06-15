@@ -112,7 +112,7 @@
 
     $(document).on( 'search-dropdown', function(e, kind, element) {
 
-      if ( typeof kind != 'undefined' && kind == 'price' ) {
+      if ( typeof kind != 'undefined' && ( kind == 'price' || kind == 'bath' || kind == 'bed' ) ) {
 
         var dropdown = $(element).parent();
 
@@ -134,6 +134,40 @@
             $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
           }
         });
+        $('.lastBathRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
+          var buyselected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( buyselected_max ) && buyselected_max != 0 ) {
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( buyselected_max );
+            $(this).closest('.sfBathRange').find('.lastBathRangeLabel.buyBlock', dropdown).val( buyselected_max );
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( buyselected_max );
+            applyPlaceholderBuyBath( $(this) );
+          } else {
+            $(this).closest('.sfBathRange').find('.lastBathRangeLabel.buyBlock', dropdown).val( 'No Max' );
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( '' );
+            applyPlaceholderBuyBath( $(this) );
+          }
+
+          if ( $('.lastBathRangeLabel.buyBlock', dropdown).val() && $('.firstBathRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+          }
+        });
+        $('.lastBedRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
+          var buyselected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( buyselected_max ) && buyselected_max != 0 ) {
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( buyselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( buyselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( buyselected_max );
+            applyPlaceholderBuyBed( $(this) );
+          } else {
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( 'No Max' );
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( '' );
+            applyPlaceholderBuyBed( $(this) );
+          }
+
+          if ( $('.lastBedRangeLabel.buyBlock', dropdown).val() && $('.firstBedRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+          }
+        });
         $('.lastRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
           var rentselected_max = parseInt( $(this).data('val') );
           if ( !isNaN( rentselected_max ) && rentselected_max != 0 ) {
@@ -149,6 +183,40 @@
           }
 
           if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+          }
+        });
+        $('.lastBathRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
+          var rentselected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( rentselected_max ) && rentselected_max != 0 ) {
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( rentselected_max );
+            $(this).closest('.sfBathRange').find('.lastBathRangeLabel.rentBlock', dropdown).val( rentselected_max );
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( rentselected_max );
+            applyPlaceholderRentBath( $(this) );
+          } else {
+            $(this).closest('.sfBathRange').find('.lastBathRangeLabel.rentBlock', dropdown).val( 'No Max' );
+            $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( '' );
+            applyPlaceholderRentBath( $(this) );
+          }
+
+          if ( $('.lastBathRangeLabel.rentBlock', dropdown).val() && $('.firstBathRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+          }
+        });
+        $('.lastBedRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
+          var rentselected_max = parseInt( $(this).data('val') );
+          if ( !isNaN( rentselected_max ) && rentselected_max != 0 ) {
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( rentselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( rentselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( rentselected_max );
+            applyPlaceholderRentBed( $(this) );
+          } else {
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( 'No Max' );
+            $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( '' );
+            applyPlaceholderRentBed( $(this) );
+          }
+
+          if ( $('.lastBedRangeLabel.rentBlock', dropdown).val() && $('.firstBedRangeLabel.rentBlock', dropdown).val() ) {
             $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
           }
         });
@@ -185,6 +253,67 @@
           });
         };
 
+        function buyGenerateMaxBath(element,selected_min) {
+          var max_values = [];
+          for( var i = selected_min; i < selected_min+6; i++ ) {
+            max_values.push( i+1 );
+          }
+
+          element.closest('.sfBathRange').find('.lastBathRangeList.buyBlock', dropdown).empty();
+          for(var key in max_values) {
+            element.closest('.sfBathRange').find('.lastBathRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="'+max_values[key]+'" href="javascript:;">'+max_values[key]+'</a></li>');
+          }
+          element.closest('.sfBathRange').find('.lastBathRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="" href="javascript:;">No Max</a></li>');
+
+          element.closest('.sfBathRange').find('.buyFormItem', dropdown).off('click').on( 'click', function(e) {
+            var selected_max = parseInt( $(this).data('val') );
+            if ( !isNaN( selected_max ) && selected_max != 0 ) {
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBathRange').find('.lastBathRangeLabel.buyBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( selected_max );
+              applyPlaceholderBuyBath( $(this) );
+            } else {
+              $(this).closest('.sfBathRange').find('.lastBathRangeLabel.buyBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val( '' );
+              applyPlaceholderBuyBath( $(this) );
+            }
+
+            if ( $('.lastBathRangeLabel.buyBlock', dropdown).val() && $('.firstBathRangeLabel.buyBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+            }
+          });
+        };
+        function buyGenerateMaxBed(element,selected_min) {
+          var max_values = [];
+          for( var i = selected_min; i < selected_min+6; i++ ) {
+            max_values.push( i+1 );
+          }
+
+          element.closest('.sfBedRange').find('.lastBedRangeList.buyBlock', dropdown).empty();
+          for(var key in max_values) {
+            element.closest('.sfBedRange').find('.lastBedRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="'+max_values[key]+'" href="javascript:;">'+max_values[key]+'</a></li>');
+          }
+          element.closest('.sfBedRange').find('.lastBedRangeList.buyBlock', dropdown).append('<li><a class="buyFormItem" data-val="" href="javascript:;">No Max</a></li>');
+
+          element.closest('.sfBedRange').find('.buyFormItem', dropdown).off('click').on( 'click', function(e) {
+            var selected_max = parseInt( $(this).data('val') );
+            if ( !isNaN( selected_max ) && selected_max != 0 ) {
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( selected_max );
+              applyPlaceholderBuyBed( $(this) );
+            } else {
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( '' );
+              applyPlaceholderBuyBed( $(this) );
+            }
+
+            if ( $('.lastBedRangeLabel.buyBlock', dropdown).val() && $('.firstBedRangeLabel.buyBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+            }
+          });
+        };
+
         function rentGenerateMax(selected_min) {
           var max_values = [];
           for( var i = 1; i < 11; i++ ) {
@@ -212,6 +341,67 @@
             }
 
             if ( $('.lastRangeLabel.rentBlock', dropdown).val() && $('.firstRangeLabel.rentBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+            }
+          });
+        };
+
+        function rentGenerateMaxBath(element,selected_min) {
+          var max_values = [];
+          for( var i = selected_min; i < selected_min+6; i++ ) {
+            max_values.push( i+1 );
+          }
+
+          element.closest('.sfBathRange').find('.lastBathRangeList.rentBlock', dropdown).empty();
+          for(var key in max_values) {
+            element.closest('.sfBathRange').find('.lastBathRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="'+max_values[key]+'" href="javascript:;">'+max_values[key]+'</a></li>');
+          }
+          element.closest('.sfBathRange').find('.lastBathRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="" href="javascript:;">No Max</a></li>');
+
+          element.closest('.sfBathRange').find('.rentFormItem', dropdown).off('click').on( 'click', function(e) {
+            var selected_max = parseInt( $(this).data('val') );
+            if ( !isNaN( selected_max ) && selected_max != 0 ) {
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBathRange').find('.lastBathRangeLabel.rentBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( selected_max );
+              applyPlaceholderRentBath( $(this) );
+            } else {
+              $(this).closest('.sfBathRange').find('.lastBathRangeLabel.rentBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val( '' );
+              applyPlaceholderRentBath( $(this) );
+            }
+
+            if ( $('.lastBathRangeLabel.rentBlock', dropdown).val() && $('.firstBathRangeLabel.rentBlock', dropdown).val() ) {
+              $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+            }
+          });
+        };
+        function rentGenerateMaxBed(element,selected_min) {
+          var max_values = [];
+          for( var i = selected_min; i < selected_min+6; i++ ) {
+            max_values.push( i+1 );
+          }
+
+          element.closest('.sfBedRange').find('.lastBedRangeList.rentBlock', dropdown).empty();
+          for(var key in max_values) {
+            element.closest('.sfBedRange').find('.lastBedRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="'+max_values[key]+'" href="javascript:;">'+max_values[key]+'</a></li>');
+          }
+          element.closest('.sfBedRange').find('.lastBedRangeList.rentBlock', dropdown).append('<li><a class="rentFormItem" data-val="" href="javascript:;">No Max</a></li>');
+
+          element.closest('.sfBedRange').find('.rentFormItem', dropdown).off('click').on( 'click', function(e) {
+            var selected_max = parseInt( $(this).data('val') );
+            if ( !isNaN( selected_max ) && selected_max != 0 ) {
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( selected_max );
+              applyPlaceholderRentBed( $(this) );
+            } else {
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( '' );
+              applyPlaceholderRentBed( $(this) );
+            }
+
+            if ( $('.lastBedRangeLabel.rentBlock', dropdown).val() && $('.firstBedRangeLabel.rentBlock', dropdown).val() ) {
               $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
             }
           });
@@ -250,6 +440,72 @@
           }
 
           $('.dropdown-value.buyBlock', dropdown).html( simplifyAmount( _first_val ) + _separator + simplifyAmount( _last_val ) );
+        };
+
+        /**
+         *
+         */
+        function applyPlaceholderBuyBath( element ) {
+          var _separator = '';
+          var _first_val = parseInt( element.closest('.sfBathRange').find('.firstBathRangeValue.buyBlock', dropdown).val() );
+          var _last_val = parseInt( element.closest('.sfBathRange').find('.lastBathRangeValue.buyBlock', dropdown).val() );
+
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
+          }
+
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
+          }
+
+          if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
+            _separator = 'Any Baths';
+          }
+
+          element.closest('.sfBaths').find('.dropdown-value.buyBlock', dropdown).html( _first_val + _separator + _last_val );
+        };
+        function applyPlaceholderBuyBed( element ) {
+          var _separator = '';
+          var _first_val = parseInt( element.closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val() );
+          var _last_val = parseInt( element.closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val() );
+
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
+          }
+
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
+          }
+
+          if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
+            _separator = 'Any Beds';
+          }
+
+          element.closest('.sfBeds').find('.dropdown-value.buyBlock', dropdown).html( _first_val + _separator + _last_val );
         };
 
         function applyPlaceholderRent() {
@@ -292,14 +548,97 @@
           $('.dropdown-value.rentBlock', dropdown).html( rentPriceDisplay( _first_val ) + _separator + rentPriceDisplay( _last_val ) );
         };
 
+        function applyPlaceholderRentBath( element ) {
+          var _separator = '';
+          var _first_val = parseInt( element.closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val() );
+          var _last_val = parseInt( element.closest('.sfBathRange').find('.lastBathRangeValue.rentBlock', dropdown).val() );
+
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
+          }
+
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
+          }
+
+          if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
+            _separator = 'Any Baths';
+          }
+
+          element.closest('.sfBaths').find('.dropdown-value.rentBlock', dropdown).html( _first_val + _separator + _last_val );
+        };
+        function applyPlaceholderRentBed( element ) {
+          var _separator = '';
+          var _first_val = parseInt( element.closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val() );
+          var _last_val = parseInt( element.closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val() );
+
+          if ( isNaN( _first_val ) || _first_val == 0 ) {
+            _first_val = '';
+          }
+
+          if ( isNaN( _last_val ) || _last_val == 0 ) {
+            _last_val = '';
+          }
+
+          if ( _last_val && _first_val ) {
+            _separator = ' - ';
+          }
+
+          if ( !_last_val && _first_val ) {
+            _separator = ' + ';
+          }
+
+          if ( _last_val && !_first_val ) {
+            _separator = ' Up to ';
+          }
+
+          if ( ( isNaN( _first_val ) || _first_val == 0 ) && ( isNaN( _last_val ) || _last_val == 0 ) ) {
+            _separator = 'Any Beds';
+          }
+
+          element.closest('.sfBeds').find('.dropdown-value.rentBlock', dropdown).html( _first_val + _separator + _last_val );
+        };
+
         $('.firstRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
           $('.left-side.buyBlock', dropdown).show();
           $('.right-side.buyBlock', dropdown).hide();
         });
 
+        $('.firstBathRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBathRange').find('.left-side.buyBlock', dropdown).show();
+          $(this).closest('.sfBathRange').find('.right-side.buyBlock', dropdown).hide();
+        });
+
+        $('.firstBedRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBedRange').find('.left-side.buyBlock', dropdown).show();
+          $(this).closest('.sfBedRange').find('.right-side.buyBlock', dropdown).hide();
+        });
+
         $('.firstRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
           $('.left-side.rentBlock', dropdown).show();
           $('.right-side.rentBlock', dropdown).hide();
+        });
+
+        $('.firstBathRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBathRange').find('.left-side.rentBlock', dropdown).show();
+          $(this).closest('.sfBathRange').find('.right-side.rentBlock', dropdown).hide();
+        });
+
+        $('.firstBedRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBedRange').find('.left-side.rentBlock', dropdown).show();
+          $(this).closest('.sfBedRange').find('.right-side.rentBlock', dropdown).hide();
         });
 
         $('.firstRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
@@ -310,12 +649,36 @@
           buyGenerateMax( buyCurrency.value );
         });
 
+        $('.firstBathRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.firstBathRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBath( $(this) );
+          buyGenerateMaxBath( $(this), parseInt( $(this).val() ) );
+        });
+
+        $('.firstBedRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.firstBedRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBed( $(this) );
+          buyGenerateMaxBed( $(this), parseInt( $(this).val() ) );
+        });
+
         $('.firstRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
           $('.firstRangeValue.rentBlock', dropdown).val( rentCurrency.value );
           applyPlaceholderRent();
           rentGenerateMax( rentCurrency.value );
+        });
+
+        $('.firstBathRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.firstBathRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBath( $(this) );
+          rentGenerateMaxBath( $(this), parseInt( $(this).val() ) );
+        });
+
+        $('.firstBedRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.firstBedRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBed( $(this) );
+          rentGenerateMaxBed( $(this), parseInt( $(this).val() ) );
         });
 
         $('.lastRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
@@ -337,9 +700,29 @@
           $('.right-side.buyBlock', dropdown).show();
         });
 
+        $('.lastBathRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBathRange').find('.left-side.buyBlock', dropdown).hide();
+          $(this).closest('.sfBathRange').find('.right-side.buyBlock', dropdown).show();
+        });
+
+        $('.lastBedRangeLabel.buyBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBedRange').find('.left-side.buyBlock', dropdown).hide();
+          $(this).closest('.sfBedRange').find('.right-side.buyBlock', dropdown).show();
+        });
+
         $('.lastRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
           $('.left-side.rentBlock', dropdown).hide();
           $('.right-side.rentBlock', dropdown).show();
+        });
+
+        $('.lastBathRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBathRange').find('.left-side.rentBlock', dropdown).hide();
+          $(this).closest('.sfBathRange').find('.right-side.rentBlock', dropdown).show();
+        });
+
+        $('.lastBedRangeLabel.rentBlock', dropdown).off('focus').on( 'focus', function(e) {
+          $(this).closest('.sfBedRange').find('.left-side.rentBlock', dropdown).hide();
+          $(this).closest('.sfBedRange').find('.right-side.rentBlock', dropdown).show();
         });
 
         $('.firstRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
@@ -363,6 +746,56 @@
           }
 
           if ( $('.lastRangeLabel.buyBlock', dropdown).val() && $('.firstRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+          }
+
+        });
+
+        $('.firstBathRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
+          var selected_min = parseInt( $(this).data('val') );
+
+          if ( !isNaN( selected_min ) && selected_min != 0 ) {
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.buyBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBathRange').find('.firstBathRangeLabel.buyBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.buyBlock', dropdown).val( selected_min );
+            applyPlaceholderBuyBath( $(this) );
+
+            buyGenerateMaxBath( $(this), selected_min );
+
+            $(this).closest('.sfBathRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
+          } else {
+            $(this).closest('.sfBathRange').find('.firstBathRangeLabel.buyBlock', dropdown).val( 'No Min' );
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.buyBlock', dropdown).val( '' );
+            applyPlaceholderBuyBath( $(this) );
+            $(this).closest('.sfBathRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
+          }
+
+          if ( $('.lastBathRangeLabel.buyBlock', dropdown).val() && $('.firstBathRangeLabel.buyBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
+          }
+
+        });
+
+        $('.firstBedRangeList .buyFormItem', dropdown).off('click').on( 'click', function(e) {
+          var selected_min = parseInt( $(this).data('val') );
+
+          if ( !isNaN( selected_min ) && selected_min != 0 ) {
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.buyBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( selected_min );
+            applyPlaceholderBuyBed( $(this) );
+
+            buyGenerateMaxBed( $(this), selected_min );
+
+            $(this).closest('.sfBedRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
+          } else {
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.buyBlock', dropdown).val( 'No Min' );
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( '' );
+            applyPlaceholderBuyBed( $(this) );
+            $(this).closest('.sfBedRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
+          }
+
+          if ( $('.lastBedRangeLabel.buyBlock', dropdown).val() && $('.firstBedRangeLabel.buyBlock', dropdown).val() ) {
             $(".dropdown-container .dropdown-list.buyBlock", that).slideUp();
           }
 
@@ -393,6 +826,56 @@
             $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
           }
 
+
+        });
+
+        $('.firstBathRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
+          var selected_min = parseInt( $(this).data('val') );
+
+          if ( !isNaN( selected_min ) && selected_min != 0 ) {
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBathRange').find('.firstBathRangeLabel.rentBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val( selected_min );
+            applyPlaceholderRentBath( $(this) );
+
+            buyGenerateMaxBath( $(this), selected_min );
+
+            $(this).closest('.sfBathRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
+          } else {
+            $(this).closest('.sfBathRange').find('.firstBathRangeLabel.rentBlock', dropdown).val( 'No Min' );
+            $(this).closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val( '' );
+            applyPlaceholderRentBath( $(this) );
+            $(this).closest('.sfBathRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
+          }
+
+          if ( $('.lastBathRangeLabel.rentBlock', dropdown).val() && $('.firstBathRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+          }
+
+        });
+
+        $('.firstBedRangeList .rentFormItem', dropdown).off('click').on( 'click', function(e) {
+          var selected_min = parseInt( $(this).data('val') );
+
+          if ( !isNaN( selected_min ) && selected_min != 0 ) {
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.rentBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val( selected_min );
+            applyPlaceholderRentBed( $(this) );
+
+            buyGenerateMaxBed( $(this), selected_min );
+
+            $(this).closest('.sfBedRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
+          } else {
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.rentBlock', dropdown).val( 'No Min' );
+            $(this).closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val( '' );
+            applyPlaceholderRentBed( $(this) );
+            $(this).closest('.sfBedRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
+          }
+
+          if ( $('.lastBedRangeLabel.rentBlock', dropdown).val() && $('.firstBedRangeLabel.rentBlock', dropdown).val() ) {
+            $(".dropdown-container .dropdown-list.rentBlock", that).slideUp();
+          }
 
         });
 

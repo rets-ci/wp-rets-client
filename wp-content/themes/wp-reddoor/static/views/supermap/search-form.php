@@ -173,28 +173,52 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Bedrooms', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <ul>
-            <li><input id="buy_beds_0" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][7][range][tax_input.bedrooms][gte]" type="radio" value="0"/><label for="buy_beds_0"><?php _e('No min'); ?></label></li>
-            <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-              ?>
-              <li><input id="buy_beds_<?php echo $value; ?>" ng-model="current_filter.bedrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][7][range][tax_input.bedrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_beds_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-            <?php endforeach; ?>
-          </ul>
+        <div class="rdc-range-fields" click-out="bedrange.click_out($event)">
+
+          <input onchange="bedrange.format(this, 'min')" value="{{current_filter.bedrooms.min}}" class="bed-input" ng-focus="bedrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="bedrange.format(this, 'max')" value="{{current_filter.bedrooms.max}}" class="bed-input" ng-focus="bedrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrooms.min}}" ng-model="bedrange.current_min" type="text" name="bool[must][7][range][tax_input.bedrooms][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bedrooms.max}}" ng-model="bedrange.current_max" type="text" name="bool[must][7][range][tax_input.bedrooms][lte]" />
+
+          <div class="price-dropdown" ng-show="bedrange.mode">
+            <ul class="min-values" ng-show="bedrange.mode == 'min'">
+              <li><a href="javascript:;" ng-click="bedrange.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_bed in bedrange.min_bedroom track by $index"><a ng-click="bedrange.set_min(_bed)" href="javascript:;">{{_bed}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="bedrange.mode == 'max'">
+              <li ng-repeat="_bed in bedrange.max_bedroom track by $index"><a ng-click="bedrange.set_max(_bed)" href="javascript:;">{{_bed}}</a></li>
+              <li><a href="javascript:;" ng-click="bedrange.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
         </div>
 
       </div>
       <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Bathrooms', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
-          <ul>
-            <li><input id="buy_baths_0" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][8][range][tax_input.bathrooms][gte]" type="radio" value="0"/><label for="buy_baths_0"><?php _e('No min'); ?></label></li>
-            <?php foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-              ?>
-              <li><input id="buy_baths_<?php echo $value; ?>" ng-model="current_filter.bathrooms.min" class="dropdown-option styled-checkbox-radio" name="bool[must][8][range][tax_input.bathrooms][gte]" type="radio" value="<?php echo $value; ?>"/><label for="buy_baths_<?php echo $value; ?>"><?php echo $value; ?>+</label></li>
-            <?php endforeach; ?>
-          </ul>
+        <div class="rdc-range-fields" click-out="bathrange.click_out($event)">
+
+          <input onchange="bathrange.format(this, 'min')" value="{{current_filter.bathrooms.min}}" class="bath-input" ng-focus="bathrange.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="bathrange.format(this, 'max')" value="{{current_filter.bathrooms.max}}" class="bath-input" ng-focus="bathrange.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrooms.min}}" ng-model="bathrange.current_min" type="text" name="bool[must][8][range][tax_input.bathrooms][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.bathrooms.max}}" ng-model="bathrange.current_max" type="text" name="bool[must][8][range][tax_input.bathrooms][lte]" />
+
+          <div class="price-dropdown" ng-show="bathrange.mode">
+            <ul class="min-values" ng-show="bathrange.mode == 'min'">
+              <li><a href="javascript:;" ng-click="bathrange.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_bath in bathrange.min_bathroom track by $index"><a ng-click="bathrange.set_min(_bath)" href="javascript:;">{{_bath}}</a></li>
+            </ul>
+            <ul class="max-values" ng-show="bathrange.mode == 'max'">
+              <li ng-repeat="_bath in bathrange.max_bathroom track by $index"><a ng-click="bathrange.set_max(_bath)" href="javascript:;">{{_bath}}</a></li>
+              <li><a href="javascript:;" ng-click="bathrange.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
         </div>
 
       </div>

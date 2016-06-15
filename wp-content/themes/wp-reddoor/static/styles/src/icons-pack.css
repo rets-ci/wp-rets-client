@@ -84,10 +84,10 @@
 .icon-rdc-high-exposure-marketing:before {
     content: "\e909";
 }
-.icon-rdc-home-buying:before {
+.icon-rdc-buy:before {
     content: "\e90a";
 }
-.icon-rdc-home-renting:before {
+.icon-rdc-rent:before {
     content: "\e90b";
 }
 .icon-rdc-home-selling:before {
@@ -126,7 +126,7 @@
 .icon-rdc-prompt-maintenance:before {
     content: "\e917";
 }
-.icon-rdc-property-management:before {
+.icon-rdc-management:before {
     content: "\e918";
 }
 .icon-rdc-proven:before {
