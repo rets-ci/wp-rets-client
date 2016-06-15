@@ -155,7 +155,7 @@
           var buyselected_max = parseInt( $(this).data('val') );
           if ( !isNaN( buyselected_max ) && buyselected_max != 0 ) {
             $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( buyselected_max );
-            $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( buyselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( buyselected_max );
             $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( buyselected_max );
             applyPlaceholderBuyBed( $(this) );
           } else {
@@ -207,7 +207,7 @@
           var rentselected_max = parseInt( $(this).data('val') );
           if ( !isNaN( rentselected_max ) && rentselected_max != 0 ) {
             $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( rentselected_max );
-            $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( rentselected_max );
+            $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( rentselected_max );
             $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( rentselected_max );
             applyPlaceholderRentBed( $(this) );
           } else {
@@ -299,11 +299,11 @@
             var selected_max = parseInt( $(this).data('val') );
             if ( !isNaN( selected_max ) && selected_max != 0 ) {
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( selected_max );
-              $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( selected_max );
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( selected_max );
               applyPlaceholderBuyBed( $(this) );
             } else {
-              $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.buyBlock', dropdown).val( 'No Max' );
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.buyBlock', dropdown).val( '' );
               applyPlaceholderBuyBed( $(this) );
             }
@@ -392,11 +392,11 @@
             var selected_max = parseInt( $(this).data('val') );
             if ( !isNaN( selected_max ) && selected_max != 0 ) {
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( selected_max );
-              $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( selected_max );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( selected_max );
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( selected_max );
               applyPlaceholderRentBed( $(this) );
             } else {
-              $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( 'No Max' );
+              $(this).closest('.sfBedRange').find('.lastBedRangeLabel.rentBlock', dropdown).val( 'No Max' );
               $(this).closest('.sfBedRange').find('.lastBedRangeValue.rentBlock', dropdown).val( '' );
               applyPlaceholderRentBed( $(this) );
             }
@@ -781,7 +781,7 @@
 
           if ( !isNaN( selected_min ) && selected_min != 0 ) {
             $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( selected_min );
-            $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( selected_min );
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.buyBlock', dropdown).val( selected_min );
             $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( selected_min );
             applyPlaceholderBuyBed( $(this) );
 
@@ -789,7 +789,7 @@
 
             $(this).closest('.sfBedRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
           } else {
-            $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( 'No Min' );
+            $(this).closest('.sfBedRange').find('.firstBedRangeLabel.buyBlock', dropdown).val( 'No Min' );
             $(this).closest('.sfBedRange').find('.firstBedRangeValue.buyBlock', dropdown).val( '' );
             applyPlaceholderBuyBed( $(this) );
             $(this).closest('.sfBedRange').find('.left-side.buyBlock, .right-side.buyBlock', dropdown).toggle();
