@@ -4,7 +4,7 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <i class="icon icon-rdc-home-buying"></i>
+      <i class="icon icon-rdc-buy"></i>
 
       <h3><?php _e('I want to buy a home', 'reddoor'); ?></h3>
       <p><?php _e('Buy your dream home on your terms! Please submit your information below or call us by phone. We’re ready to assist you with your new home purchase.', 'reddoor'); ?></p>

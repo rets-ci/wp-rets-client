@@ -4,7 +4,7 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
       
-      <i class="icon icon-rdc-home-renting"></i>
+      <i class="icon icon-rdc-rent"></i>
 
       <h3><?php _e('I want to rent a home', 'reddoor'); ?></h3>
       <p><?php _e('Please submit your information below. We\'re ready to help you find the perfect rental home!', 'reddoor'); ?></p>

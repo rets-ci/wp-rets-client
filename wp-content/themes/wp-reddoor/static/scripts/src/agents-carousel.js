@@ -18,6 +18,8 @@ function rdc_init_agents_carousel(){
             isRTL = $postsContainer.hasClass('js-rtl'),
             updateProp = isRTL ? 'margin-right' : 'margin-left';
 
+        console.log(numItems);
+
         var updatePosition = function() {
             if ( position < 0 ) position = 0;
             if ( position >= $$.find('.rdc-agents-carousel-item').length - 1 ) {
@@ -51,7 +53,7 @@ function rdc_init_agents_carousel(){
         var negativeDirection = isRTL ? 'right' : 'left';
 
         // Verify "swipe" method exists prior to invoking it.
-        if( 'function' === typeof $$.swipe ) {
+        if( 'function' === typeof $$.swipe && numItems > 1 ) {
             $$.swipe( {
                 excludedElements: "",
                 triggerOnTouchEnd: true,

@@ -188,8 +188,9 @@ $the_query = new WP_Query( $query );
 									<a href="<?php echo $instance[ 'Callout_card' ]['secondary-button-url']; ?>"><?php echo $instance[ 'Callout_card' ]['secondary-button-label']; ?></a>
 								<?php } ?>
 							</div>
-						<?php } ?>
 						</li>
+						<?php } ?>
+
 					</ul>
 				</div>
 			</div>

@@ -4,7 +4,7 @@
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
     <div class="popup-form-wrapper">
 
-      <i class="icon icon-rdc-property-management"></i>
+      <i class="icon icon-rdc-management"></i>
 
       <h3><?php _e('I want to rent my property', 'reddoor'); ?></h3>
       <p><?php _e('Grow your investment with Red Door Company! Please submit your information below or call us by phone. We\'re ready to assist you with renting your property.', 'reddoor'); ?></p>
