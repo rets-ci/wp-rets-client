@@ -973,6 +973,42 @@ a {
     }
   }
 
+  .bed-input {
+    float: left;
+    width: 47%;
+    border: 1px solid lightgrey;
+
+    &:focus {
+      border: 1px solid grey;
+    }
+
+    &+.bed-input {
+      margin-left: 6%;
+
+      @media screen and (max-width: @adaptMobile) {
+        margin-left: 4%;
+      }
+    }
+  }
+
+  .bath-input {
+    float: left;
+    width: 47%;
+    border: 1px solid lightgrey;
+
+    &:focus {
+      border: 1px solid grey;
+    }
+
+    &+.bath-input {
+      margin-left: 6%;
+
+      @media screen and (max-width: @adaptMobile) {
+        margin-left: 4%;
+      }
+    }
+  }
+
   .price-dropdown {
     background: white none repeat scroll 0 0;
     border-bottom: 1px solid lightgrey;
