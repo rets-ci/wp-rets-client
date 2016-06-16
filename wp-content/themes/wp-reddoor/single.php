@@ -23,11 +23,13 @@ if(!empty($currentId)) {
 if(!empty($post_thumbnail_id)) {
   $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
 }
+
 ?>
   <?php
   // Start the Loop.
   while ( have_posts() ) : the_post(); $property = prepare_property_for_display( get_the_ID() );
-
+  $_permalink = get_the_permalink();
+  $_blog_slug = explode('/', $_permalink);
     ?>
 <?php if(!(empty($_url))) { ?>
   <div class="container-fluid ftrdImgGoTop">
@@ -88,5 +90,10 @@ if(!empty($post_thumbnail_id)) {
   </div>
 
 </div>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.ourCompanyBtn').addClass('current-menu-item');
+    });
+  </script>
 
 <?php get_footer( get_post_type() ); ?>
