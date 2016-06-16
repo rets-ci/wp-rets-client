@@ -523,7 +523,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
-        $query = new WP_Query( array(
+        $query = new \WP_Query( array(
           'post_status' => array( 'publish', 'draft', 'pending', 'trash', 'private', 'future' ),
           'post_type'   => 'property',
           'meta_key'    => 'wpp::rets_pk',
