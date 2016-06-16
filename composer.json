@@ -10,7 +10,7 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "http://repository.usabilitydynamics.com"
+      "url": "https://repository.usabilitydynamics.com"
     }
   ],
   "repository": {
@@ -19,8 +19,7 @@
   },
   "require": {
     "php": ">=5.3",
-    "composer/installers": "~1.0",
-    "usabilitydynamics/lib-wp-bootstrap": "*"
+    "usabilitydynamics/lib-wp-bootstrap": "1.2.0"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "~0.2",
@@ -45,7 +44,24 @@
     "schemas": {
       "dependencies" : {
         "modules": {},
-        "plugins": []
+        "plugins": [
+          {
+            "name": "WP-Property",
+            "slug": "wp-property",
+            "version": "2.1.8",
+            "required": true
+          },
+          {
+            "name": "WP-Property: Importer",
+            "slug": "wp-property-importer",
+            "version": "5.1.2",
+            "required": true,
+            "private": true,
+            "author": "UsabilityDynamics, Inc.",
+            "author_url": "https://www.usabilitydynamics.com",
+            "external_url": "https://www.usabilitydynamics.com/product/wp-property-importer"
+          }
+        ]
       },
       "licenses" : {
         "client" : false,
