@@ -6700,7 +6700,17 @@ a.btn-rdc {
     width: 90%;
     margin-left: 10%;
     height: 198px;
-    overflow: hidden;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .singleShareContainer .sShConL {
+    float: left;
+    width: 48%;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .singleShareContainer .sShConR {
+    float: left;
+    width: 48%;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .singleShareContainer .sShConR .visEmail {
+    margin-bottom: 5px;
   }
   body.single-property .singlePropertyHeader .oneAgent img {
     margin: 0 50px;
