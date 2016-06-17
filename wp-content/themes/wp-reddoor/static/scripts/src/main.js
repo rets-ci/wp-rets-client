@@ -282,7 +282,7 @@ var rdc = {
 
     jQuery( '.association-carousel .sow-carousel-wrapper' ).append( '<div class="assocCarouselBg"></div>' );
 
-    if (jQuery(window).width() >= 992) {
+    if (jQuery(window).width() >= 1200) {
       rdc_property_sticky();
     }
 
@@ -305,24 +305,40 @@ var rdc = {
       
     }
 
+    /**
+     * Set correct height for Tabbet Widget blocks
+     */
+
+    function fitHeight(){
+      jQuery.each( jQuery( '.so-widget-tabbed-content .sow-slider-image.cycle-slide-active' ), function ( index, element ){
+        var contentBlockHeight = jQuery('.tabbedWidgetContent', element ).outerHeight();
+        jQuery( element ).height(contentBlockHeight);
+        jQuery( element ).parent().height(contentBlockHeight);
+        jQuery( element ).css('overflow', 'visible');
+      } );
+    }
+
+    jQuery('.so-widget-tabbed-content .sow-slider-pagination li').on('click', function (){
+      setTimeout(function(){
+        fitHeight();
+      }, 500);
+    })
+
 
     /**
      * Set row height for tabbed Widget Image Area
      */
     setTimeout(function(){
 
-      /**
-       * Tabbed content widget (feature point)
-       */
-      var imgFeaturePoint = jQuery( '.featurePoint div' ).outerHeight();
-      var iconHeight = jQuery( '.featurePoint > span' ).outerHeight();
-      var featurePointMarg = (imgFeaturePoint - iconHeight) / 2;
-      jQuery( '.featurePoint' ).css( 'height', imgFeaturePoint );
-      jQuery( '.featurePoint > span' ).css( 'margin-top', featurePointMarg );
-
       jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea:visible' ), function eachColumn( index, element ){
         jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
       } );
+
+      fitHeight();
+
+      // var contentBlockHeight = jQuery('.so-widget-tabbed-content .tabbedWidgetContent').outerHeight();
+      // jQuery('.so-widget-tabbed-content .sow-slider-images, .so-widget-tabbed-content .sow-slider-image').height(contentBlockHeight);
+       //jQuery('.so-widget-tabbed-content .sow-slider-image').css('overflow', 'visible');
 
     }, 500);
 
@@ -519,7 +535,7 @@ var rdc = {
       resizeTimer = setTimeout( function () {
         map_resize();
         frontPageSearchBlock_resize();
-        if (jQuery(window).width() >= 992) {
+        if (jQuery(window).width() >= 1200) {
           rdc_property_sticky();
         }
         rdc_agent_carousel_item_width();
