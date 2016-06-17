@@ -1132,6 +1132,11 @@
               form_data.push({name:v.name,value:v.value});
             } );
           }
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
+              form_data.push({name:v.name,value:v.value});
+            } );
+          }
           return form_data;
         };
 
@@ -1140,6 +1145,14 @@
             jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
           } else {
             jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
+          }
+        });
+
+        $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
+          } else {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
           }
         });
 
