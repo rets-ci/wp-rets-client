@@ -363,7 +363,7 @@ namespace UsabilityDynamics\WPRETSC {
             method_exists( 'WPP_F', 'revalidate_address' )
           ) {
             $this->write_log( 'Revalidate address if it was not done yet' );
-            $r = WPP_F::revalidate_address( $_post_id, array( 'skip_existing' => 'false' ) );
+            $r = \WPP_F::revalidate_address( $_post_id, array( 'skip_existing' => 'false' ) );
             if( !empty( $r[ 'status' ] ) && $r[ 'status' ] !== 'update' ) {
               $this->write_log( 'Address validation failed: ' . $r[ 'status' ] );
             }
