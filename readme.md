@@ -34,6 +34,7 @@ git subtree add --prefix=wp-content/plugins/wp-property-supermap git@github.com:
 git subtree add --prefix=wp-content/plugins/wp-property-importer git@github.com:wp-property/wp-property-importer latest --squash
 git subtree add --prefix=wp-content/plugins/wp-property-terms git@github.com:wp-property/wp-property-terms latest --squash
 git subtree add --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property latest --squash
+git subtree add --prefix=wp-content/plugins/wp-rets-client git@github.com:usabilitydynamics/wp-rets-client latest --squash
 ```
 
 ### Google Cloud Storage
