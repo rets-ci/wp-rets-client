@@ -65,7 +65,11 @@ namespace UsabilityDynamics\WPRETSC {
         add_action( 'before_delete_post', function( $post_id ) {
 
           // Do nothing if does not have a "rets_index"
-          if( !$_rets_index = get_post_meta( $post_id, 'rets_index', true ) ) {
+          if( !$_rets_index = get_post_meta( $post_id, 'rets_index', true )) {
+            return;
+          }
+
+          if( !defined( 'RETS_ES_LINK' ) ) {
             return;
           }
 
@@ -73,12 +77,10 @@ namespace UsabilityDynamics\WPRETSC {
           remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
 
           // this is a fire-and-forget event, we should be recording failure son our end to keep the WP process quicker
-          /*
-          wp_remote_request('https://site:9a154fd633d4c24a187503619a9513fb@dori-us-east-1.searchly.com' . $_rets_index . '/property/' . $post_id, array(
+          wp_remote_request( trailingslashit( RETS_ES_LINK ) . $_rets_index . '/property/' . $post_id, array(
             'method' => 'DELETE',
             'blocking' => false
           ));
-          //*/
 
         });
 
@@ -356,15 +358,16 @@ namespace UsabilityDynamics\WPRETSC {
 
           $this->write_log( 'Inserted property post as draft ' . $_post_id  );
 
-          /*
-          if( method_exists( 'WPP_F', 'revalidate_address' ) ) {
+          if(
+            ( !isset( $post_data['meta_input'][ 'address_is_formatted' ] ) || !$post_data['meta_input'][ 'address_is_formatted' ] ) &&
+            method_exists( 'WPP_F', 'revalidate_address' )
+          ) {
             $this->write_log( 'Revalidate address if it was not done yet' );
             $r = WPP_F::revalidate_address( $_post_id, array( 'skip_existing' => 'false' ) );
             if( !empty( $r[ 'status' ] ) && $r[ 'status' ] !== 'update' ) {
               $this->write_log( 'Address validation failed: ' . $r[ 'status' ] );
             }
           }
-          //*/
 
         }
 
