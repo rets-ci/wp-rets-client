@@ -79,19 +79,61 @@ if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' &
 
   function delete_rets_duplicates() {
     global $wpdb;
-
     
     // Find all RETS IDs that have multiple posts associated with them.
     $_duplicates = $wpdb->get_col( "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC;" );
 
-    $all_deleted = array();
-    foreach( $_duplicates as $_has_duplicates ) {
+    if( empty( $_duplicates ) ) {
+      die( "No duplicates found" );
+    } else {
+      echo "Found [" . count( $_duplicates ) . "] RETS IDs which have duplicated properties.<br/><br/>";
+    }
 
-      if( $_deleted = wp_delete_post( $_delete_me, true ) ) {
-        $all_deleted[] = $_deleted ;
+    $step = 0;
+
+    $all_deleted = array();
+    foreach( $_duplicates as $rets_id ) {
+
+      echo "Found duplications for RETS ID [{$rets_id}]<br/>";
+
+      $post_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='rets_id' AND meta_value='{$rets_id}' ORDER BY post_id DESC;" );
+
+      $primary = 0;
+
+      foreach( $post_ids as $post_id ) {
+
+        if ( FALSE === get_post_status( $post_id ) ) {
+          // Looks like post was deleted. But postmeta still exists... Remove it.
+          $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
+          echo "RETS ID [{$rets_id}]. Property [{$post_id}] does not exist. Removed postmeta.<br/>";
+        } else {
+          if( !$primary ) {
+            $primary = $post_id;
+          } else {
+            if( wp_delete_post( $post_id, true ) ) {
+              echo "RETS ID [{$rets_id}]. Removed Property [{$post_id}].<br/>";
+            } else {
+              echo "RETS ID [{$rets_id}]. Property [{$post_id}] could not be removed.<br/>";
+            }
+          }
+        }
+
+        // Removed post from ES.
+        wp_remote_request( trailingslashit( RETS_ES_LINK ) . 'v5/property/' . $post_id, array(
+          'method' => 'DELETE',
+          'blocking' => false
+        ));
+
       }
 
-      // die( '<pre>' . print_r( $_deleted, true ) . '</pre>' );
+      echo "<br/>";
+
+      $step++;
+
+      if( !empty( $_GET[ 'limit' ] ) && $_GET[ 'limit' ] <= $step ) {
+        die();
+      }
+
     }
 
     return $all_deleted;
@@ -135,8 +177,9 @@ if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' &
 
   }
 
+  wp_die('Deleted ' . count(delete_rets_duplicates()) . ' total');
   //wp_die('Deleted ' . count(delete_rets_listings()) . ' total');
-  wp_die('Deleted ' . count(delete_rets_media()) . ' media');
+  //wp_die('Deleted ' . count(delete_rets_media()) . ' media');
 
 }
 
