@@ -1212,14 +1212,15 @@
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
 
+          if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
+            formQuery.bool.must_not = [];
+          }
+
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
             formQuery.bool.must.push($scope.rdc_listing_query);
           }
 
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-            if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
-              formQuery.bool.must_not = [];
-            }
             formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
           }
 
