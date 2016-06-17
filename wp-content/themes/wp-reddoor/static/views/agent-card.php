@@ -21,12 +21,15 @@ use \UsabilityDynamics\RDC\Utils;
   <?php endif; ?>
 
   <div class="singleShareContainer">
+    <div class="sShConL">
     <h4><?php _e('Share This Property','reddoor'); ?></h4>
     <p>
       <a class="icon-wpproperty-social-facebook-symbol" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_the_permalink()); ?>"></a>
       <a class="icon-wpproperty-social-twitter-symbol" target="_blank" href="https://twitter.com/home?status=<?php echo urlencode('Check out this ' . ($bedrooms = Utils::get_single_term('bedrooms', $property['ID'])) . ' bed ' . ($bathrooms = Utils::get_single_term('bathrooms', $property['ID'])) . ' bath ' . ($total_living_area = Utils::get_single_term('total_living_area_sqft', $property['ID'])) . ' sqft in #' . ($location_city = Utils::get_single_term('location_city', $property['ID'])) . ' on @RedDoorCompany at ' . get_the_permalink()) ?>"></a>
       <a class="icon-wpproperty-social-linkedin-symbol" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode(get_the_permalink()); ?>&title=<?php echo urlencode($bedrooms . ' bed ' . $bathrooms . ' bath ' . $total_living_area . ' sqft in #' . $location_city); ?>&summary=<?php (!empty($property['automated_property_detail_description'])) ? urlencode($property['automated_property_detail_description']) : '' ?>&source=Red%20Door%20Company"></a>
     </p>
+    </div>
+    <div class="sShConR">
     <p class="visEmail"><span><?php _e('or send via email'); ?></span></p>
     <script>
       jQuery(document).ready(function(){
@@ -38,7 +41,8 @@ use \UsabilityDynamics\RDC\Utils;
     </script>
     <input type="email" placeholder="enter email address" id="sharingEmail" />
     <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . $property['automated_property_detail_description'] . '%0ACheck%20it%20out%20at%20' . get_the_permalink(); ?>"><?php _e('Send Email', 'reddoor') ?></a>
-  </div>
+    </div>
+    </div>
 
   <div class="rdc-agents-carousel-container">
 
@@ -70,9 +74,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                echo '<h3>' . $user_data->display_name . '</h3>';
+                echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                 echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupRentHome">'.__('Request Information', 'reddoor').'</a></div>';
 
@@ -112,9 +116,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<div class="nonRdcRentProp icon icon-wpproperty-contact-name-outline"></div>';
 
-                echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
+                echo '<div class="agentTitleBlock"><h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
-                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
+                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span></div>';
 
                 echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupNonRdcRentListing" data-nonrdcagentphone="'. $_phone .'" data-nonrdcagentname="'. Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) .'" data-nonrdcagentoffice="'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'" >'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -150,9 +154,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                   echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                  echo '<h3>' . $user_data->display_name . '</h3>';
+                  echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                  echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                  echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                   echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($agent->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -201,9 +205,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                    echo '<h3>' . $user_data->display_name . '</h3>';
+                    echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                    echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                    echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                     echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -226,5 +230,5 @@ use \UsabilityDynamics\RDC\Utils;
     </div>
 
   </div>
-
+  <div class="clear"></div>
 </div>

@@ -71,6 +71,9 @@ $_property_detail_map = array(
 // Start the Loop.
 
 while (have_posts()) : the_post();
+  $_permalink = get_the_permalink();
+  $_listing_slug = explode('/', $_permalink);
+
   $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
   $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
   $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
@@ -655,6 +658,13 @@ while (have_posts()) : the_post();
   </div>
 
 </div>
+  <?php if ($_listing_slug[3] == 'listing'){ ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.ourCompanyBtn').addClass('current-menu-item');
+    });
+  </script>
+  <?php }  ?>
 <?php endwhile; ?>
 
 <?php get_footer(); ?>
