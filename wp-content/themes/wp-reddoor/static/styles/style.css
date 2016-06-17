@@ -6686,6 +6686,118 @@ a.btn-rdc {
   padding-left: 0;
   padding-right: 0;
 }
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  body.single-property .singlePropertyHeader .oneAgent {
+    position: inherit !important;
+    width: 100%;
+    margin: 20px 0 0 0;
+    right: 0 !important;
+    top: 0 !important;
+    height: 200px;
+    padding: 0;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .singleShareContainer {
+    width: 90%;
+    margin-left: 10%;
+    height: 198px;
+    overflow: hidden;
+  }
+  body.single-property .singlePropertyHeader .oneAgent img {
+    margin: 0 50px;
+    float: left;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .agentTitleBlock {
+    float: left;
+  }
+  body.single-property .singlePropertyHeader .oneAgent h3 {
+    clear: none;
+  }
+  body.single-property .singlePropertyHeader .oneAgent span {
+    display: block;
+    text-align: center;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock {
+    padding: 0 40px;
+    margin-top: 25px;
+    float: left;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .oneAgentLinksBlock a {
+    width: 100%;
+    padding: 15px 10px;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .socialButtons {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    margin: 0;
+    border-right: 1px solid #eeeaea;
+    border-bottom: 1px solid #eeeaea;
+    float: left;
+    width: 10%;
+    height: 200px;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .socialButtons li {
+    width: 100%;
+    height: 50%;
+    color: #a7a9ac;
+    font-size: 2em !important;
+    padding: 0;
+    border-right: none;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .socialButtons li:first-child {
+    border-bottom: 1px solid #eeeaea;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .socialButtons li a {
+    color: #a7a9ac;
+    display: block;
+    padding: 22px 0 15px;
+    outline: none;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .socialButtons li a:focus {
+    text-decoration: none !important;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container {
+    float: left;
+    width: 90%;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-title {
+    float: right;
+    height: 200px;
+    padding: 0;
+    position: relative;
+    width: 10%;
+    border-left: 1px solid #eeeaea;
+    z-index: 6;
+    background: #fff none repeat scroll 0 0;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-title .rdc-agents-carousel-next {
+    border-bottom: 1px solid #eeeaea;
+    height: 50%;
+    padding-right: 25%;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    padding-top: 30%;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-title .rdc-agents-carousel-previous {
+    bottom: 0;
+    left: auto;
+    right: 0;
+    top: auto;
+    width: 100%;
+    text-align: center;
+    height: 50%;
+    padding-right: 25%;
+    padding-top: 30%;
+    border-bottom: 2px solid #eeeaea;
+  }
+  body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-items {
+    position: absolute;
+    z-index: 5;
+  }
+  body.single-property .areaMapBlock .nav-tabs li {
+    width: 24.985%;
+  }
+}
 @media screen and (min-width: 992px) {
   .home .select2-dropdown {
     width: 400px !important;

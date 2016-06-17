@@ -282,7 +282,7 @@ var rdc = {
 
     jQuery( '.association-carousel .sow-carousel-wrapper' ).append( '<div class="assocCarouselBg"></div>' );
 
-    if (jQuery(window).width() >= 992) {
+    if (jQuery(window).width() >= 1200) {
       rdc_property_sticky();
     }
 
@@ -535,7 +535,7 @@ var rdc = {
       resizeTimer = setTimeout( function () {
         map_resize();
         frontPageSearchBlock_resize();
-        if (jQuery(window).width() >= 992) {
+        if (jQuery(window).width() >= 1200) {
           rdc_property_sticky();
         }
         rdc_agent_carousel_item_width();

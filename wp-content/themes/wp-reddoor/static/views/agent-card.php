@@ -70,9 +70,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                echo '<h3>' . $user_data->display_name . '</h3>';
+                echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                 echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupRentHome">'.__('Request Information', 'reddoor').'</a></div>';
 
@@ -112,9 +112,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<div class="nonRdcRentProp icon icon-wpproperty-contact-name-outline"></div>';
 
-                echo '<h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
+                echo '<div class="agentTitleBlock"><h3>' . Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) . '</h3>';
 
-                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span>';
+                echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span></div>';
 
                 echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupNonRdcRentListing" data-nonrdcagentphone="'. $_phone .'" data-nonrdcagentname="'. Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) .'" data-nonrdcagentoffice="'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'" >'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -150,9 +150,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                   echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                  echo '<h3>' . $user_data->display_name . '</h3>';
+                  echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                  echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                  echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                   echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($agent->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -201,9 +201,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo wp_get_attachment_image($imageId, 'agent_card') . '<br />';
 
-                    echo '<h3>' . $user_data->display_name . '</h3>';
+                    echo '<div class="agentTitleBlock"><h3>' . $user_data->display_name . '</h3>';
 
-                    echo '<span>'.__('Red Door Company', 'reddoor').'</span>';
+                    echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
                     echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
@@ -226,5 +226,5 @@ use \UsabilityDynamics\RDC\Utils;
     </div>
 
   </div>
-
+  <div class="clear"></div>
 </div>

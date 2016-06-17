@@ -21,6 +21,7 @@
 @white: #fff;
 @buttons: #d03528;
 @adaptMobile: 992px;
+@adaptTablet: 1199px;
 
 @import "buttons.less";
 
@@ -30,6 +31,140 @@
   padding-left:0;
   padding-right:0;
 }
+
+@media screen and ( min-width: @adaptMobile ) and (max-width: @adaptTablet) {
+  body{
+    &.single-property{
+      .singlePropertyHeader{
+      .oneAgent{
+        position: inherit !important;
+        width: 100%;
+        margin: 20px 0 0 0;
+        right: 0 !important;
+        top: 0 !important;
+        height: 200px;
+        padding: 0;
+
+        .singleShareContainer{
+          width: 90%;
+          margin-left: 10%;
+          height: 198px;
+          overflow: hidden;
+
+        }
+
+        img {
+          margin: 0 50px;
+          float: left;
+        }
+        .agentTitleBlock{
+          float: left;
+          span{
+
+          }
+        }
+
+        h3{
+          clear: none;
+        }
+        span{
+          display: block;
+          text-align: center;
+        }
+        .oneAgentLinksBlock{
+          padding: 0 40px;
+          margin-top: 25px;
+          float: left;
+          a{
+            width: 100%;
+            padding: 15px 10px;
+          }
+        }
+        .socialButtons{
+          background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+          margin: 0;
+          border-right: 1px solid #eeeaea;
+          border-bottom: 1px solid #eeeaea;
+          float: left;
+          width: 10%;
+          height: 200px;
+          li{
+            width: 100%;
+            height: 50%;
+            color: #a7a9ac;
+            font-size: 2em !important;
+            padding: 0;
+            border-right: none;
+            &:first-child{
+              border-bottom: 1px solid #eeeaea;
+            }
+
+            a{
+              color: #a7a9ac;
+              display: block;
+              padding: 22px 0 15px;
+              outline: none;
+              &:focus{
+                text-decoration: none !important;
+              }
+            }
+          }
+        }
+        .rdc-agents-carousel-container{
+          float: left;
+          width: 90%;
+
+          .rdc-agents-carousel-title {
+            float: right;
+            height: 200px;
+            padding: 0;
+            position: relative;
+            width: 10%;
+            border-left: 1px solid #eeeaea;
+            z-index: 6;
+            background: #fff none repeat scroll 0 0;
+
+            .rdc-agents-carousel-next {
+              border-bottom: 1px solid #eeeaea;
+              height: 50%;
+              padding-right: 25%;
+              right: 0;
+              text-align: center;
+              top: 0;
+              width: 100%;
+              padding-top: 30%;
+            }
+            .rdc-agents-carousel-previous {
+              bottom: 0;
+              left: auto;
+              right: 0;
+              top: auto;
+              width: 100%;
+              text-align: center;
+              height: 50%;
+              padding-right: 25%;
+              padding-top: 30%;
+              border-bottom: 2px solid #eeeaea;
+            }
+          }
+          .rdc-agents-carousel-items{
+            position: absolute;
+            z-index: 5;
+          }
+          }
+        }
+      }
+      .areaMapBlock {
+        .nav-tabs {
+          li {
+            width: 24.985%;
+          }
+        }
+      }
+    }
+  }
+}
+
 
 
 // Large Screens Only
@@ -165,6 +300,7 @@
         margin: 20px 0 0 0;
         right: 0 !important;
         top: 0 !important;
+
       }
     }
     .menuDesktop {
