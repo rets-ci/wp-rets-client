@@ -10,25 +10,51 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 // force non-minified version of siteorigin scripts
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
-if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy') {
+// Only activate tests when on a 'develop' branch.
+if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && strpos( $_SERVER['HTTP_X_SELECTED_BRANCH'], 'develop' ) !== false ) {
   header( 'cache-control:no-cache, private' );
 
-  add_action('init', function() {
+  $_event_map = array(
+    "init" => [ 5, 10, 20 ],
+    "after_setup_theme" => [ 5, 10, 20 ],
+    "plugins_loaded" => [ 5, 10, 20 ],
+    "wp" => [ 5, 10, 20 ],
+    "wp_loaded" => [ 5, 10, 20 ],
+    "template_redirect" => [ 5, 10, 20 ],
+    "get_header" => [ 5, 10, 20 ],
+  );
 
+  foreach( $_event_map as $_action => $levels ) {
+    //print_r($_action);die();
 
-    return;
-    
-    delete_post_meta(3280379, '_thumbnail_id');
-    $test = add_post_meta( 3280379, '_thumbnail_id', 3280427 );
-    //$test = set_post_thumbnail( 3280379, 3280427 );
+    foreach( $levels as $level ) {
 
-    if( !$test ) {
-      die('failed!' );
-    } else {
-      die( 'worked!' );
+      add_action($_action, function() {
+
+        if( !headers_sent() ) {
+          $data = '[time:' . timer_stop() . '],[action:' . current_action() . ']';
+
+          if( $__level ) {
+            $data .= '[level:' . $__level . ']';
+          }
+
+          header( 'x-set-flag:' . $data, false );
+        }
+
+      }, $level );
+
     }
 
-  });
+  }
+  // time curl "https://www.reddoorcompany.com/listing_office/red-door-company/?wpp_search%5Bsale_type%5D=Rent" -H "x-set-branch:develop-andy" -H "x-edge:andy" -H "cache-control:no-cache" -H "pragma:no-cache" -I
+  // time curl "http://localhost/listing_office/red-door-company/?wpp_search%5Bsale_type%5D=Rent" -H "x-set-branch:develop-andy" -H "x-edge:andy" -H "cache-control:no-cache" -H "pragma:no-cache" -H "x-forwarded-proto:https" -I
+
+  // use to debug manually...
+  // die('death. ' . __FILE__ . ' - ' . __LINE__ . ' - ' . timer_stop() );
+
+  add_action('wp_print_scripts', function() {
+    //die(current_action() . ' - ' . time()  . ' - ' . timer_stop());
+  }, 0 );
 
 
 }

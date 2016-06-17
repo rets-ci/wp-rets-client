@@ -240,14 +240,22 @@ var rdc = {
     jQuery( '.linkedFootIcon a' ).html( '<span class="icon-wpproperty-social-linkedin-symbol"></span>' );
     jQuery( '.instagramFootIcon a' ).html( '<span class="icon-wpproperty-social-instagram-symbol"></span>' );
 
-    jQuery( '.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn' ).addClass( 'current-menu-item' );
+    //jQuery( '.archive .ourCompanyBtn, .category .ourCompanyBtn, .single .ourCompanyBtn, .blog .ourCompanyBtn' ).addClass( 'current-menu-item' );
 
     if( jQuery( 'body.page' ).hasClass( 'home' ) ) {
       jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
       jQuery( '.home .buyBtnForm' ).addClass( 'current-menu-item' );
     }
 
-    jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
+    //jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
+
+    var parentElement = jQuery('li.current-menu-item').closest('li.visibilityMenu');
+    jQuery(parentElement).addClass('current-menu-item');
+
+    if(jQuery('body[class*=listing_office]').length > 0){
+      jQuery( '#menu-header li' ).removeClass('current-menu-item');
+      jQuery('.buyBtnForm').addClass('current-menu-item')
+    }
 
     jQuery( '.menuDesktop > .removeLink > a' ).removeAttr( 'href' );
 
@@ -332,10 +340,13 @@ var rdc = {
     } );
 
     if(jQuery(window).width() <= 560) {
-      jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
+      jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width() - 20);
       jQuery(document).on('rdc-carousel-ajax-complete', function(){
         jQuery('.rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item').width(jQuery(document).width());
       });
+      if(jQuery('.rdc-carousel-item').hasClass('calloutcard')){
+        jQuery('.calloutcard').addClass('carousel-item')
+      }
     }
 
     jQuery('.oneAgent .showContactPopup a').on('click', function(){
