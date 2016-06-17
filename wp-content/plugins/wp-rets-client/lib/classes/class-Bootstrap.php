@@ -529,7 +529,7 @@ namespace UsabilityDynamics\WPRETSC {
         $query = new \WP_Query( array(
           'post_status' => array( 'publish', 'draft', 'pending', 'trash', 'private', 'future' ),
           'post_type'   => 'property',
-          'meta_key'    => 'wpp::rets_pk',
+          'meta_key'    => ( defined( 'RETS_ID_KEY' ) ? RETS_ID_KEY : 'wpp::rets_pk' ),
           'meta_value'  => $rets_id,
         ) );
 
