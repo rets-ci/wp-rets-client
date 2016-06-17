@@ -2477,17 +2477,20 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
   margin-bottom: 3em;
+  min-height: 150px;
+  display: flex;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > span {
-  float: left;
+  color: #f10d2c;
   display: block;
+  float: left;
   font-size: 5em;
-  margin-left: 10%;
-  color: #F10D2C;
+  margin-left: 5%;
+  margin-right: 7%;
+  align-self: center;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
-  float: right;
-  width: 70%;
+  float: left;
   line-height: 1.8em;
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
