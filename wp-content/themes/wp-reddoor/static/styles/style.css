@@ -7048,6 +7048,9 @@ a.btn-rdc {
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
   }
+  body .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
+    min-height: 100px;
+  }
   body .mobileMenu .closeMobileMenu {
     font-size: 2em !important;
   }
@@ -7151,9 +7154,6 @@ a.btn-rdc {
   }
   .footerWidgetArea1 {
     margin-top: 18px;
-  }
-  .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
-    min-height: auto;
   }
 }
 .searchForm .select2-search__field {
