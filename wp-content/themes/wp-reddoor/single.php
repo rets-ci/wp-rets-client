@@ -39,7 +39,16 @@ if(!empty($post_thumbnail_id)) {
         <span class="icon-rdc-<?php echo $category && $category[0] ? $category[0]->slug : ''; ?>"></span>
       </div>
       <h1 class="singleTitle"><?php the_title(); ?></h1>
-      <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
+      <h4 class="singleExcerpt hidden-xs">
+        <?php
+
+        $_single_excerpt = get_the_excerpt();
+        $tags = array("<p>", "</p>");
+        $_single_excerpt = str_replace($tags, '', $_single_excerpt);
+        echo $_single_excerpt;
+
+        ?>
+      </h4>
       <?php echo do_shortcode( '[share_this_article]' ); ?>
 
     </section>
