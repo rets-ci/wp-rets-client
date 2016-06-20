@@ -141,7 +141,7 @@ use \UsabilityDynamics\RDC\Utils;
 <!--                        </ul>-->
                       </div>
                       <ul>
-                        <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency}}</li>
+                        <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency : '$' : 0}}</li>
                         <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
@@ -293,8 +293,8 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>
                     <td class="sm-sqft" ng-show="columns.total_living_area_sqft.enable">{{row._source.tax_input.total_living_area_sqft[0]}}</td>
                     <td class="sm-lot" ng-show="columns.approximate_lot_size.enable">{{row._source.tax_input.approximate_lot_size[0]}}</td>
-                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
-                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency}}</td>
+                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency : '$' : 0}}</td>
+                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}</td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.added[0]}}</td>
                   </tr>
