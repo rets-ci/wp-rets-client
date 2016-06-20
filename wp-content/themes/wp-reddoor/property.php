@@ -430,7 +430,7 @@ while (have_posts()) : the_post();
     ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
 
     if(!empty( $walkScore )){
-    
+
     ?>
     <div class="row singleWalkScore">
       <?php
@@ -562,7 +562,13 @@ while (have_posts()) : the_post();
                     <h4><?php echo $group_detail['label']; ?></h4>
                     <p class="clear"></p>
                   </section>
-                  <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
+                  <ul class="underlined-list">
+                    <?php 
+                    
+                    echo implode( '', rdc_get_attribute_group( $group_slug ) ); 
+                    
+                    ?>
+                  </ul>
                 </div>
               </div>
               <?php } ?>
