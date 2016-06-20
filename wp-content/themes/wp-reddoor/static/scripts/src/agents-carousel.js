@@ -107,6 +107,11 @@ function rdc_init_agents_carousel(){
             } );
         }
 
+        if(jQuery(window).width() > 992 && jQuery(window).width() < 1200) {
+            if (numItems <= 1) {
+                jQuery('body.single-property .singlePropertyHeader .rdc-agents-carousel-container .rdc-agents-carousel-items').css('position', 'relative');
+            }
+        }
 
         var setNewPosition = function(newPosition) {
             if(newPosition < 50 && newPosition >  -( itemWidth * numItems )) {

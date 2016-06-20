@@ -39,7 +39,16 @@ if(!empty($post_thumbnail_id)) {
         <span class="icon-rdc-<?php echo $category && $category[0] ? $category[0]->slug : ''; ?>"></span>
       </div>
       <h1 class="singleTitle"><?php the_title(); ?></h1>
-      <h4 class="singleExcerpt"><?php the_excerpt(); ?></h4>
+      <h4 class="singleExcerpt hidden-xs">
+        <?php
+
+        $_single_excerpt = get_the_excerpt();
+        $tags = array("<p>", "</p>");
+        $_single_excerpt = str_replace($tags, '', $_single_excerpt);
+        echo $_single_excerpt;
+
+        ?>
+      </h4>
       <?php echo do_shortcode( '[share_this_article]' ); ?>
 
     </section>
@@ -47,16 +56,16 @@ if(!empty($post_thumbnail_id)) {
 <?php } ?>
 <div class="container">
   <div class="row">
-    <div class="col-lg-4">
-      <?php if (!dynamic_sidebar('Single-sidebar')) : ?>
-        [ do default stuff if no widgets ]
-      <?php endif; ?>
-    </div>
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-md-8">
       <article class="content">
         <?php the_content(); endwhile; ?>
         <?php echo do_shortcode( '[share_this_article]' ); ?>
       </article>
+    </div>
+    <div class="col-lg-3 col-md-4 col-lg-offset-1">
+      <?php if (!dynamic_sidebar('Single-sidebar')) : ?>
+        [ do default stuff if no widgets ]
+      <?php endif; ?>
     </div>
   </div>
   <div class="row loadMoreBlockSeparate">

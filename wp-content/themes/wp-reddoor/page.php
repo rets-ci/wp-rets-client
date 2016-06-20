@@ -29,7 +29,7 @@ get_header(); ?>
     </div><!-- .row -->
   </div>
 
-<!-- For call career popups on career page by clicking contact button in header and footer @kavaribes -->
+
 <?php if ($_careers_slug == 'careers'){ ?>
   <script type="text/javascript">
     jQuery(document).ready(function(){
@@ -37,6 +37,6 @@ get_header(); ?>
     });
   </script>
 <?php } ?>
-<!-- -->
+
 
 <?php get_footer(); ?>

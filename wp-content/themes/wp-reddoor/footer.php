@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="container-fluind footerBg1">
+<div class="container-fluid footerBg1">
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-lg-4">
@@ -55,7 +55,7 @@
     </div>
 </div>
 </div>
-<div class="container-fluind footerBg2">
+<div class="container-fluid footerBg2">
     <div class="container">
         <div class="row">
             <div class="col-lg-10">

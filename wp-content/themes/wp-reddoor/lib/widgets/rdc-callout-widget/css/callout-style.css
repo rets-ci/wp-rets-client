@@ -1,8 +1,7 @@
 .widget_callout{
     margin: 0 0 20px 0 !important;
     position: relative;
-    width: 80%;
-    left: 35px;
+    width: 100%;
 }
 .widget_callout .widgetBody{
     background-size: cover !important;
