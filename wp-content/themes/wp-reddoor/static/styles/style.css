@@ -1441,6 +1441,9 @@ a:focus {
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
   color: #5a595c;
 }
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li.active i {
+  color: #5a595c;
+}
 @media screen and (max-width: 992px) {
   .wpp-advanced-supermap .sm-properties-list-wrap .sm-no-results {
     padding: 30px 0;

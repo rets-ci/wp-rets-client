@@ -183,7 +183,18 @@
               }
             }
             this.mode[mode] = true;
+            this.toggleActive(mode);
             setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+          },
+          toggleActive: function(mode) {
+            var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
+            if( mode == 'table' ) {
+              list_wrapper.find('li.sm-table').addClass('active');
+              list_wrapper.find('li.sm-preview').removeClass('active');
+            } else {
+              list_wrapper.find('li.sm-table').removeClass('active');
+              list_wrapper.find('li.sm-preview').addClass('active');
+            }
           }
         };
 

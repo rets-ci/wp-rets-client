@@ -73,8 +73,8 @@ use \UsabilityDynamics\RDC\Utils;
 
         <ul class="sm-list-controls">
           <li class="hidden-md hidden-lg mobile-toggle-search-icon" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
-          <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
-          <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
+          <li ng-click="view.set('table')" class="sm-table active"><i class="icon-wpproperty-interface-list-solid"></i></li>
+          <li ng-click="view.set('preview')" class="sm-preview"><i class="icon-wpproperty-interface-grid-solid"></i></li>
         </ul>
 
         <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
