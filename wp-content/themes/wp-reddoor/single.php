@@ -56,13 +56,13 @@ if(!empty($post_thumbnail_id)) {
 <?php } ?>
 <div class="container">
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-md-8">
       <article class="content">
         <?php the_content(); endwhile; ?>
         <?php echo do_shortcode( '[share_this_article]' ); ?>
       </article>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3 col-md-4 col-lg-offset-1">
       <?php if (!dynamic_sidebar('Single-sidebar')) : ?>
         [ do default stuff if no widgets ]
       <?php endif; ?>
