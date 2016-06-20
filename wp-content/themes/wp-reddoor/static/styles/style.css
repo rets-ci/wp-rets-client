@@ -547,6 +547,11 @@ a:focus {
   border: 1px solid #f3f0e9;
   overflow: hidden;
 }
+@media screen and (max-width: 410px) {
+  .oneCategory {
+    width: 100%;
+  }
+}
 .oneCategory .oneCategoryImg {
   height: 280px;
   width: 100%;
@@ -7137,6 +7142,9 @@ a.btn-rdc {
   }
   .archiveImageHeader {
     top: -24px;
+  }
+  .archiveImageHeader .hero-overlay {
+    bottom: 34px;
   }
   .hideTabMobile {
     display: none;
