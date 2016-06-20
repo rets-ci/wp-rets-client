@@ -6758,7 +6758,7 @@ a.btn-rdc {
   body.single-property .singlePropertyHeader .oneAgent .socialButtons li a {
     color: #a7a9ac;
     display: block;
-    padding: 22px 0 15px;
+    padding: 35px 0;
     outline: none;
   }
   body.single-property .singlePropertyHeader .oneAgent .socialButtons li a:focus {
