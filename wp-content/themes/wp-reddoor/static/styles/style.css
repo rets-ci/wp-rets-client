@@ -2500,6 +2500,25 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   font-weight: 400;
   margin-bottom: 15px;
 }
+@media screen and (max-width: 1200px) {
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
+    display: block;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > span {
+    float: none;
+    margin: 5% 0;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
+    float: none;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
+    font-size: 1.5em !important;
+    text-shadow: none !important;
+    color: #5a595c !important;
+    font-weight: 400;
+    margin-bottom: 15px;
+  }
+}
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetImageArea {
   width: 50%;
   background-position: center;
@@ -6781,7 +6800,7 @@ a.btn-rdc {
   body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-title .rdc-agents-carousel-next {
     border-bottom: 1px solid #eeeaea;
     height: 50%;
-    padding-right: 25%;
+    padding-right: 30%;
     right: 0;
     text-align: center;
     top: 0;
@@ -6796,7 +6815,7 @@ a.btn-rdc {
     width: 100%;
     text-align: center;
     height: 50%;
-    padding-right: 25%;
+    padding-right: 30%;
     padding-top: 30%;
     border-bottom: 2px solid #eeeaea;
   }
