@@ -547,6 +547,11 @@ a:focus {
   border: 1px solid #f3f0e9;
   overflow: hidden;
 }
+@media screen and (max-width: 410px) {
+  .oneCategory {
+    width: 100%;
+  }
+}
 .oneCategory .oneCategoryImg {
   height: 280px;
   width: 100%;
@@ -2499,6 +2504,25 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   color: #5a595c !important;
   font-weight: 400;
   margin-bottom: 15px;
+}
+@media screen and (max-width: 1200px) {
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint {
+    display: block;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > span {
+    float: none;
+    margin: 5% 0;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div {
+    float: none;
+  }
+  .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetContent .featurePoint > div h4 {
+    font-size: 1.5em !important;
+    text-shadow: none !important;
+    color: #5a595c !important;
+    font-weight: 400;
+    margin-bottom: 15px;
+  }
 }
 .so-widget-tabbed-content .sow-slider-base .sow-slider-image-wrapper .tabbedWidgetImageArea {
   width: 50%;
@@ -6758,7 +6782,7 @@ a.btn-rdc {
   body.single-property .singlePropertyHeader .oneAgent .socialButtons li a {
     color: #a7a9ac;
     display: block;
-    padding: 22px 0 15px;
+    padding: 35px 0;
     outline: none;
   }
   body.single-property .singlePropertyHeader .oneAgent .socialButtons li a:focus {
@@ -6781,7 +6805,7 @@ a.btn-rdc {
   body.single-property .singlePropertyHeader .oneAgent .rdc-agents-carousel-container .rdc-agents-carousel-title .rdc-agents-carousel-next {
     border-bottom: 1px solid #eeeaea;
     height: 50%;
-    padding-right: 25%;
+    padding-right: 30%;
     right: 0;
     text-align: center;
     top: 0;
@@ -6796,7 +6820,7 @@ a.btn-rdc {
     width: 100%;
     text-align: center;
     height: 50%;
-    padding-right: 25%;
+    padding-right: 30%;
     padding-top: 30%;
     border-bottom: 2px solid #eeeaea;
   }
@@ -7118,6 +7142,9 @@ a.btn-rdc {
   }
   .archiveImageHeader {
     top: -24px;
+  }
+  .archiveImageHeader .hero-overlay {
+    bottom: 34px;
   }
   .hideTabMobile {
     display: none;
