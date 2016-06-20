@@ -83,9 +83,14 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
             $propertyDetailsDescription .= ' ';
         }
         $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
-        $propertyDetailsDescription .= ' sits on a ';
-        $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
-        $propertyDetailsDescription .= ' lot and features ';
+        if($propertyDetailsAttrs['approximate_lot_size']){
+            $propertyDetailsDescription .= ' sits on a ';
+            $propertyDetailsDescription .= ' sits on a ';
+            $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
+            $propertyDetailsDescription .= ' lot and features ';
+        } else{
+            $propertyDetailsDescription .= ' features ';
+        }
         $propertyDetailsDescription .=  $propertyDetailsAttrs['bedrooms'];
         $propertyDetailsDescription .= ' bedrooms and ';
         $propertyDetailsDescription .= $propertyDetailsAttrs['bathrooms'];
