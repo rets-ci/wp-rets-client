@@ -2387,7 +2387,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   min-height: 50px;
   background-position: center center;
   margin-top: 15px;
-  min-height: 700px;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
   height: 100%;
@@ -7047,9 +7046,6 @@ a.btn-rdc {
   }
   body .so-widget-tabbed-content .sow-slider-image-wrapper .tabbedWidgetContent {
     width: 100% !important;
-  }
-  body .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
-    min-height: 100px;
   }
   body .mobileMenu .closeMobileMenu {
     font-size: 2em !important;
