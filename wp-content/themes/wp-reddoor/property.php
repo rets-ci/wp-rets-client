@@ -424,11 +424,17 @@ while (have_posts()) : the_post();
         </div>
       </div>
     </div>
+    <?php
+    $_post_meta = get_post_meta( $property[ 'ID' ] );
+    ( !empty( $_post_meta[ '_ws_walkscore' ] ) ) ? $walkScoreMeta = $_post_meta[ '_ws_walkscore' ] : $walkScoreMeta = '';
+    ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
+
+    if(!empty( $walkScore )){
+    
+    ?>
     <div class="row singleWalkScore">
       <?php
-      $_post_meta = get_post_meta( $property[ 'ID' ] );
-      ( !empty( $_post_meta[ '_ws_walkscore' ] ) ) ? $walkScoreMeta = $_post_meta[ '_ws_walkscore' ] : $walkScoreMeta = '';
-      ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
+
       if( $walkScore <= 100 && $walkScore >= 70 ) {
         $walkScoreColor = '#57BD04';
       } elseif( $walkScore <= 69 && $walkScore >= 50 ) {
@@ -494,6 +500,7 @@ while (have_posts()) : the_post();
         </div>
       </div>
       </div>
+    <?php } ?>
     <div class="row">
       <div class="col-xs-12 col-md-12 col-lg-8">
         <div class="bottomSeparate"></div>
