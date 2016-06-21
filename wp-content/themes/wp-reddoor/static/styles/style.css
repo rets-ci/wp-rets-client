@@ -1446,6 +1446,9 @@ a:focus {
 .wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li i:hover {
   color: #5a595c;
 }
+.wpp-advanced-supermap .sm-properties-list-wrap .sm-list-controls li.active i {
+  color: #5a595c;
+}
 @media screen and (max-width: 992px) {
   .wpp-advanced-supermap .sm-properties-list-wrap .sm-no-results {
     padding: 30px 0;
@@ -2387,7 +2390,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   min-height: 50px;
   background-position: center center;
   margin-top: 15px;
-  min-height: 700px;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
   height: 100%;
@@ -7151,9 +7153,6 @@ a.btn-rdc {
   }
   .footerWidgetArea1 {
     margin-top: 18px;
-  }
-  .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
-    min-height: auto;
   }
 }
 .searchForm .select2-search__field {
