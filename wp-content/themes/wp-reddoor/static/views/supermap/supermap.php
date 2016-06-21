@@ -31,7 +31,7 @@ use \UsabilityDynamics\RDC\Utils;
         ?>
         <div class="<?php echo apply_filters( 'wpp::advanced_supermap::map_column_classes', 'col-md-6' ); ?> sm-google-map-wrap hidden-xs hidden-sm">
 
-          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false" map-type-control="false" street-view-control="false">
+          <ng-map zoom="4" center="[43.6650000, -79.4103000]" class="sm-google-map" default-style="false" map-type-control="false" street-view-control="false" scrollwheel="false">
 
             <div class="sm-search-layer">
               <div class="sm-search-filter-layer clearfix">
@@ -73,8 +73,8 @@ use \UsabilityDynamics\RDC\Utils;
 
         <ul class="sm-list-controls">
           <li class="hidden-md hidden-lg mobile-toggle-search-icon" ng-click="toggleSearchForm()"><i class="icon-wpproperty-interface-search-solid"></i></li>
-          <li ng-show="view.mode.preview" ng-click="view.set('table')"><i class="icon-wpproperty-interface-list-solid"></i></li>
-          <li ng-show="view.mode.table" ng-click="view.set('preview')"><i class="icon-wpproperty-interface-grid-solid"></i></li>
+          <li ng-click="view.set('table')" class="sm-table active"><i class="icon-wpproperty-interface-list-solid"></i></li>
+          <li ng-click="view.set('preview')" class="sm-preview"><i class="icon-wpproperty-interface-grid-solid"></i></li>
         </ul>
 
         <div class="sm-search-form hidden-md hidden-lg" ng-show="searchForm">
@@ -141,7 +141,7 @@ use \UsabilityDynamics\RDC\Utils;
 <!--                        </ul>-->
                       </div>
                       <ul>
-                        <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency}}</li>
+                        <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency : '$' : 0}}</li>
                         <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
@@ -293,8 +293,8 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>
                     <td class="sm-sqft" ng-show="columns.total_living_area_sqft.enable">{{row._source.tax_input.total_living_area_sqft[0]}}</td>
                     <td class="sm-lot" ng-show="columns.approximate_lot_size.enable">{{row._source.tax_input.approximate_lot_size[0]}}</td>
-                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency}}</td>
-                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency}}</td>
+                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency : '$' : 0}}</td>
+                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}</td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.added[0]}}</td>
                   </tr>

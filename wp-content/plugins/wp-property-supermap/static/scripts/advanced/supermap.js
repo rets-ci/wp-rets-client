@@ -183,7 +183,18 @@
               }
             }
             this.mode[mode] = true;
+            this.toggleActive(mode);
             setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+          },
+          toggleActive: function(mode) {
+            var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
+            if( mode == 'table' ) {
+              list_wrapper.find('li.sm-table').addClass('active');
+              list_wrapper.find('li.sm-preview').removeClass('active');
+            } else {
+              list_wrapper.find('li.sm-table').removeClass('active');
+              list_wrapper.find('li.sm-preview').addClass('active');
+            }
           }
         };
 
@@ -1126,6 +1137,36 @@
           $select.append($option).trigger('change');
         }
 
+        $scope.sm_form_data = function sm_form_data( form_data ) {
+          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+            jQuery.each( jQuery(".rdc-home-types input:checkbox"), function (k,v) {
+              form_data.push({name:v.name,value:v.value});
+            } );
+          }
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
+              form_data.push({name:v.name,value:v.value});
+            } );
+          }
+          return form_data;
+        };
+
+        $document.on( 'change', '.rdc-home-types input:checkbox', function(){
+          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
+          } else {
+            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
+          }
+        });
+
+        $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
+          } else {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
+          }
+        });
+
         /**
          * SEARCH FILTER EVENT
          *
@@ -1162,7 +1203,9 @@
             return push_counters[key]++;
           };
 
-          jQuery.each(jQuery( this ).serializeArray(), function(){
+          var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
+
+          jQuery.each(form_data, function(){
 
             if(!patterns.validate.test(this.name)){
               return;
@@ -1193,12 +1236,16 @@
             formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
           });
 
+          if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
+            formQuery.bool.must_not = [];
+          }
+
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
             formQuery.bool.must.push($scope.rdc_listing_query);
           }
 
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-            formQuery.bool.must_not = [ $scope.rdc_listing_query ];
+            formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
           }
 
           //merging the current taxonomy if tax archieve page
@@ -1209,6 +1256,7 @@
           $scope.query = formQuery;
 
           $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
+          $scope.query.bool.must_not = $scope.query.bool.must_not.filter(Boolean);
 
           if( $scope.searchForm ) {
             $scope.toggleSearchForm();
