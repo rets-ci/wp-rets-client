@@ -2387,7 +2387,6 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   min-height: 50px;
   background-position: center center;
   margin-top: 15px;
-  min-height: 700px;
 }
 .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea img {
   height: 100%;
@@ -7151,9 +7150,6 @@ a.btn-rdc {
   }
   .footerWidgetArea1 {
     margin-top: 18px;
-  }
-  .so-widget-tabbed-content .tabbedWidgetMobile .ui-accordion-content .tabbedMobileImageArea {
-    min-height: auto;
   }
 }
 .searchForm .select2-search__field {
