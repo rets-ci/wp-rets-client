@@ -266,14 +266,37 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        */
       public function rpc_remove_duplicated_mls( $args ) {
-        global $wp_xmlrpc_server;
+        global $wp_xmlrpc_server, $wpdb;
 
         $data = $this->parseRequest( $args );
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return $data;
         }
 
+        $response = array(
+          "ok" => true,
+          "total" => 0,
+          "removed" => array(),
+        );
+
         ud_get_wp_rets_client()->write_log( 'Have request wpp.removeDuplicatedMLS request' );
+
+        // Find all RETS IDs that have multiple posts associated with them.
+        $_duplicates = $wpdb->get_col( "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC;" );
+
+        $response[ 'duplicates' ] = $_duplicates;
+        //$response[ 'wpdb' ] = $wpdb;
+        $response[ 'error' ] = $wpdb->show_errors();
+
+        if( empty( $_duplicates ) ) {
+          return $response;
+        } else {
+          ud_get_wp_rets_client()->write_log( "Found [" . count( $_duplicates ) . "] RETS IDs which have duplicated properties" );
+          $response[ 'total' ] = count( $_duplicates );
+        }
+
+        return $response;
+
       }
 
     }
