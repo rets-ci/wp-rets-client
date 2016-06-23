@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<methodCall>
+  <methodName>wpp.removeDuplicatedMLS</methodName>
+  <params>
+    <param>
+      <value>
+        <int>1</int>
+      </value>
+    </param>
+    <param>
+      <value>
+        <string>wp@rets.ci</string>
+      </value>
+    </param>
+    <param>
+      <value>
+        <string><![CDATA[ED3LX#EJ1&xz]]></string>
+      </value>
+    </param>
+  </params>
+</methodCall>
