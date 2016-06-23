@@ -20,6 +20,10 @@ namespace UsabilityDynamics\WPRETSC {
        */
       protected static $instance = null;
 
+      /**
+       * @var string
+       */
+      public $logfile = 'debug-log.log';
 
       /**
        * Instantaite class.
