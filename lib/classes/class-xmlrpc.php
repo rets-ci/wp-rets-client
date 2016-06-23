@@ -358,8 +358,6 @@ namespace UsabilityDynamics\WPRETSC {
 
             }
 
-            ud_get_wp_rets_client()->write_log( "TEST 1" );
-
             // Maybe remove post from ES.
             if( !empty( $data[ 'es_client' ] ) ) {
 
@@ -371,26 +369,17 @@ namespace UsabilityDynamics\WPRETSC {
               ));
             }
 
-            ud_get_wp_rets_client()->write_log( "TEST 2" );
-
             array_push( $response[ 'removed' ], $post_id );
 
           }
 
-          ud_get_wp_rets_client()->write_log( "TEST 3" );
-
           $step++;
 
           if( !empty( $data[ 'limit' ] ) && $data[ 'limit' ] <= $step ) {
-            ud_get_wp_rets_client()->write_log( "TEST 4" );
             break;
           }
 
-          ud_get_wp_rets_client()->write_log( "TEST 5" );
-
         }
-
-        ud_get_wp_rets_client()->write_log( "TEST 6" );
 
         // @todo: probably term counting should be executed via different way. Because it takes forever to update counts.... peshkov@UD
         //wp_defer_term_counting( false );
