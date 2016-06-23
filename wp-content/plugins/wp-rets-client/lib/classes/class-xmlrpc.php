@@ -273,27 +273,129 @@ namespace UsabilityDynamics\WPRETSC {
           return $data;
         }
 
+        ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+
         $response = array(
           "ok" => true,
           "total" => 0,
+          "request" => $data,
           "removed" => array(),
+          "logs" => array(),
         );
 
         ud_get_wp_rets_client()->write_log( 'Have request wpp.removeDuplicatedMLS request' );
 
         // Find all RETS IDs that have multiple posts associated with them.
-        $_duplicates = $wpdb->get_col( "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC;" );
+        $query = "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC";
+        $_duplicates = $wpdb->get_col( $query );
 
-        $response[ 'duplicates' ] = $_duplicates;
-        //$response[ 'wpdb' ] = $wpdb;
-        $response[ 'error' ] = $wpdb->show_errors();
+        //$response[ 'query' ] = $wpdb->last_query;
+
+        $log = "Found [" . count( $_duplicates ) . "] RETS IDs which have duplicated properties";
+        array_push( $response[ 'logs' ], $log );
+        ud_get_wp_rets_client()->write_log( $log );
 
         if( empty( $_duplicates ) ) {
           return $response;
         } else {
-          ud_get_wp_rets_client()->write_log( "Found [" . count( $_duplicates ) . "] RETS IDs which have duplicated properties" );
           $response[ 'total' ] = count( $_duplicates );
         }
+
+        $step = 0;
+
+        foreach( $_duplicates as $rets_id ) {
+
+          $post_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='rets_id' AND meta_value='{$rets_id}' ORDER BY post_id DESC;" );
+
+          $log = "Found [" . ( count($post_ids) - 1 ) . "] duplications for RETS ID [{$rets_id}]";
+          array_push( $response[ 'logs' ], $log );
+          ud_get_wp_rets_client()->write_log( $log );
+
+          $primary = 0;
+
+          foreach( $post_ids as $post_id ) {
+
+            /**
+             * Disable term counting
+             */
+            wp_defer_term_counting( true );
+
+            if ( FALSE === get_post_status( $post_id ) ) {
+
+              ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+
+              ud_get_wp_rets_client()->write_log( "Post ID [$post_id] does not exist. Removing its postmeta and terms" );
+
+              // Looks like post was deleted. But postmeta ( and probably terms ) still exist... Remove it.
+              wp_delete_object_term_relationships( $post_id, get_object_taxonomies( 'property' ));
+              $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
+
+              $log = "RETS ID [{$rets_id}]. Removed postmeta and terms for Property [{$post_id}].";
+              array_push( $response[ 'logs' ], $log );
+              ud_get_wp_rets_client()->write_log( $log );
+
+            } else {
+
+              if( !$primary ) {
+
+                $primary = $post_id;
+                continue;
+
+              } else {
+
+                ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+
+                if( wp_delete_post( $post_id, true ) ) {
+                  $log = "RETS ID [{$rets_id}]. Removed Property [{$post_id}]";
+                } else {
+                  $log = "RETS ID [{$rets_id}]. Property [{$post_id}] could not be removed";
+                }
+
+                array_push( $response[ 'logs' ], $log );
+                ud_get_wp_rets_client()->write_log( $log );
+
+              }
+
+            }
+
+            ud_get_wp_rets_client()->write_log( "TEST 1" );
+
+            // Maybe remove post from ES.
+            if( !empty( $data[ 'es_client' ] ) ) {
+
+              ud_get_wp_rets_client()->write_log( "Removing post ID [$post_id] from Elasticsearch" );
+
+              wp_remote_request( trailingslashit( $data[ 'es_client' ] ) . $post_id, array(
+                'method' => 'DELETE',
+                'blocking' => false
+              ));
+            }
+
+            ud_get_wp_rets_client()->write_log( "TEST 2" );
+
+            array_push( $response[ 'removed' ], $post_id );
+
+          }
+
+          ud_get_wp_rets_client()->write_log( "TEST 3" );
+
+          $step++;
+
+          if( !empty( $data[ 'limit' ] ) && $data[ 'limit' ] <= $step ) {
+            ud_get_wp_rets_client()->write_log( "TEST 4" );
+            break;
+          }
+
+          ud_get_wp_rets_client()->write_log( "TEST 5" );
+
+        }
+
+        ud_get_wp_rets_client()->write_log( "TEST 6" );
+
+        // @todo: probably term counting should be executed via different way. Because it takes forever to update counts.... peshkov@UD
+        //wp_defer_term_counting( false );
+
+        ud_get_wp_rets_client()->write_log( 'wpp.removeDuplicatedMLS Done' );
 
         return $response;
 
