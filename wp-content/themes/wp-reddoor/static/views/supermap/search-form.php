@@ -134,7 +134,7 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="col-md-4 col-sm-4">
 
         <label><?php _e( 'Listing Type', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
+        <div class="rdc-range-fields rdc-sale-types">
           <ul>
             <li>
               <input id="sale_type_sale" ng-checked="sale_type_checked('Sale')" class="styled-checkbox-radio" type="checkbox" value="Sale" name="bool[must][5][terms][tax_input.sale_type][]" />
@@ -148,7 +148,7 @@ use \UsabilityDynamics\RDC\Utils;
         </div>
 
         <label><?php _e( 'Home Type', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields">
+        <div class="rdc-range-fields rdc-home-types">
           <ul>
             <li>
               <input id="property_type_condo" class="styled-checkbox-radio" type="checkbox" value="condo" checked name="bool[must][6][terms][meta_input.property_type][]" />

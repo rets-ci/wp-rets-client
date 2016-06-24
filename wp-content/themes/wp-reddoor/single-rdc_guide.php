@@ -18,6 +18,10 @@ if(!empty($post_thumbnail_id)) {
 // check if there is a next post link
 $have_next_post_link = get_next_post_link() ? true : false;
 
+$_permalink = get_the_permalink();
+$_guide_slug = explode('/', $_permalink);
+
+
 ?>
 <?php get_header(''); ?>
   <div class="container-fluid guide-wrapper">
@@ -62,4 +66,31 @@ $have_next_post_link = get_next_post_link() ? true : false;
 
   </div>
   </div>
+  <!--  @kavaribes -->
+<?php if ($_guide_slug[4] == 'landlord'){ ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.managementItem').addClass('current-menu-item');
+    });
+  </script>
+<?php } elseif($_guide_slug[4] == 'home-sellers'){  ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.sellItem').addClass('current-menu-item');
+    });
+  </script>
+<?php } elseif($_guide_slug[4] == 'home-renters'){  ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.rentBtnForm').addClass('current-menu-item');
+    });
+  </script>
+<?php } elseif($_guide_slug[4] == 'home-buyers'){  ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.buyBtnForm').addClass('current-menu-item');
+    });
+  </script>
+<?php }   ?>
+  <!-- -->
 <?php get_footer('guide'); ?>

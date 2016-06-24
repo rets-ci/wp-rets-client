@@ -38,7 +38,7 @@ function rdc_get_attribute_group( $name ) {
       if( array_key_exists( $key, $taxonomies ) ) {
         $get_term_value = get_the_terms( $property[ 'ID' ], $key );
         if( !empty( $get_term_value[ 0 ]->name ) ) {
-          $listAttributes[] = '<li><span class="field-label">' . str_replace( '_', ' ', ucwords( $key ) ) . ':</span> <span class="field-value">' . $get_term_value[ 0 ]->name . '</span></li>';
+          $listAttributes[] = '<li><span class="field-label">' . get_taxonomy($key)->labels->name . ':</span> <span class="field-value">' . $get_term_value[ 0 ]->name . '</span></li>';
         }
       } else {
         if( isset( $property[ "$key" ] ) && $property[ $key ] == true ) {
@@ -83,9 +83,14 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
             $propertyDetailsDescription .= ' ';
         }
         $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
-        $propertyDetailsDescription .= ' sits on a ';
-        $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
-        $propertyDetailsDescription .= ' lot and features ';
+        if($propertyDetailsAttrs['approximate_lot_size']){
+            $propertyDetailsDescription .= ' sits on a ';
+            $propertyDetailsDescription .= ' sits on a ';
+            $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
+            $propertyDetailsDescription .= ' lot and features ';
+        } else{
+            $propertyDetailsDescription .= ' features ';
+        }
         $propertyDetailsDescription .=  $propertyDetailsAttrs['bedrooms'];
         $propertyDetailsDescription .= ' bedrooms and ';
         $propertyDetailsDescription .= $propertyDetailsAttrs['bathrooms'];

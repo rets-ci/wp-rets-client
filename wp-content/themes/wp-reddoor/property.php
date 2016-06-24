@@ -71,6 +71,9 @@ $_property_detail_map = array(
 // Start the Loop.
 
 while (have_posts()) : the_post();
+  $_permalink = get_the_permalink();
+  $_listing_slug = explode('/', $_permalink);
+
   $get_sale_type_terms = get_the_terms($property['ID'], 'sale_type');
   $get_bedrooms_terms = get_the_terms($property['ID'], 'bedrooms');
   $get_bathrooms_terms = get_the_terms($property['ID'], 'bathrooms');
@@ -421,11 +424,17 @@ while (have_posts()) : the_post();
         </div>
       </div>
     </div>
+    <?php
+    $_post_meta = get_post_meta( $property[ 'ID' ] );
+    ( !empty( $_post_meta[ '_ws_walkscore' ] ) ) ? $walkScoreMeta = $_post_meta[ '_ws_walkscore' ] : $walkScoreMeta = '';
+    ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
+
+    if(!empty( $walkScore )){
+
+    ?>
     <div class="row singleWalkScore">
       <?php
-      $_post_meta = get_post_meta( $property[ 'ID' ] );
-      ( !empty( $_post_meta[ '_ws_walkscore' ] ) ) ? $walkScoreMeta = $_post_meta[ '_ws_walkscore' ] : $walkScoreMeta = '';
-      ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
+
       if( $walkScore <= 100 && $walkScore >= 70 ) {
         $walkScoreColor = '#57BD04';
       } elseif( $walkScore <= 69 && $walkScore >= 50 ) {
@@ -491,6 +500,7 @@ while (have_posts()) : the_post();
         </div>
       </div>
       </div>
+    <?php } ?>
     <div class="row">
       <div class="col-xs-12 col-md-12 col-lg-8">
         <div class="bottomSeparate"></div>
@@ -552,7 +562,13 @@ while (have_posts()) : the_post();
                     <h4><?php echo $group_detail['label']; ?></h4>
                     <p class="clear"></p>
                   </section>
-                  <ul class="underlined-list"><?php echo implode( '', rdc_get_attribute_group( $group_slug ) ); ?></ul>
+                  <ul class="underlined-list">
+                    <?php 
+                    
+                    echo implode( '', rdc_get_attribute_group( $group_slug ) ); 
+                    
+                    ?>
+                  </ul>
                 </div>
               </div>
               <?php } ?>
@@ -655,6 +671,13 @@ while (have_posts()) : the_post();
   </div>
 
 </div>
+  <?php if ($_listing_slug[3] == 'listing'){ ?>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('.ourCompanyBtn').addClass('current-menu-item');
+    });
+  </script>
+  <?php }  ?>
 <?php endwhile; ?>
 
 <?php get_footer(); ?>

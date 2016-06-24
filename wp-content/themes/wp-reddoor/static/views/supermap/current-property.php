@@ -22,7 +22,7 @@
 <!--          </ul>-->
         </div>
         <ul>
-          <li class="sm-current-property-price">{{currentProperty._source.tax_input.price[0] | currency}}</li>
+          <li class="sm-current-property-price">{{currentProperty._source.tax_input.price[0] | currency : '$' : 0}}</li>
           <li class="sm-current-property-title"><a target="_blank" href="/?p={{currentProperty._id}}">{{currentProperty._source.post_title}}</a></li>
         </ul>
         <ul class="sm-current-property-stats">
