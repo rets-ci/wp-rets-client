@@ -4,8 +4,8 @@ Donate link: https://www.usabilitydynamics.com
 Tags: admin, google, bucket, CDN, google cloud storage, media, mirror, uploads, stateless
 License: GPLv2 or later
 Requires at least: 4.0
-Tested up to: 4.4.2
-Stable tag: 1.7.3
+Tested up to: 4.5.2
+Stable tag: 1.9.0
 
 == Description ==
 
@@ -14,6 +14,12 @@ The WP-Stateless plugin copies your media uploads to Google Cloud Storage in rea
 This plugin is useful for running multiple environments or instances of your WordPress site.
 
 Plugin requires PHP 5.4 or higher.
+
+Overview
+https://www.youtube.com/watch?v=aGntFnKwkE0
+
+Setting Up
+https://www.youtube.com/watch?v=szf5hTns4Ak
 
 > See the plugin on [GitHub](https://github.com/wpCloud/wp-stateless)
 
@@ -58,6 +64,17 @@ See Installation tab.
 * Initial public release.
 
 == Changelog ==
+
+= 1.9.0 =
+* Added new ability to define cacheControl for remote objects.
+* Added new option that adds random hashes to file names.
+
+= 1.8.0 =
+* Added the ability to regenerate and synchronize separate Media file from the list.
+* Added the ability to regenerate and synchronize Media file from edit screen.
+* Fixed the issue on multisite setup (switch_to_blog now works as expected).
+* Performance fixes.
+* UI cleanup.
 
 = 1.7.3 =
 * Initial public release.

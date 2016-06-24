@@ -93,6 +93,7 @@ namespace wpCloud\StatelessMedia {
        * Regenerate image sizes.
        */
       public function action_stateless_process_image() {
+
         @error_reporting( 0 );
 
         $id = (int) $_REQUEST['id'];
@@ -115,11 +116,11 @@ namespace wpCloud\StatelessMedia {
 
           if ( $result_code !== 200 ) {
             $this->store_failed_attachment( $image->ID, 'images' );
-            throw new \Exception(sprintf(__('File not found (%s)', ud_get_stateless_media()->domain), $image->guid));
+            throw new \Exception(sprintf(__('Both local and remote files are missing. Unable to resize. (%s)', ud_get_stateless_media()->domain), $image->guid));
           }
         }
 
-        @set_time_limit( 900 );
+        @set_time_limit( -1 );
 
         $metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
 
@@ -174,7 +175,7 @@ namespace wpCloud\StatelessMedia {
 
           if ( !ud_get_stateless_media()->get_client()->media_exists( str_replace( trailingslashit( $upload_dir[ 'basedir' ] ), '', $fullsizepath ) ) ) {
 
-            @set_time_limit( 900 );
+            @set_time_limit( -1 );
 
             $metadata = wp_generate_attachment_metadata( $file->ID, $fullsizepath );
 

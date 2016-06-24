@@ -25,7 +25,7 @@ namespace wpCloud\StatelessMedia {
        * @property $version
        * @type {Object}
        */
-      public static $version = '1.7.3';
+      public static $version = '1.9.0';
 
       /**
        * Singleton Instance Reference.
@@ -42,6 +42,24 @@ namespace wpCloud\StatelessMedia {
        */
       public function init() {
 
+        /**
+         * Register SM metaboxes
+         */
+        add_action( 'admin_init', array( $this, 'register_metaboxes' ) );
+
+        /**
+         * Add custom actions to media rows
+         */
+        add_filter( 'media_row_actions', array( $this, 'add_custom_row_actions' ), 10, 3 );
+
+        /**
+         * Handle switch blog properly.
+         */
+        add_action( 'switch_blog', array( $this, 'on_switch_blog' ), 10, 2 );
+
+        /**
+         * Init AJAX jobs
+         */
         new Ajax();
 
         /**
@@ -71,10 +89,27 @@ namespace wpCloud\StatelessMedia {
          */
         $this->settings = new Settings();
 
+        /**
+         * Add scripts
+         */
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
+        /**
+         * Hashify file name if option is enabled
+         */
+        if ( $this->get( 'sm.hashify_file_name' ) == 'true' ) {
+          add_filter('sanitize_file_name', array( $this, 'randomize_filename' ), 10);
+        }
+
         /* Initialize plugin only if Mode is not 'disabled'. */
-        if( $this->get( 'sm.mode' ) !== 'disabled' ) {
+        if ( $this->get( 'sm.mode' ) !== 'disabled' ) {
+
+          /**
+           * Override Cache Control is option is enabled
+           */
+          if ( $this->get( 'sm.override_cache_control' ) == 'true' ) {
+            add_filter( 'sm:item:cacheControl', array( $this, 'override_cache_control' ) );
+          }
 
           /**
            * Determine if we have issues with connection to Google Storage Bucket
@@ -116,11 +151,6 @@ namespace wpCloud\StatelessMedia {
             add_filter( 'image_downsize', array( $this, 'image_downsize' ), 99, 3 );
 
             /**
-             * Hook into attachment egit page UI
-             */
-            add_action( 'attachment_submitbox_misc_actions', array( $this, 'attachment_submitbox_misc_actions' ), 20, 2 );
-
-            /**
              * Extends metadata by adding GS information.
              */
             add_filter( 'wp_get_attachment_metadata', array( $this, 'wp_get_attachment_metadata' ), 10, 2 );
@@ -149,6 +179,107 @@ namespace wpCloud\StatelessMedia {
 
         }
 
+      }
+
+      /**
+       * Get new blog settings once switched blog.
+       * @param $new_blog
+       * @param $prev_blog_id
+       */
+      public function on_switch_blog( $new_blog, $prev_blog_id ) {
+        $this->settings->refresh();
+      }
+
+      /**
+       * @param $actions
+       * @param $post
+       * @param $detached
+       * @return mixed
+       */
+      public function add_custom_row_actions( $actions, $post, $detached ) {
+
+        if ( !current_user_can( 'upload_files' ) ) return $actions;
+
+        if ( $post && 'attachment' == $post->post_type && 'image/' == substr( $post->post_mime_type, 0, 6 ) ) {
+          $actions['sm_sync'] = '<a href="javascript:;" data-id="'.$post->ID.'" data-type="image" class="sm_inline_sync">' . __('Regenerate and Sync with GCS', ud_get_stateless_media()->domain) . '</a>';
+        }
+
+        if ( $post && 'attachment' == $post->post_type && 'image/' != substr( $post->post_mime_type, 0, 6 ) ) {
+          $actions['sm_sync'] = '<a href="javascript:;" data-id="'.$post->ID.'" data-type="other" class="sm_inline_sync">' . __('Sync with GCS', ud_get_stateless_media()->domain) . '</a>';
+        }
+
+        return $actions;
+
+      }
+
+      /**
+       * Register metaboxes
+       */
+      public function register_metaboxes() {
+        add_meta_box(
+          'sm-attachment-metabox',
+          __( 'Google Cloud Storage', ud_get_stateless_media()->domain ),
+          array($this, 'attachment_meta_box_callback'),
+          'attachment',
+          'side',
+          'low'
+        );
+      }
+
+      /**
+       * @param $post
+       */
+      public function attachment_meta_box_callback( $post ) {
+        ob_start();
+
+        $sm_cloud = get_post_meta( $post->ID, 'sm_cloud', 1 );
+
+        if ( is_array( $sm_cloud ) && !empty( $sm_cloud[ 'fileLink' ] ) ) { ?>
+
+          <?php if( !empty( $sm_cloud[ 'cacheControl' ] ) ) { ?>
+            <div class="misc-pub-cache-control hidden">
+              <?php _e( 'Cache Control:', ud_get_stateless_media()->domain ); ?> <strong><span><?php echo $sm_cloud[ 'cacheControl' ]; ?></span> </strong>
+            </div>
+          <?php } ?>
+
+          <div class="misc-pub-gs-file-link" style="margin-bottom: 15px;">
+            <label>
+              <?php _e( 'Storage Bucket URL:', ud_get_stateless_media()->domain ); ?> <a href="<?php echo $sm_cloud[ 'fileLink' ]; ?>" target="_blank" class="sm-view-link"><?php _e( '[view]' ); ?></a>
+              <input type="text" class="widefat urlfield" readonly="readonly" value="<?php echo esc_attr($sm_cloud[ 'fileLink' ]); ?>" />
+            </label>
+          </div>
+
+          <?php
+
+          if ( !empty( $sm_cloud[ 'bucket' ] ) ) {
+            ?>
+            <div class="misc-pub-gs-bucket" style="margin-bottom: 15px;">
+              <label>
+                <?php _e( 'Storage Bucket:', ud_get_stateless_media()->domain ); ?>
+                <input type="text" class="widefat urlfield" readonly="readonly" value="gs://<?php echo esc_attr($sm_cloud[ 'bucket' ]); ?>" />
+              </label>
+            </div>
+            <?php
+          }
+
+          if ( current_user_can( 'upload_files' ) ) {
+            if ( $post && 'attachment' == $post->post_type && 'image/' == substr( $post->post_mime_type, 0, 6 ) ) {
+              ?>
+              <a href="javascript:;" data-type="image" data-id="<?php echo $post->ID; ?>"
+                 class="button-secondary sm_inline_sync"><?php _e('Regenerate and Sync with GCS', ud_get_stateless_media()->domain); ?></a>
+              <?php
+            }
+
+            if ( $post && 'attachment' == $post->post_type && 'image/' != substr( $post->post_mime_type, 0, 6 ) ) {
+              ?>
+              <a href="javascript:;" data-type="other" data-id="<?php echo $post->ID; ?>"
+                 class="button-secondary sm_inline_sync"><?php _e('Sync with GCS', ud_get_stateless_media()->domain); ?></a>
+              <?php
+            }
+          }
+        }
+
+        echo apply_filters( 'sm::attachment::meta', ob_get_clean(), $post->ID );
       }
 
       /**
@@ -187,6 +318,8 @@ namespace wpCloud\StatelessMedia {
       }
 
       /**
+       * Handle images on fly
+       *
        * @param $file
        * @return mixed
        */
@@ -195,10 +328,26 @@ namespace wpCloud\StatelessMedia {
         $client = ud_get_stateless_media()->get_client();
         $upload_dir = wp_upload_dir();
 
-        $client->add_media( $_mediaOptions = array_filter( array(
-            'name' => str_replace( trailingslashit( $upload_dir[ 'basedir' ] ), '', $file ),
-            'absolutePath' => wp_normalize_path( $file )
-        ) ));
+        $file_path = str_replace( trailingslashit( $upload_dir[ 'basedir' ] ), '', $file );
+        $file_info = @getimagesize( $file );
+
+        if ( $file_info ) {
+          $_metadata = array(
+            'width'  => $file_info[0],
+            'height' => $file_info[1],
+            'object-id' => 'unknown', // we really don't know it
+            'source-id' => md5( $file.ud_get_stateless_media()->get( 'sm.bucket' ) ),
+            'file-hash' => md5( $file )
+          );
+        }
+
+        $client->add_media( apply_filters('sm:item:on_fly:before_add', array_filter( array(
+          'name' => $file_path,
+          'absolutePath' => wp_normalize_path( $file ),
+          'cacheControl' => apply_filters( 'sm:item:cacheControl', 'public, max-age=36000, must-revalidate', $_metadata ),
+          'contentDisposition' => null,
+          'metadata' => $_metadata
+        ) ) ) );
 
         return $file;
       }
@@ -251,8 +400,31 @@ namespace wpCloud\StatelessMedia {
        *
        * @todo: it should not be loaded everywhere. peshkov@UD
        */
-      public function admin_enqueue_scripts() {
+      public function admin_enqueue_scripts( $hook ) {
+
         wp_enqueue_style( 'wp-stateless', $this->path( 'static/styles/wp-stateless.css', 'url'  ), array(), self::$version );
+
+        switch( $hook ) {
+
+          case 'upload.php':
+
+            wp_enqueue_script( 'wp-stateless-uploads-js', $this->path( 'static/scripts/wp-stateless-uploads.js', 'url'  ), array( 'jquery' ), self::$version );
+
+            break;
+
+          case 'post.php':
+
+            global $post;
+
+            if ( $post->post_type == 'attachment' ) {
+              wp_enqueue_script( 'wp-stateless-uploads-js', $this->path( 'static/scripts/wp-stateless-uploads.js', 'url'  ), array( 'jquery' ), self::$version );
+            }
+
+            break;
+
+          default: break;
+        }
+
       }
 
       /**
@@ -275,53 +447,6 @@ namespace wpCloud\StatelessMedia {
         }
 
         return $attr;
-
-      }
-
-      /**
-       * Add some meta to attachment edit page
-       *
-       * @global type $post
-       */
-      public function attachment_submitbox_misc_actions() {
-        global $post;
-
-        ob_start();
-
-        $sm_cloud = get_post_meta( $post->ID, 'sm_cloud', 1 );
-
-        if ( is_array( $sm_cloud ) && !empty( $sm_cloud[ 'fileLink' ] ) ) { ?>
-
-          <?php if( !empty( $sm_cloud[ 'cacheControl' ] ) ) { ?>
-            <div class="misc-pub-section misc-pub-cache-control hidden">
-		        <?php _e( 'Cache Control:', ud_get_stateless_media()->domain ); ?> <strong><span><?php echo $sm_cloud[ 'cacheControl' ]; ?></span> </strong>
-          </div>
-          <?php } ?>
-
-          <div class="misc-pub-section misc-pub-gs-file-link">
-            <label>
-              <?php _e( 'Storage Bucket URL:', ud_get_stateless_media()->domain ); ?> <a href="<?php echo $sm_cloud[ 'fileLink' ]; ?>" target="_blank" class="sm-view-link"><?php _e( '[view]' ); ?></a>
-              <input type="text" class="widefat urlfield" readonly="readonly" value="<?php echo esc_attr($sm_cloud[ 'fileLink' ]); ?>" />
-            </label>
-          </div>
-
-          <?php
-
-          if ( !empty( $sm_cloud[ 'bucket' ] ) ) {
-            ?>
-            <div class="misc-pub-section misc-pub-gs-bucket">
-              <label>
-                <?php _e( 'Storage Bucket:', ud_get_stateless_media()->domain ); ?>
-                <input type="text" class="widefat urlfield" readonly="readonly" value="gs://<?php echo esc_attr($sm_cloud[ 'bucket' ]); ?>" />
-              </label>
-            </div>
-          <?php
-          }
-
-
-        }
-
-        echo apply_filters( 'sm::attachment::meta', ob_get_clean(), $post->ID );
 
       }
 
