@@ -301,9 +301,9 @@ namespace UsabilityDynamics\WPRETSC {
          */
         wp_defer_term_counting( true );
 
-        if ( FALSE === get_post_status( $post_id ) ) {
+        ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
 
-          ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+        if ( FALSE === get_post_status( $post_id ) ) {
 
           ud_get_wp_rets_client()->write_log( "Post ID [$post_id] does not exist. Removing its postmeta and terms if exist" );
 
@@ -317,7 +317,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         } else {
 
-          ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+          ud_get_wp_rets_client()->write_log( "Post [$post_id] found. Removing it." );
 
           if( wp_delete_post( $post_id, true ) ) {
             $log = "Removed Property [{$post_id}]";
