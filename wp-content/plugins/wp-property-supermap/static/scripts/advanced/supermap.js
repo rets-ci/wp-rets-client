@@ -866,22 +866,34 @@
             return false;
           }
           idle_listener = map.addListener('idle', function () {
+            $scope.resetMapBounds();
             var bounds = map.getBounds();
-            var SouthWestLatitude = bounds.getSouthWest().lat();
-            var NorthEastLatitude = bounds.getNorthEast().lat();
-            var NorthEastLongitude = bounds.getNorthEast().lng();
-            var SouthWestLongitude = bounds.getSouthWest().lng();
-            if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
-              jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
-              jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
-              jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
-              jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-              jQuery('.sm-search-form form').addClass('mapChanged');
-              if (jQuery.isEmptyObject($scope.tax_must_query)) {
-                $scope.rdc_listing = true;
-              }
-              jQuery('.sm-search-form form').submit();
+            var bjson = bounds.toJSON();
+            var north = bjson.north;
+            var south = bjson.south;
+            var east = bjson.east;
+            var west = bjson.west;
+            if( north > south ) {
+              jQuery('.rdc-latitude-gte').val(south);
+              jQuery('.rdc-latitude-lte').val(north);
+            } else {
+              jQuery('.rdc-latitude-gte').val(north);
+              jQuery('.rdc-latitude-lte').val(south);
             }
+            if( west < east ) {
+              jQuery('.rdc-longitude-gte').val(east);
+              jQuery('.rdc-longitude-lte').val(west);
+            } else {
+              jQuery('.rdc-longitude-0slte').val(180);
+              jQuery('.rdc-longitude-0sgte').val(west);
+              jQuery('.rdc-longitude-1slte').val(east);
+              jQuery('.rdc-longitude-1sgte').val(-180);
+            }
+            jQuery('.sm-search-form form').addClass('mapChanged');
+            if (jQuery.isEmptyObject($scope.tax_must_query)) {
+              $scope.rdc_listing = true;
+            }
+            jQuery('.sm-search-form form').submit();
           });
         });
 
@@ -890,6 +902,10 @@
           jQuery('.rdc-latitude-lte').val('');
           jQuery('.rdc-longitude-gte').val('');
           jQuery('.rdc-longitude-lte').val('');
+          jQuery('.rdc-longitude-0slte').val('');
+          jQuery('.rdc-longitude-0sgte').val('');
+          jQuery('.rdc-longitude-1slte').val('');
+          jQuery('.rdc-longitude-1sgte').val('');
         };
 
         $document.bind("st_sort_done",function(){
