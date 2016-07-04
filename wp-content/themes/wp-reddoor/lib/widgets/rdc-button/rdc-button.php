@@ -1,10 +1,12 @@
 <?php
 /*
-Widget Name: Button
+Widget Name: rdc-button
 Description: A powerful yet simple button widget for your sidebars or Page Builder pages.
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 */
+
+if( !class_exists( 'SiteOrigin_Widget' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-button/base/rdc-siteorigin-widget.class.php';
 
 class SiteOrigin_Widget_RDC_Button_Widget extends SiteOrigin_Widget {
 	function __construct() {
