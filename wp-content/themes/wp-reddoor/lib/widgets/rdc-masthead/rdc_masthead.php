@@ -6,7 +6,7 @@ Author:
 Author URI:
 */
 
-//echo die('huy');
+die('huy');
 
 if( !class_exists( 'SiteOrigin_Widget' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-masthead/base/rdc-siteorigin-widget.class.php';
 
