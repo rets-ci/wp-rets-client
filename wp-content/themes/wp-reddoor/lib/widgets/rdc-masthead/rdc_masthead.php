@@ -1,19 +1,21 @@
 <?php
 /*
-Widget Name: rdc-button
+Widget Name: RDC Masthead
 Description: A powerful yet simple button widget for your sidebars or Page Builder pages.
-Author: SiteOrigin
-Author URI: https://siteorigin.com
+Author:
+Author URI:
 */
 
-if( !class_exists( 'SiteOrigin_Widget' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-button/base/rdc-siteorigin-widget.class.php';
+//echo die('huy');
 
-class SiteOrigin_Widget_RDC_Button_Widget extends SiteOrigin_Widget {
+if( !class_exists( 'SiteOrigin_Widget' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-masthead/base/rdc-siteorigin-widget.class.php';
+
+class RDC_Masthead_Widget extends SiteOrigin_Widget {
 	function __construct() {
 
 		parent::__construct(
-			'rdc-button',
-			__('RDC Button', 'so-widgets-bundle'),
+			'rdc-masthead',
+			__('RDC Masthead', 'so-widgets-bundle'),
 			array(
 				'description' => __('A customizable button widget.', 'so-widgets-bundle'),
 				'help' => 'https://siteorigin.com/widgets-bundle/button-widget-documentation/'
@@ -22,7 +24,7 @@ class SiteOrigin_Widget_RDC_Button_Widget extends SiteOrigin_Widget {
 
 			),
 			false,
-			get_stylesheet_directory_uri('/lib/widgets/rdc-button')
+			get_stylesheet_directory_uri('/lib/widgets/rdc-masthead')
 		);
 
 	}
@@ -31,8 +33,8 @@ class SiteOrigin_Widget_RDC_Button_Widget extends SiteOrigin_Widget {
 		$this->register_frontend_styles(
 			array(
 				array(
-					'sow-button-base',
-					get_stylesheet_directory_uri('/lib/widgets/rdc-button/css/style.css'),
+					'rdc-masthead-base',
+					get_stylesheet_directory_uri('/lib/widgets/rdc-masthead/css/style.css'),
 					array(),
 					SOW_BUNDLE_VERSION
 				),
@@ -273,4 +275,4 @@ class SiteOrigin_Widget_RDC_Button_Widget extends SiteOrigin_Widget {
 	}
 }
 
-siteorigin_widget_register('rdc-button', __FILE__, 'SiteOrigin_Widget_RDC_Button_Widget');
+siteorigin_widget_register('rdc-masthead', __FILE__, 'RDC_Masthead_Widget');
