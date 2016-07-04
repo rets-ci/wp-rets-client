@@ -13,7 +13,7 @@ require_once get_template_directory() . '/lib/post-types/guide.php';
 
 if(class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-post-carousel/post-carousel.php';
-  require_once 'lib/widgets/rdc-hero/hero.php';
+  require_once 'lib/widgets/rdc-tabbed-content/tabbed_content.php';
 }
 
 add_action( 'admin_enqueue_scripts', function () {
