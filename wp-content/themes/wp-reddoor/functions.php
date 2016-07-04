@@ -14,6 +14,7 @@ require_once get_template_directory() . '/lib/post-types/guide.php';
 if(class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-post-carousel/post-carousel.php';
   require_once 'lib/widgets/rdc-tabbed-content/tabbed_content.php';
+  require_once 'lib/widgets/rdc-masthead/rdc_masthead.php';
 }
 
 add_action( 'admin_enqueue_scripts', function () {
