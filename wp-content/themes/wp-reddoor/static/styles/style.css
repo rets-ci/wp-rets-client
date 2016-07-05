@@ -2681,6 +2681,11 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-bottom: -60px;
   top: -60px;
 }
+@media screen and (max-width: 992px) {
+  .rdc-masthead-widget {
+    height: 1050px;
+  }
+}
 /**
  * WIDGET class 'hero-content'
  *
