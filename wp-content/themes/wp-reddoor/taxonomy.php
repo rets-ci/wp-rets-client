@@ -20,4 +20,21 @@ get_header(); ?>
     </div><!-- .row -->
   </div>
 
+  <?php
+
+    if(isset($_REQUEST['wpp_search']) && isset($_REQUEST['wpp_search']['sale_type'])){
+      if($_REQUEST['wpp_search']['sale_type'] == 'Rent'){
+        ?>
+          <script type="text/javascript">
+            jQuery(document).ready(function(){
+              jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
+              jQuery( '.rentBtnForm' ).addClass( 'current-menu-item' );
+            })
+          </script>
+        <?php
+      }
+    }
+  ?>
+
+
 <?php get_footer(); ?>
