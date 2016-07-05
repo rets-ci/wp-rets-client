@@ -72,17 +72,26 @@
       maximumSelectionLength: 1,
       minimumInputLength: 3,
       ajax: {
-        url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
-        dataType: 'json',
-        data: function (params) {
-          return {
-            q: params.term
-          };
-        },
-        processResults: function(data, page){
-          return {
-            results: data.data
+        transport: function( params, success, failure ) {
+          if( rdc.client() ){
+            rdc.searchTerms( 'Buy', function( error, response ) {
+              console.log(response);
+            });
           }
+          // else {
+          //   url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
+          //       dataType: 'json',
+          //       data: function (params) {
+          //     return {
+          //       q: params.term
+          //     };
+          //   },
+          //   processResults: function(data, page){
+          //     return {
+          //       results: data.data
+          //     }
+          //   }
+          // }
         }
       },
       language: {

@@ -66,6 +66,53 @@ var rdc = {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
+  /**
+   * Search form
+   *
+   *  rdc.searchTerms('Rent', callback );
+   *
+   * @param type
+   * @param callback
+   */
+  searchTerms: function searchTerms( type, callback ) {
+
+    rdc.client().search({
+      index: 'v5',
+      type: 'property',
+      body: {
+        query: rdc.build_query()
+      },
+      _source: 'post_title,tax_input.location_latitude,tax_input.location_longitude,_permalink,tax_input.listing_type,tax_input.bedrooms,tax_input.bathrooms,tax_input.price,tax_input.total_living_area_sqft,tax_input.days_on_market,tax_input.acres,tax_input.price_per_sqft,tax_input.approximate_lot_size,tax_input.subdivision,tax_input.neighborhood,tax_input.added,tax_input.sale_type,tax_input.location_city,tax_input.location_street_number,tax_input.location_direction,tax_input.location_street,tax_input.location_unit',
+      size: 100,
+    }, function (err, response) {
+
+      // trigger callback if everything comes back okay.
+      if( 'function' === typeof callback && response ) {
+        return callback( response );
+      }
+
+      if( 'function' === typeof callback ) {
+        console.error( "Unable get rd.getCount()" );
+        return callback( err || new Error( "Unexpected response." ) );
+      }
+
+    })
+
+  },
+
+  /**
+   * Build the search query
+   */
+  build_query: function build_query() {
+    return {
+      "multi_match": {
+        "query":  "Raleigh",
+        "type":   "most_fields",
+        "fields": [ "tax_input.location_city" ]
+      }
+    }
+  },
+
   __client: null
 
 };
