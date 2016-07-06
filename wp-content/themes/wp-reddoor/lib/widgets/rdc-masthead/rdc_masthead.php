@@ -57,29 +57,7 @@ class RDC_Masthead_Widget extends SiteOrigin_Widget {
 				'default' => false,
 				'label' => __('Display search-form', 'so-widgets-bundle'),
 			),
-
-			'button_icon' => array(
-				'type' => 'section',
-				'label' => __('Icon', 'so-widgets-bundle'),
-				'fields' => array(
-					'icon_selected' => array(
-						'type' => 'icon',
-						'label' => __('Icon', 'so-widgets-bundle'),
-					),
-
-					'icon_color' => array(
-						'type' => 'color',
-						'label' => __('Icon color', 'so-widgets-bundle'),
-					),
-
-					'icon' => array(
-						'type' => 'media',
-						'label' => __('Image icon', 'so-widgets-bundle'),
-						'description' => __('Replaces the icon with your own image icon.', 'so-widgets-bundle'),
-					),
-				),
-			),
-
+			
 			'background' => array(
 				'type' => 'section',
 				'label' => __('Background image', 'so-widgets-bundle'),
@@ -89,6 +67,130 @@ class RDC_Masthead_Widget extends SiteOrigin_Widget {
 						'type' => 'media',
 						'label' => __('Image', 'so-widgets-bundle'),
 						'description' => __('Set backgound image file.', 'so-widgets-bundle'),
+					),
+
+					'color' => array(
+						'type' => 'color',
+						'label' => __( 'Background color', 'so-widgets-bundle' ),
+						'default' => '#333333',
+					),
+				),
+			),
+			'buttons' => array(
+				'type' => 'section',
+				'label' => __('Widget buttons', 'so-widgets-bundle'),
+				'hide' => true,
+				'fields' => array(
+					'primary-button' => array(
+						'type' => 'section',
+						'label' => __('Primary button', 'so-widgets-bundle'),
+						'hide' => true,
+						'fields' => array(
+							'btn_title' => array(
+								'type' => 'text',
+								'label' => __('Text button', 'so-widgets-bundle'),
+							),
+
+							'btn_url' => array(
+								'type' => 'link',
+								'label' => __('Destination URL', 'so-widgets-bundle'),
+							),
+
+							'btn_class' => array(
+								'type' => 'text',
+								'label' => __('Class button', 'so-widgets-bundle'),
+								'description' => __('You can set few classes through space.', 'so-widgets-bundle'),
+							),
+
+							'btn_text_color' => array(
+								'type' => 'color',
+								'label' => __( 'Button text color', 'so-widgets-bundle' ),
+								'default' => '#ffffff',
+							),
+
+							'btn_color' => array(
+								'type' => 'color',
+								'label' => __( 'Button color', 'so-widgets-bundle' ),
+								'default' => '#333333',
+							),
+
+							'btn_align' => array(
+								'type' => 'select',
+								'label' => __('Align', 'so-widgets-bundle'),
+								'default' => 'left',
+								'options' => array(
+									'left' => __('Left', 'so-widgets-bundle'),
+									'right' => __('Right', 'so-widgets-bundle'),
+								),
+							),
+
+							'btn_available' => array(
+								'type' => 'checkbox',
+								'default' => false,
+								'label' => __('Enable primary button', 'so-widgets-bundle'),
+							),
+
+						),
+					),
+
+					'secondary-button' => array(
+						'type' => 'section',
+						'label' => __('Secondary button', 'so-widgets-bundle'),
+						'hide' => true,
+						'fields' => array(
+							'btn_title_sec' => array(
+								'type' => 'text',
+								'label' => __('Text button', 'so-widgets-bundle'),
+							),
+
+							'btn_url_sec' => array(
+								'type' => 'link',
+								'label' => __('Destination URL', 'so-widgets-bundle'),
+							),
+
+							'btn_class_sec' => array(
+								'type' => 'text',
+								'label' => __('Class button', 'so-widgets-bundle'),
+								'description' => __('You can set few classes through space.', 'so-widgets-bundle'),
+							),
+
+							'btn_text_color_sec' => array(
+								'type' => 'color',
+								'label' => __( 'Button text color', 'so-widgets-bundle' ),
+								'default' => '#ffffff',
+							),
+
+							'btn_border_color_sec' => array(
+								'type' => 'color',
+								'label' => __( 'Button border color', 'so-widgets-bundle' ),
+								'default' => '#333333',
+							),
+
+							'btn_border_size_sec' => array(
+								'label' => __( 'Set border size', 'so-widgets-bundle' ),
+								'type' => 'slider',
+								'min' => 0,
+								'max' => 10,
+								'default' => 2,
+							),
+
+							'btn_align_sec' => array(
+								'type' => 'select',
+								'label' => __('Align', 'so-widgets-bundle'),
+								'default' => 'right',
+								'options' => array(
+									'left' => __('Left', 'so-widgets-bundle'),
+									'right' => __('Right', 'so-widgets-bundle'),
+								),
+							),
+
+							'btn_available_sec' => array(
+								'type' => 'checkbox',
+								'default' => false,
+								'label' => __('Enable secondary button', 'so-widgets-bundle'),
+							),
+
+						),
 					),
 
 				),

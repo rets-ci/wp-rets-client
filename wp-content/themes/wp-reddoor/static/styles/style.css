@@ -2677,6 +2677,17 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-bottom: -60px;
   top: -60px;
 }
+.rdc-masthead-btn {
+  border: medium none;
+  border-radius: 6px;
+  padding: 1.3em 4em;
+}
+.rdc-masthead-buttons-block {
+  padding: 20px 0;
+}
+.rdc-masthead-widget #tabs_search {
+  margin-bottom: 60px;
+}
 @media screen and (max-width: 992px) {
   .rdc-masthead-widget {
     height: 1050px;
