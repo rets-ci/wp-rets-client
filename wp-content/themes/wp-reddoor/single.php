@@ -11,18 +11,7 @@ get_header( get_post_type() ); ?>
 <?php
 
 //die( '<pre>' . print_r( $post, true ) . '</pre>' );
-if( is_home() ) {
-  $currentId = get_option( 'page_for_posts' );
-}else{
-  $currentId = get_the_ID();
-}
 
-if(!empty($currentId)) {
-  $post_thumbnail_id = get_post_thumbnail_id($currentId);
-}
-if(!empty($post_thumbnail_id)) {
-  $_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
-}
 
 ?>
   <?php
@@ -31,29 +20,9 @@ if(!empty($post_thumbnail_id)) {
   $_permalink = get_the_permalink();
   $_blog_slug = explode('/', $_permalink);
     ?>
-<?php if(!(empty($_url))) { ?>
-  <div class="container-fluid ftrdImgGoTop">
-    <section class="featuredImageHeader" style="background-image: linear-gradient(rgba(90, 89, 92, 0.4),rgba(90, 89, 92, 0.4)), url('<?php echo $_url; ?>');">
-      <?php $category = get_the_category(); ?>
-      <div class="singleHeroIcon">
-        <span class="icon-rdc-<?php echo $category && $category[0] ? $category[0]->slug : ''; ?>"></span>
-      </div>
-      <h1 class="singleTitle"><?php the_title(); ?></h1>
-      <h4 class="singleExcerpt hidden-xs">
-        <?php
 
-        $_single_excerpt = get_the_excerpt();
-        $tags = array("<p>", "</p>");
-        $_single_excerpt = str_replace($tags, '', $_single_excerpt);
-        echo $_single_excerpt;
+<?php get_template_part('static/views/masthead') ?>
 
-        ?>
-      </h4>
-      <?php echo do_shortcode( '[share_this_article]' ); ?>
-
-    </section>
-  </div>
-<?php } ?>
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-md-8">
