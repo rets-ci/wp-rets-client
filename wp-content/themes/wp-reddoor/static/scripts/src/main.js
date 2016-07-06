@@ -74,21 +74,21 @@ var rdc = {
    * @param type
    * @param callback
    */
-  searchTerms: function searchTerms( type, callback ) {
+  searchTerms: function searchTerms( q, type, callback ) {
 
     rdc.client().search({
       index: 'v5',
       type: 'property',
       body: {
-        query: rdc.build_query()
+        query: rdc.build_query( q )
       },
-      _source: 'post_title,tax_input.location_latitude,tax_input.location_longitude,_permalink,tax_input.listing_type,tax_input.bedrooms,tax_input.bathrooms,tax_input.price,tax_input.total_living_area_sqft,tax_input.days_on_market,tax_input.acres,tax_input.price_per_sqft,tax_input.approximate_lot_size,tax_input.subdivision,tax_input.neighborhood,tax_input.added,tax_input.sale_type,tax_input.location_city,tax_input.location_street_number,tax_input.location_direction,tax_input.location_street,tax_input.location_unit',
+      _source: 'tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
       size: 100,
     }, function (err, response) {
 
       // trigger callback if everything comes back okay.
       if( 'function' === typeof callback && response ) {
-        return callback( response );
+        return callback( null, response.hits.hits );
       }
 
       if( 'function' === typeof callback ) {
@@ -103,12 +103,12 @@ var rdc = {
   /**
    * Build the search query
    */
-  build_query: function build_query() {
+  build_query: function build_query( q ) {
     return {
       "multi_match": {
-        "query":  "Raleigh",
-        "type":   "most_fields",
-        "fields": [ "tax_input.location_city" ]
+        "query":  q,
+        "type":   "cross_fields",
+        "fields": [ "*.edge", "post_title", "tax_input.location_city", "tax_input.mls_id", "tax_input.location_street", "tax_input.location_zip", "tax_input.location_county", "tax_input.subdivision", "tax_input.elementary_school", "tax_input.middle_school", "tax_input.high_school", "tax_input.listing_office", "tax_input.listing_agent_name" ]
       }
     }
   },

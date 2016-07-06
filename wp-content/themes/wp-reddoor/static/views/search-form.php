@@ -28,6 +28,7 @@
 
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
+        <input type="hidden" class="searchInputTerms" />
         <select multiple="multiple" required="required" class="citiesSelection" name="_term"></select>
       </div>
 

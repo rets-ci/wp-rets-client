@@ -66,53 +66,52 @@
       $(this).parents('.dropdown-container').find('.dropdown-value').html($('label', $(this).parent()).html());
       $(".dropdown-container .dropdown-list", that).slideUp();
     });
+    
+    $('.buyForm', that).on('keyup','input.select2-search__field',function(){
+      if( rdc.client() ) {
+        rdc.searchTerms( $(this).val(), 'Buy', function( error, response ) {
+          console.log(response);
+        });
+      }
+    });
 
     $('.citiesSelection', that).select2({
       placeholder: 'Location',
       maximumSelectionLength: 1,
       minimumInputLength: 3,
-      ajax: {
-        transport: function( params, success, failure ) {
-          if( rdc.client() ){
-            rdc.searchTerms( 'Buy', function( error, response ) {
-              console.log(response);
-            });
-          }
-          // else {
-          //   url: "/wp-admin/admin-ajax.php?action=TermsSearchable",
-          //       dataType: 'json',
-          //       data: function (params) {
-          //     return {
-          //       q: params.term
-          //     };
-          //   },
-          //   processResults: function(data, page){
-          //     return {
-          //       results: data.data
-          //     }
-          //   }
-          // }
-        }
-      },
-      language: {
-        noResults: function(){
-          return "No results found. Try something else";
-        },
-        errorLoading: function(){
-          return "Searching...";
-        }
-      },
-      templateResult: function formatRepo (city) {
-
-        if (city.loading) return city.text;
-
-        var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy + "</span>";
-        return html;
-      },
-      escapeMarkup: function (markup) { return markup; },
-      templateSelection: function formatRepoSelection (city) {
-        return city.name;
-      }
+      // ajax: {
+      //   url:"http://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/v5/property/_search",
+      //   dataType: 'json',
+      //   type: "GET",
+      //   data: function( params ) {
+      //     return {
+      //       _source: 'post_title,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
+      //       size: 100,
+      //       q: rdc.build_query( params.term )
+      //     };
+      //   }
+      // },
+      // language: {
+      //   noResults: function(){
+      //     return "No results found. Try something else";
+      //   },
+      //   errorLoading: function(){
+      //     return "Searching...";
+      //   }
+      // },
+      // templateResult: function formatRepo (city) {
+      //
+      //   console.log(city);return false;
+      //
+      //   if (city.loading) return city.text;
+      //
+      //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy + "</span>";
+      //   return html;
+      // },
+      // escapeMarkup: function (markup) { return markup; },
+      // templateSelection: function formatRepoSelection (city) {
+      //   return city.name;
+      // }
     });
 
     $('.location .select2-selection__placeholder', that).html('Location');
