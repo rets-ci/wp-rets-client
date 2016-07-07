@@ -74,7 +74,12 @@
       data: [],
       query: function (query) {
         if( rdc.client() && query.term && query.term.length  > 3 ) {
-          rdc.client().search({
+
+          if( rdc.__request ) {
+            rdc.__request.abort();
+          }
+
+          rdc.__request = rdc.client().search({
             index: 'v5',
             type: 'property',
             body: {

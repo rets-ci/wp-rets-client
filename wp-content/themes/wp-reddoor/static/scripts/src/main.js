@@ -74,7 +74,21 @@ var rdc = {
       "multi_match": {
         "query":  q,
         "type":   "cross_fields",
-        "fields": [ "*.edge", "post_title", "tax_input.location_city", "tax_input.mls_id", "tax_input.location_street", "tax_input.location_zip", "tax_input.location_county", "tax_input.subdivision", "tax_input.elementary_school", "tax_input.middle_school", "tax_input.high_school", "tax_input.listing_office", "tax_input.listing_agent_name" ]
+        "fields": [
+          "*.edge",
+          "post_title",
+          "tax_input.location_city",
+          "tax_input.mls_id",
+          "tax_input.location_street",
+          "tax_input.location_zip",
+          "tax_input.location_county",
+          "tax_input.subdivision",
+          "tax_input.elementary_school",
+          "tax_input.middle_school",
+          "tax_input.high_school",
+          "tax_input.listing_office",
+          "tax_input.listing_agent_name"
+        ]
       }
     }
   },
