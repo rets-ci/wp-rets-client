@@ -2677,14 +2677,13 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
   margin-right: -15px;
   padding: 240px 0 20px 0;
   height: 825px;
-  position: relative;
-  margin-bottom: -60px;
-  top: -60px;
 }
 .rdc-masthead-btn {
   border: medium none;
   border-radius: 6px;
   padding: 1.3em 4em;
+  font-size: 1.1em;
+  font-weight: 500;
 }
 .rdc-masthead-buttons-block {
   padding: 20px 0;
