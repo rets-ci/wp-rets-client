@@ -258,9 +258,13 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
-          $term_object = get_term( $term );
+          if( is_string( $term ) && !empty( $_POST['_taxonomy'] ) ) {
+            $term_object = get_term_by( 'name', $term, $_POST['_taxonomy'] );
+          } else {
+            $term_object = get_term( $term );
+          }
 
-          $_redirect = get_term_link( $term );
+          $_redirect = get_term_link( $term_object->term_id );
 
           if ( $term_object->taxonomy == 'mls_id' ) {
             $p_query = new \WP_Query(
