@@ -66,18 +66,9 @@
       $(this).parents('.dropdown-container').find('.dropdown-value').html($('label', $(this).parent()).html());
       $(".dropdown-container .dropdown-list", that).slideUp();
     });
-    
-    // $('.buyForm', that).on('keyup','input.select2-search__field',function(){
-    //   if( rdc.client() ) {
-    //     rdc.searchTerms( $(this).val(), 'Buy', function( error, response ) {
-    //       console.log(response);
-    //     });
-    //   }
-    // });
 
     $('.citiesSelection', that).select2({
-      placeholder: 'Location',
-      maximumSelectionLength: 1,
+      placeholder: 'Search',
       minimumInputLength: 3,
       query: function (query) {
         if( rdc.client() && query.term && query.term.length  > 3 ) {
@@ -88,26 +79,120 @@
               query: rdc.build_query( query.term )
             },
             _source: 'post_title,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
-            size: 100,
+            size: 1000,
           }, function (err, response) {
 
-            query.callback({ results: response.hits.hits });
+            var data = [];
+
+            if( typeof response.hits.hits == 'undefined' ) {
+              query.callback({ results: data });
+            }
+
+            var city = { text : "City", children: [] };
+            var mls_id = { text : "MLS ID", children: [] };
+            var location_street = { text : "Street", children: [] };
+            var location_zip = { text : "Zip", children: [] };
+            var location_county = { text : "County", children: [] };
+            var subdivision = { text : "Subdivision", children: [] };
+            var elementary_school = { text : "Elementary School", children: [] };
+            var middle_school = { text : "Middle School", children: [] };
+            var high_school = { text : "High School", children: [] };
+            var listing_office = { text : "Office", children: [] };
+            var listing_agent = { text : "Agent", children: [] };
+            var unique = {};
+
+            $.each(response.hits.hits,function(k,v){
+              if( typeof v._source.tax_input.location_city != 'undefined' ) {
+                if (!unique[v._source.tax_input.location_city[0]]) {
+                  city.children.push({
+                    id: v._source.tax_input.location_city[0],
+                    text: v._source.tax_input.location_city[0]
+                  });
+                  unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
+                }
+              }
+              if( typeof v._source.tax_input.mls_id != 'undefined' ) {
+                if (!unique[v._source.tax_input.mls_id[0]]) {
+                  mls_id.children.push({id: v._source.tax_input.mls_id[0], text: v._source.tax_input.mls_id[0]});
+                  unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
+                }
+              }
+              if( typeof v._source.tax_input.location_street != 'undefined' ) {
+                if (!unique[v._source.tax_input.location_street[0]]) {
+                  location_street.children.push({id:v._source.tax_input.location_street[0],text:v._source.tax_input.location_street[0]})
+                  unique[v._source.tax_input.location_street[0]] = v._source.tax_input.location_street[0];
+                }
+              }
+              if( typeof v._source.tax_input.location_zip != 'undefined' ) {
+                if (!unique[v._source.tax_input.location_zip[0]]) {
+                  location_zip.children.push({id:v._source.tax_input.location_zip[0],text:v._source.tax_input.location_zip[0]})
+                  unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
+                }
+              }
+              if( typeof v._source.tax_input.location_county != 'undefined' ) {
+                if (!unique[v._source.tax_input.location_county[0]]) {
+                  location_county.children.push({id:v._source.tax_input.location_county[0],text:v._source.tax_input.location_county[0]})
+                  unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
+                }
+              }
+              if( typeof v._source.tax_input.subdivision != 'undefined' ) {
+                if (!unique[v._source.tax_input.subdivision[0]]) {
+                  subdivision.children.push({id:v._source.tax_input.subdivision[0],text:v._source.tax_input.subdivision[0]})
+                  unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
+                }
+
+              }
+              if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
+                if (!unique[v._source.tax_input.elementary_school[0]]) {
+                  elementary_school.children.push({id:v._source.tax_input.elementary_school[0],text:v._source.tax_input.elementary_school[0]})
+                  unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
+                }
+              }
+              if( typeof v._source.tax_input.middle_school != 'undefined' ) {
+                if (!unique[v._source.tax_input.middle_school[0]]) {
+                  middle_school.children.push({id:v._source.tax_input.middle_school[0],text:v._source.tax_input.middle_school[0]})
+                  unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
+                }
+              }
+              if( typeof v._source.tax_input.high_school != 'undefined' ) {
+                if (!unique[v._source.tax_input.high_school[0]]) {
+                  high_school.children.push({id:v._source.tax_input.high_school[0],text:v._source.tax_input.high_school[0]})
+                  unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
+                }
+              }
+              if( typeof v._source.tax_input.listing_office != 'undefined' ) {
+                if (!unique[v._source.tax_input.listing_office[0]]) {
+                  listing_office.children.push({id:v._source.tax_input.listing_office[0],text:v._source.tax_input.listing_office[0]})
+                  unique[v._source.tax_input.listing_office[0]] = v._source.tax_input.listing_office[0];
+                }
+              }
+              if( typeof v._source.tax_input.listing_agent != 'undefined' ) {
+                if (!unique[v._source.tax_input.listing_agent[0]]) {
+                  listing_agent.children.push({id:v._source.tax_input.listing_agent[0],text:v._source.tax_input.listing_agent[0]})
+                  unique[v._source.tax_input.listing_agent[0]] = v._source.tax_input.listing_agent[0];
+                }
+              }
+            });
+
+            data = [
+                city,
+                elementary_school,
+                middle_school,
+                high_school,
+                listing_office,
+                listing_agent,
+                location_street,
+                location_zip,
+                location_county,
+                subdivision,
+                mls_id,
+            ];
+
+            query.callback({ results: data });
 
           })
         }
       },
-      // ajax: {
-      //   url:"http://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com/v5/property/_search",
-      //   dataType: 'json',
-      //   type: "GET",
-      //   data: function( params ) {
-      //     return {
-      //       _source: 'post_title,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
-      //       size: 100,
-      //       q: rdc.build_query( params.term )
-      //     };
-      //   }
-      // },
       language: {
         noResults: function(){
           return "No results found. Try something else";
@@ -116,22 +201,20 @@
           return "Searching...";
         }
       },
-      templateResult: function formatRepo (city) {
-
-        if (city.loading) return city.text;
-
-        console.log(city);
-
-        var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
-        return html;
-      },
-      escapeMarkup: function (markup) { return markup; },
-      templateSelection: function formatRepoSelection (city) {
-        return city._source.tax_input.location_street[0];
-      }
+      // templateResult: function formatRepo (city) {
+      //
+      //   if (city.loading) return city.text;
+      //
+      //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
+      //   return html;
+      // },
+      // escapeMarkup: function (markup) { return markup; },
+      // templateSelection: function formatRepoSelection (city) {
+      //   return city._source.tax_input.location_street[0];
+      // }
     });
 
-    $('.location .select2-selection__placeholder', that).html('Location');
+    $('.location .select2-selection__placeholder', that).html('Search');
 
     var dropdown;
 

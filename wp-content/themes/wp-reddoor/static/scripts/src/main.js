@@ -67,40 +67,6 @@ var rdc = {
   },
 
   /**
-   * Search form
-   *
-   *  rdc.searchTerms('Rent', callback );
-   *
-   * @param type
-   * @param callback
-   */
-  searchTerms: function searchTerms( q, type, callback ) {
-
-    rdc.client().search({
-      index: 'v5',
-      type: 'property',
-      body: {
-        query: rdc.build_query( q )
-      },
-      _source: 'tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
-      size: 100,
-    }, function (err, response) {
-
-      // trigger callback if everything comes back okay.
-      if( 'function' === typeof callback && response ) {
-        return callback( null, response.hits.hits );
-      }
-
-      if( 'function' === typeof callback ) {
-        console.error( "Unable get rd.getCount()" );
-        return callback( err || new Error( "Unexpected response." ) );
-      }
-
-    })
-
-  },
-
-  /**
    * Build the search query
    */
   build_query: function build_query( q ) {
@@ -113,7 +79,9 @@ var rdc = {
     }
   },
 
-  __client: null
+  __client: null,
+
+  __request: null,
 
 };
 
