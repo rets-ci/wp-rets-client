@@ -69,7 +69,9 @@
 
     $('.citiesSelection', that).select2({
       placeholder: 'Search',
+      maximumSelectionLength: 1,
       minimumInputLength: 3,
+      data: [],
       query: function (query) {
         if( rdc.client() && query.term && query.term.length  > 3 ) {
           rdc.client().search({
@@ -212,6 +214,13 @@
       // templateSelection: function formatRepoSelection (city) {
       //   return city._source.tax_input.location_street[0];
       // }
+    }).on('select2-selecting', function(e) {
+      var $select = $(this);
+      if (e.val == '') { // Assume only groups have an empty id
+        e.preventDefault();
+        $select.select2('data', e.choice.children);
+        $select.select2('close');
+      }
     });
 
     $('.location .select2-selection__placeholder', that).html('Search');
