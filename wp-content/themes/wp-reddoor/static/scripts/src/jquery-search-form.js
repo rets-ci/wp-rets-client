@@ -222,19 +222,17 @@
               }
             });
 
-            data = [
-                city,
-                elementary_school,
-                middle_school,
-                high_school,
-                listing_office,
-                listing_agent,
-                location_street,
-                location_zip,
-                location_county,
-                subdivision,
-                mls_id,
-            ];
+            city.children.length ? data.push( city ) : '';
+            elementary_school.children.length ? data.push( elementary_school ) : '';
+            middle_school.children.length ? data.push( middle_school ) : '';
+            high_school.children.length ? data.push( high_school ) : '';
+            listing_office.children.length ? data.push( listing_office ) : '';
+            listing_agent.children.length ? data.push( listing_agent ) : '';
+            location_street.children.length ? data.push( location_street ) : '';
+            location_zip.children.length ? data.push( location_zip ) : '';
+            location_county.children.length ? data.push( location_county ) : '';
+            subdivision.children.length ? data.push( subdivision ) : '';
+            mls_id.children.length ? data.push( mls_id ) : '';
 
             query.callback({ results: data });
 
