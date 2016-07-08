@@ -215,7 +215,7 @@
                   listing_agent.children.push({
                     id:v._source.tax_input.listing_agent[0],
                     text:v._source.tax_input.listing_agent[0],
-                    taxonomy: 'listing_agent'
+                    taxonomy: 'listing_agent_name'
                   })
                   unique[v._source.tax_input.listing_agent[0]] = v._source.tax_input.listing_agent[0];
                 }
