@@ -19,8 +19,8 @@ var rdc = {
 
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
-      hosts: 'site:quw42xelwvbp5gbcdgcqqgtx4vz5txeb@dori-us-east-1.searchly.com',
-      index: 'v5'
+      hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com',
+      index: 'v5-1'
     }));
 
   },
@@ -72,10 +72,11 @@ var rdc = {
   build_query: function build_query( q ) {
     return {
       "multi_match": {
-        "query":  q,
-        "type":   "cross_fields",
+        "query": q,
+        "type": "phrase",
+        "fuzziness": "AUTO",
+        "prefix_length": 2,
         "fields": [
-          "*.edge",
           "post_title",
           "tax_input.location_city",
           "tax_input.mls_id",

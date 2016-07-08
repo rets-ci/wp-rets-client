@@ -80,13 +80,13 @@
           }
 
           rdc.__request = rdc.client().search({
-            index: 'v5',
+            index: 'v5-1',
             type: 'property',
             body: {
               query: rdc.build_query( query.term )
             },
-            _source: 'post_title,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
-            size: 1000,
+            _source: 'post_title,_permalink,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
+            size: 100,
           }, function (err, response) {
 
             var data = [];
@@ -95,6 +95,7 @@
               query.callback({ results: data });
             }
 
+            var post_title = { text: "Address", children: [] };
             var city = { text : "City", children: [] };
             var mls_id = { text : "MLS ID", children: [] };
             var location_street = { text : "Street", children: [] };
@@ -109,6 +110,17 @@
             var unique = {};
 
             $.each(response.hits.hits,function(k,v){
+              if( typeof v._source.post_title != 'undefined' ) {
+                if (!unique[v._source.post_title]) {
+                  post_title.children.push({
+                    id: v._source.post_title,
+                    text: v._source.post_title,
+                    taxonomy:'post_title',
+                    permalink: v._source._permalink,
+                  });
+                  unique[v._source.post_title] = v._source.post_title;
+                }
+              }
               if( typeof v._source.tax_input.location_city != 'undefined' ) {
                 if (!unique[v._source.tax_input.location_city[0]]) {
                   city.children.push({
@@ -125,6 +137,7 @@
                     id: v._source.tax_input.mls_id[0],
                     text: v._source.tax_input.mls_id[0],
                     taxonomy:'mls_id',
+                    permalink: v._source._permalink,
                   });
                   unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
                 }
@@ -222,6 +235,7 @@
               }
             });
 
+            post_title.children.length ? data.push( post_title ) : '';
             city.children.length ? data.push( city ) : '';
             elementary_school.children.length ? data.push( elementary_school ) : '';
             middle_school.children.length ? data.push( middle_school ) : '';
@@ -251,7 +265,13 @@
       //
       //   if (city.loading) return city.text;
       //
-      //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
+      //   if( typeof city.children != 'undefined' ) {
+      //     return city.text;
+      //   } else if( city.taxonomy == 'post_title' || city.taxonomy == 'mls_id' ) {
+      //     var html = "<a href='" + city.permalink + "'><span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.text  + "</span></a>";
+      //     return html;
+      //   }
+      //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.text  + "</span>";
       //   return html;
       // },
       // escapeMarkup: function (markup) { return markup; },
@@ -261,6 +281,9 @@
     }).on('select2:select', function(e) {
       var $select = $(this);
       var data = $select.select2('data');
+      if( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+        window.location.href= data[0].permalink;
+      }
       $('input[name="_taxonomy"]').val(data[0].taxonomy);
     });
 
