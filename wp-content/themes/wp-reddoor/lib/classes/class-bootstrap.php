@@ -342,7 +342,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
         wp_enqueue_script('masonry', 'https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js', array('jquery'), '4.0');
         wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array( 'jquery' ), '1.0.0' );
-        wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '1.0.0');
         wp_enqueue_script('rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
         wp_enqueue_script('rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
         wp_enqueue_script('touch-swipe');
