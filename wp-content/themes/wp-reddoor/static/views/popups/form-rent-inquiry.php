@@ -1,4 +1,4 @@
-<div class="popupRentHome popup contact-popup" style="display: none;">
+<div class="popupFormRentInquiry popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -102,7 +102,7 @@
 
       </form>
       
-      <!-- home-renting.php -->
+      <!-- form-rent-inquiry.php -->
 
     </div>
   </div>
