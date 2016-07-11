@@ -2649,6 +2649,49 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
     margin-bottom: 25px !important;
   }
 }
+.rdc-masthead-title {
+  font-size: 3.5em !important;
+  font-weight: bold;
+  line-height: 1.3em;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  text-align: center;
+}
+.rdc-masthead-subtitle {
+  font-size: 1.5em !important;
+  line-height: 1.75em !important;
+  margin-top: 20px !important;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5) !important;
+  color: #ffffff;
+  text-align: center;
+}
+.rdc-masthead-widget {
+  background-size: cover;
+  border-left: 0 none;
+  border-right: 0 none;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 240px 0 20px 0;
+  height: 825px;
+}
+.rdc-masthead-btn {
+  border: medium none;
+  border-radius: 6px;
+  padding: 1.3em 4em;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.rdc-masthead-buttons-block {
+  padding: 20px 0;
+}
+.rdc-masthead-widget #tabs_search {
+  margin-bottom: 60px;
+}
+@media screen and (max-width: 992px) {
+  .rdc-masthead-widget {
+    height: 1050px;
+  }
+}
 /**
  * WIDGET class 'hero-content'
  *
