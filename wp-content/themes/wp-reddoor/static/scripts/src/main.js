@@ -20,7 +20,7 @@ var rdc = {
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
       hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com',
-      index: 'v5-1'
+      index: 'v5'
     }));
 
   },
@@ -71,25 +71,11 @@ var rdc = {
    */
   build_query: function build_query( q ) {
     return {
-      "multi_match": {
-        "query": q,
-        "type": "phrase",
-        "fuzziness": "AUTO",
-        "prefix_length": 2,
-        "fields": [
-          "post_title",
-          "tax_input.location_city",
-          "tax_input.mls_id",
-          "tax_input.location_street",
-          "tax_input.location_zip",
-          "tax_input.location_county",
-          "tax_input.subdivision",
-          "tax_input.elementary_school",
-          "tax_input.middle_school",
-          "tax_input.high_school",
-          "tax_input.listing_office",
-          "tax_input.listing_agent_name"
-        ]
+      "match": {
+        "_all": {
+          "query": q,
+          "operator": "and"
+        }
       }
     }
   },

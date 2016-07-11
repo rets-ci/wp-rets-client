@@ -80,7 +80,7 @@
           }
 
           rdc.__request = rdc.client().search({
-            index: 'v5-1',
+            index: 'v5',
             type: 'property',
             body: {
               query: rdc.build_query( query.term )

@@ -35,7 +35,7 @@ use \UsabilityDynamics\RDC\Utils;
       jQuery(document).ready(function(){
         jQuery('#sharingEmail').keyup(function(){
           var value = jQuery(this).val();
-          jQuery('.goShare').attr('href', 'mailto:' + value + '?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . ( !empty($property['automated_property_detail_description']) ? $property['automated_property_detail_description'] : '' )  . "%0A%0ACheck%20it%20out%20at%20" . get_the_permalink() ?>');
+          jQuery('.goShare').attr('href', "mailto:" + value + "?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . ( !empty($property['automated_property_detail_description']) ? $property['automated_property_detail_description'] : '' )  . "%0A%0ACheck%20it%20out%20at%20" . get_the_permalink(); ?>");
         });
       });
     </script>

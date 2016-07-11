@@ -1123,29 +1123,15 @@
               }
 
               $scope._request = client.search({
-                index: 'v5-1',
+                index: 'v5',
                 type: 'property',
                 body: {
                   query: {
-                    "multi_match": {
-                      "query": query.term,
-                      "type": "phrase",
-                      "fuzziness": "AUTO",
-                      "prefix_length": 2,
-                      "fields": [
-                        "post_title",
-                        "tax_input.location_city",
-                        "tax_input.mls_id",
-                        "tax_input.location_street",
-                        "tax_input.location_zip",
-                        "tax_input.location_county",
-                        "tax_input.subdivision",
-                        "tax_input.elementary_school",
-                        "tax_input.middle_school",
-                        "tax_input.high_school",
-                        "tax_input.listing_office",
-                        "tax_input.listing_agent_name"
-                      ]
+                    "match": {
+                      "_all": {
+                        "query": query.term,
+                        "operator": "and"
+                      }
                     }
                   }
                 },
