@@ -1,4 +1,4 @@
-<div class="popupNonRdcRentListing popup contact-popup" style="display: none;">
+<div class="popupNoticeRentPass popup contact-popup" style="display: none;">
     <div class="popup-overlay"></div>
     <div class="popup-inner-wrapper">
         <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
