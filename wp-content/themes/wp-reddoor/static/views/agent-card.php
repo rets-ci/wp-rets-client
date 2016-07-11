@@ -94,10 +94,10 @@ use \UsabilityDynamics\RDC\Utils;
 
 
               <style>
-                a[href="#popupContactUsMore"] {
+                a[href="#popupFormOptions"] {
                   display: none !important;
                 }
-                button[data-action="popupContactUsMore"] {
+                button[data-action="popupFormOptions"] {
                   display: none !important;
                 }
               </style>
