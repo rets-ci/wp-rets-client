@@ -29,7 +29,11 @@ use \UsabilityDynamics\RDC\Utils;
     <input type="hidden" name="bool[must][10][range][meta_input.latitude][gte]" class="rdc-latitude-gte" value="" />
     <input type="hidden" name="bool[must][10][range][meta_input.latitude][lte]" class="rdc-latitude-lte" value="" />
     <input type="hidden" name="bool[must][11][range][meta_input.longitude][gte]" class="rdc-longitude-gte" value="" />
+    <input type="hidden" name="bool[should][0][range][meta_input.longitude][gte]" class="rdc-longitude-0sgte" value="" />
+    <input type="hidden" name="bool[should][1][range][meta_input.longitude][gte]" class="rdc-longitude-1sgte" value="" />
     <input type="hidden" name="bool[must][11][range][meta_input.longitude][lte]" class="rdc-longitude-lte" value="" />
+    <input type="hidden" name="bool[should][0][range][meta_input.longitude][lte]" class="rdc-longitude-0slte" value="" />
+    <input type="hidden" name="bool[should][1][range][meta_input.longitude][lte]" class="rdc-longitude-1slte" value="" />
   <?php endif; ?>
 
   <!-- Main Search Filters -->
