@@ -193,6 +193,10 @@
       </script>
     <?php endif; ?>
 
+    <div class="field">
+      <div id="rdcgrecaptchareferral"></div>
+    </div>
+
     <div class="submit-wrapper">
       <input class="button" type="submit" value="Send" />
     </div>
