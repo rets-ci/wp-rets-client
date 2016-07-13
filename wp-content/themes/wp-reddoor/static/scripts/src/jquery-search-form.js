@@ -248,6 +248,12 @@
             subdivision.children.length ? data.push( subdivision ) : '';
             mls_id.children.length ? data.push( mls_id ) : '';
 
+            data.sort(function(a, b){
+              // ASC  -> a.length - b.length
+              // DESC -> b.length - a.length
+              return a.children.length - b.children.length;
+            });
+
             query.callback({ results: data });
 
           })
