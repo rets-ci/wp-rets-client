@@ -25,6 +25,7 @@
     <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
+      <input name="_taxonomy" type="hidden" value=""/>
 
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>

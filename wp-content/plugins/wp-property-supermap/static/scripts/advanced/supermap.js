@@ -1094,20 +1094,203 @@
           }
         }, true );
 
-        /**
-         *
-         */
         var $select = jQuery('.termsSelection').select2({
-          placeholder: 'Location',
-          minimumInputLength: 3,
+          placeholder: 'Search',
           maximumSelectionLength: 1,
-          ajax: {
-            url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
-            dataType: 'json',
-            processResults: function(data, page){
-              return {
-                results: data.data
+          minimumInputLength: 3,
+          data: [],
+          query: function (query) {
+            if( query.term && query.term.length  > 3 ) {
+
+              if( $scope._request ) {
+                $scope._request.abort();
               }
+
+              $scope._request = client.search({
+                index: 'v5',
+                type: 'property',
+                body: {
+                  query: {
+                    "match": {
+                      "_all": {
+                        "query": query.term,
+                        "operator": "and"
+                      }
+                    }
+                  }
+                },
+                _source: 'post_title,_permalink,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
+                size: 100,
+              }, function (err, response) {
+
+                var data = [];
+
+                if( typeof response.hits.hits == 'undefined' ) {
+                  query.callback({ results: data });
+                }
+
+                var post_title = { text: "Address", children: [] };
+                var city = { text : "City", children: [] };
+                var mls_id = { text : "MLS ID", children: [] };
+                var location_street = { text : "Street", children: [] };
+                var location_zip = { text : "Zip", children: [] };
+                var location_county = { text : "County", children: [] };
+                var subdivision = { text : "Subdivision", children: [] };
+                var elementary_school = { text : "Elementary School", children: [] };
+                var middle_school = { text : "Middle School", children: [] };
+                var high_school = { text : "High School", children: [] };
+                var listing_office = { text : "Office", children: [] };
+                var listing_agent = { text : "Agent", children: [] };
+                var unique = {};
+
+                jQuery.each(response.hits.hits,function(k,v){
+                  if( typeof v._source.post_title != 'undefined' ) {
+                    if (!unique[v._source.post_title]) {
+                      post_title.children.push({
+                        id: v._source.post_title,
+                        text: v._source.post_title,
+                        taxonomy:'post_title',
+                        permalink: v._source._permalink,
+                      });
+                      unique[v._source.post_title] = v._source.post_title;
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_city != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_city[0]]) {
+                      city.children.push({
+                        id: v._source.tax_input.location_city[0],
+                        text: v._source.tax_input.location_city[0],
+                        taxonomy:'location_city',
+                      });
+                      unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.mls_id != 'undefined' ) {
+                    if (!unique[v._source.tax_input.mls_id[0]]) {
+                      mls_id.children.push({
+                        id: v._source.tax_input.mls_id[0],
+                        text: v._source.tax_input.mls_id[0],
+                        taxonomy:'mls_id',
+                        permalink: v._source._permalink,
+                      });
+                      unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_street != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_street[0]]) {
+                      location_street.children.push({
+                        id:v._source.tax_input.location_street[0],
+                        text:v._source.tax_input.location_street[0],
+                        taxonomy: 'location_street'
+                      })
+                      unique[v._source.tax_input.location_street[0]] = v._source.tax_input.location_street[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_zip != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_zip[0]]) {
+                      location_zip.children.push({
+                        id:v._source.tax_input.location_zip[0],
+                        text:v._source.tax_input.location_zip[0],
+                        taxonomy: 'location_zip'
+                      })
+                      unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_county != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_county[0]]) {
+                      location_county.children.push({
+                        id:v._source.tax_input.location_county[0],
+                        text:v._source.tax_input.location_county[0],
+                        taxonomy: 'location_county'
+                      })
+                      unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.subdivision != 'undefined' ) {
+                    if (!unique[v._source.tax_input.subdivision[0]]) {
+                      subdivision.children.push({
+                        id:v._source.tax_input.subdivision[0],
+                        text:v._source.tax_input.subdivision[0],
+                        taxonomy: 'subdivision'
+                      })
+                      unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
+                    }
+
+                  }
+                  if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.elementary_school[0]]) {
+                      elementary_school.children.push({
+                        id:v._source.tax_input.elementary_school[0],
+                        text:v._source.tax_input.elementary_school[0],
+                        taxonomy: 'elementary_school'
+                      })
+                      unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.middle_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.middle_school[0]]) {
+                      middle_school.children.push({
+                        id:v._source.tax_input.middle_school[0],
+                        text:v._source.tax_input.middle_school[0],
+                        taxonomy:'middle_school'
+                      })
+                      unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.high_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.high_school[0]]) {
+                      high_school.children.push({
+                        id:v._source.tax_input.high_school[0],
+                        text:v._source.tax_input.high_school[0],
+                        taxonomy: 'high_school'
+                      })
+                      unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.listing_office != 'undefined' ) {
+                    if (!unique[v._source.tax_input.listing_office[0]]) {
+                      listing_office.children.push({
+                        id:v._source.tax_input.listing_office[0],
+                        text:v._source.tax_input.listing_office[0],
+                        taxonomy: 'listing_office'
+                      })
+                      unique[v._source.tax_input.listing_office[0]] = v._source.tax_input.listing_office[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.listing_agent != 'undefined' ) {
+                    if (!unique[v._source.tax_input.listing_agent[0]]) {
+                      listing_agent.children.push({
+                        id:v._source.tax_input.listing_agent[0],
+                        text:v._source.tax_input.listing_agent[0],
+                        taxonomy: 'listing_agent_name'
+                      })
+                      unique[v._source.tax_input.listing_agent[0]] = v._source.tax_input.listing_agent[0];
+                    }
+                  }
+                });
+
+                post_title.children.length ? data.push( post_title ) : '';
+                city.children.length ? data.push( city ) : '';
+                elementary_school.children.length ? data.push( elementary_school ) : '';
+                middle_school.children.length ? data.push( middle_school ) : '';
+                high_school.children.length ? data.push( high_school ) : '';
+                listing_office.children.length ? data.push( listing_office ) : '';
+                listing_agent.children.length ? data.push( listing_agent ) : '';
+                location_street.children.length ? data.push( location_street ) : '';
+                location_zip.children.length ? data.push( location_zip ) : '';
+                location_county.children.length ? data.push( location_county ) : '';
+                subdivision.children.length ? data.push( subdivision ) : '';
+                mls_id.children.length ? data.push( mls_id ) : '';
+
+                data.sort(function(a, b){
+                  // ASC  -> a.length - b.length
+                  // DESC -> b.length - a.length
+                  return a.children.length - b.children.length;
+                });
+
+                query.callback({ results: data });
+
+              })
             }
           },
           language: {
@@ -1118,19 +1301,63 @@
               return "Searching...";
             }
           },
-          templateResult: function formatRepo (city) {
-            if (city.loading) return 'Searching...';
-            var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
-            return html;
-          },
-          escapeMarkup: function (markup) { return markup; },
-          templateSelection: function formatRepoSelection (term) {
-            if ( typeof term.taxonomy != 'undefined' ) {
-              $scope.map_filter_taxonomy = term.taxonomy;
-            }
-            return term.text || term.name;
+          // templateResult: function formatRepo (city) {
+          //
+          //   if (city.loading) return city.text;
+          //
+          //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
+          //   return html;
+          // },
+          // escapeMarkup: function (markup) { return markup; },
+          // templateSelection: function formatRepoSelection (city) {
+          //   return city._source.tax_input.location_street[0];
+          // }
+        }).on('select2:select', function(e) {
+          var $select = jQuery(this);
+          var data = $select.select2('data');
+          if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+            window.location.href= data[0].permalink;
           }
+          $scope.map_filter_taxonomy = data[0].taxonomy;
         });
+
+        /**
+         *
+         */
+        // var $select = jQuery('.termsSelection').select2({
+        //   placeholder: 'Location',
+        //   minimumInputLength: 3,
+        //   maximumSelectionLength: 1,
+        //   ajax: {
+        //     url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
+        //     dataType: 'json',
+        //     processResults: function(data, page){
+        //       return {
+        //         results: data.data
+        //       }
+        //     }
+        //   },
+        //   language: {
+        //     noResults: function(){
+        //       return "No results found. Try something else";
+        //     },
+        //     errorLoading: function(){
+        //       return "Searching...";
+        //     }
+        //   },
+        //   templateResult: function formatRepo (city) {
+        //     if (city.loading) return 'Searching...';
+        //     var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
+        //     return html;
+        //   },
+        //   escapeMarkup: function (markup) { return markup; },
+        //   templateSelection: function formatRepoSelection (term) {
+        //     if ( typeof term.taxonomy != 'undefined' ) {
+        //       $scope.map_filter_taxonomy = term.taxonomy;
+        //     }
+        //     return term.text || term.name;
+        //   }
+        // });
 
         if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
           var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);

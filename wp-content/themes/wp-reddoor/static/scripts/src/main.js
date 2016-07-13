@@ -19,7 +19,7 @@ var rdc = {
 
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
-      hosts: 'site:quw42xelwvbp5gbcdgcqqgtx4vz5txeb@dori-us-east-1.searchly.com',
+      hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com',
       index: 'v5'
     }));
 
@@ -66,7 +66,23 @@ var rdc = {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
-  __client: null
+  /**
+   * Build the search query
+   */
+  build_query: function build_query( q ) {
+    return {
+      "match": {
+        "_all": {
+          "query": q,
+          "operator": "and"
+        }
+      }
+    }
+  },
+
+  __client: null,
+
+  __request: null,
 
 };
 
@@ -131,7 +147,31 @@ var rdc = {
 
     jQuery(".form-validate").submit(function(e){
       if ( typeof grecaptcha == 'undefined' ) return true;
-      var rresult = grecaptcha.getResponse();
+      if ( typeof recaptchaforms == 'undefined' ) return true;
+      var _this = jQuery(this);
+      var rresult;
+      if( _this.find("#rdcgrecaptchacontactus").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "contactus", recaptchaforms ) );
+      } else if( _this.find("#rdcgrecaptchahomebuy").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "homebuy", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchacareer").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "career", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchahomebuylisting").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "buylisting", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchahomemanagement").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "homemanagement", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchahomerenting").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "homerenting", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchahomeselling").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "homeselling", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchajobrequest").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "jobrequest", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchareferral").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "referral", recaptchaforms ) );
+      }  else if( _this.find("#rdcgrecaptchareqapplication").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "reqapplication", recaptchaforms ) );
+      }
+
       if( !rresult.length > 0 ) {
         return false;
       }

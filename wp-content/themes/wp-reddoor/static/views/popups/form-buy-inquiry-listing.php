@@ -1,4 +1,4 @@
-<div class="popupBuyHomeListing popup contact-popup" style="display: none;">
+<div class="popupFormBuyInquiryListing popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -62,13 +62,17 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
+        <div class="field">
+          <div id="rdcgrecaptchahomebuylisting"></div>
+        </div>
+
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Request Showing" />
         </div>
 
       </form>
       
-      <!-- home-buying-listing.php -->
+      <!-- form-buy-inquiry-listing.php -->
 
     </div>
   </div>

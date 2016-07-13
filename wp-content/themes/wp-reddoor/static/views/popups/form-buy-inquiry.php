@@ -1,4 +1,4 @@
-<div class="popupBuyHome popup contact-popup" style="display: none;">
+<div class="popupFormBuyInquiry popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -50,6 +50,10 @@
           <div class="clear"></div>
         </div>
 
+        <div class="field">
+          <div id="rdcgrecaptchahomebuy"></div>
+        </div>
+
         <input type="hidden" id="powf_98ef9eccbf16e61180e9c4346bace2d4" name="powf_98ef9eccbf16e61180e9c4346bace2d4" value="Buyer General" />
         <input type="hidden" id="powf_bce1ec13c016e61180e9c4346bace2d4" name="powf_bce1ec13c016e61180e9c4346bace2d4" value="" />
         <input type="hidden" id="powf_b6d11d30c016e61180e9c4346bace2d4" name="powf_b6d11d30c016e61180e9c4346bace2d4" value="Buyer (General) Webform Lead" />
@@ -65,7 +69,7 @@
 
       </form>
       
-      <!-- home-buying.php -->
+      <!-- form-buy-inquiry.php -->
 
     </div>
   </div>

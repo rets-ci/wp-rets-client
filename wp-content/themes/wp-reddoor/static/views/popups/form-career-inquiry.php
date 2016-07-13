@@ -1,4 +1,4 @@
-<div class="popupCareersInquiry popup contact-popup" style="display: none;">
+<div class="popupFormCareerInquiry popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -60,6 +60,10 @@
 					<input id="powf_183a105923d4e5118112c4346bb5981c" name="powf_183a105923d4e5118112c4346bb5981c"  type="file" class="file" maxsize="1024" fileextension="pdf"  />
 					<div class="clear"></div>
 				</div>
+
+				<div class="field">
+					<div id="rdcgrecaptchacareer"></div>
+				</div>
 				
 				<input type="hidden" id="powf_42573b9313dbe5118114c4346bb5981c" name="powf_42573b9313dbe5118114c4346bb5981c" value="Recruit" />
 				<input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
@@ -73,7 +77,7 @@
         
 			</form>
 	          
-      <!-- career.php -->
+      <!-- form-career-inquiry.php -->
 
     </div>
   </div>

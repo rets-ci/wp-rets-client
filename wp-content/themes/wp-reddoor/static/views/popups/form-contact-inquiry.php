@@ -1,4 +1,4 @@
-<div class="popupGeneralContact popup contact-popup" style="display: none;">
+<div class="popupFormContactInquiry popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -60,6 +60,10 @@
           <div class="clear"></div>
         </div>
 
+        <div class="field">
+          <div id="rdcgrecaptchacontactus"></div>
+        </div>
+
         <input type="hidden" id="powf_26bab857b716e61180e9c4346bace2d4" name="powf_26bab857b716e61180e9c4346bace2d4" value="General"/>
         <input type="hidden" id="powf_d0a7e78bb716e61180e9c4346bace2d4" name="powf_d0a7e78bb716e61180e9c4346bace2d4" value="reddoorcompany.com"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
@@ -73,7 +77,7 @@
         
       </form>
       
-      <!-- contact-us.php -->
+      <!-- form-contact-inquiry.php -->
 
     </div>
   </div>

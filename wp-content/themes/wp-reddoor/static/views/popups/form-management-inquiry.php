@@ -1,4 +1,4 @@
-<div class="popupManage popup contact-popup" style="display: none;">
+<div class="popupFormManagementInquiry popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -69,13 +69,17 @@
         <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
         <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
+        <div class="field">
+          <div id="rdcgrecaptchahomemanagement"></div>
+        </div>
+
         <div class="submit-wrapper">
 	        <input class="button" type="submit" value="Submit"/>
 	      </div>
 	      
       </form>
       
-      <!-- home-management.php -->
+      <!-- form-management-inquiry.php -->
 
     </div>
   </div>

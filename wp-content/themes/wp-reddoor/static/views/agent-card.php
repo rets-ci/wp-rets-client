@@ -35,7 +35,7 @@ use \UsabilityDynamics\RDC\Utils;
       jQuery(document).ready(function(){
         jQuery('#sharingEmail').keyup(function(){
           var value = jQuery(this).val();
-          jQuery('.goShare').attr('href', 'mailto:' + value + '?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . ( !empty($property['automated_property_detail_description']) ? $property['automated_property_detail_description'] : '' )  . "%0A%0ACheck%20it%20out%20at%20" . get_the_permalink() ?>');
+          jQuery('.goShare').attr('href', "mailto:" + value + "?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . ( !empty($property['automated_property_detail_description']) ? $property['automated_property_detail_description'] : '' )  . "%0A%0ACheck%20it%20out%20at%20" . get_the_permalink(); ?>");
         });
       });
     </script>
@@ -78,9 +78,9 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupRentHome">'.__('Request Information', 'reddoor').'</a></div>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupFormRentInquiry">'.__('Request Information', 'reddoor').'</a></div>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a class="btn-rdc-wire" href="#popupRequestApplication">'.__('Request Application', 'reddoor').'</a></div></li>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a class="btn-rdc-wire" href="#popupFormRentApplication">'.__('Request Application', 'reddoor').'</a></div></li>';
 
               ?>
 
@@ -94,10 +94,10 @@ use \UsabilityDynamics\RDC\Utils;
 
 
               <style>
-                a[href="#popupContactUsMore"] {
+                a[href="#popupFormOptions"] {
                   display: none !important;
                 }
-                button[data-action="popupContactUsMore"] {
+                button[data-action="popupFormOptions"] {
                   display: none !important;
                 }
               </style>
@@ -120,7 +120,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                 echo '<span>'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'</span></div>';
 
-                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupNonRdcRentListing" data-nonrdcagentphone="'. $_phone .'" data-nonrdcagentname="'. Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) .'" data-nonrdcagentoffice="'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'" >'.__('Request Information', 'reddoor').'</a></div></li>';
+                echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupNoticeRentPass" data-nonrdcagentphone="'. $_phone .'" data-nonrdcagentname="'. Utils::get_single_term( 'listing_agent_first_name', $property['ID'] ) . ' ' . Utils::get_single_term( 'listing_agent_last_name', $property['ID'] ) .'" data-nonrdcagentoffice="'. Utils::get_multiple_terms( 'listing_office', $property['ID'], 'name', 'a'  ) .'" >'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -158,7 +158,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                   echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
-                  echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($agent->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
+                  echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupFormBuyInquiryListing" data-agentphone="'. get_user_meta($agent->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                 ?>
 
@@ -209,7 +209,7 @@ use \UsabilityDynamics\RDC\Utils;
 
                     echo '<span>'.__('Red Door Company', 'reddoor').'</span></div>';
 
-                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupBuyHomeListing" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
+                    echo '<div class="oneAgentLinksBlock showContactPopup"><a href="#popupFormBuyInquiryListing" data-agentphone="'. get_user_meta($userAgentId->ID, 'phone_number', 1)  .'">'.__('Request Information', 'reddoor').'</a></div></li>';
 
                   }
                 ?>

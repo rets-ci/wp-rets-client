@@ -35,7 +35,7 @@
           <span class="closeMobileMenu"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
           <?php wp_nav_menu(array('menu' => 'Header', 'theme_location' => 'main-menu', 'menu_class' => 'menuAdaptive')); ?>
 
-          <a class="mobileContactUs" href="#popupContactUsMore">Contact Us</a>
+          <a class="mobileContactUs" href="#popupFormOptions">Contact Us</a>
           <a href="#popupLogin">Account Login</a>
 
           <p class="mobile-copyright">&copy; Red Door Company</p>
@@ -48,4 +48,3 @@
     </div>
   </div>
 </div>
-
