@@ -67,6 +67,10 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/sell/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
+    <div class="field">
+        <div id="rdcgrecaptchahomeselling"></div>
+    </div>
+
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Submit" />
         </div>

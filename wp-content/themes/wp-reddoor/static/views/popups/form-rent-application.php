@@ -81,6 +81,10 @@
           </script>
         <?php endif; ?>
 
+        <div class="field">
+          <div id="rdcgrecaptchareqapplication"></div>
+        </div>
+
         <div>
           <input class="button" type="submit" value="Submit" onclick="javascript:;"/>
         </div>
