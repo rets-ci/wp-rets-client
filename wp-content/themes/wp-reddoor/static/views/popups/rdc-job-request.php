@@ -107,6 +107,10 @@
   <input type="hidden" name="ignore_redirecturl" value="" />
   <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
+  <div class="field">
+    <div id="rdcgrecaptchajobrequest"></div>
+  </div>
+
   <div>
     <input class="button" type="submit" value="Submit"/>
   </div>

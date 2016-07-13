@@ -113,3 +113,71 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
     return $propertyDetailsDescription;
   }
 }
+
+add_action( 'wp_footer', 'rdc_form_reCaptcha' );
+
+function rdc_form_reCaptcha(){
+    ?>
+    <script type="text/javascript">
+        var rdcRecaptchaOnloadCallback = function() {
+            if( document.querySelector("#rdcgrecaptchacontactus") ) {
+                grecaptcha.render("rdcgrecaptchacontactus", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchahomebuy") ) {
+                grecaptcha.render("rdcgrecaptchahomebuy", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchacareer") ) {
+                grecaptcha.render("rdcgrecaptchacareer", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchahomebuylisting") ) {
+                grecaptcha.render("rdcgrecaptchahomebuylisting", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchahomemanagement") ) {
+                grecaptcha.render("rdcgrecaptchahomemanagement", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchahomerenting") ) {
+                grecaptcha.render("rdcgrecaptchahomerenting", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchahomeselling") ) {
+                grecaptcha.render("rdcgrecaptchahomeselling", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchajobrequest") ) {
+                grecaptcha.render("rdcgrecaptchajobrequest", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchareferral") ) {
+                grecaptcha.render("rdcgrecaptchareferral", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+            if( document.querySelector("#rdcgrecaptchareqapplication") ) {
+                grecaptcha.render("rdcgrecaptchareqapplication", {
+                    'sitekey': '6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO'
+                });
+            }
+        };
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=rdcRecaptchaOnloadCallback&render=explicit"
+            async defer>
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer>
+    </script>
+    <?php
+}
