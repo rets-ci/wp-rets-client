@@ -1,12 +1,17 @@
 <?php
 /*
-Widget Name: Hero Image
-Description: A big hero image with a few settings to make it your own.
-Author: SiteOrigin
-Author URI: https://siteorigin.com
+Widget Name: Tabbed content
+Description: Tabbed content widget.
+Author:
+Author URI: 
 */
 
-if( !class_exists( 'SiteOrigin_Widget_Base_Slider' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-hero/base/base-slider.class.php';
+if(!class_exists('SiteOrigin_Widget')){
+	return;
+}
+
+if( !class_exists( 'SiteOrigin_Widget_Base_Slider' ) ) include_once get_stylesheet_directory().'/lib/widgets/rdc-tabbed-content/base/base-slider.class.php';
+
 
 class Tabbed_content_Widget extends SiteOrigin_Widget_Base_Slider {
 

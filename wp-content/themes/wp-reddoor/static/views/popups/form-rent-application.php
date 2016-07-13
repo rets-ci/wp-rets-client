@@ -1,4 +1,4 @@
-<div class="popupRequestApplication popup contact-popup" style="display: none;">
+<div class="popupFormRentApplication popup contact-popup" style="display: none;">
   <div class="popup-overlay"></div>
   <div class="popup-inner-wrapper">
     <span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
@@ -8,7 +8,6 @@
 
       <h3><?php _e('Request an Application', 'reddoor'); ?></h3>
       <p><?php _e('You found your new home - that\'s great! Please request an application using the below form.', 'reddoor'); ?></p>
-
 
       <form id="powf_280C1763D278E5118103C4346BB5981C" class="form-validate" enctype="multipart/form-data" action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_280C1763D278E5118103C4346BB5981C&tver=2013&c=1" method="post">
 
@@ -91,7 +90,7 @@
         </div>
       </form>
       
-      <!-- request-application.php -->
+      <!-- form-rent-application.php -->
 
     </div>
   </div>

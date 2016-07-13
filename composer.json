@@ -22,7 +22,7 @@
       "concatenate_scripts": true,
       "sunrise": false,
       "multisite": false,
-      "empty_trash_days": 7,
+      "empty_trash_days": 60,
       "alternate_wp_cron": false,
       "wp_cron_lock_timeout": 0,
       "wp": {
