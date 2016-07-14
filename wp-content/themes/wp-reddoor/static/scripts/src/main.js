@@ -170,6 +170,8 @@ var rdc = {
         rresult = grecaptcha.getResponse( jQuery.inArray( "referral", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchareqapplication").length ) {
         rresult = grecaptcha.getResponse( jQuery.inArray( "reqapplication", recaptchaforms ) );
+      } else if( _this.find("#rdcgrecaptchamanagementreferral").length ) {
+        rresult = grecaptcha.getResponse( jQuery.inArray( "managementreferral", recaptchaforms ) );
       }
 
       if( !rresult.length > 0 ) {

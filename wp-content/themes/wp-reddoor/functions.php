@@ -183,6 +183,12 @@ function rdc_form_reCaptcha(){
                 });
                 recaptchaforms.push("reqapplication");
             }
+            if( document.querySelector("#rdcgrecaptchamanagementreferral") ) {
+                grecaptcha.render("rdcgrecaptchamanagementreferral", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("managementreferral");
+            }
         };
     </script>
 
