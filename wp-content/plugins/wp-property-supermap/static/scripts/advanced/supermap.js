@@ -1141,7 +1141,7 @@
                 var high_school = { text : "High School", children: [] };
                 var listing_office = { text : "Office", children: [] };
                 var listing_agent = { text : "Agent", children: [] };
-                var unique = {};
+                var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
 
                 jQuery.each(response.hits.hits,function(k,v){
                   if( typeof v._source.post_title != 'undefined' ) {
