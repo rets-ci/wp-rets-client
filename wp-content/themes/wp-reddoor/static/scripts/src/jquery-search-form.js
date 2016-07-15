@@ -258,6 +258,8 @@
             query.callback({ results: data });
 
           })
+        } else if( ! query.term.length ) {
+          query.callback({ results: data });
         }
       },
       // language: {
