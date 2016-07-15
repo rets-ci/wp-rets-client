@@ -263,9 +263,9 @@
         noResults: function(){
           return "No results found. Try something else";
         },
-        errorLoading: function(){
-          return "Searching...";
-        }
+        // errorLoading: function(){
+        //   return "Searching...";
+        // }
       },
       // templateResult: function formatRepo (city) {
       //

@@ -1080,6 +1080,9 @@ a:focus {
   border-bottom: 1px solid #e6e6e6;
   padding: 14px;
 }
+.select2-dropdown .loading-results {
+  display: none;
+}
 .select2-container--default .select2-results__group {
   padding: 15px 6px !important;
   color: #d03528;
