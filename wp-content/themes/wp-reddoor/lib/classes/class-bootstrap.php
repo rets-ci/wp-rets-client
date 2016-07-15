@@ -258,7 +258,7 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
-          if( is_string( $term ) && !empty( $_POST['_taxonomy'] ) ) {
+          if( !empty( $_POST['_taxonomy'] ) ) {
             $term_object = get_term_by( 'name', $term, $_POST['_taxonomy'] );
           } else {
             $term_object = get_term( $term );
