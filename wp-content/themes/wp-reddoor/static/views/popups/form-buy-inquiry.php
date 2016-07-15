@@ -50,10 +50,6 @@
           <div class="clear"></div>
         </div>
 
-        <div class="field">
-          <div id="rdcgrecaptchahomebuy"></div>
-        </div>
-
         <input type="hidden" id="powf_98ef9eccbf16e61180e9c4346bace2d4" name="powf_98ef9eccbf16e61180e9c4346bace2d4" value="Buyer General" />
         <input type="hidden" id="powf_bce1ec13c016e61180e9c4346bace2d4" name="powf_bce1ec13c016e61180e9c4346bace2d4" value="" />
         <input type="hidden" id="powf_b6d11d30c016e61180e9c4346bace2d4" name="powf_b6d11d30c016e61180e9c4346bace2d4" value="Buyer (General) Webform Lead" />
@@ -62,6 +58,10 @@
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/buy/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
+        
+        <div class="field">
+          <div id="rdcgrecaptchahomebuy"></div>
+        </div>
 
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />
