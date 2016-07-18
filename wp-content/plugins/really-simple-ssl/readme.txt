@@ -5,7 +5,7 @@ Tags: mixed content, insecure content, secure website, website security, ssl, ht
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.5
-Stable tag: 2.3.8
+Stable tag: 2.3.9
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -91,6 +91,10 @@ Yes, the plugin is wpmu ready.
 You can activate ssl per site on subdomain and domain mapping installs. On subfolder installs networkwide activation is encouraged (domain.com/site1).
 
 == Changelog ==
+= 2.3.9 =
+* Fix: removed internal Wordpress redirect as it causes issues for some users.
+* Tweak: improved url request method
+
 = 2.3.8 =
 * Tweak: Fallback redirect changed into internal wp redirect, which is faster
 * Tweak: When no .htaccess rules are detected, redirect option is enabled automatically

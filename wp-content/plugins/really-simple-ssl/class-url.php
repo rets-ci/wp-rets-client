@@ -44,14 +44,15 @@ if ( ! class_exists( 'rsssl_url' ) ) {
 
 
   public function get_contents($url, $timeout = 5, $iteration=0) {
+    $use_curl = $this->is_curl_installed();
     //prevent infinite loops.
-    if ($iteration>5) {
+    if ($iteration>3) {
       $this->error_number = 404;
-      return "";
+      $use_curl = false;
     }
-    //preferrably with curl, but else with file get contents
-    if ($this->is_curl_installed()) {
 
+    //preferrably with curl, but else with file get contents
+    if ($use_curl) {
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_HEADER, true);
@@ -73,7 +74,6 @@ if ( ! class_exists( 'rsssl_url' ) ) {
 
         curl_close($ch);
         if ($this->error_number==0 && $http_code != 200) { //301, 302, 403, 404, etc.
-            //if it's redirected, follow the redirect.
             if ($http_code == 301 || $http_code == 302) {
                 list($header) = explode("\r\n\r\n", $filecontents, 2);
                 $matches = array();
@@ -85,24 +85,17 @@ if ( ! class_exists( 'rsssl_url' ) ) {
                   return $this->get_contents($url, $timeout, $iteration+1);
                 } else {
                   $this->error_number = 404;
-                  return "";
                 }
             } else { //403, 404
-              //we seem to be getting an error code.
-              //so give it a last try with file_get_contents
-              set_error_handler(array($this,'custom_error_handling'));
-              $filecontents = file_get_contents($url);
-              //errors back to normal
-              restore_error_handler();
-              return $filecontents;
+              $this->error_number = $http_code;
             }
         }
-      } else {
-        set_error_handler(array($this,'custom_error_handling'));
-        $filecontents = file_get_contents($url);
-        //errors back to normal
-        restore_error_handler();
       }
+      //if we are here, curl didn't return a valid response, so we try with file_get_contents
+      set_error_handler(array($this,'custom_error_handling'));
+      $filecontents = file_get_contents($url);
+      //errors back to normal
+      restore_error_handler();
       return $filecontents;
   }
 
@@ -116,7 +109,6 @@ if ( ! class_exists( 'rsssl_url' ) ) {
    */
 
   private function is_curl_installed() {
-
     if  (in_array  ('curl', get_loaded_extensions())) {
       return true;
     }
@@ -210,7 +202,7 @@ if ( ! class_exists( 'rsssl_url' ) ) {
       403 => 'FORBIDDEN',
       404 => 'NOT FOUND',
     );
-      if (!isset($error_codes[$error_no])) return "Not listed errornr: ".$error_no;
+      if (!isset($error_codes[$error_no])) return "Unknown error";
       return $error_codes[$error_no];
     }
   }
