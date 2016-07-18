@@ -1,3 +1,14 @@
+#### 1.9.0
+* Added new ability to define cacheControl for remote objects.
+* Added new option that adds random hashes to file names.
+
+#### 1.8.0
+* Added the ability to regenerate and synchronize separate Media file from the list.
+* Added the ability to regenerate and synchronize Media file from edit screen.
+* Fixed the issue on multisite setup (switch_to_blog now works as expected).
+* Performance fixes.
+* UI cleanup.
+
 #### 1.7.3
 * Added ability to fix previously failed items.
 
