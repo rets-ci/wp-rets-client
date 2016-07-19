@@ -86,7 +86,6 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
         $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
         if($propertyDetailsAttrs['approximate_lot_size']){
             $propertyDetailsDescription .= ' sits on a ';
-            $propertyDetailsDescription .= ' sits on a ';
             $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
             $propertyDetailsDescription .= ' lot and features ';
         } else{
