@@ -17,6 +17,15 @@ namespace wpCloud\StatelessMedia {
     class Utility {
 
       /**
+       * Override Cache Control
+       * @param $cacheControl
+       * @return mixed
+       */
+      public static function override_cache_control( $cacheControl ) {
+        return ud_get_stateless_media()->get( 'sm.cache_control' );
+      }
+
+      /**
        * wp_normalize_path was added in 3.9.0
        *
        * @param $path
@@ -33,6 +42,30 @@ namespace wpCloud\StatelessMedia {
         $path = preg_replace( '|/+|','/', $path );
         return $path;
 
+      }
+
+      /**
+       * Randomize file name
+       * @param $filename
+       * @return string
+       */
+      public static function randomize_filename( $filename ) {
+        $info = pathinfo($filename);
+        $ext = empty($info['extension']) ? '' : '' . $info['extension'];
+        $_parts = array();
+        if (strpos($info['filename'], '@')) {
+          $_cleanName = explode('@', $info['filename'])[0];
+          $_retna = explode('@', $info['filename'])[1];
+          $_parts[] = substr(md5(time()), 0, 8);
+          $_parts[] = '-';
+          $_parts[] = strtolower($_cleanName);
+          $_parts[] = '@' . strtolower($_retna);
+        } else {
+          $_parts[] = substr(md5(time()), 0, 8);
+          $_parts[] = '-';
+          $_parts[] = strtolower($info['filename']);
+        }
+        return join('', $_parts) . '.' . $ext;
       }
 
       /**
@@ -181,6 +214,8 @@ namespace wpCloud\StatelessMedia {
                 'contentDisposition' => $_contentDisposition,
                 'mimeType' => $data[ 'mime-type' ],
                 'metadata' => array_merge( $_metadata, array(
+                  'width' => $data['width'],
+                  'height' => $data['height'],
                   'child-of' => $attachment_id,
                   'file-hash' => md5( $data[ 'file' ] )
                 ))

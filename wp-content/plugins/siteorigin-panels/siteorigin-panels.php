@@ -3,7 +3,7 @@
 Plugin Name: Page Builder by SiteOrigin
 Plugin URI: https://siteorigin.com/page-builder/
 Description: A drag and drop, responsive page builder that simplifies building your website.
-Version: 2.4.9
+Version: 2.4.10
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 License: GPL3
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: http://siteorigin.com/page-builder/#donate
 */
 
-define('SITEORIGIN_PANELS_VERSION', '2.4.9');
+define('SITEORIGIN_PANELS_VERSION', '2.4.10');
 if ( ! defined('SITEORIGIN_PANELS_JS_SUFFIX' ) ) {
 	define('SITEORIGIN_PANELS_JS_SUFFIX', '.min');
 }
@@ -645,7 +645,10 @@ function siteorigin_panels_process_raw_widgets($widgets) {
 		if( !empty($info['raw']) ) {
 			if ( isset( $wp_widget_factory->widgets[ $info['class'] ] ) && method_exists( $info['class'], 'update' ) ) {
 				$the_widget = $wp_widget_factory->widgets[ $info['class'] ];
-				$widgets[$i] = $the_widget->update( $widgets[$i], $widgets[$i] );
+				$instance = $the_widget->update( $widgets[$i], $widgets[$i] );
+				$instance = apply_filters ( 'widget_update_callback', $instance, $widgets[$i], $widgets[$i], $the_widget );
+
+				$widgets[$i] = $instance;
 				unset($info['raw']);
 			}
 		}
@@ -1453,7 +1456,12 @@ add_action('plugin_action_links_' . plugin_basename(__FILE__), 'siteorigin_panel
 
 function siteorigin_panels_live_edit_link( $wp_admin_bar ){
 	// Add a Live Edit link if this is a Page Builder page that the user can edit
-	if( is_singular() && current_user_can( 'edit_post', get_the_ID() ) && get_post_meta( get_the_ID(), 'panels_data', true ) ) {
+	if(
+		siteorigin_panels_setting( 'live-editor-quick-link' ) &&
+		is_singular() &&
+		current_user_can( 'edit_post', get_the_ID() ) &&
+		get_post_meta( get_the_ID(), 'panels_data', true )
+	) {
 		$wp_admin_bar->add_node( array(
 			'id'    => 'so_live_editor',
 			'title' => __( 'Live Editor', 'siteorigin-panels' ),
