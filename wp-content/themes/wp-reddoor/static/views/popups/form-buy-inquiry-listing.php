@@ -59,7 +59,7 @@
         <input type="hidden" id="powf_44ff73d9fbe9e511811afc15b42886e8" name="powf_44ff73d9fbe9e511811afc15b42886e8" value="Buyer Webform Lead" />
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
-        <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/inquiry-success'); ?>" />
+        <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/buy/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
         <div class="field">

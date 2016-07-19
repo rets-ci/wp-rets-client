@@ -61,15 +61,15 @@
 					<div class="clear"></div>
 				</div>
 
-				<div class="field">
-					<div id="rdcgrecaptchacareer"></div>
-				</div>
-				
 				<input type="hidden" id="powf_42573b9313dbe5118114c4346bb5981c" name="powf_42573b9313dbe5118114c4346bb5981c" value="Recruit" />
 				<input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
 				<input type="hidden" name="ignore_linkbuttontext" value="" />
 				<input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/careers/inquiry-success'); ?>" />
 				<input type="hidden" name="ignore_redirectmode" value="Auto" />
+				
+				<div class="field">
+					<div id="rdcgrecaptchacareer"></div>
+				</div>
 				
 				<div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />

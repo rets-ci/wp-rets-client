@@ -60,16 +60,16 @@
           <div class="clear"></div>
         </div>
 
-        <div class="field">
-          <div id="rdcgrecaptchacontactus"></div>
-        </div>
-
         <input type="hidden" id="powf_26bab857b716e61180e9c4346bace2d4" name="powf_26bab857b716e61180e9c4346bace2d4" value="General"/>
         <input type="hidden" id="powf_d0a7e78bb716e61180e9c4346bace2d4" name="powf_d0a7e78bb716e61180e9c4346bace2d4" value="reddoorcompany.com"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
+        
+        <div class="field">
+          <div id="rdcgrecaptchacontactus"></div>
+        </div>
         
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />
