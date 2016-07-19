@@ -1120,9 +1120,22 @@
                         "operator": "and"
                       }
                     }
-                  }
+                  },
+                  _source: [
+                    "post_title",
+                    "tax_input.location_city",
+                    "tax_input.mls_id",
+                    "tax_input.location_street",
+                    "tax_input.location_zip",
+                    "tax_input.location_county",
+                    "tax_input.subdivision",
+                    "tax_input.elementary_school",
+                    "tax_input.middle_school",
+                    "tax_input.high_school",
+                    "tax_input.listing_office",
+                    "tax_input.listing_agent_name"
+                  ]
                 },
-                _source: 'post_title,_permalink,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
                 size: 100,
               }, function (err, response) {
 
