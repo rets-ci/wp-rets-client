@@ -2,8 +2,8 @@
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 3.9
 Tested up to: 4.5.3
-Stable tag: 1.6.2
-Build time: 2016-07-11T14:59:39+02:00
+Stable tag: 1.6.3
+Build time: 2016-07-19T11:22:48+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 
@@ -50,6 +50,14 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.6.3 - 19 July 2016 =
+* Added image search functionality to media field.
+* Moved actions into their own file.
+* Allow widgets to provide their own LESS/HTML.
+* Added very simple code field.
+* Multiple widgets can have the same class. Allowing widget functionality to come from configuration.
+* Various tweaks for upcoming Widgets Builder plugin.
 
 = 1.6.2 - 11 July 2016 =
 * Fixed Firefox issue in post selector builder.
