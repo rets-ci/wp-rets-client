@@ -8,7 +8,7 @@
 
       <h3><?php _e( 'I have a different question', 'reddoor' ); ?></h3>
       <p><?php _e( 'Please submit your information below or call us by phone. We\'re ready to assist you with your real estate matters!', 'reddoor' ); ?></p>
-      <input readonly class="hidden-phone" type="tel" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
+      <input readonly class="hidden-phone" type="tel" data-label="General Inquiry Call" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
 	    <form id="powf_F0DEC080B516E61180E9C4346BACE2D4" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_F0DEC080B516E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
