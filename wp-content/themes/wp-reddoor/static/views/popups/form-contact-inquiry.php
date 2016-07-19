@@ -8,7 +8,7 @@
 
       <h3><?php _e( 'I have a different question', 'reddoor' ); ?></h3>
       <p><?php _e( 'Please submit your information below or call us by phone. We\'re ready to assist you with your real estate matters!', 'reddoor' ); ?></p>
-      <input readonly class="hidden-phone" type="tel" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
+      <input readonly class="hidden-phone" type="tel" data-label="General Inquiry Call" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
 	    <form id="powf_F0DEC080B516E61180E9C4346BACE2D4" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_F0DEC080B516E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
@@ -60,16 +60,16 @@
           <div class="clear"></div>
         </div>
 
-        <div class="field">
-          <div id="rdcgrecaptchacontactus"></div>
-        </div>
-
         <input type="hidden" id="powf_26bab857b716e61180e9c4346bace2d4" name="powf_26bab857b716e61180e9c4346bace2d4" value="General"/>
         <input type="hidden" id="powf_d0a7e78bb716e61180e9c4346bace2d4" name="powf_d0a7e78bb716e61180e9c4346bace2d4" value="reddoorcompany.com"/>
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly."/>
         <input type="hidden" name="ignore_linkbuttontext" value=""/>
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/about/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
+        
+        <div class="field">
+          <div id="rdcgrecaptchacontactus"></div>
+        </div>
         
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />

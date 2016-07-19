@@ -1100,6 +1100,9 @@
           minimumInputLength: 3,
           data: [],
           query: function (query) {
+
+            var data = [];
+
             if( query.term && query.term.length  > 3 ) {
 
               if( $scope._request ) {
@@ -1117,13 +1120,24 @@
                         "operator": "and"
                       }
                     }
-                  }
+                  },
+                  _source: [
+                    "post_title",
+                    "tax_input.location_city",
+                    "tax_input.mls_id",
+                    "tax_input.location_street",
+                    "tax_input.location_zip",
+                    "tax_input.location_county",
+                    "tax_input.subdivision",
+                    "tax_input.elementary_school",
+                    "tax_input.middle_school",
+                    "tax_input.high_school",
+                    "tax_input.listing_office",
+                    "tax_input.listing_agent_name"
+                  ]
                 },
-                _source: 'post_title,_permalink,tax_input.location_city,tax_input.mls_id,tax_input.location_street,tax_input.location_zip,tax_input.location_county",tax_input.subdivision,tax_input.elementary_school,tax_input.middle_school,tax_input.high_school,tax_input.listing_office,tax_input.listing_agent_name',
                 size: 100,
               }, function (err, response) {
-
-                var data = [];
 
                 if( typeof response.hits.hits == 'undefined' ) {
                   query.callback({ results: data });
@@ -1141,7 +1155,7 @@
                 var high_school = { text : "High School", children: [] };
                 var listing_office = { text : "Office", children: [] };
                 var listing_agent = { text : "Agent", children: [] };
-                var unique = {};
+                var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
 
                 jQuery.each(response.hits.hits,function(k,v){
                   if( typeof v._source.post_title != 'undefined' ) {
@@ -1291,16 +1305,18 @@
                 query.callback({ results: data });
 
               })
+            } else if( ! query.term.length ) {
+              query.callback({ results: data });
             }
           },
-          language: {
-            noResults: function(){
-              return "No results found. Try something else";
-            },
-            errorLoading: function(){
-              return "Searching...";
-            }
-          },
+          // language: {
+          //   noResults: function(){
+          //     return "No results found. Try something else";
+          //   },
+          //   errorLoading: function(){
+          //     return "Searching...";
+          //   }
+          // },
           // templateResult: function formatRepo (city) {
           //
           //   if (city.loading) return city.text;
@@ -1319,6 +1335,11 @@
             window.location.href= data[0].permalink;
           }
           $scope.map_filter_taxonomy = data[0].taxonomy;
+        }).on('select2:selecting', function(e) {
+          var $select = $(this);
+          if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
+            e.preventDefault();
+          }
         });
 
         /**

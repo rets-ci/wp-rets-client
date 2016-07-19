@@ -8,7 +8,7 @@
 
       <h3><?php _e('I want to rent my property', 'reddoor'); ?></h3>
       <p><?php _e('Grow your investment with Red Door Company! Please submit your information below or call us by phone. We\'re ready to assist you with renting your property.', 'reddoor'); ?></p>
-      <input readonly class="hidden-phone" type="tel" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
+      <input readonly class="hidden-phone" type="tel" data-label="Management Inquiry Call" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
       <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20" class="form-validate" action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&amp;formId=powf_E3E9D503C22EE41195286C3BE5BD3B20&amp;tver=2013&amp;c=1" enctype="multipart/form-data" method="post" novalidate="novalidate">

@@ -72,15 +72,6 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/application-success'); ?>"/>
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
-        <?php $recaptcha = get_theme_mod( 'rdc_recaptcha_key' ); if( !empty( $recaptcha ) ) : ?>
-          <div id="application-request-recaptcha" class="recaptcha"></div>
-          <script>
-            jQuery(window).load(function(){
-              grecaptcha.render('application-request-recaptcha', {'sitekey' : '<?php echo $recaptcha; ?>'});
-            });
-          </script>
-        <?php endif; ?>
-
         <div class="field">
           <div id="rdcgrecaptchareqapplication"></div>
         </div>
