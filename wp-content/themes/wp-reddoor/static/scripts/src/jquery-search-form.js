@@ -1089,8 +1089,12 @@
         });
 
         $('.firstRangeLabel.buyBlock', dropdown).focus();
+        $('.firstBedRangeLabel.buyBlock', dropdown).focus();
+        $('.firstBathRangeLabel.buyBlock', dropdown).focus();
 
         $('.firstRangeLabel.rentBlock', dropdown).focus();
+        $('.firstBedRangeLabel.rentBlock', dropdown).focus();
+        $('.firstBathRangeLabel.rentBlock', dropdown).focus();
 
       }
 
