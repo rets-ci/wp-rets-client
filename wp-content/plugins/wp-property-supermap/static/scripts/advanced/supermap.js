@@ -160,6 +160,7 @@
         $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
+        $scope.loading_more_properties = true;
         $scope.rdc_listing = window.sm_rdc_listing || true;
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
@@ -726,6 +727,9 @@
          *
          */
         function getMoreProperties() {
+          if ( $scope._request ) {
+            $scope._request.abort();
+          }
           jQuery( '.sm-search-form form').addClass('processing');
           $scope.toggleSearchButton();
           $scope._request = client.search({
@@ -751,7 +755,9 @@
                 $scope.refreshMarkers(false);
 
                 if ( $scope.total > $scope.properties.length ) {
-                  getMoreProperties();
+                  if( $scope.loading_more_properties ) {
+                    getMoreProperties();
+                  }
                 }else{
                   if( ! $scope.loadNgMapChangedEvent ) {
                     $scope.loadNgMapChangedEvent = true;
@@ -835,6 +841,9 @@
                 }
                 $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
                 if ( $scope.total > $scope.properties.length ) {
+                  if( ! $scope.loading_more_properties ) {
+                    $scope.loading_more_properties = true;
+                  }
                   getMoreProperties();
                 }else if($scope.rdc_listing){
                   $scope.rdc_listing = false;
@@ -1436,6 +1445,8 @@
           if ( ! jQuery(this).hasClass('mapChanged') ) {
             $scope.resetMapBounds();
           }
+
+          $scope.loading_more_properties = false;
 
           var formQuery = {},
               push_counters = {},
