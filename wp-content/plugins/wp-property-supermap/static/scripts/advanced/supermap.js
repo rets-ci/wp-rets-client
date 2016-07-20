@@ -1337,7 +1337,7 @@
           }
           $scope.map_filter_taxonomy = data[0].taxonomy;
         }).on('select2:selecting', function(e) {
-          var $select = $(this);
+          var $select = jQuery(this);
           if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
             $select.select2( 'val', {} );
           }
