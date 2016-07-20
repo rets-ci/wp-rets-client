@@ -310,7 +310,7 @@
     }).on('select2:selecting', function(e) {
       var $select = $(this);
       if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-        e.preventDefault();
+        $select.select2( 'val', {} );
       }
     });
 
