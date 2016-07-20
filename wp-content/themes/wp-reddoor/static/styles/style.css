@@ -893,7 +893,7 @@ a:focus {
 }
 .searchForm form .location .select2-search__field {
   line-height: 35px;
-  margin-top: 0px;
+  margin-top: -5px;
 }
 .searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
