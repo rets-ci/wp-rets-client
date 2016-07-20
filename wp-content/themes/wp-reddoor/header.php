@@ -6,7 +6,7 @@
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width">
-  <title><?php bloginfo('name'); ?><?php wp_title(); ?></title>
+  <title><?php wp_title(); ?></title>
   <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,700' rel='stylesheet' type='text/css'>
   <?php wp_head(); ?>
 </head>
