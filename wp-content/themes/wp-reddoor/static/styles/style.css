@@ -840,14 +840,16 @@ a:focus {
   border-color: #a7a9ac transparent transparent;
 }
 .searchForm form .location .select2-selection__rendered {
-  line-height: 52px !important;
+  line-height: 35px !important;
   background: #f8f8f8;
   box-shadow: none;
+  margin: 10px 0;
 }
 .searchForm form .location .select2-selection__choice {
   border: none;
   padding: 0px 10px;
   border-radius: 30px;
+  font-size: 16px;
 }
 .searchForm form .location .icon-location {
   bottom: 15px;
@@ -878,17 +880,20 @@ a:focus {
   border-color: #a7a9ac transparent transparent;
 }
 .searchForm form .location .select2-selection__rendered {
-  line-height: 52px !important;
+  line-height: 35px !important;
   background: #f8f8f8;
   box-shadow: none;
+  margin: 10px 0;
 }
 .searchForm form .location .select2-selection__choice {
   border: none;
   padding: 0px 10px;
   border-radius: 30px;
+  font-size: 16px;
 }
 .searchForm form .location .select2-search__field {
-  line-height: 45px;
+  line-height: 35px;
+  margin-top: 0px;
 }
 .searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
@@ -1280,6 +1285,7 @@ a:focus {
   border: none;
   padding: 0px 10px;
   border-radius: 30px;
+  font-size: 16px;
 }
 .rdc-supermap-search-form .rdc-location-section .location .sf-icon {
   color: #a7a9ac;
