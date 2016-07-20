@@ -1283,7 +1283,7 @@ a:focus {
 }
 .rdc-supermap-search-form .rdc-location-section .location .select2 .select2-selection__choice {
   border: none;
-  padding: 0px 10px;
+  padding: 5px 10px;
   border-radius: 30px;
   font-size: 16px;
 }
