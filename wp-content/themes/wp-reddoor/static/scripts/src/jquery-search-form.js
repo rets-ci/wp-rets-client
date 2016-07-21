@@ -76,7 +76,9 @@
 
         var data = [];
 
-        if( rdc.client() && query.term && query.term.length  > 3 ) {
+        if( rdc.client() && query.term && query.term.length  >= 3 ) {
+
+          jQuery('.select2-dropdown').removeClass("hide");
 
           if( rdc.__request ) {
             rdc.__request.abort();
@@ -267,11 +269,10 @@
               // DESC -> b.length - a.length
               return a.children.length - b.children.length;
             });
-
             query.callback({ results: data });
-
-          })
-        } else if( ! query.term.length ) {
+          });
+        } else {
+          jQuery('.select2-dropdown').addClass("hide");
           query.callback({ results: data });
         }
       },
@@ -310,7 +311,7 @@
     }).on('select2:selecting', function(e) {
       var $select = $(this);
       if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-        e.preventDefault();
+        $select.select2( 'val', {} );
       }
     });
 
@@ -1088,8 +1089,12 @@
         });
 
         $('.firstRangeLabel.buyBlock', dropdown).focus();
+        $('.firstBedRangeLabel.buyBlock', dropdown).focus();
+        $('.firstBathRangeLabel.buyBlock', dropdown).focus();
 
         $('.firstRangeLabel.rentBlock', dropdown).focus();
+        $('.firstBedRangeLabel.rentBlock', dropdown).focus();
+        $('.firstBathRangeLabel.rentBlock', dropdown).focus();
 
       }
 
