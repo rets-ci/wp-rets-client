@@ -27,8 +27,8 @@ jQuery(function () {
     //__gaTracker('send', 'event', 'calls', 'click', jQuery( this ).data('label'), jQuery( this ).data('phone') );
     __gaTracker('send', {
       hitType: 'event',
-      eventCategory: 'Videos',
-      eventAction: 'play',
+      eventCategory: 'calls',
+      eventAction: 'click',
       eventLabel: jQuery( this ).data('label'),
       //eventValue: jQuery( this ).data('phone'),
     });
