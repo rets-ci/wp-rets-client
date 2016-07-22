@@ -1141,6 +1141,7 @@
                   },
                   _source: [
                     "post_title",
+                    "_permalink",
                     "tax_input.location_city",
                     "tax_input.mls_id",
                     "tax_input.location_street",
