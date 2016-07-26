@@ -161,7 +161,7 @@
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
         $scope.loading_more_properties = true;
-        $scope.rdc_listing = window.sm_rdc_listing || true;
+        $scope.rdc_listing = window.sm_rdc_listing || false;
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
@@ -1515,11 +1515,11 @@
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
             formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
           }
-
-          //merging the current taxonomy if tax archieve page
-          if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
-            formQuery.bool.must.push($scope.tax_must_query);
-          }
+          //
+          // //merging the current taxonomy if tax archieve page
+          // if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
+          //   formQuery.bool.must.push($scope.tax_must_query);
+          // }
 
           $scope.query = formQuery;
 
