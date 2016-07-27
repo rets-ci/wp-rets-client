@@ -161,7 +161,7 @@
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
         $scope.loading_more_properties = true;
-        $scope.rdc_listing = window.sm_rdc_listing || true;
+        $scope.rdc_listing = window.sm_rdc_listing || false;
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
@@ -882,21 +882,24 @@
             }
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
-              var SouthWestLatitude = bounds.getSouthWest().lat();
-              var NorthEastLatitude = bounds.getNorthEast().lat();
-              var NorthEastLongitude = bounds.getNorthEast().lng();
-              var SouthWestLongitude = bounds.getSouthWest().lng();
-              if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
-                jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
-                jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
-                jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
-                jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-                jQuery('.sm-search-form form').addClass('mapChanged');
-                if (jQuery.isEmptyObject($scope.tax_must_query)) {
-                  $scope.rdc_listing = true;
+              var zoom = map.getZoom();
+              if( zoom > 4 ) {
+                var SouthWestLatitude = bounds.getSouthWest().lat();
+                var NorthEastLatitude = bounds.getNorthEast().lat();
+                var NorthEastLongitude = bounds.getNorthEast().lng();
+                var SouthWestLongitude = bounds.getSouthWest().lng();
+                if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+                  jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+                  jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+                  jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+                  jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
                 }
-                jQuery('.sm-search-form form').submit();
+              }else{
+                $scope.resetMapBounds();
               }
+              jQuery('.sm-search-form form').addClass('mapChanged');
+              $scope.rdc_listing = true;
+              jQuery('.sm-search-form form').submit();
             });
           });
         };
@@ -1515,11 +1518,11 @@
           if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
             formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
           }
-
-          //merging the current taxonomy if tax archieve page
-          if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
-            formQuery.bool.must.push($scope.tax_must_query);
-          }
+          //
+          // //merging the current taxonomy if tax archieve page
+          // if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
+          //   formQuery.bool.must.push($scope.tax_must_query);
+          // }
 
           $scope.query = formQuery;
 
