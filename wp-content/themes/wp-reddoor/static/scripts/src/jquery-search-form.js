@@ -84,11 +84,16 @@
             rdc.__request.abort();
           }
 
+          var sale_type = "Sale";
+          if( jQuery("#tabs_search").find(".formTabs.active").data("topmenu") == "rentBtnForm" ) {
+            sale_type = "Rent";
+          }
+
           rdc.__request = rdc.client().search({
             index: 'v5',
             type: 'property',
             body: {
-              query: rdc.build_query( query.term ),
+              query: rdc.build_query( query.term, sale_type ),
               _source: [
                 "post_title",
                 "_permalink",
@@ -105,7 +110,6 @@
                 "tax_input.listing_agent_name"
               ]
             },
-            size: 100,
           }, function (err, response) {
 
             if( typeof response.hits.hits == 'undefined' ) {
