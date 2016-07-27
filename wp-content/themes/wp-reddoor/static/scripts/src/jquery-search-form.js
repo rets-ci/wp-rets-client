@@ -308,7 +308,7 @@
       if( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
         window.location.href= data[0].permalink;
       }
-      $('input[name="_taxonomy"]').val(data[0].taxonomy);
+      $select.closest('form').find('input[name="_taxonomy"]').val(data[0].taxonomy);
     }).on('select2:selecting', function(e) {
       var $select = $(this);
       if( $select.select2('val') != null && $select.select2('val').length > 0 ) {

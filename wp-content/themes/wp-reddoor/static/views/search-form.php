@@ -202,6 +202,7 @@
     <form class="rentForm tab-pane" id="tabs-2" method="POST" action="%20">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
+      <input name="_taxonomy" type="hidden" value=""/>
 
       <div class="location">
         <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
