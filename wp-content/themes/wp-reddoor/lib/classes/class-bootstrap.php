@@ -148,7 +148,7 @@ namespace UsabilityDynamics\RDC {
                 )
               );
 
-              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ) ) ) {
+              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'listing_office' ) ) ) ) {
                 $_location_selected = array(
                   'key' => $field,
                   'values' => $labels
