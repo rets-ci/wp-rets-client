@@ -69,13 +69,24 @@ var rdc = {
   /**
    * Build the search query
    */
-  build_query: function build_query( q ) {
+  build_query: function build_query( q, sale_type ) {
     return {
-      "match": {
-        "_all": {
-          "query": q,
-          "operator": "and"
-        }
+      "bool": {
+        "must": [
+          {
+            "match": {
+              "_all": {
+                "query": q,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "match": {
+              "tax_input.sale_type": sale_type
+            }
+          }
+        ]
       }
     }
   },
