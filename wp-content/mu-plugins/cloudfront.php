@@ -66,7 +66,9 @@ namespace UsabilityDynamics\CloudFront {
 	// For now its simple, a handful of domains all will function as "www.reddoorcompany.com" internally while using the custom urls in the browser.
 	$_domains_to_mask = array(
 		"cloudfront-staging.reddoorcompany.com" => "www.reddoorcompany.com",
+		"usabilitydynamics-www-reddoorcompany-com-latest.c.wpcloud.io" => "www.reddoorcompany.com",
 		"usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci" => "www.reddoorcompany.com",
+		"usabilitydynamics-www-reddoorcompany-com-production.c.wpcloud.io" => "www.reddoorcompany.com",
 		"usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci" => "www.reddoorcompany.com",
 		"usabilitydynamics-www-reddoorcompany-com-develop-mehul.c.rabbit.ci" => "www.reddoorcompany.com",
 		"d1s5isrzd47wsa.cloudfront.net" => "www.reddoorcompany.com", // prod cloudfront
@@ -99,6 +101,7 @@ namespace UsabilityDynamics\CloudFront {
 
 	// If we are on a "staging" domain, we tweak the URLs used.
 	if( isset( $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_SERVER' ] ) && isset(  $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_BROWSER' ] ) && $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_SERVER' ] !== $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_BROWSER' ] ) {
+
 		add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 		add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 		add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
