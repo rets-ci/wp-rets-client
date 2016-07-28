@@ -9,11 +9,20 @@
     }
   ],
   "extra": {
+    "settings_latest": {
+      "wp_debug_log": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": false,
+      "db": [
+        {
+          "name": "www.reddoorcompany.com/latest"
+        }
+      ]
+    },
     "settings": {
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
-      "wp_debug_log": true,
+      "wp_debug_log": false,
       "wp_debug_display": false,
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
