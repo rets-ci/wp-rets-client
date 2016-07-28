@@ -92,6 +92,9 @@
           rdc.__request = rdc.client().search({
             index: 'v5',
             type: 'property',
+            headers : {
+              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+            },
             body: {
               query: rdc.build_query( query.term, sale_type ),
               _source: [
