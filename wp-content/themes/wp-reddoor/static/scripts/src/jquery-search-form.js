@@ -906,6 +906,26 @@
           applyPlaceholderBuy();
         });
 
+        $('.lastBathRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBathRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBath( $(this) );
+        });
+
+        $('.lastBedRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBedRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBed( $(this) );
+        });
+
+        $('.lastBathRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBathRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBath( $(this) );
+        });
+
+        $('.lastBedRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBedRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBed( $(this) );
+        });
+
         $('.lastRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
