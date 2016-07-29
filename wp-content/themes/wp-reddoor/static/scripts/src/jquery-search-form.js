@@ -1056,7 +1056,7 @@
             $(this).closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val( selected_min );
             applyPlaceholderRentBath( $(this) );
 
-            buyGenerateMaxBath( $(this), selected_min );
+            rentGenerateMaxBath( $(this), selected_min );
 
             $(this).closest('.sfBathRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           } else {
@@ -1081,7 +1081,7 @@
             $(this).closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val( selected_min );
             applyPlaceholderRentBed( $(this) );
 
-            buyGenerateMaxBed( $(this), selected_min );
+            rentGenerateMaxBed( $(this), selected_min );
 
             $(this).closest('.sfBedRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           } else {

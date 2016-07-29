@@ -224,7 +224,7 @@
             <input type="text" class="firstBedRangeLabel rentBlock" value="" placeholder="<?php _e('Min') ?>" />
             <input type="hidden" class="firstBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][min]" />
 
-            <input type="text" class="lastBathRangeLabel rentBlock" value="" placeholder="<?php _e('Max') ?>" />
+            <input type="text" class="lastBedRangeLabel rentBlock" value="" placeholder="<?php _e('Max') ?>" />
             <input type="hidden" class="lastBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][max]" />
           </div>
           <div class="clear"></div>
