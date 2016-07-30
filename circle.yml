@@ -1,0 +1,21 @@
+machine:
+  timezone:
+    America/New_York
+  node:
+    version: v0.11.13
+  php:
+    version: 5.3.3
+  services:
+    - mysql
+
+  hosts:
+    reddoorcompany.com: 127.0.0.1
+    www.reddoorcompany.com: 127.0.0.1
+  environment:
+    NODE_ENV: ${CIRCLE_BRANCH}
+    PHP_ENV: ${CIRCLE_BRANCH}
+    WP_ENV: ${CIRCLE_BRANCH}
+
+test:
+  override:
+    - echo "No tests."
