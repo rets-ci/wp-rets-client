@@ -148,7 +148,7 @@ namespace UsabilityDynamics\RDC {
                 )
               );
 
-              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ) ) ) {
+              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'listing_office' ) ) ) ) {
                 $_location_selected = array(
                   'key' => $field,
                   'values' => $labels
@@ -196,14 +196,13 @@ namespace UsabilityDynamics\RDC {
                 'tax_input.listing_office' => array( 'Red Door Company' ),
             ),
         );
-        //check if current page is rdc listing or not - tax query can tell us on which page we are on currently
+        // check if current page is rdc listing or not - tax query can tell us on which page we are on currently
         if( $rdc_listing_query == $must_tax_query ) {
           $rdc_listing_query = array();
           $rdc_listing = false;
         }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
-        wp_localize_script( 'supermap-advanced', 'sm_must_tax_query', $must_tax_query );
         wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', $rdc_listing );
         wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
 
@@ -258,9 +257,13 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
-          $term_object = get_term( $term );
+          if( !empty( $_POST['_taxonomy'] ) ) {
+            $term_object = get_term_by( 'name', $term, $_POST['_taxonomy'] );
+          } else {
+            $term_object = get_term( $term );
+          }
 
-          $_redirect = get_term_link( $term );
+          $_redirect = get_term_link( $term_object->term_id );
 
           if ( $term_object->taxonomy == 'mls_id' ) {
             $p_query = new \WP_Query(
@@ -338,7 +341,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
         wp_enqueue_script('masonry', 'https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js', array('jquery'), '4.0');
         wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array( 'jquery' ), '1.0.0' );
-        wp_enqueue_script('select2.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.min.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '1.0.0');
         wp_enqueue_script('rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
         wp_enqueue_script('rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
         wp_enqueue_script('touch-swipe');

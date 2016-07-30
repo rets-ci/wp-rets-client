@@ -840,14 +840,16 @@ a:focus {
   border-color: #a7a9ac transparent transparent;
 }
 .searchForm form .location .select2-selection__rendered {
-  line-height: 52px !important;
+  line-height: 35px !important;
   background: #f8f8f8;
   box-shadow: none;
+  margin: 10px 0;
 }
 .searchForm form .location .select2-selection__choice {
   border: none;
-  background: none;
-  height: 43px !important;
+  padding: 0px 10px;
+  border-radius: 30px;
+  font-size: 16px;
 }
 .searchForm form .location .icon-location {
   bottom: 15px;
@@ -878,16 +880,20 @@ a:focus {
   border-color: #a7a9ac transparent transparent;
 }
 .searchForm form .location .select2-selection__rendered {
-  line-height: 52px !important;
+  line-height: 35px !important;
   background: #f8f8f8;
   box-shadow: none;
+  margin: 10px 0;
 }
 .searchForm form .location .select2-selection__choice {
   border: none;
-  background: none;
+  padding: 0px 10px;
+  border-radius: 30px;
+  font-size: 16px;
 }
 .searchForm form .location .select2-search__field {
-  line-height: 45px;
+  line-height: 35px;
+  margin-top: -5px;
 }
 .searchForm form .location .select2-selection__choice__remove {
   margin-right: 8px;
@@ -980,6 +986,7 @@ a:focus {
   color: #a7a9ac;
   font-size: 1em;
   position: relative;
+  z-index: 999;
   width: 100%;
   top: 0;
 }
@@ -1077,9 +1084,16 @@ a:focus {
   z-index: 10;
 }
 .select2-dropdown .select2-results__option {
-  height: 48px;
   border-bottom: 1px solid #e6e6e6;
   padding: 14px;
+}
+.select2-dropdown .loading-results {
+  display: none;
+}
+.select2-container--default .select2-results__group {
+  padding: 15px 6px !important;
+  color: #d03528;
+  background: #f3f0e9;
 }
 .wpp-advanced-supermap {
   overflow: visible !important;
@@ -1270,8 +1284,9 @@ a:focus {
 }
 .rdc-supermap-search-form .rdc-location-section .location .select2 .select2-selection__choice {
   border: none;
-  background: none;
-  margin-top: 7px;
+  padding: 5px 10px;
+  border-radius: 30px;
+  font-size: 16px;
 }
 .rdc-supermap-search-form .rdc-location-section .location .sf-icon {
   color: #a7a9ac;
@@ -2649,6 +2664,49 @@ input[type="radio"].styled-checkbox-radio:checked + label::before {
     margin-bottom: 25px !important;
   }
 }
+.rdc-masthead-title {
+  font-size: 3.5em !important;
+  font-weight: bold;
+  line-height: 1.3em;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  text-align: center;
+}
+.rdc-masthead-subtitle {
+  font-size: 1.5em !important;
+  line-height: 1.75em !important;
+  margin-top: 20px !important;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5) !important;
+  color: #ffffff;
+  text-align: center;
+}
+.rdc-masthead-widget {
+  background-size: cover;
+  border-left: 0 none;
+  border-right: 0 none;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 240px 0 20px 0;
+  height: 825px;
+}
+.rdc-masthead-btn {
+  border: medium none;
+  border-radius: 6px;
+  padding: 1.3em 4em;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.rdc-masthead-buttons-block {
+  padding: 20px 0;
+}
+.rdc-masthead-widget #tabs_search {
+  margin-bottom: 60px;
+}
+@media screen and (max-width: 992px) {
+  .rdc-masthead-widget {
+    height: 1050px;
+  }
+}
 /**
  * WIDGET class 'hero-content'
  *
@@ -3197,23 +3255,23 @@ input[type="submit"]:active {
   display: block;
   text-align: right;
 }
-.popupContactUsMore ul {
+.popupFormOptions ul {
   background: #fff;
   border-radius: 5px;
   margin: 0;
 }
-.popupContactUsMore ul li {
+.popupFormOptions ul li {
   height: 120px;
   border-bottom: 1px solid #ece9e4;
   min-width: 500px;
 }
-.popupContactUsMore ul li a {
+.popupFormOptions ul li a {
   color: #5a595c;
   display: block;
   height: 100%;
   padding: 0 5%;
 }
-.popupContactUsMore ul li a i {
+.popupFormOptions ul li a i {
   background: #f3f0e9 none repeat scroll 0 0;
   border-radius: 100%;
   color: #5a595c;
@@ -3226,25 +3284,25 @@ input[type="submit"]:active {
   top: 24px;
   width: 70px;
 }
-.popupContactUsMore ul li a div {
+.popupFormOptions ul li a div {
   float: left;
   font-size: 1.3em;
   font-weight: 500;
   line-height: 120px;
   margin-left: 25px;
 }
-.popupContactUsMore ul li a .icon-circle-right {
+.popupFormOptions ul li a .icon-circle-right {
   float: right;
   font-size: 2em;
   margin-top: 9%;
 }
-.popupContactUsMore ul li a:hover {
+.popupFormOptions ul li a:hover {
   color: #d03528;
 }
-.popupContactUsMore ul li a:hover i {
+.popupFormOptions ul li a:hover i {
   color: #d03528;
 }
-.popupNonRdcRentListing .popup-form-wrapper {
+.popupNoticeRentPass .popup-form-wrapper {
   padding: 7% 7% 10%;
 }
 .popupLogin ul {
@@ -3391,16 +3449,16 @@ input[type="submit"]:active {
     max-height: none;
     width: 100%;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul {
     height: 100%;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul li {
     min-width: 0;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li div {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul li div {
     font-size: 14px;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul li .icon {
     margin-top: 45px;
   }
   .popup.contact-popup.popupLogin .popup-inner-wrapper ul {
@@ -3424,13 +3482,13 @@ input[type="submit"]:active {
   }
 }
 @media screen and (max-width: 992px) {
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper {
     overflow-y: scroll;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li a div {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul li a div {
     margin-left: 15px;
   }
-  .popup.contact-popup.popupContactUsMore .popup-inner-wrapper ul li .icon {
+  .popup.contact-popup.popupFormOptions .popup-inner-wrapper ul li .icon {
     display: none;
   }
   .popup.contact-popup input[type="tel"] {
@@ -6977,20 +7035,42 @@ a.btn-rdc {
     position: relative;
     z-index: 20;
   }
-  body .searchForm .sfPriceRange .sfprInputsBlock input {
+  body .searchForm .sfPriceRange .sfprInputsBlock input,
+  body .searchForm .sfBathRange .sfprInputsBlock input,
+  body .searchForm .sfBedRange .sfprInputsBlock input {
     width: 48%;
   }
-  body .searchForm .sfPriceRange .left-side {
+  body .searchForm .sfPriceRange .left-side,
+  body .searchForm .sfBathRange .left-side,
+  body .searchForm .sfBedRange .left-side {
     width: 50%;
   }
-  body .searchForm .sfPriceRange .right-side {
+  body .searchForm .sfPriceRange .right-side,
+  body .searchForm .sfBathRange .right-side,
+  body .searchForm .sfBedRange .right-side {
     width: 50%;
   }
-  body .searchForm .sfPriceRange .firstRangeList {
+  body .searchForm .sfPriceRange .firstRangeList,
+  body .searchForm .sfBathRange .firstRangeList,
+  body .searchForm .sfBedRange .firstRangeList,
+  body .searchForm .sfPriceRange .firstBathRangeList,
+  body .searchForm .sfBathRange .firstBathRangeList,
+  body .searchForm .sfBedRange .firstBathRangeList,
+  body .searchForm .sfPriceRange .firstBedRangeList,
+  body .searchForm .sfBathRange .firstBedRangeList,
+  body .searchForm .sfBedRange .firstBedRangeList {
     padding-right: 15px;
     text-align: center;
   }
-  body .searchForm .sfPriceRange .lastRangeList {
+  body .searchForm .sfPriceRange .lastRangeList,
+  body .searchForm .sfBathRange .lastRangeList,
+  body .searchForm .sfBedRange .lastRangeList,
+  body .searchForm .sfPriceRange .lastBathRangeList,
+  body .searchForm .sfBathRange .lastBathRangeList,
+  body .searchForm .sfBedRange .lastBathRangeList,
+  body .searchForm .sfPriceRange .lastBedRangeList,
+  body .searchForm .sfBathRange .lastBedRangeList,
+  body .searchForm .sfBedRange .lastBedRangeList {
     padding-left: 15px;
     text-align: center;
   }

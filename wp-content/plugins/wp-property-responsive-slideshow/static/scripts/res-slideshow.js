@@ -21,6 +21,7 @@ jQuery(document).ready(function($) {
         }
         var slidesPerView, slidesPerColumn, pagination, galleryTop, galleryThumbs, $this = $(this), id = $this.attr("id"), isMobile = $this.hasClass("mobile"), sliderType = $this.attr("data-slider-type"), autoHeight = !1, centeredSlides = !0, slidesPerColumnFill = "column", _galleryTop = $this.find(".gallery-top"), _galleryThumbs = $this.find(".gallery-thumbs"), slideshow_layout = _galleryTop.data("slideshow_layout"), slider_width = _galleryTop.data("slider_width"), slider_height = isMobile ? "" : _galleryTop.data("slider_height"), slider_auto_height = _galleryTop.data("slider_auto_height").toString();
         slider_auto_height = "true" == slider_auto_height ? !0 : !1;
+        var slider_init = true;
         var slider_min_height = _galleryTop.data("slider_min_height"), slider_max_height = _galleryTop.data("slider_max_height");
         switch (sliderType) {
           case "standard":
@@ -61,7 +62,7 @@ jQuery(document).ready(function($) {
             slider_max_height: slider_max_height,
             onInit: function(s) {
                 setTimeout(function() {
-                    s.onResize(), setControlSize();
+                    s.onResize(), setControlSize(); if( slider_init ) { s.slideTo(0); slider_init = false; }
                 }, 0);
             }
         }), _galleryTop.find("img").each(function() {

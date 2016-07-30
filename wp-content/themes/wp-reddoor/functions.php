@@ -13,7 +13,8 @@ require_once get_template_directory() . '/lib/post-types/guide.php';
 
 if(class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-post-carousel/post-carousel.php';
-  require_once 'lib/widgets/rdc-hero/hero.php';
+  require_once 'lib/widgets/rdc-tabbed-content/tabbed_content.php';
+  require_once 'lib/widgets/rdc-masthead/rdc_masthead.php';
 }
 
 add_action( 'admin_enqueue_scripts', function () {
@@ -85,7 +86,6 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
         $propertyDetailsDescription .= $propertyDetailsAttrs['property_type'];
         if($propertyDetailsAttrs['approximate_lot_size']){
             $propertyDetailsDescription .= ' sits on a ';
-            $propertyDetailsDescription .= ' sits on a ';
             $propertyDetailsDescription .= $propertyDetailsAttrs['approximate_lot_size'];
             $propertyDetailsDescription .= ' lot and features ';
         } else{
@@ -112,4 +112,87 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
 
     return $propertyDetailsDescription;
   }
+}
+
+add_action( 'wp_footer', 'rdc_form_reCaptcha' );
+
+function rdc_form_reCaptcha(){
+    ?>
+    <script type="text/javascript">
+        var recaptchaforms = [];
+        var sitekey = "6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO";
+        var rdcRecaptchaOnloadCallback = function() {
+            if( document.querySelector("#rdcgrecaptchacontactus") ) {
+                grecaptcha.render("rdcgrecaptchacontactus", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("contactus");
+            }
+            if( document.querySelector("#rdcgrecaptchahomebuy") ) {
+                grecaptcha.render("rdcgrecaptchahomebuy", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("homebuy");
+            }
+            if( document.querySelector("#rdcgrecaptchacareer") ) {
+                grecaptcha.render("rdcgrecaptchacareer", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("career");
+            }
+            if( document.querySelector("#rdcgrecaptchahomebuylisting") ) {
+                grecaptcha.render("rdcgrecaptchahomebuylisting", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("buylisting");
+            }
+            if( document.querySelector("#rdcgrecaptchahomemanagement") ) {
+                grecaptcha.render("rdcgrecaptchahomemanagement", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("homemanagement");
+            }
+            if( document.querySelector("#rdcgrecaptchahomerenting") ) {
+                grecaptcha.render("rdcgrecaptchahomerenting", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("homerenting");
+            }
+            if( document.querySelector("#rdcgrecaptchahomeselling") ) {
+                grecaptcha.render("rdcgrecaptchahomeselling", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("homeselling");
+            }
+            if( document.querySelector("#rdcgrecaptchajobrequest") ) {
+                grecaptcha.render("rdcgrecaptchajobrequest", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("jobrequest");
+            }
+            if( document.querySelector("#rdcgrecaptchareferral") ) {
+                grecaptcha.render("rdcgrecaptchareferral", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("referral");
+            }
+            if( document.querySelector("#rdcgrecaptchareqapplication") ) {
+                grecaptcha.render("rdcgrecaptchareqapplication", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("reqapplication");
+            }
+            if( document.querySelector("#rdcgrecaptchamanagementreferral") ) {
+                grecaptcha.render("rdcgrecaptchamanagementreferral", {
+                    'sitekey': sitekey,
+                });
+                recaptchaforms.push("managementreferral");
+            }
+        };
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=rdcRecaptchaOnloadCallback&render=explicit"
+            async defer>
+    </script>
+    <?php
 }

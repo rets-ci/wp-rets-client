@@ -44,6 +44,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @return mixed
        */
       public function xmlrpc_methods( $_methods ) {
+        $_methods['wpp.deleteProperty'] = array( $this, 'rpc_delete_property' );
         $_methods['wpp.editProperty'] = array( $this, 'rpc_edit_property' );
         $_methods['wpp.removeDuplicatedMLS'] = array( $this, 'rpc_remove_duplicated_mls' );
         return $_methods;
@@ -260,6 +261,81 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       *
+       * @param $args
+       * @return array
+       */
+      public function rpc_delete_property( $args ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $data = $this->parseRequest( $args );
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $data;
+        }
+
+        $response = array(
+          "ok" => true,
+          "request" => $data,
+          "logs" => array(),
+        );
+
+        $post_id = 0;
+        if( is_numeric( $data ) ) {
+          $post_id = $data;
+        } else if ( !empty( $data[ 'id' ] ) ) {
+          $post_id = $data[ 'id' ];
+          ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Have wpp.deleteProperty request' );
+
+        if( !$post_id || !is_numeric( $post_id ) ) {
+          $log = 'No post ID provided';
+          array_push( $response[ 'logs' ], $log );
+          ud_get_wp_rets_client()->write_log( $log );
+          return $response;
+        }
+
+        /**
+         * Disable term counting
+         */
+        wp_defer_term_counting( true );
+
+        ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]" );
+
+        if ( FALSE === get_post_status( $post_id ) ) {
+
+          ud_get_wp_rets_client()->write_log( "Post ID [$post_id] does not exist. Removing its postmeta and terms if exist" );
+
+          // Looks like post was deleted. But postmeta ( and probably terms ) still exist... Remove it.
+          wp_delete_object_term_relationships( $post_id, get_object_taxonomies( 'property' ));
+          $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
+
+          $log = "Removed postmeta and terms for Property [{$post_id}].";
+          array_push( $response[ 'logs' ], $log );
+          ud_get_wp_rets_client()->write_log( $log );
+
+        } else {
+
+          ud_get_wp_rets_client()->write_log( "Post [$post_id] found. Removing it." );
+
+          if( wp_delete_post( $post_id, true ) ) {
+            $log = "Removed Property [{$post_id}]";
+          } else {
+            $log = "Property [{$post_id}] could not be removed";
+            $response[ "ok" ] = false;
+          }
+
+          array_push( $response[ 'logs' ], $log );
+          ud_get_wp_rets_client()->write_log( $log );
+
+        }
+
+        return $response;
+
+      }
+
+      /**
        * Removes properties with duplicated MLS
        *
        * @param $args
@@ -283,7 +359,7 @@ namespace UsabilityDynamics\WPRETSC {
           "logs" => array(),
         );
 
-        ud_get_wp_rets_client()->write_log( 'Have request wpp.removeDuplicatedMLS request' );
+        ud_get_wp_rets_client()->write_log( 'Have wpp.removeDuplicatedMLS request' );
 
         // Find all RETS IDs that have multiple posts associated with them.
         $query = "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC";

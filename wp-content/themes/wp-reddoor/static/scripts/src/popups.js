@@ -24,6 +24,14 @@ jQuery(function () {
   });
 
   jQuery('.popup .hidden-phone').on('click', function(){
+    //__gaTracker('send', 'event', 'calls', 'click', jQuery( this ).data('label'), jQuery( this ).data('phone') );
+    __gaTracker('send', {
+      hitType: 'event',
+      eventCategory: 'calls',
+      eventAction: 'click',
+      eventLabel: jQuery( this ).data('label'),
+      //eventValue: jQuery( this ).data('phone'),
+    });
     jQuery( this ).val(jQuery( this ).data('phone'));
   });
 

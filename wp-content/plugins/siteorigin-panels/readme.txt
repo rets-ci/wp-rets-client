@@ -2,8 +2,8 @@
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.0
 Tested up to: 4.5.2
-Stable tag: 2.4.9
-Build time: 2016-05-26T11:48:14+02:00
+Stable tag: 2.4.10
+Build time: 2016-07-04T11:29:25+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: http://siteorigin.com/page-builder/#donate
@@ -95,6 +95,14 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.4.10 - 4 July 2016 =
+* Made Live Editor quick link optional from Page Builder settings page.
+* Added option to specify parallax motion.
+* Fixed settings help link.
+* Renamed Prebuilt to Layouts
+* Reverted sidebars emulator change.
+* Skip empty attributes in CSS generator class.
 
 = 2.4.9 - May 26 2016 =
 * Improved parallax library to upscale images to ensure enough of a parallax.

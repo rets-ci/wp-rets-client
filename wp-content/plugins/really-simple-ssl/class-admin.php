@@ -1185,9 +1185,9 @@ protected function get_server_variable_fix_code(){
       $this->htaccess_test_success = TRUE;
 		  if ($this->debug) {$this->trace_log("htaccess rules tested successfully.");}
     } else {
-      //.htaccess rewrite rule seems to be giving problems, so enable javascript redirect (changed into wp redirect).
+      //.htaccess rewrite rule seems to be giving problems.
       $this->htaccess_test_success = FALSE;
-      $this->javascript_redirect = TRUE;
+
       if ($rsssl_url->error_number!=0) {
         $this->trace_log("htaccess rules test failed with error: ".$rsssl_url->get_curl_error($rsssl_url->error_number));
       } else {
@@ -1245,6 +1245,7 @@ protected function get_server_variable_fix_code(){
   public function removeHtaccessEdit() {
       if(file_exists($this->ABSpath.".htaccess") && is_writable($this->ABSpath.".htaccess")){
         $htaccess = file_get_contents($this->ABSpath.".htaccess");
+
 
         //if multisite, per site activation and more than one blog remaining on ssl, remove condition for this site only
         //the domain list has been rebuilt already, so current site is already removed.
@@ -1622,7 +1623,7 @@ public function show_notices()
         ?>
         <div id="message" class="error fade notice is-dismissible rlrsssl-htaccess">
           <p>
-            <?php echo __("Your .htaccess did not contain the Really Simple SSL redirect to https, and could not be written, so an internal wp redirect is currently added. .htaccess redirects are slightly faster. Set the .htaccess file to writable and visit the settings page to write it again, or copy the code lines from the settings page.","really-simple-ssl");?>
+            <?php echo __("Your .htaccess did not contain the Really Simple SSL redirect to https, and could not be written, so a javascript redirect is currently added. For SEO purposes it is advisable to use .htaccess redirects. Set the .htaccess file to writable and visit the settings page to write it again, or copy the code lines from the settings page.","really-simple-ssl");?>
             <a href="options-general.php?page=rlrsssl_really_simple_ssl">Settings</a>
           </p>
         </div>
@@ -2052,11 +2053,11 @@ public function settings_page() {
                  _e("Editing of .htaccess is blocked in Really Simple ssl settings, so you're in control of the .htaccess file.","really-simple-ssl");
               } else {
                  if (!is_writable($this->ABSpath.".htaccess")) {
-                   _e("Https redirect was set as internal wp redirect because the .htaccess was not writable. Set manually if you want to redirect in .htaccess.","really-simple-ssl");
+                   _e("Https redirect was set in javascript because the .htaccess was not writable. Set manually if you want to redirect in .htaccess.","really-simple-ssl");
                  } elseif(!$this->ssl_enabled_networkwide && $this->is_multisite_subfolder_install()) {
-                   _e("Https redirect was set as wp internal redirect because you have activated per site on a multiste subfolder install. Install networkwide to set the .htaccess redirect.","really-simple-ssl");
+                   _e("Https redirect was set in javascript because you have activated per site on a multiste subfolder install. Install networkwide to set the .htaccess redirect.","really-simple-ssl");
                  } else {
-                   _e("Https redirect was set as wp internal redirect because the htaccess redirect rule could not be verified. Insert the redirect rules manually into your .htaccess file if you want to redirect in .htaccess.","really-simple-ssl");
+                   _e("Https redirect was set in javascript because the htaccess redirect rule could not be verified. Set manually if you want to redirect in .htaccess.","really-simple-ssl");
                 }
                  if ($this->ssl_type!="NA" && !(!$this->ssl_enabled_networkwide && $this->is_multisite_subfolder_install())) {
                     $manual = true;
@@ -2256,7 +2257,7 @@ public function create_form(){
       //only show option to enable or disable mixed content and redirect when ssl is detected
       if($this->site_has_ssl || $this->force_ssl_without_detection) {
         add_settings_field('id_autoreplace_insecure_links', __("Auto replace mixed content","really-simple-ssl"), array($this,'get_option_autoreplace_insecure_links'), 'rlrsssl', 'rlrsssl_settings');
-        add_settings_field('id_javascript_redirect', __("Enable wp internal redirection to ssl","really-simple-ssl"), array($this,'get_option_javascript_redirect'), 'rlrsssl', 'rlrsssl_settings');
+        add_settings_field('id_javascript_redirect', __("Enable javascript redirection to ssl","really-simple-ssl"), array($this,'get_option_javascript_redirect'), 'rlrsssl', 'rlrsssl_settings');
       }
 
       if(!$this->site_has_ssl) {
@@ -2280,7 +2281,11 @@ public function section_text() {
   ?>
   <p>
   <?php
-
+    if ($this->site_has_ssl || $this->force_ssl_without_detection)
+      _e('By unchecking the \'auto replace mixed content\' checkbox you can test if your site can run without this extra functionality. Uncheck, empty your cache when you use one, and go to the front end of your site. You should then check if you have mixed content errors, by clicking on the lock icon in the addres bar.','really-simple-ssl');
+    else {
+      _e('The force ssl without detection option can be used when the ssl was not detected, but you are sure you have ssl.','really-simple-ssl');
+    }
   ?>
   </p>
   <?php
@@ -2373,7 +2378,6 @@ echo '<input id="rlrsssl_options" name="rlrsssl_options[debug]" size="40" type="
 public function get_option_javascript_redirect() {
 $options = get_option('rlrsssl_options');
 echo '<input id="rlrsssl_options" name="rlrsssl_options[javascript_redirect]" size="40" type="checkbox" value="1"' . checked( 1, $this->javascript_redirect, false ) ." />";
-_e("Internal wp redirect is a fallback for when the .htaccess redirects couldn't be inserted","really-simple-ssl");
 }
 
 /**
