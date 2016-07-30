@@ -1,6 +1,12 @@
 <?php
 /**
- * Shameless Hacks
+ * Plugin Name: Shameless Hacks
+ * Plugin URI: http://usabilitydynamics.com/plugins/
+ * Description: System hacks.
+ * Author: Usability Dynamics, Inc.
+ * Version: 0.1.0
+ * Author URI: http://usabilitydynamics.com
+ *
  */
 
 add_filter( 'ud:errors:admin_notices', function() { return null; });
@@ -56,140 +62,6 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && strpos( $_SERVER['HTTP_X_SELE
     //die(current_action() . ' - ' . time()  . ' - ' . timer_stop());
   }, 0 );
 
-
-}
-
-if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' && isset( $_GET[ 'test-stuff' ] ) ) {
-
-
-  add_action('__init', function() {
-    global $_wp_additional_image_sizes;
-
-    die( '<pre>' . print_r( UsabilityDynamics\Utility::all_image_sizes(), true ) . '</pre>' );
-
-
-    die( '<pre>' . print_r( get_intermediate_image_sizes(), true ) . '</pre>' );
-
-  }, 200 );
-};
-
-if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === 'andy' && isset( $_GET[ 'delete-all-old' ] ) ) {
-
-  header( 'cache-control:no-cache, private' );
-
-  function delete_rets_duplicates() {
-    global $wpdb;
-    
-    // Find all RETS IDs that have multiple posts associated with them.
-    $_duplicates = $wpdb->get_col( "SELECT meta_value, COUNT(*) c FROM $wpdb->postmeta WHERE meta_key='rets_id' GROUP BY meta_value HAVING c > 1 ORDER BY c DESC;" );
-
-    if( empty( $_duplicates ) ) {
-      die( "No duplicates found" );
-    } else {
-      echo "Found [" . count( $_duplicates ) . "] RETS IDs which have duplicated properties.<br/><br/>";
-    }
-
-    $step = 0;
-
-    $all_deleted = array();
-    foreach( $_duplicates as $rets_id ) {
-
-      echo "Found duplications for RETS ID [{$rets_id}]<br/>";
-
-      $post_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='rets_id' AND meta_value='{$rets_id}' ORDER BY post_id DESC;" );
-
-      $primary = 0;
-
-      foreach( $post_ids as $post_id ) {
-
-        if ( FALSE === get_post_status( $post_id ) ) {
-          // Looks like post was deleted. But postmeta still exists... Remove it.
-          $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
-          echo "RETS ID [{$rets_id}]. Property [{$post_id}] does not exist. Removed postmeta.<br/>";
-        } else {
-          if( !$primary ) {
-            $primary = $post_id;
-          } else {
-            if( wp_delete_post( $post_id, true ) ) {
-              echo "RETS ID [{$rets_id}]. Removed Property [{$post_id}].<br/>";
-            } else {
-              echo "RETS ID [{$rets_id}]. Property [{$post_id}] could not be removed.<br/>";
-            }
-          }
-        }
-
-        // Removed post from ES.
-        wp_remote_request( trailingslashit( RETS_ES_LINK ) . 'v5/property/' . $post_id, array(
-          'method' => 'DELETE',
-          'blocking' => false
-        ));
-
-      }
-
-      echo "<br/>";
-
-      $step++;
-
-      if( !empty( $_GET[ 'limit' ] ) && $_GET[ 'limit' ] <= $step ) {
-        die();
-      }
-
-    }
-
-    return $all_deleted;
-  }
-
-  function delete_rets_listings() {
-    global $wpdb;
-
-    $_old = $wpdb->get_col( "SELECT post_id from $wpdb->postmeta WHERE meta_key='rets_id';" );
-
-    $all_deleted = array();
-    foreach( $_old as $_delete_me ) {
-
-      if( $_deleted = wp_delete_post( $_delete_me, true ) ) {
-        $all_deleted[] = $_deleted ;
-      }
-
-      // die( '<pre>' . print_r( $_deleted, true ) . '</pre>' );
-    }
-
-    return $all_deleted;
-  }
-
-  function delete_rets_media() {
-    global $wpdb;
-
-    $_old = $wpdb->get_col( "SELECT ID from $wpdb->posts WHERE post_author='49';" );
-
-    $all_deleted = array();
-    foreach( $_old as $_delete_me ) {
-
-      if( $_deleted = wp_delete_post( $_delete_me, true ) ) {
-        $all_deleted[] = $_deleted ;
-      }
-
-      // die( '<pre>' . print_r( $_deleted, true ) . '</pre>' );
-    }
-
-    return $all_deleted;
-
-
-  }
-
-  wp_die('Deleted ' . count(delete_rets_duplicates()) . ' total');
-  //wp_die('Deleted ' . count(delete_rets_listings()) . ' total');
-  //wp_die('Deleted ' . count(delete_rets_media()) . ' media');
-
-}
-
-if( isset( $_SERVER[ 'HTTP_X_EDGE' ] ) && $_SERVER[ 'HTTP_X_EDGE' ] === '__andy' ) {
-  header( 'cache-control:no-cache, private' );
-
-  add_action( 'template_redirect', function () {
-
-    die( 'test from template_redirect' );
-  } );
 
 }
 
