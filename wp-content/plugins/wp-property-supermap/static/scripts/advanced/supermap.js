@@ -669,7 +669,8 @@
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
-          hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+          //hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
+          hosts: 'dori-us-east-1.searchly.com'
         });
 
         /**
@@ -735,6 +736,9 @@
           $scope._request = client.search({
             index: index,
             type: type,
+            headers : {
+              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+            },
             body: {
               query: build_query()
             },
@@ -809,6 +813,9 @@
           $scope._request = client.search({
             index: index,
             type: type,
+            headers : {
+              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+            },
             body: {
               query: build_query()
             },
@@ -1050,6 +1057,9 @@
             client.get({
               index: index,
               type: type,
+              headers : {
+                "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
@@ -1133,6 +1143,9 @@
               $scope._request = client.search({
                 index: 'v5',
                 type: 'property',
+                headers : {
+                  "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+                },
                 body: {
                   query: {
                     "match": {
