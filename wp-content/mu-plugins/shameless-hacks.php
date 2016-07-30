@@ -223,3 +223,8 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRA
   add_filter('pre_site_transient_update_themes','rdc_remove_core_updates');
 
 }
+
+function listing_custom_rewrite() {
+	add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+}
+add_action('init', 'listing_custom_rewrite');
