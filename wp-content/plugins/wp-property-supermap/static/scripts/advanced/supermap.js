@@ -736,7 +736,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
             body: {
               query: build_query()
@@ -813,7 +813,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
             body: {
               query: build_query()
@@ -1057,7 +1057,7 @@
               index: index,
               type: type,
               headers : {
-                "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
               },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
@@ -1143,7 +1143,7 @@
                 index: 'v5',
                 type: 'property',
                 headers : {
-                  "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
                 },
                 body: {
                   query: {
