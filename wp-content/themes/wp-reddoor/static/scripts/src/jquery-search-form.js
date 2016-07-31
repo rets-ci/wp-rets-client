@@ -93,7 +93,7 @@
             index: 'v5',
             type: 'property',
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
             },
             body: {
               query: rdc.build_query( query.term, sale_type ),

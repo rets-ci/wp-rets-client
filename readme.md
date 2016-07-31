@@ -1,3 +1,8 @@
+### API Keys
+
+* 462410d704f694edb7422745387c6b12 - admin searchly, used to be 1d5f77cffa8e5bbc062dab552a3c2093
+* quw42xelwvbp5gbcdgcqqgtx4vz5txeb - public searchly
+
 ### Test URLs
 
 * https://www.reddoorcompany.com/

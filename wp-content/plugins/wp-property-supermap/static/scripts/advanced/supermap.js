@@ -669,7 +669,6 @@
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
-          //hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
           hosts: 'dori-us-east-1.searchly.com'
         });
 
@@ -737,7 +736,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
             },
             body: {
               query: build_query()
@@ -814,7 +813,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
             },
             body: {
               query: build_query()
@@ -1058,7 +1057,7 @@
               index: index,
               type: type,
               headers : {
-                "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+                "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
               },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
@@ -1144,7 +1143,7 @@
                 index: 'v5',
                 type: 'property',
                 headers : {
-                  "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+                  "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
                 },
                 body: {
                   query: {
