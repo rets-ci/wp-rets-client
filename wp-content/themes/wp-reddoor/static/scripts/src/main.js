@@ -41,7 +41,7 @@ var rdc = {
       q: 'tax_input.sale_type:' + type,
       size: 0,
       headers: {
-        "Authorization": make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+        "Authorization": make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
       },
     }, function (err, response) {
 
