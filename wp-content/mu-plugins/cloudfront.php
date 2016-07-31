@@ -26,15 +26,14 @@
  * Anything required to login/logout and admin does not use "www". AJAX URL should not be cached either in most cases.
  * For the frontend (siteurl, home) we use the www prefix.
  *
- * wp option update adminurl  https://reddoorcompany.com/wp-admin (Required for module to work)
- * wp option update loginurl  https://reddoorcompany.com/wp-login.php
- * wp option update ajaxurl   https://reddoorcompany.com/wp-admin/admin-ajax.php
- * wp option update siteurl   https://www.reddoorcompany.com
- * wp option update home      https://www.reddoorcompany.com
+ * wp option update adminurl    https://reddoorcompany.com/wp-admin (Required for module to work)
+ * wp option update loginurl    https://reddoorcompany.com/wp-login.php
+ * wp option update ajaxurl     https://reddoorcompany.com/wp-admin/admin-ajax.php
+ * wp option update cloudfront  https://www.reddoorcompany.com
  *
- * On staging:
- * wp option update siteurl   https://cloudfront-staging.reddoorcompany.com
- * wp option update home      https://cloudfront-staging.reddoorcompany.com
+ * On latest:
+ * wp option update adminurl    https://reddoorcompany.com
+ * wp option update cloudfront  https://cloudfront-staging.reddoorcompany.com
  *
  *
  * ### Testing
@@ -62,7 +61,6 @@ namespace UsabilityDynamics\CloudFront {
 		return;
 	}
 
-
 	// For now its simple, a handful of domains all will function as "www.reddoorcompany.com" internally while using the custom urls in the browser.
 	$_domains_to_mask = array(
 		"cloudfront-staging.reddoorcompany.com" => "www.reddoorcompany.com",
@@ -75,8 +73,8 @@ namespace UsabilityDynamics\CloudFront {
 		"d85q7g852omyp.cloudfront.net" => "www.reddoorcompany.com" // latest cloudfront
 	);
 
-	// If adminurl not set we assume nothing is configured.
-	if( !get_option( 'adminurl' ) ) {
+	// If cloudfront not set we assume nothing is configured. Should just be URL of what to use for CF.
+	if( !get_option( 'cloudfront' ) ) {
 		return;
 	}
 
@@ -217,6 +215,7 @@ namespace UsabilityDynamics\CloudFront {
 		}
 
 	}
+
 
 	// If redirection has been found, we do so now.
 	if( !$_case['ok'] && $_case['redirect']  ) {

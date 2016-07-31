@@ -98,5 +98,10 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRA
 
 function listing_custom_rewrite() {
 	add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+	// flush_rewrite_rules();
 }
+
 add_action('init', 'listing_custom_rewrite');
+
+
+//die(wp_redirect('https://cloudfront-staging.reddoorcompany.com/2'));
