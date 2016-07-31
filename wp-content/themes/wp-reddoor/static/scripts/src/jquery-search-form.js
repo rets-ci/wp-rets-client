@@ -92,6 +92,9 @@
           rdc.__request = rdc.client().search({
             index: 'v5',
             type: 'property',
+            headers : {
+              "Authorization" : make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+            },
             body: {
               query: rdc.build_query( query.term, sale_type ),
               _source: [
@@ -310,6 +313,7 @@
       var $select = $(this);
       var data = $select.select2('data');
       if( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+        $select.closest('form').find("submit").attr("disabled","disabled");
         window.location.href= data[0].permalink;
       }
       $select.closest('form').find('input[name="_taxonomy"]').val(data[0].taxonomy);
@@ -902,6 +906,26 @@
           applyPlaceholderBuy();
         });
 
+        $('.lastBathRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBathRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBath( $(this) );
+        });
+
+        $('.lastBedRangeLabel.buyBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBedRangeValue.buyBlock', dropdown).val( $(this).val() );
+          applyPlaceholderBuyBed( $(this) );
+        });
+
+        $('.lastBathRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBathRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBath( $(this) );
+        });
+
+        $('.lastBedRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
+          $('.lastBedRangeValue.rentBlock', dropdown).val( $(this).val() );
+          applyPlaceholderRentBed( $(this) );
+        });
+
         $('.lastRangeLabel.rentBlock', dropdown).off('change').on( 'change', function(e) {
           var rentCurrency = rentCurrencyAmount( $(this).val() );
           $(this).val( rentCurrency.label );
@@ -1052,7 +1076,7 @@
             $(this).closest('.sfBathRange').find('.firstBathRangeValue.rentBlock', dropdown).val( selected_min );
             applyPlaceholderRentBath( $(this) );
 
-            buyGenerateMaxBath( $(this), selected_min );
+            rentGenerateMaxBath( $(this), selected_min );
 
             $(this).closest('.sfBathRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           } else {
@@ -1077,7 +1101,7 @@
             $(this).closest('.sfBedRange').find('.firstBedRangeValue.rentBlock', dropdown).val( selected_min );
             applyPlaceholderRentBed( $(this) );
 
-            buyGenerateMaxBed( $(this), selected_min );
+            rentGenerateMaxBed( $(this), selected_min );
 
             $(this).closest('.sfBedRange').find('.left-side.rentBlock, .right-side.rentBlock', dropdown).toggle();
           } else {

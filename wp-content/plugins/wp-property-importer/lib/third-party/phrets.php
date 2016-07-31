@@ -67,6 +67,9 @@ if( !class_exists( 'phRETS' ) ) {
     private $offset_support = false;
     private $override_offset_protection = false;
 
+    // @modified - potanin@UD
+    private $use_post_method = false;
+
     public function phRETS() {
     }
 
@@ -1584,6 +1587,12 @@ if( !class_exists( 'phRETS' ) ) {
       $this->last_request_url = $request_url;
       curl_setopt( $this->ch, CURLOPT_URL, $request_url );
 
+      // Support for post method. - potanin@UD
+      if( isset( $this->use_post_method ) && $this->use_post_method ) {
+        curl_setopt($this->ch, CURLOPT_POST, 1);
+        // curl_setopt($this->ch, CURLOPT_POSTFIELDS, "");
+      }
+
       curl_setopt( $this->ch, CURLOPT_HTTPHEADER, array( trim( $request_headers ) ) );
       // do it
       $response_body = curl_exec( $this->ch );
@@ -1764,6 +1773,11 @@ if( !class_exists( 'phRETS' ) ) {
           break;
         case "override_offset_protection":
           $this->override_offset_protection = $value;
+          break;
+
+        // @modified - potanin@UD
+        case "use_post_method":
+          $this->use_post_method = $value;
           break;
         default:
           return false;

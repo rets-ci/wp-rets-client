@@ -19,8 +19,8 @@ var rdc = {
 
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
-      hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com',
-      index: 'v5'
+        host: 'dori-us-east-1.searchly.com',
+        index: 'v5',
     }));
 
   },
@@ -39,7 +39,10 @@ var rdc = {
       index: 'v5',
       type: 'property',
       q: 'tax_input.sale_type:' + type,
-      size: 0
+      size: 0,
+      headers: {
+        "Authorization": make_base_auth( "site", "quw42xelwvbp5gbcdgcqqgtx4vz5txeb" )
+      },
     }, function (err, response) {
 
       // trigger callback if everything come sback okay.
@@ -96,6 +99,12 @@ var rdc = {
   __request: null,
 
 };
+
+function make_base_auth(user, password) {
+    var tok = user + ':' + password;
+    var hash = btoa(tok);
+    return "Basic " + hash;
+}
 
 /**
  * We treat everything that is 992px and smaller as "mobile" while everything above as "desktop".
