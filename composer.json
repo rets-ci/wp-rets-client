@@ -9,15 +9,24 @@
     }
   ],
   "extra": {
+    "settings_latest": {
+      "wp_debug_log": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": false,
+      "db": [
+        {
+          "name": "www.reddoorcompany.com/latest"
+        }
+      ]
+    },
     "settings": {
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
-      "wp_debug_log": true,
+      "wp_debug_log": false,
       "wp_debug_display": false,
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
-      "RETS_ES_LINK": "https://site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com",
+      "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
       "wp_cache": true,
       "concatenate_scripts": true,
       "sunrise": false,
@@ -60,15 +69,13 @@
     "docker": {
       "scripts": {
         "start": [
-          "ln -sf /var/www/wp-content/static/ssh/git /home/core/.ssh/git",
-          "ln -sf /var/www/wp-content/static/ssh/id_rsa /home/core/.ssh/id_rsa",
-          "ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php.ini  /etc/php5/fpm/php.ini",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/php-fpm.conf  /etc/php5/fpm/php-fpm.conf",
-          "ln -sf /var/www/wp-content/static/etc/php5/fpm/pool.d/www.conf  /etc/php5/fpm/pool.d/www.conf",
-          "sudo service php5-fpm stop",
-          "sudo service hhvm start",
-          "sudo service nginx reload"
+          "#ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
+          "#ln -sf /var/www/wp-content/static/etc/php5/fpm/php.ini  /etc/php5/fpm/php.ini",
+          "#ln -sf /var/www/wp-content/static/etc/php5/fpm/php-fpm.conf  /etc/php5/fpm/php-fpm.conf",
+          "#ln -sf /var/www/wp-content/static/etc/php5/fpm/pool.d/www.conf  /etc/php5/fpm/pool.d/www.conf",
+          "#sudo service php5-fpm stop",
+          "#sudo service hhvm start",
+          "#sudo service nginx reload"
         ]
       }
     }

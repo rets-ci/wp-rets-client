@@ -1540,10 +1540,10 @@ class class_wpp_property_import {
           //** Unable to delete property for some reason.
         }
       }
-      if( is_array( $r[ 'deleted_objects' ] ) ) {
+      if( isset(  $r[ 'deleted_objects' ] ) && is_array( $r[ 'deleted_objects' ] ) ) {
         $r[ 'deleted_count' ] = count( $r[ 'deleted_objects' ] );
       }
-      if( $r[ 'total_found' ] != $property_delete_counter ) {
+      if( isset( $property_delete_counter ) && $r[ 'total_found' ] != $property_delete_counter ) {
         $r[ 'remaining' ] = ( $r[ 'total_found' ] - $property_delete_counter );
       }
     } else {
@@ -2262,7 +2262,7 @@ class class_wpp_property_import {
             ( !isset( $schedule_settings[ 'remove_all_from_this_source' ] ) || $schedule_settings[ 'remove_all_from_this_source' ] != 'on' )
           ) {
             $result = class_wpp_property_import::delete_feed_properties( $schedule_id, $schedule_settings, $imported_objects );
-            if( $result[ 'deleted_count' ] > 0 ) {
+            if( isset( $result[ 'deleted_count' ] ) && $result[ 'deleted_count' ] > 0 ) {
               $wpp_import_result_stats[ ] = sprintf( __( 'Deleted ( %1s ) properties that are no longer in the feed.', ud_get_wpp_importer()->domain ), $result[ 'deleted_count' ] );
               class_wpp_property_import::maybe_echo_log( sprintf( __( 'Deleted ( %1s ) properties that are no longer in the feed.', ud_get_wpp_importer()->domain ), $result[ 'deleted_count' ] ) );
             } elseif( $result[ 'total_found' ] == 0 ) {
@@ -2902,6 +2902,11 @@ class class_wpp_property_import {
       $upload_dir = wp_upload_dir();
       $rets->SetParam( 'debug_mode', true );
       $rets->SetParam( 'debug_file', $upload_dir[ 'basedir' ] . '/xmli.rets.log' );
+    }
+
+    // @Allows for method override on RETS requests.  - potanin@UD
+    if( isset( $import[ 'rets_use_post_method' ] ) && $import[ 'rets_use_post_method' ] == 'true' ) {
+      $rets->SetParam( 'use_post_method', true );
     }
 
     $rets->AddHeader( 'Accept', '*/*' );

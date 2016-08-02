@@ -93,7 +93,7 @@
             index: 'v5',
             type: 'property',
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
             body: {
               query: rdc.build_query( query.term, sale_type ),
@@ -264,8 +264,8 @@
             elementary_school.children.length ? data.push( elementary_school ) : '';
             middle_school.children.length ? data.push( middle_school ) : '';
             high_school.children.length ? data.push( high_school ) : '';
-            listing_office.children.length ? data.push( listing_office ) : '';
-            listing_agent.children.length ? data.push( listing_agent ) : '';
+            //listing_office.children.length ? data.push( listing_office ) : '';
+            //listing_agent.children.length ? data.push( listing_agent ) : '';
             location_street.children.length ? data.push( location_street ) : '';
             location_zip.children.length ? data.push( location_zip ) : '';
             location_county.children.length ? data.push( location_county ) : '';
