@@ -449,12 +449,14 @@
                 max:''
               }
             }
-            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
@@ -523,12 +525,14 @@
                 max:''
               }
             }
-            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
@@ -597,12 +601,14 @@
                 max:''
               }
             }
-            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
