@@ -1188,7 +1188,6 @@
                     "tax_input.listing_agent_name"
                   ]
                 },
-                size: 100,
               }, function (err, response) {
 
                 if( typeof response.hits.hits == 'undefined' ) {
