@@ -1382,8 +1382,15 @@
           var data = $select.select2('data');
           if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
             window.location.href= data[0].permalink;
+          } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+            var value = window.sm_current_terms.values[0];
+            var key = window.sm_current_terms.key;
+            if( value == data[0].text ) {
+              $scope.map_filter_taxonomy = key;
+            }
+          } else {
+            $scope.map_filter_taxonomy = data[0].taxonomy;
           }
-          $scope.map_filter_taxonomy = data[0].taxonomy;
           $scope.$apply();
         }).on('select2:selecting', function(e) {
           if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
