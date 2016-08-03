@@ -769,7 +769,6 @@
                 if( ! $scope.loadNgMapChangedEvent ) {
                   $scope.loadNgMapChangedEvent = true;
                   $scope.addMapChanged();
-                  console.log("add map changed event - get more properties");
                 }
 
                 if ( $scope.total > $scope.properties.length ) {
@@ -873,7 +872,6 @@
                   if( ! $scope.loadNgMapChangedEvent ) {
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
-                    console.log("add map changed event - getproperties");
                   }
                   search_form.removeClass('mapChanged');
                 }
