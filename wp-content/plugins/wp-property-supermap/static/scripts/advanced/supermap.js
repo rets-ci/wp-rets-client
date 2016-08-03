@@ -766,15 +766,17 @@
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
 
+                if( ! $scope.loadNgMapChangedEvent ) {
+                  $scope.loadNgMapChangedEvent = true;
+                  $scope.addMapChanged();
+                  console.log("add map changed event - get more properties");
+                }
+
                 if ( $scope.total > $scope.properties.length ) {
                   if( $scope.loading_more_properties ) {
                     getMoreProperties();
                   }
                 }else{
-                  if( ! $scope.loadNgMapChangedEvent ) {
-                    $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged();
-                  }
                   search_form.removeClass('mapChanged');
                 }
               }
@@ -871,6 +873,7 @@
                   if( ! $scope.loadNgMapChangedEvent ) {
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
+                    console.log("add map changed event - getproperties");
                   }
                   search_form.removeClass('mapChanged');
                 }
