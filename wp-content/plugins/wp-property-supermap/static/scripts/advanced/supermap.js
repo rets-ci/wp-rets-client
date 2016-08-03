@@ -1379,14 +1379,13 @@
           //   return city._source.tax_input.location_street[0];
           // }
         }).on('select2:select', function(e) {
-          var $select = jQuery(this);
           var data = $select.select2('data');
           if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
             window.location.href= data[0].permalink;
           }
           $scope.map_filter_taxonomy = data[0].taxonomy;
+          $scope.$apply();
         }).on('select2:selecting', function(e) {
-          var $select = jQuery(this);
           if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
             $select.select2( 'val', {} );
           }
