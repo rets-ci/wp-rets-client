@@ -313,7 +313,7 @@
       var $select = $(this);
       var data = $select.select2('data');
       if( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
-        $select.closest('form').find("submit").attr("disabled","disabled");
+        $select.closest('form').find("input[type='submit']").attr("disabled","disabled");
         window.location.href= data[0].permalink;
       }
       $select.closest('form').find('input[name="_taxonomy"]').val(data[0].taxonomy);

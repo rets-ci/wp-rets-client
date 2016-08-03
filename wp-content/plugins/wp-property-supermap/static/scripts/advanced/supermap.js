@@ -736,7 +736,10 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
-          jQuery( '.sm-search-form form').addClass('processing');
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
           $scope.toggleSearchButton();
           $scope._request = client.search({
             index: index,
@@ -772,15 +775,15 @@
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
                   }
-                  jQuery( '.sm-search-form form').removeClass('mapChanged');
+                  search_form.removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
-              jQuery( '.sm-search-form form').removeClass('mapChanged');
+              search_form.removeClass('mapChanged');
             }
-            jQuery( '.sm-search-form form').removeClass('processing');
+            search_form.removeClass('processing');
             $scope.toggleSearchButton();
           });
         }
@@ -812,7 +815,10 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
-          jQuery( '.sm-search-form form').addClass('processing');
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
           $scope.toggleSearchButton();
 
           $scope._request = client.search({
@@ -850,8 +856,9 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
+                  $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
                 }
-                $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
+
                 if ( $scope.total > $scope.properties.length ) {
                   if( ! $scope.loading_more_properties ) {
                     $scope.loading_more_properties = true;
@@ -859,18 +866,22 @@
                   getMoreProperties();
                 }else if($scope.rdc_listing){
                   $scope.rdc_listing = false;
-                  jQuery('.sm-search-form form').submit();
+                  search_form.submit();
                 }else{
-                  jQuery( '.sm-search-form form').removeClass('mapChanged');
+                  if( ! $scope.loadNgMapChangedEvent ) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
-              jQuery( '.sm-search-form form').removeClass('mapChanged');
+              search_form.removeClass('mapChanged');
             }
 
-            jQuery( '.sm-search-form form').removeClass('processing');
+            search_form.removeClass('processing');
             $scope.toggleSearchButton();
 
           });
