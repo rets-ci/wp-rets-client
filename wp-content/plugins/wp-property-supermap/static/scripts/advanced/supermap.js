@@ -867,6 +867,10 @@
                   $scope.rdc_listing = false;
                   search_form.submit();
                 }else{
+                  if( ! $scope.loadNgMapChangedEvent ) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
+                  }
                   search_form.removeClass('mapChanged');
                 }
               }
