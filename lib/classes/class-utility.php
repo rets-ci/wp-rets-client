@@ -64,6 +64,85 @@ namespace UsabilityDynamics\WPRETSC {
         file_put_contents( ABSPATH . rtrim( $file, '/\\' ), '' . print_r( $data, true ) . ' in ' . timer_stop() . ' seconds.' . "\n", FILE_APPEND  );
       }
 
+      /**
+       * Build Date Array Range for Histogram Buckets.
+       *
+       * @author potanin@UD
+       * @see http://stackoverflow.com/questions/4312439/php-return-all-dates-between-two-dates-in-an-array
+       * @param $strDateFrom
+       * @param $strDateTo
+       * @return array
+       */
+      public static function build_date_range( $strDateFrom,$strDateTo ) {
+          // takes two dates formatted as YYYY-MM-DD and creates an
+          // inclusive array of the dates between the from and to dates.
+
+          // could test validity of dates here but I'm already doing
+          // that in the main script
+
+          $aryRange=array();
+
+          $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+          $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+
+          if ($iDateTo>=$iDateFrom)
+          {
+            array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
+            while ($iDateFrom<$iDateTo)
+            {
+              $iDateFrom+=86400; // add 24 hours
+              array_push($aryRange,date('Y-m-d',$iDateFrom));
+            }
+          }
+          return $aryRange;
+
+      }
+
+      /**
+       * Get Detailed Modified Listing Histogram Data
+       *
+       * @author potanin@UD
+       * @param $options
+       * @return array|null|object
+       */
+      public static function query_modified_listings( $options ) {
+        global $wpdb;
+
+        $options = (object) $options;
+
+        // automatically set end
+        if( !$options->endOfStartDate ) {
+          $options->endOfStartDate = date('Y-m-d', strtotime($options->startDate. ' + 1 day'));
+        }
+
+        if( !$options->dateMetaField ) {
+          $options->dateMetaField = 'rets_modified_datetime';
+        }
+        // $limit = 'LIMIT 0, 20;';
+
+        $_query = "SELECT posts.ID, pm_modified.meta_value as {$options->dateMetaField}, pm_schedule.meta_value as schedule_id
+          FROM {$wpdb->posts} posts
+          LEFT JOIN {$wpdb->postmeta} pm_modified ON posts.ID = pm_modified.post_id
+          LEFT JOIN {$wpdb->postmeta} pm_schedule ON posts.ID = pm_schedule.post_id
+          WHERE 
+            pm_schedule.meta_key='wpp_import_schedule_id' AND
+            pm_schedule.meta_value='{$options->schedule}' AND
+            pm_modified.meta_key='{$options->dateMetaField}' AND
+            pm_modified.meta_value between DATE('{$options->startDate} 00:00:00') AND DATE('{$options->endOfStartDate} 00:00:00') AND 
+            posts.post_type='property'  
+            {$limit}";
+
+        //echo($_query);
+
+        // AND posts.post_status in ('publish', 'draft')
+        // , p.post_title, p.post_status, p.post_modified
+        // meta_value between DATE('2016-07-15 00:00:00') AND DATE('2016-07-16 00:00:00') AND
+        $_result = $wpdb->get_results( $_query );
+
+        return $_result;
+
+      }
+
     }
 
   }
