@@ -19,8 +19,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function __construct() {
 
         // Expose methods as RESTful endpoints.
-        add_action( 'wp_ajax_nopriv_/histogram',        array( 'UsabilityDynamics\WPRETSC\XMLRPC', 'rpc_get_modified_histogram' ) );
-        add_action( 'wp_ajax_nopriv_/histogramDetail',  array( 'UsabilityDynamics\WPRETSC\XMLRPC', 'rpc_get_modified_detail' ) );
+        add_action( 'wp_ajax_nopriv_/rets-ci/histogram',        array( 'UsabilityDynamics\WPRETSC\XMLRPC', 'rpc_get_modified_histogram' ) );
+        add_action( 'wp_ajax_nopriv_/rets-ci/histogramDetail',  array( 'UsabilityDynamics\WPRETSC\XMLRPC', 'rpc_get_modified_detail' ) );
 
         // Prevent blocking XML-RPC by third party plugins or themes
         add_filter( 'xmlrpc_enabled', '__return_true', 100 );
@@ -483,7 +483,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * rets_modified_datetime - 2016-08-05T20:28:00
        *
-       * curl "localhost/wp-admin/admin-ajax.php?action=/histogram&schedule=1460050294&2016-07-01&endDate=2016-07-06"
+       * curl "localhost/wp-admin/admin-ajax.php?action=/rets-ci/histogram&schedule=1460050294&2016-07-01&endDate=2016-07-06"
        *
        * @param $args
        * @author potanin@UD
