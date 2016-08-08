@@ -35,7 +35,7 @@ use \UsabilityDynamics\RDC\Utils;
 
             <div class="sm-search-layer">
               <div class="sm-search-filter-layer clearfix">
-                <button ng-click="toggleSearchForm()" class="sm-search-filter btn"><i class="icon-wpproperty-interface-search-solid"></i><?php echo apply_filters( 'wpp::advanced_supermap::filter::label', __( 'Filter', ud_get_wpp_supermap()->domain ) ); ?></button>
+                <button ng-click="toggleSearchForm()" class="sm-search-filter btn"><i class="icon-wpproperty-interface-search-solid"></i><?php echo apply_filters( 'wpp::advanced_supermap::filter::label', __( 'Search', ud_get_wpp_supermap()->domain ) ); ?></button>
               </div>
               <div class="sm-search-form" ng-show="searchForm">
                 <?php
