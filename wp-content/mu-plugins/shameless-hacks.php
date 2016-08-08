@@ -98,8 +98,10 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 
 function listing_custom_rewrite() {
 	add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+	// flush_rewrite_rules();
 }
+
 add_action('init', 'listing_custom_rewrite');
-add_action('init', function() {
-  //die('time'.time());
-});
+
+
+//die(wp_redirect('https://cloudfront-staging.reddoorcompany.com/2'));

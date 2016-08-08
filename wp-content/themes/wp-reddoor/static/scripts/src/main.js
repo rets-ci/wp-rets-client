@@ -19,7 +19,6 @@ var rdc = {
 
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
-      //hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com',
         host: 'dori-us-east-1.searchly.com',
         index: 'v5',
     }));
@@ -42,7 +41,7 @@ var rdc = {
       q: 'tax_input.sale_type:' + type,
       size: 0,
       headers: {
-        "Authorization": make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+        "Authorization": make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
       },
     }, function (err, response) {
 

@@ -669,7 +669,6 @@
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
-          //hosts: 'site:1d5f77cffa8e5bbc062dab552a3c2093@dori-us-east-1.searchly.com'
           hosts: 'dori-us-east-1.searchly.com'
         });
 
@@ -737,7 +736,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
             body: {
               query: build_query()
@@ -814,7 +813,7 @@
             index: index,
             type: type,
             headers : {
-              "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
             body: {
               query: build_query()
@@ -1058,7 +1057,7 @@
               index: index,
               type: type,
               headers : {
-                "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
               },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
@@ -1144,7 +1143,7 @@
                 index: 'v5',
                 type: 'property',
                 headers : {
-                  "Authorization" : make_base_auth( "site", "1d5f77cffa8e5bbc062dab552a3c2093" )
+                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
                 },
                 body: {
                   query: {
@@ -1323,8 +1322,8 @@
                 elementary_school.children.length ? data.push( elementary_school ) : '';
                 middle_school.children.length ? data.push( middle_school ) : '';
                 high_school.children.length ? data.push( high_school ) : '';
-                listing_office.children.length ? data.push( listing_office ) : '';
-                listing_agent.children.length ? data.push( listing_agent ) : '';
+                //listing_office.children.length ? data.push( listing_office ) : '';
+                //listing_agent.children.length ? data.push( listing_agent ) : '';
                 location_street.children.length ? data.push( location_street ) : '';
                 location_zip.children.length ? data.push( location_zip ) : '';
                 location_county.children.length ? data.push( location_county ) : '';
