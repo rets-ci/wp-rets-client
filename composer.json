@@ -23,6 +23,7 @@
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
       "wp_debug_log": false,
+      "wp_rets_ci": true,
       "wp_debug_display": false,
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
