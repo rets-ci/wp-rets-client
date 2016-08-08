@@ -46,7 +46,7 @@ namespace UsabilityDynamics\WPP {
               'request' => (!empty($schedule['alt_cron_sys_command']) && $schedule['alt_cron_sys_command'] == 'true') ? 'shell' : 'http',
             ));
           }
-          set_transient('wpp:xmli:alt_cron', time(), 1 * HOUR_IN_SECONDS);
+          set_transient('wpp:xmli:alt_cron', time(), 1 * MINUTE_IN_SECONDS);
         }
 
       }

@@ -1,3 +1,18 @@
+### 5.1.4 ( July 28, 2016 )
+* Compatibility fixes with PHP 5.6
+* Alternative Cron fixes added.
+
+### 5.1.3.1 ( June 23, 2016 )
+* Fix - critical bug in lib-wp-bootstrap. Library updated to 1.2.1.
+
+### 5.1.3 ( June 23, 2016 )
+* Feature - Added support for setting "POST Method" for RETS clients that require it.
+* Feature - Added helpful RETS Classification and RETS Query fields to the schedule overview.
+* Feature - Added two new dynamic DMQL query tags [yesterday] and [this_week] which can be used to query dynamic dates.
+* Fix - Bug with built-in "Country" field not saving when updating mapping for a schedule.
+* Fix - Issue with importing images from not-verified SSL sources.
+* Dev - Made license/activation nags easier to dismiss, updated lib-wp-bootstrap to 1.2.0
+
 ### 5.1.2 ( December 7, 2015 )
 * Added ability to enable property comments (inquiries) by default on importing properties.
 * Added ability to assign more than one Real Estate Agent to property on importing.
