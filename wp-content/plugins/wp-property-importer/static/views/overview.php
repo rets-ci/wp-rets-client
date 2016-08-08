@@ -141,7 +141,7 @@ if( isset( $_REQUEST[ 'message' ] ) ) {
           $this_row_data[ ] = "limit=\"{$sch['limit_properties']}\" ";
         }
 
-        if( $total_properties = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( ID ) FROM {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE post_type = 'property' AND meta_key = 'wpp_import_schedule_id' and meta_value = %s ", $sch_id ) ) ) {
+        if( !defined( 'WP_RETS_CI' ) && $total_properties = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( ID ) FROM {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE post_type = 'property' AND meta_key = 'wpp_import_schedule_id' and meta_value = %s ", $sch_id ) ) ) {
           $vital_stats[ $sch_id ][ ] = __( 'Total Properties: ', ud_get_wpp_importer()->domain ) . WPP_F::format_numeric( $total_properties );
           $this_row_data[ ] = "total_properties=\"{$total_properties}\" ";
         } else {
