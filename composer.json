@@ -25,7 +25,7 @@
       "wp_debug_log": false,
       "wp_rets_ci": true,
       "wp_debug_display": false,
-      "wp_memcached_servers": "sql.wpcloud.io:2303",
+      "wp_memcached_servers": "sql.wpcloud.io:23038",
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
