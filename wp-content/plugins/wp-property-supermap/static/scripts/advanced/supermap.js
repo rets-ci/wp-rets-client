@@ -48,7 +48,7 @@
     /**
      * Angular Module.
      */
-    angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
+    angular.module( vars.ng_app, [ 'ngMap', 'smart-table', 'ngSanitize' ] )
 
       /**
        * Autocomplete directive.
@@ -695,6 +695,12 @@
           }
 
           r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+
+          //icon html and template
+          r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
+          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
+          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
         }
 
         function calculate_days(date) {

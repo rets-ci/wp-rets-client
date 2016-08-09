@@ -61,10 +61,10 @@ use \UsabilityDynamics\RDC\Utils;
           <div class="price-dropdown" ng-show="pricing.mode">
             <ul class="min-values" ng-show="pricing.mode == 'min'">
               <li><a href="javascript:;" ng-click="pricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
             </ul>
             <ul class="max-values" ng-show="pricing.mode == 'max'">
-              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;">{{_price | simpleAmount}}</a></li>
+              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
               <li><a href="javascript:;" ng-click="pricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
@@ -88,10 +88,10 @@ use \UsabilityDynamics\RDC\Utils;
           <div class="price-dropdown" ng-show="footage.mode">
             <ul class="min-values" ng-show="footage.mode == 'min'">
               <li><a href="javascript:;" ng-click="footage.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_foot in footage.min_foot track by $index"><a ng-click="footage.set_min(_foot)" href="javascript:;">{{_foot}}</a></li>
+              <li ng-repeat="_foot in footage.min_foot track by $index"><a ng-click="footage.set_min(_foot)" href="javascript:;" ng-bind-template="{{_foot}}"></a></li>
             </ul>
             <ul class="max-values" ng-show="footage.mode == 'max'">
-              <li ng-repeat="_foot in footage.max_foot track by $index"><a ng-click="footage.set_max(_foot)" href="javascript:;">{{_foot}}</a></li>
+              <li ng-repeat="_foot in footage.max_foot track by $index"><a ng-click="footage.set_max(_foot)" href="javascript:;" ng-bind-template="{{_foot}}"></a></li>
               <li><a href="javascript:;" ng-click="footage.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
@@ -115,10 +115,10 @@ use \UsabilityDynamics\RDC\Utils;
           <div class="price-dropdown" ng-show="acrage.mode">
             <ul class="min-values" ng-show="acrage.mode == 'min'">
               <li><a href="javascript:;" ng-click="acrage.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_acre in acrage.min_acres track by $index"><a ng-click="acrage.set_min(_acre)" href="javascript:;">{{_acre | acreage}}</a></li>
+              <li ng-repeat="_acre in acrage.min_acres track by $index"><a ng-click="acrage.set_min(_acre)" href="javascript:;" ng-bind-template="{{_acre | acreage}}"></a></li>
             </ul>
             <ul class="max-values" ng-show="acrage.mode == 'max'">
-              <li ng-repeat="_acre in acrage.max_acres track by $index"><a ng-click="acrage.set_max(_acre)" href="javascript:;">{{_acre | acreage}}</a></li>
+              <li ng-repeat="_acre in acrage.max_acres track by $index"><a ng-click="acrage.set_max(_acre)" href="javascript:;" ng-bind-template="{{_acre | acreage}}"></a></li>
               <li><a href="javascript:;" ng-click="acrage.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
@@ -184,10 +184,10 @@ use \UsabilityDynamics\RDC\Utils;
           <div class="price-dropdown" ng-show="bedrange.mode">
             <ul class="min-values" ng-show="bedrange.mode == 'min'">
               <li><a href="javascript:;" ng-click="bedrange.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_bed in bedrange.min_bedroom track by $index"><a ng-click="bedrange.set_min(_bed)" href="javascript:;">{{_bed}}</a></li>
+              <li ng-repeat="_bed in bedrange.min_bedroom track by $index"><a ng-click="bedrange.set_min(_bed)" href="javascript:;" ng-bind-template="{{_bed}}"></a></li>
             </ul>
             <ul class="max-values" ng-show="bedrange.mode == 'max'">
-              <li ng-repeat="_bed in bedrange.max_bedroom track by $index"><a ng-click="bedrange.set_max(_bed)" href="javascript:;">{{_bed}}</a></li>
+              <li ng-repeat="_bed in bedrange.max_bedroom track by $index"><a ng-click="bedrange.set_max(_bed)" href="javascript:;" ng-bind-template="{{_bed}}"></a></li>
               <li><a href="javascript:;" ng-click="bedrange.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
@@ -210,10 +210,10 @@ use \UsabilityDynamics\RDC\Utils;
           <div class="price-dropdown" ng-show="bathrange.mode">
             <ul class="min-values" ng-show="bathrange.mode == 'min'">
               <li><a href="javascript:;" ng-click="bathrange.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_bath in bathrange.min_bathroom track by $index"><a ng-click="bathrange.set_min(_bath)" href="javascript:;">{{_bath}}</a></li>
+              <li ng-repeat="_bath in bathrange.min_bathroom track by $index"><a ng-click="bathrange.set_min(_bath)" href="javascript:;" ng-bind-template="{{_bath}}"></a></li>
             </ul>
             <ul class="max-values" ng-show="bathrange.mode == 'max'">
-              <li ng-repeat="_bath in bathrange.max_bathroom track by $index"><a ng-click="bathrange.set_max(_bath)" href="javascript:;">{{_bath}}</a></li>
+              <li ng-repeat="_bath in bathrange.max_bathroom track by $index"><a ng-click="bathrange.set_max(_bath)" href="javascript:;" ng-bind-template="{{_bath}}"></a></li>
               <li><a href="javascript:;" ng-click="bathrange.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
