@@ -50,7 +50,7 @@ git subtree add --prefix=wp-content/plugins/wp-rets-client git@github.com:usabil
 
 
 ### Memcached
-wpCloud has a provisioned shared Memcached instance at sql.wpcloud.io:2303.
+wpCloud has a provisioned shared Memcached instance at sql.wpcloud.io:23038.
 
 ### MySQL Setup
 

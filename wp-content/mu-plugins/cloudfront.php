@@ -56,6 +56,18 @@ namespace UsabilityDynamics\CloudFront {
 		return;
 	}
 
+  // When accessing using a "development" hostname, do nothing, other than support the request. (.c. containers).
+  if( ( isset( $_SERVER[ 'HTTP_X_SELECTED_CONTAINER' ] ) &&  isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) || defined( 'WP_CLI' ) ) {
+    define( 'WP_HOME', 'https://' . $_SERVER[ 'HTTP_HOST' ] );
+    define( 'WP_SITEURL', 'https://' . $_SERVER[ 'HTTP_HOST' ] );
+
+    // For MS this is also needed, not just the above.
+    add_filter( 'pre_option_home', function() { return 'https://' . $_SERVER[ 'HTTP_HOST' ]; });
+    add_filter( 'pre_option_siteurl', function() { return 'https://' . $_SERVER[ 'HTTP_HOST' ] ; });
+
+    return;
+  }
+
 	// Do nothing for certain domains.
 	if( in_array( $_SERVER['HTTP_HOST'], array( 'subdomains-to-exclude-completely.example.com' ) ) ) {
 		return;
@@ -310,12 +322,14 @@ namespace UsabilityDynamics\CloudFront {
 
 		}
 
-		/**
-		 * Modify Preview links to not use the www domain.
-		 *
-		 * @param $setting
-		 * @return mixed
-		 */
+    /**
+     * Modify Preview links to not use the www domain.
+     *
+     * @param $preview_link
+     * @param $post
+     * @return mixed
+     * @internal param $setting
+     */
 		static public function preview_post_link( $preview_link, $post ) {
 
 			$preview_link = str_replace( 'www.', '', $preview_link );

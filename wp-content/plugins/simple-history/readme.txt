@@ -1,10 +1,10 @@
 === Simple History ===
 Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
-Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, cms, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
+Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 4.5.1
 Tested up to: 4.5.2
-Stable tag: 2.7.3
+Stable tag: 2.7.5
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -146,6 +146,20 @@ A simple way to see any uncommon activity, for example an increased number of lo
 == Changelog ==
 
 ## Changelog
+
+= 2.7.5 (August 2016) =
+
+- User logins using e-mail are now logged correctly. Previously the user would be logged in successfully but the log said that they failed.
+- Now only users with [`list_users`](https://codex.wordpress.org/Roles_and_Capabilities#list_users) capability can view the users filter and use the autocomplete api for users.
+- Add labels to search filters. (I do really hate label-less forms so it's kinda very strange that this was not in place before.)
+- Misc other internal fixes
+
+= 2.7.4 (July 2016) =
+
+- Log a warning message if a plugin gets disabled automatically by WordPress because of any of these errors: "Plugin file does not exist.", "Invalid plugin path.", "The plugin does not have a valid header."
+- Fix warning error if `on_wp_login()` was called without second argument.
+- Fix options diff not being shown correctly.
+- Fix notice if no message key did exist for a log message.
 
 = 2.7.3 (June 2016) =
 
