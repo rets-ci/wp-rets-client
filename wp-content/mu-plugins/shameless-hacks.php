@@ -17,7 +17,7 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
 // Only activate tests when on a 'develop' branch.
-if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && strpos( $_SERVER['HTTP_X_SELECTED_BRANCH'], 'develop' ) !== false ) {
+if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' ) !== false ) {
   header( 'cache-control:no-cache, private' );
 
   $_event_map = array(
@@ -40,7 +40,7 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && strpos( $_SERVER['HTTP_X_SELE
         if( !headers_sent() ) {
           $data = '[time:' . timer_stop() . '],[action:' . current_action() . ']';
 
-          if( $__level ) {
+          if( isset( $__level ) && $__level ) {
             $data .= '[level:' . $__level . ']';
           }
 
@@ -66,7 +66,7 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && strpos( $_SERVER['HTTP_X_SELE
 }
 
 // special handling for production branch
-if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRANCH'] === '__production' ) {
+if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production' ) {
 
   // disable plugin check
   remove_action('load-update-core.php','wp_update_plugins');
@@ -88,7 +88,6 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRA
     );
 
   }
-
   // overwrite transients for core, plugin and theme updates
   add_filter('pre_site_transient_update_core','rdc_remove_core_updates');
   add_filter('pre_site_transient_update_plugins','rdc_remove_core_updates');
@@ -96,12 +95,16 @@ if( isset( $_SERVER['HTTP_X_SELECTED_BRANCH'] ) && $_SERVER['HTTP_X_SELECTED_BRA
 
 }
 
-function listing_custom_rewrite() {
-	add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
-	// flush_rewrite_rules();
-}
 
-add_action('init', 'listing_custom_rewrite');
+// Add support for /listing/{property_id} redirection
+
+add_action('init', function() {
+  add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+});
 
 
 //die(wp_redirect('https://cloudfront-staging.reddoorcompany.com/2'));
+
+add_action('template_redirect', function() {
+//die('template_redirect');
+}, 0);

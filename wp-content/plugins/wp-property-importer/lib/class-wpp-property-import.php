@@ -3358,7 +3358,7 @@ class class_wpp_property_import {
         $filename = $file_parts[ 'filename' ];
       }
       // remove all character symbols
-      $filename = ereg_replace( "[^-_A-Za-z0-9]", "", $filename );
+      $filename = preg_replace( "/[^-_A-Za-z0-9]/", "", $filename );
       $filename .= '.' . ( ( in_array( strtolower( $file_parts[ 'extension' ] ), array( 'jpg', 'jpeg', 'gif' ) ) ) ? $file_parts[ 'extension' ] : 'jpg' );
     } else {
       //** Will break out URL or Path properly. File filename cannot be generated for whatever reason, we create a random one. */

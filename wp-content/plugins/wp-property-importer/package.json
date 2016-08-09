@@ -1,0 +1,32 @@
+{
+  "name": "wp-property-importer",
+  "title": "WP-Property Importer",
+  "description": "The XMLI Importer enables you to automatically import property listings directly into your website. This includes MLS, RETS, XML, and many other source formats. Properties are created, merged, removed, or updated according to rules you specify. This powerful importation tool downloads and attaches images and can even associate properties with real estate agents, on the fly. Once an import schedule has been created, you can literally import hundreds, thousands, even tens of thousands of properties with a single click.",
+  "version": "5.1.4",
+  "homepage": "https://usabilitydynamics.com",
+  "author": {
+    "name": "UsabilityDynamics, Inc.",
+    "url": "https://usabilitydynamics.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UsabilityDynamics/wp-property-importer"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "load-grunt-tasks": "^0.6.0",
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-markdown": "~0.4.0",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-phpunit": "~0.3.3",
+    "grunt-shell": "~0.6.0",
+    "grunt-json-minify": "~0.4.0"
+  }
+}

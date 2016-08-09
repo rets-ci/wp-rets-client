@@ -22,7 +22,7 @@
 
     <!-- Buy -->
 
-    <form class="buyForm active tab-pane" id="tabs-1" method="POST" action="">
+    <form class="buyForm active tab-pane" id="tabs-1" method="GET" action="/buy" data-search-type="buy">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
       <input name="_taxonomy" type="hidden" value=""/>
@@ -199,7 +199,7 @@
 
     <!-- Rent -->
 
-    <form class="rentForm tab-pane" id="tabs-2" method="POST" action="%20">
+    <form class="rentForm tab-pane" id="tabs-2" method="GET" action="/rent" data-search-type="rent">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
       <input name="_taxonomy" type="hidden" value=""/>
@@ -222,10 +222,10 @@
         <div class="sfBedRange dropdown-list rentBlock">
           <div class="sfprInputsBlock">
             <input type="text" class="firstBedRangeLabel rentBlock" value="" placeholder="<?php _e('Min') ?>" />
-            <input type="hidden" class="firstBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][min]" />
+            <input type="hidden" class="firstBedRangeValue rentBlock" value="" name="wpp_search[bedrooms][min]" />
 
             <input type="text" class="lastBedRangeLabel rentBlock" value="" placeholder="<?php _e('Max') ?>" />
-            <input type="hidden" class="lastBedRangeValue rentBlock" value="" name="wpp_search[bathrooms][max]" />
+            <input type="hidden" class="lastBedRangeValue rentBlock" value="" name="wpp_search[bedrooms][max]" />
           </div>
           <div class="clear"></div>
           <div class="left-side rentBlock">

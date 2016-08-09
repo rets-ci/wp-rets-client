@@ -49,6 +49,9 @@ git subtree add --prefix=wp-content/plugins/wp-rets-client git@github.com:usabil
 * Service Email: media-reddoorcompany-com@client-rdc.iam.gserviceaccount.com
 
 
+### Memcached
+wpCloud has a provisioned shared Memcached instance at sql.wpcloud.io:23038.
+
 ### MySQL Setup
 
 Connect to MySQL cluster:

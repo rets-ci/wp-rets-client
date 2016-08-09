@@ -248,6 +248,11 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
+       * Depreciated, now done client-side.
+       * 
+       * - Identifies primary _term from home page search.
+       * - If term is MLS ID, redirects to first (and only) property.
+       *
        * @param $query
        * @return mixed
        */
@@ -257,6 +262,7 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
+
           if( !empty( $_POST['_taxonomy'] ) ) {
             $term_object = get_term_by( 'name', $term, $_POST['_taxonomy'] );
           } else {
@@ -291,7 +297,9 @@ namespace UsabilityDynamics\RDC {
 
           $_query = http_build_query( apply_filters( 'wpp::search::query', array( 'wpp_search' => $_POST[ 'wpp_search' ] ) ), '', '&' );
           $_redirect .= ( strpos( $_redirect, '?' ) === false ? '?' : '&' ) . $_query;
+
           wp_redirect( $_redirect );
+
           die();
         }
 
