@@ -17,7 +17,7 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
 // Only activate tests when on a 'develop' branch.
-if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' ) !== false ) {
+if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' && isset( $_GET['_debug'] ) ) !== false ) {
   header( 'cache-control:no-cache, private' );
 
   $_event_map = array(
@@ -101,10 +101,3 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 add_action('init', function() {
   add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
 });
-
-
-//die(wp_redirect('https://cloudfront-staging.reddoorcompany.com/2'));
-
-add_action('template_redirect', function() {
-//die('template_redirect');
-}, 0);
