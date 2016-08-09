@@ -8,32 +8,20 @@
  * Author URI: http://usabilitydynamics.com
  *
  *
- * ### Notes
+ * ### Logic
  *
- * - For some reason the homepage request (https://cloudfront.usabilitydynamics.com/) does not include the HTTP_CLOUDFRONT_ headers.
- * - Woo cookies:
- *  - wp_woocommerce
- *  - woocommerce_items_in_cart
- *  - woocommerce_cart_hash
- *  - wp_woocommerce_session_XXX
+ * - If "cloudfront" is configured, then all frontend (non-admin) traffic is redirected to the cloudfront domain.
+ *
+ * - If not redirected, adjust all URLs that are output to browser to use whatever HOST that is currently being used, regardless of cloufront/rabbit/whatever.
  *
  *
- * ### Configure
- * First make sure you are using the correct DB.
+ * ### Configure:
  *
- *    wp option get db_name
+ * Production:  wp option update cloudfront   https://www.reddoorcompany.com
+ * Production:  wp option update adminurl     https://reddoorcompany.com
  *
- * Anything required to login/logout and admin does not use "www". AJAX URL should not be cached either in most cases.
- * For the frontend (siteurl, home) we use the www prefix.
- *
- * wp option update adminurl    https://reddoorcompany.com/wp-admin (Required for module to work)
- * wp option update loginurl    https://reddoorcompany.com/wp-login.php
- * wp option update ajaxurl     https://reddoorcompany.com/wp-admin/admin-ajax.php
- * wp option update cloudfront  https://www.reddoorcompany.com
- *
- * On latest:
- * wp option update adminurl    https://reddoorcompany.com
- * wp option update cloudfront  https://cloudfront-staging.reddoorcompany.com
+ * Staging:     wp option update cloudfront   https://cloudfront-staging.reddoorcompany.com
+ * Staging:     wp option update adminurl     https://reddoorcompany.com
  *
  *
  * ### Testing
@@ -56,12 +44,21 @@ namespace UsabilityDynamics\CloudFront {
 		return;
 	}
 
-  // These URLs will always be set to the browser. @todo Make sure not an issue with admin, though.
-  add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-  add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-  add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-  add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-  add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+  //add_action( 'wp_ajax_/site/v1/meta', 'UsabilityDynamics\CloudFront\API::api_site' );
+  //add_action( 'wp_ajax_nopriv_/site/v1/meta', 'UsabilityDynamics\CloudFront\API::api_site' );
+
+  // Handle any redirection.
+  if( !defined( 'WP_ADMIN' ) && get_option( 'cloudfront' ) ) {
+    // Handlers::redirection_rules();
+  }
+
+  // API::api_site();
+
+  //if( !defined( 'WP_ADMIN' ) )
+
+  Handlers::frontend_support();
+
+  return;
 
   // When accessing using a "development" hostname, do nothing, other than support the request. (.c. containers).
   if( ( isset( $_SERVER[ 'HTTP_X_SELECTED_CONTAINER' ] ) &&  isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) || defined( 'WP_CLI' ) ) {
@@ -71,10 +68,6 @@ namespace UsabilityDynamics\CloudFront {
     return;
   }
 
-	// Do nothing for certain domains.
-	if( in_array( $_SERVER['HTTP_HOST'], array( 'subdomains-to-exclude-completely.example.com' ) ) ) {
-		return;
-	}
 
 	// For now its simple, a handful of domains all will function as "www.reddoorcompany.com" internally while using the custom urls in the browser.
 	$_domains_to_mask = array(
@@ -87,11 +80,6 @@ namespace UsabilityDynamics\CloudFront {
 		"d1s5isrzd47wsa.cloudfront.net" => "www.reddoorcompany.com", // prod cloudfront
 		"d85q7g852omyp.cloudfront.net" => "www.reddoorcompany.com" // latest cloudfront
 	);
-
-	// If cloudfront not set we assume nothing is configured. Should just be URL of what to use for CF.
-	if( !get_option( 'cloudfront' ) ) {
-		return;
-	}
 
 	// Check if the request hostname is supposed to be used as a "mask" or "silent redirection" to another. This is what makes development subdomains possible.
 	if( isset( $_domains_to_mask[$_SERVER['HTTP_HOST']] ) ) {
@@ -119,119 +107,6 @@ namespace UsabilityDynamics\CloudFront {
 		add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 	}
 
-	// Not sure where they shouold be defined. Bit added here since dealing with redirection issues/concerns of wp-admin/wp-login.php
-	// add_filter( 'login_url', function() {return home_url('/account');}, 10 );
-
-	// We assume that https is always present by this point, but should add a check for it later.
-	// Would be prudent to coordinate better with wp_login_url(), admin_url(), etc.
-	$_case = array(
-		'options' => array(
-			'adminurl' => admin_url(),
-			'loginurl' => get_option( 'loginurl' ), //site_url( 'wp-login.php' ),
-			'ajaxurl' => get_admin_url( null, 'admin-ajax.php' ),
-			'siteurl' => site_url(),
-			'home' => home_url()
-		),
-		'url' => 'https://' . ( isset( $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] ) ? $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] : $_SERVER['HTTP_HOST'] ) . '' . $_SERVER['REQUEST_URI'],
-		'redirect' => false,
-		'ok' => null
-	);
-
-	// This happens for "api" subdomain requests that are forwarded to admin-ajax.php by Varnish.
-	if( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) && isset( $_SERVER['HTTP_X_FORWARDED_URI'] ) ) {
-		$_case['url'] = 'https://' . $_SERVER[ 'HTTP_X_FORWARDED_HOST'] . '' . $_SERVER['HTTP_X_FORWARDED_URI'];
-	}
-
-	// No good way to catch wp-login, no constant set on it.
-	if( strpos( $_SERVER['REQUEST_URI'],'/wp-login.php' ) === 0 ) {
-		define('WP_LOGIN_PAGE', true);
-	}
-
-	// Means somebody opened wp-admin/admin-ajax.php file.
-	// https://cloudfront.usabilitydynamics.com/wp-admin/admin-ajax.php?action=/v1/status
-	// https://usabilitydynamics.com/wp-admin/admin-ajax.php
-	// https://api.usabilitydynamics.com
-	if( defined( 'DOING_AJAX' ) ) {
-		if( strpos( $_case['url'],  $_case['options']['ajaxurl'] ) !== 0 ) {
-
-			// @note This may cause issues - we try to take the "action" argument and append it to the request, may be better just to forward to root.
-			$_case['redirect'] = $_case['options']['ajaxurl'] . ( isset( $_GET['action'] ) ? $_GET['action'] : '' );
-			$_case['ok'] = false;
-			$_case['failure'] = 'ajax';
-
-			return;
-		} else {
-			$_case['ok'] = true;
-		}
-
-	}
-
-	// redirect all xmlrpc.php requests to non-www. CloueFront won't accept POST requests to www so it'll fail, but should only affect hackers anyway.
-	if( defined( 'XMLRPC_REQUEST' ) ) {
-		if( strpos( $_case['url'], get_option( 'xmlrpcurl' ) ) !== 0 ) {
-			$_case['redirect'] = get_option( 'xmlrpcurl' );
-			$_case['ok'] = false;
-			$_case['failure'] = 'xmlrpc';
-		} else {
-			$_case['ok'] = true;
-		}
-	}
-
-	// General admin that is NOT admi-ajax. We must verify that the current request meets the adminurl prefix.
-	if( defined( 'WP_ADMIN' ) && !defined( 'DOING_AJAX'  ) ) {
-
-		if( strpos( $_case['url'], $_case['options']['adminurl'] ) !== 0 ) {
-			$_case['redirect'] = $_case['options']['adminurl'];
-			$_case['ok'] = false;
-			$_case['failure'] = 'admin';
-		} else {
-			$_case['ok'] = true;
-			add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-		}
-
-	}
-
-	// Check Login. // https://usabilitydynamics.com/wp-login.php?redirect_to=https%3A%2F%2Fusabilitydynamics.com%2Fwp-admin%2F&reauth=1
-	if( !defined( 'WP_ADMIN' ) && !defined( 'DOING_AJAX'  ) && defined( 'WP_LOGIN_PAGE' ) ) {
-
-		if( strpos( $_case['url'], $_case['options']['loginurl'] ) !== 0 ) {
-			//wp_die('Incorrect login page.');
-			$_case['redirect'] = $_case['options']['loginurl'];
-			$_case['ok'] = false;
-			$_case['failure'] = 'login';
-		} else {
-			$_case['ok'] = true;
-			add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-			add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
-		}
-
-	}
-
-	// Check all other content, if everything "ok" so far and no redirection has already been set. We make a special exception for "preview" links.
-	if( !defined( 'DOING_AJAX' ) && !defined( 'WP_ADMIN' ) && !defined( 'WP_LOGIN_PAGE' ) && !defined( 'XMLRPC_REQUEST' ) ) {
-
-		if( ( strpos( $_case[ 'url' ], $_case['options']['siteurl'] ) !== 0 ) && ( !isset( $_GET['preview'] ) && !isset( $_GET['p'] ) ) ) {
-			$_case[ 'redirect' ] = $_case['options']['siteurl'] . $_SERVER[ 'REQUEST_URI' ];
-			$_case[ 'ok' ] = false;
-			$_case['failure'] = 'content';
-		} else {
-			$_case[ 'ok' ] = true;
-			// @note we do not apply filters to change the urls here to not have "www" because even if we do they (js/css assets) will 301 to www
-		}
-
-	}
-
-	// If redirection has been found, we do so now.
-	if( !$_case['ok'] && $_case['redirect']  ) {
-		die(header("Location: " . $_case['redirect'], true, 302));
-	}
-
 	// Main flag for going into CF mode.
 	if( isset( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ) && $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] === 'https' ) {
 		define( 'CLOUDFRONT_ENABLED', true );
@@ -247,6 +122,154 @@ namespace UsabilityDynamics\CloudFront {
 	add_filter( 'secure_auth_redirect',           array( 'UsabilityDynamics\CloudFront\Filters', 'secure_auth_redirect' ), 10, 2 );
 	add_filter( 'admin_url',                      array( 'UsabilityDynamics\CloudFront\Filters', 'admin_url' ), 10, 3 );
 	add_filter( 'preview_post_link',              array( 'UsabilityDynamics\CloudFront\Filters', 'preview_post_link' ), 10 );
+
+	class Handlers {
+
+    static public function frontend_support() {
+
+      // These URLs will always be set to the browser. @todo Make sure not an issue with admin, though.
+      add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+
+
+    }
+
+    static public function redirection_rules() {
+
+
+      // Not sure where they shouold be defined. Bit added here since dealing with redirection issues/concerns of wp-admin/wp-login.php
+      // add_filter( 'login_url', function() {return home_url('/account');}, 10 );
+
+      // We assume that https is always present by this point, but should add a check for it later.
+      // Would be prudent to coordinate better with wp_login_url(), admin_url(), etc.
+      $_case = array(
+        'options' => array(
+          'adminurl' => admin_url(),
+          'cloudfront' => get_option( 'cloudfront' ),
+          'loginurl' => get_option( 'loginurl' ), //site_url( 'wp-login.php' ),
+          'ajaxurl' => get_admin_url( null, 'admin-ajax.php' ),
+          'siteurl' => site_url(),
+          'home' => home_url()
+        ),
+        'url' => 'https://' . ( isset( $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] ) ? $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] : $_SERVER['HTTP_HOST'] ) . '' . $_SERVER['REQUEST_URI'],
+        'redirect' => false,
+        'ok' => null
+      );
+
+      // This happens for "api" subdomain requests that are forwarded to admin-ajax.php by Varnish.
+      if( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) && isset( $_SERVER['HTTP_X_FORWARDED_URI'] ) ) {
+        $_case['url'] = 'https://' . $_SERVER[ 'HTTP_X_FORWARDED_HOST'] . '' . $_SERVER['HTTP_X_FORWARDED_URI'];
+      }
+
+      // No good way to catch wp-login, no constant set on it.
+      if( strpos( $_SERVER['REQUEST_URI'],'/wp-login.php' ) === 0 ) {
+        define('WP_LOGIN_PAGE', true);
+      }
+
+      // Means somebody opened wp-admin/admin-ajax.php file.
+      // https://cloudfront.usabilitydynamics.com/wp-admin/admin-ajax.php?action=/v1/status
+      // https://usabilitydynamics.com/wp-admin/admin-ajax.php
+      // https://api.usabilitydynamics.com
+      if( defined( 'DOING_AJAX' ) ) {
+        if( strpos( $_case['url'],  $_case['options']['ajaxurl'] ) !== 0 ) {
+
+          // @note This may cause issues - we try to take the "action" argument and append it to the request, may be better just to forward to root.
+          $_case['redirect'] = $_case['options']['ajaxurl'] . ( isset( $_GET['action'] ) ? $_GET['action'] : '' );
+          $_case['ok'] = false;
+          $_case['failure'] = 'ajax';
+          $_case[ 'kind' ] = 'ajax';
+          return;
+        } else {
+          $_case['ok'] = true;
+          $_case[ 'kind' ] = 'ajax';
+        }
+
+      }
+
+      // redirect all xmlrpc.php requests to non-www. CloueFront won't accept POST requests to www so it'll fail, but should only affect hackers anyway.
+      if( defined( 'XMLRPC_REQUEST' ) ) {
+        if( strpos( $_case['url'], get_option( 'xmlrpcurl' ) ) !== 0 ) {
+          $_case['redirect'] = get_option( 'xmlrpcurl' );
+          $_case['ok'] = false;
+          $_case['failure'] = 'xmlrpc';
+          $_case[ 'kind' ] = 'xmlrpc';
+        } else {
+          $_case['ok'] = true;
+          $_case[ 'kind' ] = 'xmlrpc';
+        }
+      }
+
+      // General admin that is NOT admi-ajax. We must verify that the current request meets the adminurl prefix.
+      if( defined( 'WP_ADMIN' ) && !defined( 'DOING_AJAX'  ) ) {
+
+        if( strpos( $_case['url'], $_case['options']['adminurl'] ) !== 0 ) {
+          $_case['redirect'] = $_case['options']['adminurl'];
+          $_case['ok'] = false;
+          $_case[ 'kind' ] = 'admin';
+          $_case['failure'] = 'admin';
+        } else {
+          $_case['ok'] = true;
+          $_case[ 'kind' ] = 'admin';
+          add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+        }
+
+      }
+
+      // Check Login. // https://usabilitydynamics.com/wp-login.php?redirect_to=https%3A%2F%2Fusabilitydynamics.com%2Fwp-admin%2F&reauth=1
+      if( !defined( 'WP_ADMIN' ) && !defined( 'DOING_AJAX'  ) && defined( 'WP_LOGIN_PAGE' ) ) {
+
+        if( strpos( $_case['url'], $_case['options']['loginurl'] ) !== 0 ) {
+          //wp_die('Incorrect login page.');
+          $_case['redirect'] = $_case['options']['loginurl'];
+          $_case['ok'] = false;
+          $_case['failure'] = 'login';
+        } else {
+          $_case['ok'] = true;
+          add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+          add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::drop_www', 10 );
+        }
+
+      }
+
+      // Check all other content, if everything "ok" so far and no redirection has already been set. We make a special exception for "preview" links.
+      if( !defined( 'DOING_AJAX' ) && !defined( 'WP_ADMIN' ) && !defined( 'WP_LOGIN_PAGE' ) && !defined( 'XMLRPC_REQUEST' ) ) {
+
+        if( ( strpos( $_case[ 'url' ], $_case['options']['cloudfront'] ) !== 0 ) || ( ( strpos( $_case[ 'url' ], $_case['options']['siteurl'] ) !== 0 ) && ( !isset( $_GET['preview'] ) && !isset( $_GET['p'] ) ) ) ) {
+          $_case[ 'ok' ] = false;
+          $_case[ 'kind' ] = 'frontend';
+          $_case[ 'redirect' ] = $_case['options']['siteurl'] . $_SERVER[ 'REQUEST_URI' ];
+          $_case[ 'failure' ] = 'content';
+        } else {
+          $_case[ 'ok' ] = true;
+          $_case[ 'kind' ] = 'frontend';
+          // @note we do not apply filters to change the urls here to not have "www" because even if we do they (js/css assets) will 301 to www
+        }
+
+      }
+
+      // remove extra stuff.
+      $_case = array_filter( $_case );
+
+      die( '<pre>' . print_r( $_case, true ) . '</pre>' );
+
+      // If redirection has been found, we do so now.
+      if( !$_case['ok'] && $_case['redirect']  ) {
+        die(header("Location: " . $_case['redirect'], true, 302));
+      }
+
+
+    }
+
+  }
 
 	class Redirection {
 
@@ -279,8 +302,11 @@ namespace UsabilityDynamics\CloudFront {
      */
     static public function always_browser( $url = null ) {
 
+      // Replace the host with whatever the browser wanted.
+      $url = set_url_scheme( str_replace( parse_url($url, PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url ), 'https' );
+
       // Replace the for-server hostname with the for-browser hostname. e.g. "www.reddoorcompany.com/stuff" becomes "usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/stuff"
-      $url = set_url_scheme( str_replace( $_SERVER['WP_CLOUDFRONT_HOST_FOR_SERVER'], $_SERVER['WP_CLOUDFRONT_HOST_FOR_BROWSER'], $url ), 'https' );
+      //$url = set_url_scheme( str_replace( $_SERVER['WP_CLOUDFRONT_HOST_FOR_SERVER'], $_SERVER['WP_CLOUDFRONT_HOST_FOR_BROWSER'], $url ), 'https' );
 
       return $url;
 
@@ -313,7 +339,51 @@ namespace UsabilityDynamics\CloudFront {
 
 	class API {
 
-	}
+    function api_site() {
+
+      $_meta = array(
+        "home" => get_option( 'home' ),
+        "siteurl" => get_option( 'siteurl' ),
+        "network.url" => get_site_option( 'siteurl' ),
+        "current_theme" => get_option( 'current_theme' ),
+        "stylesheet" => get_option( 'stylesheet' ),
+        "stylesheet_root" => get_option( 'stylesheet_root' ),
+        "template_root" => get_option( 'template_root' ),
+        "template" => get_option( 'template' ),
+        "theme_roots" => get_site_transient( 'theme_roots' ),
+        //"active_plugins" => get_option( 'active_plugins' ),
+        //"site_admins" => get_site_option( 'site_admins' ),
+        //"illegal_names" => get_site_option( 'illegal_names' ),
+        //"active_sitewide_plugins" => get_site_option( 'active_sitewide_plugins' ),
+        //"can_compress_scripts" => get_site_option( 'can_compress_scripts' ),
+        "ms_files_rewriting" => get_site_option( 'ms_files_rewriting' ),
+        "theme_switched" => get_option( 'theme_switched' ),
+        "blog_public" => get_option( 'blog_public' ),
+        "recently_edited" => get_option( 'recently_edited' ),
+        "upload" => wp_upload_dir(),
+        "upload_path" => get_option( 'upload_path' ),
+        "upload_url_path" => get_option( 'upload_url_path' ),
+        "allowedthemes" => get_option( 'allowedthemes' ),
+        // "update_plugins"                => get_site_transient( 'update_plugins' ),
+        // "update_themes"                 => get_site_transient( 'update_themes' ),
+        // "update_core"                   => get_site_transient( 'update_core' ),
+        // "uploads_use_yearmonth_folders" => get_option( 'uploads_use_yearmonth_folders' ),
+        // "subdomain_install"             => get_site_option( 'subdomain_install' ),
+        // "global_terms_enabled"          => get_site_option( 'global_terms_enabled' ),
+        // "thumbnail_crop"                => get_option( 'thumbnail_crop' ),
+        // "thumbnail_size_w"              => get_option( 'thumbnail_size_w' ),
+        // "thumbnail_size_h"              => get_option( 'thumbnail_size_h' ),
+        // "medium_size_w"                 => get_option( 'medium_size_w' ),
+        // "medium_size_h"                 => get_option( 'medium_size_h' ),
+        // "large_size_w"                  => get_option( 'large_size_w' ),
+        // "large_size_h"                  => get_option( 'large_size_h' ),
+      ) ;
+
+      die( '<pre>' . print_r( $_meta, true ) . '</pre>' );
+      wp_send_json( $_meta );
+    }
+
+  }
 
 	class Filters {
 
