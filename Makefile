@@ -1,5 +1,5 @@
 subtreePull:
-	@git subtree pull --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property latest --squash
+	@git subtree pull --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property v2.0 --squash
 	@git subtree pull --prefix=wp-content/plugins/wp-property-feps git@github.com:wp-property/wp-property-feps latest --squash
 	@git subtree pull --prefix=wp-content/plugins/wp-property-importer git@github.com:wp-property/wp-property-importer latest --squash
 	@git subtree pull --prefix=wp-content/plugins/wp-property-supermap git@github.com:wp-property/wp-property-supermap latest --squash
@@ -17,11 +17,7 @@ subtreePull:
 
 
 subtreePush:
-	@git subtree push --prefix=wp-content/themes/wp-avalon git@github.com:wp-property/wp-avalon latest --squash
-	@git subtree push --prefix=wp-content/themes/wp-denali git@github.com:wp-property/wp-denali latest --squash
-	@git subtree push --prefix=wp-content/themes/wp-madison git@github.com:wp-property/wp-madison latest --squash
-	@git subtree push --prefix=wp-content/plugins/wp-github-wiki git@github.com:UsabilityDynamics/wp-github-wiki latest --squash
-	@git subtree push --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property latest --squash
+	@git subtree push --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property v2.0 --squash
 	@git subtree push --prefix=wp-content/plugins/wp-property-feps git@github.com:wp-property/wp-property-feps latest --squash
 	@git subtree push --prefix=wp-content/plugins/wp-property-importer git@github.com:wp-property/wp-property-importer latest --squash
 	@git subtree push --prefix=wp-content/plugins/wp-property-supermap git@github.com:wp-property/wp-property-supermap latest --squash
@@ -41,11 +37,7 @@ subtreePush:
 	@git subtree push --prefix=wp-content/plugins/wp-upstream git@github.com:wpCloud/wp-upstream latest --squash
 
 subtreeAdd:
-	@git subtree add --prefix=wp-content/themes/wp-avalon git@github.com:wp-property/wp-avalon latest
-	@git subtree add --prefix=wp-content/themes/wp-denali git@github.com:wp-property/wp-denali latest
-	@git subtree add --prefix=wp-content/themes/wp-madison git@github.com:wp-property/wp-madison latest
-	@git subtree add --prefix=wp-content/plugins/wp-github-wiki git@github.com:UsabilityDynamics/wp-github-wiki latest
-	@git subtree add --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property latest
+	@git subtree add --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property v2.0
 	@git subtree add --prefix=wp-content/plugins/wp-property-feps git@github.com:wp-property/wp-property-feps latest
 	@git subtree add --prefix=wp-content/plugins/wp-property-importer git@github.com:wp-property/wp-property-importer latest
 	@git subtree add --prefix=wp-content/plugins/wp-property-supermap git@github.com:wp-property/wp-property-supermap latest
