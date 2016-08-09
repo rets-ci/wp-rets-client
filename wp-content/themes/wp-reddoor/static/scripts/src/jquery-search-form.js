@@ -1,7 +1,17 @@
 (function( $ ) {
 
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
   $.fn.rdc_search_form = function( options ) {
-    console.debug( 'rdc_search_form', 'invoked', options );
+    debug( 'rdc_search_form', 'invoked', options );
 
     var settings = $.extend({}, options );
 
@@ -10,7 +20,9 @@
     /**
      * A bit hacky fix for safari form validation
      */
-    $('form', that).on('submit', function(e){
+    $('form', that).on('submit', function onFormSubmit(e){
+      debug( 'onFormSubmit' );
+
       if ( !e.target.checkValidity() ) {
         $('.select2-search__field', e.target).focus().click();
         return false;
@@ -46,33 +58,38 @@
 
     $(document).on( 'click', function(){
       $(".dropdown-container .dropdown-list", that).slideUp();
-      console.debug('slideUp');
+      debug('slideUp');
     });
 
-    $(".dropdown-container .searchTrigger", that).on('click', ( function(e) {
+    $(".dropdown-container .searchTrigger", that).on('click', ( function dropdownContainerSearchTrigger(e) {
+      debug( 'dropdownContainerListClick' );
       $(".dropdown-container .dropdown-list", that).slideUp();
       $(this).parent().find(".dropdown-list").slideToggle();
       e.stopPropagation();
       $(document).trigger( 'search-dropdown', [$(e.currentTarget).data('drop'), $(e.currentTarget)] );
-      console.debug('slideToggle');
+      debug('slideToggle');
     }));
 
-    $(".dropdown-container .dropdown-list", that).on('click', ( function(e) {
+    $(".dropdown-container .dropdown-list", that).on('click', ( function dropdownContainerListClick(e) {
+      debug( 'dropdownContainerListClick' );
       e.stopPropagation();
     }));
 
     /* Search-form slide selects */
-    $(".dropdown-option", that).on( 'change', function(e) {
+    $(".dropdown-option", that).on( 'change', function onDropdownOptionChange(e) {
+      debug( 'onDropdownOptionChange' );
+
       $(this).parents('.dropdown-container').find('.dropdown-value').html($('label', $(this).parent()).html());
       $(".dropdown-container .dropdown-list", that).slideUp();
     });
 
-    $('.citiesSelection', that).select2({
+    var citiesSelection = window.citiesSelection = $('.citiesSelection', that).select2({
       placeholder: 'Search',
       maximumSelectionLength: 1,
       minimumInputLength: 3,
       data: [],
-      query: function (query) {
+      query: function onQuery(query) {
+        debug( 'onQuery' );
 
         var data = [];
 
@@ -137,6 +154,7 @@
               if( typeof v._source.post_title != 'undefined' ) {
                 if (!unique[v._source.post_title]) {
                   post_title.children.push({
+                    _id: v._id,
                     id: v._source.post_title,
                     text: v._source.post_title,
                     taxonomy:'post_title',
@@ -155,6 +173,7 @@
                   unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
                 }
               }
+
               if( typeof v._source.tax_input.mls_id != 'undefined' ) {
                 if (!unique[v._source.tax_input.mls_id[0]]) {
                   mls_id.children.push({
@@ -283,6 +302,7 @@
           jQuery('.select2-dropdown').addClass("hide");
           query.callback({ results: data });
         }
+
       },
       // language: {
       //   noResults: function(){
@@ -309,15 +329,76 @@
       // templateSelection: function formatRepoSelection (city) {
       //   return city._source.tax_input.location_street[0];
       // }
-    }).on('select2:select', function(e) {
+    });
+
+    citiesSelection.on('select2:select', function onSelect(e) {
+      debug( 'onSelect' );
+
       var $select = $(this);
       var data = $select.select2('data');
-      if( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+      var _form = $select.closest('form');
+      var _match = data[0];
+
+      // redirect to /listing/{_id}
+      if( typeof _match.taxonomy != 'undefined' && _match.taxonomy == 'post_title' ) {
+        debug('Redirecting to known property, matched by [post_title]:', '/listing/' + _match._id );
         $select.closest('form').find("input[type='submit']").attr("disabled","disabled");
-        window.location.href= data[0].permalink;
+        window.location.href = '/listing/' + _match._id;
+        return;
       }
-      $select.closest('form').find('input[name="_taxonomy"]').val(data[0].taxonomy);
-    }).on('select2:selecting', function(e) {
+
+      // Redirect to /listing/{mls_id}/
+      if( typeof _match.taxonomy != 'undefined' && _match.taxonomy == 'mls_id' ) {
+        debug('Redirecting to known property, matched by [post_title]:', '/listing/' + _match._id );
+        $select.closest('form').find("input[type='submit']").attr("disabled","disabled");
+        window.location.href = '/listing/' + _match.text;
+        return;
+      }
+
+      $select.closest('form').find('input[name="_taxonomy"]').val(_match.taxonomy);
+
+      // Build taxonomy landing page redirection detail.
+      var _selectedTerm = {
+        taxonomy: _match.taxonomy,
+        value: _match.text,
+        slug: sanitize_title( _match.text || '' ),
+        action: null,
+        query: {
+          "wpp_search": {
+            "sale_type": jQuery('[name="wpp_search[sale_type]"]', _form ).val(),
+            "bedrooms": {
+              min: jQuery('[name="wpp_search[bedrooms][min]"]', _form ).val(),
+              max: jQuery('[name="wpp_search[bedrooms][max]"]', _form ).val()
+            },
+            "bathrooms": {
+              min: jQuery('[name="wpp_search[bathrooms][min]"]', _form ).val(),
+              max: jQuery('[name="wpp_search[bathrooms][max]"]', _form ).val()
+            },
+            "price": {
+              min: jQuery('[name="wpp_search[price][min]"]', _form ).val(),
+              max: jQuery('[name="wpp_search[price][max]"]', _form ).val()
+            }
+          }
+        },
+        httpQuery: ''
+      };
+
+      // Build the same type of query the server-side would.
+      _selectedTerm.httpQuery = http_build_query( _selectedTerm.query );
+
+      // Concatenate full relative path.
+      _selectedTerm.action = [ '/', _selectedTerm.taxonomy, '/', _selectedTerm.slug ].join('');// , '?', _selectedTerm.httpQuery
+
+      // Change the form "action" URL to go to term landing page.
+      $select.closest('form').attr( 'action', _selectedTerm.action );
+
+      debug( "Updated action parameter to [%s] for [%s] form.", _selectedTerm.action , _form.data( 'search-type' ) );
+
+    });
+
+    citiesSelection.on('select2:selecting', function onSelecting(e) {
+      debug( 'onSelecting' );
+
       var $select = $(this);
       if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
         $select.select2( 'val', {} );
@@ -328,7 +409,8 @@
 
     var dropdown;
 
-    $(document).on( 'search-dropdown', function(e, kind, element) {
+    $(document).on( 'search-dropdown', function onSearchDropdownEvent(e, kind, element) {
+      debug( 'onSearchDropdownEvent' );
 
       if ( typeof kind != 'undefined' && ( kind == 'price' || kind == 'bath' || kind == 'bed' ) ) {
 
@@ -1128,6 +1210,154 @@
       }
 
     });
+
+    /**
+     * http://locutus.io/php/url/http_build_query/
+     * 
+     * @param formdata
+     * @param numericPrefix
+     * @param argSeparator
+     * @returns {string}
+     */
+    function http_build_query (formdata, numericPrefix, argSeparator) { // eslint-disable-line camelcase
+                                                                        //  discuss at: http://locutus.io/php/http_build_query/
+                                                                        // original by: Kevin van Zonneveld (http://kvz.io)
+                                                                        // improved by: Legaev Andrey
+                                                                        // improved by: Michael White (http://getsprink.com)
+                                                                        // improved by: Kevin van Zonneveld (http://kvz.io)
+                                                                        // improved by: Brett Zamir (http://brett-zamir.me)
+                                                                        //  revised by: stag019
+                                                                        //    input by: Dreamer
+                                                                        // bugfixed by: Brett Zamir (http://brett-zamir.me)
+                                                                        // bugfixed by: MIO_KODUKI (http://mio-koduki.blogspot.com/)
+                                                                        //      note 1: If the value is null, key and value are skipped in the
+                                                                        //      note 1: http_build_query of PHP while in locutus they are not.
+                                                                        //   example 1: http_build_query({foo: 'bar', php: 'hypertext processor', baz: 'boom', cow: 'milk'}, '', '&amp;')
+                                                                        //   returns 1: 'foo=bar&amp;php=hypertext+processor&amp;baz=boom&amp;cow=milk'
+                                                                        //   example 2: http_build_query({'php': 'hypertext processor', 0: 'foo', 1: 'bar', 2: 'baz', 3: 'boom', 'cow': 'milk'}, 'myvar_')
+                                                                        //   returns 2: 'myvar_0=foo&myvar_1=bar&myvar_2=baz&myvar_3=boom&php=hypertext+processor&cow=milk'
+
+
+      var value
+      var key
+      var tmp = []
+
+      var _httpBuildQueryHelper = function (key, val, argSeparator) {
+        var k
+        var tmp = []
+        if (val === true) {
+          val = '1'
+        } else if (val === false) {
+          val = '0'
+        }
+        if (val !== null) {
+          if (typeof val === 'object') {
+            for (k in val) {
+              if (val[k] !== null) {
+                tmp.push(_httpBuildQueryHelper(key + '[' + k + ']', val[k], argSeparator))
+              }
+            }
+            return tmp.join(argSeparator)
+          } else if (typeof val !== 'function') {
+            return urlencode(key) + '=' + urlencode(val)
+          } else {
+            throw new Error('There was an error processing for http_build_query().')
+          }
+        } else {
+          return ''
+        }
+      }
+
+      if (!argSeparator) {
+        argSeparator = '&'
+      }
+      for (key in formdata) {
+        value = formdata[key]
+        if (numericPrefix && !isNaN(key)) {
+          key = String(numericPrefix) + key
+        }
+        var query = _httpBuildQueryHelper(key, value, argSeparator)
+        if (query !== '') {
+          tmp.push(query)
+        }
+      }
+
+      return tmp.join(argSeparator)
+    }
+
+    /**
+     * URL Fix
+     *
+     * @param str
+     * @returns {string}
+     */
+    function urlencode (str) {
+      //       discuss at: http://locutus.io/php/urlencode/
+      //      original by: Philip Peterson
+      //      improved by: Kevin van Zonneveld (http://kvz.io)
+      //      improved by: Kevin van Zonneveld (http://kvz.io)
+      //      improved by: Brett Zamir (http://brett-zamir.me)
+      //      improved by: Lars Fischer
+      //         input by: AJ
+      //         input by: travc
+      //         input by: Brett Zamir (http://brett-zamir.me)
+      //         input by: Ratheous
+      //      bugfixed by: Kevin van Zonneveld (http://kvz.io)
+      //      bugfixed by: Kevin van Zonneveld (http://kvz.io)
+      //      bugfixed by: Joris
+      // reimplemented by: Brett Zamir (http://brett-zamir.me)
+      // reimplemented by: Brett Zamir (http://brett-zamir.me)
+      //           note 1: This reflects PHP 5.3/6.0+ behavior
+      //           note 1: Please be aware that this function
+      //           note 1: expects to encode into UTF-8 encoded strings, as found on
+      //           note 1: pages served as UTF-8
+      //        example 1: urlencode('Kevin van Zonneveld!')
+      //        returns 1: 'Kevin+van+Zonneveld%21'
+      //        example 2: urlencode('http://kvz.io/')
+      //        returns 2: 'http%3A%2F%2Fkvz.io%2F'
+      //        example 3: urlencode('http://www.google.nl/search?q=Locutus&ie=utf-8')
+      //        returns 3: 'http%3A%2F%2Fwww.google.nl%2Fsearch%3Fq%3DLocutus%26ie%3Dutf-8'
+
+      str = (str + '')
+
+      // Tilde should be allowed unescaped in future versions of PHP (as reflected below),
+      // but if you want to reflect current
+      // PHP behavior, you would need to add ".replace(/~/g, '%7E');" to the following.
+      return encodeURIComponent(str)
+        .replace(/!/g, '%21')
+        .replace(/'/g, '%27')
+        .replace(/\(/g, '%28')
+        .replace(/\)/g, '%29')
+        .replace(/\*/g, '%2A')
+        .replace(/%20/g, '+')
+    }
+
+    /**
+     * Emulates WordPress Title Sanitization.
+     *
+     * @source https://gist.github.com/spyesx/561b1d65d4afb595f295
+     * @param str
+     * @returns {string|*}
+     */
+    function sanitize_title(str) {
+      str = str.replace(/^\s+|\s+$/g, ''); // trim
+      str = str.toLowerCase();
+
+      // remove accents, swap ñ for n, etc
+      var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+      var to   = "aaaaeeeeiiiioooouuuunc------";
+
+      for (var i=0, l=from.length ; i<l ; i++)
+      {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+      }
+
+      str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+      return str;
+    }
 
   };
 
