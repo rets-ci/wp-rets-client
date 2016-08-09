@@ -64,6 +64,8 @@ namespace UsabilityDynamics\CloudFront {
     add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
+    add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
+    add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     return;
   }
 
