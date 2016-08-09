@@ -74,8 +74,6 @@
       data: [],
       query: function (query) {
 
-        var data = [];
-
         if( rdc.client() && query.term && query.term.length  >= 3 ) {
 
           jQuery('.select2-dropdown').removeClass("hide");
@@ -92,28 +90,14 @@
           rdc.__request = rdc.client().search({
             index: 'v5',
             type: 'property',
+            method: "GET",
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            body: {
-              query: rdc.build_query( query.term, sale_type ),
-              _source: [
-                "post_title",
-                "_permalink",
-                "tax_input.location_city",
-                "tax_input.mls_id",
-                "tax_input.location_street",
-                "tax_input.location_zip",
-                "tax_input.location_county",
-                "tax_input.subdivision",
-                "tax_input.elementary_school",
-                "tax_input.middle_school",
-                "tax_input.high_school",
-                "tax_input.listing_office",
-                "tax_input.listing_agent_name"
-              ]
-            },
-          }, function (err, response) {
+            source: '{'+rdc.build_query( query.term, sale_type )+',_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name"]}',
+        }, function (err, response) {
+
+        var data = [];
 
             if( typeof response.hits.hits == 'undefined' ) {
               query.callback({ results: data });

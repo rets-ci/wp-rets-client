@@ -73,25 +73,7 @@ var rdc = {
    * Build the search query
    */
   build_query: function build_query( q, sale_type ) {
-    return {
-      "bool": {
-        "must": [
-          {
-            "match": {
-              "_all": {
-                "query": q,
-                "operator": "and"
-              }
-            }
-          },
-          {
-            "match": {
-              "tax_input.sale_type": sale_type
-            }
-          }
-        ]
-      }
-    }
+      return '"query":{"bool":{"must":[{"match":{"_all":{"query": "'+q+'","operator": "and"}}},{"match": {"tax_input.sale_type": "'+sale_type+'"}}]}}';
   },
 
   __client: null,
