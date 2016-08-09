@@ -38,6 +38,7 @@ var rdc = {
     rdc.client().search({
       index: 'v5',
       type: 'property',
+      method: "GET",
       q: 'tax_input.sale_type:' + type,
       size: 0,
       headers: {
