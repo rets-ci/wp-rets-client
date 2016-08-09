@@ -726,7 +726,7 @@
          */
         function build_query() {
           // maybe alter something
-          return $scope.query;
+          return JSON.stringify($scope.query);
         }
 
         /**
@@ -744,16 +744,11 @@
           $scope._request = client.search({
             index: index,
             type: type,
+            method: "GET",
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            body: {
-              query: build_query()
-            },
-            _source: $scope.atts.fields,
-            size: 800,
-            from: $scope.properties.length,
-            sort: "post_title:asc"
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
           }, function( error, response ) {
 
             if ( !error ) {
@@ -825,15 +820,11 @@
           $scope._request = client.search({
             index: index,
             type: type,
+            method: "GET",
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            body: {
-              query: build_query()
-            },
-            _source: $scope.atts.fields,
-            size: 100,
-            sort: "post_title:asc"
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
 
             if ( !error ) {
