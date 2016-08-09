@@ -58,12 +58,13 @@ namespace UsabilityDynamics\CloudFront {
 
   // When accessing using a "development" hostname, do nothing, other than support the request. (.c. containers).
   if( ( isset( $_SERVER[ 'HTTP_X_SELECTED_CONTAINER' ] ) &&  isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) || defined( 'WP_CLI' ) ) {
-    add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
+    define( 'WP_HOME', 'https://' . $_SERVER[ 'HTTP_HOST' ] );
+    define( 'WP_SITEURL', 'https://' . $_SERVER[ 'HTTP_HOST' ] );
+
+    // For MS this is also needed, not just the above.
+    add_filter( 'pre_option_home', function() { return 'https://' . $_SERVER[ 'HTTP_HOST' ]; });
+    add_filter( 'pre_option_siteurl', function() { return 'https://' . $_SERVER[ 'HTTP_HOST' ] ; });
+
     return;
   }
 
@@ -272,23 +273,11 @@ namespace UsabilityDynamics\CloudFront {
 
 		}
 
-    /**
-     * Handle non-production domain redirection.
-     *
-     * @todo Make the "www.reddoorcompany.com" hardcoded URL dynamic. 
-     * @param null $url
-     * @return null|string
-     */
 		static public function staging_domain( $url = null ) {
 
 			//$url = set_url_scheme( str_replace( 'www.', 'cloudfront.', $url ), 'https' );
 
-      // support for any domain on .c.
-      if( isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) {
-        return set_url_scheme( str_replace( 'www.reddoorcompany.com', $_SERVER['HTTP_HOST'], $url ), 'https' );
-      }
-
-      // Replace the for-server hostname with the for-browser hostname. e.g. "www.reddoorcompany.com/stuff" becomes "usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/stuff"
+			// Replace the for-server hostname with the for-browser hostname. e.g. "www.reddoorcompany.com/stuff" becomes "usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/stuff"
 			$url = set_url_scheme( str_replace( $_SERVER['WP_CLOUDFRONT_HOST_FOR_SERVER'], $_SERVER['WP_CLOUDFRONT_HOST_FOR_BROWSER'], $url ), 'https' );
 
 			return $url;
