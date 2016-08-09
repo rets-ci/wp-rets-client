@@ -22,7 +22,7 @@
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
-      "wp_debug_log": false,
+      "wp_debug_log": true,
       "wp_rets_ci": true,
       "wp_debug_display": false,
       "wp_memcached_servers": "sql.wpcloud.io:23038",
