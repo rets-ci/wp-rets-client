@@ -855,6 +855,8 @@
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
                   $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
+                }  else {
+                  $scope.refreshMarkers( false );
                 }
 
                 if ( $scope.total > $scope.properties.length ) {
