@@ -56,16 +56,18 @@ namespace UsabilityDynamics\CloudFront {
 		return;
 	}
 
+  // These URLs will always be set to the browser. @todo Make sure not an issue with admin, though.
+  add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+  add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+  add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+  add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+  add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+
   // When accessing using a "development" hostname, do nothing, other than support the request. (.c. containers).
   if( ( isset( $_SERVER[ 'HTTP_X_SELECTED_CONTAINER' ] ) &&  isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) || defined( 'WP_CLI' ) ) {
-    add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
     return;
   }
 
@@ -112,13 +114,9 @@ namespace UsabilityDynamics\CloudFront {
 
 	// If we are on a "staging" domain, we tweak the URLs used.
 	if( isset( $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_SERVER' ] ) && isset(  $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_BROWSER' ] ) && $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_SERVER' ] !== $_SERVER[ 'WP_CLOUDFRONT_HOST_FOR_BROWSER' ] ) {
-
-		add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-		add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 		add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 		add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 		add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-		add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
 	}
 
 	// Not sure where they shouold be defined. Bit added here since dealing with redirection issues/concerns of wp-admin/wp-login.php
@@ -229,7 +227,6 @@ namespace UsabilityDynamics\CloudFront {
 
 	}
 
-
 	// If redirection has been found, we do so now.
 	if( !$_case['ok'] && $_case['redirect']  ) {
 		die(header("Location: " . $_case['redirect'], true, 302));
@@ -275,6 +272,21 @@ namespace UsabilityDynamics\CloudFront {
 		}
 
     /**
+     * Always use whatever browser is using.
+     *
+     * @param null $url
+     * @return null|string
+     */
+    static public function always_browser( $url = null ) {
+
+      // Replace the for-server hostname with the for-browser hostname. e.g. "www.reddoorcompany.com/stuff" becomes "usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/stuff"
+      $url = set_url_scheme( str_replace( $_SERVER['WP_CLOUDFRONT_HOST_FOR_SERVER'], $_SERVER['WP_CLOUDFRONT_HOST_FOR_BROWSER'], $url ), 'https' );
+
+      return $url;
+
+    }
+
+    /**
      * Handle non-production domain redirection.
      *
      * @todo Make the "www.reddoorcompany.com" hardcoded URL dynamic. 
@@ -297,20 +309,6 @@ namespace UsabilityDynamics\CloudFront {
 
 		}
 
-		/**
-		 * For Later.
-		 *
-		 * @param $redirect_url
-		 * @param $requested_url
-		 *
-		 * @return mixed|string
-		 */
-		static public function redirect_canonical( $redirect_url = '', $requested_url = null ) {
-
-			return $redirect_url;
-
-		}
-
 	}
 
 	class API {
@@ -319,11 +317,12 @@ namespace UsabilityDynamics\CloudFront {
 
 	class Filters {
 
-		/**
-		 *
-		 * @hack to trick "auth_redirect" method into using ouf CF domain for login.
-		 *
-		 */
+    /**
+     *
+     * @hack to trick "auth_redirect" method into using ouf CF domain for login.
+     * @param $setting
+     * @return mixed
+     */
 		static public function secure_auth_redirect( $setting ) {
 
 			// Verify this is needed.
@@ -356,10 +355,13 @@ namespace UsabilityDynamics\CloudFront {
 
 		}
 
-		/**
-		 * For CloudFront, we use api subdomain for admin urls.
-		 *
-		 */
+    /**
+     * For CloudFront, we use api subdomain for admin urls.
+     * @param $url
+     * @param $path
+     * @param $blog_id
+     * @return mixed|void
+     */
 		static public function admin_url( $url, $path, $blog_id ) {
 
 			// We don't want to apply these rules on the admin-side, only for front-end ajax calls.
@@ -432,12 +434,6 @@ namespace UsabilityDynamics\CloudFront {
 		 *
 		 */
 		static public function init() {
-
-			// remove the existing redirection logic completely. (Its redirection will definitely conflict)
-			remove_filter( 'redirect_canonical', array( 'UsabilityDynamics\MU\Redirection', 'redirect_canonical' ), 10 );
-
-			// add our own redirection script
-			add_filter( 'redirect_canonical', array( 'UsabilityDynamics\CloudFront', 'redirect_canonical' ), 10 );
 
 			// CloudFront configuration will ignore these.
 			header( 'cache-control:no-cache, private' );
@@ -572,18 +568,6 @@ namespace UsabilityDynamics\CloudFront {
 
 			return $_policy;
 
-		}
-
-		/**
-		 * Should not have to do anything here?
-		 *
-		 * @param string $redirect_url
-		 * @param null $requested_url
-		 * @return null
-		 */
-		static public function redirect_canonical( $redirect_url = '', $requested_url = null ) {
-
-			return null;
 		}
 
 	}

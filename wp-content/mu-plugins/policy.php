@@ -22,7 +22,7 @@ add_filter( 'minit-script-tag-async', '__return_false' );
 add_filter( 'minit-cache-expiration', function() { return 0; });
 
 add_filter( 'minit-file-pattern', function( $_path, $extension ) {
-  return str_replace( '/minit/', '/minit/asset-', $_path );
+  return str_replace( '/minit/', '/minit/asset-' . $_SERVER['GIT_BRANCH'] . '-', $_path );
 }, 10, 2 );
 
 // Force minit to be enabled if its avialable.
