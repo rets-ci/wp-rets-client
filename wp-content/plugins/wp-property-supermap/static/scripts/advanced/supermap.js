@@ -855,6 +855,8 @@
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
                   $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
+                }  else {
+                  $scope.refreshMarkers( false );
                 }
 
                 if ( $scope.total > $scope.properties.length ) {
@@ -968,6 +970,10 @@
                 backgroundClassName: 'sm-infobubble-wrap',
                 arrowStyle: 3
               });
+            }
+
+            if( ! $scope.properties.length ) {
+              $scope.infoBubble.close();
             }
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
