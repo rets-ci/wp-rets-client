@@ -3,8 +3,8 @@ Contributors: usability_dynamics, andypotanin, jbrw1984, maxim.peshkov, Anton Ko
 Donate link: http://usabilitydynamics.com/product/wp-property/
 Tags: property management, real estate, listings, properties, property, wp-property, real estate cms, wordpress real estate, listings, estate, MLS, IDX, RETS, XML Import
 Requires at least: 4.0
-Tested up to: 4.4.2
-Stable tag: 2.1.6
+Tested up to: 4.5.3
+Stable tag: 2.1.9
 
 == Description ==
 
@@ -13,6 +13,8 @@ WP-Property is the leading WordPress plugin for creating and managing highly cus
 Although WP-Property is the most downloaded WordPress real estate plugin, it can handle so much more than real estate. Showcase any kind of entity you want, from livestock, golf carts, to properties and products, experiencing unparalleled ease of use and flexibility on the way.
 
 > Do you want to see the plugin in action? Just proceed to our <a href="http://madison.ci.usabilitydynamics.com/">Madison</a> and <a href="http://denali.ci.usabilitydynamics.com/">Denali</a> Demo sites.
+
+> Free theme <a href="https://www.usabilitydynamics.com/product/avalon">Avalon</a> especially for WP-Property plugin and all it's add-ons. It has responsive style layouts so that it can be displayed nicely in any device, desktop or mobile. Customizable sidebars and different widgets to suit every taste. All colors from the site are also customizable to fit your brand's colors.
 
 <strong>Dynamic Property Listings - No Coding Required!</strong><br>
 
@@ -225,6 +227,37 @@ If you submit a popular idea on UserVoice, we WILL integrate it sooner or later.
 * Security fixes
 
 == Changelog ==
+
+= 2.1.9 =
+* Added Date Input range Search Input.
+* Fixed Google Maps Api key issue.
+* Fixed pagination on trashed properties.
+* Added minutes to the Added and Updated fields on All properties page.
+
+= 2.1.8 =
+* Added default Search Input and Data Entry types for Property Attributes on first WP-Property install.
+* Fixed default list of Property Types on first WP-Property install.
+* Fixed issue with duplicated Currency symbol on Single Property page.
+
+= 2.1.7 =
+* Added Date picker for Property Search form.
+* Added ability to remove all default attributes, meta attributes and property types from Developer tab on Settings page.
+* Added label "Properties page" to page's title ( on backend's "Pages" page ) which is used as Properties Overview page.
+* Removed ability to hide Overview meta box on "All Properties" page on backend.
+* Extended backup of WP-Property settings with settings of WP-Property Add-ons.
+* Loading $wp_properties object was moved to AJAX on Help tab on Settings page.
+* Changed `get_images` method to sort images by ascending order and expose `menu_order`.
+* Fixed empty view-link on Edit Property page.
+* Fixed fatal error when [property_attribute] shortcode was added to non-Single Property page.
+* Fixed CSS styles for Gallery meta box on Edit Property page.
+* Fixed WordPress 4.5 issue with File Upload Data Entry.
+* Fixed issue with showing empty Property Gallery widget when there were not images for the particular property.
+* Fixed issue when private properties were not showing for administrator.
+* Fixed issue when Property Search widget in Customizer had duplicated attributes.
+* Fixed displaying of title, alt and caption options of property images.
+* Fixed issue with pagination on property overview when they are two on the page
+* Fixed multiple usage of Property Overview widget and shortcode on the same page.
+* Warnings and Notices fixes.
 
 = 2.1.6 =
 * Fixed the bug when page content was always replaced with property_overview shortcode if wpp_search existed in request parameters.
