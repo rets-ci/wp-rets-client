@@ -115,7 +115,6 @@ namespace UsabilityDynamics\CloudFront {
 	add_action( 'admin_init',                     array( 'UsabilityDynamics\CloudFront\Actions', 'admin_init' ), 10 );
 	add_action( 'plugins_loaded',                 array( 'UsabilityDynamics\CloudFront\Actions', 'plugins_loaded' ), 10 );
 	add_action( 'template_redirect',              array( 'UsabilityDynamics\CloudFront\Actions', 'template_redirect' ), 10 );
-	add_action( 'template_redirect',              array( 'UsabilityDynamics\CloudFront\Actions', 'set_response_headers' ), 20 );
 	add_action( 'muplugins_loaded',               array( 'UsabilityDynamics\CloudFront\Actions', 'muplugins_loaded' ), 10 );
 	add_action( 'init',                           array( 'UsabilityDynamics\CloudFront\Actions', 'init' ), 10 );
 
@@ -567,87 +566,6 @@ namespace UsabilityDynamics\CloudFront {
 
 				//die( '<pre>' . print_r( $_SERVER['HTTP_ORIGIN'], true ) . '</pre>' );
 			}
-
-		}
-
-		/**
-		 * Cache home page forever, until purge. (31536000)
-		 * Max Age - how long browser will cache for
-		 * S-Max-Age - how long proxies will cache for
-		 *
-		 * This logic no longer applies, everything except for select pages defined in CF should be cahable for all.
-		 *
-		 * CloudFront is configured to force zero-time caching on the few select pages we hae that are truly private
-		 * - /account
-		 * - /cart
-		 * - /checkout
-		 * - /wp-admin
-		 * - /xmlrpc.php - Does not forward cookies either, all others do.
-		 *
-		 * Not sure what to do with /wp-cron.php (probably should go to api subdomain)
-		 *
-		 */
-		static public function set_response_headers() {
-			global $wp_query;
-
-			$_policy = array(
-				"set" => false,
-				"value" => 'public,max-age=31536000,s-maxage=31536000',
-				"reason" => "",
-				"query" => $wp_query
-			);
-
-			if( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/account' ) === 0 ) {
-				header( 'cache-control:private,max-age=0' );
-				return;
-			}
-
-			if( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/cart' ) === 0 ) {
-				header( 'cache-control:private,max-age=0' );
-				return;
-			}
-
-			if( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/checkout' ) === 0 ) {
-				header( 'cache-control:private,max-age=0' );
-				return;
-			}
-
-			// We cache normal content "forever" and then purge when need to.
-			if( !$_policy['set'] && ( is_page() || is_single() || is_attachment() || is_home() || is_front_page() ) ) {
-				$_policy[ "set" ] = true;
-				$_policy[ "reason" ] = "Single post, single page, attachment, home or front page are cached forever.";
-			}
-
-			// Questionable...
-			if( !$_policy['set'] && is_search() ) {
-				$_policy[ "set" ] = true;
-				$_policy[ "reason" ] = "Search cached forever.";
-			}
-
-			// Lets home previews use very unique hashes, they'll be cached forever.
-			if( !$_policy['set'] && is_preview() ) {
-				$_policy[ "set" ] = true;
-				$_policy[ "reason" ] = "Previews are cached forever.";
-			}
-
-			// Traditionally this would not be cached, but now - we no longer give a shit. Everything is cached the same for everybody.
-			if( !$_policy['set'] && is_user_logged_in() ) {
-				$_policy[ "set" ] = true;
-				$_policy[ "reason" ] = "You are logged in, but we do not care.";
-			}
-
-			// This is no exception.
-			if( !$_policy['set'] && is_404() ) {
-				$_policy[ "set" ] = true;
-				$_policy[ "reason" ] = "404 requests are cached forever.";
-			}
-
-			// Set cache-control header.
-			if( $_policy[ "set" ] && !headers_sent()) {
-				header('cache-control:'.$_policy[ "value" ]);
-			}
-
-			return $_policy;
 
 		}
 
