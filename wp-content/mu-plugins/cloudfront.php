@@ -133,7 +133,11 @@ namespace UsabilityDynamics\CloudFront {
       add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
+      // needed for uploads directory, perhaps others.
+      add_filter( 'option_siteurl', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'upload_dir', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
     }
 
@@ -301,6 +305,13 @@ namespace UsabilityDynamics\CloudFront {
      * @return null|string
      */
     static public function always_browser( $url = null ) {
+
+      // wp_upload_dir filter.
+      if( is_array( $url ) && isset( $url['baseurl'] ) ) {
+        $url['url'] = set_url_scheme( str_replace( parse_url($url['url'], PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url['url'] ), 'https' );
+        $url['baseurl'] = set_url_scheme( str_replace( parse_url($url['baseurl'], PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url['baseurl'] ), 'https' );
+        return $url;
+      }
 
       // Replace the host with whatever the browser wanted.
       $url = set_url_scheme( str_replace( parse_url($url, PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url ), 'https' );
