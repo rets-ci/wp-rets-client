@@ -89,7 +89,7 @@ add_filter( 'minit-file-pattern', function( $_path, $extension ) {
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
 
-  if( file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
+  if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
     $_plugins[] = 'minit-master/minit.php';
   }
 
