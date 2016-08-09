@@ -88,7 +88,6 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
     );
 
   }
-
   // overwrite transients for core, plugin and theme updates
   add_filter('pre_site_transient_update_core','rdc_remove_core_updates');
   add_filter('pre_site_transient_update_plugins','rdc_remove_core_updates');
@@ -96,12 +95,16 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 
 }
 
-function listing_custom_rewrite() {
-	add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
-	// flush_rewrite_rules();
-}
 
-add_action('init', 'listing_custom_rewrite');
+// Add support for /listing/{property_id} redirection
+
+add_action('init', function() {
+  add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+});
 
 
 //die(wp_redirect('https://cloudfront-staging.reddoorcompany.com/2'));
+
+add_action('template_redirect', function() {
+//die('template_redirect');
+}, 0);
