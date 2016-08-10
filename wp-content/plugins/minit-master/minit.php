@@ -18,6 +18,7 @@ class Minit {
 
   private function __construct() {
 
+    // called once in header and once in footer
     add_filter( 'print_scripts_array', array( $this, 'init_minit_js' ) );
     add_filter( 'print_styles_array', array( $this, 'init_minit_css' ) );
 
@@ -44,19 +45,36 @@ class Minit {
 
     global $wp_scripts;
 
-    return $this->minit_objects( $wp_scripts, $todo, 'js' );
+
+    if( did_action( 'get_footer' ) ) {
+      return $this->minit_objects( $wp_scripts, $todo, 'js', 'in_footer' );
+    } else {
+      return $this->minit_objects( $wp_scripts, $todo, 'js', 'in_header' );
+    }
 
   }
 
   function init_minit_css( $todo ) {
-
     global $wp_styles;
 
-    return $this->minit_objects( $wp_styles, $todo, 'css' );
+
+    if( did_action( 'get_footer' ) ) {
+      return $this->minit_objects( $wp_styles, $todo, 'css', 'in_footer' );
+    } else {
+      return $this->minit_objects( $wp_styles, $todo, 'css', 'in_header' );
+    }
+
+
 
   }
 
-  function minit_objects( &$object, $todo, $extension ) {
+  /**
+   * @param $object
+   * @param $todo
+   * @param $extension
+   * @return array
+   */
+  function minit_objects( &$object, $todo, $extension, $where ) {
 
     // Don't run if on admin or already processed
     if( is_admin() || empty( $todo ) )
@@ -71,9 +89,10 @@ class Minit {
     if( !is_array( $minit_exclude ) )
       $minit_exclude = array();
 
-    // Exluce all minit items by default
+    // Exluce all minit items by default. When ran in footer i
     $minit_exclude = array_merge( $minit_exclude, $this->get_done() );
 
+    // echo( '<pre> minit todo ' . $extension . ' - ' . $where . ' - ' . print_r( $todo, true ) . '</pre>' );
     $minit_todo = array_diff( $todo, $minit_exclude );
 
     if( empty( $minit_todo ) )
@@ -331,7 +350,12 @@ class Minit {
     if( empty( $this->async_queue ) )
       return;
 
-    // Seems to be adding "head" script twice. Adding this to prevent.
+    // Disable the actual async..
+    if( !apply_filters( 'minit-js-footer-async', true ) ) {
+      return;
+    }
+
+      // Seems to be adding "head" script twice. Adding this to prevent.
     if( !apply_filters( 'minit-js-in-footer', true ) ) {
       return;
     }
