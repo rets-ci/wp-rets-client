@@ -18,8 +18,7 @@ add_action('template_redirect', function() {
   $_policy = array(
     "set" => false,
     "value" => 'public,max-age=31536000,s-maxage=31536000,force-cache=true',
-    "reason" => "",
-    "query" => $wp_query
+    "reason" => ""
   );
 
   // On non-production, cache for 60 seconds.
