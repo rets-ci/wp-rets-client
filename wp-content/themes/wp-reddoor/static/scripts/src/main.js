@@ -96,7 +96,7 @@ function make_base_auth(user, password) {
 (function(){
 
   jQuery( document ).ready( function rdcReady() {
-    console.log( "RDC version 1.1.3" );
+    console.log( "RDC version 2.4.1" );
 
     /**
      * Validate popup forms.
