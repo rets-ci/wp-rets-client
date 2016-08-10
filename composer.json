@@ -31,7 +31,7 @@
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
       "wp_cache": true,
-      "concatenate_scripts": false,
+      "concatenate_scripts": true,
       "sunrise": false,
       "multisite": false,
       "empty_trash_days": 60,

@@ -73,8 +73,13 @@ add_action('template_redirect', function() {
 
 }, 20);
 
-// By default minit puts everything into footer, which causes issues with dependencies.
-add_filter( 'minit-js-in-footer', '__return_false' );
+// Disable using the in-footer async thing.
+add_filter( 'minit-js-footer-async', '__return_false' );
+
+// Its the only file taht is add the the real "footer" js, since we add both files in footer, i think it can be dropped.
+add_action( 'wp_enqueue_scripts', function(  ) {
+  wp_deregister_script( 'wp-embed' );
+});
 
 // We disable all caching. 
 add_filter( 'minit-use-cache', '__return_false' );
