@@ -172,7 +172,7 @@
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
         $scope.loading_more_properties = true;
-        $scope.rdc_listing = window.sm_rdc_listing || false;
+        $scope.rdc_listing = ( window.sm_rdc_listing && window.sm_rdc_listing.ok ) ? true : false
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
@@ -181,8 +181,8 @@
 
         $scope.view = {
           mode: {
-            table: isMobile == true ? false : true,
-            preview: isMobile == true ? true : false,
+            table: ( supermapMode && 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
+            preview: ( supermapMode && 'object' === typeof supermapMode && supermapUsage.isMobile ) ? true : false,
           },
           toggle: function() {
             this.mode.table = !this.mode.table;
@@ -911,7 +911,7 @@
          */
         $scope.addMapChanged = function addMapChanged() {
           debug( 'addMapChanged' );
-
+          
           NgMap.getMap().then(function (map) {
             if (isMobile == true) {
               return false;
@@ -1109,7 +1109,7 @@
                 }
 
                 if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
-                  debug( 'Error occurred during getting properties data.' );
+                  console.log( 'Error occurred during getting properties data.' );
                 } else {
                   row.data_source_logo = response._source.meta_input.data_source_logo;
                   $scope.$apply();

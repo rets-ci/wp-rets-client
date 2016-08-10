@@ -213,8 +213,10 @@ namespace UsabilityDynamics\RDC {
         }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', $rdc_listing );
         wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
+
+        // The "$l10n" must be an object/array, can not bee a bool. - potanin@UD
+        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', array( "ok" => $rdc_listing ? true : false ) );
 
         $_query = array(
           'bool' => array(
