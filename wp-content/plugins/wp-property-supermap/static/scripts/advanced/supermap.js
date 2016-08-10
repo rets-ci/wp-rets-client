@@ -182,7 +182,7 @@
         $scope.view = {
           mode: {
             table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
-            preview: ( 'object' === typeof supermapMode && supermapUsage.isMobile ) ? true : false,
+            preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
           },
           toggle: function() {
             this.mode.table = !this.mode.table;
