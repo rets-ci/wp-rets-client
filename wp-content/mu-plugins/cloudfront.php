@@ -41,10 +41,15 @@ namespace UsabilityDynamics\CloudFront {
 		return;
 	}
 
+
+  // Modify output urls to work with whatever the browser expects.
+  Handlers::check_ssl();
   Handlers::frontend_support();
+  Handlers::apply_hacks();
 
 
-  if( isset( $_SERVER['GIT_BRANCH']) ){}
+  if( isset( $_SERVER['GIT_BRANCH']) ){
+  }
 
   return;
 
@@ -105,12 +110,40 @@ namespace UsabilityDynamics\CloudFront {
 	class Handlers {
 
     /**
+     * Do things i can't explain ..
+     *
+     */
+    static public function apply_hacks() {
+
+      if(isset( $_SERVER['REQUEST_URI'] ) && $_SERVER['REQUEST_URI'] == '/index.php' ) {
+        $_SERVER['REQUEST_URI'] = '/';
+      }
+
+    }
+
+    /**
+     *
+     */
+    static public function check_ssl() {
+
+      if( isset( $_SERVER[ 'HTTP_CLOUDFRONT_FORWARDED_PROTO' ] ) && $_SERVER[ 'HTTP_CLOUDFRONT_FORWARDED_PROTO' ] === 'https' ) {
+        $_SERVER['HTTPS'] = 'on';
+      }
+
+    }
+
+
+    /**
      * Fix Browser-facing URLs.
      */
     static public function frontend_support() {
 
       add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+
+      // some parts of WP call optiosn directly
+      add_filter( 'option_home', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'option_siteurl', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
       // These URLs will always be set to the browser. @todo Make sure not an issue with admin, though.
       add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
@@ -119,12 +152,12 @@ namespace UsabilityDynamics\CloudFront {
       add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
       // needed for uploads directory, perhaps others.
-      add_filter( 'option_siteurl', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'upload_dir', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
     }
 
     static public function redirection_rules() {
+      global $wp_rewrite;
 
 
       // Not sure where they shouold be defined. Bit added here since dealing with redirection issues/concerns of wp-admin/wp-login.php
@@ -139,7 +172,8 @@ namespace UsabilityDynamics\CloudFront {
           'loginurl' => get_option( 'loginurl' ), //site_url( 'wp-login.php' ),
           'ajaxurl' => get_admin_url( null, 'admin-ajax.php' ),
           'siteurl' => site_url(),
-          'home' => home_url()
+          'home' => home_url(),
+          'use_trailing_slashes' => isset( $wp_rewrite ) ? $wp_rewrite->use_trailing_slashes : null
         ),
         'url' => 'https://' . ( isset( $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] ) ? $_SERVER[ 'WP_CLOUDFRONT_ORIGINAL_HOST' ] : $_SERVER['HTTP_HOST'] ) . '' . $_SERVER['REQUEST_URI'],
         'redirect' => false,
@@ -260,7 +294,7 @@ namespace UsabilityDynamics\CloudFront {
 
 	class Redirection {
 
-		/**
+    /**
 		 * Make all the WP urls work without the 'www' subdomain, which is otherwise expected.
 		 *
 		 * * Also make everything htttps to be on the safe side
@@ -293,11 +327,12 @@ namespace UsabilityDynamics\CloudFront {
       if( is_array( $url ) && isset( $url['baseurl'] ) ) {
         $url['url'] = set_url_scheme( str_replace( parse_url($url['url'], PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url['url'] ), 'https' );
         $url['baseurl'] = set_url_scheme( str_replace( parse_url($url['baseurl'], PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url['baseurl'] ), 'https' );
-        return $url;
       }
 
       // Replace the host with whatever the browser wanted.
-      $url = set_url_scheme( str_replace( parse_url($url, PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url ), 'https' );
+      if( is_string( $url ) ) {
+        $url = set_url_scheme( str_replace( parse_url($url, PHP_URL_HOST), $_SERVER['HTTP_HOST'], $url ), 'https' );
+      }
 
       // Replace the for-server hostname with the for-browser hostname. e.g. "www.reddoorcompany.com/stuff" becomes "usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/stuff"
       //$url = set_url_scheme( str_replace( $_SERVER['WP_CLOUDFRONT_HOST_FOR_SERVER'], $_SERVER['WP_CLOUDFRONT_HOST_FOR_BROWSER'], $url ), 'https' );
@@ -451,11 +486,6 @@ namespace UsabilityDynamics\CloudFront {
 		 */
 		static public function plugins_loaded() {
 
-			// Force WP to think this is a regular request, regardless of domain (direct., www., cloudfront., etc.)
-			if( defined('CLOUDFRONT_ENABLED') ) {
-				//$_SERVER['HTTPS'] = 'on';
-				//$_SERVER['HTTP_HOST'] = 'www.usabilitydynamics.com';
-			}
 
 			// for testing headers received by site and returning them. We run this very early since we want to know what headers were sent before any redirection may happen.
 			// curl https://cloudfront.usabilitydynamics.com/checkout/?v=3 -H "x-special-action:listHeaders" -H "x-set-branch:staging" -H "x-not-whitelisted:blah"
