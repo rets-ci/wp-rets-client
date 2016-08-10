@@ -181,8 +181,8 @@
 
         $scope.view = {
           mode: {
-            table: ( supermapMode && 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
-            preview: ( supermapMode && 'object' === typeof supermapMode && supermapUsage.isMobile ) ? true : false,
+            table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
+            preview: ( 'object' === typeof supermapMode && supermapUsage.isMobile ) ? true : false,
           },
           toggle: function() {
             this.mode.table = !this.mode.table;
@@ -913,9 +913,11 @@
           debug( 'addMapChanged' );
           
           NgMap.getMap().then(function (map) {
-            if (isMobile == true) {
+
+            if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
               return false;
             }
+
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
               var zoom = map.getZoom();
