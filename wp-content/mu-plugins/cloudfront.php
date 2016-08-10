@@ -36,37 +36,17 @@
  */
 namespace UsabilityDynamics\CloudFront {
 
-	if( defined( 'WP_CLI' ) ) {
+  // Do nothing for CLI, Crons or Admin.
+	if( defined( 'WP_CLI' ) || defined( 'DOING_CRON' ) ) {
 		return;
 	}
-
-	if ( defined( 'DOING_CRON' ) ) {
-		return;
-	}
-
-  //add_action( 'wp_ajax_/site/v1/meta', 'UsabilityDynamics\CloudFront\API::api_site' );
-  //add_action( 'wp_ajax_nopriv_/site/v1/meta', 'UsabilityDynamics\CloudFront\API::api_site' );
-
-  // Handle any redirection.
-  if( !defined( 'WP_ADMIN' ) && get_option( 'cloudfront' ) ) {
-    // Handlers::redirection_rules();
-  }
-
-  // API::api_site();
-
-  //if( !defined( 'WP_ADMIN' ) )
 
   Handlers::frontend_support();
 
-  return;
 
-  // When accessing using a "development" hostname, do nothing, other than support the request. (.c. containers).
-  if( ( isset( $_SERVER[ 'HTTP_X_SELECTED_CONTAINER' ] ) &&  isset( $_SERVER[ 'HTTP_HOST' ] ) && strpos( $_SERVER[ 'HTTP_HOST' ], '.c.' ) > 0 ) || defined( 'WP_CLI' ) ) {
-    add_filter( 'admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    add_filter( 'network_admin_url', 'UsabilityDynamics\CloudFront\Redirection::staging_domain', 10 );
-    return;
-  }
+  if( isset( $_SERVER['GIT_BRANCH']) ){}
+
+  return;
 
 
 	// For now its simple, a handful of domains all will function as "www.reddoorcompany.com" internally while using the custom urls in the browser.
@@ -124,14 +104,18 @@ namespace UsabilityDynamics\CloudFront {
 
 	class Handlers {
 
+    /**
+     * Fix Browser-facing URLs.
+     */
     static public function frontend_support() {
+
+      add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
+      add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
       // These URLs will always be set to the browser. @todo Make sure not an issue with admin, though.
       add_filter( 'minit-url-js', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'minit-url-css', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'content_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-      add_filter( 'home_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
-      add_filter( 'site_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
       add_filter( 'plugins_url', 'UsabilityDynamics\CloudFront\Redirection::always_browser', 10 );
 
       // needed for uploads directory, perhaps others.
