@@ -13,7 +13,7 @@ class ComposerStaticInit767149ad881f3a01e76e00619c0a3d05
         'UsabilityDynamics\\Term' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-term.php',
         'UsabilityDynamics\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-utility.php',
         'UsabilityDynamics\\Utility\\Guid_Fix' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
-        'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-Bootstrap.php',
+        'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\WPRETSC\\Media' => __DIR__ . '/../..' . '/lib/classes/class-media.php',
         'UsabilityDynamics\\WPRETSC\\Utility' => __DIR__ . '/../..' . '/lib/classes/class-utility.php',
         'UsabilityDynamics\\WPRETSC\\XMLRPC' => __DIR__ . '/../..' . '/lib/classes/class-xmlrpc.php',

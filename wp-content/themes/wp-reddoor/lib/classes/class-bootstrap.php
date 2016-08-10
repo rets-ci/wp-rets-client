@@ -51,6 +51,16 @@ namespace UsabilityDynamics\RDC {
         remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
         remove_action( 'admin_print_styles', 'print_emoji_styles' );
 
+        remove_action( 'wp_head', 'feed_links_extra', 3 );
+        remove_action( 'wp_head', 'feed_links', 2 );
+        remove_action( 'wp_head', 'rsd_link' );
+        remove_action( 'wp_head', 'wlwmanifest_link' );
+        remove_action( 'wp_head', 'index_rel_link' );
+        remove_action( 'wp_head', 'wp_generator');
+
+        remove_action( 'template_redirect', 'wp_shortlink_header', 11 );
+        remove_action( 'template_redirect', 'rest_output_link_header', 11 );
+
         /**
          *
          */
@@ -203,8 +213,10 @@ namespace UsabilityDynamics\RDC {
         }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', $rdc_listing );
         wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
+
+        // The "$l10n" must be an object/array, can not bee a bool. - potanin@UD
+        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', array( "ok" => $rdc_listing ? true : false ) );
 
         $_query = array(
           'bool' => array(
@@ -248,6 +260,11 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
+       * Depreciated, now done client-side.
+       * 
+       * - Identifies primary _term from home page search.
+       * - If term is MLS ID, redirects to first (and only) property.
+       *
        * @param $query
        * @return mixed
        */
@@ -257,6 +274,7 @@ namespace UsabilityDynamics\RDC {
 
           $term = $_POST[ '_term' ];
           $term = is_numeric( $term ) ? (int)$term : $term;
+
           if( !empty( $_POST['_taxonomy'] ) ) {
             $term_object = get_term_by( 'name', $term, $_POST['_taxonomy'] );
           } else {
@@ -291,7 +309,9 @@ namespace UsabilityDynamics\RDC {
 
           $_query = http_build_query( apply_filters( 'wpp::search::query', array( 'wpp_search' => $_POST[ 'wpp_search' ] ) ), '', '&' );
           $_redirect .= ( strpos( $_redirect, '?' ) === false ? '?' : '&' ) . $_query;
+
           wp_redirect( $_redirect );
+
           die();
         }
 
@@ -334,26 +354,28 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-accordion');
         wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), '1.0.0');
-        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js?nocache='.rand(0,100) . '', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
-        wp_enqueue_script('svgxuse', 'https://i.icomoon.io/public/524f31be7a/rdc/svgxuse.js');
+        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('svgxuse', get_stylesheet_directory_uri() . '/static/scripts/vendor/svgxuse.js', array(), '1.0.0');
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
         wp_enqueue_script('masonry', 'https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js', array('jquery'), '4.0');
         wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array( 'jquery' ), '1.0.0' );
         wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-custom-validate', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-1.9.0.validate.min.js', array('jquery') );
-        wp_enqueue_script('rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
+        wp_enqueue_script('rdc-custom-validate', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.validate.min.js', array('jquery') );
+
+        //wp_enqueue_script('rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
+        wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('touch-swipe');
 
-        wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css?nocache='.rand(0,10000));
+        wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css');
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
         //if ( is_singular( 'property' ) ) {
-          wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
+          wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri(). '/static/scripts/src/agents-carousel.js', array('jquery'), '1.0.0');
        // }
 
-          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js?nocache='.rand(0,10000).'', array('jquery'), '1.0.0');
+          wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri(). '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
 
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
         if( !empty( $recaptcha ) ) {

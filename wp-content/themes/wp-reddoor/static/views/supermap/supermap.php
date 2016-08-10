@@ -35,7 +35,7 @@ use \UsabilityDynamics\RDC\Utils;
 
             <div class="sm-search-layer">
               <div class="sm-search-filter-layer clearfix">
-                <button ng-click="toggleSearchForm()" class="sm-search-filter btn"><i class="icon-wpproperty-interface-search-solid"></i><?php echo apply_filters( 'wpp::advanced_supermap::filter::label', __( 'Filter', ud_get_wpp_supermap()->domain ) ); ?></button>
+                <button ng-click="toggleSearchForm()" class="sm-search-filter btn"><i class="icon-wpproperty-interface-search-solid"></i><?php echo apply_filters( 'wpp::advanced_supermap::filter::label', __( 'Search', ud_get_wpp_supermap()->domain ) ); ?></button>
               </div>
               <div class="sm-search-form" ng-show="searchForm">
                 <?php
@@ -55,7 +55,7 @@ use \UsabilityDynamics\RDC\Utils;
 
           <div class="sm-marker-infobubble">
             <div class="sm-infobubble">
-              <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a target="_blank" href="/?p={{currentProperty._id}}">{{currentProperty._source.post_title}}</a>
+              <img class="sm-map-marker-icon" ng-src="{{currentProperty._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /> <a target="_blank" class="listing-url" href="/listing/{{currentProperty._id}}">{{currentProperty._source.post_title}}</a>
             </div>
           </div>
         </div>
@@ -87,14 +87,14 @@ use \UsabilityDynamics\RDC\Utils;
 
         <div ng-show="properties.length > 0" class="sm-properties-collection">
 
-          <div class="sm-sidebar-top">{{total}} Properties</div>
+          <div class="sm-sidebar-top" ng-bind-template="{{total}} Properties"></div>
 
           <div ng-show="view.mode.preview" st-table="propertiesGridCollection" st-safe-src="properties">
 
             <ul class="dropdown-columns-options mode-preview" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
               <li ng-repeat="col in columns">
                 <label>
-                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
+                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" ng-bind-template=" {{col.label}}" />
                 </label>
               </li>
             </ul>
@@ -141,17 +141,17 @@ use \UsabilityDynamics\RDC\Utils;
 <!--                        </ul>-->
                       </div>
                       <ul>
-                        <li class="sm-current-property-price">{{row._source.tax_input.price[0] | currency : '$' : 0}}</li>
-                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</a></li>
+                        <li class="sm-current-property-price" ng-bind-template="{{row._source.tax_input.price[0] | currency : '$' : 0}}"></li>
+                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
-                        <li class="beds"><i class="icon-wpproperty-attribute-bedroom-solid"></i>{{row._source.tax_input.bedrooms[0]}} Beds</li>
-                        <li class="baths"><i class="icon-wpproperty-attribute-bathroom-solid"></i>{{row._source.tax_input.bathrooms[0]}} Baths</li>
-                        <li class="sqft"><i class="icon-wpproperty-attribute-size-solid"></i>{{row._source.tax_input.total_living_area_sqft[0]}} SqFt</li>
-                        <li class="acres"><i class="icon-wpproperty-attribute-lotsize-solid"></i>{{row._source.tax_input.approximate_lot_size[0]}} Acres</li>
+                        <li class="beds" ng-bind-html="row.current_bedrooms"></li>
+                        <li class="baths" ng-bind-html="row.current_bathrooms"></li>
+                        <li class="sqft" ng-bind-html="row.current_total_living_area_sqft"></li>
+                        <li class="acres" ng-bind-html="row.current_approximate_lot_size"></li>
                       </ul>
                       <div class="sm-current-property-buttons">
-                        <a class="open-listing" target="_blank" href="/?p={{row._id}}">
+                        <a class="open-listing" target="_blank" href="/listing/{{row._id}}">
                           <i class="icon-wpproperty-interface-expand-outline"></i>
                           <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
                         </a>
@@ -181,9 +181,9 @@ use \UsabilityDynamics\RDC\Utils;
                 <div class="col-md-6">
                   <div class="sm-current-property-details">
                     <ul>
-                      <li class="sm-current-property-title"><a href="{{currentProperty._source._permalink}}">{{currentProperty._source.post_title}}</a></li>
+                      <li class="sm-current-property-title"><a href="{{currentProperty._source._permalink}}" ng-bind-template="{{currentProperty._source.post_title}}"></a></li>
                       <li class="" ng-repeat="column in wpp.instance.settings.configuration.feature_settings.supermap.display_attributes">
-                        <label class="sm-attribute-label">{{wpp.instance.settings.property_stats[column]}}</label><span class="sm-attribute-value">{{currentProperty._source[column]}}</span>
+                        <label class="sm-attribute-label" ng-bind-template="{{wpp.instance.settings.property_stats[column]}}"></label><span class="sm-attribute-value" ng-bind-template="{{currentProperty._source[column]}}"></span>
                       </li>
                     </ul>
                   </div>
@@ -210,7 +210,7 @@ use \UsabilityDynamics\RDC\Utils;
                       <ul class="dropdown-columns-options mode-table" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
                         <li ng-repeat="col in columns">
                           <label>
-                            <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
+                            <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" ng-bind-template=" {{col.label}}" />
                           </label>
                         </li>
                       </ul>
@@ -286,17 +286,17 @@ use \UsabilityDynamics\RDC\Utils;
                   <tbody>
                   <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
-                    <td class="sm-post-title" ng-show="columns.post_title.enable">{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}</td>
-                    <td class="sm-subdivision" ng-show="columns.subdivision.enable">{{row._source.tax_input.subdivision[0]}}</td>
-                    <td class="sm-city" ng-show="columns.city.enable">{{row._source.tax_input.location_city[0]}}</td>
-                    <td class="sm-bedrooms" ng-show="columns.bedrooms.enable">{{row._source.tax_input.bedrooms[0]}}</td>
-                    <td class="sm-bathrooms" ng-show="columns.bathrooms.enable">{{row._source.tax_input.bathrooms[0]}}</td>
-                    <td class="sm-sqft" ng-show="columns.total_living_area_sqft.enable">{{row._source.tax_input.total_living_area_sqft[0]}}</td>
-                    <td class="sm-lot" ng-show="columns.approximate_lot_size.enable">{{row._source.tax_input.approximate_lot_size[0]}}</td>
-                    <td class="sm-price" ng-show="columns.price.enable">{{row._source.tax_input.price[0] | currency : '$' : 0}}</td>
-                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable">{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}</td>
-                    <td class="sm-sale" ng-show="columns.sale_type.enable">{{row._source.tax_input.sale_type[0]}}</td>
-                    <td class="sm-days" ng-show="columns.days_on_market.enable">{{row._source.tax_input.added[0]}}</td>
+                    <td class="sm-post-title" ng-show="columns.post_title.enable" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></td>
+                    <td class="sm-subdivision" ng-show="columns.subdivision.enable" ng-bind-template="{{row._source.tax_input.subdivision[0]}}"></td>
+                    <td class="sm-city" ng-show="columns.city.enable" ng-bind-template="{{row._source.tax_input.location_city[0]}}"></td>
+                    <td class="sm-bedrooms" ng-show="columns.bedrooms.enable" ng-bind-template="{{row._source.tax_input.bedrooms[0]}}"></td>
+                    <td class="sm-bathrooms" ng-show="columns.bathrooms.enable" ng-bind-template="{{row._source.tax_input.bathrooms[0]}}"></td>
+                    <td class="sm-sqft" ng-show="columns.total_living_area_sqft.enable" ng-bind-template="{{row._source.tax_input.total_living_area_sqft[0]}}"></td>
+                    <td class="sm-lot" ng-show="columns.approximate_lot_size.enable" ng-bind-template="{{row._source.tax_input.approximate_lot_size[0]}}"></td>
+                    <td class="sm-price" ng-show="columns.price.enable" ng-bind-template="{{row._source.tax_input.price[0] | currency : '$' : 0}}"></td>
+                    <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" ng-bind-template="{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}"></td>
+                    <td class="sm-sale" ng-show="columns.sale_type.enable" ng-bind-template="{{row._source.tax_input.sale_type[0]}}"></td>
+                    <td class="sm-days" ng-show="columns.days_on_market.enable" ng-bind-template="{{row._source.tax_input.added[0]}}"></td>
                   </tr>
                   </tbody>
                   <tfoot>

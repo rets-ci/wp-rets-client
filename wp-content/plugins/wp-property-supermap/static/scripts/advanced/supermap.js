@@ -4,6 +4,17 @@
 
 ( function( jQuery, wpp ){
 
+
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
   /**
    *
    * @param options
@@ -20,12 +31,12 @@
     }, options);
 
     if( !vars.ng_app ) {
-      console.log( 'wpp_advanced_supermap: ng_app is undefined!' );
+      debug( 'wpp_advanced_supermap: ng_app is undefined!' );
       return;
     }
 
     if( !vars.query ) {
-      console.log( 'wpp_advanced_supermap: query is undefined!' );
+      debug( 'wpp_advanced_supermap: query is undefined!' );
       return;
     }
 
@@ -48,7 +59,7 @@
     /**
      * Angular Module.
      */
-    angular.module( vars.ng_app, [ 'ngMap', 'smart-table' ] )
+    angular.module( vars.ng_app, [ 'ngMap', 'smart-table', 'ngSanitize' ] )
 
       /**
        * Autocomplete directive.
@@ -78,7 +89,7 @@
           }
 
           if(!source || !source.length > 0) {
-            console.log('error on trying to get source for autoComplete directive');
+            debug('error on trying to get source for autoComplete directive');
             return null;
           }
           iElement.autocomplete({
@@ -161,7 +172,7 @@
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
         $scope.loading_more_properties = true;
-        $scope.rdc_listing = window.sm_rdc_listing || false;
+        $scope.rdc_listing = ( window.sm_rdc_listing && window.sm_rdc_listing.ok ) ? true : false
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
@@ -170,8 +181,8 @@
 
         $scope.view = {
           mode: {
-            table: isMobile == true ? false : true,
-            preview: isMobile == true ? true : false,
+            table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
+            preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
           },
           toggle: function() {
             this.mode.table = !this.mode.table;
@@ -449,12 +460,14 @@
                 max:''
               }
             }
-            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
@@ -523,12 +536,14 @@
                 max:''
               }
             }
-            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
@@ -597,12 +612,14 @@
                 max:''
               }
             }
-            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
             if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
             }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
           },
 
           set_min: function(_price) {
@@ -689,6 +706,12 @@
           }
 
           r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+
+          //icon html and template
+          r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
+          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
+          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
         }
 
         function calculate_days(date) {
@@ -720,7 +743,7 @@
          */
         function build_query() {
           // maybe alter something
-          return $scope.query;
+          return JSON.stringify($scope.query);
         }
 
         /**
@@ -730,51 +753,50 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
-          jQuery( '.sm-search-form form').addClass('processing');
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
           $scope.toggleSearchButton();
           $scope._request = client.search({
             index: index,
             type: type,
+            method: "GET",
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            body: {
-              query: build_query()
-            },
-            _source: $scope.atts.fields,
-            size: 800,
-            from: $scope.properties.length,
-            sort: "post_title:asc"
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
           }, function( error, response ) {
 
             if ( !error ) {
 
               if( typeof response.hits.hits == 'undefined' ) {
-                console.log( 'Error occurred during getting properties data.' );
+                debug( 'Error occurred during getting properties data.' );
               } else {
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
 
+                if( ! $scope.loadNgMapChangedEvent ) {
+                  $scope.loadNgMapChangedEvent = true;
+                  $scope.addMapChanged();
+                }
+
                 if ( $scope.total > $scope.properties.length ) {
                   if( $scope.loading_more_properties ) {
                     getMoreProperties();
                   }
                 }else{
-                  if( ! $scope.loadNgMapChangedEvent ) {
-                    $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged();
-                  }
-                  jQuery( '.sm-search-form form').removeClass('mapChanged');
+                  search_form.removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
-              jQuery( '.sm-search-form form').removeClass('mapChanged');
+              search_form.removeClass('mapChanged');
             }
-            jQuery( '.sm-search-form form').removeClass('processing');
+            search_form.removeClass('processing');
             $scope.toggleSearchButton();
           });
         }
@@ -806,21 +828,20 @@
           if ( $scope._request ) {
             $scope._request.abort();
           }
-          jQuery( '.sm-search-form form').addClass('processing');
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
           $scope.toggleSearchButton();
 
           $scope._request = client.search({
             index: index,
             type: type,
+            method: "GET",
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            body: {
-              query: build_query()
-            },
-            _source: $scope.atts.fields,
-            size: 100,
-            sort: "post_title:asc"
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
 
             if ( !error ) {
@@ -829,7 +850,7 @@
               $scope.loaded = true;
 
               if( typeof response.hits.hits == 'undefined' ) {
-                console.log( 'Error occurred during getting properties data.' );
+                debug( 'Error occurred during getting properties data.' );
               } else {
                 response.hits.hits.filter(cast_fields);
                 if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
@@ -844,8 +865,11 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
+                  $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
+                }  else {
+                  $scope.refreshMarkers( false );
                 }
-                $scope.refreshMarkers( jQuery( '.sm-search-form form').hasClass('mapChanged') ? false : true );
+
                 if ( $scope.total > $scope.properties.length ) {
                   if( ! $scope.loading_more_properties ) {
                     $scope.loading_more_properties = true;
@@ -853,18 +877,22 @@
                   getMoreProperties();
                 }else if($scope.rdc_listing){
                   $scope.rdc_listing = false;
-                  jQuery('.sm-search-form form').submit();
+                  search_form.submit();
                 }else{
-                  jQuery( '.sm-search-form form').removeClass('mapChanged');
+                  if( ! $scope.loadNgMapChangedEvent ) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
                 }
               }
               $scope.col_changed();
             } else {
               console.error(error);
-              jQuery( '.sm-search-form form').removeClass('mapChanged');
+              search_form.removeClass('mapChanged');
             }
 
-            jQuery( '.sm-search-form form').removeClass('processing');
+            search_form.removeClass('processing');
             $scope.toggleSearchButton();
 
           });
@@ -881,11 +909,15 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.addMapChanged = function() {
+        $scope.addMapChanged = function addMapChanged() {
+          debug( 'addMapChanged' );
+          
           NgMap.getMap().then(function (map) {
-            if (isMobile == true) {
+
+            if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
               return false;
             }
+
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
               var zoom = map.getZoom();
@@ -953,6 +985,10 @@
                 backgroundClassName: 'sm-infobubble-wrap',
                 arrowStyle: 3
               });
+            }
+
+            if( ! $scope.properties.length ) {
+              $scope.infoBubble.close();
             }
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
@@ -1068,7 +1104,7 @@
                 row._is_loading_images = false;
 
                 if( typeof response._source.meta_input.rets_media == 'undefined' ) {
-                  console.log( 'Error occurred during getting properties data.' );
+                  debug( 'Error occurred during getting properties data.' );
                 } else {
                   row.images = response._source.meta_input.rets_media;
                   $scope.$apply();
@@ -1142,35 +1178,11 @@
               $scope._request = client.search({
                 index: 'v5',
                 type: 'property',
+                method: "GET",
                 headers : {
                   "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
                 },
-                body: {
-                  query: {
-                    "match": {
-                      "_all": {
-                        "query": query.term,
-                        "operator": "and"
-                      }
-                    }
-                  },
-                  _source: [
-                    "post_title",
-                    "_permalink",
-                    "tax_input.location_city",
-                    "tax_input.mls_id",
-                    "tax_input.location_street",
-                    "tax_input.location_zip",
-                    "tax_input.location_county",
-                    "tax_input.subdivision",
-                    "tax_input.elementary_school",
-                    "tax_input.middle_school",
-                    "tax_input.high_school",
-                    "tax_input.listing_office",
-                    "tax_input.listing_agent_name"
-                  ]
-                },
-                size: 100,
+                source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name"]}',
               }, function (err, response) {
 
                 if( typeof response.hits.hits == 'undefined' ) {
@@ -1362,14 +1374,20 @@
           //   return city._source.tax_input.location_street[0];
           // }
         }).on('select2:select', function(e) {
-          var $select = jQuery(this);
           var data = $select.select2('data');
           if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
             window.location.href= data[0].permalink;
+          } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+            var value = window.sm_current_terms.values[0];
+            var key = window.sm_current_terms.key;
+            if( value == data[0].text ) {
+              $scope.map_filter_taxonomy = key;
+            }
+          } else {
+            $scope.map_filter_taxonomy = data[0].taxonomy;
           }
-          $scope.map_filter_taxonomy = data[0].taxonomy;
+          $scope.$apply();
         }).on('select2:selecting', function(e) {
-          var $select = jQuery(this);
           if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
             $select.select2( 'val', {} );
           }

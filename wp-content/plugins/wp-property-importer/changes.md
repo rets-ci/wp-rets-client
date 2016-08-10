@@ -1,3 +1,7 @@
+### 5.1.4 ( July 28, 2016 )
+* Compatibility fixes with PHP 5.6
+* Alternative Cron fixes added.
+
 ### 5.1.3.1 ( June 23, 2016 )
 * Fix - critical bug in lib-wp-bootstrap. Library updated to 1.2.1.
 

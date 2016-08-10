@@ -6897,6 +6897,13 @@ a.btn-rdc {
     width: 400px !important;
   }
 }
+/* ----------- iPad 3 and 4 ----------- */
+/* Portrait and Landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .menu-header-container .menuDesktop .sub-menu {
+    width: 768px;
+  }
+}
 @media screen and (max-width: 992px) {
   body {
     background: none !important;

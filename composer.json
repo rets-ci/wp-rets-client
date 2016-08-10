@@ -11,10 +11,11 @@
   "extra": {
     "settings_latest": {
       "wp_debug_log": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": false,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "wp_memcached_servers": "localhost:11211",
       "db": [
         {
-          "name": "www.reddoorcompany.com/latest"
+          "name": "www.reddoorcompany.com.latest"
         }
       ]
     },
@@ -23,7 +24,9 @@
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
       "wp_debug_log": false,
+      "wp_rets_ci": true,
       "wp_debug_display": false,
+      "wp_memcached_servers": "sql.wpcloud.io:23038",
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",

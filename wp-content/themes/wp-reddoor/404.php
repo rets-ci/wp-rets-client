@@ -7,12 +7,13 @@
 
             if($wp_query->is_404){
 
-                query_posts('page_id=5573968');
-        if ( have_posts() ) : while ( have_posts() ) : the_post();
+              // its a "draft"
+              $the_query = new WP_Query( array( 'page_id' => '5573968', 'post_status' => 'draft' ) );
 
-            the_content();
-         endwhile;
-        endif;
+              if ( $the_query->have_posts() ) : while ( $the_query->have_posts() ) : $the_query->the_post();
+                the_content();
+              endwhile; endif;
+
                 wp_reset_query();
 
             }
