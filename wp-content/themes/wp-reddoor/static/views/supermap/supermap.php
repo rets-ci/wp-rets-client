@@ -151,7 +151,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <li class="acres" ng-bind-html="row.current_approximate_lot_size"></li>
                       </ul>
                       <div class="sm-current-property-buttons">
-                        <a class="open-listing" target="_blank" href="/?p={{row._id}}">
+                        <a class="open-listing" target="_blank" href="/listing/{{row._id}}">
                           <i class="icon-wpproperty-interface-expand-outline"></i>
                           <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
                         </a>

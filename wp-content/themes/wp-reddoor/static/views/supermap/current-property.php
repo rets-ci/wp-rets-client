@@ -32,7 +32,7 @@
           <li class="acres" ng-bind-html="currentProperty.current_approximate_lot_size"></li>
         </ul>
         <div class="sm-current-property-buttons">
-          <a class="open-listing" target="_blank" href="/?p={{currentProperty._id}}">
+          <a class="open-listing" target="_blank" href="/listing/{{currentProperty._id}}">
             <i class="icon-wpproperty-interface-expand-outline"></i>
             <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
           </a>
