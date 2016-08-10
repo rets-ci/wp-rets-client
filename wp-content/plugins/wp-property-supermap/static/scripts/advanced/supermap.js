@@ -4,6 +4,17 @@
 
 ( function( jQuery, wpp ){
 
+
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
   /**
    *
    * @param options
@@ -20,12 +31,12 @@
     }, options);
 
     if( !vars.ng_app ) {
-      console.log( 'wpp_advanced_supermap: ng_app is undefined!' );
+      debug( 'wpp_advanced_supermap: ng_app is undefined!' );
       return;
     }
 
     if( !vars.query ) {
-      console.log( 'wpp_advanced_supermap: query is undefined!' );
+      debug( 'wpp_advanced_supermap: query is undefined!' );
       return;
     }
 
@@ -78,7 +89,7 @@
           }
 
           if(!source || !source.length > 0) {
-            console.log('error on trying to get source for autoComplete directive');
+            debug('error on trying to get source for autoComplete directive');
             return null;
           }
           iElement.autocomplete({
@@ -760,7 +771,7 @@
             if ( !error ) {
 
               if( typeof response.hits.hits == 'undefined' ) {
-                console.log( 'Error occurred during getting properties data.' );
+                debug( 'Error occurred during getting properties data.' );
               } else {
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
@@ -839,7 +850,7 @@
               $scope.loaded = true;
 
               if( typeof response.hits.hits == 'undefined' ) {
-                console.log( 'Error occurred during getting properties data.' );
+                debug( 'Error occurred during getting properties data.' );
               } else {
                 response.hits.hits.filter(cast_fields);
                 if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
@@ -898,7 +909,9 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.addMapChanged = function() {
+        $scope.addMapChanged = function addMapChanged() {
+          debug( 'addMapChanged' );
+
           NgMap.getMap().then(function (map) {
             if (isMobile == true) {
               return false;
@@ -1089,14 +1102,14 @@
                 row._is_loading_images = false;
 
                 if( typeof response._source.meta_input.rets_media == 'undefined' ) {
-                  console.log( 'Error occurred during getting properties data.' );
+                  debug( 'Error occurred during getting properties data.' );
                 } else {
                   row.images = response._source.meta_input.rets_media;
                   $scope.$apply();
                 }
 
                 if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
-                  console.log( 'Error occurred during getting properties data.' );
+                  debug( 'Error occurred during getting properties data.' );
                 } else {
                   row.data_source_logo = response._source.meta_input.data_source_logo;
                   $scope.$apply();
