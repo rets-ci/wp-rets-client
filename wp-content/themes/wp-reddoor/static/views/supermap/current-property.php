@@ -8,7 +8,7 @@
 <div class="sm-current-property" ng-show="currentProperty">
   <div class="row">
     <div class="col-md-6">
-      <a target="_blank" href="/?p={{currentProperty._id}}">
+      <a target="_blank" href="/listing/{{currentProperty._id}}">
         <div class="sm-current-property-thumb" ng-style="{'background-image':'url('+currentProperty.images[0].url+')'}">
           <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{currentProperty.data_source_logo}}" />
         </div>

@@ -40,7 +40,7 @@ use \UsabilityDynamics\RDC\Utils;
       });
     </script>
     <input type="email" placeholder="enter email address" id="sharingEmail" />
-    <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . $property['automated_property_detail_description'] . '%0ACheck%20it%20out%20at%20' . get_the_permalink(); ?>"><?php _e('Send Email', 'reddoor') ?></a>
+    <a class="goShare" target="_blank" href="mailto:YOUR_MAIL?subject=<?php echo $bedrooms . '%20bed%20' . $bathrooms . '%20bath%20' . $total_living_area . '%20sqft%20in%20' . $location_city . '&body=' . ( isset( $property['automated_property_detail_description'] ) ? $property['automated_property_detail_description'] : '' ). '%0ACheck%20it%20out%20at%20' . get_the_permalink(); ?>"><?php _e('Send Email', 'reddoor') ?></a>
     </div>
     </div>
 
