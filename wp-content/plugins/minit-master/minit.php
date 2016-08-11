@@ -204,13 +204,23 @@ class Minit {
 
     $this->set_done( $cache_ver );
 
-    return $this->minit_enqueue_files( $object, $status );
+    return $this->minit_enqueue_files( $object, $status, $where );
 
   }
 
-  function minit_enqueue_files( &$object, $status ) {
+  /**
+   * @param $message
+   */
+  function console_log( $message ) {
+    // echo "<script type='text/javascript'>console.log('minit','" . $message . "');</script>";
+  }
+  
+  
+  function minit_enqueue_files( &$object, $status , $where ) {
 
     extract( $status );
+
+    Minit::console_log( "minit_enqueue_files " . ' ' . $extension . ' ' . $where );
 
     //$minit_exclude = (array)apply_filters( 'minit-exclude-js', array() );
 
@@ -239,10 +249,10 @@ class Minit {
 
       case 'js':
 
-        wp_enqueue_script( 'minit-' . $cache_ver, $url, null, null, apply_filters( 'minit-js-in-footer', true ) );
+        wp_enqueue_script( 'minit-' . $cache_ver, $url, null, null, apply_filters( 'minit-js-in-footer', $where == 'in_footer' ? true : false ) );
 
         // Add to the correct
-        $object->set_group( 'minit-' . $cache_ver, false, apply_filters( 'minit-js-in-footer', true ) );
+        $object->set_group( 'minit-' . $cache_ver, false, apply_filters( 'minit-js-in-footer', $where == 'in_footer' ? true : false ) );
 
         $inline_data = array();
 
