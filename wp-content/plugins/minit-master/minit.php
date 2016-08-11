@@ -47,9 +47,9 @@ class Minit {
 
 
     if( did_action( 'get_footer' ) ) {
-      return $this->minit_objects( $wp_scripts, $todo, 'js', 'in_footer' );
+      return $this->minit_objects( $wp_scripts, $todo, 'js', 'footer' );
     } else {
-      return $this->minit_objects( $wp_scripts, $todo, 'js', 'in_header' );
+      return $this->minit_objects( $wp_scripts, $todo, 'js', 'header' );
     }
 
   }
@@ -59,9 +59,9 @@ class Minit {
 
 
     if( did_action( 'get_footer' ) ) {
-      return $this->minit_objects( $wp_styles, $todo, 'css', 'in_footer' );
+      return $this->minit_objects( $wp_styles, $todo, 'css', 'footer' );
     } else {
-      return $this->minit_objects( $wp_styles, $todo, 'css', 'in_header' );
+      return $this->minit_objects( $wp_styles, $todo, 'css', 'header' );
     }
 
 
@@ -72,14 +72,20 @@ class Minit {
    * @param $object
    * @param $todo
    * @param $extension
+   * @param $where
    * @return array
    */
   function minit_objects( &$object, $todo, $extension, $where ) {
+    global $wp_scripts;
 
     // Don't run if on admin or already processed
     if( is_admin() || empty( $todo ) )
       return $todo;
 
+    if( $where === 'header' && $extension == 'js' ) {
+      //die( '<pre>' . print_r( $wp_scripts->groups[], true ) . '</pre>' );
+      //die( '<pre>' . print_r( $todo, true ) . '</pre>' );
+    }
     // Allow files to be excluded from Minit
     $minit_exclude = apply_filters( 'minit-exclude-' . $extension, array() );
 
@@ -92,8 +98,27 @@ class Minit {
     // Exluce all minit items by default. When ran in footer i
     $minit_exclude = array_merge( $minit_exclude, $this->get_done() );
 
+    if( $where === 'header' && $extension == 'js' ) {
+      // die( '<pre>$minit_todo ' . print_r( $todo, true ) . '</pre>' );
+    }
+
+    foreach( $todo as $_handle ) {
+      if( $wp_scripts->groups[ $_handle ] === 1 && $where === 'header' ) {
+        $minit_exclude[] = $_handle;
+      }
+    }
+
+
+    if( $where === 'header' && $extension == 'js' ) {
+      // die( '<pre>$minit_exclude ' . print_r( $minit_exclude, true ) . '</pre>' );
+    }
+
     // echo( '<pre> minit todo ' . $extension . ' - ' . $where . ' - ' . print_r( $todo, true ) . '</pre>' );
     $minit_todo = array_diff( $todo, $minit_exclude );
+
+    if( $where === 'header' && $extension == 'js' ) {
+       //die( '<pre>$minit_todo ' . print_r( $minit_todo, true ) . '</pre>' );
+    }
 
     if( empty( $minit_todo ) )
       return $todo;
@@ -121,6 +146,7 @@ class Minit {
         unset($minit_todo[$key]);
       }
     }
+    //if( $where === 'header' ) {die( '<pre>' . print_r( $minit_todo, true ) . '</pre>' );//}
 
     // Use script version to generate a cache key
     foreach( $minit_todo as $t => $script ) {
@@ -142,6 +168,12 @@ class Minit {
 
     if( isset( $cache[ 'cache_ver' ] ) && $cache[ 'cache_ver' ] == $cache_ver && file_exists( $cache[ 'file' ] ) )
       return $this->minit_enqueue_files( $object, $cache );
+
+
+    Minit::console_log( array(
+      "where" => $where,
+      "data" => $minit_todo
+    ) );
 
     foreach( $minit_todo as $script ) {
 
@@ -173,8 +205,8 @@ class Minit {
       if( !mkdir( $wp_upload_dir[ 'basedir' ] . '/minit' ) )
         return $todo;
 
-    $combined_file_path = sprintf( apply_filters( 'minit-file-pattern', '%s/minit/%s.%s', $extension ),  $wp_upload_dir[ 'basedir' ], $cache_ver, $extension );
-    $combined_file_url = sprintf( apply_filters( 'minit-file-pattern', '%s/minit/%s.%s', $extension ), $wp_upload_dir[ 'baseurl' ], $cache_ver, $extension  );
+    $combined_file_path = sprintf( apply_filters( 'minit-file-pattern', '%s/minit/%s.%s', $extension, $where ),  $wp_upload_dir[ 'basedir' ], $cache_ver, $extension );
+    $combined_file_url = sprintf( apply_filters( 'minit-file-pattern', '%s/minit/%s.%s', $extension, $where ), $wp_upload_dir[ 'baseurl' ], $cache_ver, $extension );
 
     // Allow other plugins to do something with the resulting URL
     $combined_file_url = apply_filters( 'minit-url-' . $extension, $combined_file_url, $done );
@@ -212,7 +244,17 @@ class Minit {
    * @param $message
    */
   function console_log( $message ) {
-    // echo "<script type='text/javascript'>console.log('minit','" . $message . "');</script>";
+
+    if( is_array($message ) ) {
+      $message = json_encode($message);
+    } else {
+      $message  = '"' . $message  . '"';
+    }
+
+    if( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+      echo "<script type='text/javascript'>console.log('minit'," . $message . ");</script>";
+    }
+
   }
   
   
@@ -249,10 +291,10 @@ class Minit {
 
       case 'js':
 
-        wp_enqueue_script( 'minit-' . $cache_ver, $url, null, null, apply_filters( 'minit-js-in-footer', $where == 'in_footer' ? true : false ) );
+        wp_enqueue_script( 'minit-' . $cache_ver, $url, null, null, apply_filters( 'minit-js-in-footer', $where == 'footer' ? true : false ) );
 
         // Add to the correct
-        $object->set_group( 'minit-' . $cache_ver, false, apply_filters( 'minit-js-in-footer', $where == 'in_footer' ? true : false ) );
+        $object->set_group( 'minit-' . $cache_ver, false, apply_filters( 'minit-js-in-footer', $where == 'footer' ? true : false ) );
 
         $inline_data = array();
 
