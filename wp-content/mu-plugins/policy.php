@@ -83,6 +83,10 @@ add_action( 'wp_enqueue_scripts', function(  ) {
 // We disable all caching. 
 add_filter( 'minit-use-cache', '__return_false' );
 add_filter( 'minit-script-tag-async', '__return_false' );
+
+//add_filter( 'minit-exclude-js', function( $exclude ) { return array( 'jquery' ); });
+//add_filter( 'minit-drop-js', function( $exclude ) { return array( 'jquery' ); });
+
 add_filter( 'minit-cache-expiration', function() { return 0; });
 
 // Regenerates every time.

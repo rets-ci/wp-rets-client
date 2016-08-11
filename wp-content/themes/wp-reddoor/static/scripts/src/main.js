@@ -13,7 +13,7 @@ var rdc = {
   client: function getClient() {
 
     if ( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'function' ) {
-      console.log( "ElasticSearch client not loaded." );
+      // console.log( "ElasticSearch client not loaded." );
       return false;
     }
 
@@ -182,7 +182,6 @@ function make_base_auth(user, password) {
       }
       return true;
     });
-    
 
     /**Validate popup forms.*/
 
@@ -639,8 +638,9 @@ function make_base_auth(user, password) {
    * @param el
    */
   function renderNeighborhoodMap( el ){
+
     if( jQuery( el ).length <= 0 ) {
-      console.log( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
+      // console.log( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
     }
 
     var data = {};
@@ -648,7 +648,7 @@ function make_base_auth(user, password) {
 
     if( options ) {
       parse_str( options, data );
-      console.log(data);
+      // console.log(data);
     } else {
       return false;
     }

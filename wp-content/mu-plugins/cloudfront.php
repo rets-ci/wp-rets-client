@@ -42,14 +42,18 @@ namespace UsabilityDynamics\CloudFront {
 	}
 
 
-  // Modify output urls to work with whatever the browser expects.
+  // Support CloudFront SSL termination.
   Handlers::check_ssl();
+
+  // Modify output urls to work with whatever the browser expects.
   Handlers::frontend_support();
+
+  // Fix any weird issues related to CloudFront proxy.
   Handlers::apply_hacks();
 
+  // Redirect "reddoorcompany.com" to "www.reddoorcompany.com" or whatever.
+  Handlers::redirection();
 
-  if( isset( $_SERVER['GIT_BRANCH']) ){
-  }
 
   return;
 
@@ -108,6 +112,25 @@ namespace UsabilityDynamics\CloudFront {
 	add_filter( 'preview_post_link',              array( 'UsabilityDynamics\CloudFront\Filters', 'preview_post_link' ), 10 );
 
 	class Handlers {
+
+    static public function redirection() {
+
+      // Leave admin as-it-is.
+      if( is_admin() ) {
+        return;
+      }
+
+      // Production goes to CloudFront
+      if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === 'production' && $_SERVER['HTTP_HOST'] === 'reddoorcompany.com' ) {
+        die(header("Location:https://www.reddoorcompany.com", true, 302));
+      }
+
+      // Staging also goes to CloudFront.
+      if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === 'latest' && $_SERVER['HTTP_HOST'] === 'reddoorcompany.com' ) {
+        die(header("Location:https://cloudfront-staging.reddoorcompany.com", true, 302));
+      }
+
+    }
 
     /**
      * Do things i can't explain ..
