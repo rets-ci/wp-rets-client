@@ -684,7 +684,6 @@
           return i;
         };
 
-
         $scope.current_filter.price = $scope.current_filter.price || {
           min: getParameterByName( 'wpp_search[price][min]' ),
           max: getParameterByName( 'wpp_search[price][max]' ),
@@ -697,10 +696,15 @@
 
         $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
           min: getParameterByName( 'wpp_search[bedrooms][min]' ),
-          max: getParameterByName( 'wpp_search[bedrooms][max]' ),
+          max: getParameterByName( 'wpp_search[bedrooms][max]' )
         };
 
-        $scope.current_filter.sale_type = $scope.current_filter.sale_type || getParameterByName( 'wpp_search[sale_type]' )
+        // set sale_type if we have query override, something else seems to be setting its default
+        if( getParameterByName( 'wpp_search[sale_type]' ) ) {
+          $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
+        }
+
+        debug( '$scope.current_filter', $scope.current_filter );
 
         var index = 'v5',
             type = 'property';
@@ -1957,8 +1961,7 @@
     };
 
 
-
-    window.sm_current_terms = window.sm_current_terms.key || current_term;
+    window.sm_current_terms = window.sm_current_terms || current_term;
 
   }
 
@@ -1968,7 +1971,7 @@
   function initialize() {
 
     //alter query params
-    alterQueryParams();
+    // alterQueryParams();
 
 
     jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
