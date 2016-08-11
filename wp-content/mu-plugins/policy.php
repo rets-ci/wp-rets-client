@@ -26,6 +26,11 @@ add_action('template_redirect', function() {
     $_policy['value'] = 'public,max-age=60,s-maxage=60,force-cache=true';
   }
 
+  // This will only affect Varnish. We don't want Varnish to cache things when on CloudFront.
+  if( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] === 'https' ) {
+    $_policy['value'] = 'private,no-cache,no-store';
+  }
+
   // We cache normal content "forever" and then purge when need to.
   if( !$_policy['set'] && ( is_archive() ) ) {
     $_policy[ "set" ] = true;
