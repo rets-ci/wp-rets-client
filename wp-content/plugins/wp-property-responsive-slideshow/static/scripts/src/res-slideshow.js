@@ -22,6 +22,7 @@ jQuery(document).ready(function($){
             slider_auto_height = slider_auto_height == 'true' ? true : false;
         var slider_min_height = _galleryTop.data('slider_min_height');
         var slider_max_height = _galleryTop.data('slider_max_height');
+        var slider_init = true;
 
         // Settings specific on slider types.
         switch(sliderType){
@@ -78,6 +79,10 @@ jQuery(document).ready(function($){
                                     setTimeout(function() {
                                         s.onResize();
                                         setControlSize(); // setting the next prev control size;
+                                        if( slider_init ) { 
+                                            s.slideTo(0); 
+                                            slider_init = false;
+                                        }
                                     },00);
                                 },
                 //slideToClickedSlide:true
@@ -288,9 +293,9 @@ jQuery(document).ready(function($){
                 }
             }
             
-            if($img.attr('width')>1){
+            if($img.attr('sizeLoaded') == 'true'){
                 isAllImgLoaded();
-                return;
+                return $img;
             }
 
             $('<img />').load(function(){
@@ -298,6 +303,7 @@ jQuery(document).ready(function($){
                 var height = this.height;
                 $img.attr('width', width)
                     .attr('height', height);
+                $img.attr('sizeLoaded', 'true');
                 isAllImgLoaded();
             }).error(function(){ // When image not exist or not loaded
                 isAllImgLoaded();
