@@ -251,7 +251,7 @@ class Minit {
       $message  = '"' . $message  . '"';
     }
 
-    if( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+    if( defined( 'WP_DEBUG_MINIT' ) && WP_DEBUG_MINIT ) {
       echo "<script type='text/javascript'>console.log('minit'," . $message . ");</script>";
     }
 
