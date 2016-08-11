@@ -1438,6 +1438,7 @@
         if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
           var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
           $select.append($option).trigger('change');
+          debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
         }
 
         $scope.sm_form_data = function sm_form_data( form_data ) {
@@ -1858,9 +1859,55 @@
   }
 
   /**
+   * Get parameters by name from query string
+   * @param name
+   * @param url
+   * @returns {*}
+     */
+  function getParameterByName(name, url) {
+    if (!url) url = decodeURI(window.location.href);
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  /**
+   * get URL vars
+   * @returns {Array}
+   */
+  function getUrlVars() {
+    var vars = [], hash;
+    var window_url = decodeURI(window.location.href);
+    var hashes = window_url.slice(window_url.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
+
+  function alterQueryParams() {
+
+    //current url taxonomy terms
+    var current_term = {
+      key : getParameterByName('_taxonomy'),
+      values: [ getParameterByName('_term') ],
+    };
+    window.sm_current_terms = window.sm_current_terms.key || current_term;
+  }
+
+  /**
    * Initialize our Supermap modules ( Angular Modules! )
    */
   function initialize() {
+
+    //alter query params
+    alterQueryParams();
+
     jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
       jQuery( e ).wpp_advanced_supermap( {
         'query': jQuery(e).data( 'query' ) || false,
