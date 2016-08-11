@@ -54,9 +54,11 @@ namespace UsabilityDynamics\CloudFront {
   // Redirect "reddoorcompany.com" to "www.reddoorcompany.com" or whatever.
   Handlers::redirection();
 
+  // emulate CF setup
+  Handlers::emulate_cloudfront();
+
 
   return;
-
 
 	// For now its simple, a handful of domains all will function as "www.reddoorcompany.com" internally while using the custom urls in the browser.
 	$_domains_to_mask = array(
@@ -112,6 +114,26 @@ namespace UsabilityDynamics\CloudFront {
 	add_filter( 'preview_post_link',              array( 'UsabilityDynamics\CloudFront\Filters', 'preview_post_link' ), 10 );
 
 	class Handlers {
+
+    /**
+     * Emulates CloudFront typical behaviour of stripping post/get
+     *
+     *
+     */
+    static public function emulate_cloudfront() {
+
+      if( is_admin() ) {
+        return;
+      }
+
+      // No Query params.
+      $_GET = array();
+
+      // No post data.
+      $_POST = array();
+
+    }
+
 
     static public function redirection() {
 
