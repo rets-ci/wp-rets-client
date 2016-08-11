@@ -21,6 +21,7 @@
    */
   jQuery.fn.wpp_advanced_supermap = function( options ) {
 
+
     var ngAppDOM = jQuery( this );
 
     /** Making variables public */
@@ -682,6 +683,24 @@
           }
           return i;
         };
+
+
+        $scope.current_filter.price = $scope.current_filter.price || {
+          min: getParameterByName( 'wpp_search[price][min]' ),
+          max: getParameterByName( 'wpp_search[price][max]' ),
+        };
+
+        $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
+          min: getParameterByName( 'wpp_search[bathrooms][min]' ),
+          max: getParameterByName( 'wpp_search[bathrooms][max]' ),
+        };
+
+        $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
+          min: getParameterByName( 'wpp_search[bedrooms][min]' ),
+          max: getParameterByName( 'wpp_search[bedrooms][max]' ),
+        };
+
+        $scope.current_filter.sale_type = $scope.current_filter.sale_type || getParameterByName( 'wpp_search[sale_type]' )
 
         var index = 'v5',
             type = 'property';
@@ -1859,18 +1878,56 @@
   }
 
   /**
+   * Convert URL Query to Object
+   *
+   * @param qstr
+   * @returns {{}}
+   */
+  function parse_query_string(qstr) {
+    var query = {};
+    var a = qstr.substr(1).split('&');
+    for (var i = 0; i < a.length; i++) {
+      var b = a[i].split('=');
+      query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+    }
+
+    return query;
+  }
+
+  /**
    * Get parameters by name from query string
    * @param name
    * @param url
    * @returns {*}
      */
   function getParameterByName(name, url) {
+
     if (!url) url = decodeURI(window.location.href);
     name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
+
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+    var results = regex.exec(url);
+    if (!results) {
+      debug( 'getParameterByName', name, 'no result' );
+      return null;
+    }
+
+    if (!results[2]) {
+
+      // Try another method.. - potanin@UD
+      var _parts = parse_query_string( window.location.search );
+
+      if( _parts[ name ] ) {
+        debug( 'getParameterByName', name, _parts[ name ] );
+        return _parts[ name ];
+      }
+
+      debug( 'getParameterByName', name, 'empty result' );
+
+      return '';
+    }
+
+    debug( 'getParameterByName', name, decodeURIComponent(results[2].replace(/\+/g, " ")) );
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
@@ -1892,12 +1949,17 @@
 
   function alterQueryParams() {
 
+
     //current url taxonomy terms
     var current_term = {
       key : getParameterByName('_taxonomy'),
       values: [ getParameterByName('_term') ],
     };
+
+
+
     window.sm_current_terms = window.sm_current_terms.key || current_term;
+
   }
 
   /**
@@ -1907,6 +1969,7 @@
 
     //alter query params
     alterQueryParams();
+
 
     jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
       jQuery( e ).wpp_advanced_supermap( {
