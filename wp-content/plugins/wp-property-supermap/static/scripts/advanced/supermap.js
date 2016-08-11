@@ -497,10 +497,12 @@
 
           recalculate: function ( current ) {
             var j;
+            var max_bedroom = [];
             j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_bedroom ) {
-              this.max_bedroom[i] = j += 1;
+            for( var i = j; i < j+6; i++ ) {
+              max_bedroom.push( i );
             }
+            this.max_bedroom = max_bedroom;
           },
 
           focus: function( mode ) {
@@ -573,10 +575,12 @@
 
           recalculate: function ( current ) {
             var j;
+            var max_bathroom = [];
             j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_bathroom ) {
-              this.max_bathroom[i] = j += 1;
+            for( var i = j; i < j+6; i++ ) {
+              max_bathroom.push( i );
             }
+            this.max_bathroom = max_bathroom;
           },
 
           focus: function( mode ) {
