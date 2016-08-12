@@ -45,8 +45,7 @@
       return;
     }
 
-    // Prepare DOM before initialize angular.
-
+    // General supermap settings, not related to query.
     vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts).replace(/\+/g, " ") ) : {};
 
     if( typeof vars.atts.map_height !== 'undefined' ) {
@@ -66,6 +65,11 @@
 
     function supermapController( $document, $scope, $http, $filter, NgMap ){
 
+
+      NgMap.getMap().then(function(map) {
+        window.map = map;
+      });
+
       function handleResize() {
         debug( 'handleResize' );
 
@@ -77,20 +81,31 @@
         }, 250 );
       }
 
+      /**
+       * Configure query based on URI parameters.
+       *
+       */
       function setFiltersFromQuery() {
+        debug('setFiltersFromQuery', $scope.query.bool.must )
 
         if( window.location.pathname.indexOf( 'our-listings' ) >  0 ) {
           debug( 'setFiltersFromQuery', 'fetching agency listings' );
           $scope.current_filter.agency_listing = true;
-          //$scope.query.agency_listing = true;
+          $scope.query.bool.must.push({ "terms": { "_system.agency_listing": [ "true" ] } });
         } else {
           $scope.current_filter.agency_listing = false;
         }
 
-        $scope.current_filter.price = $scope.current_filter.price || {
+        if( getParameterByName( 'wpp_search[price][min]' ) || getParameterByName( 'wpp_search[price][max]' ) ) {
+          debug('setFiltersFromQuery Setting [price]' )
+
+          $scope.current_filter.price = {
             min: getParameterByName( 'wpp_search[price][min]' ),
             max: getParameterByName( 'wpp_search[price][max]' ),
           };
+
+          $scope.query.bool.must.push({ "range": { "tax_input.price": {gte: $scope.current_filter.price.min, lte: $scope.current_filter.price.max } } });
+        }
 
         $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
             min: getParameterByName( 'wpp_search[bathrooms][min]' ),
@@ -121,9 +136,8 @@
       $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
       $scope.atts = vars.atts;
 
-
-      debug( '$scope.atts', $scope.atts );
-      debug( '$scope.query', $scope.query );
+      //debug( '$scope.atts', $scope.atts );
+      //debug( '$scope.query', $scope.query );
 
       $scope.total = 0;
       $scope.loaded = false;
@@ -136,7 +150,6 @@
       $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
       $scope.searchForm = false;
       $scope.loadNgMapChangedEvent = false;
-      $scope.loading_more_properties = true;
 
       $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
       $scope.current_filter = window.sm_current_filter || {};
@@ -770,64 +783,6 @@
       }
 
       /**
-       *
-       */
-      function getMoreProperties() {
-        debug( 'getMoreProperties' );
-
-        if ( $scope._request ) {
-          $scope._request.abort();
-        }
-
-        var search_form = jQuery('.sm-search-form form');
-
-        search_form.addClass('processing');
-        $scope.toggleSearchButton();
-        $scope._request = client.search({
-          index: index,
-          type: type,
-          method: "GET",
-          headers : {
-            "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-          },
-          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
-        }, function getMorePropertiesResponse( error, response ) {
-          debug( 'getMoreProperties.getMorePropertiesResponse' );
-
-          if ( !error ) {
-
-            if( typeof response.hits.hits == 'undefined' ) {
-              debug( 'Error occurred during getting properties data.' );
-            } else {
-              $scope.total = response.hits.total;
-              response.hits.hits.filter(cast_fields);
-              Array.prototype.push.apply($scope.properties, response.hits.hits);
-              $scope.refreshMarkers(false);
-
-              if( ! $scope.loadNgMapChangedEvent ) {
-                $scope.loadNgMapChangedEvent = true;
-                $scope.addMapChanged();
-              }
-
-              if ( $scope.total > $scope.properties.length ) {
-                if( $scope.loading_more_properties ) {
-                  getMoreProperties();
-                }
-              }else{
-                search_form.removeClass('mapChanged');
-              }
-            }
-            $scope.col_changed();
-          } else {
-            console.error(error);
-            search_form.removeClass('mapChanged');
-          }
-          search_form.removeClass('processing');
-          $scope.toggleSearchButton();
-        });
-      }
-
-      /**
        * toggle search filter button loading icon and search icon
        */
       $scope.toggleSearchButton = function () {
@@ -864,7 +819,42 @@
         var search_form = jQuery('.sm-search-form form');
 
         search_form.addClass('processing');
+
         $scope.toggleSearchButton();
+
+        // Geohashes of precision 5 are approximately 5km x 5km.
+
+
+        $scope.aggregations = {
+          "zoomedInView" : {
+            "filter" : {
+              "geo_bounding_box" : {
+                "_system.location" : {
+                  //"top_left" : "35.91291457333075, 35.69015383060772",
+                  "top_left" : "sy3kk1szbu7x",
+                  //"bottom_right" : "-78.97568676620722, -78.42431042343378"
+                  "bottom_right" : "43bnxqvjm0gt"
+                }
+              }
+            },
+            "aggregations":{
+              "zoom1": {
+                "geohash_grid" : {
+                  "field":"_system.location",
+                  "precision":3,
+                  "size": 10
+                }
+              },
+              "zoom2": {
+                "geohash_grid" : {
+                  "field":"_system.location",
+                  "precision":10,
+                  "size": 10
+                }
+              },
+            }
+          }
+        };
 
         var esQuery = {
           index: index,
@@ -873,7 +863,7 @@
           headers : {
             "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
           },
-          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
         };
 
         $scope._request = client.search( esQuery, function getPropertiesResponse( error, response ) {
@@ -899,18 +889,10 @@
                 $scope.currentProperty = $scope.properties[0];
                 $scope.properties[0].isSelected = true;
                 $scope.loadImages($scope.properties[0]);
-                $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
-              }  else {
-                $scope.refreshMarkers( false );
               }
 
               if ( $scope.total > $scope.properties.length ) {
 
-                if( ! $scope.loading_more_properties ) {
-                  $scope.loading_more_properties = true;
-                }
-
-                getMoreProperties();
 
               }else{
                 if( ! $scope.loadNgMapChangedEvent ) {
@@ -922,6 +904,32 @@
 
             }
 
+
+            NgMap.getMap().then(function (map) {
+              response.aggregations.zoomedInView.zoom1.buckets.forEach( function ( someCluster ) {
+
+                var position = decodeGeoHash( someCluster.key )
+                debug( 'someCluster', someCluster, position );
+
+                var marker = new google.maps.Marker( {
+                  position: position,
+                  map: window.map,
+                  icon: {
+                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                    size: new google.maps.Size( 60, 60 )
+                  },
+                  title: 'Hello World!'
+                } );
+
+                console.log( 'marker', marker );
+
+              } )
+
+              map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+
+            });
+
+            //google.maps.Marker
             $scope.col_changed();
 
           } else {
@@ -952,6 +960,8 @@
         debug( 'addMapChanged' );
 
         NgMap.getMap().then(function (map) {
+
+          window.map = map;
 
           if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
             return false;
@@ -996,128 +1006,6 @@
           $scope.selectRow($scope.propertiesTableCollection[0]);
         }
       });
-
-      /**
-       * Refresh Markers ( Marker Cluster ) on Google Map
-       */
-      $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
-        debug( 'refreshMarkers' );
-
-        NgMap.getMap().then(function( map ) {
-          $scope.dynMarkers = [];
-          $scope.latLngs = [];
-
-          // Clears all clusters and markers from the clusterer.
-          if( typeof $scope.markerClusterer == 'object' ) {
-            $scope.markerClusterer.clearMarkers();
-          }
-
-          if( typeof $scope.infoBubble !== 'object' ) {
-            $scope.infoBubble = new google.maps.InfoWindow({
-              map: map,
-              maxWidth: 300,
-              shadowStyle: 1,
-              padding: 0,
-              backgroundColor: '#f3f0e9',
-              borderRadius: 4,
-              arrowSize: 2,
-              borderWidth: 0,
-              borderColor: 'transparent',
-              disableAutoPan: true,
-              hideCloseButton: true,
-              arrowPosition: 7,
-              backgroundClassName: 'sm-infobubble-wrap',
-              arrowStyle: 3
-            });
-          }
-
-          if( ! $scope.properties.length ) {
-            $scope.infoBubble.close();
-          }
-
-          for ( var i=0; i < $scope.properties.length; i++ ) {
-            var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
-            latLng.listingId = $scope.properties[i]._id;
-            var marker = new google.maps.Marker( {
-              position: latLng
-              //icon: $scope.properties[i]._map_marker_url
-            } );
-            marker.listingId = $scope.properties[i]._id;
-
-            $scope.dynMarkers.push( marker );
-            $scope.latLngs.push( latLng );
-
-            /**
-             * Marker Click Event!
-             * - Selects Table Page
-             * - Selects Collection Row
-             */
-            google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
-              return function() {
-                // Preselect a row
-                var index;
-                for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
-                  var property = $scope.properties[i];
-                  if ( property._id == marker.listingId ) {
-                    property.isSelected = true;
-                    $scope.currentProperty = property;
-                    $scope.loadImages(property);
-                    index = i;
-                  } else {
-                    property.isSelected = false;
-                  }
-                }
-                // Maybe Select Page!
-                if( index !== null ) {
-                  var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
-                  angular
-                    .element( jQuery( '.collection-pagination', ngAppDOM ) )
-                    .isolateScope()
-                    .selectPage( pageNumber );
-                }
-                $scope.$apply();
-              }
-            })( marker, i, $scope ) );
-
-          }
-
-          if ( update_map_pos ) {
-            // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-            $scope.latlngbounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < $scope.latLngs.length; i++) {
-              $scope.latlngbounds.extend($scope.latLngs[i]);
-            }
-            map.fitBounds($scope.latlngbounds);
-          }
-
-          // Finally Initialize Marker Cluster
-          $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-              styles: [
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                },
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                },
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                }
-              ]
-            }
-          );
-        } );
-
-        $scope.col_changed();
-      }
 
       /**
        * Toogle Search Form
@@ -1376,25 +1264,6 @@
             query.callback({ results: data });
           }
         },
-        // language: {
-        //   noResults: function(){
-        //     return "No results found. Try something else";
-        //   },
-        //   errorLoading: function(){
-        //     return "Searching...";
-        //   }
-        // },
-        // templateResult: function formatRepo (city) {
-        //
-        //   if (city.loading) return city.text;
-        //
-        //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
-        //   return html;
-        // },
-        // escapeMarkup: function (markup) { return markup; },
-        // templateSelection: function formatRepoSelection (city) {
-        //   return city._source.tax_input.location_street[0];
-        // }
       }).on('select2:select', function(e) {
         var data = $select.select2('data');
         if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
@@ -1471,7 +1340,6 @@
           $scope.resetMapBounds();
         }
 
-        $scope.loading_more_properties = false;
 
         var formQuery = {},
           push_counters = {},
@@ -2036,6 +1904,123 @@
    * Initialization
    */
   initialize();
+
+
+  // geohash.js
+// Geohash library for Javascript
+// (c) 2008 David Troy
+// Distributed under the MIT License
+
+  BITS = [16, 8, 4, 2, 1];
+
+  BASE32 = 											   "0123456789bcdefghjkmnpqrstuvwxyz";
+  NEIGHBORS = { right  : { even :  "bc01fg45238967deuvhjyznpkmstqrwx" },
+    left   : { even :  "238967debc01fg45kmstqrwxuvhjyznp" },
+    top    : { even :  "p0r21436x8zb9dcf5h7kjnmqesgutwvy" },
+    bottom : { even :  "14365h7k9dcfesgujnmqp0r2twvyx8zb" } };
+  BORDERS   = { right  : { even : "bcfguvyz" },
+    left   : { even : "0145hjnp" },
+    top    : { even : "prxz" },
+    bottom : { even : "028b" } };
+
+  NEIGHBORS.bottom.odd = NEIGHBORS.left.even;
+  NEIGHBORS.top.odd = NEIGHBORS.right.even;
+  NEIGHBORS.left.odd = NEIGHBORS.bottom.even;
+  NEIGHBORS.right.odd = NEIGHBORS.top.even;
+
+  BORDERS.bottom.odd = BORDERS.left.even;
+  BORDERS.top.odd = BORDERS.right.even;
+  BORDERS.left.odd = BORDERS.bottom.even;
+  BORDERS.right.odd = BORDERS.top.even;
+
+  function refine_interval(interval, cd, mask) {
+    if (cd&mask)
+      interval[0] = (interval[0] + interval[1])/2;
+    else
+      interval[1] = (interval[0] + interval[1])/2;
+  }
+
+  function calculateAdjacent(srcHash, dir) {
+    srcHash = srcHash.toLowerCase();
+    var lastChr = srcHash.charAt(srcHash.length-1);
+    var type = (srcHash.length % 2) ? 'odd' : 'even';
+    var base = srcHash.substring(0,srcHash.length-1);
+    if (BORDERS[dir][type].indexOf(lastChr)!=-1)
+      base = calculateAdjacent(base, dir);
+    return base + BASE32[NEIGHBORS[dir][type].indexOf(lastChr)];
+  }
+
+  function decodeGeoHash(geohash) {
+
+    debug( 'decodeGeoHash', geohash );
+
+    var is_even = 1;
+    var lat = []; var lon = [];
+    lat[0] = -90.0;  lat[1] = 90.0;
+    lon[0] = -180.0; lon[1] = 180.0;
+    lat_err = 90.0;  lon_err = 180.0;
+
+    for (i=0; i<geohash.length; i++) {
+      c = geohash[i];
+      cd = BASE32.indexOf(c);
+      for (j=0; j<5; j++) {
+        mask = BITS[j];
+        if (is_even) {
+          lon_err /= 2;
+          refine_interval(lon, cd, mask);
+        } else {
+          lat_err /= 2;
+          refine_interval(lat, cd, mask);
+        }
+        is_even = !is_even;
+      }
+    }
+    lat[2] = (lat[0] + lat[1])/2;
+    lon[2] = (lon[0] + lon[1])/2;
+
+    return { lat: lat[0], lng: lon[0]};
+  }
+
+  function encodeGeoHash(latitude, longitude) {
+    var is_even=1;
+    var i=0;
+    var lat = []; var lon = [];
+    var bit=0;
+    var ch=0;
+    var precision = 12;
+    geohash = "";
+
+    lat[0] = -90.0;  lat[1] = 90.0;
+    lon[0] = -180.0; lon[1] = 180.0;
+
+    while (geohash.length < precision) {
+      if (is_even) {
+        mid = (lon[0] + lon[1]) / 2;
+        if (longitude > mid) {
+          ch |= BITS[bit];
+          lon[0] = mid;
+        } else
+          lon[1] = mid;
+      } else {
+        mid = (lat[0] + lat[1]) / 2;
+        if (latitude > mid) {
+          ch |= BITS[bit];
+          lat[0] = mid;
+        } else
+          lat[1] = mid;
+      }
+
+      is_even = !is_even;
+      if (bit < 4)
+        bit++;
+      else {
+        geohash += BASE32[ch];
+        bit = 0;
+        ch = 0;
+      }
+    }
+    return geohash;
+  }
 
 } )( jQuery, wpp );
 
