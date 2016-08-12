@@ -115,6 +115,14 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
 }
 
 add_action( 'wp_footer', 'rdc_form_reCaptcha' );
+add_filter( 'body_class', function( $classes, $class  ) {
+
+  if( is_tax() ) {
+    $classes[] = 'is-taxonomy';
+  }
+
+  return $classes;
+}, 20, 2  );
 
 function rdc_form_reCaptcha(){
     ?>

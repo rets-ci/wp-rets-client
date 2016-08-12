@@ -95,6 +95,16 @@ function make_base_auth(user, password) {
  */
 (function(){
 
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
   jQuery( document ).ready( function rdcReady() {
     console.log( "RDC version 2.4.1" );
 
@@ -185,6 +195,21 @@ function make_base_auth(user, password) {
 
     /**Validate popup forms.*/
 
+    // Search Result / Map Pages - detect
+    if( jQuery( 'body.is-taxonomy' ).length && getParameterByName( 'wpp_search[sale_type]' ) ) {
+      console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
+
+      if( getParameterByName( 'wpp_search[sale_type]' ) === 'Rent' ) {
+        jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
+        jQuery( '.rentBtnForm' ).addClass( 'current-menu-item' );
+      }
+
+      if( getParameterByName( 'wpp_search[sale_type]' ) === 'Sale' ) {
+        jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
+        jQuery( '.buyBtnForm' ).addClass( 'current-menu-item' );
+      }
+
+    }
 
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
@@ -669,6 +694,45 @@ function make_base_auth(user, password) {
     });
   }
 
+
+  /**
+   * Convert URL Query to Object
+   *
+   * @param qstr
+   * @returns {{}}
+   */
+  function parse_query_string(qstr) {
+    qstr = qstr || window.location.search;
+    var query = {};
+    var a = qstr.substr(1).split('&');
+    for (var i = 0; i < a.length; i++) {
+      var b = a[i].split('=');
+      query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+    }
+
+    return query;
+  }
+
+  /**
+   * Get parameters by name from query string
+   * @param name
+   * @param url
+   * @returns {*}
+   */
+  function getParameterByName(name, url) {
+
+    // Try another method.. - potanin@UD
+    var _parts = parse_query_string( window.location.search );
+
+    if( _parts[ name ] ) {
+      debug( 'getParameterByName', name, _parts[ name ] );
+      return _parts[ name ];
+    }
+
+    return null;
+
+
+  }
 
 
 })();
