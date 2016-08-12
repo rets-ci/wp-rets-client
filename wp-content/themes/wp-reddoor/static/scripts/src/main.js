@@ -197,7 +197,7 @@ function make_base_auth(user, password) {
 
     // Search Result / Map Pages - detect
     if( jQuery( 'body.is-taxonomy' ).length && getParameterByName( 'wpp_search[sale_type]' ) ) {
-      console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
+      // console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
 
       if( getParameterByName( 'wpp_search[sale_type]' ) === 'Rent' ) {
         jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
@@ -719,13 +719,13 @@ function make_base_auth(user, password) {
    * @param url
    * @returns {*}
    */
-  function getParameterByName(name, url) {
+  function getParameterByName(name) {
 
     // Try another method.. - potanin@UD
     var _parts = parse_query_string( window.location.search );
 
     if( _parts[ name ] ) {
-      debug( 'getParameterByName', name, _parts[ name ] );
+      // debug( 'getParameterByName', name, _parts[ name ] );
       return _parts[ name ];
     }
 

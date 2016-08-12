@@ -122,7 +122,7 @@ namespace UsabilityDynamics\CloudFront {
      */
     static public function emulate_cloudfront() {
 
-      if( is_admin() ) {
+      if( is_admin() || ( isset($_SERVER['REQUEST_URI'] ) && $_SERVER['REQUEST_URI'] === '/wp-login.php' ) ) {
         return;
       }
 

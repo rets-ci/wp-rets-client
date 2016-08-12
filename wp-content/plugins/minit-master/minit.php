@@ -103,7 +103,7 @@ class Minit {
     }
 
     foreach( $todo as $_handle ) {
-      if( $wp_scripts->groups[ $_handle ] === 1 && $where === 'header' ) {
+      if( isset( $wp_scripts->groups[ $_handle ] ) && $wp_scripts->groups[ $_handle ] === 1 && $where === 'header' ) {
         $minit_exclude[] = $_handle;
       }
     }

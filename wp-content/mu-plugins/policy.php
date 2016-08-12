@@ -27,7 +27,7 @@ add_action('template_redirect', function() {
   }
 
   // This will only affect Varnish. We don't want Varnish to cache things when on CloudFront.
-  if( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] === 'https' ) {
+  if( isset( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ) && $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] === 'https' ) {
     $_policy['value'] = 'private,no-cache,no-store';
   }
 
