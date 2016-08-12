@@ -355,6 +355,9 @@ namespace UsabilityDynamics\RDC {
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
         if( !empty( $recaptcha ) ) {
           wp_enqueue_script( 'google-recaptcha-api', 'https://www.google.com/recaptcha/api.js' );
+	        wp_localize_script( 'rdc-popups', 'popupMode', array(
+		        "recaptcha_key" => $recaptcha
+	        ) );
         }
       }
 
