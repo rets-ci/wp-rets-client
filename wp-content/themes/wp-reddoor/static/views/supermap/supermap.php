@@ -126,7 +126,7 @@ use \UsabilityDynamics\RDC\Utils;
             <ul class="dropdown-columns-options mode-preview" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
               <li ng-repeat="col in columns">
                 <label>
-                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" ng-bind-template=" {{col.label}}" />
+                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
                 </label>
               </li>
             </ul>
