@@ -50,6 +50,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @return mixed
        */
       public function xmlrpc_methods( $_methods ) {
+        $_methods[ 'wpp.systemCheck' ] = array( $this, 'rpc_system_check' );
         $_methods[ 'wpp.deleteProperty' ] = array( $this, 'rpc_delete_property' );
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
@@ -87,6 +88,28 @@ namespace UsabilityDynamics\WPRETSC {
         remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
 
         return $args[ 3 ];
+      }
+
+      /**
+       * Basic System Information.
+       *
+       * @param $args
+       * @return array
+       */
+      public function rpc_system_check( $args ) {
+        global $wp_xmlrpc_server;
+
+        $post_data = self::parseRequest( $args );
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $post_data;
+        }
+
+        return array(
+          "ok" => true,
+          "theme" => get_option( 'current_theme' ),
+          "post_types" => get_post_types()
+        );
+
       }
 
       /**
