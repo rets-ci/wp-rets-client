@@ -156,7 +156,7 @@ use \UsabilityDynamics\RDC\Utils;
 
               <div class="clear" style="height: 0"></div>
 
-              <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && loadImages(row)" data-property-id="{{row._id}}">
+              <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && haveImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
                     <a target="_blank" href="/?p={{row._id}}">

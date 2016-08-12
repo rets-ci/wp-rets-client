@@ -200,6 +200,8 @@ namespace UsabilityDynamics\WPP {
           return ($atts['silent_failure'] == 'true' ? false : sprintf(__('Element cannot be rendered, missing %1s script.', ud_get_wpp_supermap()->domain), 'google-maps'));
         }
 
+
+
         $defaults = array(
           'per_page' => 10,
           'css_class' => '',
@@ -214,7 +216,8 @@ namespace UsabilityDynamics\WPP {
           'sort_order' => 'DESC',
           'sort_by' => 'post_date',
           'thumbnail_size' => 'thumbnail',
-          'mode' => 'default'
+          'mode' => 'default',
+          'get_listings' => 'true'
         );
 
         $atts = array_merge($defaults, (array)$atts);
@@ -233,6 +236,7 @@ namespace UsabilityDynamics\WPP {
 
         //** Load all queriable keys **/
         $query_keys = array();
+
         foreach( \WPP_F::get_queryable_keys() as $key ) {
           //** This needs to be done because a key has to exist in the $deafult array for shortcode_atts() to load passed value */
           $query_keys[ $key ] = false;
@@ -288,8 +292,14 @@ namespace UsabilityDynamics\WPP {
           // Legacy Supermap version support.
           // If template function was re-declared we are using old logic to call template function
           if( $_template_function !== $template_function ) {
-            $properties = self::get_properties( $query );
-            if ( !empty( $properties[ 'total' ] ) ) {
+            if( $atts['get_listings'] === 'true' ) {
+              $properties = self::get_properties( $query );
+            } else {
+              $supermap = call_user_func_array( $template_function, array( $properties[ 'data' ], $atts ) );
+              return $supermap;
+            }
+
+            if ( isset($properties) && !empty( $properties[ 'total' ] ) ) {
               $atts['total'] = $properties['total'];
               $supermap = call_user_func_array( $template_function, array( $properties[ 'data' ], $atts ) );
             } else if ( isset( $_REQUEST[ 'wpp_search' ] ) ) {

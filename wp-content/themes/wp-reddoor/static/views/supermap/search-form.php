@@ -222,6 +222,18 @@ use \UsabilityDynamics\RDC\Utils;
         </div>
 
       </div>
+      <div class="col-md-8 col-sm-8">
+
+        <div class="rdc-options">
+          <ul>
+            <li>
+              <input id="red_door_listings_only" ng-checked="is_agency_listing()" class="styled-checkbox-radio" type="checkbox" value="true" checked name="bool[must][12][terms][_system.agency_listing][]" />
+              <label for="red_door_listings_only"><?php _e('Only display Red Door Company listings.', 'reddor'); ?></label>
+            </li>
+          </ul>
+        </div>
+
+      </div>
     </div>
 
   </div>

@@ -15,12 +15,16 @@
     console.debug.apply(console, _args);
   }
 
+  function firstObjectKey(obj) {
+    for (var a in obj) return a;
+  }
+
   /**
    *
    * @param options
    */
   jQuery.fn.wpp_advanced_supermap = function( options ) {
-    debug('invoked', options );
+    debug('wpp_advanced_supermap invoked', options.ng_app );
 
     var ngAppDOM = jQuery( this );
 
@@ -53,12 +57,1521 @@
     }
 
     function setStatus( status ) {
-      console.log( 'setStatus', status );
+      debug( 'setStatus', status );
       ngAppDOM.data( 'status', status );
       ngAppDOM.addClass( 'status-' + status );
     }
 
     setStatus( 'loading' );
+
+    function supermapController( $document, $scope, $http, $filter, NgMap ){
+
+      function handleResize() {
+        debug( 'handleResize' );
+
+        clearTimeout( resizeTimer );
+        resizeTimer = setTimeout( function () {
+          NgMap.getMap().then(function(map){
+            google.maps.event.trigger(map, "resize");
+          });
+        }, 250 );
+      }
+
+      function setFiltersFromQuery() {
+
+        if( window.location.pathname.indexOf( 'our-listings' ) >  0 ) {
+          debug( 'setFiltersFromQuery', 'fetching agency listings' );
+          $scope.current_filter.agency_listing = true;
+          //$scope.query.agency_listing = true;
+        } else {
+          $scope.current_filter.agency_listing = false;
+        }
+
+        $scope.current_filter.price = $scope.current_filter.price || {
+            min: getParameterByName( 'wpp_search[price][min]' ),
+            max: getParameterByName( 'wpp_search[price][max]' ),
+          };
+
+        $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
+            min: getParameterByName( 'wpp_search[bathrooms][min]' ),
+            max: getParameterByName( 'wpp_search[bathrooms][max]' ),
+          };
+
+        $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
+            min: getParameterByName( 'wpp_search[bedrooms][min]' ),
+            max: getParameterByName( 'wpp_search[bedrooms][max]' )
+          };
+
+        // set sale_type if we have query override, something else seems to be setting its default
+        if( getParameterByName( 'wpp_search[sale_type]' ) ) {
+          $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
+        }
+
+        debug( 'setFiltersFromQuery', '$scope.current_filter', $scope.current_filter );
+
+      }
+
+      window.$scope = $scope;
+
+      var resizeTimer, idle_listener;
+      jQuery( window ).on( 'resize', handleResize ).resize();
+
+      setStatus('invoked' );
+
+      $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
+      $scope.atts = vars.atts;
+
+
+      debug( '$scope.atts', $scope.atts );
+      debug( '$scope.query', $scope.query );
+
+      $scope.total = 0;
+      $scope.loaded = false;
+      $scope.error = false;
+      $scope.properties = [];
+      $scope.propertiesTableCollection = [];
+      $scope.wpp = wpp;
+      $scope.dynMarkers = [];
+      $scope.latLngs = [];
+      $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
+      $scope.searchForm = false;
+      $scope.loadNgMapChangedEvent = false;
+      $scope.loading_more_properties = true;
+
+      $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
+      $scope.current_filter = window.sm_current_filter || {};
+      $scope.tax_must_query = window.sm_must_tax_query || {};
+
+      $scope.view = {
+        mode: {
+          table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
+          preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
+        },
+        toggle: function() {
+          this.mode.table = !this.mode.table;
+          this.mode.preview = !this.mode.preview;
+          setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+        },
+        set: function(mode) {
+          for(var i in this.mode) {
+            if ( this.mode[i] == true ) {
+              this.mode[i] = false;
+            }
+          }
+          this.mode[mode] = true;
+          this.toggleActive(mode);
+          setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+        },
+        toggleActive: function(mode) {
+          var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
+          if( mode == 'table' ) {
+            list_wrapper.find('li.sm-table').addClass('active');
+            list_wrapper.find('li.sm-preview').removeClass('active');
+          } else {
+            list_wrapper.find('li.sm-table').removeClass('active');
+            list_wrapper.find('li.sm-preview').addClass('active');
+          }
+        }
+      };
+
+      $scope._request = null;
+
+      $scope.columns = {
+        post_title: {
+          label: 'Address',
+          enable: 1
+        },
+        subdivision: {
+          label: 'Subdivision',
+          enable: 0
+        },
+        city: {
+          label: 'City',
+          enable: 1
+        },
+        bedrooms: {
+          label: 'Beds',
+          enable: 1
+        },
+        bathrooms: {
+          label: 'Baths',
+          enable: 1
+        },
+        total_living_area_sqft: {
+          label: 'Sq.Ft.',
+          enable: 1
+        },
+        approximate_lot_size: {
+          label: 'Lot',
+          enable: 0
+        },
+        price: {
+          label: 'Price',
+          enable: 1
+        },
+        price_per_sqft: {
+          label: '$/Sq.Ft.',
+          enable: 0
+        },
+        sale_type: {
+          label: 'Sale',
+          enable: 0
+        },
+        days_on_market: {
+          label: 'Days',
+          enable: 0
+        },
+      };
+
+      $scope.show_dropdown_columns = false;
+
+      /**
+       *
+       * @param current
+       * @returns {boolean}
+       */
+      $scope.sale_type_checked = function(current) {
+        var _types = [];
+
+        if ( _types = $scope.current_filter.sale_type.split(',') ) {
+          for (var i in _types) {
+            if ( _types[i] == current ) return true;
+          }
+        }
+
+        return false;
+      };
+
+      $scope.is_agency_listing = function() {
+        // debug( 'is_agency_listing', current );
+
+        return $scope.current_filter.agency_listing;
+
+      };
+
+      $document.bind('click', function(event){
+        $scope.show_dropdown_columns = false;
+        $scope.$apply();
+      });
+
+      /**
+       *
+       * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
+       */
+      $scope.pricing = window.pricing = {
+        mode: false,
+
+        current_min:'',
+        current_max:'',
+        current_min_label:'',
+        current_max_label:'',
+
+        min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
+        max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
+
+        click_out: function(e) {
+          if ( !angular.element(e.target).hasClass('price-input') ) {
+            this.mode = '';
+          }
+        },
+
+        format: function(target, mode) {
+          if ( !$scope.current_filter.price ) {
+            $scope.current_filter.price = {
+              min:0,
+              max:0
+            }
+          }
+          $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
+          if ( mode == 'min' ) {
+            this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+          } else {
+            this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+          }
+        },
+
+        set_min: function(_price) {
+          if ( !$scope.current_filter.price ) {
+            $scope.current_filter.price = {
+              min:0,
+              max:0
+            }
+          }
+          this.current_min = _price;
+          $scope.current_filter.price.min = _price;
+          this.recalculate();
+          this.mode = 'max';
+        },
+
+        set_max: function(_price) {
+          if ( !$scope.current_filter.price ) {
+            $scope.current_filter.price = {
+              min:0,
+              max:0
+            }
+          }
+          this.current_max = _price;
+          $scope.current_filter.price.max = _price;
+          this.mode = false;
+        },
+
+        recalculate: function() {
+          var j;
+          j = typeof this.current_min == 'number' ? this.current_min : 0;
+          for( var i in this.max_prices ) {
+            this.max_prices[i] = j += 25000;
+          }
+        },
+
+        focus: function( mode ) {
+          this.mode = mode;
+        }
+      };
+
+      /**
+       *
+       * @type {{min_feet: number[], max_feet: number[]}}
+       */
+      $scope.footage = window.footage = {
+        mode: false,
+
+        current_min:'',
+        current_max:'',
+        current_min_label:'',
+        current_max_label:'',
+
+        min_foot: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
+        max_foot: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
+
+        click_out: function(e) {
+          if ( !angular.element(e.target).hasClass('feet-input') ) {
+            this.mode = '';
+          }
+        },
+
+        format: function(target, mode) {
+          if ( !$scope.current_filter.feet ) {
+            $scope.current_filter.feet = {
+              min:'',
+              max:''
+            }
+          }
+          $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+          if ( mode == 'min' ) {
+            this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+          } else {
+            this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+          }
+        },
+
+        set_min: function(_price) {
+          if ( !$scope.current_filter.feet ) {
+            $scope.current_filter.feet = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_min = _price;
+          $scope.current_filter.feet.min = _price;
+          this.recalculate(_price);
+          this.mode = 'max';
+        },
+
+        set_max: function(_price) {
+          if ( !$scope.current_filter.feet ) {
+            $scope.current_filter.feet = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_max = _price;
+          $scope.current_filter.feet.max = _price;
+          this.mode = false;
+        },
+
+        recalculate: function ( current ) {
+          var j;
+          j = typeof (current*1) == 'number' ? current*1 : 0;
+          for( var i in this.max_foot ) {
+            this.max_foot[i] = j += 500;
+          }
+        },
+
+        focus: function( mode ) {
+          this.mode = mode;
+        }
+      };
+
+      /**
+       *
+       * @type {{min_bedroom: number[], max_bedroom: number[]}}
+       */
+      $scope.bedrange = window.bedrange = {
+        mode: false,
+
+        current_min:'',
+        current_max:'',
+        current_min_label:'',
+        current_max_label:'',
+
+        min_bedroom: [1, 2, 3, 4, 5, 6],
+        max_bedroom: [3, 4, 5, 6, 7, 8],
+
+        click_out: function(e) {
+          if ( !angular.element(e.target).hasClass('bed-input') ) {
+            this.mode = '';
+          }
+        },
+
+        format: function(target, mode) {
+          if ( !$scope.current_filter.bedrooms ) {
+            $scope.current_filter.bedrooms = {
+              min:'',
+              max:''
+            }
+          }
+          $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
+          if ( mode == 'min' ) {
+            this.current_min = Math.round(parseInt(jQuery(target).val()));
+          } else {
+            this.current_max = Math.round(parseInt(jQuery(target).val()));
+          }
+          this.set_min(this.current_min);
+          this.set_max(this.current_max);
+        },
+
+        set_min: function(_price) {
+          if ( !$scope.current_filter.bedrooms ) {
+            $scope.current_filter.bedrooms = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_min = _price;
+          $scope.current_filter.bedrooms.min = _price;
+          this.recalculate(_price);
+          this.mode = 'max';
+        },
+
+        set_max: function(_price) {
+          if ( !$scope.current_filter.bedrooms ) {
+            $scope.current_filter.bedrooms = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_max = _price;
+          $scope.current_filter.bedrooms.max = _price;
+          this.mode = false;
+        },
+
+        recalculate: function ( current ) {
+          var j;
+          var max_bedroom = [];
+          j = typeof (current*1) == 'number' ? current*1 : 0;
+          for( var i = j; i < j+6; i++ ) {
+            max_bedroom.push( i );
+          }
+          this.max_bedroom = max_bedroom;
+        },
+
+        focus: function( mode ) {
+          this.mode = mode;
+        }
+      };
+
+      /**
+       *
+       * @type {{min_bathroom: number[], max_bathroom: number[]}}
+       */
+      $scope.bathrange = window.bathrange = {
+        mode: false,
+
+        current_min:'',
+        current_max:'',
+        current_min_label:'',
+        current_max_label:'',
+
+        min_bathroom: [1, 2, 3, 4, 5, 6],
+        max_bathroom: [3, 4, 5, 6, 7, 8],
+
+        click_out: function(e) {
+          if ( !angular.element(e.target).hasClass('bath-input') ) {
+            this.mode = '';
+          }
+        },
+
+        format: function(target, mode) {
+          if ( !$scope.current_filter.bathrooms ) {
+            $scope.current_filter.bathrooms = {
+              min:'',
+              max:''
+            }
+          }
+          $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
+          if ( mode == 'min' ) {
+            this.current_min = Math.round(parseInt(jQuery(target).val()));
+          } else {
+            this.current_max = Math.round(parseInt(jQuery(target).val()));
+          }
+          this.set_min(this.current_min);
+          this.set_max(this.current_max);
+        },
+
+        set_min: function(_price) {
+          if ( !$scope.current_filter.bathrooms ) {
+            $scope.current_filter.bathrooms = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_min = _price;
+          $scope.current_filter.bathrooms.min = _price;
+          this.recalculate(_price);
+          this.mode = 'max';
+        },
+
+        set_max: function(_price) {
+          if ( !$scope.current_filter.bathrooms ) {
+            $scope.current_filter.bathrooms = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_max = _price;
+          $scope.current_filter.bathrooms.max = _price;
+          this.mode = false;
+        },
+
+        recalculate: function ( current ) {
+          var j;
+          var max_bathroom = [];
+          j = typeof (current*1) == 'number' ? current*1 : 0;
+          for( var i = j; i < j+6; i++ ) {
+            max_bathroom.push( i );
+          }
+          this.max_bathroom = max_bathroom;
+        },
+
+        focus: function( mode ) {
+          this.mode = mode;
+        }
+      };
+
+      /**
+       *
+       * @type {{min_feet: number[], max_feet: number[]}}
+       */
+      $scope.acrage = window.acrage = {
+        mode: false,
+
+        current_min:'',
+        current_max:'',
+        current_min_label:'',
+        current_max_label:'',
+
+        min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
+        max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
+
+        click_out: function(e) {
+          if ( !angular.element(e.target).hasClass('acres-input') ) {
+            this.mode = '';
+          }
+        },
+
+        format: function(target, mode) {
+          if ( !$scope.current_filter.acrage ) {
+            $scope.current_filter.acrage = {
+              min:'',
+              max:''
+            }
+          }
+          $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
+          if ( mode == 'min' ) {
+            this.current_min = Math.round(parseInt(jQuery(target).val()));
+          } else {
+            this.current_max = Math.round(parseInt(jQuery(target).val()));
+          }
+          this.set_min(this.current_min);
+          this.set_max(this.current_max);
+        },
+
+        set_min: function(_price) {
+          if ( !$scope.current_filter.acrage ) {
+            $scope.current_filter.acrage = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_min = _price;
+          $scope.current_filter.acrage.min = _price;
+          this.recalculate(_price);
+          this.mode = 'max';
+        },
+
+        set_max: function(_price) {
+          if ( !$scope.current_filter.acrage ) {
+            $scope.current_filter.acrage = {
+              min:'',
+              max:''
+            }
+          }
+          this.current_max = _price;
+          $scope.current_filter.acrage.max = _price;
+          this.mode = false;
+        },
+
+        recalculate: function ( current ) {
+          current = current*1;
+          for( var i in this.max_acres ) {
+            if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
+              this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
+            } else {
+              if (this.max_acres[i - 1]) {
+                this.max_acres[i] = this.max_acres[i - 1] + 10;
+              } else {
+                this.max_acres[i] = current + 10;
+              }
+            }
+          }
+        },
+
+        focus: function( mode ) {
+          this.mode = mode;
+        }
+      };
+
+      /**
+       *
+       * @returns {number}
+       */
+      $scope.pagination_colspan = function(){
+        var i = 0;
+        for(var f in $scope.columns) {
+          i += $scope.columns[f].enable;
+        }
+        return i;
+      };
+
+      setFiltersFromQuery();
+
+      var index = 'v5',
+        type = 'property';
+
+      /**
+       * @type {$.es.Client|*}
+       */
+      var client = new jQuery.es.Client({
+        hosts: 'dori-us-east-1.searchly.com'
+      });
+
+      /**
+       * Fix Data Types on Fields.
+       *
+       * @param r
+       */
+      function cast_fields(r) {
+        r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+        r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+        r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+        r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
+
+        if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+          r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
+        } else {
+          r._source.tax_input.price_per_sqft = [0];
+        }
+
+        r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+
+        //icon html and template
+        r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
+        r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+        r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
+        r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
+      }
+
+      function calculate_days(date) {
+        if ( date != 'undefined' && date != null ) {
+          var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+          var firstDate = new Date(date);
+          var currentDate = new Date();
+
+          return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime()) / (oneDay)));
+        } else {
+          return 0;
+        }
+      }
+
+      /**
+       *
+       * @param int
+       * @returns {string}
+       */
+      var currencyAmount = function( int ) {
+        var int = Math.round( parseInt( int.toString().replace(/,/g,"")) / 5000 ) * 5000;
+        var cur = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return {value:int, label:cur != 'NaN' ? cur : ''};
+      };
+
+      /**
+       *
+       * @returns {*|{}}
+       */
+      function build_query() {
+        debug( 'build_query', $scope.query );
+
+        return JSON.stringify($scope.query);
+
+      }
+
+      /**
+       * Remove empties and other bad things.
+       *
+       * @returns {{}|*}
+       */
+      function prepare_query() {
+        debug( 'prepare_query - query.bool length before', $scope.query.bool.must.length );
+
+        // From before, dont know what this is for. - potanin@UD
+        $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
+        $scope.query.bool.must_not = $scope.query.bool.must_not.filter(Boolean);
+
+        var mustQuery = [];
+
+        angular.forEach($scope.query.bool.must, function( data, key ) {
+
+          var _info = {
+            type: firstObjectKey(data),
+            field: firstObjectKey( data[ firstObjectKey(data) ] ),
+            valueLength: Object.keys( data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ] ).length,
+            values: data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ],
+            valueType: typeof data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ],
+          };
+
+          // object w/ no values.
+          if( _info.valueType === 'object' && !_info.valueLength ) {
+            //debug( 'prepare_query - removing',  _info.field, _info.type );
+            return;
+            //delete $scope.query.bool.must[key];
+          }
+
+          debug( 'prepare_query - using ',  _info.field, _info.type, _info.values );
+          mustQuery.push(data);
+
+        });
+
+        debug( 'prepare_query - query.bool length after', mustQuery.length );
+
+        $scope.query.bool.must = mustQuery;
+
+        return $scope.query;
+
+      }
+
+      /**
+       *
+       */
+      function getMoreProperties() {
+        debug( 'getMoreProperties' );
+
+        if ( $scope._request ) {
+          $scope._request.abort();
+        }
+
+        var search_form = jQuery('.sm-search-form form');
+
+        search_form.addClass('processing');
+        $scope.toggleSearchButton();
+        $scope._request = client.search({
+          index: index,
+          type: type,
+          method: "GET",
+          headers : {
+            "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+          },
+          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
+        }, function getMorePropertiesResponse( error, response ) {
+          debug( 'getMoreProperties.getMorePropertiesResponse' );
+
+          if ( !error ) {
+
+            if( typeof response.hits.hits == 'undefined' ) {
+              debug( 'Error occurred during getting properties data.' );
+            } else {
+              $scope.total = response.hits.total;
+              response.hits.hits.filter(cast_fields);
+              Array.prototype.push.apply($scope.properties, response.hits.hits);
+              $scope.refreshMarkers(false);
+
+              if( ! $scope.loadNgMapChangedEvent ) {
+                $scope.loadNgMapChangedEvent = true;
+                $scope.addMapChanged();
+              }
+
+              if ( $scope.total > $scope.properties.length ) {
+                if( $scope.loading_more_properties ) {
+                  getMoreProperties();
+                }
+              }else{
+                search_form.removeClass('mapChanged');
+              }
+            }
+            $scope.col_changed();
+          } else {
+            console.error(error);
+            search_form.removeClass('mapChanged');
+          }
+          search_form.removeClass('processing');
+          $scope.toggleSearchButton();
+        });
+      }
+
+      /**
+       * toggle search filter button loading icon and search icon
+       */
+      $scope.toggleSearchButton = function () {
+        debug( 'toggleSearchButton' );
+
+        var button_icon_desktop = jQuery('.sm-search-filter').find('i');
+        var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
+
+        if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
+          button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
+          button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
+          button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
+          button_icon_mobile.removeClass("icon-wpproperty-interface-search-solid");
+        } else {
+          button_icon_desktop.removeClass("icon-wpproperty-interface-time-outline");
+          button_icon_desktop.addClass("icon-wpproperty-interface-search-solid");
+          button_icon_mobile.removeClass("icon-wpproperty-interface-time-outline");
+          button_icon_mobile.addClass("icon-wpproperty-interface-search-solid");
+        }
+
+
+      };
+
+      /**
+       * Get Properties by provided Query ( filter )
+       */
+      $scope.getProperties = function getProperties() {
+        debug( 'getProperties' );
+
+        if ( $scope._request ) {
+          $scope._request.abort();
+        }
+
+        var search_form = jQuery('.sm-search-form form');
+
+        search_form.addClass('processing');
+        $scope.toggleSearchButton();
+
+        var esQuery = {
+          index: index,
+          type: type,
+          method: "GET",
+          headers : {
+            "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+          },
+          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+        };
+
+        $scope._request = client.search( esQuery, function getPropertiesResponse( error, response ) {
+          debug( 'getPropertiesResponse', esQuery.source, response.hits.total );
+
+          setStatus( 'ready' );
+
+          if ( !error ) {
+            jQuery( '.sm-search-layer', ngAppDOM ).show();
+
+            $scope.loaded = true;
+
+            if( typeof response.hits.hits == 'undefined' ) {
+              debug( 'Error occurred during getting properties data.' );
+            } else {
+              response.hits.hits.filter(cast_fields);
+
+              $scope.total = response.hits.total;
+              $scope.properties = response.hits.hits;
+
+              // Select First Element of Properties Collection
+              if( $scope.properties.length > 0 ) {
+                $scope.currentProperty = $scope.properties[0];
+                $scope.properties[0].isSelected = true;
+                $scope.loadImages($scope.properties[0]);
+                $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
+              }  else {
+                $scope.refreshMarkers( false );
+              }
+
+              if ( $scope.total > $scope.properties.length ) {
+
+                if( ! $scope.loading_more_properties ) {
+                  $scope.loading_more_properties = true;
+                }
+
+                getMoreProperties();
+
+              }else{
+                if( ! $scope.loadNgMapChangedEvent ) {
+                  $scope.loadNgMapChangedEvent = true;
+                  $scope.addMapChanged();
+                }
+                search_form.removeClass('mapChanged');
+              }
+
+            }
+
+            $scope.col_changed();
+
+          } else {
+            console.error(error);
+            search_form.removeClass('mapChanged');
+          }
+
+          search_form.removeClass('processing');
+
+          $scope.toggleSearchButton();
+
+        });
+
+      };
+
+      /**
+       *
+       */
+      $scope.col_changed = function() {
+        debug( 'col_changed' );
+        jQuery(document).trigger('rdc_cols_changed');
+      };
+
+      /**
+       * map zoom or drag event listener for search results refresh
+       */
+      $scope.addMapChanged = function addMapChanged() {
+        debug( 'addMapChanged' );
+
+        NgMap.getMap().then(function (map) {
+
+          if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
+            return false;
+          }
+
+          idle_listener = map.addListener('idle', function () {
+            var bounds = map.getBounds();
+            var zoom = map.getZoom();
+            if( zoom > 4 ) {
+              var SouthWestLatitude = bounds.getSouthWest().lat();
+              var NorthEastLatitude = bounds.getNorthEast().lat();
+              var NorthEastLongitude = bounds.getNorthEast().lng();
+              var SouthWestLongitude = bounds.getSouthWest().lng();
+              if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+                jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+                jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+                jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+                jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
+              }
+            }else{
+              $scope.resetMapBounds();
+            }
+            jQuery('.sm-search-form form').addClass('mapChanged');
+
+            jQuery('.sm-search-form form').submit();
+
+          });
+        });
+      };
+
+      $scope.resetMapBounds = function resetMapBounds() {
+        debug( 'resetMapBounds' );
+
+        jQuery('.rdc-latitude-gte').val('');
+        jQuery('.rdc-latitude-lte').val('');
+        jQuery('.rdc-longitude-gte').val('');
+        jQuery('.rdc-longitude-lte').val('');
+      };
+
+      $document.bind("st_sort_done",function(){
+        if( $scope.propertiesTableCollection.length > 0 ) {
+          $scope.selectRow($scope.propertiesTableCollection[0]);
+        }
+      });
+
+      /**
+       * Refresh Markers ( Marker Cluster ) on Google Map
+       */
+      $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
+        debug( 'refreshMarkers' );
+
+        NgMap.getMap().then(function( map ) {
+          $scope.dynMarkers = [];
+          $scope.latLngs = [];
+
+          // Clears all clusters and markers from the clusterer.
+          if( typeof $scope.markerClusterer == 'object' ) {
+            $scope.markerClusterer.clearMarkers();
+          }
+
+          if( typeof $scope.infoBubble !== 'object' ) {
+            $scope.infoBubble = new google.maps.InfoWindow({
+              map: map,
+              maxWidth: 300,
+              shadowStyle: 1,
+              padding: 0,
+              backgroundColor: '#f3f0e9',
+              borderRadius: 4,
+              arrowSize: 2,
+              borderWidth: 0,
+              borderColor: 'transparent',
+              disableAutoPan: true,
+              hideCloseButton: true,
+              arrowPosition: 7,
+              backgroundClassName: 'sm-infobubble-wrap',
+              arrowStyle: 3
+            });
+          }
+
+          if( ! $scope.properties.length ) {
+            $scope.infoBubble.close();
+          }
+
+          for ( var i=0; i < $scope.properties.length; i++ ) {
+            var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
+            latLng.listingId = $scope.properties[i]._id;
+            var marker = new google.maps.Marker( {
+              position: latLng
+              //icon: $scope.properties[i]._map_marker_url
+            } );
+            marker.listingId = $scope.properties[i]._id;
+
+            $scope.dynMarkers.push( marker );
+            $scope.latLngs.push( latLng );
+
+            /**
+             * Marker Click Event!
+             * - Selects Table Page
+             * - Selects Collection Row
+             */
+            google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
+              return function() {
+                // Preselect a row
+                var index;
+                for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
+                  var property = $scope.properties[i];
+                  if ( property._id == marker.listingId ) {
+                    property.isSelected = true;
+                    $scope.currentProperty = property;
+                    $scope.loadImages(property);
+                    index = i;
+                  } else {
+                    property.isSelected = false;
+                  }
+                }
+                // Maybe Select Page!
+                if( index !== null ) {
+                  var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
+                  angular
+                    .element( jQuery( '.collection-pagination', ngAppDOM ) )
+                    .isolateScope()
+                    .selectPage( pageNumber );
+                }
+                $scope.$apply();
+              }
+            })( marker, i, $scope ) );
+
+          }
+
+          if ( update_map_pos ) {
+            // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+            $scope.latlngbounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < $scope.latLngs.length; i++) {
+              $scope.latlngbounds.extend($scope.latLngs[i]);
+            }
+            map.fitBounds($scope.latlngbounds);
+          }
+
+          // Finally Initialize Marker Cluster
+          $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
+              styles: [
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                }
+              ]
+            }
+          );
+        } );
+
+        $scope.col_changed();
+      }
+
+      /**
+       * Toogle Search Form
+       */
+      $scope.toggleSearchForm = function toggleSearchForm() {
+        $scope.searchForm = !$scope.searchForm;
+      }
+
+      $scope.haveImages = function haveImages( row ) {
+        // debug( 'haveImages', row._id );
+        return true;
+      }
+
+      /**
+       *
+       * @param row
+       */
+      $scope.loadImages = function loadImages( row ) {
+        debug( 'loadImages', row._id );
+
+        if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
+          row._is_loading_images = true;
+          client.get({
+            index: index,
+            type: type,
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            id: row._id,
+            _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
+          }, function (error, response) {
+
+            if ( !error ) {
+
+              row._is_loading_images = false;
+
+              if( typeof response._source.meta_input.rets_media == 'undefined' ) {
+                debug( 'Error occurred during getting properties data.' );
+              } else {
+                row.images = response._source.meta_input.rets_media;
+                $scope.$apply();
+              }
+
+              if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
+                console.log( 'Error occurred during getting properties data.' );
+              } else {
+                row.data_source_logo = response._source.meta_input.data_source_logo;
+                $scope.$apply();
+              }
+
+            } else {
+              console.error(error);
+            }
+
+          });
+        }
+        return true;
+
+      }
+
+      /**
+       * Fixes selected Row.
+       *
+       * @param row
+       */
+      $scope.selectRow = function selectRow(row) {
+        debug( 'selectRow', row._id );
+
+        for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
+          $scope.properties[i].isSelected = false;
+        }
+        $scope.currentProperty = row;
+        $scope.loadImages(row);
+        row.isSelected = true;
+      }
+
+      /**
+       * Fired when currentProperty is changed!
+       * Opens InfoBubble Window!
+       */
+      $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
+        var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
+        for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
+          if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
+            NgMap.getMap().then( function( map ) {
+              $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
+              $scope.infoBubble.setPosition( $scope.latLngs[i] );
+              $scope.infoBubble.open( map );
+            } );
+            break;
+          }
+        }
+      }, true );
+
+      var $select = jQuery('.termsSelection').select2({
+        placeholder: 'Search',
+        maximumSelectionLength: 1,
+        minimumInputLength: 3,
+        data: [],
+        query: function selectQuery(query) {
+          debug( 'selectQuery' );
+
+          var data = [];
+
+          if( query.term && query.term.length  >= 3 ) {
+
+            jQuery('.select2-dropdown').removeClass("hide");
+
+            if( $scope._request ) {
+              $scope._request.abort();
+            }
+
+            $scope._request = client.search({
+              index: 'v5',
+              type: 'property',
+              method: "GET",
+              headers : {
+                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+              },
+              source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
+            }, function selectQueryResponse(err, response) {
+              debug( 'selectQueryResponse' );
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                query.callback({ results: data });
+              }
+
+              var post_title = { text: "Address", children: [] };
+              var city = { text : "City", children: [] };
+              var mls_id = { text : "MLS ID", children: [] };
+              var location_street = { text : "Street", children: [] };
+              var location_zip = { text : "Zip", children: [] };
+              var location_county = { text : "County", children: [] };
+              var subdivision = { text : "Subdivision", children: [] };
+              var elementary_school = { text : "Elementary School", children: [] };
+              var middle_school = { text : "Middle School", children: [] };
+              var high_school = { text : "High School", children: [] };
+              var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
+
+              jQuery.each(response.hits.hits,function(k,v){
+                if( typeof v._source.post_title != 'undefined' ) {
+                  if (!unique[v._source.post_title]) {
+                    post_title.children.push({
+                      id: v._source.post_title,
+                      text: v._source.post_title,
+                      taxonomy:'post_title',
+                      permalink: v._source._permalink,
+                    });
+                    unique[v._source.post_title] = v._source.post_title;
+                  }
+                }
+                if( typeof v._source.tax_input.location_city != 'undefined' ) {
+                  if (!unique[v._source.tax_input.location_city[0]]) {
+                    city.children.push({
+                      id: v._source.tax_input.location_city[0],
+                      text: v._source.tax_input.location_city[0],
+                      taxonomy:'location_city',
+                    });
+                    unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
+                  }
+                }
+                if( typeof v._source.tax_input.mls_id != 'undefined' ) {
+                  if (!unique[v._source.tax_input.mls_id[0]]) {
+                    mls_id.children.push({
+                      id: v._source.tax_input.mls_id[0],
+                      text: v._source.tax_input.mls_id[0],
+                      taxonomy:'mls_id',
+                      permalink: v._source._permalink,
+                    });
+                    unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
+                  }
+                }
+                if( typeof v._source.tax_input.location_zip != 'undefined' ) {
+                  if (!unique[v._source.tax_input.location_zip[0]]) {
+                    location_zip.children.push({
+                      id:v._source.tax_input.location_zip[0],
+                      text:v._source.tax_input.location_zip[0],
+                      taxonomy: 'location_zip'
+                    })
+                    unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
+                  }
+                }
+                if( typeof v._source.tax_input.location_county != 'undefined' ) {
+                  if (!unique[v._source.tax_input.location_county[0]]) {
+                    location_county.children.push({
+                      id:v._source.tax_input.location_county[0],
+                      text:v._source.tax_input.location_county[0],
+                      taxonomy: 'location_county'
+                    })
+                    unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
+                  }
+                }
+                if( typeof v._source.tax_input.subdivision != 'undefined' ) {
+                  if (!unique[v._source.tax_input.subdivision[0]]) {
+                    subdivision.children.push({
+                      id:v._source.tax_input.subdivision[0],
+                      text:v._source.tax_input.subdivision[0],
+                      taxonomy: 'subdivision'
+                    })
+                    unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
+                  }
+
+                }
+                if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
+                  if (!unique[v._source.tax_input.elementary_school[0]]) {
+                    elementary_school.children.push({
+                      id:v._source.tax_input.elementary_school[0],
+                      text:v._source.tax_input.elementary_school[0],
+                      taxonomy: 'elementary_school'
+                    })
+                    unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
+                  }
+                }
+                if( typeof v._source.tax_input.middle_school != 'undefined' ) {
+                  if (!unique[v._source.tax_input.middle_school[0]]) {
+                    middle_school.children.push({
+                      id:v._source.tax_input.middle_school[0],
+                      text:v._source.tax_input.middle_school[0],
+                      taxonomy:'middle_school'
+                    })
+                    unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
+                  }
+                }
+                if( typeof v._source.tax_input.high_school != 'undefined' ) {
+                  if (!unique[v._source.tax_input.high_school[0]]) {
+                    high_school.children.push({
+                      id:v._source.tax_input.high_school[0],
+                      text:v._source.tax_input.high_school[0],
+                      taxonomy: 'high_school'
+                    })
+                    unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
+                  }
+                }
+              });
+
+              post_title.children.length ? data.push( post_title ) : '';
+              city.children.length ? data.push( city ) : '';
+              elementary_school.children.length ? data.push( elementary_school ) : '';
+              middle_school.children.length ? data.push( middle_school ) : '';
+              high_school.children.length ? data.push( high_school ) : '';
+              location_street.children.length ? data.push( location_street ) : '';
+              location_zip.children.length ? data.push( location_zip ) : '';
+              location_county.children.length ? data.push( location_county ) : '';
+              subdivision.children.length ? data.push( subdivision ) : '';
+              mls_id.children.length ? data.push( mls_id ) : '';
+
+              data.sort(function(a, b){
+                // ASC  -> a.length - b.length
+                // DESC -> b.length - a.length
+                return a.children.length - b.children.length;
+              });
+              query.callback({ results: data });
+            });
+          } else {
+            jQuery('.select2-dropdown').addClass("hide");
+            query.callback({ results: data });
+          }
+        },
+        // language: {
+        //   noResults: function(){
+        //     return "No results found. Try something else";
+        //   },
+        //   errorLoading: function(){
+        //     return "Searching...";
+        //   }
+        // },
+        // templateResult: function formatRepo (city) {
+        //
+        //   if (city.loading) return city.text;
+        //
+        //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
+        //   return html;
+        // },
+        // escapeMarkup: function (markup) { return markup; },
+        // templateSelection: function formatRepoSelection (city) {
+        //   return city._source.tax_input.location_street[0];
+        // }
+      }).on('select2:select', function(e) {
+        var data = $select.select2('data');
+        if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+          window.location.href= data[0].permalink;
+        } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+          var value = window.sm_current_terms.values[0];
+          var key = window.sm_current_terms.key;
+          if( value == data[0].text ) {
+            $scope.map_filter_taxonomy = key;
+          }
+        } else {
+          $scope.map_filter_taxonomy = data[0].taxonomy;
+        }
+        $scope.$apply();
+      }).on('select2:selecting', function(e) {
+        if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
+          $select.select2( 'val', {} );
+        }
+      });
+
+      if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+        var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
+        $select.append($option).trigger('change');
+        debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
+      }
+
+      $scope.sm_form_data = function sm_form_data( form_data ) {
+        debug( 'sm_form_data' );
+
+        // form_data.forEach(function(data){console.log(data.name)});
+
+        if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+          jQuery.each( jQuery(".rdc-home-types input:checkbox"), function (k,v) {
+            form_data.push({name:v.name,value:v.value});
+          } );
+        }
+        if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+          jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
+            form_data.push({name:v.name,value:v.value});
+          } );
+        }
+        return form_data;
+      };
+
+      $document.on( 'change', '.rdc-home-types input:checkbox', function(){
+        if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+          jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
+        } else {
+          jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
+        }
+      });
+
+      $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
+        if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+          jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
+        } else {
+          jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
+        }
+      });
+
+      /**
+       * SEARCH FILTER EVENT
+       *
+       * We're using jQuery instead of AngularJS here because
+       * property search form is being generated via [property_search] shortcode
+       * or even can be custom, since we are using apply_filters on rendering.
+       */
+      jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function formSubmitted(e){
+        debug( 'formSubmitted' );
+
+        e.preventDefault();
+
+        if ( ! jQuery(this).hasClass('mapChanged') ) {
+          $scope.resetMapBounds();
+        }
+
+        $scope.loading_more_properties = false;
+
+        var formQuery = {},
+          push_counters = {},
+          patterns = {
+            "validate": /^[a-zA-Z][a-zA-Z0-9_\.]*(?:\[(?:\d*|[a-zA-Z0-9_\.]+)\])*$/,
+            "key":      /[a-zA-Z0-9_\.]+|(?=\[\])/g,
+            "push":     /^$/,
+            "fixed":    /^\d+$/,
+            "named":    /^[a-zA-Z0-9_\.]+$/
+          };
+
+        var build = function(base, key, value){
+          base[key] = value;
+          return base;
+        };
+
+        var push_counter = function(key){
+          if(push_counters[key] === undefined){
+            push_counters[key] = 0;
+          }
+          return push_counters[key]++;
+        };
+
+        var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
+
+        jQuery.each(form_data, function(){
+
+          if(!patterns.validate.test(this.name)){
+            return;
+          }
+
+          var k,
+            keys = this.name.match(patterns.key),
+            merge = this.value,
+            reverse_key = this.name;
+
+          while((k = keys.pop()) !== undefined){
+
+            reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+            if(k.match(patterns.push)){
+              merge = build([], push_counter(reverse_key), merge);
+            }
+
+            else if(k.match(patterns.fixed)){
+              merge = build([], k, merge);
+            }
+
+            else if(k.match(patterns.named)){
+              merge = build({}, k, merge);
+            }
+          }
+
+          formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
+        });
+
+        if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
+          formQuery.bool.must_not = [];
+        }
+
+        console.log( 'formQuery', formQuery );
+
+        $scope.query = formQuery;
+
+        prepare_query();
+
+        //debug( '$scope.query', $scope.query );
+
+        if( $scope.searchForm ) {
+          $scope.toggleSearchForm();
+        }
+
+        $scope.$apply();
+
+        $scope.getProperties();
+
+      } );
+
+      /**
+       * BACK HISTORY EVENT
+       */
+      window.addEventListener( 'popstate', function popstateHandler(){
+        debug('popstateHandler');
+
+        // Get current location params
+        var location = window.location.href.split('?');
+        var locationQuery = {};
+        if( typeof location[1] !== 'undefined' ) {
+          parse_str( location[1], locationQuery );
+        }
+
+        $scope.$apply();
+        $scope.getProperties();
+
+      }, false);
+
+      // Get properties by request
+      $scope.getProperties();
+
+    }
 
     /**
      * Angular Module.
@@ -150,1484 +1663,10 @@
         };
       })
 
-      .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
-
-
-
-        var resizeTimer, idle_listener;
-        jQuery( window ).on( 'resize', function () {
-          clearTimeout( resizeTimer );
-          resizeTimer = setTimeout( function () {
-            NgMap.getMap().then(function(map){
-              google.maps.event.trigger(map, "resize");
-            });
-          }, 250 );
-        } ).resize();
-
-        setStatus('invoked' );
-
-        $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
-        $scope.atts = vars.atts;
-        $scope.total = 0;
-        $scope.loaded = false;
-        $scope.error = false;
-        $scope.properties = [];
-        $scope.propertiesTableCollection = [];
-        $scope.wpp = wpp;
-        $scope.dynMarkers = [];
-        $scope.latLngs = [];
-        $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
-        $scope.searchForm = false;
-        $scope.loadNgMapChangedEvent = false;
-        $scope.loading_more_properties = true;
-        $scope.rdc_listing = ( window.sm_rdc_listing && window.sm_rdc_listing.ok ) ? true : false
-
-        $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
-        $scope.current_filter = window.sm_current_filter || {};
-        $scope.tax_must_query = window.sm_must_tax_query || {};
-        $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
-
-        $scope.view = {
-          mode: {
-            table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
-            preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
-          },
-          toggle: function() {
-            this.mode.table = !this.mode.table;
-            this.mode.preview = !this.mode.preview;
-            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
-          },
-          set: function(mode) {
-            for(var i in this.mode) {
-              if ( this.mode[i] == true ) {
-                this.mode[i] = false;
-              }
-            }
-            this.mode[mode] = true;
-            this.toggleActive(mode);
-            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
-          },
-          toggleActive: function(mode) {
-            var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
-            if( mode == 'table' ) {
-              list_wrapper.find('li.sm-table').addClass('active');
-              list_wrapper.find('li.sm-preview').removeClass('active');
-            } else {
-              list_wrapper.find('li.sm-table').removeClass('active');
-              list_wrapper.find('li.sm-preview').addClass('active');
-            }
-          }
-        };
-
-        $scope._request = null;
-
-        $scope.columns = {
-          post_title: {
-            label: 'Address',
-            enable: 1
-          },
-          subdivision: {
-            label: 'Subdivision',
-            enable: 0
-          },
-          city: {
-            label: 'City',
-            enable: 1
-          },
-          bedrooms: {
-            label: 'Beds',
-            enable: 1
-          },
-          bathrooms: {
-            label: 'Baths',
-            enable: 1
-          },
-          total_living_area_sqft: {
-            label: 'Sq.Ft.',
-            enable: 1
-          },
-          approximate_lot_size: {
-            label: 'Lot',
-            enable: 0
-          },
-          price: {
-            label: 'Price',
-            enable: 1
-          },
-          price_per_sqft: {
-            label: '$/Sq.Ft.',
-            enable: 0
-          },
-          sale_type: {
-            label: 'Sale',
-            enable: 0
-          },
-          days_on_market: {
-            label: 'Days',
-            enable: 0
-          },
-        };
-
-        $scope.show_dropdown_columns = false;
-
-        /**
-         *
-         * @param current
-         * @returns {boolean}
-         */
-        $scope.sale_type_checked = function(current) {
-          var _types = [];
-
-          if ( _types = $scope.current_filter.sale_type.split(',') ) {
-            for (var i in _types) {
-              if ( _types[i] == current ) return true;
-            }
-          }
-
-          return false;
-        };
-
-        $document.bind('click', function(event){
-          $scope.show_dropdown_columns = false;
-          $scope.$apply();
-        });
-
-        /**
-         *
-         * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
-         */
-        $scope.pricing = window.pricing = {
-          mode: false,
-
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
-
-          min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
-          max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
-
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('price-input') ) {
-              this.mode = '';
-            }
-          },
-
-          format: function(target, mode) {
-            if ( !$scope.current_filter.price ) {
-              $scope.current_filter.price = {
-                min:0,
-                max:0
-              }
-            }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
-            if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
-            } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
-            }
-          },
-
-          set_min: function(_price) {
-            if ( !$scope.current_filter.price ) {
-              $scope.current_filter.price = {
-                min:0,
-                max:0
-              }
-            }
-            this.current_min = _price;
-            $scope.current_filter.price.min = _price;
-            this.recalculate();
-            this.mode = 'max';
-          },
-
-          set_max: function(_price) {
-            if ( !$scope.current_filter.price ) {
-              $scope.current_filter.price = {
-                min:0,
-                max:0
-              }
-            }
-            this.current_max = _price;
-            $scope.current_filter.price.max = _price;
-            this.mode = false;
-          },
-
-          recalculate: function() {
-            var j;
-            j = typeof this.current_min == 'number' ? this.current_min : 0;
-            for( var i in this.max_prices ) {
-              this.max_prices[i] = j += 25000;
-            }
-          },
-
-          focus: function( mode ) {
-            this.mode = mode;
-          }
-        };
-
-        /**
-         *
-         * @type {{min_feet: number[], max_feet: number[]}}
-         */
-        $scope.footage = window.footage = {
-          mode: false,
-
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
-
-          min_foot: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
-          max_foot: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
-
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('feet-input') ) {
-              this.mode = '';
-            }
-          },
-
-          format: function(target, mode) {
-            if ( !$scope.current_filter.feet ) {
-              $scope.current_filter.feet = {
-                min:'',
-                max:''
-              }
-            }
-            $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
-            if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
-            } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
-            }
-          },
-
-          set_min: function(_price) {
-            if ( !$scope.current_filter.feet ) {
-              $scope.current_filter.feet = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_min = _price;
-            $scope.current_filter.feet.min = _price;
-            this.recalculate(_price);
-            this.mode = 'max';
-          },
-
-          set_max: function(_price) {
-            if ( !$scope.current_filter.feet ) {
-              $scope.current_filter.feet = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_max = _price;
-            $scope.current_filter.feet.max = _price;
-            this.mode = false;
-          },
-
-          recalculate: function ( current ) {
-            var j;
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_foot ) {
-              this.max_foot[i] = j += 500;
-            }
-          },
-
-          focus: function( mode ) {
-            this.mode = mode;
-          }
-        };
-
-        /**
-         *
-         * @type {{min_bedroom: number[], max_bedroom: number[]}}
-         */
-        $scope.bedrange = window.bedrange = {
-          mode: false,
-
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
-
-          min_bedroom: [1, 2, 3, 4, 5, 6],
-          max_bedroom: [3, 4, 5, 6, 7, 8],
-
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('bed-input') ) {
-              this.mode = '';
-            }
-          },
-
-          format: function(target, mode) {
-            if ( !$scope.current_filter.bedrooms ) {
-              $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
-              }
-            }
-            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()));
-            } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()));
-            }
-            this.set_min(this.current_min);
-            this.set_max(this.current_max);
-          },
-
-          set_min: function(_price) {
-            if ( !$scope.current_filter.bedrooms ) {
-              $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_min = _price;
-            $scope.current_filter.bedrooms.min = _price;
-            this.recalculate(_price);
-            this.mode = 'max';
-          },
-
-          set_max: function(_price) {
-            if ( !$scope.current_filter.bedrooms ) {
-              $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_max = _price;
-            $scope.current_filter.bedrooms.max = _price;
-            this.mode = false;
-          },
-
-          recalculate: function ( current ) {
-            var j;
-            var max_bedroom = [];
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i = j; i < j+6; i++ ) {
-              max_bedroom.push( i );
-            }
-            this.max_bedroom = max_bedroom;
-          },
-
-          focus: function( mode ) {
-            this.mode = mode;
-          }
-        };
-
-        /**
-         *
-         * @type {{min_bathroom: number[], max_bathroom: number[]}}
-         */
-        $scope.bathrange = window.bathrange = {
-          mode: false,
-
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
-
-          min_bathroom: [1, 2, 3, 4, 5, 6],
-          max_bathroom: [3, 4, 5, 6, 7, 8],
-
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('bath-input') ) {
-              this.mode = '';
-            }
-          },
-
-          format: function(target, mode) {
-            if ( !$scope.current_filter.bathrooms ) {
-              $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
-              }
-            }
-            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()));
-            } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()));
-            }
-            this.set_min(this.current_min);
-            this.set_max(this.current_max);
-          },
-
-          set_min: function(_price) {
-            if ( !$scope.current_filter.bathrooms ) {
-              $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_min = _price;
-            $scope.current_filter.bathrooms.min = _price;
-            this.recalculate(_price);
-            this.mode = 'max';
-          },
-
-          set_max: function(_price) {
-            if ( !$scope.current_filter.bathrooms ) {
-              $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_max = _price;
-            $scope.current_filter.bathrooms.max = _price;
-            this.mode = false;
-          },
-
-          recalculate: function ( current ) {
-            var j;
-            var max_bathroom = [];
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i = j; i < j+6; i++ ) {
-              max_bathroom.push( i );
-            }
-            this.max_bathroom = max_bathroom;
-          },
-
-          focus: function( mode ) {
-            this.mode = mode;
-          }
-        };
-
-        /**
-         *
-         * @type {{min_feet: number[], max_feet: number[]}}
-         */
-        $scope.acrage = window.acrage = {
-          mode: false,
-
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
-
-          min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
-          max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
-
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('acres-input') ) {
-              this.mode = '';
-            }
-          },
-
-          format: function(target, mode) {
-            if ( !$scope.current_filter.acrage ) {
-              $scope.current_filter.acrage = {
-                min:'',
-                max:''
-              }
-            }
-            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
-              this.current_min = Math.round(parseInt(jQuery(target).val()));
-            } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()));
-            }
-            this.set_min(this.current_min);
-            this.set_max(this.current_max);
-          },
-
-          set_min: function(_price) {
-            if ( !$scope.current_filter.acrage ) {
-              $scope.current_filter.acrage = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_min = _price;
-            $scope.current_filter.acrage.min = _price;
-            this.recalculate(_price);
-            this.mode = 'max';
-          },
-
-          set_max: function(_price) {
-            if ( !$scope.current_filter.acrage ) {
-              $scope.current_filter.acrage = {
-                min:'',
-                max:''
-              }
-            }
-            this.current_max = _price;
-            $scope.current_filter.acrage.max = _price;
-            this.mode = false;
-          },
-
-          recalculate: function ( current ) {
-            current = current*1;
-            for( var i in this.max_acres ) {
-              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
-                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
-              } else {
-                if (this.max_acres[i - 1]) {
-                  this.max_acres[i] = this.max_acres[i - 1] + 10;
-                } else {
-                  this.max_acres[i] = current + 10;
-                }
-              }
-            }
-          },
-
-          focus: function( mode ) {
-            this.mode = mode;
-          }
-        };
-
-        /**
-         *
-         * @returns {number}
-         */
-        $scope.pagination_colspan = function(){
-          var i = 0;
-          for(var f in $scope.columns) {
-            i += $scope.columns[f].enable;
-          }
-          return i;
-        };
-
-        $scope.current_filter.price = $scope.current_filter.price || {
-          min: getParameterByName( 'wpp_search[price][min]' ),
-          max: getParameterByName( 'wpp_search[price][max]' ),
-        };
-
-        $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
-          min: getParameterByName( 'wpp_search[bathrooms][min]' ),
-          max: getParameterByName( 'wpp_search[bathrooms][max]' ),
-        };
-
-        $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
-          min: getParameterByName( 'wpp_search[bedrooms][min]' ),
-          max: getParameterByName( 'wpp_search[bedrooms][max]' )
-        };
-
-        // set sale_type if we have query override, something else seems to be setting its default
-        if( getParameterByName( 'wpp_search[sale_type]' ) ) {
-          $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
-        }
-
-        debug( '$scope.current_filter', $scope.current_filter );
-
-        var index = 'v5',
-            type = 'property';
-
-        /**
-         * @type {$.es.Client|*}
-         */
-        var client = new jQuery.es.Client({
-          hosts: 'dori-us-east-1.searchly.com'
-        });
-
-        /**
-         *
-         * @param r
-         */
-        function cast_fields(r) {
-          r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
-          r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
-          r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
-          r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
-
-          if (typeof r._source.tax_input.price_per_sqft!='undefined') {
-            r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
-          } else {
-            r._source.tax_input.price_per_sqft = [0];
-          }
-
-          r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
-
-          //icon html and template
-          r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
-          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
-          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
-          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
-        }
-
-        function calculate_days(date) {
-          if ( date != 'undefined' && date != null ) {
-            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-            var firstDate = new Date(date);
-            var currentDate = new Date();
-
-            return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime()) / (oneDay)));
-          } else {
-            return 0;
-          }
-        }
-
-        /**
-         *
-         * @param int
-         * @returns {string}
-         */
-        var currencyAmount = function( int ) {
-          var int = Math.round( parseInt( int.toString().replace(/,/g,"")) / 5000 ) * 5000;
-          var cur = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          return {value:int, label:cur != 'NaN' ? cur : ''};
-        };
-
-        /**
-         *
-         * @returns {*|{}}
-         */
-        function build_query() {
-          // maybe alter something
-          return JSON.stringify($scope.query);
-        }
-
-        /**
-         *
-         */
-        function getMoreProperties() {
-          if ( $scope._request ) {
-            $scope._request.abort();
-          }
-
-          var search_form = jQuery('.sm-search-form form');
-
-          search_form.addClass('processing');
-          $scope.toggleSearchButton();
-          $scope._request = client.search({
-            index: index,
-            type: type,
-            method: "GET",
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-            },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
-          }, function( error, response ) {
-
-            if ( !error ) {
-
-              if( typeof response.hits.hits == 'undefined' ) {
-                debug( 'Error occurred during getting properties data.' );
-              } else {
-                $scope.total = response.hits.total;
-                response.hits.hits.filter(cast_fields);
-                Array.prototype.push.apply($scope.properties, response.hits.hits);
-                $scope.refreshMarkers(false);
-
-                if( ! $scope.loadNgMapChangedEvent ) {
-                  $scope.loadNgMapChangedEvent = true;
-                  $scope.addMapChanged();
-                }
-
-                if ( $scope.total > $scope.properties.length ) {
-                  if( $scope.loading_more_properties ) {
-                    getMoreProperties();
-                  }
-                }else{
-                  search_form.removeClass('mapChanged');
-                }
-              }
-              $scope.col_changed();
-            } else {
-              console.error(error);
-              search_form.removeClass('mapChanged');
-            }
-            search_form.removeClass('processing');
-            $scope.toggleSearchButton();
-          });
-        }
-
-        /**
-         * toggle search filter button loading icon and search icon
-         */
-        $scope.toggleSearchButton = function () {
-          var button_icon_desktop = jQuery('.sm-search-filter').find('i');
-          var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
-          if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
-            button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
-            button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
-            button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
-            button_icon_mobile.removeClass("icon-wpproperty-interface-search-solid");
-          } else {
-            button_icon_desktop.removeClass("icon-wpproperty-interface-time-outline");
-            button_icon_desktop.addClass("icon-wpproperty-interface-search-solid");
-            button_icon_mobile.removeClass("icon-wpproperty-interface-time-outline");
-            button_icon_mobile.addClass("icon-wpproperty-interface-search-solid");
-          }
-        };
-
-        /**
-         * Get Properties by provided Query ( filter )
-         */
-        $scope.getProperties = function getProperties() {
-
-          if ( $scope._request ) {
-            $scope._request.abort();
-          }
-
-          var search_form = jQuery('.sm-search-form form');
-
-          search_form.addClass('processing');
-          $scope.toggleSearchButton();
-
-          $scope._request = client.search({
-            index: index,
-            type: type,
-            method: "GET",
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-            },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
-          }, function( error, response ) {
-
-            setStatus( 'ready' );
-
-            if ( !error ) {
-              jQuery( '.sm-search-layer', ngAppDOM ).show();
-
-              $scope.loaded = true;
-
-              if( typeof response.hits.hits == 'undefined' ) {
-                debug( 'Error occurred during getting properties data.' );
-              } else {
-                response.hits.hits.filter(cast_fields);
-                if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-                  $scope.total = $scope.total + response.hits.total;
-                  Array.prototype.push.apply($scope.properties, response.hits.hits);
-                }else{
-                  $scope.total = response.hits.total;
-                  $scope.properties = response.hits.hits;
-                }
-                // Select First Element of Properties Collection
-                if( $scope.properties.length > 0 ) {
-                  $scope.currentProperty = $scope.properties[0];
-                  $scope.properties[0].isSelected = true;
-                  $scope.loadImages($scope.properties[0]);
-                  $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
-                }  else {
-                  $scope.refreshMarkers( false );
-                }
-
-                if ( $scope.total > $scope.properties.length ) {
-                  if( ! $scope.loading_more_properties ) {
-                    $scope.loading_more_properties = true;
-                  }
-                  getMoreProperties();
-                }else if($scope.rdc_listing){
-                  $scope.rdc_listing = false;
-                  search_form.submit();
-                }else{
-                  if( ! $scope.loadNgMapChangedEvent ) {
-                    $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged();
-                  }
-                  search_form.removeClass('mapChanged');
-                }
-              }
-              $scope.col_changed();
-            } else {
-              console.error(error);
-              search_form.removeClass('mapChanged');
-            }
-
-            search_form.removeClass('processing');
-            
-            $scope.toggleSearchButton();
-
-          });
-
-        };
-
-        /**
-         *
-         */
-        $scope.col_changed = function() {
-          jQuery(document).trigger('rdc_cols_changed');
-        };
-
-        /**
-         * map zoom or drag event listener for search results refresh
-         */
-        $scope.addMapChanged = function addMapChanged() {
-          debug( 'addMapChanged' );
-          
-          NgMap.getMap().then(function (map) {
-
-            if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
-              return false;
-            }
-
-            idle_listener = map.addListener('idle', function () {
-              var bounds = map.getBounds();
-              var zoom = map.getZoom();
-              if( zoom > 4 ) {
-                var SouthWestLatitude = bounds.getSouthWest().lat();
-                var NorthEastLatitude = bounds.getNorthEast().lat();
-                var NorthEastLongitude = bounds.getNorthEast().lng();
-                var SouthWestLongitude = bounds.getSouthWest().lng();
-                if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
-                  jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
-                  jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
-                  jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
-                  jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
-                }
-              }else{
-                $scope.resetMapBounds();
-              }
-              jQuery('.sm-search-form form').addClass('mapChanged');
-              $scope.rdc_listing = true;
-              jQuery('.sm-search-form form').submit();
-            });
-          });
-        };
-
-        $scope.resetMapBounds = function resetMapBounds() {
-          jQuery('.rdc-latitude-gte').val('');
-          jQuery('.rdc-latitude-lte').val('');
-          jQuery('.rdc-longitude-gte').val('');
-          jQuery('.rdc-longitude-lte').val('');
-        };
-
-        $document.bind("st_sort_done",function(){
-          if( $scope.propertiesTableCollection.length > 0 ) {
-            $scope.selectRow($scope.propertiesTableCollection[0]);
-          }
-        });
-
-        /**
-         * Refresh Markers ( Marker Cluster ) on Google Map
-         */
-        $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
-          NgMap.getMap().then(function( map ) {
-            $scope.dynMarkers = [];
-            $scope.latLngs = [];
-
-            // Clears all clusters and markers from the clusterer.
-            if( typeof $scope.markerClusterer == 'object' ) {
-              $scope.markerClusterer.clearMarkers();
-            }
-
-            if( typeof $scope.infoBubble !== 'object' ) {
-              $scope.infoBubble = new google.maps.InfoWindow({
-                map: map,
-                maxWidth: 300,
-                shadowStyle: 1,
-                padding: 0,
-                backgroundColor: '#f3f0e9',
-                borderRadius: 4,
-                arrowSize: 2,
-                borderWidth: 0,
-                borderColor: 'transparent',
-                disableAutoPan: true,
-                hideCloseButton: true,
-                arrowPosition: 7,
-                backgroundClassName: 'sm-infobubble-wrap',
-                arrowStyle: 3
-              });
-            }
-
-            if( ! $scope.properties.length ) {
-              $scope.infoBubble.close();
-            }
-
-            for ( var i=0; i < $scope.properties.length; i++ ) {
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
-              latLng.listingId = $scope.properties[i]._id;
-              var marker = new google.maps.Marker( {
-                position: latLng
-                //icon: $scope.properties[i]._map_marker_url
-              } );
-              marker.listingId = $scope.properties[i]._id;
-
-              $scope.dynMarkers.push( marker );
-              $scope.latLngs.push( latLng );
-
-              /**
-               * Marker Click Event!
-               * - Selects Table Page
-               * - Selects Collection Row
-               */
-              google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
-                return function() {
-                  // Preselect a row
-                  var index;
-                  for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
-                    var property = $scope.properties[i];
-                    if ( property._id == marker.listingId ) {
-                      property.isSelected = true;
-                      $scope.currentProperty = property;
-                      $scope.loadImages(property);
-                      index = i;
-                    } else {
-                      property.isSelected = false;
-                    }
-                  }
-                  // Maybe Select Page!
-                  if( index !== null ) {
-                    var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
-                    angular
-                      .element( jQuery( '.collection-pagination', ngAppDOM ) )
-                      .isolateScope()
-                      .selectPage( pageNumber );
-                  }
-                  $scope.$apply();
-                }
-              })( marker, i, $scope ) );
-
-            }
-
-            if ( update_map_pos ) {
-              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-              $scope.latlngbounds = new google.maps.LatLngBounds();
-              for (var i = 0; i < $scope.latLngs.length; i++) {
-                $scope.latlngbounds.extend($scope.latLngs[i]);
-              }
-              map.fitBounds($scope.latlngbounds);
-            }
-
-            // Finally Initialize Marker Cluster
-            $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-              styles: [
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                },
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                },
-                {
-                  textColor: 'white',
-                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                  height: 60,
-                  width: 60
-                }
-              ]
-            }
-            );
-          } );
-
-          $scope.col_changed();
-        }
-
-        /**
-         * Toogle Search Form
-         */
-        $scope.toggleSearchForm = function toggleSearchForm() {
-          $scope.searchForm = !$scope.searchForm;
-        }
-
-        /**
-         *
-         * @param row
-         */
-        $scope.loadImages = function loadImages( row ) {
-          if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
-            row._is_loading_images = true;
-            client.get({
-              index: index,
-              type: type,
-              headers : {
-                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-              },
-              id: row._id,
-              _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
-            }, function (error, response) {
-
-              if ( !error ) {
-
-                row._is_loading_images = false;
-
-                if( typeof response._source.meta_input.rets_media == 'undefined' ) {
-                  debug( 'Error occurred during getting properties data.' );
-                } else {
-                  row.images = response._source.meta_input.rets_media;
-                  $scope.$apply();
-                }
-
-                if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
-                  console.log( 'Error occurred during getting properties data.' );
-                } else {
-                  row.data_source_logo = response._source.meta_input.data_source_logo;
-                  $scope.$apply();
-                }
-
-              } else {
-                console.error(error);
-              }
-
-            });
-          }
-          return true;
-        }
-
-        /**
-         * Fixes selected Row.
-         *
-         * @param row
-         */
-        $scope.selectRow = function selectRow(row) {
-          for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
-            $scope.properties[i].isSelected = false;
-          }
-          $scope.currentProperty = row;
-          $scope.loadImages(row);
-          row.isSelected = true;
-        }
-
-        /**
-         * Fired when currentProperty is changed!
-         * Opens InfoBubble Window!
-         */
-        $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
-          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
-          for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
-            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
-              NgMap.getMap().then( function( map ) {
-                $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
-                $scope.infoBubble.setPosition( $scope.latLngs[i] );
-                $scope.infoBubble.open( map );
-              } );
-              break;
-            }
-          }
-        }, true );
-
-        var $select = jQuery('.termsSelection').select2({
-          placeholder: 'Search',
-          maximumSelectionLength: 1,
-          minimumInputLength: 3,
-          data: [],
-          query: function (query) {
-
-            var data = [];
-
-            if( query.term && query.term.length  >= 3 ) {
-
-              jQuery('.select2-dropdown').removeClass("hide");
-
-              if( $scope._request ) {
-                $scope._request.abort();
-              }
-
-              $scope._request = client.search({
-                index: 'v5',
-                type: 'property',
-                method: "GET",
-                headers : {
-                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-                },
-                source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name"]}',
-              }, function (err, response) {
-
-                if( typeof response.hits.hits == 'undefined' ) {
-                  query.callback({ results: data });
-                }
-
-                var post_title = { text: "Address", children: [] };
-                var city = { text : "City", children: [] };
-                var mls_id = { text : "MLS ID", children: [] };
-                var location_street = { text : "Street", children: [] };
-                var location_zip = { text : "Zip", children: [] };
-                var location_county = { text : "County", children: [] };
-                var subdivision = { text : "Subdivision", children: [] };
-                var elementary_school = { text : "Elementary School", children: [] };
-                var middle_school = { text : "Middle School", children: [] };
-                var high_school = { text : "High School", children: [] };
-                var listing_office = { text : "Office", children: [] };
-                var listing_agent = { text : "Agent", children: [] };
-                var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
-
-                jQuery.each(response.hits.hits,function(k,v){
-                  if( typeof v._source.post_title != 'undefined' ) {
-                    if (!unique[v._source.post_title]) {
-                      post_title.children.push({
-                        id: v._source.post_title,
-                        text: v._source.post_title,
-                        taxonomy:'post_title',
-                        permalink: v._source._permalink,
-                      });
-                      unique[v._source.post_title] = v._source.post_title;
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_city != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_city[0]]) {
-                      city.children.push({
-                        id: v._source.tax_input.location_city[0],
-                        text: v._source.tax_input.location_city[0],
-                        taxonomy:'location_city',
-                      });
-                      unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.mls_id != 'undefined' ) {
-                    if (!unique[v._source.tax_input.mls_id[0]]) {
-                      mls_id.children.push({
-                        id: v._source.tax_input.mls_id[0],
-                        text: v._source.tax_input.mls_id[0],
-                        taxonomy:'mls_id',
-                        permalink: v._source._permalink,
-                      });
-                      unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_street != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_street[0]]) {
-                      location_street.children.push({
-                        id:v._source.tax_input.location_street[0],
-                        text:v._source.tax_input.location_street[0],
-                        taxonomy: 'location_street'
-                      })
-                      unique[v._source.tax_input.location_street[0]] = v._source.tax_input.location_street[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_zip != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_zip[0]]) {
-                      location_zip.children.push({
-                        id:v._source.tax_input.location_zip[0],
-                        text:v._source.tax_input.location_zip[0],
-                        taxonomy: 'location_zip'
-                      })
-                      unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_county != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_county[0]]) {
-                      location_county.children.push({
-                        id:v._source.tax_input.location_county[0],
-                        text:v._source.tax_input.location_county[0],
-                        taxonomy: 'location_county'
-                      })
-                      unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.subdivision != 'undefined' ) {
-                    if (!unique[v._source.tax_input.subdivision[0]]) {
-                      subdivision.children.push({
-                        id:v._source.tax_input.subdivision[0],
-                        text:v._source.tax_input.subdivision[0],
-                        taxonomy: 'subdivision'
-                      })
-                      unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
-                    }
-
-                  }
-                  if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.elementary_school[0]]) {
-                      elementary_school.children.push({
-                        id:v._source.tax_input.elementary_school[0],
-                        text:v._source.tax_input.elementary_school[0],
-                        taxonomy: 'elementary_school'
-                      })
-                      unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.middle_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.middle_school[0]]) {
-                      middle_school.children.push({
-                        id:v._source.tax_input.middle_school[0],
-                        text:v._source.tax_input.middle_school[0],
-                        taxonomy:'middle_school'
-                      })
-                      unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.high_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.high_school[0]]) {
-                      high_school.children.push({
-                        id:v._source.tax_input.high_school[0],
-                        text:v._source.tax_input.high_school[0],
-                        taxonomy: 'high_school'
-                      })
-                      unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.listing_office != 'undefined' ) {
-                    if (!unique[v._source.tax_input.listing_office[0]]) {
-                      listing_office.children.push({
-                        id:v._source.tax_input.listing_office[0],
-                        text:v._source.tax_input.listing_office[0],
-                        taxonomy: 'listing_office'
-                      })
-                      unique[v._source.tax_input.listing_office[0]] = v._source.tax_input.listing_office[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.listing_agent != 'undefined' ) {
-                    if (!unique[v._source.tax_input.listing_agent[0]]) {
-                      listing_agent.children.push({
-                        id:v._source.tax_input.listing_agent[0],
-                        text:v._source.tax_input.listing_agent[0],
-                        taxonomy: 'listing_agent_name'
-                      })
-                      unique[v._source.tax_input.listing_agent[0]] = v._source.tax_input.listing_agent[0];
-                    }
-                  }
-                });
-
-                post_title.children.length ? data.push( post_title ) : '';
-                city.children.length ? data.push( city ) : '';
-                elementary_school.children.length ? data.push( elementary_school ) : '';
-                middle_school.children.length ? data.push( middle_school ) : '';
-                high_school.children.length ? data.push( high_school ) : '';
-                //listing_office.children.length ? data.push( listing_office ) : '';
-                //listing_agent.children.length ? data.push( listing_agent ) : '';
-                location_street.children.length ? data.push( location_street ) : '';
-                location_zip.children.length ? data.push( location_zip ) : '';
-                location_county.children.length ? data.push( location_county ) : '';
-                subdivision.children.length ? data.push( subdivision ) : '';
-                mls_id.children.length ? data.push( mls_id ) : '';
-
-                data.sort(function(a, b){
-                  // ASC  -> a.length - b.length
-                  // DESC -> b.length - a.length
-                  return a.children.length - b.children.length;
-                });
-                query.callback({ results: data });
-              });
-            } else {
-              jQuery('.select2-dropdown').addClass("hide");
-              query.callback({ results: data });
-            }
-          },
-          // language: {
-          //   noResults: function(){
-          //     return "No results found. Try something else";
-          //   },
-          //   errorLoading: function(){
-          //     return "Searching...";
-          //   }
-          // },
-          // templateResult: function formatRepo (city) {
-          //
-          //   if (city.loading) return city.text;
-          //
-          //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
-          //   return html;
-          // },
-          // escapeMarkup: function (markup) { return markup; },
-          // templateSelection: function formatRepoSelection (city) {
-          //   return city._source.tax_input.location_street[0];
-          // }
-        }).on('select2:select', function(e) {
-          var data = $select.select2('data');
-          if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
-            window.location.href= data[0].permalink;
-          } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
-            var value = window.sm_current_terms.values[0];
-            var key = window.sm_current_terms.key;
-            if( value == data[0].text ) {
-              $scope.map_filter_taxonomy = key;
-            }
-          } else {
-            $scope.map_filter_taxonomy = data[0].taxonomy;
-          }
-          $scope.$apply();
-        }).on('select2:selecting', function(e) {
-          if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-            $select.select2( 'val', {} );
-          }
-        });
-
-        /**
-         *
-         */
-        // var $select = jQuery('.termsSelection').select2({
-        //   placeholder: 'Location',
-        //   minimumInputLength: 3,
-        //   maximumSelectionLength: 1,
-        //   ajax: {
-        //     url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
-        //     dataType: 'json',
-        //     processResults: function(data, page){
-        //       return {
-        //         results: data.data
-        //       }
-        //     }
-        //   },
-        //   language: {
-        //     noResults: function(){
-        //       return "No results found. Try something else";
-        //     },
-        //     errorLoading: function(){
-        //       return "Searching...";
-        //     }
-        //   },
-        //   templateResult: function formatRepo (city) {
-        //     if (city.loading) return 'Searching...';
-        //     var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
-        //     return html;
-        //   },
-        //   escapeMarkup: function (markup) { return markup; },
-        //   templateSelection: function formatRepoSelection (term) {
-        //     if ( typeof term.taxonomy != 'undefined' ) {
-        //       $scope.map_filter_taxonomy = term.taxonomy;
-        //     }
-        //     return term.text || term.name;
-        //   }
-        // });
-
-        if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
-          var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
-          $select.append($option).trigger('change');
-          debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
-        }
-
-        $scope.sm_form_data = function sm_form_data( form_data ) {
-          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
-            jQuery.each( jQuery(".rdc-home-types input:checkbox"), function (k,v) {
-              form_data.push({name:v.name,value:v.value});
-            } );
-          }
-          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
-            jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
-              form_data.push({name:v.name,value:v.value});
-            } );
-          }
-          return form_data;
-        };
-
-        $document.on( 'change', '.rdc-home-types input:checkbox', function(){
-          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
-            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
-          } else {
-            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
-          }
-        });
-
-        $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
-          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
-            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
-          } else {
-            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
-          }
-        });
-
-        /**
-         * SEARCH FILTER EVENT
-         *
-         * We're using jQuery instead of AngularJS here because
-         * property search form is being generated via [property_search] shortcode
-         * or even can be custom, since we are using apply_filters on rendering.
-         */
-        jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
-          e.preventDefault();
-
-          if ( ! jQuery(this).hasClass('mapChanged') ) {
-            $scope.resetMapBounds();
-          }
-
-          $scope.loading_more_properties = false;
-
-          var formQuery = {},
-              push_counters = {},
-              patterns = {
-                "validate": /^[a-zA-Z][a-zA-Z0-9_\.]*(?:\[(?:\d*|[a-zA-Z0-9_\.]+)\])*$/,
-                "key":      /[a-zA-Z0-9_\.]+|(?=\[\])/g,
-                "push":     /^$/,
-                "fixed":    /^\d+$/,
-                "named":    /^[a-zA-Z0-9_\.]+$/
-              };
-
-          var build = function(base, key, value){
-            base[key] = value;
-            return base;
-          };
-
-          var push_counter = function(key){
-            if(push_counters[key] === undefined){
-              push_counters[key] = 0;
-            }
-            return push_counters[key]++;
-          };
-
-          var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
-
-          jQuery.each(form_data, function(){
-
-            if(!patterns.validate.test(this.name)){
-              return;
-            }
-
-            var k,
-                keys = this.name.match(patterns.key),
-                merge = this.value,
-                reverse_key = this.name;
-
-            while((k = keys.pop()) !== undefined){
-
-              reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
-
-              if(k.match(patterns.push)){
-                merge = build([], push_counter(reverse_key), merge);
-              }
-
-              else if(k.match(patterns.fixed)){
-                merge = build([], k, merge);
-              }
-
-              else if(k.match(patterns.named)){
-                merge = build({}, k, merge);
-              }
-            }
-
-            formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
-          });
-
-          if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
-            formQuery.bool.must_not = [];
-          }
-
-          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
-            formQuery.bool.must.push($scope.rdc_listing_query);
-          }
-
-          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-            formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
-          }
-          //
-          // //merging the current taxonomy if tax archieve page
-          // if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
-          //   formQuery.bool.must.push($scope.tax_must_query);
-          // }
-
-          $scope.query = formQuery;
-
-          $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
-          $scope.query.bool.must_not = $scope.query.bool.must_not.filter(Boolean);
-
-          if( $scope.searchForm ) {
-            $scope.toggleSearchForm();
-          }
-          $scope.$apply();
-          $scope.getProperties();
-
-        } );
-
-        /**
-         * BACK HISTORY EVENT
-         */
-        window.addEventListener( 'popstate', function(){
-
-          // Get current location params
-          var location = window.location.href.split('?');
-          var locationQuery = {};
-          if( typeof location[1] !== 'undefined' ) {
-            parse_str( location[1], locationQuery );
-          }
-
-          $scope.$apply();
-          $scope.getProperties();
-
-        }, false);
-
-        // Get properties by request
-        $scope.getProperties();
-
-      } ] );
+      .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', supermapController ] );
 
   };
+
 
   function removeAllBlankOrNull(JsonObj) {
     jQuery.each(JsonObj, function(key, value) {
@@ -1922,7 +1961,7 @@
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
     var results = regex.exec(url);
     if (!results) {
-      debug( 'getParameterByName', name, 'no result' );
+      // debug( 'getParameterByName', name, 'no result' );
       return null;
     }
 
@@ -1932,16 +1971,16 @@
       var _parts = parse_query_string( window.location.search );
 
       if( _parts[ name ] ) {
-        debug( 'getParameterByName', name, _parts[ name ] );
+        // debug( 'getParameterByName', name, _parts[ name ] );
         return _parts[ name ];
       }
 
-      debug( 'getParameterByName', name, 'empty result' );
+      // debug( 'getParameterByName', name, 'empty result' );
 
       return '';
     }
 
-    debug( 'getParameterByName', name, decodeURIComponent(results[2].replace(/\+/g, " ")) );
+    // debug( 'getParameterByName', name, decodeURIComponent(results[2].replace(/\+/g, " ")) );
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 

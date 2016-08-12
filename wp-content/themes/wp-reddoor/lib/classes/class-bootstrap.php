@@ -136,8 +136,6 @@ namespace UsabilityDynamics\RDC {
           )
         );
 
-        $must_not_query = array();
-
         $_location_selected = array();
 
         foreach( $query as $field => $value ) {
@@ -158,7 +156,7 @@ namespace UsabilityDynamics\RDC {
                 )
               );
 
-              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'listing_office' ) ) ) ) {
+              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ) ) ) {
                 $_location_selected = array(
                   'key' => $field,
                   'values' => $labels
@@ -192,36 +190,13 @@ namespace UsabilityDynamics\RDC {
           }
         }
 
-        $must_tax_query = array();
-        if( is_tax() && ! empty( $queried_object = get_queried_object() ) ) {
-          $must_tax_query = array(
-              'terms' => array(
-                  'tax_input.' . $queried_object->taxonomy => array( $queried_object->name ),
-              ),
-          );
-        }
-        $rdc_listing = true;
-        $rdc_listing_query = array(
-            'terms' => array(
-                'tax_input.listing_office' => array( 'Red Door Company' ),
-            ),
-        );
         // check if current page is rdc listing or not - tax query can tell us on which page we are on currently
-        if( $rdc_listing_query == $must_tax_query ) {
-          $rdc_listing_query = array();
-          $rdc_listing = false;
-        }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
-
-        // The "$l10n" must be an object/array, can not bee a bool. - potanin@UD
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', array( "ok" => $rdc_listing ? true : false ) );
 
         $_query = array(
           'bool' => array(
-            'must' => $must_query,
-            'must_not' => $must_not_query
+            'must' => $must_query
           )
         );
 
