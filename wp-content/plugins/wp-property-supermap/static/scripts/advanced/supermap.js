@@ -3,7 +3,7 @@
  */
 
 ( function( jQuery, wpp ){
-
+  console.log( 'starting supermap' );
 
   /**
    * Debug Helper
@@ -20,7 +20,7 @@
    * @param options
    */
   jQuery.fn.wpp_advanced_supermap = function( options ) {
-
+    debug('invoked', options );
 
     var ngAppDOM = jQuery( this );
 
@@ -52,10 +52,13 @@
       jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
     }
 
-    /**
-     * Be sure our module App is shown
-     */
-    ngAppDOM.show();
+    function setStatus( status ) {
+      console.log( 'setStatus', status );
+      ngAppDOM.data( 'status', status );
+      ngAppDOM.addClass( 'status-' + status );
+    }
+
+    setStatus( 'loading' );
 
     /**
      * Angular Module.
@@ -149,6 +152,8 @@
 
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
 
+
+
         var resizeTimer, idle_listener;
         jQuery( window ).on( 'resize', function () {
           clearTimeout( resizeTimer );
@@ -158,6 +163,8 @@
             });
           }, 250 );
         } ).resize();
+
+        setStatus('invoked' );
 
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
         $scope.atts = vars.atts;
@@ -871,6 +878,8 @@
             source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
 
+            setStatus( 'ready' );
+
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
 
@@ -920,6 +929,7 @@
             }
 
             search_form.removeClass('processing');
+            
             $scope.toggleSearchButton();
 
           });
