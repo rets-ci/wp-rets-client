@@ -68,6 +68,15 @@
 
       NgMap.getMap().then(function(map) {
         window.map = map;
+
+        google.maps.event.addListener(map, 'bounds_changed', function () {
+          debug( 'mapEvent', 'bounds_changed' );
+        });
+
+        google.maps.event.addListener(map, 'resize', function () {
+          debug( 'mapEvent', 'resize' );
+        });
+
       });
 
       function handleResize() {
@@ -149,6 +158,9 @@
       $scope.latLngs = [];
       $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
       $scope.searchForm = false;
+
+      $scope.markerBounds = new google.maps.LatLngBounds();;
+
       $scope.loadNgMapChangedEvent = false;
 
       $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
@@ -826,6 +838,40 @@
 
 
         $scope.aggregations = {
+          "titles": {
+            "terms": {
+              "field": "title"
+            },
+            "meta": {
+              "color": "blue"
+            },
+          },
+
+          "location_city" : {
+            "terms" : { "field" : "tax_input.location_city" },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "location_county" : {
+            "terms" : { "field" : "tax_input.location_county" },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "listing_type" : {
+            "terms" : { "field" : "tax_input.listing_type" },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+
           "zoomedInView" : {
             "filter" : {
               "geo_bounding_box" : {
@@ -841,15 +887,15 @@
               "zoom1": {
                 "geohash_grid" : {
                   "field":"_system.location",
-                  "precision":3,
-                  "size": 10
+                  "precision":4,
+                  "size": 50
                 }
               },
               "zoom2": {
                 "geohash_grid" : {
                   "field":"_system.location",
                   "precision":10,
-                  "size": 10
+                  "size": 50
                 }
               },
             }
@@ -906,26 +952,55 @@
 
 
             NgMap.getMap().then(function (map) {
-              response.aggregations.zoomedInView.zoom1.buckets.forEach( function ( someCluster ) {
 
+              response.aggregations.zoomedInView.zoom1.buckets.forEach( function ( someCluster ) {
+return;
                 var position = decodeGeoHash( someCluster.key )
                 debug( 'someCluster', someCluster, position );
 
                 var marker = new google.maps.Marker( {
                   position: position,
-                  map: window.map,
+                  map: map,
                   icon: {
                     url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
                     size: new google.maps.Size( 60, 60 )
                   },
-                  title: 'Hello World!'
+                  title: "Total " + someCluster.doc_count
                 } );
 
                 console.log( 'marker', marker );
 
               } )
 
-              map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+              response.aggregations.location_county.buckets.forEach( function ( someCluster ) {
+
+                ///var position = decodeGeoHash( someCluster.key )
+
+                debug( 'someCluster', someCluster, someCluster.key, someCluster.doc_count );
+
+                var marker = new google.maps.Marker( {
+                  position: { lat: someCluster.centroid.location.lat, lng: someCluster.centroid.location.lon },
+                  map: map,
+                  icon: {
+                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                    size: new google.maps.Size( 60, 60 )
+                  },
+                  title: "Total " + someCluster.doc_count + " " + someCluster.key
+                } );
+
+                // add marker to bounds.
+                $scope.markerBounds.extend(marker.getPosition());
+
+                console.log( 'marker', marker );
+
+              } )
+
+              console.log("setting center");
+
+              map.fitBounds($scope.markerBounds);
+              map.setCenter($scope.markerBounds.getCenter());
+
+              //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
 
             });
 
@@ -967,6 +1042,7 @@
             return false;
           }
 
+          // This event is fired when the map becomes idle after panning or zooming.
           idle_listener = map.addListener('idle', function () {
             var bounds = map.getBounds();
             var zoom = map.getZoom();
