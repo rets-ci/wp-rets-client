@@ -348,6 +348,8 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('touch-swipe');
 
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css');
+        wp_enqueue_style('style', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
+        
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
         //if ( is_singular( 'property' ) ) {
