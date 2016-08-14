@@ -989,9 +989,6 @@
           index: index,
           type: type,
           method: "GET",
-          headers : {
-            "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-          },
           source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
         };
 
@@ -1150,9 +1147,6 @@
           client.get({
             index: index,
             type: type,
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-            },
             id: row._id,
             _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
           }, function (error, response) {
@@ -1241,9 +1235,6 @@
               index: 'v5',
               type: 'property',
               method: "GET",
-              headers : {
-                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-              },
               source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
             }, function selectQueryResponse(err, response) {
               debug( 'selectQueryResponse' );
