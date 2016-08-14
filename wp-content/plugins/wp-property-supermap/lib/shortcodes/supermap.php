@@ -328,6 +328,7 @@ namespace UsabilityDynamics\WPP {
 
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
+        wp_enqueue_style( 'angular-material', ud_get_wpp_supermap()->path( 'bower_components/angular-material/angular-material.css' ) );
 
         wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ), array(), false, true );
         wp_enqueue_script( 'angular-sanitize', ud_get_wpp_supermap()->path( 'bower_components/angular/angular-sanitize.min.js' ), array( 'angularjs' ), false, true );
@@ -337,7 +338,8 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_script( 'gm-infobubble', ud_get_wpp_supermap()->path( 'bower_components/js-info-bubble/src/infobubble-compiled.js' ), array( 'ng-map' ) );
         wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ), array( 'angularjs' ) );
         wp_enqueue_script( 'markerwithlabel', ud_get_wpp_supermap()->path( 'static/scripts/advanced/markerwithlabel.js' ), array( 'ng-map' ) );
-        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), false, true );
+        wp_enqueue_script( 'angular-material', ud_get_wpp_supermap()->path( 'bower_components/angular-material/angular-material.js' ), array( 'angularjs' ) );
+        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angular-material', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), false, true );
 
         // This can be our generic SuperMap client-side facing settings object.
         wp_localize_script( 'supermap-advanced', 'supermapMode', array(
