@@ -36,6 +36,15 @@
             <i class="icon-wpproperty-interface-expand-outline"></i>
             <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
           </a>
+
+          <a class="favorite-listing" target="#" data-listing-id="{{currentProperty._id}}">
+            <span class="icon-action-like"></span><?php _e( 'Save', ud_get_wpp_supermap()->domain ); ?>
+          </a>
+
+          <a class="hide-listing" target="#" data-listing-id="{{currentProperty._id}}">
+            <span class="icon-action-hide"></span><?php _e( 'Hide', ud_get_wpp_supermap()->domain ); ?>
+          </a>
+
         </div>
 <!--        <div class="sm-days-on-market">-->
 <!--          <span>{{currentProperty._source.tax_input.days_on_market[0]}} Days on Market</span>-->
