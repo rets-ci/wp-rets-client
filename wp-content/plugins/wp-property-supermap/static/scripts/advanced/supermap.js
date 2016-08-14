@@ -69,12 +69,36 @@
       NgMap.getMap().then(function(map) {
         window.map = map;
 
+        // update options
+        map.setOptions({
+          center: new google.maps.LatLng( '35.7796', '78.6382' ),
+          minZoom: 8,
+          maxZoom: 12
+        });
+
+
         google.maps.event.addListener(map, 'bounds_changed', function () {
           debug( 'mapEvent', 'bounds_changed' );
         });
 
+        google.maps.event.addListener(map, 'zoom_changed', function () {
+          debug( 'mapEvent', 'zoom_changed', map.getZoom() );
+
+          if( map.getZoom() === 10 ) {
+            $scope.renderClusters( 'location_county', { recenter: false } )
+          }
+
+          if( map.getZoom() === 11 ) {
+            $scope.renderClusters( 'location_city', { recenter: false } )
+          }
+
+        });
+
         google.maps.event.addListenerOnce(map, 'idle', function () {
           debug( 'mapEvent', 'idle' );
+
+          $scope.state.mapReady = true;
+
         });
 
         google.maps.event.addListener(map, 'resize', function () {
@@ -674,6 +698,10 @@
       $scope.responseAggregations = [];
       $scope.currentMarkers = [];
 
+      $scope.state = {
+        mapReady: false
+      };
+
       /**
        *
        * @returns {number}
@@ -802,33 +830,65 @@
 
       }
 
+      $scope.renderListings = function renderListings( what, options ) {
+        
+          var marker = new google.maps.Marker( {
+            position: someCluster._position,
+            map: map,
+            icon: {
+              url: 'https://storage.googleapis.com/media.reddoorcompany.com/2015/11/153d7999-9627ffcd-rdc-pin-24x32.png',
+              size: new google.maps.Size( 60, 60 )
+            },
+            title: "Total " + someCluster.doc_count + " " + someCluster.key
+          } );
+
+      }
+
       /**
        * Draw clusters by an aggregation and zoom/center on them. If already have markers, clear them.
        *
-       * $scope.clusterBy( 'location_county' )
-       * $scope.clusterBy( 'location_city' )
+       * $scope.renderClusters( 'location_county', { recenter: false} )
+       * $scope.renderClusters( 'location_city', { recenter: false} )
+       * $scope.renderClusters( 'location_zip', { recenter: false} )
+       *
+       * To NOT recenter, to avoid infinite loop:
+       * $scope.renderClusters( 'location_city', { recenter: false} )
+       *
+       * ### Notes
+       * - ZIP seems to be the tightest group
+       *
        *
        * @param what
        */
-      $scope.clusterBy = function clusterBy( what ) {
-        debug( 'clusterBy', what )
+      $scope.renderClusters = function renderClusters( what, options ) {
 
-        if( !$scope.responseAggregations[ what ] || !$scope.responseAggregations[what].buckets ) {
-          debug( 'clusterBy', what, 'not found' );
-          return;
-        }
-
-        angular.forEach($scope.currentMarkers, function( marker ) {
-          marker.setMap(null);
-        });
-
-        // reset markers
-        $scope.currentMarkers = [];
-
-        // reset marker bounds
-        $scope.markerBounds = new google.maps.LatLngBounds();
+        options = options || { recenter: true };
 
         NgMap.getMap().then(function (map) {
+
+          if( !$scope.state.mapReady ) {
+            debug( 'renderClusters', 'map not ready, rescheduling [renderClusters] method to next idle' );
+            google.maps.event.addListenerOnce(map, 'idle', $scope.renderClusters.bind( this, what, options ) );
+            return;
+          }
+
+          if( !$scope.responseAggregations[ what ] || !$scope.responseAggregations[what].buckets ) {
+            debug( 'renderClusters', what, 'not found' );
+            return;
+          }
+
+          debug( 'renderClusters', what, 'have total of', $scope.responseAggregations[what].buckets.length, 'other docs', $scope.responseAggregations[what].sum_other_doc_count )
+
+          angular.forEach($scope.currentMarkers, function( marker ) {
+            marker.setMap(null);
+          });
+
+          // reset markers
+          $scope.currentMarkers = [];
+
+          // reset marker bounds
+          $scope.markerBounds = new google.maps.LatLngBounds();
+
 
           $scope.responseAggregations[what].buckets.forEach( function ( someCluster ) {
 
@@ -858,14 +918,19 @@
 
           } )
 
-          console.log("setting center");
-
           // Center on markers and then zoom out one level, so nothing is on the border.
-          map.fitBounds($scope.markerBounds);
-          map.setCenter($scope.markerBounds.getCenter());
-          //map.setZoom( ( map.getZoom() - 1 ) );
+          if( options.recenter ) {
 
-          //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+            debug("renderClusters", 'setting center');
+
+            map.fitBounds($scope.markerBounds);
+
+            // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
+            //map.setCenter($scope.markerBounds.getCenter());
+            //map.setZoom( ( map.getZoom() - 1 ) );
+
+            //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+          }
 
         });
 
@@ -922,9 +987,49 @@
               "color": "blue"
             },
           },
-
+          "subdivision" : {
+            "terms" : {
+              "field" : "tax_input.subdivision", "size": 100 },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "elementary_school" : {
+            "terms" : { "field" : "tax_input.elementary_school", "size": 50  },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "middle_school" : {
+            "terms" : { "field" : "tax_input.middle_school", "size": 50  },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "high_school" : {
+            "terms" : { "field" : "tax_input.high_school", "size": 50  },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
           "location_city" : {
-            "terms" : { "field" : "tax_input.location_city" },
+            "terms" : { "field" : "tax_input.location_city", "size": 50  },
+            "aggs" : {
+              "centroid" : {
+                "geo_centroid" : { "field" : "_system.location" }
+              }
+            }
+          },
+          "location_zip" : {
+            "terms" : { "field" : "tax_input.location_zip", "size": 100  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
@@ -932,55 +1037,11 @@
             }
           },
           "location_county" : {
-            "terms" : { "field" : "tax_input.location_county" },
+            "terms" : { "field" : "tax_input.location_county", "size": 50  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
               }
-            }
-          },
-          "listing_type" : {
-            "terms" : { "field" : "tax_input.listing_type" },
-            "aggs" : {
-              "centroid" : {
-                "geo_centroid" : { "field" : "_system.location" }
-              }
-            }
-          },
-
-          "per_ring": {
-            "geohash_grid": {
-              "field":    "_system.location",
-              "precision":  5
-            }
-          },
-
-          "zoomedInView" : {
-            "filter" : {
-              "geo_bounding_box" : {
-                "_system.location" : {
-                  //"top_left" : "35.91291457333075, 35.69015383060772",
-                  "top_left" : "sy3kk1szbu7x",
-                  //"bottom_right" : "-78.97568676620722, -78.42431042343378"
-                  "bottom_right" : "43bnxqvjm0gt"
-                }
-              }
-            },
-            "aggregations":{
-              "zoom1": {
-                "geohash_grid" : {
-                  "field":"_system.location",
-                  "precision":4,
-                  "size": 50
-                }
-              },
-              "zoom2": {
-                "geohash_grid" : {
-                  "field":"_system.location",
-                  "precision":10,
-                  "size": 50
-                }
-              },
             }
           }
         };
@@ -1033,16 +1094,7 @@
 
             }
 
-            // Get properties by request, once map is fully loaded.
-            NgMap.getMap().then(function (map) {
-              debug( 'getPropertiesResponse', "binding idle event" );
-
-              google.maps.event.addListenerOnce(map, 'idle', function renderCluserOnceIdle() {
-                debug('renderCluserOnceIdle');
-                $scope.clusterBy( 'location_county' )
-              });
-
-            });
+            $scope.renderClusters( 'location_county' )
 
             //google.maps.Marker
             $scope.col_changed();
