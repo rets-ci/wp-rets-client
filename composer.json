@@ -72,6 +72,7 @@
     "docker": {
       "scripts": {
         "start": [
+          "ln -sf /var/www/wp-content/static/git-hooks/post-merge.sh /var/www/.git/hooks/post-merge",
           "#ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
           "#ln -sf /var/www/wp-content/static/etc/php5/fpm/php.ini  /etc/php5/fpm/php.ini",
           "#ln -sf /var/www/wp-content/static/etc/php5/fpm/php-fpm.conf  /etc/php5/fpm/php-fpm.conf",
