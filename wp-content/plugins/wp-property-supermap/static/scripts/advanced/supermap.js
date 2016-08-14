@@ -73,6 +73,10 @@
           debug( 'mapEvent', 'bounds_changed' );
         });
 
+        google.maps.event.addListenerOnce(map, 'idle', function () {
+          debug( 'mapEvent', 'idle' );
+        });
+
         google.maps.event.addListener(map, 'resize', function () {
           debug( 'mapEvent', 'resize' );
         });
@@ -666,6 +670,10 @@
         }
       };
 
+      $scope.responseHits = [];
+      $scope.responseAggregations = [];
+      $scope.currentMarkers = [];
+
       /**
        *
        * @returns {number}
@@ -687,7 +695,7 @@
        * @type {$.es.Client|*}
        */
       var client = new jQuery.es.Client({
-        hosts: 'dori-us-east-1.searchly.com'
+        hosts: window.location.hostname //'dori-us-east-1.searchly.com'
       });
 
       /**
@@ -795,6 +803,75 @@
       }
 
       /**
+       * Draw clusters by an aggregation and zoom/center on them. If already have markers, clear them.
+       *
+       * $scope.clusterBy( 'location_county' )
+       * $scope.clusterBy( 'location_city' )
+       *
+       * @param what
+       */
+      $scope.clusterBy = function clusterBy( what ) {
+        debug( 'clusterBy', what )
+
+        if( !$scope.responseAggregations[ what ] || !$scope.responseAggregations[what].buckets ) {
+          debug( 'clusterBy', what, 'not found' );
+          return;
+        }
+
+        angular.forEach($scope.currentMarkers, function( marker ) {
+          marker.setMap(null);
+        });
+
+        // reset markers
+        $scope.currentMarkers = [];
+
+        // reset marker bounds
+        $scope.markerBounds = new google.maps.LatLngBounds();
+
+        NgMap.getMap().then(function (map) {
+
+          $scope.responseAggregations[what].buckets.forEach( function ( someCluster ) {
+
+            // detect geohash
+            if( someCluster.centroid ) {
+              someCluster._position = { lat: someCluster.centroid.location.lat, lng: someCluster.centroid.location.lon };
+            } else {
+              someCluster._position = decodeGeoHash( someCluster.key )
+            }
+
+            // debug( 'someCluster', someCluster, someCluster.key, someCluster.doc_count );
+
+            var marker = new google.maps.Marker( {
+              position: someCluster._position,
+              map: map,
+              icon: {
+                url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                size: new google.maps.Size( 60, 60 )
+              },
+              title: "Total " + someCluster.doc_count + " " + someCluster.key
+            } );
+
+            // add marker to bounds.
+            $scope.currentMarkers.push( marker );
+
+            $scope.markerBounds.extend(marker.getPosition());
+
+          } )
+
+          console.log("setting center");
+
+          // Center on markers and then zoom out one level, so nothing is on the border.
+          map.fitBounds($scope.markerBounds);
+          map.setCenter($scope.markerBounds.getCenter());
+          //map.setZoom( ( map.getZoom() - 1 ) );
+
+          //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+
+        });
+
+      }
+
+      /**
        * toggle search filter button loading icon and search icon
        */
       $scope.toggleSearchButton = function () {
@@ -836,7 +913,6 @@
 
         // Geohashes of precision 5 are approximately 5km x 5km.
 
-
         $scope.aggregations = {
           "titles": {
             "terms": {
@@ -869,6 +945,13 @@
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
               }
+            }
+          },
+
+          "per_ring": {
+            "geohash_grid": {
+              "field":    "_system.location",
+              "precision":  5
             }
           },
 
@@ -921,6 +1004,8 @@
             jQuery( '.sm-search-layer', ngAppDOM ).show();
 
             $scope.loaded = true;
+            $scope.responseHits = response.hits.hits;
+            $scope.responseAggregations = response.aggregations;
 
             if( typeof response.hits.hits == 'undefined' ) {
               debug( 'Error occurred during getting properties data.' );
@@ -943,64 +1028,22 @@
               }else{
                 if( ! $scope.loadNgMapChangedEvent ) {
                   $scope.loadNgMapChangedEvent = true;
-                  $scope.addMapChanged();
+                  // why do this? doesn't it search again?
+                  //$scope.addMapChanged();
                 }
                 search_form.removeClass('mapChanged');
               }
 
             }
 
-
+            // Get properties by request, once map is fully loaded.
             NgMap.getMap().then(function (map) {
+              debug( 'getPropertiesResponse', "binding idle event" );
 
-              response.aggregations.zoomedInView.zoom1.buckets.forEach( function ( someCluster ) {
-return;
-                var position = decodeGeoHash( someCluster.key )
-                debug( 'someCluster', someCluster, position );
-
-                var marker = new google.maps.Marker( {
-                  position: position,
-                  map: map,
-                  icon: {
-                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                    size: new google.maps.Size( 60, 60 )
-                  },
-                  title: "Total " + someCluster.doc_count
-                } );
-
-                console.log( 'marker', marker );
-
-              } )
-
-              response.aggregations.location_county.buckets.forEach( function ( someCluster ) {
-
-                ///var position = decodeGeoHash( someCluster.key )
-
-                debug( 'someCluster', someCluster, someCluster.key, someCluster.doc_count );
-
-                var marker = new google.maps.Marker( {
-                  position: { lat: someCluster.centroid.location.lat, lng: someCluster.centroid.location.lon },
-                  map: map,
-                  icon: {
-                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                    size: new google.maps.Size( 60, 60 )
-                  },
-                  title: "Total " + someCluster.doc_count + " " + someCluster.key
-                } );
-
-                // add marker to bounds.
-                $scope.markerBounds.extend(marker.getPosition());
-
-                console.log( 'marker', marker );
-
-              } )
-
-              console.log("setting center");
-
-              map.fitBounds($scope.markerBounds);
-              map.setCenter($scope.markerBounds.getCenter());
-
-              //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+              google.maps.event.addListenerOnce(map, 'idle', function renderCluserOnceIdle() {
+                debug('renderCluserOnceIdle');
+                $scope.clusterBy( 'location_county' )
+              });
 
             });
 
@@ -1512,7 +1555,6 @@ return;
 
       }, false);
 
-      // Get properties by request
       $scope.getProperties();
 
     }
