@@ -923,10 +923,12 @@
               //labelContent: someCluster.doc_count,
               labelClass: "wpp-listing-label",
               labelInBackground: false,
-              //icon: {url: 'https://storage.googleapis.com/media.reddoorcompany.com/2015/11/153d7999-9627ffcd-rdc-pin-24x32.png', size: new google.maps.Size( 60, 60 )},
-              icon: {url: 'https://ssl.cdn-redfin.com/v118.3.1/corvstatic/customer-pages/en/a614cab4ee42b3a7711f765e9825d00b.gif', size: new google.maps.Size( 60, 60 )},
+              icon: { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAIUlEQVR42mP8X89AEWAcNWDUgFEDRg0YNWDUgFEDhpsBAGYoL+EqzeKXAAAAAElFTkSuQmCC',  size: new google.maps.Size( 20, 20 ) },
+              labelContent: '<i class="icon-home"></i>',
+              labelAnchor: new google.maps.Point(10, 20),
               someProperty: someProperty
             } );
+
 
             google.maps.event.addListener(marker, 'click', listingMarkerClick )
 
@@ -994,6 +996,8 @@
         debug( 'listingMarkerClick', this.someProperty );
 
         $scope.currentProperty = this.someProperty;
+
+        this.set('labelClass', 'wpp-listing-label wpp-listing-visited');
 
         //$scope.propertiesTableCollection
         // $scope.selectRow($scope.propertiesTableCollection[2]);
@@ -1488,6 +1492,7 @@
        */
       $scope.selectRow = function selectRow(row) {
         debug( 'selectRow', row._id );
+
 
         for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
           $scope.properties[i].isSelected = false;

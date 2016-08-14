@@ -12,9 +12,30 @@ use \UsabilityDynamics\RDC\Utils;
 
 ?>
 <style>
+
+  .icon-home {
+    font-size: 14px;
+  }
+
+  .wpp-listing-label {
+    color: white;
+    background-color: #d03528;
+    padding: 2px 3px;
+    border-radius: 6px;
+  }
+
+  .wpp-listing-label.wpp-listing-visited {
+    background-color: #e8655b;
+  }
+
+  .wpp-listing-label.wpp-listing-favorited {
+    background-color: #3f51b5;
+  }
+
   .wpp-cluster-label {
     color: #FFF;
   }
+
   .wpp-advanced-supermap {
     height: 600px;
     display: block !important;
