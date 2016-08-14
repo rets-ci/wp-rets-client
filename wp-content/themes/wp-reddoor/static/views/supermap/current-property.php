@@ -23,7 +23,7 @@
         </div>
         <ul>
           <li class="sm-current-property-price" ng-bind-template="{{currentProperty._source.tax_input.price[0] | currency : '$' : 0}}"></li>
-          <li class="sm-current-property-title"><a target="_blank" href="/?p={{currentProperty._id}}" ng-bind-template="{{currentProperty._source.post_title}}"></a></li>
+          <li class="sm-current-property-title"><a target="_blank" href="/listing/{{currentProperty._id}}" ng-bind-template="{{currentProperty._source.post_title}}"></a></li>
         </ul>
         <ul class="sm-current-property-stats">
           <li class="beds" ng-bind-html="currentProperty.current_bedrooms"></li>

@@ -901,14 +901,35 @@
 
             // debug( 'someCluster', someCluster, someCluster.key, someCluster.doc_count );
 
-            var marker = new google.maps.Marker( {
+            var _chars = someCluster.doc_count.toString().length
+            var _offset = 0;
+
+            if( _chars === 1 ) {
+              _offset = 2;
+            }
+
+            if( _chars === 2 ) {
+              _offset = 6;
+            }
+
+            if( _chars === 3 ) {
+              _offset = 9;
+            }
+
+            var marker = new MarkerWithLabel( {
               position: someCluster._position,
               map: map,
-              icon: {
-                url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                size: new google.maps.Size( 60, 60 )
-              },
-              title: "Total " + someCluster.doc_count + " " + someCluster.key
+              draggable: false,
+              raiseOnDrag: true,
+              title: someCluster.doc_count + " listings in " + someCluster.key + ' ' + (what).replace('location_', ''),
+              labelContent: someCluster.doc_count,
+
+              // @todo Adjust offset based on length onf labelContent
+              // the higher the first number the further to left it goes. the higher the second number the higher it goes
+              labelAnchor: new google.maps.Point( _offset, 38),
+              labelClass: "wpp-cluster-label",
+              labelInBackground: false,
+              icon: {url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png', size: new google.maps.Size( 60, 60 )},
             } );
 
             // add marker to bounds.

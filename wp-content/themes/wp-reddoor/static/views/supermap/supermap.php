@@ -12,6 +12,9 @@ use \UsabilityDynamics\RDC\Utils;
 
 ?>
 <style>
+  .wpp-cluster-label {
+    color: #FFF;
+  }
   .wpp-advanced-supermap {
     height: 600px;
     display: block !important;
@@ -159,7 +162,7 @@ use \UsabilityDynamics\RDC\Utils;
               <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && haveImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
-                    <a target="_blank" href="/?p={{row._id}}">
+                    <a target="_blank" href="/listing/{{row._id}}">
                       <div class="sm-current-property-thumb" ng-style="{'background-image':'url('+row.images[0].url+')'}">
                         <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{row.data_source_logo}}" />
                       </div>
@@ -174,7 +177,7 @@ use \UsabilityDynamics\RDC\Utils;
                       </div>
                       <ul>
                         <li class="sm-current-property-price" ng-bind-template="{{row._source.tax_input.price[0] | currency : '$' : 0}}"></li>
-                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></a></li>
+                        <li class="sm-current-property-title"><a target="_blank" href="/listing/{{row._id}}" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
                         <li class="beds" ng-bind-html="row.current_bedrooms"></li>
