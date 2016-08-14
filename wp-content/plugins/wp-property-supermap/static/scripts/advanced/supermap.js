@@ -19,74 +19,6 @@
     for (var a in obj) return a;
   }
 
-
-  function triggerClusterClick() {
-    console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_, this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.type );
-
-    var markerClusterer = this.cluster_.getMarkerClusterer();
-
-    if( this.cluster_.clusterIcon_.text_ < 500 ) {
-      console.log( 'triggerClusterClick' , 'rendering properties' );
-      $scope.clusterMarkerClick.call(this);
-      return;
-    } else {
-      console.log( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
-    }
-
-    // Trigger the clusterclick event.
-    google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
-
-    if (markerClusterer.isZoomOnClick()) {
-      console.log( 'triggerClusterClick', 'zoom click' );
-      // Zoom into the cluster.
-      this.map_.fitBounds(this.cluster_.getBounds());
-    }
-
-  };
-
-  function MarkerClustererCalculator(markers, numStyles){
-    // debug( 'MarkerClustererCalculator', markers.length );
-
-    var index = 0;
-    var title = "";
-    var count = markers.length.toString();
-
-    var dv = count;
-    while (dv !== 0) {
-      dv = parseInt(dv / 10, 10);
-      index++;
-    }
-
-    index = Math.min(index, numStyles);
-
-    var _total_count = 0;
-    var _label = [];
-    var _type = null;
-
-    angular.forEach(markers, function eachMarker( marker ) {
-      // debug( 'MarkerClustererCalculator eachMarker someCluster.key', marker.someCluster.key );
-      _total_count =  _total_count + parseInt( marker.labelContent )
-      _label.push(marker.someCluster.key);
-      _type = marker.someCluster.type;
-    });
-
-    // 5700 listings in Wake,Johnston,Durham,Franklin,Clay,Misc location_county
-    title = _total_count + ' listings in ' + _label.join( ', ' ) + ' ' + _type;
-
-    // debug( 'MarkerClustererCalculator', 'title', title );
-
-    return {
-      text: _total_count,
-      doc_count: _total_count,
-      index: index,
-      title: title,
-      keys: _label,
-      type: _type
-    };
-
-  };
-
-
   /**
    *
    * @param options
@@ -140,9 +72,10 @@
         map.setOptions({
           center: new google.maps.LatLng( 35.7796, -78.6382 ),
           minZoom: 8,
-          //maxZoom: 12,
+          maxZoom: 12,
           zoom: 5
         });
+
 
         google.maps.event.addListener(map, 'bounds_changed', function () {
           debug( 'mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng() );
@@ -1041,11 +974,6 @@
         // reset markers
         $scope.currentClusterMarkers = [];
 
-        // hide superclusters
-        if( $scope.markerClusterer ) {
-          $scope.markerClusterer.clearMarkers()
-        }
-
       }
 
       $scope.hideListings = function hideListings( options ) {
@@ -1054,9 +982,6 @@
         angular.forEach($scope.currentListingMarkers, function( marker ) {
           marker.setMap(null);
         });
-
-        console.log( "Removing", jQuery(".wpp-listing-label").length, "label elements." );
-        jQuery(".wpp-listing-label").remove();
 
         // reset markers
         $scope.currentListingMarkers = [];
@@ -1068,7 +993,7 @@
        * @param event
        */
       function listingMarkerClick(event) {
-        debug( 'listingMarkerClick', this.someProperty._id );
+        debug( 'listingMarkerClick', this.someProperty );
 
         $scope.currentProperty = this.someProperty;
 
@@ -1084,7 +1009,7 @@
        * Called from two different contexts - an aggregation cluster or a master cluster
        * @param event
        */
-      $scope.clusterMarkerClick = function clusterMarkerClick(event) {
+      function clusterMarkerClick(event) {
 
         if( this.someCluster ) {
           debug( 'clusterMarkerClick', this.someCluster.type, this.someCluster.key, this.someCluster.doc_count );
@@ -1093,9 +1018,6 @@
         } else {
           debug( "ERROR!", 'what the hell did you click?', this )
         }
-
-        
-
 
 
         // @todo Fetch and render listings for key/keys
@@ -1198,7 +1120,7 @@
               icon: {url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png', size: new google.maps.Size( 60, 60 )},
             } );
 
-            google.maps.event.addListener(marker, 'click', $scope.clusterMarkerClick )
+            google.maps.event.addListener(marker, 'click', clusterMarkerClick )
 
             // add marker to bounds.
             $scope.currentClusterMarkers.push( marker );
@@ -1252,14 +1174,33 @@
 
         MarkerClusterer.prototype.calculator_ = MarkerClustererCalculator;
 
-        ClusterIcon.prototype.triggerClusterClick = triggerClusterClick;
+        ClusterIcon.prototype.triggerClusterClick = function() {
+          console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_, this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.type );
+
+          var markerClusterer = this.cluster_.getMarkerClusterer();
+
+          if( this.cluster_.clusterIcon_.text_ < 500 ) {
+            console.log( 'triggerClusterClick' , 'rendering properties' );
+            clusterMarkerClick.call(this);
+            return;
+          } else {
+            console.log( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
+          }
+
+          // Trigger the clusterclick event.
+          google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
+
+          if (markerClusterer.isZoomOnClick()) {
+            console.log( 'triggerClusterClick', 'zoom click' );
+            // Zoom into the cluster.
+            this.map_.fitBounds(this.cluster_.getBounds());
+          }
+
+        };
+
 
         NgMap.getMap().then(function (map) {
           $scope.markerClusterer = new MarkerClusterer( map, $scope.currentClusterMarkers, {
-            // the higer the number the less clusters on screen.
-            gridSize: 80,
-            minimumClusterSize: 2,
-            maxZoom: null,
             styles: [
               {
                 textColor: 'white',
@@ -1284,16 +1225,6 @@
 
         });
 
-
-      }
-
-      /**
-       * Visual indicator that terms have change.d
-       *
-       */
-      $scope.termsChanged= function termsChanged() {
-
-        // jQuery('.sm-search-filter').addClass('action-pulsate')
 
       }
 
@@ -1336,7 +1267,6 @@
         search_form.addClass('processing');
 
         $scope.toggleSearchButton();
-
 
         // Geohashes of precision 5 are approximately 5km x 5km.
 
@@ -1457,11 +1387,9 @@
             // Over 500 listings, we only show cluster
             if( $scope.total > 500 ) {
               $scope.hideListings();
-              $scope.hideListings();
               $scope.renderClusters( $scope.clusterTerm )
             } else {
               $scope.hideClusters();
-              $scope.hideListings();
               $scope.renderListings()
             }
 
@@ -1557,24 +1485,7 @@
         return true;
       }
 
-      $scope.hoverRow = function hoverRow(row) {
-        debug( 'hoverRow', row._id );
-
-        angular.forEach($scope.currentListingMarkers, function findMarker( someMarker ) {
-
-          var _original = someMarker.get( 'labelClass' ).replace( 'wpp-listing-hover', '' );
-
-          if( someMarker.someProperty._id === row._id ) {
-            someMarker.set('labelClass', 'wpp-listing-label wpp-listing-hover' );
-          } else {
-            someMarker.set('labelClass', _original );
-          }
-
-        });
-
-      }
-
-        /**
+      /**
        * Fixes selected Row.
        *
        * @param row
@@ -1582,13 +1493,6 @@
       $scope.selectRow = function selectRow(row) {
         debug( 'selectRow', row._id );
 
-        angular.forEach($scope.currentListingMarkers, function findMarker( someMarker ) {
-
-          if( someMarker.someProperty._id === row._id ) {
-            someMarker.set('labelClass', 'wpp-listing-label wpp-listing-active');
-          }
-
-        });
 
         for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
           $scope.properties[i].isSelected = false;
@@ -1615,10 +1519,9 @@
         }
       }, true );
 
-      var selectOpions = {
+      var $select = jQuery('.termsSelection').select2({
         placeholder: 'Search',
-        tags: true,
-        maximumSelectionLength: 4,
+        maximumSelectionLength: 1,
         minimumInputLength: 3,
         data: [],
         query: function selectQuery(query) {
@@ -1770,25 +1673,15 @@
                 // DESC -> b.length - a.length
                 return a.children.length - b.children.length;
               });
-
               query.callback({ results: data });
-
             });
-
           } else {
             jQuery('.select2-dropdown').addClass("hide");
             query.callback({ results: data });
           }
         },
-      };
-
-      var $select = jQuery('.termsSelection').select2(selectOpions);
-
-      $select.on('select2:select', function onSelect(e) {
-        debug('onSelect', $select.select2('data'));
-
+      }).on('select2:select', function(e) {
         var data = $select.select2('data');
-
         if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
           window.location.href= data[0].permalink;
         } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
@@ -1800,18 +1693,11 @@
         } else {
           $scope.map_filter_taxonomy = data[0].taxonomy;
         }
-
         $scope.$apply();
-      });
-
-      $select.on('select2:selecting_', function onSelecting(e) {
-        debug('onSelecting', $select.select2('val') );
-
-        $select.select2( 'val', {} );
+      }).on('select2:selecting', function(e) {
         if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-          // $select.select2( 'val', {} );
+          $select.select2( 'val', {} );
         }
-
       });
 
       if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
@@ -1969,6 +1855,48 @@
       $scope.getProperties();
 
     }
+
+    function MarkerClustererCalculator(markers, numStyles){
+      // debug( 'MarkerClustererCalculator', markers.length );
+
+      var index = 0;
+      var title = "";
+      var count = markers.length.toString();
+
+      var dv = count;
+      while (dv !== 0) {
+        dv = parseInt(dv / 10, 10);
+        index++;
+      }
+
+      index = Math.min(index, numStyles);
+
+      var _total_count = 0;
+      var _label = [];
+      var _type = null;
+
+      angular.forEach(markers, function eachMarker( marker ) {
+        // debug( 'MarkerClustererCalculator eachMarker someCluster.key', marker.someCluster.key );
+        _total_count =  _total_count + parseInt( marker.labelContent )
+        _label.push(marker.someCluster.key);
+        _type = marker.someCluster.type;
+      });
+
+      // 5700 listings in Wake,Johnston,Durham,Franklin,Clay,Misc location_county
+      title = _total_count + ' listings in ' + _label.join( ', ' ) + ' ' + _type;
+
+      // debug( 'MarkerClustererCalculator', 'title', title );
+
+      return {
+        text: _total_count,
+        doc_count: _total_count,
+        index: index,
+        title: title,
+        keys: _label,
+        type: _type
+      };
+
+    };
 
     /**
      * Angular Module.

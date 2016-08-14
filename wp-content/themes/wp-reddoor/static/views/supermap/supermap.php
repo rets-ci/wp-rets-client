@@ -13,23 +13,6 @@ use \UsabilityDynamics\RDC\Utils;
 ?>
 <style>
 
-    .select2-container .select2-search__field {
-      line-height: 30px
-    }
-
-    button.sm-search-filter {
-      background-color: #d03528;
-    }
-
-    button.sm-search-filter.action-pulsate {
-      background-color: #e82413;
-      -webkit-transition: background-color 1000ms linear;
-      -moz-transition: background-color 1000ms linear;
-      -o-transition: background-color 1000ms linear;
-      -ms-transition: background-color 1000ms linear;
-      transition: background-color 1000ms linear;
-    }
-
   .icon-home {
     font-size: 14px;
   }
@@ -45,16 +28,8 @@ use \UsabilityDynamics\RDC\Utils;
     background-color: #e8655b;
   }
 
-  .wpp-listing-label.wpp-listing-active {
-    background-color: #e8655b;
-  }
-
-  .wpp-listing-label.wpp-listing-hover {
-    background-color: #bf463b;
-  }
-
   .wpp-listing-label.wpp-listing-favorited {
-    background-color: #368839;
+    background-color: #3f51b5;
   }
 
   .wpp-cluster-label {
@@ -374,7 +349,7 @@ use \UsabilityDynamics\RDC\Utils;
                   </tr>
                   </thead>
                   <tbody>
-                  <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-mouseover="hoverRow(row)" ng-click="selectRow(row)" data-property-id="{{row._id}}">
+                  <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
                     <td class="sm-post-title" ng-show="columns.post_title.enable" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></td>
                     <td class="sm-subdivision" ng-show="columns.subdivision.enable" ng-bind-template="{{row._source.tax_input.subdivision[0]}}"></td>
