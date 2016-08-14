@@ -98,7 +98,7 @@
             return;
           }
 
-          $scope.renderClusters( 'location_city', { recenter: false } )
+          $scope.renderClusters( $scope.clusterTerm, { recenter: false } )
 
           if( map.getZoom() === 10 ) {
             // $scope.renderClusters( 'location_county', { recenter: false } )
@@ -201,6 +201,8 @@
 
       $scope.dynMarkers = [];
 
+
+      $scope.clusterTerm = 'location_city';
 
       $scope.total = 0;
       $scope.loaded = false;
@@ -772,8 +774,10 @@
 
         r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
         r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
-        r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
         r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
+
+        // @todo Use "_system.listed_date" to calculate.
+        r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
 
         if (typeof r._source.tax_input.price_per_sqft!='undefined') {
           r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
@@ -912,6 +916,7 @@
             var marker = new MarkerWithLabel( {
               position: new google.maps.LatLng( _source.tax_input.location_latitude[0], _source.tax_input.location_longitude[0] ),
               map: map,
+              clickable: true,
               draggable: false,
               raiseOnDrag: true,
               title: _source.post_title,
@@ -920,7 +925,10 @@
               labelInBackground: false,
               //icon: {url: 'https://storage.googleapis.com/media.reddoorcompany.com/2015/11/153d7999-9627ffcd-rdc-pin-24x32.png', size: new google.maps.Size( 60, 60 )},
               icon: {url: 'https://ssl.cdn-redfin.com/v118.3.1/corvstatic/customer-pages/en/a614cab4ee42b3a7711f765e9825d00b.gif', size: new google.maps.Size( 60, 60 )},
+              someProperty: someProperty
             } );
+
+            google.maps.event.addListener(marker, 'click', listingMarkerClick )
 
             // add marker to bounds.
             $scope.currentListingMarkers.push( marker );
@@ -979,13 +987,28 @@
       }
 
       /**
+       *
+       * @param event
+       */
+      function listingMarkerClick(event) {
+        debug( 'listingMarkerClick', this.someProperty );
+
+        $scope.currentProperty = this.someProperty;
+
+        //$scope.propertiesTableCollection
+        // $scope.selectRow($scope.propertiesTableCollection[2]);
+
+
+      }
+
+      /**
        * Called from two different contexts - an aggregation cluster or a master cluster
        * @param event
        */
       function clusterMarkerClick(event) {
 
         if( this.someCluster ) {
-          debug( 'clusterMarkerClick', this.someCluster.key, this.someCluster.doc_count );
+          debug( 'clusterMarkerClick', this.someCluster.type, this.someCluster.key, this.someCluster.doc_count );
         } else if( this.cluster_ && this.cluster_.clusterIcon_ ) {
           debug( 'clusterMarkerClick', 'clicked from group of clusters for keys:', this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.doc_count );
         } else {
@@ -1007,6 +1030,8 @@
        * To NOT recenter, to avoid infinite loop:
        * $scope.renderClusters( 'location_city', { recenter: false} )
        *
+       * $scope.renderClusters( 'high_school', { recenter: false} )
+       *
        * ### Notes
        * - ZIP seems to be the tightest group
        *
@@ -1027,6 +1052,9 @@
 
           $scope.hideClusters();
           // $scope.hideListings();
+
+          // change term if new one passed.
+          $scope.clusterTerm = ( $scope.clusterTerm !== what ) ? what : $scope.clusterTerm;
 
           if( !$scope.responseAggregations[ what ] || !$scope.responseAggregations[what].buckets ) {
             debug( 'renderClusters', what, 'not found' );
@@ -1143,7 +1171,7 @@
         MarkerClusterer.prototype.calculator_ = MarkerClustererCalculator;
 
         ClusterIcon.prototype.triggerClusterClick = function() {
-          console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_ );
+          console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_, this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.type );
 
           var markerClusterer = this.cluster_.getMarkerClusterer();
 
@@ -1355,7 +1383,7 @@
             // Over 500 listings, we only show cluster
             if( $scope.total > 500 ) {
               $scope.hideListings();
-              $scope.renderClusters( 'location_city' )
+              $scope.renderClusters( $scope.clusterTerm )
             } else {
               $scope.hideClusters();
               $scope.renderListings()
@@ -1859,7 +1887,8 @@
         doc_count: _total_count,
         index: index,
         title: title,
-        keys: _label
+        keys: _label,
+        type: _type
       };
 
     };

@@ -341,7 +341,7 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" ng-bind-template="{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}"></td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable" ng-bind-template="{{row._source.tax_input.sale_type[0]}}"></td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable" ng-bind-template="{{row._source.tax_input.added[0]}}"></td>
-                    <td class="sm-days" ng-show="columns.available_date.enable" ng-bind-template="{{row._source._system.available_date[0]}}"></td>
+                    <td class="sm-days" ng-show="columns.available_date.enable" ng-bind-template="{{row._source._system.available_date}}"></td>
                   </tr>
                   </tbody>
                   <tfoot>
