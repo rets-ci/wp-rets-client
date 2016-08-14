@@ -76,6 +76,7 @@
           zoom: 5
         });
 
+
         google.maps.event.addListener(map, 'bounds_changed', function () {
           debug( 'mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng() );
 
@@ -97,12 +98,14 @@
             return;
           }
 
+          $scope.renderClusters( 'location_city', { recenter: false } )
+
           if( map.getZoom() === 10 ) {
-            $scope.renderClusters( 'location_county', { recenter: false } )
+            // $scope.renderClusters( 'location_county', { recenter: false } )
           }
 
           if( map.getZoom() === 11 ) {
-            $scope.renderClusters( 'location_city', { recenter: false } )
+            // $scope.renderClusters( 'location_city', { recenter: false } )
           }
 
         });
@@ -196,6 +199,9 @@
       //debug( '$scope.atts', $scope.atts );
       //debug( '$scope.query', $scope.query );
 
+      $scope.dynMarkers = [];
+
+
       $scope.total = 0;
       $scope.loaded = false;
       $scope.error = false;
@@ -217,7 +223,7 @@
       $scope.tax_must_query = window.sm_must_tax_query || {};
 
       // set default date. will move this somewher better.
-      $scope.current_filter.date_available = $scope.current_filter.date_available || $scope.getAvailabilityDate();
+      $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
 
       $scope.view = {
         mode: {
@@ -298,7 +304,7 @@
           label: 'Days',
           enable: 0
         },
-        date_available: {
+        available_date: {
           label: 'Aavailable',
           enable: 0
         },
@@ -896,7 +902,10 @@
 
           debug( 'renderListings', 'have total of', $scope.properties.length, 'listings.' )
 
-          angular.forEach( $scope.properties, function eachProperty( someProperty ){
+          //$scope.hideClusters();
+          //$scope.hideListings();
+
+          angular.forEach( $scope.properties, function eachProperty( someProperty ) {
 
             var _source = someProperty._source;
 
@@ -928,15 +937,63 @@
             }, 200 );
 
             // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
-            //map.setCenter($scope.clusterMarkerBounds.getCenter());
+            //map.setCenter($scope.listingMarkerBounds.getCenter());
             //map.setZoom( ( map.getZoom() - 1 ) );
 
-            //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
           }
 
 
 
         });
+
+      }
+
+      /**
+       *
+       * $scope.hideClusters();
+       *
+       * @param options
+       */
+      $scope.hideClusters = function hideClusters( options ) {
+        debug( 'hideClusters' );
+
+        angular.forEach($scope.currentClusterMarkers, function( marker ) {
+          marker.setMap(null);
+        });
+
+        // reset markers
+        $scope.currentClusterMarkers = [];
+
+      }
+
+      $scope.hideListings = function hideListings( options ) {
+        debug( 'hideListings' );
+
+        angular.forEach($scope.currentListingMarkers, function( marker ) {
+          marker.setMap(null);
+        });
+
+        // reset markers
+        $scope.currentListingMarkers = [];
+
+      }
+
+      /**
+       * Called from two different contexts - an aggregation cluster or a master cluster
+       * @param event
+       */
+      function clusterMarkerClick(event) {
+
+        if( this.someCluster ) {
+          debug( 'clusterMarkerClick', this.someCluster.key, this.someCluster.doc_count );
+        } else if( this.cluster_ && this.cluster_.clusterIcon_ ) {
+          debug( 'clusterMarkerClick', 'clicked from group of clusters for keys:', this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.doc_count );
+        } else {
+          debug( "ERROR!", 'what the hell did you click?', this )
+        }
+
+
+        // @todo Fetch and render listings for key/keys
 
       }
 
@@ -968,19 +1025,15 @@
             return;
           }
 
+          $scope.hideClusters();
+          // $scope.hideListings();
+
           if( !$scope.responseAggregations[ what ] || !$scope.responseAggregations[what].buckets ) {
             debug( 'renderClusters', what, 'not found' );
             return;
           }
 
           debug( 'renderClusters', what, 'have total of', $scope.responseAggregations[what].buckets.length, 'other docs', $scope.responseAggregations[what].sum_other_doc_count )
-
-          angular.forEach($scope.currentClusterMarkers, function( marker ) {
-            marker.setMap(null);
-          });
-
-          // reset markers
-          $scope.currentClusterMarkers = [];
 
           // reset marker bounds
           $scope.clusterMarkerBounds = new google.maps.LatLngBounds();
@@ -1011,13 +1064,21 @@
               _offset = 9;
             }
 
+            if( _chars === 4 ) {
+              _offset = 12;
+            }
+
+            someCluster.type = what;
+
             var marker = new MarkerWithLabel( {
               position: someCluster._position,
               map: map,
               draggable: false,
+              clickable: true,
               raiseOnDrag: true,
               title: someCluster.doc_count + " listings in " + someCluster.key + ' ' + (what).replace('location_', ''),
               labelContent: someCluster.doc_count,
+              someCluster: someCluster,
 
               // @todo Adjust offset based on length onf labelContent
               // the higher the first number the further to left it goes. the higher the second number the higher it goes
@@ -1027,6 +1088,8 @@
               icon: {url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png', size: new google.maps.Size( 60, 60 )},
             } );
 
+            google.maps.event.addListener(marker, 'click', clusterMarkerClick )
+
             // add marker to bounds.
             $scope.currentClusterMarkers.push( marker );
 
@@ -1034,11 +1097,15 @@
 
           } )
 
+          $scope.renderSuperClusrers();
+
           // Center on markers and then zoom out one level, so nothing is on the border.
           if( options.recenter ) {
             debug("renderClusters", 'setting center');
 
-            map.fitBounds($scope.clusterMarkerBounds);
+            window.setTimeout(function() {
+              map.fitBounds( $scope.clusterMarkerBounds );
+            }, 200 );
 
             // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
             //map.setCenter($scope.clusterMarkerBounds.getCenter());
@@ -1048,6 +1115,84 @@
           }
 
         });
+
+      }
+
+      /**
+       * Creates "Super Clusters" from regular aggregation clusters. However, they look the same, so user doesn't know any better.
+       * These are only used for grouping our regular Aggregation Clusters. Once one of these is clicked and regular AC are shown, they must be clicked to show actual listings.
+       * 
+       * The non-clustered regular aggregation clusters remain on map.
+       * 
+       * $scope.markerClusterer.clearMarkers();
+       *
+       * map.fitBounds( $scope.clusterMarkerBounds );
+       *
+       * Will redner aggregations, super-cluster them and then hide originals. The aggregated counts ar eoff.
+       * $scope.renderClusters( 'location_city', { recenter: false} )
+       * $scope.renderSuperClusrers();
+       * $scope.hideClusters();
+       *
+       */
+      $scope.renderSuperClusrers = function() {
+
+        if( $scope.markerClusterer ) {
+          $scope.markerClusterer.clearMarkers();
+        }
+
+        MarkerClusterer.prototype.calculator_ = MarkerClustererCalculator;
+
+        ClusterIcon.prototype.triggerClusterClick = function() {
+          console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_ );
+
+          var markerClusterer = this.cluster_.getMarkerClusterer();
+
+          if( this.cluster_.clusterIcon_.text_ < 500 ) {
+            console.log( 'triggerClusterClick' , 'rendering properties' );
+            clusterMarkerClick.call(this);
+            return;
+          } else {
+            console.log( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
+          }
+
+          // Trigger the clusterclick event.
+          google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
+
+          if (markerClusterer.isZoomOnClick()) {
+            console.log( 'triggerClusterClick', 'zoom click' );
+            // Zoom into the cluster.
+            this.map_.fitBounds(this.cluster_.getBounds());
+          }
+
+        };
+
+
+        NgMap.getMap().then(function (map) {
+          $scope.markerClusterer = new MarkerClusterer( map, $scope.currentClusterMarkers, {
+            styles: [
+              {
+                textColor: 'white',
+                url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                height: 60,
+                width: 60
+              },
+              {
+                textColor: 'white',
+                url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                height: 60,
+                width: 60
+              },
+              {
+                textColor: 'white',
+                url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                height: 60,
+                width: 60
+              }
+            ]
+          } );
+
+        });
+
 
       }
 
@@ -1128,7 +1273,7 @@
             }
           },
           "high_school" : {
-            "terms" : { "field" : "tax_input.high_school", "size": 50  },
+            "terms" : { "field" : "tax_input.high_school", "size": 100  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
@@ -1136,7 +1281,7 @@
             }
           },
           "location_city" : {
-            "terms" : { "field" : "tax_input.location_city", "size": 50  },
+            "terms" : { "field" : "tax_input.location_city", "size": 100  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
@@ -1165,7 +1310,7 @@
           index: index,
           type: type,
           method: "GET",
-          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
+          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
         };
 
         $scope._request = client.search( esQuery, function getPropertiesResponse( error, response ) {
@@ -1209,9 +1354,11 @@
 
             // Over 500 listings, we only show cluster
             if( $scope.total > 500 ) {
-              $scope.renderClusters( 'location_county' )
+              $scope.hideListings();
+              $scope.renderClusters( 'location_city' )
             } else {
-              $scope.renderListings( )
+              $scope.hideClusters();
+              $scope.renderListings()
             }
 
             //google.maps.Marker
@@ -1676,6 +1823,47 @@
 
     }
 
+    function MarkerClustererCalculator(markers, numStyles){
+      // debug( 'MarkerClustererCalculator', markers.length );
+
+      var index = 0;
+      var title = "";
+      var count = markers.length.toString();
+
+      var dv = count;
+      while (dv !== 0) {
+        dv = parseInt(dv / 10, 10);
+        index++;
+      }
+
+      index = Math.min(index, numStyles);
+
+      var _total_count = 0;
+      var _label = [];
+      var _type = null;
+
+      angular.forEach(markers, function eachMarker( marker ) {
+        // debug( 'MarkerClustererCalculator eachMarker someCluster.key', marker.someCluster.key );
+        _total_count =  _total_count + parseInt( marker.labelContent )
+        _label.push(marker.someCluster.key);
+        _type = marker.someCluster.type;
+      });
+
+      // 5700 listings in Wake,Johnston,Durham,Franklin,Clay,Misc location_county
+      title = _total_count + ' listings in ' + _label.join( ', ' ) + ' ' + _type;
+
+      // debug( 'MarkerClustererCalculator', 'title', title );
+
+      return {
+        text: _total_count,
+        doc_count: _total_count,
+        index: index,
+        title: title,
+        keys: _label
+      };
+
+    };
+
     /**
      * Angular Module.
      */
@@ -1769,6 +1957,38 @@
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', supermapController ] );
 
   };
+
+  /**
+   * Experimental.
+   *
+   */
+  function restrictBounds() {
+    var strictBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng( 35.132123, -77.154236 ),
+      new google.maps.LatLng( 36.065613, -79.455872 )
+    );
+
+    google.maps.event.addListener( map, 'dragend', function () {
+      if( strictBounds.contains( map.getCenter() ) ) return;
+
+      // We're out of bounds - Move the map back within the bounds
+      var c = map.getCenter(),
+        x = c.lng(),
+        y = c.lat(),
+        maxX = strictBounds.getNorthEast().lng(),
+        maxY = strictBounds.getNorthEast().lat(),
+        minX = strictBounds.getSouthWest().lng(),
+        minY = strictBounds.getSouthWest().lat();
+
+      if( x < minX ) x = minX;
+      if( x > maxX ) x = maxX;
+      if( y < minY ) y = minY;
+      if( y > maxY ) y = maxY;
+
+      map.setCenter( new google.maps.LatLng( y, x ) );
+    } );
+
+  }
 
   function removeAllBlankOrNull(JsonObj) {
     jQuery.each(JsonObj, function(key, value) {

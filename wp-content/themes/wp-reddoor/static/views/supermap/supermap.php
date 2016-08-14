@@ -153,7 +153,7 @@ use \UsabilityDynamics\RDC\Utils;
               <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
-              <li class="sm-days" ng-show="columns.date_available.enable" st-sort="_source.tax_input.date_available[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::date_available::label", __( 'Available', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-days" ng-show="columns.available_date.enable" st-sort="_source._system.available_date" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::available_date::label", __( 'Available', ud_get_wpp_supermap()->domain ) ); ?></li>
             </ul>
 
             <div class="sm-properties-grid">
@@ -319,7 +319,7 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Days', 'reddoor' ); ?>
                       </div>
                     </th>
-                    <th class="sm-days" ng-show="columns.date_available.enable" st-sort="_source.tax_input.date_available[0]" st-skip-natural="true">
+                    <th class="sm-days" ng-show="columns.available_date.enable" st-sort="_source._system.available_date" st-skip-natural="true">
                       <?php _e( 'Available', 'reddoor' ); ?>
                       <div>
                         <?php _e( 'Available', 'reddoor' ); ?>
@@ -341,7 +341,7 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" ng-bind-template="{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}"></td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable" ng-bind-template="{{row._source.tax_input.sale_type[0]}}"></td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable" ng-bind-template="{{row._source.tax_input.added[0]}}"></td>
-                    <td class="sm-days" ng-show="columns.date_available.enable" ng-bind-template="{{row._source.tax_input.date_available[0]}}"></td>
+                    <td class="sm-days" ng-show="columns.available_date.enable" ng-bind-template="{{row._source._system.available_date[0]}}"></td>
                   </tr>
                   </tbody>
                   <tfoot>
