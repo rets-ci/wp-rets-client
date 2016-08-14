@@ -107,12 +107,20 @@
 
       });
 
+      $scope.getAvailabilityDate = function getAvailabilityDate() {
+        var d = new Date();
+        return  d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + d.getDate();
+      }
+
       function handleResize() {
         debug( 'handleResize' );
 
         clearTimeout( resizeTimer );
         resizeTimer = setTimeout( function () {
+
+
           NgMap.getMap().then(function(map){
+            map.fitBounds($scope.markerBounds);
             google.maps.event.trigger(map, "resize");
           });
         }, 250 );
@@ -195,6 +203,9 @@
       $scope.current_filter = window.sm_current_filter || {};
       $scope.tax_must_query = window.sm_must_tax_query || {};
 
+      // set default date. will move this somewher better.
+      $scope.current_filter.date_available = $scope.current_filter.date_available || $scope.getAvailabilityDate();
+
       $scope.view = {
         mode: {
           table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
@@ -272,6 +283,10 @@
         },
         days_on_market: {
           label: 'Days',
+          enable: 0
+        },
+        date_available: {
+          label: 'Aavailable',
           enable: 0
         },
       };
@@ -732,6 +747,9 @@
        * @param r
        */
       function cast_fields(r) {
+
+        r.has = r.has || {};
+
         r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
         r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
         r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
@@ -746,8 +764,24 @@
         r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
 
         //icon html and template
-        r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
-        r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+        if( r._source.tax_input.total_living_area_sqft[0] ) {
+          r.has.total_living_area = true;
+          r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
+        } else {
+          r.has.total_living_area = false;
+          r.current_total_living_area_sqft = '';
+        }
+
+        r.rets_thumbnail_url = ( r._source.meta_input.rets_thumbnail_url ).toLowerCase().replace('.jpg', '-300x200.jpg');
+
+        if( r._source.tax_input.approximate_lot_size[0] ) {
+          r.has.current_approximate_lot_size = true;
+          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+        } else {
+          r.has.current_approximate_lot_size = false;
+          r.current_approximate_lot_size = '';
+        }
+
         r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
         r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
       }
@@ -1098,7 +1132,6 @@
               if( $scope.properties.length > 0 ) {
                 $scope.currentProperty = $scope.properties[0];
                 $scope.properties[0].isSelected = true;
-                $scope.loadImages($scope.properties[0]);
               }
 
               if ( $scope.total > $scope.properties.length ) {
@@ -1209,50 +1242,6 @@
       }
 
       /**
-       *
-       * @param row
-       */
-      $scope.loadImages = function loadImages( row ) {
-        debug( 'loadImages', row._id );
-
-        if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
-          row._is_loading_images = true;
-          client.get({
-            index: index,
-            type: type,
-            id: row._id,
-            _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
-          }, function (error, response) {
-
-            if ( !error ) {
-
-              row._is_loading_images = false;
-
-              if( typeof response._source.meta_input.rets_media == 'undefined' ) {
-                debug( 'Error occurred during getting properties data.' );
-              } else {
-                row.images = response._source.meta_input.rets_media;
-                $scope.$apply();
-              }
-
-              if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
-                console.log( 'Error occurred during getting properties data.' );
-              } else {
-                row.data_source_logo = response._source.meta_input.data_source_logo;
-                $scope.$apply();
-              }
-
-            } else {
-              console.error(error);
-            }
-
-          });
-        }
-        return true;
-
-      }
-
-      /**
        * Fixes selected Row.
        *
        * @param row
@@ -1264,7 +1253,6 @@
           $scope.properties[i].isSelected = false;
         }
         $scope.currentProperty = row;
-        $scope.loadImages(row);
         row.isSelected = true;
       }
 

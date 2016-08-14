@@ -153,6 +153,7 @@ use \UsabilityDynamics\RDC\Utils;
               <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-days" ng-show="columns.date_available.enable" st-sort="_source.tax_input.date_available[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::date_available::label", __( 'Available', ud_get_wpp_supermap()->domain ) ); ?></li>
             </ul>
 
             <div class="sm-properties-grid">
@@ -211,7 +212,9 @@ use \UsabilityDynamics\RDC\Utils;
             <div class="sm-current-property" ng-show="">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="{{currentProperty._source._permalink}}"><div class="sm-current-property-thumb" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div></div></a>
+                  <a href="{{currentProperty._source._permalink}}">
+                    <div class="sm-current-property-thumb" data-kind="image" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div>
+                    </div></a>
                 </div>
                 <div class="col-md-6">
                   <div class="sm-current-property-details">
@@ -316,6 +319,12 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Days', 'reddoor' ); ?>
                       </div>
                     </th>
+                    <th class="sm-days" ng-show="columns.date_available.enable" st-sort="_source.tax_input.date_available[0]" st-skip-natural="true">
+                      <?php _e( 'Available', 'reddoor' ); ?>
+                      <div>
+                        <?php _e( 'Available', 'reddoor' ); ?>
+                      </div>
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
@@ -332,6 +341,7 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" ng-bind-template="{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}"></td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable" ng-bind-template="{{row._source.tax_input.sale_type[0]}}"></td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable" ng-bind-template="{{row._source.tax_input.added[0]}}"></td>
+                    <td class="sm-days" ng-show="columns.date_available.enable" ng-bind-template="{{row._source.tax_input.date_available[0]}}"></td>
                   </tr>
                   </tbody>
                   <tfoot>

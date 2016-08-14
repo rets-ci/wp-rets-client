@@ -222,6 +222,16 @@ use \UsabilityDynamics\RDC\Utils;
         </div>
 
       </div>
+      <div class="col-md-4 col-sm-4">
+
+        <label><?php _e( 'Available After', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields" click-out="bathrange.click_out($event)">
+
+          <input value="{{current_filter.date_available}}" class="date_available-input"  name="bool[must][13][range][tax_input.date_available][lte]" placeholder="getAvailabilityDate()" type="text" />
+
+        </div>
+
+      </div>
       <div class="col-md-8 col-sm-8">
 
         <div class="rdc-options">
