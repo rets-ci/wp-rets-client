@@ -19,28 +19,39 @@
     for (var a in obj) return a;
   }
 
-
+  /**
+   *
+   */
   function triggerClusterClick() {
-    console.log( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_, this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.type );
+    debug( 'triggerClusterClick' , this.cluster_.clusterIcon_.text_, this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.type );
 
     var markerClusterer = this.cluster_.getMarkerClusterer();
 
     if( this.cluster_.clusterIcon_.text_ < 500 ) {
-      console.log( 'triggerClusterClick' , 'rendering properties' );
+      debug( 'triggerClusterClick' , 'rendering properties' );
       $scope.clusterMarkerClick.call(this);
       return;
     } else {
-      console.log( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
+      debug( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
     }
+
 
     // Trigger the clusterclick event.
-    google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
+    google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_ );
 
-    if (markerClusterer.isZoomOnClick()) {
-      console.log( 'triggerClusterClick', 'zoom click' );
-      // Zoom into the cluster.
-      this.map_.fitBounds(this.cluster_.getBounds());
+    if ( !markerClusterer.isZoomOnClick()) {
+      return;
     }
+
+    // Zoom into the cluster.
+    debug( 'triggerClusterClick', 'zoom click, expanding cluster' );
+
+    this.map_.fitBounds(this.cluster_.getBounds());
+
+    // @todo Hide all other clustesr and marker clustesr, the ones that were not clicked...
+      // angular.forEach( this.cluster_.getMarkers(), function checkEachCluster( someCluster ) {})
+
+
 
   };
 
@@ -159,6 +170,9 @@
 
           $scope.state.lastZoom = map.getZoom();
 
+
+          return;
+
           // do nothing if showing listings
           if( $scope.total < 500 ) {
             $scope.renderListings( { recenter: false } )
@@ -185,6 +199,10 @@
 
         google.maps.event.addListener(map, 'resize', function () {
           debug( 'mapEvent', 'resize' );
+
+          // refit map
+          $scope.recenter_map();
+
         });
 
       });
@@ -195,16 +213,17 @@
       }
 
       function handleResize() {
-        debug( 'handleResize' );
+        debug( 'handleResize', 'scheduling' );
 
         clearTimeout( resizeTimer );
-        resizeTimer = setTimeout( function () {
 
+        resizeTimer = setTimeout( function resizeScheduleExecting() {
+          debug( 'handleResize', 'resizeScheduleExecting' );
 
           NgMap.getMap().then(function(map){
-            map.fitBounds($scope.clusterMarkerBounds);
             google.maps.event.trigger(map, "resize");
           });
+
         }, 250 );
       }
 
@@ -248,6 +267,8 @@
         if( getParameterByName( 'wpp_search[sale_type]' ) ) {
           $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
         }
+
+        $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
 
         debug( 'setFiltersFromQuery', '$scope.current_filter', $scope.current_filter );
 
@@ -986,6 +1007,7 @@
               position: new google.maps.LatLng( _source.tax_input.location_latitude[0], _source.tax_input.location_longitude[0] ),
               map: map,
               clickable: true,
+              // visible: false,
               draggable: false,
               raiseOnDrag: true,
               title: _source.post_title,
@@ -997,7 +1019,6 @@
               labelAnchor: new google.maps.Point(10, 20),
               someProperty: someProperty
             } );
-
 
             google.maps.event.addListener(marker, 'click', listingMarkerClick )
 
@@ -1011,9 +1032,11 @@
           if( options.recenter ) {
             debug("renderListings", 'setting center');
 
+            // Fit and zoom-in a bit.
             window.setTimeout(function() {
               map.fitBounds($scope.listingMarkerBounds);
-            }, 200 );
+              map.setZoom( ( map.getZoom() + 1 ) );
+            }, 400 );
 
             // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
             //map.setCenter($scope.listingMarkerBounds.getCenter());
@@ -1042,10 +1065,13 @@
         }
 
         angular.forEach($scope.currentClusterMarkers, function( marker ) {
+          // debug( 'clearClusterMarkers', 'removing', marker.title );
+          marker.setVisible(false);
+          delete marker.labelContent;
           marker.setMap(null);
         });
 
-        console.log( "Removing", jQuery(".wpp-cluster-label").length, "cluste marker elements." );
+        debug( "Removing", jQuery(".wpp-cluster-label").length, "cluster marker elements." );
 
         jQuery(".wpp-cluster-label").remove();
 
@@ -1058,6 +1084,9 @@
         debug( 'clearListingMarkers', $scope.currentListingMarkers.length );
 
         angular.forEach($scope.currentListingMarkers, function( marker ) {
+          // debug( 'clearListingMarkers', 'removing', marker.title );
+          marker.setVisible(false);
+          delete marker.labelContent;
           marker.setMap(null);
         });
 
@@ -1095,46 +1124,53 @@
 
         var marker = this;
 
+        var _data = [];
+        var keys = [];
+        var type = null;
+
         if( this.someCluster ) {
           debug( 'clusterMarkerClick', this.someCluster.type, this.someCluster.key, this.someCluster.doc_count );
+
+          keys = [this.someCluster.key];
+          type = this.someCluster.type;
+
         } else if( this.cluster_ && this.cluster_.clusterIcon_ ) {
           debug( 'clusterMarkerClick', 'clicked from group of clusters for keys:', this.cluster_.clusterIcon_.sums_.keys, this.cluster_.clusterIcon_.sums_.doc_count, this.cluster_.clusterIcon_.sums_.type );
 
-
-          var _data = [];
-
-          angular.forEach(this.cluster_.clusterIcon_.sums_.keys, function prepareKey( key ) {
-
-            _data.push({
-              "selected": true,
-              "text": key,
-              "id": key,
-              "taxonomy": marker.cluster_.clusterIcon_.sums_.type
-            });
-
-
-            // $scope.query.bool.must.push({"terms": {'location_city': [key]}})
-
-
-          });
-
-          debug('clusterMarkerClick - data', _data );
-
-          $scope.setup_term_selection( _data );
-
-          // @ghetto Because we are restricted to one taxonomy
-          $scope.map_filter_taxonomy = marker.cluster_.clusterIcon_.sums_.type;
-
-          //$scope.prepare_query();
-
-          //$scope.getProperties();
-
-          jQuery('.sm-search-form form').submit();
-
+          keys = this.cluster_.clusterIcon_.sums_.keys;
+          type = marker.cluster_.clusterIcon_.sums_.type;
 
         } else {
           debug( "ERROR!", 'what the hell did you click?', this )
+          return;
         }
+
+        angular.forEach(keys, function prepareKey( key ) {
+
+          _data.push({
+            "selected": true,
+            "text": key,
+            "id": 'bool[must][][terms][tax_input.' + type + '][]',
+            "title": key,
+            "taxonomy": type
+          });
+
+          // $scope.query.bool.must.push({"terms": {'location_city': [key]}})
+
+        });
+
+        debug('clusterMarkerClick - data', _data );
+
+        $scope.setup_term_selection( _data );
+
+        // @ghetto Because we are restricted to one taxonomy
+        $scope.map_filter_taxonomy = type;
+
+        //$scope.prepare_query();
+
+        //$scope.getProperties();
+
+        jQuery('.sm-search-form form').submit();
 
 
         // @todo Fetch and render listings for key/keys
@@ -1222,6 +1258,7 @@
             var marker = new MarkerWithLabel( {
               position: someCluster._position,
               map: map,
+              visible: false,
               draggable: false,
               clickable: true,
               raiseOnDrag: true,
@@ -1253,8 +1290,18 @@
             debug("renderClusters", 'setting center');
 
             window.setTimeout(function() {
+
+              angular.forEach($scope.currentClusterMarkers, function showNow( marker ) {
+                marker.setVisible(true);
+              });
+
+            }, 100 );
+
+            window.setTimeout(function() {
+
               map.fitBounds( $scope.clusterMarkerBounds );
-            }, 200 );
+
+            }, 400 );
 
             // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
             //map.setCenter($scope.clusterMarkerBounds.getCenter());
@@ -1296,8 +1343,10 @@
         NgMap.getMap().then(function (map) {
           $scope.markerClusterer = new MarkerClusterer( map, $scope.currentClusterMarkers, {
             // the higer the number the less clusters on screen.
-            gridSize: 80,
-            minimumClusterSize: 2,
+            gridSize: 60,
+
+            // at 2, we get raleigh and knighdslale
+            minimumClusterSize: 3,
             maxZoom: null,
             styles: [
               {
@@ -1370,35 +1419,66 @@
           $scope._request.abort();
         }
 
+        // applied in several other places, but shouldn't hurt to do twice
+        $scope.prepare_query();
+
         var search_form = jQuery('.sm-search-form form');
 
         search_form.addClass('processing');
 
         $scope.toggleSearchButton();
 
-
         // Geohashes of precision 5 are approximately 5km x 5km.
 
-        $scope.aggregations = {
-          "titles": {
-            "terms": {
-              "field": "title"
-            },
-            "meta": {
-              "color": "blue"
-            },
+        $scope.aggregationFields = {
+          "elementary_school" : {
+            "title": "Elementary School",
+            "field": "tax_input.elementary_school",
+            "search_field": "_search.elementary_school"
           },
-          "subdivision" : {
-            "terms" : {
-              "field" : "tax_input.subdivision", "size": 100 },
+          "middle_school" : {
+            "title": "Middle School",
+            "field": "tax_input.middle_school",
+            "search_field": "_search.middle_school"
+          },
+          "high_school" : {
+            "title": "High School",
+            "field": "tax_input.high_school",
+            "search_field": "_search.high_school"
+          },
+          "location_city" : {
+            "title": "City",
+            "field": "tax_input.location_city",
+            "search_field": "_search.location_city"
+          },
+          "location_zip" : {
+            "title": "Zip",
+            "field": "tax_input.location_zip",
+            "search_field": "_search.location_zip"
+          },
+          "location_neighborhood" : {
+            "title": "Neighborhood",
+            "field": "_system.addressDetail.neighborhood",
+            "search_field": "_search.location_neighborhood"
+          },
+          "location_county" : {
+            "title": "County",
+            "field": "tax_input.location_county",
+            "search_field": "_search.location_county"
+          }
+        }
+
+        $scope.aggregations = {
+          "elementary_school" : {
+            "terms" : { "field" : "tax_input.elementary_school", "size": 50  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
               }
             }
           },
-          "elementary_school" : {
-            "terms" : { "field" : "tax_input.elementary_school", "size": 50  },
+          "location_neighborhood" : {
+            "terms" : { "field" : "_system.addressDetail.neighborhood", "size": 150  },
             "aggs" : {
               "centroid" : {
                 "geo_centroid" : { "field" : "_system.location" }
@@ -1450,7 +1530,7 @@
         var esQuery = {
           index: index,
           type: type,
-          method: "GET",
+          method: "POST",
           source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
         };
 
@@ -1496,7 +1576,31 @@
             // Over 500 listings, we only show cluster
             if( $scope.total > 500 ) {
               $scope.clearListingMarkers();
+
+              angular.forEach($scope.responseAggregations, function eachAggregation( someAggregation, aggregationName ) {
+                debug( 'getPropertiesResponse', aggregationName, someAggregation.buckets.length, 'and missing', someAggregation.sum_other_doc_count );
+              });
+
+              // use location zip when few cities
+              if( $scope.responseAggregations.location_city.buckets.length < 3 && $scope.responseAggregations.high_school.buckets.length > 2 ) {
+                debug( 'getPropertiesResponse', 'clustering by high_school', $scope.responseAggregations.high_school.buckets.length );
+                $scope.clusterTerm = 'high_school';
+              }
+
+              if( $scope.responseAggregations.location_county.buckets.length >  $scope.responseAggregations.high_school.buckets.length ) {
+                debug( 'getPropertiesResponse', 'clustering by location_conty, more of them than high_school.', $scope.responseAggregations.location_county.buckets.length );
+                $scope.clusterTerm = 'location_county';
+              }
+
+              // otherwise use cities
+              if( $scope.responseAggregations.location_city.buckets.length > 2 ) {
+                debug( 'getPropertiesResponse', 'clustering by location_city', $scope.responseAggregations.location_city.buckets.length );
+                $scope.clusterTerm = 'location_city';
+              }
+
               $scope.renderClusters( $scope.clusterTerm )
+
+
             } else {
               $scope.clearClusterMarkers();
               $scope.clearListingMarkers();
@@ -1583,10 +1687,26 @@
         }
       });
 
-      /**
+      $scope.recenter_map = function recenter_map() {
+        debug( 'recenter_map' );
+
+        // refit map
+        if( $scope.currentClusterMarkers.length && $scope.clusterMarkerBounds ) {
+          //map.fitBounds($scope.clusterMarkerBounds);
+          map.setCenter($scope.clusterMarkerBounds.getCenter());
+        } else if( $scope.currentListingMarkers.length && $scope.listingMarkerBounds ) {
+          //map.fitBounds($scope.listingMarkerBounds);
+          map.setCenter($scope.listingMarkerBounds.getCenter());
+        }
+
+      }
+
+        /**
        * Toogle Search Form
        */
       $scope.toggleSearchForm = function toggleSearchForm() {
+        debug( 'toggleSearchForm' );
+        $scope.recenter_map();
         $scope.searchForm = !$scope.searchForm;
       }
 
@@ -1624,6 +1744,7 @@
 
           if( someMarker.someProperty._id === row._id ) {
             someMarker.set('labelClass', 'wpp-listing-label wpp-listing-active');
+            someMarker.setZIndex();
           }
 
         });
@@ -1653,6 +1774,9 @@
         }
       }, true );
 
+      $scope.term_fields = {
+
+      };
 
       $scope.setup_term_selection = function( data ) {
         debug( 'setup_term_selection' );
@@ -1676,13 +1800,41 @@
                 $scope._request.abort();
               }
 
+              var _source = {
+                "query": {"filtered": {"query": {"match_all": {}}}
+                },
+                "aggregations": {}
+              };
+
+              angular.forEach($scope.aggregationFields, function setField( data, key ) {
+
+                _source.aggregations[ data.title ] = { filter: { terms: { field: {}, size: 100 } , aggs: {} } };
+
+                _source.aggregations[ data.title ]['filter']['terms']['field'][data.search_field] = query.term;
+
+              });
+
+              debug( '_source.aggregations', _source.aggregations );
+
+              var asd = {"aggregations": {
+                  "elementary_school": { "terms": {"field": "tax_input.elementary_school", "size": 100 }, },
+                  "middle_school": { "terms": {"field": "tax_input.middle_school", "size": 100 }, },
+                  "high_school": { "terms": {"field": "tax_input.high_school", "size": 100 }, },
+                  "location_city": { "terms": {"field": "tax_input.location_city", "size": 100 }, },
+                  "location_zip": { "terms": {"field": "tax_input.location_zip", "size": 100 }, },
+                  "location_county": { "terms": {"field": "tax_input.location_county", "size": 100 }, },
+                  //"location_neighborhood": { "terms": {"field": "_search.location_neighborhood", "size": 100 }, }
+                }
+              };
+
               $scope._request = client.search({
                 index: 'v5',
                 type: 'property',
-                method: "GET",
-                source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
+                method: "POST",
+                size: 0,
+                source: JSON.stringify(_source),// '{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
               }, function selectQueryResponse(err, response) {
-                debug( 'selectQueryResponse' );
+                debug( 'selectQueryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
 
                 if( typeof response.hits.hits == 'undefined' ) {
                   query.callback({ results: data });
@@ -1804,7 +1956,7 @@
                 location_street.children.length ? data.push( location_street ) : '';
                 location_zip.children.length ? data.push( location_zip ) : '';
                 location_county.children.length ? data.push( location_county ) : '';
-                subdivision.children.length ? data.push( subdivision ) : '';
+                subdivisionsubdivision.children.length ? data.push( subdivision ) : '';
                 mls_id.children.length ? data.push( mls_id ) : '';
 
                 data.sort(function(a, b){
@@ -1864,6 +2016,11 @@
 
       }
 
+      /**
+       *
+       * @param form_data
+       * @returns {*}
+       */
       $scope.sm_form_data = function sm_form_data( form_data ) {
         debug( 'sm_form_data' );
 
@@ -1880,6 +2037,26 @@
           } );
         }
 
+        debug( 'sm_form_data', 'parsing selection', jQuery('.termsSelection').select2('data') );
+
+        // Get Select2 Options.
+        angular.forEach(jQuery('.termsSelection').select2('data'), function eachSelect( selectData ) {
+          debug( 'eachSelect', selectData.taxonomy, selectData.id );
+
+          var _name = selectData.taxonomy ? ( 'bool[must][][terms][tax_input.' + selectData.taxonomy + '][]' ) : selectData.id;
+
+          if( _name.indexOf( 'bool[must][]' ) === 0 ) {
+            _name =  _name.replace( 'bool[must][]', 'bool[must][' + ( form_data.length ) + ']');
+          }
+
+          form_data.push({
+            name: _name,
+            value: selectData.text
+          });
+
+        });
+
+        debug( 'sm_form_data', 'parsed form elements', form_data );
         return form_data;
 
       };
@@ -1940,7 +2117,7 @@
           return push_counters[key]++;
         };
 
-        var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
+        var form_data = $scope.sm_form_data( jQuery( '.sm-search-form form' ).serializeArray() );
 
         jQuery.each(form_data, function(){
 
@@ -1971,13 +2148,14 @@
           }
 
           formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
+
         });
 
         if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
           formQuery.bool.must_not = [];
         }
 
-        console.log( 'formQuery', formQuery );
+        debug( 'formQuery', formQuery );
 
         $scope.query = formQuery;
 

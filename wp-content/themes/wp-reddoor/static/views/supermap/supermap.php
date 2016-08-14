@@ -32,14 +32,14 @@ use \UsabilityDynamics\RDC\Utils;
     }
 
   .icon-home {
-    font-size: 14px;
+    font-size: 10px;
   }
 
   .wpp-listing-label {
     color: white;
     background-color: #d03528;
     padding: 2px 3px;
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
   .wpp-listing-label.wpp-listing-visited {
