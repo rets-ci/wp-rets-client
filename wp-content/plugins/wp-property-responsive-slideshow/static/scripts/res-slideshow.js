@@ -14,7 +14,12 @@ jQuery(document).ready(function($) {
             };
             return "true" == $img.attr("sizeLoaded") ? (isAllImgLoaded(), $img) : ($("<img />").load(function() {
                 var width = this.width, height = this.height;
-                $img.attr("width", width).attr("height", height), $img.attr("sizeLoaded", "true"), 
+                if ($img.attr("width", width).attr("height", height), $img.attr("sizeLoaded", "true"), 
+                isMobile) {
+                    var tmpHeight = Math.min(s.container.width() * (height / width), $(window).height());
+                    s.params.slider_height = Math.max(s.params.slider_height, tmpHeight), jQuery("#wprs-fullwidth-spacer-" + id).height(s.params.slider_height), 
+                    s.container.height(s.params.slider_height);
+                }
                 isAllImgLoaded();
             }).error(function() {
                 isAllImgLoaded();

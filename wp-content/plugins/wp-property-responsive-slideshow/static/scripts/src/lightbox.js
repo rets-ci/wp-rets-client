@@ -72,6 +72,7 @@
 
     function showLightbox(img){
       var activeIndex = jQuery(img).parent().index();
+      originalParams = jQuery.extend(true, {}, options.galleryTop.params);
       options.galleryTop.params.slidesPerView = 1;
       options.galleryTop.params.slidesPerColumn = 1;
       options.galleryTop.params.lightBox = true;
@@ -81,6 +82,7 @@
       options.galleryTop.params.slider_width = false;
       options.galleryTop.params.slider_height = false;
       options.galleryTop.params.slideshow_layout = false;
+      options.galleryTop.translate = 0;
       options.galleryThumbs.activeIndex = activeIndex;
 
       loadFullImageLazy();
@@ -116,6 +118,7 @@
       
       options.galleryTop.params.initialSlide = activeIndex;
       options.galleryTop.params.lightBox = false;
+      options.galleryTop.translate = 0;
 
       $(options.galleryTop.slides).removeClass('swiper-lazy');
       lb.removeClass('lightbox');

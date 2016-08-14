@@ -304,6 +304,12 @@ jQuery(document).ready(function($){
                 $img.attr('width', width)
                     .attr('height', height);
                 $img.attr('sizeLoaded', 'true');
+                if(isMobile){
+                    var tmpHeight = Math.min(s.container.width() * (height / width ), $( window ).height());
+                    s.params.slider_height = Math.max(s.params.slider_height, tmpHeight);
+                    jQuery('#wprs-fullwidth-spacer-' + id).height(s.params.slider_height);
+                    s.container.height(s.params.slider_height);
+                }
                 isAllImgLoaded();
             }).error(function(){ // When image not exist or not loaded
                 isAllImgLoaded();

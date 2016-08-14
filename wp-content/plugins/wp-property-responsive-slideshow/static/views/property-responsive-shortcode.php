@@ -25,8 +25,7 @@ foreach ($images as $img) {
         $thumb = wp_get_attachment_image($attach_id);
     }
     else{
-        $large_src = wp_get_attachment_image_src($attach_id, $img_size);
-        $large = "<img data-src='{$large_src[0]}' class='swiper-lazy' width='{$large_src[1]}' height='{$large_src[2]}' /><div class='swiper-lazy-preloader'></div>";
+        $large = "<img data-src='{$full[0]}' class='swiper-lazy' width='{$full[1]}' height='{$full[2]}' /><div class='swiper-lazy-preloader'></div>";
         $thumb = '';
     }
 	$imgs[$attach_id] = array(
