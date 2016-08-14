@@ -164,7 +164,7 @@ use \UsabilityDynamics\RDC\Utils;
                 <div class="row">
                   <div class="col-md-6">
                     <a target="_blank" href="/listing/{{row._id}}">
-                      <div class="sm-current-property-thumb" ng-style="{'background-image':'url('+row.images[0].url+')'}">
+                      <div class="sm-current-property-thumb" data-meta="rets_thumbnail_url"  ng-style="{'background-image':'url('+row.rets_thumbnail_url+')'}">
                         <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{row.data_source_logo}}" />
                       </div>
                     </a>

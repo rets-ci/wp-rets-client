@@ -65,24 +65,37 @@
 
     function supermapController( $document, $scope, $http, $filter, NgMap ){
 
-
       NgMap.getMap().then(function(map) {
         window.map = map;
 
         // update options
         map.setOptions({
-          center: new google.maps.LatLng( '35.7796', '78.6382' ),
+          center: new google.maps.LatLng( 35.7796, -78.6382 ),
           minZoom: 8,
-          maxZoom: 12
+          maxZoom: 12,
+          zoom: 5
         });
 
-
         google.maps.event.addListener(map, 'bounds_changed', function () {
-          debug( 'mapEvent', 'bounds_changed' );
+          debug( 'mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng() );
+
         });
 
         google.maps.event.addListener(map, 'zoom_changed', function () {
-          debug( 'mapEvent', 'zoom_changed', map.getZoom() );
+
+          if( $scope.state.lastZoom === map.getZoom() ) {
+            return;
+          } else {
+            debug( 'mapEvent', 'zoom_changed from', $scope.state.lastZoom, 'to', map.getZoom() );
+          }
+
+          $scope.state.lastZoom = map.getZoom();
+
+          // do nothing if showing listings
+          if( $scope.total < 500 ) {
+            $scope.renderListings( { recenter: false } )
+            return;
+          }
 
           if( map.getZoom() === 10 ) {
             $scope.renderClusters( 'location_county', { recenter: false } )
@@ -95,10 +108,9 @@
         });
 
         google.maps.event.addListenerOnce(map, 'idle', function () {
-          debug( 'mapEvent', 'idle' );
-
+          debug( 'mapEvent', 'idle, lastZoom is', $scope.state.lastZoom, 'current zoom is', map.getZoom() );
+          $scope.state.lastZoom = map.getZoom();
           $scope.state.mapReady = true;
-
         });
 
         google.maps.event.addListener(map, 'resize', function () {
@@ -120,7 +132,7 @@
 
 
           NgMap.getMap().then(function(map){
-            map.fitBounds($scope.markerBounds);
+            map.fitBounds($scope.clusterMarkerBounds);
             google.maps.event.trigger(map, "resize");
           });
         }, 250 );
@@ -174,7 +186,7 @@
       window.$scope = $scope;
 
       var resizeTimer, idle_listener;
-      jQuery( window ).on( 'resize', handleResize ).resize();
+      jQuery( window ).on( 'resize', handleResize );
 
       setStatus('invoked' );
 
@@ -195,7 +207,8 @@
       $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
       $scope.searchForm = false;
 
-      $scope.markerBounds = new google.maps.LatLngBounds();;
+      $scope.clusterMarkerBounds = new google.maps.LatLngBounds();;
+      $scope.listingMarkerBounds = new google.maps.LatLngBounds();;
 
       $scope.loadNgMapChangedEvent = false;
 
@@ -709,11 +722,12 @@
         }
       };
 
-      $scope.responseHits = [];
       $scope.responseAggregations = [];
-      $scope.currentMarkers = [];
+      $scope.currentClusterMarkers = [];
+      $scope.currentListingMarkers = [];
 
       $scope.state = {
+        lastZoom: null,
         mapReady: false
       };
 
@@ -772,7 +786,11 @@
           r.current_total_living_area_sqft = '';
         }
 
-        r.rets_thumbnail_url = ( r._source.meta_input.rets_thumbnail_url ).toLowerCase().replace('.jpg', '-300x200.jpg');
+        if(  r._source.meta_input && r._source.meta_input.rets_thumbnail_url ) {
+          r.rets_thumbnail_url = ( r._source.meta_input.rets_thumbnail_url ).toLowerCase().replace('.jpg', '-300x250.jpg');
+        } else {
+          r.rets_thumbnail_url = '';
+        }
 
         if( r._source.tax_input.approximate_lot_size[0] ) {
           r.has.current_approximate_lot_size = true;
@@ -864,17 +882,61 @@
 
       }
 
-      $scope.renderListings = function renderListings( what, options ) {
-        
-          var marker = new google.maps.Marker( {
-            position: someCluster._position,
-            map: map,
-            icon: {
-              url: 'https://storage.googleapis.com/media.reddoorcompany.com/2015/11/153d7999-9627ffcd-rdc-pin-24x32.png',
-              size: new google.maps.Size( 60, 60 )
-            },
-            title: "Total " + someCluster.doc_count + " " + someCluster.key
-          } );
+      $scope.renderListings = function renderListings( options ) {
+
+        options = options || { recenter: true };
+
+        NgMap.getMap().then(function (map) {
+
+          if( !$scope.state.mapReady ) {
+            debug( 'renderListings', 'map not ready, rescheduling [renderListings] method to next idle' );
+            google.maps.event.addListenerOnce(map, 'idle', $scope.renderListings.bind( this, options ) );
+            return;
+          }
+
+          debug( 'renderListings', 'have total of', $scope.properties.length, 'listings.' )
+
+          angular.forEach( $scope.properties, function eachProperty( someProperty ){
+
+            var _source = someProperty._source;
+
+            var marker = new MarkerWithLabel( {
+              position: new google.maps.LatLng( _source.tax_input.location_latitude[0], _source.tax_input.location_longitude[0] ),
+              map: map,
+              draggable: false,
+              raiseOnDrag: true,
+              title: _source.post_title,
+              //labelContent: someCluster.doc_count,
+              labelClass: "wpp-listing-label",
+              labelInBackground: false,
+              //icon: {url: 'https://storage.googleapis.com/media.reddoorcompany.com/2015/11/153d7999-9627ffcd-rdc-pin-24x32.png', size: new google.maps.Size( 60, 60 )},
+              icon: {url: 'https://ssl.cdn-redfin.com/v118.3.1/corvstatic/customer-pages/en/a614cab4ee42b3a7711f765e9825d00b.gif', size: new google.maps.Size( 60, 60 )},
+            } );
+
+            // add marker to bounds.
+            $scope.currentListingMarkers.push( marker );
+
+            $scope.listingMarkerBounds.extend(marker.getPosition());
+
+          })
+
+          if( options.recenter ) {
+            debug("renderListings", 'setting center');
+
+            window.setTimeout(function() {
+              map.fitBounds($scope.listingMarkerBounds);
+            }, 200 );
+
+            // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
+            //map.setCenter($scope.clusterMarkerBounds.getCenter());
+            //map.setZoom( ( map.getZoom() - 1 ) );
+
+            //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
+          }
+
+
+
+        });
 
       }
 
@@ -913,18 +975,17 @@
 
           debug( 'renderClusters', what, 'have total of', $scope.responseAggregations[what].buckets.length, 'other docs', $scope.responseAggregations[what].sum_other_doc_count )
 
-          angular.forEach($scope.currentMarkers, function( marker ) {
+          angular.forEach($scope.currentClusterMarkers, function( marker ) {
             marker.setMap(null);
           });
 
           // reset markers
-          $scope.currentMarkers = [];
+          $scope.currentClusterMarkers = [];
 
           // reset marker bounds
-          $scope.markerBounds = new google.maps.LatLngBounds();
+          $scope.clusterMarkerBounds = new google.maps.LatLngBounds();
 
-
-          $scope.responseAggregations[what].buckets.forEach( function ( someCluster ) {
+          angular.forEach( $scope.responseAggregations[what].buckets, function ( someCluster ) {
 
             // detect geohash
             if( someCluster.centroid ) {
@@ -967,21 +1028,20 @@
             } );
 
             // add marker to bounds.
-            $scope.currentMarkers.push( marker );
+            $scope.currentClusterMarkers.push( marker );
 
-            $scope.markerBounds.extend(marker.getPosition());
+            $scope.clusterMarkerBounds.extend(marker.getPosition());
 
           } )
 
           // Center on markers and then zoom out one level, so nothing is on the border.
           if( options.recenter ) {
-
             debug("renderClusters", 'setting center');
 
-            map.fitBounds($scope.markerBounds);
+            map.fitBounds($scope.clusterMarkerBounds);
 
             // sometimes throws way off. , e.g. on https://usabilitydynamics-www-reddoorcompany-com-latest.c.rabbit.ci/rent/our-listings
-            //map.setCenter($scope.markerBounds.getCenter());
+            //map.setCenter($scope.clusterMarkerBounds.getCenter());
             //map.setZoom( ( map.getZoom() - 1 ) );
 
             //map.setCenter( new google.maps.LatLng( '35.15625', '-81.5625' ) );
@@ -1117,7 +1177,6 @@
             jQuery( '.sm-search-layer', ngAppDOM ).show();
 
             $scope.loaded = true;
-            $scope.responseHits = response.hits.hits;
             $scope.responseAggregations = response.aggregations;
 
             if( typeof response.hits.hits == 'undefined' ) {
@@ -1148,10 +1207,16 @@
 
             }
 
-            $scope.renderClusters( 'location_county' )
+            // Over 500 listings, we only show cluster
+            if( $scope.total > 500 ) {
+              $scope.renderClusters( 'location_county' )
+            } else {
+              $scope.renderListings( )
+            }
 
             //google.maps.Marker
             $scope.col_changed();
+
 
           } else {
             console.error(error);
@@ -1704,7 +1769,6 @@
       .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', supermapController ] );
 
   };
-
 
   function removeAllBlankOrNull(JsonObj) {
     jQuery.each(JsonObj, function(key, value) {
