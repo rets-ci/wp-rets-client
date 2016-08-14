@@ -32,9 +32,8 @@
       $scope.clusterMarkerClick.call(this);
       return;
     } else {
-      debug( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.' );
+      debug( 'triggerClusterClick' , 'too many properties, zooming into additional clusters.', this.cluster_.clusterIcon_.text_ );
     }
-
 
     // Trigger the clusterclick event.
     google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_ );
@@ -96,7 +95,6 @@
     };
 
   };
-
 
   /**
    *
@@ -942,15 +940,17 @@
        * @returns {{}|*}
        */
       $scope.prepare_query  = function prepare_query() {
-        debug( 'prepare_query - query.bool length before', $scope.query.bool.must.length );
+        debug( 'prepare_query - query.bool.must length before', $scope.query.bool.must.length );
 
         // From before, dont know what this is for. - potanin@UD
         $scope.query.bool.must = $scope.query.bool.must ? $scope.query.bool.must : [];
         $scope.query.bool.must_not = $scope.query.bool.must_not ? $scope.query.bool.must_not : []
+        $scope.query.bool.should = $scope.query.bool.should ? $scope.query.bool.should : []
 
         var mustQuery = [];
 
-        angular.forEach($scope.query.bool.must, function( data, key ) {
+
+        angular.forEach($scope.query.bool.must, function mustCheck( data, key ) {
 
           var _info = {
             type: firstObjectKey(data),
@@ -960,6 +960,36 @@
             valueType: typeof data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ],
           };
 
+          // object w/ no values.
+          if( _info.valueType === 'object' && !_info.valueLength ) {
+            //debug( 'prepare_query - removing',  _info.field, _info.type );
+            return;
+            //delete $scope.query.bool.must[key];
+          }
+
+          debug( 'prepare_query', 'must', 'using',  _info.field, _info.type, _info.values );
+          mustQuery.push(data);
+
+        });
+
+        var _detail = { shouldFields: [], shouldQuery: [] };
+
+        // @todo Needs to combine by term key. e.g. "tax_input.location_neighborhood"
+        angular.forEach($scope.query.bool.should, function shouldCheck( data, key ) {
+
+          var _info = {
+            type: firstObjectKey(data),
+            field: firstObjectKey( data[ firstObjectKey(data) ] ),
+            valueLength: Object.keys( data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ] ).length,
+            values: data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ],
+            valueType: typeof data[ firstObjectKey(data) ][ firstObjectKey( data[ firstObjectKey(data) ] ) ],
+          };
+
+          _info.values = _info.values.filter(function( val ) { return val; });
+
+          _detail.shouldFields[_info.field] = _detail.shouldFields[_info.field] || [];
+
+          _detail.shouldFields[ '' + _info.field + '' ].push( _info.values[0] );
 
           // object w/ no values.
           if( _info.valueType === 'object' && !_info.valueLength ) {
@@ -968,14 +998,33 @@
             //delete $scope.query.bool.must[key];
           }
 
-          debug( 'prepare_query - using ',  _info.field, _info.type, _info.values );
-          mustQuery.push(data);
+          debug( 'prepare_query', 'should', 'using ',  _info.field, _info.type, _info.values );
+
+          //shouldQuery.push(data);
 
         });
 
-        debug( 'prepare_query - query.bool length after', mustQuery.length );
+        angular.forEach( Object.keys(_detail.shouldFields), function addFiled( field, values ) {
+          debug( 'addField', field, _detail.shouldFields[field]);
+
+          var _row = {terms: {} };
+
+          _row.terms[field] = _detail.shouldFields[field];
+
+          _detail.shouldQuery.push( _row );
+
+        });
+
+        debug( 'prepare_query - query.bool.must length after', mustQuery.length );
+        debug( 'prepare_query - query.bool.should length after', _detail.shouldQuery.length );
 
         $scope.query.bool.must = mustQuery;
+
+        // If should query is used, we need to match at least one.
+        if( _detail.shouldQuery.length ) {
+          $scope.query.bool.should = _detail.shouldQuery;
+          $scope.query.bool.minimum_should_match = 1;
+        }
 
         return $scope.query;
 
@@ -1150,7 +1199,7 @@
           _data.push({
             "selected": true,
             "text": key,
-            "id": 'bool[must][][terms][tax_input.' + type + '][]',
+            "id": 'bool[should][][terms][tax_input.' + type + '][]',
             "title": key,
             "taxonomy": type
           });
@@ -1341,6 +1390,7 @@
         ClusterIcon.prototype.triggerClusterClick = triggerClusterClick;
 
         NgMap.getMap().then(function (map) {
+
           $scope.markerClusterer = new MarkerClusterer( map, $scope.currentClusterMarkers, {
             // the higer the number the less clusters on screen.
             gridSize: 60,
@@ -1369,6 +1419,9 @@
               }
             ]
           } );
+
+          // don't work...
+          // if( $scope.markerClusterer.getTotalClusters() < 5 ) { $scope.markerClusterer.setGridSize( 40 ); }
 
         });
 
@@ -1456,9 +1509,9 @@
             "field": "tax_input.location_zip",
             "search_field": "_search.location_zip"
           },
-          "location_neighborhood" : {
+          "neighborhood" : {
             "title": "Neighborhood",
-            "field": "_system.addressDetail.neighborhood",
+            "field": "_system.neighborhood.fullName",
             "search_field": "_search.location_neighborhood"
           },
           "location_county" : {
@@ -1531,11 +1584,11 @@
           index: index,
           type: type,
           method: "POST",
-          source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}',
+          body: JSON.parse( '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}' ),
         };
 
         $scope._request = client.search( esQuery, function getPropertiesResponse( error, response ) {
-          debug( 'getPropertiesResponse', esQuery.source, response.hits.total );
+          debug( 'getPropertiesResponse', esQuery.body, ( response && response.hits ? response.hits.total : null ) );
 
           setStatus( 'ready' );
 
@@ -1590,6 +1643,11 @@
               if( $scope.responseAggregations.location_county.buckets.length >  $scope.responseAggregations.high_school.buckets.length ) {
                 debug( 'getPropertiesResponse', 'clustering by location_conty, more of them than high_school.', $scope.responseAggregations.location_county.buckets.length );
                 $scope.clusterTerm = 'location_county';
+              }
+
+              if( $scope.responseAggregations.location_neighborhood.buckets.length > $scope.responseAggregations.location_neighborhood.sum_other_doc_count  ) {
+                debug( 'getPropertiesResponse', 'clustering by location_neighborhood', $scope.responseAggregations.location_neighborhood.buckets.length );
+                $scope.clusterTerm = 'location_neighborhood';
               }
 
               // otherwise use cities
@@ -1701,8 +1759,9 @@
 
       }
 
-        /**
+      /**
        * Toogle Search Form
+       *
        */
       $scope.toggleSearchForm = function toggleSearchForm() {
         debug( 'toggleSearchForm' );
@@ -1832,7 +1891,7 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                source: JSON.stringify(_source),// '{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
+                body: _source,// '{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
               }, function selectQueryResponse(err, response) {
                 debug( 'selectQueryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
 
@@ -2043,7 +2102,7 @@
         angular.forEach(jQuery('.termsSelection').select2('data'), function eachSelect( selectData ) {
           debug( 'eachSelect', selectData.taxonomy, selectData.id );
 
-          var _name = selectData.taxonomy ? ( 'bool[must][][terms][tax_input.' + selectData.taxonomy + '][]' ) : selectData.id;
+          var _name = selectData.taxonomy ? ( 'bool[should][][terms][tax_input.' + selectData.taxonomy + '][]' ) : selectData.id;
 
           if( _name.indexOf( 'bool[must][]' ) === 0 ) {
             _name =  _name.replace( 'bool[must][]', 'bool[must][' + ( form_data.length ) + ']');
