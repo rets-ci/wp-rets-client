@@ -39,7 +39,7 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="col-md-12">
         <div class="location">
           <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
-          <select multiple="multiple" class="termsSelection" name="bool[must][1][terms][tax_input.{{map_filter_taxonomy}}][]"></select>
+          <select multiple="multiple" class="termsSelection"></select>
         </div>
       </div>
     </div>
@@ -219,6 +219,14 @@ use \UsabilityDynamics\RDC\Utils;
           </div>
 
           <div class="clear"></div>
+        </div>
+
+      </div>
+      <div class="col-md-4 col-sm-4">
+
+        <label><?php _e( 'Available By', 'reddoor' ); ?></label>
+        <div class="rdc-range-fields">
+          <input value="{{current_filter.available_date}}" class="available_date-input"  name="bool[must][13][range][_system.available_date][lte]" placeholder="today" type="text" />
         </div>
 
       </div>
