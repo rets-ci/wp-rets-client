@@ -132,6 +132,7 @@
       jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
     }
 
+
     function setStatus( status ) {
       debug( 'setStatus', status );
       ngAppDOM.data( 'status', status );
@@ -282,11 +283,14 @@
       $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
       $scope.atts = vars.atts;
 
+
+
       //debug( '$scope.atts', $scope.atts );
       //debug( '$scope.query', $scope.query );
 
       $scope.dynMarkers = [];
 
+      $scope.atts.clusterEnabled = false;
 
       $scope.clusterTerm = 'location_city';
 
@@ -824,6 +828,8 @@
         lastZoom: null,
         mapReady: false
       };
+
+      $scope.requestSize = 200;
 
       /**
        *
@@ -1485,38 +1491,45 @@
 
         $scope.aggregationFields = {
           "elementary_school" : {
+            "slug": "elementary_school",
             "title": "Elementary School",
-            "field": "tax_input.elementary_school",
+            "field": "_schools.elementary_school",
             "search_field": "_search.elementary_school"
           },
           "middle_school" : {
+            "slug": "middle_school",
             "title": "Middle School",
-            "field": "tax_input.middle_school",
+            "field": "_schools.middle_school",
             "search_field": "_search.middle_school"
           },
           "high_school" : {
+            "slug": "high_school",
             "title": "High School",
-            "field": "tax_input.high_school",
+            "field": "_schools.high_school",
             "search_field": "_search.high_school"
           },
           "location_city" : {
+            "slug": "city",
             "title": "City",
-            "field": "tax_input.location_city",
+            "field": "_system.addressDetail.city",
             "search_field": "_search.location_city"
           },
           "location_zip" : {
+            "slug": "zip",
             "title": "Zip",
-            "field": "tax_input.location_zip",
+            "field": "_system.addressDetail.zipcode",
             "search_field": "_search.location_zip"
           },
           "neighborhood" : {
+            "slug": "neighborhood",
             "title": "Neighborhood",
             "field": "_system.neighborhood.fullName",
             "search_field": "_search.location_neighborhood"
           },
           "location_county" : {
+            "slug": "county",
             "title": "County",
-            "field": "tax_input.location_county",
+            "field": "_system.addressDetail.administrativeLevels.level2long",
             "search_field": "_search.location_county"
           }
         }
@@ -1584,7 +1597,7 @@
           index: index,
           type: type,
           method: "POST",
-          body: JSON.parse( '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}' ),
+          body: JSON.parse( '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":' + $scope.requestSize + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":'+JSON.stringify($scope.aggregations)+'}' ),
         };
 
         $scope._request = client.search( esQuery, function getPropertiesResponse( error, response ) {
@@ -1627,7 +1640,7 @@
             }
 
             // Over 500 listings, we only show cluster
-            if( $scope.total > 500 ) {
+            if( $scope.total > 500 && $scope.atts.clusterEnabled ) {
               $scope.clearListingMarkers();
 
               angular.forEach($scope.responseAggregations, function eachAggregation( someAggregation, aggregationName ) {
@@ -1833,9 +1846,89 @@
         }
       }, true );
 
-      $scope.term_fields = {
+      function selectQuery(query) {
+        debug( 'selectQuery', ( query && query.term ? query.term.length : null ));
 
-      };
+        var data = [];
+
+        if( query.term && query.term.length  >= 3 ) {
+
+          jQuery('.select2-dropdown').removeClass("hide");
+
+          if( $scope._request ) {
+            $scope._request.abort();
+          }
+
+          var _source = {
+            "query": { "match": { "post_status": "publish" } },
+            "aggs": {}
+          };
+
+          angular.forEach($scope.aggregationFields, function setField( data, key ) {
+
+            _source.aggs[ key ] = {
+              filters: {filters: {}},
+              aggs: {}
+            };
+
+            _source.aggs[ key ]['filters']['filters'][key] = { term: {} }
+            _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term;
+            _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+
+          });
+
+          $scope._request = client.search({
+            index: 'v5',
+            type: 'property',
+            method: "POST",
+            size: 0,
+            body: _source
+          }, function selectQueryResponse(err, response) {
+            debug( 'selectQueryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
+
+            if( typeof response.hits.hits == 'undefined' ) {
+              query.callback({ results: data });
+            }
+
+            angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
+              debug( 'eachAggregation', aggregationKey )
+
+              var _buckets = [];
+
+              angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
+
+                _buckets.push({
+                  id: data.key,
+                  text: data.key + ' (' + data.doc_count + ')',
+                  count: data.doc_count,
+                  taxonomy: data.slug
+                })
+
+              });
+
+              if( _buckets.length > 0 ) {
+
+                data.push( {
+                  key: aggregationKey,
+                  text: $scope.aggregationFields[ aggregationKey ].title,
+                  children: _buckets
+                } )
+
+              }
+
+            });
+
+            debug( 'eachAggregation', data )
+
+            query.callback({ results: data });
+
+          });
+
+        } else {
+          jQuery('.select2-dropdown').addClass("hide");
+          query.callback({ results: data });
+        }
+      }
 
       $scope.setup_term_selection = function( data ) {
         debug( 'setup_term_selection' );
@@ -1846,193 +1939,13 @@
           maximumSelectionLength: 4,
           minimumInputLength: 3,
           data: data || [],
-          query: function selectQuery(query) {
-            debug( 'selectQuery' );
+          query: selectQuery,
+          formatResult: function formatResult( field ) {
+            console.log( 'field', field);
 
-            var data = [];
+            return field;
 
-            if( query.term && query.term.length  >= 3 ) {
-
-              jQuery('.select2-dropdown').removeClass("hide");
-
-              if( $scope._request ) {
-                $scope._request.abort();
-              }
-
-              var _source = {
-                "query": {"filtered": {"query": {"match_all": {}}}
-                },
-                "aggregations": {}
-              };
-
-              angular.forEach($scope.aggregationFields, function setField( data, key ) {
-
-                _source.aggregations[ data.title ] = { filter: { terms: { field: {}, size: 100 } , aggs: {} } };
-
-                _source.aggregations[ data.title ]['filter']['terms']['field'][data.search_field] = query.term;
-
-              });
-
-              debug( '_source.aggregations', _source.aggregations );
-
-              var asd = {"aggregations": {
-                  "elementary_school": { "terms": {"field": "tax_input.elementary_school", "size": 100 }, },
-                  "middle_school": { "terms": {"field": "tax_input.middle_school", "size": 100 }, },
-                  "high_school": { "terms": {"field": "tax_input.high_school", "size": 100 }, },
-                  "location_city": { "terms": {"field": "tax_input.location_city", "size": 100 }, },
-                  "location_zip": { "terms": {"field": "tax_input.location_zip", "size": 100 }, },
-                  "location_county": { "terms": {"field": "tax_input.location_county", "size": 100 }, },
-                  //"location_neighborhood": { "terms": {"field": "_search.location_neighborhood", "size": 100 }, }
-                }
-              };
-
-              $scope._request = client.search({
-                index: 'v5',
-                type: 'property',
-                method: "POST",
-                size: 0,
-                body: _source,// '{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name","_system.agency_listing"]}',
-              }, function selectQueryResponse(err, response) {
-                debug( 'selectQueryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
-
-                if( typeof response.hits.hits == 'undefined' ) {
-                  query.callback({ results: data });
-                }
-
-                var post_title = { text: "Address", children: [] };
-                var city = { text : "City", children: [] };
-                var mls_id = { text : "MLS ID", children: [] };
-                var location_street = { text : "Street", children: [] };
-                var location_zip = { text : "Zip", children: [] };
-                var location_county = { text : "County", children: [] };
-                var subdivision = { text : "Subdivision", children: [] };
-                var elementary_school = { text : "Elementary School", children: [] };
-                var middle_school = { text : "Middle School", children: [] };
-                var high_school = { text : "High School", children: [] };
-                var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
-
-                jQuery.each(response.hits.hits,function(k,v){
-                  if( typeof v._source.post_title != 'undefined' ) {
-                    if (!unique[v._source.post_title]) {
-                      post_title.children.push({
-                        id: v._source.post_title,
-                        text: v._source.post_title,
-                        taxonomy:'post_title',
-                        permalink: v._source._permalink,
-                      });
-                      unique[v._source.post_title] = v._source.post_title;
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_city != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_city[0]]) {
-                      city.children.push({
-                        id: v._source.tax_input.location_city[0],
-                        text: v._source.tax_input.location_city[0],
-                        taxonomy:'location_city',
-                      });
-                      unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.mls_id != 'undefined' ) {
-                    if (!unique[v._source.tax_input.mls_id[0]]) {
-                      mls_id.children.push({
-                        id: v._source.tax_input.mls_id[0],
-                        text: v._source.tax_input.mls_id[0],
-                        taxonomy:'mls_id',
-                        permalink: v._source._permalink,
-                      });
-                      unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_zip != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_zip[0]]) {
-                      location_zip.children.push({
-                        id:v._source.tax_input.location_zip[0],
-                        text:v._source.tax_input.location_zip[0],
-                        taxonomy: 'location_zip'
-                      })
-                      unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.location_county != 'undefined' ) {
-                    if (!unique[v._source.tax_input.location_county[0]]) {
-                      location_county.children.push({
-                        id:v._source.tax_input.location_county[0],
-                        text:v._source.tax_input.location_county[0],
-                        taxonomy: 'location_county'
-                      })
-                      unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.subdivision != 'undefined' ) {
-                    if (!unique[v._source.tax_input.subdivision[0]]) {
-                      subdivision.children.push({
-                        id:v._source.tax_input.subdivision[0],
-                        text:v._source.tax_input.subdivision[0],
-                        taxonomy: 'subdivision'
-                      })
-                      unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
-                    }
-
-                  }
-                  if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.elementary_school[0]]) {
-                      elementary_school.children.push({
-                        id:v._source.tax_input.elementary_school[0],
-                        text:v._source.tax_input.elementary_school[0],
-                        taxonomy: 'elementary_school'
-                      })
-                      unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.middle_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.middle_school[0]]) {
-                      middle_school.children.push({
-                        id:v._source.tax_input.middle_school[0],
-                        text:v._source.tax_input.middle_school[0],
-                        taxonomy:'middle_school'
-                      })
-                      unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
-                    }
-                  }
-                  if( typeof v._source.tax_input.high_school != 'undefined' ) {
-                    if (!unique[v._source.tax_input.high_school[0]]) {
-                      high_school.children.push({
-                        id:v._source.tax_input.high_school[0],
-                        text:v._source.tax_input.high_school[0],
-                        taxonomy: 'high_school'
-                      })
-                      unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
-                    }
-                  }
-                });
-
-                post_title.children.length ? data.push( post_title ) : '';
-                city.children.length ? data.push( city ) : '';
-                elementary_school.children.length ? data.push( elementary_school ) : '';
-                middle_school.children.length ? data.push( middle_school ) : '';
-                high_school.children.length ? data.push( high_school ) : '';
-                location_street.children.length ? data.push( location_street ) : '';
-                location_zip.children.length ? data.push( location_zip ) : '';
-                location_county.children.length ? data.push( location_county ) : '';
-                subdivisionsubdivision.children.length ? data.push( subdivision ) : '';
-                mls_id.children.length ? data.push( mls_id ) : '';
-
-                data.sort(function(a, b){
-                  // ASC  -> a.length - b.length
-                  // DESC -> b.length - a.length
-                  return a.children.length - b.children.length;
-                });
-
-                query.callback({ results: data });
-
-              });
-
-            } else {
-              jQuery('.select2-dropdown').addClass("hide");
-              query.callback({ results: data });
-            }
-          },
+          }
         };
 
         var $select = jQuery('.termsSelection').select2(selectOpions);
