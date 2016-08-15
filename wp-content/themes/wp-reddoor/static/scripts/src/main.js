@@ -311,7 +311,7 @@ function make_base_auth(user, password) {
 
     if( jQuery( 'body.page' ).hasClass( 'home' ) ) {
       jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
-      jQuery( '.home .buyBtnForm' ).addClass( 'current-menu-item' );
+      jQuery( '.home .rentBtnForm' ).addClass( 'current-menu-item' );
     }
 
     //jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
