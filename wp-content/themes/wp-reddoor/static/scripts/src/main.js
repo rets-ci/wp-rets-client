@@ -160,34 +160,32 @@ function make_base_auth(user, password) {
 
     jQuery(".form-validate").submit(function(e){
       if ( typeof grecaptcha == 'undefined' ) return true;
-      if ( typeof recaptchaforms == 'undefined' ) return true;
+      if ( typeof window.recaptchaforms == 'undefined' ) return true;
       var _this = jQuery(this);
       var rresult;
+      var recaptchaforms = window.recaptchaforms;
       if( _this.find("#rdcgrecaptchacontactus").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "contactus", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormContactInquiry", recaptchaforms ) );
       } else if( _this.find("#rdcgrecaptchahomebuy").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homebuy", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormBuyInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchacareer").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "career", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormCareerInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomebuylisting").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "buylisting", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormBuyInquiryListing", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomemanagement").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homemanagement", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormManagementInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomerenting").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homerenting", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormRentInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomeselling").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homeselling", recaptchaforms ) );
-      }  else if( _this.find("#rdcgrecaptchajobrequest").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "jobrequest", recaptchaforms ) );
-      }  else if( _this.find("#rdcgrecaptchareferral").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "referral", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormSellInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchareqapplication").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "reqapplication", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormRentInquiry", recaptchaforms ) );
       } else if( _this.find("#rdcgrecaptchamanagementreferral").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "managementreferral", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormManagementReferral", recaptchaforms ) );
       }
 
       if( !rresult.length > 0 ) {
+        debug("reCaptcha validation failed!");
         return false;
       }
       return true;
@@ -313,7 +311,7 @@ function make_base_auth(user, password) {
 
     if( jQuery( 'body.page' ).hasClass( 'home' ) ) {
       jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
-      jQuery( '.home .buyBtnForm' ).addClass( 'current-menu-item' );
+      jQuery( '.home .rentBtnForm' ).addClass( 'current-menu-item' );
     }
 
     //jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
