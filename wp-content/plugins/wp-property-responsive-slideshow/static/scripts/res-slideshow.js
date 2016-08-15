@@ -14,12 +14,7 @@ jQuery(document).ready(function($) {
             };
             return "true" == $img.attr("sizeLoaded") ? (isAllImgLoaded(), $img) : ($("<img />").load(function() {
                 var width = this.width, height = this.height;
-                if ($img.attr("width", width).attr("height", height), $img.attr("sizeLoaded", "true"), 
-                isMobile) {
-                    var tmpHeight = Math.min(s.container.width() * (height / width), $(window).height());
-                    s.params.slider_height = Math.max(s.params.slider_height, tmpHeight), jQuery("#wprs-fullwidth-spacer-" + id).height(s.params.slider_height), 
-                    s.container.height(s.params.slider_height);
-                }
+                $img.attr("width", width).attr("height", height), $img.attr("sizeLoaded", "true"), 
                 isAllImgLoaded();
             }).error(function() {
                 isAllImgLoaded();
@@ -114,7 +109,7 @@ jQuery(document).ready(function($) {
                     height = maxWidth / ratio) : height > maxHeight && (height = maxHeight, width = maxHeight * ratio), 
                     $this.width(width), $this.height(height), $this[0].style.setProperty("width", width + "px", "important"), 
                     $this[0].style.setProperty("height", height + "px", "important");
-                });
+                }), isMobile && !s.isLightbox() && updateContainerHeight(s);
             }
         }), galleryTop.on("onLazyImageReady", function(s, slide, _img) {
             s.onResize();
@@ -145,6 +140,17 @@ jQuery(document).ready(function($) {
                 width: jQuery(window).width(),
                 margin: "0 auto"
             });
+        }, updateContainerHeight = function(s, ratio) {
+            var landscape = 0, lcCount = 0, portrait = 0, ptCount = 0;
+            s.slides.each(function() {
+                var $this = jQuery(this).find("img");
+                width = parseInt($this.attr("width")), height = parseInt($this.attr("height")), 
+                ratio = width / height;
+                var tmpWidth = Math.min(s.container.width() / ratio, width / ratio);
+                ratio >= 1 ? (landscape = Math.max(landscape, tmpWidth), lcCount++) : (portrait = Math.max(portrait, tmpWidth), 
+                ptCount++);
+            }), s.params.slider_height = Math.min($(window).height(), landscape || portrait), 
+            jQuery("#wprs-fullwidth-spacer-" + id).height(s.params.slider_height), s.container.height(s.params.slider_height);
         };
     });
 });

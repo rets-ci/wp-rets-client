@@ -770,7 +770,7 @@ s.updateSlidesSize = function () {
             }
         }
 
-        s.virtualSize += slideSize + ((i%2 == 0)?spaceBetween:0);
+        s.virtualSize += slideSize + ((row%2 == 0)?spaceBetween:0);
 
         prevSlideSize = slideSize;
 

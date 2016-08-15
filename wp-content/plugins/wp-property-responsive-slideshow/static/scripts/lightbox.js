@@ -1,5 +1,11 @@
 !function($) {
     $.fn.wpp_rs_lb = function(prop) {
+        function closeLB(s, e) {
+            var touches = s.touches, diff = touches.currentY - touches.startY;
+            return diff > 100 ? (e.preventDefault(), setTimeout(function() {
+                hideLightbox(e);
+            }, 50), !1) : void 0;
+        }
         function setViewOriginalHref(s) {
             var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("src");
             lb.find(".viewOriginal").attr("href", href);
@@ -15,7 +21,7 @@
             loadFullImageLazy(), lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), 
             options.galleryTop.init(), options.galleryTop.lazy.load(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
             options.galleryTop.enableKeyboardControl(), $(document).on("keydown", lbHandleKeyboard), 
-            $("body").css({
+            options.galleryTop.on("touchEnd", closeLB), $("body").css({
                 overflow: "hidden"
             });
         }
@@ -31,7 +37,8 @@
             options.galleryTop.params.lightBox = !1, options.galleryTop.translate = 0, $(options.galleryTop.slides).removeClass("swiper-lazy"), 
             lb.removeClass("lightbox"), $("#wpadminbar").show(), options.galleryTop.destroy(!1, !0), 
             options.galleryTop.init(), options.galleryTop.enableKeyboardControl(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
-            $(document).off("keydown", lbHandleKeyboard), $("body").css({
+            $(document).off("keydown", lbHandleKeyboard), options.galleryTop.off("touchEnd", closeLB), 
+            $("body").css({
                 overflow: ""
             });
         }
@@ -53,11 +60,6 @@
             hideLightbox(e);
         }), setViewOriginalHref(options.galleryTop), options.galleryTop.on("slideChangeStart", function(s) {
             setViewOriginalHref(s);
-        }), options.galleryTop.on("touchEnd", function(s, e) {
-            var touches = s.touches, diff = touches.currentY - touches.startY;
-            return diff > 100 ? (e.preventDefault(), setTimeout(function() {
-                hideLightbox(e);
-            }, 50), !1) : void 0;
         }), this;
     };
 }(jQuery);

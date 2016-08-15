@@ -220,6 +220,10 @@ jQuery(document).ready(function($){
                 $this[0].style.setProperty('height', height + "px", 'important');
 
             });
+
+            if(isMobile && !s.isLightbox()){
+                updateContainerHeight(s);
+            }
         });
 
         
@@ -279,6 +283,28 @@ jQuery(document).ready(function($){
             });
         }
 
+        var updateContainerHeight = function(s, ratio){
+            var landscape = 0, lcCount = 0, portrait = 0, ptCount = 0;
+            s.slides.each(function(){
+                var $this   = jQuery(this).find('img');
+                    width   = parseInt($this.attr('width')),
+                    height  = parseInt($this.attr('height')),
+                    ratio   = width/height;
+                var tmpWidth = Math.min(s.container.width() / ratio, width / ratio);
+                if(ratio>=1){
+                    landscape = Math.max(landscape, tmpWidth);
+                    lcCount++;
+                }
+                else{
+                    portrait = Math.max(portrait, tmpWidth);
+                    ptCount++;
+                }
+            });
+            s.params.slider_height = Math.min($( window ).height(), (landscape || portrait));
+            jQuery('#wprs-fullwidth-spacer-' + id).height(s.params.slider_height);
+            s.container.height(s.params.slider_height);
+        }
+
         function setRealWidthHeight($img, s){
             if(typeof s.noOfimgageLoaded == 'undefined')
                 s.noOfimgageLoaded = 0;
@@ -304,12 +330,6 @@ jQuery(document).ready(function($){
                 $img.attr('width', width)
                     .attr('height', height);
                 $img.attr('sizeLoaded', 'true');
-                if(isMobile){
-                    var tmpHeight = Math.min(s.container.width() * (height / width ), $( window ).height());
-                    s.params.slider_height = Math.max(s.params.slider_height, tmpHeight);
-                    jQuery('#wprs-fullwidth-spacer-' + id).height(s.params.slider_height);
-                    s.container.height(s.params.slider_height);
-                }
                 isAllImgLoaded();
             }).error(function(){ // When image not exist or not loaded
                 isAllImgLoaded();

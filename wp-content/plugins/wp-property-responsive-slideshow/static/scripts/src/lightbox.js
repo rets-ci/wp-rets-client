@@ -46,7 +46,7 @@
     });
 
     //Swipe down to close
-    options.galleryTop.on('touchEnd', function(s, e){
+    function closeLB(s, e){
       var touches = s.touches;
       var diff = touches.currentY - touches.startY;
       if(diff>100){
@@ -56,7 +56,7 @@
         },50);
         return false;
       }
-    });
+    }
 
     function handleMoveImage(s, e){
       e.stopPropagation();
@@ -97,6 +97,7 @@
 
       options.galleryTop.enableKeyboardControl();
       $(document).on('keydown', lbHandleKeyboard);
+      options.galleryTop.on('touchEnd', closeLB);
       $('body').css({'overflow':'hidden'});
     }
 
@@ -132,6 +133,7 @@
         options.galleryThumbs.onResize();
 
       $(document).off('keydown', lbHandleKeyboard);
+      options.galleryTop.off('touchEnd', closeLB);
       $('body').css({'overflow':''});
     }
     /**
