@@ -51,6 +51,10 @@ namespace UsabilityDynamics\WPRETSC {
             // get available image sizes
             $_image_sizes = \UsabilityDynamics\Utility::all_image_sizes();
 
+            if( $size && !isset( $_image_sizes[$size] ) ) {
+              $size = 'full';
+            }
+
             // add "full" and "medium_large" sizes which are now standard
             if( !isset( $_image_sizes['full'] ) ) {
               $_image_sizes['full']['width'] = get_option('large_size_w');
@@ -64,6 +68,7 @@ namespace UsabilityDynamics\WPRETSC {
 
             // return expected array of url, width, height
             return array( $this->fix_rets_image_url( $attachment_id, $size ), $_image_sizes[$size]['width'], $_image_sizes[$size]['height'] );
+
           }
 
           return $image;
