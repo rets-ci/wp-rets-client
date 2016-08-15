@@ -44,24 +44,7 @@
     "schemas": {
       "dependencies" : {
         "modules": {},
-        "plugins": [
-          {
-            "name": "WP-Property",
-            "slug": "wp-property",
-            "version": "2.1.8",
-            "required": true
-          },
-          {
-            "name": "WP-Property: Importer",
-            "slug": "wp-property-importer",
-            "version": "5.1.2",
-            "required": true,
-            "private": true,
-            "author": "UsabilityDynamics, Inc.",
-            "author_url": "https://www.usabilitydynamics.com",
-            "external_url": "https://www.usabilitydynamics.com/product/wp-property-importer"
-          }
-        ]
+        "plugins": []
       },
       "licenses" : {
         "client" : false,
