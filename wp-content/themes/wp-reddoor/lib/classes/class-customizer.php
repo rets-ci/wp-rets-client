@@ -83,6 +83,18 @@ namespace UsabilityDynamics\RDC {
             'settings' => 'rdc_hide_supermap_mobile'
         ));
 
+	      //Searchly meta tag data
+	      $wp_customize->add_setting( 'rdc_searchly_url', array(
+		      'default'              => ''
+	      ));
+
+	      $wp_customize->add_control( 'rdc_searchly_url', array(
+		      'label'   => __( 'Searchly URL', 'rdc' ),
+		      'section' => 'rdc_supermap',
+		      'type'    => 'text',
+		      'settings' => 'rdc_searchly_url'
+	      ));
+
 	      $wp_customize->add_setting( 'rdc_searchly_user', array(
 		      'default'              => ''
 	      ));
