@@ -120,16 +120,10 @@ add_action( 'wp', 'rdc_wp_ghetto_term_redirection' );
  * @param $query
  */
 function rdc_wp_ghetto_term_redirection( $query ) {
-  global $wp_query;
+  global $wp_query,$wp_properties;
 
-
-  if(!$wp_query->is_404() || !defined( 'RETS_ES_LINK' ) ) {
+  if(!$wp_query->is_404() || !defined( 'RETS_ES_LINK' ) || !$wp_query || !$wp_query->tax_query || !$wp_query->tax_query->queries ) {
     return;
-  }
-
-  // when cached this is preetty snappy.
-  if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
-    die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) ) ) ;
   }
 
   $_data = array(
@@ -137,9 +131,19 @@ function rdc_wp_ghetto_term_redirection( $query ) {
     "term" => $wp_query->tax_query->queries[0]['terms'][0]
   );
 
+  // must be a known WPP taxonomy for us to consider.
+  if( !in_array( $_data['taxonomy'], array_keys($wp_properties['taxonomies'])  ) ) {
+    return;
+  }
+
   // WP did not recognize taxonomy at all.
   if( !$_data['taxonomy'] ) {
     return;
+  }
+
+  // when cached this is preetty snappy.
+  if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
+    die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) ) ) ;
   }
 
   // Search for term...
