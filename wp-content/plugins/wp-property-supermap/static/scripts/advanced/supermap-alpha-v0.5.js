@@ -166,6 +166,67 @@
           }, 250 );
         } ).resize();
 
+        $scope.getAvailabilityDate = function getAvailabilityDate() {
+          var d = new Date();
+          return  d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + d.getDate();
+        }
+
+
+        $scope.is_agency_listing = function() {
+          // debug( 'is_agency_listing', current );
+
+          return $scope.current_filter.agency_listing;
+
+        };
+
+        /**
+         * Configure query based on URI parameters.
+         *
+         */
+        function setFiltersFromQuery() {
+          debug('setFiltersFromQuery', $scope.query.bool.must )
+
+          if( window.location.pathname.indexOf( 'our-listings' ) >  0 ) {
+            debug( 'setFiltersFromQuery', 'fetching agency listings' );
+            $scope.current_filter.agency_listing = true;
+            $scope.query.bool.must.push({ "terms": { "_system.agency_listing": [ "true" ] } });
+          } else {
+            $scope.current_filter.agency_listing = false;
+          }
+
+          if( getParameterByName( 'wpp_search[price][min]' ) || getParameterByName( 'wpp_search[price][max]' ) ) {
+            debug('setFiltersFromQuery Setting [price]' )
+
+            $scope.current_filter.price = {
+              min: getParameterByName( 'wpp_search[price][min]' ),
+              max: getParameterByName( 'wpp_search[price][max]' ),
+            };
+
+            $scope.query.bool.must.push({ "range": { "tax_input.price": {gte: $scope.current_filter.price.min, lte: $scope.current_filter.price.max } } });
+          }
+
+          $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
+              min: getParameterByName( 'wpp_search[bathrooms][min]' ),
+              max: getParameterByName( 'wpp_search[bathrooms][max]' ),
+            };
+
+          $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
+              min: getParameterByName( 'wpp_search[bedrooms][min]' ),
+              max: getParameterByName( 'wpp_search[bedrooms][max]' )
+            };
+
+          // set sale_type if we have query override, something else seems to be setting its default
+          if( getParameterByName( 'wpp_search[sale_type]' ) ) {
+            $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
+          }
+
+          $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+
+          debug( 'setFiltersFromQuery', '$scope.current_filter', $scope.current_filter );
+
+        }
+
+
         setStatus('invoked' );
 
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
@@ -182,12 +243,10 @@
         $scope.searchForm = false;
         $scope.loadNgMapChangedEvent = false;
         $scope.loading_more_properties = true;
-        $scope.rdc_listing = ( window.sm_rdc_listing && window.sm_rdc_listing.ok ) ? true : false
 
         $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
         $scope.current_filter = window.sm_current_filter || {};
         $scope.tax_must_query = window.sm_must_tax_query || {};
-        $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
 
         $scope.haveImages = function haveImages() {
           return true;
@@ -745,6 +804,9 @@
           return i;
         };
 
+        setFiltersFromQuery();
+
+
         var index = 'v5',
           type = 'property';
 
@@ -838,7 +900,7 @@
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
           }, function( error, response ) {
 
             setStatus( 'ready' );
@@ -916,10 +978,12 @@
             headers : {
               "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
             },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
             debug( 'searchResponse query: [%s], hits [%s]', build_query(), response.hits.total );
 
+            setStatus( 'ready' );
+            
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
 
@@ -929,13 +993,8 @@
                 debug( 'Error occurred during getting properties data.' );
               } else {
                 response.hits.hits.filter(cast_fields);
-                if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-                  $scope.total = $scope.total + response.hits.total;
-                  Array.prototype.push.apply($scope.properties, response.hits.hits);
-                }else{
                   $scope.total = response.hits.total;
                   $scope.properties = response.hits.hits;
-                }
                 // Select First Element of Properties Collection
                 if( $scope.properties.length > 0 ) {
                   $scope.currentProperty = $scope.properties[0];
@@ -951,10 +1010,6 @@
                     $scope.loading_more_properties = true;
                   }
                   getMoreProperties();
-                }else if($scope.rdc_listing){
-                  $scope.rdc_listing = false;
-                  search_form.submit();
-                }else{
                   if( ! $scope.loadNgMapChangedEvent ) {
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
@@ -1013,7 +1068,6 @@
                 $scope.resetMapBounds();
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
-              $scope.rdc_listing = true;
               jQuery('.sm-search-form form').submit();
             });
           });
@@ -1238,105 +1292,172 @@
             $scope._request.abort();
           }
 
-          var _source = {
-            "query": { "match": { "post_status": "publish" } },
-            "aggs": {}
-          };
+          async.auto({
+            aggregations: function aggregationRequestWrapper( done ) {
 
-          angular.forEach($scope.aggregationFields, function setField( data, key ) {
+              var _source = {
+                "query": { "match": { "post_status": "publish" } },
+                "aggs": {}
+              };
 
-            _source.aggs[ key ] = {
-              filters: {filters: {}},
-              aggs: {}
-            };
+              angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
-            _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
-            _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term;
-            _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+                _source.query = $scope.query;
 
-          });
+                _source.aggs[ key ] = {
+                  filters: {filters: {}},
+                  aggs: {}
+                };
 
-          var _body = {
-            index: 'v5',
-            type: 'property',
-            method: "POST",
-            size: 0,
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-            },
-            body: _source
-          };
-
-          //_body.suggestField = '_search.suggest';
-          //_body.suggestText  = query.term;
-          //_body.suggestSize  = 5;
-
-          $scope._request = client.search({
-            index: 'v5',
-            type: 'property',
-            method: "POST",
-            size: 0,
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-            },
-            body: _source
-          }, select_queryResponse );
-
-
-          /**
-           *
-           * @param err
-           * @param response
-           */
-          function select_queryResponse(err, response) {
-            debug( 'select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
-
-            if( typeof response.hits.hits == 'undefined' ) {
-              query.callback({ results: data });
-            }
-
-
-
-            angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
-              //debug( 'eachAggregation - aggregationKey', aggregationKey )
-              // debug( 'eachAggregation - someAggregation', someAggregation )
-
-              var _buckets = [];
-
-              angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
-
-                var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
-
-                _buckets.push({
-                  id: data.key,
-                  text: data.key + ' (' + data.doc_count + ')',
-                  count: data.doc_count,
-                  taxonomy: _bucketDetail['field'],
-                  field: _bucketDetail['field'],
-                  search_field: _bucketDetail['search_field']
-                })
+                _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
+                _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term;
+                _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
 
               });
 
-              if( _buckets.length > 0 ) {
+              $scope._request = client.search({
+                index: 'v5',
+                type: 'property',
+                method: "POST",
+                size: 0,
+                headers : {
+                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+                },
+                body: _source
+              }, select_queryResponse );
 
-                data.push( {
-                  key: aggregationKey,
-                  text: $scope.aggregationFields[ aggregationKey ].title,
-                  children: _buckets
-                } )
+              /**
+               *
+               * @param err
+               * @param response
+               */
+              function select_queryResponse(err, response) {
+                debug( 'select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
+
+                if( typeof response.hits.hits == 'undefined' ) {
+                  //query.callback({ results: data });
+                  return done( null );
+                }
+
+                angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
+                  //debug( 'eachAggregation - aggregationKey', aggregationKey )
+                  // debug( 'eachAggregation - someAggregation', someAggregation )
+
+                  var _buckets = [];
+
+                  angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
+
+                    var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
+
+                    _buckets.push({
+                      id: data.key,
+                      text: data.key + ' (' + data.doc_count + ')',
+                      count: data.doc_count,
+                      taxonomy: _bucketDetail['field'],
+                      field: _bucketDetail['field'],
+                      search_field: _bucketDetail['search_field']
+                    })
+
+                  });
+
+                  if( _buckets.length > 0 ) {
+
+                    data.push( {
+                      key: aggregationKey,
+                      text: $scope.aggregationFields[ aggregationKey ].title,
+                      children: _buckets
+                    } )
+
+                  }
+
+                });
+
+                debug( 'eachAggregation', data );
+
+                done( null, data );
 
               }
 
+
+            },
+            suggest: function suggestRequestWrapper( done ) {
+
+              $scope._request_suggest = client.suggest({
+                index: 'v5',
+                type: 'property',
+                method: "POST",
+                size: 0,
+                headers : {
+                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+                },
+                body: {
+                  "regular" : {
+                    "text" : query.term,
+                    "completion" : { "field" : "_search._suggest" }
+                  },
+                  "fuzzy" : {
+                    "text" : query.term,
+                    "completion" : { "field" : "_search._suggest", "fuzzy" : { "fuzziness" : 0 } }
+                  }
+                }
+              }, suggest_queryResponse );
+
+              /**
+               *
+               * @param err
+               * @param response
+               */
+              function suggest_queryResponse(err, response) {
+                debug( 'suggest_queryResponse', response );
+
+                if( typeof response.regular == 'undefined' ) {
+                  return done( null );
+                }
+
+                var data = [];
+
+                angular.forEach( response.regular[0].options, function eachMatch( someMatch, aggregationKey ) {
+                  debug( 'someMatch', someMatch );
+
+                  data.push( {
+                    id: someMatch.payload.id,
+                    listing_id: someMatch.payload.listing_id,
+                    score: someMatch.score,
+                    text: someMatch.text,
+                    thumbnail_url: someMatch.payload.rets_thumbnail_url,
+                    //latitude: someMatch.payload.rets_thumbnail_url
+                  } )
+
+                });
+
+                done( null, data.length ? {
+                  key: 'Listings',
+                  text: 'Listings',
+                  children: data
+                } : null );
+
+              }
+
+
+            },
+          }, allDone );
+
+          /**
+           * Aggration/Suggest requests complete.
+           *
+           * @param error
+           * @param results
+           */
+          function allDone( error, results  ) {
+            console.log( 'allDone', error, results );
+
+            query.callback({
+              results: [].concat(results.aggregations, results.suggest )
             });
-
-            debug( 'eachAggregation', data )
-
-            query.callback({ results: data });
 
           }
 
-        }
+        };
 
         /**
          * 
@@ -1372,6 +1493,12 @@
             debug('onSelect', $select.select2('data'), event.params.data);
 
             var data = $select.select2('data');
+
+            // specific listing found via suggest. @todo make this popup in new window
+            if( event.params.data.listing_id && event.params.data.id ) {
+              window.location.href= '/listing/' + event.params.data.id;;
+              return;
+            }
 
             if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
               window.location.href= data[0].permalink;
@@ -1546,18 +1673,6 @@
             formQuery.bool.must_not = [];
           }
 
-          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
-            formQuery.bool.must.push($scope.rdc_listing_query);
-          }
-
-          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
-            formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
-          }
-          //
-          // //merging the current taxonomy if tax archieve page
-          // if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
-          //   formQuery.bool.must.push($scope.tax_must_query);
-          // }
 
           $scope.query = formQuery;
 
@@ -1595,6 +1710,43 @@
       } ] );
 
   };
+
+  /**
+   * Get parameters by name from query string
+   * @param name
+   * @param url
+   * @returns {*}
+   */
+  function getParameterByName(name, url) {
+
+    if (!url) url = decodeURI(window.location.href);
+    name = name.replace(/[\[\]]/g, "\\$&");
+
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+    var results = regex.exec(url);
+    if (!results) {
+      // debug( 'getParameterByName', name, 'no result' );
+      return null;
+    }
+
+    if (!results[2]) {
+
+      // Try another method.. - potanin@UD
+      var _parts = parse_query_string( window.location.search );
+
+      if( _parts[ name ] ) {
+        // debug( 'getParameterByName', name, _parts[ name ] );
+        return _parts[ name ];
+      }
+
+      // debug( 'getParameterByName', name, 'empty result' );
+
+      return '';
+    }
+
+    // debug( 'getParameterByName', name, decodeURIComponent(results[2].replace(/\+/g, " ")) );
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 
   function removeAllBlankOrNull(JsonObj) {
     jQuery.each(JsonObj, function(key, value) {
