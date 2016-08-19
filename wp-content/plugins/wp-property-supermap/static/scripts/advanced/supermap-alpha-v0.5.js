@@ -983,7 +983,7 @@
             debug( 'searchResponse query: [%s], hits [%s]', build_query(), response.hits.total );
 
             setStatus( 'ready' );
-            
+
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
 
@@ -1310,7 +1310,7 @@
                 };
 
                 _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
-                _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term;
+                _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term.toLowerCase();
                 _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
 
               });
@@ -1392,11 +1392,11 @@
                 },
                 body: {
                   "regular" : {
-                    "text" : query.term,
+                    "text" : query.term.toLowerCase(),
                     "completion" : { "field" : "_search._suggest" }
                   },
                   "fuzzy" : {
-                    "text" : query.term,
+                    "text" : query.term.toLowerCase(),
                     "completion" : { "field" : "_search._suggest", "fuzzy" : { "fuzziness" : 0 } }
                   }
                 }
@@ -1417,7 +1417,11 @@
                 var data = [];
 
                 angular.forEach( response.regular[0].options, function eachMatch( someMatch, aggregationKey ) {
-                  debug( 'someMatch', someMatch );
+                  debug( 'someMatch', someMatch.payload );
+
+                  if( !someMatch.payload ) {
+                    return;
+                  }
 
                   data.push( {
                     id: someMatch.payload.id,
@@ -1434,7 +1438,7 @@
                   key: 'Listings',
                   text: 'Listings',
                   children: data
-                } : null );
+                } : [] );
 
               }
 
