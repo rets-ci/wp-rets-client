@@ -1,0 +1,1891 @@
+/**
+ *
+ */
+
+( function( jQuery, wpp ){
+
+
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
+  /**
+   *
+   * @param options
+   */
+  jQuery.fn.wpp_advanced_supermap = function( options ) {
+
+    var ngAppDOM = jQuery( this );
+
+    /** Making variables public */
+    var vars = jQuery.extend({
+      'ng_app': false,
+      'query': false,
+      'atts': false
+    }, options);
+
+    if( !vars.ng_app ) {
+      debug( 'wpp_advanced_supermap: ng_app is undefined!' );
+      return;
+    }
+
+    if( !vars.query ) {
+      debug( 'wpp_advanced_supermap: query is undefined!' );
+      return;
+    }
+
+    // Prepare DOM before initialize angular.
+
+    vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts).replace(/\+/g, " ") ) : {};
+
+    if( typeof vars.atts.map_height !== 'undefined' ) {
+      ngAppDOM.css( 'height', vars.atts.map_height );
+      jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
+      jQuery( '.sm-properties-list-wrap', ngAppDOM).css( 'height', vars.atts.map_height );
+      jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+    }
+
+    function setStatus( status ) {
+      debug( 'setStatus', status );
+      ngAppDOM.data( 'status', status );
+      ngAppDOM.addClass( 'status-' + status );
+    }
+
+    setStatus( 'loading' );
+
+    /**
+     * Be sure our module App is shown
+     */
+    ngAppDOM.show();
+
+    /**
+     * Angular Module.
+     */
+    angular.module( vars.ng_app, [ 'ngMap', 'smart-table', 'ngSanitize' ] )
+
+    /**
+     * Autocomplete directive.
+     * It requires jQuery UI.
+     *
+     * It's not used for the current advanced View,
+     * but can be used for custom solutions as well!
+     */
+      .directive('autoComplete', function($timeout) {
+        return function(scope, iElement, iAttrs) {
+          var uiItems = iAttrs.uiItems;
+          var source;
+          uiItems = uiItems.split('.');
+
+          for( var i=0; i<uiItems.length; i++ ) {
+            if(!source) {
+              if( typeof scope[uiItems[i]] !== 'undefined' ) {
+                source = scope[uiItems[i]];
+              } else {
+                break;
+              }
+            } else if( typeof source[uiItems[i]] !== 'undefined' ) {
+              source = source[uiItems[i]];
+            } else {
+              break;
+            }
+          }
+
+          if(!source || !source.length > 0) {
+            debug('error on trying to get source for autoComplete directive');
+            return null;
+          }
+          iElement.autocomplete({
+            source: source
+          });
+        };
+      })
+
+      .filter('simpleAmount', function() {
+        return function( int ) {
+          if ( !int || int == 0 ) return '';
+          int = Math.round(int/1000)*1000
+          if ( !String(int).length ) return '';
+          return '$' + ( int / 1000 ) + 'k';
+        };
+      })
+
+      .filter('acreage', function() {
+        return function( int ) {
+          return int > 1 ? int + ' acres' : int + ' acre';
+        };
+      })
+
+      .directive('clickOut', ['$window', '$parse', function ($window, $parse) {
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            var clickOutHandler = $parse(attrs.clickOut);
+
+            angular.element($window).on('click', function (event) {
+              if (element[0].contains(event.target)) return;
+              clickOutHandler(scope, {$event: event});
+              scope.$apply();
+            });
+          }
+        };
+      }])
+
+      .directive('onlyDigits', function () {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function (scope, element, attrs, modelCtrl) {
+            modelCtrl.$parsers.push(function (inputValue) {
+              if (inputValue == undefined) return '';
+              var transformedInput = inputValue.replace(/[^0-9]/g, '');
+              if (transformedInput !== inputValue) {
+                modelCtrl.$setViewValue(transformedInput);
+                modelCtrl.$render();
+              }
+              return transformedInput;
+            });
+          }
+        };
+      })
+
+      .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
+
+        var resizeTimer, idle_listener;
+        jQuery( window ).on( 'resize', function () {
+          clearTimeout( resizeTimer );
+          resizeTimer = setTimeout( function () {
+            NgMap.getMap().then(function(map){
+              google.maps.event.trigger(map, "resize");
+            });
+          }, 250 );
+        } ).resize();
+
+        setStatus('invoked' );
+
+        $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
+        $scope.atts = vars.atts;
+        $scope.total = 0;
+        $scope.loaded = false;
+        $scope.error = false;
+        $scope.properties = [];
+        $scope.propertiesTableCollection = [];
+        $scope.wpp = wpp;
+        $scope.dynMarkers = [];
+        $scope.latLngs = [];
+        $scope.per_page = typeof $scope.atts.per_page !== 'undefined' ? $scope.atts.per_page : 10;
+        $scope.searchForm = false;
+        $scope.loadNgMapChangedEvent = false;
+        $scope.loading_more_properties = true;
+        $scope.rdc_listing = ( window.sm_rdc_listing && window.sm_rdc_listing.ok ) ? true : false
+
+        $scope.map_filter_taxonomy = window.sm_current_terms.key || '';
+        $scope.current_filter = window.sm_current_filter || {};
+        $scope.tax_must_query = window.sm_must_tax_query || {};
+        $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
+
+        $scope.view = {
+          mode: {
+            table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
+            preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
+          },
+          toggle: function() {
+            this.mode.table = !this.mode.table;
+            this.mode.preview = !this.mode.preview;
+            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+          },
+          set: function(mode) {
+            for(var i in this.mode) {
+              if ( this.mode[i] == true ) {
+                this.mode[i] = false;
+              }
+            }
+            this.mode[mode] = true;
+            this.toggleActive(mode);
+            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+          },
+          toggleActive: function(mode) {
+            var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
+            if( mode == 'table' ) {
+              list_wrapper.find('li.sm-table').addClass('active');
+              list_wrapper.find('li.sm-preview').removeClass('active');
+            } else {
+              list_wrapper.find('li.sm-table').removeClass('active');
+              list_wrapper.find('li.sm-preview').addClass('active');
+            }
+          }
+        };
+
+        $scope._request = null;
+
+        $scope.columns = {
+          post_title: {
+            label: 'Address',
+            enable: 1
+          },
+          subdivision: {
+            label: 'Subdivision',
+            enable: 0
+          },
+          city: {
+            label: 'City',
+            enable: 1
+          },
+          bedrooms: {
+            label: 'Beds',
+            enable: 1
+          },
+          bathrooms: {
+            label: 'Baths',
+            enable: 1
+          },
+          total_living_area_sqft: {
+            label: 'Sq.Ft.',
+            enable: 1
+          },
+          approximate_lot_size: {
+            label: 'Lot',
+            enable: 0
+          },
+          price: {
+            label: 'Price',
+            enable: 1
+          },
+          price_per_sqft: {
+            label: '$/Sq.Ft.',
+            enable: 0
+          },
+          sale_type: {
+            label: 'Sale',
+            enable: 0
+          },
+          days_on_market: {
+            label: 'Days',
+            enable: 0
+          },
+        };
+
+        $scope.show_dropdown_columns = false;
+
+        /**
+         *
+         * @param current
+         * @returns {boolean}
+         */
+        $scope.sale_type_checked = function(current) {
+          var _types = [];
+
+          if ( _types = $scope.current_filter.sale_type.split(',') ) {
+            for (var i in _types) {
+              if ( _types[i] == current ) return true;
+            }
+          }
+
+          return false;
+        };
+
+        $document.bind('click', function(event){
+          $scope.show_dropdown_columns = false;
+          $scope.$apply();
+        });
+
+        /**
+         *
+         * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
+         */
+        $scope.pricing = window.pricing = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
+          max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('price-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
+            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.price.min = _price;
+            this.recalculate();
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.price ) {
+              $scope.current_filter.price = {
+                min:0,
+                max:0
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.price.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function() {
+            var j;
+            j = typeof this.current_min == 'number' ? this.current_min : 0;
+            for( var i in this.max_prices ) {
+              this.max_prices[i] = j += 25000;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_feet: number[], max_feet: number[]}}
+         */
+        $scope.footage = window.footage = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_foot: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
+          max_foot: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('feet-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            }
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.feet.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.feet ) {
+              $scope.current_filter.feet = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.feet.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_foot ) {
+              this.max_foot[i] = j += 500;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_bedroom: number[], max_bedroom: number[]}}
+         */
+        $scope.bedrange = window.bedrange = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_bedroom: [1, 2, 3, 4, 5, 6],
+          max_bedroom: [3, 4, 5, 6, 7, 8],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('bed-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
+            }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.bedrooms.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.bedrooms ) {
+              $scope.current_filter.bedrooms = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.bedrooms.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_bedroom ) {
+              this.max_bedroom[i] = j += 1;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_bathroom: number[], max_bathroom: number[]}}
+         */
+        $scope.bathrange = window.bathrange = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_bathroom: [1, 2, 3, 4, 5, 6],
+          max_bathroom: [3, 4, 5, 6, 7, 8],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('bath-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
+            }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.bathrooms.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.bathrooms ) {
+              $scope.current_filter.bathrooms = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.bathrooms.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            var j;
+            j = typeof (current*1) == 'number' ? current*1 : 0;
+            for( var i in this.max_bathroom ) {
+              this.max_bathroom[i] = j += 1;
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @type {{min_feet: number[], max_feet: number[]}}
+         */
+        $scope.acrage = window.acrage = {
+          mode: false,
+
+          current_min:'',
+          current_max:'',
+          current_min_label:'',
+          current_max_label:'',
+
+          min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
+          max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
+
+          click_out: function(e) {
+            if ( !angular.element(e.target).hasClass('acres-input') ) {
+              this.mode = '';
+            }
+          },
+
+          format: function(target, mode) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
+            if ( mode == 'min' ) {
+              this.current_min = Math.round(parseInt(jQuery(target).val()));
+            } else {
+              this.current_max = Math.round(parseInt(jQuery(target).val()));
+            }
+            this.set_min(this.current_min);
+            this.set_max(this.current_max);
+          },
+
+          set_min: function(_price) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.acrage.min = _price;
+            this.recalculate(_price);
+            this.mode = 'max';
+          },
+
+          set_max: function(_price) {
+            if ( !$scope.current_filter.acrage ) {
+              $scope.current_filter.acrage = {
+                min:'',
+                max:''
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.acrage.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function ( current ) {
+            current = current*1;
+            for( var i in this.max_acres ) {
+              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
+                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
+              } else {
+                if (this.max_acres[i - 1]) {
+                  this.max_acres[i] = this.max_acres[i - 1] + 10;
+                } else {
+                  this.max_acres[i] = current + 10;
+                }
+              }
+            }
+          },
+
+          focus: function( mode ) {
+            this.mode = mode;
+          }
+        };
+
+        /**
+         *
+         * @returns {number}
+         */
+        $scope.pagination_colspan = function(){
+          var i = 0;
+          for(var f in $scope.columns) {
+            i += $scope.columns[f].enable;
+          }
+          return i;
+        };
+
+        var index = 'v5',
+          type = 'property';
+
+        /**
+         * @type {$.es.Client|*}
+         */
+        var client = new jQuery.es.Client({
+          hosts: 'dori-us-east-1.searchly.com'
+        });
+
+        /**
+         *
+         * @param r
+         */
+        function cast_fields(r) {
+          r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
+          r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
+          r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
+          r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
+
+          if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+            r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
+          } else {
+            r._source.tax_input.price_per_sqft = [0];
+          }
+
+          r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+
+          if( r._source.meta_input && r._source.meta_input.rets_thumbnail_url ) {
+            r.rets_thumbnail_url = r._source.meta_input.rets_thumbnail_url.replace( '.JPG', '-270x280.jpg' );
+          }
+
+          //icon html and template
+          r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
+          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
+          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
+          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
+        }
+
+        function calculate_days(date) {
+          if ( date != 'undefined' && date != null ) {
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            var firstDate = new Date(date);
+            var currentDate = new Date();
+
+            return Math.round(Math.abs((firstDate.getTime() - currentDate.getTime()) / (oneDay)));
+          } else {
+            return 0;
+          }
+        }
+
+        /**
+         *
+         * @param int
+         * @returns {string}
+         */
+        var currencyAmount = function( int ) {
+          var int = Math.round( parseInt( int.toString().replace(/,/g,"")) / 5000 ) * 5000;
+          var cur = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          return {value:int, label:cur != 'NaN' ? cur : ''};
+        };
+
+        /**
+         *
+         * @returns {*|{}}
+         */
+        function build_query() {
+          // maybe alter something
+          return JSON.stringify($scope.query);
+        }
+
+        /**
+         *
+         */
+        function getMoreProperties() {
+          if ( $scope._request ) {
+            $scope._request.abort();
+          }
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
+          $scope.toggleSearchButton();
+          $scope._request = client.search({
+            index: index,
+            type: type,
+            method: "GET",
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
+          }, function( error, response ) {
+
+            setStatus( 'ready' );
+            
+            if ( !error ) {
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                debug( 'Error occurred during getting properties data.' );
+              } else {
+                $scope.total = response.hits.total;
+                response.hits.hits.filter(cast_fields);
+                Array.prototype.push.apply($scope.properties, response.hits.hits);
+                $scope.refreshMarkers(false);
+
+                if( ! $scope.loadNgMapChangedEvent ) {
+                  $scope.loadNgMapChangedEvent = true;
+                  $scope.addMapChanged();
+                }
+
+                if ( $scope.total > $scope.properties.length ) {
+                  if( $scope.loading_more_properties ) {
+                    getMoreProperties();
+                  }
+                }else{
+                  search_form.removeClass('mapChanged');
+                }
+              }
+              $scope.col_changed();
+            } else {
+              console.error(error);
+              search_form.removeClass('mapChanged');
+            }
+            search_form.removeClass('processing');
+            $scope.toggleSearchButton();
+          });
+        }
+
+        /**
+         * toggle search filter button loading icon and search icon
+         */
+        $scope.toggleSearchButton = function () {
+          var button_icon_desktop = jQuery('.sm-search-filter').find('i');
+          var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
+          if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
+            button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-search-solid");
+          } else {
+            button_icon_desktop.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_desktop.addClass("icon-wpproperty-interface-search-solid");
+            button_icon_mobile.removeClass("icon-wpproperty-interface-time-outline");
+            button_icon_mobile.addClass("icon-wpproperty-interface-search-solid");
+          }
+        };
+
+        /**
+         * Get Properties by provided Query ( filter )
+         */
+        $scope.getProperties = function getProperties() {
+
+          if ( $scope._request ) {
+            $scope._request.abort();
+          }
+
+          var search_form = jQuery('.sm-search-form form');
+
+          search_form.addClass('processing');
+          $scope.toggleSearchButton();
+
+          $scope._request = client.search({
+            index: index,
+            type: type,
+            method: "GET",
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
+          }, function( error, response ) {
+
+            if ( !error ) {
+              jQuery( '.sm-search-layer', ngAppDOM ).show();
+
+              $scope.loaded = true;
+
+              if( typeof response.hits.hits == 'undefined' ) {
+                debug( 'Error occurred during getting properties data.' );
+              } else {
+                response.hits.hits.filter(cast_fields);
+                if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+                  $scope.total = $scope.total + response.hits.total;
+                  Array.prototype.push.apply($scope.properties, response.hits.hits);
+                }else{
+                  $scope.total = response.hits.total;
+                  $scope.properties = response.hits.hits;
+                }
+                // Select First Element of Properties Collection
+                if( $scope.properties.length > 0 ) {
+                  $scope.currentProperty = $scope.properties[0];
+                  $scope.properties[0].isSelected = true;
+                  $scope.loadImages($scope.properties[0]);
+                  $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
+                }  else {
+                  $scope.refreshMarkers( false );
+                }
+
+                if ( $scope.total > $scope.properties.length ) {
+                  if( ! $scope.loading_more_properties ) {
+                    $scope.loading_more_properties = true;
+                  }
+                  getMoreProperties();
+                }else if($scope.rdc_listing){
+                  $scope.rdc_listing = false;
+                  search_form.submit();
+                }else{
+                  if( ! $scope.loadNgMapChangedEvent ) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
+                }
+              }
+              $scope.col_changed();
+            } else {
+              console.error(error);
+              search_form.removeClass('mapChanged');
+            }
+
+            search_form.removeClass('processing');
+            $scope.toggleSearchButton();
+
+          });
+
+        };
+
+        /**
+         *
+         */
+        $scope.col_changed = function() {
+          jQuery(document).trigger('rdc_cols_changed');
+        };
+
+        /**
+         * map zoom or drag event listener for search results refresh
+         */
+        $scope.addMapChanged = function addMapChanged() {
+          debug( 'addMapChanged' );
+
+          NgMap.getMap().then(function (map) {
+
+            if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
+              return false;
+            }
+
+            idle_listener = map.addListener('idle', function () {
+              var bounds = map.getBounds();
+              var zoom = map.getZoom();
+              if( zoom > 4 ) {
+                var SouthWestLatitude = bounds.getSouthWest().lat();
+                var NorthEastLatitude = bounds.getNorthEast().lat();
+                var NorthEastLongitude = bounds.getNorthEast().lng();
+                var SouthWestLongitude = bounds.getSouthWest().lng();
+                if (( SouthWestLatitude != 0 && NorthEastLatitude != 0 ) && ( SouthWestLongitude != 180 && NorthEastLongitude != -180 )) {
+                  jQuery('.rdc-latitude-gte').val(SouthWestLatitude);
+                  jQuery('.rdc-latitude-lte').val(NorthEastLatitude);
+                  jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
+                  jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
+                }
+              }else{
+                $scope.resetMapBounds();
+              }
+              jQuery('.sm-search-form form').addClass('mapChanged');
+              $scope.rdc_listing = true;
+              jQuery('.sm-search-form form').submit();
+            });
+          });
+        };
+
+        $scope.resetMapBounds = function resetMapBounds() {
+          jQuery('.rdc-latitude-gte').val('');
+          jQuery('.rdc-latitude-lte').val('');
+          jQuery('.rdc-longitude-gte').val('');
+          jQuery('.rdc-longitude-lte').val('');
+        };
+
+        $document.bind("st_sort_done",function(){
+          if( $scope.propertiesTableCollection.length > 0 ) {
+            $scope.selectRow($scope.propertiesTableCollection[0]);
+          }
+        });
+
+        /**
+         * Refresh Markers ( Marker Cluster ) on Google Map
+         */
+        $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
+          NgMap.getMap().then(function( map ) {
+            $scope.dynMarkers = [];
+            $scope.latLngs = [];
+
+            // Clears all clusters and markers from the clusterer.
+            if( typeof $scope.markerClusterer == 'object' ) {
+              $scope.markerClusterer.clearMarkers();
+            }
+
+            if( typeof $scope.infoBubble !== 'object' ) {
+              $scope.infoBubble = new google.maps.InfoWindow({
+                map: map,
+                maxWidth: 300,
+                shadowStyle: 1,
+                padding: 0,
+                backgroundColor: '#f3f0e9',
+                borderRadius: 4,
+                arrowSize: 2,
+                borderWidth: 0,
+                borderColor: 'transparent',
+                disableAutoPan: true,
+                hideCloseButton: true,
+                arrowPosition: 7,
+                backgroundClassName: 'sm-infobubble-wrap',
+                arrowStyle: 3
+              });
+            }
+
+            if( ! $scope.properties.length ) {
+              $scope.infoBubble.close();
+            }
+
+            for ( var i=0; i < $scope.properties.length; i++ ) {
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
+              latLng.listingId = $scope.properties[i]._id;
+              var marker = new google.maps.Marker( {
+                position: latLng
+                //icon: $scope.properties[i]._map_marker_url
+              } );
+              marker.listingId = $scope.properties[i]._id;
+
+              $scope.dynMarkers.push( marker );
+              $scope.latLngs.push( latLng );
+
+              /**
+               * Marker Click Event!
+               * - Selects Table Page
+               * - Selects Collection Row
+               */
+              google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
+                return function() {
+                  // Preselect a row
+                  var index;
+                  for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
+                    var property = $scope.properties[i];
+                    if ( property._id == marker.listingId ) {
+                      property.isSelected = true;
+                      $scope.currentProperty = property;
+                      $scope.loadImages(property);
+                      index = i;
+                    } else {
+                      property.isSelected = false;
+                    }
+                  }
+                  // Maybe Select Page!
+                  if( index !== null ) {
+                    var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
+                    angular
+                      .element( jQuery( '.collection-pagination', ngAppDOM ) )
+                      .isolateScope()
+                      .selectPage( pageNumber );
+                  }
+                  $scope.$apply();
+                }
+              })( marker, i, $scope ) );
+
+            }
+
+            if ( update_map_pos ) {
+              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+              $scope.latlngbounds = new google.maps.LatLngBounds();
+              for (var i = 0; i < $scope.latLngs.length; i++) {
+                $scope.latlngbounds.extend($scope.latLngs[i]);
+              }
+              map.fitBounds($scope.latlngbounds);
+            }
+
+            // Finally Initialize Marker Cluster
+            $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
+                styles: [
+                  {
+                    textColor: 'white',
+                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                    height: 60,
+                    width: 60
+                  },
+                  {
+                    textColor: 'white',
+                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                    height: 60,
+                    width: 60
+                  },
+                  {
+                    textColor: 'white',
+                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                    height: 60,
+                    width: 60
+                  }
+                ]
+              }
+            );
+          } );
+
+          $scope.col_changed();
+        }
+
+        /**
+         * Toogle Search Form
+         */
+        $scope.toggleSearchForm = function toggleSearchForm() {
+          $scope.searchForm = !$scope.searchForm;
+        }
+
+        /**
+         *
+         * @param row
+         */
+        $scope.loadImages = function loadImages( row ) {
+          if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
+            row._is_loading_images = true;
+            client.get({
+              index: index,
+              type: type,
+              headers : {
+                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+              },
+              id: row._id,
+              _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
+            }, function (error, response) {
+
+              if ( !error ) {
+
+                row._is_loading_images = false;
+
+                if( typeof response._source.meta_input.rets_media == 'undefined' ) {
+                  debug( 'Error occurred during getting properties data.' );
+                } else {
+                  row.images = response._source.meta_input.rets_media;
+                  $scope.$apply();
+                }
+
+                if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
+                  console.log( 'Error occurred during getting properties data.' );
+                } else {
+                  row.data_source_logo = response._source.meta_input.data_source_logo;
+                  $scope.$apply();
+                }
+
+              } else {
+                console.error(error);
+              }
+
+            });
+          }
+          return true;
+        }
+
+        /**
+         * Fixes selected Row.
+         *
+         * @param row
+         */
+        $scope.selectRow = function selectRow(row) {
+          for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
+            $scope.properties[i].isSelected = false;
+          }
+          $scope.currentProperty = row;
+          $scope.loadImages(row);
+          row.isSelected = true;
+        }
+
+        /**
+         * Fired when currentProperty is changed!
+         * Opens InfoBubble Window!
+         */
+        $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
+          for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
+            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
+              NgMap.getMap().then( function( map ) {
+                $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
+                $scope.infoBubble.setPosition( $scope.latLngs[i] );
+                $scope.infoBubble.open( map );
+              } );
+              break;
+            }
+          }
+        }, true );
+
+        var $select = jQuery('.termsSelection').select2({
+          placeholder: 'Search',
+          maximumSelectionLength: 1,
+          minimumInputLength: 3,
+          data: [],
+          query: function (query) {
+
+            var data = [];
+
+            if( query.term && query.term.length  >= 3 ) {
+
+              jQuery('.select2-dropdown').removeClass("hide");
+
+              if( $scope._request ) {
+                $scope._request.abort();
+              }
+
+              $scope._request = client.search({
+                index: 'v5',
+                type: 'property',
+                method: "GET",
+                headers : {
+                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+                },
+                source:'{query: {"match": {"_all": {"query": "'+query.term+'","operator": "and"}}},_source: ["post_title","_permalink","tax_input.location_city","tax_input.mls_id","tax_input.location_street","tax_input.location_zip","tax_input.location_county","tax_input.subdivision","tax_input.elementary_school","tax_input.middle_school","tax_input.high_school","tax_input.listing_office","tax_input.listing_agent_name"]}',
+              }, function (err, response) {
+
+                if( typeof response.hits.hits == 'undefined' ) {
+                  query.callback({ results: data });
+                }
+
+                var post_title = { text: "Address", children: [] };
+                var city = { text : "City", children: [] };
+                var mls_id = { text : "MLS ID", children: [] };
+                var location_street = { text : "Street", children: [] };
+                var location_zip = { text : "Zip", children: [] };
+                var location_county = { text : "County", children: [] };
+                var subdivision = { text : "Subdivision", children: [] };
+                var elementary_school = { text : "Elementary School", children: [] };
+                var middle_school = { text : "Middle School", children: [] };
+                var high_school = { text : "High School", children: [] };
+                var listing_office = { text : "Office", children: [] };
+                var listing_agent = { text : "Agent", children: [] };
+                var unique = { "None" : "None","Not in a Subdivision" : "Not in a Subdivision" };
+
+                jQuery.each(response.hits.hits,function(k,v){
+                  if( typeof v._source.post_title != 'undefined' ) {
+                    if (!unique[v._source.post_title]) {
+                      post_title.children.push({
+                        id: v._source.post_title,
+                        text: v._source.post_title,
+                        taxonomy:'post_title',
+                        permalink: v._source._permalink,
+                      });
+                      unique[v._source.post_title] = v._source.post_title;
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_city != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_city[0]]) {
+                      city.children.push({
+                        id: v._source.tax_input.location_city[0],
+                        text: v._source.tax_input.location_city[0],
+                        taxonomy:'location_city',
+                      });
+                      unique[v._source.tax_input.location_city[0]] = v._source.tax_input.location_city[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.mls_id != 'undefined' ) {
+                    if (!unique[v._source.tax_input.mls_id[0]]) {
+                      mls_id.children.push({
+                        id: v._source.tax_input.mls_id[0],
+                        text: v._source.tax_input.mls_id[0],
+                        taxonomy:'mls_id',
+                        permalink: v._source._permalink,
+                      });
+                      unique[v._source.tax_input.mls_id[0]] = v._source.tax_input.mls_id[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_street != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_street[0]]) {
+                      location_street.children.push({
+                        id:v._source.tax_input.location_street[0],
+                        text:v._source.tax_input.location_street[0],
+                        taxonomy: 'location_street'
+                      })
+                      unique[v._source.tax_input.location_street[0]] = v._source.tax_input.location_street[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_zip != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_zip[0]]) {
+                      location_zip.children.push({
+                        id:v._source.tax_input.location_zip[0],
+                        text:v._source.tax_input.location_zip[0],
+                        taxonomy: 'location_zip'
+                      })
+                      unique[v._source.tax_input.location_zip[0]] = v._source.tax_input.location_zip[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.location_county != 'undefined' ) {
+                    if (!unique[v._source.tax_input.location_county[0]]) {
+                      location_county.children.push({
+                        id:v._source.tax_input.location_county[0],
+                        text:v._source.tax_input.location_county[0],
+                        taxonomy: 'location_county'
+                      })
+                      unique[v._source.tax_input.location_county[0]] = v._source.tax_input.location_county[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.subdivision != 'undefined' ) {
+                    if (!unique[v._source.tax_input.subdivision[0]]) {
+                      subdivision.children.push({
+                        id:v._source.tax_input.subdivision[0],
+                        text:v._source.tax_input.subdivision[0],
+                        taxonomy: 'subdivision'
+                      })
+                      unique[v._source.tax_input.subdivision[0]] = v._source.tax_input.subdivision[0];
+                    }
+
+                  }
+                  if( typeof v._source.tax_input.elementary_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.elementary_school[0]]) {
+                      elementary_school.children.push({
+                        id:v._source.tax_input.elementary_school[0],
+                        text:v._source.tax_input.elementary_school[0],
+                        taxonomy: 'elementary_school'
+                      })
+                      unique[v._source.tax_input.elementary_school[0]] = v._source.tax_input.elementary_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.middle_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.middle_school[0]]) {
+                      middle_school.children.push({
+                        id:v._source.tax_input.middle_school[0],
+                        text:v._source.tax_input.middle_school[0],
+                        taxonomy:'middle_school'
+                      })
+                      unique[v._source.tax_input.middle_school[0]] = v._source.tax_input.middle_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.high_school != 'undefined' ) {
+                    if (!unique[v._source.tax_input.high_school[0]]) {
+                      high_school.children.push({
+                        id:v._source.tax_input.high_school[0],
+                        text:v._source.tax_input.high_school[0],
+                        taxonomy: 'high_school'
+                      })
+                      unique[v._source.tax_input.high_school[0]] = v._source.tax_input.high_school[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.listing_office != 'undefined' ) {
+                    if (!unique[v._source.tax_input.listing_office[0]]) {
+                      listing_office.children.push({
+                        id:v._source.tax_input.listing_office[0],
+                        text:v._source.tax_input.listing_office[0],
+                        taxonomy: 'listing_office'
+                      })
+                      unique[v._source.tax_input.listing_office[0]] = v._source.tax_input.listing_office[0];
+                    }
+                  }
+                  if( typeof v._source.tax_input.listing_agent != 'undefined' ) {
+                    if (!unique[v._source.tax_input.listing_agent[0]]) {
+                      listing_agent.children.push({
+                        id:v._source.tax_input.listing_agent[0],
+                        text:v._source.tax_input.listing_agent[0],
+                        taxonomy: 'listing_agent_name'
+                      })
+                      unique[v._source.tax_input.listing_agent[0]] = v._source.tax_input.listing_agent[0];
+                    }
+                  }
+                });
+
+                post_title.children.length ? data.push( post_title ) : '';
+                city.children.length ? data.push( city ) : '';
+                elementary_school.children.length ? data.push( elementary_school ) : '';
+                middle_school.children.length ? data.push( middle_school ) : '';
+                high_school.children.length ? data.push( high_school ) : '';
+                //listing_office.children.length ? data.push( listing_office ) : '';
+                //listing_agent.children.length ? data.push( listing_agent ) : '';
+                location_street.children.length ? data.push( location_street ) : '';
+                location_zip.children.length ? data.push( location_zip ) : '';
+                location_county.children.length ? data.push( location_county ) : '';
+                subdivision.children.length ? data.push( subdivision ) : '';
+                mls_id.children.length ? data.push( mls_id ) : '';
+
+                data.sort(function(a, b){
+                  // ASC  -> a.length - b.length
+                  // DESC -> b.length - a.length
+                  return a.children.length - b.children.length;
+                });
+                query.callback({ results: data });
+              });
+            } else {
+              jQuery('.select2-dropdown').addClass("hide");
+              query.callback({ results: data });
+            }
+          },
+          // language: {
+          //   noResults: function(){
+          //     return "No results found. Try something else";
+          //   },
+          //   errorLoading: function(){
+          //     return "Searching...";
+          //   }
+          // },
+          // templateResult: function formatRepo (city) {
+          //
+          //   if (city.loading) return city.text;
+          //
+          //   var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city._source.tax_input.location_street[0]  + "</span><span style='float: right; color: #cf3428;'>" + city._source.tax_input.location_street[0] + "</span>";
+          //   return html;
+          // },
+          // escapeMarkup: function (markup) { return markup; },
+          // templateSelection: function formatRepoSelection (city) {
+          //   return city._source.tax_input.location_street[0];
+          // }
+        }).on('select2:select', function(e) {
+          var data = $select.select2('data');
+          if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+            window.location.href= data[0].permalink;
+          } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+            var value = window.sm_current_terms.values[0];
+            var key = window.sm_current_terms.key;
+            if( value == data[0].text ) {
+              $scope.map_filter_taxonomy = key;
+            }
+          } else {
+            $scope.map_filter_taxonomy = data[0].taxonomy;
+          }
+          $scope.$apply();
+        }).on('select2:selecting', function(e) {
+          if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
+            $select.select2( 'val', {} );
+          }
+        });
+
+        /**
+         *
+         */
+        // var $select = jQuery('.termsSelection').select2({
+        //   placeholder: 'Location',
+        //   minimumInputLength: 3,
+        //   maximumSelectionLength: 1,
+        //   ajax: {
+        //     url: "/wp-admin/admin-ajax.php?action=mapFilterAutocomplete",
+        //     dataType: 'json',
+        //     processResults: function(data, page){
+        //       return {
+        //         results: data.data
+        //       }
+        //     }
+        //   },
+        //   language: {
+        //     noResults: function(){
+        //       return "No results found. Try something else";
+        //     },
+        //     errorLoading: function(){
+        //       return "Searching...";
+        //     }
+        //   },
+        //   templateResult: function formatRepo (city) {
+        //     if (city.loading) return 'Searching...';
+        //     var html = "<span style='float: left; max-width: 200px; overflow: hidden; height: 23px;'>" + city.name  + "</span><span style='float: right; color: #cf3428;'>" + city.taxonomy_label + "</span>";
+        //     return html;
+        //   },
+        //   escapeMarkup: function (markup) { return markup; },
+        //   templateSelection: function formatRepoSelection (term) {
+        //     if ( typeof term.taxonomy != 'undefined' ) {
+        //       $scope.map_filter_taxonomy = term.taxonomy;
+        //     }
+        //     return term.text || term.name;
+        //   }
+        // });
+
+        if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+          var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
+          $select.append($option).trigger('change');
+        }
+
+        $scope.sm_form_data = function sm_form_data( form_data ) {
+          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+            jQuery.each( jQuery(".rdc-home-types input:checkbox"), function (k,v) {
+              form_data.push({name:v.name,value:v.value});
+            } );
+          }
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
+              form_data.push({name:v.name,value:v.value});
+            } );
+          }
+          return form_data;
+        };
+
+        $document.on( 'change', '.rdc-home-types input:checkbox', function(){
+          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
+            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
+          } else {
+            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
+          }
+        });
+
+        $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
+          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
+          } else {
+            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
+          }
+        });
+
+        /**
+         * SEARCH FILTER EVENT
+         *
+         * We're using jQuery instead of AngularJS here because
+         * property search form is being generated via [property_search] shortcode
+         * or even can be custom, since we are using apply_filters on rendering.
+         */
+        jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
+          e.preventDefault();
+
+          if ( ! jQuery(this).hasClass('mapChanged') ) {
+            $scope.resetMapBounds();
+          }
+
+          $scope.loading_more_properties = false;
+
+          var formQuery = {},
+            push_counters = {},
+            patterns = {
+              "validate": /^[a-zA-Z][a-zA-Z0-9_\.]*(?:\[(?:\d*|[a-zA-Z0-9_\.]+)\])*$/,
+              "key":      /[a-zA-Z0-9_\.]+|(?=\[\])/g,
+              "push":     /^$/,
+              "fixed":    /^\d+$/,
+              "named":    /^[a-zA-Z0-9_\.]+$/
+            };
+
+          var build = function(base, key, value){
+            base[key] = value;
+            return base;
+          };
+
+          var push_counter = function(key){
+            if(push_counters[key] === undefined){
+              push_counters[key] = 0;
+            }
+            return push_counters[key]++;
+          };
+
+          var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
+
+          jQuery.each(form_data, function(){
+
+            if(!patterns.validate.test(this.name)){
+              return;
+            }
+
+            var k,
+              keys = this.name.match(patterns.key),
+              merge = this.value,
+              reverse_key = this.name;
+
+            while((k = keys.pop()) !== undefined){
+
+              reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+              if(k.match(patterns.push)){
+                merge = build([], push_counter(reverse_key), merge);
+              }
+
+              else if(k.match(patterns.fixed)){
+                merge = build([], k, merge);
+              }
+
+              else if(k.match(patterns.named)){
+                merge = build({}, k, merge);
+              }
+            }
+
+            formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
+          });
+
+          if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
+            formQuery.bool.must_not = [];
+          }
+
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && $scope.rdc_listing ) {
+            formQuery.bool.must.push($scope.rdc_listing_query);
+          }
+
+          if( ! jQuery.isEmptyObject($scope.rdc_listing_query) && ! $scope.rdc_listing ) {
+            formQuery.bool.must_not[formQuery.bool.must_not.length] = $scope.rdc_listing_query;
+          }
+          //
+          // //merging the current taxonomy if tax archieve page
+          // if( ! jQuery.isEmptyObject($scope.tax_must_query) && ! $scope.rdc_listing ) {
+          //   formQuery.bool.must.push($scope.tax_must_query);
+          // }
+
+          $scope.query = formQuery;
+
+          $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
+          $scope.query.bool.must_not = $scope.query.bool.must_not.filter(Boolean);
+
+          if( $scope.searchForm ) {
+            $scope.toggleSearchForm();
+          }
+          $scope.$apply();
+          $scope.getProperties();
+
+        } );
+
+        /**
+         * BACK HISTORY EVENT
+         */
+        window.addEventListener( 'popstate', function(){
+
+          // Get current location params
+          var location = window.location.href.split('?');
+          var locationQuery = {};
+          if( typeof location[1] !== 'undefined' ) {
+            parse_str( location[1], locationQuery );
+          }
+
+          $scope.$apply();
+          $scope.getProperties();
+
+        }, false);
+
+        // Get properties by request
+        $scope.getProperties();
+
+      } ] );
+
+  };
+
+  function removeAllBlankOrNull(JsonObj) {
+    jQuery.each(JsonObj, function(key, value) {
+      if (value === "" || value === null) {
+        delete JsonObj[key];
+      } else if (typeof(value) === "object") {
+        JsonObj[key] = removeAllBlankOrNull(value);
+      }
+    });
+    return JsonObj;
+  }
+
+  /**
+   *
+   * @param data
+   * @returns {*}
+   */
+  function unserialize(data) {
+    var that = this,
+      utf8Overhead = function(chr) {
+        var code = chr.charCodeAt(0);
+        if (  code < 0x0080
+          || 0x00A0 <= code && code <= 0x00FF
+          || [338,339,352,353,376,402,8211,8212,8216,8217,8218,8220,8221,8222,8224,8225,8226,8230,8240,8364,8482].indexOf(code)!=-1)
+        {
+          return 0;
+        }
+        if (code < 0x0800) {
+          return 1;
+        }
+        return 2;
+      };
+    error = function(type, msg, filename, line) {
+      throw new that.window[type](msg, filename, line);
+    };
+    read_until = function(data, offset, stopchr) {
+      var i = 2,
+        buf = [],
+        chr = data.slice(offset, offset + 1);
+
+      while (chr != stopchr) {
+        if ((i + offset) > data.length) {
+          error('Error', 'Invalid');
+        }
+        buf.push(chr);
+        chr = data.slice(offset + (i - 1), offset + i);
+        i += 1;
+      }
+      return [buf.length, buf.join('')];
+    };
+    read_chrs = function(data, offset, length) {
+      var i, chr, buf;
+
+      buf = [];
+      for (i = 0; i < length; i++) {
+        chr = data.slice(offset + (i - 1), offset + i);
+        buf.push(chr);
+        length -= utf8Overhead(chr);
+      }
+      return [buf.length, buf.join('')];
+    };
+    _unserialize = function(data, offset) {
+      var dtype, dataoffset, keyandchrs, keys, contig,
+        length, array, readdata, readData, ccount,
+        stringlength, i, key, kprops, kchrs, vprops,
+        vchrs, value, chrs = 0,
+        typeconvert = function(x) {
+          return x;
+        };
+
+      if (!offset) {
+        offset = 0;
+      }
+      dtype = (data.slice(offset, offset + 1))
+        .toLowerCase();
+
+      dataoffset = offset + 2;
+
+      switch (dtype) {
+        case 'i':
+          typeconvert = function(x) {
+            return parseInt(x, 10);
+          };
+          readData = read_until(data, dataoffset, ';');
+          chrs = readData[0];
+          readdata = readData[1];
+          dataoffset += chrs + 1;
+          break;
+        case 'b':
+          typeconvert = function(x) {
+            return parseInt(x, 10) !== 0;
+          };
+          readData = read_until(data, dataoffset, ';');
+          chrs = readData[0];
+          readdata = readData[1];
+          dataoffset += chrs + 1;
+          break;
+        case 'd':
+          typeconvert = function(x) {
+            return parseFloat(x);
+          };
+          readData = read_until(data, dataoffset, ';');
+          chrs = readData[0];
+          readdata = readData[1];
+          dataoffset += chrs + 1;
+          break;
+        case 'n':
+          readdata = null;
+          break;
+        case 's':
+          ccount = read_until(data, dataoffset, ':');
+          chrs = ccount[0];
+          stringlength = ccount[1];
+          dataoffset += chrs + 2;
+
+          readData = read_chrs(data, dataoffset + 1, parseInt(stringlength, 10));
+          chrs = readData[0];
+          readdata = readData[1];
+          dataoffset += chrs + 2;
+          if (chrs != parseInt(stringlength, 10) && chrs != readdata.length) {
+            error('SyntaxError', 'String length mismatch');
+          }
+          break;
+        case 'a':
+          readdata = {};
+
+          keyandchrs = read_until(data, dataoffset, ':');
+          chrs = keyandchrs[0];
+          keys = keyandchrs[1];
+          dataoffset += chrs + 2;
+
+          length = parseInt(keys, 10);
+          contig = true;
+
+          for (i = 0; i < length; i++) {
+            kprops = _unserialize(data, dataoffset);
+            kchrs = kprops[1];
+            key = kprops[2];
+            dataoffset += kchrs;
+
+            vprops = _unserialize(data, dataoffset);
+            vchrs = vprops[1];
+            value = vprops[2];
+            dataoffset += vchrs;
+
+            if (key !== i)
+              contig = false;
+
+            readdata[key] = value;
+          }
+
+          if (contig) {
+            array = new Array(length);
+            for (i = 0; i < length; i++)
+              array[i] = readdata[i];
+            readdata = array;
+          }
+
+          dataoffset += 1;
+          break;
+        default:
+          error('SyntaxError', 'Unknown / Unhandled data type(s): ' + dtype);
+          break;
+      }
+      return [dtype, dataoffset - offset, typeconvert(readdata)];
+    };
+
+    return _unserialize((data + ''), 0)[2];
+  }
+
+  /**
+   *
+   * @param str
+   * @param array
+   */
+  function parse_str(str, array) {
+    var strArr = String(str)
+        .replace(/^&/, '')
+        .replace(/&$/, '')
+        .split('&'),
+      sal = strArr.length,
+      i, j, ct, p, lastObj, obj, lastIter, undef, chr, tmp, key, value,
+      postLeftBracketPos, keys, keysLen,
+      fixStr = function(str) {
+        return decodeURIComponent(str.replace(/\+/g, '%20'));
+      };
+
+    if (!array) {
+      array = this.window;
+    }
+
+    for (i = 0; i < sal; i++) {
+      tmp = strArr[i].split('=');
+      key = fixStr(tmp[0]);
+      value = (tmp.length < 2) ? '' : fixStr(tmp[1]);
+
+      while (key.charAt(0) === ' ') {
+        key = key.slice(1);
+      }
+      if (key.indexOf('\x00') > -1) {
+        key = key.slice(0, key.indexOf('\x00'));
+      }
+      if (key && key.charAt(0) !== '[') {
+        keys = [];
+        postLeftBracketPos = 0;
+        for (j = 0; j < key.length; j++) {
+          if (key.charAt(j) === '[' && !postLeftBracketPos) {
+            postLeftBracketPos = j + 1;
+          } else if (key.charAt(j) === ']') {
+            if (postLeftBracketPos) {
+              if (!keys.length) {
+                keys.push(key.slice(0, postLeftBracketPos - 1));
+              }
+              keys.push(key.substr(postLeftBracketPos, j - postLeftBracketPos));
+              postLeftBracketPos = 0;
+              if (key.charAt(j + 1) !== '[') {
+                break;
+              }
+            }
+          }
+        }
+        if (!keys.length) {
+          keys = [key];
+        }
+        for (j = 0; j < keys[0].length; j++) {
+          chr = keys[0].charAt(j);
+          if (chr === ' ' || chr === '.' || chr === '[') {
+            keys[0] = keys[0].substr(0, j) + '_' + keys[0].substr(j + 1);
+          }
+          if (chr === '[') {
+            break;
+          }
+        }
+
+        obj = array;
+        for (j = 0, keysLen = keys.length; j < keysLen; j++) {
+          key = keys[j].replace(/^['"]/, '')
+            .replace(/['"]$/, '');
+          lastIter = j !== keys.length - 1;
+          lastObj = obj;
+          if ((key !== '' && key !== ' ') || j === 0) {
+            if (obj[key] === undef) {
+              obj[key] = {};
+            }
+            obj = obj[key];
+          } else {
+            // To insert new dimension
+            ct = -1;
+            for (p in obj) {
+              if (obj.hasOwnProperty(p)) {
+                if (+p > ct && p.match(/^\d+$/g)) {
+                  ct = +p;
+                }
+              }
+            }
+            key = ct + 1;
+          }
+        }
+        lastObj[key] = value;
+      }
+    }
+  }
+
+  /**
+   * Initialize our Supermap modules ( Angular Modules! )
+   */
+  function initialize() {
+
+    jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
+      jQuery( e ).wpp_advanced_supermap( {
+        'query': jQuery(e).data( 'query' ) || false,
+        'atts': jQuery(e).data( 'atts' ) || false,
+        'ng_app': jQuery(e).attr( 'ng-app' ) || false
+      } );
+    } );
+  }
+
+  /**
+   * Initialization
+   */
+  initialize();
+
+} )( jQuery, wpp );

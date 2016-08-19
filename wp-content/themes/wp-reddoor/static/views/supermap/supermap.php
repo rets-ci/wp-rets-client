@@ -17,7 +17,7 @@ use \UsabilityDynamics\RDC\Utils;
       line-height: 30px
     }
 
-    
+
     button.sm-search-filter {
       background-color: #d03528;
     }
@@ -76,11 +76,11 @@ use \UsabilityDynamics\RDC\Utils;
   }
 
   .wpp-advanced-supermap .wpp-advanced-supermap-inner-wrapper {
-    display: none;
+    opacity: 0;
   }
 
   .wpp-advanced-supermap.status-ready .wpp-advanced-supermap-inner-wrapper {
-    display:block;
+    opacity:1;
   }
 
 </style>

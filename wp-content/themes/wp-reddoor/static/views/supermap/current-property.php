@@ -37,11 +37,11 @@
             <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
           </a>
 
-          <a class="favorite-listing" target="#" data-listing-id="{{currentProperty._id}}">
+          <a class="favorite-listing hidden" target="#" data-listing-id="{{currentProperty._id}}">
             <span class="icon-action-like"></span><?php _e( 'Save', ud_get_wpp_supermap()->domain ); ?>
           </a>
 
-          <a class="hide-listing" target="#" data-listing-id="{{currentProperty._id}}">
+          <a class="hide-listing hidden" target="#" data-listing-id="{{currentProperty._id}}">
             <span class="icon-action-hide"></span><?php _e( 'Hide', ud_get_wpp_supermap()->domain ); ?>
           </a>
 

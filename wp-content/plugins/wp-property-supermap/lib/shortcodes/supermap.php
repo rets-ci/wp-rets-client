@@ -337,7 +337,8 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_script( 'gm-infobubble', ud_get_wpp_supermap()->path( 'bower_components/js-info-bubble/src/infobubble-compiled.js' ), array( 'ng-map' ) );
         wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ), array( 'angularjs' ) );
         wp_enqueue_script( 'markerwithlabel', ud_get_wpp_supermap()->path( 'static/scripts/advanced/markerwithlabel.js' ), array( 'ng-map' ) );
-        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), false, true );
+
+        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-alpha-v0.5.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '0.5', true );
 
         // This can be our generic SuperMap client-side facing settings object.
         wp_localize_script( 'supermap-advanced', 'supermapMode', array(

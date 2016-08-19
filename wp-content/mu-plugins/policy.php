@@ -104,8 +104,13 @@ add_filter( 'option_active_plugins', function( $_plugins ) {
 
   if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
     $_plugins[] = 'minit-master/minit.php';
-  }
+  } else {
 
+    if(($key = array_search('minit-master/minit.php', $_plugins)) !== false) {
+      unset($_plugins[$key]);
+    }
+
+  }
   return array_unique( $_plugins );
 
 } );
