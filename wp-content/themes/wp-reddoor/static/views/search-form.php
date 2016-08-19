@@ -1,9 +1,9 @@
 <div class="searchForm container" id="tabs_search" data-template="static/views/search-form">
   <ul class="nav nav-tabs">
-    <li class="formTabs active" data-topmenu="buyBtnForm">
+    <li class="formTabs" data-topmenu="buyBtnForm">
       <a data-toggle="tab" href="#tabs-1">Buy</a>
     </li>
-    <li class="formTabs" data-topmenu="rentBtnForm">
+    <li class="formTabs active" data-topmenu="rentBtnForm">
       <a data-toggle="tab" href="#tabs-2">Rent</a>
     </li>
   </ul>
@@ -22,7 +22,7 @@
 
     <!-- Buy -->
 
-    <form class="buyForm active tab-pane" id="tabs-1" method="GET" action="/buy" data-search-type="buy">
+    <form class="buyForm tab-pane" id="tabs-1" method="GET" action="/buy" data-search-type="buy">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Sale"/>
       <input name="_taxonomy" type="hidden" value=""/>
@@ -199,7 +199,7 @@
 
     <!-- Rent -->
 
-    <form class="rentForm tab-pane" id="tabs-2" method="GET" action="/rent" data-search-type="rent">
+    <form class="rentForm active tab-pane" id="tabs-2" method="GET" action="/rent" data-search-type="rent">
 
       <input name="wpp_search[sale_type]" type="hidden" value="Rent"/>
       <input name="_taxonomy" type="hidden" value=""/>

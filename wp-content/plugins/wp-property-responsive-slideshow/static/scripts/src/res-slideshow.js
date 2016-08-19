@@ -22,6 +22,7 @@ jQuery(document).ready(function($){
             slider_auto_height = slider_auto_height == 'true' ? true : false;
         var slider_min_height = _galleryTop.data('slider_min_height');
         var slider_max_height = _galleryTop.data('slider_max_height');
+        var slider_init = true;
 
         // Settings specific on slider types.
         switch(sliderType){
@@ -78,6 +79,10 @@ jQuery(document).ready(function($){
                                     setTimeout(function() {
                                         s.onResize();
                                         setControlSize(); // setting the next prev control size;
+                                        if( slider_init ) { 
+                                            s.slideTo(0); 
+                                            slider_init = false;
+                                        }
                                     },00);
                                 },
                 //slideToClickedSlide:true
@@ -215,6 +220,10 @@ jQuery(document).ready(function($){
                 $this[0].style.setProperty('height', height + "px", 'important');
 
             });
+
+            if(isMobile && !s.isLightbox()){
+                updateContainerHeight(s);
+            }
         });
 
         
@@ -274,6 +283,28 @@ jQuery(document).ready(function($){
             });
         }
 
+        var updateContainerHeight = function(s, ratio){
+            var landscape = 0, lcCount = 0, portrait = 0, ptCount = 0;
+            s.slides.each(function(){
+                var $this   = jQuery(this).find('img');
+                    width   = parseInt($this.attr('width')),
+                    height  = parseInt($this.attr('height')),
+                    ratio   = width/height;
+                var tmpWidth = Math.min(s.container.width() / ratio, width / ratio);
+                if(ratio>=1){
+                    landscape = Math.max(landscape, tmpWidth);
+                    lcCount++;
+                }
+                else{
+                    portrait = Math.max(portrait, tmpWidth);
+                    ptCount++;
+                }
+            });
+            s.params.slider_height = Math.min($( window ).height(), (landscape || portrait));
+            jQuery('#wprs-fullwidth-spacer-' + id).height(s.params.slider_height);
+            s.container.height(s.params.slider_height);
+        }
+
         function setRealWidthHeight($img, s){
             if(typeof s.noOfimgageLoaded == 'undefined')
                 s.noOfimgageLoaded = 0;
@@ -288,9 +319,9 @@ jQuery(document).ready(function($){
                 }
             }
             
-            if($img.attr('width')>1){
+            if($img.attr('sizeLoaded') == 'true'){
                 isAllImgLoaded();
-                return;
+                return $img;
             }
 
             $('<img />').load(function(){
@@ -298,6 +329,7 @@ jQuery(document).ready(function($){
                 var height = this.height;
                 $img.attr('width', width)
                     .attr('height', height);
+                $img.attr('sizeLoaded', 'true');
                 isAllImgLoaded();
             }).error(function(){ // When image not exist or not loaded
                 isAllImgLoaded();

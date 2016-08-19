@@ -3835,6 +3835,12 @@ html.rdc-mobile-menu-opened {
   text-align: center;
   opacity: 0;
 }
+@media screen and (max-width: 992px) {
+  .sp-slideshow-block {
+    top: -15px;
+    margin-bottom: -15px;
+  }
+}
 .attribute-content {
   border-left: 1px solid #d8d8d8;
   border-right: 1px solid #d8d8d8;

@@ -46,7 +46,7 @@
     });
 
     //Swipe down to close
-    options.galleryTop.on('touchEnd', function(s, e){
+    function closeLB(s, e){
       var touches = s.touches;
       var diff = touches.currentY - touches.startY;
       if(diff>100){
@@ -56,7 +56,7 @@
         },50);
         return false;
       }
-    });
+    }
 
     function handleMoveImage(s, e){
       e.stopPropagation();
@@ -72,6 +72,7 @@
 
     function showLightbox(img){
       var activeIndex = jQuery(img).parent().index();
+      originalParams = jQuery.extend(true, {}, options.galleryTop.params);
       options.galleryTop.params.slidesPerView = 1;
       options.galleryTop.params.slidesPerColumn = 1;
       options.galleryTop.params.lightBox = true;
@@ -81,6 +82,7 @@
       options.galleryTop.params.slider_width = false;
       options.galleryTop.params.slider_height = false;
       options.galleryTop.params.slideshow_layout = false;
+      options.galleryTop.translate = 0;
       options.galleryThumbs.activeIndex = activeIndex;
 
       loadFullImageLazy();
@@ -95,6 +97,7 @@
 
       options.galleryTop.enableKeyboardControl();
       $(document).on('keydown', lbHandleKeyboard);
+      options.galleryTop.on('touchEnd', closeLB);
       $('body').css({'overflow':'hidden'});
     }
 
@@ -116,6 +119,7 @@
       
       options.galleryTop.params.initialSlide = activeIndex;
       options.galleryTop.params.lightBox = false;
+      options.galleryTop.translate = 0;
 
       $(options.galleryTop.slides).removeClass('swiper-lazy');
       lb.removeClass('lightbox');
@@ -129,6 +133,7 @@
         options.galleryThumbs.onResize();
 
       $(document).off('keydown', lbHandleKeyboard);
+      options.galleryTop.off('touchEnd', closeLB);
       $('body').css({'overflow':''});
     }
     /**

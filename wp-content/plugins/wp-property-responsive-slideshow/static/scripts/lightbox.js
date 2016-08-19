@@ -1,20 +1,27 @@
 !function($) {
     $.fn.wpp_rs_lb = function(prop) {
+        function closeLB(s, e) {
+            var touches = s.touches, diff = touches.currentY - touches.startY;
+            return diff > 100 ? (e.preventDefault(), setTimeout(function() {
+                hideLightbox(e);
+            }, 50), !1) : void 0;
+        }
         function setViewOriginalHref(s) {
             var activeIndex = s.activeIndex, href = $(s.slides[activeIndex]).data("src");
             lb.find(".viewOriginal").attr("href", href);
         }
         function showLightbox(img) {
             var activeIndex = jQuery(img).parent().index();
-            options.galleryTop.params.slidesPerView = 1, options.galleryTop.params.slidesPerColumn = 1, 
-            options.galleryTop.params.lightBox = !0, options.galleryTop.params.noSwiping = !0, 
-            options.galleryTop.params.initialSlide = activeIndex, options.galleryTop.params.autoHeight = !1, 
-            options.galleryTop.params.slider_width = !1, options.galleryTop.params.slider_height = !1, 
-            options.galleryTop.params.slideshow_layout = !1, options.galleryThumbs.activeIndex = activeIndex, 
+            originalParams = jQuery.extend(!0, {}, options.galleryTop.params), options.galleryTop.params.slidesPerView = 1, 
+            options.galleryTop.params.slidesPerColumn = 1, options.galleryTop.params.lightBox = !0, 
+            options.galleryTop.params.noSwiping = !0, options.galleryTop.params.initialSlide = activeIndex, 
+            options.galleryTop.params.autoHeight = !1, options.galleryTop.params.slider_width = !1, 
+            options.galleryTop.params.slider_height = !1, options.galleryTop.params.slideshow_layout = !1, 
+            options.galleryTop.translate = 0, options.galleryThumbs.activeIndex = activeIndex, 
             loadFullImageLazy(), lb.addClass("lightbox"), $("#wpadminbar").hide(), options.galleryTop.destroy(!1, !0), 
             options.galleryTop.init(), options.galleryTop.lazy.load(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
             options.galleryTop.enableKeyboardControl(), $(document).on("keydown", lbHandleKeyboard), 
-            $("body").css({
+            options.galleryTop.on("touchEnd", closeLB), $("body").css({
                 overflow: "hidden"
             });
         }
@@ -27,10 +34,11 @@
         function hideLightbox(e) {
             var activeIndex = options.galleryTop.activeIndex;
             options.galleryTop.params = jQuery.extend(!0, {}, originalParams), options.galleryTop.params.initialSlide = activeIndex, 
-            options.galleryTop.params.lightBox = !1, $(options.galleryTop.slides).removeClass("swiper-lazy"), 
+            options.galleryTop.params.lightBox = !1, options.galleryTop.translate = 0, $(options.galleryTop.slides).removeClass("swiper-lazy"), 
             lb.removeClass("lightbox"), $("#wpadminbar").show(), options.galleryTop.destroy(!1, !0), 
             options.galleryTop.init(), options.galleryTop.enableKeyboardControl(), options.galleryThumbs.onResize && options.galleryThumbs.onResize(), 
-            $(document).off("keydown", lbHandleKeyboard), $("body").css({
+            $(document).off("keydown", lbHandleKeyboard), options.galleryTop.off("touchEnd", closeLB), 
+            $("body").css({
                 overflow: ""
             });
         }
@@ -52,11 +60,6 @@
             hideLightbox(e);
         }), setViewOriginalHref(options.galleryTop), options.galleryTop.on("slideChangeStart", function(s) {
             setViewOriginalHref(s);
-        }), options.galleryTop.on("touchEnd", function(s, e) {
-            var touches = s.touches, diff = touches.currentY - touches.startY;
-            return diff > 100 ? (e.preventDefault(), setTimeout(function() {
-                hideLightbox(e);
-            }, 50), !1) : void 0;
         }), this;
     };
 }(jQuery);

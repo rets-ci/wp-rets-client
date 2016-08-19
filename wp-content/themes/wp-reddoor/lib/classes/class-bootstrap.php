@@ -136,8 +136,6 @@ namespace UsabilityDynamics\RDC {
           )
         );
 
-        $must_not_query = array();
-
         $_location_selected = array();
 
         foreach( $query as $field => $value ) {
@@ -158,7 +156,7 @@ namespace UsabilityDynamics\RDC {
                 )
               );
 
-              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city', 'listing_office' ) ) ) ) {
+              if ( in_array( $field, apply_filters( 'rdc_taxonomy_keys', array( 'high_school', 'middle_school', 'elementary_school', 'location_country', 'location_zip', 'neighborhood', 'location_city' ) ) ) ) {
                 $_location_selected = array(
                   'key' => $field,
                   'values' => $labels
@@ -192,36 +190,13 @@ namespace UsabilityDynamics\RDC {
           }
         }
 
-        $must_tax_query = array();
-        if( is_tax() && ! empty( $queried_object = get_queried_object() ) ) {
-          $must_tax_query = array(
-              'terms' => array(
-                  'tax_input.' . $queried_object->taxonomy => array( $queried_object->name ),
-              ),
-          );
-        }
-        $rdc_listing = true;
-        $rdc_listing_query = array(
-            'terms' => array(
-                'tax_input.listing_office' => array( 'Red Door Company' ),
-            ),
-        );
         // check if current page is rdc listing or not - tax query can tell us on which page we are on currently
-        if( $rdc_listing_query == $must_tax_query ) {
-          $rdc_listing_query = array();
-          $rdc_listing = false;
-        }
 
         wp_localize_script( 'supermap-advanced', 'sm_current_terms', $_location_selected );
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing_query', $rdc_listing_query );
-
-        // The "$l10n" must be an object/array, can not bee a bool. - potanin@UD
-        wp_localize_script( 'supermap-advanced', 'sm_rdc_listing', array( "ok" => $rdc_listing ? true : false ) );
 
         $_query = array(
           'bool' => array(
-            'must' => $must_query,
-            'must_not' => $must_not_query
+            'must' => $must_query
           )
         );
 
@@ -238,6 +213,15 @@ namespace UsabilityDynamics\RDC {
             'tax_input.location_latitude',
             'tax_input.location_longitude',
             '_permalink',
+
+            '_system.neighborhood',
+            '_system.google_place_id',
+            '_system.available_date',
+            '_system.listed_date',
+            '_system.agency_listing',
+            '_metrics.score.total',
+
+            'meta_input.rets_thumbnail_url',
             'tax_input.listing_type',
             'tax_input.bedrooms',
             'tax_input.bathrooms',
@@ -361,7 +345,7 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
         wp_enqueue_script('masonry', 'https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js', array('jquery'), '4.0');
         wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array( 'jquery' ), '1.0.0' );
-        wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '4.0.3');
         wp_enqueue_script('rdc-custom-validate', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.validate.min.js', array('jquery') );
 
         //wp_enqueue_script('rdc-custom-ui', 'https://cloud.crm.powerobjects.net/powerWebFormV3/scripts/jquery-ui-1.8.17.custom.min.js', array('jquery') );
@@ -369,6 +353,10 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('touch-swipe');
 
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css');
+
+        wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
+        wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
+
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
         //if ( is_singular( 'property' ) ) {
@@ -380,6 +368,9 @@ namespace UsabilityDynamics\RDC {
         $recaptcha = get_theme_mod( 'rdc_recaptcha_key' );
         if( !empty( $recaptcha ) ) {
           wp_enqueue_script( 'google-recaptcha-api', 'https://www.google.com/recaptcha/api.js' );
+	        wp_localize_script( 'rdc-popups', 'popupMode', array(
+		        "recaptcha_key" => $recaptcha
+	        ) );
         }
       }
 

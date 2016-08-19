@@ -26,6 +26,11 @@ add_action('template_redirect', function() {
     $_policy['value'] = 'public,max-age=60,s-maxage=60,force-cache=true';
   }
 
+  // This will only affect Varnish. We don't want Varnish to cache things when on CloudFront.
+  if( isset( $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] ) && $_SERVER['HTTP_CLOUDFRONT_FORWARDED_PROTO'] === 'https' ) {
+    $_policy['value'] = 'private,no-cache,no-store';
+  }
+
   // We cache normal content "forever" and then purge when need to.
   if( !$_policy['set'] && ( is_archive() ) ) {
     $_policy[ "set" ] = true;
@@ -83,20 +88,29 @@ add_action( 'wp_enqueue_scripts', function(  ) {
 // We disable all caching. 
 add_filter( 'minit-use-cache', '__return_false' );
 add_filter( 'minit-script-tag-async', '__return_false' );
+
+//add_filter( 'minit-exclude-js', function( $exclude ) { return array( 'jquery' ); });
+//add_filter( 'minit-drop-js', function( $exclude ) { return array( 'jquery' ); });
+
 add_filter( 'minit-cache-expiration', function() { return 0; });
 
 // Regenerates every time.
-add_filter( 'minit-file-pattern', function( $_path, $extension ) {
-  return str_replace( '/minit/', '/minit/asset-' . $_SERVER['GIT_BRANCH'] . '-' . time() . '-', $_path );
-}, 10, 2 );
+add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
+  return str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . time() . '-', $_path );
+}, 10, 3 );
 
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
 
   if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
     $_plugins[] = 'minit-master/minit.php';
-  }
+  } else {
 
+    if(($key = array_search('minit-master/minit.php', $_plugins)) !== false) {
+      unset($_plugins[$key]);
+    }
+
+  }
   return array_unique( $_plugins );
 
 } );

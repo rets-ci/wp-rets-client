@@ -770,7 +770,7 @@ s.updateSlidesSize = function () {
             }
         }
 
-        s.virtualSize += slideSize + ((i%2 == 0)?spaceBetween:0);
+        s.virtualSize += slideSize + ((row%2 == 0)?spaceBetween:0);
 
         prevSlideSize = slideSize;
 
@@ -2349,11 +2349,10 @@ s.setSlideSize_12grid = function(slide, s){
 
     if(slide.is(':first-child')){
         slideHeight = s.container.height();
-        slideRatio = 16 / 9;
-        if(s.params.slider_width && s.params.slider_height)
-            slideRatio   = s.params.slider_width / s.params.slider_height;
-        slideWidth = width = slideHeight * imgRatio;
-        height = slideHeight;
+        slideRatio = attrWidth / attrHeight;
+        slideWidth = slideHeight * imgRatio;
+        width = slideWidth + 'px';
+        height = slideHeight + 'px';
     }
     else if(1 > imgRatio){ // Here 1 is slide ratio. Because slide width and height is same.
         width = "100%";

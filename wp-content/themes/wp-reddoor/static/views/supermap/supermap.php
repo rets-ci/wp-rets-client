@@ -11,9 +11,91 @@
 use \UsabilityDynamics\RDC\Utils;
 
 ?>
+<style>
+
+    .select2-container .select2-search__field {
+      line-height: 30px
+    }
+
+
+    button.sm-search-filter {
+      background-color: #d03528;
+    }
+
+    button.sm-search-filter.action-pulsate {
+      background-color: #e82413;
+      -webkit-transition: background-color 1000ms linear;
+      -moz-transition: background-color 1000ms linear;
+      -o-transition: background-color 1000ms linear;
+      -ms-transition: background-color 1000ms linear;
+      transition: background-color 1000ms linear;
+    }
+
+  .icon-home {
+    font-size: 10px;
+  }
+
+  .wpp-listing-label {
+    color: white;
+    background-color: #d03528;
+    padding: 2px 3px;
+    border-radius: 4px;
+  }
+
+  .wpp-listing-label.wpp-listing-visited {
+    background-color: #e8655b;
+  }
+
+  .wpp-listing-label.wpp-listing-active {
+    background-color: #e8655b;
+  }
+
+  .wpp-listing-label.wpp-listing-hover {
+    background-color: #bf463b;
+  }
+
+  .wpp-listing-label.wpp-listing-favorited {
+    background-color: #368839;
+  }
+
+  .wpp-cluster-label {
+    color: #FFF;
+  }
+
+  .wpp-advanced-supermap {
+    height: 600px;
+    display: block !important;
+    background-color: #f3f0e9;
+    background-image: url('data:image/gif;base64,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');
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .wpp-advanced-supermap.status-ready {
+    background-image:none;
+  }
+
+  .wpp-advanced-supermap .wpp-advanced-supermap-inner-wrapper {
+    opacity: 0;
+  }
+
+  .wpp-advanced-supermap.status-ready .wpp-advanced-supermap-inner-wrapper {
+    opacity:1;
+  }
+
+</style>
+<script>
+  // set container height quickly
+  window.setTimeout(function showHeight() {
+    jQuery( '.wpp-advanced-supermap' ).height( jQuery(window).height() - 120 );
+    //console.log( 'height window', jQuery(window).height() );
+    //console.log( "height Set height to", jQuery( '.wpp-advanced-supermap' ).height() );
+  },10);
+
+</script>
 <div ng-app="wppSupermap<?php echo rand( 1001, 9999 ); ?>" data-query="<?php echo urlencode( serialize( $query ) ) ?>" data-atts="<?php echo urlencode( serialize( $atts ) ) ?>" class="wpp-advanced-supermap">
 
-  <div ng-controller="main">
+  <div ng-controller="main" class="wpp-advanced-supermap-inner-wrapper">
 
     <div class="row">
 
@@ -94,7 +176,7 @@ use \UsabilityDynamics\RDC\Utils;
             <ul class="dropdown-columns-options mode-preview" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
               <li ng-repeat="col in columns">
                 <label>
-                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" ng-bind-template=" {{col.label}}" />
+                  <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
                 </label>
               </li>
             </ul>
@@ -118,17 +200,18 @@ use \UsabilityDynamics\RDC\Utils;
               <li class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" st-sort="_source.tax_input.price_per_sqft[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::price_per_sqft::label", __( '$/Sq.Ft.', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-sale" ng-show="columns.sale_type.enable" st-sort="_source.tax_input.sale_type[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::sale_type::label", __( 'Sale', ud_get_wpp_supermap()->domain ) ); ?></li>
               <li class="sm-days" ng-show="columns.days_on_market.enable" st-sort="_source.tax_input.days_on_market[0]" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::days::label", __( 'Days', ud_get_wpp_supermap()->domain ) ); ?></li>
+              <li class="sm-days" ng-show="columns.available_date.enable" st-sort="_source._system.available_date" st-skip-natural="true"><?php echo apply_filters( "wpp::advanced_supermap::column::available_date::label", __( 'Available', ud_get_wpp_supermap()->domain ) ); ?></li>
             </ul>
 
             <div class="sm-properties-grid">
 
               <div class="clear" style="height: 0"></div>
 
-              <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && loadImages(row)" data-property-id="{{row._id}}">
+              <div ng-repeat="row in propertiesGridCollection" st-select-row="row" class="sm-current-property" ng-show="currentProperty && haveImages(row)" data-property-id="{{row._id}}">
                 <div class="row">
                   <div class="col-md-6">
-                    <a target="_blank" href="/?p={{row._id}}">
-                      <div class="sm-current-property-thumb" ng-style="{'background-image':'url('+row.images[0].url+')'}">
+                    <a target="_blank" href="/listing/{{row._id}}">
+                      <div class="sm-current-property-thumb" data-meta="rets_thumbnail_url"  ng-style="{'background-image':'url('+row.rets_thumbnail_url+')'}">
                         <img style="position: absolute;right: 5px;bottom: 10px;" ng-src="{{row.data_source_logo}}" />
                       </div>
                     </a>
@@ -142,7 +225,7 @@ use \UsabilityDynamics\RDC\Utils;
                       </div>
                       <ul>
                         <li class="sm-current-property-price" ng-bind-template="{{row._source.tax_input.price[0] | currency : '$' : 0}}"></li>
-                        <li class="sm-current-property-title"><a target="_blank" href="/?p={{row._id}}" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></a></li>
+                        <li class="sm-current-property-title"><a target="_blank" href="/listing/{{row._id}}" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></a></li>
                       </ul>
                       <ul class="sm-current-property-stats">
                         <li class="beds" ng-bind-html="row.current_bedrooms"></li>
@@ -176,7 +259,9 @@ use \UsabilityDynamics\RDC\Utils;
             <div class="sm-current-property" ng-show="">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="{{currentProperty._source._permalink}}"><div class="sm-current-property-thumb" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div></div></a>
+                  <a href="{{currentProperty._source._permalink}}">
+                    <div class="sm-current-property-thumb" data-kind="image" style="background-image: url({{currentProperty.featured_image_url ? currentProperty.featured_image_url : get_thumbnail_url(currentProperty.ID) }});"><div class="wpp-super-map-ajax-loader" ng-hide="currentProperty.featured_image_url">Loading....</div>
+                    </div></a>
                 </div>
                 <div class="col-md-6">
                   <div class="sm-current-property-details">
@@ -210,7 +295,7 @@ use \UsabilityDynamics\RDC\Utils;
                       <ul class="dropdown-columns-options mode-table" ng-show="show_dropdown_columns" ng-click="$event.stopPropagation()">
                         <li ng-repeat="col in columns">
                           <label>
-                            <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" ng-bind-template=" {{col.label}}" />
+                            <input ng-click="col_changed()" type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="col.enable" /> {{col.label}}
                           </label>
                         </li>
                       </ul>
@@ -281,10 +366,16 @@ use \UsabilityDynamics\RDC\Utils;
                         <?php _e( 'Days', 'reddoor' ); ?>
                       </div>
                     </th>
+                    <th class="sm-days" ng-show="columns.available_date.enable" st-sort="_source._system.available_date" st-skip-natural="true">
+                      <?php _e( 'Available', 'reddoor' ); ?>
+                      <div>
+                        <?php _e( 'Available', 'reddoor' ); ?>
+                      </div>
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-click="selectRow(row)" data-property-id="{{row._id}}">
+                  <tr st-select-row="row" ng-repeat="row in propertiesTableCollection" ng-mouseover="hoverRow(row)" ng-click="selectRow(row)" data-property-id="{{row._id}}">
                     <td class="sm-marker"><img class="sm-map-marker-icon" ng-src="{{row._map_marker_url || '//maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png'}}" alt="" /></td>
                     <td class="sm-post-title" ng-show="columns.post_title.enable" ng-bind-template="{{row._source.tax_input.location_street_number[0]}} {{row._source.tax_input.location_direction[0]}} {{row._source.tax_input.location_street[0]}} {{row._source.tax_input.location_unit[0]}}"></td>
                     <td class="sm-subdivision" ng-show="columns.subdivision.enable" ng-bind-template="{{row._source.tax_input.subdivision[0]}}"></td>
@@ -297,6 +388,7 @@ use \UsabilityDynamics\RDC\Utils;
                     <td class="sm-price-sqft" ng-show="columns.price_per_sqft.enable" ng-bind-template="{{row._source.tax_input.price_per_sqft[0] | currency : '$' : 0}}"></td>
                     <td class="sm-sale" ng-show="columns.sale_type.enable" ng-bind-template="{{row._source.tax_input.sale_type[0]}}"></td>
                     <td class="sm-days" ng-show="columns.days_on_market.enable" ng-bind-template="{{row._source.tax_input.added[0]}}"></td>
+                    <td class="sm-days" ng-show="columns.available_date.enable" ng-bind-template="{{row._source._system.available_date}}"></td>
                   </tr>
                   </tbody>
                   <tfoot>
