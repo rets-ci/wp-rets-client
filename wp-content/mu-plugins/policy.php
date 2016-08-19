@@ -110,6 +110,8 @@ add_filter( 'option_active_plugins', function( $_plugins ) {
       unset($_plugins[$key]);
     }
 
+
+
   }
   return array_unique( $_plugins );
 
