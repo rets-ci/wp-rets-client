@@ -13,6 +13,10 @@
  * Caching Policy (Varnish).
  *
  */
+
+add_filter( 'automatic_updater_disabled', '__return_true' );
+add_filter( 'automatic_updates_is_vcs_checkout', '__return_false', 1 );
+
 add_action('template_redirect', function() {
 
   $_policy = array(

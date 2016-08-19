@@ -45,9 +45,11 @@
         "allow_repair": true,
         "force_ssl_admin": true,
         "force_ssl_login": true,
-        "auto_core_update": true,
+        "auto_core_update": false,
+        "AUTO_UPDATE_CORE": false,
         "use_themes": true
       },
+      "AUTOMATIC_UPDATER_DISABLED": true,
       "db": [
         {
           "name": "www.reddoorcompany.com.production",
