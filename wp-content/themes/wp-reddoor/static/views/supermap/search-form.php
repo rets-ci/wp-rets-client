@@ -39,7 +39,7 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="col-md-12">
         <div class="location">
           <span class="icon-wpproperty-location-pin-solid sf-icon"></span>
-          <select multiple="multiple" class="termsSelection"></select>
+          <select multiple="multiple" class="termsSelection" name="bool[must][1][terms][tax_input.{{map_filter_taxonomy}}][]"></select>
         </div>
       </div>
     </div>
