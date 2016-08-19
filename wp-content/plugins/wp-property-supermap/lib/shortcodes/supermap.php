@@ -341,6 +341,7 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_script( 'markerwithlabel', ud_get_wpp_supermap()->path( 'static/scripts/advanced/markerwithlabel.js' ), array( 'ng-map' ) );
 
         wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-alpha-v0.5.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '0.5', true );
+        wp_enqueue_script( 'supermap-advanced-autocomplete', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-autocomplete-v1.0.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '1.0', true );
 
         // This can be our generic SuperMap client-side facing settings object.
         wp_localize_script( 'supermap-advanced', 'supermapMode', array(
