@@ -1250,11 +1250,26 @@
               aggs: {}
             };
 
-            _source.aggs[ key ]['filters']['filters'][key] = { term: {} }
+            _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
             _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term;
             _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
 
           });
+
+          var _body = {
+            index: 'v5',
+            type: 'property',
+            method: "POST",
+            size: 0,
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            body: _source
+          };
+
+          //_body.suggestField = '_search.suggest';
+          //_body.suggestText  = query.term;
+          //_body.suggestSize  = 5;
 
           $scope._request = client.search({
             index: 'v5',
@@ -1280,9 +1295,11 @@
               query.callback({ results: data });
             }
 
+
+
             angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
-              debug( 'eachAggregation - aggregationKey', aggregationKey )
-              debug( 'eachAggregation - someAggregation', someAggregation )
+              //debug( 'eachAggregation - aggregationKey', aggregationKey )
+              // debug( 'eachAggregation - someAggregation', someAggregation )
 
               var _buckets = [];
 

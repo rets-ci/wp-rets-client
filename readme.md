@@ -68,6 +68,13 @@ GRANT USAGE on `www.reddoorcompany.com.develop`.* to `rdc`@`%` IDENTIFIED BY "wp
 GRANT ALL PRIVILEGES on `www.reddoorcompany.com.develop`.* to `rdc`@`%`;
 ```
 
+### Update MySQL Data on Staging/Latest
+
+```
+gunzip www.reddoorcompany.com.production-2016-08-19.sql.gz
+wp db import www.reddoorcompany.com.production-2016-08-19.sql 
+```
+
 
 ### Grunt
 The new theme uses grunt to build files. 
