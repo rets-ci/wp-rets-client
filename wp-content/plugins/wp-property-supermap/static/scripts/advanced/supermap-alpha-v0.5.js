@@ -189,6 +189,10 @@
         $scope.tax_must_query = window.sm_must_tax_query || {};
         $scope.rdc_listing_query = window.sm_rdc_listing_query || {};
 
+        $scope.haveImages = function haveImages() {
+          return true;
+        }
+
 
 
 

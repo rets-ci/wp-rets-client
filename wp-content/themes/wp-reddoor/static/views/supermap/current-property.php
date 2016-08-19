@@ -34,7 +34,7 @@
         <div class="sm-current-property-buttons" style="clear:both">
           <a class="open-listing" target="_blank" href="/listing/{{currentProperty._id}}">
             <i class="icon-wpproperty-interface-expand-outline"></i>
-            <?php _e( 'Open Listing', ud_get_wpp_supermap()->domain ); ?>
+            <?php _e( 'Open', ud_get_wpp_supermap()->domain ); ?>
           </a>
 
           <a class="favorite-listing hidden" target="#" data-listing-id="{{currentProperty._id}}">
