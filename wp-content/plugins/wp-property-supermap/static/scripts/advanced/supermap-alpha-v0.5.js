@@ -1326,6 +1326,10 @@
             console.log( "Found random infowindow!", jQuery( '.gm-style-iw' ) );
             jQuery( '.gm-style-iw' ).parent().hide()
           }
+
+          // make sure not collapsed.
+          if( jQuery( '.sm-table-header' ).length ) {
+          }
         }
 
         /**

@@ -165,7 +165,6 @@ function rdc_wp_ghetto_term_redirection( $query ) {
   $_link = get_term_link($_term->term_id, $_term->taxonomy);
 
   if( $_cached = wp_cache_set( $query->query_string, $_link, 'retsci_redirection' ) ) {
-    die(' saved cache'. $_cached );
   }
 
   // Redirect to it.
