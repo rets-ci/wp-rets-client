@@ -680,7 +680,9 @@
           }
         };
 
-
+        /**
+         * Defines which fields to use for search vs display when aggregating
+         */
         $scope.aggregationFields = {
           "elementary_school" : {
             "slug": "elementary_school",
@@ -712,13 +714,12 @@
             "field": "_system.addressDetail.zipcode",
             "search_field": "_search.location_zip"
           },
-          /* need to make sure this exists in tax_
           "location_neighborhood" : {
             "slug": "neighborhood",
             "title": "Neighborhood",
             "field": "_system.neighborhood.fullName",
             "search_field": "_search.location_neighborhood"
-          },*/
+          },
           "location_county" : {
             "slug": "county",
             "title": "County",
@@ -910,6 +911,7 @@
             },
             source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
+            debug( 'searchResponse', '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}', response );
 
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
@@ -1278,11 +1280,15 @@
 
               angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
 
+                var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
+
                 _buckets.push({
                   id: data.key,
                   text: data.key + ' (' + data.doc_count + ')',
                   count: data.doc_count,
-                  taxonomy: aggregationKey
+                  taxonomy: _bucketDetail['field'],
+                  field: _bucketDetail['field'],
+                  search_field: _bucketDetail['search_field']
                 })
 
               });
@@ -1338,7 +1344,7 @@
            *
            */
           $select.on('select2:select', function onSelect(event) {
-            debug('onSelect', $select.select2('data'), event.params);
+            debug('onSelect', $select.select2('data'), event.params.data);
 
             var data = $select.select2('data');
 
