@@ -540,7 +540,7 @@
         function buyGenerateMaxBath(element,selected_min) {
           var max_values = [];
           for( var i = selected_min; i < selected_min+6; i++ ) {
-            max_values.push( i+1 );
+            max_values.push( i );
           }
 
           element.closest('.sfBathRange').find('.lastBathRangeList.buyBlock', dropdown).empty();
@@ -570,7 +570,7 @@
         function buyGenerateMaxBed(element,selected_min) {
           var max_values = [];
           for( var i = selected_min; i < selected_min+6; i++ ) {
-            max_values.push( i+1 );
+            max_values.push( i );
           }
 
           element.closest('.sfBedRange').find('.lastBedRangeList.buyBlock', dropdown).empty();
@@ -633,7 +633,7 @@
         function rentGenerateMaxBath(element,selected_min) {
           var max_values = [];
           for( var i = selected_min; i < selected_min+6; i++ ) {
-            max_values.push( i+1 );
+            max_values.push( i );
           }
 
           element.closest('.sfBathRange').find('.lastBathRangeList.rentBlock', dropdown).empty();
@@ -663,7 +663,7 @@
         function rentGenerateMaxBed(element,selected_min) {
           var max_values = [];
           for( var i = selected_min; i < selected_min+6; i++ ) {
-            max_values.push( i+1 );
+            max_values.push( i );
           }
 
           element.closest('.sfBedRange').find('.lastBedRangeList.rentBlock', dropdown).empty();

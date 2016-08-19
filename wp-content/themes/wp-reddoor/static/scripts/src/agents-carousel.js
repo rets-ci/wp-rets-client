@@ -18,7 +18,7 @@ function rdc_init_agents_carousel(){
             isRTL = $postsContainer.hasClass('js-rtl'),
             updateProp = isRTL ? 'margin-right' : 'margin-left';
 
-        console.log(numItems);
+        // console.log(numItems);
 
         var updatePosition = function() {
             if ( position < 0 ) position = 0;

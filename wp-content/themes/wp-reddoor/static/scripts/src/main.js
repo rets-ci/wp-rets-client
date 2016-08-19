@@ -13,7 +13,7 @@ var rdc = {
   client: function getClient() {
 
     if ( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'function' ) {
-      console.log( "ElasticSearch client not loaded." );
+      // console.log( "ElasticSearch client not loaded." );
       return false;
     }
 
@@ -95,8 +95,18 @@ function make_base_auth(user, password) {
  */
 (function(){
 
+  /**
+   * Debug Helper
+   *
+   */
+  function debug() {
+    var _args = [].slice.call(arguments);
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply(console, _args);
+  }
+
   jQuery( document ).ready( function rdcReady() {
-    console.log( "RDC version 1.1.3" );
+    console.log( "RDC version 2.4.1" );
 
     /**
      * Validate popup forms.
@@ -150,42 +160,54 @@ function make_base_auth(user, password) {
 
     jQuery(".form-validate").submit(function(e){
       if ( typeof grecaptcha == 'undefined' ) return true;
-      if ( typeof recaptchaforms == 'undefined' ) return true;
+      if ( typeof window.recaptchaforms == 'undefined' ) return true;
       var _this = jQuery(this);
       var rresult;
+      var recaptchaforms = window.recaptchaforms;
       if( _this.find("#rdcgrecaptchacontactus").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "contactus", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormContactInquiry", recaptchaforms ) );
       } else if( _this.find("#rdcgrecaptchahomebuy").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homebuy", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormBuyInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchacareer").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "career", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormCareerInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomebuylisting").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "buylisting", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormBuyInquiryListing", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomemanagement").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homemanagement", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormManagementInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomerenting").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homerenting", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormRentInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchahomeselling").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "homeselling", recaptchaforms ) );
-      }  else if( _this.find("#rdcgrecaptchajobrequest").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "jobrequest", recaptchaforms ) );
-      }  else if( _this.find("#rdcgrecaptchareferral").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "referral", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormSellInquiry", recaptchaforms ) );
       }  else if( _this.find("#rdcgrecaptchareqapplication").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "reqapplication", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormRentInquiry", recaptchaforms ) );
       } else if( _this.find("#rdcgrecaptchamanagementreferral").length ) {
-        rresult = grecaptcha.getResponse( jQuery.inArray( "managementreferral", recaptchaforms ) );
+        rresult = grecaptcha.getResponse( jQuery.inArray( "popupFormManagementReferral", recaptchaforms ) );
       }
 
       if( !rresult.length > 0 ) {
+        debug("reCaptcha validation failed!");
         return false;
       }
       return true;
     });
-    
 
     /**Validate popup forms.*/
 
+    // Search Result / Map Pages - detect
+    if( jQuery( 'body.is-taxonomy' ).length && getParameterByName( 'wpp_search[sale_type]' ) ) {
+      // console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
+
+      if( getParameterByName( 'wpp_search[sale_type]' ) === 'Rent' ) {
+        jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
+        jQuery( '.rentBtnForm' ).addClass( 'current-menu-item' );
+      }
+
+      if( getParameterByName( 'wpp_search[sale_type]' ) === 'Sale' ) {
+        jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
+        jQuery( '.buyBtnForm' ).addClass( 'current-menu-item' );
+      }
+
+    }
 
     // Invoke RDC Search Form, if tabs_search element exists.
     if ( 'undefined' !== typeof jQuery().rdc_search_form && jQuery('#tabs_search').length ) {
@@ -289,7 +311,7 @@ function make_base_auth(user, password) {
 
     if( jQuery( 'body.page' ).hasClass( 'home' ) ) {
       jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
-      jQuery( '.home .buyBtnForm' ).addClass( 'current-menu-item' );
+      jQuery( '.home .rentBtnForm' ).addClass( 'current-menu-item' );
     }
 
     //jQuery( '.page .ourCompanyBtn.current_page_parent' ).addClass( 'current-menu-item' );
@@ -639,8 +661,9 @@ function make_base_auth(user, password) {
    * @param el
    */
   function renderNeighborhoodMap( el ){
+
     if( jQuery( el ).length <= 0 ) {
-      console.log( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
+      // console.log( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
     }
 
     var data = {};
@@ -648,7 +671,7 @@ function make_base_auth(user, password) {
 
     if( options ) {
       parse_str( options, data );
-      console.log(data);
+      // console.log(data);
     } else {
       return false;
     }
@@ -669,6 +692,45 @@ function make_base_auth(user, password) {
     });
   }
 
+
+  /**
+   * Convert URL Query to Object
+   *
+   * @param qstr
+   * @returns {{}}
+   */
+  function parse_query_string(qstr) {
+    qstr = qstr || window.location.search;
+    var query = {};
+    var a = qstr.substr(1).split('&');
+    for (var i = 0; i < a.length; i++) {
+      var b = a[i].split('=');
+      query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+    }
+
+    return query;
+  }
+
+  /**
+   * Get parameters by name from query string
+   * @param name
+   * @param url
+   * @returns {*}
+   */
+  function getParameterByName(name) {
+
+    // Try another method.. - potanin@UD
+    var _parts = parse_query_string( window.location.search );
+
+    if( _parts[ name ] ) {
+      // debug( 'getParameterByName', name, _parts[ name ] );
+      return _parts[ name ];
+    }
+
+    return null;
+
+
+  }
 
 
 })();

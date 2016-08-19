@@ -3,8 +3,8 @@ Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 4.5.1
-Tested up to: 4.5.2
-Stable tag: 2.7.5
+Tested up to: 4.5.3
+Stable tag: 2.9
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -38,17 +38,23 @@ see when someone has tried to log in, but failed. The log will then include ip a
 * **Option screens**<br>
 view details about changes made in the differnt settings sections of WordPress. Things like changes to the site title and the permalink structure will be logged.
 
+
 #### Support for third party plugins
 
-By default Simple History comes with support for these third party plugins:
+By default Simple History comes with built in support for the following plugins:
 
 **User Switching**
-The [User Switching plugin](https://wordpress.org/plugins/user-switching/) allows you to quickly swap between user accounts in WordPress at the click of a button. Simple History will log each user switch being made.
+The [User Switching plugin](https://wordpress.org/plugins/user-switching/) allows you to quickly swap between user accounts in WordPress at the click of a button.
+Simple History will log each user switch being made.
 
 **Enable Media Replace**
-The [Enable Media Replace plugin](https://wordpress.org/plugins/enable-media-replace/) allows you to replace a file in your media library by uploading a new file in its place. Simple history will log details about the file being replaced and details about the new file.
+The [Enable Media Replace plugin](https://wordpress.org/plugins/enable-media-replace/) allows you to replace a file in your media library by uploading a new file in its place.
+Simple history will log details about the file being replaced and details about the new file.
 
-Support for more plugins are coming.
+**Limit Login Attempts**
+The plugin [Limit Login Attempts](https://sv.wordpress.org/plugins/limit-login-attempts/) is old
+and has not been updated for 4 years. However it still has +1 million installs, so many users will benefit from
+Simple History logging login attempts, lockouts, and configuration changes made in the plugin Limit Login Attempts.
 
 #### RSS feed available
 
@@ -147,10 +153,30 @@ A simple way to see any uncommon activity, for example an increased number of lo
 
 ## Changelog
 
+= 2.9 (August 2016) =
+
+- Added custom date ranges to the dates filter. Just select "Custom date range..." in the dates dropdown and you can choose to se the log between any two exact dates.
+- The values in the statistics graph can now be clicked and when clicked the log is filtered to only show logged events from that day. Very convenient if you have a larger number of events logged for one day and quickly want to find out what exactly was logged that day.
+- Dates filter no longer accepts multi values. It was indeed a bit confusing that you could select both "Last 7 days" and "Last 3 days".
+- Fix for empty previous plugin version (the `{plugin_prev_version}` placeholder) when updating plugins.
+- Post and pages updates done in the WordPress apps for Ios and Android should be logged again.
+
+= 2.8 (August 2016) =
+
+- Theme installs are now logged
+- ...and so are theme updates
+- ...and theme deletions. Awesome!
+- Support for plugin [Limit Login Attempts](https://wordpress.org/plugins/limit-login-attempts/).
+  Failed login attempts, lockouts and configuration changes will be logged.
+- Correct message is now used when a plugin update fails, i.e. the message for key `plugin_update_failed`.
+- The original untranslated strings for plugin name and so on are stored when storing info for plugin installs and updates and similar.
+- Default number of events to show is now 10 instead of 5.
+
 = 2.7.5 (August 2016) =
 
 - User logins using e-mail are now logged correctly. Previously the user would be logged in successfully but the log said that they failed.
-- Now only users with [`list_users`](https://codex.wordpress.org/Roles_and_Capabilities#list_users) capability can view the users filter and use the autocomplete api for users.
+- Security fix: only users with [`list_users`](https://codex.wordpress.org/Roles_and_Capabilities#list_users) capability can view the users filter and use the autocomplete api for users.
+  Previously the autocomplete function could be used by all logged in users.
 - Add labels to search filters. (I do really hate label-less forms so it's kinda very strange that this was not in place before.)
 - Misc other internal fixes
 

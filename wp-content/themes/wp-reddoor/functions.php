@@ -114,85 +114,11 @@ function rdc_get_property_details_description($propertyDetailsAttrs){
   }
 }
 
-add_action( 'wp_footer', 'rdc_form_reCaptcha' );
+add_filter( 'body_class', function( $classes, $class  ) {
 
-function rdc_form_reCaptcha(){
-    ?>
-    <script type="text/javascript">
-        var recaptchaforms = [];
-        var sitekey = "6LecvSQTAAAAAEJZorb8_bx1y1s8KUMxZ_bM_jAO";
-        var rdcRecaptchaOnloadCallback = function() {
-            if( document.querySelector("#rdcgrecaptchacontactus") ) {
-                grecaptcha.render("rdcgrecaptchacontactus", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("contactus");
-            }
-            if( document.querySelector("#rdcgrecaptchahomebuy") ) {
-                grecaptcha.render("rdcgrecaptchahomebuy", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("homebuy");
-            }
-            if( document.querySelector("#rdcgrecaptchacareer") ) {
-                grecaptcha.render("rdcgrecaptchacareer", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("career");
-            }
-            if( document.querySelector("#rdcgrecaptchahomebuylisting") ) {
-                grecaptcha.render("rdcgrecaptchahomebuylisting", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("buylisting");
-            }
-            if( document.querySelector("#rdcgrecaptchahomemanagement") ) {
-                grecaptcha.render("rdcgrecaptchahomemanagement", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("homemanagement");
-            }
-            if( document.querySelector("#rdcgrecaptchahomerenting") ) {
-                grecaptcha.render("rdcgrecaptchahomerenting", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("homerenting");
-            }
-            if( document.querySelector("#rdcgrecaptchahomeselling") ) {
-                grecaptcha.render("rdcgrecaptchahomeselling", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("homeselling");
-            }
-            if( document.querySelector("#rdcgrecaptchajobrequest") ) {
-                grecaptcha.render("rdcgrecaptchajobrequest", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("jobrequest");
-            }
-            if( document.querySelector("#rdcgrecaptchareferral") ) {
-                grecaptcha.render("rdcgrecaptchareferral", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("referral");
-            }
-            if( document.querySelector("#rdcgrecaptchareqapplication") ) {
-                grecaptcha.render("rdcgrecaptchareqapplication", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("reqapplication");
-            }
-            if( document.querySelector("#rdcgrecaptchamanagementreferral") ) {
-                grecaptcha.render("rdcgrecaptchamanagementreferral", {
-                    'sitekey': sitekey,
-                });
-                recaptchaforms.push("managementreferral");
-            }
-        };
-    </script>
+  if( is_tax() ) {
+    $classes[] = 'is-taxonomy';
+  }
 
-    <script src="https://www.google.com/recaptcha/api.js?onload=rdcRecaptchaOnloadCallback&render=explicit"
-            async defer>
-    </script>
-    <?php
-}
+  return $classes;
+}, 20, 2  );

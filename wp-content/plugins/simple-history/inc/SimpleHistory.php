@@ -629,7 +629,7 @@ class SimpleHistory {
 
 				} else {
 
-					$data["logRows"] = $logRows;
+					// $data["logRows"] = $logRows;
 				}
 
 				break;
@@ -841,7 +841,8 @@ class SimpleHistory {
 			// Loggers for third party plugins
 			$loggersDir . "PluginUserSwitchingLogger.php",
 			$loggersDir . "PluginEnableMediaReplaceLogger.php",
-			$loggersDir . "Plugin_UltimateMembers_Logger.php"
+			$loggersDir . "Plugin_UltimateMembers_Logger.php",
+			$loggersDir . "Plugin_LimitLoginAttempts.php"
 	    );
 
 		// SimpleLogger.php must be loaded first and always since the other loggers extend it
@@ -1131,7 +1132,7 @@ class SimpleHistory {
 	 */
 	function get_pager_size() {
 
-		$pager_size = get_option( "simple_history_pager_size", 5 );
+		$pager_size = get_option( "simple_history_pager_size", 10 );
 
 		/**
 		 * Filter the pager size setting
