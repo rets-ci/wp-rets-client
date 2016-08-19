@@ -129,7 +129,7 @@ function rdc_wp_ghetto_term_redirection( $query ) {
 
   // when cached this is preetty snappy.
   if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
-    die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) );
+    die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) ) ) ;
   }
 
   $_data = array(
