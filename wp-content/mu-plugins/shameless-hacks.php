@@ -95,6 +95,13 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 
 }
 
+// override default wpp setttings
+add_filter('wpp:supermap:defaults', function( $defaults ) {
+
+  // makes supermap pages load much faster since all requesets are done via ajax calls
+  $defaults['get_listings'] = false;
+  return $defaults;
+});
 
 // Add support for /listing/{property_id} redirection
 

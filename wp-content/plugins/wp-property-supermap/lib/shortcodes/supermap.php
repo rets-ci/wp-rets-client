@@ -220,6 +220,8 @@ namespace UsabilityDynamics\WPP {
           'get_listings' => 'true'
         );
 
+        $defaults = apply_filters( 'wpp:supermap:defaults', $defaults );
+
         $atts = array_merge($defaults, (array)$atts);
 
         //* Set property types */
