@@ -99,7 +99,7 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 add_filter('wpp:supermap:defaults', function( $defaults ) {
 
   // makes supermap pages load much faster since all requesets are done via ajax calls
-  $defaults['get_listings'] = false;
+  $defaults['get_listings'] = 'false';
   return $defaults;
 });
 
