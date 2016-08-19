@@ -128,7 +128,7 @@ function rdc_wp_ghetto_term_redirection( $query ) {
   }
 
   // when cached this is preetty snappy.
-  if( $_cached = wp_cache_get( $query->query_string, 'retsci_redirection' ) ) {
+  if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
     die(wp_redirect( $_cached . '?' . $_SERVER['QUERY_STRING'] ));
   }
 
@@ -152,7 +152,10 @@ function rdc_wp_ghetto_term_redirection( $query ) {
 
   // This is bad. We identified the taxonomy and term but couldn't find any docs in ES.
   if( !count( json_decode( $_response )->hits->hits ) ) {
-    wp_die('not found');
+    $_link = get_home_url( null, '/buy' );
+    //$_link = get_home_url( null, '/buy' ) . '?' . $_SERVER['QUERY_STRING'];
+    wp_cache_set( $query->request, $_link, 'retsci_term_redirection' ) ;
+    die(wp_redirect( $_link ));
   }
 
   // Get taxnomy VALUE of match in tax_input.
@@ -164,7 +167,7 @@ function rdc_wp_ghetto_term_redirection( $query ) {
   // Get link to the term
   $_link = get_term_link($_term->term_id, $_term->taxonomy);
 
-  if( $_cached = wp_cache_set( $query->query_string, $_link, 'retsci_redirection' ) ) {
+  if( $_cached = wp_cache_set( $query->request, $_link, 'retsci_term_redirection' ) ) {
   }
 
   // Redirect to it.

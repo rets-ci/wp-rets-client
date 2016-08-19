@@ -302,6 +302,8 @@
           window.sm_current_terms.values = [ data[0].id ];
         }
 
+        $scope.fix_terms();
+
         //debug( 'onSelect:result. $scope.map_filter_taxonomy', $scope.map_filter_taxonomy );
         //debug( 'onSelect:result. window.sm_current_terms', window.sm_current_terms );
 
@@ -331,6 +333,8 @@
         $select.append($option).trigger('change');
         debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
       }
+
+      $scope.fix_terms();
 
     }
 
@@ -531,21 +535,21 @@
             debug('setFiltersFromQuery Setting [price]' )
 
             $scope.current_filter.price = {
-              min: getParameterByName( 'wpp_search[price][min]' ),
-              max: getParameterByName( 'wpp_search[price][max]' ),
+              min: getParameterByName( 'wpp_search[price][min]' ) || null,
+              max: getParameterByName( 'wpp_search[price][max]' ) || null,
             };
 
             $scope.query.bool.must.push({ "range": { "tax_input.price": {gte: $scope.current_filter.price.min, lte: $scope.current_filter.price.max } } });
           }
 
           $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
-              min: getParameterByName( 'wpp_search[bathrooms][min]' ),
-              max: getParameterByName( 'wpp_search[bathrooms][max]' ),
+              min: getParameterByName( 'wpp_search[bathrooms][min]' ) || null,
+              max: getParameterByName( 'wpp_search[bathrooms][max]' ) || null
             };
 
           $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
-              min: getParameterByName( 'wpp_search[bedrooms][min]' ),
-              max: getParameterByName( 'wpp_search[bedrooms][max]' )
+              min: getParameterByName( 'wpp_search[bedrooms][min]' ) || null,
+              max: getParameterByName( 'wpp_search[bedrooms][max]' ) || null
             };
 
           // set sale_type if we have query override, something else seems to be setting its default
@@ -1258,6 +1262,8 @@
           search_form.addClass('processing');
           $scope.toggleSearchButton();
 
+          $scope.fix_terms();
+
           $scope._request = client.search({
             index: index,
             type: type,
@@ -1842,12 +1848,10 @@
 
             window.sm_current_terms.values = [ data[0].id ];
 
-            //debug( 'onSelect:result. $scope.map_filter_taxonomy', $scope.map_filter_taxonomy );
-            //debug( 'onSelect:result. window.sm_current_terms', window.sm_current_terms );
-
-            //$scope.query.bool.must.push({"terms": {}});
+            $scope.fix_terms();
 
             $scope.$apply();
+
 
           });
 
@@ -1870,7 +1874,84 @@
             var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
             $select.append($option).trigger('change');
             debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
+
+            $scope.fix_terms();
           }
+
+        }
+
+        /**
+         * Ghetto fabular fix.
+         * 
+         */
+        $scope.fix_terms = function fix_terms() {
+
+          if( window.sm_current_terms && window.sm_current_terms.key ) {
+
+            if( $scope.aggregationFields[ window.sm_current_terms.key ] && $scope.aggregationFields[ window.sm_current_terms.key ].search_field ) {
+              debug( 'fix_terms', 'fixing', window.sm_current_terms.key, 'to', $scope.aggregationFields[ window.sm_current_terms.key ].search_field  )
+              window.sm_current_terms.key = $scope.aggregationFields[ window.sm_current_terms.key ].search_field;
+            }
+
+          }
+
+          angular.forEach($scope.query.bool.must, function eachTerm( termData, termIndex ) {
+
+            if( !termData.terms ) {
+              return;
+            }
+
+            if( termData.terms['location_city'] ) {
+              debug( 'fix_terms', 'fixing', 'location_city', 'field' );
+              termData.terms[ $scope.aggregationFields['location_city'].field ] = termData.terms['location_city'];
+              delete $scope.query.bool.must[termIndex].terms['location_city'];
+            }
+
+            if( termData.terms['location_county'] ) {
+              debug( 'fix_terms', 'fixing', 'location_county', 'field' );
+              termData.terms[ $scope.aggregationFields['location_county'].field ] = termData.terms['location_county'];
+              delete $scope.query.bool.must[termIndex].terms['location_county'];
+            }
+
+            if( termData.terms['location_zip'] ) {
+              debug( 'fix_terms', 'fixing', 'location_zip', 'field' );
+              termData.terms[ $scope.aggregationFields['location_zip'].field ] = termData.terms['location_zip'];
+              delete $scope.query.bool.must[termIndex].terms['location_zip'];
+            }
+
+            if( termData.terms['location_neighborhood'] ) {
+              debug( 'fix_terms', 'fixing', 'location_neighborhood', 'field' );
+              termData.terms[ $scope.aggregationFields['location_neighborhood'].field ] = termData.terms['location_neighborhood'];
+              delete $scope.query.bool.must[termIndex].terms['location_neighborhood'];
+            }
+
+            if( termData.terms['location_county'] ) {
+              debug( 'fix_terms', 'fixing', 'location_county', 'field' );
+              termData.terms[ $scope.aggregationFields['location_county'].field ] = termData.terms['location_county'];
+              delete $scope.query.bool.must[termIndex].terms['location_county'];
+            }
+
+            if( termData.terms['elementary_school'] ) {
+              debug( 'fix_terms', 'fixing', 'elementary_school', 'field' );
+              termData.terms[ $scope.aggregationFields['elementary_school'].field ] = termData.terms['elementary_school'];
+              delete $scope.query.bool.must[termIndex].terms['elementary_school'];
+            }
+
+            if( termData.terms['middle_school'] ) {
+              debug( 'fix_terms', 'fixing', 'middle_school', 'field' );
+              termData.terms[ $scope.aggregationFields['middle_school'].field ] = termData.terms['middle_school'];
+              delete $scope.query.bool.must[termIndex].terms['middle_school'];
+            }
+
+            if( termData.terms['high_school'] ) {
+              debug( 'fix_terms', 'fixing', 'high_school', 'field' );
+              termData.terms[ $scope.aggregationFields['high_school'].field ] = termData.terms['high_school'];
+              delete $scope.query.bool.must[termIndex].terms['high_school'];
+            }
+
+          });
+
+          //$scope.query
 
         }
 
@@ -1894,6 +1975,7 @@
           }
         }, true );
 
+        window.$scope = $scope;
 
         $scope.setup_term_selection();
 
