@@ -748,7 +748,10 @@
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
-          hosts: 'dori-us-east-1.searchly.com'
+          hosts: [
+            window.location.host,
+            //'dori-us-east-1.searchly.com'
+          ]
         });
 
         /**
@@ -911,7 +914,7 @@
             },
             source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}',
           }, function( error, response ) {
-            debug( 'searchResponse', '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"post_title":{"order":"asc"}}]}', response );
+            debug( 'searchResponse query: [%s], hits [%s]', build_query(), response.hits.total );
 
             if ( !error ) {
               jQuery( '.sm-search-layer', ngAppDOM ).show();
@@ -962,6 +965,7 @@
             }
 
             search_form.removeClass('processing');
+
             $scope.toggleSearchButton();
 
           });
