@@ -5,6 +5,339 @@
 ( function( jQuery, wpp ){
 
 
+  jQuery.fn.wpp_supermap_search = function wpp_supermap_search( options ) {
+    console.log( 'wpp_supermap_search' );
+
+    options = 'object' === typeof options ? options : {};
+
+    var $scope = {
+      searchElement: this,
+      aggregationFields: 'object' === typeof supermapMode ? supermapMode.aggregationFields : {},
+      selectOpions: null,
+      client: new jQuery.es.Client({ hosts: [ window.location.host ] }),
+      _request: false,
+      $select: null,
+      query: options.query || { "match": { "post_status": "publish" } },
+      $apply: function noop() {},
+      onSelect: options.onSelect || function onSelect() {},
+    };
+
+    /**
+     * Execute search/aggregation queries.
+     *
+     * @param query
+     * @returns {*}
+     */
+    function select_query(query) {
+      debug( 'select_query', ( query && query.term ? query.term.length : null ));
+
+      var data = [];
+
+      // no query or its too short
+      if( !query.term || ( query.term && query.term.length  < 2 ) ) {
+        jQuery('.select2-dropdown').addClass("hide");
+        return query.callback({ results: data });
+      }
+
+      jQuery('.select2-dropdown').removeClass("hide");
+
+      if( $scope._request ) {
+        $scope._request.abort();
+      }
+
+      async.auto({
+        aggregations: function aggregationRequestWrapper( done ) {
+          debug( '$scope.aggregationFields', $scope.aggregationFields );
+
+          var _source = {
+            "query": { "match": { "post_status": "publish" } },
+            "aggs": {}
+          };
+
+          angular.forEach($scope.aggregationFields, function setField( data, key ) {
+
+            _source.query = $scope.query;
+
+            _source.aggs[ key ] = {
+              filters: {filters: {}},
+              aggs: {}
+            };
+
+            _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
+            _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term.toLowerCase();
+            _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+
+          });
+
+          $scope._request = $scope.client.search({
+            index: 'v5',
+            type: 'property',
+            method: "POST",
+            size: 0,
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            body: _source
+          }, select_queryResponse );
+
+          /**
+           *
+           * @param err
+           * @param response
+           */
+          function select_queryResponse(err, response) {
+            debug( 'select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
+
+            if( typeof response.hits.hits == 'undefined' ) {
+              //query.callback({ results: data });
+              return done( null );
+            }
+
+            angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
+              //debug( 'eachAggregation - aggregationKey', aggregationKey )
+              // debug( 'eachAggregation - someAggregation', someAggregation )
+
+              var _buckets = [];
+
+              angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
+
+                var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
+
+                _buckets.push({
+                  id: data.key,
+                  text: data.key + ' (' + data.doc_count + ')',
+                  count: data.doc_count,
+                  taxonomy: _bucketDetail['field'],
+                  field: _bucketDetail['field'],
+                  search_field: _bucketDetail['search_field'],
+                  // name is used for fields
+                  name: aggregationKey
+                })
+
+              });
+
+              if( _buckets.length > 0 ) {
+
+                data.push( {
+                  key: aggregationKey,
+                  text: $scope.aggregationFields[ aggregationKey ].title,
+                  children: _buckets
+                } )
+
+              }
+
+            });
+
+            debug( 'eachAggregation', data );
+
+            done( null, data );
+
+          }
+
+
+        },
+        suggest: function suggestRequestWrapper( done ) {
+
+          $scope._request_suggest = $scope.client.suggest({
+            index: 'v5',
+            type: 'property',
+            method: "POST",
+            size: 0,
+            headers : {
+              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            },
+            body: {
+              "regular" : {
+                "text" : query.term.toLowerCase(),
+                "completion" : { "field" : "_search._suggest" }
+              },
+              "fuzzy" : {
+                "text" : query.term.toLowerCase(),
+                "completion" : { "field" : "_search._suggest", "fuzzy" : { "fuzziness" : 0 } }
+              }
+            }
+          }, suggest_queryResponse );
+
+          /**
+           *
+           * @param error
+           * @param response
+           */
+          function suggest_queryResponse(error, response) {
+            debug( 'suggest_queryResponse', response );
+
+            if( typeof response.regular == 'undefined' ) {
+              return done( null );
+            }
+
+            var data = [];
+
+            angular.forEach( response.regular[0].options, function eachMatch( someMatch, aggregationKey ) {
+              debug( 'someMatch', someMatch.payload );
+
+              if( !someMatch.payload ) {
+                return;
+              }
+
+              data.push( {
+                id: someMatch.payload.id,
+                listing_id: someMatch.payload.listing_id,
+                score: someMatch.score,
+                text: someMatch.text,
+                thumbnail_url: someMatch.payload.rets_thumbnail_url,
+                location_county: someMatch.payload.location_county,
+                location_city: someMatch.payload.location_city,
+                //latitude: someMatch.payload.rets_thumbnail_url
+              } )
+
+            });
+
+            done( null, data.length ? {
+              key: 'Listings',
+              text: 'Listings',
+              children: data
+            } : [] );
+
+          }
+
+
+        },
+      }, allDone );
+
+      /**
+       * Aggration/Suggest requests complete.
+       *
+       * @param error
+       * @param results
+       */
+      function allDone( error, results  ) {
+        console.log( 'allDone', error, results );
+
+        query.callback({
+          results: [].concat(results.aggregations, results.suggest )
+        });
+
+      }
+
+    }
+
+    /**
+     * Initialize autocomplete search elements.
+     *
+     * @param data
+     */
+    function setup_term_selection( data ) {
+      debug( 'setup_term_selection' );
+
+      $scope.selectOpions = {
+        placeholder: 'Search',
+        tags: false,
+        maximumSelectionLength: 1,
+        minimumInputLength: 3,
+        templateResult: function templateResult( result, element ) {
+          console.log( 'templateResult', result )
+          //jQuery(result.text).addClass('lasdfjdlsakfj');
+          return result.text;
+        },
+        templateSelection: function templateSelection( selection, element ) {
+          console.log( 'templateSelection', selection )
+          //jQuery(result.text).addClass('lasdfjdlsakfj');
+          return selection.text;
+        },
+        data: data || [],
+        query: select_query,
+        formatResult: function formatResult( field ) {
+          console.log( 'field', field);
+
+          return field;
+
+        }
+      };
+
+      var $select = $scope.$select = jQuery( $scope.searchElement ).select2($scope.selectOpions);
+
+      /**
+       *
+       * map_filter_taxonomy
+       * sm_current_terms
+       *
+       */
+      $select.on('select2:select', function onSelect(event) {
+        debug('onSelect', event.params.data );
+
+        var data = $select.select2('data');
+
+
+        $scope.onSelect.call( $scope, event.params.data );
+
+        // specific listing found via suggest. @todo make this popup in new window
+        if( event.params.data.listing_id && event.params.data.id ) {
+
+          // if we have a city, set it as our search term. @todo make this work smoother.
+          if( event.params.data.location_city ) {
+            // window.setTimeout(function() {jQuery('.select2-selection__choice').html('<span class="select2-selection__choice__remove" role="presentation">×</span>' + event.params.data.location_city);}, 200 );
+            //selectOpions.data = [ event.params.data.location_city ];
+            //$select = jQuery('.termsSelection').select2( $scope.selectOpions);
+          }
+
+          // open listing in new window
+          window.open('/listing/' + event.params.data.id);
+
+          return;
+        }
+
+        if ( data[0] && typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
+          window.location.href= data[0].permalink;
+        } else if ( typeof data[0].taxonomy == 'undefined' && ( window.sm_current_terms && window.sm_current_terms.values && window.sm_current_terms.values.length )  ) {
+          var value = window.sm_current_terms.values[0];
+          var key = window.sm_current_terms.key;
+          if( value == data[0].text ) {
+            $scope.map_filter_taxonomy = key;
+          }
+        } else {
+          $scope.map_filter_taxonomy = data[0].taxonomy;
+        }
+
+        if( window.sm_current_terms && window.sm_current_terms ) {
+          window.sm_current_terms.values = [ data[0].id ];
+        }
+
+        //debug( 'onSelect:result. $scope.map_filter_taxonomy', $scope.map_filter_taxonomy );
+        //debug( 'onSelect:result. window.sm_current_terms', window.sm_current_terms );
+
+        //$scope.query.bool.must.push({"terms": {}});
+
+        $scope.$apply();
+
+      });
+
+      /**
+       * Donta allow more than one selection.
+       *
+       */
+      $select.on('select2:selecting', function onSelecting(event) {
+        debug('onSelecting', $select.select2('val'), event.params );
+
+        $select.select2( 'val', {} );
+
+        if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
+          $select.select2( 'val', {} );
+        }
+
+      });
+
+      if ( window.sm_current_terms && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+        var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
+        $select.append($option).trigger('change');
+        debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
+      }
+
+    }
+
+    setup_term_selection();
+
+  }
+
   /**
    * Debug Helper
    *
@@ -226,7 +559,6 @@
 
         }
 
-
         setStatus('invoked' );
 
         $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
@@ -251,8 +583,6 @@
         $scope.haveImages = function haveImages() {
           return true;
         }
-
-
 
 
         $scope.view = {
@@ -746,51 +1076,7 @@
         /**
          * Defines which fields to use for search vs display when aggregating
          */
-        $scope.aggregationFields = {
-          "elementary_school" : {
-            "slug": "elementary_school",
-            "title": "Elementary School",
-            "field": "_schools.elementary_school",
-            "search_field": "_search.elementary_school"
-          },
-          "middle_school" : {
-            "slug": "middle_school",
-            "title": "Middle School",
-            "field": "_schools.middle_school",
-            "search_field": "_search.middle_school"
-          },
-          "high_school" : {
-            "slug": "high_school",
-            "title": "High School",
-            "field": "_schools.high_school",
-            "search_field": "_search.high_school"
-          },
-          "location_city" : {
-            "slug": "city",
-            "title": "City",
-            "field": "_system.addressDetail.city",
-            "search_field": "_search.location_city"
-          },
-          "location_zip" : {
-            "slug": "zip",
-            "title": "Zip",
-            "field": "_system.addressDetail.zipcode",
-            "search_field": "_search.location_zip"
-          },
-          "location_neighborhood" : {
-            "slug": "neighborhood",
-            "title": "Neighborhood",
-            "field": "_system.neighborhood.fullName",
-            "search_field": "_search.location_neighborhood"
-          },
-          "location_county" : {
-            "slug": "county",
-            "title": "County",
-            "field": "_system.addressDetail.administrativeLevels.level2long",
-            "search_field": "_search.location_county"
-          }
-        }
-
+         $scope.aggregationFields = 'object' === typeof supermapMode ? supermapMode.aggregationFields : {}
 
         /**
          *
@@ -902,6 +1188,7 @@
             },
             source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
           }, function( error, response ) {
+
 
             setStatus( 'ready' );
             
@@ -1031,6 +1318,16 @@
 
         };
 
+        $scope.clean_up = function clean_up() {
+          debug( 'clean_up' );
+
+          // debug phantom infowindow in corner... I think ngmap adds it.
+          if( jQuery( '.gm-style-iw' ).length ) {
+            console.log( "Found random infowindow!", jQuery( '.gm-style-iw' ) );
+            jQuery( '.gm-style-iw' ).parent().hide()
+          }
+        }
+
         /**
          *
          */
@@ -1069,7 +1366,11 @@
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
               jQuery('.sm-search-form form').submit();
+
+
             });
+
+
           });
         };
 
@@ -1090,6 +1391,7 @@
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
         $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
+
           NgMap.getMap().then(function( map ) {
             $scope.dynMarkers = [];
             $scope.latLngs = [];
@@ -1100,6 +1402,7 @@
             }
 
             if( typeof $scope.infoBubble !== 'object' ) {
+
               $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
                 maxWidth: 300,
@@ -1116,6 +1419,10 @@
                 backgroundClassName: 'sm-infobubble-wrap',
                 arrowStyle: 3
               });
+
+              // it seems to open sometimes on boot, keep it closed until needed.
+              $scope.infoBubble.close();
+
             }
 
             if( ! $scope.properties.length ) {
@@ -1199,8 +1506,9 @@
                     width: 60
                   }
                 ]
-              }
-            );
+            });
+
+
           } );
 
           $scope.col_changed();
@@ -1571,9 +1879,11 @@
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
             if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
               NgMap.getMap().then( function( map ) {
+                console.log( "DOing stuff with infowindow" );
                 $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
                 $scope.infoBubble.setPosition( $scope.latLngs[i] );
                 $scope.infoBubble.open( map );
+
               } );
               break;
             }
@@ -1719,6 +2029,24 @@
           $scope.getProperties();
 
         }, false);
+
+
+        NgMap.getMap().then(function(map) {
+
+          google.maps.event.addListener(map, 'bounds_changed', function () {
+            debug( 'mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng() );
+          });
+
+          google.maps.event.addListener(map, 'zoom_changed', function () {
+            debug( 'mapEvent', 'zoom_changed' );
+          });
+
+          google.maps.event.addListener(map, 'resize', function () {
+            debug( 'mapEvent', 'resize' );
+          });
+
+
+        });
 
         // Get properties by request
         $scope.getProperties();
@@ -2048,6 +2376,10 @@
    * Initialize our Supermap modules ( Angular Modules! )
    */
   function initialize() {
+
+    jQuery( '.wpp-supermap-search').each( function( i,e ) {
+      // jQuery( e ).wpp_supermap_search();
+    });
 
     jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
       jQuery( e ).wpp_advanced_supermap( {

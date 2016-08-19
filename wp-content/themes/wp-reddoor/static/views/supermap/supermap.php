@@ -13,7 +13,13 @@ use \UsabilityDynamics\RDC\Utils;
 ?>
 <style>
 
-    .select2-container .select2-search__field {
+  /** it keeps coming back */
+  .gm-style-iw{
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .select2-container .select2-search__field {
       line-height: 30px
     }
 

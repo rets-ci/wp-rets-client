@@ -105,6 +105,75 @@ add_filter('wpp:supermap:defaults', function( $defaults ) {
 
 // Add support for /listing/{property_id} redirection
 
+add_action( 'wp', 'rdc_wp_ghetto_term_redirection' );
+
+/**
+ * Ghetto Term Fallback.
+ *
+ * Elasticsearch will redirect to urls like "/elementary_school/highland-elementary-school"
+ * which are not known to WP. So we reach-back to ES, find first document that has "highland-elementary-school" slug,
+ * and get its tax_input, then use that to lookup the real term in WP.
+ *
+ * This is fucking terrible, I know, but can't think of any other way to deal with aggregated terms.
+ *
+ * @author potanin@UD
+ * @param $query
+ */
+function rdc_wp_ghetto_term_redirection( $query ) {
+  global $wp_query;
+
+
+  if(!$wp_query->is_404() || !defined( 'RETS_ES_LINK' ) ) {
+    return;
+  }
+
+  // when cached this is preetty snappy.
+  if( $_cached = wp_cache_get( $query->query_string, 'retsci_redirection' ) ) {
+    die(wp_redirect( $_cached . '?' . $_SERVER['QUERY_STRING'] ));
+  }
+
+  $_data = array(
+    "taxonomy" => $wp_query->tax_query->queries[0]['taxonomy'],
+    "term" => $wp_query->tax_query->queries[0]['terms'][0]
+  );
+
+  // WP did not recognize taxonomy at all.
+  if( !$_data['taxonomy'] ) {
+    return;
+  }
+
+  // Search for term...
+  $_request = wp_remote_post(RETS_ES_LINK . "/v5/property/_search", array(
+    "headers" => array(),
+    "body" => '{"size":1,"query": {"match": {"_search.' .  $_data['taxonomy'] . '":{"query": "' . $_data['term'] . '"}}}}'
+  ));
+
+  $_response = wp_remote_retrieve_body($_request);
+
+  // This is bad. We identified the taxonomy and term but couldn't find any docs in ES.
+  if( !count( json_decode( $_response )->hits->hits ) ) {
+    wp_die('not found');
+  }
+
+  // Get taxnomy VALUE of match in tax_input.
+  $_term_name = json_decode( $_response )->hits->hits[0]->_source->tax_input->{$_data['taxonomy']}[0];
+
+  // Query the term in WP
+  $_term =  get_term_by('name', $_term_name, $_data['taxonomy']);
+
+  // Get link to the term
+  $_link = get_term_link($_term->term_id, $_term->taxonomy);
+
+  if( $_cached = wp_cache_set( $query->query_string, $_link, 'retsci_redirection' ) ) {
+    die(' saved cache'. $_cached );
+  }
+
+  // Redirect to it.
+  die(wp_redirect( $_link . '?' . $_SERVER['QUERY_STRING'] ));
+
+}
+
+
 add_action('init', function() {
   add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
 });
