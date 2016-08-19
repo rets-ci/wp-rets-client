@@ -1281,7 +1281,7 @@
           var data = [];
 
           // no query or its too short
-          if( !query.term || ( query.term && query.term.length  < 3 ) ) {
+          if( !query.term || ( query.term && query.term.length  < 2 ) ) {
             jQuery('.select2-dropdown').addClass("hide");
             return query.callback({ results: data });
           }
@@ -1404,10 +1404,10 @@
 
               /**
                *
-               * @param err
+               * @param error
                * @param response
                */
-              function suggest_queryResponse(err, response) {
+              function suggest_queryResponse(error, response) {
                 debug( 'suggest_queryResponse', response );
 
                 if( typeof response.regular == 'undefined' ) {
@@ -1429,6 +1429,8 @@
                     score: someMatch.score,
                     text: someMatch.text,
                     thumbnail_url: someMatch.payload.rets_thumbnail_url,
+                    location_county: someMatch.payload.location_county,
+                    location_city: someMatch.payload.location_city,
                     //latitude: someMatch.payload.rets_thumbnail_url
                   } )
 
@@ -1470,7 +1472,7 @@
         $scope.setup_term_selection = function setup_term_selection( data ) {
           debug( 'setup_term_selection' );
 
-          var selectOpions = {
+          $scope.selectOpions = {
             placeholder: 'Search',
             tags: false,
             maximumSelectionLength: 1,
@@ -1485,7 +1487,7 @@
             }
           };
 
-          var $select = jQuery('.termsSelection').select2(selectOpions);
+          var $select = jQuery('.termsSelection').select2($scope.selectOpions);
 
           /**
            *
@@ -1500,7 +1502,17 @@
 
             // specific listing found via suggest. @todo make this popup in new window
             if( event.params.data.listing_id && event.params.data.id ) {
-              window.location.href= '/listing/' + event.params.data.id;;
+
+              // if we have a city, set it as our search term. @todo make this work smoother.
+              if( event.params.data.location_city ) {
+                // window.setTimeout(function() {jQuery('.select2-selection__choice').html('<span class="select2-selection__choice__remove" role="presentation">×</span>' + event.params.data.location_city);}, 200 );
+                //selectOpions.data = [ event.params.data.location_city ];
+                //$select = jQuery('.termsSelection').select2( $scope.selectOpions);
+              }
+
+              // open listing in new window
+              window.open('/listing/' + event.params.data.id);
+
               return;
             }
 
