@@ -195,7 +195,7 @@ function make_base_auth(user, password) {
 
     // Search Result / Map Pages - detect
     if( jQuery( 'body.is-taxonomy' ).length && getParameterByName( 'wpp_search[sale_type]' ) ) {
-      // console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
+      console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
 
       if( getParameterByName( 'wpp_search[sale_type]' ) === 'Rent' ) {
         jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );

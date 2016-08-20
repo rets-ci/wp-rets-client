@@ -289,6 +289,9 @@ class WPP_F extends UsabilityDynamics\Utility {
 
     }
 
+
+    // disabled for now because it causes a conflict on RDC.
+    /*
     register_taxonomy( 'wpp_location', 'property', array(
       'labels'                => array(
         'name' => __( 'WPP Location' ),
@@ -317,6 +320,7 @@ class WPP_F extends UsabilityDynamics\Utility {
       'query_var'             => 'wpp_location',
       'update_count_callback' => null
     ));
+  */
 
   }
 

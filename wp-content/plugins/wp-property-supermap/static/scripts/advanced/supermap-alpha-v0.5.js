@@ -55,6 +55,8 @@
 
           angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
+            console.log( '$scope.query', $scope.query );
+            // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
             _source.query = $scope.query;
 
             _source.aggs[ key ] = {
@@ -266,7 +268,6 @@
 
         var data = $select.select2('data');
 
-
         $scope.onSelect.call( $scope, event.params.data );
 
         // specific listing found via suggest. @todo make this popup in new window
@@ -283,18 +284,6 @@
           window.open('/listing/' + event.params.data.id);
 
           return;
-        }
-
-        if ( data[0] && typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
-          window.location.href= data[0].permalink;
-        } else if ( typeof data[0].taxonomy == 'undefined' && ( window.sm_current_terms && window.sm_current_terms.values && window.sm_current_terms.values.length )  ) {
-          var value = window.sm_current_terms.values[0];
-          var key = window.sm_current_terms.key;
-          if( value == data[0].text ) {
-            $scope.map_filter_taxonomy = key;
-          }
-        } else {
-          $scope.map_filter_taxonomy = data[0].taxonomy;
         }
 
         if( window.sm_current_terms && window.sm_current_terms ) {

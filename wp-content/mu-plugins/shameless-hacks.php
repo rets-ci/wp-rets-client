@@ -145,9 +145,9 @@ function rdc_wp_ghetto_term_redirection( $query ) {
   if( !$_data['taxonomy'] ) {
     return;
   }
-
   // when cached this is preetty snappy.
   if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
+    header('x-note:cached-redirection for [' . $query->request . '] key.' );
     die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) ) ) ;
   }
 
@@ -180,6 +180,7 @@ function rdc_wp_ghetto_term_redirection( $query ) {
   }
 
   // Redirect to it.
+  header('x-note:uncached redirection');
   die(wp_redirect( $_link . (  $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' )));
 
 }
