@@ -53,11 +53,10 @@
             "aggs": {}
           };
 
-          angular.forEach($scope.aggregationFields, function setField( data, key ) {
+          // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
+          // _source.query = $scope.query;
 
-            console.log( '$scope.query', $scope.query );
-            // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
-            _source.query = $scope.query;
+          angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
             _source.aggs[ key ] = {
               filters: {filters: {}},
@@ -1606,9 +1605,10 @@
                 "aggs": {}
               };
 
-              angular.forEach($scope.aggregationFields, function setField( data, key ) {
+              // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
+              // _source.query = $scope.query;
 
-                _source.query = $scope.query;
+              angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
                 _source.aggs[ key ] = {
                   filters: {filters: {}},
@@ -1618,6 +1618,9 @@
                 _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
                 _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term.toLowerCase();
                 _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+
+
+                // remove
 
               });
 
