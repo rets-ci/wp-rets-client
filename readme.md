@@ -71,8 +71,9 @@ GRANT ALL PRIVILEGES on `www.reddoorcompany.com.develop`.* to `rdc`@`%`;
 ### Update MySQL Data on Staging/Latest
 
 ```
-gunzip www.reddoorcompany.com.production-2016-08-19.sql.gz
-wp db import www.reddoorcompany.com.production-2016-08-19.sql 
+wget https://storage.googleapis.com/snapshots.wpcloud.io/www.reddoorcompany.com/www.reddoorcompany.com.production/www.reddoorcompany.com.production-2016-08-20.sql.gz
+gunzip www.reddoorcompany.com.production-2016-08-20.sql.gz
+wp db import www.reddoorcompany.com.production-2016-08-20.sql 
 ```
 
 

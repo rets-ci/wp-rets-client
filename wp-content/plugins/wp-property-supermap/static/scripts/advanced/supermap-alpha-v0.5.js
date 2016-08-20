@@ -4,7 +4,6 @@
 
 ( function( jQuery, wpp ){
 
-
   jQuery.fn.wpp_supermap_search = function wpp_supermap_search( options ) {
     console.log( 'wpp_supermap_search' );
 
@@ -302,7 +301,7 @@
           window.sm_current_terms.values = [ data[0].id ];
         }
 
-        $scope.fix_terms();
+        // $scope.fix_terms();
 
         //debug( 'onSelect:result. $scope.map_filter_taxonomy', $scope.map_filter_taxonomy );
         //debug( 'onSelect:result. window.sm_current_terms', window.sm_current_terms );
@@ -334,7 +333,7 @@
         debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
       }
 
-      $scope.fix_terms();
+      //$scope.fix_terms();
 
     }
 

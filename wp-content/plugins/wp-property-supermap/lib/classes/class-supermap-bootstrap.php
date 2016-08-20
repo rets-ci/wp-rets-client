@@ -9,7 +9,7 @@ namespace UsabilityDynamics\WPP {
   if( !class_exists( 'UsabilityDynamics\WPP\Supermap_Bootstrap' ) ) {
 
     final class Supermap_Bootstrap extends \UsabilityDynamics\WP\Bootstrap_Plugin {
-      
+
       /**
        * Singleton Instance Reference.
        *
@@ -19,7 +19,7 @@ namespace UsabilityDynamics\WPP {
        * @type UsabilityDynamics\WPP\Supermap_Bootstrap object
        */
       protected static $instance = null;
-      
+
       /**
        * Instantaite class.
        */
@@ -31,12 +31,11 @@ namespace UsabilityDynamics\WPP {
         /**
          * May be load Shortcodes
          */
-        add_action( 'init', function() {
-          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path('lib/shortcodes', 'dir') );
+        add_action( 'init', function () {
+          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path( 'lib/shortcodes', 'dir' ) );
         }, 999 );
 
-
-        add_action( 'wp_enqueue_scripts', function() {
+        add_action( 'wp_enqueue_scripts', function () {
 
           wp_register_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ), array(), false, true );
           wp_register_script( 'angular-sanitize', ud_get_wpp_supermap()->path( 'bower_components/angular/angular-sanitize.min.js' ), array( 'angularjs' ), false, true );
@@ -49,91 +48,90 @@ namespace UsabilityDynamics\WPP {
           wp_register_script( 'markerwithlabel', ud_get_wpp_supermap()->path( 'static/scripts/advanced/markerwithlabel.js' ), array( 'ng-map' ) );
           wp_register_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-alpha-v0.5.js' ), array( 'async', 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '0.5', true );
 
-
           // This can be our generic SuperMap client-side facing settings object.
           wp_localize_script( 'supermap-advanced', 'supermapMode', array(
-            "isMobile" => ( isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == 'mobile' ) ? true : false,
-            "aggregationFields" => json_decode('{
-              "elementary_school" : {
-                "icons": {
-                  "main": "school-elementary-solid",
-                  "outline": "school-elementary-outline"
-                },
-                "slug": "elementary_school",
-                "title": "Elementary School",
-                "field": "_schools.elementary_school",
-                "search_field": "_search.elementary_school"
-              },
-              "middle_school" : {
-                "icons": {
-                  "main": "school-middle-solid",
-                  "outline": "school-middle-outline"
-                },
-                "slug": "middle_school",
-                "title": "Middle School",
-                "field": "_schools.middle_school",
-                "search_field": "_search.middle_school"
-              },
-              "high_school" : {
-                "icons": {
-                  "main": "school-high-solid",
-                  "outline": "school-high-outline"
-                },
-                "slug": "high_school",
-                "title": "High School",
-                "field": "_schools.high_school",
-                "search_field": "_search.high_school"
-              },
-              "location_city" : {
-                "icons": {
-                  "main": "school-elementary-solid",
-                  "outline": "school-elementary-outline"
-                },
-                "slug": "city",
-                "title": "City",
-                "field": "_system.addressDetail.city",
-                "search_field": "_search.location_city"
-              },
-              "location_zip" : {
-                "icons": {
-                  "main": "school-elementary-solid",
-                  "outline": "school-elementary-outline"
-                },
-                "slug": "zip",
-                "title": "Zip",
-                "field": "_system.addressDetail.zipcode",
-                "search_field": "_search.location_zip"
-              },
-              "location_neighborhood" : {
-                "icons": {
-                  "main": "attribute-neighborhood-solid",
-                  "outline": "attribute-neighborhood-outline"
-                },
-                "slug": "neighborhood",
-                "title": "Neighborhood",
-                "field": "_system.neighborhood.fullName",
-                "search_field": "_search.location_neighborhood"
-              },
-              "location_county" : {
-                "icons": {
-                  "main": "school-elementary-solid",
-                  "outline": "school-elementary-outline"
-                },
-                "slug": "county",
-                "title": "County",
-                "field": "_system.addressDetail.administrativeLevels.level2long",
-                "search_field": "_search.location_county"
-              }
-            }')
+            "isMobile" => ( isset( $_SERVER[ 'HTTP_X_USER_DEVICE' ] ) && $_SERVER[ 'HTTP_X_USER_DEVICE' ] == 'mobile' ) ? true : false,
+            "aggregationFields" => array(
+              'elementary_school' => array(
+                  'icons' => array(
+                      'main' => 'school-elementary-solid',
+                      'outline' => 'school-elementary-outline',
+                    ),
+                  'slug' => 'elementary_school',
+                  'title' => 'Elementary School',
+                  'field' => '_schools.elementary_school',
+                  'search_field' => '_search.elementary_school',
+                ),
+              'middle_school' => array(
+                  'icons' => array(
+                      'main' => 'school-middle-solid',
+                      'outline' => 'school-middle-outline',
+                    ),
+                  'slug' => 'middle_school',
+                  'title' => 'Middle School',
+                  'field' => '_schools.middle_school',
+                  'search_field' => '_search.middle_school',
+                ),
+              'high_school' => array(
+                  'icons' => array(
+                      'main' => 'school-high-solid',
+                      'outline' => 'school-high-outline',
+                    ),
+                  'slug' => 'high_school',
+                  'title' => 'High School',
+                  'field' => '_schools.high_school',
+                  'search_field' => '_search.high_school',
+                ),
+              'location_city' => array(
+                  'icons' => array(
+                      'main' => 'school-elementary-solid',
+                      'outline' => 'school-elementary-outline',
+                    ),
+                  'slug' => 'city',
+                  'title' => 'City',
+                  'field' => '_system.addressDetail.city',
+                  'search_field' => '_search.location_city',
+                ),
+              'location_zip' => array(
+                  'icons' => array(
+                      'main' => 'school-elementary-solid',
+                      'outline' => 'school-elementary-outline',
+                    ),
+                  'slug' => 'zip',
+                  'title' => 'Zip',
+                  'field' => '_system.addressDetail.zipcode',
+                  'search_field' => '_search.location_zip',
+                ),
+              'location_neighborhood' => array(
+                  'icons' => array(
+                      'main' => 'attribute-neighborhood-solid',
+                      'outline' => 'attribute-neighborhood-outline',
+                    ),
+                  'slug' => 'neighborhood',
+                  'title' => 'Neighborhood',
+                  'field' => '_system.neighborhood.fullName',
+                  'search_field' => '_search.location_neighborhood',
+                ),
+              'location_county' => array(
+                  'icons' => array(
+                      'main' => 'school-elementary-solid',
+                      'outline' => 'school-elementary-outline',
+                    ),
+                  'slug' => 'county',
+                  'title' => 'County',
+                  'field' => '_system.addressDetail.administrativeLevels.level2long',
+                  'search_field' => '_search.location_county',
+                ),
+            )
           ) );
 
         }, 5 );
 
-          /**
+        /**
          * May be load Widgets
          */
-        add_action( 'widgets_init', function() {
-          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path('lib/widgets', 'dir') );
+        add_action( 'widgets_init', function () {
+          ud_get_wpp_supermap()->load_files( ud_get_wpp_supermap()->path( 'lib/widgets', 'dir' ) );
         }, 1 );
 
       }
@@ -144,16 +142,16 @@ namespace UsabilityDynamics\WPP {
        * @param string $dir Directory's path
        * @author peshkov@UD
        */
-      public function load_files($dir = '') {
-        $dir = trailingslashit($dir);
-        if (!empty($dir) && is_dir($dir)) {
-          if ($dh = opendir($dir)) {
-            while (( $file = readdir($dh) ) !== false) {
-              if (!in_array($file, array('.', '..')) && is_file($dir . $file) && 'php' == pathinfo($dir . $file, PATHINFO_EXTENSION)) {
+      public function load_files( $dir = '' ) {
+        $dir = trailingslashit( $dir );
+        if( !empty( $dir ) && is_dir( $dir ) ) {
+          if( $dh = opendir( $dir ) ) {
+            while( ( $file = readdir( $dh ) ) !== false ) {
+              if( !in_array( $file, array( '.', '..' ) ) && is_file( $dir . $file ) && 'php' == pathinfo( $dir . $file, PATHINFO_EXTENSION ) ) {
                 include_once( $dir . $file );
               }
             }
-            closedir($dh);
+            closedir( $dh );
           }
         }
       }
@@ -187,9 +185,9 @@ namespace UsabilityDynamics\WPP {
        * @param $arguments
        * @return mixed|null
        */
-      public function __call($name, $arguments) {
-        if (is_callable(array("\\UsabilityDynamics\\WPP\\Supermap_Utility", $name))) {
-          return call_user_func_array(array("\\UsabilityDynamics\\WPP\\Supermap_Utility", $name), $arguments);
+      public function __call( $name, $arguments ) {
+        if( is_callable( array( "\\UsabilityDynamics\\WPP\\Supermap_Utility", $name ) ) ) {
+          return call_user_func_array( array( "\\UsabilityDynamics\\WPP\\Supermap_Utility", $name ), $arguments );
         } else {
           return NULL;
         }
