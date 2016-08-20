@@ -55,7 +55,7 @@ namespace UsabilityDynamics\WPRETSC {
               'new_item_name'     => __( 'New Schedule Name', ud_get_wp_rets_client()->domain ),
               'menu_name'         => __( 'Schedules' ),
             ),
-            'show_ui'           => true,
+            'show_ui'           => false,
             'show_admin_column' => false,
             'query_var'         => false,
             'rewrite'           => false

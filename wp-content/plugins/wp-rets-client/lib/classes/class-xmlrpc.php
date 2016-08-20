@@ -157,7 +157,6 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].' );
         }
 
-
         $_post_id = wp_insert_post( $post_data, true );
 
         if( is_wp_error( $_post_id ) ) {
