@@ -121,6 +121,7 @@ namespace UsabilityDynamics\WPRETSC {
         global $wp_xmlrpc_server;
 
         $post_data = self::parseRequest( $args );
+        
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return $post_data;
         }
@@ -155,6 +156,7 @@ namespace UsabilityDynamics\WPRETSC {
         } else {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].' );
         }
+
 
         $_post_id = wp_insert_post( $post_data, true );
 
@@ -283,11 +285,14 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
         }
 
+        $_taxonomies = get_object_taxonomies( 'property' );
+
         return array(
           "ok" => true,
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
-          "permalink" => get_the_permalink( $_post_id )
+          "permalink" => get_the_permalink( $_post_id ),
+          "post_terms" =>  wp_get_object_terms($post_id, $_taxonomies)
         );
 
       }
