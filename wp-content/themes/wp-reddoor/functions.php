@@ -20,7 +20,7 @@ if(class_exists('SiteOrigin_Widget')) {
 add_action( 'wp_enqueue_scripts', function () {
 
   // we need supermap on home page for search thing
-  if( is_home() || is_front_page() ) {
+  if( is_home() || is_front_page() || is_404() ) {
     wp_enqueue_script( 'supermap-advanced' );
   }
 

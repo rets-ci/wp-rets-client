@@ -781,6 +781,10 @@ namespace UsabilityDynamics\WPP {
           ),
         ) );
 
+        $_taxonomies = $this->get( 'config.taxonomies', array() );
+
+        //die( '<pre>' . print_r( $_taxonomies[$taxonomy], true ) . '</pre>' );
+
         /* May be fix data type */
         foreach( $args as &$arg ) {
           if( is_string( $arg ) && $arg === 'true' ) {
@@ -790,6 +794,11 @@ namespace UsabilityDynamics\WPP {
 
         if( $args[ 'hierarchical' ] ) {
           $args[ 'rewrite' ][ 'hierarchical' ] = true;
+        }
+
+        // @todo Check that taxonomy set to be public, if not, do
+        if( !$args[ 'public' ] ) {
+          $args[ 'rewrite' ] = false;
         }
 
         return $args;

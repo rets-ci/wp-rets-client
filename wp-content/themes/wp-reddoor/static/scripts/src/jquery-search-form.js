@@ -88,70 +88,74 @@
     jQuery('body.home .upToHeader .sow-slider-image').unbind('click');
 
     // Init supermap autocomplete search thing.
-    jQuery( '.citiesSelection' ).wpp_supermap_search({
-      onSelect: function onSelect( option ) {
-        console.log( 'onSelect-override', option.search_field, option, this.searchElement.closest('form') );
+    if( 'function' === typeof jQuery.fn.wpp_supermap_search ) {
 
-        var $select = this.select;
-        var _form = this.searchElement.closest('form');
+      jQuery( '.citiesSelection' ).wpp_supermap_search( {
+        onSelect: function onSelect( option ) {
+          console.log( 'onSelect-override', option.search_field, option, this.searchElement.closest( 'form' ) );
 
-        // redirect to /listing/{_id}
-        if( typeof option.taxonomy != 'undefined' && option.taxonomy == 'post_title' ) {
-          debug('Redirecting to known property, matched by [post_title]:', '/listing/' + option._id );
-          $select.closest('form').find("input[type='submit']").attr("disabled","disabled");
-          window.location.href = '/listing/' + option._id;
-          return;
-        }
+          var $select = this.select;
+          var _form = this.searchElement.closest( 'form' );
 
-        // Redirect to /listing/{mls_id}/
-        if( typeof option.taxonomy != 'undefined' && option.taxonomy == 'mls_id' ) {
-          debug('Redirecting to known property, matched by [post_title]:', '/listing/' + option._id );
-          $select.closest('form').find("input[type='submit']").attr("disabled","disabled");
-          window.location.href = '/listing/' + option.text;
-          return;
-        }
+          // redirect to /listing/{_id}
+          if( typeof option.taxonomy != 'undefined' && option.taxonomy == 'post_title' ) {
+            debug( 'Redirecting to known property, matched by [post_title]:', '/listing/' + option._id );
+            $select.closest( 'form' ).find( "input[type='submit']" ).attr( "disabled", "disabled" );
+            window.location.href = '/listing/' + option._id;
+            return;
+          }
 
-        _form.find('input[name="_taxonomy"]').val(option.name);
+          // Redirect to /listing/{mls_id}/
+          if( typeof option.taxonomy != 'undefined' && option.taxonomy == 'mls_id' ) {
+            debug( 'Redirecting to known property, matched by [post_title]:', '/listing/' + option._id );
+            $select.closest( 'form' ).find( "input[type='submit']" ).attr( "disabled", "disabled" );
+            window.location.href = '/listing/' + option.text;
+            return;
+          }
 
-        // Build taxonomy landing page redirection detail.
-        var _selectedTerm = {
-          taxonomy: option.name,
-          value: option.id,
-          slug: sanitize_title( option.id || '' ),
-          action: null,
-          query: {
-            "wpp_search": {
-              "sale_type": jQuery('[name="wpp_search[sale_type]"]', _form ).val(),
-              "bedrooms": {
-                min: jQuery('[name="wpp_search[bedrooms][min]"]', _form ).val(),
-                max: jQuery('[name="wpp_search[bedrooms][max]"]', _form ).val()
-              },
-              "bathrooms": {
-                min: jQuery('[name="wpp_search[bathrooms][min]"]', _form ).val(),
-                max: jQuery('[name="wpp_search[bathrooms][max]"]', _form ).val()
-              },
-              "price": {
-                min: jQuery('[name="wpp_search[price][min]"]', _form ).val(),
-                max: jQuery('[name="wpp_search[price][max]"]', _form ).val()
+          _form.find( 'input[name="_taxonomy"]' ).val( option.name );
+
+          // Build taxonomy landing page redirection detail.
+          var _selectedTerm = {
+            taxonomy: option.name,
+            value: option.id,
+            slug: sanitize_title( option.id || '' ),
+            action: null,
+            query: {
+              "wpp_search": {
+                "sale_type": jQuery( '[name="wpp_search[sale_type]"]', _form ).val(),
+                "bedrooms": {
+                  min: jQuery( '[name="wpp_search[bedrooms][min]"]', _form ).val(),
+                  max: jQuery( '[name="wpp_search[bedrooms][max]"]', _form ).val()
+                },
+                "bathrooms": {
+                  min: jQuery( '[name="wpp_search[bathrooms][min]"]', _form ).val(),
+                  max: jQuery( '[name="wpp_search[bathrooms][max]"]', _form ).val()
+                },
+                "price": {
+                  min: jQuery( '[name="wpp_search[price][min]"]', _form ).val(),
+                  max: jQuery( '[name="wpp_search[price][max]"]', _form ).val()
+                }
               }
-            }
-          },
-          httpQuery: ''
-        };
+            },
+            httpQuery: ''
+          };
 
-        // Build the same type of query the server-side would.
-        _selectedTerm.httpQuery = http_build_query( _selectedTerm.query );
+          // Build the same type of query the server-side would.
+          _selectedTerm.httpQuery = http_build_query( _selectedTerm.query );
 
-        // Concatenate full relative path.
-        _selectedTerm.action = [ '/', _selectedTerm.taxonomy, '/', _selectedTerm.slug ].join('');// , '?', _selectedTerm.httpQuery
+          // Concatenate full relative path.
+          _selectedTerm.action = [ '/', _selectedTerm.taxonomy, '/', _selectedTerm.slug ].join( '' );// , '?', _selectedTerm.httpQuery
 
-        // Change the form "action" URL to go to term landing page.
-        _form.attr( 'action', _selectedTerm.action );
+          // Change the form "action" URL to go to term landing page.
+          _form.attr( 'action', _selectedTerm.action );
 
-        debug( "Updated action parameter to [%s] for [%s] form.", _selectedTerm.action , _form.data( 'search-type' ) );
+          debug( "Updated action parameter to [%s] for [%s] form.", _selectedTerm.action, _form.data( 'search-type' ) );
 
-      }
-    });
+        }
+      } );
+      
+    }
 
 
     $('.location .select2-selection__placeholder', that).html('Search');

@@ -79,6 +79,7 @@ namespace UsabilityDynamics {
             
             if( !taxonomy_exists( $taxonomy ) ) {
               $data = self::_prepare_taxonomy( $taxonomy );
+              die( '<pre>' . print_r( $data, true ) . '</pre>' );
               register_taxonomy( $taxonomy, null, $data );
             }
             
