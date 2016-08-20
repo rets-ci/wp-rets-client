@@ -16,6 +16,10 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 // force non-minified version of siteorigin scripts
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
+// stop sa bunch of options being written to wp_options table for things that'll be cached by varnish/cloudfront anyway.
+add_filter('wpseo_enable_xml_sitemap_transient_caching','__return_false');
+
+
 // Only activate tests when on a 'develop' branch.
 if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' && isset( $_GET['_debug'] ) ) !== false ) {
   header( 'cache-control:no-cache, private' );
@@ -73,6 +77,7 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 
   // flush some update transient?
   add_filter('pre_site_transient_update_plugins','__return_null');
+
 
   // hide core update nag
   add_action('admin_menu',function() {
