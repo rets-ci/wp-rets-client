@@ -106,6 +106,8 @@ add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
 
+  $_plugins[] = 'wp-rets-client/wp-rets-client.php';
+  $_plugins[] = 'wp-upstream/wp-upstream.php';
   $_plugins[] = 'simple-history/index.php';
   $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
   $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
