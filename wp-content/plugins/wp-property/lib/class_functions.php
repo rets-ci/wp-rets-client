@@ -309,7 +309,7 @@ class WPP_F extends UsabilityDynamics\Utility {
       'rewrite'               => array(
 
         // this makes it work from root...
-        'slug' => '/',
+        'slug' => '/locations',
         'with_front' => false,
         'hierarchical' => true,
         'ep_mask' => EP_NONE
