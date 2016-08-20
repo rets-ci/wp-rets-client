@@ -23,7 +23,7 @@ add_action('template_redirect', function() {
     "set" => false,
     "value" => 'public,max-age=31536000,s-maxage=31536000,force-cache=true',
     "reason" => ""
-  );
+  ); 
 
   // On non-production, cache for 60 seconds.
   if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] !== 'production' ) {

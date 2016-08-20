@@ -55,6 +55,7 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
+        $_methods[ 'wpp.updatePropertyMeta' ] = array( $this, 'rpc_update_property_meta' );
 
         return $_methods;
       }
@@ -363,6 +364,24 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         return $response;
+
+      }
+
+      /**
+       * @param $args
+       * @return array
+       */
+      public function rpc_update_property_meta( $args ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $data = self::parseRequest( $args );
+
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $data;
+        }
+
+        die( '<pre>' . print_r( $data, true ) . '</pre>' );
+
 
       }
 
