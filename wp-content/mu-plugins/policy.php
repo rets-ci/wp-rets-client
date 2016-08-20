@@ -106,6 +106,11 @@ add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
 
+  $_plugins[] = 'simple-history/index.php';
+  $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
+  $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
+  $_plugins[] = 'wp-stateless/wp-stateless-media.php';
+
   if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
     $_plugins[] = 'minit-master/minit.php';
   } else {
