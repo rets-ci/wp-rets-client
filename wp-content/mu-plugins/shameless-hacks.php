@@ -141,10 +141,11 @@ function rdc_wp_ghetto_term_redirection( $query ) {
     return;
   }
 
-  // WP did not recognize taxonomy at all.
-  if( !$_data['taxonomy'] ) {
+  // WP did not recognize taxonomy at all or if its wpp_location, which we are ignoring on purpose right now since its permalinks are not refined.
+  if( !$_data['taxonomy'] || isset( $_data['taxonomy'] )  && $_data['taxonomy'] === 'wpp_location'  ) {
     return;
   }
+
   // when cached this is preetty snappy.
   if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
     header('x-note:cached-redirection for [' . $query->request . '] key.' );
