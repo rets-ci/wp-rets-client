@@ -17,7 +17,7 @@
 ### Text Links
 
 ```html
-<a class="showContactPopup" href="#" rel="popupFormBuyInquiry">Show Selling</a>
+<a class="showContactPopup" href="#popupFormManagementInquiry">Show ManagementInquiry Popup</a>
 ```
 
 ### Button Elements
@@ -25,7 +25,7 @@
 You may also use a `<button>` element, except instead of `rel` we use `data-action` because WordPress strips the `rel` from buttons, like so:
 
 ```html
-<button class="showContactPopup" data-action="popupFormBuyInquiry">Show some popup</button>
+<button class="showContactPopup" data-action="popupFormSellInquiry">Show Sell Inquiry Popup</button>
 ```
 
 ## Success Pages
