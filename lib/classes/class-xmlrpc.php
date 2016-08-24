@@ -109,7 +109,6 @@ namespace UsabilityDynamics\WPRETSC {
           "theme" => get_option( 'current_theme' ),
           "post_types" => get_post_types()
         );
-
       }
 
       /**
