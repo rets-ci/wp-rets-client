@@ -19,7 +19,7 @@
  *    curl -X PURGE "http://api.wpcloud.io/brillz-is-on-a-mission-to-*" -H "X-Access-Token:yhcwokwserjzdjir" -H "host:www.discodonniepresents.com"
  *
  */
-add_action( 'save_post', function( $post_id ) {
+function rdc_flush_cache( $post_id ) {
 
   // If this is just a revision, don't send the email.
   if ( wp_is_post_revision( $post_id ) )
@@ -44,7 +44,11 @@ add_action( 'save_post', function( $post_id ) {
   ));
 
 
-}, 100);
+}
+
+add_action( 'save_post', "rdc_flush_cache", 100);
+// WP-RETS Client plugin
+add_action( 'wprc:xmlrpc:editProperty', "rdc_flush_cache", 100);
 
 
 /**

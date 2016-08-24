@@ -282,6 +282,23 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
         }
 
+        clean_post_cache( $_post_id );
+
+        /**
+         * Flush all object caches related to current property
+         */
+        if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
+          \UsabilityDynamics\WPP\Property_Factory::flush_cache( $_post_id );
+        }
+        /**
+         * Flush WP-Property caches
+         */
+        if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
+          \WPP_F::clear_cache();
+        }
+
+        do_action( 'wprc:xmlrpc:editProperty', $_post_id );
+
         return array(
           "ok" => true,
           "post_id" => $_post_id,
