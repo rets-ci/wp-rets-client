@@ -286,12 +286,35 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_taxonomies = get_object_taxonomies( 'property' );
 
+        /**
+         * Purge WP Object Cache for current post
+         */
+        clean_post_cache( $_post_id );
+
+        /**
+         * Flush all WP-Property object caches related to current property
+         */
+        if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
+          \UsabilityDynamics\WPP\Property_Factory::flush_cache( $_post_id );
+        }
+        /**
+         * Flush general WP-Property cache
+         */
+        if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
+          \WPP_F::clear_cache();
+        }
+
+        /**
+         * Use the action for custom stuff
+         */
+        do_action( 'wprc:xmlrpc:editProperty', $_post_id );
+
         return array(
           "ok" => true,
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
           "permalink" => get_the_permalink( $_post_id ),
-          "post_terms" =>  wp_get_object_terms($post_id, $_taxonomies)
+          "post_terms" =>  wp_get_object_terms( $_post_id, $_taxonomies)
         );
 
       }
