@@ -1186,7 +1186,6 @@
               }
             }
           ]);
-          console.log('123 ->', $scope.query);
           return JSON.stringify($scope.query);
         }
 
