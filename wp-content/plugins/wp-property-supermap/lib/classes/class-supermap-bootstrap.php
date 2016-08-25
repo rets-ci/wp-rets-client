@@ -59,7 +59,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'city',
                   'title' => 'City',
-                  'field' => '_system.addressDetail.city',
+                  'field' => 'tax_input.location_city',
                   'search_field' => '_search.location_city',
                 ),
               'location_zip' => array(
