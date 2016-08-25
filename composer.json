@@ -12,8 +12,8 @@
     "settings_latest": {
       "wp_debug_log": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211",
-      "db": [
+      "__wp_memcached_servers": "localhost:11211",
+      "_db": [
         {
           "name": "www.reddoorcompany.com.latest"
         }
