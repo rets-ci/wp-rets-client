@@ -684,6 +684,96 @@
           }
         };
 
+
+
+        /**
+         * Get parameters by name from query string
+         * @param name
+         * @param url
+         * @returns {*}
+         */
+        function getParameterByName(name, url) {
+
+          if (!url) url = decodeURI(window.location.href);
+          name = name.replace(/[\[\]]/g, "\\$&");
+
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+          var results = regex.exec(url);
+          if (!results) {
+            // debug( 'getParameterByName', name, 'no result' );
+            return null;
+          }
+
+          if (!results[2]) {
+
+            // Try another method.. - potanin@UD
+            var _parts = parse_query_string( window.location.search );
+
+            if( _parts[ name ] ) {
+              // debug( 'getParameterByName', name, _parts[ name ] );
+              return _parts[ name ];
+            }
+
+            // debug( 'getParameterByName', name, 'empty result' );
+
+            return '';
+          }
+
+          // debug( 'getParameterByName', name, decodeURIComponent(results[2].replace(/\+/g, " ")) );
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        /**
+         * Configure query based on URI parameters.
+         *
+         */
+        function setFiltersFromQuery() {
+          debug('setFiltersFromQuery', $scope.query.bool.must )
+
+          if( window.location.pathname.indexOf( 'our-listings' ) >  0 ) {
+            debug( 'setFiltersFromQuery', 'fetching agency listings' );
+            $scope.current_filter.agency_listing = true;
+            $scope.query.bool.must.push({ "terms": { "_system.agency_listing": [ "true" ] } });
+          } else {
+            $scope.current_filter.agency_listing = false;
+          }
+
+          if( getParameterByName( 'wpp_search[price][min]' ) || getParameterByName( 'wpp_search[price][max]' ) ) {
+            debug('setFiltersFromQuery Setting [price]' )
+
+            $scope.current_filter.price = {
+              min: getParameterByName( 'wpp_search[price][min]' ),
+              max: getParameterByName( 'wpp_search[price][max]' ),
+            };
+
+            $scope.query.bool.must.push({ "range": { "tax_input.price": {gte: $scope.current_filter.price.min, lte: $scope.current_filter.price.max } } });
+          }
+
+          $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
+              min: getParameterByName( 'wpp_search[bathrooms][min]' ),
+              max: getParameterByName( 'wpp_search[bathrooms][max]' ),
+            };
+
+          $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
+              min: getParameterByName( 'wpp_search[bedrooms][min]' ),
+              max: getParameterByName( 'wpp_search[bedrooms][max]' )
+            };
+
+          // set sale_type if we have query override, something else seems to be setting its default
+          if( getParameterByName( 'wpp_search[sale_type]' ) ) {
+            $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
+          }
+
+          $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+
+          debug( 'setFiltersFromQuery', '$scope.current_filter', $scope.current_filter );
+
+        }
+
+        $scope.getAvailabilityDate = function getAvailabilityDate() {
+          var d = new Date();
+          return  d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + d.getDate();
+        }
         /**
          * Defines which fields to use for search vs display when aggregating
          */
@@ -745,6 +835,8 @@
           return i;
         };
 
+        setFiltersFromQuery();
+
         var index = 'v5',
           type = 'property';
 
@@ -753,8 +845,8 @@
          */
         var client = new jQuery.es.Client({
           hosts: [
-            window.location.host,
-            //'dori-us-east-1.searchly.com'
+            //window.location.host,
+            'dori-us-east-1.searchly.com'
           ]
         });
 
