@@ -111,7 +111,7 @@
 
                 _buckets.push({
                   id: data.key,
-                  text: data.key + ' (' + data.doc_count + ')',
+                  text: data.key, // + ' (' + data.doc_count + ')',
                   count: data.doc_count,
                   taxonomy: _bucketDetail['field'],
                   field: _bucketDetail['field'],
@@ -1433,7 +1433,15 @@
             }
 
             for ( var i=0; i < $scope.properties.length; i++ ) {
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0] );
+
+              debug( '$scope.properties[i]._source', $scope.properties[i]._source );
+              
+              // ignore listings with broken latitude
+              if( !$scope.properties[i]._source._system || !$scope.properties[i]._source._system.addressDetail || !$scope.properties[i]._source._system.addressDetail.longitude ) {
+                continue;
+              }
+
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
               latLng.listingId = $scope.properties[i]._id;
               var marker = new google.maps.Marker( {
                 position: latLng
@@ -1671,7 +1679,7 @@
 
                     _buckets.push({
                       id: data.key,
-                      text: data.key + ' (' + data.doc_count + ')',
+                      text: data.key, // + ' (' + data.doc_count + ')',
                       count: data.doc_count,
                       taxonomy: _bucketDetail['field'],
                       field: _bucketDetail['field'],
