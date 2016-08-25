@@ -1155,6 +1155,32 @@
          */
         function build_query() {
           // maybe alter something
+          if (!angular.isArray($scope.query.bool.must_not)) {
+            $scope.query.bool.must_not = [];
+          }
+          $scope.query.bool.must_not = $scope.query.bool.must_not.concat([
+            {
+              "term": {
+                "tax_input.location_latitude": "0"
+              }
+            },
+            {
+              "term": {
+                "tax_input.location_longitude": "0"
+              }
+            },
+            {
+              "missing": {
+                "field": "tax_input.location_latitude"
+              }
+            },
+            {
+              "missing": {
+                "field": "tax_input.location_longitude"
+              }
+            }
+          ]);
+          console.log('123 ->', $scope.query);
           return JSON.stringify($scope.query);
         }
 
