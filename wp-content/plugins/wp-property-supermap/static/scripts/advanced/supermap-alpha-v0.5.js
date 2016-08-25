@@ -1466,7 +1466,10 @@
                 continue;
               }
 
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
+
+              //var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
+
               latLng.listingId = $scope.properties[i]._id;
               var marker = new google.maps.Marker( {
                 position: latLng
@@ -1999,7 +2002,7 @@
           for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
             if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
               NgMap.getMap().then( function( map ) {
-                console.log( "DOing stuff with infowindow" );
+                //console.log( "DOing stuff with infowindow" );
                 $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
                 $scope.infoBubble.setPosition( $scope.latLngs[i] );
                 $scope.infoBubble.open( map );
