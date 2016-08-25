@@ -52,14 +52,14 @@ namespace UsabilityDynamics\WPP {
           wp_localize_script( 'supermap-advanced', 'supermapMode', array(
             "isMobile" => ( isset( $_SERVER[ 'HTTP_X_USER_DEVICE' ] ) && $_SERVER[ 'HTTP_X_USER_DEVICE' ] == 'mobile' ) ? true : false,
             "aggregationFields" => array(
-              /*'elementary_school' => array(
+              'elementary_school' => array(
                   'icons' => array(
                       'main' => 'school-elementary-solid',
                       'outline' => 'school-elementary-outline',
                     ),
                   'slug' => 'elementary_school',
                   'title' => 'Elementary School',
-                  'field' => '_schools.elementary_school',
+                  'field' => 'tax_input.elementary_school',
                   'search_field' => '_search.elementary_school',
                 ),
               'middle_school' => array(
@@ -69,7 +69,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'middle_school',
                   'title' => 'Middle School',
-                  'field' => '_schools.middle_school',
+                  'field' => 'tax_input.middle_school',
                   'search_field' => '_search.middle_school',
                 ),
               'high_school' => array(
@@ -79,9 +79,9 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'high_school',
                   'title' => 'High School',
-                  'field' => '_schools.high_school',
+                  'field' => 'tax_input.high_school',
                   'search_field' => '_search.high_school',
-                ),*/
+                ),
               'location_city' => array(
                   'icons' => array(
                       'main' => 'school-elementary-solid',
