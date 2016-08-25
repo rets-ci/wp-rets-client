@@ -126,6 +126,10 @@ namespace UsabilityDynamics\CloudFront {
         return;
       }
 
+      // if not checked will be stuck at upgrade forever.
+      if( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
+        return;
+      }
       // No Query params.
       $_GET = array();
 

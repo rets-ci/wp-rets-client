@@ -16,6 +16,10 @@ add_filter( 'ud:warnings:admin_notices', function() { return null; });
 // force non-minified version of siteorigin scripts
 define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 
+// stop sa bunch of options being written to wp_options table for things that'll be cached by varnish/cloudfront anyway.
+add_filter('wpseo_enable_xml_sitemap_transient_caching','__return_false');
+
+
 // Only activate tests when on a 'develop' branch.
 if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' && isset( $_GET['_debug'] ) ) !== false ) {
   header( 'cache-control:no-cache, private' );
@@ -74,6 +78,7 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
   // flush some update transient?
   add_filter('pre_site_transient_update_plugins','__return_null');
 
+
   // hide core update nag
   add_action('admin_menu',function() {
     remove_action( 'admin_notices', 'update_nag', 3 );
@@ -99,11 +104,88 @@ if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] === '__production'
 add_filter('wpp:supermap:defaults', function( $defaults ) {
 
   // makes supermap pages load much faster since all requesets are done via ajax calls
-  $defaults['get_listings'] = false;
+  $defaults['get_listings'] = 'false';
   return $defaults;
 });
 
 // Add support for /listing/{property_id} redirection
+
+add_action( 'wp', 'rdc_wp_ghetto_term_redirection' );
+
+/**
+ * Ghetto Term Fallback.
+ *
+ * Elasticsearch will redirect to urls like "/elementary_school/highland-elementary-school"
+ * which are not known to WP. So we reach-back to ES, find first document that has "highland-elementary-school" slug,
+ * and get its tax_input, then use that to lookup the real term in WP.
+ *
+ * This is fucking terrible, I know, but can't think of any other way to deal with aggregated terms.
+ *
+ * @author potanin@UD
+ * @param $query
+ */
+function rdc_wp_ghetto_term_redirection( $query ) {
+  global $wp_query,$wp_properties;
+
+  if(!$wp_query->is_404() || !defined( 'RETS_ES_LINK' ) || !$wp_query || !$wp_query->tax_query || !$wp_query->tax_query->queries ) {
+    return;
+  }
+
+  $_data = array(
+    "taxonomy" => $wp_query->tax_query->queries[0]['taxonomy'],
+    "term" => $wp_query->tax_query->queries[0]['terms'][0]
+  );
+
+  // must be a known WPP taxonomy for us to consider.
+  if( !in_array( $_data['taxonomy'], array_keys($wp_properties['taxonomies'])  ) ) {
+    return;
+  }
+
+  // WP did not recognize taxonomy at all or if its wpp_location, which we are ignoring on purpose right now since its permalinks are not refined.
+  if( !$_data['taxonomy'] || isset( $_data['taxonomy'] )  && $_data['taxonomy'] === 'wpp_location'  ) {
+    return;
+  }
+
+  // when cached this is preetty snappy.
+  if( $_cached = wp_cache_get( $query->request, 'retsci_term_redirection' ) ) {
+    header('x-note:cached-redirection for [' . $query->request . '] key.' );
+    die(wp_redirect( $_cached . ( $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ) ) ) ;
+  }
+
+  // Search for term...
+  $_request = wp_remote_post(RETS_ES_LINK . "/v5/property/_search", array(
+    "headers" => array(),
+    "body" => '{"size":1,"query": {"match": {"_search.' .  $_data['taxonomy'] . '":{"query": "' . $_data['term'] . '"}}}}'
+  ));
+
+  $_response = wp_remote_retrieve_body($_request);
+
+  // This is bad. We identified the taxonomy and term but couldn't find any docs in ES.
+  if( !count( json_decode( $_response )->hits->hits ) ) {
+    $_link = get_home_url( null, '/buy' );
+    //$_link = get_home_url( null, '/buy' ) . '?' . $_SERVER['QUERY_STRING'];
+    wp_cache_set( $query->request, $_link, 'retsci_term_redirection' ) ;
+    die(wp_redirect( $_link ));
+  }
+
+  // Get taxnomy VALUE of match in tax_input.
+  $_term_name = json_decode( $_response )->hits->hits[0]->_source->tax_input->{$_data['taxonomy']}[0];
+
+  // Query the term in WP
+  $_term =  get_term_by('name', $_term_name, $_data['taxonomy']);
+
+  // Get link to the term
+  $_link = get_term_link($_term->term_id, $_term->taxonomy);
+
+  if( $_cached = wp_cache_set( $query->request, $_link, 'retsci_term_redirection' ) ) {
+  }
+
+  // Redirect to it.
+  header('x-note:uncached redirection');
+  die(wp_redirect( $_link . (  $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' )));
+
+}
+
 
 add_action('init', function() {
   add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');

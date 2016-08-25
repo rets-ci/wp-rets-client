@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<methodCall>
+  <methodName>wpp.updatePropertyMeta</methodName>
+  <params>
+    <param>
+      <value>
+        <int>1</int>
+      </value>
+    </param>
+    <param>
+      <value>
+        <string>wp@rets.ci</string>
+      </value>
+    </param>
+    <param>
+      <value>
+        <string><![CDATA[ED3LX#EJ1&xz]]></string>
+      </value>
+    </param>
+    <param>
+      <value>
+        <struct>
+          <member>
+            <name>post_id</name>
+            <value>
+              <string>12345</string>
+            </value>
+          </member>
+          <member>
+            <name>meta_key</name>
+            <value>
+              <string>last_check</string>
+            </value>
+          </member>
+          <member>
+            <name>meta_value</name>
+            <value>
+              <string>today</string>
+            </value>
+          </member>
+        </struct>
+      </value>
+    </param>
+  </params>
+</methodCall>

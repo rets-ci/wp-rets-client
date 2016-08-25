@@ -10,9 +10,10 @@ function siteorigin_widgets_icon_families_filter( $families ){
 		'icomoon' => __( 'Icomoon Free', 'so-widgets-bundle' ),
 		'typicons' => __( 'Typicons', 'so-widgets-bundle' ),
 		'ionicons' => __( 'Ionicons', 'so-widgets-bundle' ),
-		'reddoorcompany' => __( 'Reddoorcompany', 'so-widgets-bundle' ),
-		'wpproperty' => __( 'Wp-property', 'so-widgets-bundle' ),
-	);
+    'reddoorcompany' => __( 'Reddoorcompany', 'so-widgets-bundle' ),
+    'wpproperty' => __( 'Wp-property', 'so-widgets-bundle' ),
+
+  );
 
 	foreach ( $bundled as $font => $name) {
 		include_once plugin_dir_path(__FILE__) . $font . '/filter.php';

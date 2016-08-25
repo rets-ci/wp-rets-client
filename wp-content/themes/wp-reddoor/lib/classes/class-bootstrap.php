@@ -217,6 +217,8 @@ namespace UsabilityDynamics\RDC {
             '_system.neighborhood',
             '_system.google_place_id',
             '_system.available_date',
+            '_system.addressDetail',
+            '_system.available_date',
             '_system.listed_date',
             '_system.agency_listing',
             '_metrics.score.total',

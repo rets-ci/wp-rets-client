@@ -17,6 +17,15 @@ if(class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-masthead/rdc_masthead.php';
 }
 
+add_action( 'wp_enqueue_scripts', function () {
+
+  // we need supermap on home page for search thing
+  if( is_home() || is_front_page() || is_404() ) {
+    wp_enqueue_script( 'supermap-advanced' );
+  }
+
+});
+
 add_action( 'admin_enqueue_scripts', function () {
   wp_enqueue_style( 'rdc-admin', get_template_directory_uri() . '/static/styles/admin/style.css', false, '1.0.0' );
 } );

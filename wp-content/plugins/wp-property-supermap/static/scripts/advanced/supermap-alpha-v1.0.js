@@ -1490,24 +1490,6 @@
         // Geohashes of precision 5 are approximately 5km x 5km.
 
         $scope.aggregationFields = {
-          "elementary_school" : {
-            "slug": "elementary_school",
-            "title": "Elementary School",
-            "field": "_schools.elementary_school",
-            "search_field": "_search.elementary_school"
-          },
-          "middle_school" : {
-            "slug": "middle_school",
-            "title": "Middle School",
-            "field": "_schools.middle_school",
-            "search_field": "_search.middle_school"
-          },
-          "high_school" : {
-            "slug": "high_school",
-            "title": "High School",
-            "field": "_schools.high_school",
-            "search_field": "_search.high_school"
-          },
           "location_city" : {
             "slug": "city",
             "title": "City",
@@ -1520,12 +1502,6 @@
             "field": "_system.addressDetail.zipcode",
             "search_field": "_search.location_zip"
           },
-          "neighborhood" : {
-            "slug": "neighborhood",
-            "title": "Neighborhood",
-            "field": "_system.neighborhood.fullName",
-            "search_field": "_search.location_neighborhood"
-          },
           "location_county" : {
             "slug": "county",
             "title": "County",
@@ -1535,38 +1511,6 @@
         }
 
         $scope.aggregations = {
-          "elementary_school" : {
-            "terms" : { "field" : "tax_input.elementary_school", "size": 50  },
-            "aggs" : {
-              "centroid" : {
-                "geo_centroid" : { "field" : "_system.location" }
-              }
-            }
-          },
-          "location_neighborhood" : {
-            "terms" : { "field" : "_system.addressDetail.neighborhood", "size": 150  },
-            "aggs" : {
-              "centroid" : {
-                "geo_centroid" : { "field" : "_system.location" }
-              }
-            }
-          },
-          "middle_school" : {
-            "terms" : { "field" : "tax_input.middle_school", "size": 50  },
-            "aggs" : {
-              "centroid" : {
-                "geo_centroid" : { "field" : "_system.location" }
-              }
-            }
-          },
-          "high_school" : {
-            "terms" : { "field" : "tax_input.high_school", "size": 100  },
-            "aggs" : {
-              "centroid" : {
-                "geo_centroid" : { "field" : "_system.location" }
-              }
-            }
-          },
           "location_city" : {
             "terms" : { "field" : "tax_input.location_city", "size": 100  },
             "aggs" : {
@@ -1658,7 +1602,7 @@
                 $scope.clusterTerm = 'location_county';
               }
 
-              if( $scope.responseAggregations.location_neighborhood.buckets.length > $scope.responseAggregations.location_neighborhood.sum_other_doc_count  ) {
+              if( $scope.responseAggregations.location_neighborhood && $scope.responseAggregations.location_neighborhood.buckets.length > $scope.responseAggregations.location_neighborhood.sum_other_doc_count  ) {
                 debug( 'getPropertiesResponse', 'clustering by location_neighborhood', $scope.responseAggregations.location_neighborhood.buckets.length );
                 $scope.clusterTerm = 'location_neighborhood';
               }

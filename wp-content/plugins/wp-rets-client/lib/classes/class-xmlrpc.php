@@ -55,6 +55,7 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
+        $_methods[ 'wpp.updatePropertyMeta' ] = array( $this, 'rpc_update_property_meta' );
 
         return $_methods;
       }
@@ -120,6 +121,7 @@ namespace UsabilityDynamics\WPRETSC {
         global $wp_xmlrpc_server;
 
         $post_data = self::parseRequest( $args );
+        
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return $post_data;
         }
@@ -282,28 +284,37 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>' );
         }
 
+        $_taxonomies = get_object_taxonomies( 'property' );
+
+        /**
+         * Purge WP Object Cache for current post
+         */
         clean_post_cache( $_post_id );
 
         /**
-         * Flush all object caches related to current property
+         * Flush all WP-Property object caches related to current property
          */
         if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
           \UsabilityDynamics\WPP\Property_Factory::flush_cache( $_post_id );
         }
         /**
-         * Flush WP-Property caches
+         * Flush general WP-Property cache
          */
         if( method_exists( '\UsabilityDynamics\WPP\Property_Factory', 'flush_cache' ) ) {
           \WPP_F::clear_cache();
         }
 
+        /**
+         * Use the action for custom stuff
+         */
         do_action( 'wprc:xmlrpc:editProperty', $_post_id );
 
         return array(
           "ok" => true,
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
-          "permalink" => get_the_permalink( $_post_id )
+          "permalink" => get_the_permalink( $_post_id ),
+          "post_terms" =>  wp_get_object_terms( $_post_id, $_taxonomies)
         );
 
       }
@@ -380,6 +391,24 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         return $response;
+
+      }
+
+      /**
+       * @param $args
+       * @return array
+       */
+      public function rpc_update_property_meta( $args ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $data = self::parseRequest( $args );
+
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $data;
+        }
+
+        die( '<pre>' . print_r( $data, true ) . '</pre>' );
+
 
       }
 

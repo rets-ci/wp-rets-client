@@ -331,22 +331,16 @@ namespace UsabilityDynamics\WPP {
         wp_enqueue_style( 'bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' );
         wp_enqueue_style( 'wpp-supermap-advanced', ud_get_wpp_supermap()->path( 'static/styles/supermap-advanced.min.css' ) );
 
-        wp_enqueue_script( 'angularjs', ud_get_wpp_supermap()->path( 'bower_components/angular/angular.min.js' ), array(), false, true );
-        wp_enqueue_script( 'angular-sanitize', ud_get_wpp_supermap()->path( 'bower_components/angular/angular-sanitize.min.js' ), array( 'angularjs' ), false, true );
-        wp_enqueue_script( 'ng-map', ud_get_wpp_supermap()->path( 'bower_components/ngmap/build/scripts/ng-map.min.js' ), array( 'google-maps', 'angularjs' ) );
-        wp_enqueue_script( 'ng-smart-table', ud_get_wpp_supermap()->path( 'bower_components/angular-smart-table/dist/smart-table.min.js' ), array( 'angularjs' ) );
-        wp_enqueue_script( 'gm-markerclusterer', ud_get_wpp_supermap()->path( 'bower_components/js-marker-clusterer/src/markerclusterer.js' ), array( 'ng-map' ) );
-        wp_enqueue_script( 'gm-infobubble', ud_get_wpp_supermap()->path( 'bower_components/js-info-bubble/src/infobubble-compiled.js' ), array( 'ng-map' ) );
-        wp_enqueue_script( 'ng-elasticsearch', ud_get_wpp_supermap()->path( 'bower_components/elasticsearch/elasticsearch.jquery.js' ), array( 'angularjs' ) );
-        wp_enqueue_script( 'markerwithlabel', ud_get_wpp_supermap()->path( 'static/scripts/advanced/markerwithlabel.js' ), array( 'ng-map' ) );
-
-        wp_enqueue_script( 'supermap-advanced', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-alpha-v0.5.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '0.5', true );
-        wp_enqueue_script( 'supermap-advanced-autocomplete', ud_get_wpp_supermap()->path( 'static/scripts/advanced/supermap-autocomplete-v1.0.js' ), array( 'angularjs', 'gm-markerclusterer', 'gm-infobubble', 'ng-map', 'ng-smart-table' ), '1.0', true );
-
-        // This can be our generic SuperMap client-side facing settings object.
-        wp_localize_script( 'supermap-advanced', 'supermapMode', array(
-          "isMobile" => ( isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == 'mobile' ) ? true : false
-        ) );
+        wp_enqueue_script( 'angularjs' );
+        wp_enqueue_script( 'angular-sanitize' );
+        wp_enqueue_script( 'ng-map' );
+        wp_enqueue_script( 'ng-smart-table' );
+        wp_enqueue_script( 'gm-markerclusterer' );
+        wp_enqueue_script( 'gm-infobubble'  );
+        wp_enqueue_script( 'ng-elasticsearch' );
+        wp_enqueue_script( 'async'  );
+        wp_enqueue_script( 'markerwithlabel' );
+        wp_enqueue_script( 'supermap-advanced');
 
         // HACK
         // REDECLARE OUR QUERY.

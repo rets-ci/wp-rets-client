@@ -35,8 +35,6 @@
       <!-- Buy Bedrooms -->
 
       <div class="sfBeds dropdown-container">
-        <!-- default search value -->
-<!--        <input name="wpp_search[bedrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bedrooms', 0); ?><!--" />-->
 
         <span class="searchTrigger" data-drop="bed">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
@@ -75,19 +73,11 @@
             </ul>
           </div>
         </div>
-<!--        <ul class="dropdown-list">-->
-<!--          --><?php //foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-//          ?>
-<!--            <li><input id="buy_beds_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="buy_beds_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
-<!--          --><?php //endforeach; ?>
-<!--        </ul>-->
       </div>
 
       <!-- Buy Bathrooms -->
 
       <div class="sfBaths dropdown-container">
-        <!-- default search value -->
-<!--        <input name="wpp_search[bathrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bathrooms', 0); ?><!--" />-->
 
         <span class="searchTrigger" data-drop="bath">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
@@ -128,13 +118,6 @@
           </div>
         </div>
 
-<!--        <ul class="dropdown-list">-->
-<!--          --><?php
-//            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-//          ?>
-<!--            <li><input id="buy_baths_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="buy_baths_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
-<!--          --><?php //endforeach; ?>
-<!--        </ul>-->
       </div>
 
       <!-- Buy Price -->
@@ -210,8 +193,6 @@
       </div>
 
       <div class="sfBeds dropdown-container">
-        <!-- default search value -->
-<!--        <input name="wpp_search[bedrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bedrooms', 0); ?><!--" />-->
 
         <span class="searchTrigger" data-drop="bed">
           <div class="icon-wpproperty-attribute-bedroom-solid sf-icon"></div>
@@ -252,19 +233,9 @@
           </div>
         </div>
 
-<!--        <ul class="dropdown-list">-->
-<!--          --><?php
-//            foreach( apply_filters('rdc_search_bedrooms_options', array(1,2,3,4,5,6)) as $value ) :
-//          ?>
-<!--            <li><input id="rent_beds_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bedrooms][min]" type="radio" value="--><?php //echo $value; ?><!--" /><label for="rent_beds_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
-<!--          --><?php //endforeach; ?>
-<!--        </ul>-->
       </div>
 
       <div class="sfBaths dropdown-container">
-        <!-- default search value -->
-<!--        <input name="wpp_search[bathrooms][min]" type="hidden" value="--><?php //echo apply_filters('rdc_search_default_bathrooms', 0); ?><!--" />-->
-
         <span class="searchTrigger" data-drop="bath">
           <div class="icon-wpproperty-attribute-bathroom-solid sf-icon"></div>
           <span class="dropdown-value rentBlock"><?php _e( 'Baths' ); ?></span>
@@ -304,13 +275,6 @@
           </div>
         </div>
 
-<!--        <ul class="dropdown-list">-->
-<!--          --><?php
-//            foreach( apply_filters('rdc_search_bathrooms_options', array(1,2,3,4,5,6)) as $value ) :
-//          ?>
-<!--            <li><input id="rent_baths_--><?php //echo $value; ?><!--" class="dropdown-option" name="wpp_search[bathrooms][min]" type="radio" value="--><?php //echo $value; ?><!--"/><label for="rent_baths_--><?php //echo $value; ?><!--">--><?php //echo $value; ?><!--+</label></li>-->
-<!--          --><?php //endforeach; ?>
-<!--        </ul>-->
       </div>
 
       <div class="sfPrice dropdown-container">

@@ -13,13 +13,17 @@
  * Caching Policy (Varnish).
  *
  */
+
+add_filter( 'automatic_updater_disabled', '__return_true' );
+add_filter( 'automatic_updates_is_vcs_checkout', '__return_false', 1 );
+
 add_action('template_redirect', function() {
 
   $_policy = array(
     "set" => false,
     "value" => 'public,max-age=31536000,s-maxage=31536000,force-cache=true',
     "reason" => ""
-  );
+  ); 
 
   // On non-production, cache for 60 seconds.
   if( isset( $_SERVER['GIT_BRANCH'] ) && $_SERVER['GIT_BRANCH'] !== 'production' ) {
@@ -102,6 +106,13 @@ add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
 
+  $_plugins[] = 'wp-rets-client/wp-rets-client.php';
+  $_plugins[] = 'wp-upstream/wp-upstream.php';
+  $_plugins[] = 'simple-history/index.php';
+  $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
+  $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
+  $_plugins[] = 'wp-stateless/wp-stateless-media.php';
+
   if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
     $_plugins[] = 'minit-master/minit.php';
   } else {
@@ -109,6 +120,8 @@ add_filter( 'option_active_plugins', function( $_plugins ) {
     if(($key = array_search('minit-master/minit.php', $_plugins)) !== false) {
       unset($_plugins[$key]);
     }
+
+
 
   }
   return array_unique( $_plugins );

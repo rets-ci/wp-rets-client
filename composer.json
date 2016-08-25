@@ -12,8 +12,8 @@
     "settings_latest": {
       "wp_debug_log": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211",
-      "db": [
+      "__wp_memcached_servers": "localhost:11211",
+      "_db": [
         {
           "name": "www.reddoorcompany.com.latest"
         }
@@ -23,7 +23,7 @@
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
-      "wp_debug_log": false,
+      "wp_debug_log": true,
       "wp_rets_ci": true,
       "wp_debug_display": false,
       "wp_memcached_servers": "sql.wpcloud.io:23038",
@@ -45,9 +45,11 @@
         "allow_repair": true,
         "force_ssl_admin": true,
         "force_ssl_login": true,
-        "auto_core_update": true,
+        "auto_core_update": false,
+        "AUTO_UPDATE_CORE": false,
         "use_themes": true
       },
+      "AUTOMATIC_UPDATER_DISABLED": true,
       "db": [
         {
           "name": "www.reddoorcompany.com.production",
