@@ -102,16 +102,6 @@ namespace UsabilityDynamics\WPP {
                   'field' => '_system.addressDetail.zipcode',
                   'search_field' => '_search.location_zip',
                 ),
-              'location_neighborhood' => array(
-                  'icons' => array(
-                      'main' => 'attribute-neighborhood-solid',
-                      'outline' => 'attribute-neighborhood-outline',
-                    ),
-                  'slug' => 'neighborhood',
-                  'title' => 'Neighborhood',
-                  'field' => '_system.neighborhood.fullName',
-                  'search_field' => '_search.location_neighborhood',
-                ),
               'location_county' => array(
                   'icons' => array(
                       'main' => 'school-elementary-solid',
