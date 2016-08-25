@@ -109,7 +109,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'county',
                   'title' => 'County',
-                  'field' => '_system.addressDetail.administrativeLevels.level2long',
+                  'field' => 'tax_input.location_county',
                   'search_field' => '_search.location_county',
                 ),
             )
