@@ -1466,9 +1466,8 @@
                 continue;
               }
 
-
-              //var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
+              var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
+              //var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
 
               latLng.listingId = $scope.properties[i]._id;
               var marker = new google.maps.Marker( {
