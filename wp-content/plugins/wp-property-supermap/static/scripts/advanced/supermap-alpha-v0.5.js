@@ -56,6 +56,12 @@
           // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
           // _source.query = $scope.query;
 
+
+          // @hack only use first word
+          if( query.term.indexOf( ' ' ) > 0 ) {
+            query.term = query.term.split( ' ' )[0];
+          }
+
           angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
             _source.aggs[ key ] = {
@@ -1633,6 +1639,11 @@
 
               // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
               // _source.query = $scope.query;
+
+              // @hack only use first word
+              if( query.term.indexOf( ' ' ) > 0 ) {
+                query.term = query.term.split( ' ' )[0];
+              }
 
               angular.forEach($scope.aggregationFields, function setField( data, key ) {
 
