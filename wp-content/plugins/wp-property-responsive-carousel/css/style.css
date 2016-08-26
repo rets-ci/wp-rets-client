@@ -393,18 +393,20 @@ a.rdc-carousel-next {
     padding: 40px 0 60px 0;
   }
   .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
-    margin: 0;
-    padding: 0 5px 0 0;
+    padding: 0;
+    margin-right: 5px;
   }
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock h2{
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock h2 {
     padding: 0 10px;
   }
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock p{
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock p {
     padding: 0 10px;
   }
 }
 @media screen and (max-width: 480px) {
   .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock a {
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
   }
   .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p {
