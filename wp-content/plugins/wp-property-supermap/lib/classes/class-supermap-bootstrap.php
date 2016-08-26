@@ -52,7 +52,6 @@ namespace UsabilityDynamics\WPP {
           wp_localize_script( 'supermap-advanced', 'supermapMode', array(
             "isMobile" => ( isset( $_SERVER[ 'HTTP_X_USER_DEVICE' ] ) && $_SERVER[ 'HTTP_X_USER_DEVICE' ] == 'mobile' ) ? true : false,
             "aggregationFields" => array(
-              /*
               'elementary_school' => array(
                   'icons' => array(
                       'main' => 'school-elementary-solid',
@@ -82,7 +81,7 @@ namespace UsabilityDynamics\WPP {
                   'title' => 'High School',
                   'field' => 'tax_input.high_school',
                   'search_field' => '_search.high_school',
-                ),*/
+                ),
               'location_city' => array(
                   'icons' => array(
                       'main' => 'school-elementary-solid',
