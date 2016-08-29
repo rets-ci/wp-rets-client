@@ -663,9 +663,9 @@ function minit_cache_delete_files()
 /* Set timestamp for Minit */
 function minit_timestamp()
 {
-  if (isset($_GET["minit_timestamp"]) && ($_GET["minit_timestamp"] == true)) {
+  if (isset($_GET["minitflush"]) || $_SERVER['HTTP_X_MINIT_FLUSH'] == true) {
     update_option('minit_timestamp', time());
-    $time = time();
+    $time = get_option('minit_timestamp');
   } else {
     if (get_option('minit_timestamp') == true && get_option('minit_timestamp') !== '') {
       $time = get_option('minit_timestamp');
