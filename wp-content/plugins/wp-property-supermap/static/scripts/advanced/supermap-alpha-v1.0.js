@@ -1372,9 +1372,9 @@
       /**
        * Creates "Super Clusters" from regular aggregation clusters. However, they look the same, so user doesn't know any better.
        * These are only used for grouping our regular Aggregation Clusters. Once one of these is clicked and regular AC are shown, they must be clicked to show actual listings.
-       * 
+       *
        * The non-clustered regular aggregation clusters remain on map.
-       * 
+       *
        * $scope.markerClusterer.clearMarkers();
        *
        * map.fitBounds( $scope.clusterMarkerBounds );
