@@ -14,7 +14,7 @@ function rdc_widgets_icon_families_filter( $families ){
     include_once get_template_directory(). '/static/icons/' . $font . '/filter.php';
     $families[$font] = array(
       'name' => $name,
-      'style_uri' => get_template_directory(). '/static/icons/' . $font . '/style.css',
+      'style_uri' => get_template_directory_uri() . '/static/icons/' . $font . '/style.css',
       'icons' => apply_filters('siteorigin_widgets_icons_' . $font, array() ),
     );
   }

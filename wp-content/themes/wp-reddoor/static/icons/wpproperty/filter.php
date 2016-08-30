@@ -1,6 +1,6 @@
 <?php
 
-function siteorigin_widgets_icons_wpproperty_filter($icons) {
+function rdc_widgets_icons_wpproperty_filter($icons) {
 	return array_merge( $icons, array(
 		'interface-alert-solid' => '&#xe91e;',
 		'interface-alert-outline' => '&#xe91f;',
@@ -217,7 +217,7 @@ function siteorigin_widgets_icons_wpproperty_filter($icons) {
 		'status-pricedown-outline' => '&#xe9f3;',
 		'status-priceup-solid' => '&#xe9f4;',
 		'status-priceup-outline' => '&#xe9f5;',
-		'status-rented-soliddd' => '&#xe9f6;',
+		'status-rented-solid' => '&#xe9f6;',
 		'status-rented-outline' => '&#xe9f7;',
 		'status-withdrawn-solid' => '&#xe9f8;',
 		'status-withdrawn-outline' => '&#xe9f9;',
@@ -466,4 +466,4 @@ function siteorigin_widgets_icons_wpproperty_filter($icons) {
 
 	));
 }
-add_filter('siteorigin_widgets_icons_wpproperty', 'siteorigin_widgets_icons_wpproperty_filter');
+add_filter('siteorigin_widgets_icons_wpproperty', 'rdc_widgets_icons_wpproperty_filter');

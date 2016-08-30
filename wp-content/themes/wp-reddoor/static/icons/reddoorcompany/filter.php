@@ -1,6 +1,6 @@
 <?php
 
-function siteorigin_widgets_icons_reddoorcompany_filter($icons) {
+function rdc_widgets_icons_reddoorcompany_filter($icons) {
 	return array_merge( $icons, array(
 		'accurate-data' => '&#xe900;',
 		'attention-communication' => '&#xe901;',
@@ -60,4 +60,4 @@ function siteorigin_widgets_icons_reddoorcompany_filter($icons) {
 
 	));
 }
-add_filter('siteorigin_widgets_icons_reddoorcompany', 'siteorigin_widgets_icons_reddoorcompany_filter');
+add_filter('siteorigin_widgets_icons_reddoorcompany', 'rdc_widgets_icons_reddoorcompany_filter');
