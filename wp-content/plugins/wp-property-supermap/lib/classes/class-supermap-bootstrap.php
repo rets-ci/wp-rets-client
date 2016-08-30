@@ -59,7 +59,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'elementary_school',
                   'title' => 'Elementary School',
-                  'field' => '_schools.elementary_school',
+                  'field' => 'tax_input.elementary_school',
                   'search_field' => '_search.elementary_school',
                 ),
               'middle_school' => array(
@@ -69,7 +69,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'middle_school',
                   'title' => 'Middle School',
-                  'field' => '_schools.middle_school',
+                  'field' => 'tax_input.middle_school',
                   'search_field' => '_search.middle_school',
                 ),
               'high_school' => array(
@@ -79,7 +79,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'high_school',
                   'title' => 'High School',
-                  'field' => '_schools.high_school',
+                  'field' => 'tax_input.high_school',
                   'search_field' => '_search.high_school',
                 ),
               'location_city' => array(
@@ -89,7 +89,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'city',
                   'title' => 'City',
-                  'field' => '_system.addressDetail.city',
+                  'field' => 'tax_input.location_city',
                   'search_field' => '_search.location_city',
                 ),
               'location_zip' => array(
@@ -109,7 +109,7 @@ namespace UsabilityDynamics\WPP {
                     ),
                   'slug' => 'county',
                   'title' => 'County',
-                  'field' => '_system.addressDetail.administrativeLevels.level2long',
+                  'field' => 'tax_input.location_county',
                   'search_field' => '_search.location_county',
                 ),
             )

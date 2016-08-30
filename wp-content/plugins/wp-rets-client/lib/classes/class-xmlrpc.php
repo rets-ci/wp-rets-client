@@ -314,7 +314,7 @@ namespace UsabilityDynamics\WPRETSC {
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
           "permalink" => get_the_permalink( $_post_id ),
-          "post_terms" =>  wp_get_object_terms( $_post_id, $_taxonomies)
+          //"post_terms" =>  wp_get_object_terms( $_post_id, $_taxonomies)
         );
 
       }
