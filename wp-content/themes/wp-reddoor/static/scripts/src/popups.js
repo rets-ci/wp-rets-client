@@ -7,12 +7,18 @@ jQuery(function () {
   jQuery('span.exitPopup').on('click', function () {
     jQuery(this).parent().parent().fadeOut(100);
     jQuery('html').css('overflow-y','scroll');
+    if(jQuery(this).parents('.popup').hasClass('popupFormRentInquiry')) {
+      // resetCaptcha('popupFormRentInquiry');
+    }
     return false;
   });
 
   jQuery('.popup-overlay').on('click', function () {
     jQuery(this).parent().fadeOut(100);
     jQuery('html').css('overflow-y','scroll');
+    if(jQuery(this).parents('.popup').hasClass('popupFormRentInquiry')) {
+      // resetCaptcha('popupFormRentInquiry');
+    }
     return false;
   });
 
@@ -112,7 +118,8 @@ jQuery(function () {
      */
   function grender(element,type) {
     if ( typeof grecaptcha == 'undefined' ) return true;
-    var sitekey = 'object' === typeof popupMode && popupMode.recaptcha_key ? popupMode.recaptcha_key : '';
+    // var sitekey = 'object' === typeof popupMode && popupMode.recaptcha_key ? popupMode.recaptcha_key : '';
+    var sitekey = '6Ldp4SgTAAAAADTMzxaeyxJXgd7h75pmTSNpKeaL';
     grecaptcha.render(element, {
       'sitekey': sitekey,
     });
@@ -128,6 +135,19 @@ jQuery(function () {
     var _args = [].slice.call(arguments);
     // _args.unshift( 'jquery-search-form' );
     console.debug.apply(console, _args);
+  }
+
+  /**
+   * Reset captcha
+   *
+   * */
+  function resetCaptcha(container) {
+    if ( typeof grecaptcha == 'undefined' ) return true;
+    var sitekey = '6Ldp4SgTAAAAADTMzxaeyxJXgd7h75pmTSNpKeaL';
+    var widget = grecaptcha.render(container, {
+      'sitekey' : sitekey
+    });
+    grecaptcha.reset(widget);
   }
 
 });
