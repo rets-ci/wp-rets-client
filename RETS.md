@@ -6,7 +6,7 @@
 ## retsci RETS Sync
 * 30 Day Resync: https://api.rets.ci/v1/client/listings/sync.json?client=www.reddoorcompany.com 
 
-if you have the issues, like legacy data for some property or missing property on RDC just use the above link.
+If you have the issues, like legacy data for some property or missing property on RDC just use the above link.
 
 It executes sync processes for all schedules, which sync all properties which were modified for last 30 days. Also it sends messages to #rets-ci channel in Slack, so you know the current status
 
