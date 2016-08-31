@@ -98,6 +98,9 @@ namespace UsabilityDynamics\RDC {
         // get any template part
         add_shortcode( 'template_part', array( 'UsabilityDynamics\RDC\Shortcodes', 'template_part' ) );
 
+	    //add searchly meta tag
+	    add_action( 'wp_head', array( $this, 'add_searchly_meta_tag' ) );
+
       }
 
       /**
@@ -432,6 +435,13 @@ namespace UsabilityDynamics\RDC {
           register_widget('\UsabilityDynamics\RDC\Guide_content_Widget');
           register_widget('\UsabilityDynamics\RDC\RDC_Callout_Widget');
         }
+      }
+
+      public function add_searchly_meta_tag() {
+	      $searchly_user = get_theme_mod( 'rdc_searchly_user' );
+	      $searchly_password = get_theme_mod( 'rdc_searchly_password' );
+	      $searchly_url = get_theme_mod( 'rdc_searchly_url' );
+	      ?><meta name="searchly" data-url="<?php echo $searchly_url; ?>" data-user="<?php echo $searchly_user; ?>" data-password="<?php echo $searchly_password; ?>" /><?php
       }
     }
   }
