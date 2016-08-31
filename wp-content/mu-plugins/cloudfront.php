@@ -131,7 +131,7 @@ namespace UsabilityDynamics\CloudFront {
         return;
       }
       // No Query params.
-      $_GET = array();
+//      $_GET = array();
 
       // No post data.
       $_POST = array();
