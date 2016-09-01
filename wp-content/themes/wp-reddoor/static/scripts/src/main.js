@@ -214,11 +214,13 @@ function make_base_auth(user, password) {
       jQuery('#tabs_search').rdc_search_form();
     }
 
-
     // add datepicker to all input elements with "rdc-datepicker" class
     if( 'function' === typeof jQuery.fn.datepicker && jQuery('input.rdc-datepicker' ).length ) {
-      jQuery('input.rdc-datepicker' ).datepicker();
+      jQuery('input.rdc-datepicker').datepicker({
+        dateFormat: 'yy-mm-dd'
+      });
     }
+
     
     // Property Attribute Lists Filter
     if( jQuery('.attribute-content').length ) {
