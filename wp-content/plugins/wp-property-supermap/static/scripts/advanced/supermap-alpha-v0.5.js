@@ -500,7 +500,7 @@
 
         $scope.getAvailabilityDate = function getAvailabilityDate() {
           var d = new Date();
-          return d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + d.getDate();
+          return d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + (("0" + (d.getDate())).slice(-2));
         }
 
 
@@ -1470,14 +1470,14 @@
             for (var i = 0; i < $scope.properties.length; i++) {
               var latLng = new google.maps.LatLng($scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
 
-              debug( '$scope.properties[i]._source', $scope.properties[i]._source );
-              
+              // debug( '$scope.properties[i]._source', $scope.properties[i]._source );
+
               // ignore listings with broken latitude
-              if( !$scope.properties[i]._source._system || !$scope.properties[i]._source._system.addressDetail || !$scope.properties[i]._source._system.addressDetail.longitude ) {
+              if (!$scope.properties[i]._source._system || !$scope.properties[i]._source._system.addressDetail || !$scope.properties[i]._source._system.addressDetail.longitude) {
                 continue;
               }
 
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
+              var latLng = new google.maps.LatLng($scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
               //var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
 
               latLng.listingId = $scope.properties[i]._id;
@@ -2007,17 +2007,17 @@
          * Fired when currentProperty is changed!
          * Opens InfoBubble Window!
          */
-        $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
-          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
-          for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
-            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
-              NgMap.getMap().then( function( map ) {
+        $scope.$watch('currentProperty', function (currentProperty, prevCurrentProperty) {
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined' ? prevCurrentProperty._id : false;
+          for (var i = 0; i < $scope.dynMarkers.length; i++) {
+            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id) {
+              NgMap.getMap().then(function (map) {
                 //console.log( "DOing stuff with infowindow" );
-                $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
-                $scope.infoBubble.setPosition( $scope.latLngs[i] );
-                $scope.infoBubble.open( map );
+                $scope.infoBubble.setContent(jQuery('.sm-marker-infobubble', ngAppDOM).html());
+                $scope.infoBubble.setPosition($scope.latLngs[i]);
+                $scope.infoBubble.open(map);
 
-              } );
+              });
               break;
             }
           }
