@@ -51,7 +51,7 @@ module.exports = function build( grunt ) {
           'static/styles/lightbox.min.css': [ 'static/styles/src/lightbox.less' ],
           'static/styles/res-slideshow.min.css'    : [ 'static/styles/src/res-slideshow.less' ],
           'static/styles/swiper/swiper.min.css'    : [ 'static/styles/src/swiper/swiper.less' ]
-          
+
         }
       },
       development: {

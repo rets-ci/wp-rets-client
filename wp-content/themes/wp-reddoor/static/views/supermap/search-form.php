@@ -226,7 +226,7 @@ use \UsabilityDynamics\RDC\Utils;
 
         <label><?php _e( 'Available By', 'reddoor' ); ?></label>
         <div class="rdc-range-fields">
-          <input value="{{current_filter.available_date}}" class="available_date-input"  name="bool[must][13][range][_system.available_date][lte]" placeholder="today" type="text" style="border:1px solid lightgrey" />
+          <input value="{{current_filter.available_date}}" class="available_date-input rdc-datepicker"  name="bool[must][13][range][_system.available_date][lte]" placeholder="today" type="text" style="border:1px solid lightgrey" />
         </div>
 
       </div>

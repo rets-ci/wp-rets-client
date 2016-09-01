@@ -18,11 +18,11 @@ get_header(); ?>
 
     <div class="row site-content">
       <?php while (have_posts()) : the_post(); ?>
-        <?php $_permalink = get_the_permalink();
-              $_careers_slug = substr($_permalink, -8, 7);
-        ?>
         <?php
-          the_content();
+        $_permalink = get_the_permalink();
+        $_careers_slug = substr($_permalink, -8, 7);
+
+        the_content();
         ?>
 
       <?php endwhile; // end of the loop. ?>
@@ -30,9 +30,9 @@ get_header(); ?>
   </div>
 
 
-<?php if ($_careers_slug == 'careers'){ ?>
+<?php if ($_careers_slug == 'careers') { ?>
   <script type="text/javascript">
-    jQuery(document).ready(function(){
+    jQuery(document).ready(function () {
       jQuery('body').addClass('<?php echo $_careers_slug; ?>');
     });
   </script>

@@ -2,10 +2,10 @@
  *
  */
 
-( function( jQuery, wpp ){
+(function (jQuery, wpp) {
 
-  jQuery.fn.wpp_supermap_search = function wpp_supermap_search( options ) {
-    console.log( 'wpp_supermap_search' );
+  jQuery.fn.wpp_supermap_search = function wpp_supermap_search(options) {
+    console.log('wpp_supermap_search');
 
     options = 'object' === typeof options ? options : {};
 
@@ -13,12 +13,14 @@
       searchElement: this,
       aggregationFields: 'object' === typeof supermapMode ? supermapMode.aggregationFields : {},
       selectOpions: null,
-      client: new jQuery.es.Client({ hosts: [ window.location.host ] }),
+      client: new jQuery.es.Client({hosts: [window.location.host]}),
       _request: false,
       $select: null,
-      query: options.query || { "match": { "post_status": "publish" } },
-      $apply: function noop() {},
-      onSelect: options.onSelect || function onSelect() {},
+      query: options.query || {"match": {"post_status": "publish"}},
+      $apply: function noop() {
+      },
+      onSelect: options.onSelect || function onSelect() {
+      },
     };
 
     /**
@@ -28,28 +30,28 @@
      * @returns {*}
      */
     function select_query(query) {
-      debug( 'select_query', ( query && query.term ? query.term.length : null ));
+      debug('select_query', ( query && query.term ? query.term.length : null ));
 
       var data = [];
 
       // no query or its too short
-      if( !query.term || ( query.term && query.term.length  < 2 ) ) {
+      if (!query.term || ( query.term && query.term.length < 2 )) {
         jQuery('.select2-dropdown').addClass("hide");
-        return query.callback({ results: data });
+        return query.callback({results: data});
       }
 
       jQuery('.select2-dropdown').removeClass("hide");
 
-      if( $scope._request ) {
+      if ($scope._request) {
         $scope._request.abort();
       }
 
       async.auto({
-        aggregations: function aggregationRequestWrapper( done ) {
-          debug( '$scope.aggregationFields', $scope.aggregationFields );
+        aggregations: function aggregationRequestWrapper(done) {
+          debug('$scope.aggregationFields', $scope.aggregationFields);
 
           var _source = {
-            "query": { "match": { "post_status": "publish" } },
+            "query": {"match": {"post_status": "publish"}},
             "aggs": {}
           };
 
@@ -58,20 +60,20 @@
 
 
           // @hack only use first word
-          if( query.term.indexOf( ' ' ) > 0 ) {
-            query.term = query.term.split( ' ' )[0];
+          if (query.term.indexOf(' ') > 0) {
+            query.term = query.term.split(' ')[0];
           }
 
-          angular.forEach($scope.aggregationFields, function setField( data, key ) {
+          angular.forEach($scope.aggregationFields, function setField(data, key) {
 
-            _source.aggs[ key ] = {
+            _source.aggs[key] = {
               filters: {filters: {}},
               aggs: {}
             };
 
-            _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
-            _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term.toLowerCase();
-            _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+            _source.aggs[key]['filters']['filters'][key] = {term: {}};
+            _source.aggs[key]['filters']['filters'][key].term[data.search_field] = query.term.toLowerCase();
+            _source.aggs[key]['aggs'][key] = {terms: {field: data.field}}
 
           });
 
@@ -80,11 +82,11 @@
             type: 'property',
             method: "POST",
             size: 0,
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            headers: {
+              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
             },
             body: _source
-          }, select_queryResponse );
+          }, select_queryResponse);
 
           /**
            *
@@ -92,22 +94,22 @@
            * @param response
            */
           function select_queryResponse(err, response) {
-            debug( 'select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
+            debug('select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ));
 
-            if( typeof response.hits.hits == 'undefined' ) {
+            if (typeof response.hits.hits == 'undefined') {
               //query.callback({ results: data });
-              return done( null );
+              return done(null);
             }
 
-            angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
+            angular.forEach(response.aggregations, function eachAggregation(someAggregation, aggregationKey) {
               //debug( 'eachAggregation - aggregationKey', aggregationKey )
               // debug( 'eachAggregation - someAggregation', someAggregation )
 
               var _buckets = [];
 
-              angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
+              angular.forEach(someAggregation.buckets[aggregationKey][aggregationKey].buckets, function eachBucket(data) {
 
-                var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
+                var _bucketDetail = $scope.aggregationFields[aggregationKey];
 
                 _buckets.push({
                   id: data.key,
@@ -122,47 +124,47 @@
 
               });
 
-              if( _buckets.length > 0 ) {
+              if (_buckets.length > 0) {
 
-                data.push( {
+                data.push({
                   key: aggregationKey,
-                  text: $scope.aggregationFields[ aggregationKey ].title,
+                  text: $scope.aggregationFields[aggregationKey].title,
                   children: _buckets
-                } )
+                })
 
               }
 
             });
 
-            debug( 'eachAggregation', data );
+            debug('eachAggregation', data);
 
-            done( null, data );
+            done(null, data);
 
           }
 
 
         },
-        suggest: function suggestRequestWrapper( done ) {
+        suggest: function suggestRequestWrapper(done) {
 
           $scope._request_suggest = $scope.client.suggest({
             index: 'v5',
             type: 'property',
             method: "POST",
             size: 0,
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            headers: {
+              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
             },
             body: {
-              "regular" : {
-                "text" : query.term.toLowerCase(),
-                "completion" : { "field" : "_search._suggest" }
+              "regular": {
+                "text": query.term.toLowerCase(),
+                "completion": {"field": "_search._suggest"}
               },
-              "fuzzy" : {
-                "text" : query.term.toLowerCase(),
-                "completion" : { "field" : "_search._suggest", "fuzzy" : { "fuzziness" : 0 } }
+              "fuzzy": {
+                "text": query.term.toLowerCase(),
+                "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
               }
             }
-          }, suggest_queryResponse );
+          }, suggest_queryResponse);
 
           /**
            *
@@ -170,22 +172,22 @@
            * @param response
            */
           function suggest_queryResponse(error, response) {
-            debug( 'suggest_queryResponse', response );
+            debug('suggest_queryResponse', response);
 
-            if( typeof response.regular == 'undefined' ) {
-              return done( null );
+            if (typeof response.regular == 'undefined') {
+              return done(null);
             }
 
             var data = [];
 
-            angular.forEach( response.regular[0].options, function eachMatch( someMatch, aggregationKey ) {
-              debug( 'someMatch', someMatch.payload );
+            angular.forEach(response.regular[0].options, function eachMatch(someMatch, aggregationKey) {
+              debug('someMatch', someMatch.payload);
 
-              if( !someMatch.payload ) {
+              if (!someMatch.payload) {
                 return;
               }
 
-              data.push( {
+              data.push({
                 id: someMatch.payload.id,
                 listing_id: someMatch.payload.listing_id,
                 score: someMatch.score,
@@ -194,21 +196,21 @@
                 location_county: someMatch.payload.location_county,
                 location_city: someMatch.payload.location_city,
                 //latitude: someMatch.payload.rets_thumbnail_url
-              } )
+              })
 
             });
 
-            done( null, data.length ? {
+            done(null, data.length ? {
               key: 'Listings',
               text: 'Listings',
               children: data
-            } : [] );
+            } : []);
 
           }
 
 
         },
-      }, allDone );
+      }, allDone);
 
       /**
        * Aggration/Suggest requests complete.
@@ -216,11 +218,11 @@
        * @param error
        * @param results
        */
-      function allDone( error, results  ) {
-        console.log( 'allDone', error, results );
+      function allDone(error, results) {
+        console.log('allDone', error, results);
 
         query.callback({
-          results: [].concat(results.aggregations, results.suggest )
+          results: [].concat(results.aggregations, results.suggest)
         });
 
       }
@@ -232,35 +234,35 @@
      *
      * @param data
      */
-    function setup_term_selection( data ) {
-      debug( 'setup_term_selection' );
+    function setup_term_selection(data) {
+      debug('setup_term_selection');
 
       $scope.selectOpions = {
         placeholder: 'Search',
         tags: false,
         maximumSelectionLength: 1,
         minimumInputLength: 3,
-        templateResult: function templateResult( result, element ) {
-          console.log( 'templateResult', result )
+        templateResult: function templateResult(result, element) {
+          console.log('templateResult', result)
           //jQuery(result.text).addClass('lasdfjdlsakfj');
           return result.text;
         },
-        templateSelection: function templateSelection( selection, element ) {
-          console.log( 'templateSelection', selection )
+        templateSelection: function templateSelection(selection, element) {
+          console.log('templateSelection', selection)
           //jQuery(result.text).addClass('lasdfjdlsakfj');
           return selection.text;
         },
         data: data || [],
         query: select_query,
-        formatResult: function formatResult( field ) {
-          console.log( 'field', field);
+        formatResult: function formatResult(field) {
+          console.log('field', field);
 
           return field;
 
         }
       };
 
-      var $select = $scope.$select = jQuery( $scope.searchElement ).select2($scope.selectOpions);
+      var $select = $scope.$select = jQuery($scope.searchElement).select2($scope.selectOpions);
 
       /**
        *
@@ -269,17 +271,17 @@
        *
        */
       $select.on('select2:select', function onSelect(event) {
-        debug('onSelect', event.params.data );
+        debug('onSelect', event.params.data);
 
         var data = $select.select2('data');
 
-        $scope.onSelect.call( $scope, event.params.data );
+        $scope.onSelect.call($scope, event.params.data);
 
         // specific listing found via suggest. @todo make this popup in new window
-        if( event.params.data.listing_id && event.params.data.id ) {
+        if (event.params.data.listing_id && event.params.data.id) {
 
           // if we have a city, set it as our search term. @todo make this work smoother.
-          if( event.params.data.location_city ) {
+          if (event.params.data.location_city) {
             // window.setTimeout(function() {jQuery('.select2-selection__choice').html('<span class="select2-selection__choice__remove" role="presentation">×</span>' + event.params.data.location_city);}, 200 );
             //selectOpions.data = [ event.params.data.location_city ];
             //$select = jQuery('.termsSelection').select2( $scope.selectOpions);
@@ -291,8 +293,8 @@
           return;
         }
 
-        if( window.sm_current_terms && window.sm_current_terms ) {
-          window.sm_current_terms.values = [ data[0].id ];
+        if (window.sm_current_terms && window.sm_current_terms) {
+          window.sm_current_terms.values = [data[0].id];
         }
 
         // $scope.fix_terms();
@@ -311,20 +313,20 @@
        *
        */
       $select.on('select2:selecting', function onSelecting(event) {
-        debug('onSelecting', $select.select2('val'), event.params );
+        debug('onSelecting', $select.select2('val'), event.params);
 
-        $select.select2( 'val', {} );
+        $select.select2('val', {});
 
-        if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-          $select.select2( 'val', {} );
+        if ($select.select2('val') != null && $select.select2('val').length > 0) {
+          $select.select2('val', {});
         }
 
       });
 
-      if ( window.sm_current_terms && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+      if (window.sm_current_terms && window.sm_current_terms.values && window.sm_current_terms.values.length) {
         var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
         $select.append($option).trigger('change');
-        debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
+        debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0]);
       }
 
       //$scope.fix_terms();
@@ -349,9 +351,9 @@
    *
    * @param options
    */
-  jQuery.fn.wpp_advanced_supermap = function( options ) {
+  jQuery.fn.wpp_advanced_supermap = function (options) {
 
-    var ngAppDOM = jQuery( this );
+    var ngAppDOM = jQuery(this);
 
     /** Making variables public */
     var vars = jQuery.extend({
@@ -360,34 +362,34 @@
       'atts': false
     }, options);
 
-    if( !vars.ng_app ) {
-      debug( 'wpp_advanced_supermap: ng_app is undefined!' );
+    if (!vars.ng_app) {
+      debug('wpp_advanced_supermap: ng_app is undefined!');
       return;
     }
 
-    if( !vars.query ) {
-      debug( 'wpp_advanced_supermap: query is undefined!' );
+    if (!vars.query) {
+      debug('wpp_advanced_supermap: query is undefined!');
       return;
     }
 
     // Prepare DOM before initialize angular.
 
-    vars.atts = vars.atts ? unserialize( decodeURIComponent( vars.atts).replace(/\+/g, " ") ) : {};
+    vars.atts = vars.atts ? unserialize(decodeURIComponent(vars.atts).replace(/\+/g, " ")) : {};
 
-    if( typeof vars.atts.map_height !== 'undefined' ) {
-      ngAppDOM.css( 'height', vars.atts.map_height );
-      jQuery( 'ng-map', ngAppDOM).css( 'height', vars.atts.map_height );
-      jQuery( '.sm-properties-list-wrap', ngAppDOM).css( 'height', vars.atts.map_height );
-      jQuery( '.sm-properties-list-wrap', ngAppDOM ).show();
+    if (typeof vars.atts.map_height !== 'undefined') {
+      ngAppDOM.css('height', vars.atts.map_height);
+      jQuery('ng-map', ngAppDOM).css('height', vars.atts.map_height);
+      jQuery('.sm-properties-list-wrap', ngAppDOM).css('height', vars.atts.map_height);
+      jQuery('.sm-properties-list-wrap', ngAppDOM).show();
     }
 
-    function setStatus( status ) {
-      debug( 'setStatus', status );
-      ngAppDOM.data( 'status', status );
-      ngAppDOM.addClass( 'status-' + status );
+    function setStatus(status) {
+      debug('setStatus', status);
+      ngAppDOM.data('status', status);
+      ngAppDOM.addClass('status-' + status);
     }
 
-    setStatus( 'loading' );
+    setStatus('loading');
 
     /**
      * Be sure our module App is shown
@@ -397,7 +399,7 @@
     /**
      * Angular Module.
      */
-    angular.module( vars.ng_app, [ 'ngMap', 'smart-table', 'ngSanitize' ] )
+    angular.module(vars.ng_app, ['ngMap', 'smart-table', 'ngSanitize'])
 
     /**
      * Autocomplete directive.
@@ -406,27 +408,27 @@
      * It's not used for the current advanced View,
      * but can be used for custom solutions as well!
      */
-      .directive('autoComplete', function($timeout) {
-        return function(scope, iElement, iAttrs) {
+      .directive('autoComplete', function ($timeout) {
+        return function (scope, iElement, iAttrs) {
           var uiItems = iAttrs.uiItems;
           var source;
           uiItems = uiItems.split('.');
 
-          for( var i=0; i<uiItems.length; i++ ) {
-            if(!source) {
-              if( typeof scope[uiItems[i]] !== 'undefined' ) {
+          for (var i = 0; i < uiItems.length; i++) {
+            if (!source) {
+              if (typeof scope[uiItems[i]] !== 'undefined') {
                 source = scope[uiItems[i]];
               } else {
                 break;
               }
-            } else if( typeof source[uiItems[i]] !== 'undefined' ) {
+            } else if (typeof source[uiItems[i]] !== 'undefined') {
               source = source[uiItems[i]];
             } else {
               break;
             }
           }
 
-          if(!source || !source.length > 0) {
+          if (!source || !source.length > 0) {
             debug('error on trying to get source for autoComplete directive');
             return null;
           }
@@ -436,17 +438,17 @@
         };
       })
 
-      .filter('simpleAmount', function() {
-        return function( int ) {
-          if ( !int || int == 0 ) return '';
-          int = Math.round(int/1000)*1000
-          if ( !String(int).length ) return '';
+      .filter('simpleAmount', function () {
+        return function (int) {
+          if (!int || int == 0) return '';
+          int = Math.round(int / 1000) * 1000
+          if (!String(int).length) return '';
           return '$' + ( int / 1000 ) + 'k';
         };
       })
 
-      .filter('acreage', function() {
-        return function( int ) {
+      .filter('acreage', function () {
+        return function (int) {
           return int > 1 ? int + ' acres' : int + ' acre';
         };
       })
@@ -484,25 +486,25 @@
         };
       })
 
-      .controller( 'main', [ '$document', '$scope', '$http', '$filter', 'NgMap', function( $document, $scope, $http, $filter, NgMap ){
+      .controller('main', ['$document', '$scope', '$http', '$filter', 'NgMap', function ($document, $scope, $http, $filter, NgMap) {
 
         var resizeTimer, idle_listener;
-        jQuery( window ).on( 'resize', function () {
-          clearTimeout( resizeTimer );
-          resizeTimer = setTimeout( function () {
-            NgMap.getMap().then(function(map){
+        jQuery(window).on('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () {
+            NgMap.getMap().then(function (map) {
               google.maps.event.trigger(map, "resize");
             });
-          }, 250 );
-        } ).resize();
+          }, 250);
+        }).resize();
 
         $scope.getAvailabilityDate = function getAvailabilityDate() {
           var d = new Date();
-          return  d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + d.getDate();
+          return d.getFullYear() + '-' + (("0" + (d.getMonth() + 1)).slice(-2)) + "-" + (("0" + (d.getDate())).slice(-2));
         }
 
 
-        $scope.is_agency_listing = function() {
+        $scope.is_agency_listing = function () {
           // debug( 'is_agency_listing', current );
 
           return $scope.current_filter.agency_listing;
@@ -514,51 +516,58 @@
          *
          */
         function setFiltersFromQuery() {
-          debug('setFiltersFromQuery', $scope.query.bool.must )
+          debug('setFiltersFromQuery', $scope.query.bool.must)
 
-          if( window.location.pathname.indexOf( 'our-listings' ) >  0 ) {
-            debug( 'setFiltersFromQuery', 'fetching agency listings' );
+          if (window.location.pathname.indexOf('our-listings') > 0) {
+            debug('setFiltersFromQuery', 'fetching agency listings');
             $scope.current_filter.agency_listing = true;
-            $scope.query.bool.must.push({ "terms": { "_system.agency_listing": [ "true" ] } });
+            $scope.query.bool.must.push({"terms": {"_system.agency_listing": ["true"]}});
           } else {
             $scope.current_filter.agency_listing = false;
           }
 
-          if( getParameterByName( 'wpp_search[price][min]' ) || getParameterByName( 'wpp_search[price][max]' ) ) {
-            debug('setFiltersFromQuery Setting [price]' )
+          if (getParameterByName('wpp_search[price][min]') || getParameterByName('wpp_search[price][max]')) {
+            debug('setFiltersFromQuery Setting [price]')
 
             $scope.current_filter.price = {
-              min: getParameterByName( 'wpp_search[price][min]' ) || null,
-              max: getParameterByName( 'wpp_search[price][max]' ) || null,
+              min: getParameterByName('wpp_search[price][min]') || null,
+              max: getParameterByName('wpp_search[price][max]') || null,
             };
 
-            $scope.query.bool.must.push({ "range": { "tax_input.price": {gte: $scope.current_filter.price.min, lte: $scope.current_filter.price.max } } });
+            $scope.query.bool.must.push({
+              "range": {
+                "tax_input.price": {
+                  gte: $scope.current_filter.price.min,
+                  lte: $scope.current_filter.price.max
+                }
+              }
+            });
           }
 
           $scope.current_filter.bathrooms = $scope.current_filter.bathrooms || {
-              min: getParameterByName( 'wpp_search[bathrooms][min]' ) || null,
-              max: getParameterByName( 'wpp_search[bathrooms][max]' ) || null
+              min: getParameterByName('wpp_search[bathrooms][min]') || null,
+              max: getParameterByName('wpp_search[bathrooms][max]') || null
             };
 
           $scope.current_filter.bedrooms = $scope.current_filter.bedrooms || {
-              min: getParameterByName( 'wpp_search[bedrooms][min]' ) || null,
-              max: getParameterByName( 'wpp_search[bedrooms][max]' ) || null
+              min: getParameterByName('wpp_search[bedrooms][min]') || null,
+              max: getParameterByName('wpp_search[bedrooms][max]') || null
             };
 
           // set sale_type if we have query override, something else seems to be setting its default
-          if( getParameterByName( 'wpp_search[sale_type]' ) ) {
-            $scope.current_filter.sale_type = getParameterByName( 'wpp_search[sale_type]' )
+          if (getParameterByName('wpp_search[sale_type]')) {
+            $scope.current_filter.sale_type = getParameterByName('wpp_search[sale_type]')
           }
 
           $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
 
-          debug( 'setFiltersFromQuery', '$scope.current_filter', $scope.current_filter );
+          debug('setFiltersFromQuery', '$scope.current_filter', $scope.current_filter);
 
         }
 
-        setStatus('invoked' );
+        setStatus('invoked');
 
-        $scope.query = unserialize( decodeURIComponent( vars.query ).replace(/\+/g, " ") );
+        $scope.query = unserialize(decodeURIComponent(vars.query).replace(/\+/g, " "));
         $scope.atts = vars.atts;
         $scope.total = 0;
         $scope.loaded = false;
@@ -587,24 +596,28 @@
             table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
             preview: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? true : false,
           },
-          toggle: function() {
+          toggle: function () {
             this.mode.table = !this.mode.table;
             this.mode.preview = !this.mode.preview;
-            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+            setTimeout(function () {
+              jQuery(document).trigger('rdc_cols_changed');
+            }, 100);
           },
-          set: function(mode) {
-            for(var i in this.mode) {
-              if ( this.mode[i] == true ) {
+          set: function (mode) {
+            for (var i in this.mode) {
+              if (this.mode[i] == true) {
                 this.mode[i] = false;
               }
             }
             this.mode[mode] = true;
             this.toggleActive(mode);
-            setTimeout(function(){jQuery(document).trigger('rdc_cols_changed');}, 100);
+            setTimeout(function () {
+              jQuery(document).trigger('rdc_cols_changed');
+            }, 100);
           },
-          toggleActive: function(mode) {
+          toggleActive: function (mode) {
             var list_wrapper = jQuery('.sm-properties-list-wrap .sm-list-controls');
-            if( mode == 'table' ) {
+            if (mode == 'table') {
               list_wrapper.find('li.sm-table').addClass('active');
               list_wrapper.find('li.sm-preview').removeClass('active');
             } else {
@@ -670,19 +683,18 @@
          * @param current
          * @returns {boolean}
          */
-        $scope.sale_type_checked = function(current) {
-          var _types = [];
 
-          if ( _types = $scope.current_filter.sale_type.split(',') ) {
+        $scope.sale_type_checked = function (current) {
+          var _types = [];
+          if (_types = $scope.current_filter.sale_type.split(',')) {
             for (var i in _types) {
-              if ( _types[i] == current ) return true;
+              if (_types[i] == current) return true;
             }
           }
-
           return false;
         };
 
-        $document.bind('click', function(event){
+        $document.bind('click', function (event) {
           $scope.show_dropdown_columns = false;
           $scope.$apply();
         });
@@ -692,42 +704,44 @@
          * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
          */
         $scope.pricing = window.pricing = {
+
           mode: false,
 
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
 
-          min_prices: [ 25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000 ],
-          max_prices: [ 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000 ],
+          min_prices: [25000, 50000, 75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000],
+          max_prices: [75000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 600000, 700000],
 
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('price-input') ) {
+
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('price-input')) {
               this.mode = '';
             }
           },
 
-          format: function(target, mode) {
-            if ( !$scope.current_filter.price ) {
+          format: function (target, mode) {
+            if (!$scope.current_filter.price) {
               $scope.current_filter.price = {
-                min:0,
-                max:0
+                min: 0,
+                max: 0
               }
             }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val())/1000)*1000;
-            if ( mode == 'min' ) {
+            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            if (mode == 'min') {
               this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
             } else {
               this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
             }
           },
 
-          set_min: function(_price) {
-            if ( !$scope.current_filter.price ) {
+          set_min: function (_price) {
+            if (!$scope.current_filter.price) {
               $scope.current_filter.price = {
-                min:0,
-                max:0
+                min: 0,
+                max: 0
               }
             }
             this.current_min = _price;
@@ -736,11 +750,11 @@
             this.mode = 'max';
           },
 
-          set_max: function(_price) {
-            if ( !$scope.current_filter.price ) {
+          set_max: function (_price) {
+            if (!$scope.current_filter.price) {
               $scope.current_filter.price = {
-                min:0,
-                max:0
+                min: 0,
+                max: 0
               }
             }
             this.current_max = _price;
@@ -748,15 +762,15 @@
             this.mode = false;
           },
 
-          recalculate: function() {
+          recalculate: function () {
             var j;
             j = typeof this.current_min == 'number' ? this.current_min : 0;
-            for( var i in this.max_prices ) {
+            for (var i in this.max_prices) {
               this.max_prices[i] = j += 25000;
             }
           },
 
-          focus: function( mode ) {
+          focus: function (mode) {
             this.mode = mode;
           }
         };
@@ -768,40 +782,40 @@
         $scope.footage = window.footage = {
           mode: false,
 
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
 
           min_foot: [500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000],
           max_foot: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 7000, 8000, 10000],
 
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('feet-input') ) {
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('feet-input')) {
               this.mode = '';
             }
           },
 
-          format: function(target, mode) {
-            if ( !$scope.current_filter.feet ) {
+          format: function (target, mode) {
+            if (!$scope.current_filter.feet) {
               $scope.current_filter.feet = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
-            $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val())/10)*10;
-            if ( mode == 'min' ) {
+            $scope.current_filter.feet[mode] = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            if (mode == 'min') {
               this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
             } else {
               this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
             }
           },
 
-          set_min: function(_price) {
-            if ( !$scope.current_filter.feet ) {
+          set_min: function (_price) {
+            if (!$scope.current_filter.feet) {
               $scope.current_filter.feet = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_min = _price;
@@ -810,11 +824,11 @@
             this.mode = 'max';
           },
 
-          set_max: function(_price) {
-            if ( !$scope.current_filter.feet ) {
+          set_max: function (_price) {
+            if (!$scope.current_filter.feet) {
               $scope.current_filter.feet = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_max = _price;
@@ -822,15 +836,15 @@
             this.mode = false;
           },
 
-          recalculate: function ( current ) {
+          recalculate: function (current) {
             var j;
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_foot ) {
+            j = typeof (current * 1) == 'number' ? current * 1 : 0;
+            for (var i in this.max_foot) {
               this.max_foot[i] = j += 500;
             }
           },
 
-          focus: function( mode ) {
+          focus: function (mode) {
             this.mode = mode;
           }
         };
@@ -842,29 +856,29 @@
         $scope.bedrange = window.bedrange = {
           mode: false,
 
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
 
           min_bedroom: [1, 2, 3, 4, 5, 6],
           max_bedroom: [3, 4, 5, 6, 7, 8],
 
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('bed-input') ) {
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('bed-input')) {
               this.mode = '';
             }
           },
 
-          format: function(target, mode) {
-            if ( !$scope.current_filter.bedrooms ) {
+          format: function (target, mode) {
+            if (!$scope.current_filter.bedrooms) {
               $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             $scope.current_filter.bedrooms[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
+            if (mode == 'min') {
               this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
               this.current_max = Math.round(parseInt(jQuery(target).val()));
@@ -873,11 +887,11 @@
             this.set_max(this.current_max);
           },
 
-          set_min: function(_price) {
-            if ( !$scope.current_filter.bedrooms ) {
+          set_min: function (_price) {
+            if (!$scope.current_filter.bedrooms) {
               $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_min = _price;
@@ -886,11 +900,11 @@
             this.mode = 'max';
           },
 
-          set_max: function(_price) {
-            if ( !$scope.current_filter.bedrooms ) {
+          set_max: function (_price) {
+            if (!$scope.current_filter.bedrooms) {
               $scope.current_filter.bedrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_max = _price;
@@ -898,15 +912,15 @@
             this.mode = false;
           },
 
-          recalculate: function ( current ) {
+          recalculate: function (current) {
             var j;
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_bedroom ) {
+            j = typeof (current * 1) == 'number' ? current * 1 : 0;
+            for (var i in this.max_bedroom) {
               this.max_bedroom[i] = j += 1;
             }
           },
 
-          focus: function( mode ) {
+          focus: function (mode) {
             this.mode = mode;
           }
         };
@@ -918,29 +932,29 @@
         $scope.bathrange = window.bathrange = {
           mode: false,
 
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
 
           min_bathroom: [1, 2, 3, 4, 5, 6],
           max_bathroom: [3, 4, 5, 6, 7, 8],
 
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('bath-input') ) {
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('bath-input')) {
               this.mode = '';
             }
           },
 
-          format: function(target, mode) {
-            if ( !$scope.current_filter.bathrooms ) {
+          format: function (target, mode) {
+            if (!$scope.current_filter.bathrooms) {
               $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             $scope.current_filter.bathrooms[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
+            if (mode == 'min') {
               this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
               this.current_max = Math.round(parseInt(jQuery(target).val()));
@@ -949,11 +963,11 @@
             this.set_max(this.current_max);
           },
 
-          set_min: function(_price) {
-            if ( !$scope.current_filter.bathrooms ) {
+          set_min: function (_price) {
+            if (!$scope.current_filter.bathrooms) {
               $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_min = _price;
@@ -962,11 +976,11 @@
             this.mode = 'max';
           },
 
-          set_max: function(_price) {
-            if ( !$scope.current_filter.bathrooms ) {
+          set_max: function (_price) {
+            if (!$scope.current_filter.bathrooms) {
               $scope.current_filter.bathrooms = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_max = _price;
@@ -974,15 +988,15 @@
             this.mode = false;
           },
 
-          recalculate: function ( current ) {
+          recalculate: function (current) {
             var j;
-            j = typeof (current*1) == 'number' ? current*1 : 0;
-            for( var i in this.max_bathroom ) {
+            j = typeof (current * 1) == 'number' ? current * 1 : 0;
+            for (var i in this.max_bathroom) {
               this.max_bathroom[i] = j += 1;
             }
           },
 
-          focus: function( mode ) {
+          focus: function (mode) {
             this.mode = mode;
           }
         };
@@ -994,29 +1008,29 @@
         $scope.acrage = window.acrage = {
           mode: false,
 
-          current_min:'',
-          current_max:'',
-          current_min_label:'',
-          current_max_label:'',
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
 
           min_acres: [0.25, 0.50, 0.75, 1, 5, 10, 20, 30, 50, 60],
           max_acres: [0.75, 1, 5, 10, 20, 30, 40, 50, 60, 70],
 
-          click_out: function(e) {
-            if ( !angular.element(e.target).hasClass('acres-input') ) {
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('acres-input')) {
               this.mode = '';
             }
           },
 
-          format: function(target, mode) {
-            if ( !$scope.current_filter.acrage ) {
+          format: function (target, mode) {
+            if (!$scope.current_filter.acrage) {
               $scope.current_filter.acrage = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             $scope.current_filter.acrage[mode] = Math.round(parseInt(jQuery(target).val()));
-            if ( mode == 'min' ) {
+            if (mode == 'min') {
               this.current_min = Math.round(parseInt(jQuery(target).val()));
             } else {
               this.current_max = Math.round(parseInt(jQuery(target).val()));
@@ -1025,11 +1039,11 @@
             this.set_max(this.current_max);
           },
 
-          set_min: function(_price) {
-            if ( !$scope.current_filter.acrage ) {
+          set_min: function (_price) {
+            if (!$scope.current_filter.acrage) {
               $scope.current_filter.acrage = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_min = _price;
@@ -1038,11 +1052,11 @@
             this.mode = 'max';
           },
 
-          set_max: function(_price) {
-            if ( !$scope.current_filter.acrage ) {
+          set_max: function (_price) {
+            if (!$scope.current_filter.acrage) {
               $scope.current_filter.acrage = {
-                min:'',
-                max:''
+                min: '',
+                max: ''
               }
             }
             this.current_max = _price;
@@ -1050,11 +1064,11 @@
             this.mode = false;
           },
 
-          recalculate: function ( current ) {
-            current = current*1;
-            for( var i in this.max_acres ) {
-              if ( this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ] ) {
-                this.max_acres[i] = this.min_acres[ parseInt(this.min_acres.indexOf( current )) + parseInt(i) + 1 ];
+          recalculate: function (current) {
+            current = current * 1;
+            for (var i in this.max_acres) {
+              if (this.min_acres[parseInt(this.min_acres.indexOf(current)) + parseInt(i) + 1]) {
+                this.max_acres[i] = this.min_acres[parseInt(this.min_acres.indexOf(current)) + parseInt(i) + 1];
               } else {
                 if (this.max_acres[i - 1]) {
                   this.max_acres[i] = this.max_acres[i - 1] + 10;
@@ -1065,7 +1079,7 @@
             }
           },
 
-          focus: function( mode ) {
+          focus: function (mode) {
             this.mode = mode;
           }
         };
@@ -1073,15 +1087,15 @@
         /**
          * Defines which fields to use for search vs display when aggregating
          */
-         $scope.aggregationFields = 'object' === typeof supermapMode ? supermapMode.aggregationFields : {}
+        $scope.aggregationFields = 'object' === typeof supermapMode ? supermapMode.aggregationFields : {}
 
         /**
          *
          * @returns {number}
          */
-        $scope.pagination_colspan = function(){
+        $scope.pagination_colspan = function () {
           var i = 0;
-          for(var f in $scope.columns) {
+          for (var f in $scope.columns) {
             i += $scope.columns[f].enable;
           }
           return i;
@@ -1113,27 +1127,27 @@
           r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
           r._source.tax_input.added[0] = parseInt(calculate_days(r._source.tax_input.added[0]));
 
-          if (typeof r._source.tax_input.price_per_sqft!='undefined') {
+          if (typeof r._source.tax_input.price_per_sqft != 'undefined') {
             r._source.tax_input.price_per_sqft[0] = parseFloat(r._source.tax_input.price_per_sqft[0]);
           } else {
             r._source.tax_input.price_per_sqft = [0];
           }
 
-          r._source.tax_input.approximate_lot_size[0] = parseFloat( r._source.tax_input.approximate_lot_size[0] );
+          r._source.tax_input.approximate_lot_size[0] = parseFloat(r._source.tax_input.approximate_lot_size[0]);
 
-          if( r._source.meta_input && r._source.meta_input.rets_thumbnail_url ) {
-            r.rets_thumbnail_url = r._source.meta_input.rets_thumbnail_url.replace( '.JPG', '-270x280.jpg' );
+          if (r._source.meta_input && r._source.meta_input.rets_thumbnail_url) {
+            r.rets_thumbnail_url = r._source.meta_input.rets_thumbnail_url.replace('.JPG', '-270x280.jpg');
           }
 
           //icon html and template
           r.current_total_living_area_sqft = '<i class="icon-wpproperty-attribute-size-solid"></i>' + parseInt(r._source.tax_input.total_living_area_sqft[0]) + ' SqFt';
-          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat( r._source.tax_input.approximate_lot_size[0] ) + ' Acres';
-          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat( r._source.tax_input.bedrooms[0] ) + ' Beds';
-          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat( r._source.tax_input.bathrooms[0] ) + ' Baths';
+          r.current_approximate_lot_size = '<i class="icon-wpproperty-attribute-lotsize-solid"></i>' + parseFloat(r._source.tax_input.approximate_lot_size[0]) + ' Acres';
+          r.current_bedrooms = '<i class="icon-wpproperty-attribute-bedroom-solid"></i>' + parseFloat(r._source.tax_input.bedrooms[0]) + ' Beds';
+          r.current_bathrooms = '<i class="icon-wpproperty-attribute-bathroom-solid"></i>' + parseFloat(r._source.tax_input.bathrooms[0]) + ' Baths';
         }
 
         function calculate_days(date) {
-          if ( date != 'undefined' && date != null ) {
+          if (date != 'undefined' && date != null) {
             var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             var firstDate = new Date(date);
             var currentDate = new Date();
@@ -1149,10 +1163,10 @@
          * @param int
          * @returns {string}
          */
-        var currencyAmount = function( int ) {
-          var int = Math.round( parseInt( int.toString().replace(/,/g,"")) / 5000 ) * 5000;
+        var currencyAmount = function (int) {
+          var int = Math.round(parseInt(int.toString().replace(/,/g, "")) / 5000) * 5000;
           var cur = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          return {value:int, label:cur != 'NaN' ? cur : ''};
+          return {value: int, label: cur != 'NaN' ? cur : ''};
         };
 
         /**
@@ -1193,7 +1207,7 @@
          *
          */
         function getMoreProperties() {
-          if ( $scope._request ) {
+          if ($scope._request) {
             $scope._request.abort();
           }
 
@@ -1205,35 +1219,35 @@
             index: index,
             type: type,
             method: "GET",
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            headers: {
+              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
             },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":'+$scope.properties.length+'}',
-          }, function( error, response ) {
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
+          }, function (error, response) {
 
 
-            setStatus( 'ready' );
-            
-            if ( !error ) {
+            setStatus('ready');
 
-              if( typeof response.hits.hits == 'undefined' ) {
-                debug( 'Error occurred during getting properties data.' );
+            if (!error) {
+
+              if (typeof response.hits.hits == 'undefined') {
+                debug('Error occurred during getting properties data.');
               } else {
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
 
-                if( ! $scope.loadNgMapChangedEvent ) {
+                if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
                   $scope.addMapChanged();
                 }
 
-                if ( $scope.total > $scope.properties.length ) {
-                  if( $scope.loading_more_properties ) {
+                if ($scope.total > $scope.properties.length) {
+                  if ($scope.loading_more_properties) {
                     getMoreProperties();
                   }
-                }else{
+                } else {
                   search_form.removeClass('mapChanged');
                 }
               }
@@ -1253,7 +1267,7 @@
         $scope.toggleSearchButton = function () {
           var button_icon_desktop = jQuery('.sm-search-filter').find('i');
           var button_icon_mobile = jQuery('.mobile-toggle-search-icon').find('i');
-          if ( jQuery( '.sm-search-form form').hasClass('processing') ) {
+          if (jQuery('.sm-search-form form').hasClass('processing')) {
             button_icon_desktop.addClass("icon-wpproperty-interface-time-outline");
             button_icon_desktop.removeClass("icon-wpproperty-interface-search-solid");
             button_icon_mobile.addClass("icon-wpproperty-interface-time-outline");
@@ -1271,7 +1285,7 @@
          */
         $scope.getProperties = function getProperties() {
 
-          if ( $scope._request ) {
+          if ($scope._request) {
             $scope._request.abort();
           }
 
@@ -1286,42 +1300,42 @@
             index: index,
             type: type,
             method: "GET",
-            headers : {
-              "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+            headers: {
+              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
             },
-            source: '{"query":'+build_query()+',"_source": '+JSON.stringify($scope.atts.fields.split(','))+', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
-          }, function( error, response ) {
-            debug( 'searchResponse query: [%s], hits [%s]', build_query(), response.hits.total );
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+          }, function (error, response) {
+            debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
 
-            setStatus( 'ready' );
+            setStatus('ready');
 
-            if ( !error ) {
-              jQuery( '.sm-search-layer', ngAppDOM ).show();
+            if (!error) {
+              jQuery('.sm-search-layer', ngAppDOM).show();
 
               $scope.loaded = true;
 
-              if( typeof response.hits.hits == 'undefined' ) {
-                debug( 'Error occurred during getting properties data.' );
+              if (typeof response.hits.hits == 'undefined') {
+                debug('Error occurred during getting properties data.');
               } else {
                 response.hits.hits.filter(cast_fields);
-                  $scope.total = response.hits.total;
-                  $scope.properties = response.hits.hits;
+                $scope.total = response.hits.total;
+                $scope.properties = response.hits.hits;
                 // Select First Element of Properties Collection
-                if( $scope.properties.length > 0 ) {
+                if ($scope.properties.length > 0) {
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
-                  $scope.refreshMarkers( search_form.hasClass('mapChanged') ? false : true );
-                }  else {
-                  $scope.refreshMarkers( false );
+                  $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
+                } else {
+                  $scope.refreshMarkers(false);
                 }
 
-                if ( $scope.total > $scope.properties.length ) {
-                  if( ! $scope.loading_more_properties ) {
+                if ($scope.total > $scope.properties.length) {
+                  if (!$scope.loading_more_properties) {
                     $scope.loading_more_properties = true;
                   }
                   getMoreProperties();
-                  if( ! $scope.loadNgMapChangedEvent ) {
+                  if (!$scope.loadNgMapChangedEvent) {
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
                   }
@@ -1343,23 +1357,23 @@
         };
 
         $scope.clean_up = function clean_up() {
-          debug( 'clean_up' );
+          debug('clean_up');
 
           // debug phantom infowindow in corner... I think ngmap adds it.
-          if( jQuery( '.gm-style-iw' ).length ) {
-            console.log( "Found random infowindow!", jQuery( '.gm-style-iw' ) );
-            jQuery( '.gm-style-iw' ).parent().hide()
+          if (jQuery('.gm-style-iw').length) {
+            console.log("Found random infowindow!", jQuery('.gm-style-iw'));
+            jQuery('.gm-style-iw').parent().hide()
           }
 
           // make sure not collapsed.
-          if( jQuery( '.sm-table-header' ).length ) {
+          if (jQuery('.sm-table-header').length) {
           }
         }
 
         /**
          *
          */
-        $scope.col_changed = function() {
+        $scope.col_changed = function () {
           jQuery(document).trigger('rdc_cols_changed');
         };
 
@@ -1367,18 +1381,18 @@
          * map zoom or drag event listener for search results refresh
          */
         $scope.addMapChanged = function addMapChanged() {
-          debug( 'addMapChanged' );
+          debug('addMapChanged');
 
           NgMap.getMap().then(function (map) {
 
-            if ( 'object' === typeof supermapMode && supermapMode.isMobile == true) {
+            if ('object' === typeof supermapMode && supermapMode.isMobile == true) {
               return false;
             }
 
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
               var zoom = map.getZoom();
-              if( zoom > 4 ) {
+              if (zoom > 4) {
                 var SouthWestLatitude = bounds.getSouthWest().lat();
                 var NorthEastLatitude = bounds.getNorthEast().lat();
                 var NorthEastLongitude = bounds.getNorthEast().lng();
@@ -1389,16 +1403,12 @@
                   jQuery('.rdc-longitude-gte').val(NorthEastLongitude);
                   jQuery('.rdc-longitude-lte').val(SouthWestLongitude);
                 }
-              }else{
+              } else {
                 $scope.resetMapBounds();
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
               jQuery('.sm-search-form form').submit();
-
-
             });
-
-
           });
         };
 
@@ -1409,8 +1419,8 @@
           jQuery('.rdc-longitude-lte').val('');
         };
 
-        $document.bind("st_sort_done",function(){
-          if( $scope.propertiesTableCollection.length > 0 ) {
+        $document.bind("st_sort_done", function () {
+          if ($scope.propertiesTableCollection.length > 0) {
             $scope.selectRow($scope.propertiesTableCollection[0]);
           }
         });
@@ -1418,18 +1428,18 @@
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
-        $scope.refreshMarkers = function refreshMarkers( update_map_pos ) {
+        $scope.refreshMarkers = function refreshMarkers(update_map_pos) {
 
-          NgMap.getMap().then(function( map ) {
+          NgMap.getMap().then(function (map) {
             $scope.dynMarkers = [];
             $scope.latLngs = [];
 
             // Clears all clusters and markers from the clusterer.
-            if( typeof $scope.markerClusterer == 'object' ) {
+            if (typeof $scope.markerClusterer == 'object') {
               $scope.markerClusterer.clearMarkers();
             }
 
-            if( typeof $scope.infoBubble !== 'object' ) {
+            if (typeof $scope.infoBubble !== 'object') {
 
               $scope.infoBubble = new google.maps.InfoWindow({
                 map: map,
@@ -1453,44 +1463,45 @@
 
             }
 
-            if( ! $scope.properties.length ) {
+            if (!$scope.properties.length) {
               $scope.infoBubble.close();
             }
 
-            for ( var i=0; i < $scope.properties.length; i++ ) {
+            for (var i = 0; i < $scope.properties.length; i++) {
+              var latLng = new google.maps.LatLng($scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
 
-              debug( '$scope.properties[i]._source', $scope.properties[i]._source );
-              
+              // debug( '$scope.properties[i]._source', $scope.properties[i]._source );
+
               // ignore listings with broken latitude
-              if( !$scope.properties[i]._source._system || !$scope.properties[i]._source._system.addressDetail || !$scope.properties[i]._source._system.addressDetail.longitude ) {
+              if (!$scope.properties[i]._source._system || !$scope.properties[i]._source._system.addressDetail || !$scope.properties[i]._source._system.addressDetail.longitude) {
                 continue;
               }
 
-              var latLng = new google.maps.LatLng( $scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
+              var latLng = new google.maps.LatLng($scope.properties[i]._source._system.addressDetail.latitude, $scope.properties[i]._source._system.addressDetail.longitude);
               //var latLng = new google.maps.LatLng( $scope.properties[i]._source.tax_input.location_latitude[0], $scope.properties[i]._source.tax_input.location_longitude[0]);
 
               latLng.listingId = $scope.properties[i]._id;
-              var marker = new google.maps.Marker( {
+              var marker = new google.maps.Marker({
                 position: latLng
                 //icon: $scope.properties[i]._map_marker_url
-              } );
+              });
               marker.listingId = $scope.properties[i]._id;
 
-              $scope.dynMarkers.push( marker );
-              $scope.latLngs.push( latLng );
+              $scope.dynMarkers.push(marker);
+              $scope.latLngs.push(latLng);
 
               /**
                * Marker Click Event!
                * - Selects Table Page
                * - Selects Collection Row
                */
-              google.maps.event.addListener( marker, 'click', ( function( marker, i, $scope ) {
-                return function() {
+              google.maps.event.addListener(marker, 'click', (function (marker, i, $scope) {
+                return function () {
                   // Preselect a row
                   var index;
-                  for ( var i = 0, len = $scope.properties.length; i < len; i += 1) {
+                  for (var i = 0, len = $scope.properties.length; i < len; i += 1) {
                     var property = $scope.properties[i];
-                    if ( property._id == marker.listingId ) {
+                    if (property._id == marker.listingId) {
                       property.isSelected = true;
                       $scope.currentProperty = property;
                       $scope.loadImages(property);
@@ -1500,20 +1511,20 @@
                     }
                   }
                   // Maybe Select Page!
-                  if( index !== null ) {
-                    var pageNumber = Math.ceil( ( index + 1 ) / $scope.per_page );
+                  if (index !== null) {
+                    var pageNumber = Math.ceil(( index + 1 ) / $scope.per_page);
                     angular
-                      .element( jQuery( '.collection-pagination', ngAppDOM ) )
+                      .element(jQuery('.collection-pagination', ngAppDOM))
                       .isolateScope()
-                      .selectPage( pageNumber );
+                      .selectPage(pageNumber);
                   }
                   $scope.$apply();
                 }
-              })( marker, i, $scope ) );
+              })(marker, i, $scope));
 
             }
 
-            if ( update_map_pos ) {
+            if (update_map_pos) {
               // Set Map 'Zoom' and 'Center On' automatically using existing markers.
               $scope.latlngbounds = new google.maps.LatLngBounds();
               for (var i = 0; i < $scope.latLngs.length; i++) {
@@ -1523,31 +1534,31 @@
             }
 
             // Finally Initialize Marker Cluster
-            $scope.markerClusterer = new MarkerClusterer( map, $scope.dynMarkers, {
-                styles: [
-                  {
-                    textColor: 'white',
-                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                    height: 60,
-                    width: 60
-                  },
-                  {
-                    textColor: 'white',
-                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                    height: 60,
-                    width: 60
-                  },
-                  {
-                    textColor: 'white',
-                    url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
-                    height: 60,
-                    width: 60
-                  }
-                ]
+            $scope.markerClusterer = new MarkerClusterer(map, $scope.dynMarkers, {
+              styles: [
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                },
+                {
+                  textColor: 'white',
+                  url: '/wp-content/themes/wp-reddoor/static/images/src/map_cluster1.png',
+                  height: 60,
+                  width: 60
+                }
+              ]
             });
 
 
-          } );
+          });
 
           $scope.col_changed();
         }
@@ -1563,32 +1574,32 @@
          *
          * @param row
          */
-        $scope.loadImages = function loadImages( row ) {
-          if ( ( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images ) {
+        $scope.loadImages = function loadImages(row) {
+          if (( typeof row.images == 'undefined' || !row.images.length ) && !row._is_loading_images) {
             row._is_loading_images = true;
             client.get({
               index: index,
               type: type,
-              headers : {
-                "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+              headers: {
+                "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
               },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
 
-              if ( !error ) {
+              if (!error) {
 
                 row._is_loading_images = false;
 
-                if( typeof response._source.meta_input.rets_media == 'undefined' ) {
-                  debug( 'Error occurred during getting properties data.' );
+                if (typeof response._source.meta_input.rets_media == 'undefined') {
+                  debug('Error occurred during getting properties data.');
                 } else {
                   row.images = response._source.meta_input.rets_media;
                   $scope.$apply();
                 }
 
-                if( typeof response._source.meta_input.data_source_logo == 'undefined' ) {
-                  console.log( 'Error occurred during getting properties data.' );
+                if (typeof response._source.meta_input.data_source_logo == 'undefined') {
+                  console.log('Error occurred during getting properties data.');
                 } else {
                   row.data_source_logo = response._source.meta_input.data_source_logo;
                   $scope.$apply();
@@ -1622,27 +1633,27 @@
          * @param query
          */
         $scope.select_query = function select_query(query) {
-          debug( 'select_query', ( query && query.term ? query.term.length : null ));
+          debug('select_query', ( query && query.term ? query.term.length : null ));
 
           var data = [];
 
           // no query or its too short
-          if( !query.term || ( query.term && query.term.length  < 2 ) ) {
+          if (!query.term || ( query.term && query.term.length < 2 )) {
             jQuery('.select2-dropdown').addClass("hide");
-            return query.callback({ results: data });
+            return query.callback({results: data});
           }
 
           jQuery('.select2-dropdown').removeClass("hide");
 
-          if( $scope._request ) {
+          if ($scope._request) {
             $scope._request.abort();
           }
 
           async.auto({
-            aggregations: function aggregationRequestWrapper( done ) {
+            aggregations: function aggregationRequestWrapper(done) {
 
               var _source = {
-                "query": { "match": { "post_status": "publish" } },
+                "query": {"match": {"post_status": "publish"}},
                 "aggs": {}
               };
 
@@ -1650,20 +1661,20 @@
               // _source.query = $scope.query;
 
               // @hack only use first word
-              if( query.term.indexOf( ' ' ) > 0 ) {
-                query.term = query.term.split( ' ' )[0];
+              if (query.term.indexOf(' ') > 0) {
+                query.term = query.term.split(' ')[0];
               }
 
-              angular.forEach($scope.aggregationFields, function setField( data, key ) {
+              angular.forEach($scope.aggregationFields, function setField(data, key) {
 
-                _source.aggs[ key ] = {
+                _source.aggs[key] = {
                   filters: {filters: {}},
                   aggs: {}
                 };
 
-                _source.aggs[ key ]['filters']['filters'][key] = { term: {} };
-                _source.aggs[ key ]['filters']['filters'][key].term[ data.search_field ] = query.term.toLowerCase();
-                _source.aggs[ key ]['aggs'][key] = { terms: { field: data.field } }
+                _source.aggs[key]['filters']['filters'][key] = {term: {}};
+                _source.aggs[key]['filters']['filters'][key].term[data.search_field] = query.term.toLowerCase();
+                _source.aggs[key]['aggs'][key] = {terms: {field: data.field}}
 
 
                 // remove
@@ -1675,11 +1686,11 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers : {
-                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+                headers: {
+                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
                 },
                 body: _source
-              }, select_queryResponse );
+              }, select_queryResponse);
 
               /**
                *
@@ -1687,22 +1698,22 @@
                * @param response
                */
               function select_queryResponse(err, response) {
-                debug( 'select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ) );
+                debug('select_queryResponse', JSON.stringify(_source), ( response && response.hits ? response.hits.total : null ));
 
-                if( typeof response.hits.hits == 'undefined' ) {
+                if (typeof response.hits.hits == 'undefined') {
                   //query.callback({ results: data });
-                  return done( null );
+                  return done(null);
                 }
 
-                angular.forEach( response.aggregations, function eachAggregation( someAggregation, aggregationKey ) {
+                angular.forEach(response.aggregations, function eachAggregation(someAggregation, aggregationKey) {
                   //debug( 'eachAggregation - aggregationKey', aggregationKey )
                   // debug( 'eachAggregation - someAggregation', someAggregation )
 
                   var _buckets = [];
 
-                  angular.forEach( someAggregation.buckets[ aggregationKey ][ aggregationKey ].buckets, function eachBucket( data ) {
+                  angular.forEach(someAggregation.buckets[aggregationKey][aggregationKey].buckets, function eachBucket(data) {
 
-                    var _bucketDetail = $scope.aggregationFields[ aggregationKey ];
+                    var _bucketDetail = $scope.aggregationFields[aggregationKey];
 
                     _buckets.push({
                       id: data.key,
@@ -1715,47 +1726,47 @@
 
                   });
 
-                  if( _buckets.length > 0 ) {
+                  if (_buckets.length > 0) {
 
-                    data.push( {
+                    data.push({
                       key: aggregationKey,
-                      text: $scope.aggregationFields[ aggregationKey ].title,
+                      text: $scope.aggregationFields[aggregationKey].title,
                       children: _buckets
-                    } )
+                    })
 
                   }
 
                 });
 
-                debug( 'eachAggregation', data );
+                debug('eachAggregation', data);
 
-                done( null, data );
+                done(null, data);
 
               }
 
 
             },
-            suggest: function suggestRequestWrapper( done ) {
+            suggest: function suggestRequestWrapper(done) {
 
               $scope._request_suggest = client.suggest({
                 index: 'v5',
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers : {
-                  "Authorization" : make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+                headers: {
+                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
                 },
                 body: {
-                  "regular" : {
-                    "text" : query.term.toLowerCase(),
-                    "completion" : { "field" : "_search._suggest" }
+                  "regular": {
+                    "text": query.term.toLowerCase(),
+                    "completion": {"field": "_search._suggest"}
                   },
-                  "fuzzy" : {
-                    "text" : query.term.toLowerCase(),
-                    "completion" : { "field" : "_search._suggest", "fuzzy" : { "fuzziness" : 0 } }
+                  "fuzzy": {
+                    "text": query.term.toLowerCase(),
+                    "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
                   }
                 }
-              }, suggest_queryResponse );
+              }, suggest_queryResponse);
 
               /**
                *
@@ -1763,22 +1774,22 @@
                * @param response
                */
               function suggest_queryResponse(error, response) {
-                debug( 'suggest_queryResponse', response );
+                debug('suggest_queryResponse', response);
 
-                if( typeof response.regular == 'undefined' ) {
-                  return done( null );
+                if (typeof response.regular == 'undefined') {
+                  return done(null);
                 }
 
                 var data = [];
 
-                angular.forEach( response.regular[0].options, function eachMatch( someMatch, aggregationKey ) {
-                  debug( 'someMatch', someMatch.payload );
+                angular.forEach(response.regular[0].options, function eachMatch(someMatch, aggregationKey) {
+                  debug('someMatch', someMatch.payload);
 
-                  if( !someMatch.payload ) {
+                  if (!someMatch.payload) {
                     return;
                   }
 
-                  data.push( {
+                  data.push({
                     id: someMatch.payload.id,
                     listing_id: someMatch.payload.listing_id,
                     score: someMatch.score,
@@ -1787,21 +1798,21 @@
                     location_county: someMatch.payload.location_county,
                     location_city: someMatch.payload.location_city,
                     //latitude: someMatch.payload.rets_thumbnail_url
-                  } )
+                  })
 
                 });
 
-                done( null, data.length ? {
+                done(null, data.length ? {
                   key: 'Listings',
                   text: 'Listings',
                   children: data
-                } : [] );
+                } : []);
 
               }
 
 
             },
-          }, allDone );
+          }, allDone);
 
           /**
            * Aggration/Suggest requests complete.
@@ -1809,11 +1820,11 @@
            * @param error
            * @param results
            */
-          function allDone( error, results  ) {
-            console.log( 'allDone', error, results );
+          function allDone(error, results) {
+            console.log('allDone', error, results);
 
             query.callback({
-              results: [].concat(results.aggregations, results.suggest )
+              results: [].concat(results.aggregations, results.suggest)
             });
 
           }
@@ -1821,11 +1832,11 @@
         };
 
         /**
-         * 
+         *
          * @param data
          */
-        $scope.setup_term_selection = function setup_term_selection( data ) {
-          debug( 'setup_term_selection' );
+        $scope.setup_term_selection = function setup_term_selection(data) {
+          debug('setup_term_selection');
 
           $scope.selectOpions = {
             placeholder: 'Search',
@@ -1834,8 +1845,8 @@
             minimumInputLength: 3,
             data: data || [],
             query: $scope.select_query,
-            formatResult: function formatResult( field ) {
-              console.log( 'field', field);
+            formatResult: function formatResult(field) {
+              console.log('field', field);
 
               return field;
 
@@ -1856,10 +1867,10 @@
             var data = $select.select2('data');
 
             // specific listing found via suggest. @todo make this popup in new window
-            if( event.params.data.listing_id && event.params.data.id ) {
+            if (event.params.data.listing_id && event.params.data.id) {
 
               // if we have a city, set it as our search term. @todo make this work smoother.
-              if( event.params.data.location_city ) {
+              if (event.params.data.location_city) {
                 // window.setTimeout(function() {jQuery('.select2-selection__choice').html('<span class="select2-selection__choice__remove" role="presentation">×</span>' + event.params.data.location_city);}, 200 );
                 //selectOpions.data = [ event.params.data.location_city ];
                 //$select = jQuery('.termsSelection').select2( $scope.selectOpions);
@@ -1871,19 +1882,19 @@
               return;
             }
 
-            if ( typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id' ) {
-              window.location.href= data[0].permalink;
-            } else if ( typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+            if (typeof data[0].taxonomy != 'undefined' && data[0].taxonomy == 'post_title' || data[0].taxonomy == 'mls_id') {
+              window.location.href = data[0].permalink;
+            } else if (typeof data[0].taxonomy == 'undefined' && window.sm_current_terms.values && window.sm_current_terms.values.length) {
               var value = window.sm_current_terms.values[0];
               var key = window.sm_current_terms.key;
-              if( value == data[0].text ) {
+              if (value == data[0].text) {
                 $scope.map_filter_taxonomy = key;
               }
             } else {
               $scope.map_filter_taxonomy = data[0].taxonomy;
             }
 
-            window.sm_current_terms.values = [ data[0].id ];
+            window.sm_current_terms.values = [data[0].id];
 
             $scope.fix_terms();
 
@@ -1897,20 +1908,20 @@
            *
            */
           $select.on('select2:selecting', function onSelecting(event) {
-            debug('onSelecting', $select.select2('val'), event.params );
+            debug('onSelecting', $select.select2('val'), event.params);
 
-            $select.select2( 'val', {} );
+            $select.select2('val', {});
 
-            if( $select.select2('val') != null && $select.select2('val').length > 0 ) {
-              $select.select2( 'val', {} );
+            if ($select.select2('val') != null && $select.select2('val').length > 0) {
+              $select.select2('val', {});
             }
 
           });
 
-          if ( window.sm_current_terms.values && window.sm_current_terms.values.length ) {
+          if (window.sm_current_terms.values && window.sm_current_terms.values.length) {
             var $option = jQuery('<option selected>Loading...</option>').val(window.sm_current_terms.values[0]).text(window.sm_current_terms.values[0]);
             $select.append($option).trigger('change');
-            debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0] );
+            debug('taxonomy=' + window.sm_current_terms.key + ' value=' + window.sm_current_terms.values[0]);
 
             $scope.fix_terms();
           }
@@ -1919,70 +1930,70 @@
 
         /**
          * Ghetto fabular fix.
-         * 
+         *
          */
         $scope.fix_terms = function fix_terms() {
 
-          if( window.sm_current_terms && window.sm_current_terms.key ) {
+          if (window.sm_current_terms && window.sm_current_terms.key) {
 
-            if( $scope.aggregationFields[ window.sm_current_terms.key ] && $scope.aggregationFields[ window.sm_current_terms.key ].search_field ) {
-              debug( 'fix_terms', 'fixing', window.sm_current_terms.key, 'to', $scope.aggregationFields[ window.sm_current_terms.key ].search_field  )
-              window.sm_current_terms.key = $scope.aggregationFields[ window.sm_current_terms.key ].search_field;
+            if ($scope.aggregationFields[window.sm_current_terms.key] && $scope.aggregationFields[window.sm_current_terms.key].search_field) {
+              debug('fix_terms', 'fixing', window.sm_current_terms.key, 'to', $scope.aggregationFields[window.sm_current_terms.key].search_field)
+              window.sm_current_terms.key = $scope.aggregationFields[window.sm_current_terms.key].search_field;
             }
 
           }
 
-          angular.forEach($scope.query.bool.must, function eachTerm( termData, termIndex ) {
+          angular.forEach($scope.query.bool.must, function eachTerm(termData, termIndex) {
 
-            if( !termData.terms ) {
+            if (!termData.terms) {
               return;
             }
 
-            if( termData.terms['location_city'] ) {
-              debug( 'fix_terms', 'fixing', 'location_city', 'field' );
-              termData.terms[ $scope.aggregationFields['location_city'].field ] = termData.terms['location_city'];
+            if (termData.terms['location_city']) {
+              debug('fix_terms', 'fixing', 'location_city', 'field');
+              termData.terms[$scope.aggregationFields['location_city'].field] = termData.terms['location_city'];
               delete $scope.query.bool.must[termIndex].terms['location_city'];
             }
 
-            if( termData.terms['location_county'] ) {
-              debug( 'fix_terms', 'fixing', 'location_county', 'field' );
-              termData.terms[ $scope.aggregationFields['location_county'].field ] = termData.terms['location_county'];
+            if (termData.terms['location_county']) {
+              debug('fix_terms', 'fixing', 'location_county', 'field');
+              termData.terms[$scope.aggregationFields['location_county'].field] = termData.terms['location_county'];
               delete $scope.query.bool.must[termIndex].terms['location_county'];
             }
 
-            if( termData.terms['location_zip'] ) {
-              debug( 'fix_terms', 'fixing', 'location_zip', 'field' );
-              termData.terms[ $scope.aggregationFields['location_zip'].field ] = termData.terms['location_zip'];
+            if (termData.terms['location_zip']) {
+              debug('fix_terms', 'fixing', 'location_zip', 'field');
+              termData.terms[$scope.aggregationFields['location_zip'].field] = termData.terms['location_zip'];
               delete $scope.query.bool.must[termIndex].terms['location_zip'];
             }
 
-            if( termData.terms['location_neighborhood'] ) {
-              debug( 'fix_terms', 'fixing', 'location_neighborhood', 'field' );
-              termData.terms[ $scope.aggregationFields['location_neighborhood'].field ] = termData.terms['location_neighborhood'];
+            if (termData.terms['location_neighborhood']) {
+              debug('fix_terms', 'fixing', 'location_neighborhood', 'field');
+              termData.terms[$scope.aggregationFields['location_neighborhood'].field] = termData.terms['location_neighborhood'];
               delete $scope.query.bool.must[termIndex].terms['location_neighborhood'];
             }
 
-            if( termData.terms['location_county'] ) {
-              debug( 'fix_terms', 'fixing', 'location_county', 'field' );
-              termData.terms[ $scope.aggregationFields['location_county'].field ] = termData.terms['location_county'];
+            if (termData.terms['location_county']) {
+              debug('fix_terms', 'fixing', 'location_county', 'field');
+              termData.terms[$scope.aggregationFields['location_county'].field] = termData.terms['location_county'];
               delete $scope.query.bool.must[termIndex].terms['location_county'];
             }
 
-            if( termData.terms['elementary_school'] ) {
-              debug( 'fix_terms', 'fixing', 'elementary_school', 'field' );
-              termData.terms[ $scope.aggregationFields['elementary_school'].field ] = termData.terms['elementary_school'];
+            if (termData.terms['elementary_school']) {
+              debug('fix_terms', 'fixing', 'elementary_school', 'field');
+              termData.terms[$scope.aggregationFields['elementary_school'].field] = termData.terms['elementary_school'];
               delete $scope.query.bool.must[termIndex].terms['elementary_school'];
             }
 
-            if( termData.terms['middle_school'] ) {
-              debug( 'fix_terms', 'fixing', 'middle_school', 'field' );
-              termData.terms[ $scope.aggregationFields['middle_school'].field ] = termData.terms['middle_school'];
+            if (termData.terms['middle_school']) {
+              debug('fix_terms', 'fixing', 'middle_school', 'field');
+              termData.terms[$scope.aggregationFields['middle_school'].field] = termData.terms['middle_school'];
               delete $scope.query.bool.must[termIndex].terms['middle_school'];
             }
 
-            if( termData.terms['high_school'] ) {
-              debug( 'fix_terms', 'fixing', 'high_school', 'field' );
-              termData.terms[ $scope.aggregationFields['high_school'].field ] = termData.terms['high_school'];
+            if (termData.terms['high_school']) {
+              debug('fix_terms', 'fixing', 'high_school', 'field');
+              termData.terms[$scope.aggregationFields['high_school'].field] = termData.terms['high_school'];
               delete $scope.query.bool.must[termIndex].terms['high_school'];
             }
 
@@ -1996,54 +2007,54 @@
          * Fired when currentProperty is changed!
          * Opens InfoBubble Window!
          */
-        $scope.$watch( 'currentProperty', function( currentProperty, prevCurrentProperty ) {
-          var prevPropertyID = typeof prevCurrentProperty != 'undefined'?prevCurrentProperty._id:false;
-          for ( var i=0; i<$scope.dynMarkers.length; i++ ) {
-            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id ) {
-              NgMap.getMap().then( function( map ) {
+        $scope.$watch('currentProperty', function (currentProperty, prevCurrentProperty) {
+          var prevPropertyID = typeof prevCurrentProperty != 'undefined' ? prevCurrentProperty._id : false;
+          for (var i = 0; i < $scope.dynMarkers.length; i++) {
+            if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id) {
+              NgMap.getMap().then(function (map) {
                 //console.log( "DOing stuff with infowindow" );
-                $scope.infoBubble.setContent( jQuery( '.sm-marker-infobubble', ngAppDOM ).html() );
-                $scope.infoBubble.setPosition( $scope.latLngs[i] );
-                $scope.infoBubble.open( map );
+                $scope.infoBubble.setContent(jQuery('.sm-marker-infobubble', ngAppDOM).html());
+                $scope.infoBubble.setPosition($scope.latLngs[i]);
+                $scope.infoBubble.open(map);
 
-              } );
+              });
               break;
             }
           }
-        }, true );
+        }, true);
 
         window.$scope = $scope;
 
         $scope.setup_term_selection();
 
 
-        $scope.sm_form_data = function sm_form_data( form_data ) {
-          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
-            jQuery.each( jQuery(".rdc-home-types input:checkbox"), function (k,v) {
-              form_data.push({name:v.name,value:v.value});
-            } );
+        $scope.sm_form_data = function sm_form_data(form_data) {
+          if (!jQuery(".rdc-home-types input:checkbox:checked").length) {
+            jQuery.each(jQuery(".rdc-home-types input:checkbox"), function (k, v) {
+              form_data.push({name: v.name, value: v.value});
+            });
           }
-          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
-            jQuery.each( jQuery(".rdc-sale-types input:checkbox"), function (k,v) {
-              form_data.push({name:v.name,value:v.value});
-            } );
+          if (!jQuery(".rdc-sale-types input:checkbox:checked").length) {
+            jQuery.each(jQuery(".rdc-sale-types input:checkbox"), function (k, v) {
+              form_data.push({name: v.name, value: v.value});
+            });
           }
           return form_data;
         };
 
-        $document.on( 'change', '.rdc-home-types input:checkbox', function(){
-          if( ! jQuery(".rdc-home-types input:checkbox:checked").length ) {
-            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must_not][6][terms][meta_input.property_type][]' );
+        $document.on('change', '.rdc-home-types input:checkbox', function () {
+          if (!jQuery(".rdc-home-types input:checkbox:checked").length) {
+            jQuery(".rdc-home-types input:checkbox").attr('name', 'bool[must_not][6][terms][meta_input.property_type][]');
           } else {
-            jQuery(".rdc-home-types input:checkbox").attr( 'name', 'bool[must][6][terms][meta_input.property_type][]' );
+            jQuery(".rdc-home-types input:checkbox").attr('name', 'bool[must][6][terms][meta_input.property_type][]');
           }
         });
 
-        $document.on( 'change', '.rdc-sale-types input:checkbox', function(){
-          if( ! jQuery(".rdc-sale-types input:checkbox:checked").length ) {
-            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must_not][5][terms][tax_input.sale_type][]' );
+        $document.on('change', '.rdc-sale-types input:checkbox', function () {
+          if (!jQuery(".rdc-sale-types input:checkbox:checked").length) {
+            jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must_not][5][terms][tax_input.sale_type][]');
           } else {
-            jQuery(".rdc-sale-types input:checkbox").attr( 'name', 'bool[must][5][terms][tax_input.sale_type][]' );
+            jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must][5][terms][tax_input.sale_type][]');
           }
         });
 
@@ -2054,10 +2065,10 @@
          * property search form is being generated via [property_search] shortcode
          * or even can be custom, since we are using apply_filters on rendering.
          */
-        jQuery( '.sm-search-form form', ngAppDOM).on( 'submit', function(e){
+        jQuery('.sm-search-form form', ngAppDOM).on('submit', function (e) {
           e.preventDefault();
 
-          if ( ! jQuery(this).hasClass('mapChanged') ) {
+          if (!jQuery(this).hasClass('mapChanged')) {
             $scope.resetMapBounds();
           }
 
@@ -2067,29 +2078,29 @@
             push_counters = {},
             patterns = {
               "validate": /^[a-zA-Z][a-zA-Z0-9_\.]*(?:\[(?:\d*|[a-zA-Z0-9_\.]+)\])*$/,
-              "key":      /[a-zA-Z0-9_\.]+|(?=\[\])/g,
-              "push":     /^$/,
-              "fixed":    /^\d+$/,
-              "named":    /^[a-zA-Z0-9_\.]+$/
+              "key": /[a-zA-Z0-9_\.]+|(?=\[\])/g,
+              "push": /^$/,
+              "fixed": /^\d+$/,
+              "named": /^[a-zA-Z0-9_\.]+$/
             };
 
-          var build = function(base, key, value){
+          var build = function (base, key, value) {
             base[key] = value;
             return base;
           };
 
-          var push_counter = function(key){
-            if(push_counters[key] === undefined){
+          var push_counter = function (key) {
+            if (push_counters[key] === undefined) {
               push_counters[key] = 0;
             }
             return push_counters[key]++;
           };
 
-          var form_data = $scope.sm_form_data( jQuery( this ).serializeArray() );
+          var form_data = $scope.sm_form_data(jQuery(this).serializeArray());
 
-          jQuery.each(form_data, function(){
+          jQuery.each(form_data, function () {
 
-            if(!patterns.validate.test(this.name)){
+            if (!patterns.validate.test(this.name)) {
               return;
             }
 
@@ -2098,27 +2109,27 @@
               merge = this.value,
               reverse_key = this.name;
 
-            while((k = keys.pop()) !== undefined){
+            while ((k = keys.pop()) !== undefined) {
 
               reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
 
-              if(k.match(patterns.push)){
+              if (k.match(patterns.push)) {
                 merge = build([], push_counter(reverse_key), merge);
               }
 
-              else if(k.match(patterns.fixed)){
+              else if (k.match(patterns.fixed)) {
                 merge = build([], k, merge);
               }
 
-              else if(k.match(patterns.named)){
+              else if (k.match(patterns.named)) {
                 merge = build({}, k, merge);
               }
             }
 
-            formQuery = removeAllBlankOrNull( jQuery.extend(true, formQuery, merge) );
+            formQuery = removeAllBlankOrNull(jQuery.extend(true, formQuery, merge));
           });
 
-          if( jQuery.isEmptyObject(formQuery.bool.must_not) ) {
+          if (jQuery.isEmptyObject(formQuery.bool.must_not)) {
             formQuery.bool.must_not = [];
           }
 
@@ -2128,24 +2139,24 @@
           $scope.query.bool.must = $scope.query.bool.must.filter(Boolean);
           $scope.query.bool.must_not = $scope.query.bool.must_not.filter(Boolean);
 
-          if( $scope.searchForm ) {
+          if ($scope.searchForm) {
             $scope.toggleSearchForm();
           }
           $scope.$apply();
           $scope.getProperties();
 
-        } );
+        });
 
         /**
          * BACK HISTORY EVENT
          */
-        window.addEventListener( 'popstate', function(){
+        window.addEventListener('popstate', function () {
 
           // Get current location params
           var location = window.location.href.split('?');
           var locationQuery = {};
-          if( typeof location[1] !== 'undefined' ) {
-            parse_str( location[1], locationQuery );
+          if (typeof location[1] !== 'undefined') {
+            parse_str(location[1], locationQuery);
           }
 
           $scope.$apply();
@@ -2154,18 +2165,18 @@
         }, false);
 
 
-        NgMap.getMap().then(function(map) {
+        NgMap.getMap().then(function (map) {
 
           google.maps.event.addListener(map, 'bounds_changed', function () {
-            debug( 'mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng() );
+            debug('mapEvent', 'bounds_changed', 'current center', map.getCenter().lat(), map.getCenter().lng());
           });
 
           google.maps.event.addListener(map, 'zoom_changed', function () {
-            debug( 'mapEvent', 'zoom_changed' );
+            debug('mapEvent', 'zoom_changed');
           });
 
           google.maps.event.addListener(map, 'resize', function () {
-            debug( 'mapEvent', 'resize' );
+            debug('mapEvent', 'resize');
           });
 
 
@@ -2174,7 +2185,7 @@
         // Get properties by request
         $scope.getProperties();
 
-      } ] );
+      }]);
 
   };
 
@@ -2199,11 +2210,11 @@
     if (!results[2]) {
 
       // Try another method.. - potanin@UD
-      var _parts = parse_query_string( window.location.search );
+      var _parts = parse_query_string(window.location.search);
 
-      if( _parts[ name ] ) {
+      if (_parts[name]) {
         // debug( 'getParameterByName', name, _parts[ name ] );
-        return _parts[ name ];
+        return _parts[name];
       }
 
       // debug( 'getParameterByName', name, 'empty result' );
@@ -2216,7 +2227,7 @@
   }
 
   function removeAllBlankOrNull(JsonObj) {
-    jQuery.each(JsonObj, function(key, value) {
+    jQuery.each(JsonObj, function (key, value) {
       if (value === "" || value === null) {
         delete JsonObj[key];
       } else if (typeof(value) === "object") {
@@ -2233,12 +2244,11 @@
    */
   function unserialize(data) {
     var that = this,
-      utf8Overhead = function(chr) {
+      utf8Overhead = function (chr) {
         var code = chr.charCodeAt(0);
-        if (  code < 0x0080
+        if (code < 0x0080
           || 0x00A0 <= code && code <= 0x00FF
-          || [338,339,352,353,376,402,8211,8212,8216,8217,8218,8220,8221,8222,8224,8225,8226,8230,8240,8364,8482].indexOf(code)!=-1)
-        {
+          || [338, 339, 352, 353, 376, 402, 8211, 8212, 8216, 8217, 8218, 8220, 8221, 8222, 8224, 8225, 8226, 8230, 8240, 8364, 8482].indexOf(code) != -1) {
           return 0;
         }
         if (code < 0x0800) {
@@ -2246,10 +2256,10 @@
         }
         return 2;
       };
-    error = function(type, msg, filename, line) {
+    error = function (type, msg, filename, line) {
       throw new that.window[type](msg, filename, line);
     };
-    read_until = function(data, offset, stopchr) {
+    read_until = function (data, offset, stopchr) {
       var i = 2,
         buf = [],
         chr = data.slice(offset, offset + 1);
@@ -2264,7 +2274,7 @@
       }
       return [buf.length, buf.join('')];
     };
-    read_chrs = function(data, offset, length) {
+    read_chrs = function (data, offset, length) {
       var i, chr, buf;
 
       buf = [];
@@ -2275,12 +2285,12 @@
       }
       return [buf.length, buf.join('')];
     };
-    _unserialize = function(data, offset) {
+    _unserialize = function (data, offset) {
       var dtype, dataoffset, keyandchrs, keys, contig,
         length, array, readdata, readData, ccount,
         stringlength, i, key, kprops, kchrs, vprops,
         vchrs, value, chrs = 0,
-        typeconvert = function(x) {
+        typeconvert = function (x) {
           return x;
         };
 
@@ -2294,7 +2304,7 @@
 
       switch (dtype) {
         case 'i':
-          typeconvert = function(x) {
+          typeconvert = function (x) {
             return parseInt(x, 10);
           };
           readData = read_until(data, dataoffset, ';');
@@ -2303,7 +2313,7 @@
           dataoffset += chrs + 1;
           break;
         case 'b':
-          typeconvert = function(x) {
+          typeconvert = function (x) {
             return parseInt(x, 10) !== 0;
           };
           readData = read_until(data, dataoffset, ';');
@@ -2312,7 +2322,7 @@
           dataoffset += chrs + 1;
           break;
         case 'd':
-          typeconvert = function(x) {
+          typeconvert = function (x) {
             return parseFloat(x);
           };
           readData = read_until(data, dataoffset, ';');
@@ -2401,7 +2411,7 @@
     return query;
   }
 
-  
+
   /**
    *
    * @param str
@@ -2415,7 +2425,7 @@
       sal = strArr.length,
       i, j, ct, p, lastObj, obj, lastIter, undef, chr, tmp, key, value,
       postLeftBracketPos, keys, keysLen,
-      fixStr = function(str) {
+      fixStr = function (str) {
         return decodeURIComponent(str.replace(/\+/g, '%20'));
       };
 
@@ -2500,17 +2510,17 @@
    */
   function initialize() {
 
-    jQuery( '.wpp-supermap-search').each( function( i,e ) {
+    jQuery('.wpp-supermap-search').each(function (i, e) {
       // jQuery( e ).wpp_supermap_search();
     });
 
-    jQuery( '.wpp-advanced-supermap').each( function( i,e ) {
-      jQuery( e ).wpp_advanced_supermap( {
-        'query': jQuery(e).data( 'query' ) || false,
-        'atts': jQuery(e).data( 'atts' ) || false,
-        'ng_app': jQuery(e).attr( 'ng-app' ) || false
-      } );
-    } );
+    jQuery('.wpp-advanced-supermap').each(function (i, e) {
+      jQuery(e).wpp_advanced_supermap({
+        'query': jQuery(e).data('query') || false,
+        'atts': jQuery(e).data('atts') || false,
+        'ng_app': jQuery(e).attr('ng-app') || false
+      });
+    });
   }
 
   /**
@@ -2518,4 +2528,4 @@
    */
   initialize();
 
-} )( jQuery, wpp );
+})(jQuery, wpp);

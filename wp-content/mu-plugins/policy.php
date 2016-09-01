@@ -100,7 +100,7 @@ add_filter( 'minit-cache-expiration', function() { return 0; });
 
 // Regenerates every time.
 add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
-  return str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . time() . '-', $_path );
+  return str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . minit_timestamp() . '-', $_path );
 }, 10, 3 );
 
 // Force minit to be enabled if its avialable.
