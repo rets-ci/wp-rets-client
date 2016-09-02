@@ -1169,6 +1169,20 @@
           return {value: int, label: cur != 'NaN' ? cur : ''};
         };
 
+
+        /**
+         *
+         * Return meta values for map
+         */
+        function get_map_metadata() {
+          var url = jQuery('meta[name="searchly"]').attr('data-url');
+          var user = jQuery('meta[name="searchly"]').attr('data-user');
+          var password = jQuery('meta[name="searchly"]').attr('data-password');
+          console.log('url:', url);
+          console.log('user:', user);
+          console.log('password:', password);
+        }
+
         /**
          *
          * @returns {*|{}}
@@ -1210,6 +1224,8 @@
           if ($scope._request) {
             $scope._request.abort();
           }
+
+          get_map_metadata();
 
           var search_form = jQuery('.sm-search-form form');
 

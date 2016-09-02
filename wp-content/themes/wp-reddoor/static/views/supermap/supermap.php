@@ -99,6 +99,9 @@ use \UsabilityDynamics\RDC\Utils;
   },10);
 
 </script>
+
+<?php //print_r($atts); ?>
+
 <div ng-app="wppSupermap<?php echo rand( 1001, 9999 ); ?>" data-query="<?php echo urlencode( serialize( $query ) ) ?>" data-atts="<?php echo urlencode( serialize( $atts ) ) ?>" class="wpp-advanced-supermap">
 
   <div ng-controller="main" class="wpp-advanced-supermap-inner-wrapper">
