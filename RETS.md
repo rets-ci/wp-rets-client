@@ -1,7 +1,14 @@
 ## Triangle MLS Credentials
+
+### Standard Feed
 * URL: http://triangle.rets.paragonrels.com/rets/fnisrets.aspx/TRIANGLE/login?rets-version=rets/1.7
 * user: RedDoorIDX
 * pass: teBRaq7n
+
+### Closed Feed
+* URL: http://triangle.apps.retsiq.com/rets/login
+* user: RedDoorIDX2
+* pass: Z8vac4W2Mq6eMdxp
 
 ## retsci RETS Sync
 * 30 Day Resync: https://api.rets.ci/v1/client/listings/sync.json?client=www.reddoorcompany.com 
