@@ -1,7 +1,7 @@
 ## Triangle MLS Credentials
 
 ### Standard Feed
-* URL: http://triangle.rets.paragonrels.com/rets/fnisrets.aspx/TRIANGLE/login?rets-version=rets/1.7
+* URL: http://triangle.apps.retsiq.com/rets/login
 * user: RedDoorIDX
 * pass: teBRaq7n
 
