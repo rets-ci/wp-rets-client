@@ -449,22 +449,11 @@ namespace UsabilityDynamics\RDC {
         }
       }
 
-<<<<<<< HEAD
-      public function add_searchly_meta_tag()
-      {
-        $searchly_user = get_theme_mod('rdc_searchly_user');
-        $searchly_password = get_theme_mod('rdc_searchly_password');
-        $searchly_url = get_theme_mod('rdc_searchly_url');
-        ?>
-        <meta name="searchly" data-url="<?php echo $searchly_url; ?>" data-user="<?php echo $searchly_user; ?>"
-              data-password="<?php echo $searchly_password; ?>" /><?php
-=======
       public function add_searchly_meta_tag() {
 	      $searchly_user = get_theme_mod( 'rdc_searchly_user' );
 	      $searchly_password = get_theme_mod( 'rdc_searchly_password' );
 	      $searchly_url = get_theme_mod( 'rdc_searchly_url' );
 	      ?><meta name="searchly" data-url="<?php echo $searchly_url; ?>" data-user="<?php echo $searchly_user; ?>" data-password="<?php echo $searchly_password; ?>" /><?php
->>>>>>> origin/latest
       }
     }
   }
