@@ -380,6 +380,9 @@ namespace UsabilityDynamics\WPP {
           'map_height' => '550',
           'per_page' => '10',
           'thumbnail_size' => '',
+          'sale_type' => '',
+          'zoom' => '',
+          'center_on' => '',
         );
         $atts = shortcode_atts( $defaults, $atts );
 
@@ -393,6 +396,9 @@ namespace UsabilityDynamics\WPP {
           'featured_image_url',
           'gallery',
           '_map_marker_url',
+          'sale_type' => '',
+          'zoom' => '',
+          'center_on' => '',
         ), ud_get_wp_property( 'configuration.feature_settings.supermap.display_attributes', array() ) );
         $atts[ 'fields' ] = apply_filters( 'wpp::advanced_supermap::property_fields', $atts[ 'fields' ] );
         $atts[ 'fields' ] = is_array( $atts[ 'fields' ] ) ? implode( ',', $atts[ 'fields' ] ) : $atts[ 'fields' ];

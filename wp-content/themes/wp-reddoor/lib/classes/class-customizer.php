@@ -101,6 +101,41 @@ namespace UsabilityDynamics\RDC {
         $wp_customize->add_setting('rdc_searchly_user', array(
           'default' => ''
         ));
+
+	      //Searchly meta tag data
+	      $wp_customize->add_setting( 'rdc_searchly_url', array(
+		      'default'              => ''
+	      ));
+
+	      $wp_customize->add_control( 'rdc_searchly_url', array(
+		      'label'   => __( 'Searchly URL', 'rdc' ),
+		      'section' => 'rdc_supermap',
+		      'type'    => 'text',
+		      'settings' => 'rdc_searchly_url'
+	      ));
+
+	      $wp_customize->add_setting( 'rdc_searchly_user', array(
+		      'default'              => ''
+	      ));
+
+	      $wp_customize->add_control( 'rdc_searchly_user', array(
+		      'label'   => __( 'Searchly User', 'rdc' ),
+		      'section' => 'rdc_supermap',
+		      'type'    => 'text',
+		      'settings' => 'rdc_searchly_user'
+	      ));
+
+	      $wp_customize->add_setting( 'rdc_searchly_password', array(
+		      'default'              => ''
+	      ));
+
+	      $wp_customize->add_control( 'rdc_searchly_password', array(
+		      'label'   => __( 'Searchly Password', 'rdc' ),
+		      'section' => 'rdc_supermap',
+		      'type'    => 'text',
+		      'settings' => 'rdc_searchly_password'
+	      ));
+
       }
     }
   }

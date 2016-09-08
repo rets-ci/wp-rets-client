@@ -1253,6 +1253,7 @@
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
+                // $scope.getZommCenter();
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
@@ -1441,6 +1442,7 @@
           }
         });
 
+
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
@@ -1547,6 +1549,10 @@
                 $scope.latlngbounds.extend($scope.latLngs[i]);
               }
               map.fitBounds($scope.latlngbounds);
+              var zoom = vars.atts.zoom;
+              var latLngArr = vars.atts.center_on.split(',');
+              map.setZoom(parseInt(zoom));
+              map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
             }
 
             // Finally Initialize Marker Cluster
