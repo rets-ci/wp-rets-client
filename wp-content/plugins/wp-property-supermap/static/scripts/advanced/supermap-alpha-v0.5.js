@@ -1169,6 +1169,20 @@
           return {value: int, label: cur != 'NaN' ? cur : ''};
         };
 
+
+        /**
+         *
+         * Return meta values for map
+         */
+        function get_map_metadata() {
+          var url = jQuery('meta[name="searchly"]').attr('data-url');
+          var user = jQuery('meta[name="searchly"]').attr('data-user');
+          var password = jQuery('meta[name="searchly"]').attr('data-password');
+          console.log('url:', url);
+          console.log('user:', user);
+          console.log('password:', password);
+        }
+
         /**
          *
          * @returns {*|{}}
@@ -1211,6 +1225,8 @@
             $scope._request.abort();
           }
 
+          get_map_metadata();
+
           var search_form = jQuery('.sm-search-form form');
 
           search_form.addClass('processing');
@@ -1237,6 +1253,7 @@
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
+                // $scope.getZommCenter();
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
@@ -1425,6 +1442,7 @@
           }
         });
 
+
         /**
          * Refresh Markers ( Marker Cluster ) on Google Map
          */
@@ -1531,6 +1549,10 @@
                 $scope.latlngbounds.extend($scope.latLngs[i]);
               }
               map.fitBounds($scope.latlngbounds);
+              var zoom = vars.atts.zoom;
+              var latLngArr = vars.atts.center_on.split(',');
+              map.setZoom(parseInt(zoom));
+              map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
             }
 
             // Finally Initialize Marker Cluster
