@@ -1225,7 +1225,7 @@
             $scope._request.abort();
           }
 
-          get_map_metadata();
+          // get_map_metadata();
 
           var search_form = jQuery('.sm-search-form form');
 
@@ -1240,7 +1240,6 @@
             },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
-
 
             setStatus('ready');
 
@@ -1276,6 +1275,8 @@
             search_form.removeClass('processing');
             $scope.toggleSearchButton();
           });
+
+          // console.log('request', $scope._request);
         }
 
         /**
@@ -1549,10 +1550,18 @@
                 $scope.latlngbounds.extend($scope.latLngs[i]);
               }
               map.fitBounds($scope.latlngbounds);
-              var zoom = vars.atts.zoom;
-              var latLngArr = vars.atts.center_on.split(',');
-              map.setZoom(parseInt(zoom));
-              map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
+
+              console.log('Zoom: ', vars.atts.zoom);
+              console.log('Center_on: ', vars.atts.center_on);
+
+              if (vars.atts.zoom) {
+                var zoom = vars.atts.zoom;
+              }
+              if (vars.atts.center_on) {
+                var latLngArr = vars.atts.center_on.split(',');
+                map.setZoom(parseInt(zoom));
+                map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
+              }
             }
 
             // Finally Initialize Marker Cluster
