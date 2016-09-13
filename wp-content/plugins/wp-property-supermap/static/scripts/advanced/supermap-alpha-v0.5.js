@@ -1117,6 +1117,8 @@
           ]
         });
 
+        console.log('Host: ', window.location.host);
+
         /**
          *
          * @param r
@@ -1174,14 +1176,9 @@
          *
          * Return meta values for map
          */
-        function get_map_metadata() {
-          var url = jQuery('meta[name="searchly"]').attr('data-url');
-          var user = jQuery('meta[name="searchly"]').attr('data-user');
-          var password = jQuery('meta[name="searchly"]').attr('data-password');
-          console.log('url:', url);
-          console.log('user:', user);
-          console.log('password:', password);
-        }
+        $scope.get_map_metadata_url = jQuery('meta[name="searchly"]').attr('data-url');
+        $scope.get_map_metadata_user = jQuery('meta[name="searchly"]').attr('data-user');
+        $scope.get_map_metadata_password = jQuery('meta[name="searchly"]').attr('data-password');
 
         /**
          *
@@ -1225,8 +1222,6 @@
             $scope._request.abort();
           }
 
-          // get_map_metadata();
-
           var search_form = jQuery('.sm-search-form form');
 
           search_form.addClass('processing');
@@ -1236,7 +1231,7 @@
             type: type,
             method: "GET",
             headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+              "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
             },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
@@ -1276,7 +1271,7 @@
             $scope.toggleSearchButton();
           });
 
-          // console.log('request', $scope._request);
+          console.log('request', $scope._request);
         }
 
         /**
@@ -1319,7 +1314,7 @@
             type: type,
             method: "GET",
             headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+              "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
             },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
@@ -1556,10 +1551,10 @@
 
               if (vars.atts.zoom) {
                 var zoom = vars.atts.zoom;
+                map.setZoom(parseInt(zoom));
               }
               if (vars.atts.center_on) {
                 var latLngArr = vars.atts.center_on.split(',');
-                map.setZoom(parseInt(zoom));
                 map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
               }
             }
@@ -1612,7 +1607,7 @@
               index: index,
               type: type,
               headers: {
-                "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+                "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
               },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
@@ -1718,7 +1713,7 @@
                 method: "POST",
                 size: 0,
                 headers: {
-                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+                  "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
                 },
                 body: _source
               }, select_queryResponse);
@@ -1785,7 +1780,7 @@
                 method: "POST",
                 size: 0,
                 headers: {
-                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+                  "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
                 },
                 body: {
                   "regular": {
