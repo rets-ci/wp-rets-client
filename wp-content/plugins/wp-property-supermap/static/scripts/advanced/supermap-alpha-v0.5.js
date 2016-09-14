@@ -1143,7 +1143,6 @@
          * @param r
          */
         function cast_fields(r) {
-          // console.log('R:', r);
           r._source.tax_input.price[0] = parseInt(r._source.tax_input.price[0]);
           r._source.tax_input.total_living_area_sqft[0] = parseInt(r._source.tax_input.total_living_area_sqft[0]);
           r._source.tax_input.days_on_market[0] = parseInt(r._source.tax_input.days_on_market[0]);
@@ -1266,7 +1265,7 @@
                 $scope.total = response.hits.total;
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
-                $scope.refreshMarkers(true);
+                $scope.refreshMarkers(false);
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
@@ -1333,7 +1332,7 @@
             headers: {
               "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
             },
-            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
 
@@ -1348,7 +1347,6 @@
                 debug('Error occurred during getting properties data.');
               } else {
                 response.hits.hits.filter(cast_fields);
-                console.log('filter: ', response.hits.hits);
                 $scope.total = response.hits.total;
                 $scope.properties = response.hits.hits;
                 // Select First Element of Properties Collection
@@ -1356,6 +1354,7 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
+                  // $scope.refreshMarkers(true);
                   $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
                 } else {
                   $scope.refreshMarkers(false);
@@ -1384,58 +1383,6 @@
             $scope.toggleSearchButton();
 
           });
-
-        };
-
-        $scope.getExistProperties = function (properties) {
-
-          if ($scope._request) {
-            $scope._request.abort();
-          }
-
-          var search_form = jQuery('.sm-search-form form');
-
-          search_form.addClass('processing');
-          $scope.toggleSearchButton();
-
-          $scope.fix_terms();
-
-          jQuery('.sm-search-layer', ngAppDOM).show();
-
-          $scope.loaded = true;
-
-          if (typeof properties == 'undefined') {
-            debug('Error occurred during getting properties data.');
-          } else {
-            properties.filter(cast_fields);
-            $scope.total = properties.length;
-            $scope.properties = properties;
-            // Select First Element of Properties Collection
-            if ($scope.properties.length > 0) {
-              $scope.currentProperty = $scope.properties[0];
-              $scope.properties[0].isSelected = true;
-              $scope.loadImages($scope.properties[0]);
-              // $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
-            } else {
-              // $scope.refreshMarkers(false);
-            }
-
-            if ($scope.total > $scope.properties.length) {
-              if (!$scope.loading_more_properties) {
-                $scope.loading_more_properties = true;
-              }
-              if (!$scope.loadNgMapChangedEvent) {
-                $scope.loadNgMapChangedEvent = true;
-                // $scope.addMapChanged($scope.properties);
-              }
-              search_form.removeClass('mapChanged');
-            }
-          }
-          $scope.col_changed();
-
-          search_form.removeClass('processing');
-
-          $scope.toggleSearchButton();
 
         };
 
@@ -1491,7 +1438,6 @@
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
               jQuery('.sm-search-form form').submit();
-              // $scope.getExistProperties(properties_data);
 
             });
           });
@@ -1616,25 +1562,28 @@
               // automatically map resize
               map_resize();
 
-              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-              $scope.latlngbounds = new google.maps.LatLngBounds();
-              for (var i = 0; i < $scope.latLngs.length; i++) {
-                $scope.latlngbounds.extend($scope.latLngs[i]);
-                console.log('latLngs', $scope.latLngs.length);
-              }
-              map.fitBounds($scope.latlngbounds);
+              function mapCenter() {
+                // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+                $scope.latlngbounds = new google.maps.LatLngBounds();
+                for (var i = 0; i < $scope.latLngs.length; i++) {
+                  $scope.latlngbounds.extend($scope.latLngs[i]);
+                }
+                map.fitBounds($scope.latlngbounds);
 
-              console.log('Center on changed!');
+                console.log('Center on changed!', $scope.latLngs.length);
 
-              // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
-              if (vars.atts.zoom) {
-                var zoom = vars.atts.zoom;
-                map.setZoom(parseInt(zoom));
+                // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
+                if (vars.atts.zoom) {
+                  var zoom = vars.atts.zoom;
+                  map.setZoom(parseInt(zoom));
+                }
+                if (vars.atts.center_on) {
+                  var latLngArr = vars.atts.center_on.split(',');
+                  map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
+                }
               }
-              if (vars.atts.center_on) {
-                var latLngArr = vars.atts.center_on.split(',');
-                map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
-              }
+              mapCenter();
+              setTimeout(mapCenter, 2000);
             }
 
             // Finally Initialize Marker Cluster
@@ -1667,6 +1616,7 @@
               var size = cluster.getSize();
               var markers = cluster.getMarkers();
             });
+
 
           });
 
@@ -2237,7 +2187,6 @@
 
             formQuery = removeAllBlankOrNull(jQuery.extend(true, formQuery, merge));
 
-            console.log('formQuery: ', formQuery);
           });
 
           if (jQuery.isEmptyObject(formQuery.bool.must_not)) {
