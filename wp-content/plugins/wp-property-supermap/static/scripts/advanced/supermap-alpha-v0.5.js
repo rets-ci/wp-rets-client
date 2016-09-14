@@ -348,6 +348,27 @@
   }
 
   /**
+   * Map resize function
+   *
+   */
+  function map_resize() {
+    if ( jQuery( window ).width() < 992 ) {
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
+      jQuery('.sm-scrollable-table > div').height('100%');
+      jQuery('.sm-properties-grid').height('100%');
+    } else {
+      var height = jQuery(window).height() - jQuery("#header").height() + 29;
+      if (height < 400) {
+        height = 400;
+      }
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
+      jQuery('.sm-scrollable-table > div').height(height - 303);
+      jQuery('.sm-properties-grid').height(height - 103);
+    }
+    console.log('map height: ', jQuery('.wpp-advanced-supermap').height());
+  }
+
+  /**
    *
    * @param options
    */
@@ -1247,7 +1268,6 @@
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
-                // $scope.getZommCenter();
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
@@ -1270,8 +1290,6 @@
             search_form.removeClass('processing');
             $scope.toggleSearchButton();
           });
-
-          console.log('request', $scope._request);
         }
 
         /**
@@ -1350,7 +1368,7 @@
                   getMoreProperties();
                   if (!$scope.loadNgMapChangedEvent) {
                     $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged();
+                    $scope.addMapChanged($scope.properties);
                   }
                   search_form.removeClass('mapChanged');
                 }
@@ -1393,7 +1411,7 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.addMapChanged = function addMapChanged() {
+        $scope.addMapChanged = function addMapChanged(properties_data) {
           debug('addMapChanged');
 
           NgMap.getMap().then(function (map) {
@@ -1402,9 +1420,15 @@
               return false;
             }
 
+            // var properties_data = properties_data;
+            console.log('properties_data: ', properties_data);
+            console.log('PD_length: ', properties_data.length);
+
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
               var zoom = map.getZoom();
+              // var properties = getMoreProperties();
+              // console.log('properties: ', properties);
               if (zoom > 4) {
                 var SouthWestLatitude = bounds.getSouthWest().lat();
                 var NorthEastLatitude = bounds.getNorthEast().lat();
@@ -1421,6 +1445,7 @@
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
               jQuery('.sm-search-form form').submit();
+
             });
           });
         };
@@ -1510,6 +1535,7 @@
                * - Selects Collection Row
                */
               google.maps.event.addListener(marker, 'click', (function (marker, i, $scope) {
+
                 return function () {
                   // Preselect a row
                   var index;
@@ -1539,6 +1565,10 @@
             }
 
             if (update_map_pos) {
+
+              // automatically map resize
+              map_resize();
+
               // Set Map 'Zoom' and 'Center On' automatically using existing markers.
               $scope.latlngbounds = new google.maps.LatLngBounds();
               for (var i = 0; i < $scope.latLngs.length; i++) {
@@ -1546,9 +1576,9 @@
               }
               map.fitBounds($scope.latlngbounds);
 
-              console.log('Zoom: ', vars.atts.zoom);
-              console.log('Center_on: ', vars.atts.center_on);
+              console.log('Center on changed!');
 
+              // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
               if (vars.atts.zoom) {
                 var zoom = vars.atts.zoom;
                 map.setZoom(parseInt(zoom));
@@ -1581,6 +1611,14 @@
                   width: 60
                 }
               ]
+            });
+
+            // Clusters actions
+            google.maps.event.addListener($scope.markerClusterer, 'clusterclick', function (cluster) {
+              var center = cluster.getCenter();
+              var size = cluster.getSize();
+              var markers = cluster.getMarkers();
+              console.log('markers: ', markers);
             });
 
 
@@ -2038,7 +2076,6 @@
           for (var i = 0; i < $scope.dynMarkers.length; i++) {
             if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id) {
               NgMap.getMap().then(function (map) {
-                //console.log( "DOing stuff with infowindow" );
                 $scope.infoBubble.setContent(jQuery('.sm-marker-infobubble', ngAppDOM).html());
                 $scope.infoBubble.setPosition($scope.latLngs[i]);
                 $scope.infoBubble.open(map);
@@ -2204,7 +2241,6 @@
           google.maps.event.addListener(map, 'resize', function () {
             debug('mapEvent', 'resize');
           });
-
 
         });
 
