@@ -1581,8 +1581,10 @@
                   var latLngArr = vars.atts.center_on.split(',');
                   map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
                 }
+                google.maps.event.trigger(map, 'resize');
               }
               mapCenter();
+
               setTimeout(mapCenter, 2000);
             }
 
