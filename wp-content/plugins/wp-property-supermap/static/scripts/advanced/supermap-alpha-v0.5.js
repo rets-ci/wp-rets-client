@@ -745,6 +745,9 @@
          */
         $scope.priceModeFormat = function priceModeFormat(mode) {
           if ($scope.selected_sale_types.length !== 1) {
+            if ($scope.selected_sale_types.length == 0) {
+              jQuery('.rdc-sale-types input#sale_type_sale').attr('checked', 'checked');
+            }
             switch (mode) {
               case 'Sale':
                 return true;
