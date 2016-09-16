@@ -1263,8 +1263,8 @@
          */
         var client = new jQuery.es.Client({
           hosts: [
-            window.location.host,
-            //'dori-us-east-1.searchly.com'
+            // window.location.host,
+            'dori-us-east-1.searchly.com'
           ]
         });
 
