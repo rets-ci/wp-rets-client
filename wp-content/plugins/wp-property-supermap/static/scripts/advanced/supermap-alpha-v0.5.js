@@ -462,17 +462,30 @@
       .filter('simpleAmount', function () {
         return function (int) {
           if (!int || int == 0) return '';
-          int = Math.round(int / 1000) * 1000
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
           if (!String(int).length) return '';
-          return '$' + ( int / 1000 ) + 'k';
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
         };
       })
 
       .filter('numberFormat', function () {
         return function (int) {
           if (!int || int == 0) return '';
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
           if (!String(int).length) return '';
-          return '$' + ( int );
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
         };
       })
 
@@ -735,6 +748,7 @@
             sale_type.push(jQuery(this).val());
           });
           $scope.selected_sale_types = sale_type;
+          jQuery('input.price-input').val('');
           $scope.$apply();
         };
 
@@ -802,11 +816,20 @@
                 max: 0
               }
             }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
-            if (mode == 'min') {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            if (parseInt(jQuery(target).val() >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              }
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              $scope.current_filter.price[mode] = parseInt(jQuery(target).val());
+              if (mode == 'min') {
+                this.current_min = parseInt(jQuery(target).val());
+              } else {
+                this.current_max = parseInt(jQuery(target).val());
+              }
             }
           },
 
@@ -879,11 +902,20 @@
                 max: 0
               }
             }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
-            if (mode == 'min') {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+            if (parseInt(jQuery(target).val() >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              }
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 10) * 10;
+              $scope.current_filter.price[mode] = parseInt(jQuery(target).val());
+              if (mode == 'min') {
+                this.current_min = parseInt(jQuery(target).val());
+              } else {
+                this.current_max = parseInt(jQuery(target).val());
+              }
             }
           },
 
