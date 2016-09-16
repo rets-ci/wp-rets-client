@@ -817,7 +817,9 @@
               }
             }
             var targetVal = jQuery(target).val();
-            var clearTargetVal = targetVal.replace(/,/g,'');
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
+            console.log('clearTargetVal', clearTargetVal);
             if (parseInt(clearTargetVal >= 10000)) {
               $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
@@ -905,7 +907,8 @@
               }
             }
             var targetVal = jQuery(target).val();
-            var clearTargetVal = targetVal.replace(/,/g,'');
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
             if (parseInt(clearTargetVal >= 10000)) {
               $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
