@@ -816,19 +816,21 @@
                 max: 0
               }
             }
-            if (parseInt(jQuery(target).val() >= 10000)) {
-              $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(/,/g,'');
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
-                this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               } else {
-                this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               }
             } else {
-              $scope.current_filter.price[mode] = parseInt(jQuery(target).val());
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
               if (mode == 'min') {
-                this.current_min = parseInt(jQuery(target).val());
+                this.current_min = parseInt(clearTargetVal);
               } else {
-                this.current_max = parseInt(jQuery(target).val());
+                this.current_max = parseInt(clearTargetVal);
               }
             }
           },
@@ -902,19 +904,21 @@
                 max: 0
               }
             }
-            if (parseInt(jQuery(target).val() >= 10000)) {
-              $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(/,/g,'');
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
-                this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               } else {
-                this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               }
             } else {
-              $scope.current_filter.price[mode] = parseInt(jQuery(target).val());
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
               if (mode == 'min') {
-                this.current_min = parseInt(jQuery(target).val());
+                this.current_min = parseInt(clearTargetVal);
               } else {
-                this.current_max = parseInt(jQuery(target).val());
+                this.current_max = parseInt(clearTargetVal);
               }
             }
           },
