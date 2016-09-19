@@ -462,9 +462,30 @@
       .filter('simpleAmount', function () {
         return function (int) {
           if (!int || int == 0) return '';
-          int = Math.round(int / 1000) * 1000
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
           if (!String(int).length) return '';
-          return '$' + ( int / 1000 ) + 'k';
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
+        };
+      })
+
+      .filter('numberFormat', function () {
+        return function (int) {
+          if (!int || int == 0) return '';
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
+          if (!String(int).length) return '';
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
         };
       })
 
@@ -510,6 +531,7 @@
       .controller('main', ['$document', '$scope', '$http', '$filter', 'NgMap', function ($document, $scope, $http, $filter, NgMap) {
 
         var resizeTimer, idle_listener;
+
         jQuery(window).on('resize', function () {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function () {
@@ -581,6 +603,8 @@
           }
 
           $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+
+          $scope.selected_sale_types = $scope.current_filter.sale_type.split(',');
 
           debug('setFiltersFromQuery', '$scope.current_filter', $scope.current_filter);
 
@@ -715,16 +739,59 @@
           return false;
         };
 
+        /**
+         * Checking sale type for price selectors
+         */
+        $scope.sale_type_price = function () {
+          var sale_type = [];
+          jQuery('.rdc-sale-types ul li input:checkbox:checked').each(function () {
+            sale_type.push(jQuery(this).val());
+          });
+          $scope.selected_sale_types = sale_type;
+          $scope.salePricing.set_min(0);
+          $scope.salePricing.set_max(0);
+          $scope.$apply();
+        };
+
+        /**
+         * Price mode
+         *
+         * @param sale_type
+         */
+        $scope.priceModeFormat = function priceModeFormat(mode) {
+          if ($scope.selected_sale_types.length !== 1) {
+            if ($scope.selected_sale_types.length == 0) {
+              jQuery('.rdc-sale-types input#sale_type_sale').attr('checked', 'checked');
+            }
+            switch (mode) {
+              case 'Sale':
+                return true;
+                break;
+              case 'Rent':
+                return false;
+                break;
+            }
+          } else {
+            for (var i in $scope.selected_sale_types) {
+              if ($scope.selected_sale_types[i] == mode) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
         $document.bind('click', function (event) {
           $scope.show_dropdown_columns = false;
           $scope.$apply();
         });
 
         /**
+         * Sale pricing
          *
-         * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
+         * @type {{min: $scope.salePricing.min, max: $scope.salePricing.max}}
          */
-        $scope.pricing = window.pricing = {
+        $scope.salePricing = window.salePricing = {
 
           mode: false,
 
@@ -750,11 +817,24 @@
                 max: 0
               }
             }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
-            if (mode == 'min') {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
+            console.log('clearTargetVal', clearTargetVal);
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              }
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
+              if (mode == 'min') {
+                this.current_min = parseInt(clearTargetVal);
+              } else {
+                this.current_max = parseInt(clearTargetVal);
+              }
             }
           },
 
@@ -795,6 +875,96 @@
             this.mode = mode;
           }
         };
+
+        /**
+         * Rent pricing
+         *
+         * @type {{min: $scope.rentPricing.min, max: $scope.rentPricing.max}}
+         */
+        $scope.rentPricing = window.rentPricing = {
+
+          mode: false,
+
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
+
+          min_prices: [750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000],
+          max_prices: [1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000],
+
+
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('price-input')) {
+              this.mode = '';
+            }
+          },
+
+          format: function (target, mode) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              }
+            } else {
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
+              if (mode == 'min') {
+                this.current_min = parseInt(clearTargetVal);
+              } else {
+                this.current_max = parseInt(clearTargetVal);
+              }
+            }
+          },
+
+          set_min: function (_price) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.price.min = _price;
+            this.recalculate();
+            this.mode = 'max';
+          },
+
+          set_max: function (_price) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.price.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function () {
+            var j;
+            j = typeof this.current_min == 'number' ? this.current_min : 0;
+            for (var i in this.max_prices) {
+              this.max_prices[i] = j += 250;
+            }
+          },
+
+          focus: function (mode) {
+            this.mode = mode;
+          }
+        };
+
 
         /**
          *
@@ -1134,7 +1304,7 @@
         var client = new jQuery.es.Client({
           hosts: [
             window.location.host,
-            //'dori-us-east-1.searchly.com'
+            // 'dori-us-east-1.searchly.com'
           ]
         });
 
@@ -1269,7 +1439,7 @@
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
-                  $scope.addMapChanged($scope.properties);
+                  $scope.addMapChanged();
                 }
 
                 if ($scope.total > $scope.properties.length) {
@@ -1367,7 +1537,13 @@
                   getMoreProperties();
                   if (!$scope.loadNgMapChangedEvent) {
                     $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged($scope.properties);
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
+                } else {
+                  if (!$scope.loadNgMapChangedEvent) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
                   }
                   search_form.removeClass('mapChanged');
                 }
@@ -1410,7 +1586,7 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.addMapChanged = function addMapChanged(properties_data) {
+        $scope.addMapChanged = function addMapChanged() {
           debug('addMapChanged');
 
           NgMap.getMap().then(function (map) {
@@ -1581,8 +1757,11 @@
                   var latLngArr = vars.atts.center_on.split(',');
                   map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
                 }
+                google.maps.event.trigger(map, 'resize');
               }
+
               mapCenter();
+
               setTimeout(mapCenter, 2000);
             }
 
@@ -2110,12 +2289,14 @@
         });
 
         $document.on('change', '.rdc-sale-types input:checkbox', function () {
+          $scope.sale_type_price();
           if (!jQuery(".rdc-sale-types input:checkbox:checked").length) {
             jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must_not][5][terms][tax_input.sale_type][]');
           } else {
             jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must][5][terms][tax_input.sale_type][]');
           }
         });
+
 
         /**
          * SEARCH FILTER EVENT

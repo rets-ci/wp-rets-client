@@ -50,27 +50,53 @@ use \UsabilityDynamics\RDC\Utils;
       <div class="col-md-4">
 
         <label><?php _e( 'Price', 'reddoor' ); ?></label>
-        <div class="rdc-range-fields" click-out="pricing.click_out($event)">
+        <!-- Sale price mode -->
+        <div class="rdc-range-fields" click-out="salePricing.click_out($event)" ng-show="priceModeFormat('Sale')">
 
-          <input onchange="pricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="pricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="pricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="pricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="salePricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="salePricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="salePricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="salePricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="pricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
-          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="pricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="salePricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="salePricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
 
-          <div class="price-dropdown" ng-show="pricing.mode">
-            <ul class="min-values" ng-show="pricing.mode == 'min'">
-              <li><a href="javascript:;" ng-click="pricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
-              <li ng-repeat="_price in pricing.min_prices track by $index"><a ng-click="pricing.set_min(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
+          <div class="price-dropdown" ng-show="salePricing.mode">
+            <ul class="min-values" ng-show="salePricing.mode == 'min'">
+              <li><a href="javascript:;" ng-click="salePricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_price in salePricing.min_prices track by $index"><a ng-click="salePricing.set_min(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
             </ul>
-            <ul class="max-values" ng-show="pricing.mode == 'max'">
-              <li ng-repeat="_price in pricing.max_prices track by $index"><a ng-click="pricing.set_max(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
-              <li><a href="javascript:;" ng-click="pricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            <ul class="max-values" ng-show="salePricing.mode == 'max'">
+              <li ng-repeat="_price in salePricing.max_prices track by $index"><a ng-click="salePricing.set_max(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
+              <li><a href="javascript:;" ng-click="salePricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
             </ul>
           </div>
 
           <div class="clear"></div>
         </div>
+        <!-- Sale price mode end -->
+
+        <!-- Rent price mode -->
+        <div class="rdc-range-fields" click-out="rentPricing.click_out($event)" ng-show="priceModeFormat('Rent')">
+
+          <input onchange="rentPricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="rentPricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="rentPricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="rentPricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="rentPricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
+          <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="rentPricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
+
+          <div class="price-dropdown" ng-show="rentPricing.mode">
+            <ul class="min-values" ng-show="rentPricing.mode == 'min'">
+              <li><a href="javascript:;" ng-click="rentPricing.set_min('')"><?php _e('No Min', 'reddor'); ?></a></li>
+              <li ng-repeat="_price in rentPricing.min_prices track by $index"><a ng-click="rentPricing.set_min(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
+            </ul>
+            <ul class="max-values" ng-show="rentPricing.mode == 'max'">
+              <li ng-repeat="_price in rentPricing.max_prices track by $index"><a ng-click="rentPricing.set_max(_price)" href="javascript:;" ng-bind-template="{{_price | simpleAmount}}"></a></li>
+              <li><a href="javascript:;" ng-click="rentPricing.set_max('')"><?php _e('No Max', 'reddor'); ?></a></li>
+            </ul>
+          </div>
+
+          <div class="clear"></div>
+        </div>
+        <!-- Rent price mode end -->
 
       </div>
 
