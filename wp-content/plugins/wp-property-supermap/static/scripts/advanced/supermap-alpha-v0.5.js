@@ -151,9 +151,9 @@
             type: 'property',
             method: "POST",
             size: 0,
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
+            // headers: {
+            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+            // },
             body: {
               "regular": {
                 "text": query.term.toLowerCase(),
@@ -1819,9 +1819,9 @@
             client.get({
               index: index,
               type: type,
-              headers: {
-                "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-              },
+              // headers: {
+              //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+              // },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
@@ -1992,9 +1992,9 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers: {
-                  "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-                },
+                // headers: {
+                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+                // },
                 body: {
                   "regular": {
                     "text": query.term.toLowerCase(),
