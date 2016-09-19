@@ -53,8 +53,8 @@ use \UsabilityDynamics\RDC\Utils;
         <!-- Sale price mode -->
         <div class="rdc-range-fields" click-out="salePricing.click_out($event)" ng-show="priceModeFormat('Sale')">
 
-          <input onchange="salePricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="salePricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="salePricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="salePricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="salePricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" autocomplete="off" class="price-input" ng-focus="salePricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="salePricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" autocomplete="off" class="price-input" ng-focus="salePricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="salePricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="salePricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
@@ -77,8 +77,8 @@ use \UsabilityDynamics\RDC\Utils;
         <!-- Rent price mode -->
         <div class="rdc-range-fields" click-out="rentPricing.click_out($event)" ng-show="priceModeFormat('Rent')">
 
-          <input onchange="rentPricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" class="price-input" ng-focus="rentPricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="rentPricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" class="price-input" ng-focus="rentPricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="rentPricing.format(this, 'min')" value="{{current_filter.price.min | simpleAmount}}" autocomplete="off" class="price-input" ng-focus="rentPricing.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="rentPricing.format(this, 'max')" value="{{current_filter.price.max | simpleAmount}}" autocomplete="off" class="price-input" ng-focus="rentPricing.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.min}}" ng-model="rentPricing.current_min" type="text" name="bool[must][2][range][tax_input.price][gte]" />
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.price.max}}" ng-model="rentPricing.current_max" type="text" name="bool[must][2][range][tax_input.price][lte]" />
@@ -105,8 +105,8 @@ use \UsabilityDynamics\RDC\Utils;
         <label><?php _e( 'Square Feet', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="footage.click_out($event)">
 
-          <input onchange="footage.format(this, 'min')" value="{{current_filter.feet.min}}" class="feet-input" ng-focus="footage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="footage.format(this, 'max')" value="{{current_filter.feet.max}}" class="feet-input" ng-focus="footage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="footage.format(this, 'min')" value="{{current_filter.feet.min}}" class="feet-input" autocomplete="off" ng-focus="footage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="footage.format(this, 'max')" value="{{current_filter.feet.max}}" class="feet-input" autocomplete="off" ng-focus="footage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.feet.min}}" ng-model="footage.current_min" type="text" name="bool[must][3][range][meta_input.total_living_area_sqft_2][gte]" />
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.feet.max}}" ng-model="footage.current_max" type="text" name="bool[must][3][range][meta_input.total_living_area_sqft_2][lte]" />
@@ -132,8 +132,8 @@ use \UsabilityDynamics\RDC\Utils;
         <label><?php _e( 'Lot Size', 'reddoor' ); ?></label>
         <div class="rdc-range-fields" click-out="acrage.click_out($event)">
 
-          <input onchange="acrage.format(this, 'min')" value="{{current_filter.acrage.min}}" class="acres-input" ng-focus="acrage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
-          <input onchange="acrage.format(this, 'max')" value="{{current_filter.acrage.max}}" class="acres-input" ng-focus="acrage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
+          <input onchange="acrage.format(this, 'min')" value="{{current_filter.acrage.min}}" class="acres-input" autocomplete="off" ng-focus="acrage.focus('min')" placeholder="<?php _e('No Min'); ?>" type="text" />
+          <input onchange="acrage.format(this, 'max')" value="{{current_filter.acrage.max}}" class="acres-input" autocomplete="off" ng-focus="acrage.focus('max')" placeholder="<?php _e('No Max'); ?>" type="text" />
 
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.acrage.min}}" ng-model="acrage.current_min" type="text" name="bool[must][4][range][tax_input.approximate_lot_size][gte]" />
           <input style="opacity:0;position:absolute;z-index:-1;left:0;" only-digits ng-value="{{current_filter.acrage.max}}" ng-model="acrage.current_max" type="text" name="bool[must][4][range][tax_input.approximate_lot_size][lte]" />
