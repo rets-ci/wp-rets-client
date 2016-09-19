@@ -8,7 +8,14 @@
  * Text Domain: wp_rets_client
  * Author URI: http://usabilitydynamics.com
  *
- * Copyright 2012 - 2015 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
+ * Requires at least: 4.0
+ * Tested up to: 4.5.2
+ * Domain Path: /static/languages/
+ * Author URI: https://www.usabilitydynamics.com
+ * GitHub Plugin URI: usabilitydynamics/wp-rets-client
+ * GitHub Branch: production
+ *
+ * Copyright 2012 - 2016 Usability Dynamics, Inc.  ( email : info@usabilitydynamics.com )
  *
  */
 
@@ -76,7 +83,7 @@ if( !function_exists( 'ud_wp_rets_client_message' ) ) {
    * Renders admin notes in case there are errors on plugin init
    *
    * @author Usability Dynamics, Inc.
-   * @since 1.0.0
+   * @since 0.2.0
    */
   function ud_wp_rets_client_message() {
     global $_ud_wp_rets_client_error;
