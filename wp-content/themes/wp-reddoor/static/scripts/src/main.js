@@ -546,28 +546,7 @@ function make_base_auth(user, password) {
 
     //console.log( rdc.client );
 
-
   } );
-
-  function map_resize() {
-    if ( jQuery( window ).width() < 992 ) {
-      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
-      jQuery('.sm-scrollable-table > div').height('100%');
-      jQuery('.sm-properties-grid').height('100%');
-    } else {
-      var height = jQuery(window).height() - jQuery("#header").height() + 29;
-      if (height < 400) {
-        height = 400;
-      }
-      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
-
-
-
-        jQuery('.sm-scrollable-table > div').height(height - 303);
-
-      jQuery('.sm-properties-grid').height(height - 103);
-    }
-  }
 
   /**
    * Resizes Search Block on Home page to fit the Viewport
@@ -602,7 +581,7 @@ function make_base_auth(user, password) {
     jQuery( window ).on( 'resize', function () {
       clearTimeout( resizeTimer );
       resizeTimer = setTimeout( function () {
-        map_resize();
+        // map_resize();
         frontPageSearchBlock_resize();
         if (jQuery(window).width() >= 1200) {
           rdc_property_sticky();

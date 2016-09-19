@@ -82,9 +82,9 @@
             type: 'property',
             method: "POST",
             size: 0,
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
+            // headers: {
+            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+            // },
             body: _source
           }, select_queryResponse);
 
@@ -151,9 +151,9 @@
             type: 'property',
             method: "POST",
             size: 0,
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
+            // headers: {
+            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+            // },
             body: {
               "regular": {
                 "text": query.term.toLowerCase(),
@@ -348,6 +348,27 @@
   }
 
   /**
+   * Map resize function
+   *
+   */
+  function map_resize() {
+    if (jQuery(window).width() < 992) {
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height('auto');
+      jQuery('.sm-scrollable-table > div').height('100%');
+      jQuery('.sm-properties-grid').height('100%');
+    } else {
+      var height = jQuery(window).height() - jQuery("#header").height() + 29;
+      if (height < 400) {
+        height = 400;
+      }
+      jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
+      jQuery('.sm-scrollable-table > div').height(height - 341);
+      jQuery('.sm-properties-grid').height(height - 103);
+    }
+    console.log('map height: ', jQuery('.wpp-advanced-supermap').height());
+  }
+
+  /**
    *
    * @param options
    */
@@ -441,9 +462,30 @@
       .filter('simpleAmount', function () {
         return function (int) {
           if (!int || int == 0) return '';
-          int = Math.round(int / 1000) * 1000
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
           if (!String(int).length) return '';
-          return '$' + ( int / 1000 ) + 'k';
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
+        };
+      })
+
+      .filter('numberFormat', function () {
+        return function (int) {
+          if (!int || int == 0) return '';
+          if (int >= 10000) {
+            int = Math.round(int / 1000) * 1000
+          }
+          if (!String(int).length) return '';
+          if (int >= 10000) {
+            return '$' + ( int / 1000 ) + 'k';
+          } else {
+            return '$' + ( int );
+          }
         };
       })
 
@@ -489,6 +531,7 @@
       .controller('main', ['$document', '$scope', '$http', '$filter', 'NgMap', function ($document, $scope, $http, $filter, NgMap) {
 
         var resizeTimer, idle_listener;
+
         jQuery(window).on('resize', function () {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function () {
@@ -560,6 +603,8 @@
           }
 
           $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+
+          $scope.selected_sale_types = $scope.current_filter.sale_type.split(',');
 
           debug('setFiltersFromQuery', '$scope.current_filter', $scope.current_filter);
 
@@ -694,16 +739,59 @@
           return false;
         };
 
+        /**
+         * Checking sale type for price selectors
+         */
+        $scope.sale_type_price = function () {
+          var sale_type = [];
+          jQuery('.rdc-sale-types ul li input:checkbox:checked').each(function () {
+            sale_type.push(jQuery(this).val());
+          });
+          $scope.selected_sale_types = sale_type;
+          $scope.salePricing.set_min(0);
+          $scope.salePricing.set_max(0);
+          $scope.$apply();
+        };
+
+        /**
+         * Price mode
+         *
+         * @param sale_type
+         */
+        $scope.priceModeFormat = function priceModeFormat(mode) {
+          if ($scope.selected_sale_types.length !== 1) {
+            if ($scope.selected_sale_types.length == 0) {
+              jQuery('.rdc-sale-types input#sale_type_sale').attr('checked', 'checked');
+            }
+            switch (mode) {
+              case 'Sale':
+                return true;
+                break;
+              case 'Rent':
+                return false;
+                break;
+            }
+          } else {
+            for (var i in $scope.selected_sale_types) {
+              if ($scope.selected_sale_types[i] == mode) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
         $document.bind('click', function (event) {
           $scope.show_dropdown_columns = false;
           $scope.$apply();
         });
 
         /**
+         * Sale pricing
          *
-         * @type {{min: $scope.pricing.min, max: $scope.pricing.max}}
+         * @type {{min: $scope.salePricing.min, max: $scope.salePricing.max}}
          */
-        $scope.pricing = window.pricing = {
+        $scope.salePricing = window.salePricing = {
 
           mode: false,
 
@@ -729,11 +817,24 @@
                 max: 0
               }
             }
-            $scope.current_filter.price[mode] = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
-            if (mode == 'min') {
-              this.current_min = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
+            console.log('clearTargetVal', clearTargetVal);
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              }
             } else {
-              this.current_max = Math.round(parseInt(jQuery(target).val()) / 1000) * 1000;
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
+              if (mode == 'min') {
+                this.current_min = parseInt(clearTargetVal);
+              } else {
+                this.current_max = parseInt(clearTargetVal);
+              }
             }
           },
 
@@ -774,6 +875,96 @@
             this.mode = mode;
           }
         };
+
+        /**
+         * Rent pricing
+         *
+         * @type {{min: $scope.rentPricing.min, max: $scope.rentPricing.max}}
+         */
+        $scope.rentPricing = window.rentPricing = {
+
+          mode: false,
+
+          current_min: '',
+          current_max: '',
+          current_min_label: '',
+          current_max_label: '',
+
+          min_prices: [750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000],
+          max_prices: [1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000],
+
+
+          click_out: function (e) {
+            if (!angular.element(e.target).hasClass('price-input')) {
+              this.mode = '';
+            }
+          },
+
+          format: function (target, mode) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            var targetVal = jQuery(target).val();
+            var clearTargetVal = targetVal.replace(',', '');
+            clearTargetVal = clearTargetVal.replace('.', '');
+            if (parseInt(clearTargetVal >= 10000)) {
+              $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              if (mode == 'min') {
+                this.current_min = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              } else {
+                this.current_max = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
+              }
+            } else {
+              $scope.current_filter.price[mode] = parseInt(clearTargetVal);
+              if (mode == 'min') {
+                this.current_min = parseInt(clearTargetVal);
+              } else {
+                this.current_max = parseInt(clearTargetVal);
+              }
+            }
+          },
+
+          set_min: function (_price) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            this.current_min = _price;
+            $scope.current_filter.price.min = _price;
+            this.recalculate();
+            this.mode = 'max';
+          },
+
+          set_max: function (_price) {
+            if (!$scope.current_filter.price) {
+              $scope.current_filter.price = {
+                min: 0,
+                max: 0
+              }
+            }
+            this.current_max = _price;
+            $scope.current_filter.price.max = _price;
+            this.mode = false;
+          },
+
+          recalculate: function () {
+            var j;
+            j = typeof this.current_min == 'number' ? this.current_min : 0;
+            for (var i in this.max_prices) {
+              this.max_prices[i] = j += 250;
+            }
+          },
+
+          focus: function (mode) {
+            this.mode = mode;
+          }
+        };
+
 
         /**
          *
@@ -1112,8 +1303,8 @@
          */
         var client = new jQuery.es.Client({
           hosts: [
-            window.location.host,
-            //'dori-us-east-1.searchly.com'
+            // window.location.host,
+            'api.reddoorcompany.com'
           ]
         });
 
@@ -1174,14 +1365,9 @@
          *
          * Return meta values for map
          */
-        function get_map_metadata() {
-          var url = jQuery('meta[name="searchly"]').attr('data-url');
-          var user = jQuery('meta[name="searchly"]').attr('data-user');
-          var password = jQuery('meta[name="searchly"]').attr('data-password');
-          console.log('url:', url);
-          console.log('user:', user);
-          console.log('password:', password);
-        }
+        $scope.get_map_metadata_url = jQuery('meta[name="searchly"]').attr('data-url');
+        $scope.get_map_metadata_user = jQuery('meta[name="searchly"]').attr('data-user');
+        $scope.get_map_metadata_password = jQuery('meta[name="searchly"]').attr('data-password');
 
         /**
          *
@@ -1225,8 +1411,6 @@
             $scope._request.abort();
           }
 
-          // get_map_metadata();
-
           var search_form = jQuery('.sm-search-form form');
 
           search_form.addClass('processing');
@@ -1235,9 +1419,9 @@
             index: index,
             type: type,
             method: "GET",
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
+            // headers: {
+            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
 
@@ -1252,7 +1436,6 @@
                 response.hits.hits.filter(cast_fields);
                 Array.prototype.push.apply($scope.properties, response.hits.hits);
                 $scope.refreshMarkers(false);
-                // $scope.getZommCenter();
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
@@ -1275,8 +1458,6 @@
             search_form.removeClass('processing');
             $scope.toggleSearchButton();
           });
-
-          // console.log('request', $scope._request);
         }
 
         /**
@@ -1318,10 +1499,10 @@
             index: index,
             type: type,
             method: "GET",
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
-            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+            // headers: {
+            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+            // },
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
 
@@ -1343,6 +1524,7 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
+                  // $scope.refreshMarkers(true);
                   $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
                 } else {
                   $scope.refreshMarkers(false);
@@ -1353,6 +1535,12 @@
                     $scope.loading_more_properties = true;
                   }
                   getMoreProperties();
+                  if (!$scope.loadNgMapChangedEvent) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
+                } else {
                   if (!$scope.loadNgMapChangedEvent) {
                     $scope.loadNgMapChangedEvent = true;
                     $scope.addMapChanged();
@@ -1380,7 +1568,7 @@
           // debug phantom infowindow in corner... I think ngmap adds it.
           if (jQuery('.gm-style-iw').length) {
             console.log("Found random infowindow!", jQuery('.gm-style-iw'));
-            jQuery('.gm-style-iw').parent().hide()
+            jQuery('.gm-style-iw').parent().hide();
           }
 
           // make sure not collapsed.
@@ -1426,6 +1614,7 @@
               }
               jQuery('.sm-search-form form').addClass('mapChanged');
               jQuery('.sm-search-form form').submit();
+
             });
           });
         };
@@ -1515,6 +1704,7 @@
                * - Selects Collection Row
                */
               google.maps.event.addListener(marker, 'click', (function (marker, i, $scope) {
+
                 return function () {
                   // Preselect a row
                   var index;
@@ -1544,24 +1734,35 @@
             }
 
             if (update_map_pos) {
-              // Set Map 'Zoom' and 'Center On' automatically using existing markers.
-              $scope.latlngbounds = new google.maps.LatLngBounds();
-              for (var i = 0; i < $scope.latLngs.length; i++) {
-                $scope.latlngbounds.extend($scope.latLngs[i]);
-              }
-              map.fitBounds($scope.latlngbounds);
 
-              console.log('Zoom: ', vars.atts.zoom);
-              console.log('Center_on: ', vars.atts.center_on);
+              // automatically map resize
+              map_resize();
 
-              if (vars.atts.zoom) {
-                var zoom = vars.atts.zoom;
+              function mapCenter() {
+                // Set Map 'Zoom' and 'Center On' automatically using existing markers.
+                $scope.latlngbounds = new google.maps.LatLngBounds();
+                for (var i = 0; i < $scope.latLngs.length; i++) {
+                  $scope.latlngbounds.extend($scope.latLngs[i]);
+                }
+                map.fitBounds($scope.latlngbounds);
+
+                console.log('Center on changed!', $scope.latLngs.length);
+
+                // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
+                if (vars.atts.zoom) {
+                  var zoom = vars.atts.zoom;
+                  map.setZoom(parseInt(zoom));
+                }
+                if (vars.atts.center_on) {
+                  var latLngArr = vars.atts.center_on.split(',');
+                  map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
+                }
+                google.maps.event.trigger(map, 'resize');
               }
-              if (vars.atts.center_on) {
-                var latLngArr = vars.atts.center_on.split(',');
-                map.setZoom(parseInt(zoom));
-                map.setCenter(new google.maps.LatLng(latLngArr[0], latLngArr[1]));
-              }
+
+              mapCenter();
+
+              setTimeout(mapCenter, 2000);
             }
 
             // Finally Initialize Marker Cluster
@@ -1588,6 +1789,13 @@
               ]
             });
 
+            // Clusters actions
+            google.maps.event.addListener($scope.markerClusterer, 'clusterclick', function (cluster) {
+              var center = cluster.getCenter();
+              var size = cluster.getSize();
+              var markers = cluster.getMarkers();
+            });
+
 
           });
 
@@ -1611,9 +1819,9 @@
             client.get({
               index: index,
               type: type,
-              headers: {
-                "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-              },
+              // headers: {
+              //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+              // },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
@@ -1717,9 +1925,9 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers: {
-                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-                },
+                // headers: {
+                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+                // },
                 body: _source
               }, select_queryResponse);
 
@@ -1784,9 +1992,9 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers: {
-                  "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-                },
+                // headers: {
+                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+                // },
                 body: {
                   "regular": {
                     "text": query.term.toLowerCase(),
@@ -2043,7 +2251,6 @@
           for (var i = 0; i < $scope.dynMarkers.length; i++) {
             if (currentProperty._id != prevPropertyID && $scope.dynMarkers[i].listingId == currentProperty._id) {
               NgMap.getMap().then(function (map) {
-                //console.log( "DOing stuff with infowindow" );
                 $scope.infoBubble.setContent(jQuery('.sm-marker-infobubble', ngAppDOM).html());
                 $scope.infoBubble.setPosition($scope.latLngs[i]);
                 $scope.infoBubble.open(map);
@@ -2082,12 +2289,14 @@
         });
 
         $document.on('change', '.rdc-sale-types input:checkbox', function () {
+          $scope.sale_type_price();
           if (!jQuery(".rdc-sale-types input:checkbox:checked").length) {
             jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must_not][5][terms][tax_input.sale_type][]');
           } else {
             jQuery(".rdc-sale-types input:checkbox").attr('name', 'bool[must][5][terms][tax_input.sale_type][]');
           }
         });
+
 
         /**
          * SEARCH FILTER EVENT
@@ -2158,6 +2367,7 @@
             }
 
             formQuery = removeAllBlankOrNull(jQuery.extend(true, formQuery, merge));
+
           });
 
           if (jQuery.isEmptyObject(formQuery.bool.must_not)) {
@@ -2209,7 +2419,6 @@
           google.maps.event.addListener(map, 'resize', function () {
             debug('mapEvent', 'resize');
           });
-
 
         });
 
