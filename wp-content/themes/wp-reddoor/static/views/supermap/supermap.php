@@ -291,7 +291,7 @@ use \UsabilityDynamics\RDC\Utils;
              */
             echo apply_filters( 'wpp::advanced_supermap::current_property::details', ob_get_clean() ); ?>
             <section class="sm-scrollable-table">
-              <div style="overflow:scroll;min-height:110px;">
+              <div style="overflow-y:scroll;min-height:110px;">
                 <table st-table="propertiesTableCollection" st-safe-src="properties" class="table table-striped sm-properties-list">
                   <thead>
                   <tr class="sm-table-header">

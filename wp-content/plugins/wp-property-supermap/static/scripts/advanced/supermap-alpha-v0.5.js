@@ -82,9 +82,9 @@
             type: 'property',
             method: "POST",
             size: 0,
-            headers: {
-              "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            },
+            // headers: {
+            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
+            // },
             body: _source
           }, select_queryResponse);
 
@@ -362,7 +362,7 @@
         height = 400;
       }
       jQuery('.wpp-advanced-supermap, .sm-properties-list-wrap, ng-map').height(height);
-      jQuery('.sm-scrollable-table > div').height(height - 303);
+      jQuery('.sm-scrollable-table > div').height(height - 341);
       jQuery('.sm-properties-grid').height(height - 103);
     }
     console.log('map height: ', jQuery('.wpp-advanced-supermap').height());
@@ -1303,8 +1303,8 @@
          */
         var client = new jQuery.es.Client({
           hosts: [
-            window.location.host,
-            // 'dori-us-east-1.searchly.com'
+            // window.location.host,
+            'api.reddoorcompany.com'
           ]
         });
 
@@ -1419,9 +1419,9 @@
             index: index,
             type: type,
             method: "GET",
-            headers: {
-              "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            },
+            // headers: {
+            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
 
@@ -1499,9 +1499,9 @@
             index: index,
             type: type,
             method: "GET",
-            headers: {
-              "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            },
+            // headers: {
+            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
@@ -1925,9 +1925,9 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                headers: {
-                  "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-                },
+                // headers: {
+                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
+                // },
                 body: _source
               }, select_queryResponse);
 
