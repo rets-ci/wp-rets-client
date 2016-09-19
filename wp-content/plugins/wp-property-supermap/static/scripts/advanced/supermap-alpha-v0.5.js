@@ -748,7 +748,8 @@
             sale_type.push(jQuery(this).val());
           });
           $scope.selected_sale_types = sale_type;
-          jQuery('input.price-input').val('');
+          $scope.salePricing.set_min(0);
+          $scope.salePricing.set_max(0);
           $scope.$apply();
         };
 
