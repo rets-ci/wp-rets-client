@@ -1410,8 +1410,6 @@
             $scope._request.abort();
           }
 
-          console.log('worked');
-
           var search_form = jQuery('.sm-search-form form');
 
           search_form.addClass('processing');
@@ -1440,7 +1438,7 @@
 
                 if (!$scope.loadNgMapChangedEvent) {
                   $scope.loadNgMapChangedEvent = true;
-                  $scope.addMapChanged($scope.properties);
+                  $scope.addMapChanged();
                 }
 
                 if ($scope.total > $scope.properties.length) {
@@ -1503,7 +1501,7 @@
             headers: {
               "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
             },
-            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
 
@@ -1538,7 +1536,13 @@
                   getMoreProperties();
                   if (!$scope.loadNgMapChangedEvent) {
                     $scope.loadNgMapChangedEvent = true;
-                    $scope.addMapChanged($scope.properties);
+                    $scope.addMapChanged();
+                  }
+                  search_form.removeClass('mapChanged');
+                } else {
+                  if (!$scope.loadNgMapChangedEvent) {
+                    $scope.loadNgMapChangedEvent = true;
+                    $scope.addMapChanged();
                   }
                   search_form.removeClass('mapChanged');
                 }
@@ -1581,7 +1585,7 @@
         /**
          * map zoom or drag event listener for search results refresh
          */
-        $scope.addMapChanged = function addMapChanged(properties_data) {
+        $scope.addMapChanged = function addMapChanged() {
           debug('addMapChanged');
 
           NgMap.getMap().then(function (map) {
