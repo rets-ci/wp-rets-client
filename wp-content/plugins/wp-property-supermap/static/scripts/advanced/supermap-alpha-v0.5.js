@@ -1410,6 +1410,8 @@
             $scope._request.abort();
           }
 
+          console.log('worked');
+
           var search_form = jQuery('.sm-search-form form');
 
           search_form.addClass('processing');
@@ -1501,9 +1503,9 @@
             headers: {
               "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
             },
-            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
+            source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":100,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
-            // debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
+            debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
 
             setStatus('ready');
 
