@@ -138,7 +138,7 @@ add_filter('body_class', function ($classes, $class) {
 
 /**
  * @author vorobjov@UD
- * @param $propertyID
+ * @param $sale_value, $petpolicy_value, $office
  * @return boolean
  * call in property.php
  */
