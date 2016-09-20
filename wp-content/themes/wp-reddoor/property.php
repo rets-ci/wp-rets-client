@@ -29,41 +29,41 @@ $_property_detail_map = array(
   "Rooms" => array(
     "label" => "Rooms",
     "groups" => array(
-      "bedrooms" => array( "label" => "Bedrooms", "icon" => "attribute-bedroom" ),
-      "bathrooms" => array( "label" => "Bathrooms", "icon" => "attribute-bathroom" ),
-      "kitchen_dining_room" => array( "label" => "Kitchen & Dining", "icon" => "attribute-kitchen" ),
-      "living_area" => array( "label" => "Living Area", "icon" => "attribute-livingarea" ),
-      "other_rooms" => array( "label" => "Other Rooms", "icon" => "attribute-rooms" )
+      "bedrooms" => array("label" => "Bedrooms", "icon" => "attribute-bedroom"),
+      "bathrooms" => array("label" => "Bathrooms", "icon" => "attribute-bathroom"),
+      "kitchen_dining_room" => array("label" => "Kitchen & Dining", "icon" => "attribute-kitchen"),
+      "living_area" => array("label" => "Living Area", "icon" => "attribute-livingarea"),
+      "other_rooms" => array("label" => "Other Rooms", "icon" => "attribute-rooms")
     ),
     "icon-class" => "iconRooms"
   ),
   "Features" => array(
     "label" => "Features",
     "groups" => array(
-      "interior" => array( "label" => "Interior", "icon" => "attribute-interior" ),
-      "exterior" => array( "label" => "Exterior", "icon" => "attribute-exterior" ),
-      "heating_cooling" => array( "label" => "Heating & Cooling", "icon" => "attribute-solid" ),
-      "utility" => array( "label" => "Utility", "icon" => "attribute-utility" ),
-      "parking" => array( "label" => "Parking", "icon" => "attribute-parking" )
+      "interior" => array("label" => "Interior", "icon" => "attribute-interior"),
+      "exterior" => array("label" => "Exterior", "icon" => "attribute-exterior"),
+      "heating_cooling" => array("label" => "Heating & Cooling", "icon" => "attribute-solid"),
+      "utility" => array("label" => "Utility", "icon" => "attribute-utility"),
+      "parking" => array("label" => "Parking", "icon" => "attribute-parking")
     ),
-      "icon-class" => "iconFeatures"
+    "icon-class" => "iconFeatures"
   ),
   "NeighborhoodDetail" => array(
     "label" => "Neighborhood",
     "groups" => array(
-      "schools" => array( "label" => "Schools", "icon" => "school" ),
-      "homeowners_association" => array( "label" => "Homeowners Association", "icon" => "attribute-hoa" )
+      "schools" => array("label" => "Schools", "icon" => "school"),
+      "homeowners_association" => array("label" => "Homeowners Association", "icon" => "attribute-hoa")
     ),
     "icon-class" => "iconNeighborhoodDetail"
   ),
   "PropertyLot" => array(
     "label" => "Property <span class='hidden-sm	hidden-xs'>& Pricing</span>",
     "groups" => array(
-      "pricing_terms" => array( "label" => "Pricing & Terms", "icon" => "attribute-price" ),
-      "building" => array( "label" => "Building", "icon" => "listing-house" ),
-      "lot" => array( "label" => "Lot", "icon" => "attribute-lot" )
+      "pricing_terms" => array("label" => "Pricing & Terms", "icon" => "attribute-price"),
+      "building" => array("label" => "Building", "icon" => "listing-house"),
+      "lot" => array("label" => "Lot", "icon" => "attribute-lot")
     ),
-      "icon-class" => "iconPropertyLot"
+    "icon-class" => "iconPropertyLot"
   ),
 );
 
@@ -103,12 +103,13 @@ while (have_posts()) : the_post();
   $get_location_direction_terms = get_the_terms($property['ID'], 'location_direction');
   $get_location_street_terms = get_the_terms($property['ID'], 'location_street');
   $get_location_unit_terms = get_the_terms($property['ID'], 'location_unit');
+  $get_pet_policy_terms = get_the_terms($property['ID'], 'pet_policy');
 
 
   $_propertySaleType = ($get_sale_type_terms[0]) ? $get_sale_type_terms[0]->slug : '';
   $singleBedrooms = ($get_bedrooms_terms[0]) ? $get_bedrooms_terms[0]->name : '';
   $singleBathrooms = ($get_bathrooms_terms[0]) ? $get_bathrooms_terms[0]->name : '';
-  $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '' ;
+  $totalLivingArea = ($get_living_area_terms[0]) ? $get_living_area_terms[0]->name : '';
   $approximateLotSize = ($get_approximate_lot_size_terms[0]) ? $get_approximate_lot_size_terms[0]->name : '';
   $locationState = ($get_location_state_terms[0]) ? $get_location_state_terms[0]->name : '';
   $locationCity = ($get_location_city_terms[0]) ? $get_location_city_terms[0]->name : '';
@@ -134,397 +135,399 @@ while (have_posts()) : the_post();
   $location_direction = ($get_location_direction_terms[0]) ? $get_location_direction_terms[0]->name : '';
   $location_street = ($get_location_street_terms[0]) ? $get_location_street_terms[0]->name : '';
   $location_unit = ($get_location_unit_terms[0]) ? $get_location_unit_terms[0]->name : '';
+  $pet_policy = ($get_pet_policy_terms[0]) ? $get_pet_policy_terms[0]->name : '';
 
   ?>
-<div class="single-property">
-  <div class="container-fluid ftrdImgGoTop">
+  <div class="single-property">
+    <div class="container-fluid ftrdImgGoTop">
 
-    <?php get_template_part( 'static/views/property/slideshow' ); ?>
+      <?php get_template_part('static/views/property/slideshow'); ?>
 
-    <section id="propertyDetails" class="singlePropertyHeader">
-      <div class="container">
+      <section id="propertyDetails" class="singlePropertyHeader">
+        <div class="container">
 
-        <div class="title">
-          <span>Active</span>
-          <div data-content-type="title"><?php
-            echo ($location_street_number) ? $location_street_number : '';
-            echo ($location_direction) ? ' ' . $location_direction : '';
-            echo ($location_street) ? ' ' . $location_street : '';
-            echo ($location_unit) ? ' ' . $location_unit : '';
+          <div class="title">
+            <span>Active</span>
+            <div data-content-type="title"><?php
+              echo ($location_street_number) ? $location_street_number : '';
+              echo ($location_direction) ? ' ' . $location_direction : '';
+              echo ($location_street) ? ' ' . $location_street : '';
+              echo ($location_unit) ? ' ' . $location_unit : '';
 
-          ?><span data-content-type="summary-location"><?php echo $locationCity ? ( _e( $locationCity ) . ',' ) : '' ?>
-              <?php if( $locationZip ) {
-                _e( 'NC ' . $locationZip );
-              } ?></span></div>
+              ?><span data-content-type="summary-location"><?php echo $locationCity ? (_e($locationCity) . ',') : '' ?>
+                <?php if ($locationZip) {
+                  _e('NC ' . $locationZip);
+                } ?></span></div>
+            <b class="clear"></b>
+          </div>
           <b class="clear"></b>
-        </div>
-        <b class="clear"></b>
-        <ul class="ie11-attr-position">
-          <?php if( !empty( $property[ 'price_2' ] ) ) { ?>
-            <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e( '$' );
-            echo number_format( $property[ 'price_2' ] ); ?></li><?php } ?>
-          <?php if( $singleBedrooms ) { ?>
-            <li><span
-              class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e( $singleBedrooms . ' Beds' ); ?>
-            </li><?php } ?>
-          <?php if( $singleBathrooms ) { ?>
-            <li><span
-              class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e( $singleBathrooms . ' Baths' ); ?>
-            </li><?php } ?>
-          <?php if( $totalLivingArea ) { ?>
-            <li><span
-              class="icon-wpproperty-attribute-rooms-solid singlePropertyIcon"></span><?php _e( number_format( $totalLivingArea ) . ' Sq.Ft.' ); ?>
-            </li><?php } ?>
-          <?php if( $approximateLotSize ) { ?>
-            <li><span
-              class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e( $approximateLotSize . ' Acres' ); ?>
-            </li><?php } ?>
-        </ul>
-        <b class="clear"></b>
-        <?php get_template_part( 'static/views/agent-card' ); ?>
-
-      </div>
-    </section>
-  </div>
-
-  <div class="container">
-
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php
-        if($date_available) {
-          echo 'Available ' . date( 'F j, Y', strtotime( $date_available ) ) . '. ';
-        }
-        ?>
-        <?php echo $property[ 'remarks' ]; ?>
-      </div>
-    </div>
-
-    <div class="row no-gutter">
-      <div class="col-md-8 col-lg-8 col-xs-12">
-        <div class="container-fluid">
-
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-data-checked-outline"></span>
-            </div>
-            <span>Last Checked</span>
-            <strong>1 minute ago</strong>
-          </div>
-
-          <?php if( !empty( $updatedProperty ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-data-updated-outline"></span>
-            </div>
-            <span>Last Updated</span>
-            <strong><?php echo date( 'F j, Y', strtotime( "$updatedProperty GMT" ) ); ?></strong>
-          </div>
-          <?php } ?>
-
-          <?php if( !empty( $added ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-data-days-outline"></span>
-            </div>
-            <span>Days on Website</span>
-            <strong><?php
-                $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
-              echo $daysOnMarket;
-              ?></strong>
-          </div>
-          <?php } ?>
+          <ul class="ie11-attr-position">
+            <?php if (!empty($property['price_2'])) { ?>
+              <li><span class="icon-wpproperty-status-rented-solid singlePropertyIcon"></span><?php _e('$');
+              echo number_format($property['price_2']); ?></li><?php } ?>
+            <?php if ($singleBedrooms) { ?>
+              <li><span
+                class="icon-wpproperty-attribute-bedroom-solid singlePropertyIcon"></span><?php _e($singleBedrooms . ' Beds'); ?>
+              </li><?php } ?>
+            <?php if ($singleBathrooms) { ?>
+              <li><span
+                class="icon-wpproperty-attribute-bathroom-solid singlePropertyIcon"></span><?php _e($singleBathrooms . ' Baths'); ?>
+              </li><?php } ?>
+            <?php if ($totalLivingArea) { ?>
+              <li><span
+                class="icon-wpproperty-attribute-rooms-solid singlePropertyIcon"></span><?php _e(number_format($totalLivingArea) . ' Sq.Ft.'); ?>
+              </li><?php } ?>
+            <?php if ($approximateLotSize) { ?>
+              <li><span
+                class="icon-wpproperty-attribute-lotsize-solid singlePropertyIcon"></span><?php _e($approximateLotSize . ' Acres'); ?>
+              </li><?php } ?>
+          </ul>
+          <b class="clear"></b>
+          <?php get_template_part('static/views/agent-card'); ?>
 
         </div>
-      </div>
+      </section>
     </div>
 
-    <div class="row" data-row-type="property-facts">
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <h4><?php _e( 'Property Highlights' ) ?></h4>
+    <div class="container">
+
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+          <?php
+          if ($date_available) {
+            echo 'Available ' . date('F j, Y', strtotime($date_available)) . '. ';
+          }
+          ?>
+          <?php echo $property['remarks']; ?>
+        </div>
       </div>
-    </div>
 
-    <div class="row no-gutter" data-row-type="property-facts">
-      <div class="col-md-8 col-lg-8 col-xs-12">
-        <div class="container-fluid">
+      <div class="row no-gutter">
+        <div class="col-md-8 col-lg-8 col-xs-12">
+          <div class="container-fluid">
 
-          <?php if( !empty( Utils::get_multiple_terms( 'design', $property[ 'ID' ], 'name' ) ) ){ ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-listing-house-outline"></span>
+            <div class="col-md-4 property-detail-wrapper">
+              <div class="property-detail-icon-wrapper">
+                <span class="icon-wpproperty-data-checked-outline"></span>
+              </div>
+              <span>Last Checked</span>
+              <strong>1 minute ago</strong>
             </div>
-            <span><?php _e( 'Design' ); ?></span>
-            <strong><?php echo Utils::get_multiple_terms( 'design', $property[ 'ID' ], 'name', 'a' ); ?></strong>
+
+            <?php if (!empty($updatedProperty)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-data-updated-outline"></span>
+                </div>
+                <span>Last Updated</span>
+                <strong><?php echo date('F j, Y', strtotime("$updatedProperty GMT")); ?></strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty($added)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-data-days-outline"></span>
+                </div>
+                <span>Days on Website</span>
+                <strong><?php
+                  $daysOnMarket = human_time_diff(strtotime($added), current_time('timestamp'));
+                  echo $daysOnMarket;
+                  ?></strong>
+              </div>
+            <?php } ?>
+
           </div>
-          <?php } ?>
+        </div>
+      </div>
 
-          <?php if( !empty( $subdivision ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
-            </div>
-            <span><?php _e( 'Subdivision' ); ?></span>
-            <strong><?php _e( $subdivision ); ?></strong>
-          </div>
-          <?php } ?>
+      <div class="row" data-row-type="property-facts">
+        <div class="col-xs-12 col-lg-8 col-md-12">
+          <h4><?php _e('Property Highlights') ?></h4>
+        </div>
+      </div>
 
-          <?php if( !empty( $elementary_school ) ) { ?>
+      <div class="row no-gutter" data-row-type="property-facts">
+        <div class="col-md-8 col-lg-8 col-xs-12">
+          <div class="container-fluid">
+
+            <?php if (!empty(Utils::get_multiple_terms('design', $property['ID'], 'name'))) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-listing-house-outline"></span>
+                </div>
+                <span><?php _e('Design'); ?></span>
+                <strong><?php echo Utils::get_multiple_terms('design', $property['ID'], 'name', 'a'); ?></strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty($subdivision)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-attribute-neighborhood-outline"></span>
+                </div>
+                <span><?php _e('Subdivision'); ?></span>
+                <strong><?php _e($subdivision); ?></strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty($elementary_school)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-school-elementary-outline"></span>
+                </div>
+                <span><?php _e('Elementary School'); ?></span>
+                <strong><?php _e($elementary_school); ?></strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty(Utils::get_multiple_terms('style', $property['ID'], 'name'))) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
+                </div>
+                <span><?php _e('Style'); ?></span>
+                <strong><?php echo Utils::get_multiple_terms('style', $property['ID'], 'name', 'a'); ?></strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty($inside_city)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
+                </div>
+                <span><?php _e('Inside City'); ?></span>
+                <strong>
+                  <?php if ($inside_city == 'Yes') {
+                    echo $inside_city . ', ' . $location_city;
+                  } else {
+                    echo $inside_city;
+                  }
+                  ?>
+                </strong>
+              </div>
+            <?php } ?>
+
+            <?php if (!empty($middle_school)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-school-middle-outline"></span>
+                </div>
+                <span><?php _e('Middle School'); ?></span>
+                <strong><?php _e($middle_school); ?></strong>
+              </div>
+            <?php } ?>
+
             <div class="col-md-4 property-detail-wrapper">
               <div class="property-detail-icon-wrapper">
-                <span class="icon-wpproperty-school-elementary-outline"></span>
+                <span class="icon-wpproperty-attribute-exterior-outline"></span>
               </div>
-              <span><?php _e( 'Elementary School' ); ?></span>
-              <strong><?php _e( $elementary_school ); ?></strong>
-            </div>
-          <?php } ?>
-
-          <?php if( !empty( Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name' ) ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-              <div class="property-detail-icon-wrapper">
-                <span class="icon-wpproperty-residentialstyle-capecod-outline"></span>
-              </div>
-              <span><?php _e( 'Style' ); ?></span>
-              <strong><?php echo Utils::get_multiple_terms( 'style', $property[ 'ID' ], 'name', 'a' ); ?></strong>
-            </div>
-          <?php } ?>
-
-          <?php if( !empty( $inside_city ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-              <div class="property-detail-icon-wrapper">
-                <span class="icon-wpproperty-listing-commercial-hotel-outline"></span>
-              </div>
-              <span><?php _e( 'Inside City' ); ?></span>
+              <span><?php _e('Year Built'); ?></span>
               <strong>
-                <?php if( $inside_city == 'Yes' ) {
-                  echo $inside_city . ', ' . $location_city;
+                <?php if ($new_construction == 'Yes') {
+                  print_r($year_built . ', ') . _e('New Construction');
                 } else {
-                  echo $inside_city;
-                }
-                ?>
+                  _e($year_built);
+                } ?>
               </strong>
             </div>
-          <?php } ?>
 
-          <?php if( !empty( $middle_school ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-              <div class="property-detail-icon-wrapper">
-                <span class="icon-wpproperty-school-middle-outline"></span>
+            <?php if (!empty($location_county)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-listing-land-outline"></span>
+                </div>
+                <span><?php _e('County'); ?></span>
+                <strong><?php _e($location_county); ?></strong>
               </div>
-              <span><?php _e( 'Middle School' ); ?></span>
-              <strong><?php _e( $middle_school ); ?></strong>
-            </div>
-          <?php } ?>
+            <?php } ?>
 
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-attribute-exterior-outline"></span>
-            </div>
-            <span><?php _e( 'Year Built' ); ?></span>
-            <strong>
-              <?php if( $new_construction == 'Yes' ) {
-                print_r( $year_built . ', ' ) . _e( 'New Construction' );
-              } else {
-                _e( $year_built );
-              } ?>
-            </strong>
-          </div>
-
-          <?php if( !empty( $location_county ) ) { ?>
-            <div class="col-md-4 property-detail-wrapper">
-              <div class="property-detail-icon-wrapper">
-                <span class="icon-wpproperty-listing-land-outline"></span>
+            <?php if (!empty($high_school)) { ?>
+              <div class="col-md-4 property-detail-wrapper">
+                <div class="property-detail-icon-wrapper">
+                  <span class="icon-wpproperty-school-high-outline"></span>
+                </div>
+                <span><?php _e('High School'); ?></span>
+                <strong><?php _e($high_school); ?></strong>
               </div>
-              <span><?php _e( 'County' ); ?></span>
-              <strong><?php _e( $location_county ); ?></strong>
-            </div>
-          <?php } ?>
+            <?php } ?>
 
-          <?php if( !empty( $high_school ) ) { ?>
-          <div class="col-md-4 property-detail-wrapper">
-            <div class="property-detail-icon-wrapper">
-              <span class="icon-wpproperty-school-high-outline"></span>
-            </div>
-            <span><?php _e( 'High School' ); ?></span>
-            <strong><?php _e( $high_school ); ?></strong>
           </div>
-          <?php } ?>
-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-8">
+          <div class="bottomSeparate"></div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-md-12 col-lg-8">
-        <div class="bottomSeparate"></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="container areaMapBlock">
-    <div class="row">
-      <div class="col-xs-12 col-md-12 col-lg-7">
-        <h4><?php _e( 'Area Map for ' );
-          echo ( !empty( $property[ 'location_address' ] ) ) ? $property[ 'location_address' ] : ''; ?></h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <ul class="nav nav-tabs ws_nmaps">
-          <li class="active"><a class="iconNeighborhood" data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
-          <li><a class="iconCommute" data-toggle="tab" href="#Commute">Commute</a></li>
-          <li><a class="iconStreet" data-toggle="tab" href="#Street">Street View</a></li>
-          <li><a class="iconSatellite" data-toggle="tab" href="#Satellite">Satellite</a></li>
-        </ul>
-
-        <div class="tab-content">
-          <div id="Neighborhood" class="tab-pane fade in active" data-nmap-options="<?php echo urldecode( http_build_query( array(
-            "property_id" => $property[ 'ID' ],
-            "ws_commute" => "false",
-            "ws_map_modules" => "all",
-            "ws_base_map" => "google_map",
-            "ws_show_reviews" => "false",
-            "ws_hide_bigger_map" => "true",
-            "ws_no_link_info_bubbles" => "true",
-            "ws_map_icon_type" => "house",
-            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
-          <div id="Commute" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
-            "property_id" => $property[ 'ID' ],
-            "ws_commute" => "true",
-            "ws_map_modules" => "all",
-            "ws_base_map" => "google_map",
-            "ws_show_reviews" => "false",
-            "ws_hide_bigger_map" => "true",
-            "ws_no_link_info_bubbles" => "true",
-            "ws_map_icon_type" => "house",
-            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
-          <div id="Street" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
-            "property_id" => $property[ 'ID' ],
-            "ws_commute" => "false",
-            "ws_map_modules" => "all",
-            "ws_base_map" => "street_view",
-            "ws_show_reviews" => "false",
-            "ws_hide_bigger_map" => "true",
-            "ws_no_link_info_bubbles" => "true",
-            "ws_map_icon_type" => "house",
-            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
-          <div id="Satellite" class="tab-pane fade" data-nmap-options="<?php echo urldecode( http_build_query( array(
-            "property_id" => $property[ 'ID' ],
-            "ws_commute" => "false",
-            "ws_map_modules" => "all",
-            "ws_base_map" => "satellite",
-            "ws_show_reviews" => "false",
-            "ws_hide_bigger_map" => "true",
-            "ws_no_link_info_bubbles" => "true",
-            "ws_map_icon_type" => "house",
-            "ws_layout" => ( $_SERVER[ 'HTTP_X_USER_DEVICE' ] == "mobile" ? "vertical" : "horizontal" )
-          ) ) ); ?>"></div>
+    <div class="container areaMapBlock">
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-7">
+          <h4><?php _e('Area Map for ');
+            echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
         </div>
       </div>
-    </div>
-    <?php
-    $_post_meta = get_post_meta( $property[ 'ID' ] );
-    ( !empty( $_post_meta[ '_ws_walkscore' ] ) ) ? $walkScoreMeta = $_post_meta[ '_ws_walkscore' ] : $walkScoreMeta = '';
-    ( !empty( $walkScoreMeta[ 0 ] ) ) ? $walkScore = $walkScoreMeta[ 0 ] : $walkScore = '';
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12">
+          <ul class="nav nav-tabs ws_nmaps">
+            <li class="active"><a class="iconNeighborhood" data-toggle="tab" href="#Neighborhood">Neighborhood</a></li>
+            <li><a class="iconCommute" data-toggle="tab" href="#Commute">Commute</a></li>
+            <li><a class="iconStreet" data-toggle="tab" href="#Street">Street View</a></li>
+            <li><a class="iconSatellite" data-toggle="tab" href="#Satellite">Satellite</a></li>
+          </ul>
 
-    if(!empty( $walkScore )){
-
-    ?>
-    <div class="row singleWalkScore">
+          <div class="tab-content">
+            <div id="Neighborhood" class="tab-pane fade in active"
+                 data-nmap-options="<?php echo urldecode(http_build_query(array(
+                   "property_id" => $property['ID'],
+                   "ws_commute" => "false",
+                   "ws_map_modules" => "all",
+                   "ws_base_map" => "google_map",
+                   "ws_show_reviews" => "false",
+                   "ws_hide_bigger_map" => "true",
+                   "ws_no_link_info_bubbles" => "true",
+                   "ws_map_icon_type" => "house",
+                   "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+                 ))); ?>"></div>
+            <div id="Commute" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
+              "property_id" => $property['ID'],
+              "ws_commute" => "true",
+              "ws_map_modules" => "all",
+              "ws_base_map" => "google_map",
+              "ws_show_reviews" => "false",
+              "ws_hide_bigger_map" => "true",
+              "ws_no_link_info_bubbles" => "true",
+              "ws_map_icon_type" => "house",
+              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+            ))); ?>"></div>
+            <div id="Street" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
+              "property_id" => $property['ID'],
+              "ws_commute" => "false",
+              "ws_map_modules" => "all",
+              "ws_base_map" => "street_view",
+              "ws_show_reviews" => "false",
+              "ws_hide_bigger_map" => "true",
+              "ws_no_link_info_bubbles" => "true",
+              "ws_map_icon_type" => "house",
+              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+            ))); ?>"></div>
+            <div id="Satellite" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
+              "property_id" => $property['ID'],
+              "ws_commute" => "false",
+              "ws_map_modules" => "all",
+              "ws_base_map" => "satellite",
+              "ws_show_reviews" => "false",
+              "ws_hide_bigger_map" => "true",
+              "ws_no_link_info_bubbles" => "true",
+              "ws_map_icon_type" => "house",
+              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+            ))); ?>"></div>
+          </div>
+        </div>
+      </div>
       <?php
+      $_post_meta = get_post_meta($property['ID']);
+      (!empty($_post_meta['_ws_walkscore'])) ? $walkScoreMeta = $_post_meta['_ws_walkscore'] : $walkScoreMeta = '';
+      (!empty($walkScoreMeta[0])) ? $walkScore = $walkScoreMeta[0] : $walkScore = '';
 
-      if( $walkScore <= 100 && $walkScore >= 70 ) {
-        $walkScoreColor = '#57BD04';
-      } elseif( $walkScore <= 69 && $walkScore >= 50 ) {
-        $walkScoreColor = '#e5af1c';
-        $walkScoreSubtitle = 'Somewhat Walkable';
-      } elseif( $walkScore <= 49 && $walkScore >= 25 ) {
-        $walkScoreColor = '#e9822f';
-        $walkScoreSubtitle = 'Car Dependent';
-      } elseif( $walkScore <= 24 && $walkScore >= 0 ) {
-        $walkScoreColor = '#e73f3f';
-        $walkScoreSubtitle = 'Car Dependent';
-      }
-      if( $walkScore <= 100 && $walkScore >= 90 ) {
-        $walkScoreSubtitle = 'Walker’s Paradise';
-      }
-      if( $walkScore <= 89 && $walkScore >= 70 ) {
-        $walkScoreSubtitle = 'Very Walkable';
-      }
-      ?>
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <div class="container-fluid">
-          <div class="row">
-        <?php if( !empty( $walkScore ) ) { ?>
+      if (!empty($walkScore)) {
 
-          <div class="col-xs-12 col-md-4 col-lg-4">
+        ?>
+        <div class="row singleWalkScore">
+          <?php
 
-            <div class="ambItem">
-              <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
-              <span>Walk Score</span>
-              <strong><?php echo $walkScoreSubtitle; ?></strong>
+          if ($walkScore <= 100 && $walkScore >= 70) {
+            $walkScoreColor = '#57BD04';
+          } elseif ($walkScore <= 69 && $walkScore >= 50) {
+            $walkScoreColor = '#e5af1c';
+            $walkScoreSubtitle = 'Somewhat Walkable';
+          } elseif ($walkScore <= 49 && $walkScore >= 25) {
+            $walkScoreColor = '#e9822f';
+            $walkScoreSubtitle = 'Car Dependent';
+          } elseif ($walkScore <= 24 && $walkScore >= 0) {
+            $walkScoreColor = '#e73f3f';
+            $walkScoreSubtitle = 'Car Dependent';
+          }
+          if ($walkScore <= 100 && $walkScore >= 90) {
+            $walkScoreSubtitle = 'Walker’s Paradise';
+          }
+          if ($walkScore <= 89 && $walkScore >= 70) {
+            $walkScoreSubtitle = 'Very Walkable';
+          }
+          ?>
+          <div class="col-xs-12 col-lg-8 col-md-12">
+            <div class="container-fluid">
+              <div class="row">
+                <?php if (!empty($walkScore)) { ?>
+
+                  <div class="col-xs-12 col-md-4 col-lg-4">
+
+                    <div class="ambItem">
+                      <div style="background: <?php echo $walkScoreColor; ?>;"><?php echo $walkScore; ?></div>
+                      <span>Walk Score</span>
+                      <strong><?php echo $walkScoreSubtitle; ?></strong>
+                    </div>
+                  </div>
+                <?php } else { ?>
+
+                  <div class="col-xs-12 col-md-4 col-lg-4">
+
+                    <div class="ambItem">
+                      <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+                      <span>Walk Score</span>
+                      <strong><?php _e('Temporarily Unavailable'); ?></strong>
+                    </div>
+                  </div>
+                <?php } ?>
+
+                <div class="col-xs-12 col-md-4 col-lg-4">
+
+                  <div class="ambItem">
+                    <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+                    <span>Transit Score</span>
+                    <strong>Coming Soon</strong>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-md-4 col-lg-4">
+
+                  <div class="ambItem">
+                    <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
+                    <span>Bike Score</span>
+                    <strong>Coming Soon</strong>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        <?php } else { ?>
-
-          <div class="col-xs-12 col-md-4 col-lg-4">
-
-            <div class="ambItem">
-            <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-            <span>Walk Score</span>
-            <strong><?php _e( 'Temporarily Unavailable' ); ?></strong>
-            </div>
-          </div>
-        <?php } ?>
-
-        <div class="col-xs-12 col-md-4 col-lg-4">
-
-          <div class="ambItem">
-          <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-          <span>Transit Score</span>
-          <strong>Coming Soon</strong>
-          </div>
         </div>
-
-        <div class="col-xs-12 col-md-4 col-lg-4">
-
-          <div class="ambItem">
-            <div class="scoreComing"><span class="icon-wpproperty-status-expired-outline"></span></div>
-            <span>Bike Score</span>
-            <strong>Coming Soon</strong>
-          </div>
+      <?php } ?>
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-8">
+          <div class="bottomSeparate"></div>
         </div>
-        </div>
-        </div>
-      </div>
-      </div>
-    <?php } ?>
-    <div class="row">
-      <div class="col-xs-12 col-md-12 col-lg-8">
-        <div class="bottomSeparate"></div>
       </div>
     </div>
-  </div>
 
-  <div class="container propertyDetails">
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <h4><?php _e( 'Property Details for ' );
-          echo ( !empty( $property[ 'location_address' ] ) ) ? $property[ 'location_address' ] : ''; ?></h4>
+    <div class="container propertyDetails">
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12">
+          <h4><?php _e('Property Details for ');
+            echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php
-        $propertyDetailsAttrs = array(
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+          <?php
+          $propertyDetailsAttrs = array(
             'property_type' => $property['property_type'],
             'location_address' => $property['location_address'],
             'city' => $locationCity,
             'state' => $locationState,
             'postal_code' => $locationZip,
-            'total_living_area_sqft' => isset( $property['total_living_area_sqft_2'] ) ? $property['total_living_area_sqft_2'] : null,
+            'total_living_area_sqft' => isset($property['total_living_area_sqft_2']) ? $property['total_living_area_sqft_2'] : null,
             'approximate_lot_size' => $property['approximate_lot_size_2'],
             'bedrooms' => $singleBedrooms,
             'bathrooms' => $singleBathrooms,
@@ -532,152 +535,195 @@ while (have_posts()) : the_post();
             'cumulative_days_on_market' => $daysOnMarket,
             'price' => $property['price_2'],
             'sale_type' => $_propertySaleType
-        );
+          );
 
-        echo rdc_get_property_details_description($propertyDetailsAttrs);
-        
-        ?>
+          echo rdc_get_property_details_description($propertyDetailsAttrs);
+
+          ?>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12">
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12">
 
-        <ul class="nav nav-tabs attribute-filter">
-          <?php foreach( $_property_detail_map as $tab_slug => $tab_detail ) { ?>
-            <li class="attribute-filter-single-wrapper"><a data-filter=".wpp-category-<?php echo $tab_slug; ?>" href="#<?php echo $tab_slug; ?>" class="attribute-filter-single <?php echo $tab_detail['icon-class']; ?>"><?php echo $tab_detail['label']; ?></a></li>
-          <?php } ?>
-          <li class="attribute-filter-single-wrapper active"><a data-filter="" href="#Rooms" class="attribute-filter-single">All</a></li>
-        </ul>
-
-        <div class="attribute-content">
-          <div class="container-fluid">
-          <div class="row">
-          <?php foreach( $_property_detail_map as $tab_slug => $tab_detail ) { ?>
-            <?php foreach( $tab_detail['groups'] as $group_slug => $group_detail ) { ?>
-              <?php if( !empty( rdc_get_attribute_group( $group_slug) ) ) { ?>
-              <div class="wpp-attribute-wrapper col-md-6 wpp-category-<?php echo $tab_slug; ?> wpp-group-<?php echo $group_slug; ?>" data-attribute-group="<?php echo $group_slug; ?>" data-attribute-category="<?php echo $group_slug; ?>">
-                <div class="attributer-inner-wrapper">
-                  <section class="attribute-group-title">
-                    <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span></div>
-                    <h4><?php echo $group_detail['label']; ?></h4>
-                    <p class="clear"></p>
-                  </section>
-                  <ul class="underlined-list">
-                    <?php 
-                    
-                    echo implode( '', rdc_get_attribute_group( $group_slug ) ); 
-                    
-                    ?>
-                  </ul>
-                </div>
-              </div>
-              <?php } ?>
+          <ul class="nav nav-tabs attribute-filter">
+            <?php foreach ($_property_detail_map as $tab_slug => $tab_detail) { ?>
+              <li class="attribute-filter-single-wrapper"><a data-filter=".wpp-category-<?php echo $tab_slug; ?>"
+                                                             href="#<?php echo $tab_slug; ?>"
+                                                             class="attribute-filter-single <?php echo $tab_detail['icon-class']; ?>"><?php echo $tab_detail['label']; ?></a>
+              </li>
             <?php } ?>
-          <?php } ?>
+            <li class="attribute-filter-single-wrapper active"><a data-filter="" href="#Rooms"
+                                                                  class="attribute-filter-single">All</a></li>
+          </ul>
+
+          <div class="attribute-content">
+            <div class="container-fluid">
+              <div class="row">
+                <?php foreach ($_property_detail_map as $tab_slug => $tab_detail) { ?>
+                  <?php foreach ($tab_detail['groups'] as $group_slug => $group_detail) { ?>
+                    <?php if (!empty(rdc_get_attribute_group($group_slug))) { ?>
+                      <div
+                        class="wpp-attribute-wrapper col-md-6 wpp-category-<?php echo $tab_slug; ?> wpp-group-<?php echo $group_slug; ?>"
+                        data-attribute-group="<?php echo $group_slug; ?>"
+                        data-attribute-category="<?php echo $group_slug; ?>">
+                        <div class="attributer-inner-wrapper">
+                          <section class="attribute-group-title">
+                            <div><span class="icon-wpproperty-<?php echo $group_detail['icon']; ?>-outline"></span>
+                            </div>
+                            <h4><?php echo $group_detail['label']; ?></h4>
+                            <p class="clear"></p>
+                          </section>
+                          <ul class="underlined-list">
+                            <?php
+
+                            echo implode('', rdc_get_attribute_group($group_slug));
+
+                            ?>
+                          </ul>
+                        </div>
+                      </div>
+                    <?php } ?>
+                  <?php } ?>
+                <?php } ?>
+              </div>
+            </div>
           </div>
-          </div>
+
         </div>
-
       </div>
-      </div>
-    <div class="row">
-      <div class="col-xs-12 col-md-12 col-lg-8">
-        <div class="bottomSeparate"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container listingProvider">
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12">
-        <h4><?php _e( 'Listing Provider for ' );
-          echo ( !empty( $property[ 'location_address' ] ) ) ? $property[ 'location_address' ] : ''; ?></h4>
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-8">
+          <div class="bottomSeparate"></div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-        <?php ( !empty( $property[ 'data_source_disclaimer' ] ) ) ? _e( $property[ 'data_source_disclaimer' ] ) : ''; ?>
-      </div>
-    </div>
-    <div class="row">
 
-      <div class="col-md-8">
-
+    <?php
+    $office = Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a');
+    if (petPolicyChecking($_propertySaleType, $pet_policy, $office) == true) : ?>
+      <div class="container propertyPetPolicy">
         <div class="row">
-
-          <div class="col-md-6">
-
-            <ul class="underlined-list">
-              <li>
-                <span class="field-label"><?php _e( 'Agent: ' ); ?></span>
-                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_agent_name', $property[ 'ID' ], 'name', 'a' ); ?></span>
-              </li>
-
-              <li>
-                <span class="field-label"><?php _e( 'Agent Phone Number: ' ); ?></span>
-                <span class="field-value"><?php echo ( !empty( $listing_agent_phone_number ) ) ? $listing_agent_phone_number : ''; if( $listing_agent_phone_extension ) { echo ', ' . $listing_agent_phone_extension;} ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'Office: ' ); ?></span>
-                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_office', $property[ 'ID' ], 'name', 'a' ); ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'Office Phone Number: ' ); ?></span>
-                <span class="field-value"><?php echo Utils::get_multiple_terms( 'listing_office_phone_number', $property[ 'ID' ], 'name', 'a' ); ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'MLS ID: ' ); ?></span>
-                <span class="field-value"><?php echo Utils::get_multiple_terms( 'mls_id', $property[ 'ID' ], 'name', 'a' ); ?></span>
-              </li>
-            </ul>
-
+          <div class="col-xs-12 col-lg-8 col-md-12">
+            <h4><?php _e('Pet Policy for ');
+              echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
           </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+            <p><?php _e('The following information regarding pets is general in nature. Every property is different and the executed lease terms would control.'); ?></p>
+            <p><?php _e('Sample Lease Terms:'); ?></p>
+            <p><?php _e('If pets are not allowed, Tenant agrees not to keep or allow anywhere on or about the Property any animals or pets of any kind. If pets are allowed, Tenant shall pay for any damages whether the damage is to the Premises or to any common areas, and to indemnify Landlord from any liability to third parties which may result from Tenant\'s keeping of pets.'); ?></p>
+            <p><?php _e('Tenant shall remove any pet previously permitted within 24 hours of written notification from the Landlord that the pet, in Landlord\'s sole judgment, creates a nuisance or disturbance or is, in Landlord\'s opinion, undesirable. If the pet is caused to be removed pursuant to this paragraph, the Landlord shall not be required to refund the Pet Fee or otherwise alter the terms of the lease.'); ?></p>
+            <p><?php _e('Pet Fees:'); ?></p>
+            <p><?php _e('For a single animal, the refundable pet deposit will be at least 50% of the rent and held as additional security deposit. Pet rent will be at least 3% of the monthly rent and added to the monthly rent due. For multiple animals or high-risk animals, the fees will be higher but will be handled on a case-by-case basis. Please note that we do not permit any of the dangerous breed dogs on any of our properties.'); ?></p>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
 
-          <div class="col-md-6">
+    <div class="container listingProvider">
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12">
+          <h4><?php _e('Listing Provider for ');
+            echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
+          <?php (!empty($property['data_source_disclaimer'])) ? _e($property['data_source_disclaimer']) : ''; ?>
+        </div>
+      </div>
+      <div class="row">
 
-            <ul class="underlined-list">
-              <li>
-                <span class="field-label"><?php _e( 'Data Source: ' ); ?></span>
-                <span class="field-value"><?php _e( $data_source ); ?></span>
-              </li>
-              <li class="hidden">
-                <span class="field-label"><?php _e( 'Data Property ID: ' ); ?></span>
-                <span class="field-value"><?php echo $listing_id; ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'Last Checked: ' ); ?></span>
-                <span class="field-value"><?php echo date( 'F j, Y g:i A T', current_time( 'timestamp' ) - 60 ); ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'Last Updated: ' ); ?></span>
-                <span class="field-value"><?php echo date( 'F j, Y g:i A T', strtotime( "$updatedProperty GMT" ) ); ?></span>
-              </li>
-              <li>
-                <span class="field-label"><?php _e( 'Days on site: ' ); ?></span>
-                <span class="field-value"><?php echo human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ); ?></span>
-              </li>
-              <li>
-                <span class="field-label"><img src="<?php echo ( !empty( $property[ 'data_source_logo_2' ] ) ) ? $property[ 'data_source_logo_2' ] : ''; ?>" alt=""></span>
-              </li>
+        <div class="col-md-8">
 
-            </ul>
+          <div class="row">
+
+            <div class="col-md-6">
+
+              <ul class="underlined-list">
+                <li>
+                  <span class="field-label"><?php _e('Agent: '); ?></span>
+                  <span
+                    class="field-value"><?php echo Utils::get_multiple_terms('listing_agent_name', $property['ID'], 'name', 'a'); ?></span>
+                </li>
+
+                <li>
+                  <span class="field-label"><?php _e('Agent Phone Number: '); ?></span>
+                  <span
+                    class="field-value"><?php echo (!empty($listing_agent_phone_number)) ? $listing_agent_phone_number : '';
+                    if ($listing_agent_phone_extension) {
+                      echo ', ' . $listing_agent_phone_extension;
+                    } ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('Office: '); ?></span>
+                  <span
+                    class="field-value"><?php echo Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a'); ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('Office Phone Number: '); ?></span>
+                  <span
+                    class="field-value"><?php echo Utils::get_multiple_terms('listing_office_phone_number', $property['ID'], 'name', 'a'); ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('MLS ID: '); ?></span>
+                  <span
+                    class="field-value"><?php echo Utils::get_multiple_terms('mls_id', $property['ID'], 'name', 'a'); ?></span>
+                </li>
+              </ul>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <ul class="underlined-list">
+                <li>
+                  <span class="field-label"><?php _e('Data Source: '); ?></span>
+                  <span class="field-value"><?php _e($data_source); ?></span>
+                </li>
+                <li class="hidden">
+                  <span class="field-label"><?php _e('Data Property ID: '); ?></span>
+                  <span class="field-value"><?php echo $listing_id; ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('Last Checked: '); ?></span>
+                  <span class="field-value"><?php echo date('F j, Y g:i A T', current_time('timestamp') - 60); ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('Last Updated: '); ?></span>
+                  <span
+                    class="field-value"><?php echo date('F j, Y g:i A T', strtotime("$updatedProperty GMT")); ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><?php _e('Days on site: '); ?></span>
+                  <span
+                    class="field-value"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')); ?></span>
+                </li>
+                <li>
+                  <span class="field-label"><img
+                      src="<?php echo (!empty($property['data_source_logo_2'])) ? $property['data_source_logo_2'] : ''; ?>"
+                      alt=""></span>
+                </li>
+
+              </ul>
+
+            </div>
 
           </div>
 
         </div>
-
       </div>
     </div>
-  </div>
 
-</div>
-  <?php if ($_listing_slug[3] == 'listing'){ ?>
-  <script type="text/javascript">
-    jQuery(document).ready(function(){
-      jQuery('.ourCompanyBtn').addClass('current-menu-item');
-    });
-  </script>
-  <?php }  ?>
+  </div>
+  <?php if ($_listing_slug[3] == 'listing') { ?>
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        jQuery('.ourCompanyBtn').addClass('current-menu-item');
+      });
+    </script>
+  <?php } ?>
 <?php endwhile; ?>
 
 <?php get_footer(); ?>
