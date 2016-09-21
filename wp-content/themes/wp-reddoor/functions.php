@@ -42,7 +42,7 @@ new \UsabilityDynamics\RDC\Bootstrap();
  * @param $name
  * @return array
  */
-function rdc_get_attribute_group($name)
+function rdc_get_attribute_group($name, $_propertySaleType, $pet_policy, $office)
 {
   global $wp_properties, $post, $property;
 
@@ -53,7 +53,16 @@ function rdc_get_attribute_group($name)
       if (array_key_exists($key, $taxonomies)) {
         $get_term_value = get_the_terms($property['ID'], $key);
         if (!empty($get_term_value[0]->name)) {
-          $listAttributes[] = '<li><span class="field-label">' . get_taxonomy($key)->labels->name . ':</span> <span class="field-value">' . $get_term_value[0]->name . '</span></li>';
+          $taxLabelName = get_taxonomy($key)->labels->name;
+          $listAttributes[] = '<li><span class="field-label">' . $taxLabelName . ':</span> <span class="field-value">';
+          if (($taxLabelName == 'Pet Policy') && (petPolicyChecking($_propertySaleType, $pet_policy, $office) == true)) :
+            $listAttributes[] .= '<a href="' . get_site_url() . '/rent/pet-policy" target="_blank">';
+            $listAttributes[] .= $get_term_value[0]->name;
+            $listAttributes[] .= '</a>';
+          else :
+            $listAttributes[] .= $get_term_value[0]->name;
+          endif;
+          $listAttributes[] .= '</span></li>';
         }
       } else {
         if (isset($property["$key"]) && $property[$key] == true) {
@@ -138,7 +147,7 @@ add_filter('body_class', function ($classes, $class) {
 
 /**
  * @author vorobjov@UD
- * @param $sale_value, $petpolicy_value, $office
+ * @param $sale_value , $petpolicy_value, $office
  * @return boolean
  * call in property.php
  */

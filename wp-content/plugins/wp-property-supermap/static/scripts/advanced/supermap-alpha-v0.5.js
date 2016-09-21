@@ -1499,9 +1499,6 @@
             index: index,
             type: type,
             method: "GET",
-            // headers: {
-            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
@@ -1524,12 +1521,10 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
-                  // $scope.refreshMarkers(true);
                   $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
                 } else {
                   $scope.refreshMarkers(false);
                 }
-
                 if ($scope.total > $scope.properties.length) {
                   if (!$scope.loading_more_properties) {
                     $scope.loading_more_properties = true;
@@ -1597,7 +1592,9 @@
 
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
+              console.log('bounds: ', bounds);
               var zoom = map.getZoom();
+              console.log('zoom: ', zoom);
               if (zoom > 4) {
                 var SouthWestLatitude = bounds.getSouthWest().lat();
                 var NorthEastLatitude = bounds.getNorthEast().lat();
@@ -1745,8 +1742,6 @@
                   $scope.latlngbounds.extend($scope.latLngs[i]);
                 }
                 map.fitBounds($scope.latlngbounds);
-
-                console.log('Center on changed!', $scope.latLngs.length);
 
                 // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
                 if (vars.atts.zoom) {
