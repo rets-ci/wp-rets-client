@@ -446,7 +446,7 @@ a.rdc-carousel-next {
     .rdc-property-carousel .hidden-xs {
         display: none;
     }
-    
+
     .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
         font-size: 80%;
         margin-bottom: 15px;
@@ -511,6 +511,7 @@ a.rdc-carousel-next {
     }
     .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard h2 {
         padding: 0 20px;
+        font-size: 1.5em;
         margin: 1.1em 5px 0.8em;
     }
 
