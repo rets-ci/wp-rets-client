@@ -158,3 +158,4 @@ function petPolicyChecking($sale_value, $petpolicy_value, $office)
     return true;
   endif;
 }
+
