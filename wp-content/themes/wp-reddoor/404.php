@@ -8,7 +8,7 @@
     if ($wp_query->is_404) {
 
       // its a "draft"
-      $the_query = new WP_Query(array('page_id' => 5573968, 'status' => 'draft'));
+      $the_query = new WP_Query(array('page_id' => 5573968, 'post_status' => 'draft'));
 
       if ($the_query->have_posts()) : $the_query->the_post();
         the_content();
