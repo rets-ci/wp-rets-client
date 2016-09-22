@@ -508,26 +508,70 @@ a.rdc-carousel-next {
   .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock p {
     padding: 0 10px;
   }
+  
+  .rdc-carousel-wrapper ul.rdc-carousel-items li.calloutcard h2 {
+    padding: 0 1em;
+  }
 }
 
 @media screen and (max-width: 480px) {
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock a {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-  }
 
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p {
-    line-height: 1.1em;
-  }
+  .rdc-carousel-wrapper ul.rdc-carousel-items {
 
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
-    padding: 0 0 25px 30px;
-  }
+    li.descriptionBlock a {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
 
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li {
-    display: block;
-    margin-top: 5px;
+    li.rdc-carousel-item {
+      .rdc-carousel-thumbnail div.thumb{
+        height: 181.52PX;
+      }
+
+      .item-content{
+        p {
+          line-height: 1.1em;
+          color: #000000;
+          font-size: 1.2em;
+          padding: 20px 20px 0px 20px;
+        }
+        >span{
+          color: #000000;
+          padding: 0 20px;
+          font-size: 1em;
+        }
+        ul {
+          padding: 0px 0 20px 15px;
+
+          li {
+            /*display: block;*/
+            margin-top: 5px;
+            margin-right: 10px;
+            color: #000000;
+            font-size: 1em;
+
+            .singlePropertyIcon{
+              color: #000000;
+              font-size: 1em;
+            }
+          }
+
+          li.calloutcard {
+            h2{
+              font-size: 11px;
+            }
+            a:last-child, a:first-child {
+              margin-left: 20px;
+              margin-right: 20px;
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
+      
+
+    }
   }
 }
 
