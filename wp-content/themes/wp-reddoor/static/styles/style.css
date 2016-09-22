@@ -517,6 +517,10 @@ a:focus {
 .single .content a {
   color: #d03528;
 }
+.single .content img {
+  max-width: 100%;
+  height: auto;
+}
 .single .content .singleSocialBlock {
   margin-bottom: 10%;
   margin-top: 7%;
@@ -536,8 +540,22 @@ a:focus {
   margin-bottom: 8em;
 }
 @media screen and (max-width: 991px) {
-  .moreCategoriesPosts .loadMore > .col-md-4 {
+  .loadMoreContainer {
+    text-align: center;
+  }
+}
+@media screen and (max-width: 991px) {
+  .moreCategoriesPosts .loadMore > .col-md-4,
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4 {
     width: 50%;
+    float: left;
+  }
+}
+@media screen and (max-width: 767px) {
+  .moreCategoriesPosts .loadMore > .col-md-4,
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4 {
+    width: 100%;
+    float: none;
   }
 }
 .oneCategory {
@@ -559,6 +577,11 @@ a:focus {
     width: 100%;
   }
 }
+@media screen and (max-width: 767px) {
+  .oneCategory {
+    height: auto;
+  }
+}
 @media screen and (max-width: 410px) {
   .oneCategory {
     width: 100%;
@@ -574,6 +597,17 @@ a:focus {
 @media screen and (max-width: 1074px) {
   .oneCategory .oneCategoryImg {
     height: 200px;
+  }
+}
+@media screen and (max-width: 991px) {
+  .oneCategory .oneCategoryImg {
+    height: 220px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .oneCategory .oneCategoryImg {
+    height: auto;
+    margin-bottom: 0;
   }
 }
 .oneCategory .oneCategoryImg > img {
@@ -596,6 +630,16 @@ a:focus {
 @media screen and (max-width: 1074px) {
   .oneCategory .catIconLoop {
     top: 165px;
+  }
+}
+@media screen and (max-width: 991px) {
+  .oneCategory .catIconLoop {
+    top: 185px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .oneCategory .catIconLoop {
+    display: none;
   }
 }
 .oneCategory .catIconLoop img {
@@ -624,6 +668,11 @@ a:focus {
 .oneCategory a.oneCategoryTitle:hover {
   text-decoration: none;
   color: #d03528;
+}
+@media screen and (max-width: 767px) {
+  .oneCategory a.oneCategoryTitle {
+    padding: 1em 2em;
+  }
 }
 .oneCategory a.oneCategoryTitle .one_text {
   margin: 0 25px;

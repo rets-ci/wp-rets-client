@@ -23,7 +23,7 @@ get_header( get_post_type() ); ?>
 
 <?php get_template_part('static/views/masthead') ?>
 
-<div class="container">
+<div class="container moreCategoriesPosts">
   <div class="row">
     <div class="col-lg-8 col-md-8">
       <article class="content">
