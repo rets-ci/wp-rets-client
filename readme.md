@@ -11,5 +11,9 @@ RETS Client for WP-Property: Importer. Allows to import properties from RETS sys
 [![Scrutinizer Quality](http://img.shields.io/scrutinizer/g/usabilitydynamics/wp-rets-client.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-rets-client)
 [![Scrutinizer Coverage](http://img.shields.io/scrutinizer/coverage/g/usabilitydynamics/wp-rets-client.svg)](https://scrutinizer-ci.com/g/usabilitydynamics/wp-rets-client)
 [![Packagist Vesion](http://img.shields.io/packagist/v/usabilitydynamics/wp-rets-client.svg)](https://packagist.org/packages/usabilitydynamics/wp-rets-client)
-[![CircleCI](https://circleci.com/gh/usabilitydynamics/wp-rets-client.png)](https://circleci.com/gh/usabilitydynamics/wp-rets-client)
 ***
+
+Adding To Site:
+```
+git subtree add --prefix=wp-content/plugins/wp-rets-client git@github.com:UsabilityDynamics/wp-rets-client latest
+```
