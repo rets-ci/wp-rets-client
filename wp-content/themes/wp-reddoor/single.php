@@ -42,11 +42,14 @@ $_blog_slug = explode('/', $_permalink);
   </div>
 </div>
 <div class="container moreCategoriesPosts">
-  <div class="row loadMoreBlockSeparate">
+  <div class="row">
     <div class="col-lg-12">
       <h3><?php $category = get_the_category($post->ID);
         _e('More ' . ($category && $category[0] ? $category[0]->name : '') . ' Articles'); ?></h3>
     </div>
+  </div>
+
+  <div class="row loadMore">
 
     <?php
 
@@ -57,7 +60,7 @@ $_blog_slug = explode('/', $_permalink);
     ));
 
     if (have_posts()) : while (have_posts()) : the_post(); ?>
-      <div class="col-lg-4" data-element-kind="singleCategoryCard">
+      <div class="col-md-4" data-element-kind="singleCategoryCard">
         <?php get_template_part('static/views/category-card') ?>
       </div>
     <?php endwhile; endif; ?>
