@@ -1,11 +1,11 @@
 @font-face {
 	font-family: 'rdc-icomoon';
-	src:    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.eot?1gwudq');
-	src:    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.eot?1gwudq#iefix') format('embedded-opentype'),
-	url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.woff2?1gwudq') format('woff2'),
-	url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.ttf?1gwudq') format('truetype'),
-	url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.woff?1gwudq') format('woff'),
-	url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.svg?1gwudq#icomoon') format('svg');
+	src:    url('/font/icomoon.eot?1gwudq');
+	src:    url('/font/icomoon.eot?1gwudq#iefix') format('embedded-opentype'),
+	url('/font/icomoon.woff2?1gwudq') format('woff2'),
+	url('/font/icomoon.ttf?1gwudq') format('truetype'),
+	url('/font/icomoon.woff?1gwudq') format('woff'),
+	url('/font/icomoon.svg?1gwudq#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

@@ -42,7 +42,7 @@ new \UsabilityDynamics\RDC\Bootstrap();
  * @param $name
  * @return array
  */
-function rdc_get_attribute_group($name)
+function rdc_get_attribute_group($name, $_propertySaleType, $pet_policy, $office)
 {
   global $wp_properties, $post, $property;
 
@@ -53,7 +53,16 @@ function rdc_get_attribute_group($name)
       if (array_key_exists($key, $taxonomies)) {
         $get_term_value = get_the_terms($property['ID'], $key);
         if (!empty($get_term_value[0]->name)) {
-          $listAttributes[] = '<li><span class="field-label">' . get_taxonomy($key)->labels->name . ':</span> <span class="field-value">' . $get_term_value[0]->name . '</span></li>';
+          $taxLabelName = get_taxonomy($key)->labels->name;
+          $listAttributes[] = '<li><span class="field-label">' . $taxLabelName . ':</span> <span class="field-value">';
+          if (($taxLabelName == 'Pet Policy') && (petPolicyChecking($_propertySaleType, $pet_policy, $office) == true)) :
+            $listAttributes[] .= '<a href="' . get_site_url() . '/rent/pet-policy" target="_blank">';
+            $listAttributes[] .= $get_term_value[0]->name;
+            $listAttributes[] .= '</a>';
+          else :
+            $listAttributes[] .= $get_term_value[0]->name;
+          endif;
+          $listAttributes[] .= '</span></li>';
         }
       } else {
         if (isset($property["$key"]) && $property[$key] == true) {
@@ -134,3 +143,72 @@ add_filter('body_class', function ($classes, $class) {
 
   return $classes;
 }, 20, 2);
+
+
+/**
+ * @author vorobjov@UD
+ * @param $sale_value , $petpolicy_value, $office
+ * @return boolean
+ * call in property.php
+ */
+
+function petPolicyChecking($sale_value, $petpolicy_value, $office)
+{
+  if (($office == 'Red Door Company') && ($sale_value == 'rent') && ($petpolicy_value == 'Pets Negotiable' || $petpolicy_value == 'Pet Deposit' || $petpolicy_value == 'Pet Fee' || $petpolicy_value == 'Cats Allowed' || $petpolicy_value == 'Dogs Allowed' || $petpolicy_value == 'Dogs Allowed/Size Limit')) :
+    return true;
+  endif;
+}
+
+/**
+ * @author vorobjov@UD
+ * @param $template , $atts
+ * call in functions.php
+ */
+
+function rdc_get_template_part($template, $atts = array())
+{
+  extract($atts);
+  require locate_template($template . '.php');
+}
+
+
+/**
+ * @author vorobjov@UD
+ *
+ */
+function rdc_template_redirect()
+{
+//  global $wp_query;
+//
+//  if ($wp_query->is_404) {
+//
+//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+//    if($REQUEST_URI !== '/sale/city/apex') {
+//      return false;
+//    }
+//    $REQUEST_URI = substr($REQUEST_URI, 1);
+//    $request = explode('/', $REQUEST_URI);
+//
+//    $sale = '/^sale/';
+//    $city = '/^city/';
+//
+//    preg_match($sale, $request[0], $sale_type_matches);
+//    if ($sale_type_matches !== '') {
+//      $sale_type = 'sale_type=' . implode($sale_type_matches, ',');
+//    }
+//    preg_match($city, $request[1], $city_type_matches);
+//    if ($city_type_matches !== '') {
+//      $city_type = 'location_city=' . $request[2];
+//    }
+//
+//    $atts = array(
+//      $sale_type, $city_type
+//    );
+//
+//    rdc_get_template_part('static/views/new_taxonomy', $atts);
+//    status_header(200);
+//    die();
+//  }
+}
+
+//add_action('template_redirect', 'rdc_template_redirect');
