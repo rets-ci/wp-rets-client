@@ -365,7 +365,6 @@
       jQuery('.sm-scrollable-table > div').height(height - 341);
       jQuery('.sm-properties-grid').height(height - 103);
     }
-    console.log('map height: ', jQuery('.wpp-advanced-supermap').height());
   }
 
   /**
@@ -635,7 +634,6 @@
           return true;
         }
 
-
         $scope.view = {
           mode: {
             table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
@@ -820,7 +818,6 @@
             var targetVal = jQuery(target).val();
             var clearTargetVal = targetVal.replace(',', '');
             clearTargetVal = clearTargetVal.replace('.', '');
-            console.log('clearTargetVal', clearTargetVal);
             if (parseInt(clearTargetVal >= 10000)) {
               $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
@@ -1419,9 +1416,6 @@
             index: index,
             type: type,
             method: "GET",
-            // headers: {
-            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
 
@@ -1489,10 +1483,8 @@
           }
 
           var search_form = jQuery('.sm-search-form form');
-
           search_form.addClass('processing');
           $scope.toggleSearchButton();
-
           $scope.fix_terms();
 
           $scope._request = client.search({
@@ -1592,9 +1584,7 @@
 
             idle_listener = map.addListener('idle', function () {
               var bounds = map.getBounds();
-              console.log('bounds: ', bounds);
               var zoom = map.getZoom();
-              console.log('zoom: ', zoom);
               if (zoom > 4) {
                 var SouthWestLatitude = bounds.getSouthWest().lat();
                 var NorthEastLatitude = bounds.getNorthEast().lat();
@@ -2368,7 +2358,6 @@
           if (jQuery.isEmptyObject(formQuery.bool.must_not)) {
             formQuery.bool.must_not = [];
           }
-
 
           $scope.query = formQuery;
 

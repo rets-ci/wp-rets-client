@@ -336,6 +336,16 @@ a {
   margin-bottom: 8em;
 }
 
+.moreCategoriesPosts {
+  .loadMore {
+    > .col-md-4 {
+      @media screen and (max-width: 991px) {
+        width: 50%;
+      }
+    }
+  }
+}
+
 .oneCategory{
   width: 380px;
   height: 445px;
@@ -347,6 +357,11 @@ a {
   box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
+  @media screen and (max-width: 1074px) {
+    height: 365px;
+    margin-bottom: 30px !important;
+    width: 100%;
+  }
   @media screen and (max-width: 410px) {
     width: 100%;
   }
@@ -358,7 +373,9 @@ a {
     margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
-
+    @media screen and (max-width: 1074px) {
+      height: 200px;
+    }
     &>img {
       height: 100%;
       width: 100%;
@@ -379,7 +396,9 @@ a {
     position: absolute;
     left: 40%;
     top: 245px;
-
+    @media screen and (max-width: 1074px) {
+      top: 165px;
+    }
     img{
 
       display: block;

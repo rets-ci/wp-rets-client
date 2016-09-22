@@ -159,3 +159,56 @@ function petPolicyChecking($sale_value, $petpolicy_value, $office)
   endif;
 }
 
+/**
+ * @author vorobjov@UD
+ * @param $template , $atts
+ * call in functions.php
+ */
+
+function rdc_get_template_part($template, $atts = array())
+{
+  extract($atts);
+  require locate_template($template . '.php');
+}
+
+
+/**
+ * @author vorobjov@UD
+ *
+ */
+function rdc_template_redirect()
+{
+//  global $wp_query;
+//
+//  if ($wp_query->is_404) {
+//
+//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+//    if($REQUEST_URI !== '/sale/city/apex') {
+//      return false;
+//    }
+//    $REQUEST_URI = substr($REQUEST_URI, 1);
+//    $request = explode('/', $REQUEST_URI);
+//
+//    $sale = '/^sale/';
+//    $city = '/^city/';
+//
+//    preg_match($sale, $request[0], $sale_type_matches);
+//    if ($sale_type_matches !== '') {
+//      $sale_type = 'sale_type=' . implode($sale_type_matches, ',');
+//    }
+//    preg_match($city, $request[1], $city_type_matches);
+//    if ($city_type_matches !== '') {
+//      $city_type = 'location_city=' . $request[2];
+//    }
+//
+//    $atts = array(
+//      $sale_type, $city_type
+//    );
+//
+//    rdc_get_template_part('static/views/new_taxonomy', $atts);
+//    status_header(200);
+//    die();
+//  }
+}
+
+//add_action('template_redirect', 'rdc_template_redirect');
