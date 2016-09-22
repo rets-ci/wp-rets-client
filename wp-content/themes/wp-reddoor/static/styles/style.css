@@ -459,7 +459,6 @@ a:focus {
   padding-bottom: 50px;
   position: relative;
   text-align: center;
-  width: 30%;
   z-index: 9;
 }
 .single .singleSocialBlock li {
@@ -546,14 +545,18 @@ a:focus {
 }
 @media screen and (max-width: 991px) {
   .moreCategoriesPosts .loadMore > .col-md-4,
-  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4 {
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4,
+  .moreCategoriesPosts .loadMore > .col-lg-4,
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-lg-4 {
     width: 50%;
     float: left;
   }
 }
 @media screen and (max-width: 767px) {
   .moreCategoriesPosts .loadMore > .col-md-4,
-  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4 {
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-md-4,
+  .moreCategoriesPosts .loadMore > .col-lg-4,
+  .moreCategoriesPosts .loadMoreBlockSeparate > .col-lg-4 {
     width: 100%;
     float: none;
   }
