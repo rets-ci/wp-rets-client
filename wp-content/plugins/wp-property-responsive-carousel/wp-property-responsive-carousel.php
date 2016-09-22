@@ -118,16 +118,17 @@ class SiteOrigin_Widget_PropertyCarousel_Widget extends SiteOrigin_Widget {
         )
       )
     );
-    $this->register_frontend_styles(
-      array(
-        array(
-          'ud-carousel-basic',
-          plugin_dir_url(__FILE__) . 'css/style.css',
-          array(),
-          rand( 10000, 99999 ),
-        )
-      )
-    );
+    // Style moved to theme 
+    //$this->register_frontend_styles(
+    //  array(
+    //    array(
+    //      'ud-carousel-basic',
+    //      plugin_dir_url(__FILE__) . 'css/style.css',
+    //      array(),
+    //      rand( 10000, 99999 ),
+    //    )
+    //  )
+    //);
   }
 
   function get_template_name($instance){
