@@ -63,7 +63,9 @@ namespace UsabilityDynamics\WPRETSC {
       /**
        * Parse XML-RPC request
        * Make sure credentials are valid.
-       *
+       * @param null $args
+       * @param null $defaults
+       * @return array
        */
       static public function parseRequest( $args = null, $defaults = null ) {
         global $wp_xmlrpc_server;
@@ -74,6 +76,11 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         $wp_xmlrpc_server->escape( $args );
+
+        // @note Shouldn't this be done automatically elsewhere?
+        if( $args[0] && $args[0] !== 1 ) {
+          switch_to_blog($args[0]);
+        }
 
         if( !$user = $wp_xmlrpc_server->login( $args[ 1 ], $args[ 2 ] ) ) {
           return array(
@@ -101,10 +108,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function rpc_system_check( $args ) {
         global $wp_xmlrpc_server;
 
-        // @note Shouldn't this be done automatically?
-        if( $args[0] && $args[0] !== 1 ) {
-          switch_to_blog($args[0]);
-        }
+        // swets blog
+        self::parseRequest( $args );
 
         $_response = self::send(array(
           "ok" => true,
