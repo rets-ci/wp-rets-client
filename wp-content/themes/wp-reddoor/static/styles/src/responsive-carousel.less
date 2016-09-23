@@ -1,10 +1,13 @@
+/*
+Responsive Carousel Start
+*/
 @font-face {
   font-family: 'carousel-arrows';
-  src: url('fonts/carousel-arrows.eot?-95vnmw');
-  src: url('fonts/carousel-arrows.eot?#iefix-95vnmw') format('embedded-opentype'),
-  url('fonts/carousel-arrows.woff?-95vnmw') format('woff'),
-  url('fonts/carousel-arrows.ttf?-95vnmw') format('truetype'),
-  url('fonts/carousel-arrows.svg?-95vnmw#carousel-arrows') format('svg');
+  src: url('../fonts/carousel-arrows.eot?-95vnmw');
+  src: url('../fonts/carousel-arrows.eot?#iefix-95vnmw') format('embedded-opentype'),
+  url('../fonts/carousel-arrows.woff?-95vnmw') format('woff'),
+  url('../fonts/carousel-arrows.ttf?-95vnmw') format('truetype'),
+  url('../fonts/carousel-arrows.svg?-95vnmw#carousel-arrows') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -99,7 +102,7 @@
             color: white;
             -moz-appearance: none;
             -webkit-appearance: none;
-            background-image: url("images/arrow-down-white.png");
+            background-image: url("../images/arrow-down-white.png");
             background-position: 90% center;
             background-repeat: no-repeat;
 
@@ -237,7 +240,7 @@
     padding: 0;
     .clearfix();
     width: 99999px;
-    padding-top: 10px;
+    display: flex;
 
     li.descriptionBlock {
       border-radius: 0;
@@ -260,7 +263,7 @@
 
     li.calloutcard {
       background-color: #e12524;
-      background-image: url("./images/calloutcard.png");
+      background-image: url("../images/calloutcard.png");
       background-repeat: no-repeat;
       background-position: 0 bottom;
       background-size: 101% auto;
@@ -268,11 +271,11 @@
       min-height: 415px;
 
       h2 {
-        font-size: 2em;
+        font-size: 1.7em;
         font-weight: 500;
         text-align: center;
-        padding: 0 2em;
-        margin: 35px 10px 25px 10px;
+        padding: 0 2.5em;
+        margin: 45px 10px 25px;
       }
 
       div {
@@ -317,7 +320,7 @@
         font-size: 2.7em;
         font-weight: bold;
         line-height: 1.5em;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
       }
       p {
         line-height: 1.75em;
@@ -466,7 +469,7 @@
       width: 275px;
       height: 343px;
       float: left;
-      background: url(images/carousel-loader.gif) #F6F6F6 center center no-repeat;
+      background: url(../images/carousel-loader.gif) #F6F6F6 center center no-repeat;
       margin: 0;
     }
   }
@@ -480,76 +483,131 @@ a.rdc-carousel-next {
   display: none;
 }
 
-@media screen and (max-width: 700px) {
 
+@media screen and (max-width: 768px){
+  /*
+    Image card started
+  */
   .rdc-carousel-title {
-    display: none;
+      display:none
   }
 
   .rdc-property-carousel .section-content {
-    padding: 40px 0 40px 40px;
+      padding: 40px 0 60px 40px;
+      min-height: auto;
+  }
+  .rdc-property-carousel .hidden-xs {
+      display: none;
   }
 
+  .rdc-carousel-wrapper {
+    ul.rdc-carousel-items {
+      li.rdc-carousel-item {
+        font-size: 80%;
+        margin-bottom: 15px;
+
+        .item-content{
+          p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding: 15px 20px 0px 20px;
+          }
+
+          >span {
+            padding: 0 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis
+          }
+
+          ul {
+            padding: 5px 0px 20px 20px;
+          }
+
+          ul li {
+            margin-top: 5px;
+            margin-right: 10px;
+          }
+
+        } /* .item-content */
+      } /* li.rdc-carousel-item */
+
+      li.descriptionBlock {
+        font-size:90%;
+
+        a {
+          margin: 1.3em;
+          padding: 1em;
+          width: auto
+        }
+
+        h2 {
+          margin-top: 15px;
+          margin-bottom: 15px;
+          padding: 0 20px;
+          font-size: 2.2em
+        }
+
+        p {
+          padding: 0 20px;
+          line-height: 1.1em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+      }
+      
+      li.calloutcard {
+        min-height: auto;
+          
+        h2 {
+            padding: 0 20px;
+            font-size: 1.5em;
+            margin: 1.1em 5px 0.8em;
+        }
+
+        a:last-child, a:first-child {
+            display: block;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 1.7em;
+            background: rgba(225,37,36,.6);
+        }
+      }
+    } /* ul.rdc-carousel-items*/
+  } /* .rdc-carousel-wrapper */
 }
 
-@media screen and (max-width: 560px) {
-  .rdc-property-carousel .section-content {
-    padding: 40px 0 60px 0;
-  }
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item {
-    padding: 0;
-    margin-right: 5px;
-  }
-
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock h2 {
-    padding: 0 10px;
-  }
-
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock p {
-    padding: 0 10px;
+@media screen and (max-width: 414px), screen and (max-height: 414px) and (orientation : landscape) {  /* For iphone 6 @375*/
+  .rdc-carousel-wrapper{
+    ul.rdc-carousel-items{
+      li.rdc-carousel-item {
+        font-size: 80%;
+        .lead {
+          line-height: 1.3em
+        }
+      }
+    }
   }
 }
 
-@media screen and (max-width: 480px) {
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.descriptionBlock a {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-  }
-
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item p {
-    line-height: 1.1em;
-  }
-
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul {
-    padding: 0 0 25px 30px;
-  }
-
-  .rdc-carousel-wrapper ul.rdc-carousel-items li.rdc-carousel-item .item-content ul li {
-    display: block;
-    margin-top: 5px;
+@media screen and (max-width: 320px), screen and (max-height: 320px) and (orientation : landscape){
+  .rdc-carousel-wrapper{
+    ul.rdc-carousel-items{
+      li.rdc-carousel-item {
+        font-size: 70%;
+      }
+      li.descriptionBlock {
+        font-size: 75%;
+        .lead {
+          line-height: 1.1em;
+          font-size: 1.4em
+        }
+      }
+    }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+Responsive Carousel End
+*/
