@@ -58,12 +58,6 @@
           // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
           // _source.query = $scope.query;
 
-
-          // @hack only use first word
-          if (query.term.indexOf(' ') > 0) {
-            query.term = query.term.split(' ')[0];
-          }
-
           angular.forEach($scope.aggregationFields, function setField(data, key) {
 
             _source.aggs[key] = {
@@ -156,12 +150,8 @@
             // },
             body: {
               "regular": {
-                "text": query.term.toLowerCase(),
+                "text": query.term.toLowerCase().replace( /\s+/g, '' ),
                 "completion": {"field": "_search._suggest"}
-              },
-              "fuzzy": {
-                "text": query.term.toLowerCase(),
-                "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
               }
             }
           }, suggest_queryResponse);
@@ -1884,11 +1874,6 @@
               // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
               // _source.query = $scope.query;
 
-              // @hack only use first word
-              if (query.term.indexOf(' ') > 0) {
-                query.term = query.term.split(' ')[0];
-              }
-
               angular.forEach($scope.aggregationFields, function setField(data, key) {
 
                 _source.aggs[key] = {
@@ -1977,17 +1962,10 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                // headers: {
-                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-                // },
                 body: {
                   "regular": {
-                    "text": query.term.toLowerCase(),
+                    "text": query.term.toLowerCase().replace( /\s+/g, '' ),
                     "completion": {"field": "_search._suggest"}
-                  },
-                  "fuzzy": {
-                    "text": query.term.toLowerCase(),
-                    "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
                   }
                 }
               }, suggest_queryResponse);
@@ -2033,7 +2011,6 @@
                 } : []);
 
               }
-
 
             },
           }, allDone);
