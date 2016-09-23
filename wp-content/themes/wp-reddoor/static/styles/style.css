@@ -642,7 +642,10 @@ a:focus {
 }
 @media screen and (max-width: 767px) {
   .oneCategory .catIconLoop {
-    display: none;
+    position: relative;
+    margin: 0 auto -50px;
+    top: -35px;
+    left: 0;
   }
 }
 .oneCategory .catIconLoop img {
@@ -674,7 +677,8 @@ a:focus {
 }
 @media screen and (max-width: 767px) {
   .oneCategory a.oneCategoryTitle {
-    padding: 1em 2em;
+    padding: 1em 2em 1.5em;
+    max-height: 100%;
   }
 }
 .oneCategory a.oneCategoryTitle .one_text {
