@@ -50,6 +50,7 @@ namespace UsabilityDynamics\WPRETSC {
        * @return mixed
        */
       public function xmlrpc_methods( $_methods ) {
+
         $_methods[ 'wpp.systemCheck' ] = array( $this, 'rpc_system_check' );
         $_methods[ 'wpp.deleteProperty' ] = array( $this, 'rpc_delete_property' );
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
@@ -93,22 +94,34 @@ namespace UsabilityDynamics\WPRETSC {
       /**
        * Basic System Information.
        *
+       * @author potanin@UD
        * @param $args
        * @return array
        */
       public function rpc_system_check( $args ) {
         global $wp_xmlrpc_server;
 
-        $post_data = self::parseRequest( $args );
-        if( !empty( $wp_xmlrpc_server->error ) ) {
-          return $post_data;
+        // @note Shouldn't this be done automatically?
+        if( $args[0] && $args[0] !== 1 ) {
+          switch_to_blog($args[0]);
         }
 
-        return array(
+        $_response = self::send(array(
           "ok" => true,
-          "theme" => get_option( 'current_theme' ),
+          "blog_id" => get_current_blog_id(),
+          "themeName" => wp_get_theme()->get( 'Name' ),
+          "themeVersion" => wp_get_theme()->get( 'Version' ),
+          "stylesheet" => get_option( 'stylesheet' ),
+          "template" => get_option( 'stylesheet' ),
           "post_types" => get_post_types()
-        );
+        ));
+
+        // not sure if needed here, but seems like good pratice.
+        restore_current_blog();
+
+        // Send response to wherever.
+        return $_response;
+
       }
 
       /**
@@ -509,6 +522,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * @param $args
        * @author potanin@UD
+       * @return null
        */
       public function rpc_get_modified_histogram( $args = null ) {
         global $wpdb;
@@ -529,7 +543,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         // send cached histogram
         if( !$args[ 'noCache' ] && wp_cache_get( $args[ 'cacheKey' ], 'wpp' ) ) {
-          self::send( array(
+          return self::send( array(
             "schedule" => $args['schedule'],
             "data" => wp_cache_get( $args[ 'cacheKey' ], 'wpp' ), 
             "time" => timer_stop(), 
@@ -545,7 +559,7 @@ namespace UsabilityDynamics\WPRETSC {
         wp_cache_set( $args[ 'cacheKey' ], $_range, 'wpp' );
 
         // send non-cached histogram
-        self::send( array(
+        return self::send( array(
           "schedule" => $args['schedule'],
           "data" => $_range,
           "time" => timer_stop(),
@@ -563,6 +577,7 @@ namespace UsabilityDynamics\WPRETSC {
        *
        * @author potanin@UD
        * @param null $args
+       * @return null
        */
       public function rpc_get_modified_detail( $args = null ) {
 
@@ -594,7 +609,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         }
 
-        self::send($_detail);
+        return self::send($_detail);
 
       }
 
@@ -604,8 +619,15 @@ namespace UsabilityDynamics\WPRETSC {
        * @todo Make this handle both XMLRPC and REST.
        * @author potanin@UD
        * @param null $data
+       * @return null
        */
       static public function send( $data = null ) {
+
+        // Do nothing if we really are RPC.
+        if( defined( 'XMLRPC_REQUEST' ) ) {
+          return $data;
+        }
+
         @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 
         die( json_encode( $data, JSON_PRETTY_PRINT ) );
