@@ -178,37 +178,65 @@ function rdc_get_template_part($template, $atts = array())
  */
 function rdc_template_redirect()
 {
-//  global $wp_query;
-//
-//  if ($wp_query->is_404) {
-//
-//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
-//    if($REQUEST_URI !== '/sale/city/apex') {
-//      return false;
-//    }
-//    $REQUEST_URI = substr($REQUEST_URI, 1);
-//    $request = explode('/', $REQUEST_URI);
-//
-//    $sale = '/^sale/';
-//    $city = '/^city/';
-//
-//    preg_match($sale, $request[0], $sale_type_matches);
-//    if ($sale_type_matches !== '') {
-//      $sale_type = 'sale_type=' . implode($sale_type_matches, ',');
-//    }
-//    preg_match($city, $request[1], $city_type_matches);
-//    if ($city_type_matches !== '') {
-//      $city_type = 'location_city=' . $request[2];
-//    }
-//
-//    $atts = array(
-//      $sale_type, $city_type
-//    );
-//
-//    rdc_get_template_part('static/views/new_taxonomy', $atts);
-//    status_header(200);
+  global $wp_query;
+
+  if ($wp_query->is_404) {
+
+    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+    $REQUEST_URI = substr($REQUEST_URI, 1);
+    $request = explode('/', $REQUEST_URI);
+    // Check on sale_type
+    $sale_type_matches = array('sale', 'rent', 'commercial', 'sold');
+    if (!in_array($request[0], $sale_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    // Check on taxonomy
+    $args = array(
+      'public' => true,
+      '_builtin' => false
+    );
+    $output = 'names'; // or objects
+    $operator = 'and'; // 'and' or 'or'
+    $taxonomies = get_taxonomies($args, $output, $operator);
+    $taxonomy_type_matches = array();
+    if ($taxonomies) {
+      foreach ($taxonomies as $taxonomy) {
+        $taxonomy_type_matches[] = $taxonomy;
+      }
+    }
+    if (!in_array($request[1], $taxonomy_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    // Check on terms
+    $terms = get_terms(array('taxonomy' => $request[1]));
+    $term_type_matches = array();
+//    print_r($terms);
+    if ($terms) {
+      foreach ($terms as $term) {
+        $term_type_matches[] = $term->slug;
+      }
+    }
+//    print_r($term_type_matches);
+    if (!in_array($request[2], $term_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    $sale_type = 'sale_type=' . ucfirst($request[0]);
+    $taxonomy_type = $request[1] . '=' . ucfirst($request[2]);
+
+    $atts = array(
+      $sale_type, $taxonomy_type
+    );
+//    $query = implode($atts, ' ');
+//    print_r($query);
 //    die();
-//  }
+
+    rdc_get_template_part('static/views/new_taxonomy', $atts);
+    status_header(200);
+    die();
+  }
 }
 
-//add_action('template_redirect', 'rdc_template_redirect');
+add_action('template_redirect', 'rdc_template_redirect');
