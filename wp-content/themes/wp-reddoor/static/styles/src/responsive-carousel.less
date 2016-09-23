@@ -102,7 +102,7 @@ Responsive Carousel Start
             color: white;
             -moz-appearance: none;
             -webkit-appearance: none;
-            background-image: url("../images/arrow-down-white.png");
+            background-image: url("../images/src/arrow-down-white.png");
             background-position: 90% center;
             background-repeat: no-repeat;
 
@@ -241,65 +241,6 @@ Responsive Carousel Start
     .clearfix();
     width: 99999px;
     display: flex;
-
-    li.descriptionBlock {
-      border-radius: 0;
-      box-shadow: none;
-      margin-top: 0;
-
-      a {
-        background: #bf2b1f none repeat scroll 0 0;
-        border-radius: 5px;
-        color: #fff;
-        display: block;
-        padding: 18px;
-        width: 50%;
-        text-align: center;
-        margin-bottom: 30px;
-        margin-top: 50px;
-        font-size: 1.2em;
-      }
-    }
-
-    li.calloutcard {
-      background-color: #e12524;
-      background-image: url("../images/calloutcard.png");
-      background-repeat: no-repeat;
-      background-position: 0 bottom;
-      background-size: 101% auto;
-      color: #fff;
-      min-height: 415px;
-
-      h2 {
-        font-size: 1.7em;
-        font-weight: 500;
-        text-align: center;
-        padding: 0 2.5em;
-        margin: 45px 10px 25px;
-      }
-
-      div {
-        text-align: center;
-      }
-
-      a {
-        border: 2px solid #f49793;
-        border-radius: 3px;
-        color: #fff;
-        display: inline-block;
-        font-size: 1.1em;
-        font-weight: 500;
-        padding: 15px 20px;
-
-        &:first-child {
-          margin-right: 5px;
-        }
-
-        &:last-child {
-          margin-left: 5px;
-        }
-      }
-    }
 
     li.rdc-carousel-item {
       list-style: none;
@@ -469,8 +410,67 @@ Responsive Carousel Start
       width: 275px;
       height: 343px;
       float: left;
-      background: url(../images/carousel-loader.gif) #F6F6F6 center center no-repeat;
+      background: url(../images/src/carousel-loader.gif) #F6F6F6 center center no-repeat;
       margin: 0;
+    }
+
+    li.descriptionBlock {
+      border-radius: 0;
+      box-shadow: none;
+      margin-top: 0;
+
+      a {
+        background: #bf2b1f none repeat scroll 0 0;
+        border-radius: 5px;
+        color: #fff;
+        display: block;
+        padding: 18px;
+        width: 50%;
+        text-align: center;
+        margin-bottom: 30px;
+        margin-top: 50px;
+        font-size: 1.2em;
+      }
+    }
+
+    li.calloutcard {
+      background-color: #e12524;
+      background-image: url("../images/src/calloutcard.png");
+      background-repeat: no-repeat;
+      background-position: 0 bottom;
+      background-size: 101% auto;
+      color: #fff;
+      min-height: 415px;
+
+      h2 {
+        font-size: 1.7em;
+        font-weight: 500;
+        text-align: center;
+        padding: 0 2.5em;
+        margin: 45px 10px 25px;
+      }
+
+      div {
+        text-align: center;
+      }
+
+      a {
+        border: 2px solid #f49793;
+        border-radius: 3px;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.1em;
+        font-weight: 500;
+        padding: 15px 20px;
+
+        &:first-child {
+          margin-right: 5px;
+        }
+
+        &:last-child {
+          margin-left: 5px;
+        }
+      }
     }
   }
 }
@@ -579,7 +579,7 @@ a.rdc-carousel-next {
   } /* .rdc-carousel-wrapper */
 }
 
-@media screen and (max-width: 414px), screen and (max-height: 414px) and (orientation : landscape) {  /* For iphone 6 @375*/
+@media screen and (max-width: 414px){  /* For iphone 6 @375*/
   .rdc-carousel-wrapper{
     ul.rdc-carousel-items{
       li.rdc-carousel-item {
@@ -592,7 +592,7 @@ a.rdc-carousel-next {
   }
 }
 
-@media screen and (max-width: 320px), screen and (max-height: 320px) and (orientation : landscape){
+@media screen and (max-width: 320px){
   .rdc-carousel-wrapper{
     ul.rdc-carousel-items{
       li.rdc-carousel-item {
