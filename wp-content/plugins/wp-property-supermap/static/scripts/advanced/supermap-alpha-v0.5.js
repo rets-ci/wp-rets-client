@@ -58,12 +58,6 @@
           // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
           // _source.query = $scope.query;
 
-
-          // @hack only use first word
-          if (query.term.indexOf(' ') > 0) {
-            query.term = query.term.split(' ')[0];
-          }
-
           angular.forEach($scope.aggregationFields, function setField(data, key) {
 
             _source.aggs[key] = {
@@ -156,12 +150,8 @@
             // },
             body: {
               "regular": {
-                "text": query.term.toLowerCase(),
+                "text": query.term.toLowerCase().replace( /\s+/g, '' ),
                 "completion": {"field": "_search._suggest"}
-              },
-              "fuzzy": {
-                "text": query.term.toLowerCase(),
-                "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
               }
             }
           }, suggest_queryResponse);
@@ -365,7 +355,6 @@
       jQuery('.sm-scrollable-table > div').height(height - 341);
       jQuery('.sm-properties-grid').height(height - 103);
     }
-    console.log('map height: ', jQuery('.wpp-advanced-supermap').height());
   }
 
   /**
@@ -635,7 +624,6 @@
           return true;
         }
 
-
         $scope.view = {
           mode: {
             table: ( 'object' === typeof supermapMode && supermapMode.isMobile ) ? false : true,
@@ -820,7 +808,6 @@
             var targetVal = jQuery(target).val();
             var clearTargetVal = targetVal.replace(',', '');
             clearTargetVal = clearTargetVal.replace('.', '');
-            console.log('clearTargetVal', clearTargetVal);
             if (parseInt(clearTargetVal >= 10000)) {
               $scope.current_filter.price[mode] = Math.round(parseInt(clearTargetVal) / 1000) * 1000;
               if (mode == 'min') {
@@ -1419,9 +1406,6 @@
             index: index,
             type: type,
             method: "GET",
-            // headers: {
-            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":800,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}],"from":' + $scope.properties.length + '}',
           }, function (error, response) {
 
@@ -1489,19 +1473,14 @@
           }
 
           var search_form = jQuery('.sm-search-form form');
-
           search_form.addClass('processing');
           $scope.toggleSearchButton();
-
           $scope.fix_terms();
 
           $scope._request = client.search({
             index: index,
             type: type,
             method: "GET",
-            // headers: {
-            //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-            // },
             source: '{"query":' + build_query() + ',"_source": ' + JSON.stringify($scope.atts.fields.split(',')) + ', "size":500,"sort":[{"_system.agency_listing":{"order":"asc"}},{"post_title":{"order":"asc"}}]}',
           }, function (error, response) {
             debug('searchResponse query: [%s], hits [%s]', build_query(), response.hits.total);
@@ -1524,12 +1503,10 @@
                   $scope.currentProperty = $scope.properties[0];
                   $scope.properties[0].isSelected = true;
                   $scope.loadImages($scope.properties[0]);
-                  // $scope.refreshMarkers(true);
                   $scope.refreshMarkers(search_form.hasClass('mapChanged') ? false : true);
                 } else {
                   $scope.refreshMarkers(false);
                 }
-
                 if ($scope.total > $scope.properties.length) {
                   if (!$scope.loading_more_properties) {
                     $scope.loading_more_properties = true;
@@ -1746,8 +1723,6 @@
                 }
                 map.fitBounds($scope.latlngbounds);
 
-                console.log('Center on changed!', $scope.latLngs.length);
-
                 // Set Map 'Zoom' and 'Center On' automatically using shortcode paremeters.
                 if (vars.atts.zoom) {
                   var zoom = vars.atts.zoom;
@@ -1899,11 +1874,6 @@
               // @todo Fix issue with current "term" being used when getting new aggregate acounts for doing another search.
               // _source.query = $scope.query;
 
-              // @hack only use first word
-              if (query.term.indexOf(' ') > 0) {
-                query.term = query.term.split(' ')[0];
-              }
-
               angular.forEach($scope.aggregationFields, function setField(data, key) {
 
                 _source.aggs[key] = {
@@ -1992,17 +1962,10 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                // headers: {
-                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-                // },
                 body: {
                   "regular": {
-                    "text": query.term.toLowerCase(),
+                    "text": query.term.toLowerCase().replace( /\s+/g, '' ),
                     "completion": {"field": "_search._suggest"}
-                  },
-                  "fuzzy": {
-                    "text": query.term.toLowerCase(),
-                    "completion": {"field": "_search._suggest", "fuzzy": {"fuzziness": 0}}
                   }
                 }
               }, suggest_queryResponse);
@@ -2048,7 +2011,6 @@
                 } : []);
 
               }
-
 
             },
           }, allDone);
@@ -2373,7 +2335,6 @@
           if (jQuery.isEmptyObject(formQuery.bool.must_not)) {
             formQuery.bool.must_not = [];
           }
-
 
           $scope.query = formQuery;
 

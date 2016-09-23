@@ -252,7 +252,7 @@ a {
     padding-bottom: 50px;
     position: relative;
     text-align: center;
-    width: 30%;
+    //width: 30%;
     z-index: 9;
     li{
       display: inline-block;
@@ -309,6 +309,10 @@ a {
     a{
       color: @buttons;
     }
+    img{
+      max-width:100%;
+      height:auto;
+    }
     .singleSocialBlock{
       margin-bottom: 10%;
       margin-top: 7%;
@@ -334,6 +338,26 @@ a {
 .loadMoreContainer {
   margin-top: 4em;
   margin-bottom: 8em;
+  @media screen and (max-width: 991px) {
+    text-align: center;
+  }
+}
+
+.moreCategoriesPosts {
+  .loadMore,
+  .loadMoreBlockSeparate {
+    > .col-md-4,
+    > .col-lg-4 {
+      @media screen and (max-width: 991px) {
+        width: 50%;
+        float: left;
+      }
+      @media screen and (max-width: 767px) {
+        width: 100%;
+        float: none;
+      }
+    }
+  }
 }
 
 .oneCategory{
@@ -347,6 +371,14 @@ a {
   box-shadow: 0px 3px 15px rgba(53, 53, 53, 0.08);
   border: 1px solid #f3f0e9;
   overflow: hidden;
+  @media screen and (max-width: 1074px) {
+    height: 365px;
+    margin-bottom: 30px !important;
+    width: 100%;
+  }
+  @media screen and (max-width: 767px) {
+    height: auto;
+  }
   @media screen and (max-width: 410px) {
     width: 100%;
   }
@@ -358,7 +390,16 @@ a {
     margin-bottom: 42px;
     text-align: center;
     background: #efefef none repeat scroll 0 0;
-
+    @media screen and (max-width: 1074px) {
+      height: 200px;
+    }
+    @media screen and (max-width: 991px) {
+      height: 220px;
+    }
+    @media screen and (max-width: 767px) {
+      height: auto;
+      margin-bottom: 0;
+    }
     &>img {
       height: 100%;
       width: 100%;
@@ -379,7 +420,15 @@ a {
     position: absolute;
     left: 40%;
     top: 245px;
-
+    @media screen and (max-width: 1074px) {
+      top: 165px;
+    }
+    @media screen and (max-width: 991px) {
+      top: 185px;
+    }
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
     img{
 
       display: block;
@@ -411,6 +460,10 @@ a {
     &:hover {
       text-decoration: none;
       color: @buttons;
+    }
+
+    @media screen and (max-width: 767px) {
+      padding: 1em 2em;
     }
 
     .one_text {

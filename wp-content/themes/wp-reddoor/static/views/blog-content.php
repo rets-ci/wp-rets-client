@@ -33,7 +33,7 @@ $category = get_the_category();
 	</div>
 </div>
 
-<div class="container">
+<div class="container moreCategoriesPosts">
 	<div class="row loadMore">
 		<?php
 

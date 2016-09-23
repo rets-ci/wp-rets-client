@@ -575,9 +575,8 @@ while (have_posts()) : the_post();
                           </section>
                           <ul class="underlined-list">
                             <?php
-
-                            echo implode('', rdc_get_attribute_group($group_slug));
-
+                            $office = Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a');
+                            echo implode('', rdc_get_attribute_group($group_slug, $_propertySaleType, $pet_policy, $office));
                             ?>
                           </ul>
                         </div>
@@ -597,29 +596,6 @@ while (have_posts()) : the_post();
         </div>
       </div>
     </div>
-
-    <?php
-    $office = Utils::get_multiple_terms('listing_office', $property['ID'], 'name', 'a');
-    if (petPolicyChecking($_propertySaleType, $pet_policy, $office) == true) : ?>
-      <div class="container propertyPetPolicy">
-        <div class="row">
-          <div class="col-xs-12 col-lg-8 col-md-12">
-            <h4><?php _e('Pet Policy for ');
-              echo (!empty($property['location_address'])) ? $property['location_address'] : ''; ?></h4>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-lg-8 col-md-12 singleRemarks">
-            <p><?php _e('The following information regarding pets is general in nature. Every property is different and the executed lease terms would control.'); ?></p>
-            <p><?php _e('Sample Lease Terms:'); ?></p>
-            <p><?php _e('If pets are not allowed, Tenant agrees not to keep or allow anywhere on or about the Property any animals or pets of any kind. If pets are allowed, Tenant shall pay for any damages whether the damage is to the Premises or to any common areas, and to indemnify Landlord from any liability to third parties which may result from Tenant\'s keeping of pets.'); ?></p>
-            <p><?php _e('Tenant shall remove any pet previously permitted within 24 hours of written notification from the Landlord that the pet, in Landlord\'s sole judgment, creates a nuisance or disturbance or is, in Landlord\'s opinion, undesirable. If the pet is caused to be removed pursuant to this paragraph, the Landlord shall not be required to refund the Pet Fee or otherwise alter the terms of the lease.'); ?></p>
-            <p><?php _e('Pet Fees:'); ?></p>
-            <p><?php _e('For a single animal, the refundable pet deposit will be at least 50% of the rent and held as additional security deposit. Pet rent will be at least 3% of the monthly rent and added to the monthly rent due. For multiple animals or high-risk animals, the fees will be higher but will be handled on a case-by-case basis. Please note that we do not permit any of the dangerous breed dogs on any of our properties.'); ?></p>
-          </div>
-        </div>
-      </div>
-    <?php endif; ?>
 
     <div class="container listingProvider">
       <div class="row">

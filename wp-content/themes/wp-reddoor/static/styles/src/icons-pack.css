@@ -1,23 +1,23 @@
 @font-face {
     font-family: 'rdc-icomoon';
-    src:    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.eot?1gwudq');
-    src:    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.eot?1gwudq#iefix') format('embedded-opentype'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.woff2?1gwudq') format('woff2'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.ttf?1gwudq') format('truetype'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.woff?1gwudq') format('woff'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/reddoorcompany/icomoon.svg?1gwudq#icomoon') format('svg');
+    src:    url('../icons/reddoorcompany/font/icomoon.eot?1gwudq');
+    src:    url('../icons/reddoorcompany/font/icomoon.eot?1gwudq#iefix') format('embedded-opentype'),
+    url('../icons/reddoorcompany/font/icomoon.woff2?1gwudq') format('woff2'),
+    url('../icons/reddoorcompany/font/icomoon.ttf?1gwudq') format('truetype'),
+    url('../icons/reddoorcompany/font/icomoon.woff?1gwudq') format('woff'),
+    url('../icons/reddoorcompany/font/icomoon.svg?1gwudq#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'wpp-icomoon';
-    src:    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.eot?ob605w');
-    src:    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.eot?ob605w#iefix') format('embedded-opentype'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.woff2?ob605w') format('woff2'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.ttf?ob605w') format('truetype'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.woff?ob605w') format('woff'),
-    url('https://s3.amazonaws.com/icomoon.io/28703/wpproperty/icomoon.svg?ob605w#icomoon') format('svg');
+    src:    url('../icons/wpproperty/font/icomoon.eot?ob605w');
+    src:    url('../icons/wpproperty/font/icomoon.eot?ob605w#iefix') format('embedded-opentype'),
+    url('../icons/wpproperty/font/icomoon.woff2?ob605w') format('woff2'),
+    url('../icons/wpproperty/font/icomoon.ttf?ob605w') format('truetype'),
+    url('../icons/wpproperty/font/icomoon.woff?ob605w') format('woff'),
+    url('../icons/wpproperty/font/icomoon.svg?ob605w#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }

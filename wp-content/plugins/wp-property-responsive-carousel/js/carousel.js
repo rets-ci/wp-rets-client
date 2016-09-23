@@ -5,11 +5,12 @@ jQuery( function($){
         var $$ = $(this),
             $container = $$.closest('.rdc-carousel-container').parent(),
             $itemsContainer = $$.find('.rdc-carousel-items'),
-            $items = $$.find('.rdc-carousel-item.carousel-item'),
+            $items = $$.find('.rdc-carousel-item'),
             $filters = $$.parents('.rdc-property-carousel').find('form'),
             $firstItem = $items.eq(0),
             maxCount = $$.data('max-count'),
-            cardAvailable = $$.data('card-available');
+            cardAvailable = $$.data('card-available'),
+            padding;
 
         var position = 0,
             page = 1,
@@ -19,6 +20,49 @@ jQuery( function($){
             complete = numItems == totalPosts || (cardAvailable && maxCount >= numItems),
             itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) ),
             timer;
+
+        var setWidth = function(){
+            var windowHeight = jQuery(window).height();
+            var windowWidth = jQuery(window).width();
+            var width = $$.width();
+            var content = $items.find('.item-content');
+            var thumb = $items.find('.rdc-carousel-thumbnail .thumb');
+
+            if(windowWidth <= 768) {
+                padding = width * 20 / 100;
+                padding = padding > 50 ? 50 : padding;
+                width = width - padding;
+                width = width > 332?332:width;
+                $items.width(width);
+
+                var thumbHeight = $items.width() * 0.54;
+                var totalHeight = thumbHeight + content.height();
+                
+                thumb.height(thumbHeight);
+                $items.filter('.calloutcard').height(totalHeight);
+            }
+            else{
+                $items.css('width', '');
+                thumb.height("");
+                $items.filter('.calloutcard').height("");
+            }
+                
+            itemWidth = ( $firstItem.width() + parseInt($firstItem.css('margin-right')) );
+            if(typeof updatePosition != "undefined")
+                updatePosition();
+        }
+
+        if(jQuery('.rdc-carousel-item').hasClass('calloutcard')){
+            $items.find('.calloutcard').addClass('carousel-item');
+            $items.find('.descriptionBlock').addClass('carousel-item');
+        }
+        
+
+        jQuery(window).on('resize', function(){
+            setWidth();
+        });
+        jQuery(document).on('ready', setWidth);
+        jQuery(document).on('rdc-carousel-ajax-complete', setWidth);
 
         var doFilter = function() {
             page = 1;
@@ -63,8 +107,13 @@ jQuery( function($){
                     doRequest();
                 }
             }
+            var marginLeft = itemWidth * position;
+            if ( position == $$.find('.rdc-carousel-item').length - 1 ){
+                marginLeft -= padding;
+            }
+
             $itemsContainer.css('transition-duration', "0.45s");
-            $itemsContainer.css('margin-left', -( itemWidth * position) + 'px' );
+            $itemsContainer.css('margin-left', - marginLeft + 'px' );
         };
 
         $filters.find( 'select').on( 'change', function(){
@@ -115,8 +164,13 @@ jQuery( function($){
         $$.swipe( {
             excludedElements: "",
             triggerOnTouchEnd: true,
-            threshold: 75,
+            threshold: 45,
+            allowPageScroll: "vertical",
             swipeStatus: function (event, phase, direction, distance, duration, fingerCount, fingerData) {
+                if(direction == "down" || direction == "up"){
+                    updatePosition();
+                    return false;
+                }
                 if ( phase == "start" ) {
                     startPosition = -( itemWidth * position);
                     prevTime = new Date().getTime();
@@ -134,7 +188,7 @@ jQuery( function($){
                 else if ( phase == "end" ) {
                     validSwipe = true;
                     if( direction == "left" ) distance *= -1;
-                    if(Math.abs(velocity) > 400) {
+                    if(Math.abs(velocity) > 200) {
                         velocity *= 0.1;
                         var startTime = new Date().getTime();
                         var cumulativeDistance = 0;
