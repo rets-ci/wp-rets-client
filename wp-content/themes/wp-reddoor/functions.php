@@ -171,4 +171,87 @@ function rdc_get_template_part($template, $atts = array())
   require locate_template($template . '.php');
 }
 
-
+//
+///**
+// * @author vorobjov@UD
+// *
+// */
+//function rdc_template_redirect()
+//{
+//  global $wp_query;
+//
+//  if ($wp_query->is_404) {
+//
+//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+//    $REQUEST_URI = substr($REQUEST_URI, 1);
+//    $request = explode('/', $REQUEST_URI);
+//    // Check on sale_type
+//    $sale_type_matches = array('sale', 'rent', 'commercial', 'sold');
+//    if (!in_array($request[0], $sale_type_matches)) { // if has not matches going to 404
+//      return false;
+//    }
+//
+//    // Check on taxonomy
+//    $args = array(
+//      'public' => true,
+//      '_builtin' => false
+//    );
+//    $output = 'names';
+//    $operator = 'and';
+//    $taxonomies = get_taxonomies($args, $output, $operator);
+//    $taxonomy_type_matches = array();
+//    if ($taxonomies) {
+//      foreach ($taxonomies as $taxonomy) {
+//        $taxonomy_type_matches[] = $taxonomy;
+//      }
+//    }
+//    if (!in_array($request[1], $taxonomy_type_matches)) { // if has not matches going to 404
+//      return false;
+//    }
+//
+//    // Check on terms
+//    $terms = get_terms(array('taxonomy' => $request[1]));
+//    $term_type_matches = array();
+//    if ($terms) {
+//      foreach ($terms as $term) {
+//        $term_type_matches[] = $term->slug;
+//      }
+//    }
+//    if (!in_array($request[2], $term_type_matches)) { // if has not matches going to 404
+//      return false;
+//    }
+//
+//    $sale_type = 'sale_type=' . ucfirst($request[0]);
+//    $taxonomy_type = $request[1] . '=' . ucfirst($request[2]);
+//
+//    $atts = array(
+//      $sale_type, $taxonomy_type
+//    );
+//
+////    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+////    $REQUEST_URI = substr($REQUEST_URI, 1);
+////    $request = explode('/', $REQUEST_URI);
+//    $term = get_term_by('slug', $request[2], $request[1]);
+////    print_r($term->name);
+////    print_r(get_bloginfo('name'));
+//
+//    $title = apply_filters('the_tax_title', $term->name);
+//
+////    print_r(get_option('wpseo_titles'));
+//
+//
+//
+//
+//    add_filter('wp_title', 'filter_function_name', 99, 2);
+//    rdc_get_template_part('static/views/new_taxonomy', $atts);
+//    status_header(200);
+//    die();
+//  }
+//}
+//
+//add_action('template_redirect', 'rdc_template_redirect');
+//
+//function filter_function_name($title, $sep, $seplocation)
+//{
+//
+//}
