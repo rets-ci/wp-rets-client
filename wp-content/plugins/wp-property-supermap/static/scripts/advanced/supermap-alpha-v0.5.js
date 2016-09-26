@@ -76,9 +76,6 @@
             type: 'property',
             method: "POST",
             size: 0,
-            // headers: {
-            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            // },
             body: _source
           }, select_queryResponse);
 
@@ -145,9 +142,6 @@
             type: 'property',
             method: "POST",
             size: 0,
-            // headers: {
-            //   "Authorization": make_base_auth("supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n")
-            // },
             body: {
               "regular": {
                 "text": query.term.toLowerCase().replace( /\s+/g, '' ),
@@ -233,13 +227,11 @@
         maximumSelectionLength: 1,
         minimumInputLength: 3,
         templateResult: function templateResult(result, element) {
-          console.log('templateResult', result)
-          //jQuery(result.text).addClass('lasdfjdlsakfj');
+          console.log('templateResult', result);
           return result.text;
         },
         templateSelection: function templateSelection(selection, element) {
-          console.log('templateSelection', selection)
-          //jQuery(result.text).addClass('lasdfjdlsakfj');
+          console.log('templateSelection', selection);
           return selection.text;
         },
         data: data || [],
@@ -591,7 +583,8 @@
             $scope.current_filter.sale_type = getParameterByName('wpp_search[sale_type]')
           }
 
-          $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+          // $scope.current_filter.available_date = $scope.current_filter.available_date || $scope.getAvailabilityDate();
+          $scope.current_filter.available_date = $scope.current_filter.available_date || '';
 
           $scope.selected_sale_types = $scope.current_filter.sale_type.split(',');
 
@@ -1895,9 +1888,6 @@
                 type: 'property',
                 method: "POST",
                 size: 0,
-                // headers: {
-                //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-                // },
                 body: _source
               }, select_queryResponse);
 
