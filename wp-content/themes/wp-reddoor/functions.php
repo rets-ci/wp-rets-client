@@ -182,7 +182,7 @@ function rdc_template_redirect()
 
   if ($wp_query->is_404) {
 
-    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+    $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
     $REQUEST_URI = substr($REQUEST_URI, 1);
     $request = explode('/', $REQUEST_URI);
     // Check on sale_type
@@ -239,7 +239,7 @@ add_action('template_redirect', 'rdc_template_redirect');
 
 function custom_tax_title()
 {
-  $REQUEST_URI = $_SERVER['REQUEST_URI'];
+  $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
   $REQUEST_URI = substr($REQUEST_URI, 1);
   $request = explode('/', $REQUEST_URI);
 
