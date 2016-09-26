@@ -178,37 +178,80 @@ function rdc_get_template_part($template, $atts = array())
  */
 function rdc_template_redirect()
 {
-//  global $wp_query;
-//
-//  if ($wp_query->is_404) {
-//
-//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
-//    if($REQUEST_URI !== '/sale/city/apex') {
-//      return false;
-//    }
-//    $REQUEST_URI = substr($REQUEST_URI, 1);
-//    $request = explode('/', $REQUEST_URI);
-//
-//    $sale = '/^sale/';
-//    $city = '/^city/';
-//
-//    preg_match($sale, $request[0], $sale_type_matches);
-//    if ($sale_type_matches !== '') {
-//      $sale_type = 'sale_type=' . implode($sale_type_matches, ',');
-//    }
-//    preg_match($city, $request[1], $city_type_matches);
-//    if ($city_type_matches !== '') {
-//      $city_type = 'location_city=' . $request[2];
-//    }
-//
-//    $atts = array(
-//      $sale_type, $city_type
-//    );
-//
-//    rdc_get_template_part('static/views/new_taxonomy', $atts);
-//    status_header(200);
-//    die();
-//  }
+  global $wp_query;
+
+  if ($wp_query->is_404) {
+
+    $REQUEST_URI = $_SERVER['REQUEST_URI'];
+    $REQUEST_URI = substr($REQUEST_URI, 1);
+    $request = explode('/', $REQUEST_URI);
+    // Check on sale_type
+    $sale_type_matches = array('sale', 'rent', 'commercial', 'sold');
+    if (!in_array($request[0], $sale_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    // Check on taxonomy
+    $args = array(
+      'public' => true,
+      '_builtin' => false
+    );
+    $output = 'names';
+    $operator = 'and';
+    $taxonomies = get_taxonomies($args, $output, $operator);
+    $taxonomy_type_matches = array();
+    if ($taxonomies) {
+      foreach ($taxonomies as $taxonomy) {
+        $taxonomy_type_matches[] = $taxonomy;
+      }
+    }
+    if (!in_array($request[1], $taxonomy_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    // Check on terms
+    $terms = get_terms(array('taxonomy' => $request[1]));
+    $term_type_matches = array();
+    if ($terms) {
+      foreach ($terms as $term) {
+        $term_type_matches[] = $term->slug;
+      }
+    }
+    if (!in_array($request[2], $term_type_matches)) { // if has not matches going to 404
+      return false;
+    }
+
+    $sale_type = 'sale_type=' . ucfirst($request[0]);
+    $taxonomy_type = $request[1] . '=' . ucfirst($request[2]);
+
+    $atts = array(
+      $sale_type, $taxonomy_type
+    );
+
+    add_filter('wp_title', 'custom_tax_title', 99, 2);
+    rdc_get_template_part('static/views/custom_taxonomy', $atts);
+    status_header(200);
+    die();
+  }
 }
 
-//add_action('template_redirect', 'rdc_template_redirect');
+add_action('template_redirect', 'rdc_template_redirect');
+
+function custom_tax_title()
+{
+  $REQUEST_URI = $_SERVER['REQUEST_URI'];
+  $REQUEST_URI = substr($REQUEST_URI, 1);
+  $request = explode('/', $REQUEST_URI);
+
+  $term = get_term_by('slug', $request[2], $request[1]);
+  $seo_option = get_option('wpseo_titles');
+  $seo_title = $seo_option['title-tax-builder'];
+
+  $sep = '|';
+  $sitename = get_bloginfo('name');
+
+  $seo_title = str_replace('%%term_title%%', $term->name, $seo_title);
+  $seo_title = str_replace('%%sep%%', $sep, $seo_title);
+  $seo_title = str_replace('%%sitename%%', $sitename, $seo_title);
+  return $seo_title;
+}

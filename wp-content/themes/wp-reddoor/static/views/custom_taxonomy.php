@@ -6,6 +6,7 @@
 
 global $wp_query;
 $query = implode($atts, ' ');
+//print_r($query);
 get_header(); ?>
 
   <div class="container-fluid upToHeader">
