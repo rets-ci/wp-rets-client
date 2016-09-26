@@ -76,6 +76,7 @@
         "start": [
           "ln -sf /var/www/wp-content/static/etc/nginx/sites.d/wpcloud.conf /etc/nginx/sites.d/wpcloud.conf",
           "ln -sf /var/www/wp-content/static/git-hooks/post-merge.sh /var/www/.git/hooks/post-merge",
+          "chmod +x /var/www/.git/hooks/post-merge",
           "sudo service nginx reload"
         ]
       }
