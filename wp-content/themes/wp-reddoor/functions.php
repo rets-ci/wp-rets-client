@@ -228,20 +228,8 @@ function rdc_template_redirect()
       $sale_type, $taxonomy_type
     );
 
-//    $REQUEST_URI = $_SERVER['REQUEST_URI'];
-//    $REQUEST_URI = substr($REQUEST_URI, 1);
-//    $request = explode('/', $REQUEST_URI);
-    $term = get_term_by('slug', $request[2], $request[1]);
-//    print_r($term->name);
-//    print_r(get_bloginfo('name'));
-
-    $title = apply_filters('the_tax_title', $term->name);
-
-    print_r(get_option('wpseo_titles'));
-
-
-    add_filter('wp_title', 'filter_function_name', 99, 2);
-    rdc_get_template_part('static/views/new_taxonomy', $atts);
+    add_filter('wp_title', 'custom_tax_title', 99, 2);
+    rdc_get_template_part('static/views/custom_taxonomy', $atts);
     status_header(200);
     die();
   }
@@ -249,7 +237,21 @@ function rdc_template_redirect()
 
 add_action('template_redirect', 'rdc_template_redirect');
 
-function filter_function_name($title, $sep, $seplocation)
+function custom_tax_title()
 {
+  $REQUEST_URI = $_SERVER['REQUEST_URI'];
+  $REQUEST_URI = substr($REQUEST_URI, 1);
+  $request = explode('/', $REQUEST_URI);
 
+  $term = get_term_by('slug', $request[2], $request[1]);
+  $seo_option = get_option('wpseo_titles');
+  $seo_title = $seo_option['title-tax-builder'];
+
+  $sep = '|';
+  $sitename = get_bloginfo('name');
+
+  $seo_title = str_replace('%%term_title%%', $term->name, $seo_title);
+  $seo_title = str_replace('%%sep%%', $sep, $seo_title);
+  $seo_title = str_replace('%%sitename%%', $sitename, $seo_title);
+  return $seo_title;
 }
