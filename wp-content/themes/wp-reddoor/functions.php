@@ -173,8 +173,9 @@ function rdc_get_template_part($template, $atts = array())
 
 
 /**
- * @author vorobjov@UD
+ * Template redirect from 404 on new template with new permalink
  *
+ * @author vorobjov@UD
  */
 function rdc_template_redirect()
 {
@@ -228,15 +229,22 @@ function rdc_template_redirect()
       $sale_type, $taxonomy_type
     );
 
-    add_filter('wp_title', 'custom_tax_title', 99, 2);
+    add_filter('wp_title', 'custom_tax_title', 99, 2); // Page title hook
+//    add_filter('wpseo_title', 'custom_links_seo_title_hook'); // Seo title hook
+    $wp_query->is_404 = false;
     rdc_get_template_part('static/views/custom_taxonomy', $atts);
-    status_header(200);
+//    status_header(200);
     die();
   }
 }
 
 add_action('template_redirect', 'rdc_template_redirect');
 
+/**
+ * wp_title Filter for new pages
+ *
+ * @author vorobjov@UD
+ */
 function custom_tax_title()
 {
   $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
@@ -245,7 +253,8 @@ function custom_tax_title()
 
   $term = get_term_by('slug', $request[2], $request[1]);
   $seo_option = get_option('wpseo_titles');
-  $seo_title = $seo_option['title-tax-builder'];
+  $title_name = 'title-tax-' . $request[1];
+  $seo_title = $seo_option[$title_name];
 
   $sep = '|';
   $sitename = get_bloginfo('name');
@@ -255,3 +264,13 @@ function custom_tax_title()
   $seo_title = str_replace('%%sitename%%', $sitename, $seo_title);
   return $seo_title;
 }
+
+/**
+ * Seo plugin meta filters
+ *
+ * @author vorobjov@UD
+ */
+//function custom_links_seo_title_hook($link)
+//{
+//  return $link . '123';
+//}
