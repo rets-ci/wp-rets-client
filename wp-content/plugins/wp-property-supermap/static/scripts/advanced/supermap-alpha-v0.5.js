@@ -1529,7 +1529,7 @@
             $scope.toggleSearchButton();
 
           });
-
+          map_resize();
         };
 
         $scope.clean_up = function clean_up() {
@@ -1787,9 +1787,6 @@
             client.get({
               index: index,
               type: type,
-              // headers: {
-              //   "Authorization": make_base_auth($scope.get_map_metadata_user, $scope.get_map_metadata_password)
-              // },
               id: row._id,
               _source: ['meta_input.rets_media.*', 'meta_input.data_source_logo']
             }, function (error, response) {
