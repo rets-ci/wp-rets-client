@@ -230,10 +230,9 @@ function rdc_template_redirect()
     );
 
     add_filter('wp_title', 'custom_tax_title', 99, 2); // Page title hook
-//    add_filter('wpseo_title', 'custom_links_seo_title_hook'); // Seo title hook
     $wp_query->is_404 = false;
     rdc_get_template_part('static/views/custom_taxonomy', $atts);
-//    status_header(200);
+    status_header(200);
     die();
   }
 }
@@ -270,7 +269,3 @@ function custom_tax_title()
  *
  * @author vorobjov@UD
  */
-//function custom_links_seo_title_hook($link)
-//{
-//  return $link . '123';
-//}
