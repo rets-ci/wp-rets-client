@@ -173,12 +173,15 @@ function rdc_get_template_part($template, $atts = array())
 
 
 /**
- * @author vorobjov@UD
+ * Template redirect from 404 on new template with new permalink
  *
+ * @author vorobjov@UD
  */
 function rdc_template_redirect()
 {
   global $wp_query;
+
+//  print_r($wp_query);
 
   if ($wp_query->is_404) {
 
@@ -228,7 +231,9 @@ function rdc_template_redirect()
       $sale_type, $taxonomy_type
     );
 
-    add_filter('wp_title', 'custom_tax_title', 99, 2);
+    $wp_query->is_404 = false;
+    rdc_rewrite_query($request);
+    add_filter('wp_title', 'custom_tax_title', 99, 2); // Page title hook
     rdc_get_template_part('static/views/custom_taxonomy', $atts);
     status_header(200);
     die();
@@ -237,6 +242,11 @@ function rdc_template_redirect()
 
 add_action('template_redirect', 'rdc_template_redirect');
 
+/**
+ * wp_title Filter for new pages
+ *
+ * @author vorobjov@UD
+ */
 function custom_tax_title()
 {
   $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
@@ -245,7 +255,8 @@ function custom_tax_title()
 
   $term = get_term_by('slug', $request[2], $request[1]);
   $seo_option = get_option('wpseo_titles');
-  $seo_title = $seo_option['title-tax-builder'];
+  $title_name = 'title-tax-' . $request[1];
+  $seo_title = $seo_option[$title_name];
 
   $sep = '|';
   $sitename = get_bloginfo('name');
@@ -254,4 +265,66 @@ function custom_tax_title()
   $seo_title = str_replace('%%sep%%', $sep, $seo_title);
   $seo_title = str_replace('%%sitename%%', $sitename, $seo_title);
   return $seo_title;
+}
+
+/**
+ * Seo plugin meta rdc_rewrite_query()
+ *
+ * @author vorobjov@UD
+ */
+function rdc_rewrite_query($data)
+{
+  global $wp_query;
+
+  $term_data = get_term_by('slug', $data[2], $data[1]);
+
+//  print_r($term_data);
+
+  $wp_query->is_tax = true;
+  $wp_query->is_archive = true;
+
+  if ($wp_query->query['error'] == '404') {
+    unset($wp_query->query['error']);
+    $wp_query->query[$data[1]] = $data[2];
+  }
+  if ($wp_query->query_vars['error'] == '404') {
+    $wp_query->query_vars['error'] = '';
+    $wp_query->query_vars[$data[1]] = $data[2];
+    $wp_query->query_vars['taxonomy'] = $data[1];
+    $wp_query->query_vars['term'] = $data[2];
+  }
+  $wp_query->tax_query->queries = array(array(
+    'taxonomy' => $data[1],
+    'terms' => array($data[2]),
+    'field' => 'slug',
+    'operator' => 'IN',
+    'include_children' => 1
+  ));
+
+  $wp_query->tax_query->queried_terms = array(
+    $data[1] => array(
+      'terms' => array($data[2]),
+      'field' => 'slug'
+    )
+  );
+
+  $wp_query->queried_object = $term_data;
+  $wp_query->queried_object_id = $term_data->term_id;
+//  $wp_query->request = "SELECT SQL_CALC_FOUND_ROWS  wp_posts.ID FROM wp_posts  LEFT JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) WHERE 1=1  AND (
+//wp_term_relationships.term_taxonomy_id IN (" . $term_data->term_taxonomy_id . ")
+//) AND wp_posts.post_type = 'property' AND (wp_posts.post_status = 'publish' OR wp_posts.post_author = 49 AND wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_posts.post_date DESC LIMIT 0, 6";
+
+  $get_posts = get_posts(array(
+    'posts_per_page' => 6,
+    'post_type' => 'property',
+    'category' => 'taxonomy',
+    'order_by' => 'post_date',
+    'tax' => $term_data->term_taxonomy_id
+  ));
+  $get_post = get_post($get_posts[0]->ID);
+
+  $wp_query->posts = $get_posts;
+  $wp_query->post = $get_post;
+
+  wpseo_frontend_head_init();
 }
