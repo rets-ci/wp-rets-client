@@ -13,7 +13,7 @@
       searchElement: this,
       aggregationFields: 'object' === typeof supermapMode ? supermapMode.aggregationFields : {},
       selectOpions: null,
-      client: new jQuery.es.Client({hosts: [window.location.host]}),
+      client: new jQuery.es.Client({hosts: jQuery('meta[name="searchly"]').attr('data-url') || window.location.host  }),
       _request: false,
       $select: null,
       query: options.query || {"match": {"post_status": "publish"}},
@@ -1282,10 +1282,7 @@
          * @type {$.es.Client|*}
          */
         var client = new jQuery.es.Client({
-          hosts: [
-            // window.location.host,
-            'api.reddoorcompany.com'
-          ]
+          hosts: jQuery('meta[name="searchly"]').attr('data-url') || window.location.host
         });
 
         /**
