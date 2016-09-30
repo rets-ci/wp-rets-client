@@ -172,13 +172,18 @@ class Minit
     }
 
     if (isset($cache['cache_ver']) && $cache['cache_ver'] == $cache_ver && file_exists($cache['file']))
-      return $this->minit_enqueue_files($object, $cache);
+      return $this->minit_enqueue_files($object, $cache, $where);
 
 
     Minit::console_log(array(
       "where" => $where,
       "data" => $minit_todo
     ));
+
+
+    $_paths_used = array();
+    $_modified_times = array();
+
 
     foreach ($minit_todo as $script) {
 
@@ -194,6 +199,9 @@ class Minit
         continue;
 
       $script_content = apply_filters('minit-item-' . $extension, file_get_contents(ABSPATH . $src), $object, $script);
+      $_paths_used[] = ABSPATH . $src;
+
+      $_modified_times[ $src ] = filemtime( ABSPATH . $src );
 
       if (false !== $script_content)
         $done[$script] = $script_content;
@@ -210,8 +218,19 @@ class Minit
       if (!mkdir($wp_upload_dir['basedir'] . '/minit'))
         return $todo;
 
-    $combined_file_path = sprintf(apply_filters('minit-file-pattern', '%s/minit/%s.%s', $extension, $where), $wp_upload_dir['basedir'], $cache_ver, $extension);
-    $combined_file_url = sprintf(apply_filters('minit-file-pattern', '%s/minit/%s.%s', $extension, $where), $wp_upload_dir['baseurl'], $cache_ver, $extension);
+
+    // Use highest modified time.
+    if( is_array( $_modified_times ) ) {
+      $cache_ver = $cache_ver . '-' . md5(max($_modified_times));
+    }
+
+    $combined_file_path = sprintf(apply_filters('minit-file-pattern', '%s/minit/%s.%s', $extension, $where, $_modified_times), $wp_upload_dir['basedir'], $cache_ver, $extension);
+    $combined_file_url = sprintf(apply_filters('minit-file-pattern', '%s/minit/%s.%s', $extension, $where, $_modified_times), $wp_upload_dir['baseurl'], $cache_ver, $extension);
+
+    if( isset( $where ) && $where === 'header' && $extension === 'js' ) {
+      //die( '<pre>' . print_r( $_modified_times, true ) . '</pre>' );
+      // die( '<pre>' . print_r( array( 'where' => $where, '$extension' => $extension, '$combined_file_url' => $combined_file_url  ), true ) . '</pre>' );
+    }
 
     // Allow other plugins to do something with the resulting URL
     $combined_file_url = apply_filters('minit-url-' . $extension, $combined_file_url, $done);

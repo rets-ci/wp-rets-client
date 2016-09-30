@@ -17,10 +17,12 @@ var rdc = {
       return false;
     }
 
+
+
     // return stored client or create new one
     return rdc.__client = ( rdc.__client || new jQuery.es.Client({
-        host: 'dori-us-east-1.searchly.com',
-        index: 'v5',
+      host: jQuery('meta[name="searchly"]').attr('data-url') || window.location.host,
+      index: 'v5'
     }));
 
   },
@@ -35,6 +37,8 @@ var rdc = {
    */
   getCount: function getCount( type, callback ) {
 
+
+    
     rdc.client().search({
       index: 'v5',
       type: 'property',

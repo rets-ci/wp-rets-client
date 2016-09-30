@@ -99,9 +99,17 @@ add_filter( 'minit-script-tag-async', '__return_false' );
 add_filter( 'minit-cache-expiration', function() { return 0; });
 
 // Regenerates every time.
-add_filter( 'minit-file-pattern', function( $_path, $extension, $where ) {
-  return str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . minit_timestamp() . '-', $_path );
-}, 10, 3 );
+add_filter( 'minit-file-pattern', function( $_path, $extension, $where, $_modified_times ) {
+
+  $_timestamp = minit_timestamp();
+
+  // affix our modified-time busting hash
+  if( is_array( $_modified_times ) ) {
+    $_timestamp = $_timestamp  . '-' . max($_modified_times);
+  }
+  return  str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . $_timestamp . '-', $_path );
+
+}, 10, 4 );
 
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
