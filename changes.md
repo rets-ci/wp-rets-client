@@ -1,3 +1,6 @@
+### 1.0.3
+* Testing release.
+
 ### 1.0.2
 * Enabled automatic updates for wp-rabbit.
 
