@@ -1,3 +1,6 @@
+### 1.0.2
+* Enabled automatic updates for wp-rabbit.
+
 ### 1.0.1
 * Enabled plugin version checks from api.
 
