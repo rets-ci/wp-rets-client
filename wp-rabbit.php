@@ -14,3 +14,5 @@
 
 
 include_once( 'lib/updater.php' );
+include_once( 'lib/varnish.php' );
+

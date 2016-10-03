@@ -3,7 +3,7 @@
 add_filter('site_transient_update_plugins', function( $response, $transient ) {
 
   return $response;
-  
+
   //die( '<pre>' . print_r( $_response['body'], true ) . '</pre>' );
   if( !$response || !is_array( $response->response )) {
     return $response;
@@ -30,7 +30,9 @@ add_filter('site_transient_update_plugins', function( $response, $transient ) {
 
   // Make API call which will tell us if we are using the latest version or not.
   $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/wp-rabbit/latest/?version=' . $_version );
-  die( '<pre>' . print_r( $_response, true ) . '</pre>' );
+
+  // die( '<pre>' . print_r( $_response, true ) . '</pre>' );
+
   if( wp_remote_retrieve_response_code( $_response ) === 200 ) {
     $_body = wp_remote_retrieve_body( $_response );
     $_body = json_decode( $_body );
