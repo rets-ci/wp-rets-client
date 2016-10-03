@@ -376,22 +376,22 @@ function rdc_custom_seo_settings()
         $sale_description = get_option('custom_seo_tax_description_' . $tax->name . '_sale');
         $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
 
-        echo '<div class="tax-box"><table><tr>';
-        echo '<td class="tax-box-sale">';
+        echo '<div class="tax-box">';
+        echo '<div class="tax-box-sale">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
-        echo '<input class="all-options" type="text" value="' . $sale_title . '" name="custom_seo_tax_title_' . $tax->name . '_sale" placeholder="' . __('Title', 'reddoor') . '" />';
+        echo '<input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $sale_title . '" name="custom_seo_tax_title_' . $tax->name . '_sale" placeholder="' . __('Title', 'reddoor') . '" />';
         echo '<br />';
-        echo '<textarea class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_sale" placeholder="' . __('Description', 'reddoor') . '">' . $sale_description . '</textarea>';
-        echo '</td>'; // Sale box
+        echo '<textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_sale" placeholder="' . __('Description', 'reddoor') . '">' . $sale_description . '</textarea>';
+        echo '</div>'; // Sale box
 
-        echo '<td class="tax-box-rent">';
+        echo '<div class="tax-box-rent">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Rent)', 'reddoor') . '</h2>';
-        echo '<input class="all-options" type="text" value="' . $rent_title . '" name="custom_seo_tax_title_' . $tax->name . '_rent" placeholder="' . __('Title', 'reddoor') . '" />';
+        echo '<input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $rent_title . '" name="custom_seo_tax_title_' . $tax->name . '_rent" placeholder="' . __('Title', 'reddoor') . '" />';
         echo '<br />';
-        echo '<textarea class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_rent" placeholder="' . __('Description', 'reddoor') . '">' . $rent_description . '</textarea>';
-        echo '</td>'; // Rent box
+        echo '<textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_rent" placeholder="' . __('Description', 'reddoor') . '">' . $rent_description . '</textarea>';
+        echo '</div>'; // Rent box
 
-        echo '</tr></table></div>'; // box
+        echo '</div>'; // box
         echo '<br />';
         echo '<br />';
 
