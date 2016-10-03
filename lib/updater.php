@@ -28,9 +28,9 @@ add_filter( 'site_transient_update_plugins', function ( $response, $old_value ) 
     // todo use real plugin version if there is no build.sha in composer.json
     $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/wp-rabbit/latest/' . ( isset( $_version ) && $_version ? '?version=' . $_version : '' ), array(
       "headers"=> array(
-        //"x-set-branch"=> "staging",
-        "cache-control"=> "no-cache",
-        "pragma"=> "no-cache"
+        // "x-set-branch"=> "staging",
+        // "cache-control"=> "no-cache",
+        // "pragma"=> "no-cache"
       )
     ) );
 
