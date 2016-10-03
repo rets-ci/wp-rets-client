@@ -2,8 +2,6 @@
 
 add_filter('site_transient_update_plugins', function( $response, $transient ) {
 
-  return $response;
-
   //die( '<pre>' . print_r( $_response['body'], true ) . '</pre>' );
   if( !$response || !is_array( $response->response )) {
     return $response;
@@ -24,14 +22,7 @@ add_filter('site_transient_update_plugins', function( $response, $transient ) {
   } catch ( \Exception $e ) {}
 
   // todo use real plugin version if there is no build.sha in composer.json
-  if( !isset( $_version ) || !$_version ) {
-    $_version = '2.0';
-  }
-
-  // Make API call which will tell us if we are using the latest version or not.
-  $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/wp-rabbit/latest/?version=' . $_version );
-
-  // die( '<pre>' . print_r( $_response, true ) . '</pre>' );
+  $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/wp-rabbit/latest/' . ( isset( $_version ) && $_version ? 'version=' . $_version : '' ) );
 
   if( wp_remote_retrieve_response_code( $_response ) === 200 ) {
     $_body = wp_remote_retrieve_body( $_response );
@@ -40,7 +31,11 @@ add_filter('site_transient_update_plugins', function( $response, $transient ) {
     // If there is no "data" field then we have nothing to update.
     if( $_body->data ) {
       $response->response['wp-rabbit/wp-rabbit.php'] = $_body->data;
-      unset( $response->no_update['wp-rabbit/wp-rabbit.php'] );
+
+      if( isset( $response->no_update['wp-rabbit/wp-rabbit.php'] ) ) {
+        unset( $response->no_update['wp-rabbit/wp-rabbit.php'] );
+      }
+
     }
 
   }

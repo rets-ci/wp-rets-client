@@ -4,7 +4,7 @@
  * Plugin URI: https://www.usabilitydynamics.com
  * Description: Rabbit.ci helper.
  * Author: Usability Dynamics, Inc.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Text Domain: stateless-media
  * Author URI: https://www.usabilitydynamics.com
  *
