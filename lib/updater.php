@@ -5,7 +5,7 @@
  * - site_transient_update_plugins - on every run
  */
 // wp transient delete update_plugins
-add_filter( 'site_transient_update_plugins', function ( $response, $old_value, $option ) {
+add_filter( 'site_transient_update_plugins', function ( $response, $old_value ) {
 
 
   //die( '<pre>' . print_r( $_response['body'], true ) . '</pre>' );
@@ -27,7 +27,11 @@ add_filter( 'site_transient_update_plugins', function ( $response, $old_value, $
 
     // todo use real plugin version if there is no build.sha in composer.json
     $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/wp-rabbit/latest/' . ( isset( $_version ) && $_version ? '?version=' . $_version : '' ), array(
-      "headers"=> array( "x-set-branch"=> "staging" )
+      "headers"=> array(
+        //"x-set-branch"=> "staging",
+        "cache-control"=> "no-cache",
+        "pragma"=> "no-cache"
+      )
     ) );
 
     if( wp_remote_retrieve_response_code( $_response ) === 200 ) {
@@ -51,7 +55,7 @@ add_filter( 'site_transient_update_plugins', function ( $response, $old_value, $
 
   return $response;
 
-}, 50, 3 );
+}, 50, 2 );
 
 // show a custom message next to the update nag, perhaps display last commit message or something
 add_action( 'in_plugin_update_message-wp-rabbit/wp-rabbit.php', function ( $plugin_data, $response ) {
