@@ -26,7 +26,10 @@
     "codeclimate/php-test-reporter": "~0.1"
   },
   "autoload": {
-    "classmap": [ "lib/classes" ]
+    "classmap": [ "lib/classes" ],
+    "files": [
+      "wp-rets-client.php"
+    ]
   },
   "archive": {
     "exclude": [
