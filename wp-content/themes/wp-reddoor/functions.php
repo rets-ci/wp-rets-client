@@ -353,6 +353,8 @@ function register_rdc_custom_seo_settings()
     register_setting('rdc-custom-seo-settings', 'custom_seo_tax_description_' . $tax->name . '_sale');
     register_setting('rdc-custom-seo-settings', 'custom_seo_tax_title_' . $tax->name . '_rent');
     register_setting('rdc-custom-seo-settings', 'custom_seo_tax_description_' . $tax->name . '_rent');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_sitemap_' . $tax->name . '_sale');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_sitemap_' . $tax->name . '_rent');
   }
 }
 
@@ -375,20 +377,34 @@ function rdc_custom_seo_settings()
         $rent_title = get_option('custom_seo_tax_title_' . $tax->name . '_rent');
         $sale_description = get_option('custom_seo_tax_description_' . $tax->name . '_sale');
         $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
+        $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_sale');
+        $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_rent');
 
         echo '<div class="tax-box">';
         echo '<div class="tax-box-sale">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
-        echo '<input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $sale_title . '" name="custom_seo_tax_title_' . $tax->name . '_sale" placeholder="' . __('Title', 'reddoor') . '" />';
-        echo '<br />';
-        echo '<textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_sale" placeholder="' . __('Description', 'reddoor') . '">' . $sale_description . '</textarea>';
+        echo '<table><tr>';
+        echo '<td style="vertical-align: top"><label>' . __('Title', 'reddoor') . '</label></td>';
+        echo '<td><input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $sale_title . '" name="custom_seo_tax_title_' . $tax->name . '_sale" placeholder="' . __('Title', 'reddoor') . '" /></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Description', 'reddoor') . '</label></td>';
+        echo '<td><textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_sale" placeholder="' . __('Description', 'reddoor') . '">' . $sale_description . '</textarea></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Sitemap options', 'reddoor') . '</label></td>';
+        echo '<td><label><input type="radio" value="1" name="custom_seo_tax_sitemap_' . $tax->name . '_sale" ' . checked($sale_sitemap, '1', false) . ' class="" /> ' . __('In sitemap', 'reddoor') . '</label><br />';
+        echo '<label><input type="radio" value="" name="custom_seo_tax_sitemap_' . $tax->name . '_sale" ' . checked($sale_sitemap, '', false) . ' class="" /> ' . __('Not in sitemap', 'reddoor') . '</label></td>';
+        echo '</tr></table>';
         echo '</div>'; // Sale box
 
         echo '<div class="tax-box-rent">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Rent)', 'reddoor') . '</h2>';
-        echo '<input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $rent_title . '" name="custom_seo_tax_title_' . $tax->name . '_rent" placeholder="' . __('Title', 'reddoor') . '" />';
-        echo '<br />';
-        echo '<textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_rent" placeholder="' . __('Description', 'reddoor') . '">' . $rent_description . '</textarea>';
+        echo '<table><tr>';
+        echo '<td style="vertical-align: top"><label>' . __('Title', 'reddoor') . '</label></td>';
+        echo '<td><input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $rent_title . '" name="custom_seo_tax_title_' . $tax->name . '_rent" placeholder="' . __('Title', 'reddoor') . '" /></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Description', 'reddoor') . '</label></td>';
+        echo '<td><textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_rent" placeholder="' . __('Description', 'reddoor') . '">' . $rent_description . '</textarea></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Sitemap options', 'reddoor') . '</label></td>';
+        echo '<td><label><input type="radio" value="1" name="custom_seo_tax_sitemap_' . $tax->name . '_rent" ' . checked($rent_sitemap, '1', false) . ' class="" /> ' . __('In sitemap', 'reddoor') . '</label><br />';
+        echo '<label><input type="radio" value="" name="custom_seo_tax_sitemap_' . $tax->name . '_rent" ' . checked($rent_sitemap, '', false) . ' class="" /> ' . __('Not in sitemap', 'reddoor') . '</label></td>';
+        echo '</tr></table>';
         echo '</div>'; // Rent box
 
         echo '</div>'; // box
@@ -404,3 +420,26 @@ function rdc_custom_seo_settings()
   </div>
   <?php
 }
+//
+//$taxonomies = apply_filters('wpseo_sitemaps_supported_taxonomies', get_taxonomies(array('public' => true), 'objects'));
+//$yform = new Yoast_Form;
+//$switch_values = array(
+//  'off' => __('In sitemap', 'wordpress-seo'),
+//  'on' => __('Not in sitemap', 'wordpress-seo'),
+//);
+//if (is_array($taxonomies) && $taxonomies !== array()) {
+//  foreach ($taxonomies as $tax) {
+//    // Explicitly hide all the core taxonomies we never want in our sitemap.
+//    if (in_array($tax->name, array('link_category', 'nav_menu', 'post_format'))) {
+//      continue;
+//    }
+//    if (isset($tax->labels->name) && trim($tax->labels->name) != '') {
+//      $yform->toggle_switch(
+//        'custom_seo_tax_sitemap_' . $tax->name . '_rent',
+//        $switch_values,
+//        $tax->labels->name . ' (<code>' . $tax->name . '</code>)'
+//      );
+//        print_r($yform);
+//    }
+//  }
+//}
