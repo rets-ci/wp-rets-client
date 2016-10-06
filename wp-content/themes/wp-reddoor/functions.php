@@ -341,8 +341,15 @@ function rdc_rewrite_query($data)
 
   add_filter('wpseo_opengraph_title', 'new_wpseo_title');
   add_filter('wpseo_twitter_title', 'new_wpseo_title');
-  add_filter('wpseo_canonical', '__return_false');  // disable canonical tag
+  add_filter('wpseo_canonical', 'new_wpseo_canonical');
   add_filter('wpseo_next_rel_link', '__return_false'); // disable next link gag
+}
+
+function new_wpseo_canonical($canonical)
+{
+  $canonical = strtok($_SERVER['REQUEST_URI'], '?');
+  $canonical = site_url() . $canonical;
+  return $canonical;
 }
 
 function new_wpseo_title($title)
