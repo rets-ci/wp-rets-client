@@ -436,16 +436,16 @@ add_action('init', function () {
       foreach ($terms as $term) {
         if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod>2016-10-05T18:54:29-04:00</lastmod>
-		<changefreq>weekly</changefreq>
-		<priority>0.6</priority>
+          <lastmod></lastmod>
+		<changefreq></changefreq>
+		<priority></priority>
 	</url>';
         }
         if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod>2016-10-05T18:54:29-04:00</lastmod>
-		<changefreq>weekly</changefreq>
-		<priority>0.6</priority>
+          <lastmod></lastmod>
+		<changefreq></changefreq>
+		<priority></priority>
 	</url>';
         }
       }
