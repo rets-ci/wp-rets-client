@@ -230,8 +230,8 @@ function rdc_template_redirect()
     );
 
     $wp_query->is_404 = false;
-    rdc_rewrite_query($request);
     add_filter('wp_title', 'custom_tax_title', 99, 2); // Page title hook
+    rdc_rewrite_query($request);
     rdc_get_template_part('static/views/custom_taxonomy', $atts);
     status_header(200);
     die();
@@ -252,6 +252,7 @@ function custom_tax_title()
   $request = explode('/', $REQUEST_URI);
 
   $term = get_term_by('slug', $request[2], $request[1]);
+
   if (!empty(get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]))) {
     $seo_title = get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]);
   } else {
@@ -338,10 +339,35 @@ function rdc_rewrite_query($data)
 
   wpseo_frontend_head_init();
 
-  add_filter( 'wpseo_canonical', '__return_false' );  // disable canonical tag
-  add_filter( 'wpseo_next_rel_link', '__return_false' ); // disable next link gag
+  add_filter('wpseo_opengraph_title', 'new_wpseo_title');
+  add_filter('wpseo_twitter_title', 'new_wpseo_title');
+  add_filter('wpseo_canonical', '__return_false');  // disable canonical tag
+  add_filter('wpseo_next_rel_link', '__return_false'); // disable next link gag
 }
 
+function new_wpseo_title($title)
+{
+  $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
+  $REQUEST_URI = substr($REQUEST_URI, 1);
+  $request = explode('/', $REQUEST_URI);
+
+  $term = get_term_by('slug', $request[2], $request[1]);
+
+  if (!empty(get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]))) {
+    $title = get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]);
+  } else {
+    $seo_option = get_option('wpseo_titles');
+    $title_name = 'title-tax-' . $request[1];
+    $title = $seo_option[$title_name];
+  }
+  $sep = '|';
+  $sitename = get_bloginfo('name');
+
+  $title = str_replace('%%term_title%%', $term->name, $title);
+  $title = str_replace('%%sep%%', $sep, $title);
+  $title = str_replace('%%sitename%%', $sitename, $title);
+  return $title;
+}
 
 add_action('admin_menu', function () {
   add_menu_page(__('RDC Custom SEO Settings', 'reddoor'), __('RDC SEO Settings', 'reddoor'), 'manage_options', 'site-options', 'rdc_custom_seo_settings', '', 99.1);
