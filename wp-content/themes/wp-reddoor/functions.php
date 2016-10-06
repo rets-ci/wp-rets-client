@@ -181,8 +181,6 @@ function rdc_template_redirect()
 {
   global $wp_query;
 
-//  print_r($wp_query);
-
   if ($wp_query->is_404) {
 
     $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
@@ -232,8 +230,8 @@ function rdc_template_redirect()
     );
 
     $wp_query->is_404 = false;
-    rdc_rewrite_query($request);
     add_filter('wp_title', 'custom_tax_title', 99, 2); // Page title hook
+    rdc_rewrite_query($request);
     rdc_get_template_part('static/views/custom_taxonomy', $atts);
     status_header(200);
     die();
@@ -254,9 +252,27 @@ function custom_tax_title()
   $request = explode('/', $REQUEST_URI);
 
   $term = get_term_by('slug', $request[2], $request[1]);
-  $seo_option = get_option('wpseo_titles');
-  $title_name = 'title-tax-' . $request[1];
-  $seo_title = $seo_option[$title_name];
+
+  if (!empty(get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]))) {
+    $seo_title = get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]);
+  } else {
+    $seo_option = get_option('wpseo_titles');
+    $title_name = 'title-tax-' . $request[1];
+    $seo_title = $seo_option[$title_name];
+  }
+
+  if (!empty(get_option('custom_seo_tax_description_' . $request[1] . '_' . $request[0]))) {
+    add_filter('wpseo_metadesc', function ($seo_description) {
+      $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
+      $REQUEST_URI = substr($REQUEST_URI, 1);
+      $request = explode('/', $REQUEST_URI);
+      $seo_description = get_option('custom_seo_tax_description_' . $request[1] . '_' . $request[0]);
+      $term = get_term_by('slug', $request[2], $request[1]);
+      $seo_description = str_replace('%%term_title%%', $term->name, $seo_description);
+
+      return $seo_description;
+    });
+  }
 
   $sep = '|';
   $sitename = get_bloginfo('name');
@@ -277,8 +293,6 @@ function rdc_rewrite_query($data)
   global $wp_query;
 
   $term_data = get_term_by('slug', $data[2], $data[1]);
-
-//  print_r($term_data);
 
   $wp_query->is_tax = true;
   $wp_query->is_archive = true;
@@ -310,9 +324,6 @@ function rdc_rewrite_query($data)
 
   $wp_query->queried_object = $term_data;
   $wp_query->queried_object_id = $term_data->term_id;
-//  $wp_query->request = "SELECT SQL_CALC_FOUND_ROWS  wp_posts.ID FROM wp_posts  LEFT JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) WHERE 1=1  AND (
-//wp_term_relationships.term_taxonomy_id IN (" . $term_data->term_taxonomy_id . ")
-//) AND wp_posts.post_type = 'property' AND (wp_posts.post_status = 'publish' OR wp_posts.post_author = 49 AND wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_posts.post_date DESC LIMIT 0, 6";
 
   $get_posts = get_posts(array(
     'posts_per_page' => 6,
@@ -327,4 +338,155 @@ function rdc_rewrite_query($data)
   $wp_query->post = $get_post;
 
   wpseo_frontend_head_init();
+
+  add_filter('wpseo_opengraph_title', 'new_wpseo_title');
+  add_filter('wpseo_twitter_title', 'new_wpseo_title');
+  add_filter('wpseo_canonical', 'new_wpseo_canonical');
+  add_filter('wpseo_next_rel_link', '__return_false'); // disable next link gag
 }
+
+function new_wpseo_canonical($canonical)
+{
+  $canonical = strtok($_SERVER['REQUEST_URI'], '?');
+  $canonical = site_url() . $canonical;
+  return $canonical;
+}
+
+function new_wpseo_title($title)
+{
+  $REQUEST_URI = strtok($_SERVER['REQUEST_URI'], '?');
+  $REQUEST_URI = substr($REQUEST_URI, 1);
+  $request = explode('/', $REQUEST_URI);
+
+  $term = get_term_by('slug', $request[2], $request[1]);
+
+  if (!empty(get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]))) {
+    $title = get_option('custom_seo_tax_title_' . $request[1] . '_' . $request[0]);
+  } else {
+    $seo_option = get_option('wpseo_titles');
+    $title_name = 'title-tax-' . $request[1];
+    $title = $seo_option[$title_name];
+  }
+  $sep = '|';
+  $sitename = get_bloginfo('name');
+
+  $title = str_replace('%%term_title%%', $term->name, $title);
+  $title = str_replace('%%sep%%', $sep, $title);
+  $title = str_replace('%%sitename%%', $sitename, $title);
+  return $title;
+}
+
+add_action('admin_menu', function () {
+  add_menu_page(__('RDC Custom SEO Settings', 'reddoor'), __('RDC SEO Settings', 'reddoor'), 'manage_options', 'site-options', 'rdc_custom_seo_settings', '', 99.1);
+  add_action('admin_init', 'register_rdc_custom_seo_settings');
+});
+
+function register_rdc_custom_seo_settings()
+{
+  $taxonomies = get_taxonomies(array('public' => true), 'objects');
+  foreach ($taxonomies as $tax) {
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_title_' . $tax->name . '_sale');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_description_' . $tax->name . '_sale');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_title_' . $tax->name . '_rent');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_description_' . $tax->name . '_rent');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_sitemap_' . $tax->name . '_sale');
+    register_setting('rdc-custom-seo-settings', 'custom_seo_tax_sitemap_' . $tax->name . '_rent');
+  }
+}
+
+function rdc_custom_seo_settings()
+{
+  $taxonomies = get_taxonomies(array('public' => true), 'objects');
+  ?>
+  <div class="wrap">
+
+    <h1><?php _e('Custom taxonomies SEO settings'); ?></h1>
+
+    <form action="options.php" method="POST">
+      <?php
+
+      settings_fields('rdc-custom-seo-settings');
+      do_settings_sections('rdc-custom-seo-settings');
+
+      foreach ($taxonomies as $tax) {
+        $sale_title = get_option('custom_seo_tax_title_' . $tax->name . '_sale');
+        $rent_title = get_option('custom_seo_tax_title_' . $tax->name . '_rent');
+        $sale_description = get_option('custom_seo_tax_description_' . $tax->name . '_sale');
+        $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
+        $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_sale');
+        $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_rent');
+        echo 'Sale: ' . $sale_sitemap;
+        echo '<br />';
+        echo 'Rent: ' . $rent_sitemap;
+        echo '<div class="tax-box">';
+        echo '<div class="tax-box-sale">';
+        echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
+        echo '<table><tr>';
+        echo '<td style="vertical-align: top"><label>' . __('Title', 'reddoor') . '</label></td>';
+        echo '<td><input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $sale_title . '" name="custom_seo_tax_title_' . $tax->name . '_sale" placeholder="' . __('Title', 'reddoor') . '" /></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Description', 'reddoor') . '</label></td>';
+        echo '<td><textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_sale" placeholder="' . __('Description', 'reddoor') . '">' . $sale_description . '</textarea></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Sitemap options', 'reddoor') . '</label></td>';
+        echo '<td><label><input type="radio" value="1" name="custom_seo_tax_sitemap_' . $tax->name . '_sale" ' . checked($sale_sitemap, '1', false) . ' class="" /> ' . __('In sitemap', 'reddoor') . '</label><br />';
+        echo '<label><input type="radio" value="" name="custom_seo_tax_sitemap_' . $tax->name . '_sale" ' . checked($sale_sitemap, '', false) . ' class="" /> ' . __('Not in sitemap', 'reddoor') . '</label></td>';
+        echo '</tr></table>';
+        echo '</div>'; // Sale box
+
+        echo '<div class="tax-box-rent">';
+        echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Rent)', 'reddoor') . '</h2>';
+        echo '<table><tr>';
+        echo '<td style="vertical-align: top"><label>' . __('Title', 'reddoor') . '</label></td>';
+        echo '<td><input style="width: 400px; margin: 0px 0px 10px;" class="all-options" type="text" value="' . $rent_title . '" name="custom_seo_tax_title_' . $tax->name . '_rent" placeholder="' . __('Title', 'reddoor') . '" /></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Description', 'reddoor') . '</label></td>';
+        echo '<td><textarea style="width: 400px" class="all-options" rows="5" name="custom_seo_tax_description_' . $tax->name . '_rent" placeholder="' . __('Description', 'reddoor') . '">' . $rent_description . '</textarea></td>';
+        echo '</tr><tr><td style="vertical-align: top"><label>' . __('Sitemap options', 'reddoor') . '</label></td>';
+        echo '<td><label><input type="radio" value="1" name="custom_seo_tax_sitemap_' . $tax->name . '_rent" ' . checked($rent_sitemap, '1', false) . ' class="" /> ' . __('In sitemap', 'reddoor') . '</label><br />';
+        echo '<label><input type="radio" value="" name="custom_seo_tax_sitemap_' . $tax->name . '_rent" ' . checked($rent_sitemap, '', false) . ' class="" /> ' . __('Not in sitemap', 'reddoor') . '</label></td>';
+        echo '</tr></table>';
+        echo '</div>'; // Rent box
+
+        echo '</div>'; // box
+        echo '<br />';
+        echo '<br />';
+
+      } // end foreach of taxonomies
+      submit_button();
+      ?>
+    </form>
+  </div>
+  <?php
+}
+
+add_action('init', function () {
+  $taxonomies = get_taxonomies(array('public' => true), 'objects');
+  foreach ($taxonomies as $tax) {
+    add_filter('wpseo_sitemap_' . $tax->name . '_content', function () {
+      $current_filter = current_filter();
+      $current_filter = str_replace('wpseo_sitemap_', '', $current_filter);
+      $tax_name = str_replace('_content', '', $current_filter);
+      $terms = get_terms(array('taxonomy' => $tax_name));
+      $siteurl = site_url();
+      $permalinks = '';
+      $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_sale');
+      $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_rent');
+      foreach ($terms as $term) {
+        if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
+          $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
+          <lastmod></lastmod>
+		<changefreq></changefreq>
+		<priority></priority>
+	</url>';
+        }
+        if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
+          $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
+          <lastmod></lastmod>
+		<changefreq></changefreq>
+		<priority></priority>
+	</url>';
+        }
+      }
+      return $permalinks;
+    });
+  }
+});
+
