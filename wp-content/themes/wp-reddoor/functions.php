@@ -415,9 +415,7 @@ function rdc_custom_seo_settings()
         $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
         $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_sale');
         $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_rent');
-        echo 'Sale: ' . $sale_sitemap;
-        echo '<br />';
-        echo 'Rent: ' . $rent_sitemap;
+        
         echo '<div class="tax-box">';
         echo '<div class="tax-box-sale">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
