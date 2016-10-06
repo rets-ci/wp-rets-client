@@ -379,7 +379,9 @@ function rdc_custom_seo_settings()
         $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
         $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_sale');
         $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_rent');
-
+        echo 'Sale: ' . $sale_sitemap;
+        echo '<br />';
+        echo 'Rent: ' . $rent_sitemap;
         echo '<div class="tax-box">';
         echo '<div class="tax-box-sale">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
@@ -412,34 +414,43 @@ function rdc_custom_seo_settings()
         echo '<br />';
 
       } // end foreach of taxonomies
-
       submit_button();
-
       ?>
     </form>
   </div>
   <?php
 }
-//
-//$taxonomies = apply_filters('wpseo_sitemaps_supported_taxonomies', get_taxonomies(array('public' => true), 'objects'));
-//$yform = new Yoast_Form;
-//$switch_values = array(
-//  'off' => __('In sitemap', 'wordpress-seo'),
-//  'on' => __('Not in sitemap', 'wordpress-seo'),
-//);
-//if (is_array($taxonomies) && $taxonomies !== array()) {
-//  foreach ($taxonomies as $tax) {
-//    // Explicitly hide all the core taxonomies we never want in our sitemap.
-//    if (in_array($tax->name, array('link_category', 'nav_menu', 'post_format'))) {
-//      continue;
-//    }
-//    if (isset($tax->labels->name) && trim($tax->labels->name) != '') {
-//      $yform->toggle_switch(
-//        'custom_seo_tax_sitemap_' . $tax->name . '_rent',
-//        $switch_values,
-//        $tax->labels->name . ' (<code>' . $tax->name . '</code>)'
-//      );
-//        print_r($yform);
-//    }
-//  }
-//}
+
+add_action('init', function () {
+  $taxonomies = get_taxonomies(array('public' => true), 'objects');
+  foreach ($taxonomies as $tax) {
+    add_filter('wpseo_sitemap_' . $tax->name . '_content', function () {
+      $current_filter = current_filter();
+      $current_filter = str_replace('wpseo_sitemap_', '', $current_filter);
+      $tax_name = str_replace('_content', '', $current_filter);
+      $terms = get_terms(array('taxonomy' => $tax_name));
+      $siteurl = site_url();
+      $permalinks = '';
+      $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_sale');
+      $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_rent');
+      foreach ($terms as $term) {
+        if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
+          $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
+          <lastmod>2016-10-05T18:54:29-04:00</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.6</priority>
+	</url>';
+        }
+        if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
+          $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
+          <lastmod>2016-10-05T18:54:29-04:00</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.6</priority>
+	</url>';
+        }
+      }
+      return $permalinks;
+    });
+  }
+});
+
