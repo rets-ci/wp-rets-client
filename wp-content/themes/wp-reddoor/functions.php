@@ -337,6 +337,9 @@ function rdc_rewrite_query($data)
   $wp_query->post = $get_post;
 
   wpseo_frontend_head_init();
+
+  add_filter( 'wpseo_canonical', '__return_false' );  // disable canonical tag
+  add_filter( 'wpseo_next_rel_link', '__return_false' ); // disable next link gag
 }
 
 
