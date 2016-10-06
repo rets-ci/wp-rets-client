@@ -187,6 +187,14 @@ function rdc_wp_ghetto_term_redirection( $query ) {
 }
 
 
-add_action('init', function() {
-  add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
-});
+add_action('wp_loaded', function() {
+  global $wp_rewrite;
+
+  if( isset($wp_rewrite) && isset($wp_rewrite->rules) && !isset( $wp_rewrite->rules['^listing/([0-9]+)/?$'])) {
+    add_rewrite_rule('^listing/([0-9]+)/?$', 'index.php?p=$matches[1]', 'top');
+    $wp_rewrite->flush_rules(true);
+    // die( '<pre>' . print_r( get_option( 'rewrite_rules', true ), true ) . '</pre>' );
+    // die('flushed rules');
+  }
+
+}, 20);
