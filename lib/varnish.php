@@ -25,12 +25,13 @@ add_action( 'save_post', function( $post_id ) {
     "method" => "PURGE",
     "headers" => array(
       "X-Access-Token" => "yhcwokwserjzdjir",
-      "Host" => $parse['host']
+      "Host" => $parse['host'],
+      "x-set-branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
     ),
     "blocking" => false
   ));
 
-  // die( '<pre>' . print_r( $_purge, true ) . '</pre>' );
+  rabbit_write_log( 'Purging cache for [' . $parse['host'] . $parse['path'] . '] in ['.$_SERVER['GIT_BRANCH'].'] branch.' );
 
 }, 50 );
 
@@ -43,6 +44,9 @@ add_action( 'save_post', function( $post_id ) {
  */
 add_filter( 'generate_rewrite_rules', function( $wp_rewrite ) {
 
+  // disabled for now, seems to run all the time on UD, for instance.
+  return $wp_rewrite->rules;
+
   $site_url = home_url();
 
   $parse = parse_url($site_url);
@@ -52,11 +56,27 @@ add_filter( 'generate_rewrite_rules', function( $wp_rewrite ) {
     "method" => "PURGE",
     "headers" => array(
       "X-Access-Token" => "yhcwokwserjzdjir",
-      "Host" => $parse['host']
+      "Host" => $parse['host'],
+      "x-set-branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
     ),
     "blocking" => false
   ));
 
+  rabbit_write_log( 'Purging all cache for [' . $parse['host'] . $parse['path'] . '/*' . '] in ['.$_SERVER['GIT_BRANCH'].'] branch.' );
+
   return $wp_rewrite->rules;
 
 }, 50 );
+
+/**
+ * @param $data
+ */
+function rabbit_write_log( $data ) {
+
+  $data = "\n" . date("F j, Y, g:i a") . " - " . $data;
+
+  if( file_exists( '/var/log/wpcloud.site/deployment.log' ) ) {
+    @file_put_contents('/var/log/wpcloud.site/deployment.log', $data, FILE_APPEND );
+  }
+
+}

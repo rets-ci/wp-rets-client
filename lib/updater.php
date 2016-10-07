@@ -7,7 +7,6 @@
 // wp transient delete update_plugins
 add_filter( 'site_transient_update_plugins', function ( $response, $old_value ) {
 
-
   //die( '<pre>' . print_r( $_response['body'], true ) . '</pre>' );
   if( !$response || !is_array( $response->response ) ) {
     return $response;
