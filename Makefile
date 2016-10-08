@@ -14,6 +14,7 @@ subtreePull:
 	@git subtree pull --prefix=wp-content/plugins/wp-rets-client git@github.com:UsabilityDynamics/wp-rets-client latest --squash
 	@git subtree pull --prefix=wp-content/plugins/wp-stateless git@github.com:wpCloud/wp-stateless latest --squash
 	@git subtree pull --prefix=wp-content/plugins/wp-upstream git@github.com:wpCloud/wp-upstream latest --squash
+	@git subtree pull --prefix=wp-content/plugins/wp-rabbit git@github.com:RabbitCI/wp-rabbit latest --squash
 
 
 subtreePush:
@@ -35,6 +36,7 @@ subtreePush:
 	@git subtree push --prefix=wp-content/plugins/wp-invoice-mijireh-checkout git@github.com:wp-invoice/wp-invoice-mijireh-checkout latest --squash
 	@git subtree push --prefix=wp-content/plugins/wp-stateless git@github.com:wpCloud/wp-stateless latest --squash
 	@git subtree push --prefix=wp-content/plugins/wp-upstream git@github.com:wpCloud/wp-upstream latest --squash
+	@git subtree push --prefix=wp-content/plugins/wp-rabbit git@github.com:RabbitCI/wp-rabbit latest --squash
 
 subtreeAdd:
 	@git subtree add --prefix=wp-content/plugins/wp-property git@github.com:wp-property/wp-property v2.0
@@ -55,3 +57,4 @@ subtreeAdd:
 	@git subtree add --prefix=wp-content/plugins/wp-invoice-mijireh-checkout git@github.com:wp-invoice/wp-invoice-mijireh-checkout latest
 	@git subtree add --prefix=wp-content/plugins/wp-stateless git@github.com:wpCloud/wp-stateless latest
 	@git subtree add --prefix=wp-content/plugins/wp-upstream git@github.com:wpCloud/wp-upstream latest
+	@git subtree add --prefix=wp-content/plugins/wp-rabbit git@github.com:RabbitCI/wp-rabbit latest
