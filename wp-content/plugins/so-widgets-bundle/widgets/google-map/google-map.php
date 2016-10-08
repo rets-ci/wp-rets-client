@@ -25,29 +25,10 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 	}
 
 	function initialize() {
-		$this->register_frontend_scripts(
-			array(
-				array(
-					'sow-google-map',
-					plugin_dir_url(__FILE__) . 'js/js-map' . SOW_BUNDLE_JS_SUFFIX . '.js',
-					array( 'jquery' ),
-					SOW_BUNDLE_VERSION
-				)
-			)
-		);
-		$this->register_frontend_styles(
-			array(
-				array(
-					'sow-google-map',
-					plugin_dir_url(__FILE__) . 'css/style.css',
-					array(),
-					SOW_BUNDLE_VERSION
-				)
-			)
-		);
+		add_action( 'siteorigin_widgets_before_widget_sow-google-map', array( $this, 'enqueue_widget_scripts' ) );
 	}
 
-	function initialize_form(){
+	function get_widget_form(){
 		return array(
 			'map_center'      => array(
 				'type'        => 'textarea',
@@ -452,6 +433,23 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 			);
 		}
 	}
+
+	public function enqueue_widget_scripts() {
+		wp_enqueue_script(
+			'sow-google-map',
+			plugin_dir_url( __FILE__ ) . 'js/js-map' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			array( 'jquery' ),
+			SOW_BUNDLE_VERSION
+		);
+
+		wp_enqueue_style(
+			'sow-google-map',
+			plugin_dir_url(__FILE__) . 'css/style.css',
+			array(),
+			SOW_BUNDLE_VERSION
+		);
+	}
+
 
 	private function get_styles( $instance ) {
 		$style_config = $instance['styles'];
