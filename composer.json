@@ -19,8 +19,10 @@
         }
       ]
     },
-    "settings_latest_v3": {
+    "settings_latest-v3": {
       "wp_debug_log": true,
+      "wp_siteurl": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
+      "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "wp_memcached_servers": "localhost:11211",
       "db": [
