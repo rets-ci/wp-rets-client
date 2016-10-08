@@ -5,6 +5,17 @@ Importnat note, this plugin updates itself automatically when changes are made t
 * Purges all Varnish cache for entire domain when permalinks are updated/changes.
 
 
+### Settings
+For now settings will be constant-based, in future can add options.
+ 
+* `RABBITCI_AUTO_UPDATE` - If enabled, will update from latest branch and automatically install.
+
+
+### Functions
+Few useful functions.
+
+* `rabbit_write_log` - Writes details to /var/log/wpcloud.site/deployment.log.
+
 ### Development
 To setup wp-rabbit within a site for contextual development:
 

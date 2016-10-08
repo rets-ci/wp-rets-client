@@ -1,3 +1,6 @@
+### 1.0.4
+* Ported Navbar out of wp-cloud-io plugin.
+
 ### 1.0.3
 * Testing release.
 
