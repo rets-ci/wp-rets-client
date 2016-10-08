@@ -81,6 +81,9 @@ function rabbit_auto_update_specific_plugins ( $update, $item ) {
 
 }
 
-add_filter( 'auto_update_plugin', 'rabbit_auto_update_specific_plugins', 10, 2 );
+if( defined( 'RABBITCI_AUTO_UPDATE' ) && RABBITCI_AUTO_UPDATE ) {
+  add_filter( 'auto_update_plugin', 'rabbit_auto_update_specific_plugins', 10, 2 );
+}
+
 
 

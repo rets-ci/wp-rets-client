@@ -1,7 +1,9 @@
 <?php
 /**
  * Purge Varnish Cache
- * 
+ *
+ *
+ * @todo Use IO_WPCLOUD_DEPLOYMENT_HASH or CI_RABBIT_HASH for x-access-token ID.
  */
 
 // varnish cache purging
@@ -11,7 +13,6 @@ add_action( 'save_post', function( $post_id ) {
   if ( wp_is_post_revision( $post_id ) )
     return;
 
-  $post_title = get_the_title( $post_id );
   $post_url = get_permalink( $post_id );
 
   if( !$post_url ) {
