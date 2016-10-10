@@ -154,6 +154,10 @@ class SimpleHistory {
 				$postdata = file_get_contents( "php://input" );
 				$context["_debug_http_raw_post_data"] = $sh->json_encode( $postdata );
 
+				$context["_debug_wp_debug_backtrace_summary"] = wp_debug_backtrace_summary();
+				$context["_debug_is_admin"] = json_encode( is_admin() );
+				$context["_debug_is_doing_cron"] = json_encode( defined('DOING_CRON') && DOING_CRON );
+
 				return $context;
 
 			}, 10, 4 );
@@ -837,12 +841,14 @@ class SimpleHistory {
 			$loggersDir . "SimpleThemeLogger.php",
 			$loggersDir . "SimpleUserLogger.php",
 			$loggersDir . "SimpleCategoriesLogger.php",
+			$loggersDir . "AvailableUpdatesLogger.php",
 
 			// Loggers for third party plugins
 			$loggersDir . "PluginUserSwitchingLogger.php",
 			$loggersDir . "PluginEnableMediaReplaceLogger.php",
 			$loggersDir . "Plugin_UltimateMembers_Logger.php",
-			$loggersDir . "Plugin_LimitLoginAttempts.php"
+			$loggersDir . "Plugin_LimitLoginAttempts.php",
+			$loggersDir . "Plugin_Redirection.php",
 	    );
 
 		// SimpleLogger.php must be loaded first and always since the other loggers extend it
@@ -1132,7 +1138,7 @@ class SimpleHistory {
 	 */
 	function get_pager_size() {
 
-		$pager_size = get_option( "simple_history_pager_size", 10 );
+		$pager_size = get_option( "simple_history_pager_size", 20 );
 
 		/**
 		 * Filter the pager size setting
@@ -1142,6 +1148,31 @@ class SimpleHistory {
 		 * @param int $pager_size
 		 */
 		$pager_size = apply_filters( "simple_history/pager_size", $pager_size );
+
+		return $pager_size;
+
+	}
+
+
+	/**
+	 * Gets the pager size,
+	 * i.e. the number of items to show on each page in the history
+	 *
+	 * @since 2.12
+	 * @return int
+	 */
+	function get_pager_size_dashboard() {
+
+		$pager_size = get_option( "simple_history_pager_size_dashboard", 5 );
+
+		/**
+		 * Filter the pager size setting
+		 *
+		 * @since 2.12
+		 *
+		 * @param int $pager_size
+		 */
+		$pager_size = apply_filters( "simple_history/pager_size_dashboard", $pager_size );
 
 		return $pager_size;
 
@@ -1195,7 +1226,7 @@ class SimpleHistory {
 	 */
 	function dashboard_widget_output() {
 
-		$pager_size = $this->get_pager_size();
+		$pager_size = $this->get_pager_size_dashboard();
 
 		/**
 		 * Filter the pager size setting for the dashboard
@@ -1816,17 +1847,31 @@ Because Simple History was just recently installed, this feed does not contain m
         register_setting( SimpleHistory::SETTINGS_GENERAL_OPTION_GROUP, "simple_history_show_on_dashboard" );
         register_setting( SimpleHistory::SETTINGS_GENERAL_OPTION_GROUP, "simple_history_show_as_page" );
 
-		// Dropdown number if items to show
+		// Number if items to show on the history page
 		add_settings_field(
 			"simple_history_number_of_items",
-			__( "Number of items per page", "simple-history" ),
+			__( "Number of items per page on the log page", "simple-history" ),
 			array( $this, "settings_field_number_of_items" ),
 			SimpleHistory::SETTINGS_MENU_SLUG,
 			$settings_section_general_id
 		);
 
 		// Nonces for number of items inputs
-                register_setting( SimpleHistory::SETTINGS_GENERAL_OPTION_GROUP, "simple_history_pager_size" );
+        register_setting( SimpleHistory::SETTINGS_GENERAL_OPTION_GROUP, "simple_history_pager_size" );
+
+
+		// Number if items to show on dashboard
+		add_settings_field(
+			"simple_history_number_of_items_dashboard",
+			__( "Number of items per page on the dashboard", "simple-history" ),
+			array( $this, "settings_field_number_of_items_dashboard" ),
+			SimpleHistory::SETTINGS_MENU_SLUG,
+			$settings_section_general_id
+		);
+
+		// Nonces for number of items inputs
+        register_setting( SimpleHistory::SETTINGS_GENERAL_OPTION_GROUP, "simple_history_pager_size_dashboard" );
+
 
 		// Link to clear log
 		add_settings_field(
@@ -1938,7 +1983,7 @@ Because Simple History was just recently installed, this feed does not contain m
 	}
 
 	/**
-	 * Settings field for how many rows/items to show in log
+	 * Settings field for how many rows/items to show in log on the log page
 	 */
 	function settings_field_number_of_items() {
 
@@ -1946,6 +1991,30 @@ Because Simple History was just recently installed, this feed does not contain m
 
 		?>
 		<select name="simple_history_pager_size">
+			<option <?php echo $current_pager_size == 5 ? "selected" : ""?> value="5">5</option>
+			<option <?php echo $current_pager_size == 10 ? "selected" : ""?> value="10">10</option>
+			<option <?php echo $current_pager_size == 15 ? "selected" : ""?> value="15">15</option>
+			<option <?php echo $current_pager_size == 20 ? "selected" : ""?> value="20">20</option>
+			<option <?php echo $current_pager_size == 25 ? "selected" : ""?> value="25">25</option>
+			<option <?php echo $current_pager_size == 30 ? "selected" : ""?> value="30">30</option>
+			<option <?php echo $current_pager_size == 40 ? "selected" : ""?> value="40">40</option>
+			<option <?php echo $current_pager_size == 50 ? "selected" : ""?> value="50">50</option>
+			<option <?php echo $current_pager_size == 75 ? "selected" : ""?> value="75">75</option>
+			<option <?php echo $current_pager_size == 100 ? "selected" : ""?> value="100">100</option>
+		</select>
+		<?php
+
+	}
+
+	/**
+	 * Settings field for how many rows/items to show in log on the dashboard
+	 */
+	function settings_field_number_of_items_dashboard() {
+
+		$current_pager_size = $this->get_pager_size_dashboard();
+
+		?>
+		<select name="simple_history_pager_size_dashboard">
 			<option <?php echo $current_pager_size == 5 ? "selected" : ""?> value="5">5</option>
 			<option <?php echo $current_pager_size == 10 ? "selected" : ""?> value="10">10</option>
 			<option <?php echo $current_pager_size == 15 ? "selected" : ""?> value="15">15</option>
