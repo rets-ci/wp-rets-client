@@ -490,16 +490,9 @@ add_action('init', function () {
   }
 });
 
-function rdc_get_last_modified_gmt( $post_types ) {
+function rdc_get_last_modified_gmt( ) {
 
   global $wpdb;
-
-  $post_type_dates = array();
-
-  if ( ! is_array( $post_types ) ) {
-    $post_types = array( $post_types );
-  }
-
 
   $sql = "
 			SELECT post_type, MAX(post_modified_gmt) AS date
@@ -511,16 +504,5 @@ function rdc_get_last_modified_gmt( $post_types ) {
 		";
 
   $results = $wpdb->get_results( $sql );
-  foreach ( $results as $obj ) {
-    $post_type_dates[ $obj->post_type ] = $obj->date;
-  }
-  unset( $sql, $results, $obj );
-
-  $dates = array_intersect_key( $post_type_dates, array_flip( $post_types ) );
-
-  if ( count( $dates ) > 0 ) {
-    return max( $dates );
-  }
-
-  return false;
+  print_r($results);
 }
