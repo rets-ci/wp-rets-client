@@ -468,8 +468,8 @@ add_action('init', function () {
       $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_sale');
       $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_rent');
       foreach ($terms as $term) {
-      $date = WPSEO_Sitemaps::get_last_modified_gmt($term->object_type);
-//      print_r($date);
+      $date = rdc_get_last_modified_gmt($term->object_type);
+      print_r($date);
         if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
           <lastmod>' . $date . '</lastmod>
@@ -489,3 +489,38 @@ add_action('init', function () {
     });
   }
 });
+
+function rdc_get_last_modified_gmt( $post_types ) {
+
+  global $wpdb;
+
+  $post_type_dates = array();
+
+  if ( ! is_array( $post_types ) ) {
+    $post_types = array( $post_types );
+  }
+
+
+  $sql = "
+			SELECT post_type, MAX(post_modified_gmt) AS date
+			FROM $wpdb->posts
+			WHERE post_status IN ('publish','inherit')
+				AND post_type IN ('" . implode( "','", get_post_types( array( 'public' => true ) ) ) . "')
+			GROUP BY post_type
+			ORDER BY post_modified_gmt DESC
+		";
+
+  $results = $wpdb->get_results( $sql );
+  foreach ( $results as $obj ) {
+    $post_type_dates[ $obj->post_type ] = $obj->date;
+  }
+  unset( $sql, $results, $obj );
+
+  $dates = array_intersect_key( $post_type_dates, array_flip( $post_types ) );
+
+  if ( count( $dates ) > 0 ) {
+    return max( $dates );
+  }
+
+  return false;
+}
