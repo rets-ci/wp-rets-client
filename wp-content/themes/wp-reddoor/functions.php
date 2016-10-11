@@ -472,14 +472,14 @@ add_action('init', function () {
       print_r($date);
         if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod>' . $date . '</lastmod>
+          <lastmod></lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
         }
         if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod>' . $date . '</lastmod>
+          <lastmod></lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
