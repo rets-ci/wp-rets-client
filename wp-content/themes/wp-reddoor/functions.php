@@ -506,3 +506,4 @@ function rdc_get_last_modified_gmt( ) {
   $results = $wpdb->get_results( $sql );
   print_r($results);
 }
+rdc_get_last_modified_gmt();
