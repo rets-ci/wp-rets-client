@@ -488,3 +488,5 @@ add_action('init', function () {
   }
 });
 
+$taxonomies = get_taxonomies(array('public' => true), 'objects');
+print_r($taxonomies);
