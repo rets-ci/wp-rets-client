@@ -467,17 +467,18 @@ add_action('init', function () {
       $permalinks = '';
       $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_sale');
       $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_rent');
+      $date = WPSEO_Sitemaps::get_last_modified_gmt($tax_name);
       foreach ($terms as $term) {
         if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod></lastmod>
+          <lastmod>' . $date . '</lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
         }
         if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod></lastmod>
+          <lastmod>' . $date . '</lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
