@@ -415,7 +415,7 @@ function rdc_custom_seo_settings()
         $rent_description = get_option('custom_seo_tax_description_' . $tax->name . '_rent');
         $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_sale');
         $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax->name . '_rent');
-        
+
         echo '<div class="tax-box">';
         echo '<div class="tax-box-sale">';
         echo '<h2>' . esc_html(ucfirst($tax->labels->name)) . __(' (Sale)', 'reddoor') . '</h2>';
@@ -459,25 +459,47 @@ add_action('init', function () {
   $taxonomies = get_taxonomies(array('public' => true), 'objects');
   foreach ($taxonomies as $tax) {
     add_filter('wpseo_sitemap_' . $tax->name . '_content', function () {
+      global $wpdb;
       $current_filter = current_filter();
       $current_filter = str_replace('wpseo_sitemap_', '', $current_filter);
       $tax_name = str_replace('_content', '', $current_filter);
       $terms = get_terms(array('taxonomy' => $tax_name));
+
       $siteurl = site_url();
       $permalinks = '';
       $sale_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_sale');
       $rent_sitemap = get_option('custom_seo_tax_sitemap_' . $tax_name . '_rent');
+
       foreach ($terms as $term) {
+        $args = array(
+          'order' => 'ASC',
+          'orderby' => 'date',
+          'posts_per_page' => 1,
+          'tax_query' => array(
+            array(
+              'taxonomy' => $tax_name,
+              'field' => 'slug',
+              'terms' => array($term->slug),
+            ),
+          )
+        );
+        $query = new WP_Query($args);
+        if ($query->post->post_modified) {
+          $date = $query->post->post_modified . '-04:00';
+        } else {
+          $date = '';
+        }
+
         if ($sale_sitemap && $sale_sitemap == true || $sale_sitemap && $sale_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/sale/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod></lastmod>
+          <lastmod>' . $date . '</lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
         }
         if ($rent_sitemap && $rent_sitemap == true || $rent_sitemap && $rent_sitemap == 1) {
           $permalinks .= '<url><loc>' . $siteurl . '/rent/' . $tax_name . '/' . $term->slug . '</loc>
-          <lastmod></lastmod>
+          <lastmod>' . $date . '</lastmod>
 		<changefreq></changefreq>
 		<priority></priority>
 	</url>';
@@ -487,4 +509,3 @@ add_action('init', function () {
     });
   }
 });
-
