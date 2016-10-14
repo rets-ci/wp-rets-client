@@ -36,6 +36,9 @@ namespace UsabilityDynamics\WPRETSC {
         // Initialize Media handler
         new Media();
 
+        // 3d-party compatibility
+        new Connectors\Loader();
+
         add_action('init', function() {
 
           // Needed for import associationa and tracking of what schedule a listing came from
@@ -56,6 +59,7 @@ namespace UsabilityDynamics\WPRETSC {
               'menu_name'         => __( 'Schedules' ),
             ),
             'show_ui'           => true,
+            'show_in_menu'      => false,
             'show_admin_column' => false,
             'query_var'         => false,
             'rewrite'           => false
