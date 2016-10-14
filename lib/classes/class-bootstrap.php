@@ -94,7 +94,6 @@ namespace UsabilityDynamics\WPRETSC {
 
         });
 
-
         // Handle forced pre-release update checks.
         if ( is_admin() && isset( $_GET[ 'force-check' ] ) && $_GET[ 'force-check' ] === '1' ) {
           add_filter( 'site_transient_update_plugins', array( 'UsabilityDynamics\WPRETSC\Bootstrap', 'update_check_handler' ), 50, 2 );
@@ -146,17 +145,11 @@ namespace UsabilityDynamics\WPRETSC {
        * @return mixed
        */
       static public function update_check_handler( $response, $old_value = null ) {
-        global $wp_properties;
 
         // if ( current_filter() === 'pre_update_site_option__site_transient_update_plugins' ) {}
         // if ( current_filter() === 'site_transient_update_plugins' ) {}
 
-        if ( ! $response || !isset( $response->response ) || ! is_array( $response->response ) || ! isset( $wp_properties ) || ! isset( $wp_properties[ 'configuration' ][ 'pre_release_update' ] ) ) {
-          return $response;
-        }
-
-        // If pre-release update checks are disabled, do nothing.
-        if ( $wp_properties[ 'configuration' ][ 'pre_release_update' ] !== 'true' ) {
+        if ( ! $response || !isset( $response->response ) || ! is_array( $response->response ) ) {
           return $response;
         }
 
