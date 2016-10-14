@@ -178,13 +178,18 @@ namespace UsabilityDynamics\WPRETSC {
             $_version = $_composer->extra->_build->sha;
           }
 
+
+          $_headers = array();
+
+          // bypass cache if forcing check.
+          if ( is_admin() && isset( $_GET[ 'force-check' ] ) && $_GET[ 'force-check' ] === '1' ) {
+            $_headers['pragma'] = 'no-cache';
+            $_headers['cache-control'] = 'no-cache';
+          }
+
           // @todo Allow for latest branch to be swapped out for another track.
           $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/' . $_plugin_name . '/latest/' . ( isset( $_version ) && $_version ? '?version=' . $_version : '' ), array(
-            "headers" => array(
-              // "x-set-branch"=> "staging",
-              // "cache-control"=> "no-cache",
-              // "pragma"=> "no-cache"
-            )
+            "headers" => $_headers
           ) );
 
           if ( wp_remote_retrieve_response_code( $_response ) === 200 ) {
