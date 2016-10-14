@@ -13,7 +13,7 @@
       searchElement: this,
       aggregationFields: 'object' === typeof supermapMode ? supermapMode.aggregationFields : {},
       selectOpions: null,
-      client: new jQuery.es.Client({hosts: jQuery('meta[name="searchly"]').attr('data-url') || window.location.host  }),
+      client: new jQuery.es.Client({hosts: jQuery('meta[name="searchly"]').attr('data-url') || window.location.host}),
       _request: false,
       $select: null,
       query: options.query || {"match": {"post_status": "publish"}},
@@ -33,6 +33,12 @@
       debug('select_query', ( query && query.term ? query.term.length : null ));
 
       var data = [];
+
+      if (query.term && query.term !== '' && query.term !== 'undefined') {
+        query.term = query.term.toLowerCase().replace(/\s+/g, '').replace(',', '').replace('.', '');
+        var query_term = query.term;
+        $scope.query_term = query_term.toLowerCase().replace(/\s+/g, '').replace(',', '').replace('.', '');
+      }
 
       // no query or its too short
       if (!query.term || ( query.term && query.term.length < 2 )) {
@@ -144,7 +150,7 @@
             size: 0,
             body: {
               "regular": {
-                "text": query.term.toLowerCase().replace( /\s+/g, '' ),
+                "text": query.term.toLowerCase().replace(/\s+/g, '').replace(',', '').replace('.', ''),
                 "completion": {"field": "_search._suggest"}
               }
             }
@@ -183,6 +189,8 @@
               })
 
             });
+
+            console.log('DATA: ', data);
 
             done(null, data.length ? {
               key: 'Listings',
@@ -228,7 +236,12 @@
         minimumInputLength: 3,
         templateResult: function templateResult(result, element) {
           console.log('templateResult', result);
-          return result.text;
+          var resultText = result.text.toLowerCase().replace(/\s+/g, '').replace(',', '').replace('.', '');
+          console.log('Result query:', $scope.query_term);
+          console.log('Result text:', resultText);
+          if (result.children && result.children !== 'undefined' || ($scope.query_term) && resultText.indexOf($scope.query_term) !== -1) {
+            return result.text;
+          }
         },
         templateSelection: function templateSelection(selection, element) {
           console.log('templateSelection', selection);
@@ -1948,7 +1961,7 @@
                 size: 0,
                 body: {
                   "regular": {
-                    "text": query.term.toLowerCase().replace( /\s+/g, '' ),
+                    "text": query.term.toLowerCase().replace(/\s+/g, ''),
                     "completion": {"field": "_search._suggest"}
                   }
                 }
