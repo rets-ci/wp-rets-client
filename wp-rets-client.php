@@ -43,7 +43,6 @@ if( !function_exists( 'ud_check_wp_rets_client' ) ) {
    */
   function ud_check_wp_rets_client() {
     global $_ud_wp_rets_client_error;
-    
     try {
       //** Be sure composer.json exists */
       $file = dirname( __FILE__ ) . '/composer.json';
