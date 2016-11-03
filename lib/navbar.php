@@ -53,11 +53,12 @@ namespace RabbitCI\Navbar {
       ));
 
       $wp_admin_bar->add_node( array(
+        'id' => 'wp-rabbit-inner',
         'parent' => 'wp-rabbit',
         'title' => sprintf( __( '%s' ), $_backend ),
         'href' => '#'
       ));
-
+      
     }
 
   }
