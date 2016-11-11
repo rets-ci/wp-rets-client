@@ -51,6 +51,7 @@
 						<option value="" selected="selected" disabled="disabled">Job Interest</option>
 						<option value="Sales Broker">Sales Broker</option>
 						<option value="Property Manager">Property Manager</option>
+						<option value="Leasing Assistant">Leasing Assistant</option>
 					</select>
 					<div class="clear"></div>
 				</div>
