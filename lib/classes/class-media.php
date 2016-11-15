@@ -201,7 +201,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         //die('$size'.$size);
         // if the size exists in image sizes, append the image-size spedific annex to url
-        if( $size && array_key_exists( $size, $_image_sizes ) ) {
+        if( $size && is_string( $size ) && array_key_exists( $size, $_image_sizes ) ) {
           $_extension = pathinfo( $_url, PATHINFO_EXTENSION );
           if( empty( $_extension ) ) {
             $_url .= '-' . $_image_sizes[$size]['width'] . 'x' . $_image_sizes[$size]['height'];
