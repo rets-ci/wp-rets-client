@@ -7,7 +7,7 @@
 
 namespace UsabilityDynamics\WPRETSC {
 
-  if( !class_exists( 'UsabilityDynamics\WPRETSC\Register' ) && !function_exists(ud_get_wp_property()) ) {
+  if( !class_exists( '\UsabilityDynamics\WPRETSC\Register' ) && !function_exists(ud_get_wp_property()) ) {
 
     final class Register  {
 
