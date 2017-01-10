@@ -7,7 +7,7 @@
 
 namespace UsabilityDynamics\WPRETSC {
 
-  if( !class_exists( '\UsabilityDynamics\WPRETSC\Register' ) && !function_exists(ud_get_wp_property()) ) {
+  if( !class_exists( '\UsabilityDynamics\WPRETSC\Register' )) {
 
     final class Register  {
 
@@ -73,19 +73,14 @@ namespace UsabilityDynamics\WPRETSC {
         $api_body = json_decode(wp_remote_retrieve_body($response));
 
         if (isset($api_body) && $api_body->retsci_site_secret_token === $retsci_site_secret_token) {
-
           if (isset($api_body->retsci_site_id)) {
             add_site_option('retsci_site_id', $api_body->retsci_site_id);
           }
-
           if (isset($api_body->retsci_site_public_key)) {
             add_site_option('retsci_site_public_key', $api_body->retsci_site_public_key);
           }
-
         }
-
       }
-
     }
     }
   }
