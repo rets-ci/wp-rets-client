@@ -43,7 +43,7 @@ namespace UsabilityDynamics\WPRETSC {
       }
       $retsci_site_id = get_site_option('retsci_site_id');
 
-      $url = 'https://api.usabilitydynamics.com/product/v2/site/register';
+      $url = 'https://api.usabilitydynamics.com/product/retsci/site/register/v2';
       $find = array('http://', 'https://');
       $replace = '';
       $output = str_replace($find, $replace, $site_url);
