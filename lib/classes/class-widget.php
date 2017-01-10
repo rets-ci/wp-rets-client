@@ -80,16 +80,17 @@ namespace UsabilityDynamics\WPRETSC {
         /**
          * Do nothing if was not able to register on UD
          */
-        if ( !$this->is_ud_site_id_registered() || !$this->is_ud_site_secret_token_registered() ) {
-          echo 'System is not ready for RETS.CI. Refresh page or contact UsabilityDynamics, Inc.';
-          return;
-        }
+//        if ( !$this->is_ud_site_id_registered() || !$this->is_ud_site_secret_token_registered() ) {
+//          echo 'System is not ready for RETS.CI. Refresh page or contact UsabilityDynamics, Inc.';
+//          return;
+//        }
 
         wp_enqueue_script( 'wpp_retsci_app', ud_get_wp_rets_client()->path( 'static/scripts/app.js', 'url' ), array( 'jquery' ) );
 
         /**
          *
          */
+
         $data = json_encode(array(
           'retsci_site_id' => $this->is_retsci_site_id_registered(),
           'retsci_site_secret_token' => $this->is_retsci_site_secret_token_registered(),
