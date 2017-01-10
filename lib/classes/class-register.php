@@ -16,6 +16,7 @@ namespace UsabilityDynamics\WPRETSC {
          * Maybe register site on UD
          */
         add_action( 'init', array( $this, 'maybe_register_site' ) );
+        
       }
 
     /**
