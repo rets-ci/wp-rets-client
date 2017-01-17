@@ -29,6 +29,16 @@
         }
       ]
     },
+    "settings_develop-dmitry": {
+      "wp_debug_log": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "wp_memcached_servers": "localhost:11211",
+      "db": [
+        {
+          "name": "www.reddoorcompany.com/latest-v3"
+        }
+      ]
+    },
     "settings": {
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
