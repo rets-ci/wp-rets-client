@@ -1,0 +1,95 @@
+{
+  "rows": [
+    {
+      "style": [],
+      "cells": [
+        {
+          "weight": 0.5,
+          "widget": {
+            "title": "Test title",
+            "text": "dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads",
+            "panels_info": {
+              "class": "WP_Widget_Text",
+              "grid": 0,
+              "cell": 0,
+              "id": 0,
+              "widget_id": "961dc2e5-16e4-41ea-a44b-545c545d555e",
+              "style": {
+                "background_image_attachment": false,
+                "background_display": "tile"
+              }
+            },
+            "filter": false
+          }
+        },
+        {
+          "weight": 0.5,
+          "widget": {
+            "title": "Test title",
+            "text": "dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads",
+            "panels_info": {
+              "class": "WP_Widget_Text",
+              "grid": 0,
+              "cell": 1,
+              "id": 1,
+              "widget_id": "2f28a4d7-5607-40a8-a0cb-0ceda60bb0b1",
+              "style": {
+                "background_image_attachment": false,
+                "background_display": "tile"
+              }
+            },
+            "filter": false
+          }
+        }
+      ]
+    },
+    {
+      "style": [],
+      "cells": [
+        {
+          "weight": 1,
+          "widget": {
+            "title": "Test title",
+            "text": "dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads",
+            "panels_info": {
+              "class": "WP_Widget_Text",
+              "grid": 1,
+              "cell": 0,
+              "id": 2,
+              "widget_id": "41dbae81-9909-4290-8d3f-3ca200730a95",
+              "style": {
+                "background_image_attachment": false,
+                "background_display": "tile"
+              }
+            },
+            "filter": false
+          }
+        }
+      ]
+    },
+    {
+      "style": [],
+      "cells": [
+        {
+          "weight": 1,
+          "widget": {
+            "title": "Test title",
+            "text": "dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads dsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assadsdsadsadsadsad assads",
+            "panels_info": {
+              "class": "WP_Widget_Text",
+              "grid": 0,
+              "cell": 1,
+              "id": 1,
+              "widget_id": "2f28a4d7-5607-40a8-a0cb-0ceda60bb0b1",
+              "style": {
+                "background_image_attachment": false,
+                "background_display": "tile"
+              }
+            },
+            "filter": false
+          }
+        }
+      ]
+    }
+  ]
+}

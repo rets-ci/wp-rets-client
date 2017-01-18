@@ -1,0 +1,27 @@
+/**
+ * Theme Name: RedDoorNew
+ * Description: RedDoorCompany Theme
+ * Theme URI: https://www.reddoorcompany.com
+ * Author: Usability Dynamics, Inc.
+ * Author URI: http://usabilitydynamics.com
+ * Version: 0.1
+ * Text Domain: reddoornew
+ * Domain Path: /languages/
+ * License: GNU General Public License
+ * License URI: license.txt
+ * Tags: real estate
+ *
+ */
+.cell-2 {
+    width: 50%;
+    float: left;
+}
+
+.row {
+    background-color: grey;
+    margin-bottom: 10px;
+}
+
+.clear {
+    clear: both;
+}
