@@ -5,6 +5,6 @@
 
 get_header(); ?>
 
-<div id="content"></div>
+<div id="root"></div>
 
 <?php get_footer(); ?>
