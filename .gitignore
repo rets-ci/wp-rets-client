@@ -18,3 +18,7 @@ nohup.out
 wp-content/plugins/wp-responsive-jquery-slider/README.txt
 .maintenance
 /*.sh
+#react.js ignore
+*.jsx
+webpack.config.js
+package.json
