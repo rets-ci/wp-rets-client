@@ -72,6 +72,9 @@ jQuery.extend( wpp = wpp || {}, { ui: { settings: {
 	  }
     } );
 
+    /* Disable auto scroll for help expander. */
+    jQuery('#contextual-help-link, #show-settings-link').off( 'focus.scroll-into-view');
+
     /* Tabs for various UI elements */
     jQuery( '.wpp_subtle_tabs' ).tabs();
 
@@ -139,7 +142,36 @@ jQuery.extend( wpp = wpp || {}, { ui: { settings: {
         jQuery( message ).insertAfter( "h2" );
       } );
     } );
+    
+    /* Generate _is_remote meta */
+    jQuery( "#wpp_is_remote_meta" ).click( function () {
+      var _this = jQuery(this);
+      jQuery( '.clear_cache_status' ).remove();
+      jQuery.post( wpp.instance.ajax_url, {
+        action: 'wpp_ajax_generate_is_remote_meta'
+      }, function ( data ) {
+        message = "<div class='clear_cache_status updated fade'><p>" + data + "</p></div>";
+        jQuery( message ).insertAfter( _this );
+      } );
+    } );
 
+    /* Create settings backup 
+    * used at : wp-property\static\views\admin\settings.php
+    */
+   jQuery( "#wpp_ajax_create_settings_backup" ).click( function () {
+      jQuery( this ).val( wpp.strings.processing );
+      jQuery( this ).attr( 'disabled', true );
+      jQuery( '.address_revalidation_status' ).remove();
+
+      jQuery.post( wpp.instance.ajax_url, {
+        action: 'wpp_ajax_create_settings_backup'
+      }, function ( data ) {
+        jQuery( "#wpp_ajax_create_settings_backup" ).val( 'Create Another Backup' );
+        jQuery( "#wpp_ajax_create_settings_backup" ).attr( 'disabled', false );
+        jQuery( '.wpp_backups_list' ).append( data.message );
+      }, 'json' );
+    } );
+    
     /* Revalidate all addresses */
     jQuery( "#wpp_ajax_revalidate_all_addresses" ).click( function () {
       jQuery( this ).val( wpp.strings.processing );

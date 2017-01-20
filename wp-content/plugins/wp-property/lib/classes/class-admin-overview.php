@@ -215,7 +215,7 @@ namespace UsabilityDynamics\WPP {
           if(
             empty( $entry_types[ $attribute ] ) ||
             empty( $search_schema[ $entry_types[ $attribute ] ] ) ||
-            !in_array( $search_types[ $attribute ], $search_schema[ $entry_types[ $attribute ] ] )
+            !in_array( @$search_types[ $attribute ], @$search_schema[ $entry_types[ $attribute ] ] )
           ) {
             continue;
           }
@@ -360,6 +360,7 @@ namespace UsabilityDynamics\WPP {
         }
         $attrs[ 'any' ] = __( 'Any', $this->get('domain') ) . ' (' . \WPP_F::format_numeric( $all ) . ')';
         ksort( $attrs );
+        $attrs = apply_filters('admin_overview_post_statuses', $attrs);
         return $attrs;
       }
 

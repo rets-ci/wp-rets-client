@@ -17,7 +17,7 @@ namespace UsabilityDynamics\WPP {
        * @param $old_version
        * @param $new_version
        */
-      static public function run( $old_version, $new_version ){
+      static public function run( $old_version, $new_version ) {
         global $wpdb;
 
         self::do_backup( $old_version, $new_version );
@@ -78,6 +78,9 @@ namespace UsabilityDynamics\WPP {
             }
             if($property_terms_widget_updated)
               update_option('widget_wpp_property_terms', $property_terms_widget);
+
+          case ( version_compare( $old_version, '2.3.0', '<' ) ):
+            deactivate_plugins( 'wp-property-terms/wp-property-terms.php', true );
 
         }
 
