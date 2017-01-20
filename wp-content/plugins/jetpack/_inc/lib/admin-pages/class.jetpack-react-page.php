@@ -27,17 +27,14 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 			return; // No need to handle the fallback redirection if we are not on the Jetpack page
 		}
 
-		// Adding a redirect meta tag for older WordPress versions
-		if ( $this->is_wp_version_too_old() ) {
+		// Adding a redirect meta tag for older WordPress versions or if the REST API is disabled
+		if ( $this->is_wp_version_too_old() || ! $this->is_rest_api_enabled() ) {
 			$this->is_redirecting = true;
 			add_action( 'admin_head', array( $this, 'add_fallback_head_meta' ) );
 		}
 
 		// Adding a redirect meta tag wrapped in noscript tags for all browsers in case they have JavaScript disabled
 		add_action( 'admin_head', array( $this, 'add_noscript_head_meta' ) );
-
-		// Enqueue admin page styles in head
-		add_action( 'admin_enqueue_scripts', array( $this, 'page_admin_styles' ) );
 
 		// Adding a redirect tag wrapped in browser conditional comments
 		add_action( 'admin_head', array( $this, 'add_legacy_browsers_head_script' ) );
@@ -152,18 +149,17 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 
 	function get_i18n_data() {
 
-		// Try fetching by patch
-		$locale_data = @file_get_contents( JETPACK__PLUGIN_DIR . 'languages/json/jetpack-' . get_locale() . '.json' );
+		$i18n_json = JETPACK__PLUGIN_DIR . 'languages/json/jetpack-' . jetpack_get_user_locale() . '.json';
 
-		if ( false === $locale_data ) {
-
-			// Return empty if we have nothing to return so it doesn't fail when parsed in JS
-			return '{}';
-		} else {
-
-			// We got the json file so let's return it
-			return $locale_data;
+		if ( is_file( $i18n_json ) && is_readable( $i18n_json ) ) {
+			$locale_data = @file_get_contents( $i18n_json );
+			if ( $locale_data ) {
+				return $locale_data;
+			}
 		}
+
+		// Return empty if we have nothing to return so it doesn't fail when parsed in JS
+		return '{}';
 	}
 
 	/**
@@ -185,18 +181,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		return $dismissed_notices;
 	}
 
-	function jetpack_get_tracks_user_data() {
-		if ( ! $user_data = Jetpack::get_connected_user_data() ) {
-			return false;
-		}
-
-		return array(
-			'userid' => $user_data['ID'],
-			'username' => $user_data['login'],
-		);
-	}
-
-	function page_admin_styles() {
+	function additional_styles() {
 		$rtl = is_rtl() ? '.rtl' : '';
 
 		wp_enqueue_style( 'dops-css', plugins_url( "_inc/build/admin.dops-style$rtl.css", JETPACK__PLUGIN_FILE ), array(), JETPACK__VERSION );
@@ -215,10 +200,10 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 
 		if ( ! $is_dev_mode ) {
 			// Required for Analytics
-			wp_enqueue_script( 'jp-tracks', '//stats.wp.com/w.js?48', array(), JETPACK__VERSION, true );
+			wp_enqueue_script( 'jp-tracks', '//stats.wp.com/w.js', array(), gmdate( 'YW' ), true );
 		}
 
-		$localeSlug = explode( '_', get_locale() );
+		$localeSlug = explode( '_', jetpack_get_user_locale() );
 		$localeSlug = $localeSlug[0];
 
 		// Collecting roles that can view site stats
@@ -227,7 +212,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		foreach( get_editable_roles() as $slug => $role ) {
 			$stats_roles[ $slug ] = array(
 				'name' => translate_user_role( $role['name'] ),
-				'canView' => in_array( $slug, $enabled_roles, true ),
+				'canView' => is_array( $enabled_roles ) ? in_array( $slug, $enabled_roles, true ) : false,
 			);
 		}
 
@@ -241,6 +226,12 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 			$modules[ $slug ]['description'] = html_entity_decode( $data['description'] );
 			$modules[ $slug ]['short_description'] = html_entity_decode( $data['short_description'] );
 			$modules[ $slug ]['long_description'] = html_entity_decode( $data['long_description'] );
+		}
+
+		// Get last post, to build the link to Customizer in the Related Posts module.
+		$last_post = get_posts( array( 'posts_per_page' => 1 ) );
+		if ( $last_post[0] instanceof WP_Post ) {
+			$last_post = get_permalink( $last_post[0]->ID );
 		}
 
 		// Add objects to be passed to the initial state of the app
@@ -258,6 +249,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 					'filter'   => apply_filters( 'jetpack_development_mode', false ),
 				),
 				'isPublic'	=> '1' == get_option( 'blog_public' ),
+				'isInIdentityCrisis' => Jetpack::validate_sync_error_idc_option(),
 			),
 			'dismissedNotices' => $this->get_dismissed_jetpack_notices(),
 			'isDevVersion' => Jetpack::is_development_version(),
@@ -281,7 +273,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 				'jetpack_holiday_snow_enabled' => function_exists( 'jetpack_holiday_snow_option_name' ) ? jetpack_holiday_snow_option_name() : false,
 			),
 			'userData' => array(
-				'othersLinked' => jetpack_get_other_linked_users(),
+//				'othersLinked' => Jetpack::get_other_linked_admins(),
 				'currentUser'  => jetpack_current_user_data(),
 			),
 			'locale' => $this->get_i18n_data(),
@@ -291,8 +283,9 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 				'errorCode' => Jetpack::state( 'error' ),
 				'errorDescription' => Jetpack::state( 'error_description' ),
 			),
-			'tracksUserData' => $this->jetpack_get_tracks_user_data(),
-			'currentIp' => function_exists( 'jetpack_protect_get_ip' ) ? jetpack_protect_get_ip() : false
+			'tracksUserData' => Jetpack_Tracks_Client::get_connected_user_tracks_identity(),
+			'currentIp' => function_exists( 'jetpack_protect_get_ip' ) ? jetpack_protect_get_ip() : false,
+			'lastPostUrl' => esc_url( $last_post ),
 		) );
 	}
 }
@@ -362,37 +355,6 @@ function jetpack_show_jumpstart() {
 }
 
 /*
- * Checks to see if there are any other users available to become primary
- * Users must both:
- * - Be linked to wpcom
- * - Be an admin
- *
- * @return mixed False if no other users are linked, Int if there are.
- */
-function jetpack_get_other_linked_users() {
-	// If only one admin
-	$all_users = count_users();
-	if ( 2 > $all_users['avail_roles']['administrator'] ) {
-		return false;
-	}
-
-	$users = get_users();
-	$available = array();
-	// If no one else is linked to dotcom
-	foreach ( $users as $user ) {
-		if ( isset( $user->caps['administrator'] ) && Jetpack::is_user_connected( $user->ID ) ) {
-			$available[] = $user->ID;
-		}
-	}
-
-	if ( 2 > count( $available ) ) {
-		return false;
-	}
-
-	return count( $available );
-}
-
-/*
  * Gather data about the master user.
  *
  * @since 4.1.0
@@ -457,4 +419,24 @@ function jetpack_current_user_data() {
 	);
 
 	return $current_user_data;
+}
+
+/**
+ * Set the admin language, based on user language.
+ *
+ * @since 4.5.0
+ *
+ * @return string
+ *
+ * @todo Remove this function when WordPress 4.8 is released
+ * and replace `jetpack_get_user_locale()` in this file with `get_user_locale()`.
+ */
+function jetpack_get_user_locale() {
+	$locale = get_locale();
+
+	if ( function_exists( 'get_user_locale' ) ) {
+		$locale = get_user_locale();
+	}
+
+	return $locale;
 }

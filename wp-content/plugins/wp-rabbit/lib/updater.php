@@ -38,7 +38,7 @@ add_filter( 'site_transient_update_plugins', function ( $response, $old_value ) 
       $_body = json_decode( $_body );
 
       // If there is no "data" field then we have nothing to update.
-      if( $_body->data ) {
+      if( $_body && isset( $_body->data ) && $_body->data ) {
         $response->response[ 'wp-rabbit/wp-rabbit.php' ] = $_body->data;
 
         if( isset( $response->no_update[ 'wp-rabbit/wp-rabbit.php' ] ) ) {

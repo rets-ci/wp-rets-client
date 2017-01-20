@@ -1,7 +1,6 @@
 <?php
 
 class Jetpack_Sync_Module_Meta extends Jetpack_Sync_Module {
-	private $meta_types = array( 'post', 'comment' );
 
 	public function name() {
 		return 'meta';
@@ -22,7 +21,10 @@ class Jetpack_Sync_Module_Meta extends Jetpack_Sync_Module {
 	 */
 	public function get_objects_by_id( $object_type, $config ) {
 		global $wpdb;
-		if ( ! in_array( $object_type, $this->meta_types ) ) {
+
+		$table = _get_meta_table( $object_type );
+
+		if ( ! $table ) {
 			return array();
 		}
 
@@ -32,18 +34,7 @@ class Jetpack_Sync_Module_Meta extends Jetpack_Sync_Module {
 
 		$meta_key = $config['meta_key'];
 		$ids = $config['ids'];
-
-		if ( ! $this->is_meta_key_allowed( $meta_key ) ) {
-			return array();
-		}
-
-		if ( 'post' == $object_type ) {
-			$table = $wpdb->postmeta;
-			$object_id_column = 'post_id';
-		} else {
-			$table = $wpdb->commentmeta;
-			$object_id_column = 'comment_id';
-		}
+		$object_id_column = $object_type.'_id';
 
 		// Sanitize so that the array only has integer values
 		$ids_string = implode( ', ', array_map( 'intval', $ids ) );
@@ -67,49 +58,5 @@ class Jetpack_Sync_Module_Meta extends Jetpack_Sync_Module {
 		}
 
 		return $meta_objects;
-	}
-
-	public function init_listeners( $callable ) {
-		$whitelist_handler = array( $this, 'filter_meta' );
-
-		foreach ( $this->meta_types as $meta_type ) {
-			add_action( "added_{$meta_type}_meta", $callable, 10, 4 );
-			add_action( "updated_{$meta_type}_meta", $callable, 10, 4 );
-			add_action( "deleted_{$meta_type}_meta", $callable, 10, 4 );
-
-			add_filter( "jetpack_sync_before_enqueue_added_{$meta_type}_meta", $whitelist_handler );
-			add_filter( "jetpack_sync_before_enqueue_updated_{$meta_type}_meta", $whitelist_handler );
-			add_filter( "jetpack_sync_before_enqueue_deleted_{$meta_type}_meta", $whitelist_handler );
-		}
-	}
-
-	/**
-	 * Should we allow the meta key to be synced?
-	 *
-	 * @param string $meta_key The meta key.
-	 *
-	 * @return bool
-	 */
-	function is_meta_key_allowed( $meta_key ) {
-		if ( '_' === $meta_key[0] &&
-		     ! in_array( $meta_key, Jetpack_Sync_Defaults::$default_whitelist_meta_keys ) &&
-		     ! wp_startswith( $meta_key, '_wpas_skip_' )
-		) {
-			return false;
-		}
-
-		if ( in_array( $meta_key, Jetpack_Sync_Settings::get_setting( 'meta_blacklist' ) ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	function filter_meta( $args ) {
-		if ( ! $this->is_meta_key_allowed( $args[2] ) ) {
-			return false;
-		}
-
-		return $args;
 	}
 }

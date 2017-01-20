@@ -1,3 +1,6 @@
+### 1.0.5
+* Varnish purge fix.
+
 ### 1.0.4
 * Ported Navbar out of wp-cloud-io plugin.
 

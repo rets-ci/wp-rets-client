@@ -21,16 +21,20 @@ add_action( 'save_post', function( $post_id ) {
 
   $parse = parse_url($post_url);
 
-  // make purge request to wpcloud.io. (this gets public DNS of wpcloud servers and then uses GCE load balancers to purge the appropriate machien based on hostname)
-  $_purge = wp_remote_request( "http://wpcloud.io" . $parse['path'], array(
+  // The x-access-token is arbitrary.
+  $purge_request_args = array(
     "method" => "PURGE",
     "headers" => array(
-      "X-Access-Token" => "yhcwokwserjzdjir",
+      "X-Access-Token" => isset( $_SERVER['HTTP_X_SELECTED_CONTAINER'] ) ? $_SERVER['HTTP_X_SELECTED_CONTAINER'] : '',
       "Host" => $parse['host'],
       "x-set-branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
     ),
     "blocking" => false
-  ));
+  );
+
+
+  // make purge request to wpcloud.io. (this gets public DNS of wpcloud servers and then uses GCE load balancers to purge the appropriate machien based on hostname)
+  $_purge = wp_remote_request( "http://wpcloud.io" . $parse['path'], $purge_request_args );
 
   rabbit_write_log( 'Purging cache for [' . $parse['host'] . $parse['path'] . '] in ['.$_SERVER['GIT_BRANCH'].'] branch.' );
 
