@@ -32,7 +32,8 @@
       ]
     },
     "settings": {
-      "UD_RETS_API_URL": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/retsci/site/register/v2",
+      "UD_RETSCI_AJAX_API_URL": "https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/",
+      "UD_RETSCI_API_URL": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/retsci/site/register/v2",
       "wp_siteurl": "https://www.reddoorcompany.com",
       "wp_home": "https://www.reddoorcompany.com",
       "wp_debug": true,
