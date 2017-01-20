@@ -14,12 +14,24 @@ function reddoor_scripts()
 /** Localize bundle script with needed data */
 function localize_bundle_script(){
   global $post;
+
+  $menu_items = array_map(function($item){
+    return [
+      'ID' => $item->ID,
+      'title' => $item->title,
+      'url'   => $item->url
+    ];
+  },wp_get_nav_menu_items('main_menu'));
+
   $params = array(
     'site_url' => site_url(),
-    'admin_ajax_url' => admin_url('admin-ajax.php')
+    'admin_ajax_url' => admin_url('admin-ajax.php'),
+    'menuItems' => json_encode($menu_items)
   );
 
   $params['post'] = $post;
+
+  $params['post']->custom_content = false;
 
   // Builder content case
   if($post_data = get_post_meta($post->ID, 'panels_data', true)){
@@ -36,7 +48,6 @@ function localize_bundle_script(){
 /** Rebuild builder data array */
 function rebuild_builder_content($content)
 {
-//  $content = unserialize($data);
   $rows = [];
 
   foreach ($content['widgets'] as $key => $widget) {
@@ -66,8 +77,3 @@ function get_api()
   echo $content;
   wp_die();
 }
-
-function register_my_menu() {
-  register_nav_menu('new-menu',__( 'New Menu' ));
-}
-add_action( 'init', 'register_my_menu' );

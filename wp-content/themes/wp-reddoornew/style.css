@@ -17,11 +17,15 @@
     float: left;
 }
 
-.row {
+.line {
     background-color: grey;
     margin-bottom: 10px;
 }
 
 .clear {
     clear: both;
+}
+
+.cell-item{
+    overflow-wrap: break-word;
 }
