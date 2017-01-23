@@ -2,7 +2,9 @@
 /**
  * Theme Icons
  */
-define( 'SITEORIGIN_WIDGETS_ICONS', true );
+if( !defined( 'SITEORIGIN_WIDGETS_ICONS' ) ) {
+  define( 'SITEORIGIN_WIDGETS_ICONS', true );
+}
 
 function rdc_widgets_icon_families_filter( $families ){
   $bundled = array(

@@ -48,6 +48,7 @@
       "alternate_wp_cron": false,
       "wp_cron_lock_timeout": 0,
       "wp": {
+        "SITEORIGIN_WIDGETS_ICONS": true,
         "upstream_automatic_push": true,
         "upstream_debug": false,
         "post_revisions": 30,
@@ -60,17 +61,16 @@
         "use_themes": true
       },
       "AUTOMATIC_UPDATER_DISABLED": true,
-      "db": [
-        {
-          "name": "www.reddoorcompany.com.production",
-          "user": "rdc",
-          "password": "wpcvdvwyocbhnrfj",
-          "host": "api.wpcloud.io:13038",
-          "read": 5,
-          "write": 5,
-          "charset": "utf8"
-        }
-      ]
+      "db": {
+        "name": "www.reddoorcompany.com.production",
+        "user": "rdc",
+        "password": "wpcvdvwyocbhnrfj",
+        "host": "api.wpcloud.io:13038",
+        "read": 5,
+        "write": 5,
+        "charset": "utf8",
+        "collate": "utf8_general_ci"
+      }
     }
   },
   "config": {
