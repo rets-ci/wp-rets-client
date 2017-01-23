@@ -1,0 +1,28 @@
+{
+  "name": "www.reddoorcompany.com",
+  "version": "1.0.0",
+  "description": "* 462410d704f694edb7422745387c6b12 - admin searchly, used to be 1d5f77cffa8e5bbc062dab552a3c2093 * quw42xelwvbp5gbcdgcqqgtx4vz5txeb - public searchly",
+  "main": "gruntfile.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UsabilityDynamics/www.reddoorcompany.com.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UsabilityDynamics/www.reddoorcompany.com/issues"
+  },
+  "homepage": "https://github.com/UsabilityDynamics/www.reddoorcompany.com#readme",
+  "devDependencies": {
+    "async": "^2.1.4",
+    "colors": "^1.1.2",
+    "debug": "^2.6.0",
+    "elasticsearch": "^12.1.3",
+    "grunt": "^1.0.1",
+    "lodash": "^4.17.4",
+    "request": "^2.79.0"
+  }
+}

@@ -76,7 +76,7 @@ namespace UsabilityDynamics\RDC {
         /**
          * Frontend scripts
          */
-        add_action('wp_enqueue_scripts', array($this, 'frontend_scripts'));
+        add_action('wp_enqueue_scripts', array($this, 'wp_enqueue_scripts'));
 
         /**
          * Parse Search Request and redirect to Taxonomy page
@@ -345,11 +345,8 @@ namespace UsabilityDynamics\RDC {
         ));
       }
 
-      /**
-       * Front End Scripts Loading
-       */
-      public function frontend_scripts()
-      {
+
+      public function wp_enqueue_scripts() {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-accordion');
@@ -370,8 +367,9 @@ namespace UsabilityDynamics\RDC {
 
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css');
 
-        wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
-        wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
+        // @note These are bundled into main style.css now, loaded from static/icons/* directories.
+        //wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
+        //wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
 
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 

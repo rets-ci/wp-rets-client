@@ -72,7 +72,7 @@ if ( sharing_js_options && sharing_js_options.counts ) {
 			}
 
 			for ( url in data ) {
-				if ( ! data.hasOwnProperty( url ) || ! data[ url ].share.share_count ) {
+				if ( ! data.hasOwnProperty( url ) || ! data[ url ].share || ! data[ url ].share.share_count ) {
 					continue;
 				}
 
@@ -357,7 +357,7 @@ var updateLinkedInCount = function( data ) {
 					$( '#sharing_email form a.sharing_cancel' ).show();
 
 					// Reset reCATPCHA if exists.
-					if ( 'object' === typeof grecaptcha && 'function' === typeof grecaptcha.reset ) {
+					if ( 'object' === typeof grecaptcha && 'function' === typeof grecaptcha.reset && window.___grecaptcha_cfg.count ) {
 						grecaptcha.reset();
 					}
 

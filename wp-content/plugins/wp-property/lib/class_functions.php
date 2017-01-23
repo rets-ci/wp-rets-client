@@ -287,36 +287,9 @@ class WPP_F extends UsabilityDynamics\Utility {
         )
       ), $taxonomy ) );
 
+      // die( '<pre>' . print_r( $_taxonomy_args, true ) . '</pre>' );
+
     }
-
-    register_taxonomy( 'wpp_location', 'property', array(
-      'labels'                => array(
-        'name' => __( 'WPP Location' ),
-        'singular_name' => __( 'WPP Location' ),
-      ),
-      'description'           => 'Location taxonomy.',
-      'public'                => true,
-      'publicly_queryable'    => true,
-      'hierarchical'          => true,
-      'show_ui'               => defined( 'WP_DEBUG' ) ? true : false, // disable this to make it only show up in the WPP ui
-      'show_in_menu'          => defined( 'WP_DEBUG' ) ? true : false,
-      'show_in_nav_menus'     => false,
-      'show_tagcloud'         => false,
-      'show_in_quick_edit'	  => false,
-      'show_admin_column'     => false,
-      'meta_box_cb'           => null,
-      'capabilities'          => array(),
-      'rewrite'               => array(
-
-        // this makes it work from root...
-        'slug' => '/locations',
-        'with_front' => false,
-        'hierarchical' => true,
-        'ep_mask' => EP_NONE
-      ),
-      'query_var'             => 'wpp_location',
-      'update_count_callback' => null
-    ));
 
   }
 

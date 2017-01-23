@@ -21,6 +21,7 @@ require_once dirname( __FILE__ ) . '/class.jetpack-sync-module-terms.php';
 require_once dirname( __FILE__ ) . '/class.jetpack-sync-module-plugins.php';
 require_once dirname( __FILE__ ) . '/class.jetpack-sync-module-protect.php';
 require_once dirname( __FILE__ ) . '/class.jetpack-sync-module-full-sync.php';
+require_once dirname( __FILE__ ) . '/class.jetpack-sync-module-stats.php';
 
 class Jetpack_Sync_Modules {
 
@@ -40,6 +41,7 @@ class Jetpack_Sync_Modules {
 		'Jetpack_Sync_Module_Plugins',
 		'Jetpack_Sync_Module_Protect',
 		'Jetpack_Sync_Module_Full_Sync',
+		'Jetpack_Sync_Module_Stats',
 	);
 
 	private static $initialized_modules = null;
@@ -84,7 +86,11 @@ class Jetpack_Sync_Modules {
 	static function initialize_module( $module_name ) {
 		$module = new $module_name;
 		$module->set_defaults();
+		if ( method_exists( $module, 'set_late_default' ) ) {
+			add_action( 'init', array( $module, 'set_late_default' ), 90 );
+		}
 
 		return $module;
 	}
+
 }

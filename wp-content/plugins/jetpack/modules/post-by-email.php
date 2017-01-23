@@ -2,12 +2,13 @@
 
 /**
  * Module Name: Post by Email
- * Module Description: Publish posts by email, using any device and email client.
+ * Module Description: Publish posts by sending an email.
  * First Introduced: 2.0
  * Sort Order: 14
  * Requires Connection: Yes
  * Auto Activate: Yes
  * Module Tags: Writing
+ * Feature: Writing
  * Additional Search Queries: post by email, email
  */
 
@@ -122,7 +123,7 @@ class Jetpack_Post_By_Email {
 						<?php echo esc_html( wptexturize( __( "If you don't have a WordPress.com account yet, you can sign up for free in just a few seconds.", 'jetpack' ) ) ); ?>
 					</p>
 					<p>
-						<a href="<?php echo $jetpack->build_connect_url( false, get_edit_profile_url( get_current_user_id() ) . '#post-by-email' ); ?>" class="button button-connector" id="wpcom-connect"><?php esc_html_e( 'Link account with WordPress.com', 'jetpack' ); ?></a>
+						<a href="<?php echo $jetpack->build_connect_url( false, get_edit_profile_url( get_current_user_id() ) . '#post-by-email', 'unlinked-user-pbe' ); ?>" class="button button-connector" id="wpcom-connect"><?php esc_html_e( 'Link account with WordPress.com', 'jetpack' ); ?></a>
 					</p>
 					<?php
 				} ?>
@@ -198,6 +199,9 @@ class Jetpack_Post_By_Email {
 		if ( empty( $response ) ) {
 			wp_send_json_error( $error_message );
 		}
+
+		// Will be used only in Jetpack_Core_Json_Api_Endpoints::get_remote_value.
+		update_option( 'post_by_email_address' . get_current_user_id(), $response );
 
 		wp_send_json_success( $response );
 	}
