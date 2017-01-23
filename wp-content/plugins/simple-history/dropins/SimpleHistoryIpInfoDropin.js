@@ -18,6 +18,14 @@
 			return;
 		}
 
+		// since 24 sept 2016 ipinfo supports ssl/https for all users, so we can enable ipinfo for all
+		// https://twitter.com/ipinfoio/status/779374440417103872
+		showPopup($elm);
+
+		return lookupIpAddress(ipAddress);
+
+
+		/*
 		// If we are on a HTTPS site we cant use ipinfo because lookups over https require pro account
 		// Fallback to plain link
 		var isHTTPS = document.location.protocol == "https:";
@@ -32,6 +40,7 @@
 
 			return lookupIpAddress(ipAddress);
 		}
+		*/
 
 	});
 
@@ -94,7 +103,7 @@
 
 		//try {
 		
-			var ajax = $.get("http://ipinfo.io/" + ipAddress, onIpAddressLookupResponse, "jsonp");
+			var ajax = $.get("https://ipinfo.io/" + ipAddress, onIpAddressLookupResponse, "jsonp");
 
 			// If the ajax call fail, for example because of blocked connections using adblocker-similar software
 			// err_blocked_by_client

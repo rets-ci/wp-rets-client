@@ -1,12 +1,13 @@
 <?php
 /**
  * Module Name: Likes
- * Module Description: Give visitors an easy way to show their appreciation for your content.
+ * Module Description: Give visitors an easy way to show they appreciate your content.
  * First Introduced: 2.2
  * Sort Order: 23
  * Requires Connection: Yes
  * Auto Activate: No
  * Module Tags: Social
+ * Feature: Engagement
  * Additional Search Queries: like, likes, wordpress.com
  */
 
@@ -298,7 +299,7 @@ class Jetpack_Likes {
 	<script type="text/javascript">
 	jQuery( function( $ )  {
 		var table = $( '#social_notifications_like' ).parents( 'table:first' ),
-			header = table.prevAll( 'h3:first' ),
+			header = table.prevAll( 'h2:first' ),
 			newParent = $( '#moderation_notify' ).parent( 'label' ).parent();
 
 		if ( !table.length || !header.length || !newParent.length ) {
@@ -500,14 +501,14 @@ class Jetpack_Likes {
 		switch( $new_state ) {
 			case 'off' :
 				if ( true == $db_state && ! $this->in_jetpack ) {
-					$g_gif = file_get_contents( 'http://pixel.wp.com/g.gif?v=wpcom-no-pv&x_likes=disabled_likes' );
+					$g_gif = file_get_contents( 'https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_likes=disabled_likes' );
 				}
 				update_option( 'disabled_likes', 1 );
 				break;
 			case 'on'  :
 			default:
 				if ( false == $db_state && ! $this->in_jetpack ) {
-					$g_gif = file_get_contents( 'http://pixel.wp.com/g.gif?v=wpcom-no-pv&x_likes=reenabled_likes' );
+					$g_gif = file_get_contents( 'https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_likes=reenabled_likes' );
 				}
 				delete_option( 'disabled_likes' );
 				break;
@@ -516,14 +517,14 @@ class Jetpack_Likes {
 		switch( $reblogs_new_state ) {
 			case 'off' :
 				if ( true == $reblogs_db_state && ! $this->in_jetpack ) {
-					$g_gif = file_get_contents( 'http://pixel.wp.com/g.gif?v=wpcom-no-pv&x_reblogs=disabled_reblogs' );
+					$g_gif = file_get_contents( 'https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_reblogs=disabled_reblogs' );
 				}
 				update_option( 'disabled_reblogs', 1 );
 				break;
 			case 'on'  :
 			default:
 				if ( false == $reblogs_db_state && ! $this->in_jetpack ) {
-					$g_gif = file_get_contents( 'http://pixel.wp.com/g.gif?v=wpcom-no-pv&x_reblogs=reenabled_reblogs' );
+					$g_gif = file_get_contents( 'https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_reblogs=reenabled_reblogs' );
 				}
 				delete_option( 'disabled_reblogs' );
 				break;
@@ -786,8 +787,14 @@ class Jetpack_Likes {
 		$src = sprintf( '//widgets.wp.com/likes/#blog_id=%1$d&amp;post_id=%2$d&amp;origin=%3$s&amp;obj_id=%1$d-%2$d-%4$s', $blog_id, $post->ID, $domain, $uniqid );
 		$name = sprintf( 'like-post-frame-%1$d-%2$d-%3$s', $blog_id, $post->ID, $uniqid );
 		$wrapper = sprintf( 'like-post-wrapper-%1$d-%2$d-%3$s', $blog_id, $post->ID, $uniqid );
+		$headline = sprintf(
+			/** This filter is already documented in modules/sharedaddy/sharing-service.php */
+			apply_filters( 'jetpack_sharing_headline_html', '<h3 class="sd-title">%s</h3>', esc_html__( 'Like this:', 'jetpack' ), 'likes' ),
+			esc_html__( 'Like this:', 'jetpack' )
+		);
 
-		$html  = "<div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='$wrapper' data-src='$src' data-name='$name'><h3 class='sd-title'>" . esc_html__( 'Like this:', 'jetpack' ) . '</h3>';
+		$html  = "<div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='$wrapper' data-src='$src' data-name='$name'>";
+		$html .= $headline;
 		$html .= "<div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>" . esc_html__( 'Like', 'jetpack' ) . '</span></span> <span class="loading">' . esc_html__( 'Loading...', 'jetpack' ) . '</span></div>';
 		$html .= "<span class='sd-text-color'></span><a class='sd-link-color'></a>";
 		$html .= '</div>';
@@ -967,6 +974,11 @@ class Jetpack_Likes {
 	 * similar logic and filters apply here, too.
 	 */
 	function is_likes_visible() {
+		require_once JETPACK__PLUGIN_DIR . '/sync/class.jetpack-sync-settings.php';
+		if ( Jetpack_Sync_Settings::is_syncing() ) {
+			return false;
+		}
+
 		global $post, $wp_current_filter; // Used to apply 'sharing_show' filter
 
 		// @todo: Remove this block when 4.5 is the minimum

@@ -117,6 +117,7 @@ class Jetpack_Client_Server {
 		Jetpack::update_user_token( $current_user_id, sprintf( '%s.%d', $token, $current_user_id ), $is_master_user );
 
 		if ( ! $is_master_user ) {
+			Jetpack::state( 'message', 'linked' );
 			// Don't activate anything since we are just connecting a user.
 			return 'linked';
 		}
@@ -129,11 +130,15 @@ class Jetpack_Client_Server {
 		} else {
 			Jetpack::activate_default_modules( false, false, array(), $redirect_on_activation_error );
 		}
-		
+
+		// Since this is a fresh connection, be sure to clear out IDC options
+		Jetpack_IDC::clear_all_idc_options();
+
 		// Start nonce cleaner
 		wp_clear_scheduled_hook( 'jetpack_clean_nonces' );
 		wp_schedule_event( time(), 'hourly', 'jetpack_clean_nonces' );
 
+		Jetpack::state( 'message', 'authorized' );
 		return 'authorized';
 	}
 

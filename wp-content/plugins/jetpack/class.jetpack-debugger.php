@@ -88,18 +88,11 @@ class Jetpack_Debugger {
 		$human_readable_sync_status = array();
 		foreach( $sync_statuses  as $sync_status => $sync_status_value ) {
 			$human_readable_sync_status[ $sync_status ] =
-				in_array( $sync_status, array( 'started', 'queue_finished', 'sent_started', 'finished' ) )
+				in_array( $sync_status, array( 'started', 'queue_finished', 'send_started', 'finished' ) )
 				? date( 'r', $sync_status_value ) : $sync_status_value ;
 		}
 
 		$debug_info .= "\r\n". sprintf( esc_html__( 'Jetpack Sync Full Status: `%1$s`', 'jetpack' ), print_r( $human_readable_sync_status, 1 ) );
-
-		$next_schedules = wp_next_scheduled( 'jetpack_sync_full' );
-		if( $next_schedules ) {
-			$debug_info .= "\r\n". sprintf( esc_html__( 'Next Jetpack Full Sync Schedule: `%1$s`', 'jetpack' ), date( 'r', $next_schedules ) );
-		} else {
-			$debug_info .= "\r\n". esc_html__( "Next Jetpack Full Sync Schedule: Not Scheduled", 'jetpack' );
-		}
 
 		require_once JETPACK__PLUGIN_DIR. 'sync/class.jetpack-sync-sender.php';
 
@@ -157,10 +150,12 @@ class Jetpack_Debugger {
 		$tests['HTTPS']['fail_message'] = esc_html__( 'Your site isn’t securely reaching the Jetpack servers.', 'jetpack' );
 
 		$identity_crisis_message = '';
-		if ( $identity_crisis = Jetpack::check_identity_crisis( true ) ) {
-			foreach( $identity_crisis as $key => $value ) {
-				$identity_crisis_message .= sprintf( __( 'Your `%1$s` option is set up as `%2$s`, but your WordPress.com connection lists it as `%3$s`!', 'jetpack' ), $key, (string) get_option( $key ), $value ) . "\r\n";
-			}
+		if ( $identity_crisis = Jetpack::check_identity_crisis() ) {
+			$identity_crisis_message .= sprintf(
+				__( 'Your url is set as `%1$s`, but your WordPress.com connection lists it as `%2$s`!', 'jetpack' ),
+				$identity_crisis['home'],
+				$identity_crisis['wpcom_home']
+			);
 			$identity_crisis = new WP_Error( 'identity-crisis', $identity_crisis_message, $identity_crisis );
 		} else {
 			$identity_crisis = 'PASS';
@@ -253,10 +248,17 @@ class Jetpack_Debugger {
 				<p class="jetpack-show-contact-form"><?php echo sprintf( __( 'If none of these help you find a solution, <a href="%s">click here to contact Jetpack support</a>. Tell us as much as you can about the issue and what steps you\'ve tried to resolve it, and one of our Happiness Engineers will be in touch to help.', 'jetpack' ), Jetpack::admin_url( array( 'page' => 'jetpack-debugger', 'contact' => true ) ) ); ?>
 				</p>
 				<?php endif; ?>
+				<hr />
 				<?php if ( Jetpack::is_active() ) : ?>
-					<hr />
 					<div id="connected-user-details">
 						<p><?php printf( __( 'The primary connection is owned by <strong>%s</strong>\'s WordPress.com account.', 'jetpack' ), esc_html( Jetpack::get_master_user_email() ) ); ?></p>
+					</div>
+				<?php else : ?>
+					<div id="dev-mode-details">
+						<p><?php printf(
+							__( 'Would you like to use Jetpack on your local development site? You can do so thanks to <a href="%s">Jetpack\'s development mode</a>.', 'jetpack' ),
+							'https://jetpack.com/support/development-mode/'
+						); ?></p>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -286,7 +288,7 @@ class Jetpack_Debugger {
 					?>
 					<div class="formbox">
 						<label for="message" class="h"><?php esc_html_e( 'Please describe the problem you are having.', 'jetpack' ); ?></label>
-						<textarea name="message" cols="40" rows="7" id="did"><?php echo ( isset( $_GET['note'] ) ? esc_textarea( $_GET['note'] ) : '' ); ?></textarea>
+						<textarea name="message" cols="40" rows="7" id="did"></textarea>
 					</div>
 
 					<div id="name_div" class="formbox">
@@ -296,7 +298,7 @@ class Jetpack_Debugger {
 					</div>
 
 					<div id="email_div" class="formbox">
-						<label class="h" for="your_email"><?php esc_html_e( 'E-mail', 'jetpack' ); ?></label>
+						<label class="h" for="your_email"><?php esc_html_e( 'Email', 'jetpack' ); ?></label>
 			  			<span class="errormsg"><?php esc_html_e( 'Use a valid email address.', 'jetpack' ); ?></span>
 						<input name="your_email" type="text" id="your_email" value="<?php esc_html_e( $current_user->user_email, 'jetpack'); ?>" size="40">
 					</div>
@@ -314,7 +316,7 @@ class Jetpack_Debugger {
 
 					<div id="blog_div" class="formbox">
 						<div id="submit_div" class="contact-support">
-						<input type="submit" name="submit" class="button button-primary button-large" value="<?php esc_html_e( 'Submit &#187;', 'jetpack' ); ?>">
+						<input type="submit" name="submit" value="<?php esc_html_e( 'Submit &#187;', 'jetpack' ); ?>">
 						</div>
 					</div>
 					<div style="clear: both;"></div>
@@ -376,10 +378,11 @@ class Jetpack_Debugger {
 
 			form#contactme {
 				border: 1px solid #dfdfdf;
-				background: #FFF;
+				background: #eaf3fa;
 				padding: 20px;
 				margin: 10px;
-				background-color: #F3F6F8;
+				background-color: #eaf3fa;
+				border-radius: 5px;
 				font-size: 15px;
 			}
 
@@ -397,6 +400,7 @@ class Jetpack_Debugger {
 
 			.formbox input[type="text"], .formbox input[type="email"], .formbox input[type="url"], .formbox textarea, #debug_info_div {
 				border: 1px solid #e5e5e5;
+				border-radius: 11px;
 				box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
 				color: #666;
 				font-size: 14px;
@@ -408,6 +412,25 @@ class Jetpack_Debugger {
 				margin-top: 16px;
 				background: #FFF;
 				padding: 16px;
+			}
+			.formbox .contact-support input[type="submit"] {
+				float: right;
+				margin: 0 !important;
+				border-radius: 20px !important;
+				cursor: pointer;
+				font-size: 13pt !important;
+				height: auto !important;
+				margin: 0 0 2em 10px !important;
+				padding: 8px 16px !important;
+				background-color: #ddd;
+				border: 1px solid rgba(0,0,0,0.05);
+				border-top-color: rgba(255,255,255,0.1);
+				border-bottom-color: rgba(0,0,0,0.15);
+				color: #333;
+				font-weight: 400;
+				display: inline-block;
+				text-align: center;
+				text-decoration: none;
 			}
 
 			.formbox span.errormsg {
