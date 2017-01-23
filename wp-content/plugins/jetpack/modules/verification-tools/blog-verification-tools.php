@@ -21,6 +21,12 @@ function jetpack_verification_services() {
 			'format' => 'f100679e6048d45e4a0b0b92dce1efce',
 			'url'    => 'https://pinterest.com/website/verify/',
 		),
+		'yandex'     => array(
+			'name'   => 'Yandex.Webmaster',
+			'key'    => 'yandex-verification',
+			'format' => '44d68e1216009f40',
+			'url'    => 'https://webmaster.yandex.com/sites/',
+		),
 	);
 }
 
@@ -55,42 +61,6 @@ function jetpack_verification_print_meta() {
 }
 add_action( 'wp_head', 'jetpack_verification_print_meta', 1 );
 
-function jetpack_verification_get_code( $code ){
-	$pattern = '/content=["\']?([^"\' ]*)["\' ]/is';
-	preg_match( $pattern, $code, $match );
-	if ( $match ){
-		return urldecode( $match[1] );
-	} else {
-		return false;
-	}
-}
-
-function jetpack_verification_validate( $verification_services_codes ) {
-	foreach ( $verification_services_codes as $key => &$code ) {
-		// Parse html meta tags if present
-		if ( stripos( $code, 'meta' ) )
-			$code = jetpack_verification_get_code( $code );
-
-		$code = esc_attr( trim( $code ) );
-
-		// limit length to 100 chars.
-		$code = substr( $code, 0, 100 );
-
-		/**
-		 * Fire after each Verification code was validated.
-		 *
-		 * @module verification-tools
-		 *
-		 * @since 3.0.0
-		 *
-		 * @param string $key Verification service name.
-		 * @param string $code Verification service code provided in field in the Tools menu.
-		 */
-		do_action( 'jetpack_site_verification_validate', $key, $code );
-	}
-	return $verification_services_codes;
-}
-
 function jetpack_verification_options_form() {
 	$verification_services_codes = get_option( 'verification_services_codes' );
 	?>
@@ -101,7 +71,7 @@ function jetpack_verification_options_form() {
 	foreach ( jetpack_verification_services() as $key => $service ) {
 		echo "<div class='jp-verification-service'>
 				<h4>" . esc_html( $service['name'] ) . "</h4>
-					<input value='" . esc_attr( $verification_services_codes["$key"] ) . "' name='verification_services_codes[" . esc_attr( $key ) . "]' type='text' />
+					<input value='" . esc_attr( isset( $verification_services_codes[ $key ] ) ? $verification_services_codes[ $key ] : '' ) . "' name='verification_services_codes[" . esc_attr( $key ) . "]' type='text' />
 				<small>
 					<label for='verification_services_codes[" . esc_attr( $key ) . "]'>" . esc_html( __( 'Example:' , 'jetpack' ) ) . " <span>&lt;meta name='" . esc_attr( $service['key'] ) . "' content='<strong>" . esc_attr( $service['format'] ) . "</strong>'&gt;</span></label>
 				</small>

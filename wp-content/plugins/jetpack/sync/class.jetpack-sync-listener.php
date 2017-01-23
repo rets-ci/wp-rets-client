@@ -34,7 +34,6 @@ class Jetpack_Sync_Listener {
 	}
 
 	private function init() {
-
 		$handler = array( $this, 'action_handler' );
 		$full_sync_handler = array( $this, 'full_sync_action_handler' );
 
@@ -46,6 +45,9 @@ class Jetpack_Sync_Listener {
 		// Module Activation
 		add_action( 'jetpack_activate_module', $handler );
 		add_action( 'jetpack_deactivate_module', $handler );
+
+		// Jetpack Upgrade
+		add_action( 'updating_jetpack_version', $handler, 10, 2 );
 
 		// Send periodic checksum
 		add_action( 'jetpack_sync_checksum', $handler );
@@ -163,6 +165,11 @@ class Jetpack_Sync_Listener {
 	}
 
 	function enqueue_action( $current_filter, $args, $queue ) {
+		// don't enqueue an action during the outbound http request - this prevents recursion
+		if ( Jetpack_Sync_Settings::is_sending() ) {
+			return;
+		}
+
 		/**
 		 * Modify or reject the data within an action before it is enqueued locally.
 		 *
@@ -196,6 +203,14 @@ class Jetpack_Sync_Listener {
 			microtime( true ),
 			Jetpack_Sync_Settings::is_importing()
 		) );
+
+		// since we've added some items, let's try to load the sender so we can send them as quickly as possible
+		if ( ! Jetpack_Sync_Actions::$sender ) {
+			add_filter( 'jetpack_sync_sender_should_load', '__return_true' );
+			if ( did_action( 'init' ) ) {
+				Jetpack_Sync_Actions::add_sender_shutdown();
+			}
+		}
 	}
 
 	function set_defaults() {

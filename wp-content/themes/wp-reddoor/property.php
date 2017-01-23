@@ -528,7 +528,7 @@ while (have_posts()) : the_post();
             'state' => $locationState,
             'postal_code' => $locationZip,
             'total_living_area_sqft' => isset($property['total_living_area_sqft_2']) ? $property['total_living_area_sqft_2'] : null,
-            'approximate_lot_size' => $property['approximate_lot_size_2'],
+            'approximate_lot_size' => isset( $property['approximate_lot_size_2'] ) ? $property['approximate_lot_size_2'] : '',
             'bedrooms' => $singleBedrooms,
             'bathrooms' => $singleBathrooms,
             'year_built' => $year_built,
