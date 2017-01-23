@@ -10,6 +10,10 @@
  */
 
 
+if( defined( 'WP_DEBUG_DISPLAY' ) && !WP_DEBUG_DISPLAY ) {
+  return;
+}
+
 if( defined( 'DOING_AJAX' ) || !class_exists( 'UD_ChromePhp' ) ) {
   return;
 }

@@ -37,9 +37,12 @@ new \UsabilityDynamics\RDC\Bootstrap();
  *
  * @author potanin@UD
  * @param $name
+ * @param string $_propertySaleType
+ * @param $pet_policy
+ * @param $office
  * @return array
  */
-function rdc_get_attribute_group($name, $_propertySaleType, $pet_policy, $office)
+function rdc_get_attribute_group($name, $_propertySaleType = '', $pet_policy = '', $office = '')
 {
   global $wp_properties, $post, $property;
 
@@ -141,15 +144,15 @@ add_filter('body_class', function ($classes, $class) {
   return $classes;
 }, 20, 2);
 
-
 /**
  * @author vorobjov@UD
  * @param $sale_value , $petpolicy_value, $office
- * @return boolean
+ * @param string $petpolicy_value
+ * @param $office
+ * @return bool call in property.php
  * call in property.php
  */
-
-function petPolicyChecking($sale_value, $petpolicy_value, $office)
+function petPolicyChecking($sale_value, $petpolicy_value = '', $office = '')
 {
   if (($office == 'Red Door Company') && ($sale_value == 'rent') && ($petpolicy_value == 'Pets Negotiable' || $petpolicy_value == 'Pet Deposit' || $petpolicy_value == 'Pet Fee' || $petpolicy_value == 'Cats Allowed' || $petpolicy_value == 'Dogs Allowed' || $petpolicy_value == 'Dogs Allowed/Size Limit')) :
     return true;
