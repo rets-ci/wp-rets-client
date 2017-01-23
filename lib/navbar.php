@@ -55,10 +55,17 @@ namespace RabbitCI\Navbar {
       $wp_admin_bar->add_node( array(
         'id' => 'wp-rabbit-inner',
         'parent' => 'wp-rabbit',
-        'title' => sprintf( __( '%s' ), $_backend ),
+        'title' => sprintf( __( 'Container: %s' ), $_backend ),
         'href' => '#'
       ));
-      
+
+      $wp_admin_bar->add_node( array(
+        'id' => 'wp-rabbit-inner-db',
+        'parent' => 'wp-rabbit',
+        'title' => sprintf( __( 'Database: %s' ), DB_NAME),
+        'href' => '#'
+      ));
+
     }
 
   }
