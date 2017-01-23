@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Cell = function ({cell}) {
+const Cell = function ({cell, style}) {
     let type = cell.type;
     let title = cell.title;
     let content = cell.content;
@@ -8,11 +8,9 @@ const Cell = function ({cell}) {
 
     let classes = "cell-item" + cellClass + " " + type;
     return (
-        <div className="cell-container">
-            <div className={classes}>
-                <div className="cell-title">{title}</div>
-                <div className="cell-content">{content}</div>
-            </div>
+        <div className={classes} style={style}>
+            <div className="cell-title">{title}</div>
+            <div className="cell-content">{content}</div>
         </div>
     )
 };

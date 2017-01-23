@@ -51,7 +51,7 @@ function rebuild_builder_content($content)
   $rows = [];
 
   foreach ($content['widgets'] as $key => $widget) {
-    $rows[$widget['panels_info']['grid']]['style'] = $content['grids']['style'];
+    $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
     $rows[$widget['panels_info']['grid']]['cells'][] = [
       'weight' => $content['grid_cells'][$key]['weight'],
       'widget' => $widget
