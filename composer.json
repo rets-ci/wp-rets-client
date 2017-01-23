@@ -35,7 +35,7 @@
       "wp_debug": true,
       "wp_debug_log": true,
       "wp_rets_ci": true,
-      "wp_debug_display": false,
+      "wp_debug_display": true,
       "_wp_memcached_servers": "api.wpcloud.io:23038",
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
