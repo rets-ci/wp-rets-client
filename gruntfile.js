@@ -77,7 +77,7 @@ module.exports = function ( grunt ) {
         }
 
         if( !error && resp.headers && resp.headers['location'] ) {
-          console.error( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers['location'] )
+          debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers['location'] )
         }
 
         callback();
