@@ -9,16 +9,6 @@
     }
   ],
   "extra": {
-    "settings_latest": {
-      "wp_debug_log": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "__wp_memcached_servers": "localhost:11211",
-      "_db": [
-        {
-          "name": "www.reddoorcompany.com.latest"
-        }
-      ]
-    },
     "settings_latest_v3": {
       "wp_debug_log": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
