@@ -51,7 +51,7 @@ namespace RedDoorCompany\Policy {
      * @param $redirect
      * @return mixed
      */
-    function redirect_canonical( $redirect ) {
+    static public function redirect_canonical( $redirect ) {
       global $wp;
 
       // Cache any /listing/* redirection rules.
@@ -85,7 +85,7 @@ namespace RedDoorCompany\Policy {
      *
      * @return array
      */
-    function template_redirect() {
+    static public function template_redirect() {
 
       // Should not happen, perhaps record error...
       if( headers_sent() ) {
