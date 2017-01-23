@@ -15,11 +15,18 @@
  */
 namespace RedDoorCompany\Policy {
 
+
+  // CloudFront Hack fix. This issue should go away, but happens if we ever forget to forward specific headers, in particular the host. - potanin@UD
+  if( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['HTTP_X_SET_APPLICATION'] ) && $_SERVER['HTTP_HOST'] === 'c.rabbit.ci' && $_SERVER['HTTP_X_SET_APPLICATION'] === 'www.reddoorcompany.com' ) {
+    $_SERVER['HTTP_HOST'] = 'www.reddoorcompany.com';
+  }
+
+
   add_filter( 'automatic_updater_disabled', '__return_true' );
   add_filter( 'automatic_updates_is_vcs_checkout', '__return_false', 1 );
 
   add_action( 'template_redirect', array( 'RedDoorCompany\Policy\Caching', 'template_redirect' ), 20 );
-  add_filter( 'redirect_canonical', array( 'RedDoorCompany\Policy\Caching', 'redirect_canonical' ), 20 );
+  add_filter( 'redirect_canonical', array( 'RedDoorCompany\Policy\Caching', 'redirect_canonical' ), 100 );
 
   // Its the only file taht is add the the real "footer" js, since we add both files in footer, i think it can be dropped.
   add_action( 'wp_enqueue_scripts', function () {
@@ -46,7 +53,7 @@ namespace RedDoorCompany\Policy {
     /**
      * Handles Redirection Caching.
      *
-     * e.g. https://www.reddoorcompany.com/listing/20910407
+     * e.g. web.curl -I https://www.reddoorcompany.com/listing/20910407
      *
      * @param $redirect
      * @return mixed
