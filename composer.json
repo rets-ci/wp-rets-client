@@ -47,8 +47,8 @@
       "empty_trash_days": 60,
       "alternate_wp_cron": false,
       "wp_cron_lock_timeout": 0,
+      "SITEORIGIN_WIDGETS_ICONS": true,
       "wp": {
-        "SITEORIGIN_WIDGETS_ICONS": true,
         "upstream_automatic_push": true,
         "upstream_debug": false,
         "post_revisions": 30,
