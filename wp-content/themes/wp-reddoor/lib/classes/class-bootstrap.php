@@ -77,6 +77,7 @@ namespace UsabilityDynamics\RDC {
          * Frontend scripts
          */
         add_action('wp_enqueue_scripts', array($this, 'frontend_scripts'));
+        add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
 
         /**
          * Parse Search Request and redirect to Taxonomy page
@@ -348,6 +349,13 @@ namespace UsabilityDynamics\RDC {
       /**
        * Front End Scripts Loading
        */
+      public function admin_enqueue_scripts() {
+
+        wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
+        wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
+
+      }
+
       public function frontend_scripts()
       {
         wp_enqueue_script('jquery');
