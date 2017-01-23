@@ -20,6 +20,37 @@ define( 'SOW_BUNDLE_JS_SUFFIX', '' );
 add_filter('wpseo_enable_xml_sitemap_transient_caching','__return_false');
 
 
+
+/**
+ * Ported from [wp-content/themes/wp-reddoor/static/icons/icons.php], which seems to be loaded too late.
+ *
+ * @param $families
+ * @return mixed
+ */
+function rdc_widgets_icon_families_filter( $families ){
+
+  $bundled = array(
+    'reddoorcompany' => __( 'Reddoorcompany', 'so-widgets-bundle' ),
+    'wpproperty' => __( 'Wp-property', 'so-widgets-bundle' ),
+  );
+
+  foreach ( $bundled as $font => $name) {
+
+    include_once get_template_directory(). '/static/icons/' . $font . '/filter.php';
+
+    $families[$font] = array(
+      'name' => $name,
+      'style_uri' => get_template_directory_uri() . '/static/icons/' . $font . '/style.css?v=' . rand(),
+      'icons' => apply_filters('siteorigin_widgets_icons_' . $font, array() ),
+    );
+  }
+
+  return $families;
+
+}
+
+add_filter( 'siteorigin_widgets_icon_families', 'rdc_widgets_icon_families_filter' );
+
 // Only activate tests when on a 'develop' branch.
 if( isset( $_SERVER['GIT_BRANCH'] ) && strpos( $_SERVER['GIT_BRANCH'], 'develop' && isset( $_GET['_debug'] ) ) !== false ) {
   header( 'cache-control:no-cache, private' );

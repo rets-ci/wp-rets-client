@@ -17,9 +17,6 @@ if (class_exists('SiteOrigin_Widget')) {
   require_once 'lib/widgets/rdc-masthead/rdc_masthead.php';
 }
 
-// Site icons
-require_once get_template_directory() . '/static/icons/icons.php';
-
 add_action('wp_enqueue_scripts', function () {
 
   // we need supermap on home page for search thing
