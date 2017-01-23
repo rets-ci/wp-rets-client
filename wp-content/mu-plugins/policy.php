@@ -81,35 +81,10 @@ add_action('template_redirect', function() {
 
 }, 20);
 
-// Disable using the in-footer async thing.
-add_filter( 'minit-js-footer-async', '__return_false' );
-
 // Its the only file taht is add the the real "footer" js, since we add both files in footer, i think it can be dropped.
 add_action( 'wp_enqueue_scripts', function(  ) {
   wp_deregister_script( 'wp-embed' );
 });
-
-// We disable all caching. 
-add_filter( 'minit-use-cache', '__return_false' );
-add_filter( 'minit-script-tag-async', '__return_false' );
-
-//add_filter( 'minit-exclude-js', function( $exclude ) { return array( 'jquery' ); });
-//add_filter( 'minit-drop-js', function( $exclude ) { return array( 'jquery' ); });
-
-add_filter( 'minit-cache-expiration', function() { return 0; });
-
-// Regenerates every time.
-add_filter( 'minit-file-pattern', function( $_path, $extension, $where, $_modified_times ) {
-
-  $_timestamp = minit_timestamp();
-
-  // affix our modified-time busting hash
-  if( is_array( $_modified_times ) ) {
-    $_timestamp = $_timestamp  . '-' . max($_modified_times);
-  }
-  return  str_replace( '/minit/', '/minit/asset-' . $where . '-' . $_SERVER['GIT_BRANCH'] . '-' . $_timestamp . '-', $_path );
-
-}, 10, 4 );
 
 // Force minit to be enabled if its avialable.
 add_filter( 'option_active_plugins', function( $_plugins ) {
@@ -121,17 +96,6 @@ add_filter( 'option_active_plugins', function( $_plugins ) {
   $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
   $_plugins[] = 'wp-stateless/wp-stateless-media.php';
 
-  if(  defined( 'CONCATENATE_SCRIPTS' ) && CONCATENATE_SCRIPTS && file_exists( WP_PLUGIN_DIR . '/minit-master/minit.php' )) {
-    $_plugins[] = 'minit-master/minit.php';
-  } else {
-
-    if(($key = array_search('minit-master/minit.php', $_plugins)) !== false) {
-      unset($_plugins[$key]);
-    }
-
-
-
-  }
   return array_unique( $_plugins );
 
 } );
