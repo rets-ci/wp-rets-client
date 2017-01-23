@@ -15,18 +15,11 @@
  */
 namespace RedDoorCompany\Policy {
 
-
-  // CloudFront Hack fix. This issue should go away, but happens if we ever forget to forward specific headers, in particular the host. - potanin@UD
-  if( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['HTTP_X_SET_APPLICATION'] ) && $_SERVER['HTTP_HOST'] === 'c.rabbit.ci' && $_SERVER['HTTP_X_SET_APPLICATION'] === 'www.reddoorcompany.com' ) {
-    $_SERVER['HTTP_HOST'] = 'www.reddoorcompany.com';
-  }
-
-
   add_filter( 'automatic_updater_disabled', '__return_true' );
   add_filter( 'automatic_updates_is_vcs_checkout', '__return_false', 1 );
 
   add_action( 'template_redirect', array( 'RedDoorCompany\Policy\Caching', 'template_redirect' ), 20 );
-  add_filter( 'redirect_canonical', array( 'RedDoorCompany\Policy\Caching', 'redirect_canonical' ), 100 );
+  add_filter( 'redirect_canonical', array( 'RedDoorCompany\Policy\Caching', 'redirect_canonical' ), 5 );
 
   // Its the only file taht is add the the real "footer" js, since we add both files in footer, i think it can be dropped.
   add_action( 'wp_enqueue_scripts', function () {
@@ -71,10 +64,16 @@ namespace RedDoorCompany\Policy {
         header('X-CloudFront-TTL:31536000');
 
         // Will be removed when missing access toekn.
-        header('X-Cache-Control-Reason:Single listing redirection');
+        header('X-Cache-Control-Reason:Single listing redirection.');
 
         // CloudFront will cache this forever due to 86400 cache control TTL, hardcoded.
         header('cache-control:public,max-age=31536000,s-maxage=31536000,force-cache=true');
+
+        // e.g. x-surrogate-keys: post-10579106
+        if( isset( $wp->query_vars ) && is_array( $wp->query_vars ) && isset( $wp->query_vars[ 'p' ] )  ) {
+          header('x-surrogate-keys:post-' . $wp->query_vars[ 'p' ], false );
+        }
+
       }
 
       return $redirect;
@@ -82,17 +81,22 @@ namespace RedDoorCompany\Policy {
     }
 
     /**
-     *
+     * Standard Response Page
      *
      * @return array
-     *
      */
     function template_redirect() {
+
+      // Should not happen, perhaps record error...
+      if( headers_sent() ) {
+        return false;
+      }
 
       $_policy = array(
         "set" => false,
         "value" => 'public,max-age=31536000,s-maxage=31536000,force-cache=true',
-        "reason" => ""
+        "reason" => "",
+        "surrogates" => array()
       );
 
       // On non-production, cache for 60 seconds.
@@ -115,10 +119,17 @@ namespace RedDoorCompany\Policy {
 
       // We cache normal content "forever" and then purge when need to.
       if( !$_policy[ 'set' ] && ( is_page() || is_single() || is_attachment() || is_home() || is_front_page() ) ) {
+        global $wp_query;
+
         $_policy[ "set" ] = true;
         $_policy[ "reason" ] = "Single post, single page, attachment, home or front page are cached forever.";
         $_policy[ "cloudfront_ttl" ] = "31536000";
         $_policy[ "varnish_ttl" ] = "31536000";
+
+        foreach( (array) $wp_query->posts as $_post ) {
+          $_policy[ "surrogates" ][] = $_post->post_type . '-' . $_post->ID;
+        }
+
       }
 
       // Questionable...
@@ -131,10 +142,13 @@ namespace RedDoorCompany\Policy {
 
       // Lets home previews use very unique hashes, they'll be cached forever.
       if( !$_policy[ 'set' ] && is_preview() ) {
+        global $post;
+
         $_policy[ "set" ] = true;
         $_policy[ "reason" ] = "Previews are cached forever.";
         $_policy[ "cloudfront_ttl" ] = "31536000";
         $_policy[ "varnish_ttl" ] = "31536000";
+        $_policy[ "surrogates" ] = [ 'post-' . $post->ID ];
       }
 
       // Traditionally this would not be cached, but now - we no longer give a shit. Everything is cached the same for everybody.
@@ -149,19 +163,19 @@ namespace RedDoorCompany\Policy {
       if( !$_policy[ 'set' ] && is_404() ) {
         $_policy[ "set" ] = true;
         $_policy[ "reason" ] = "404 requests are cached forever.";
-        $_policy[ "cloudfront_ttl" ] = "31536000";
-        $_policy[ "varnish_ttl" ] = "31536000";
+        $_policy[ "cloudfront_ttl" ] = "0";
+        $_policy[ "varnish_ttl" ] = "0";
       }
 
       // Set cache-control header.
-      if( $_policy[ "set" ] && !headers_sent() ) {
+      if( $_policy[ "set" ]  ) {
 
         if( isset( $_policy[ "value" ] ) ) {
           header( 'cache-control:' . $_policy[ "value" ] );
         }
 
         if( isset( $_policy[ "reason" ] ) ) {
-          header( 'x-cache-control-reason:' . $_policy[ "reason" ] );
+          header( 'x-cache-control-reason:' . $_policy[ "reason" ], false );
         }
 
         if( isset( $_policy[ "varnish_ttl" ] ) ) {
@@ -170,6 +184,11 @@ namespace RedDoorCompany\Policy {
 
         if( isset( $_policy[ "cloudfront_ttl" ] ) ) {
           header( 'x-cloudfront-ttl:' . $_policy[ "cloudfront_ttl" ] );
+        }
+
+        // Keys will be combined into CSV in logs. @see https://api.wpcloud.io:19100/waf-v2/log-v2/_search?sort=timestamp:desc&size=199&q=response.headers.x-surrogate-keys:*
+        foreach( (array) $_policy[ "surrogates" ]  as $_surrogate_key ) {
+          header( 'x-surrogate-keys:' . $_surrogate_key, false );
         }
 
       }
