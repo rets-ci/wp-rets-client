@@ -2,7 +2,7 @@
 
 ### Install global packages, if needed
 * npm install -g babel
-* npm install -g babel
+* npm install -g babel-cli
 
 ### Install local packages
 * npm init
