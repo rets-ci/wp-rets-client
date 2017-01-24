@@ -11,7 +11,7 @@
       <input readonly class="hidden-phone" type="tel" data-label="Buy Inquiry Call" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number'); ?></span>
 
-			<form id="powf_629EB2C7BE16E61180E9C4346BACE2D4" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
+			<form id="powf_629EB2C7BE16E61180E9C4346BACE2D4" class="form-validate" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_b8ba60f3be16e61180e9c4346bace2d4" name="powf_b8ba60f3be16e61180e9c4346bace2d4" value="" maxlength="50" class="required" />
@@ -49,19 +49,28 @@
           <textarea placeholder="Message" id="powf_c79126adbf16e61180e9c4346bace2d4" name="powf_c79126adbf16e61180e9c4346bace2d4"></textarea>
           <div class="clear"></div>
         </div>
-
+        
+        <!-- Origin -->
         <input type="hidden" id="powf_98ef9eccbf16e61180e9c4346bace2d4" name="powf_98ef9eccbf16e61180e9c4346bace2d4" value="Buyer General" />
+        
+        <!-- Broker Email -->
         <input type="hidden" id="powf_bce1ec13c016e61180e9c4346bace2d4" name="powf_bce1ec13c016e61180e9c4346bace2d4" value="" />
+        
+        <!-- Topic -->
         <input type="hidden" id="powf_b6d11d30c016e61180e9c4346bace2d4" name="powf_b6d11d30c016e61180e9c4346bace2d4" value="Buyer (General) Webform Lead" />
+        
+        <!-- Lead Source -->
         <input type="hidden" id="powf_642031a9d316e61180e6fc15b4286ffc" name="powf_642031a9d316e61180e6fc15b4286ffc" value="reddoorcompany.com" />
+        
+        <!-- Referring URL -->
+				<input type="hidden" id="powf_7819c99fbe1ee61180e4fc15b428cd78" name="powf_7819c99fbe1ee61180e4fc15b428cd78" value="" />
+				
         <input type="hidden" name="ignore_submitmessage" value="Thank you. We will be in touch with you shortly." />
         <input type="hidden" name="ignore_linkbuttontext" value="" />
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/buy/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
         
-        <div class="field">
-          <div id="rdcgrecaptchahomebuy"></div>
-        </div>
+        <div class="field g-recaptcha"></div>
 
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Send" />

@@ -5,6 +5,8 @@
  */
 namespace UsabilityDynamics\RDC {
 
+  use WP_REST_Request;
+
   if (!class_exists('\UsabilityDynamics\RDC\Bootstrap')) {
 
     /**
@@ -24,6 +26,9 @@ namespace UsabilityDynamics\RDC {
          * Ajax
          */
         new Ajax();
+
+        // Invoke API
+        new API();
 
         /**
          * Property Hooks
@@ -76,7 +81,7 @@ namespace UsabilityDynamics\RDC {
         /**
          * Frontend scripts
          */
-        add_action('wp_enqueue_scripts', array($this, 'frontend_scripts'));
+        add_action('wp_enqueue_scripts', array($this, 'wp_enqueue_scripts'));
 
         /**
          * Parse Search Request and redirect to Taxonomy page
@@ -318,6 +323,8 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
+       * Register Post Types.
+       *
        *
        */
       public function register_post_types()
@@ -346,21 +353,28 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
-       * Front End Scripts Loading
+       * Enqueue Scripts for Frontend
+       *
        */
-      public function frontend_scripts()
-      {
+      public function wp_enqueue_scripts() {
+
+        $currentTheme = wp_get_theme();
+
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-accordion');
-        wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), '1.0.0');
-        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('jquery'), '1.0.0');
-        wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js', array('jquery'), '1.0.0');
-        wp_enqueue_script('svgxuse', get_stylesheet_directory_uri() . '/static/scripts/vendor/svgxuse.js', array(), '1.0.0');
-        wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), '1.0.0');
+
+        wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), $currentTheme->get( 'Version' ) );
+
+        wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdc_recaptcha_onload_callback&render=explicit', array( ), $currentTheme->get( 'Version' ) , true );
+        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery', 'google-recaptcha-api' ), $currentTheme->get( 'Version' ), true );
+        wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('main'), $currentTheme->get( 'Version' ) );
+        wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js', array('main'), $currentTheme->get( 'Version' ) );
+
+        wp_enqueue_script('svgxuse', get_stylesheet_directory_uri() . '/static/scripts/vendor/svgxuse.js', array(), $currentTheme->get( 'Version' ) );
+        wp_enqueue_script('jquery.sticky', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.sticky.js', array('jquery'), $currentTheme->get( 'Version' ) );
         wp_enqueue_script('masonry', 'https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js', array('jquery'), '4.0');
-        wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('isotope', get_stylesheet_directory_uri() . '/static/scripts/src/isotope.min.js', array('jquery'), $currentTheme->get( 'Version' ) );
         wp_enqueue_script('select2.full.min', get_stylesheet_directory_uri() . '/static/scripts/src/select2.full.min.js', array('jquery'), '4.0.3');
         wp_enqueue_script('rdc-custom-validate', get_stylesheet_directory_uri() . '/static/scripts/src/jquery.validate.min.js', array('jquery'));
 
@@ -370,26 +384,27 @@ namespace UsabilityDynamics\RDC {
 
         wp_enqueue_style('style', get_stylesheet_directory_uri() . '/static/styles/style.css');
 
-        wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
-        wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
+        // @note These are bundled into main style.css now, loaded from static/icons/* directories.
+        //wp_enqueue_style('icomoon-reddoorcompany', 'https://i.icomoon.io/public/524f31be7a/reddoorcompany/style.css');
+        //wp_enqueue_style('icomoon-wpproperty', 'https://i.icomoon.io/public/524f31be7a/wpproperty/style.css');
 
         wp_enqueue_style('agents-carousel', get_stylesheet_directory_uri() . '/static/styles/src/agents-carousel.css');
 
         //if ( is_singular( 'property' ) ) {
-        wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri() . '/static/scripts/src/agents-carousel.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('agents-carousel', get_stylesheet_directory_uri() . '/static/scripts/src/agents-carousel.js', array('jquery'), $currentTheme->get( 'Version' ) );
         // }
 
-        wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
+        wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-search-form.js', array('jquery'), $currentTheme->get( 'Version' ) );
 
         $recaptcha = get_theme_mod('rdc_recaptcha_key');
-        if (!empty($recaptcha)) {
-          wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdcRecaptchaOnloadCallback&render=explicit');
-          wp_localize_script('rdc-popups', 'popupMode', array(
-            "recaptcha_key" => $recaptcha
-          ));
-        }
-      }
 
+
+        wp_localize_script('rdc-main', 'popupMode', array( "recaptcha_key" => defined( 'RDC_RECAPTCHA_KEY' ) ? RDC_RECAPTCHA_KEY : $recaptcha ));
+
+
+        if (!empty($recaptcha)) {}
+
+      }
 
       /**
        *

@@ -389,7 +389,7 @@ while (have_posts()) : the_post();
                    "ws_hide_bigger_map" => "true",
                    "ws_no_link_info_bubbles" => "true",
                    "ws_map_icon_type" => "house",
-                   "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+                   "ws_layout" => (  isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
                  ))); ?>"></div>
             <div id="Commute" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
               "property_id" => $property['ID'],
@@ -400,7 +400,7 @@ while (have_posts()) : the_post();
               "ws_hide_bigger_map" => "true",
               "ws_no_link_info_bubbles" => "true",
               "ws_map_icon_type" => "house",
-              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+              "ws_layout" => ( isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
             ))); ?>"></div>
             <div id="Street" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
               "property_id" => $property['ID'],
@@ -411,7 +411,7 @@ while (have_posts()) : the_post();
               "ws_hide_bigger_map" => "true",
               "ws_no_link_info_bubbles" => "true",
               "ws_map_icon_type" => "house",
-              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+              "ws_layout" => ( isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
             ))); ?>"></div>
             <div id="Satellite" class="tab-pane fade" data-nmap-options="<?php echo urldecode(http_build_query(array(
               "property_id" => $property['ID'],
@@ -422,7 +422,7 @@ while (have_posts()) : the_post();
               "ws_hide_bigger_map" => "true",
               "ws_no_link_info_bubbles" => "true",
               "ws_map_icon_type" => "house",
-              "ws_layout" => ($_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
+              "ws_layout" => ( isset( $_SERVER['HTTP_X_USER_DEVICE'] ) && $_SERVER['HTTP_X_USER_DEVICE'] == "mobile" ? "vertical" : "horizontal")
             ))); ?>"></div>
           </div>
         </div>
@@ -528,7 +528,7 @@ while (have_posts()) : the_post();
             'state' => $locationState,
             'postal_code' => $locationZip,
             'total_living_area_sqft' => isset($property['total_living_area_sqft_2']) ? $property['total_living_area_sqft_2'] : null,
-            'approximate_lot_size' => $property['approximate_lot_size_2'],
+            'approximate_lot_size' => isset( $property['approximate_lot_size_2'] ) ? $property['approximate_lot_size_2'] : '',
             'bedrooms' => $singleBedrooms,
             'bathrooms' => $singleBathrooms,
             'year_built' => $year_built,

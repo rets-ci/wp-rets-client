@@ -11,7 +11,7 @@
       <input readonly class="hidden-phone" type="tel" data-label="Management Inquiry Call" data-phone="919-321-0128 x210" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
-      <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20" class="form-validate" action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&amp;formId=powf_E3E9D503C22EE41195286C3BE5BD3B20&amp;tver=2013&amp;c=1" enctype="multipart/form-data" method="post" novalidate="novalidate">
+      <form id="powf_E3E9D503C22EE41195286C3BE5BD3B20" class="form-validate" action="https://cloud.crm.powerobjects.net/powerWebFormV3/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&amp;formId=powf_E3E9D503C22EE41195286C3BE5BD3B20&amp;tver=2013&amp;c=1" method="post" novalidate="novalidate">
 
         <div class="field">
           <input placeholder="First Name *" id="powf_8f29ad3ac22ee41195286c3be5bd3b20" class="required" maxlength="100" name="powf_8f29ad3ac22ee41195286c3be5bd3b20" type="text" value=""/>
@@ -69,9 +69,7 @@
         <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
         <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
-        <div class="field">
-          <div id="rdcgrecaptchahomemanagement"></div>
-        </div>
+        <div class="field g-recaptcha"></div>
 
         <div class="submit-wrapper">
 	        <input class="button" type="submit" value="Submit"/>

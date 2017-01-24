@@ -58,7 +58,7 @@
 
     $(document).on('click', function () {
       $(".dropdown-container .dropdown-list", that).slideUp();
-      debug('slideUp');
+      // debug('slideUp');
     });
 
     $(".dropdown-container .searchTrigger", that).on('click', ( function dropdownContainerSearchTrigger(e) {
