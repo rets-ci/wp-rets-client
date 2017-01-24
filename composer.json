@@ -9,6 +9,11 @@
     }
   ],
   "extra": {
+    "settings_production-hotfix": {
+      "wp_debug_log": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "wp_memcached_servers": "localhost:11211"
+    },
     "settings_latest_v3": {
       "wp_debug_log": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,

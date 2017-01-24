@@ -368,7 +368,7 @@ function new_wpseo_title( $title ) {
 }
 
 add_action( 'admin_menu', function () {
-  add_menu_page( __( 'RDC Custom SEO Settings', 'reddoor' ), __( 'RDC SEO Settings', 'reddoor' ), 'manage_options', 'site-options', 'rdc_custom_seo_settings', '', 99.1 );
+  add_submenu_page( 'tools.php', __( 'RDC Custom SEO Settings', 'reddoor' ), __( 'RDC SEO Settings', 'reddoor' ), 'manage_options', 'site-options', 'rdc_custom_seo_settings', '', 99.1 );
   add_action( 'admin_init', 'register_rdc_custom_seo_settings' );
 } );
 
