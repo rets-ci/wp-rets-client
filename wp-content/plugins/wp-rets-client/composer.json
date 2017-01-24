@@ -19,14 +19,17 @@
   },
   "require": {
     "php": ">=5.3",
-    "usabilitydynamics/lib-wp-bootstrap": "1.2.0"
+    "usabilitydynamics/lib-wp-bootstrap": "1.2.1"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "~0.2",
     "codeclimate/php-test-reporter": "~0.1"
   },
   "autoload": {
-    "classmap": [ "lib/classes" ]
+    "classmap": [ "lib/classes", "lib/connectors" ],
+    "files": [
+      "wp-rets-client.php"
+    ]
   },
   "archive": {
     "exclude": [

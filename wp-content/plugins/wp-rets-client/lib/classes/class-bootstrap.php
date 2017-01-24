@@ -23,7 +23,7 @@ namespace UsabilityDynamics\WPRETSC {
       /**
        * @var string
        */
-      public $logfile = 'debug-log.log';
+      public $logfile = 'wp-content/rets-debug-log.log';
 
       /**
        * Instantaite class.
@@ -35,6 +35,23 @@ namespace UsabilityDynamics\WPRETSC {
 
         // Initialize Media handler
         new Media();
+
+        // Initialize Register handler
+        new Register();
+
+        // 3d-party compatibility
+        new Connectors\Loader();
+
+        // AJAX
+        new Ajax();
+
+        add_action( 'wp_dashboard_setup', function(){
+
+          if( defined( 'RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET' ) && RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET ) {
+            new Widget();
+          }
+
+        } );
 
         add_action('init', function() {
 
@@ -55,11 +72,17 @@ namespace UsabilityDynamics\WPRETSC {
               'new_item_name'     => __( 'New Schedule Name', ud_get_wp_rets_client()->domain ),
               'menu_name'         => __( 'Schedules' ),
             ),
-            'show_ui'           => false,
+            'show_ui'           => true,
+            'show_in_menu'      => false,
             'show_admin_column' => false,
+            'meta_box_cb' => false,
             'query_var'         => false,
             'rewrite'           => false
           ) );
+
+          add_shortcode('wp-rets-client', function() {
+            return '<!--Delivered by rets.ci.-->';
+          });
 
         });
 

@@ -67,11 +67,6 @@ namespace UsabilityDynamics\RDC {
           return $content;
         });
 
-        /**
-         * Validate reCAPTCHA and send form to external server.
-         *
-         */
-        add_action( 'template_redirect', array( $this, 'rdc_form_action' ) );
 
         /**
          *
@@ -89,74 +84,7 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
-       * RDC forms validator
-       */
-      public function rdc_form_action() {
-
-        if( isset( $_REQUEST[ 'rdc_action' ] ) && $_REQUEST[ 'rdc_action' ] == 'submit_form' && !empty( $_POST[ 'rdc_fyb' ] ) ) {
-
-          $key = get_theme_mod( 'rdc_recaptcha_key' );
-          $secret = get_theme_mod( 'rdc_recaptcha_secret' );
-          $redirect = isset( $_POST[ 'ignore_redirecturl' ] ) ? $_POST[ 'ignore_redirecturl' ] : '';
-
-          try {
-
-            if( !empty( $key ) && !empty( $secret ) ) {
-
-              if (empty($_POST['g-recaptcha-response'])) {
-                throw new Exception('No captcha response');
-              }
-
-              $recaptcha = $_POST['g-recaptcha-response'];
-              unset($_POST['g-recaptcha-response']);
-
-              $request = wp_remote_post('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $recaptcha);
-
-              if (is_wp_error($request) || wp_remote_retrieve_response_code($request) != 200) {
-                throw new Exception('Invalid response from Captcha API');
-              }
-
-              $response = wp_remote_retrieve_body($request);
-              $response = @json_decode($response, true);
-
-              if (empty($response['success']) || !$response['success']) {
-                throw new Exception('Captcha is not valid');
-              }
-
-            }
-
-            $url = $_POST[ 'rdc_fyb' ];
-
-            unset( $_POST[ 'rdc_fyb' ] );
-
-            $data = $_POST;
-            $data[ 'ignore_redirecturl' ] = '';
-
-            $response = wp_remote_post( $url, array(
-                'body' => $data,
-            ) );
-
-            if( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) != 200 ) {
-              throw new Exception( 'Invalid response from CRM Server' );
-            }
-
-          } catch( Exception $e ) {
-
-            wp_redirect( home_url() . '/success/error' );
-
-          }
-
-          if( !empty( $redirect ) ) {
-            wp_redirect( $redirect );
-          } else {
-            wp_redirect( home_url() );
-          }
-
-        }
-
-      }
-
-      /**
+       *
        * @param $content
        * @return string
        */
