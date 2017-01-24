@@ -9,7 +9,7 @@
       <h3><?php _e( 'Red Door Company', 'reddoor' ); ?></h3>
       <p><?php _e( 'Grow your career with Red Door Company! Please submit your information and a member of our management team will contact you shortly.', 'reddoor' ); ?></p>
 
-			<form id="powf_905AF33FD6D1E511810FC4346BACE18C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_905AF33FD6D1E511810FC4346BACE18C&tver=2013&c=1" method="post">
+			<form id="powf_905AF33FD6D1E511810FC4346BACE18C" class="form-validate" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_905AF33FD6D1E511810FC4346BACE18C&tver=2013&c=1" method="post">
 			
 				<div class="field">
 					<input placeholder="First Name *" type="text" id="powf_351e0689d6d1e511810fc4346bace18c" name="powf_351e0689d6d1e511810fc4346bace18c" value="" maxlength="100" class="required" />
@@ -69,7 +69,7 @@
 				<input type="hidden" name="ignore_redirectmode" value="Auto" />
 				
 				<div class="field">
-					<div id="rdcgrecaptchacareer"></div>
+					<div class="g-recaptcha" data-sitekey="6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5"></div>
 				</div>
 				
 				<div class="submit-wrapper">

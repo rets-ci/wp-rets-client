@@ -8,6 +8,7 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( "default", defaultTask );
   grunt.registerTask( "primeRedirectionCache", primeRedirectionCache );
+  grunt.registerTask( "primeSitemapCache", primeSitemapCache );
 
   /**
    *
@@ -85,6 +86,29 @@ module.exports = function ( grunt ) {
       });
 
     }
+
+  }
+
+  /**
+   *
+   * 'http://localhost/sitemap_index.xml'
+   * 'http://localhost/property-sitemap1.xml'
+   *
+   */
+  function primeSitemapCache() {
+
+    var taskDone = this.async();
+
+    var Sitemapper = require('sitemapper');
+
+    var sitemap = new Sitemapper();
+
+    sitemap.fetch('http://localhost/property-sitemap1.xml').then(function(sites) {
+      console.log( require( 'util' ).inspect( sites.sites, { showHidden: false, depth: 2, colors: true } ) );
+
+      taskDone();
+    });
+
 
   }
 

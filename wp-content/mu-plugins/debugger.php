@@ -10,7 +10,13 @@
  */
 
 
+// Debug display turned off, do nothing.
 if( defined( 'WP_DEBUG_DISPLAY' ) && !WP_DEBUG_DISPLAY ) {
+  return;
+}
+
+// REST Request, do nothing.
+if( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], rest_get_url_prefix() ) === 1 ) ) {
   return;
 }
 
@@ -19,12 +25,6 @@ if( defined( 'DOING_AJAX' ) || !class_exists( 'UD_ChromePhp' ) ) {
 }
 
 ob_start(function( $data ) { return $data; });
-
-add_action('_shutdown', function() {
-  $page = ob_get_contents();
-  ob_end_clean();
-}, 20 );
-
 
 add_action( 'muplugins_loaded',   function () { UD_ChromePhp::log(  timer_stop(), 'muplugins_loaded', 10 ); } );
 add_action( 'init',               function () { UD_ChromePhp::log(  timer_stop(), 'init', 5 ); }, 5 );
@@ -45,6 +45,8 @@ add_action( 'send_headers',       function () {UD_ChromePhp::log(  timer_stop(),
 add_action( 'wp_print_scripts',   function () {UD_ChromePhp::log(  timer_stop(), 'wp_print_scripts', 10 );} );
 add_action( 'wp_head',            function () {UD_ChromePhp::log(  timer_stop(), 'wp_head', 10 );} );
 add_action( 'template_redirect',  function () {UD_ChromePhp::log(  timer_stop(), 'template_redirect', 10 );} );
+add_action( 'rest_api_init',      function () {UD_ChromePhp::log(  timer_stop(), 'rest_api_init', 10 );} );
+add_action( 'parse_request',      function () {UD_ChromePhp::log(  timer_stop(), 'parse_request', 10 );} );
 add_action( 'parse_query',        function () {UD_ChromePhp::log(  timer_stop(), 'parse_query', 10 );} );
 add_action( 'shutdown',           function () {UD_ChromePhp::log(  timer_stop(), 'shutdown', 10 );} );
 add_action( 'wp',                 function () {UD_ChromePhp::log(  timer_stop(), 'wp', 10 );} );
@@ -414,7 +416,9 @@ class UD_ChromePhp {
   }
 
   protected function _writeHeader( $data ) {
-    header( self::HEADER_NAME . ': ' . $this->_encode( $data ) );
+    if( !headers_sent() ) {
+      header( self::HEADER_NAME . ': ' . $this->_encode( $data ) );
+    }
   }
 
   /**

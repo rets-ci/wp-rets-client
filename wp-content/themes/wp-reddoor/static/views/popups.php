@@ -3,6 +3,11 @@
 	<div class="popup-inner-wrapper">
 		<span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
 		<ul>
+			<li class="pupTest showContactPopup">
+				<a href="#popupTestContact">
+					<i class="icon-rdc-buy"></i><div><?php _e('Test Contact','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
+				</a>
+			</li>
 			<li class="pupBuy showContactPopup">
 				<a href="#<?php echo is_singular('property') ? 'popupFormBuyInquiryListing' : 'popupFormBuyInquiry'; ?>">
 					<i class="icon-rdc-buy"></i><div><?php _e('I want to buy a home','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
@@ -31,6 +36,8 @@
 		</ul>
 	</div>
 </div>
+
+<?php get_template_part('static/views/popups/form-test-contact'); ?>
 
 <?php get_template_part('static/views/popups/form-buy-inquiry'); ?>
 <?php get_template_part('static/views/popups/form-buy-inquiry-listing'); ?>

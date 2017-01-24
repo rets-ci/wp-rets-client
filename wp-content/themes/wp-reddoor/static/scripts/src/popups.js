@@ -46,7 +46,6 @@ jQuery(function () {
     jQuery('.careers .footerContact').data('action', 'popupCareersInquiry');
   }, 20);
 
-
   /**
    * Show Popup Box
    *
@@ -57,10 +56,12 @@ jQuery(function () {
 
     var that = this;
 
-    var firsthref = jQuery(that).attr("href");
-    if (typeof firsthref != 'undefined') {
-      var lasthref = firsthref.substr(1);
+    var _firsthref = jQuery(that).attr("href");
+
+    if (typeof _firsthref !== 'undefined') {
+      var lasthref = _firsthref.substr(1);
     }
+
     var dataaction = jQuery(that).data("action");
 
     // prevent actual click from going through
@@ -69,7 +70,14 @@ jQuery(function () {
     // determine type of action we're making with the click
     var _type = dataaction || lasthref;
 
-    // renderRecaptcha(_type);
+    debug( 'showContactPopup', _type  );
+
+    if( !_type  ) {
+      console.error( "Unknown contact." );
+      return false;
+    }
+
+    debug( "Using", _type );
 
     jQuery('div.popup').fadeOut(300);
     jQuery('div.popup.' + _type).fadeIn(200);
@@ -79,46 +87,6 @@ jQuery(function () {
 
   }
 
-  //recaptcha forms handle
-  window.recaptchaforms = [];
-
-  function renderRecaptcha(type) {
-    if ('popupFormBuyInquiry' == type) {
-      grender("rdcgrecaptchahomebuy", type);
-    } else if ('popupFormContactInquiry' == type) {
-      grender("rdcgrecaptchacontactus", type);
-    } else if ('popupFormCareerInquiry' == type) {
-      grender("rdcgrecaptchacareer", type);
-    } else if ('popupFormBuyInquiryListing' == type) {
-      grender("rdcgrecaptchahomebuylisting", type);
-    } else if ('popupFormManagementInquiry' == type) {
-      grender("rdcgrecaptchahomemanagement", type);
-    } else if ('popupFormRentInquiry' == type) {
-      grender("rdcgrecaptchahomerenting", type);
-    } else if ('popupFormSellInquiry' == type) {
-      grender("rdcgrecaptchahomeselling", type);
-    } else if ('popupFormRentApplication' == type) {
-      grender("rdcgrecaptchareqapplication", type);
-    } else if ('popupFormManagementReferral' == type) {
-      grender("rdcgrecaptchamanagementreferral", type);
-    }
-  }
-
-  /**
-   * grecaptcha render
-   * @param element
-   * @param type
-   * @returns {boolean}
-   */
-  function grender(element, type) {
-    if (typeof grecaptcha == 'undefined') return true;
-    var sitekey = 'object' === typeof popupMode && popupMode.recaptcha_key ? popupMode.recaptcha_key : '';
-    grecaptcha.render(element, {
-      'sitekey': sitekey,
-    });
-    window.recaptchaforms.push(type);
-    debug("reCaptcha loaded" + type);
-  }
 
   /**
    * Debug Helper
@@ -132,28 +100,3 @@ jQuery(function () {
 
 
 });
-
-/**
- * Reset captcha
- *
- * */
-function resetCaptcha(container) {
-  if (typeof grecaptcha == 'undefined') return true;
-  var sitekey = 'object' === typeof popupMode && popupMode.recaptcha_key ? popupMode.recaptcha_key : '';
-  var widget = grecaptcha.render(container, {
-    'sitekey': sitekey
-  });
-  grecaptcha.reset(widget);
-}
-
-var rdcRecaptchaOnloadCallback = function () {
-  resetCaptcha('rdcgrecaptchahomebuy');
-  resetCaptcha('rdcgrecaptchacontactus');
-  resetCaptcha('rdcgrecaptchacareer');
-  resetCaptcha('rdcgrecaptchahomebuylisting');
-  resetCaptcha('rdcgrecaptchahomemanagement');
-  resetCaptcha('rdcgrecaptchahomerenting');
-  resetCaptcha('rdcgrecaptchahomeselling');
-  resetCaptcha('rdcgrecaptchareqapplication');
-  resetCaptcha('rdcgrecaptchamanagementreferral');
-};

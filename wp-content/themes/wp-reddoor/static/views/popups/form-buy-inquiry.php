@@ -11,7 +11,7 @@
       <input readonly class="hidden-phone" type="tel" data-label="Buy Inquiry Call" data-phone="919-321-0128 x2" value="919-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number'); ?></span>
 
-			<form id="powf_629EB2C7BE16E61180E9C4346BACE2D4" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
+			<form id="powf_629EB2C7BE16E61180E9C4346BACE2D4" class="form-validate" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_629EB2C7BE16E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
 
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_b8ba60f3be16e61180e9c4346bace2d4" name="powf_b8ba60f3be16e61180e9c4346bace2d4" value="" maxlength="50" class="required" />
@@ -71,7 +71,7 @@
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
         
         <div class="field">
-          <div id="rdcgrecaptchahomebuy"></div>
+          <div class="g-recaptcha" data-sitekey="6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5"></div>
         </div>
 
         <div class="submit-wrapper">

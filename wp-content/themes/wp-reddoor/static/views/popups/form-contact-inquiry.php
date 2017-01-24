@@ -11,7 +11,7 @@
       <input readonly class="hidden-phone" type="tel" data-label="General Inquiry Call" data-phone="(919)321-0128 X0" value="(919)-XXX-XXXX" />
       <span class="clickToView"><?php _e('click to view the full number','reddoor'); ?></span>
 
-	    <form id="powf_F0DEC080B516E61180E9C4346BACE2D4" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_F0DEC080B516E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
+	    <form id="powf_F0DEC080B516E61180E9C4346BACE2D4" class="form-validate" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_F0DEC080B516E61180E9C4346BACE2D4&tver=2013&c=1" method="post">
 		    
         <div class="field">
           <input placeholder="First Name *" type="text" id="powf_742ed9c3b516e61180e9c4346bace2d4" name="powf_742ed9c3b516e61180e9c4346bace2d4" value="" maxlength="100" class="required"/>

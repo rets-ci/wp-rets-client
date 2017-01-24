@@ -134,7 +134,7 @@ namespace UsabilityDynamics\CloudFront {
 //      $_GET = array();
 
       // No post data.
-      $_POST = array();
+      //$_POST = array();
 
     }
 

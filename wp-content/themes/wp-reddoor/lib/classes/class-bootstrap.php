@@ -5,6 +5,8 @@
  */
 namespace UsabilityDynamics\RDC {
 
+  use WP_REST_Request;
+
   if (!class_exists('\UsabilityDynamics\RDC\Bootstrap')) {
 
     /**
@@ -24,6 +26,9 @@ namespace UsabilityDynamics\RDC {
          * Ajax
          */
         new Ajax();
+
+        // Invoke API
+        new API();
 
         /**
          * Property Hooks
@@ -318,6 +323,8 @@ namespace UsabilityDynamics\RDC {
       }
 
       /**
+       * Register Post Types.
+       *
        *
        */
       public function register_post_types()
@@ -345,7 +352,10 @@ namespace UsabilityDynamics\RDC {
         ));
       }
 
-
+      /**
+       * Enqueue Scripts for Frontend
+       *
+       */
       public function wp_enqueue_scripts() {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
@@ -380,14 +390,16 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery-search-form', get_stylesheet_directory_uri() . '/static/scripts/src/jquery-search-form.js', array('jquery'), '1.0.0');
 
         $recaptcha = get_theme_mod('rdc_recaptcha_key');
+
         if (!empty($recaptcha)) {
-          wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdcRecaptchaOnloadCallback&render=explicit');
-          wp_localize_script('rdc-popups', 'popupMode', array(
-            "recaptcha_key" => $recaptcha
-          ));
+
+          wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdc_recaptcha_onload_callback&render=explicit', array( 'rdc-popups' ), null, true );
+
+          wp_localize_script('rdc-popups', 'popupMode', array( "recaptcha_key" => defined( 'RDC_RECAPTCHA_KEY' ) ? RDC_RECAPTCHA_KEY : $recaptcha ));
+
+
         }
       }
-
 
       /**
        *

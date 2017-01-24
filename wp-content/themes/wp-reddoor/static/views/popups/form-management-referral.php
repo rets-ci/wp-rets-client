@@ -9,7 +9,7 @@
       <h3><?php _e( 'Refer a Triangle Landlord', 'reddoor' ); ?></h3>
       <p><?php _e( 'Receive a $300 referral fee for each Triangle landlord you refer! Red Door Company proudly pays the highest referral fee in the area. We look forward to working with you!', 'reddoor' ); ?></p>
       
-			<form id="powf_AD77AFF19A38E61180EFC4346BAC563C" class="form-validate" enctype="multipart/form-data" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_AD77AFF19A38E61180EFC4346BAC563C&tver=2013&c=1" method="post">
+			<form id="powf_AD77AFF19A38E61180EFC4346BAC563C" class="form-validate" action="https://pocloudcentral.crm.powerobjects.net/PowerWebForm/PowerWebFormData.aspx?t=CCGr6i%2b2CU2A1Z%2bLiVlRh28AcgBnADAANQAyADkANwBlAGYAZAA%3d&formId=powf_AD77AFF19A38E61180EFC4346BAC563C&tver=2013&c=1" method="post">
 			
 				<div class="field">
 					<input placeholder="RB ID *" type="text" id="powf_6524b3fd9a38e61180efc4346bac563c" name="powf_6524b3fd9a38e61180efc4346bac563c" value="" maxlength="100" class="required" />
