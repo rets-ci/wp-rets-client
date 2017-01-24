@@ -11,6 +11,7 @@
   "extra": {
     "settings_production-hotfix": {
       "wp_debug_log": true,
+      "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "wp_memcached_servers": "localhost:11211"
     },
@@ -30,7 +31,7 @@
       "wp_debug": true,
       "wp_debug_log": true,
       "wp_rets_ci": true,
-      "wp_debug_display": true,
+      "wp_debug_display": false,
       "RDC_RECAPTCHA_KEY": "6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5",
       "RDC_RECAPTCHA_SECRET": "6Lfn7xIUAAAAAHtv6LS1QgU01y68PjellGSb4cKD",
       "_wp_memcached_servers": "api.wpcloud.io:23038",
