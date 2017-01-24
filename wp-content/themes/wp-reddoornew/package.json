@@ -6,7 +6,10 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-history": "^0.18.2",
+    "react-render-html": "^0.1.6"
+  },
   "devDependencies": {},
   "scripts": {
     "build": "webpack --debug"

@@ -1,4 +1,5 @@
 import React from 'react';
+import renderHTML from 'react-render-html';
 
 const Cell = function ({cell, style}) {
     let type = cell.type;
@@ -10,7 +11,7 @@ const Cell = function ({cell, style}) {
     return (
         <div className={classes} style={style}>
             <div className="cell-title">{title}</div>
-            <div className="cell-content">{content}</div>
+            <div className="cell-content">{renderHTML(content)}</div>
         </div>
     )
 };

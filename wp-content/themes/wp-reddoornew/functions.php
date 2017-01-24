@@ -4,49 +4,15 @@ add_action('wp_enqueue_scripts', 'reddoor_scripts');
 function reddoor_scripts()
 {
   wp_enqueue_script('jquery');
-  wp_enqueue_style( 'style', get_stylesheet_uri() );
+  wp_enqueue_style('style', get_stylesheet_uri());
 
-  wp_enqueue_script( 'bundle', get_stylesheet_directory_uri() . '/bundle.js', [], null, true );
-
-  localize_bundle_script();
-}
-
-/** Localize bundle script with needed data */
-function localize_bundle_script(){
-  global $post;
-
-  $menu_items = array_map(function($item){
-    return [
-      'ID' => $item->ID,
-      'title' => $item->title,
-      'url'   => $item->url
-    ];
-  },wp_get_nav_menu_items('main_menu'));
-
-  $params = array(
-    'site_url' => site_url(),
-    'admin_ajax_url' => admin_url('admin-ajax.php'),
-    'menuItems' => json_encode($menu_items)
-  );
-
-  $params['post'] = $post;
-
-  $params['post']->custom_content = false;
-
-  // Builder content case
-  if($post_data = get_post_meta($post->ID, 'panels_data', true)){
-    $params['post']->custom_content = true;
-
-    $rows = rebuild_builder_content($post_data);
-    $params['post']->post_content = json_encode($rows);
-  }
-
-
-  wp_localize_script( 'jquery', 'bundle', $params );
+  wp_enqueue_script('bundle', get_stylesheet_directory_uri() . '/bundle.js', [], null, true);
+  $params = reddoor_get_page_content();
+  wp_localize_script('jquery', 'bundle', $params);
 }
 
 /** Rebuild builder data array */
-function rebuild_builder_content($content)
+function reddoor_rebuild_builder_content($content)
 {
   $rows = [];
 
@@ -61,19 +27,72 @@ function rebuild_builder_content($content)
   return $rows;
 }
 
-add_action('wp_ajax_get_api', 'get_api');
-add_action('wp_ajax_nopriv_get_api', 'get_api');
 
-/** Get static api for testing */
-function get_api()
+function reddoor_start_buffer_output_content()
 {
-  $file = get_stylesheet_directory() . '/test/fixtures/page_api.json';
+  if (!isset($_GET['pageType']))
+    return;
 
-  $content = '';
 
-  if (file_exists($file))
-    $content = file_get_contents($file);
+  switch ($_GET['pageType']) {
+    case 'json':
+      ob_start('reddoor_buffer_handler');
+      break;
+    default;
+  }
+}
 
-  echo $content;
-  wp_die();
+add_action('init', 'reddoor_start_buffer_output_content');
+function reddoor_end_buffer_output_content()
+{
+  if (!isset($_GET['pageType']))
+    return;
+
+  switch ($_GET['pageType']) {
+    case 'json':
+      ob_end_flush();
+      break;
+    default;
+  }
+
+
+}
+
+add_action('shutdown', 'reddoor_end_buffer_output_content', 100);
+
+function reddoor_buffer_handler($output)
+{
+  $params = reddoor_get_page_content();
+  return wp_json_encode($params);
+}
+
+function reddoor_get_page_content()
+{
+  global $post;
+
+  $menu_items = array_map(function ($item) {
+    return [
+      'ID' => $item->ID,
+      'title' => $item->title,
+      'url' => $item->url
+    ];
+  }, wp_get_nav_menu_items('main_menu'));
+
+  $params = array(
+    'site_url' => site_url(),
+    'admin_ajax_url' => admin_url('admin-ajax.php'),
+    'menuItems' => $menu_items
+  );
+
+  $params['post'] = $post;
+
+  $params['post']->custom_content = false;
+
+  // Builder content case
+  if ($post_data = get_post_meta($post->ID, 'panels_data', true)) {
+    $params['post']->custom_content = true;
+    $params['post']->post_content = reddoor_rebuild_builder_content($post_data);
+  }
+
+  return $params;
 }
