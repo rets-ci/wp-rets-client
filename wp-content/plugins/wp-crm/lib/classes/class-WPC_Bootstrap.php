@@ -1,0 +1,231 @@
+<?php
+/**
+ * Bootstrap
+ *
+ * @since 1.0.0
+ */
+namespace UsabilityDynamics\WPC {
+
+  if( !class_exists( 'UsabilityDynamics\WPC\WPC_Bootstrap' ) ) {
+
+    final class WPC_Bootstrap extends \UsabilityDynamics\WP\Bootstrap_Plugin {
+      
+      /**
+       * Singleton Instance Reference.
+       *
+       * @protected
+       * @static
+       * @property $instance
+       * @type UsabilityDynamics\WPC\WPC_Bootstrap object
+       */
+      protected static $instance = null;
+      
+      /**
+       * Instantaite class.
+       */
+      public function init() {
+
+        // Handle forced pre-release update checks.
+        if ( is_admin() && isset( $_GET[ 'force-check' ] ) && $_GET[ 'force-check' ] === '1' ) {
+          add_filter( 'site_transient_update_plugins', array( $this, 'update_check_handler' ), 50, 2 );
+        }
+
+        // Handle regular pre-release checks.
+        add_filter( 'pre_update_site_option__site_transient_update_plugins', array( $this, 'update_check_handler' ), 50, 2 );
+
+        /** Functions - customized for WP-CRM */
+        include_once ud_get_wp_crm()->path( "lib/class_ud.php", 'dir' );
+
+        /** Loads built-in plugin metadata and allows for third-party modification to hook into the filters. Has to be include_onced here to run after template functions.php */
+        include_once ud_get_wp_crm()->path( "action_hooks.php", 'dir' );
+
+        /** Defaults filters and hooks */
+        include_once ud_get_wp_crm()->path( "lib/class_default_api.php", 'dir' );
+
+        /** Loads notification functions used by WP-crm */
+        include_once ud_get_wp_crm()->path( "lib/class_notification.php", 'dir' );
+
+        /** Loads general functions used by WP-crm */
+        include_once ud_get_wp_crm()->path( "lib/class_functions.php", 'dir' );
+
+        /** Loads all the metaboxes for the crm page */
+        include_once ud_get_wp_crm()->path( "lib/ui/crm_metaboxes.php", 'dir' );
+
+        /** Loads all the metaboxes for the crm page */
+        include_once ud_get_wp_crm()->path( "lib/class_core.php", 'dir' );
+
+        /** Ajax Handlers */
+        include_once ud_get_wp_crm()->path( "lib/class_ajax.php", 'dir' );
+
+        /** Contact messages */
+        include_once ud_get_wp_crm()->path( "lib/class_contact_messages.php", 'dir' );
+
+        //** Initiate the plugin */
+        $this->core = new \WP_CRM_Core();
+      }
+
+      /**
+       * Pre release updates handler
+       * @param $response
+       * @param null $old_value
+       * @return mixed
+       */
+      public function update_check_handler( $response, $old_value = null ) {
+        global $wp_crm;
+
+        if ( ! $response || !isset( $response->response ) || ! is_array( $response->response ) || ! isset( $wp_crm ) || ! isset( $wp_crm[ 'configuration' ][ 'pre_release_updates' ] ) ) {
+          return $response;
+        }
+
+        // If pre-release update checks are disabled, do nothing.
+        if ( $wp_crm[ 'configuration' ][ 'pre_release_updates' ] !== 'true' ) {
+          return $response;
+        }
+
+        // Last check was very recent. (This doesn't seem to be right place for this). That being said, if it's being forced, we ignore last time we tried.
+        if ( current_filter() === 'site_transient_update_plugins' && !( isset( $_GET[ 'force-check' ] ) && $_GET[ 'force-check' ] === '1' ) && $response->last_checked && ( time() - $response->last_checked ) < 360 ) {
+          return $response;
+        }
+
+        // e.g. "wp-crm", the clean directory name that we are runnig from.
+        $_plugin_name = plugin_basename( dirname( dirname( __DIR__ ) ) );
+
+        // e.g. "wp-invoice/wp-invoice.php". Directory name may vary but the main plugin file should not.
+        $_plugin_local_id = $_plugin_name . '/wp-crm.php';
+
+        // Bail, no composer.json file, something broken badly.
+        if ( ! file_exists( WP_PLUGIN_DIR . '/' . $_plugin_name . '/composer.json' ) ) {
+          return $response;
+        }
+
+        try {
+
+          // Must be able to parse composer.json from plugin file, hopefully to detect the "_build.sha" field.
+          $_composer = json_decode( file_get_contents( WP_PLUGIN_DIR . '/' . $_plugin_name . '/composer.json' ) );
+
+          if ( is_object( $_composer ) && isset( $_composer->extra ) && isset( $_composer->extra->_build ) && isset( $_composer->extra->_build->sha ) ) {
+            $_version = $_composer->extra->_build->sha;
+          }
+
+          // @todo Allow for latest branch to be swapped out for another track.
+          $_response = wp_remote_get( 'https://api.usabilitydynamics.com/v1/product/updates/' . $_plugin_name . '/latest/' . ( isset( $_version ) && $_version ? '?version=' . $_version : '' ) );
+
+          if ( wp_remote_retrieve_response_code( $_response ) === 200 ) {
+            $_body = wp_remote_retrieve_body( $_response );
+            $_body = json_decode( $_body );
+
+            // If there is no "data" field then we have nothing to update.
+            if ( isset( $_body->data ) ) {
+
+              if( !isset( $response->response ) ) {
+                $response->response = array();
+              }
+
+              if( !isset( $response->no_update ) ) {
+                $response->no_update = array();
+              }
+
+              $response->response[ $_plugin_local_id ] = $_body->data;
+
+              if ( isset( $response->no_update[ $_plugin_local_id ] ) ) {
+                unset( $response->no_update[ $_plugin_local_id ] );
+              }
+
+            }
+
+          }
+
+        } catch( \Exception $e ) {}
+
+        return $response;
+      }
+      
+      /**
+       * Return localization's list.
+       *
+       * @author peshkov@UD
+       * @return array
+       */
+      public function get_localization() {
+        return apply_filters( 'wpc::get_localization', array(
+          'licenses_menu_title' => __( 'Add-ons', $this->domain ),
+          'licenses_page_title' => __( 'WP-CRM Add-ons Manager', $this->domain ),
+        ) );
+      }
+      
+      /**
+       * Plugin Activation
+       *
+       */
+      public function activate() {
+        if ( !class_exists('\WP_CRM_F') ) {
+          include_once ud_get_wp_crm()->path( "lib/class_functions.php", 'dir' );
+        }
+        \WP_CRM_F::maybe_install_tables();
+        \WP_CRM_F::manual_activation('auto_redirect=false&update_caps=true');
+      }
+      
+      /**
+       * Plugin Deactivation
+       *
+       */
+      public function deactivate() {}
+
+      /**
+       * Run Install Process.
+       *
+       * @author peshkov@UD
+       */
+      public function run_install_process() {
+        /* Compatibility with WP-CRM 0.36.5 and less versions */
+        $old_version = get_option( 'wp_crm_version' );
+        if( $old_version ) {
+          $this->run_upgrade_process();
+        }
+      }
+
+      /**
+       * Run Upgrade Process:
+       * - do WP-Invoice settings backup.
+       *
+       * @author peshkov@UD
+       */
+      public function run_upgrade_process() {
+        /* Do automatic Settings backup! */
+        $settings = get_option( 'wp_crm_settings' );
+
+        if( !empty( $settings ) ) {
+
+          /**
+           * Fixes allowed mime types for adding download files on Edit Product page.
+           *
+           * @see https://wordpress.org/support/topic/2310-download-file_type-missing-in-variations-filters-exe?replies=5
+           * @author peshkov@UD
+           */
+          add_filter( 'upload_mimes', function( $t ){
+            if( !isset( $t['json'] ) ) {
+              $t['json'] = 'application/json';
+            }
+            return $t;
+          }, 99 );
+
+          $filename = md5( 'wp_crm_settings_backup' ) . '.json';
+          $upload = @wp_upload_bits( $filename, null, json_encode( $settings ) );
+
+          if( !empty( $upload ) && empty( $upload[ 'error' ] ) ) {
+            if( isset( $upload[ 'error' ] ) ) unset( $upload[ 'error' ] );
+            $upload[ 'version' ] = $this->old_version;
+            $upload[ 'time' ] = time();
+            update_option( 'wp_crm_settings_backup', $upload );
+          }
+
+        }
+
+        do_action( $this->slug . '::upgrade', $this->old_version, $this->args[ 'version' ], $this );
+      }
+
+    }
+
+  }
+
+}
