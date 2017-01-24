@@ -13,17 +13,18 @@ module.exports = function ( grunt ) {
   /**
    *
    * grunt primeRedirectionCache
-   * DEBUG=gruntfile grunt primeRedirectionCache
+   * DEBUG=prime grunt primeRedirectionCache
    *
    */
   function primeRedirectionCache() {
 
     var taskDone = this.async();
+    var debug = require( 'debug' )('prime');
 
     var esQuery = {
       "index": process.env.ES_INDEX,
       "type": process.env.ES_TYPE,
-      "size": 5,
+      "size": 1,
       "from": 0,
       "scroll": '300m',
       "body": {
@@ -43,20 +44,34 @@ module.exports = function ( grunt ) {
       }
     };
 
+    var q = async.queue(function (task, callback) {
+      //debug('Doing task [%s].', task.location);
+      cache_prime_request(task.location, callback);
+    }, 2);
+
+
+
     scrollResults( esQuery, handleListing, function () {
-      console.log( 'scrollComplete' );
+      debug( 'scrollComplete' );
       taskDone();
     } );
 
     var _done = 0;
 
     function handleListing( source, callback, doc ) {
-      debug( '[%s] Priming [%s] ID.', _done, doc._id );
-      //console.log( 'https://www.reddoorcompany.com/listing/' + doc._id );
+      // debug( '[%s] Priming [%s] ID.', _done, doc._id );
+      //debug( 'https://www.reddoorcompany.com/listing/' + doc._id );
+
+      cache_prime_request( 'https://d2v5c8pxcauet3.cloudfront.net/listing/' + doc._id, callback );
+
+    }
+
+    function cache_prime_request( target_url, request_done ) {
+      // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
 
       var _requestOptions = {
-        url: 'https://d2v5c8pxcauet3.cloudfront.net/listing/' + doc._id,
-        actualUrl: 'https://www.reddoorcompany.com/listing/' + doc._id,
+        url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
+        actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
         method: 'GET',
         strictSSL: false,
         followRedirect: false,
@@ -72,16 +87,37 @@ module.exports = function ( grunt ) {
 
         _done++;
 
-        if( error || !resp.headers || !resp.headers['location'] ) {
-          console.error( '[%s] Unable to prime [%s] url.', _done, _requestOptions.actualUrl )
-
+        if( error || !resp.headers ) {
+          console.error( '[%s] Unable to prime [%s] url, error [%s]', _done, _requestOptions.actualUrl, ( error ? error.message : 'no-error' ) )
         }
 
         if( !error && resp.headers && resp.headers['location'] ) {
-          debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers['location'] )
+
+          if( _.get( resp, 'headers.age' ) ) {
+            debug( '[%s] Already primed [%s] to with [%s] age.', _done, _requestOptions.actualUrl, _.get( resp, 'headers.age' ) );
+          } else {
+            debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] )
+          }
+
+          q.push({location: resp.headers['location'], resp: resp}, function (err, resp) {
+
+            if( _.get( resp, 'headers.age' ) ) {
+              debug('[%s] Already primed [%s] with [%s] ttl.', _done, resp.headers['location'], _.get( resp, 'headers.age' ) );
+            } else {
+              debug('[%s] Primed [%s] with [%s] status code.', _done, _requestOptions.actualUrl, resp.statusCode);
+            }
+
+          });
+
         }
 
-        callback();
+        if( !error && resp.headers && !resp.headers['location'] ) {
+          debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+        }
+
+        if( 'function' === typeof request_done ) {
+          request_done( null, resp );
+        }
 
       });
 
