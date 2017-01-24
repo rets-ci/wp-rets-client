@@ -55,12 +55,6 @@ namespace RabbitCI\Navbar {
       $wp_admin_bar->add_node( array(
         'id' => 'wp-rabbit-inner',
         'parent' => 'wp-rabbit',
-<<<<<<< HEAD
-        'title' => sprintf( __( '%s' ), $_backend ),
-        'href' => '#'
-      ));
-      
-=======
         'title' => sprintf( __( 'Container: %s' ), $_backend ),
         'href' => '#'
       ));
@@ -72,13 +66,8 @@ namespace RabbitCI\Navbar {
         'href' => '#'
       ));
 
->>>>>>> origin/production
     }
 
   }
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/production
