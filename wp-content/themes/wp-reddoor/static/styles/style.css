@@ -7884,3 +7884,7 @@ input[type="checkbox"].styled-checkbox-radio + label::before,
 input[type="radio"].styled-checkbox-radio + label::before {
   width: 29px;
 }
+/* Hide wp-crm labels, we use placeholders */
+.popup.contact-popup .wp_crm_input_label {
+  display: none;
+}

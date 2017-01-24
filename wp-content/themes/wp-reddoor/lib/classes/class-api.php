@@ -35,7 +35,7 @@ namespace UsabilityDynamics\RDC {
       public function rest_api_init() {
 
         // https://usabilitydynamics-www-reddoorcompany-com-production-hotfix.c.rabbit.ci/wp-json/form/v1/submit/
-        register_rest_route( 'crm/v1/form', '/submit/', array(
+        register_rest_route( '__status/v1/form', '/submit/', array(
           'methods' => array('POST', 'GET'),
           'callback' => array( $this, 'submit_form'),
         ) );
