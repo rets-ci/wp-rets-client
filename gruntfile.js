@@ -14,7 +14,7 @@ module.exports = function ( grunt ) {
   /**
    *
    * grunt primeRedirectionCache
-   * DEBUG=prime grunt primeRedirectionCache
+   * DEBUG=* grunt primeRedirectionCache
    *
    */
   function primeRedirectionCache() {
