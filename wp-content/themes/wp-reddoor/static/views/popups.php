@@ -37,22 +37,17 @@
 	</div>
 </div>
 
-<?php get_template_part('static/views/popups/form-test-contact'); ?>
+<?php get_template_part('static/views/popups/form-crm-contact'); ?>
 
 <?php get_template_part('static/views/popups/form-buy-inquiry'); ?>
 <?php get_template_part('static/views/popups/form-buy-inquiry-listing'); ?>
-
 <?php get_template_part('static/views/popups/form-rent-inquiry'); ?>
 <?php get_template_part('static/views/popups/form-rent-application'); ?>
-<?php get_template_part('static/views/popups/notice-rent-pass'); ?>
-
 <?php get_template_part('static/views/popups/form-sell-inquiry'); ?>
-
 <?php get_template_part('static/views/popups/form-management-inquiry'); ?>
 <?php get_template_part('static/views/popups/form-management-referral'); ?>
-
 <?php get_template_part('static/views/popups/form-contact-inquiry'); ?>
+<?php get_template_part('static/views/popups/form-career-inquiry'); ?>
 
-<?php get_template_part('static/views/popups/form-career-inquiry'); ?>	
-
+<?php get_template_part('static/views/popups/notice-rent-pass'); ?>
 <?php get_template_part('static/views/popups/ux-login'); ?>

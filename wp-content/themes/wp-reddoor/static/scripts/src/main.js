@@ -1,9 +1,21 @@
 /**
  * Global RDC Object
  *
+ *
+ * Session Storage Keys
+ *
+ * - current.popup - Name of currently open popu.
+ *
+ *
  * @type {{client: rdc.getClient, getCount: rdc.getCount}}
  */
 var rdc = {
+
+  debug: function debug() {
+    var _args = [].slice.call( arguments );
+    // _args.unshift( 'jquery-search-form' );
+    console.debug.apply( console, _args );
+  },
 
   /**
    * Get Elasticsearch client.
@@ -13,7 +25,7 @@ var rdc = {
   client: function getClient() {
 
     if( 'object' !== typeof jQuery.es || typeof jQuery.es.Client !== 'function' ) {
-      // console.log( "ElasticSearch client not loaded." );
+      // rdc.debug( "ElasticSearch client not loaded." );
       return false;
     }
 
@@ -42,8 +54,8 @@ var rdc = {
       q: 'tax_input.sale_type:' + type,
       size: 0,
       headers: {
-        "Authorization": make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
-      },
+        "Authorization": rdc.make_base_auth( "supermap", "oxzydzbx4rn0kcrjyppzrhxouxrgp32n" )
+      }
     }, function ( err, response ) {
 
       // trigger callback if everything come sback okay.
@@ -77,17 +89,103 @@ var rdc = {
     return '"query":{"bool":{"must":[{"match":{"_all":{"query": "' + q + '","operator": "and"}}},{"match": {"tax_input.sale_type": "' + sale_type + '"}}]}}';
   },
 
+  /**
+   * Show Popup Box
+   *
+   * @param event
+   * @returns {boolean}
+   */
+  showContactPopup: function showContactPopup(event) {
+    rdc.debug( 'showContactPopup', typeof event );
+
+    var that = this;
+
+    var _firsthref = jQuery(that).attr("href");
+
+    rdc.debug( 'showContactPopup', '_firsthref', _firsthref );
+
+    if (typeof _firsthref !== 'undefined') {
+      var dataaction = _firsthref.substr(1);
+    }
+
+    dataaction = dataaction || jQuery(that).data("action");
+
+    rdc.debug( 'showContactPopup', 'dataaction', dataaction );
+
+    // prevent actual click from going through
+    event.preventDefault();
+
+    rdc.openContactForm( dataaction );
+
+  },
+
+  openContactForm: function openContactForm(dataaction) {
+    rdc.debug( 'openContactForm', dataaction  );
+
+    if( !dataaction  ) {
+      console.error( "Unknown contact." );
+      return false;
+    }
+
+    rdc.debug( "Using", dataaction );
+
+    window.location.hash = '#popupform=' + dataaction;
+
+    jQuery('div.popup').fadeOut(300);
+    jQuery('div.popup.' + dataaction).fadeIn(200);
+    jQuery('html').css('overflow-y', 'hidden');
+
+    if( 'object' === typeof sessionStorage ) {
+      sessionStorage.setItem('current.popup', dataaction );
+    }
+
+
+    return false;
+
+  },
+
+  /**
+   * Close currently open popup.
+   *
+   * @param nameOrEvent
+   */
+  closeContactForm: function closeContactForm( nameOrEvent ) {
+    rdc.debug( 'closeContactForm' );
+
+    if( 'object' === typeof nameOrEvent && 'object' === typeof nameOrEvent.currentTarget ) {
+      jQuery( nameOrEvent.currentTarget ).parent().parent().fadeOut(100);
+    } else {
+      jQuery('span.exitPopup').parent().parent().fadeOut(100);
+    }
+
+    jQuery('html').css('overflow-y', 'scroll');
+
+    // Unset location hash, unset [current.popup]
+    if( 'object' === typeof sessionStorage ) {
+      window.location.hash = window.location.hash.replace('#popupform=' + sessionStorage.getItem( 'current.popup' ), '' );
+      sessionStorage.removeItem( 'current.popup' );
+    }
+
+  },
+
+  /**
+   * Utility.
+   *
+   * @param user
+   * @param password
+   * @returns {string}
+   */
+  make_base_auth: function make_base_auth( user, password ) {
+    var tok = user + ':' + password;
+    var hash = btoa( tok );
+    return "Basic " + hash;
+  },
+
   __client: null,
 
-  __request: null,
+  __request: null
 
 };
-
-function make_base_auth( user, password ) {
-  var tok = user + ':' + password;
-  var hash = btoa( tok );
-  return "Basic " + hash;
-}
 
 /**
  * We treat everything that is 992px and smaller as "mobile" while everything above as "desktop".
@@ -95,18 +193,8 @@ function make_base_auth( user, password ) {
  */
 (function () {
 
-  /**
-   * Debug Helper
-   *
-   */
-  function debug() {
-    var _args = [].slice.call( arguments );
-    // _args.unshift( 'jquery-search-form' );
-    console.debug.apply( console, _args );
-  }
-
   jQuery( document ).ready( function rdcReady() {
-    console.log( "RDC version 2.4.1" );
+    rdc.debug( "RDC version 2.4.1" );
 
     jQuery.validator.addClassRules( {
       required: {
@@ -121,7 +209,7 @@ function make_base_auth( user, password ) {
     } );
 
     jQuery( ".form-validate" ).each( function validateEachForm() {
-      console.log( 'validateEachForm', jQuery( this ).attr('id'), jQuery( this ).attr('action') );
+      rdc.debug( 'validateEachForm', jQuery( this ).attr('id') );
 
       var currentForm = jQuery( this );
 
@@ -155,10 +243,10 @@ function make_base_auth( user, password ) {
     } );
 
     jQuery( ".form-validate" ).submit( function submitForm( e ) {
-      console.log( 'submitForm' );
+      rdc.debug( 'submitForm' );
 
-      if( typeof grecaptcha == 'undefined' ) {
-        console.log( "grecaptcha not loaded." );
+      if( typeof grecaptcha === 'undefined' ) {
+        rdc.debug( "grecaptcha not loaded." );
         return true;
       }
 
@@ -167,16 +255,16 @@ function make_base_auth( user, password ) {
       var _response = grecaptcha.getResponse();
 
       if( !_response ) {
-        console.log( "Missing recaptha, or is invalid." );
+        rdc.debug( "Missing recaptha, or is invalid." );
         return false;
       }
 
-      console.log( "Have result", _response );
+      rdc.debug( "Have result", _response );
 
-      return true;
+      // return true;
 
       if( !_response ) {
-        debug( "reCaptcha validation failed!" );
+        rdc.debug( "reCaptcha validation failed!" );
         return false;
       }
       return true;
@@ -186,7 +274,7 @@ function make_base_auth( user, password ) {
 
     // Search Result / Map Pages - detect
     if( jQuery( 'body.is-taxonomy' ).length && getParameterByName( 'wpp_search[sale_type]' ) ) {
-      console.log( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
+      rdc.debug( 'wpp_search[sale_type]', getParameterByName( 'wpp_search[sale_type]' ) );
 
       if( getParameterByName( 'wpp_search[sale_type]' ) === 'Rent' ) {
         jQuery( '#menu-header li' ).removeClass( 'current-menu-item' );
@@ -383,7 +471,7 @@ function make_base_auth( user, password ) {
      * Set row height for tabbed Widget Image Area
      */
     setTimeout( function makeTabbedAreaVisisble() {
-      console.log( 'makeTabbedAreaVisisble' );
+      rdc.debug( 'makeTabbedAreaVisisble' );
 
       jQuery.each( jQuery( '.so-widget-tabbed-content .tabbedWidgetImageArea:visible' ), function eachColumn( index, element ) {
         jQuery( element ).height( jQuery( element ).closest( '.sow-slider-image-wrapper' ).height() );
@@ -458,7 +546,6 @@ function make_base_auth( user, password ) {
      *
      * The offset is calculated automatically based on total number of elements of same kind
      *
-     * @todo Could also calculate if there more elements to load by seeing if returned count is less than per_page.
      * @author potanin@UD
      */
     jQuery( 'button[data-handler=load-more]' ).on( 'click', function loadMore( e ) {
@@ -478,7 +565,7 @@ function make_base_auth( user, password ) {
       // find similar elements we'll be adding more of
       var kindElements = jQuery( '[data-element-kind=' + _options.kind + ']' );
 
-      // console.log( '_options', _options );
+      // rdc.debug( '_options', _options );
 
       jQuery.ajax( {
         url: '/wp-admin/admin-ajax.php',
@@ -489,7 +576,7 @@ function make_base_auth( user, password ) {
           category: _options.category
         },
         success: function onSuccess( data, type ) {
-          // console.log( 'onSuccess', data );
+          // rdc.debug( 'onSuccess', data );
 
           // remove disabled state from button
           element.prop( 'disabled', false );
@@ -530,31 +617,9 @@ function make_base_auth( user, password ) {
       } );
     } );
 
-    //console.log( rdc.client );
+    //rdc.debug( rdc.client );
 
   } );
-
-  /**
-   * Resizes Search Block on Home page to fit the Viewport
-   *
-   * @author peshkov@UD
-   */
-  function frontPageSearchBlock_resize() {
-    var height = jQuery( window ).height() - jQuery( "#header" ).height() - jQuery( '.association-carousel' ).height() - 100;
-    if( jQuery( '#wpadminbar' ).length > 0 ) {
-      height = height - jQuery( '#wpadminbar' ).height();
-    }
-    jQuery( '.frontPageSearchBlock' ).height( height );
-    //console.log( jQuery('.frontPageSearchBlock').height() );
-  }
-
-  function rdc_property_sticky() {
-    jQuery( "#propertyDetails" ).sticky( { topSpacing: 0, bottomSpacing: 1000 } );
-  }
-
-  function rdc_agent_carousel_item_width() {
-    jQuery( '.rdc-agents-carousel-item' ).width( jQuery( '.rdc-agents-carousel-wrapper' ).width() );
-  }
 
   jQuery( window ).load( function () {
 
@@ -591,17 +656,40 @@ function make_base_auth( user, password ) {
   } );
 
   /**
+   * Resizes Search Block on Home page to fit the Viewport
+   *
+   * @author peshkov@UD
+   */
+  function frontPageSearchBlock_resize() {
+    var height = jQuery( window ).height() - jQuery( "#header" ).height() - jQuery( '.association-carousel' ).height() - 100;
+    if( jQuery( '#wpadminbar' ).length > 0 ) {
+      height = height - jQuery( '#wpadminbar' ).height();
+    }
+    jQuery( '.frontPageSearchBlock' ).height( height );
+    //rdc.debug( jQuery('.frontPageSearchBlock').height() );
+  }
+
+  function rdc_property_sticky() {
+    jQuery( "#propertyDetails" ).sticky( { topSpacing: 0, bottomSpacing: 1000 } );
+  }
+
+  function rdc_agent_carousel_item_width() {
+    jQuery( '.rdc-agents-carousel-item' ).width( jQuery( '.rdc-agents-carousel-wrapper' ).width() );
+  }
+
+  /**
    * parse_str function
    *
    * @subpackages URL
    * @author shogo < shogo4405 at gmail dot com >
    * @version 1.0.0RC3
    * @see http://www.php.net/parse_str
-   * @param  {String} s string
+   * @param  {Array} s string
    * @param  {Object} o object
    */
   function parse_str( s, o ) {
     var i, f, p, m, r = /\[(.*?)\]/g;
+
     s = decodeURI( s.toString() ).replace( /\+/g, ' ' ).split( '&' );
 
     function c( o, k, v, p ) {
@@ -637,7 +725,7 @@ function make_base_auth( user, password ) {
   function renderNeighborhoodMap( el ) {
 
     if( jQuery( el ).length <= 0 ) {
-      // console.log( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
+      // rdc.debug( 'renderNeighborhoodMap:failed', 'No DOM element found', el );
     }
 
     var data = {};
@@ -645,7 +733,7 @@ function make_base_auth( user, password ) {
 
     if( options ) {
       parse_str( options, data );
-      // console.log(data);
+      // rdc.debug(data);
     } else {
       return false;
     }
@@ -654,7 +742,7 @@ function make_base_auth( user, password ) {
       action: 'wpp_walkscore_nmap'
     } );
 
-    //console.log( 'renderNeighborhoodMap:options', data );
+    //rdc.debug( 'renderNeighborhoodMap:options', data );
 
     jQuery.ajax( {
       url: '/wp-admin/admin-ajax.php',
@@ -706,12 +794,20 @@ function make_base_auth( user, password ) {
 
 })();
 
-
+/**
+ * Recaptcha callback.
+ *
+ */
 function rdc_recaptcha_onload_callback() {
-  console.log( 'rdc_recaptcha_onload_callback' );
+  rdc.debug( 'rdc_recaptcha_onload_callback' );
 
   jQuery('.g-recaptcha').each(function renderRecaptha(index, el) {
-    console.log( 'render recaptcha' );
+    rdc.debug( 'render recaptcha' );
+    grecaptcha.render(el, {'sitekey' : '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5'});
+  });
+
+  jQuery('.wp_crm_validation_row').each(function renderRecaptha(index, el) {
+    rdc.debug( 'render recaptcha' );
     grecaptcha.render(el, {'sitekey' : '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5'});
   });
 
