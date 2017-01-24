@@ -3,7 +3,7 @@
 	<div class="popup-inner-wrapper">
 		<span class="exitPopup"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></span>
 		<ul>
-			<li class="pupTest showContactPopup">
+			<li class="pupTest showContactPopup hidden">
 				<a href="#popupTestContact">
 					<i class="icon-rdc-buy"></i><div><?php _e('Test Contact','reddoor'); ?></div><svg class="icon icon-circle-right"><use xlink:href="#icon-circle-right"></use></svg>
 				</a>
@@ -37,7 +37,7 @@
 	</div>
 </div>
 
-<?php get_template_part('static/views/popups/form-crm-contact'); ?>
+<?php /* get_template_part('static/views/popups/form-crm-contact'); */ ?>
 
 <?php get_template_part('static/views/popups/form-buy-inquiry'); ?>
 <?php get_template_part('static/views/popups/form-buy-inquiry-listing'); ?>

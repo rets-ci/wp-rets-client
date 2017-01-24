@@ -95,20 +95,20 @@ var rdc = {
    * @param event
    * @returns {boolean}
    */
-  showContactPopup: function showContactPopup(event) {
+  showContactPopup: function showContactPopup( event ) {
     rdc.debug( 'showContactPopup', typeof event );
 
     var that = this;
 
-    var _firsthref = jQuery(that).attr("href");
+    var _firsthref = jQuery( that ).attr( "href" );
 
     rdc.debug( 'showContactPopup', '_firsthref', _firsthref );
 
-    if (typeof _firsthref !== 'undefined') {
-      var dataaction = _firsthref.substr(1);
+    if( typeof _firsthref !== 'undefined' ) {
+      var dataaction = _firsthref.substr( 1 );
     }
 
-    dataaction = dataaction || jQuery(that).data("action");
+    dataaction = dataaction || jQuery( that ).data( "action" );
 
     rdc.debug( 'showContactPopup', 'dataaction', dataaction );
 
@@ -119,10 +119,28 @@ var rdc = {
 
   },
 
-  openContactForm: function openContactForm(dataaction) {
-    rdc.debug( 'openContactForm', dataaction  );
+  removeHash: function removeHash() {
+    rdc.debug( 'removeHash', window.location.hash );
+    var scrollV, scrollH, loc = window.location;
+    if( "pushState" in history )
+      history.pushState( "", document.title, loc.pathname + loc.search );
+    else {
+      // Prevent scrolling by storing the page's current scroll offset
+      scrollV = document.body.scrollTop;
+      scrollH = document.body.scrollLeft;
 
-    if( !dataaction  ) {
+      loc.hash = "";
+
+      // Restore the scroll offset, should be flicker free
+      document.body.scrollTop = scrollV;
+      document.body.scrollLeft = scrollH;
+    }
+  },
+
+  openContactForm: function openContactForm( dataaction ) {
+    rdc.debug( 'openContactForm', dataaction );
+
+    if( !dataaction ) {
       console.error( "Unknown contact." );
       return false;
     }
@@ -131,14 +149,35 @@ var rdc = {
 
     window.location.hash = '#popupform=' + dataaction;
 
-    jQuery('div.popup').fadeOut(300);
-    jQuery('div.popup.' + dataaction).fadeIn(200);
-    jQuery('html').css('overflow-y', 'hidden');
+    var _target_popup = jQuery( 'div.popup.' + dataaction );
+
+    jQuery( 'div.popup' ).fadeOut( 300 );
+    jQuery( 'html' ).css( 'overflow-y', 'hidden' );
+
+    _target_popup.fadeIn( 200 );
 
     if( 'object' === typeof sessionStorage ) {
-      sessionStorage.setItem('current.popup', dataaction );
+      sessionStorage.setItem( 'current.popup', dataaction );
     }
 
+    var _form = jQuery( 'form', _target_popup );
+    var _recaptcha = jQuery( '.g-recaptcha', _target_popup );
+
+    //console.log( '_recaptcha', _recaptcha );
+    //console.log( '_recaptcha:grecaptcha-id', _recaptcha.attr('grecaptcha-id') );
+
+    if( !_recaptcha.length ) {
+      return;
+    }
+
+    if( _recaptcha.attr('grecaptcha-id') ) {
+      return;
+    }
+
+    var _rendered = grecaptcha.render( _recaptcha.get(0), { 'sitekey': '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5' });
+
+    _recaptcha.attr( 'grecaptcha-id', _rendered );
+    _form.attr( 'grecaptcha-id', _rendered );
 
     return false;
 
@@ -152,17 +191,18 @@ var rdc = {
   closeContactForm: function closeContactForm( nameOrEvent ) {
     rdc.debug( 'closeContactForm' );
 
-    if( 'object' === typeof nameOrEvent && 'object' === typeof nameOrEvent.currentTarget ) {
-      jQuery( nameOrEvent.currentTarget ).parent().parent().fadeOut(100);
-    } else {
-      jQuery('span.exitPopup').parent().parent().fadeOut(100);
+    if( !sessionStorage.getItem( 'current.popup' ) ) {
+      return;
     }
 
-    jQuery('html').css('overflow-y', 'scroll');
+    jQuery( 'span.exitPopup' ).parent().parent().fadeOut( 100 );
+
+    jQuery( 'html' ).css( 'overflow-y', 'scroll' );
 
     // Unset location hash, unset [current.popup]
     if( 'object' === typeof sessionStorage ) {
-      window.location.hash = window.location.hash.replace('#popupform=' + sessionStorage.getItem( 'current.popup' ), '' );
+      //window.location.hash = window.location.hash.replace('#popupform=' + sessionStorage.getItem( 'current.popup' ), '' );
+      rdc.removeHash();
       sessionStorage.removeItem( 'current.popup' );
     }
 
@@ -183,7 +223,9 @@ var rdc = {
 
   __client: null,
 
-  __request: null
+  __request: null,
+
+  __cache: { recaptcha_clients: [] }
 
 };
 
@@ -209,7 +251,7 @@ var rdc = {
     } );
 
     jQuery( ".form-validate" ).each( function validateEachForm() {
-      rdc.debug( 'validateEachForm', jQuery( this ).attr('id') );
+      rdc.debug( 'validateEachForm', jQuery( this ).attr( 'id' ) );
 
       var currentForm = jQuery( this );
 
@@ -252,22 +294,25 @@ var rdc = {
 
       var _this = jQuery( this );
 
-      var _response = grecaptcha.getResponse();
+      if( _this.attr('grecaptcha-id') ) {
+        rdc.debug( 'This form has captcha ID.', _this.attr('grecaptcha-id') );
+      }
 
-      if( !_response ) {
-        rdc.debug( "Missing recaptha, or is invalid." );
+      //if( sessionStorage.getItem( 'current.grecaptcha' ) ) {}
+
+      var _response = grecaptcha.getResponse( _this.attr('grecaptcha-id') );
+
+      if( !_response || ( _response && _response.length < 500) ) {
+        rdc.debug( "Missing recaptha, is invalid, or too short.", _response );
         return false;
       }
 
-      rdc.debug( "Have result", _response );
+      rdc.debug( 'Storing grecaptcha in session storage.' );
 
-      // return true;
+      //sessionStorage.setItem( 'current.grecaptcha', _response );
 
-      if( !_response ) {
-        rdc.debug( "reCaptcha validation failed!" );
-        return false;
-      }
       return true;
+
     } );
 
     /**Validate popup forms.*/
@@ -801,14 +846,17 @@ var rdc = {
 function rdc_recaptcha_onload_callback() {
   rdc.debug( 'rdc_recaptcha_onload_callback' );
 
-  jQuery('.g-recaptcha').each(function renderRecaptha(index, el) {
-    rdc.debug( 'render recaptcha' );
-    grecaptcha.render(el, {'sitekey' : '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5'});
-  });
 
-  jQuery('.wp_crm_validation_row').each(function renderRecaptha(index, el) {
+  jQuery( '.g-recaptcha' ).each( function renderRecaptha( index, el ) {
+    //var _parent = jQuery( this ).parent( 'form' );
+    //rdc.debug( 'render recaptcha', jQuery( this ).parent( 'form' ).attr( 'id' ) );
+    //rdc.__cache.recaptcha_clients[ jQuery( this ).parent( 'form' ).attr( 'id' ) ] = grecaptcha.render( el, { 'sitekey': '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5' } ) ;
+    //grecaptcha.reset( el );
+  } );
+
+  jQuery( '.wp_crm_validation_row' ).each( function renderRecaptha( index, el ) {
     rdc.debug( 'render recaptcha' );
-    grecaptcha.render(el, {'sitekey' : '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5'});
-  });
+    grecaptcha.render( el, { 'sitekey': '6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5' } );
+  } );
 
 }

@@ -363,9 +363,11 @@ namespace UsabilityDynamics\RDC {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-accordion');
+
         wp_enqueue_script('bootstrap', get_stylesheet_directory_uri() . '/static/scripts/src/bootstrap.js', array(), $currentTheme->get( 'Version' ) );
 
-        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery'), $currentTheme->get( 'Version' ) );
+        wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdc_recaptcha_onload_callback&render=explicit', array( ), $currentTheme->get( 'Version' ) , true );
+        wp_enqueue_script('main', get_stylesheet_directory_uri() . '/static/scripts/src/main.js', array('jquery', 'google-recaptcha-api' ), $currentTheme->get( 'Version' ), true );
         wp_enqueue_script('rdc-popups', get_stylesheet_directory_uri() . '/static/scripts/src/popups.js', array('main'), $currentTheme->get( 'Version' ) );
         wp_enqueue_script('rdc-guides', get_stylesheet_directory_uri() . '/static/scripts/src/guides.js', array('main'), $currentTheme->get( 'Version' ) );
 
@@ -396,14 +398,12 @@ namespace UsabilityDynamics\RDC {
 
         $recaptcha = get_theme_mod('rdc_recaptcha_key');
 
-        if (!empty($recaptcha)) {
 
-          wp_enqueue_script('google-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=rdc_recaptcha_onload_callback&render=explicit', array( 'rdc-popups' ), null, true );
-
-          wp_localize_script('rdc-popups', 'popupMode', array( "recaptcha_key" => defined( 'RDC_RECAPTCHA_KEY' ) ? RDC_RECAPTCHA_KEY : $recaptcha ));
+        wp_localize_script('rdc-main', 'popupMode', array( "recaptcha_key" => defined( 'RDC_RECAPTCHA_KEY' ) ? RDC_RECAPTCHA_KEY : $recaptcha ));
 
 
-        }
+        if (!empty($recaptcha)) {}
+
       }
 
       /**

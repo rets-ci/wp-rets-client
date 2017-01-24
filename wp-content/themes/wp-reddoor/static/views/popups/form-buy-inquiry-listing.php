@@ -62,9 +62,7 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/buy/inquiry-success'); ?>" />
         <input type="hidden" name="ignore_redirectmode" value="Auto" />
 
-        <div class="field">
-          <div class="g-recaptcha" data-sitekey="6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5"></div>
-        </div>
+        <div class="field g-recaptcha"></div>
 
         <div class="submit-wrapper">
           <input class="button" type="submit" value="Request Showing" />

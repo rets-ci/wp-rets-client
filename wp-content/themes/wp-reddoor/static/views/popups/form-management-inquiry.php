@@ -69,9 +69,7 @@
         <input name="ignore_redirecturl" type="hidden" value="<?php echo home_url('/management/inquiry-success'); ?>"/>
         <input name="ignore_redirectmode" type="hidden" value="Auto"/>
 
-        <div class="field">
-          <div id="rdcgrecaptchahomemanagement"></div>
-        </div>
+        <div class="field g-recaptcha"></div>
 
         <div class="submit-wrapper">
 	        <input class="button" type="submit" value="Submit"/>

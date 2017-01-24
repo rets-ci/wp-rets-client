@@ -63,9 +63,7 @@
         <input type="hidden" name="ignore_redirecturl" value="<?php echo home_url('/rent/application-success'); ?>"/>
         <input type="hidden" name="ignore_redirectmode" value="Auto"/>
 
-        <div class="field">
-          <div id="rdcgrecaptchareqapplication"></div>
-        </div>
+        <div class="field g-recaptcha"></div>
 
         <div>
           <input class="button" type="submit" value="Submit" onclick="javascript:;"/>

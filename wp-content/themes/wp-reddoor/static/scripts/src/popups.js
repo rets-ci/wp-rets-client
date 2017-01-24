@@ -45,4 +45,3 @@ jQuery( document ).ready(function onDocumentReady() {
   }, 20);
 
 });
-
