@@ -54,8 +54,12 @@ namespace RedDoorCompany\Policy {
     static public function redirect_canonical( $redirect ) {
       global $wp;
 
+      if( headers_sent() ) {
+        return $redirect;
+      }
+
       // Cache any /listing/* redirection rules.
-      if( isset( $wp->matched_rule ) && $wp->matched_rule === '^listing/([0-9]+)/?$' && !headers_sent()) {
+      if( isset( $wp->matched_rule ) && $wp->matched_rule === '^listing/([0-9]+)/?$' ) {
 
         // Will be removed when missing access toekn.
         header('X-Cache-Control-Reason:Single listing redirection.');
@@ -68,7 +72,15 @@ namespace RedDoorCompany\Policy {
           header('X-Surrogate-Keys:post-' . $wp->query_vars[ 'p' ], false );
         }
 
+        return $redirect;
+
       }
+
+      // Will be removed when missing access toekn.
+      header('X-Cache-Control-Reason:All other redirection.');
+
+      // CloudFront will cache this forever due to 86400 cache control TTL, hardcoded.
+      header('cache-control:public,cloudfront-maxage=86400,varnish-maxage=31536000,max-age=86400');
 
       return $redirect;
 

@@ -9,6 +9,7 @@ module.exports = function ( grunt ) {
   grunt.registerTask( "default", defaultTask );
   grunt.registerTask( "primeRedirectionCache", primeRedirectionCache );
   grunt.registerTask( "primeSitemapCache", primeSitemapCache );
+  grunt.registerTask( "cacheTest", cacheTest );
 
   /**
    *
@@ -44,19 +45,10 @@ module.exports = function ( grunt ) {
       }
     };
 
-    var q = async.queue(function (task, callback) {
-      //debug('Doing task [%s].', task.location);
-      cache_prime_request(task.location, callback);
-    }, 2);
-
-
-
     scrollResults( esQuery, handleListing, function () {
       debug( 'scrollComplete' );
       taskDone();
     } );
-
-    var _done = 0;
 
     function handleListing( source, callback, doc ) {
       // debug( '[%s] Priming [%s] ID.', _done, doc._id );
@@ -66,66 +58,23 @@ module.exports = function ( grunt ) {
 
     }
 
-    function cache_prime_request( target_url, request_done ) {
-      // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
-
-      var _requestOptions = {
-        url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
-        actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
-        method: 'GET',
-        strictSSL: false,
-        followRedirect: false,
-        headers: {
-          'host': 'www.reddoorcompany.com',
-          'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-          'accept-language':'en-US,en;q=0.8',
-          'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
-        }
-      };
-
-      request(_requestOptions, function haveCallback( error, resp, body ) {
-
-        _done++;
-
-        if( error || !resp.headers ) {
-          console.error( '[%s] Unable to prime [%s] url, error [%s]', _done, _requestOptions.actualUrl, ( error ? error.message : 'no-error' ) )
-        }
-
-        if( !error && resp.headers && resp.headers['location'] ) {
-
-          if( _.get( resp, 'headers.age' ) ) {
-            debug( '[%s] Already primed [%s] to with [%s] age.', _done, _requestOptions.actualUrl, _.get( resp, 'headers.age' ) );
-          } else {
-            debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] )
-          }
-
-          q.push({location: resp.headers['location'], resp: resp}, function (err, resp) {
-
-            if( _.get( resp, 'headers.age' ) ) {
-              debug('[%s] Already primed [%s] with [%s] ttl.', _done, resp.headers['location'], _.get( resp, 'headers.age' ) );
-            } else {
-              debug('[%s] Primed [%s] with [%s] status code.', _done, _requestOptions.actualUrl, resp.statusCode);
-            }
-
-          });
-
-        }
-
-        if( !error && resp.headers && !resp.headers['location'] ) {
-          debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
-        }
-
-        if( 'function' === typeof request_done ) {
-          request_done( null, resp );
-        }
-
-      });
-
-    }
-
   }
 
   /**
+   *
+   *
+   * https://www.reddoorcompany.com/sitemap_index.xml
+   *
+   *
+   * https://www.reddoorcompany.com/rdc_guide-sitemap.xml
+   * https://www.reddoorcompany.com/post-sitemap.xml
+   * https://www.reddoorcompany.com/page-sitemap.xml
+   *
+   *
+   * https://www.reddoorcompany.com/style-sitemap.xml
+   * https://www.reddoorcompany.com/design-sitemap.xml
+   *
+   *
    *
    * 'http://localhost/sitemap_index.xml'
    * 'http://localhost/property-sitemap1.xml'
@@ -139,12 +88,26 @@ module.exports = function ( grunt ) {
 
     var sitemap = new Sitemapper();
 
-    sitemap.fetch('http://localhost/property-sitemap1.xml').then(function(sites) {
-      console.log( require( 'util' ).inspect( sites.sites, { showHidden: false, depth: 2, colors: true } ) );
+    sitemap.fetch('https://www.reddoorcompany.com/sitemap_index.xml').then(function(sites) {
+      console.log( require( 'util' ).inspect( sites, { showHidden: false, depth: 2, colors: true } ) );
 
       taskDone();
     });
 
+  }
+
+  /**
+   * grunt cacheTest
+   */
+  function cacheTest() {
+
+    var taskDone = this.async();
+
+    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/' );
+    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/buy' );
+    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/rent' );
+
+    setTimeout(taskDone, 5000 );
 
   }
 
@@ -157,6 +120,124 @@ module.exports = function ( grunt ) {
   }
 
 };
+
+function rabbit_request( target_url, request_done ) {
+  debug( '[%s] Making Rabbit Cache request to [%s].', _done, target_url );
+
+  var _requestOptions = {
+    url: target_url.replace( 'www.reddoorcompany.com', 'c.rabbit.ci' ),
+    actualUrl:  target_url.replace( 'c.rabbit.ci', 'www.reddoorcompany.com' ),
+    method: 'GET',
+    strictSSL: false,
+    followRedirect: false,
+    headers: {
+      'x-access-token': 'yhcwokwserjzdjir',
+      'host': 'www.reddoorcompany.com',
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'accept-language':'en-US,en;q=0.8',
+      'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
+    }
+  };
+
+  request(_requestOptions, function haveCallback( error, resp, body ) {
+
+    _done++;
+
+    console.log( "Checking URL [%s].", _requestOptions.actualUrl );
+
+    if( error || !resp.headers ) {
+      console.error( '[%s] Unable to prime [%s] url, error [%s]', _done, _requestOptions.actualUrl, ( error ? error.message : 'no-error' ) )
+    }
+
+
+    if( !resp.headers[ 'x-object-ttl' ] ) {
+      console.log( 'statusCode', resp.statusCode );
+      console.log( require( 'util' ).inspect( resp.headers, { showHidden: false, depth: 2, colors: true } ) );
+
+    }
+    console.log( "Varnish TTL [%s].", resp.headers[ 'x-object-ttl' ] );
+    console.log( "Varnish hits [%s].", resp.headers[ 'x-object-hits' ] );
+    console.log( "Varnish x-cache [%s].", resp.headers[ 'x-cache' ] );
+    console.log( require( 'util' ).inspect( resp.headers, { showHidden: false, depth: 2, colors: true } ) );
+
+    if( !error && resp.headers && resp.headers['location'] ) {
+
+      if( _.get( resp, 'headers.age' ) ) {
+        debug( '[%s] Already primed [%s] to with [%s] age.', _done, _requestOptions.actualUrl, _.get( resp, 'headers.age' ) );
+      } else {
+        debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] )
+      }
+
+    }
+
+    if( !error && resp.headers && !resp.headers['location'] ) {
+      debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+    }
+
+    if( 'function' === typeof request_done ) {
+      request_done( null, resp );
+    }
+
+  });
+
+}
+
+function cache_prime_request( target_url, request_done ) {
+  // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
+
+  var _requestOptions = {
+    url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
+    actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
+    method: 'GET',
+    strictSSL: false,
+    followRedirect: false,
+    headers: {
+      'host': 'www.reddoorcompany.com',
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'accept-language':'en-US,en;q=0.8',
+      'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
+    }
+  };
+
+  request(_requestOptions, function haveCallback( error, resp, body ) {
+
+    _done++;
+
+    if( error || !resp.headers ) {
+      console.error( '[%s] Unable to prime [%s] url, error [%s]', _done, _requestOptions.actualUrl, ( error ? error.message : 'no-error' ) )
+    }
+
+    if( !error && resp.headers && resp.headers['location'] ) {
+
+      if( _.get( resp, 'headers.age' ) ) {
+        debug( '[%s] Already primed [%s] to with [%s] age.', _done, _requestOptions.actualUrl, _.get( resp, 'headers.age' ) );
+      } else {
+        debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] )
+      }
+
+      _queue.push({location: resp.headers['location'], resp: resp}, function (err, resp) {
+
+        if( _.get( resp, 'headers.age' ) ) {
+          debug('[%s] Already primed [%s] with [%s] ttl.', _done, resp.headers['location'], _.get( resp, 'headers.age' ) );
+        } else {
+          debug('[%s] Primed [%s] with [%s] status code.', _done, _requestOptions.actualUrl, resp.statusCode);
+        }
+
+      });
+
+    }
+
+    if( !error && resp.headers && !resp.headers['location'] ) {
+      debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+    }
+
+    if( 'function' === typeof request_done ) {
+      request_done( null, resp );
+    }
+
+  });
+
+}
 
 
 /**
@@ -248,3 +329,10 @@ var request = require( 'request' );
 var _ = require( 'lodash' );
 var colors = require( 'colors' );
 var async = require( 'async' );
+
+var _queue = async.queue(function (task, callback) {
+  //debug('Doing task [%s].', task.location);
+  cache_prime_request(task.location, callback);
+}, 2);
+
+var _done = 0;
