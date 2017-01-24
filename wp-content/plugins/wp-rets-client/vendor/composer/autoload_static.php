@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit767149ad881f3a01e76e00619c0a3d05
+class ComposerStaticInit589bafad0d78fdaa0be7887063578b3b
 {
+    public static $files = array (
+        'b19b183aa467dadb9e7c538535e7f296' => __DIR__ . '/../..' . '/wp-rets-client.php',
+    );
+
     public static $classMap = array (
         'UsabilityDynamics\\Job' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-job.php',
         'UsabilityDynamics\\Loader' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-loader.php',
@@ -13,9 +17,16 @@ class ComposerStaticInit767149ad881f3a01e76e00619c0a3d05
         'UsabilityDynamics\\Term' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-term.php',
         'UsabilityDynamics\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-utility.php',
         'UsabilityDynamics\\Utility\\Guid_Fix' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-guid-fix.php',
+        'UsabilityDynamics\\WPRETSC\\Ajax' => __DIR__ . '/../..' . '/lib/classes/class-ajax.php',
         'UsabilityDynamics\\WPRETSC\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
+        'UsabilityDynamics\\WPRETSC\\Connectors\\Loader' => __DIR__ . '/../..' . '/lib/connectors/class-loader.php',
+        'UsabilityDynamics\\WPRETSC\\Connectors\\WPML' => __DIR__ . '/../..' . '/lib/connectors/class-wpml.php',
+        'UsabilityDynamics\\WPRETSC\\Dashboard_Widget' => __DIR__ . '/../..' . '/lib/classes/class-dashboard-widget.php',
+        'UsabilityDynamics\\WPRETSC\\Logger' => __DIR__ . '/../..' . '/lib/classes/class-logger.php',
         'UsabilityDynamics\\WPRETSC\\Media' => __DIR__ . '/../..' . '/lib/classes/class-media.php',
+        'UsabilityDynamics\\WPRETSC\\Register' => __DIR__ . '/../..' . '/lib/classes/class-register.php',
         'UsabilityDynamics\\WPRETSC\\Utility' => __DIR__ . '/../..' . '/lib/classes/class-utility.php',
+        'UsabilityDynamics\\WPRETSC\\Widget' => __DIR__ . '/../..' . '/lib/classes/class-widget.php',
         'UsabilityDynamics\\WPRETSC\\XMLRPC' => __DIR__ . '/../..' . '/lib/classes/class-xmlrpc.php',
         'UsabilityDynamics\\WP\\Bootstrap' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\WP\\Bootstrap_Plugin' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-bootstrap/lib/classes/class-bootstrap-plugin.php',
@@ -33,7 +44,7 @@ class ComposerStaticInit767149ad881f3a01e76e00619c0a3d05
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit767149ad881f3a01e76e00619c0a3d05::$classMap;
+            $loader->classMap = ComposerStaticInit589bafad0d78fdaa0be7887063578b3b::$classMap;
 
         }, null, ClassLoader::class);
     }
