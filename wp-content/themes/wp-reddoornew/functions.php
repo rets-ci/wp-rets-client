@@ -84,15 +84,28 @@ function reddoor_get_page_content()
     'menuItems' => $menu_items
   );
 
-  $params['post'] = $post;
-
-  $params['post']->custom_content = false;
+  $params['post'] = [
+    'post_date' => $post->post_date,
+    'post_modified' => $post->post_modified,
+    'post_parent' => $post->post_parent,
+    'post_title' => $post->post_title,
+    'post_content' => $post->post_content,
+    'post_type' => $post->post_type,
+    'custom_content' => false
+  ];
 
   // Builder content case
   if ($post_data = get_post_meta($post->ID, 'panels_data', true)) {
-    $params['post']->custom_content = true;
-    $params['post']->post_content = reddoor_rebuild_builder_content($post_data);
+    $params['post']['custom_content'] = true;
+    $params['post']['post_content'] = reddoor_rebuild_builder_content($post_data);
   }
 
   return $params;
+}
+
+add_action('after_setup_theme', 'remove_admin_bar');
+function remove_admin_bar() {
+  if (!current_user_can('administrator') && !is_admin()) {
+    show_admin_bar(false);
+  }
 }
