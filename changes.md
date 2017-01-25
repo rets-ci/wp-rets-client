@@ -1,3 +1,6 @@
+### 1.0.6
+* Added Git Branch and Object Cache type detail to navbar.
+
 ### 1.0.5
 * Varnish purge fix.
 
