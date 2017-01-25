@@ -10,6 +10,7 @@ module.exports = function ( grunt ) {
   grunt.registerTask( "primeRedirectionCache", primeRedirectionCache );
   grunt.registerTask( "primeSitemapCache", primeSitemapCache );
   grunt.registerTask( "cacheTest", cacheTest );
+  grunt.registerTask( "watchCacheChange", watchCacheChange );
 
   /**
    *
@@ -66,33 +67,72 @@ module.exports = function ( grunt ) {
    * https://www.reddoorcompany.com/sitemap_index.xml
    *
    *
-   * https://www.reddoorcompany.com/rdc_guide-sitemap.xml
-   * https://www.reddoorcompany.com/post-sitemap.xml
-   * https://www.reddoorcompany.com/page-sitemap.xml
-   *
-   *
-   * https://www.reddoorcompany.com/style-sitemap.xml
-   * https://www.reddoorcompany.com/design-sitemap.xml
-   *
-   *
-   *
    * 'http://localhost/sitemap_index.xml'
-   * 'http://localhost/property-sitemap1.xml'
+   *
+   *
+   * grunt primeSitemapCache
+   * DEBUG=* grunt primeSitemapCache
    *
    */
   function primeSitemapCache() {
 
     var taskDone = this.async();
 
+    var debug = require( 'debug' )('prime');
+
+    var _maps = require( './package').config.sitemaps;
+
+    var _queue = async.queue(function (task, callback) {
+      //debug('Doing task [%s].', task.location);
+      cache_prime_request(task.location, callback);
+    }, 2);
+
+    _queue.push({location:'https://www.reddoorcompany.com/'});
+    _queue.push({location:'https://www.reddoorcompany.com'});
+
+    var _sites = [];
+
     var Sitemapper = require('sitemapper');
 
     var sitemap = new Sitemapper();
 
-    sitemap.fetch('https://www.reddoorcompany.com/sitemap_index.xml').then(function(sites) {
-      console.log( require( 'util' ).inspect( sites, { showHidden: false, depth: 2, colors: true } ) );
+    async.eachSeries( _maps, function eachMap( _map, done ) {
+      //console.log( 'eachMap', _map );
 
-      taskDone();
-    });
+      sitemap.fetch( 'https://www.reddoorcompany.com/' + _map ).then(function(sites) {
+
+        if( !sites || !sites.sites ) {
+          debug( 'No sites from [%s] sitemap.', 'https://www.reddoorcompany.com/' + _map + '.xml' );
+          return done();
+        }
+
+        debug( 'Have [%s] urls from [%s] sitemap.', sites.sites.length, 'https://www.reddoorcompany.com/' + _map );
+
+        _.each(sites.sites, function( location ) {
+          // console.log( "Pushing location", location );
+          _queue.push({location:location});
+          _sites.push( location );
+        });
+
+        done();
+
+      });
+
+    }, function haveMaps() {
+      debug( 'All sitemaps parsed, total of [%s] sites.', _.flatten( _sites ).length );
+
+      _queue.drain = function() {
+        console.log( 'drained' );
+        //taskDone();
+
+      }
+
+    } );
+
+
+    //setTimeout(function(){}, 100000 );
+
+
 
   }
 
@@ -117,6 +157,42 @@ module.exports = function ( grunt ) {
    */
   function defaultTask() {
     console.log( process.env.ES_ADDRESS );
+  }
+
+
+  /**
+   * grunt watchCacheChange
+   *
+   */
+  function watchCacheChange() {
+
+    var taskDone = this.async();
+
+    var _last_age = null;
+    async.forever(function checkCache( done ) {
+
+      get_header_request( 'https://www.reddoorcompany.com/rent/our-listings', function( error, resp_headers ) {
+
+        if( !resp_headers.age ) {
+          console.log( "No age! x-cache: [%s]" );
+        }
+
+        console.log( "Cache control [%s], before it was [%s]. x-cache [%s]", parseInt( resp_headers.age  ), _last_age, resp_headers['cache-control'] );
+        //console.log( require( 'util' ).inspect( resp_headers.age , { showHidden: false, depth: 2, colors: true } ) );
+
+        _last_age = parseInt( resp_headers.age );
+
+        setTimeout(done, 1000 );
+
+      });
+
+
+    }, function final( error ) {
+      console.log( "Stopped monitor", error );
+
+    });
+
+
   }
 
 };
@@ -153,8 +229,8 @@ function rabbit_request( target_url, request_done ) {
     if( !resp.headers[ 'x-object-ttl' ] ) {
       console.log( 'statusCode', resp.statusCode );
       console.log( require( 'util' ).inspect( resp.headers, { showHidden: false, depth: 2, colors: true } ) );
-
     }
+
     console.log( "Varnish TTL [%s].", resp.headers[ 'x-object-ttl' ] );
     console.log( "Varnish hits [%s].", resp.headers[ 'x-object-hits' ] );
     console.log( "Varnish x-cache [%s].", resp.headers[ 'x-cache' ] );
@@ -171,7 +247,7 @@ function rabbit_request( target_url, request_done ) {
     }
 
     if( !error && resp.headers && !resp.headers['location'] ) {
-      debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+      //debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
     }
 
     if( 'function' === typeof request_done ) {
@@ -228,11 +304,43 @@ function cache_prime_request( target_url, request_done ) {
     }
 
     if( !error && resp.headers && !resp.headers['location'] ) {
-      debug( '[%s] Primed [%s], no-redirection, status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+
+      if( resp.headers.age ) {
+        debug( '[%s] Already primed [%s], status [%s], age [%s].', _done, _requestOptions.actualUrl, resp.statusCode, resp.headers.age );
+      } else {
+        debug( '[%s] Primed [%s], status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+      }
     }
 
     if( 'function' === typeof request_done ) {
       request_done( null, resp );
+    }
+
+  });
+
+}
+
+function get_header_request( target_url, request_done ) {
+  // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
+
+  var _requestOptions = {
+    url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
+    actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
+    method: 'GET',
+    strictSSL: false,
+    followRedirect: false,
+    headers: {
+      'host': 'www.reddoorcompany.com',
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'accept-language':'en-US,en;q=0.8',
+      'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
+    }
+  };
+
+  request(_requestOptions, function haveCallback( error, resp, body ) {
+
+    if( 'function' === typeof request_done ) {
+      request_done( null, resp.headers );
     }
 
   });
