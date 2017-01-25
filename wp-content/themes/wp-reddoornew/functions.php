@@ -1,10 +1,14 @@
 <?php
 
+define("GOOGLE_API_KEY", "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss");
+
 add_action('wp_enqueue_scripts', 'reddoor_scripts');
 function reddoor_scripts()
 {
   wp_enqueue_script('jquery');
   wp_enqueue_style('style', get_stylesheet_uri());
+
+  wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key='.GOOGLE_API_KEY);
 
   wp_enqueue_script('bundle', get_stylesheet_directory_uri() . '/bundle.js', [], null, true);
   $params = reddoor_get_page_content();

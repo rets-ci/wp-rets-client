@@ -66,7 +66,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _BrowserHistory = __webpack_require__(287);
+	var _BrowserHistory = __webpack_require__(288);
 
 	var _BrowserHistory2 = _interopRequireDefault(_BrowserHistory);
 
@@ -23761,7 +23761,7 @@
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _menu = __webpack_require__(218);
+	var _menu = __webpack_require__(219);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -23776,19 +23776,22 @@
 
 /***/ },
 /* 217 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _lib = __webpack_require__(218);
+
 	var post = function post() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var action = arguments[1];
 
 	    switch (action.type) {
-	        case 'ADD_POST':
+	        case _lib.Lib.ADD_POST_ACTION:
 	            return Object.assign({}, state, {
 	                post: action.post,
 	                rows: action.post.post_content
@@ -23801,6 +23804,20 @@
 
 /***/ },
 /* 218 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var Lib = exports.Lib = {
+	    ADD_POST_ACTION: 'ADD_POST',
+	    INIT_MENU_ACTION: 'INIT_MENU'
+	};
+
+/***/ },
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23809,7 +23826,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(219);
+	var _lib = __webpack_require__(218);
 
 	var menu = function menu() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -23827,20 +23844,6 @@
 	exports.default = menu;
 
 /***/ },
-/* 219 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var Lib = exports.Lib = {
-	    ADD_POST_ACTION: 'ADD_POST',
-	    INIT_MENU_ACTION: 'INIT_MENU'
-	};
-
-/***/ },
 /* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23851,7 +23854,7 @@
 	});
 	exports.initMenu = exports.addPost = undefined;
 
-	var _lib = __webpack_require__(219);
+	var _lib = __webpack_require__(218);
 
 	var addPost = exports.addPost = function addPost(post) {
 	    return {
@@ -23889,6 +23892,10 @@
 
 	var _Content2 = _interopRequireDefault(_Content);
 
+	var _Map = __webpack_require__(287);
+
+	var _Map2 = _interopRequireDefault(_Map);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var App = function App() {
@@ -23896,6 +23903,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_Menu2.default, null),
+	        _react2.default.createElement(_Map2.default, null),
 	        _react2.default.createElement(_Content2.default, null)
 	    );
 	};
@@ -39264,17 +39272,112 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Map = function (_React$Component) {
+	    _inherits(Map, _React$Component);
+
+	    function Map() {
+	        _classCallCheck(this, Map);
+
+	        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
+	    }
+
+	    _createClass(Map, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            Map.loadMap();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var style = {
+	                height: '200px',
+	                width: '400px'
+	            };
+
+	            return _react2.default.createElement('div', { id: 'map', style: style });
+	        }
+	    }], [{
+	        key: 'loadMap',
+	        value: function loadMap() {
+	            console.log("init");
+
+	            var myLatLng = { lat: -34.397, lng: 150.644 };
+
+	            var map = new google.maps.Map(document.getElementById('map'), {
+	                center: myLatLng,
+	                scrollwheel: false,
+	                zoom: 8
+	            });
+
+	            // let url = "https://api.reddoorcompany.com/v5/property/_search?q=tax_input.location_city:Durham";
+	            var url = "https://api.reddoorcompany.com/v5/property/_search?source=%7B%22query%22%3A%7B%22bool%22%3A%7B%22must%22%3A%5B%7B%22exists%22%3A%7B%22field%22%3A%22_system.location%22%7D%7D%2C%7B%22terms%22%3A%7B%22tax_input.location_county%22%3A%5B%22Durham%22%5D%7D%7D%2C%7B%22terms%22%3A%7B%22tax_input.sale_type%22%3A%5B%22Rent%22%5D%7D%7D%5D%2C%22must_not%22%3A%5B%7B%22term%22%3A%7B%22tax_input.location_latitude%22%3A%220%22%7D%7D%2C%7B%22term%22%3A%7B%22tax_input.location_longitude%22%3A%220%22%7D%7D%2C%7B%22missing%22%3A%7B%22field%22%3A%22tax_input.location_latitude%22%7D%7D%2C%7B%22missing%22%3A%7B%22field%22%3A%22tax_input.location_longitude%22%7D%7D%5D%7D%7D%2C%22_source%22%3A%20%5B%22post_title%22%2C%22tax_input.location_latitude%22%2C%22tax_input.location_longitude%22%2C%22_permalink%22%2C%22_system.neighborhood%22%2C%22_system.google_place_id%22%2C%22_system.available_date%22%2C%22_system.addressDetail%22%2C%22_system.available_date%22%2C%22_system.listed_date%22%2C%22_system.agency_listing%22%2C%22_metrics.score.total%22%2C%22meta_input.rets_thumbnail_url%22%2C%22tax_input.listing_type%22%2C%22tax_input.bedrooms%22%2C%22tax_input.bathrooms%22%2C%22tax_input.price%22%2C%22tax_input.total_living_area_sqft%22%2C%22tax_input.days_on_market%22%2C%22tax_input.acres%22%2C%22tax_input.price_per_sqft%22%2C%22tax_input.approximate_lot_size%22%2C%22tax_input.subdivision%22%2C%22tax_input.neighborhood%22%2C%22tax_input.added%22%2C%22tax_input.sale_type%22%2C%22tax_input.location_city%22%2C%22tax_input.location_street_number%22%2C%22tax_input.location_direction%22%2C%22tax_input.location_street%22%2C%22tax_input.location_unit%22%5D%2C%20%22size%22%3A500%2C%22sort%22%3A%5B%7B%22_system.agency_listing%22%3A%7B%22order%22%3A%22asc%22%7D%7D%2C%7B%22post_title%22%3A%7B%22order%22%3A%22asc%22%7D%7D%5D%7D";
+
+	            jQuery.ajax({
+	                url: url,
+	                type: 'get',
+	                dataType: 'json',
+	                success: function success(data) {
+	                    var lastPosition = void 0;
+
+	                    if (data.hits.hits.length) {
+	                        for (var i in data.hits.hits) {
+	                            var position = new google.maps.LatLng(data.hits.hits[i]._source.tax_input.location_latitude, data.hits.hits[i]._source.tax_input.location_longitude);
+	                            new google.maps.Marker({
+	                                position: position,
+	                                map: map,
+	                                title: data.hits.hits[i]._source.post_title
+	                            });
+
+	                            lastPosition = position;
+	                        }
+	                        map.setCenter(lastPosition);
+	                    }
+	                }
+	            });
+	        }
+	    }]);
+
+	    return Map;
+	}(_react2.default.Component);
+
+	exports.default = Map;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	exports.__esModule = true;
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _createBrowserHistory = __webpack_require__(288);
+	var _createBrowserHistory = __webpack_require__(289);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _PropTypes = __webpack_require__(297);
+	var _PropTypes = __webpack_require__(298);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39351,7 +39454,7 @@
 	exports.default = BrowserHistory;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -39362,7 +39465,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _warning = __webpack_require__(289);
+	var _warning = __webpack_require__(290);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -39370,17 +39473,17 @@
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _LocationUtils = __webpack_require__(290);
+	var _LocationUtils = __webpack_require__(291);
 
-	var _PathUtils = __webpack_require__(293);
+	var _PathUtils = __webpack_require__(294);
 
-	var _createTransitionManager = __webpack_require__(294);
+	var _createTransitionManager = __webpack_require__(295);
 
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-	var _ExecutionEnvironment = __webpack_require__(295);
+	var _ExecutionEnvironment = __webpack_require__(296);
 
-	var _DOMUtils = __webpack_require__(296);
+	var _DOMUtils = __webpack_require__(297);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39670,7 +39773,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -39737,7 +39840,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39747,15 +39850,15 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _resolvePathname = __webpack_require__(291);
+	var _resolvePathname = __webpack_require__(292);
 
 	var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 
-	var _valueEqual = __webpack_require__(292);
+	var _valueEqual = __webpack_require__(293);
 
 	var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
-	var _PathUtils = __webpack_require__(293);
+	var _PathUtils = __webpack_require__(294);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39805,7 +39908,7 @@
 	};
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -39880,7 +39983,7 @@
 	module.exports = resolvePathname;
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -39929,7 +40032,7 @@
 	exports.default = valueEqual;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -39987,14 +40090,14 @@
 	};
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	exports.__esModule = true;
 
-	var _warning = __webpack_require__(289);
+	var _warning = __webpack_require__(290);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -40078,7 +40181,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -40087,7 +40190,7 @@
 	var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -40145,7 +40248,7 @@
 	};
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
