@@ -70,6 +70,8 @@ module.exports = function ( grunt ) {
    * 'http://localhost/sitemap_index.xml'
    *
    *
+   * DEBUG=* nohup grunt primeSitemapCache &
+   * 
    * grunt primeSitemapCache
    * DEBUG=* grunt primeSitemapCache
    *
@@ -99,14 +101,14 @@ module.exports = function ( grunt ) {
     async.eachSeries( _maps, function eachMap( _map, done ) {
       //console.log( 'eachMap', _map );
 
-      sitemap.fetch( 'https://www.reddoorcompany.com/' + _map ).then(function(sites) {
+      sitemap.fetch( 'https://usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci/' + _map ).then(function(sites) {
 
         if( !sites || !sites.sites ) {
-          debug( 'No sites from [%s] sitemap.', 'https://www.reddoorcompany.com/' + _map + '.xml' );
+          debug( 'No sites from [%s] sitemap.', 'https://usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci/' + _map + '.xml' );
           return done();
         }
 
-        debug( 'Have [%s] urls from [%s] sitemap.', sites.sites.length, 'https://www.reddoorcompany.com/' + _map );
+        debug( 'Have [%s] urls from [%s] sitemap.', sites.sites.length, 'https://usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci/' + _map );
 
         _.each(sites.sites, function( location ) {
           // console.log( "Pushing location", location );
