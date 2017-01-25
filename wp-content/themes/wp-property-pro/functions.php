@@ -2,8 +2,8 @@
 
 define("GOOGLE_API_KEY", "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss");
 
-add_action('wp_enqueue_scripts', 'reddoor_scripts');
-function reddoor_scripts()
+add_action('wp_enqueue_scripts', 'property_pro_scripts');
+function property_pro_scripts()
 {
   wp_enqueue_script('jquery');
   wp_enqueue_style('style', get_stylesheet_uri());
@@ -11,12 +11,12 @@ function reddoor_scripts()
   wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key='.GOOGLE_API_KEY);
 
   wp_enqueue_script('bundle', get_stylesheet_directory_uri() . '/bundle.js', [], null, true);
-  $params = reddoor_get_page_content();
+  $params = property_pro_get_page_content();
   wp_localize_script('jquery', 'bundle', $params);
 }
 
 /** Rebuild builder data array */
-function reddoor_rebuild_builder_content($content)
+function property_pro_rebuild_builder_content($content)
 {
   $rows = [];
 
@@ -32,7 +32,7 @@ function reddoor_rebuild_builder_content($content)
 }
 
 
-function reddoor_start_buffer_output_content()
+function property_pro_start_buffer_output_content()
 {
   if (!isset($_GET['pageType']))
     return;
@@ -40,14 +40,14 @@ function reddoor_start_buffer_output_content()
 
   switch ($_GET['pageType']) {
     case 'json':
-      ob_start('reddoor_buffer_handler');
+      ob_start('property_pro_buffer_handler');
       break;
     default;
   }
 }
 
-add_action('init', 'reddoor_start_buffer_output_content');
-function reddoor_end_buffer_output_content()
+add_action('init', 'property_pro_start_buffer_output_content');
+function property_pro_end_buffer_output_content()
 {
   if (!isset($_GET['pageType']))
     return;
@@ -62,15 +62,15 @@ function reddoor_end_buffer_output_content()
 
 }
 
-add_action('shutdown', 'reddoor_end_buffer_output_content', 100);
+add_action('shutdown', 'property_pro_end_buffer_output_content', 100);
 
-function reddoor_buffer_handler($output)
+function property_pro_buffer_handler($output)
 {
-  $params = reddoor_get_page_content();
+  $params = property_pro_get_page_content();
   return wp_json_encode($params);
 }
 
-function reddoor_get_page_content()
+function property_pro_get_page_content()
 {
   global $post;
 
@@ -101,14 +101,14 @@ function reddoor_get_page_content()
   // Builder content case
   if ($post_data = get_post_meta($post->ID, 'panels_data', true)) {
     $params['post']['custom_content'] = true;
-    $params['post']['post_content'] = reddoor_rebuild_builder_content($post_data);
+    $params['post']['post_content'] = property_pro_rebuild_builder_content($post_data);
   }
 
   return $params;
 }
 
-add_action('after_setup_theme', 'remove_admin_bar');
-function remove_admin_bar() {
+add_action('after_setup_theme', 'property_pro_remove_admin_bar');
+function property_pro_remove_admin_bar() {
   if (!current_user_can('administrator') && !is_admin()) {
     show_admin_bar(false);
   }

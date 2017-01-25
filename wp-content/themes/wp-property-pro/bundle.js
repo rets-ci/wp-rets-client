@@ -23767,12 +23767,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var reddoorApp = (0, _redux.combineReducers)({
+	var propertyProApp = (0, _redux.combineReducers)({
 	    postState: _post2.default,
 	    menuState: _menu2.default
 	});
 
-	exports.default = reddoorApp;
+	exports.default = propertyProApp;
 
 /***/ },
 /* 217 */

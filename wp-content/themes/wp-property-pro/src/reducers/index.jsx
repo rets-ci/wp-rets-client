@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 import postState from './post.jsx';
 import menuState from './menu.jsx';
 
-const reddoorApp = combineReducers({
+const propertyProApp = combineReducers({
     postState,
     menuState
 });
 
-export default reddoorApp
+export default propertyProApp
