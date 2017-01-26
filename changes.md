@@ -1,3 +1,6 @@
+### 1.0.7
+* Performance improvement to self-updater logic.
+
 ### 1.0.6
 * Added Git Branch and Object Cache type detail to navbar.
 
