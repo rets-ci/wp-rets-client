@@ -20,7 +20,7 @@ add_filter( 'site_transient_update_plugins', function ( $response, $old_value ) 
     // Must be able to parse composer.json from plugin file, hopefully to detect the "_build.sha" field.
     $_composer = json_decode( file_get_contents( WP_PLUGIN_DIR . '/wp-rabbit/composer.json' ) );
 
-    if( is_object( $_composer ) && $_composer->extra && $_composer->extra->_build && $_composer->extra->_build->sha ) {
+    if( is_object( $_composer ) && isset( $_composer->extra ) && isset( $_composer->extra->_build ) && isset( $_composer->extra->_build->sha ) ) {
       $_version = $_composer->extra->_build->sha;
     }
 
