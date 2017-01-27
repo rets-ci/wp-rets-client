@@ -1,63 +1,223 @@
 import React from 'react'
+import {connect} from 'react-redux';
+import {addMap} from '../actions/index.jsx';
+import {getApi} from '../actions/index.jsx';
 
-class Map extends React.Component {
+const mapStateToProps = (state) => {
+    return {}
+};
 
-    componentDidMount() {
-        Map.loadMap();
-    }
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        addMapToStore: (map) => {
+            dispatch(addMap(map));
+        },
+        loadAPi: (location_filter) => {
 
-    static loadMap() {
-        console.log("init");
+            /**
+             * @type {$.es.Client|*}
+             */
+            let client = new jQuery.es.Client({
+                hosts: window.location.hostname
+            });
 
-        let myLatLng = {lat: -34.397, lng: 150.644};
-
-        let map = new google.maps.Map(document.getElementById('map'), {
-            center: myLatLng,
-            scrollwheel: false,
-            zoom: 8
-        });
-
-        // let url = "https://api.reddoorcompany.com/v5/property/_search?q=tax_input.location_city:Durham";
-        let url = "https://api.reddoorcompany.com/v5/property/_search?source=%7B%22query%22%3A%7B%22bool%22%3A%7B%22must%22%3A%5B%7B%22exists%22%3A%7B%22field%22%3A%22_system.location%22%7D%7D%2C%7B%22terms%22%3A%7B%22tax_input.location_county%22%3A%5B%22Durham%22%5D%7D%7D%2C%7B%22terms%22%3A%7B%22tax_input.sale_type%22%3A%5B%22Rent%22%5D%7D%7D%5D%2C%22must_not%22%3A%5B%7B%22term%22%3A%7B%22tax_input.location_latitude%22%3A%220%22%7D%7D%2C%7B%22term%22%3A%7B%22tax_input.location_longitude%22%3A%220%22%7D%7D%2C%7B%22missing%22%3A%7B%22field%22%3A%22tax_input.location_latitude%22%7D%7D%2C%7B%22missing%22%3A%7B%22field%22%3A%22tax_input.location_longitude%22%7D%7D%5D%7D%7D%2C%22_source%22%3A%20%5B%22post_title%22%2C%22tax_input.location_latitude%22%2C%22tax_input.location_longitude%22%2C%22_permalink%22%2C%22_system.neighborhood%22%2C%22_system.google_place_id%22%2C%22_system.available_date%22%2C%22_system.addressDetail%22%2C%22_system.available_date%22%2C%22_system.listed_date%22%2C%22_system.agency_listing%22%2C%22_metrics.score.total%22%2C%22meta_input.rets_thumbnail_url%22%2C%22tax_input.listing_type%22%2C%22tax_input.bedrooms%22%2C%22tax_input.bathrooms%22%2C%22tax_input.price%22%2C%22tax_input.total_living_area_sqft%22%2C%22tax_input.days_on_market%22%2C%22tax_input.acres%22%2C%22tax_input.price_per_sqft%22%2C%22tax_input.approximate_lot_size%22%2C%22tax_input.subdivision%22%2C%22tax_input.neighborhood%22%2C%22tax_input.added%22%2C%22tax_input.sale_type%22%2C%22tax_input.location_city%22%2C%22tax_input.location_street_number%22%2C%22tax_input.location_direction%22%2C%22tax_input.location_street%22%2C%22tax_input.location_unit%22%5D%2C%20%22size%22%3A500%2C%22sort%22%3A%5B%7B%22_system.agency_listing%22%3A%7B%22order%22%3A%22asc%22%7D%7D%2C%7B%22post_title%22%3A%7B%22order%22%3A%22asc%22%7D%7D%5D%7D";
-
-        jQuery.ajax({
-            url: url,
-            type: 'get',
-            dataType: 'json',
-            success: function (data) {
-                let lastPosition;
-
-
-                if (data.hits.hits.length) {
-                    for (let i in data.hits.hits) {
-                        let position = new google.maps.LatLng(data.hits.hits[i]._source.tax_input.location_latitude, data.hits.hits[i]._source.tax_input.location_longitude);
-                        new google.maps.Marker({
-                            position: position,
-                            map: map,
-                            title: data.hits.hits[i]._source.post_title
-                        });
-
-                        lastPosition = position;
-                    }
-                    map.setCenter(lastPosition);
+            let query = {
+                "bool": {
+                    "must": [
+                        {
+                            "exists": {
+                                "field": "_system.location"
+                            }
+                        },
+                        {
+                            "terms": {
+                                "tax_input.location_county": [
+                                    "Durham"
+                                ]
+                            }
+                        },
+                        {
+                            "terms": {
+                                "tax_input.sale_type": [
+                                    "Rent"
+                                ]
+                            }
+                        }
+                    ],
+                    "must_not": [
+                        {
+                            "term": {
+                                "tax_input.location_latitude": "0"
+                            }
+                        },
+                        {
+                            "term": {
+                                "tax_input.location_longitude": "0"
+                            }
+                        },
+                        {
+                            "missing": {
+                                "field": "tax_input.location_latitude"
+                            }
+                        },
+                        {
+                            "missing": {
+                                "field": "tax_input.location_longitude"
+                            }
+                        }
+                    ]
                 }
-            }
-        });
+            };
 
+            if (location_filter)
+                query.bool = Object.assign(query.bool, {
+                    "filter": {
+                        "geo_bounding_box": {
+                            "tax_input.location_latitude": {
+                                "top_left": {
+                                    "lat": location_filter.top_left.lat,
+                                    "lon": location_filter.top_left.lon
+                                },
+                                "bottom_right": {
+                                    "lat": location_filter.bottom_right.lat,
+                                    "lon": location_filter.bottom_right.lon
+                                }
 
+                            }
+                        }
+                    }
+                });
+
+            query = JSON.stringify(query);
+
+            let size = 500;
+
+            let aggregations = JSON.stringify({});
+
+            let source = JSON.stringify([
+                "post_title",
+                "tax_input.location_latitude",
+                "tax_input.location_longitude",
+                "_permalink",
+                "_system.neighborhood",
+                "_system.google_place_id",
+                "_system .available_date",
+                "_system.addressDetail",
+                "_system.available_date",
+                "_system.listed_date",
+                "_system.agency_listing",
+                "_metrics.score.total",
+                "meta_input.rets_thumbnail_url",
+                "tax_input.listing_type",
+                "tax_input.bedrooms",
+                "tax_input.bathrooms",
+                "tax_input.price",
+                "tax_input.total_living_area_sqft",
+                "tax_input.days_on_market",
+                "tax_input.acres",
+                "tax_input.price_per_sqft",
+                "tax_input.approximate_lot_size",
+                "tax_input.subdivision",
+                "tax_input.neighborhood",
+                "tax_input.added",
+                "tax_input.sale_type",
+                "tax_input.location_city",
+                "tax_input .location_street_number",
+                "tax_input.location_direction",
+                "tax_input.location_street",
+                "tax_input.location_unit"
+            ]);
+
+            let index = 'v5',
+                type = 'property';
+
+            let esQuery = {
+                index: index,
+                type: type,
+                method: "POST",
+                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
+            };
+
+            client.search(esQuery, function getPropertiesResponse(error, response) {
+                dispatch(getApi(response));
+            });
+        }
+    }
+};
+
+const Map = function ({mapState, response, addMapToStore, loadAPi}) {
+
+    if (typeof mapState.map === 'undefined'){
+        setTimeout(function () {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 35.994033, lng: -78.898619},
+                scrollwheel: false,
+                zoom: 9
+            });
+
+            let location_filter = null;
+
+            map.addListener('dragend', function () {
+                console.log('Dragged');
+                let bounds = map.getBounds();
+                let NE = bounds.getNorthEast();
+                let SW = bounds.getSouthWest();
+
+                location_filter = {
+                    "top_left": {
+                        "lat": NE.lat(),
+                        "lon": NE.lng()
+                    },
+                    "bottom_right": {
+                        "lat": SW.lat(),
+                        "lon": SW.lng()
+                    }
+                };
+
+                loadAPi(location_filter);
+            });
+
+            addMapToStore(map);
+        }, 500);
     }
 
-    render() {
 
-        var style = {
-            height: '200px',
-            width: '400px'
+    if (typeof response.hits !== 'undefined') {
+
+        let map = mapState.map;
+
+        let lastPosition;
+
+        if (response.hits.hits.length) {
+            for (let i in response.hits.hits) {
+                let position = new google.maps.LatLng(response.hits.hits[i]._source.tax_input.location_latitude, response.hits.hits[i]._source.tax_input.location_longitude);
+                new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: response.hits.hits[i]._source.post_title
+                });
+
+                lastPosition = position;
+            }
+            map.setCenter(lastPosition);
         }
 
-        return (
-            <div id="map" style={style}></div>
-        )
-    }
-}
+        addMapToStore(map);
+    }else
+        if(typeof mapState.map !== 'undefined')
+            loadAPi();
 
-export default Map
+    let style = {
+        height: '200px',
+        width: '400px'
+    };
+
+    return (
+        <div id="map" style={style}>Loading ...</div>
+    )
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Map);

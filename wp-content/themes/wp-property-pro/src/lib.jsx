@@ -1,4 +1,6 @@
 export const Lib = {
     ADD_POST_ACTION: 'ADD_POST',
-    INIT_MENU_ACTION: 'INIT_MENU'
-}
+    INIT_MENU_ACTION: 'INIT_MENU',
+    GET_API_ACTION: 'GET_API',
+    ADD_MAP_ACTION: 'ADD_MAP'
+};

@@ -1,12 +1,12 @@
 import React from 'react';
 import Menu from './Menu.jsx';
 import Content from './Content.jsx';
-import Map from "./Map.jsx"
+import MapContent from '../containers/MapContent.jsx'
 
 const App = () => (
     <div>
         <Menu />
-        <Map />
+        <MapContent />
         <Content />
     </div>
 );
