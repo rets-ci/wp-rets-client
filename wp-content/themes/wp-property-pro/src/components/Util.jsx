@@ -19,6 +19,11 @@ class Util extends React.Component {
 
         return style;
     }
+
+    static parseURL(){
+        let path = location.pathname;
+        let apthArray = path.split('/');
+    }
 }
 
 export default Util;

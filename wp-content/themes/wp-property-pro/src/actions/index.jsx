@@ -14,14 +14,6 @@ export const initMenu = (menuItems) => {
     }
 };
 
-export const getApi = (response) => {
-    return {
-        type: Lib.GET_API_ACTION,
-        response: response
-    }
-};
-
-
 export const addMap = (map) => {
     return {
         type: Lib.ADD_MAP_ACTION,
