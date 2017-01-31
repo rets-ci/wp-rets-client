@@ -130,11 +130,6 @@ namespace UsabilityDynamics\CloudFront {
       if( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
         return;
       }
-      // No Query params.
-//      $_GET = array();
-
-      // No post data.
-      //$_POST = array();
 
     }
 
