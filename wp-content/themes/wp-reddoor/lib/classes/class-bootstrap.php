@@ -322,6 +322,101 @@ namespace UsabilityDynamics\RDC {
 
       }
 
+      public function parse_request_modified($query)
+      {
+        //parse_request
+
+        $_POST = array();
+
+        if( !isset( $_POST['wpp_search'] ) && ( strpos( $_SERVER[ 'REQUEST_URI' ], 'rent/' ) === 1 ||  strpos( $_SERVER[ 'REQUEST_URI' ], 'sale/' ) === 1 ) ) {
+
+          $_parts = explode( '/', str_replace( array( '/rent/', '/sale/' ), '', $_SERVER[ 'REQUEST_URI' ] ) );
+
+          $_parts[1] = reset( explode( '?', $_parts[1] ) );
+
+          $_POST['wpp_search' ] = array( $_parts[0] => $_parts[1] );
+          $_POST['_term_slug' ] = $_parts[1];
+          //$_POST['_term' ] = $_parts[1];
+          $_POST['_taxonomy' ] = $_parts[0];
+
+          //$term_object = get_term_by('slug', $_POST['_term_slug' ], $_POST['_taxonomy']);
+
+          rdc_log( '$_parts', $_parts );
+          rdc_log( '_post', $_POST );
+
+          return $query;
+        }
+
+
+        //rdc_log( print_r($_POST, true) );
+
+
+        if (!empty($_POST['wpp_search']) && !empty($_POST['_term'])) {
+          rdc_log( 'doing wpp term redireciton for rdc' );
+
+          $term = $_POST['_term'];
+          $term = is_numeric($term) ? (int)$term : $term;
+
+          if (!empty($_POST['_taxonomy'])) {
+
+            if( isset( $_POST['_term_slug' ] ) ) {
+              rdc_log( 'get by slug');
+              $term_object = get_term_by('slug', $_POST['_term_slug' ], $_POST['_taxonomy']);
+            } else {
+              rdc_log( 'get by name');
+              $term_object = get_term_by('name', $term, $_POST['_taxonomy']);
+            }
+
+            rdc_log( '$term_object', $term_object );
+
+          } else {
+            $term_object = get_term($term);
+          }
+
+          $_redirect = get_term_link($term_object->term_id);
+
+          rdc_log( '$_redirect', $_redirect );
+
+          if ($term_object->taxonomy == 'mls_id') {
+            $p_query = new \WP_Query(
+              array(
+                'post_type' => 'property',
+                'tax_query' => array(
+                  array(
+                    'taxonomy' => $term_object->taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $term_object->term_id,
+                  )
+                )
+              )
+            );
+          }
+
+          if (!empty($p_query->posts) && count($p_query->posts) > 0) {
+            rdc_log( 'id redirect', get_permalink($p_query->posts[0]->ID) );
+            wp_redirect(get_permalink($p_query->posts[0]->ID));
+            exit;
+          }
+
+          if (is_wp_error($_redirect)) {
+            return $query;
+          }
+
+          //$_query = http_build_query(apply_filters('wpp::search::query', array('wpp_search' => $_POST['wpp_search'])), '', '&');
+          //$_redirect .= (strpos($_redirect, '?') === false ? '?' : '&') . $_query;
+
+          //rdc_log( 'rdc uncaught redirect', $_redirect );
+          //wp_redirect($_redirect);
+
+          //die();
+        }
+
+        rdc_log( 'no redirection, passins through - ' .$_SERVER[ 'REQUEST_URI' ] );
+
+        return $query;
+
+      }
+
       /**
        * Register Post Types.
        *

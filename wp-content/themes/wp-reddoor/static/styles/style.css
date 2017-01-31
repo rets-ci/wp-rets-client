@@ -7888,3 +7888,6 @@ input[type="radio"].styled-checkbox-radio + label::before {
 .popup.contact-popup .wp_crm_input_label {
   display: none;
 }
+body.home .widget_sow-hero.panel-first-child {
+  height: 652px;
+}
