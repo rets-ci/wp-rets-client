@@ -20,3 +20,10 @@ export const addMap = (map) => {
         map: map
     }
 };
+
+export const setProps = (props) => {
+    return {
+        type: Lib.SET_PROPS_ACTION,
+        props: props
+    }
+};
