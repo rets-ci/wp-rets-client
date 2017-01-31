@@ -7,6 +7,7 @@
 namespace UsabilityDynamics\WPRETSC {
 
   use WP_Query;
+  use WPP_F;
 
   if( !class_exists( 'UsabilityDynamics\WPRETSC\XMLRPC' ) ) {
 
@@ -94,7 +95,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         // remove filter which slows down updates significantly. (experimental)
-        remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
+        // remove_filter( 'transition_post_status', '_update_term_count_on_transition_post_status', 10 );
 
         // Return blank array of nothing provided so auth does not fail.
         return $args[ 3 ] ? $args[ 3 ] : array();
@@ -115,12 +116,12 @@ namespace UsabilityDynamics\WPRETSC {
           return false;
         }
 
-        if( !get_site_option( 'retsci_site_id' ) || !get_site_option( 'retsci_site_secret_token' ) ) {
+        if( !get_site_option( 'ud_site_id' ) || !get_site_option( 'ud_site_secret_token' ) ) {
           return false;
         }
 
 
-        if( $site_id === get_site_option( 'retsci_site_id' ) && $secret_token === get_site_option( 'retsci_site_secret_token' ) ) {
+        if( $site_id === get_site_option( 'ud_site_id' ) && $secret_token === get_site_option( 'ud_site_secret_token' ) ) {
           $wp_xmlrpc_server->error = null;
           return true;
         }
@@ -193,6 +194,7 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * Create or Update Property
        *
        * @param $args
        * @return array
@@ -222,6 +224,8 @@ namespace UsabilityDynamics\WPRETSC {
           return array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data );
         }
 
+        $_new_post_status = $post_data[ 'post_status' ];
+
         // set post status to draft since it may be inserting for a while due to large amount of terms
         $post_data[ 'post_status' ] = 'draft';
 
@@ -244,7 +248,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data['tax_input'] = array();
 
         // Ensure we have lat/log meta fields. @note May be a better place to set this up?
-        if( !$post_data[ 'meta_input' ][ 'latitude' ] && isset( $post_data['_system']['location']['lat'] ) ) {
+        if( ( !isset( $post_data[ 'meta_input' ][ 'latitude' ] ) || !$post_data[ 'meta_input' ][ 'latitude' ] ) && isset( $post_data['_system']['location']['lat'] ) ) {
           $post_data[ 'meta_input' ][ 'latitude' ] = $post_data['_system']['location']['lat'];
           $post_data[ 'meta_input' ][ 'longitude' ] = $post_data['_system']['location']['lon'];
           ud_get_wp_rets_client()->write_log( 'Inserted lat/lon from _system ' . $post_data['_system']['location']['lat'] );
@@ -262,110 +266,10 @@ namespace UsabilityDynamics\WPRETSC {
             "error" => $_post_id->get_error_message()
           );
 
-        } else {
-
-          if(!empty($_post_data_tax_input)){
-            foreach($_post_data_tax_input as $tax_name => $tax_tags){
-
-              if(!get_taxonomy($tax_name)){
-
-                // @note If "hierarchical" is true then we can not pass in terms using names but must inead use ID.
-                $_register_taxonomy = register_taxonomy($tax_name, array( 'property' ), array(
-                  'hierarchical' => false
-                ));
-
-                if( is_wp_error( $_register_taxonomy ) ) {
-                  ud_get_wp_rets_client()->write_log( 'Unable to register a new taxonomy ' . $tax_name );
-                }
-
-              }
-
-              if( is_taxonomy_hierarchical( $tax_name ) ) {
-
-                ud_get_wp_rets_client()->write_log( "Handling hierarchical taxonomy [$tax_name]." );
-
-                $_terms = array();
-
-                foreach( $tax_tags as $_term_name ) {
-
-                  $_term_parts = explode( ' > ', $_term_name );
-
-                  $_term = get_term_by( 'slug', sanitize_title( $_term_name ), $tax_name, ARRAY_A );
-                  $_term_parent = get_term_by( 'slug', sanitize_title( $_term_parts[0] ), $tax_name, ARRAY_A );
-
-                  if( !$_term_parent ) {
-                    ud_get_wp_rets_client()->write_log( "Did not find parent term [$_term_parts[0]]." );
-
-                    $_term_parent = wp_insert_term( $_term_parts[0], $tax_name, array(
-                      "slug" => sanitize_title( $_term_parts[0] )
-                    ));
-
-                    ud_get_wp_rets_client()->write_log( "Created parent term [$_term_parts[0]] with [" . $_term_parent['term_id'] ."]." );
-
-                  }
-
-                  if( $_term_parent && !$_term && $_term_parts[1] ) {
-                    ud_get_wp_rets_client()->write_log( "Did not find child term [$_term_parts[1]] with slug [" .sanitize_title( $_term_name ) . "]." );
-
-                    $_term = wp_insert_term( $_term_name, $tax_name, array(
-                      "parent" => $_term_parent['term_id'],
-                      "slug" => sanitize_title( $_term_name )
-                    ));
-
-                    if( $_term && !is_wp_error( $_term ) ) {
-
-                      $_child_term_name_change = wp_update_term( $_term['term_id'], $tax_name, array(
-                        'name' => $_term_parts[1],
-                        'slug' => sanitize_title( $_term_name )
-                      ));
-
-                      //ud_get_wp_rets_client()->write_log( '$_child_term_name_change' );
-                      //ud_get_wp_rets_client()->write_log( $_child_term_name_change );
-
-                    }
-
-                    ud_get_wp_rets_client()->write_log( "Created child term [$_term_name] with [" . $_term['term_id'] ."] for [$_term_parts[0]] parent." );
-                  }
-
-                  if( $_term_parent && $_term_parent['term_id'] ) {
-                    $_terms[] = $_term_parent['term_id'];
-                  }
-
-                  if( $_term && $_term['term_id'] ) {
-                    // ud_get_wp_rets_client()->write_log( "Did not find and could not create child term [$_term_parts[0]] using [".sanitize_title( $_term_parts[1] )."] slug" );
-                    $_terms[] = $_term['term_id'];
-                  }
-
-                }
-
-                $_inserted_terms = wp_set_post_terms( $_post_id, $_terms, $tax_name );
-
-                ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_inserted_terms ) . "] terms." );
-
-              } else {
-                wp_set_post_terms( $_post_id, $tax_tags, $tax_name );
-              }
-
-              //ud_get_wp_rets_client()->write_log( "Inserted terms $tax_name." );
-              //ud_get_wp_rets_client()->write_log( $_insert_result );
-
-            }
-          }
-
-          ud_get_wp_rets_client()->write_log( 'Inserted property post as draft ' . $_post_id );
-
-          if( ( !isset( $post_data[ 'meta_input' ][ 'address_is_formatted' ] ) || !$post_data[ 'meta_input' ][ 'address_is_formatted' ] ) && method_exists( 'WPP_F', 'revalidate_address' )  ) {
-            ud_get_wp_rets_client()->write_log( 'Revalidate address if it was not done yet' );
-            $r = \WPP_F::revalidate_address( $_post_id, array( 'skip_existing' => 'false' ) );
-
-            if( !empty( $r[ 'status' ] ) && $r[ 'status' ] !== 'updated' ) {
-              ud_get_wp_rets_client()->write_log( 'Address validation failed: ' . $r[ 'status' ] );
-            } else {
-              ud_get_wp_rets_client()->write_log( 'Address validation worked, have [' . count($r['terms']) . '] terms.' );
-            }
-          }
-
         }
+
+        // Insert all the terms and creates taxonomies.
+        self::insert_terms( $_post_id, $_post_data_tax_input, $post_data );
 
         if( !empty( $post_data[ 'meta_input' ][ 'rets_media' ] ) && is_array( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
 
@@ -460,14 +364,20 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( 'Creating property post [' . $_post_id  . '].' );
         }
 
+        $_post_status = ( !empty( $_post ) && !empty( $_post->post_status ) ? $_post->post_status : 'publish' );
+
+        if( isset( $_new_post_status ) ) {
+          $_post_status  = $_new_post_status;
+        }
+
+        // If post already was added to DB, probably its status was changed manually, so let's set the latest status. peshkov@UD
         $_update_post = wp_update_post( array(
           'ID' => $_post_id,
-          // If post already was added to DB, probably its status was changed manually, so let's set the latest status. peshkov@UD
-          'post_status' => ( !empty( $_post ) && !empty( $_post->post_status ) ? $_post->post_status : 'publish' )
+          'post_status' => $_post_status
         ) );
 
         if( !is_wp_error( $_update_post ) ) {
-          ud_get_wp_rets_client()->write_log( 'Published property post [' . $_post_id  . '].' );
+          ud_get_wp_rets_client()->write_log( 'Published property post [' . $_post_id  . '], setting post_status to [' .$_post_status .']' );
           /**
            * Do something after property is published
            */
@@ -483,6 +393,150 @@ namespace UsabilityDynamics\WPRETSC {
           "post" => get_post( $_post_id ),
           "permalink" => get_the_permalink( $_post_id )
         );
+
+      }
+
+      /**
+       * Creates taxonomies and terms. Also handles hierarchies.
+       *
+       * @author potanin@UD
+       * @param $_post_id
+       * @param $_post_data_tax_input
+       * @param array $post_data
+       */
+      static public function insert_terms( $_post_id, $_post_data_tax_input, $post_data = array() ) {
+
+        foreach( (array) $_post_data_tax_input as $tax_name => $tax_tags){
+
+          // Ignore these taxonomies if we support [wpp_location].
+          if( defined( 'WPP_FEATURE_FLAG_WPP_LOCATION' ) && WPP_FEATURE_FLAG_WPP_LOCATION && in_array( $tax_name, array( 'rets_location_state', 'rets_location_county', 'rets_location_city', 'rets_location_route' ) ) ) {
+            ud_get_wp_rets_client()->write_log( "Skipping [$tax_name] taxonomy, we have [wpp_location] enabled." );
+            continue;
+          }
+
+          if(!get_taxonomy($tax_name)){
+
+            // @note If "hierarchical" is true then we can not pass in terms using names but must inead use ID.
+            $_register_taxonomy = register_taxonomy($tax_name, array( 'property' ), array(
+              'hierarchical' => false
+            ));
+
+            if( is_wp_error( $_register_taxonomy ) ) {
+              ud_get_wp_rets_client()->write_log( 'Unable to register a new taxonomy ' . $tax_name );
+            }
+
+          }
+
+          // If WP-Property location flag is enabled, and we're doing the [wpp_location] taxonomy, and the WPP_F::update_location_terms method is callable, process our wpp_location terms.
+          if( defined( 'WPP_FEATURE_FLAG_WPP_LOCATION' ) && WPP_FEATURE_FLAG_WPP_LOCATION && $tax_name === 'wpp_location' && is_callable(array( 'WPP_F', 'update_location_terms' ) ) ) {
+            ud_get_wp_rets_client()->write_log( 'Handling [wpp_location] taxonomy for [' . $_post_id .'] listing.' );
+
+            $_geo_tag_fields = array(
+              "state" => reset( $_post_data_tax_input["rets_location_state"] ),
+              "county" => reset( $_post_data_tax_input["rets_location_county"] ),
+              "city" => reset( $_post_data_tax_input["rets_location_city"] ),
+              "route" => reset( $_post_data_tax_input["rets_location_route"] ),
+            );
+
+
+            $_location_terms = WPP_F::update_location_terms( $_post_id, (object) $_geo_tag_fields);
+
+            if( is_wp_error( $_location_terms ) ) {
+              ud_get_wp_rets_client()->write_log( "Failed to insert location terms for[" .$_post_id."] property, got [" . $_location_terms->get_error_message() . " ] error" );
+            } else {
+              ud_get_wp_rets_client()->write_log( "Inserted " . count( $_location_terms ) . " location terms for [" .$_post_id."] property." );
+            }
+
+            // Avoid re-adding whatever fields were passed by real [wpp_location]
+            continue;
+
+          }
+
+          if( is_taxonomy_hierarchical( $tax_name ) ) {
+
+            ud_get_wp_rets_client()->write_log( "Handling hierarchical taxonomy [$tax_name]." );
+
+            $_terms = array();
+
+            foreach( $tax_tags as $_term_name ) {
+
+              $_term_parts = explode( ' > ', $_term_name );
+
+              $_term_parent_value = $_term_parts[0];
+
+              if( isset( $_term_parts[1] ) && $_term_parts[1] ) {
+                $_term_child_value = $_term_parts[1];
+              } else {
+                $_term_child_value = null;
+              }
+
+              $_term = get_term_by( 'slug', sanitize_title( $_term_name ), $tax_name, ARRAY_A );
+              $_term_parent = get_term_by( 'slug', sanitize_title( $_term_parent_value ), $tax_name, ARRAY_A );
+
+              if( !$_term_parent ) {
+                ud_get_wp_rets_client()->write_log( "Did not find parent term [$_term_parent_value]." );
+
+                $_term_parent = wp_insert_term( $_term_parent_value, $tax_name, array(
+                  "slug" => sanitize_title( $_term_parent_value )
+                ));
+
+                if( is_wp_error( $_term_parent ) ) {
+                  ud_get_wp_rets_client()->write_log( "Error creating term [$_term_parent_value] with [" . $_term_parent->get_error_message() ."]." );
+                } else {
+                  ud_get_wp_rets_client()->write_log( "Created parent term [$_term_parent_value] with [" . $_term_parent['term_id'] ."]." );
+                }
+
+              }
+
+              if( $_term_parent && !$_term && isset( $_term_parts ) && $_term_child_value  ) {
+
+                ud_get_wp_rets_client()->write_log( "Did not find child term [$_term_child_value] with slug [" .sanitize_title( $_term_name ) . "]." );
+                //ud_get_wp_rets_client()->write_log( 'count' . count( $_term_parts ) );
+                //ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_term_parts, true ) . '</pre>' );
+
+                $_term = wp_insert_term( $_term_name, $tax_name, array(
+                  "parent" => $_term_parent['term_id'],
+                  "slug" => sanitize_title( $_term_name ),
+                  "description" => $_term_child_value
+                ));
+
+                // add_term_meta();
+
+                if( $_term && !is_wp_error( $_term ) ) {
+
+                  $_child_term_name_change = wp_update_term( $_term['term_id'], $tax_name, array(
+                    'name' => $_term_parent_value,
+                    'slug' => sanitize_title( $_term_name )
+                  ));
+
+                  //ud_get_wp_rets_client()->write_log( '$_child_term_name_change' );
+                  //ud_get_wp_rets_client()->write_log( $_child_term_name_change );
+
+                }
+
+                ud_get_wp_rets_client()->write_log( "Created child term [$_term_name] with [" . $_term['term_id'] ."] for [$_term_parent_value] parent." );
+              }
+
+              if( $_term_parent && $_term_parent['term_id'] ) {
+                $_terms[] = $_term_parent['term_id'];
+              }
+
+              if( $_term && $_term['term_id'] ) {
+                // ud_get_wp_rets_client()->write_log( "Did not find and could not create child term [$_term_parent_value] using [".sanitize_title( $_term_parts[1] )."] slug" );
+                $_terms[] = $_term['term_id'];
+              }
+
+            }
+
+            $_inserted_terms = wp_set_post_terms( $_post_id, $_terms, $tax_name );
+
+            ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_inserted_terms ) . "] terms." );
+
+          } else {
+            wp_set_post_terms( $_post_id, $tax_tags, $tax_name );
+          }
+
+        }
 
       }
 
