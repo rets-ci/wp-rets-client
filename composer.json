@@ -15,6 +15,13 @@
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "wp_memcached_servers": "localhost:11211"
     },
+    "settings_develop-v3-andy": {
+      "wp_debug_log": true,
+      "wp_debug_display": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "wp_memcached_servers": "localhost:11211",
+      "db_name": "www.reddoorcompany.com/latest-v3"
+    },
     "settings_latest-v3": {
       "wp_debug_log": true,
       "wp_debug_display": true,
@@ -22,11 +29,7 @@
       "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "wp_memcached_servers": "localhost:11211",
-      "db": [
-        {
-          "name": "www.reddoorcompany.com/latest-v3"
-        }
-      ]
+      "db_name": "www.reddoorcompany.com/latest-v3"
     },
     "settings_develop-dmitry": {
       "wp_debug_log": true,
@@ -39,6 +42,8 @@
       ]
     },
     "settings": {
+      "WP_PROPERTY_LAYOUTS": true,
+      "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET": true,
       "UD_RETSCI_AJAX_API_URL": "https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/",
       "UD_RETSCI_API_URL": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/retsci/site/register/v2",
       "wp_siteurl": "https://www.reddoorcompany.com",
@@ -54,7 +59,7 @@
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
       "wp_cache": true,
-      "concatenate_scripts": false,
+      "concatenate_scripts": true,
       "sunrise": false,
       "multisite": false,
       "empty_trash_days": 60,

@@ -1,1 +1,0 @@
-WordPress plugin that randomizes the filename of newly uploaded media files.

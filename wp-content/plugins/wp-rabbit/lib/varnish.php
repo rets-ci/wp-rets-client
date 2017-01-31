@@ -10,10 +10,14 @@
 add_action( 'save_post', function( $post_id ) {
 
   // If this is just a revision, don't send the email.
-  if ( wp_is_post_revision( $post_id ) )
+  if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
     return;
+  }
 
   $post_url = get_permalink( $post_id );
+
+  // Removes the URL added by WP, we need the original.
+  $post_url = str_replace( '__trashed', '', $post_url );
 
   if( !$post_url ) {
     return;
@@ -27,20 +31,30 @@ add_action( 'save_post', function( $post_id ) {
     "headers" => array(
       "X-Access-Token" => isset( $_SERVER['HTTP_X_SELECTED_CONTAINER'] ) ? $_SERVER['HTTP_X_SELECTED_CONTAINER'] : '',
       "Host" => $parse['host'],
-      "x-set-branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
+      "X-Set-Branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
     ),
-    "blocking" => false
+    "blocking" => defined( "WP_DEBUG" ) && WP_DEBUG ? true : false
   );
 
-
   // make purge request to wpcloud.io. (this gets public DNS of wpcloud servers and then uses GCE load balancers to purge the appropriate machien based on hostname)
-  $_purge = wp_remote_request( "http://wpcloud.io" . $parse['path'], $purge_request_args );
+  $_purge = wp_remote_request( "http://c.rabbit.ci" . $parse['path'], $purge_request_args );
 
-  rabbit_write_log( 'Purging cache for [' . $parse['host'] . $parse['path'] . '] in ['.$_SERVER['GIT_BRANCH'].'] branch.' );
+  rabbit_write_log( 'Post [' . $post_id. '] updated. Purging cache at [' . $parse['host'] . $parse['path'] . '] url for ['.$_SERVER['GIT_BRANCH'].'] branch.' );
+
+  if( $_purge && wp_remote_retrieve_body( $_purge ) && defined( "WP_DEBUG" ) ) {
+
+    try {
+      $_response = json_decode( wp_remote_retrieve_body( $_purge ) );
+      rabbit_write_log( ' - Purge response [' . $_response->message . '].' );
+
+    } catch ( Exception $e ) {
+      rabbit_write_log( ' - Unable to parse purge response.' );
+    }
+
+  }
+
 
 }, 50 );
-
-
 
 /**
  * Purge Entire Site on Permalink Change.
@@ -64,7 +78,7 @@ add_filter( 'generate_rewrite_rules', function( $wp_rewrite ) {
       "Host" => $parse['host'],
       "x-set-branch" => isset( $_SERVER['GIT_BRANCH'] ) ? $_SERVER['GIT_BRANCH'] : ''
     ),
-    "blocking" => false
+    "blocking" => defined( "WP_DEBUG" ) && WP_DEBUG ? true : false
   ));
 
   rabbit_write_log( 'Purging all cache for [' . $parse['host'] . $parse['path'] . '/*' . '] in ['.$_SERVER['GIT_BRANCH'].'] branch.' );
@@ -74,6 +88,8 @@ add_filter( 'generate_rewrite_rules', function( $wp_rewrite ) {
 }, 50 );
 
 /**
+ * Write to file log.
+ *
  * @param $data
  */
 function rabbit_write_log( $data ) {

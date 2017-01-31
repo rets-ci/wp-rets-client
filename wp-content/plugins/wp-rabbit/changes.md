@@ -1,3 +1,10 @@
+### 1.0.7
+* Performance improvement to self-updater logic.
+* Outputting purge response logs when [WP_DEBUG] mode is enabled.
+
+### 1.0.6
+* Added Git Branch and Object Cache type detail to navbar.
+
 ### 1.0.5
 * Varnish purge fix.
 
