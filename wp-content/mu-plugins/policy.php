@@ -30,7 +30,6 @@ namespace RedDoorCompany\Policy {
   add_filter( 'option_active_plugins', function ( $_plugins ) {
 
     $_plugins[] = 'wp-rabbit/wp-rabbit.php';
-    $_plugins[] = 'wp-rets-client/wp-rets-client.php';
     $_plugins[] = 'wp-upstream/wp-upstream.php';
     $_plugins[] = 'simple-history/index.php';
     $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
