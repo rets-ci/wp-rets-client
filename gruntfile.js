@@ -7,76 +7,17 @@ module.exports = function ( grunt ) {
   grunt.initConfig( {} );
 
   grunt.registerTask( "default", defaultTask );
-  grunt.registerTask( "primeRedirectionCache", primeRedirectionCache );
-  grunt.registerTask( "primeSitemapCache", primeSitemapCache );
-  grunt.registerTask( "cacheTest", cacheTest );
+  grunt.registerTask( "primeCache", primeCache );
   grunt.registerTask( "watchCacheChange", watchCacheChange );
 
   /**
    *
-   * grunt primeRedirectionCache
-   * DEBUG=* grunt primeRedirectionCache
+   * clear; DEBUG=* grunt primeCache
+   *
+   * grunt primeCache
    *
    */
-  function primeRedirectionCache() {
-
-    var taskDone = this.async();
-    var debug = require( 'debug' )('prime');
-
-    var esQuery = {
-      "index": process.env.ES_INDEX,
-      "type": process.env.ES_TYPE,
-      "size": 1,
-      "from": 0,
-      "scroll": '300m',
-      "body": {
-        "query": {
-          "filtered": {
-            "filter": {
-              "bool": {
-                "must": [
-                  {
-                    "exists": { "field": "_permalink" }
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    };
-
-    scrollResults( esQuery, handleListing, function () {
-      debug( 'scrollComplete' );
-      taskDone();
-    } );
-
-    function handleListing( source, callback, doc ) {
-      // debug( '[%s] Priming [%s] ID.', _done, doc._id );
-      //debug( 'https://www.reddoorcompany.com/listing/' + doc._id );
-
-      cache_prime_request( 'https://d2v5c8pxcauet3.cloudfront.net/listing/' + doc._id, callback );
-
-    }
-
-  }
-
-  /**
-   *
-   *
-   * https://www.reddoorcompany.com/sitemap_index.xml
-   *
-   *
-   * 'http://localhost/sitemap_index.xml'
-   *
-   *
-   * DEBUG=* nohup grunt primeSitemapCache &
-   * 
-   * grunt primeSitemapCache
-   * DEBUG=* grunt primeSitemapCache
-   *
-   */
-  function primeSitemapCache() {
+  function primeCache() {
 
     var taskDone = this.async();
 
@@ -85,12 +26,24 @@ module.exports = function ( grunt ) {
     var _maps = require( './package').config.sitemaps;
 
     var _queue = async.queue(function (task, callback) {
-      //debug('Doing task [%s].', task.location);
-      cache_prime_request(task.location, callback);
-    }, 2);
+      debug('Starting [primeCache] task [%s] with gzip [%s].', task.location, task.gzip);
 
-    _queue.push({location:'https://www.reddoorcompany.com/'});
-    _queue.push({location:'https://www.reddoorcompany.com'});
+      cache_prime_request(task.location, { gzip: task.gzip }, function responseCallback( error, resp, stats ) {
+
+        if( stats.cached && stats.age > 10000 ) {
+          console.log( stats.url.green, stats.options.gzip ? 'gzip' : '' );
+        } else if( stats.cached && stats.age < 10000 ) {
+          console.log( stats.url.blue, stats.options.gzip ? 'gzip' : '', stats.age );
+        } else {
+          console.log( stats.url.red, stats.options.gzip ? 'gzip' : '' );
+        }
+
+        //console.log( 'resp.headers', require( 'util' ).inspect( resp.headers, { showHidden: false, depth: 2, colors: true } ) );
+        callback( error, resp, stats );
+
+      });
+
+    }, 10);
 
     var _sites = [];
 
@@ -111,9 +64,13 @@ module.exports = function ( grunt ) {
         debug( 'Have [%s] urls from [%s] sitemap.', sites.sites.length, 'https://usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci/' + _map );
 
         _.each(sites.sites, function( location ) {
+
+          location = location.replace('usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci', 'www.reddoorcompany.com');
+
           // console.log( "Pushing location", location );
-          _queue.push({location:location});
-          _sites.push( location );
+          _queue.push({location:location, gzip: true });
+          _queue.push({location:location, gzip: false });
+          //_sites.push( location );
         });
 
         done();
@@ -125,34 +82,13 @@ module.exports = function ( grunt ) {
 
       _queue.drain = function() {
         console.log( 'drained' );
-        //taskDone();
-
+        taskDone();
       }
 
     } );
 
 
-    //setTimeout(function(){}, 100000 );
-
-
-
   }
-
-  /**
-   * grunt cacheTest
-   */
-  function cacheTest() {
-
-    var taskDone = this.async();
-
-    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/' );
-    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/buy' );
-    rabbit_request( 'https://d2v5c8pxcauet3.cloudfront.net/rent' );
-
-    setTimeout(taskDone, 5000 );
-
-  }
-
 
   /**
    *
@@ -260,22 +196,47 @@ function rabbit_request( target_url, request_done ) {
 
 }
 
-function cache_prime_request( target_url, request_done ) {
-  // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
+/**
+ *
+ * - the 'accept' header is cache-busting, not sure if value is analyzed
+ * - the 'accept-encoding' header is cache-busting. Seems to look for "gzip" value.
+ *
+ * - the 'accept-language' header is ignored
+ *
+ *
+ * @todo Could just issue accept-encoding with and without "gzip".
+ * @param target_url
+ * @param options
+ * @param request_done
+ */
+function cache_prime_request( target_url, options, request_done ) {
+  debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
+
+  _.defaults( options, { gzip: true } );
 
   var _requestOptions = {
-    url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
-    actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
+    url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ).replace( 'usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci', 'd2v5c8pxcauet3.cloudfront.net' ),
+    actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ).replace( 'usabilitydynamics-www-reddoorcompany-com-production.c.rabbit.ci', 'www.reddoorcompany.com' ),
     method: 'GET',
     strictSSL: false,
     followRedirect: false,
     headers: {
+      'accept': 'text/html',
+      'accept-encoding': options.gzip ? 'gzip, deflate, sdch, br' : 'deflate, sdch, br',
+      //'accept-language':'en-US,en;q=0.8',
       'host': 'www.reddoorcompany.com',
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'accept-language':'en-US,en;q=0.8',
       'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
     }
   };
+
+  var _resultDetail = {
+    url: _requestOptions.actualUrl,
+    cached: undefined,
+    age: undefined,
+    options: options
+  };
+
+  // debug( 'Making Cache Prime request to [%s].', _requestOptions.url );
 
   request(_requestOptions, function haveCallback( error, resp, body ) {
 
@@ -289,16 +250,24 @@ function cache_prime_request( target_url, request_done ) {
 
       if( _.get( resp, 'headers.age' ) ) {
         debug( '[%s] Already primed [%s] to with [%s] age.', _done, _requestOptions.actualUrl, _.get( resp, 'headers.age' ) );
+        _resultDetail.cached = true;
+        _resultDetail.age = parseInt( _.get( resp, 'headers.age' ) );
       } else {
-        debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] )
+        debug( '[%s] Primed [%s] to follow [%s] url.', _done, _requestOptions.actualUrl, resp.headers[ 'location' ] );
+        _resultDetail.cached = false;
+        _resultDetail.age = null;
       }
 
       _queue.push({location: resp.headers['location'], resp: resp}, function (err, resp) {
 
         if( _.get( resp, 'headers.age' ) ) {
           debug('[%s] Already primed [%s] with [%s] ttl.', _done, resp.headers['location'], _.get( resp, 'headers.age' ) );
+          _resultDetail.cached = true;
+          _resultDetail.age = parseInt( _.get( resp, 'headers.age' ) );
         } else {
           debug('[%s] Primed [%s] with [%s] status code.', _done, _requestOptions.actualUrl, resp.statusCode);
+          _resultDetail.cached = false;
+          _resultDetail.age = null;
         }
 
       });
@@ -309,13 +278,18 @@ function cache_prime_request( target_url, request_done ) {
 
       if( resp.headers.age ) {
         debug( '[%s] Already primed [%s], status [%s], age [%s].', _done, _requestOptions.actualUrl, resp.statusCode, resp.headers.age );
+        _resultDetail.cached = true;
+        _resultDetail.age = parseInt( _.get( resp, 'headers.age' ) );
       } else {
         debug( '[%s] Primed [%s], status [%s].', _done, _requestOptions.actualUrl, resp.statusCode );
+        _resultDetail.cached = false;
+        _resultDetail.age = null
+
       }
     }
 
     if( 'function' === typeof request_done ) {
-      request_done( null, resp );
+      request_done( null, resp, _resultDetail );
     }
 
   });
@@ -323,10 +297,10 @@ function cache_prime_request( target_url, request_done ) {
 }
 
 function get_header_request( target_url, request_done ) {
-  // debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
+  debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
 
   var _requestOptions = {
-    url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
+    //url: target_url.replace( 'www.reddoorcompany.com', 'd2v5c8pxcauet3.cloudfront.net' ),
     actualUrl:  target_url.replace( 'd2v5c8pxcauet3.cloudfront.net', 'www.reddoorcompany.com' ),
     method: 'GET',
     strictSSL: false,
@@ -442,7 +416,7 @@ var async = require( 'async' );
 
 var _queue = async.queue(function (task, callback) {
   //debug('Doing task [%s].', task.location);
-  cache_prime_request(task.location, callback);
+  cache_prime_request(task.location, {}, callback);
 }, 2);
 
 var _done = 0;
