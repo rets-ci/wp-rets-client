@@ -10,11 +10,14 @@
 add_action( 'save_post', function( $post_id ) {
 
   // If this is just a revision, don't send the email.
-  if ( wp_is_post_revision( $post_id ) ) {
+  if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
     return;
   }
 
   $post_url = get_permalink( $post_id );
+
+  // Removes the URL added by WP, we need the original.
+  $post_url = str_replace( '__trashed', '', $post_url );
 
   if( !$post_url ) {
     return;
