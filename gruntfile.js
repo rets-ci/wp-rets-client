@@ -14,10 +14,12 @@ module.exports = function ( grunt ) {
 
   /**
    * Prime Listing Redirection
-   * 
+   *
    * grunt primeRedirectionCache
    *
    * DEBUG=prime:redirection grunt primeRedirectionCache
+   *
+   * DEBUG=prime:redirection nohup grunt primeRedirectionCache &
    *
    */
   function primeRedirectionCache() {
