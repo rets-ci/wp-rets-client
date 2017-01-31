@@ -1,4 +1,5 @@
 <?php
+/**
  * Plugin Name: rets.ci mapper
  * Plugin URI: https://www.usabilitydynamics.com/product/wp-crm/
  * Description: Map fields
@@ -13,6 +14,6 @@ add_action('admin_menu', function() {
 
   add_dashboard_page('Mapper', 'Mapper', 'read', 'rets-mapper', function() {
     include_once( __DIR__ . '/views/rets-mapper-ui.php' );
-
   } );
+
 });
