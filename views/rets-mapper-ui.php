@@ -1,6 +1,8 @@
 <?php
 
-$_analysis = json_decode( wp_remote_retrieve_body( wp_remote_get('https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/v1/site/616bf200-b814-4a8b-816e-a4405061e3b8/analysis?token=40f95eaadca4472e7213f1f7d6ead1a7') ) );
+$api_url = 'https://rets-ci-node-client-service-latest.c.rabbit.ci/' . get_option('ud_site_id') . '/analysis?token=40f95eaadca4472e7213f1f7d6ead1a7';
+
+$_analysis = json_decode( wp_remote_retrieve_body( wp_remote_get($api_url) ) );
 
 wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/jquery.tablesorter.min.js' );
 ?>
