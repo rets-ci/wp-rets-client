@@ -1,1 +1,0 @@
-define("udx.ui.parallax",["udx.utility"],function(){return console.debug("udx.ui.parallax","loaded"),function(){return console.debug("udx.ui.parallax","ready"),this}});
