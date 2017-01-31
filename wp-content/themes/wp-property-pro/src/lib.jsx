@@ -1,0 +1,6 @@
+export const Lib = {
+    ADD_POST_ACTION: 'ADD_POST',
+    INIT_MENU_ACTION: 'INIT_MENU',
+    ADD_MAP_ACTION: 'ADD_MAP',
+    ADD_MARKER_ACTION: 'ADD_MARKER'
+};
