@@ -1,6 +1,6 @@
 <?php
 
-$api_url = 'https://rets-ci-node-client-service-latest.c.rabbit.ci/' . get_option('ud_site_id') . '/analysis?token=40f95eaadca4472e7213f1f7d6ead1a7';
+$api_url = 'https://rets-ci-node-client-service-latest.c.rabbit.ci/' . get_option('ud_site_id') . '/analysis?token=' . get_option('ud_site_secret_token');
 
 $_analysis = json_decode( wp_remote_retrieve_body( wp_remote_get($api_url) ) );
 
