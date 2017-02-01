@@ -1,5 +1,15 @@
 import React from 'react'
+import {connect} from 'react-redux';
 
+const mapStateToProps = (state) => {
+    return {
+
+    }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+
+};
 
 class Api extends React.Component {
 
@@ -60,8 +70,11 @@ class Api extends React.Component {
         });
 
         let rows = [];
-        if (!params.term || params.term.length < 3)
+
+        if (!params.term || params.term.length < 3){
+            callback(rows);
             return;
+        }
 
         let _source = {
             "query": {"match": {"post_status": "publish"}},
@@ -94,13 +107,6 @@ class Api extends React.Component {
             body: _source
         }, function selectQueryResponse(err, response) {
 
-            // console.log(response);
-            //
-            // if (typeof response.hits.hits == 'undefined') {
-            //     // query.callback({ results: data });
-            //     return;
-            // }
-
             let rows = [];
 
             for (let aggregationKey in response.aggregations) {
@@ -116,7 +122,7 @@ class Api extends React.Component {
 
                     _buckets.push({
                         id: data.key,
-                        text: data.key + ' (' + data.doc_count + ')',
+                        text: data.key,
                         count: data.doc_count,
                         taxonomy: data.slug
                     });
@@ -170,6 +176,11 @@ class Api extends React.Component {
             hosts: window.location.hostname
         });
 
+        let terms = {};
+        terms['tax_input.'+params.tax] = [
+            params.term
+        ];
+
         let query = {
             "bool": {
                 "must": [
@@ -179,11 +190,7 @@ class Api extends React.Component {
                         }
                     },
                     {
-                        "terms": {
-                            "tax_input.location_county": [
-                                params.locationCountry
-                            ]
-                        }
+                        "terms": terms
                     },
                     {
                         "terms": {
@@ -293,25 +300,12 @@ class Api extends React.Component {
 
     }
 
-    static refreshMapMarkers(map, response) {
 
-        if (response.hits.hits.length) {
-
-            let lastPosition;
-
-            for (let i in response.hits.hits) {
-                let position = new google.maps.LatLng(response.hits.hits[i]._source.tax_input.location_latitude, response.hits.hits[i]._source.tax_input.location_longitude);
-                new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    title: response.hits.hits[i]._source.post_title
-                });
-
-                lastPosition = position;
-            }
-            map.setCenter(lastPosition);
-        }
-    }
 }
 
-export default Api;
+const ApiObject = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Api);
+
+export default ApiObject;

@@ -1,13 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Api from './Api.jsx';
+import Api from '../containers/Api.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
-import {setProps} from '../actions/index.jsx';
+import {setSearchProps} from '../actions/index.jsx';
+import {setMapProps} from '../actions/index.jsx';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, history) => {
     return {
         currentState: state,
-        props: state.propsState.props
+        searchProps: state.searchPropsState.searchProps,
+        history: history
     }
 };
 
@@ -15,70 +17,56 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         searchHandler: (state, event) => {
 
-            if (event.key === 'Enter')
-                return false;
-
             let searchParams = {
                 term: event.target.value
             };
 
             Api.selectQuery(searchParams,
                 function (rows) {
-
-                // alert(rows.length);
                     jQuery('.search-results').empty();
-                        dispatch(setProps(rows));
-
-
-                    // if (response.regular[0].options.length) {
-                    //     for (let i in response.regular[0].options) {
-                    //         let option = response.regular[0].options[i];
-                    //
-                    //         if (!option.payload)
-                    //             continue;
-                    //
-                    //         console.log(response.hits.hits[i]);
-                    //     }
-                    // }
-
-                    // jQuery('.search-results').append()
+                    dispatch(setSearchProps(rows));
                 }
-                //     function (response) {
-                //
-                //     if (typeof response.regular == 'undefined')
-                //         return;
-                //
-                //     jQuery('.search-results').empty();
-                //
-                //     if (response.regular[0].options.length) {
-                //         for (let i in response.regular[0].options) {
-                //             let option = response.regular[0].options[i];
-                //
-                //             if (!option.payload)
-                //                 continue;
-                //
-                //             console.log(response.hits.hits[i]);
-                //         }
-                //     }
-                //
-                //     // jQuery('.search-results').append()
-                // }
             );
+        },
+        searchItemClick: (title, url, tax, term) => {
+            history.pushState({}, title, url);
+            jQuery('title').text(title);
+
+            let params = {
+                tax: tax,
+                term: term,
+                saleType: jQuery('#search_type').val()
+            };
+
+            Api.search(params, function(response){
+                dispatch(setMapProps(response));
+            });
         }
     }
 };
 
-const SearchContent = function ({currentState, searchHandler, props}) {
+const SearchContent = function ({currentState, searchHandler, searchProps, searchItemClick}) {
 
-    let searchResults = props.map((prop) => {
+    let searchResults = searchProps.map((prop) => {
 
-        return (<SearchResultRow prop={prop} />)
+        return (<SearchResultRow prop={prop} clickHandler={searchItemClick}/>)
     });
+
+    let style = {
+      "overflow-y": "scroll",
+      "background": "grey",
+      "height": "100px",
+      "width": "200px",
+    };
 
     return (
         <div>
+            <select id="search_type">
+                <option value="Rent" selected="selected">Rent</option>
+                <option value="Sale">Buy</option>
+            </select>
             <input type="text" onKeyUp={searchHandler.bind(this, currentState)}/>
-            <ul id="search-result">
+            <ul id="search-result" style={style}>
                 {searchResults}
             </ul>
         </div>

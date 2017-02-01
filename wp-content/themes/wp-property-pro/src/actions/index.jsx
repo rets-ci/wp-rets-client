@@ -21,9 +21,23 @@ export const addMap = (map) => {
     }
 };
 
-export const setProps = (props) => {
+export const setSearchProps = (searchProps) => {
     return {
-        type: Lib.SET_PROPS_ACTION,
-        props: props
+        type: Lib.SET_SEARCH_PROPS_ACTION,
+        searchProps: searchProps
+    }
+};
+
+export const setMapProps = (mapProps) => {
+    return {
+        type: Lib.SET_MAP_PROPS_ACTION,
+        mapProps: mapProps
+    }
+};
+
+export const setMapMarkers = (mapMarkers) => {
+    return {
+        type: Lib.SET_MAP_MARKERS_ACTION,
+        mapMarkers: mapMarkers
     }
 };

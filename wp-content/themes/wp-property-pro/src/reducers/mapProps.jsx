@@ -1,13 +1,13 @@
 import {Lib} from "../lib.jsx";
 
-const props = (state = {}, action) => {
+const mapProps = (state = {}, action) => {
     switch (action.type) {
-        case Lib.SET_PROPS_ACTION:
+        case Lib.SET_MAP_PROPS_ACTION:
             return Object.assign({}, state, {
-                props: action.props
+                mapProps: action.mapProps
             });
         default:
             return state
     }
 }
-export default props
+export default mapProps
