@@ -40,16 +40,34 @@ wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery
   </tr>
   </thead>
   <tbody>
-<?php  foreach( $_analysis->data as $_field ) { ?>
+  <?php $c = 0; ?>
+<?php foreach( $_analysis->data as $_field ) { ?>
+  <?php $c++; ?>
   <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
-
+    
     <th class="hidden"><?php echo $_field->_id; ?></th>
     <th><?php echo $_field->key; ?></th>
     <td><?php echo $_field->totalCount; ?></td>
     <td class="hidden"><?php echo $_field->type; ?></td>
     <td><?php echo $_field->usageRate; ?></td>
     <td><?php echo $_field->group; ?></td>
-    <td><?php echo isset( $_field->values  ) ? count( $_field->values ) : ''; ?></td>
+    <td class="mapper-show-info" data-info-block="block-<?php echo $c; ?>" style="color:blue;font-weight: bold;cursor:pointer">
+      <?php
+      if(isset( $_field->values  )){
+        echo count( $_field->values );
+        $i = 0; ?>
+        <div class="hidden block-<?php echo $c; ?>" style="padding: 2px;font-style: italic">
+          <?php
+          foreach($_field->values as $value){
+            $i++;
+            if($i < 5){
+              echo $value->value . '<br/>';
+            }
+          }
+          ?>
+        </div>
+      <?php }; ?>
+    </td>
     <td><input type="text" value=""></td>
 
   </tr>
@@ -71,6 +89,10 @@ echo( '<pre class="hidden">' . print_r( $_analysis, true ) . '</pre>' ); ?>
         cssAsc: 'asc',
         cssDesc: 'desc',
         widthFixed: true
+      });
+      jQuery('.mapper-show-info').on('click', function(){
+        var current_class = '.' + jQuery(this).data('info-block');
+        jQuery(current_class).toggle();
       });
     }
   );
