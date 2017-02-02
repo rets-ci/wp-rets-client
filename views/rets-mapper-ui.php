@@ -78,7 +78,7 @@ wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery
         </div>
       <?php } else { echo '-'; }; ?>
     </td>
-    <td><?php echo $field_alias[ $_field->key ]; ?></td>
+    <td><?php echo isset( $field_alias[ $_field->key ] ) ? $field_alias[ $_field->key ] : '-'; ?></td>
     <td><a class="wp-rets-mapper-action" data-action="hide">Hide</a></td>
 
   </tr>
