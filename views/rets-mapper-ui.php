@@ -2,7 +2,7 @@
 global $wp_properties;
 
 
-$api_url = 'https://rets-ci-node-client-service-latest.c.rabbit.ci/' . get_option('ud_site_id') . '/analysis?token=' . get_option('ud_site_secret_token');
+$api_url = 'https://api.rets.ci/v2/site/' . get_option('ud_site_id') . '/analysis?token=' . get_option('ud_site_secret_token');
 
 $_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get($api_url) ) );
 

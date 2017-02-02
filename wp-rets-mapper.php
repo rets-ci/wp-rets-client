@@ -30,7 +30,7 @@ function mapper_add_alias(){
 
   $payload = $_POST['payload'];
 
-  $response = wp_remote_post( 'https://rets-ci-node-client-service-latest.c.rabbit.ci/set_site_mapping?token=' . get_option('ud_site_secret_token'), $request_data = array(
+  $response = wp_remote_post( 'https://api.rets.ci/v2/site/set_site_mapping?token=' . get_option('ud_site_secret_token'), $request_data = array(
     'headers' => array(
       'content-type' => 'application/json'
     ),
