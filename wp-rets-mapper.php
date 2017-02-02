@@ -21,3 +21,27 @@ add_action('admin_menu', function() {
   } );
 
 });
+
+add_action( 'wp_ajax_mapper_add_alias', 'mapper_add_alias' );
+
+function mapper_add_alias(){
+
+  check_ajax_referer( 'mapper_add_alias', 'security', 1 );
+
+  $payload = $_POST['payload'];
+
+  $response = wp_remote_post( 'https://rets-ci-node-client-service-latest.c.rabbit.ci/set_site_mapping?token=' . get_option('ud_site_secret_token'), $request_data = array(
+    'headers' => array(
+      'content-type' => 'application/json'
+    ),
+    'body' => json_encode(array(
+      'slug' => $payload['slug'],
+      'alias' => $payload['alias']
+      )
+    ))
+   );
+
+  if ( is_wp_error( $response ) )
+    wp_send_json_error( 'Something went wrong' );
+    
+}
