@@ -7,7 +7,7 @@ if( get_transient( 'wp-rets-mapper-data' ) ) {
   $_analysis = get_transient( 'wp-rets-mapper-data' );
 } else {
 
-  $api_url = 'https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/v1/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
+  $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
   $_analysis = json_decode( wp_remote_retrieve_body( wp_remote_get( $api_url ) ) );
   set_transient( 'wp-rets-mapper-data', $_analysis, 90 );
 }
