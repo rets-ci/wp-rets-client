@@ -1,4 +1,7 @@
 <?php
+global $wp_properties;
+
+$field_alias = isset( $wp_properties['field_alias'] ) && is_array( $wp_properties['field_alias'] ) ? array_flip( $wp_properties['field_alias'] ) : array();
 
 if( get_transient( 'wp-rets-mapper-data' ) ) {
   $_analysis = get_transient( 'wp-rets-mapper-data' );
@@ -36,11 +39,11 @@ wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery
   <thead>
   <tr>
     <th scope="col" class="hidden">ID</th>
+    <th scope="col" class="sortable"><a href="#"><span>Storage Type</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Slug</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Count</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable hidden"><a href="#"><span>Type</span><span class="sorting-indicator"></span></a></th>
-    <th scope="col" class="sortable"><a href="#"><span>Rate</span><span class="sorting-indicator"></span></a></th>
-    <th scope="col" class="sortable"><a href="#"><span>Group</span><span class="sorting-indicator"></span></a></th>
+    <th scope="col" class="sortable hidden"><a href="#"><span>Rate</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Values</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Alias</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class=""><a href="#"><span>Action</span><span class="sorting-indicator"></span></a></th>
@@ -53,11 +56,11 @@ wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery
     <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?>" data-rets-mapper-id="<?php echo $_field->_id; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
     
     <th class="hidden"><?php echo $_field->_id; ?></th>
+    <td><?php echo $_field->group; ?></td>
     <th><?php echo $_field->key; ?></th>
     <td><?php echo $_field->totalCount; ?></td>
     <td class="hidden"><?php echo $_field->type; ?></td>
-    <td><?php echo $_field->usageRate; ?></td>
-    <td><?php echo $_field->group; ?></td>
+    <td class="hidden"><?php echo $_field->usageRate; ?></td>
     <td class="mapper-show-info" data-info-block="block-<?php echo $c; ?>" style="color:blue;font-weight: bold;cursor:pointer">
       <?php
       if( isset( $_field->values ) ) {
@@ -73,9 +76,9 @@ wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery
           }
           ?>
         </div>
-      <?php }; ?>
+      <?php } else { echo '-'; }; ?>
     </td>
-    <td><input type="text" value=""></td>
+    <td><?php echo $field_alias[ $_field->key ]; ?></td>
     <td><a class="wp-rets-mapper-action" data-action="hide">Hide</a></td>
 
   </tr>
