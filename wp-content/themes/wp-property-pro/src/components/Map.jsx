@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     marker.setMap(null);
                 }
 
-                let lastPosition;
+                let firstPosition;
 
                 for (let i in response.hits.hits) {
                     let position = new google.maps.LatLng(response.hits.hits[i]._source.tax_input.location_latitude, response.hits.hits[i]._source.tax_input.location_longitude);
@@ -39,10 +39,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
                     markers.push(marker);
 
-                    lastPosition = position;
+                    if(!firstPosition)
+                        firstPosition = position;
                 }
 
-                map.setCenter(lastPosition);
+                let mapContainer = jQuery('#map');
+                if(mapContainer.is(':hidden'))
+                    mapContainer.show();
+
+                google.maps.event.trigger(map, 'resize');
+
+                map.setCenter(firstPosition);
 
                 dispatch(setMapMarkers(markers));
             }
@@ -120,7 +127,8 @@ class Map extends React.Component {
     render() {
         let style = {
             height: '200px',
-            width: '400px'
+            width: '400px',
+            display: 'none'
         };
 
         return (

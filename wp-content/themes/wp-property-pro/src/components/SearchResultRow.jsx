@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {}
 };
 
-const SearchResultRowContent = function ({prop, clickHandler}) {
+const SearchResultRowContent = function ({prop, clickHandler, filterTerms}) {
 
     if (!prop)
         return (<div></div>);
@@ -19,9 +19,8 @@ const SearchResultRowContent = function ({prop, clickHandler}) {
     let children = prop.children.map((child) => {
         let type = jQuery('#search_type').val();
         let url = '/' + type + '/' + prop.key + '/' + child.id.toLowerCase().replace(/\s+/g, '');
-        let title = prop.text + ' ' + child.text;
         return (<li><a href={url} onClick={(event) => {
-            clickHandler(title, url, prop.key, child.text);
+            clickHandler(prop.key, child.text, filterTerms);
             event.preventDefault();
             event.stopPropagation();
         }}
