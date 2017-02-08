@@ -25,6 +25,19 @@
     clear: both;
 }
 
-.cell-item{
+.cell-item {
     overflow-wrap: break-word;
+}
+
+#wp-property-pro-map {
+    height: 200px;
+    width: 400px;
+    display: none;
+}
+
+#wp-property-pro-search-result {
+    overflow-y: scroll;
+    background: grey;
+    height: 100px;
+    width: 200px;
 }

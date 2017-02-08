@@ -10,12 +10,16 @@ define("DEFAULT_SELECT_VALUE", "select");
 define("BRAND_TYPE_COMPANY", "company");
 define("BRAND_TYPE_PERSON", "person");
 
+define("GOOGLE_ANALYTICS_API_KEY", $_SERVER['HTTP_X_SELECTED_BRANCH'] == 'production' ? 'UA-31717595-1' : 'UA-31717595-2');
+
 add_action('wp_enqueue_scripts', 'property_pro_scripts');
 function property_pro_scripts()
 {
   wp_enqueue_script('jquery');
   wp_enqueue_style('style', get_stylesheet_uri());
+  wp_enqueue_style('style', get_stylesheet_directory_uri().'/bootstrap.min.js');
 
+  wp_enqueue_script('google-analytics', get_stylesheet_directory_uri() . '/google-analytics.js');
   wp_enqueue_script('elastic-search', get_stylesheet_directory_uri() . '/elasticsearch.jquery.js', [], null, true);
   wp_enqueue_script('bundle', get_stylesheet_directory_uri() . '/bundle.js', [], null, true);
 
