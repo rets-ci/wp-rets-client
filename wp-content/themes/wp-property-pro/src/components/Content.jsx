@@ -1,7 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import PostContent from '../containers/PostContent.jsx'
-import Cell from './Cell.jsx';
+import Cell from './Cell.jsx'
+import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
@@ -11,12 +12,14 @@ const mapStateToProps = (state) => {
 
 const Content = function ({currentState}) {
 
-    if (!currentState.postState.post.custom_content) {
+    let customContent = _.get(currentState, 'postState.post.custom_content', false);
+
+    if (!customContent) {
         let cellProps = {
-            title: currentState.postState.post.post_title,
-            content: currentState.postState.post.post_content,
-            type: "",
-            cellClass: ""
+            title: _.get(currentState, 'postState.post.post_title', ''),
+            content: _.get(currentState, 'postState.post.post_content', ''),
+            type: '',
+            cellClass: ''
         };
 
         return (<Cell cell={cellProps}/>);

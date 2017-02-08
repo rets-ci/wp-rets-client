@@ -1,11 +1,12 @@
 import React from 'react';
 import renderHTML from 'react-render-html';
+import _ from 'lodash'
 
 const Cell = function ({cell, style}) {
-    let type = cell.type;
-    let title = cell.title;
-    let content = cell.content;
-    let cellClass = cell.cellClass ? " cell-" + cell.cellClass : "";
+    let type = _.get(cell, 'type', '');
+    let title = _.get(cell, 'title', '');
+    let content = _.get(cell, 'content', '');
+    let cellClass = " cell-" + _.get(cell, 'cellClass', '');
 
     let classes = "cell-item" + cellClass + " " + type;
     return (

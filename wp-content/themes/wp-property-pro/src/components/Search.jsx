@@ -4,12 +4,14 @@ import Api from '../containers/Api.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
 import FilterTerm from './filterTerm.jsx';
 import {setSearchProps, setFilterTerms, setMapProps} from '../actions/index.jsx';
+import {Lib} from '../lib.jsx'
+import _ from 'lodash'
 
 const mapStateToProps = (state, history) => {
     return {
         currentState: state,
-        searchProps: state.searchPropsState.searchProps,
-        filterTerms: state.filterTermsState.filterTerms,
+        searchProps: _.get(state, 'searchPropsState.searchProps', []),
+        filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
         history: history
     }
 };
@@ -19,12 +21,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         searchHandler: (state, event) => {
 
             let searchParams = {
-                term: event.target.value
+                term: _.get(event, 'target.value', '')
             };
 
             Api.selectQuery(searchParams,
                 function (rows) {
-                    jQuery('.search-results').empty();
                     dispatch(setSearchProps(rows));
                 }
             );
@@ -37,6 +38,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 term: term
             });
 
+            jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
+
             dispatch(setFilterTerms(terms));
         },
         clearTermFilter: () => {
@@ -45,9 +48,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         doSearch: () => {
 
-            let tax = jQuery('.search-term').attr('id').replace('tax-', '');
+            let tax = jQuery('.search-term').attr('data-tax');
             let term = jQuery('.search-term span').text();
-            let saleType = jQuery('#search_type').val();
+            let saleType = jQuery('#' + Lib.THEME_PREFIX + 'search_type').val();
 
             let title = tax + ' - ' + term;
             let url = '/' + saleType + '/' + tax + '/' + term;
@@ -71,41 +74,30 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const SearchContent = function ({currentState, searchHandler, searchProps, filterTerms, searchItemClick, doSearch, clearTermFilter}) {
 
     let searchResults = [];
+    let filterTermsList = [];
 
-    if (typeof filterTerms == 'undefined' || !filterTerms.length)
+    if (filterTerms.length)
+        filterTermsList = filterTerms.map((item) => {
+            return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
+        });
+    else
         searchResults = searchProps.map((prop) => {
 
             return (<SearchResultRow prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
         });
-    else {
-        jQuery('#search-input').val('');
-    }
-
-    let filterTermsList = [];
-    if (typeof filterTerms != 'undefined')
-        filterTermsList = filterTerms.map((item) => {
-            return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
-        });
-
-    let style = {
-        "overflow-y": "scroll",
-        "background": "grey",
-        "height": "100px",
-        "width": "200px",
-    };
 
     return (
         <div>
-            <select id="search_type">
+            <select id={Lib.THEME_PREFIX + "search_type"}>
                 <option value="Rent" selected="selected">Rent</option>
                 <option value="Sale">Buy</option>
             </select>
-            <input type="text" onKeyUp={searchHandler.bind(this, currentState)} id="search-input"/>
+            <input type="text" onKeyUp={searchHandler.bind(this, currentState)} id={Lib.THEME_PREFIX + "search-input"}/>
             <a href="javascript:;" onClick={doSearch}>Search</a>
-            <div id="filter-block">
+            <div id={Lib.THEME_PREFIX + "filter-block"}>
                 {filterTermsList}
             </div>
-            <ul id="search-result" style={style}>
+            <ul id={Lib.THEME_PREFIX + "search-result"}>
                 {searchResults}
             </ul>
         </div>
