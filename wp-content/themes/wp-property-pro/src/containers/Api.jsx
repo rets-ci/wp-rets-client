@@ -66,7 +66,7 @@ class Api extends React.Component {
     static selectQuery(params, callback) {
 
         let client = new jQuery.es.Client({
-            hosts: 'api.reddoorcompany.com'
+            hosts: location.host
         });
 
         let rows = [];

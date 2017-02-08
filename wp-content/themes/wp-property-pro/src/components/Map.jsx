@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux';
 import {addMap, setMapMarkers} from '../actions/index.jsx';
 import Api from '../containers/Api.jsx';
+import {Lib} from '../lib.jsx';
 
 const mapStateToProps = (state) => {
     return {
@@ -27,7 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     marker.setMap(null);
                 }
 
-                let lastPosition;
+                let firstPosition;
 
                 for (let i in response.hits.hits) {
                     let position = new google.maps.LatLng(response.hits.hits[i]._source.tax_input.location_latitude, response.hits.hits[i]._source.tax_input.location_longitude);
@@ -39,10 +40,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
                     markers.push(marker);
 
-                    lastPosition = position;
+                    if(!firstPosition)
+                        firstPosition = position;
                 }
 
-                map.setCenter(lastPosition);
+                let mapContainer = jQuery('#' + Lib.THEME_PREFIX + 'map');
+                if(mapContainer.is(':hidden'))
+                    mapContainer.show();
+
+                google.maps.event.trigger(map, 'resize');
+
+                map.setCenter(firstPosition);
 
                 dispatch(setMapMarkers(markers));
             }
@@ -55,14 +63,14 @@ class Map extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if(typeof nextProps == 'undefined')
+        if(typeof nextProps === 'undefined')
             return;
 
         let map = nextProps.mapState.map;
 
         if(nextProps.props){
 
-            if(nextProps.props == this.props.props)
+            if(nextProps.props === this.props.props)
                 return;
 
             nextProps.saveMarkers(map, nextProps.props, nextProps.mapMarkersState.mapMarkers);
@@ -70,15 +78,15 @@ class Map extends React.Component {
     }
 
     shouldComponentUpdate() {
-        return typeof this.props.mapState.map == 'undefined';
+        return typeof this.props.mapState.map === 'undefined';
     }
 
     componentDidMount() {
 
-        if (typeof this.props.mapState.map != 'undefined')
+        if (typeof this.props.mapState.map !== 'undefined')
             return;
 
-        let map = new google.maps.Map(document.getElementById('map'), {
+        let map = new google.maps.Map(document.getElementById(Lib.THEME_PREFIX + 'map'), {
             center: {lat: 35.994033, lng: -78.898619},
             scrollwheel: false,
             zoom: 9
@@ -118,14 +126,10 @@ class Map extends React.Component {
     }
 
     render() {
-        let style = {
-            height: '200px',
-            width: '400px'
-        };
 
         return (
             <div>
-                <div id="map" style={style}>Loading ...</div>
+                <div id={Lib.THEME_PREFIX + "map"}>Loading ...</div>
             </div>
         )
     }

@@ -41,3 +41,10 @@ export const setMapMarkers = (mapMarkers) => {
         mapMarkers: mapMarkers
     }
 };
+
+export const setFilterTerms = (filterTerms) => {
+    return {
+        type: Lib.SET_FILTER_TERMS_ACTION,
+        filterTerms: filterTerms
+    }
+};

@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Lib} from '../lib.jsx'
+import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
@@ -11,25 +13,31 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {}
 };
 
-const SearchResultRowContent = function ({prop, clickHandler}) {
+const SearchResultRowContent = function ({prop, clickHandler, filterTerms}) {
 
     if (!prop)
         return (<div></div>);
 
+    let taxTitle = _.get(prop, 'text', '');
+
     let children = prop.children.map((child) => {
-        let type = jQuery('#search_type').val();
-        let url = '/' + type + '/' + prop.key + '/' + child.id.toLowerCase().replace(/\s+/g, '');
-        let title = prop.text + ' ' + child.text;
+
+        let type = jQuery('#' + Lib.THEME_PREFIX + 'search_type').val();
+        let id = _.get(child, 'id', '');
+        let tax = _.get(prop, 'key', '');
+        let term = _.get(child, 'text', '');
+        let url = [type, tax, id.toLowerCase().replace(/\s+/g, '')].join('/');
+
         return (<li><a href={url} onClick={(event) => {
-            clickHandler(title, url, prop.key, child.text);
+            clickHandler(tax, term, filterTerms);
             event.preventDefault();
             event.stopPropagation();
         }}
-        >{child.id}</a></li>)
+        >{id}</a></li>)
     });
 
     return (
-        <li>{prop.text}
+        <li>{taxTitle}
             <ul>{children}</ul>
         </li>
     )

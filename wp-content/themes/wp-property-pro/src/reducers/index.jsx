@@ -5,6 +5,7 @@ import mapState from './map.jsx';
 import searchPropsState from './searchProps.jsx';
 import mapPropsState from './mapProps.jsx';
 import mapMarkersState from './mapMarkers.jsx';
+import filterTermsState from './filterTerms.jsx';
 
 const propertyProApp = combineReducers({
     postState,
@@ -13,6 +14,7 @@ const propertyProApp = combineReducers({
     searchPropsState,
     mapPropsState,
     mapMarkersState,
+    filterTermsState
 });
 
 export default propertyProApp
