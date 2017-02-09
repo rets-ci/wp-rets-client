@@ -1,0 +1,1 @@
+define("lib-api",function(){return console.log("lib-api"),{success:!0,test:!0}});
