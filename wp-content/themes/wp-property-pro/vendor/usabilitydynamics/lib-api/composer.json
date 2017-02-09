@@ -1,0 +1,47 @@
+{
+  "name": "usabilitydynamics/lib-api",
+  "keywords": [ "api" ],
+  "type": "library",
+  "require": {
+    "usabilitydynamics/lib-utility": "*"
+  },
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/UsabilityDynamics/lib-utility"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/UsabilityDynamics/lib-api"
+    }
+  ],
+  "autoload": {
+    "classmap": [ "lib" ]
+  },
+  "homepage": "http://github.com/usabilitydynamics/lib-api",
+  "authors": [
+    {
+      "name": "Andy Potanin",
+      "email": "andy.potanin@usabilitydynamics.com",
+      "homepage": "http://usabilitydynamics.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Maxim Peshkov",
+      "email": "maxim.peshkov@usabilitydynamics.com",
+      "homepage": "http://usabilitydynamics.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Anton Korotkov",
+      "email": "anton.korotkov@usabilitydynamics.com",
+      "homepage": "http://usabilitydynamics.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/usabilitydynamics/lib-api/issues"
+  },
+  "license": "MIT"
+}
