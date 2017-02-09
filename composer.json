@@ -116,13 +116,12 @@
     }
   },
   "require": {
-    "php": "~7.0.13",
+    "php": "~5.3",
     "composer/installers": "~1.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "~2.0",
-    "phpunit/phpunit": "~3.7",
-    "usabilitydynamics/lib-wp-theme": "0.4.0"
+    "phpunit/phpunit": "~3.7"
   },
   "keywords": [
     "wordpress",
