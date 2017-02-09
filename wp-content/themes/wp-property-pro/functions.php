@@ -8,6 +8,11 @@ define("DEFAULT_SELECT_VALUE", "select");
 define("BRAND_TYPE_COMPANY", "company");
 define("BRAND_TYPE_PERSON", "person");
 
+if( class_exists( 'SiteOrigin_Widget' ) ) {
+  require_once get_template_directory() . '/lib/widgets/property-pro-masthead/property_pro_masthead.php';
+}
+
+
 add_action('wp_enqueue_scripts', 'property_pro_scripts');
 function property_pro_scripts()
 {

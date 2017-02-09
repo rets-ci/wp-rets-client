@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "property_pro_colors_section": {
+      "title": "Colors",
+      "priority": 30
+    }
+  },
+  "settings": [
+    {
+      "key": "primary_color",
+      "label": "Primary Color",
+      "section": "property_pro_colors_section",
+      "control": "color",
+      "important": false,
+      "default": "#000000",
+      "selector": [
+
+      ]
+    },
+    {
+      "key": "secondary_color",
+      "label": "Secondary Color",
+      "section": "property_pro_colors_section",
+      "control": "color",
+      "important": false,
+      "default": "#000000",
+      "selector": [
+
+      ]
+    }
+  ]
+}
