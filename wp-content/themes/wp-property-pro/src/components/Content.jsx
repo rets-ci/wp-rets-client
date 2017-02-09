@@ -24,7 +24,6 @@ const Content = function ({currentState}) {
 
         return (<Cell cell={cellProps}/>);
     }
-
     return (
         <div>
             <PostContent />

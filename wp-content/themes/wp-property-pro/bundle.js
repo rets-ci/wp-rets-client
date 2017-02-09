@@ -24166,6 +24166,8 @@
 	                },
 	                dataType: 'json',
 	                success: function success(data) {
+	                    console.log('about to add post');
+	                    console.log(data);
 	                    dispatch((0, _index.addPost)(data.post));
 	                }
 	            });
@@ -24259,7 +24261,6 @@
 
 	        return _react2.default.createElement(_Cell2.default, { cell: cellProps });
 	    }
-
 	    return _react2.default.createElement(
 	        'div',
 	        null,
@@ -56702,12 +56703,15 @@
 	    var searchResults = [];
 	    var filterTermsList = [];
 
-	    if (filterTerms.length) filterTermsList = filterTerms.map(function (item) {
-	        return _react2.default.createElement(_filterTerm2.default, { term: item.term, tax: item.tax, clearTermFilter: clearTermFilter });
-	    });else searchResults = searchProps.map(function (prop) {
-
-	        return _react2.default.createElement(_SearchResultRow2.default, { prop: prop, clickHandler: searchItemClick, filterTerms: filterTerms });
-	    });
+	    if (filterTerms.length) {
+	        filterTermsList = filterTerms.map(function (item) {
+	            return _react2.default.createElement(_filterTerm2.default, { term: item.term, tax: item.tax, clearTermFilter: clearTermFilter });
+	        });
+	    } else {
+	        searchResults = searchProps.map(function (prop) {
+	            return _react2.default.createElement(_SearchResultRow2.default, { prop: prop, clickHandler: searchItemClick, filterTerms: filterTerms });
+	        });
+	    }
 
 	    return _react2.default.createElement(
 	        'div',
@@ -56877,7 +56881,6 @@
 	                _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
 	                _source.aggs[key]['aggs'][key] = { terms: { field: data.field } };
 	            }
-
 	            client.search({
 	                index: 'v5',
 	                type: 'property',
@@ -56887,7 +56890,6 @@
 	            }, function selectQueryResponse(err, response) {
 
 	                var rows = [];
-
 	                for (var aggregationKey in response.aggregations) {
 
 	                    var someAggregation = response.aggregations[aggregationKey];
@@ -56907,15 +56909,13 @@
 	                        });
 	                    }
 	                    if (_buckets.length > 0) {
-
 	                        _data = Object.assign({}, _data, {
 	                            key: aggregationKey,
 	                            text: aggregationsFields[aggregationKey].title,
 	                            children: _buckets
 	                        });
+	                        rows.push(_data);
 	                    }
-
-	                    rows.push(_data);
 	                }
 	                callback(rows);
 	            });
@@ -57047,82 +57047,83 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(178);
-
 	var _lib = __webpack_require__(218);
-
-	var _lodash = __webpack_require__(291);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        currentState: state
-	    };
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {};
-	};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	var SearchResultRowContent = function SearchResultRowContent(_ref) {
-	    var prop = _ref.prop,
-	        clickHandler = _ref.clickHandler,
-	        filterTerms = _ref.filterTerms;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var SearchResultRowContent = function (_Component) {
+	  _inherits(SearchResultRowContent, _Component);
 
-	    if (!prop) return _react2.default.createElement('div', null);
+	  function SearchResultRowContent() {
+	    _classCallCheck(this, SearchResultRowContent);
 
-	    var taxTitle = _lodash2.default.get(prop, 'text', '');
+	    return _possibleConstructorReturn(this, (SearchResultRowContent.__proto__ || Object.getPrototypeOf(SearchResultRowContent)).apply(this, arguments));
+	  }
 
-	    var children = prop.children.map(function (child) {
+	  _createClass(SearchResultRowContent, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
 
+	      var taxTitle = this.props.prop.text;
+	      var children = this.props.prop.children.map(function (child) {
 	        var type = jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val();
-	        var id = _lodash2.default.get(child, 'id', '');
-	        var tax = _lodash2.default.get(prop, 'key', '');
-	        var term = _lodash2.default.get(child, 'text', '');
+	        var id = child.id;
+	        var tax = _this2.props.prop.key;
+	        var term = child.text;
 	        var url = [type, tax, id.toLowerCase().replace(/\s+/g, '')].join('/');
-
 	        return _react2.default.createElement(
-	            'li',
-	            null,
-	            _react2.default.createElement(
-	                'a',
-	                { href: url, onClick: function onClick(event) {
-	                        clickHandler(tax, term, filterTerms);
-	                        event.preventDefault();
-	                        event.stopPropagation();
-	                    }
-	                },
-	                id
-	            )
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { href: url, onClick: function (event) {
+	                this.props.clickHandler(tax, term, this.props.filterTerms);
+	                event.preventDefault();
+	                event.stopPropagation();
+	              }.bind(_this2)
+	            },
+	            id
+	          )
 	        );
-	    });
-
-	    return _react2.default.createElement(
+	      });
+	      return _react2.default.createElement(
 	        'li',
 	        null,
 	        taxTitle,
 	        _react2.default.createElement(
-	            'ul',
-	            null,
-	            children
+	          'ul',
+	          null,
+	          children
 	        )
-	    );
+	      );
+	    }
+	  }]);
+
+	  return SearchResultRowContent;
+	}(_react.Component);
+
+	SearchResultRowContent.propTypes = {
+	  prop: _react.PropTypes.object.isRequired,
+	  clickHandler: _react.PropTypes.func.isRequired,
+	  filterTerms: _react.PropTypes.array
 	};
-
-	var SearchResultRow = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchResultRowContent);
-
-	exports.default = SearchResultRow;
+	exports.default = SearchResultRowContent;
 
 /***/ },
 /* 296 */
