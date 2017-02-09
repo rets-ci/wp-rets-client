@@ -1,0 +1,18 @@
+{
+  "name": "usabilitydynamics/property-pro",
+  "type": "wordpress-theme",
+  "description": "Property Pro theme.",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repository.usabilitydynamics.com"
+    }
+  ],
+  "require": {
+    "php": "~7.0.13"
+  },
+  "require-dev": {
+    "usabilitydynamics/lib-wp-theme": "~0.4.0"
+  },
+  "minimum-stability": "dev"
+}
