@@ -1,7 +1,5 @@
 <?php
 
-define("GOOGLE_API_KEY", "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss");
-
 define("OPTION_PERSON_BRANDING", "person_branding");
 define("OPTION_COMPANY_BRANDING", "company_branding");
 
@@ -9,8 +7,6 @@ define("DEFAULT_SELECT_VALUE", "select");
 
 define("BRAND_TYPE_COMPANY", "company");
 define("BRAND_TYPE_PERSON", "person");
-
-define("GOOGLE_ANALYTICS_API_KEY", $_SERVER['HTTP_X_SELECTED_BRANCH'] == 'production' ? 'UA-31717595-1' : 'UA-31717595-2');
 
 add_action('wp_enqueue_scripts', 'property_pro_scripts');
 function property_pro_scripts()
