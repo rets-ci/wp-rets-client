@@ -76,15 +76,15 @@ const SearchContent = function ({currentState, searchHandler, searchProps, filte
     let searchResults = [];
     let filterTermsList = [];
 
-    if (filterTerms.length)
-        filterTermsList = filterTerms.map((item) => {
-            return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
-        });
-    else
-        searchResults = searchProps.map((prop) => {
-
-            return (<SearchResultRow prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
-        });
+    if (filterTerms.length) {
+      filterTermsList = filterTerms.map((item) => {
+        return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
+      });
+    } else {
+      searchResults = searchProps.map((prop) => {
+        return (<SearchResultRow prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
+      });
+    }
 
     return (
         <div>

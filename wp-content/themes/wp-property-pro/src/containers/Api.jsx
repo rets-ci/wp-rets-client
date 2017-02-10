@@ -98,7 +98,6 @@ class Api extends React.Component {
             _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
             _source.aggs[key]['aggs'][key] = {terms: {field: data.field}}
         }
-
         client.search({
             index: 'v5',
             type: 'property',
@@ -108,7 +107,6 @@ class Api extends React.Component {
         }, function selectQueryResponse(err, response) {
 
             let rows = [];
-
             for (let aggregationKey in response.aggregations) {
 
                 let someAggregation = response.aggregations[aggregationKey];
@@ -127,18 +125,17 @@ class Api extends React.Component {
                         taxonomy: data.slug
                     });
 
-
                 }
                 if (_buckets.length > 0) {
-
                     data = Object.assign({}, data, {
                         key: aggregationKey,
                         text: aggregationsFields[aggregationKey].title,
                         children: _buckets
                     });
+                    rows.push(data);
                 }
 
-                rows.push(data);
+
             }
             callback(rows);
         });
