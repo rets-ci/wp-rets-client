@@ -8,6 +8,11 @@
       "url": "https://repository.usabilitydynamics.com"
     }
   ],
+  "autoload": {
+    "classmap": [
+      "lib"
+    ]
+  },
   "require": {
     "php": "~7.0.13"
   },

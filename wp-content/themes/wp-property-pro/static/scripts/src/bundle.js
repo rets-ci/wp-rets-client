@@ -24166,8 +24166,6 @@
 	                },
 	                dataType: 'json',
 	                success: function success(data) {
-	                    console.log('about to add post');
-	                    console.log(data);
 	                    dispatch((0, _index.addPost)(data.post));
 	                }
 	            });

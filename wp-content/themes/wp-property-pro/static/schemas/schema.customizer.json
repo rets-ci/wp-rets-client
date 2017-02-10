@@ -3,29 +3,129 @@
     "property_pro_colors_section": {
       "title": "Colors",
       "priority": 30
+    },
+    "property_pro_fonts_section": {
+      "title": "Fonts",
+      "priority": 31
+    },
+    "property_pro_branding_section": {
+      "title": "Branding",
+      "priority": 32
     }
   },
   "settings": [
     {
-      "key": "primary_color",
+      "key": "property_pro_primary_color",
       "label": "Primary Color",
       "section": "property_pro_colors_section",
       "control": "color",
       "important": false,
       "default": "#000000",
       "selector": [
-
+        "#menu-item"
       ]
     },
     {
-      "key": "secondary_color",
+      "key": "property_pro_secondary_color",
       "label": "Secondary Color",
       "section": "property_pro_colors_section",
       "control": "color",
       "important": false,
       "default": "#000000",
       "selector": [
-
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_heading_font",
+      "label": "Select heading font:",
+      "section": "property_pro_fonts_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "arial": "Arial, Helvetica, sans-serif",
+        "arial_black": "\"Arial Black\", Gadget, sans-serif",
+        "comic_sans": "\"Comic Sans MS\", cursive, sans-serif",
+        "lucida": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "tahoma": "Tahoma, Geneva, sans-serif",
+        "trebuchet": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "verdana": "Verdana, Geneva, sans-serif"
+      },
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_body_font",
+      "label": "Select body font:",
+      "section": "property_pro_fonts_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "arial": "Arial, Helvetica, sans-serif",
+        "arial_black": "\"Arial Black\", Gadget, sans-serif",
+        "comic_sans": "\"Comic Sans MS\", cursive, sans-serif",
+        "lucida": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "tahoma": "Tahoma, Geneva, sans-serif",
+        "trebuchet": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "verdana": "Verdana, Geneva, sans-serif"
+      },
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_brand_type",
+      "label": "Select brand type:",
+      "section": "property_pro_branding_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "company": "Company",
+        "person": "Person"
+      },
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_company_branding",
+      "label": "Select company branding:",
+      "section": "property_pro_branding_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "square_logo": "Square Logo",
+        "horizontal_logo": "Horizontal Logo",
+        "vertical_logo": "Vertical Logo"
+      },
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_branding",
+      "label": "Select person branding:",
+      "section": "property_pro_branding_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "headshot": "Headshot",
+        "name": "Name",
+        "credential": "Credential"
+      },
+      "selector": [
+        "#selector"
       ]
     }
   ]
