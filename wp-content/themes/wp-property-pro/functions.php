@@ -10,6 +10,10 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
   require_once(__DIR__ . '/vendor/autoload.php');
 }
 
+if (class_exists('\UsabilityDynamics\PropertyPro\Config')) {
+  $config = new \UsabilityDynamics\PropertyPro\Config();
+}
+
 // If Bootstrap class not found, we must fail, unless we are administrating.
 if (!class_exists('UsabilityDynamics\PropertyPro\Bootstrap') && !is_admin()) {
   wp_die('<h2>Fatal Error</h2><p>Missing UsabilityDynamics\PropertyPro\Bootstrap class.</p>');

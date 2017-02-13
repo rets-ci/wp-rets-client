@@ -8,6 +8,27 @@
       "url": "https://repository.usabilitydynamics.com"
     }
   ],
+  "extra": {
+    "settings_production-hotfix": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
+    },
+    "settings_develop-v3-andy": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
+    },
+    "settings_latest-v3": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
+    },
+    "settings_develop-dmitry": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
+    },
+    "settings_production": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
+    },
+    "settings": {
+      "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1",
+      "GOOGLE_API_KEY": "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss"
+    }
+  },
   "autoload": {
     "classmap": [
       "lib"

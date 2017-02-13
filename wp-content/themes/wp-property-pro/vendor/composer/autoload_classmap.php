@@ -21,6 +21,7 @@ return array(
     'UsabilityDynamics\\Model\\Utility' => $vendorDir . '/usabilitydynamics/lib-model/lib/class-model-utility.php',
     'UsabilityDynamics\\PropertyPro' => $baseDir . '/lib/classes/class-property-pro.php',
     'UsabilityDynamics\\PropertyPro\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
+    'UsabilityDynamics\\PropertyPro\\Config' => $baseDir . '/lib/classes/class-config.php',
     'UsabilityDynamics\\PropertyPro\\Customizer' => $baseDir . '/lib/classes/class-customizer.php',
     'UsabilityDynamics\\Requires' => $vendorDir . '/usabilitydynamics/lib-requires/lib/class-requires.php',
     'UsabilityDynamics\\Settings' => $vendorDir . '/usabilitydynamics/lib-settings/lib/class-settings.php',

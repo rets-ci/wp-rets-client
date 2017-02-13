@@ -11,7 +11,7 @@ namespace UsabilityDynamics\PropertyPro {
   use UsabilityDynamics\PropertyPro;
 
   /**
-   * Festival Bootstrap
+   * Property Pro Bootstrap
    *
    * @author Usability Dynamics
    */
