@@ -25,6 +25,7 @@
       "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
     },
     "settings": {
+      "ELASTICSEARCH_HOST": "api.reddoorcompany.com",
       "GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1",
       "GOOGLE_API_KEY": "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss"
     }

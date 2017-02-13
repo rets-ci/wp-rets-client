@@ -56848,7 +56848,7 @@
 	        value: function selectQuery(params, callback) {
 
 	            var client = new jQuery.es.Client({
-	                hosts: location.host
+	                hosts: bundle.elasticsearch_host
 	            });
 
 	            var rows = [];
@@ -56925,7 +56925,7 @@
 	             * @type {$.es.Client|*}
 	             */
 	            var client = new jQuery.es.Client({
-	                hosts: window.location.hostname
+	                hosts: bundle.elasticsearch_host
 	            });
 
 	            client.suggest({
@@ -56950,7 +56950,7 @@
 	             * @type {$.es.Client|*}
 	             */
 	            var client = new jQuery.es.Client({
-	                hosts: window.location.hostname
+	                hosts: bundle.elasticsearch_host
 	            });
 
 	            var terms = {};

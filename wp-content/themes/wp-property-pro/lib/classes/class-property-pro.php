@@ -82,6 +82,12 @@ namespace UsabilityDynamics {
       wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . GOOGLE_API_KEY);
 
       $params = $this->get_page_content();
+
+      /**
+       * @TODO Add elasticsearch host to wp property settings and get value from it,
+       * now host value in theme composer.json
+       */
+      $params['elasticsearch_host'] = ELASTICSEARCH_HOST;
       wp_localize_script('jquery', 'bundle', $params);
     }
 
