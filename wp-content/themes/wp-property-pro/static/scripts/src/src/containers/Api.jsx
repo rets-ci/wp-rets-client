@@ -2,9 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state) => {
-    return {
-
-    }
+    return {}
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -66,12 +64,12 @@ class Api extends React.Component {
     static selectQuery(params, callback) {
 
         let client = new jQuery.es.Client({
-            hosts: location.host
+            hosts: bundle.elasticsearch_host
         });
 
         let rows = [];
 
-        if (!params.term || params.term.length < 3){
+        if (!params.term || params.term.length < 3) {
             callback(rows);
             return;
         }
@@ -146,7 +144,7 @@ class Api extends React.Component {
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
-            hosts: window.location.hostname
+            hosts: bundle.elasticsearch_host
         });
 
         client.suggest({
@@ -170,11 +168,11 @@ class Api extends React.Component {
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
-            hosts: window.location.hostname
+            hosts: bundle.elasticsearch_host
         });
 
         let terms = {};
-        terms['tax_input.'+params.tax] = [
+        terms['tax_input.' + params.tax] = [
             params.term
         ];
 
