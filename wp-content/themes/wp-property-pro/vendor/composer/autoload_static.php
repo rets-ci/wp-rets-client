@@ -17,6 +17,8 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
     );
 
     public static $classMap = array (
+        'Property_Pro_Masthead_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/property_pro_masthead.php',
+        'SiteOrigin_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php',
         'UsabilityDynamics\\API' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api.php',
         'UsabilityDynamics\\API\\Routes' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-routes.php',
         'UsabilityDynamics\\API\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-utility.php',
@@ -28,6 +30,10 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
         'UsabilityDynamics\\Model\\Manager' => __DIR__ . '/..' . '/usabilitydynamics/lib-model/lib/class-model-manager.php',
         'UsabilityDynamics\\Model\\Post' => __DIR__ . '/..' . '/usabilitydynamics/lib-model/lib/models/class-post.php',
         'UsabilityDynamics\\Model\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-model/lib/class-model-utility.php',
+        'UsabilityDynamics\\PropertyPro' => __DIR__ . '/../..' . '/lib/classes/class-property-pro.php',
+        'UsabilityDynamics\\PropertyPro\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
+        'UsabilityDynamics\\PropertyPro\\Config' => __DIR__ . '/../..' . '/lib/classes/class-config.php',
+        'UsabilityDynamics\\PropertyPro\\Customizer' => __DIR__ . '/../..' . '/lib/classes/class-customizer.php',
         'UsabilityDynamics\\Requires' => __DIR__ . '/..' . '/usabilitydynamics/lib-requires/lib/class-requires.php',
         'UsabilityDynamics\\Settings' => __DIR__ . '/..' . '/usabilitydynamics/lib-settings/lib/class-settings.php',
         'UsabilityDynamics\\Structure' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-structure.php',

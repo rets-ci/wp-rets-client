@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Property_Pro_Masthead_Widget' => $baseDir . '/lib/widgets/property-pro-masthead/property_pro_masthead.php',
+    'SiteOrigin_Widget' => $baseDir . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php',
     'UsabilityDynamics\\API' => $vendorDir . '/usabilitydynamics/lib-api/lib/class-api.php',
     'UsabilityDynamics\\API\\Routes' => $vendorDir . '/usabilitydynamics/lib-api/lib/class-api-routes.php',
     'UsabilityDynamics\\API\\Utility' => $vendorDir . '/usabilitydynamics/lib-api/lib/class-api-utility.php',
@@ -17,6 +19,10 @@ return array(
     'UsabilityDynamics\\Model\\Manager' => $vendorDir . '/usabilitydynamics/lib-model/lib/class-model-manager.php',
     'UsabilityDynamics\\Model\\Post' => $vendorDir . '/usabilitydynamics/lib-model/lib/models/class-post.php',
     'UsabilityDynamics\\Model\\Utility' => $vendorDir . '/usabilitydynamics/lib-model/lib/class-model-utility.php',
+    'UsabilityDynamics\\PropertyPro' => $baseDir . '/lib/classes/class-property-pro.php',
+    'UsabilityDynamics\\PropertyPro\\Bootstrap' => $baseDir . '/lib/classes/class-bootstrap.php',
+    'UsabilityDynamics\\PropertyPro\\Config' => $baseDir . '/lib/classes/class-config.php',
+    'UsabilityDynamics\\PropertyPro\\Customizer' => $baseDir . '/lib/classes/class-customizer.php',
     'UsabilityDynamics\\Requires' => $vendorDir . '/usabilitydynamics/lib-requires/lib/class-requires.php',
     'UsabilityDynamics\\Settings' => $vendorDir . '/usabilitydynamics/lib-settings/lib/class-settings.php',
     'UsabilityDynamics\\Structure' => $vendorDir . '/usabilitydynamics/lib-utility/lib/class-structure.php',
