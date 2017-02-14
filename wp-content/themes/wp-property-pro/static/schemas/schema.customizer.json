@@ -38,7 +38,7 @@
     },
     {
       "key": "property_pro_heading_font",
-      "label": "Select heading font:",
+      "label": "Heading Font-Family",
       "section": "property_pro_fonts_section",
       "control": "select",
       "important": false,
@@ -60,13 +60,13 @@
     },
     {
       "key": "property_pro_body_font",
-      "label": "Select body font:",
+      "label": "Body Font-Family",
       "section": "property_pro_fonts_section",
       "control": "select",
       "important": false,
       "default": "0",
       "choices": {
-        "0": "Make a choice",
+        "0": "Select Option",
         "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
         "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
         "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
@@ -82,13 +82,13 @@
     },
     {
       "key": "property_pro_brand_type",
-      "label": "Select brand type:",
+      "label": "Brand Type",
       "section": "property_pro_branding_section",
       "control": "select",
       "important": false,
       "default": "0",
       "choices": {
-        "0": "Make a choice",
+        "0": "Select Option",
         "company": "Company",
         "person": "Person"
       },
@@ -98,7 +98,7 @@
     },
     {
       "key": "property_pro_company_square_logo",
-      "label": "Select square logo:",
+      "label": "Square Logo",
       "section": "property_pro_branding_section",
       "control": "image",
       "selector": [
@@ -107,7 +107,7 @@
     },
     {
       "key": "property_pro_company_horizontal_logo",
-      "label": "Select horizontal logo:",
+      "label": "Horizontal Logo",
       "section": "property_pro_branding_section",
       "control": "image",
       "selector": [
@@ -116,7 +116,7 @@
     },
     {
       "key": "property_pro_company_vertical_logo",
-      "label": "Select vertical logo:",
+      "label": "Vertical Logo",
       "section": "property_pro_branding_section",
       "control": "image",
       "selector": [
@@ -125,7 +125,7 @@
     },
     {
       "key": "property_pro_person_square_headshot",
-      "label": "Select square headshot:",
+      "label": "Square Headshot",
       "section": "property_pro_branding_section",
       "control": "image",
       "selector": [
@@ -134,7 +134,7 @@
     },
     {
       "key": "property_pro_person_name",
-      "label": "Select name:",
+      "label": "Name",
       "section": "property_pro_branding_section",
       "control": "text",
       "selector": [
@@ -143,7 +143,7 @@
     },
     {
       "key": "property_pro_person_credential",
-      "label": "Select credential:",
+      "label": "Credential",
       "section": "property_pro_branding_section",
       "control": "text",
       "selector": [
