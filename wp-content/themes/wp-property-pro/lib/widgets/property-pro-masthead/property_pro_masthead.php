@@ -33,7 +33,7 @@ class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
       [
         [
           'property-pro-masthead-base',
-          get_stylesheet_directory_uri('/lib/widgets/property-pro-masthead/css/style.css'),
+          get_stylesheet_directory_uri() . '/lib/widgets/property-pro-masthead/css/style.css',
           [],
           SOW_BUNDLE_VERSION
         ],
