@@ -126,6 +126,32 @@ namespace UsabilityDynamics\PropertyPro {
       }
 
       /**
+       * * Override base method
+       * Return styles
+       *
+       * @author fq.jony@UD
+       *
+       * @return array
+       */
+      public function get_asset_data() {
+        $data = array();
+        foreach( (array)$this->get( 'settings' ) as $setting ) {
+          if( is_array( $setting[ 'css' ] ) && count( $setting[ 'css' ] ) ){
+            foreach( $setting[ 'css' ] as $rule ){
+
+              if(isset($setting['rule-title']))
+                $rule['style'] = $setting['rule-title'];
+
+              if( !empty( $rule ) && $rule[ 'style' ] && $style = $this->generate_css( $rule ) ) {
+                $data[ $setting[ 'key' ] . '-' . $rule[ 'style' ] ] = $style;
+              }
+            }
+          }
+        }
+        return $data;
+      }
+
+      /**
        * Get default Settings from schema
        *
        */

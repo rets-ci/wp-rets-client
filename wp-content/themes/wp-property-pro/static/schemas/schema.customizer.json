@@ -45,16 +45,17 @@
       "default": "0",
       "choices": {
         "0": "Make a choice",
-        "arial": "Arial, Helvetica, sans-serif",
-        "arial_black": "\"Arial Black\", Gadget, sans-serif",
-        "comic_sans": "\"Comic Sans MS\", cursive, sans-serif",
-        "lucida": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-        "tahoma": "Tahoma, Geneva, sans-serif",
-        "trebuchet": "\"Trebuchet MS\", Helvetica, sans-serif",
-        "verdana": "Verdana, Geneva, sans-serif"
+        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
+        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
+        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
+        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
+        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
       },
+      "rule-title": "font-family",
       "selector": [
-        "#selector"
+        ".pageheader h1"
       ]
     },
     {
@@ -66,16 +67,17 @@
       "default": "0",
       "choices": {
         "0": "Make a choice",
-        "arial": "Arial, Helvetica, sans-serif",
-        "arial_black": "\"Arial Black\", Gadget, sans-serif",
-        "comic_sans": "\"Comic Sans MS\", cursive, sans-serif",
-        "lucida": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-        "tahoma": "Tahoma, Geneva, sans-serif",
-        "trebuchet": "\"Trebuchet MS\", Helvetica, sans-serif",
-        "verdana": "Verdana, Geneva, sans-serif"
+        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
+        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
+        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
+        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
+        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
       },
+      "rule-title": "font-family",
       "selector": [
-        "#selector"
+        ".pageheader p.hidden-sm-down"
       ]
     },
     {
@@ -95,35 +97,55 @@
       ]
     },
     {
-      "key": "property_pro_company_branding",
-      "label": "Select company branding:",
+      "key": "property_pro_company_square_logo",
+      "label": "Select square logo:",
       "section": "property_pro_branding_section",
-      "control": "select",
-      "important": false,
-      "default": "0",
-      "choices": {
-        "0": "Make a choice",
-        "square_logo": "Square Logo",
-        "horizontal_logo": "Horizontal Logo",
-        "vertical_logo": "Vertical Logo"
-      },
+      "control": "image",
       "selector": [
         "#selector"
       ]
     },
     {
-      "key": "property_pro_person_branding",
-      "label": "Select person branding:",
+      "key": "property_pro_company_horizontal_logo",
+      "label": "Select horizontal logo:",
       "section": "property_pro_branding_section",
-      "control": "select",
-      "important": false,
-      "default": "0",
-      "choices": {
-        "0": "Make a choice",
-        "headshot": "Headshot",
-        "name": "Name",
-        "credential": "Credential"
-      },
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_company_vertical_logo",
+      "label": "Select vertical logo:",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_square_headshot",
+      "label": "Select square headshot:",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_name",
+      "label": "Select name:",
+      "section": "property_pro_branding_section",
+      "control": "text",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_credential",
+      "label": "Select credential:",
+      "section": "property_pro_branding_section",
+      "control": "text",
       "selector": [
         "#selector"
       ]
