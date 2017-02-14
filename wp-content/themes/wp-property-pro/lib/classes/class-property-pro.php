@@ -73,8 +73,8 @@ namespace UsabilityDynamics {
     {
 
       wp_enqueue_script('jquery');
+      wp_enqueue_style('bootstrap', $this->_stylesDir . '/src/bootstrap.min.css');
       wp_enqueue_style('style', get_stylesheet_uri());
-      wp_enqueue_style('style', $this->_stylesDir . '/src/bootstrap.min.css');
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('elastic-search', $this->_scriptsDir . '/src/elasticsearch.jquery.js', [], null, true);
@@ -115,6 +115,8 @@ namespace UsabilityDynamics {
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
+        'template_url' => get_template_directory_uri(),
+        'site_name' => esc_attr(get_bloginfo('name')),
         'menuItems' => $menu_items
       ];
 
@@ -142,12 +144,32 @@ namespace UsabilityDynamics {
     {
       $rows = [];
 
+
       foreach ($content['widgets'] as $key => $widget) {
         $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
+
+        switch ($widget['panels_info']['class']) {
+          case 'Property_Pro_Masthead_Widget':
+
+            /** Exclude siteorigin system field */
+            if (isset($widget['search_options']['so_field_container_state']))
+              unset($widget['search_options']['so_field_container_state']);
+
+            /** Pack all widgets fields to one fields cell */
+            $widget['fields'] = [
+              'layout' => $widget['layout'],
+              'title' => $widget['title'],
+              'subtitle' => $widget['subtitle'],
+              'image_src' => $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '',
+              'search_options' => $widget['search_options']
+            ];
+        }
+
         $rows[$widget['panels_info']['grid']]['cells'][] = [
           'weight' => $content['grid_cells'][$key]['weight'],
           'widget' => $widget
         ];
+
       }
 
       return $rows;

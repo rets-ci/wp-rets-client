@@ -7,5 +7,7 @@ export const Lib = {
     SET_MAP_PROPS_ACTION: 'SET_MAP_PROPS',
     SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
     SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
-    THEME_PREFIX: 'wp-property-pro-'
+
+    THEME_PREFIX: 'wp-property-pro-',
+    STRING_ARRAY_DELIMITER: '-'
 };
