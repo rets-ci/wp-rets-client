@@ -64,7 +64,7 @@ class Api extends React.Component {
     static selectQuery(params, callback) {
 
         let client = new jQuery.es.Client({
-            hosts: bundle.elasticsearch_host
+            hosts: 'https://' + bundle.elasticsearch_host
         });
 
         let rows = [];
@@ -144,7 +144,7 @@ class Api extends React.Component {
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
-            hosts: bundle.elasticsearch_host
+            hosts: 'https://' + bundle.elasticsearch_host
         });
 
         client.suggest({
@@ -168,7 +168,7 @@ class Api extends React.Component {
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
-            hosts: bundle.elasticsearch_host
+            hosts: 'https://' + bundle.elasticsearch_host
         });
 
         let terms = {};
@@ -193,6 +193,12 @@ class Api extends React.Component {
                                 params.saleType
                             ]
                         }
+                    },
+                    {
+                        "terms": {
+                            "meta_input.property_type": params.propertyTypes
+                        }
+
                     }
                 ],
                 "must_not": [

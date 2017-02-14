@@ -21,3 +21,4 @@
 </head>
 
 <body <?php body_class(); ?>>
+<div id="root"></div>

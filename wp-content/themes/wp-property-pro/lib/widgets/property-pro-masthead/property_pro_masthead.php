@@ -43,21 +43,40 @@ class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
 
   function initialize_form()
   {
+    global $wp_properties;
 
-    /** @TODO get dynamic properties types and sale types */
-//    $property_types = [];
-//    foreach ([
-//               'Rent' => 'Rent',
-//               'Sale' => 'Buy',
-//               'Land' => 'Land',
-//               'Commercial' => 'Commercial'
-//             ] as $key => $label) {
-//      $property_types[$key] = [
-//        'type' => 'checkbox',
-//        'default' => false,
-//        'label' => __($label, 'so-widgets-bundle'),
-//      ];
-//    }
+    $general_property_types = array_filter($wp_properties['property_types'], function ($type) {
+      return !in_array($type, ['Land', 'Commercial']);
+    });
+
+    $excluded_property_types = array_filter($wp_properties['property_types'], function ($type) {
+      return in_array($type, ['Land', 'Commercial']);
+    });
+
+    $search_options = [];
+    $delimiter = '-';
+    foreach ([
+               'Rent',
+               'Sale',
+               'Land',
+               'Commercial'
+             ] as $label) {
+
+        $sale_type = $label;
+      if (in_array($label, ['Rent', 'Sale']))
+        $key = implode($delimiter, $general_property_types);
+      else{
+        $key = $excluded_property_types[strtolower($label)];
+        $sale_type = 'Sale';
+      }
+
+
+      $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+        'type' => 'checkbox',
+        'default' => false,
+        'label' => __($label, 'so-widgets-bundle'),
+      ];
+    }
 
     return [
       'layout' => [
@@ -86,12 +105,12 @@ class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
         'description' => __('Set backgound image file.', 'so-widgets-bundle'),
       ],
 
-//      'property_types' => [
-//        'type' => 'section',
-//        'label' => __('Search', 'so-widgets-bundle'),
-//        'hide' => true,
-//        'fields' => $property_types
-//      ]
+      'search_options' => [
+        'type' => 'section',
+        'label' => __('Search', 'so-widgets-bundle'),
+        'hide' => true,
+        'fields' => $search_options
+      ]
     ];
   }
 

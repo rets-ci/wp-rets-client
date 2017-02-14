@@ -1,13 +1,13 @@
 import React from 'react';
-import Menu from './Menu.jsx';
+// import Menu from './Menu.jsx';
+import Header from './Header.jsx';
 import Content from './Content.jsx';
-import Search from './Search.jsx'
 import Map from './Map.jsx'
 
 const App = () => (
     <div>
-        <Menu />
-        <Search />
+        {/*<Menu />*/}
+        <Header />
         <Map />
         <Content />
     </div>
