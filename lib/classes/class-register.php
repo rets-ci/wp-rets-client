@@ -113,7 +113,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $api_body = json_decode(wp_remote_retrieve_body($response));
 
-        if (isset($api_body) && $api_body->retsci_site_secret_token === $retsci_site_secret_token) {
+        if (isset($api_body) && $api_body->retsci_secret_token === $retsci_site_secret_token) {
           if (isset($api_body->retsci_site_id)) {
             add_site_option('retsci_site_id', $api_body->retsci_site_id);
           }
