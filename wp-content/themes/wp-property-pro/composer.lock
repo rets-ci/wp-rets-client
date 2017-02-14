@@ -1,0 +1,481 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "651b2da129cec58fba7a94cf48e76450",
+    "content-hash": "e3d99bd5bebbc36f6d4e0f91b2257f86",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "hanamura/wp-model",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hanamura/wp-model.git",
+                "reference": "41ea6b6f97333125dc22312f637bf64148ca751f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hanamura/wp-model/zipball/41ea6b6f97333125dc22312f637bf64148ca751f",
+                "reference": "41ea6b6f97333125dc22312f637bf64148ca751f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WPModel": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taro Hanamura",
+                    "email": "m@hanamurataro.com"
+                }
+            ],
+            "description": "Missing functionalities from model objects of WordPress.",
+            "time": "2014-12-10 09:44:45"
+        },
+        {
+            "name": "usabilitydynamics/lib-api",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-api",
+                "reference": "0.5.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-api/archive/0.5.0.zip",
+                "reference": "0.5.0",
+                "shasum": null
+            },
+            "require": {
+                "usabilitydynamics/lib-utility": "*"
+            },
+            "type": "library",
+            "extra": {
+                "installer-name": "lib-api"
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "http://github.com/usabilitydynamics/lib-api",
+            "keywords": [
+                "api"
+            ],
+            "support": {
+                "issues": "https://github.com/usabilitydynamics/lib-api/issues"
+            }
+        },
+        {
+            "name": "usabilitydynamics/lib-model",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-model",
+                "reference": "0.4.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-model/archive/0.4.0.zip",
+                "reference": "0.4.0",
+                "shasum": null
+            },
+            "require": {
+                "hanamura/wp-model": "~1.1",
+                "usabilitydynamics/lib-utility": "~0.3"
+            },
+            "require-dev": {
+                "usabilitydynamics/lib-meta-box": "master"
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "static/scripts/udx.model.js",
+                        "static/scripts/udx.model.validation.js"
+                    ]
+                },
+                "installer-name": "lib-model"
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "http://github.com/usabilitydynamics/lib-models",
+            "keywords": [
+                "models",
+                "shema",
+                "validation"
+            ]
+        },
+        {
+            "name": "usabilitydynamics/lib-requires",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-requires",
+                "reference": "3.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-requires/archive/3.1.0.zip",
+                "reference": "3.1.0",
+                "shasum": null
+            },
+            "require": {
+                "usabilitydynamics/lib-utility": "*"
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "scripts/udx.requires.js",
+                        "scripts/udx.requires.asset.js"
+                    ]
+                },
+                "installer-name": "lib-requires"
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "keywords": [
+                "adm",
+                "api",
+                "javascript",
+                "require.js",
+                "udx.io"
+            ]
+        },
+        {
+            "name": "usabilitydynamics/lib-settings",
+            "version": "0.2.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-settings",
+                "reference": "0.2.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-settings/archive/0.2.3.zip",
+                "reference": "0.2.3",
+                "shasum": null
+            },
+            "require": {
+                "usabilitydynamics/lib-utility": "~0.3"
+            },
+            "require-dev": {
+                "justinrainbow/json-schema": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "static/scripts/settings.js"
+                    ],
+                    "templates": [
+                        "static/views/new-installation.xhtml"
+                    ],
+                    "files": [
+                        "static/schemas/settings.json"
+                    ]
+                },
+                "installer-name": "lib-settings"
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "http://github.com/usabilitydynamics/lib-settings",
+            "keywords": [
+                "settings"
+            ]
+        },
+        {
+            "name": "usabilitydynamics/lib-ui",
+            "version": "0.3.4",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-ui",
+                "reference": "0.3.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-ui/archive/0.3.4.zip",
+                "reference": "0.3.4",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=5.3",
+                "usabilitydynamics/lib-utility": "~0.3"
+            },
+            "type": "library",
+            "extra": {
+                "installer-name": "lib-ui",
+                "text_domain": "lib-ui",
+                "main-file": "lib/class-ui.php",
+                "class": "UsabilityDynamics\\UI",
+                "component": {
+                    "scripts": [
+                        "static/scripts/ui.js",
+                        "static/scripts/ui.markdown.js",
+                        "static/scripts/ui.jquery-tabs.js"
+                    ],
+                    "styles": [
+                        "static/styles/ui.css",
+                        "static/styles/ui.less"
+                    ]
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "GNU"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "http://github.com/UsabilityDynamics/wp-ui",
+            "keywords": [
+                "css-editor",
+                "editor",
+                "script-editor",
+                "ui"
+            ]
+        },
+        {
+            "name": "usabilitydynamics/lib-utility",
+            "version": "0.3.7",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-utility",
+                "reference": "0.3.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-utility/archive/0.3.7.zip",
+                "reference": "0.3.7",
+                "shasum": null
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "installer-name": "lib-utility",
+                "component": {
+                    "name": "utility",
+                    "scripts": [
+                        "scripts/*.js"
+                    ]
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Potanin",
+                    "email": "andy.potanin@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Maxim Peshkov",
+                    "email": "maxim.peshkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anton Korotkov",
+                    "email": "anton.korotkov@usabilitydynamics.com",
+                    "homepage": "http://usabilitydynamics.com",
+                    "role": "Developer"
+                }
+            ],
+            "keywords": [
+                "job",
+                "process",
+                "utility"
+            ]
+        },
+        {
+            "name": "usabilitydynamics/lib-wp-theme",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:UsabilityDynamics/lib-wp-theme",
+                "reference": "0.4.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/UsabilityDynamics/lib-wp-theme/archive/0.4.0.zip",
+                "reference": "0.4.0",
+                "shasum": null
+            },
+            "require": {
+                "usabilitydynamics/lib-api": "~0.5",
+                "usabilitydynamics/lib-model": "~0.3",
+                "usabilitydynamics/lib-requires": "~3.1",
+                "usabilitydynamics/lib-settings": "~0.2",
+                "usabilitydynamics/lib-ui": "~0.3",
+                "usabilitydynamics/lib-utility": "~0.3"
+            },
+            "type": "library",
+            "extra": {
+                "installer-name": "lib-wp-theme"
+            },
+            "autoload": {
+                "classmap": [
+                    "lib/plugins",
+                    "lib/classes"
+                ]
+            },
+            "license": [
+                "GPL-2.0"
+            ],
+            "description": "WordPress Theme bootstrap."
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "~7.0.13"
+    },
+    "platform-dev": []
+}

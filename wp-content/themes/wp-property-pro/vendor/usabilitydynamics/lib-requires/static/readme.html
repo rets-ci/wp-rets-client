@@ -1,0 +1,216 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>doc</title>
+    <style>
+      /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
+      pre code {
+        display: block; padding: 0.5em;
+        color: #333;
+        background: #f8f8ff
+      }
+      pre .comment,
+      pre .template_comment,
+      pre .diff .header,
+      pre .javadoc {
+        color: #998;
+        font-style: italic
+      }
+      pre .keyword,
+      pre .css .rule .keyword,
+      pre .winutils,
+      pre .javascript .title,
+      pre .nginx .title,
+      pre .subst,
+      pre .request,
+      pre .status {
+        color: #333;
+        font-weight: bold
+      }
+      pre .number,
+      pre .hexcolor,
+      pre .ruby .constant {
+        color: #099;
+      }
+      pre .string,
+      pre .tag .value,
+      pre .phpdoc,
+      pre .tex .formula {
+        color: #d14
+      }
+      pre .title,
+      pre .id {
+        color: #900;
+        font-weight: bold
+      }
+      pre .javascript .title,
+      pre .lisp .title,
+      pre .clojure .title,
+      pre .subst {
+        font-weight: normal
+      }
+      pre .class .title,
+      pre .haskell .type,
+      pre .vhdl .literal,
+      pre .tex .command {
+        color: #458;
+        font-weight: bold
+      }
+      pre .tag,
+      pre .tag .title,
+      pre .rules .property,
+      pre .django .tag .keyword {
+        color: #000080;
+        font-weight: normal
+      }
+      pre .attribute,
+      pre .variable,
+      pre .lisp .body {
+        color: #008080
+      }
+      pre .regexp {
+        color: #009926
+      }
+      pre .class {
+        color: #458;
+        font-weight: bold
+      }
+      pre .symbol,
+      pre .ruby .symbol .string,
+      pre .lisp .keyword,
+      pre .tex .special,
+      pre .prompt {
+        color: #990073
+      }
+      pre .built_in,
+      pre .lisp .title,
+      pre .clojure .built_in {
+        color: #0086b3
+      }
+      pre .preprocessor,
+      pre .pi,
+      pre .doctype,
+      pre .shebang,
+      pre .cdata {
+        color: #999;
+        font-weight: bold
+      }
+      pre .deletion {
+        background: #fdd
+      }
+      pre .addition {
+        background: #dfd
+      }
+      pre .diff .change {
+        background: #0086b3
+      }
+      pre .chunk {
+        color: #aaa
+      }
+    </style>
+  </head>
+  <body>  
+    <h2 id="concepts">Concepts</h2>
+<ul>
+<li>Requires will only produce a single script tag per page request, but multiple may be supported in the future.</li>
+</ul>
+<h2 id="wordpress-concepts">WordPress Concepts</h2>
+<ul>
+<li>Only footer scripts are converted to AMD, header scripts assumed to be necessary for <body> to render, and are blocking.</li>
+<li>The AMD configuration is stored in app.config.js.</li>
+<li>Each script&#39;s localization data is loaded via app.locale.js. Traditional global variables are honored in addition to be each locale setting object being wrapped into define()</li>
+<li>Recognized AMD scripts are stored in options table.</li>
+<li>Recognized AMD scripts are dequed from footer (wp_print_footer_scripts) only if they are loaded prior to &quot;template_redirect&quot; action.
+*</li>
+</ul>
+<p>Config Properties
+The app.config.js file includes:</p>
+<ul>
+<li>baseUrl - Relative URL to assets, typically simply /assets.</li>
+<li>paths - Reference to paths of all enqueued scripts via wp_enqueue_script() and dependencies that are not available via UDX CDN.</li>
+<li>deps - All enqueued scripts that should be loaded on initialization, e.g. &#39;jquery&#39;, &#39;jquery.accordion&#39;, &#39;menufication-js&#39;, etc.</li>
+<li>shim - Dependencies of enqueued scripts.</li>
+<li>config - Object containing all custom configuration such as Analytics ID, Locale Strings, Menufication settings, etc. This configuration does not take user session or application state into consideration.</li>
+</ul>
+<h2 id="size">Size</h2>
+<p>The size of the main <a href="http://cdn.udx.io/udx.requires.js">http://cdn.udx.io/udx.requires.js</a> file is:</p>
+<ul>
+<li>11.1 KB - Minified and GZipped.</li>
+<li>17.7 KB - Minified.</li>
+<li>69.8 KB - Unminified.</li>
+</ul>
+<h3 id="shims">Shims</h3>
+<ul>
+<li>Object.extend</li>
+<li>Object.defineSchema</li>
+<li>Object.validateSchema</li>
+<li>Object.create</li>
+<li>Object.defineProperty</li>
+<li>Object.defineProperties</li>
+<li>Object.getOwnPropertyDescriptor</li>
+<li>Object.getOwnPropertyNames</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<h3 id="initialize-require-client">Initialize Require Client</h3>
+<ul>
+<li>data-id</li>
+<li>data-name</li>
+<li>data-base-url</li>
+<li>data-model</li>
+<li>data-version - Will append a &quot;ver=X.X&quot; version to each requested script.</li>
+<li>data-config - JSON configuration string, may otherwise be set as inner-content of the <script> tag.</li>
+<li>data-main</li>
+<li>data-status - (loading|ready|error)</li>
+<li>data-requiremodule</li>
+<li>data-requirecontext</li>
+<li>data-requires / data-require / data-enqueue</li>
+</ul>
+<h3 id="initialize-wordpress-handler">Initialize WordPress Handler</h3>
+<pre><code class="lang-php">// Initialize.
+$_requires = new \UsabilityDynamics\Requires;
+
+// Configure..
+$_requires-&gt;set(array(
+  &#39;paths&#39; =&gt; &#39;/scripts/app.state.js&#39;,
+  &#39;scopes&#39; =&gt; &#39;public&#39;,
+  &#39;debug&#39; =&gt; true
+)));
+
+// Define Libraries.
+$_requires-&gt;add( &#39;udx.knockout&#39; );
+$_requires-&gt;add( &#39;wpp.ui.supermap&#39; );
+$_requires-&gt;add( &#39;wpp.ui.admin.settings&#39; );
+
+// Render HTML tag.
+$_requires-&gt;render_tag();</code></pre>
+<h3 id="in-header">In Header</h3>
+<pre><code class="lang-html">&lt;script data-debug=&quot;true&quot; src=&quot;//cdn.udx.io/requires.js&quot;&gt;&lt;/script&gt;</code></pre>
+<h3 id="in-body">In Body</h3>
+<pre><code class="lang-html">&lt;div data-requires=&quot;udx.wp-property.supermap&quot;&gt;&lt;/div&gt;
+&lt;div data-requires=&quot;udx.elastic-filter&quot;&gt;&lt;/div&gt;
+&lt;div data-requires=&quot;crowdfavorite.carrington-build.slider&quot;&gt;&lt;/div&gt;
+&lt;div data-requires=&quot;bootstrap.carousel&quot;&gt;&lt;/div&gt;</code></pre>
+<h2 id="license">License</h2>
+<p>(The MIT License)</p>
+<p>Copyright (c) 2013 Usability Dynamics, Inc. &lt;info@usabilitydynamics.com&gt;</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+&#39;Software&#39;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &#39;AS IS&#39;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+  </body>
+</html>

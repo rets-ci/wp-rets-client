@@ -1,0 +1,31 @@
+{
+  "name": "usabilitydynamics/lib-wp-theme",
+  "type": "library",
+  "description": "WordPress Theme bootstrap.",
+  "author": {
+    "name": "Usability Dynamics",
+    "url": "http://UsabilityDynamics.com"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "usabilitydynamics/lib-api": "~0.5",
+    "usabilitydynamics/lib-settings": "~0.2",
+    "usabilitydynamics/lib-utility": "~0.3",
+    "usabilitydynamics/lib-ui": "~0.3",
+    "UsabilityDynamics/lib-model": "~0.3",
+    "UsabilityDynamics/lib-requires": "~3.1"
+  },
+  "autoload": {
+    "classmap": [
+      "lib/plugins",
+      "lib/classes"
+    ]
+  },
+  "license": "GPL-2.0"
+}

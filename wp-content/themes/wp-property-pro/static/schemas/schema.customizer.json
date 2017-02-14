@@ -1,0 +1,154 @@
+{
+  "sections": {
+    "property_pro_colors_section": {
+      "title": "Colors",
+      "priority": 30
+    },
+    "property_pro_fonts_section": {
+      "title": "Fonts",
+      "priority": 31
+    },
+    "property_pro_branding_section": {
+      "title": "Branding",
+      "priority": 32
+    }
+  },
+  "settings": [
+    {
+      "key": "property_pro_primary_color",
+      "label": "Primary Color",
+      "section": "property_pro_colors_section",
+      "control": "color",
+      "important": false,
+      "default": "#000000",
+      "selector": [
+        "#menu-item"
+      ]
+    },
+    {
+      "key": "property_pro_secondary_color",
+      "label": "Secondary Color",
+      "section": "property_pro_colors_section",
+      "control": "color",
+      "important": false,
+      "default": "#000000",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_heading_font",
+      "label": "Heading Font-Family",
+      "section": "property_pro_fonts_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Make a choice",
+        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
+        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
+        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
+        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
+        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
+      },
+      "rule-title": "font-family",
+      "selector": [
+        ".pageheader h1"
+      ]
+    },
+    {
+      "key": "property_pro_body_font",
+      "label": "Body Font-Family",
+      "section": "property_pro_fonts_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Select Option",
+        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
+        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
+        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
+        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
+        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
+        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
+      },
+      "rule-title": "font-family",
+      "selector": [
+        ".pageheader p.hidden-sm-down"
+      ]
+    },
+    {
+      "key": "property_pro_brand_type",
+      "label": "Brand Type",
+      "section": "property_pro_branding_section",
+      "control": "select",
+      "important": false,
+      "default": "0",
+      "choices": {
+        "0": "Select Option",
+        "company": "Company",
+        "person": "Person"
+      },
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_company_square_logo",
+      "label": "Square Logo",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_company_horizontal_logo",
+      "label": "Horizontal Logo",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_company_vertical_logo",
+      "label": "Vertical Logo",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_square_headshot",
+      "label": "Square Headshot",
+      "section": "property_pro_branding_section",
+      "control": "image",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_name",
+      "label": "Name",
+      "section": "property_pro_branding_section",
+      "control": "text",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_person_credential",
+      "label": "Credential",
+      "section": "property_pro_branding_section",
+      "control": "text",
+      "selector": [
+        "#selector"
+      ]
+    }
+  ]
+}
