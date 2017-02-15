@@ -144,18 +144,26 @@ namespace UsabilityDynamics {
     {
       $rows = [];
 
-
       foreach ($content['widgets'] as $key => $widget) {
         $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
 
+        /** Get image src */
+        if (isset($widget['image']))
+          $widget['image_src'] = $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '';
 
         $fields = [];
         foreach ($widget as $key => $field) {
 
-          /** Exclude siteorigin system field */
-          if (is_array($field))
+          if (is_array($field)) {
+
+            /** Exclude siteorigin system field */
             if (isset($field['so_field_container_state']))
               unset($field['so_field_container_state']);
+
+            foreach ($field as $item_key => $item)
+              if (array_key_exists('image', $item))
+                $field[$item_key]['image_src'] = $item['image'] ? wp_get_attachment_image_src($item['image'], 'full')[0] : '';
+          }
 
           /** Siteorigin system fields no need in fields array */
           if (in_array($key, ['_sow_form_id', 'panels_info']))
