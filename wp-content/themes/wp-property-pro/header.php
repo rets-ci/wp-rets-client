@@ -6,6 +6,8 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,500,500i,600,700|Playfair+Display" />
     <title><?php wp_title(); ?></title>
   <?php wp_head(); ?>
     <!-- Google Analytics -->
