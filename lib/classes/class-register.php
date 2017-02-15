@@ -117,7 +117,7 @@ namespace UsabilityDynamics\WPRETSC {
               add_site_option('retsci_site_id', $api_body->retsci_site_id);
             }
             if (isset($api_body->retsci_site_public_key)) {
-              add_site_option('retsci_site_public_key', $api_body->retsci_site_public_key);
+              add_site_option('retsci_site_public_key', $api_body->retsci_public_key);
             }
           }
         }
