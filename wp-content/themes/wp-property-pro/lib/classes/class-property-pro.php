@@ -148,22 +148,23 @@ namespace UsabilityDynamics {
       foreach ($content['widgets'] as $key => $widget) {
         $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
 
-        switch ($widget['panels_info']['class']) {
-          case 'Property_Pro_Masthead_Widget':
 
-            /** Exclude siteorigin system field */
-            if (isset($widget['search_options']['so_field_container_state']))
-              unset($widget['search_options']['so_field_container_state']);
+        $fields = [];
+        foreach ($widget as $key => $field) {
 
-            /** Pack all widgets fields to one fields cell */
-            $widget['fields'] = [
-              'layout' => $widget['layout'],
-              'title' => $widget['title'],
-              'subtitle' => $widget['subtitle'],
-              'image_src' => $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '',
-              'search_options' => $widget['search_options']
-            ];
+          /** Exclude siteorigin system field */
+          if (is_array($field))
+            if (isset($field['so_field_container_state']))
+              unset($field['so_field_container_state']);
+
+          /** Siteorigin system fields no need in fields array */
+          if (in_array($key, ['_sow_form_id', 'panels_info']))
+            continue;
+
+          $fields[$key] = $field;
         }
+
+        $widget['fields'] = $fields;
 
         $rows[$widget['panels_info']['grid']]['cells'][] = [
           'weight' => $content['grid_cells'][$key]['weight'],
