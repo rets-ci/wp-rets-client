@@ -88,6 +88,19 @@ namespace UsabilityDynamics\WPRETSC {
 
         wp_enqueue_script( 'wpp_retsci_app', ud_get_wp_rets_client()->path( 'static/scripts/app.js', 'url' ), array( 'jquery' ) );
 
+        $data = json_encode(array(
+          'retsci_site_id' => $this->is_retsci_site_id_registered(),
+          'retsci_site_secret_token' => $this->is_retsci_site_secret_token_registered(),
+          'user_data' => get_userdata(get_current_user_id()),
+          'blog_id' => get_current_blog_id(),
+          'security' => wp_create_nonce( "wpp_retsci_subscriber" ),
+          'api_url' => $api_url
+        ));
+
+        ob_start();
+        include_once ud_get_wp_rets_client()->path( 'static/views/widget-subscriber.php', 'dir' );
+        echo apply_filters( 'wpp_retsci_widget_subscriber_content', ob_get_clean() );
+
 
         /**
          * If not registered on rets ci yet
@@ -110,19 +123,6 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         // Register subscriber
-
-        $data = json_encode(array(
-          'retsci_site_id' => $this->is_retsci_site_id_registered(),
-          'retsci_site_secret_token' => $this->is_retsci_site_secret_token_registered(),
-          'user_data' => get_userdata(get_current_user_id()),
-          'blog_id' => get_current_blog_id(),
-          'security' => wp_create_nonce( "wpp_retsci_subscriber" ),
-          'api_url' => $api_url
-        ));
-
-        ob_start();
-        include_once ud_get_wp_rets_client()->path( 'static/views/widget-subscriber.php', 'dir' );
-        echo apply_filters( 'wpp_retsci_widget_subscriber_content', ob_get_clean() );
 
         /**
          * Show stats

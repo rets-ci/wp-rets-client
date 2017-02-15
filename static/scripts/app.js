@@ -89,7 +89,7 @@ jQuery(function() {
       }, {});
 
       jQuery.post( ajaxurl, {
-        action: 'wpp_retsci_subscription',
+        action: 'ajax_retsci_subscriber',
         security: config.security,
         payload: {
           retsci_site_id: config.retsci_site_id,

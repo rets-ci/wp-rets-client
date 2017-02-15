@@ -56,7 +56,7 @@ namespace UsabilityDynamics\WPRETSC {
           if ( !empty( $response_body->retsci_site_public_key ) )
             update_site_option( 'retsci_site_public_key', $response_body->retsci_site_public_key );
 
-            update_site_option( 'retsci_site_secret_token', $payload['retsci_site_secret_token'] );
+          update_site_option( 'retsci_site_secret_token', $payload['retsci_site_secret_token'] );
 
         }
 
@@ -123,11 +123,11 @@ namespace UsabilityDynamics\WPRETSC {
         $response_body = json_decode(wp_remote_retrieve_body($response));
 
         if ( !empty( $response_body->ok ) && $response_body->ok == true ) {
-          
+
         }
 
         wp_send_json($response_body);
-        
+
       }
     }
   }
