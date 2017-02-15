@@ -42,6 +42,10 @@
     width: 200px;
 }
 
+#search-options-type-container:hover {
+  cursor: pointer
+}
+
 
 /*-----------------------------------------------------------------------------------*/
 /*  Global
@@ -60,7 +64,7 @@ p { margin-bottom: 1.20em; line-height: 1.4; }
 body,p , input, button, select, textarea { font-family: "Lato", serif; letter-spacing: 1px;  }
 h1, h2, h3, h4, h5 { font-family: inherit; font-weight: 700; font-size: inherit; line-height: inherit; }
 .testimonial h4, .listings h3,
-.pageheader h1  { font-family: 'Playfair Display', serif; line-height: inherit; }
+.pageheader h1  { font-family: 'Playfair Display', serif !important; line-height: inherit; }
 
 
 

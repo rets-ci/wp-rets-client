@@ -1,4 +1,5 @@
-import {combineReducers} from 'redux'
+import {routerReducer} from 'react-router-redux';
+import {combineReducers} from 'redux';
 import postState from './post.jsx';
 import menuState from './menu.jsx';
 import mapState from './map.jsx';
@@ -14,6 +15,7 @@ const propertyProApp = combineReducers({
     searchPropsState,
     mapPropsState,
     mapMarkersState,
+    routing: routerReducer,
     filterTermsState
 });
 
