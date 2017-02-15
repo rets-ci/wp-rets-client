@@ -74,7 +74,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 };
 
-const SearchContentOld = function ({currentState, searchHandler, searchProps, filterTerms, searchItemClick, doSearch, clearTermFilter, options}) {
+const SearchContent = function ({currentState, searchHandler, searchProps, filterTerms, searchItemClick, doSearch, clearTermFilter, options}) {
 
     let searchResults = [];
     let filterTermsList = [];
@@ -138,7 +138,7 @@ const SearchContentOld = function ({currentState, searchHandler, searchProps, fi
     )
 };
 
-class SearchContent extends Component {
+class SearchContentOld extends Component {
   constructor(props) {
     super(props);
     this.state = {

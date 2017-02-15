@@ -29499,6 +29499,10 @@
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
+	var _Map = __webpack_require__(296);
+
+	var _Map2 = _interopRequireDefault(_Map);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29524,6 +29528,7 @@
 	        null,
 	        _react2.default.createElement(_UserPanel2.default, null),
 	        _react2.default.createElement(_Header2.default, null),
+	        _react2.default.createElement(_Map2.default, null),
 	        this.props.children
 	      );
 	    }
@@ -46965,7 +46970,7 @@
 	    };
 	};
 
-	var SearchContentOld = function SearchContentOld(_ref) {
+	var SearchContent = function SearchContent(_ref) {
 	    var currentState = _ref.currentState,
 	        searchHandler = _ref.searchHandler,
 	        searchProps = _ref.searchProps,
@@ -47041,13 +47046,13 @@
 	    );
 	};
 
-	var SearchContent = function (_Component) {
-	    _inherits(SearchContent, _Component);
+	var SearchContentOld = function (_Component) {
+	    _inherits(SearchContentOld, _Component);
 
-	    function SearchContent(props) {
-	        _classCallCheck(this, SearchContent);
+	    function SearchContentOld(props) {
+	        _classCallCheck(this, SearchContentOld);
 
-	        var _this = _possibleConstructorReturn(this, (SearchContent.__proto__ || Object.getPrototypeOf(SearchContent)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (SearchContentOld.__proto__ || Object.getPrototypeOf(SearchContentOld)).call(this, props));
 
 	        _this.state = {
 	            dropDownOpen: false
@@ -47055,7 +47060,7 @@
 	        return _this;
 	    }
 
-	    _createClass(SearchContent, [{
+	    _createClass(SearchContentOld, [{
 	        key: 'toggleDropdown',
 	        value: function toggleDropdown() {
 	            this.setState({ dropDownOpen: !this.state.dropDownOpen });
@@ -47151,10 +47156,10 @@
 	        }
 	    }]);
 
-	    return SearchContent;
+	    return SearchContentOld;
 	}(_react.Component);
 
-	SearchContent.propTypes = {
+	SearchContentOld.propTypes = {
 	    currentState: _react.PropTypes.object.isRequired,
 	    searchHandler: _react.PropTypes.func.isRequired,
 	    searchProps: _react.PropTypes.array,
@@ -47896,6 +47901,185 @@
 	var UserPanel = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserPanelContent);
 
 	exports.default = UserPanel;
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(284);
+
+	var _Api = __webpack_require__(292);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _lib = __webpack_require__(276);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        mapState: state.mapState,
+	        props: state.mapPropsState.mapProps,
+	        mapMarkersState: state.mapMarkersState
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {
+	        addMap: function addMap(map) {
+	            dispatch((0, _index.addMap)(map));
+	        },
+	        saveMarkers: function saveMarkers(map, response, mapMarkers) {
+
+	            if (response.hits.hits.length) {
+
+	                var markers = [];
+
+	                for (var i in mapMarkers) {
+	                    var marker = mapMarkers[i];
+	                    marker.setMap(null);
+	                }
+
+	                var firstPosition = void 0;
+
+	                for (var _i in response.hits.hits) {
+	                    var position = new google.maps.LatLng(response.hits.hits[_i]._source.tax_input.location_latitude, response.hits.hits[_i]._source.tax_input.location_longitude);
+	                    var _marker = new google.maps.Marker({
+	                        position: position,
+	                        map: map,
+	                        title: response.hits.hits[_i]._source.post_title
+	                    });
+
+	                    markers.push(_marker);
+
+	                    if (!firstPosition) firstPosition = position;
+	                }
+
+	                var mapContainer = jQuery('#' + _lib.Lib.THEME_PREFIX + 'map');
+	                if (mapContainer.is(':hidden')) mapContainer.show();
+
+	                google.maps.event.trigger(map, 'resize');
+
+	                map.setCenter(firstPosition);
+
+	                dispatch((0, _index.setMapMarkers)(markers));
+	            }
+	        }
+	    };
+	};
+
+	var Map = function (_React$Component) {
+	    _inherits(Map, _React$Component);
+
+	    function Map() {
+	        _classCallCheck(this, Map);
+
+	        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
+	    }
+
+	    _createClass(Map, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+
+	            if (typeof nextProps === 'undefined') return;
+
+	            var map = nextProps.mapState.map;
+
+	            if (nextProps.props) {
+
+	                if (nextProps.props === this.props.props) return;
+
+	                nextProps.saveMarkers(map, nextProps.props, nextProps.mapMarkersState.mapMarkers);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return typeof this.props.mapState.map === 'undefined';
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+
+	            if (typeof this.props.mapState.map !== 'undefined') return;
+
+	            var map = new google.maps.Map(document.getElementById(_lib.Lib.THEME_PREFIX + 'map'), {
+	                center: { lat: 35.994033, lng: -78.898619 },
+	                scrollwheel: false,
+	                zoom: 9
+	            });
+
+	            var instance = this;
+
+	            map.addListener('dragend', function () {
+	                var bounds = map.getBounds();
+	                var NE = bounds.getNorthEast();
+	                var SW = bounds.getSouthWest();
+
+	                var searchParams = {
+	                    locationCountry: 'Durham',
+	                    saleType: 'Rent',
+	                    locationFilter: true,
+	                    topLeft: {
+	                        lat: NE.lat(),
+	                        lon: NE.lng()
+	                    },
+	                    bottomRight: {
+	                        "lat": SW.lat(),
+	                        "lon": SW.lng()
+	                    }
+	                };
+
+	                _Api2.default.search(searchParams, function (response) {
+
+	                    if (typeof response === 'undefined') return;
+
+	                    instance.opts.saveMarkers(map, response, instance.opts.mapMarkers);
+	                });
+	            });
+
+	            this.props.addMap(map);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { id: _lib.Lib.THEME_PREFIX + "map" },
+	                    'Loading ...'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Map;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map);
 
 /***/ }
 /******/ ]);
