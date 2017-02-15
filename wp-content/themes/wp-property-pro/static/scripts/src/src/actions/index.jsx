@@ -48,3 +48,10 @@ export const setFilterTerms = (filterTerms) => {
         filterTerms: filterTerms
     }
 };
+
+export const setUserData = (userData) => {
+    return {
+        type: Lib.SET_USER_DATA_ACTION,
+        userData: userData
+    }
+};

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Api from '../containers/Api.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
@@ -136,6 +136,105 @@ const SearchContent = function ({currentState, searchHandler, searchProps, filte
             </ul>
         </div>
     )
+};
+
+class SearchContentOld extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropDownOpen: false
+    };
+  }
+  static propTypes = {
+    currentState: PropTypes.object.isRequired,
+    searchHandler: PropTypes.func.isRequired,
+    searchProps: PropTypes.array,
+    filterTerms: PropTypes.array,
+    searchItemClick: PropTypes.func,
+    doSearch: PropTypes.func,
+    clearTermFilter: PropTypes.func,
+    options: PropTypes.object.isRequired
+  };
+
+  toggleDropdown() {
+    this.setState({dropDownOpen: !this.state.dropDownOpen});
+  }
+
+  render() {
+    let {
+      clearTermFilter,
+      doSearch,
+      filterTerms,
+      options,
+      searchItemClick,
+      searchHandler,
+      searchProps
+    } = this.props;
+    let filterTermsList = [];
+    let labels = [];
+    let select_options_content = [];
+    let select_options_array = [];
+    let searchResults = [];
+
+    if (filterTerms.length) {
+      filterTermsList = filterTerms.map((item) => {
+        return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
+      });
+    } else {
+      searchResults = searchProps.map((prop) => {
+        return (<SearchResultRow prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
+      });
+    }
+
+    for (let key in options) {
+        if (options[key] === false)
+            continue;
+        let option_array = _.split(key, Lib.STRING_ARRAY_DELIMITER);
+        let label = _.slice(option_array, 0, 1);
+        labels.push(label);
+        select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
+        select_options_content.push(<option
+            value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)}>{label}</option>);
+    }
+
+    let search_types;
+
+    if (select_options_content.length > 1) {
+        search_types = (
+            <select id={Lib.THEME_PREFIX + "search_type"}>
+                {select_options_content}
+            </select>
+        );
+    } else if (select_options_content.length === 1) {
+      search_types = (
+        <input type="hidden" id={Lib.THEME_PREFIX + "search_type"} value={select_options_array[0]}/>
+      );
+    }
+
+    if (!search_types) {
+      return (
+        <div></div>
+      );
+    }
+    return (
+      <div className="search-box">
+        <div className="drop-search">
+          <div id="search-options-type-container" onClick={this.toggleDropdown.bind(this)}>
+            {labels.length ? labels[0] : ''}
+            <i className="fa fa-caret-down"></i>
+          </div>
+        {this.state.dropDownOpen ?
+          <ul>
+            {labels.map(l =>
+              <li><a href="#">{l}</a></li>
+            )}
+          </ul>
+        : null}
+        </div>
+        <i className="fa fa-search"></i> Enter neighbohood, address, Zipcode
+      </div>
+    );
+  }
 };
 
 const Search = connect(
