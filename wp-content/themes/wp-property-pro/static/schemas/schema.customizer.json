@@ -55,7 +55,8 @@
       },
       "rule-title": "font-family",
       "selector": [
-        ".pageheader h1"
+        ".pageheader h1",
+        ".testimonial h4"
       ]
     },
     {
@@ -77,7 +78,10 @@
       },
       "rule-title": "font-family",
       "selector": [
-        ".pageheader p.hidden-sm-down"
+        ".pageheader p.hidden-sm-down",
+        ".testimonial .sliderContent blockquote p",
+        ".testimonial .userInfo .userBox p",
+        ".testimonial .userInfo .userBox span"
       ]
     },
     {
