@@ -29507,11 +29507,11 @@
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Testimonials = __webpack_require__(297);
+	var _Testimonials = __webpack_require__(300);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(298);
+	var _Subnavigation = __webpack_require__(301);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -47546,13 +47546,17 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _Search = __webpack_require__(294);
+	var _WidgetsUtil = __webpack_require__(294);
 
-	var _Search2 = _interopRequireDefault(_Search);
+	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _lodash = __webpack_require__(289);
+	var _SearchLayout = __webpack_require__(295);
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
+
+	var _TextLayout = __webpack_require__(299);
+
+	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47566,15 +47570,7 @@
 	    var rows = _ref.rows;
 
 
-	    var widget_cell = void 0;
-	    for (var row_index in rows) {
-
-	        var cells = rows[row_index].cells;
-
-	        if (widget_cell = _lodash2.default.find(cells, function (cell) {
-	            return cell.widget.panels_info.class === 'Property_Pro_Masthead_Widget';
-	        })) break;
-	    }
+	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('div', null);
 
@@ -47582,37 +47578,16 @@
 	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
 	    };
 
-	    var container = _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            widget_cell.widget.fields.title
-	        ),
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
-	        ),
-	        _react2.default.createElement(_Search2.default, { options: widget_cell.widget.fields.search_options })
-	    );
-
-	    if (widget_cell.widget.fields.layout === 'option_2') container = _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	            'p',
-	            { className: 'hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
-	        ),
-	        _react2.default.createElement(
-	            'h1',
-	            null,
-	            widget_cell.widget.fields.title
-	        ),
-	        _react2.default.createElement(_Search2.default, { options: widget_cell.widget.fields.search_options })
-	    );
+	    var container = void 0;
+	    switch (widget_cell.widget.fields.layout) {
+	        case 'text_layout':
+	            container = _react2.default.createElement(_TextLayout2.default, { widget_cell: widget_cell });
+	            break;
+	        case 'search_layout':
+	        default:
+	            container = _react2.default.createElement(_SearchLayout2.default, { widget_cell: widget_cell });
+	            break;
+	    }
 
 	    return _react2.default.createElement(
 	        'div',
@@ -47645,17 +47620,120 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _lodash = __webpack_require__(289);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var WidgetsUtil = function (_React$Component) {
+	    _inherits(WidgetsUtil, _React$Component);
+
+	    function WidgetsUtil() {
+	        _classCallCheck(this, WidgetsUtil);
+
+	        return _possibleConstructorReturn(this, (WidgetsUtil.__proto__ || Object.getPrototypeOf(WidgetsUtil)).apply(this, arguments));
+	    }
+
+	    _createClass(WidgetsUtil, null, [{
+	        key: 'getWidgetByKey',
+	        value: function getWidgetByKey(key, rows) {
+	            var widget_cell = void 0;
+	            for (var row_index in rows) {
+
+	                var cells = rows[row_index].cells;
+
+	                if (widget_cell = _lodash2.default.find(cells, function (cell) {
+	                    return cell.widget.panels_info.class === key;
+	                })) break;
+	            }
+
+	            return widget_cell;
+	        }
+	    }]);
+
+	    return WidgetsUtil;
+	}(_react2.default.Component);
+
+	exports.default = WidgetsUtil;
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _Search = __webpack_require__(296);
+
+	var _Search2 = _interopRequireDefault(_Search);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchLayout = function SearchLayout(_ref) {
+	    var widget_cell = _ref.widget_cell;
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	            'h1',
+	            null,
+	            widget_cell.widget.fields.title
+	        ),
+	        _react2.default.createElement(
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
+	        ),
+	        _react2.default.createElement(_Search2.default, { options: widget_cell.widget.fields.search_options })
+	    );
+	};
+
+	exports.default = SearchLayout;
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _reactRedux = __webpack_require__(178);
 
 	var _Api = __webpack_require__(292);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _SearchResultRow = __webpack_require__(295);
+	var _SearchResultRow = __webpack_require__(297);
 
 	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
 
-	var _filterTerm = __webpack_require__(296);
+	var _filterTerm = __webpack_require__(298);
 
 	var _filterTerm2 = _interopRequireDefault(_filterTerm);
 
@@ -47946,7 +48024,7 @@
 	exports.default = Search;
 
 /***/ },
-/* 295 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48031,7 +48109,7 @@
 	exports.default = SearchResultRowContent;
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48052,10 +48130,6 @@
 	    return {
 	        currentState: state
 	    };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {};
 	};
 
 	var filterTermContent = function filterTermContent(_ref) {
@@ -48090,12 +48164,51 @@
 	    );
 	};
 
-	var filterTerm = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(filterTermContent);
+	var filterTerm = (0, _reactRedux.connect)(mapStateToProps)(filterTermContent);
 
 	exports.default = filterTerm;
 
 /***/ },
-/* 297 */
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchLayout = function SearchLayout(_ref) {
+	    var widget_cell = _ref.widget_cell;
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
+	        ),
+	        _react2.default.createElement(
+	            'h1',
+	            null,
+	            widget_cell.widget.fields.title
+	        )
+	    );
+	};
+
+	exports.default = SearchLayout;
+
+/***/ },
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48227,7 +48340,7 @@
 	exports.default = Testimonials;
 
 /***/ },
-/* 298 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

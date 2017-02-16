@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Api from '../containers/Api.jsx';
+import Api from '../../../../containers/Api.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
 import FilterTerm from './filterTerm.jsx';
-import {setSearchProps, setFilterTerms, setMapProps} from '../actions/index.jsx';
-import {Lib} from '../lib.jsx'
+import {setSearchProps, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
 const mapStateToProps = (state, history) => {

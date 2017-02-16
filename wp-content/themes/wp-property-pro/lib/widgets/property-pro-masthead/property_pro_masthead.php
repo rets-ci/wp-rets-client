@@ -62,10 +62,10 @@ class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
                'Commercial'
              ] as $label) {
 
-        $sale_type = $label;
+      $sale_type = $label;
       if (in_array($label, ['Rent', 'Sale']))
         $key = implode($delimiter, $general_property_types);
-      else{
+      else {
         $key = $excluded_property_types[strtolower($label)];
         $sale_type = 'Sale';
       }
@@ -82,10 +82,10 @@ class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
       'layout' => [
         'type' => 'select',
         'label' => __('Layout', 'so-widgets-bundle'),
-        'default' => 'option_1',
+        'default' => 'search_layout',
         'options' => [
-          'option_1' => __('Option 1', 'so-widgets-bundle'),
-          'option_2' => __('Option 2', 'so-widgets-bundle'),
+          'search_layout' => __('Search layout', 'so-widgets-bundle'),
+          'text_layout' => __('Text layout', 'so-widgets-bundle'),
         ],
       ],
 
