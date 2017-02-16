@@ -44,11 +44,13 @@ const TestimonialsContent = ({rows}) => {
 
     let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
         <li className={i === 0 ? "active" : ""} key={i}>
-            <div className="userBox">
-                <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
-                <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
-                <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
-            </div>
+            <a href="#">
+                <div className="userBox">
+                    <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
+                    <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
+                    <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
+                </div>
+            </a>
         </li>
     ));
 
