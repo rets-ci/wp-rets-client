@@ -45,4 +45,7 @@
     font-size: 5em;
     color: #0f7b18;
   }
+  .wpp_retsci_widget_schedule .input-text-wrapper {
+    margin-bottom: 10px;
+  }
 </style>
