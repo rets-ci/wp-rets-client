@@ -172,7 +172,7 @@ html, body { height: 100%; margin: 0; }
 .user-info-box .status.loggedin { display: block; }
 
 
-.user-navigation { overflow: auto; max-height: 490px; }
+.user-navigation { overflow: auto; max-height: 80%; }
 .user-navigation ul { display: block; list-style-type: none; margin: 0; padding: 15px 0; border-bottom: 1px solid #d2dae0; }
 .user-navigation li a { display: block; padding: 0 35px; font-size: 1.050rem; font-weight: 600; line-height: 65px; position: relative; }
 .user-navigation li a span { display: inline-block; margin-right: 15px; }

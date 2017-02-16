@@ -29503,6 +29503,10 @@
 
 	var _Map2 = _interopRequireDefault(_Map);
 
+	var _Testimonials = __webpack_require__(297);
+
+	var _Testimonials2 = _interopRequireDefault(_Testimonials);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29529,7 +29533,8 @@
 	        _react2.default.createElement(_UserPanel2.default, null),
 	        _react2.default.createElement(_Header2.default, null),
 	        _react2.default.createElement(_Map2.default, null),
-	        this.props.children
+	        this.props.children,
+	        _react2.default.createElement(_Testimonials2.default, null)
 	      );
 	    }
 	  }]);
@@ -48080,6 +48085,135 @@
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map);
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _lodash = __webpack_require__(289);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        rows: state.postState.rows
+	    };
+	};
+
+	var TestimonialsContent = function TestimonialsContent(_ref) {
+	    var rows = _ref.rows;
+
+
+	    var widget_cell = void 0;
+	    console.log(rows);
+	    for (var row_index in rows) {
+
+	        var cells = rows[row_index].cells;
+
+	        if (widget_cell = _lodash2.default.find(cells, function (cell) {
+	            return cell.widget.panels_info.class === 'Property_Pro_Testimonials_Widget';
+	        })) break;
+	    }
+
+	    if (!widget_cell) return _react2.default.createElement('section', { className: 'testimonial' });
+
+	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	        return _react2.default.createElement(
+	            'li',
+	            { className: i === 0 ? "active-slide" : "", key: i },
+	            _react2.default.createElement(
+	                'blockquote',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    _lodash2.default.get(testimonial, 'review', '')
+	                )
+	            )
+	        );
+	    });
+
+	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	        return _react2.default.createElement(
+	            'li',
+	            { className: i === 0 ? "active" : "", key: i },
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'userBox' },
+	                _react2.default.createElement('img', { src: _lodash2.default.get(testimonial, 'image_src', ''), alt: _lodash2.default.get(testimonial, 'title', '') }),
+	                _react2.default.createElement(
+	                    'p',
+	                    { className: 'hidden-sm-down' },
+	                    _lodash2.default.get(testimonial, 'title', '')
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'hidden-sm-down' },
+	                    _lodash2.default.get(testimonial, 'subtitle', '')
+	                )
+	            )
+	        );
+	    });
+
+	    return _react2.default.createElement(
+	        'section',
+	        { className: 'testimonial' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	                'h4',
+	                null,
+	                _lodash2.default.get(widget_cell, 'widget.fields.title', '')
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'sliderContent' },
+	                _react2.default.createElement(
+	                    'ul',
+	                    { className: 'slides' },
+	                    testimonials_reviews
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'userInfo' },
+	                _react2.default.createElement(
+	                    'ul',
+	                    { className: 'slides' },
+	                    testimonials_authors
+	                )
+	            )
+	        )
+	    );
+	};
+
+	var Testimonials = (0, _reactRedux.connect)(mapStateToProps)(TestimonialsContent);
+
+	exports.default = Testimonials;
 
 /***/ }
 /******/ ]);

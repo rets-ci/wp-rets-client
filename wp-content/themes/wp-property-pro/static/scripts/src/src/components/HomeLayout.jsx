@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Header from './Header.jsx';
 import UserPanel from './UserPanel.jsx';
 import Map from './Map.jsx';
+import Testimonials from './Testimonials.jsx';
 
 export default class Home extends Component {
   static propTypes = {
@@ -15,6 +16,7 @@ export default class Home extends Component {
         <Header />
         <Map />
         {this.props.children}
+        <Testimonials />
       </div>
     )
   }
