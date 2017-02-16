@@ -49,20 +49,16 @@ const UserPanelContent = ({userData, closeUserPanel}) => (
         </div>
 
         <div className="user-navigation">
-            <ul className="clearfix">
+            <ol className="clearfix">
                 <li><a href="#" title="Home For You">
                     <span><img src={bundle.template_url + "/static/images/src/home-for-you.svg"}
-                               alt="home-for-you"/></span> Home For You <span className="tag">8</span></a>
-                </li>
+                               alt="home-for-you"/></span> Home For You <span className="tag">8</span></a></li>
                 <li><a href="#" title="Shared Favorites">
                     <span><img src={bundle.template_url + "/static/images/src/shared-favorites.svg"}
-                               alt="shared-favorites"/></span> Shared Favorites</a></li>
+                               alt="shared-favorites"/></span> Shared Favorites <span className="tag">8</span></a></li>
                 <li><a href="#" title="Comments">
                     <span><img src={bundle.template_url + "/static/images/src/comments.svg"} alt="comments"/></span>
-                    Comments <span className="tag">8</span></a></li>
-            </ul>
-
-            <ul className="clearfix">
+                    Comments</a></li>
                 <li><a href="#" title="Search Homes">
                     <span><img src={bundle.template_url + "/static/images/src/search-homes.svg"}
                                alt="search-homes"/></span> Search Homes</a></li>
@@ -72,9 +68,6 @@ const UserPanelContent = ({userData, closeUserPanel}) => (
                 <li><a href="#" title="Saved Searches">
                     <span><img src={bundle.template_url + "/static/images/src/saved-searches.svg"}
                                alt="saved-searches"/></span> Saved Searches</a></li>
-            </ul>
-
-            <ul className="clearfix">
                 <li><a href="#" title="Buy With Us">
                     <span><img src={bundle.template_url + "/static/images/src/buy-with-us.svg"}
                                alt="buy-with-us"/></span> Buy With Us</a></li>
@@ -84,7 +77,7 @@ const UserPanelContent = ({userData, closeUserPanel}) => (
                 <li><a href="#" title="Home Buyer’s Blog">
                     <span><img src={bundle.template_url + "/static/images/src/buyers-blog.svg"}
                                alt="buyers-blog"/></span> Home Buyer’s Blog</a></li>
-            </ul>
+            </ol>
         </div>
         <div className="more">
             <a href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>

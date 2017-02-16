@@ -46882,7 +46882,7 @@
 	            'div',
 	            { className: 'user-navigation' },
 	            _react2.default.createElement(
-	                'ul',
+	                'ol',
 	                { className: 'clearfix' },
 	                _react2.default.createElement(
 	                    'li',
@@ -46916,7 +46916,12 @@
 	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/shared-favorites.svg",
 	                                alt: 'shared-favorites' })
 	                        ),
-	                        ' Shared Favorites'
+	                        ' Shared Favorites ',
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'tag' },
+	                            '8'
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -46930,18 +46935,9 @@
 	                            null,
 	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/comments.svg", alt: 'comments' })
 	                        ),
-	                        'Comments ',
-	                        _react2.default.createElement(
-	                            'span',
-	                            { className: 'tag' },
-	                            '8'
-	                        )
+	                        'Comments'
 	                    )
-	                )
-	            ),
-	            _react2.default.createElement(
-	                'ul',
-	                { className: 'clearfix' },
+	                ),
 	                _react2.default.createElement(
 	                    'li',
 	                    null,
@@ -46985,11 +46981,7 @@
 	                        ),
 	                        ' Saved Searches'
 	                    )
-	                )
-	            ),
-	            _react2.default.createElement(
-	                'ul',
-	                { className: 'clearfix' },
+	                ),
 	                _react2.default.createElement(
 	                    'li',
 	                    null,
