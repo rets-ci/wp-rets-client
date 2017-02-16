@@ -6,7 +6,7 @@ Author: fq.jony@UD
 Author URI:
 */
 
-if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-testimonials/base/rdc-siteorigin-widget.class.php';
+if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-testimonials/base/property-pro-siteorigin-widget.class.php';
 
 class Property_Pro_Testimonials_Widget extends SiteOrigin_Widget
 {
@@ -80,9 +80,9 @@ class Property_Pro_Testimonials_Widget extends SiteOrigin_Widget
       'layout' => [
         'type' => 'select',
         'label' => __('Layout', 'so-widgets-bundle'),
-        'default' => 'option_1',
+        'default' => 'default_layout',
         'options' => [
-          'option_1' => __('Option 1', 'so-widgets-bundle')
+          'default_layout' => __('Default', 'so-widgets-bundle')
         ],
       ],
       'title' => [

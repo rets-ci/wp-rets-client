@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import {Lib} from '../lib.jsx'
+import {Lib} from '../../../../lib.jsx'
 
 export default class SearchResultRowContent extends Component {
   static propTypes = {

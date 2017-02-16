@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import _ from 'lodash'
+import WidgetsUtil from '../WidgetsUtil.jsx'
+import DefaultLayout from './layouts/DefaultLayout.jsx'
 
 const mapStateToProps = (state) => {
     return {
@@ -10,16 +11,7 @@ const mapStateToProps = (state) => {
 
 const TestimonialsContent = ({rows}) => {
 
-    let widget_cell;
-    for (let row_index in rows) {
-
-        let cells = rows[row_index].cells;
-
-        if (widget_cell = _.find(cells, function (cell) {
-                return cell.widget.panels_info.class === 'Property_Pro_Testimonials_Widget';
-            }))
-            break;
-    }
+    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
     if (!widget_cell)
         return (
@@ -44,33 +36,28 @@ const TestimonialsContent = ({rows}) => {
 
     let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
         <li className={i === 0 ? "active" : ""} key={i}>
-            <div className="userBox">
-                <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
-                <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
-                <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
-            </div>
+            <a href="#">
+                <div className="userBox">
+                    <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
+                    <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
+                    <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
+                </div>
+            </a>
         </li>
     ));
 
+    let container;
+    switch (widget_cell.widget.fields.layout) {
+        case 'default_layout':
+        default:
+            container = <DefaultLayout widget_cell={widget_cell} testimonials_reviews={testimonials_reviews}
+                                       testimonials_authors={testimonials_authors}/>;
+            break;
+    }
 
     return (
         <section className="testimonial">
-
-            <div className="container">
-
-                <h4>{_.get(widget_cell, 'widget.fields.title', '')}</h4>
-
-                <div className="sliderContent">
-                    <ul className="slides">
-                        {testimonials_reviews}
-                    </ul>
-                </div>
-                <div className="userInfo">
-                    <ul className="slides">
-                        {testimonials_authors}
-                    </ul>
-                </div>
-            </div>
+            {container}
         </section>
     );
 };

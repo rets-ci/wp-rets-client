@@ -22,7 +22,9 @@
       "important": false,
       "default": "#000000",
       "selector": [
-        "#menu-item"
+        ".subnavigation ul li a:hover",
+        ".subnavigation ul li a:focus",
+        ".subnavigation ul li a:hover svg path"
       ]
     },
     {
@@ -81,7 +83,9 @@
         ".pageheader p.hidden-sm-down",
         ".testimonial .sliderContent blockquote p",
         ".testimonial .userInfo .userBox p",
-        ".testimonial .userInfo .userBox span"
+        ".testimonial .userInfo .userBox span",
+        ".subnavigation ul li span",
+        ".subnavigation ul li a"
       ]
     },
     {
