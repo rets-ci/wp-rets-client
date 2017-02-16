@@ -29482,7 +29482,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29511,7 +29511,7 @@
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(301);
+	var _Subnavigation = __webpack_require__(302);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -29524,36 +29524,36 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var Home = function (_Component) {
-	  _inherits(Home, _Component);
+	    _inherits(Home, _Component);
 
-	  function Home() {
-	    _classCallCheck(this, Home);
+	    function Home() {
+	        _classCallCheck(this, Home);
 
-	    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
-	  }
-
-	  _createClass(Home, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(_UserPanel2.default, null),
-	        _react2.default.createElement(_Header2.default, null),
-	        _react2.default.createElement(_Masthead2.default, null),
-	        _react2.default.createElement(_Subnavigation2.default, null),
-	        _react2.default.createElement(_Map2.default, null),
-	        this.props.children,
-	        _react2.default.createElement(_Testimonials2.default, null)
-	      );
+	        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
 	    }
-	  }]);
 
-	  return Home;
+	    _createClass(Home, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(_UserPanel2.default, null),
+	                _react2.default.createElement(_Header2.default, null),
+	                _react2.default.createElement(_Masthead2.default, null),
+	                _react2.default.createElement(_Subnavigation2.default, null),
+	                _react2.default.createElement(_Map2.default, null),
+	                this.props.children,
+	                _react2.default.createElement(_Testimonials2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Home;
 	}(_react.Component);
 
 	Home.propTypes = {
-	  children: _react.PropTypes.object.isRequired
+	    children: _react.PropTypes.object.isRequired
 	};
 	exports.default = Home;
 	;
@@ -48223,9 +48223,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _lodash = __webpack_require__(289);
+	var _DefaultLayout = __webpack_require__(301);
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48244,14 +48244,14 @@
 
 	        var cells = rows[row_index].cells;
 
-	        if (widget_cell = _lodash2.default.find(cells, function (cell) {
+	        if (widget_cell = _.find(cells, function (cell) {
 	            return cell.widget.panels_info.class === 'Property_Pro_Testimonials_Widget';
 	        })) break;
 	    }
 
 	    if (!widget_cell) return _react2.default.createElement('section', { className: 'testimonial' });
 
-	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    var testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
 	            'li',
 	            { className: i === 0 ? "active-slide" : "", key: i },
@@ -48270,13 +48270,13 @@
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
-	                    _lodash2.default.get(testimonial, 'review', '')
+	                    _.get(testimonial, 'review', '')
 	                )
 	            )
 	        );
 	    });
 
-	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    var testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
 	            'li',
 	            { className: i === 0 ? "active" : "", key: i },
@@ -48286,52 +48286,35 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'userBox' },
-	                    _react2.default.createElement('img', { src: _lodash2.default.get(testimonial, 'image_src', ''), alt: _lodash2.default.get(testimonial, 'title', '') }),
+	                    _react2.default.createElement('img', { src: _.get(testimonial, 'image_src', ''), alt: _.get(testimonial, 'title', '') }),
 	                    _react2.default.createElement(
 	                        'p',
 	                        { className: 'hidden-sm-down' },
-	                        _lodash2.default.get(testimonial, 'title', '')
+	                        _.get(testimonial, 'title', '')
 	                    ),
 	                    _react2.default.createElement(
 	                        'span',
 	                        { className: 'hidden-sm-down' },
-	                        _lodash2.default.get(testimonial, 'subtitle', '')
+	                        _.get(testimonial, 'subtitle', '')
 	                    )
 	                )
 	            )
 	        );
 	    });
 
+	    var container = void 0;
+	    switch (widget_cell.widget.fields.layout) {
+	        case 'default_layout':
+	        default:
+	            container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
+	                testimonials_authors: testimonials_authors });
+	            break;
+	    }
+
 	    return _react2.default.createElement(
 	        'section',
 	        { className: 'testimonial' },
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement(
-	                'h4',
-	                null,
-	                _lodash2.default.get(widget_cell, 'widget.fields.title', '')
-	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'sliderContent' },
-	                _react2.default.createElement(
-	                    'ul',
-	                    { className: 'slides' },
-	                    testimonials_reviews
-	                )
-	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'userInfo' },
-	                _react2.default.createElement(
-	                    'ul',
-	                    { className: 'slides' },
-	                    testimonials_authors
-	                )
-	            )
-	        )
+	        container
 	    );
 	};
 
@@ -48341,6 +48324,64 @@
 
 /***/ },
 /* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _lodash = __webpack_require__(289);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DefaultLayout = function DefaultLayout(_ref) {
+	    var widget_cell = _ref.widget_cell,
+	        testimonials_reviews = _ref.testimonials_reviews,
+	        testimonials_authors = _ref.testimonials_authors;
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	            'h4',
+	            null,
+	            _lodash2.default.get(widget_cell, 'widget.fields.title', '')
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'sliderContent' },
+	            _react2.default.createElement(
+	                'ul',
+	                { className: 'slides' },
+	                testimonials_reviews
+	            )
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'userInfo' },
+	            _react2.default.createElement(
+	                'ul',
+	                { className: 'slides' },
+	                testimonials_authors
+	            )
+	        )
+	    );
+	};
+
+	exports.default = DefaultLayout;
+
+/***/ },
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

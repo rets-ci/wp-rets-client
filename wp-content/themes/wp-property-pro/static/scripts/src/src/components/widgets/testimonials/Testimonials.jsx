@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import _ from 'lodash'
+import DefaultLayout from './layouts/DefaultLayout.jsx'
 
 const mapStateToProps = (state) => {
     return {
@@ -54,25 +54,18 @@ const TestimonialsContent = ({rows}) => {
         </li>
     ));
 
+    let container;
+    switch (widget_cell.widget.fields.layout) {
+        case 'default_layout':
+        default:
+            container = <DefaultLayout widget_cell={widget_cell} testimonials_reviews={testimonials_reviews}
+                                       testimonials_authors={testimonials_authors}/>;
+            break;
+    }
 
     return (
         <section className="testimonial">
-
-            <div className="container">
-
-                <h4>{_.get(widget_cell, 'widget.fields.title', '')}</h4>
-
-                <div className="sliderContent">
-                    <ul className="slides">
-                        {testimonials_reviews}
-                    </ul>
-                </div>
-                <div className="userInfo">
-                    <ul className="slides">
-                        {testimonials_authors}
-                    </ul>
-                </div>
-            </div>
+            {container}
         </section>
     );
 };
