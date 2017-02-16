@@ -11,7 +11,6 @@ const mapStateToProps = (state) => {
 const TestimonialsContent = ({rows}) => {
 
     let widget_cell;
-    console.log(rows);
     for (let row_index in rows) {
 
         let cells = rows[row_index].cells;
