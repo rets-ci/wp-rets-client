@@ -48223,6 +48223,10 @@
 
 	var _reactRedux = __webpack_require__(178);
 
+	var _WidgetsUtil = __webpack_require__(294);
+
+	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
+
 	var _DefaultLayout = __webpack_require__(301);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
@@ -48239,15 +48243,7 @@
 	    var rows = _ref.rows;
 
 
-	    var widget_cell = void 0;
-	    for (var row_index in rows) {
-
-	        var cells = rows[row_index].cells;
-
-	        if (widget_cell = _.find(cells, function (cell) {
-	            return cell.widget.panels_info.class === 'Property_Pro_Testimonials_Widget';
-	        })) break;
-	    }
+	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('section', { className: 'testimonial' });
 
@@ -48396,9 +48392,17 @@
 
 	var _reactRedux = __webpack_require__(178);
 
+	var _WidgetsUtil = __webpack_require__(294);
+
+	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
+
 	var _lodash = __webpack_require__(289);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _DefaultLayout = __webpack_require__(303);
+
+	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48412,26 +48416,19 @@
 	    var rows = _ref.rows;
 
 
-	    var widget_cell = void 0;
-	    for (var row_index in rows) {
-
-	        var cells = rows[row_index].cells;
-
-	        if (widget_cell = _lodash2.default.find(cells, function (cell) {
-	            return cell.widget.panels_info.class === 'Property_Pro_Subnavigation_Widget';
-	        })) break;
-	    }
+	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('section', { className: 'subnavigation' });
 
 	    var items = _lodash2.default.get(widget_cell, 'widget.fields.menu_items', []).map(function (item, i) {
 	        return _react2.default.createElement(
 	            'li',
-	            null,
+	            { key: i },
 	            _react2.default.createElement(
 	                'a',
 	                { href: item.url, title: item.title },
-	                _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/' + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg", alt: item.title }),
+	                _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/' + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
+	                    alt: item.title }),
 	                _react2.default.createElement(
 	                    'span',
 	                    null,
@@ -48441,24 +48438,58 @@
 	        );
 	    });
 
+	    var container = void 0;
+	    switch (widget_cell.widget.fields.layout) {
+	        case 'default_layout':
+	        default:
+	            container = _react2.default.createElement(_DefaultLayout2.default, { items: items });
+	            break;
+	    }
+
 	    return _react2.default.createElement(
 	        'section',
 	        { className: 'subnavigation' },
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement(
-	                'ul',
-	                { className: 'clearfix' },
-	                items
-	            )
-	        )
+	        container
 	    );
 	};
 
 	var Subnavigation = (0, _reactRedux.connect)(mapStateToProps)(SubnavigationContent);
 
 	exports.default = Subnavigation;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DefaultLayout = function DefaultLayout(_ref) {
+	    var items = _ref.items;
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	            'ul',
+	            { className: 'clearfix' },
+	            items
+	        )
+	    );
+	};
+
+	exports.default = DefaultLayout;
 
 /***/ }
 /******/ ]);

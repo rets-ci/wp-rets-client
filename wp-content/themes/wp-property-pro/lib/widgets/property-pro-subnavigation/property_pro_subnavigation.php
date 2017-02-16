@@ -6,7 +6,7 @@ Author: fq.jony@UD
 Author URI:
 */
 
-if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-subnavigation/base/rdc-siteorigin-widget.class.php';
+if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-subnavigation/base/property-pro-siteorigin-widget.class.php';
 
 class Property_Pro_Subnavigation_Widget extends SiteOrigin_Widget
 {
@@ -53,7 +53,7 @@ class Property_Pro_Subnavigation_Widget extends SiteOrigin_Widget
       'layout' => [
         'type' => 'select',
         'label' => __('Layout', 'so-widgets-bundle'),
-        'default' => 'option_1',
+        'default' => 'text',
         'options' => [
           'text' => __('Text', 'so-widgets-bundle'),
           'icon' => __('Icon', 'so-widgets-bundle')
