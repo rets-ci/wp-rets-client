@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import WidgetsUtil from '../WidgetsUtil.jsx'
 import DefaultLayout from './layouts/DefaultLayout.jsx'
 
 const mapStateToProps = (state) => {
@@ -10,16 +11,7 @@ const mapStateToProps = (state) => {
 
 const TestimonialsContent = ({rows}) => {
 
-    let widget_cell;
-    for (let row_index in rows) {
-
-        let cells = rows[row_index].cells;
-
-        if (widget_cell = _.find(cells, function (cell) {
-                return cell.widget.panels_info.class === 'Property_Pro_Testimonials_Widget';
-            }))
-            break;
-    }
+    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
     if (!widget_cell)
         return (
