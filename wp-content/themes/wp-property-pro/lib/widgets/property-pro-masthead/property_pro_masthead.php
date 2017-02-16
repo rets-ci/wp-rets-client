@@ -6,7 +6,7 @@ Author: fq.jony@UD
 Author URI:
 */
 
-if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-masthead/base/rdc-siteorigin-widget.class.php';
+if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php';
 
 class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
 {
