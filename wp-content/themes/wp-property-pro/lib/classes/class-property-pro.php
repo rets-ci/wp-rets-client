@@ -151,6 +151,10 @@ namespace UsabilityDynamics {
         if (isset($widget['image']))
           $widget['image_src'] = $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '';
 
+        /** Get menu items */
+        if (isset($widget['menu_select']))
+          $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
+
         $fields = [];
         foreach ($widget as $key => $field) {
 

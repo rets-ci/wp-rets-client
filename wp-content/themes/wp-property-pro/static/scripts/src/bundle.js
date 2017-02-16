@@ -29507,6 +29507,10 @@
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
+	var _Subnavigation = __webpack_require__(298);
+
+	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29532,6 +29536,7 @@
 	        null,
 	        _react2.default.createElement(_UserPanel2.default, null),
 	        _react2.default.createElement(_Header2.default, null),
+	        _react2.default.createElement(_Subnavigation2.default, null),
 	        _react2.default.createElement(_Map2.default, null),
 	        this.props.children,
 	        _react2.default.createElement(_Testimonials2.default, null)
@@ -48119,7 +48124,6 @@
 
 
 	    var widget_cell = void 0;
-	    console.log(rows);
 	    for (var row_index in rows) {
 
 	        var cells = rows[row_index].cells;
@@ -48214,6 +48218,86 @@
 	var Testimonials = (0, _reactRedux.connect)(mapStateToProps)(TestimonialsContent);
 
 	exports.default = Testimonials;
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _lodash = __webpack_require__(289);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        rows: state.postState.rows
+	    };
+	};
+
+	var SubnavigationContent = function SubnavigationContent(_ref) {
+	    var rows = _ref.rows;
+
+
+	    var widget_cell = void 0;
+	    for (var row_index in rows) {
+
+	        var cells = rows[row_index].cells;
+
+	        if (widget_cell = _lodash2.default.find(cells, function (cell) {
+	            return cell.widget.panels_info.class === 'Property_Pro_Subnavigation_Widget';
+	        })) break;
+	    }
+
+	    if (!widget_cell) return _react2.default.createElement('section', { className: 'subnavigation' });
+
+	    var items = _lodash2.default.get(widget_cell, 'widget.fields.menu_items', []).map(function (item, i) {
+	        return _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	                'a',
+	                { href: item.url, title: item.title },
+	                _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/' + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg", alt: item.title }),
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    item.title
+	                )
+	            )
+	        );
+	    });
+
+	    return _react2.default.createElement(
+	        'section',
+	        { className: 'subnavigation' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	                'ul',
+	                { className: 'clearfix' },
+	                items
+	            )
+	        )
+	    );
+	};
+
+	var Subnavigation = (0, _reactRedux.connect)(mapStateToProps)(SubnavigationContent);
+
+	exports.default = Subnavigation;
 
 /***/ }
 /******/ ]);

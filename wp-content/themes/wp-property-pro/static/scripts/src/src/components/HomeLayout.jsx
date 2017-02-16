@@ -3,6 +3,7 @@ import Header from './Header.jsx';
 import UserPanel from './UserPanel.jsx';
 import Map from './Map.jsx';
 import Testimonials from './Testimonials.jsx';
+import Subnavigation from './Subnavigation.jsx';
 
 export default class Home extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ export default class Home extends Component {
       <div>
         <UserPanel />
         <Header />
+        <Subnavigation />
         <Map />
         {this.props.children}
         <Testimonials />
