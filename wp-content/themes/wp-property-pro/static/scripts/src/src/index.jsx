@@ -7,6 +7,7 @@ import { createStore } from 'redux';
 import propertyProApp from './reducers/index.jsx';
 import {addPost, initMenu, setSearchProps} from './actions/index.jsx';
 
+// import App from './components/App.jsx';
 import Home from './components/Home.jsx'
 import HomeLayout from './components/HomeLayout.jsx';
 

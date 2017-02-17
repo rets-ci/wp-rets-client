@@ -76,6 +76,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// import App from './components/App.jsx';
 	var store = (0, _redux.createStore)(_index2.default);
 
 	store.dispatch((0, _index3.initMenu)(bundle.menuItems));
