@@ -55,3 +55,10 @@ export const setUserData = (userData) => {
         userData: userData
     }
 };
+
+export const setTestimonialsActiveItem = (activeItem) => {
+    return {
+        type: Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+        activeItem: activeItem
+    }
+};

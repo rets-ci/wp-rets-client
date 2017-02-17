@@ -64,13 +64,13 @@
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(284);
+	var _index3 = __webpack_require__(285);
 
-	var _Home = __webpack_require__(285);
+	var _Home = __webpack_require__(286);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _HomeLayout = __webpack_require__(286);
+	var _HomeLayout = __webpack_require__(287);
 
 	var _HomeLayout2 = _interopRequireDefault(_HomeLayout);
 
@@ -29093,6 +29093,10 @@
 
 	var _userData2 = _interopRequireDefault(_userData);
 
+	var _testimonialsCarousel = __webpack_require__(284);
+
+	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var propertyProApp = (0, _redux.combineReducers)({
@@ -29104,7 +29108,8 @@
 	    mapMarkersState: _mapMarkers2.default,
 	    routing: _reactRouterRedux.routerReducer,
 	    filterTermsState: _filterTerms2.default,
-	    userDataState: _userData2.default
+	    userDataState: _userData2.default,
+	    testimonialsCarouselState: _testimonialsCarousel2.default
 	});
 
 	exports.default = propertyProApp;
@@ -29156,6 +29161,7 @@
 	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
+	    SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
 
 	    THEME_PREFIX: 'wp-property-pro-',
 	    STRING_ARRAY_DELIMITER: '-'
@@ -29356,12 +29362,39 @@
 /* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(276);
+
+	var testimonialsCarousel = function testimonialsCarousel() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION:
+	            return Object.assign({}, state, {
+	                activeItem: action.activeItem
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = testimonialsCarousel;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setUserData = exports.setFilterTerms = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.addMap = exports.initMenu = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.addMap = exports.initMenu = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(276);
 
@@ -29421,8 +29454,15 @@
 	    };
 	};
 
+	var setTestimonialsActiveItem = exports.setTestimonialsActiveItem = function setTestimonialsActiveItem(activeItem) {
+	    return {
+	        type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+	        activeItem: activeItem
+	    };
+	};
+
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29476,7 +29516,7 @@
 	;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29491,27 +29531,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Header = __webpack_require__(287);
+	var _Header = __webpack_require__(288);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _UserPanel = __webpack_require__(290);
+	var _UserPanel = __webpack_require__(291);
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
-	var _Map = __webpack_require__(291);
+	var _Map = __webpack_require__(292);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
-	var _Masthead = __webpack_require__(293);
+	var _Masthead = __webpack_require__(294);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Testimonials = __webpack_require__(300);
+	var _Testimonials = __webpack_require__(301);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(302);
+	var _Subnavigation = __webpack_require__(303);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -29559,7 +29599,7 @@
 	;
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29572,7 +29612,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Navigation = __webpack_require__(288);
+	var _Navigation = __webpack_require__(289);
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
@@ -29594,7 +29634,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29609,9 +29649,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(284);
+	var _index = __webpack_require__(285);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -29683,7 +29723,7 @@
 	exports.default = Navigation;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -46774,7 +46814,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(203)(module)))
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46789,9 +46829,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(284);
+	var _index = __webpack_require__(285);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47052,7 +47092,7 @@
 	exports.default = UserPanel;
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47069,9 +47109,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(284);
+	var _index = __webpack_require__(285);
 
-	var _Api = __webpack_require__(292);
+	var _Api = __webpack_require__(293);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
@@ -47231,7 +47271,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map);
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47523,7 +47563,7 @@
 	exports.default = ApiObject;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47538,15 +47578,15 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(294);
+	var _WidgetsUtil = __webpack_require__(295);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _SearchLayout = __webpack_require__(295);
+	var _SearchLayout = __webpack_require__(296);
 
 	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
 
-	var _TextLayout = __webpack_require__(299);
+	var _TextLayout = __webpack_require__(300);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -47597,7 +47637,7 @@
 	exports.default = Masthead;
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47612,7 +47652,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47656,7 +47696,7 @@
 	exports.default = WidgetsUtil;
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47671,7 +47711,7 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _Search = __webpack_require__(296);
+	var _Search = __webpack_require__(297);
 
 	var _Search2 = _interopRequireDefault(_Search);
 
@@ -47700,7 +47740,7 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47717,23 +47757,23 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _Api = __webpack_require__(292);
+	var _Api = __webpack_require__(293);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _SearchResultRow = __webpack_require__(297);
+	var _SearchResultRow = __webpack_require__(298);
 
 	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
 
-	var _filterTerm = __webpack_require__(298);
+	var _filterTerm = __webpack_require__(299);
 
 	var _filterTerm2 = _interopRequireDefault(_filterTerm);
 
-	var _index = __webpack_require__(284);
+	var _index = __webpack_require__(285);
 
 	var _lib = __webpack_require__(276);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -48016,7 +48056,7 @@
 	exports.default = Search;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48101,7 +48141,7 @@
 	exports.default = SearchResultRowContent;
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48161,7 +48201,7 @@
 	exports.default = filterTerm;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48200,7 +48240,7 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48215,34 +48255,51 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(294);
+	var _WidgetsUtil = __webpack_require__(295);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _DefaultLayout = __webpack_require__(301);
+	var _DefaultLayout = __webpack_require__(302);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
+
+	var _index = __webpack_require__(285);
+
+	var _lodash = __webpack_require__(290);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows
+	        rows: state.postState.rows,
+	        activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {
+	        switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
+	            dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
+	        }
 	    };
 	};
 
 	var TestimonialsContent = function TestimonialsContent(_ref) {
-	    var rows = _ref.rows;
+	    var rows = _ref.rows,
+	        activeItem = _ref.activeItem,
+	        switchActiveTestimonial = _ref.switchActiveTestimonial;
 
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('section', { className: 'testimonial' });
 
-	    var testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
 	            'li',
-	            { className: i === 0 ? "active-slide" : "", key: i },
+	            { className: i === activeItem ? "active-slide" : "", key: i },
 	            _react2.default.createElement(
 	                'blockquote',
 	                null,
@@ -48258,32 +48315,36 @@
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
-	                    _.get(testimonial, 'review', '')
+	                    _lodash2.default.get(testimonial, 'review', '')
 	                )
 	            )
 	        );
 	    });
 
-	    var testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
 	            'li',
-	            { className: i === 0 ? "active" : "", key: i },
+	            { className: i === activeItem ? "active" : "", key: i },
 	            _react2.default.createElement(
 	                'a',
-	                { href: '#' },
+	                { href: '#', onClick: function onClick(event) {
+	                        switchActiveTestimonial(i);
+	                        event.preventDefault();
+	                        event.stopPropagation();
+	                    } },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'userBox' },
-	                    _react2.default.createElement('img', { src: _.get(testimonial, 'image_src', ''), alt: _.get(testimonial, 'title', '') }),
+	                    _react2.default.createElement('img', { src: _lodash2.default.get(testimonial, 'image_src', ''), alt: _lodash2.default.get(testimonial, 'title', '') }),
 	                    _react2.default.createElement(
 	                        'p',
 	                        { className: 'hidden-sm-down' },
-	                        _.get(testimonial, 'title', '')
+	                        _lodash2.default.get(testimonial, 'title', '')
 	                    ),
 	                    _react2.default.createElement(
 	                        'span',
 	                        { className: 'hidden-sm-down' },
-	                        _.get(testimonial, 'subtitle', '')
+	                        _lodash2.default.get(testimonial, 'subtitle', '')
 	                    )
 	                )
 	            )
@@ -48306,12 +48367,12 @@
 	    );
 	};
 
-	var Testimonials = (0, _reactRedux.connect)(mapStateToProps)(TestimonialsContent);
+	var Testimonials = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TestimonialsContent);
 
 	exports.default = Testimonials;
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48326,7 +48387,7 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -48369,7 +48430,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48384,15 +48445,15 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(294);
+	var _WidgetsUtil = __webpack_require__(295);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _lodash = __webpack_require__(289);
+	var _lodash = __webpack_require__(290);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _DefaultLayout = __webpack_require__(303);
+	var _DefaultLayout = __webpack_require__(304);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -48450,7 +48511,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

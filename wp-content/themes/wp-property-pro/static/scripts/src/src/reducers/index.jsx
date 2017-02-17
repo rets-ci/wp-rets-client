@@ -8,6 +8,7 @@ import mapPropsState from './mapProps.jsx';
 import mapMarkersState from './mapMarkers.jsx';
 import filterTermsState from './filterTerms.jsx';
 import userDataState from './userData.jsx';
+import testimonialsCarouselState from './testimonialsCarousel.jsx';
 
 const propertyProApp = combineReducers({
     postState,
@@ -18,7 +19,8 @@ const propertyProApp = combineReducers({
     mapMarkersState,
     routing: routerReducer,
     filterTermsState,
-    userDataState
+    userDataState,
+    testimonialsCarouselState
 });
 
 export default propertyProApp
