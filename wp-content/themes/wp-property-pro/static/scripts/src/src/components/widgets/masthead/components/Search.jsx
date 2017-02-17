@@ -92,6 +92,7 @@ const SearchContent = function ({currentState, searchHandler, searchProps, filte
     let select_options_content = [];
     let select_options_array = [];
 
+    let counter = 0;
     for (let key in options) {
 
         if (options[key] === false)
@@ -101,7 +102,9 @@ const SearchContent = function ({currentState, searchHandler, searchProps, filte
         let label = _.slice(option_array, 0, 1);
         select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
         select_options_content.push(<option
-            value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)}>{label}</option>);
+            value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)} key={counter}>{label}</option>);
+
+        counter++;
     }
 
     let search_types;

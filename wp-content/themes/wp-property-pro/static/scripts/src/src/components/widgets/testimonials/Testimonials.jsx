@@ -4,6 +4,7 @@ import WidgetsUtil from '../WidgetsUtil.jsx'
 import DefaultLayout from './layouts/DefaultLayout.jsx'
 import {setTestimonialsActiveItem} from '../../../actions/index.jsx'
 import _ from 'lodash'
+import renderHTML from 'react-render-html'
 
 const mapStateToProps = (state) => {
     return {
@@ -54,9 +55,12 @@ const TestimonialsContent = ({rows, activeItem, switchActiveTestimonial}) => {
                 event.stopPropagation();
             }}>
                 <div className="userBox">
-                    <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
-                    <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
-                    <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
+                    {renderHTML(
+                        (_.get(testimonial, 'image_src', '') ? '<img src="' + testimonial.image_src + '" alt="' + testimonial.title + '" />' : '') +
+                        (_.get(testimonial, 'title', '') ? '<p class="hidden-sm-down">' + testimonial.title + '</p>' : '') +
+                        (_.get(testimonial, 'subtitle', '') ? '<span class="hidden-sm-down">' + testimonial.subtitle + '</span>' : '')
+                    )}
+
                 </div>
             </a>
         </li>
