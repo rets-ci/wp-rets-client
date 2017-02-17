@@ -29073,6 +29073,10 @@
 
 	var _map2 = _interopRequireDefault(_map);
 
+	var _modal = __webpack_require__(306);
+
+	var _modal2 = _interopRequireDefault(_modal);
+
 	var _searchProps = __webpack_require__(279);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
@@ -29099,6 +29103,7 @@
 	    postState: _post2.default,
 	    menuState: _menu2.default,
 	    mapState: _map2.default,
+	    modal: _modal2.default,
 	    searchPropsState: _searchProps2.default,
 	    mapPropsState: _mapProps2.default,
 	    mapMarkersState: _mapMarkers2.default,
@@ -29151,12 +29156,12 @@
 	    INIT_MENU_ACTION: 'INIT_MENU',
 	    ADD_MAP_ACTION: 'ADD_MAP',
 	    ADD_MARKER_ACTION: 'ADD_MARKER',
+	    TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
 	    SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
 	    SET_MAP_PROPS_ACTION: 'SET_MAP_PROPS',
 	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
-
 	    THEME_PREFIX: 'wp-property-pro-',
 	    STRING_ARRAY_DELIMITER: '-'
 	};
@@ -29361,7 +29366,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setUserData = exports.setFilterTerms = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.addMap = exports.initMenu = exports.addPost = undefined;
+	exports.setUserData = exports.setFilterTerms = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(276);
 
@@ -29383,6 +29388,13 @@
 	    return {
 	        type: _lib.Lib.ADD_MAP_ACTION,
 	        map: map
+	    };
+	};
+
+	var openModal = exports.openModal = function openModal(open) {
+	    return {
+	        type: _lib.Lib.TOGGLE_MODAL_ACTION,
+	        open: open
 	    };
 	};
 
@@ -29482,7 +29494,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29503,15 +29515,19 @@
 
 	var _Map2 = _interopRequireDefault(_Map);
 
+	var _Modal = __webpack_require__(307);
+
+	var _Modal2 = _interopRequireDefault(_Modal);
+
 	var _Masthead = __webpack_require__(293);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Testimonials = __webpack_require__(300);
+	var _Testimonials = __webpack_require__(301);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(302);
+	var _Subnavigation = __webpack_require__(303);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -29524,36 +29540,37 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var Home = function (_Component) {
-	    _inherits(Home, _Component);
+	  _inherits(Home, _Component);
 
-	    function Home() {
-	        _classCallCheck(this, Home);
+	  function Home() {
+	    _classCallCheck(this, Home);
 
-	        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+	  }
+
+	  _createClass(Home, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_UserPanel2.default, null),
+	        _react2.default.createElement(_Modal2.default, null),
+	        _react2.default.createElement(_Header2.default, null),
+	        _react2.default.createElement(_Masthead2.default, null),
+	        _react2.default.createElement(_Subnavigation2.default, null),
+	        _react2.default.createElement(_Map2.default, null),
+	        this.props.children,
+	        _react2.default.createElement(_Testimonials2.default, null)
+	      );
 	    }
+	  }]);
 
-	    _createClass(Home, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(_UserPanel2.default, null),
-	                _react2.default.createElement(_Header2.default, null),
-	                _react2.default.createElement(_Masthead2.default, null),
-	                _react2.default.createElement(_Subnavigation2.default, null),
-	                _react2.default.createElement(_Map2.default, null),
-	                this.props.children,
-	                _react2.default.createElement(_Testimonials2.default, null)
-	            );
-	        }
-	    }]);
-
-	    return Home;
+	  return Home;
 	}(_react.Component);
 
 	Home.propTypes = {
-	    children: _react.PropTypes.object.isRequired
+	  children: _react.PropTypes.object.isRequired
 	};
 	exports.default = Home;
 	;
@@ -47546,7 +47563,7 @@
 
 	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
 
-	var _TextLayout = __webpack_require__(299);
+	var _TextLayout = __webpack_require__(300);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -47721,11 +47738,15 @@
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _SearchResultRow = __webpack_require__(297);
+	var _DropDownSearch = __webpack_require__(297);
+
+	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
+
+	var _SearchResultRow = __webpack_require__(298);
 
 	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
 
-	var _filterTerm = __webpack_require__(298);
+	var _filterTerm = __webpack_require__(299);
 
 	var _filterTerm2 = _interopRequireDefault(_filterTerm);
 
@@ -47756,34 +47777,34 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	    return {
-	        searchHandler: function searchHandler(state, event) {
+	        openSearchModal: function openSearchModal(open) {
+	            dispatch((0, _index.openModal)(open));
+	        },
 
+	        searchHandler: function searchHandler(state, event) {
 	            var searchParams = {
 	                term: _lodash2.default.get(event, 'target.value', '')
 	            };
-
 	            _Api2.default.selectQuery(searchParams, function (rows) {
 	                dispatch((0, _index.setSearchProps)(rows));
 	            });
 	        },
-	        searchItemClick: function searchItemClick(tax, term, filterTerms) {
 
+	        searchItemClick: function searchItemClick(tax, term, filterTerms) {
 	            var terms = filterTerms || [];
 	            terms.push({
 	                tax: tax,
 	                term: term
 	            });
-
 	            jQuery('#' + _lib.Lib.THEME_PREFIX + 'search-input').val('');
-
 	            dispatch((0, _index.setFilterTerms)(terms));
 	        },
-	        clearTermFilter: function clearTermFilter() {
 
+	        clearTermFilter: function clearTermFilter() {
 	            dispatch((0, _index.setFilterTerms)([]));
 	        },
-	        doSearch: function doSearch() {
 
+	        doSearch: function doSearch() {
 	            var tax = jQuery('.search-term').attr('data-tax');
 	            var term = jQuery('.search-term span').text();
 	            var searchTypeArray = _lodash2.default.split(jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val(), _lib.Lib.STRING_ARRAY_DELIMITER);
@@ -47895,103 +47916,109 @@
 	        var _this = _possibleConstructorReturn(this, (SearchContentOld.__proto__ || Object.getPrototypeOf(SearchContentOld)).call(this, props));
 
 	        _this.state = {
-	            dropDownOpen: false
+	            dropDownOpen: false,
+	            labels: [],
+	            searchType: ''
 	        };
 	        return _this;
 	    }
 
 	    _createClass(SearchContentOld, [{
-	        key: 'toggleDropdown',
-	        value: function toggleDropdown() {
-	            this.setState({ dropDownOpen: !this.state.dropDownOpen });
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var labels = Object.keys(this.props.options).map(function (o) {
+	                var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
+	                return labelsArr[0];
+	            });
+	            this.setState({
+	                labels: labels,
+	                searchType: labels.length ? labels[0] : ''
+	            });
+	        }
+	    }, {
+	        key: 'handleSearchDropDownChange',
+	        value: function handleSearchDropDownChange(open) {
+	            this.setState({ dropDownOpen: open });
+	        }
+	    }, {
+	        key: 'handleSearchDropDownOptionSelect',
+	        value: function handleSearchDropDownOptionSelect(option) {
+	            this.setState({
+	                searchType: option,
+	                dropDownOpen: false
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _props = this.props,
-	                clearTermFilter = _props.clearTermFilter,
-	                doSearch = _props.doSearch,
-	                filterTerms = _props.filterTerms,
-	                options = _props.options,
-	                searchItemClick = _props.searchItemClick,
-	                searchHandler = _props.searchHandler,
-	                searchProps = _props.searchProps;
+	                openSearchModal = _props.openSearchModal,
+	                options = _props.options;
+	            // let filterTermsList = [];
+	            // let labels = [];
+	            // let select_options_content = [];
+	            // let select_options_array = [];
+	            // let searchResults = [];
+	            //
+	            // if (filterTerms.length) {
+	            //   filterTermsList = filterTerms.map((item) => {
+	            //     return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
+	            //   });
+	            // } else {
+	            //   searchResults = searchProps.map((prop, i) => {
+	            //     return (<SearchResultRow key={i} prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
+	            //   });
+	            // }
+	            // for (let key in options) {
+	            //     if (options[key] === false)
+	            //         continue;
+	            //     let option_array = _.split(key, Lib.STRING_ARRAY_DELIMITER);
+	            //     let label = _.slice(option_array, 0, 1);
+	            //     labels.push(label);
+	            //     select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
+	            //     select_options_content.push(<option
+	            //         key={key} value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)}>{label}</option>);
+	            // }
 
-	            var filterTermsList = [];
-	            var labels = [];
-	            var select_options_content = [];
-	            var select_options_array = [];
-	            var searchResults = [];
+	            // let search_types;
+	            //
+	            // if (select_options_content.length > 1) {
+	            //     search_types = (
+	            //         <select id={Lib.THEME_PREFIX + "search_type"}>
+	            //             {select_options_content}
+	            //         </select>
+	            //     );
+	            // } else if (select_options_content.length === 1) {
+	            //   search_types = (
+	            //     <input type="hidden" id={Lib.THEME_PREFIX + "search_type"} value={select_options_array[0]}/>
+	            //   );
+	            // }
 
-	            if (filterTerms.length) {
-	                filterTermsList = filterTerms.map(function (item) {
-	                    return _react2.default.createElement(_filterTerm2.default, { term: item.term, tax: item.tax, clearTermFilter: clearTermFilter });
-	                });
-	            } else {
-	                searchResults = searchProps.map(function (prop) {
-	                    return _react2.default.createElement(_SearchResultRow2.default, { prop: prop, clickHandler: searchItemClick, filterTerms: filterTerms });
-	                });
-	            }
+	            // if (!search_types) {
+	            //   return (
+	            //     <div></div>
+	            //   );
+	            // }
 
-	            for (var key in options) {
-	                if (options[key] === false) continue;
-	                var option_array = _lodash2.default.split(key, _lib.Lib.STRING_ARRAY_DELIMITER);
-	                var label = _lodash2.default.slice(option_array, 0, 1);
-	                labels.push(label);
-	                select_options_array.push(_lodash2.default.slice(option_array, 1).join(_lib.Lib.STRING_ARRAY_DELIMITER));
-	                select_options_content.push(_react2.default.createElement(
-	                    'option',
-	                    {
-	                        value: _lodash2.default.slice(option_array, 1).join(_lib.Lib.STRING_ARRAY_DELIMITER) },
-	                    label
-	                ));
-	            }
-
-	            var search_types = void 0;
-
-	            if (select_options_content.length > 1) {
-	                search_types = _react2.default.createElement(
-	                    'select',
-	                    { id: _lib.Lib.THEME_PREFIX + "search_type" },
-	                    select_options_content
-	                );
-	            } else if (select_options_content.length === 1) {
-	                search_types = _react2.default.createElement('input', { type: 'hidden', id: _lib.Lib.THEME_PREFIX + "search_type", value: select_options_array[0] });
-	            }
-
-	            if (!search_types) {
-	                return _react2.default.createElement('div', null);
-	            }
+	            var self = this;
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'search-box' },
+	                _react2.default.createElement(_DropDownSearch2.default, {
+	                    labels: this.state.labels,
+	                    open: this.state.dropDownOpen,
+	                    selectedOption: this.state.searchType,
+	                    handleChange: this.handleSearchDropDownChange.bind(this),
+	                    handleOptionSelect: this.handleSearchDropDownOptionSelect.bind(this)
+	                }),
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'drop-search' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { id: 'search-options-type-container', onClick: this.toggleDropdown.bind(this) },
-	                        labels.length ? labels[0] : '',
-	                        _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	                    ),
-	                    this.state.dropDownOpen ? _react2.default.createElement(
-	                        'ul',
-	                        null,
-	                        labels.map(function (l) {
-	                            return _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    'a',
-	                                    { href: '#' },
-	                                    l
-	                                )
-	                            );
-	                        })
-	                    ) : null
-	                ),
-	                _react2.default.createElement('i', { className: 'fa fa-search' }),
-	                ' Enter neighbohood, address, Zipcode'
+	                    'button',
+	                    { className: 'btn btn-search', onClick: function onClick() {
+	                            return self.props.openSearchModal(true);
+	                        }, type: 'button' },
+	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
+	                    ' Enter neighbohood, address, Zipcode'
+	                )
 	            );
 	        }
 	    }]);
@@ -48011,12 +48038,113 @@
 	};
 	;
 
-	var Search = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchContent);
+	var Search = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchContentOld);
 
 	exports.default = Search;
 
 /***/ },
 /* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactOnclickoutside = __webpack_require__(305);
+
+	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var DropDownSearch = function (_Component) {
+	  _inherits(DropDownSearch, _Component);
+
+	  function DropDownSearch(props) {
+	    _classCallCheck(this, DropDownSearch);
+
+	    return _possibleConstructorReturn(this, (DropDownSearch.__proto__ || Object.getPrototypeOf(DropDownSearch)).call(this, props));
+	  }
+
+	  _createClass(DropDownSearch, [{
+	    key: 'handleClickOutside',
+	    value: function handleClickOutside(evt) {
+	      this.props.handleChange(false);
+	    }
+	  }, {
+	    key: 'selectOption',
+	    value: function selectOption(eve, option) {
+	      // consume the event argument before calling the parent callback
+	      eve.preventDefault();
+	      this.props.handleOptionSelect(option);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var self = this;
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'drop-search' },
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'search-options-type-container', onClick: function onClick() {
+	              return self.props.handleChange(true);
+	            } },
+	          this.props.selectedOption,
+	          _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          { style: { display: this.props.open ? 'block' : 'none' } },
+	          this.props.labels.map(function (l, i) {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: i },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: function onClick(eve) {
+	                    return self.selectOption.bind(_this2)(eve, l);
+	                  } },
+	                l
+	              )
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return DropDownSearch;
+	}(_react.Component);
+
+	DropDownSearch.propTypes = {
+	  handleChange: _react.PropTypes.func,
+	  handleOptionSelect: _react.PropTypes.func,
+	  labels: _react.PropTypes.array,
+	  open: _react.PropTypes.bool.isRequired,
+	  selectedOption: _react.PropTypes.string
+	};
+	;
+
+	exports.default = (0, _reactOnclickoutside2.default)(DropDownSearch);
+
+/***/ },
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48101,7 +48229,7 @@
 	exports.default = SearchResultRowContent;
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48161,7 +48289,7 @@
 	exports.default = filterTerm;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48200,7 +48328,7 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48219,7 +48347,7 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _DefaultLayout = __webpack_require__(301);
+	var _DefaultLayout = __webpack_require__(302);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -48311,7 +48439,7 @@
 	exports.default = Testimonials;
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48369,7 +48497,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48392,7 +48520,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _DefaultLayout = __webpack_require__(303);
+	var _DefaultLayout = __webpack_require__(304);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -48450,7 +48578,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48482,6 +48610,518 @@
 	};
 
 	exports.default = DefaultLayout;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+	 * A higher-order-component for handling onClickOutside for React components.
+	 */
+	(function(root) {
+
+	  // administrative
+	  var registeredComponents = [];
+	  var handlers = [];
+	  var IGNORE_CLASS = 'ignore-react-onclickoutside';
+	  var DEFAULT_EVENTS = ['mousedown', 'touchstart'];
+
+	  /**
+	   * Check whether some DOM node is our Component's node.
+	   */
+	  var isNodeFound = function(current, componentNode, ignoreClass) {
+	    if (current === componentNode) {
+	      return true;
+	    }
+	    // SVG <use/> elements do not technically reside in the rendered DOM, so
+	    // they do not have classList directly, but they offer a link to their
+	    // corresponding element, which can have classList. This extra check is for
+	    // that case.
+	    // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
+	    // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
+	    if (current.correspondingElement) {
+	      return current.correspondingElement.classList.contains(ignoreClass);
+	    }
+	    return current.classList.contains(ignoreClass);
+	  };
+
+	  /**
+	   * Try to find our node in a hierarchy of nodes, returning the document
+	   * node as highest noode if our node is not found in the path up.
+	   */
+	  var findHighest = function(current, componentNode, ignoreClass) {
+	    if (current === componentNode) {
+	      return true;
+	    }
+
+	    // If source=local then this event came from 'somewhere'
+	    // inside and should be ignored. We could handle this with
+	    // a layered approach, too, but that requires going back to
+	    // thinking in terms of Dom node nesting, running counter
+	    // to React's 'you shouldn't care about the DOM' philosophy.
+	    while(current.parentNode) {
+	      if (isNodeFound(current, componentNode, ignoreClass)) {
+	        return true;
+	      }
+	      current = current.parentNode;
+	    }
+	    return current;
+	  };
+
+	  /**
+	   * Check if the browser scrollbar was clicked
+	   */
+	  var clickedScrollbar = function(evt) {
+	    return document.documentElement.clientWidth <= evt.clientX;
+	  };
+
+	  /**
+	   * Generate the event handler that checks whether a clicked DOM node
+	   * is inside of, or lives outside of, our Component's node tree.
+	   */
+	  var generateOutsideCheck = function(componentNode, componentInstance, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
+	    return function(evt) {
+	      if (preventDefault) {
+	        evt.preventDefault();
+	      }
+	      if (stopPropagation) {
+	        evt.stopPropagation();
+	      }
+	      var current = evt.target;
+	      if((excludeScrollbar && clickedScrollbar(evt)) || (findHighest(current, componentNode, ignoreClass) !== document)) {
+	        return;
+	      }
+	      eventHandler(evt);
+	    };
+	  };
+
+	  /**
+	   * This function generates the HOC function that you'll use
+	   * in order to impart onOutsideClick listening to an
+	   * arbitrary component. It gets called at the end of the
+	   * bootstrapping code to yield an instance of the
+	   * onClickOutsideHOC function defined inside setupHOC().
+	   */
+	  function setupHOC(root, React, ReactDOM) {
+
+	    // The actual Component-wrapping HOC:
+	    return function onClickOutsideHOC(Component, config) {
+	      var wrapComponentWithOnClickOutsideHandling = React.createClass({
+	        statics: {
+	          /**
+	           * Access the wrapped Component's class.
+	           */
+	          getClass: function() {
+	            if (Component.getClass) {
+	              return Component.getClass();
+	            }
+	            return Component;
+	          }
+	        },
+
+	        /**
+	         * Access the wrapped Component's instance.
+	         */
+	        getInstance: function() {
+	          return Component.prototype.isReactComponent ? this.refs.instance : this;
+	        },
+
+	        // this is given meaning in componentDidMount
+	        __outsideClickHandler: function() {},
+
+	        /**
+	         * Add click listeners to the current document,
+	         * linked to this component's state.
+	         */
+	        componentDidMount: function() {
+	          // If we are in an environment without a DOM such
+	          // as shallow rendering or snapshots then we exit
+	          // early to prevent any unhandled errors being thrown.
+	          if (typeof document === 'undefined' || !document.createElement){
+	            return;
+	          }
+
+	          var instance = this.getInstance();
+	          var clickOutsideHandler;
+
+	          if(config && typeof config.handleClickOutside === 'function') {
+	            clickOutsideHandler = config.handleClickOutside(instance);
+	            if(typeof clickOutsideHandler !== 'function') {
+	              throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
+	            }
+	          } else if(typeof instance.handleClickOutside === 'function') {
+	            if (React.Component.prototype.isPrototypeOf(instance)) {
+	              clickOutsideHandler = instance.handleClickOutside.bind(instance);
+	            } else {
+	              clickOutsideHandler = instance.handleClickOutside;
+	            }
+	          } else if(typeof instance.props.handleClickOutside === 'function') {
+	            clickOutsideHandler = instance.props.handleClickOutside;
+	          } else {
+	            throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
+	          }
+
+	          var componentNode = ReactDOM.findDOMNode(instance);
+	          if (componentNode === null) {
+	            console.warn('Antipattern warning: there was no DOM node associated with the component that is being wrapped by outsideClick.');
+	            console.warn([
+	              'This is typically caused by having a component that starts life with a render function that',
+	              'returns `null` (due to a state or props value), so that the component \'exist\' in the React',
+	              'chain of components, but not in the DOM.\n\nInstead, you need to refactor your code so that the',
+	              'decision of whether or not to show your component is handled by the parent, in their render()',
+	              'function.\n\nIn code, rather than:\n\n  A{render(){return check? <.../> : null;}\n  B{render(){<A check=... />}\n\nmake sure that you',
+	              'use:\n\n  A{render(){return <.../>}\n  B{render(){return <...>{ check ? <A/> : null }<...>}}\n\nThat is:',
+	              'the parent is always responsible for deciding whether or not to render any of its children.',
+	              'It is not the child\'s responsibility to decide whether a render instruction from above should',
+	              'get ignored or not by returning `null`.\n\nWhen any component gets its render() function called,',
+	              'that is the signal that it should be rendering its part of the UI. It may in turn decide not to',
+	              'render all of *its* children, but it should never return `null` for itself. It is not responsible',
+	              'for that decision.'
+	            ].join(' '));
+	          }
+
+	          var fn = this.__outsideClickHandler = generateOutsideCheck(
+	            componentNode,
+	            instance,
+	            clickOutsideHandler,
+	            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
+	            this.props.excludeScrollbar || false,
+	            this.props.preventDefault || false,
+	            this.props.stopPropagation || false
+	          );
+
+	          var pos = registeredComponents.length;
+	          registeredComponents.push(this);
+	          handlers[pos] = fn;
+
+	          // If there is a truthy disableOnClickOutside property for this
+	          // component, don't immediately start listening for outside events.
+	          if (!this.props.disableOnClickOutside) {
+	            this.enableOnClickOutside();
+	          }
+	        },
+
+	        /**
+	        * Track for disableOnClickOutside props changes and enable/disable click outside
+	        */
+	        componentWillReceiveProps: function(nextProps) {
+	          if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
+	            this.enableOnClickOutside();
+	          } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
+	            this.disableOnClickOutside();
+	          }
+	        },
+
+	        /**
+	         * Remove the document's event listeners
+	         */
+	        componentWillUnmount: function() {
+	          this.disableOnClickOutside();
+	          this.__outsideClickHandler = false;
+	          var pos = registeredComponents.indexOf(this);
+	          if( pos>-1) {
+	            // clean up so we don't leak memory
+	            if (handlers[pos]) { handlers.splice(pos, 1); }
+	            registeredComponents.splice(pos, 1);
+	          }
+	        },
+
+	        /**
+	         * Can be called to explicitly enable event listening
+	         * for clicks and touches outside of this element.
+	         */
+	        enableOnClickOutside: function() {
+	          var fn = this.__outsideClickHandler;
+	          if (typeof document !== 'undefined') {
+	            var events = this.props.eventTypes || DEFAULT_EVENTS;
+	            if (!events.forEach) {
+	              events = [events];
+	            }
+	            events.forEach(function (eventName) {
+	              document.addEventListener(eventName, fn);
+	            });
+	          }
+	        },
+
+	        /**
+	         * Can be called to explicitly disable event listening
+	         * for clicks and touches outside of this element.
+	         */
+	        disableOnClickOutside: function() {
+	          var fn = this.__outsideClickHandler;
+	          if (typeof document !== 'undefined') {
+	            var events = this.props.eventTypes || DEFAULT_EVENTS;
+	            if (!events.forEach) {
+	              events = [events];
+	            }
+	            events.forEach(function (eventName) {
+	              document.removeEventListener(eventName, fn);
+	            });
+	          }
+	        },
+
+	        /**
+	         * Pass-through render
+	         */
+	        render: function() {
+	          var passedProps = this.props;
+	          var props = {};
+	          Object.keys(this.props).forEach(function(key) {
+	            if (key !== 'excludeScrollbar') {
+	              props[key] = passedProps[key];
+	            }
+	          });
+	          if (Component.prototype.isReactComponent) {
+	            props.ref = 'instance';
+	          }
+	          props.disableOnClickOutside = this.disableOnClickOutside;
+	          props.enableOnClickOutside = this.enableOnClickOutside;
+	          return React.createElement(Component, props);
+	        }
+	      });
+
+	      // Add display name for React devtools
+	      (function bindWrappedComponentName(c, wrapper) {
+	        var componentName = c.displayName || c.name || 'Component';
+	        wrapper.displayName = 'OnClickOutside(' + componentName + ')';
+	      }(Component, wrapComponentWithOnClickOutsideHandling));
+
+	      return wrapComponentWithOnClickOutsideHandling;
+	    };
+	  }
+
+	  /**
+	   * This function sets up the library in ways that
+	   * work with the various modulde loading solutions
+	   * used in JavaScript land today.
+	   */
+	  function setupBinding(root, factory) {
+	    if (true) {
+	      // AMD. Register as an anonymous module.
+	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1),__webpack_require__(32)], __WEBPACK_AMD_DEFINE_RESULT__ = function(React, ReactDom) {
+	        return factory(root, React, ReactDom);
+	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object') {
+	      // Node. Note that this does not work with strict
+	      // CommonJS, but only CommonJS-like environments
+	      // that support module.exports
+	      module.exports = factory(root, require('react'), require('react-dom'));
+	    } else {
+	      // Browser globals (root is window)
+	      root.onClickOutside = factory(root, React, ReactDOM);
+	    }
+	  }
+
+	  // Make it all happen
+	  setupBinding(root, setupHOC);
+
+	}(this));
+
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(276);
+
+	var modal = function modal() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.TOGGLE_MODAL_ACTION:
+	            return Object.assign({}, state, {
+	                openModal: action.open
+	            });
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = modal;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _index = __webpack_require__(284);
+
+	var _Api = __webpack_require__(292);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _lodash = __webpack_require__(289);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _lib = __webpack_require__(276);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var stateToProps = function stateToProps(state) {
+	  return {
+	    open: state.modal ? state.modal.openModal : false,
+	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', [])
+	  };
+	};
+
+	var dispatchToProps = function dispatchToProps(dispatch, ownProps) {
+	  return {
+	    closeModal: function closeModal() {
+	      dispatch((0, _index.openModal)(false));
+	    },
+
+	    searchHandler: function searchHandler(term) {
+	      var searchParams = {
+	        term: term
+	      };
+	      _Api2.default.selectQuery(searchParams, function (rows) {
+	        dispatch((0, _index.setSearchProps)(rows));
+	      });
+	    }
+	  };
+	};
+
+	var Modal = function (_Component) {
+	  _inherits(Modal, _Component);
+
+	  function Modal(props) {
+	    _classCallCheck(this, Modal);
+
+	    var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+
+	    _this.state = {
+	      searchValue: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Modal, [{
+	    key: 'handleClose',
+	    value: function handleClose(eve) {
+	      eve.preventDefault();
+	      this.props.closeModal();
+	    }
+	  }, {
+	    key: 'handleSearchValueChange',
+	    value: function handleSearchValueChange(eve) {
+	      var val = eve.target.value;
+	      this.setState({ searchValue: val });
+	      this.props.searchHandler(val);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var searchResults = this.props.searchResults;
+
+	      var resultsElements = searchResults.map(function (s, k) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { key: k, className: 'search-title' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'h4',
+	                null,
+	                s.text
+	              )
+	            )
+	          ),
+	          s.children.length ? _react2.default.createElement(
+	            'ol',
+	            null,
+	            s.children.map(function (c, i) {
+	              return _react2.default.createElement(
+	                'li',
+	                { key: i },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'container' },
+	                    c.text
+	                  )
+	                )
+	              );
+	            })
+	          ) : null
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-modal', style: { display: this.props.open ? 'block' : 'none' } },
+	        _react2.default.createElement(
+	          'a',
+	          { href: '#', className: 'close-panel', onClick: this.handleClose.bind(this) },
+	          _react2.default.createElement('i', { className: 'fa fa-times' })
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { method: 'get', className: 'form-inline' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement('i', { className: 'fa fa-search' }),
+	            _react2.default.createElement('input', {
+	              className: 'form-control',
+	              id: _lib.Lib.THEME_PREFIX + "search-input",
+	              onChange: this.handleSearchValueChange.bind(this),
+	              type: 'text',
+	              value: this.state.searchValue
+	            }),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', className: 'btn btn-primary' },
+	              'Search'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-modal-box' },
+	          resultsElements
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Modal;
+	}(_react.Component);
+
+	;
+
+	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Modal);
 
 /***/ }
 /******/ ]);

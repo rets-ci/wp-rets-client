@@ -15,10 +15,17 @@ export const initMenu = (menuItems) => {
 };
 
 export const addMap = (map) => {
-    return {
-        type: Lib.ADD_MAP_ACTION,
-        map: map
-    }
+  return {
+    type: Lib.ADD_MAP_ACTION,
+    map: map
+  }
+};
+
+export const openModal = (open) => {
+  return {
+    type: Lib.TOGGLE_MODAL_ACTION,
+    open: open
+  }
 };
 
 export const setSearchProps = (searchProps) => {
