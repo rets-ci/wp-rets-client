@@ -4,7 +4,7 @@ import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
 import FilterTerm from './filterTerm.jsx';
-import {setSearchProps, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchProps, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -19,58 +19,58 @@ const mapStateToProps = (state, history) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        openSearchModal: open => {
+          dispatch(openModal(open));
+        },
+
         searchHandler: (state, event) => {
-
             let searchParams = {
-                term: _.get(event, 'target.value', '')
+              term: _.get(event, 'target.value', '')
             };
-
             Api.selectQuery(searchParams,
-                function (rows) {
-                    dispatch(setSearchProps(rows));
-                }
+              function (rows) {
+                  dispatch(setSearchProps(rows));
+              }
             );
         },
+
         searchItemClick: (tax, term, filterTerms) => {
-
-            let terms = filterTerms || [];
-            terms.push({
-                tax: tax,
-                term: term
-            });
-
-            jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
-
-            dispatch(setFilterTerms(terms));
+          let terms = filterTerms || [];
+          terms.push({
+              tax: tax,
+              term: term
+          });
+          jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
+          dispatch(setFilterTerms(terms));
         },
+
         clearTermFilter: () => {
-
-            dispatch(setFilterTerms([]));
+          dispatch(setFilterTerms([]));
         },
+
         doSearch: () => {
+          let tax = jQuery('.search-term').attr('data-tax');
+          let term = jQuery('.search-term span').text();
+          let searchTypeArray = _.split(jQuery('#' + Lib.THEME_PREFIX + 'search_type').val(), Lib.STRING_ARRAY_DELIMITER);
+          let saleType = _.slice(searchTypeArray, 0, 1);
+          let propertyTypes = _.slice(searchTypeArray, 1);
 
-            let tax = jQuery('.search-term').attr('data-tax');
-            let term = jQuery('.search-term span').text();
-            let searchTypeArray = _.split(jQuery('#' + Lib.THEME_PREFIX + 'search_type').val(), Lib.STRING_ARRAY_DELIMITER);
-            let saleType = _.slice(searchTypeArray, 0, 1);
-            let propertyTypes = _.slice(searchTypeArray, 1);
+          let title = tax + ' - ' + term;
+          let url = '/' + saleType + '/' + tax + '/' + term;
 
-            let title = tax + ' - ' + term;
-            let url = '/' + saleType + '/' + tax + '/' + term;
+          history.pushState({}, title, url);
+          jQuery('title').text(title);
 
-            history.pushState({}, title, url);
-            jQuery('title').text(title);
+          let params = {
+              tax: tax,
+              term: term,
+              saleType: saleType,
+              propertyTypes: propertyTypes
+          };
 
-            let params = {
-                tax: tax,
-                term: term,
-                saleType: saleType,
-                propertyTypes: propertyTypes
-            };
-
-            Api.search(params, function (response) {
-                dispatch(setMapProps(response));
-            });
+          Api.search(params, function (response) {
+              dispatch(setMapProps(response));
+          });
         }
     }
 };
@@ -186,7 +186,8 @@ class SearchContentOld extends Component {
       // clearTermFilter,
       // doSearch,
       // filterTerms,
-      options,
+      openSearchModal,
+      options
       // searchItemClick,
       // searchHandler,
       // searchProps
@@ -236,6 +237,7 @@ class SearchContentOld extends Component {
     //     <div></div>
     //   );
     // }
+    var self = this;
     return (
       <div className="search-box">
         <DropDownSearch
@@ -245,7 +247,7 @@ class SearchContentOld extends Component {
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
-        <button className="btn btn-search" type="button">
+        <button className="btn btn-search" onClick={() => self.props.openSearchModal(true)} type="button">
           <i className="fa fa-search"></i> Enter neighbohood, address, Zipcode
         </button>
       </div>
