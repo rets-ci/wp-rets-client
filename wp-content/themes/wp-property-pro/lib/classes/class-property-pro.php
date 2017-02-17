@@ -38,8 +38,8 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
-      $this->_stylesDir = get_stylesheet_directory_uri() . '/static/styles/';
-      $this->_scriptsDir = get_stylesheet_directory_uri() . '/static/scripts/';
+      $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
+      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
 
       //** Enables Customizer for Options. */
       $this->customizer();

@@ -2,14 +2,26 @@ import React from 'react';
 import {connect} from 'react-redux'
 import WidgetsUtil from '../WidgetsUtil.jsx'
 import DefaultLayout from './layouts/DefaultLayout.jsx'
+import {setTestimonialsActiveItem} from '../../../actions/index.jsx'
+import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows
+        rows: state.postState.rows,
+        activeItem: _.get(state, 'testimonialsCarouselState.activeItem', 0)
     }
 };
 
-const TestimonialsContent = ({rows}) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        switchActiveTestimonial: (activeItem) => {
+            dispatch(setTestimonialsActiveItem(activeItem));
+        }
+    }
+};
+
+const TestimonialsContent = ({rows, activeItem, switchActiveTestimonial}) => {
+
 
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
@@ -19,7 +31,7 @@ const TestimonialsContent = ({rows}) => {
         );
 
     let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
-        <li className={i === 0 ? "active-slide" : ""} key={i}>
+        <li className={i === activeItem ? "active-slide" : ""} key={i}>
             <blockquote>
                 <div className="rating">
                     <i className="fa fa-star" aria-hidden="true"></i>
@@ -35,12 +47,27 @@ const TestimonialsContent = ({rows}) => {
     ));
 
     let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
-        <li className={i === 0 ? "active" : ""} key={i}>
-            <a href="#">
+        <li className={i === activeItem ? "active" : ""} key={i}>
+            <a href="#" onClick={(event) => {
+                switchActiveTestimonial(i);
+                event.preventDefault();
+                event.stopPropagation();
+            }}>
                 <div className="userBox">
-                    <img src={_.get(testimonial, 'image_src', '')} alt={_.get(testimonial, 'title', '')}/>
-                    <p className="hidden-sm-down">{_.get(testimonial, 'title', '')}</p>
-                    <span className="hidden-sm-down">{_.get(testimonial, 'subtitle', '')}</span>
+                    {
+                        _.get(testimonial, 'image_src', '')
+                            ? <img src={testimonial.image_src} alt={testimonial.title}/>
+                            : null
+                    }
+                    {    _.get(testimonial, 'title', '')
+                        ? <p className="hidden-sm-down">{testimonial.title}</p>
+                        : null
+                    }
+                    {
+                        _.get(testimonial, 'subtitle', '')
+                            ? <span className="hidden-sm-down">{testimonial.subtitle}</span>
+                            : null
+                    }
                 </div>
             </a>
         </li>
@@ -63,7 +90,8 @@ const TestimonialsContent = ({rows}) => {
 };
 
 const Testimonials = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(TestimonialsContent);
 
 export default Testimonials;

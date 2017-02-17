@@ -15,10 +15,10 @@ export const initMenu = (menuItems) => {
 };
 
 export const addMap = (map) => {
-  return {
-    type: Lib.ADD_MAP_ACTION,
-    map: map
-  }
+    return {
+        type: Lib.ADD_MAP_ACTION,
+        map: map
+    }
 };
 
 export const openModal = (open) => {
@@ -60,5 +60,12 @@ export const setUserData = (userData) => {
     return {
         type: Lib.SET_USER_DATA_ACTION,
         userData: userData
+    }
+};
+
+export const setTestimonialsActiveItem = (activeItem) => {
+    return {
+        type: Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+        activeItem: activeItem
     }
 };

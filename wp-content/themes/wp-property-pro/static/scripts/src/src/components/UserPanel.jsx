@@ -40,10 +40,10 @@ const UserPanelContent = ({userData, closeUserPanel}) => (
 
             <div className="status">
                 <a href="#">
-                    <img src="img/paresh.png" alt="" className="default-user"/>
+                    <img src={bundle.template_url + "/static/images/src/paresh.png"} alt="" className="default-user"/>
                     <h5>Paresh Khatri</h5>
                     <p>Home buyer</p>
-                    <span><img src="img/settings.svg" alt=""/></span>
+                    <span><img src={bundle.template_url + "/static/images/src/settings.svg"} alt=""/></span>
                 </a>
             </div>
         </div>

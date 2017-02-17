@@ -6,7 +6,11 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
     return (
         <div className="container">
 
-            <h4>{_.get(widget_cell, 'widget.fields.title', '')}</h4>
+            {
+                _.get(widget_cell, 'widget.fields.title', '')
+                    ? <h4>{widget_cell.widget.fields.title}</h4>
+                    : null
+            }
 
             <div className="sliderContent">
                 <ul className="slides">
