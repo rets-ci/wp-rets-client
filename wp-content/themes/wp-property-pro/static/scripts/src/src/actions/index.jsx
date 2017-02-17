@@ -21,6 +21,13 @@ export const addMap = (map) => {
     }
 };
 
+export const openModal = (open) => {
+  return {
+    type: Lib.TOGGLE_MODAL_ACTION,
+    open: open
+  }
+};
+
 export const setSearchProps = (searchProps) => {
     return {
         type: Lib.SET_SEARCH_PROPS_ACTION,
