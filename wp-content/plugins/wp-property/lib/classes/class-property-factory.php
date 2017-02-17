@@ -7,6 +7,8 @@
  */
 namespace UsabilityDynamics\WPP {
 
+  use WPP_F;
+
   if( !class_exists( 'UsabilityDynamics\WPP\Property_Factory' ) ) {
 
     class Property_Factory {
@@ -15,8 +17,10 @@ namespace UsabilityDynamics\WPP {
        * Returns property
        *
        * @since 1.11
+       *
        * @todo Code pertaining to displaying data should be migrated to prepare_property_for_display() like :$real_value = nl2br($real_value);
        * @todo Fix the long dashes - when in latitude or longitude it breaks it when using static map
+       *
        * @param $id
        * @param bool $args
        * @return array|bool|mixed
@@ -49,6 +53,10 @@ namespace UsabilityDynamics\WPP {
         if( $cache && $property = wp_cache_get( $id ) ) {
 
           // Do nothing here since we already have data from cache!
+
+          if( is_array( $property ) ) {
+            $property['_cached'] = true;
+          }
 
         } else {
 
@@ -94,7 +102,7 @@ namespace UsabilityDynamics\WPP {
 
                 default:
                   $real_value = $value;
-                  break;
+                break;
 
               }
 
@@ -105,16 +113,21 @@ namespace UsabilityDynamics\WPP {
                 $property[ $key ] = $real_value;
               }
 
+              $property[ $key ] = maybe_unserialize( $property[ $key ] );
+
             }
           }
 
           $property = array_merge( $property, $post );
 
+          // Early get_property, before adding standard/computed fields.
+          $property = apply_filters( 'wpp::property::early_extend', $property, $args );
+
           //** Make sure certain keys were not messed up by custom attributes */
           $property[ 'system' ]  = array();
           $property[ 'gallery' ] = array();
 
-          $property[ 'wpp_gpid' ]  = \WPP_F::maybe_set_gpid( $id );
+          $property[ 'wpp_gpid' ]  = WPP_F::maybe_set_gpid( $id );
           $property[ 'permalink' ] = get_permalink( $id );
 
           //** Make sure property_type stays as slug, or it will break many things:  (widgets, class names, etc)  */
@@ -182,7 +195,7 @@ namespace UsabilityDynamics\WPP {
 
         //** Convert to object */
         if( $return_object ) {
-          $property = \WPP_F::array_to_object( $property );
+          $property = WPP_F::array_to_object( $property );
         }
 
         return $property;

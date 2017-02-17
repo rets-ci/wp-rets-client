@@ -19,7 +19,7 @@ namespace UsabilityDynamics\WPP {
        * @var array
        */
       private $possible_tags = array(
-        'search-results', 'single-property', 'single-property-term'
+         'single-property', 'property-overview'
       );
 
       /**
@@ -37,7 +37,7 @@ namespace UsabilityDynamics\WPP {
          *
          */
         $this->api_client = new Layouts_API_Client(array(
-            'url' => 'https://api.usabilitydynamics.com/v1/layouts/'
+          'url' => defined('UD_API_LAYOUTS_URL') ? UD_API_LAYOUTS_URL : 'https://api.usabilitydynamics.com/product/property/layouts/v1'
         ));
 
         /**
