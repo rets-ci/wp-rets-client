@@ -38,8 +38,8 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
-      $this->_stylesDir = get_stylesheet_directory_uri() . '/static/styles/';
-      $this->_scriptsDir = get_stylesheet_directory_uri() . '/static/scripts/';
+      $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
+      $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
 
       //** Enables Customizer for Options. */
       $this->customizer();
@@ -144,26 +144,39 @@ namespace UsabilityDynamics {
     {
       $rows = [];
 
-
       foreach ($content['widgets'] as $key => $widget) {
         $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
 
-        switch ($widget['panels_info']['class']) {
-          case 'Property_Pro_Masthead_Widget':
+        /** Get image src */
+        if (isset($widget['image']))
+          $widget['image_src'] = $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '';
+
+        /** Get menu items */
+        if (isset($widget['menu_select']))
+          $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
+
+        $fields = [];
+        foreach ($widget as $key => $field) {
+
+          if (is_array($field)) {
 
             /** Exclude siteorigin system field */
-            if (isset($widget['search_options']['so_field_container_state']))
-              unset($widget['search_options']['so_field_container_state']);
+            if (isset($field['so_field_container_state']))
+              unset($field['so_field_container_state']);
 
-            /** Pack all widgets fields to one fields cell */
-            $widget['fields'] = [
-              'layout' => $widget['layout'],
-              'title' => $widget['title'],
-              'subtitle' => $widget['subtitle'],
-              'image_src' => $widget['image'] ? wp_get_attachment_image_src($widget['image'], 'full')[0] : '',
-              'search_options' => $widget['search_options']
-            ];
+            foreach ($field as $item_key => $item)
+              if (array_key_exists('image', $item))
+                $field[$item_key]['image_src'] = $item['image'] ? wp_get_attachment_image_src($item['image'], 'full')[0] : '';
+          }
+
+          /** Siteorigin system fields no need in fields array */
+          if (in_array($key, ['_sow_form_id', 'panels_info']))
+            continue;
+
+          $fields[$key] = $field;
         }
+
+        $widget['fields'] = $fields;
 
         $rows[$widget['panels_info']['grid']]['cells'][] = [
           'weight' => $content['grid_cells'][$key]['weight'],

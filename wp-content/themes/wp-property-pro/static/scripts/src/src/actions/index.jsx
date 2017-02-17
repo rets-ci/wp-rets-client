@@ -21,6 +21,13 @@ export const addMap = (map) => {
     }
 };
 
+export const openModal = (open) => {
+  return {
+    type: Lib.TOGGLE_MODAL_ACTION,
+    open: open
+  }
+};
+
 export const setSearchProps = (searchProps) => {
     return {
         type: Lib.SET_SEARCH_PROPS_ACTION,
@@ -53,5 +60,12 @@ export const setUserData = (userData) => {
     return {
         type: Lib.SET_USER_DATA_ACTION,
         userData: userData
+    }
+};
+
+export const setTestimonialsActiveItem = (activeItem) => {
+    return {
+        type: Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+        activeItem: activeItem
     }
 };

@@ -1,30 +1,15 @@
 import React from 'react';
-import {connect} from 'react-redux'
 import Navigation from './Navigation.jsx';
-import Masthead from './Masthead.jsx'
 
-const mapStateToProps = (state) => {
-    return {
-        rows: state.postState.rows
-    }
-};
-
-const HeaderContent = ({rows}) => {
+const Header = () => {
 
     return (
         <header className="pageheader">
-            <div className="intro-wrap">
-                <div className="container-fluid">
-                    <Navigation />
-                    <Masthead rows={rows}/>
-                </div>
+            <div className="container-fluid">
+                <Navigation />
             </div>
         </header>
     );
 };
-
-const Header = connect(
-    mapStateToProps
-)(HeaderContent);
 
 export default Header;

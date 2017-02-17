@@ -7,10 +7,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {}
-};
-
 const filterTermContent = function ({term, tax, clearTermFilter}) {
 
     if (!term)
@@ -21,8 +17,7 @@ const filterTermContent = function ({term, tax, clearTermFilter}) {
 };
 
 const filterTerm = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(filterTermContent);
 
 export default filterTerm

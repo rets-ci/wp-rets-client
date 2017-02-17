@@ -6,119 +6,123 @@ Author: fq.jony@UD
 Author URI:
 */
 
-if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-masthead/base/rdc-siteorigin-widget.class.php';
+namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
 
-class Property_Pro_Masthead_Widget extends SiteOrigin_Widget
-{
-  function __construct()
+  if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php';
+
+  class Property_Pro_Masthead_Widget extends \SiteOrigin_Widget
   {
+    function __construct()
+    {
 
-    parent::__construct(
-      'porperty-pro-masthead',
-      __('Property Pro Masthead', 'so-widgets-bundle'),
-      [
-        'description' => __('A customizable masthead widget.', 'so-widgets-bundle'),
-        'help' => 'https://siteorigin.com/widgets-bundle/button-widget-documentation/'
-      ],
-      [],
-      false,
-      get_stylesheet_directory_uri('/lib/widgets/property-pro-masthead')
-    );
-
-  }
-
-  function initialize()
-  {
-    $this->register_frontend_styles(
-      [
+      parent::__construct(
+        'porperty-pro-masthead',
+        __('Property Pro Masthead', 'wp-property-pro'),
         [
-          'property-pro-masthead-base',
-          get_stylesheet_directory_uri() . '/lib/widgets/property-pro-masthead/css/style.css',
-          [],
-          SOW_BUNDLE_VERSION
+          'description' => __('A customizable masthead widget.', 'wp-property-pro'),
+          'help' => 'https://siteorigin.com/widgets-bundle/button-widget-documentation/'
         ],
-      ]
-    );
-  }
+        [],
+        false,
+        get_template_directory_uri().'/lib/widgets/property-pro-masthead'
+      );
 
-  function initialize_form()
-  {
-    global $wp_properties;
+    }
 
-    $general_property_types = array_filter($wp_properties['property_types'], function ($type) {
-      return !in_array($type, ['Land', 'Commercial']);
-    });
+    function initialize()
+    {
+      $this->register_frontend_styles(
+        [
+          [
+            'property-pro-masthead-base',
+            get_template_directory_uri().'/lib/widgets/property-pro-masthead/css/style.css',
+            [],
+            SOW_BUNDLE_VERSION
+          ],
+        ]
+      );
+    }
 
-    $excluded_property_types = array_filter($wp_properties['property_types'], function ($type) {
-      return in_array($type, ['Land', 'Commercial']);
-    });
+    function initialize_form()
+    {
+      global $wp_properties;
 
-    $search_options = [];
-    $delimiter = '-';
-    foreach ([
-               'Rent',
-               'Sale',
-               'Land',
-               'Commercial'
-             ] as $label) {
+      $general_property_types = array_filter($wp_properties['property_types'], function ($type) {
+        return !in_array($type, ['Land', 'Commercial']);
+      });
+
+      $excluded_property_types = array_filter($wp_properties['property_types'], function ($type) {
+        return in_array($type, ['Land', 'Commercial']);
+      });
+
+      $search_options = [];
+      $delimiter = '-';
+      foreach ([
+                 'Rent',
+                 'Sale',
+                 'Land',
+                 'Commercial'
+               ] as $label) {
 
         $sale_type = $label;
-      if (in_array($label, ['Rent', 'Sale']))
-        $key = implode($delimiter, $general_property_types);
-      else{
-        $key = $excluded_property_types[strtolower($label)];
-        $sale_type = 'Sale';
+        if (in_array($label, ['Rent', 'Sale']))
+          $key = implode($delimiter, $general_property_types);
+        else {
+          $key = $excluded_property_types[strtolower($label)];
+          $sale_type = 'Sale';
+        }
+
+
+        $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
+          'type' => 'checkbox',
+          'default' => false,
+          'label' => __($label, 'wp-property-pro'),
+        ];
       }
 
+      return [
+        'layout' => [
+          'type' => 'select',
+          'label' => __('Layout', 'wp-property-pro'),
+          'default' => 'search_layout',
+          'options' => [
+            'search_layout' => __('Search layout', 'wp-property-pro'),
+            'text_layout' => __('Text layout', 'wp-property-pro'),
+          ],
+        ],
 
-      $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
-        'type' => 'checkbox',
-        'default' => false,
-        'label' => __($label, 'so-widgets-bundle'),
+        'title' => [
+          'type' => 'text',
+          'label' => __('Title', 'wp-property-pro'),
+        ],
+
+        'subtitle' => [
+          'type' => 'text',
+          'label' => __('Subtitle', 'wp-property-pro'),
+        ],
+
+        'image' => [
+          'type' => 'media',
+          'label' => __('Image', 'wp-property-pro'),
+          'description' => __('Set backgound image file.', 'wp-property-pro'),
+        ],
+
+        'search_options' => [
+          'type' => 'section',
+          'label' => __('Search', 'wp-property-pro'),
+          'hide' => true,
+          'fields' => $search_options
+        ]
       ];
     }
 
-    return [
-      'layout' => [
-        'type' => 'select',
-        'label' => __('Layout', 'so-widgets-bundle'),
-        'default' => 'option_1',
-        'options' => [
-          'option_1' => __('Option 1', 'so-widgets-bundle'),
-          'option_2' => __('Option 2', 'so-widgets-bundle'),
-        ],
-      ],
+    function get_template_name($instance)
+    {
+      return 'base';
+    }
 
-      'title' => [
-        'type' => 'text',
-        'label' => __('Title', 'so-widgets-bundle'),
-      ],
-
-      'subtitle' => [
-        'type' => 'text',
-        'label' => __('Subtitle', 'so-widgets-bundle'),
-      ],
-
-      'image' => [
-        'type' => 'media',
-        'label' => __('Image', 'so-widgets-bundle'),
-        'description' => __('Set backgound image file.', 'so-widgets-bundle'),
-      ],
-
-      'search_options' => [
-        'type' => 'section',
-        'label' => __('Search', 'so-widgets-bundle'),
-        'hide' => true,
-        'fields' => $search_options
-      ]
-    ];
   }
 
-  function get_template_name($instance)
-  {
-    return 'base';
-  }
+  siteorigin_widget_register('property-pro-masthead', __FILE__, 'UsabilityDynamics\PropertyPro\PropertyProMasthead\Property_Pro_Masthead_Widget');
 
 }
-
-siteorigin_widget_register('property-pro-masthead', __FILE__, 'Property_Pro_Masthead_Widget');
