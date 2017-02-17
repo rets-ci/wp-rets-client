@@ -2,8 +2,8 @@
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 3.9
 Tested up to: 4.7.2
-Stable tag: 1.8
-Build time: 2017-01-31T13:37:28+02:00
+Stable tag: 1.8.1
+Build time: 2017-02-03T17:54:58+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -51,6 +51,18 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.8.1 - 3 February 2017 =
+* Fixed empty array warning.
+* Contact Form: Prevent empty title markup from being echoed.
+* Contact Form: Display email after name
+* Slider: Account for 0 speed.
+* Features: Fix sizing issue when using images instead of icons.
+* Use default unit if missing for measurement fields.
+* Price Table: Shortcode support for feature text.
+* Testimonial: Updated text radius label and fixed resulting functionality.
+* Revert change made to post search for link field.
+* Link Field: Make sure we have a valid post_types value.
 
 = 1.8 - 31 January 2017 =
 * Introduced compatibility system.
