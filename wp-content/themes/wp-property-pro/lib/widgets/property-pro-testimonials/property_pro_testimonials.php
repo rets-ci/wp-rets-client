@@ -27,7 +27,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProTestimonials {
         ],
         [],
         false,
-        get_template_directory().'/lib/widgets/property-pro-testimonials'
+        get_template_directory_uri().'/lib/widgets/property-pro-testimonials'
       );
 
     }
@@ -38,7 +38,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProTestimonials {
         [
           [
             'property-pro-testimonials-base',
-            get_template_directory().'/lib/widgets/property-pro-testimonials/css/style.css',
+            get_template_directory_uri().'/lib/widgets/property-pro-testimonials/css/style.css',
             [],
             SOW_BUNDLE_VERSION
           ],

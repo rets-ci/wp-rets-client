@@ -24,7 +24,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
         ],
         [],
         false,
-        get_template_directory().'/lib/widgets/property-pro-masthead'
+        get_template_directory_uri().'/lib/widgets/property-pro-masthead'
       );
 
     }
@@ -35,7 +35,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
         [
           [
             'property-pro-masthead-base',
-            get_template_directory().'/lib/widgets/property-pro-masthead/css/style.css',
+            get_template_directory_uri().'/lib/widgets/property-pro-masthead/css/style.css',
             [],
             SOW_BUNDLE_VERSION
           ],

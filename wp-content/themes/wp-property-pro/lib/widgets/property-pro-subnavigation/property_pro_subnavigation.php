@@ -26,7 +26,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProSubnavigation {
         ],
         [],
         false,
-        get_template_directory().'/lib/widgets/property-pro-subnavigation'
+        get_template_directory_uri().'/lib/widgets/property-pro-subnavigation'
       );
 
     }
@@ -37,7 +37,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProSubnavigation {
         [
           [
             'property-pro-subnavigation-base',
-            get_template_directory().'/lib/widgets/property-pro-subnavigation/css/style.css',
+            get_template_directory_uri().'/lib/widgets/property-pro-subnavigation/css/style.css',
             [],
             SOW_BUNDLE_VERSION
           ],
