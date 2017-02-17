@@ -19,6 +19,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-history": "^0.18.2",
+    "react-onclickoutside": "^5.9.0",
     "react-redux": "^5.0.2",
     "react-render-html": "^0.1.6",
     "react-router": "^3.0.2",
