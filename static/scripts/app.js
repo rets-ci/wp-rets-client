@@ -76,10 +76,10 @@ jQuery(function() {
     });
   }
 
-  if ( jQuery( '.wpp_retsci_widget_subscription').length ) {
-    var container = jQuery( '.wpp_retsci_widget_subscription' );
+  if ( jQuery( '.wpp_retsci_widget_subscriber').length ) {
+    var container = jQuery( '.wpp_retsci_widget_subscriber' );
     var config = container.data('config');
-    var signin_form = jQuery( '#subscription-form', container );
+    var signin_form = jQuery( '#subscriber-form', container );
 
     signin_form.on( 'submit', function() {
 
@@ -96,10 +96,12 @@ jQuery(function() {
           retsci_secret_token: config.retsci_site_secret_token,
           user_data: config.user_data,
           blog_id: config.blog_id,
+          blog_url: config.blog_url,
           credentials: data,
           api_url: config.api_url,
         }
       }, function( res ){
+        console.log(res);
 
         if ( res.ok ) {
           alert('Data added successfully.');
