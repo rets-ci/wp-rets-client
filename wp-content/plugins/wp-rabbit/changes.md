@@ -1,3 +1,6 @@
+### 1.0.8
+* Admin navbar now displays host/port used by Redis/Memcached servers, if Object Cache is used.
+
 ### 1.0.7
 * Performance improvement to self-updater logic.
 * Outputting purge response logs when [WP_DEBUG] mode is enabled.

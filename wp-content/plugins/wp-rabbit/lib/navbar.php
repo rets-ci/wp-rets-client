@@ -76,12 +76,41 @@ namespace RabbitCI\Navbar {
       }
 
       if( wp_get_cache_type() !== 'Default' ) {
+
+        // Standard Memcached
+        if( wp_get_cache_type() === 'Memcached' && defined( 'WP_MEMCACHED_SERVERS' ) && WP_MEMCACHED_SERVERS ) {
+          $_object_cache_host = WP_MEMCACHED_SERVERS;
+        }
+
+        // Redis (https://github.com/ericmann/Redis-Object-Cache)
+        if( wp_get_cache_type() === 'Redis' && defined( 'WP_REDIS_BACKEND_HOST' ) && defined( 'WP_REDIS_BACKEND_PORT' ) ) {
+          $_object_cache_host = WP_REDIS_BACKEND_HOST . ':' . WP_REDIS_BACKEND_PORT;
+        }
+
+        // wp-redis (Pantheon)
+        if( wp_get_cache_type() === 'Redis' && !$_object_cache_host && isset( $_SERVER['CACHE_HOST'] ) ) {
+          $_object_cache_host = $_SERVER['CACHE_HOST'];
+        }
+
+        // Try to guess default settings...
+        if( !isset( $_object_cache_host ) ) {
+
+          if( wp_get_cache_type() === 'Redis' ) {
+            $_object_cache_host = 'localhost:6379';
+          } elseif( wp_get_cache_type() === 'Memcached' ) {
+            $_object_cache_host = 'localhost:11211';
+          } else {
+            $_object_cache_host = 'unknown';
+          }
+        }
+
         $wp_admin_bar->add_node( array(
           'id' => 'wp-rabbit-inner-cache',
           'parent' => 'wp-rabbit',
-          'title' => sprintf( __( 'Object Cache: %s' ), wp_get_cache_type() ),
+          'title' => sprintf( __( 'Object Cache: %s (%s)' ), wp_get_cache_type(), $_object_cache_host),
           'href' => '#'
         ) );
+
       }
 
     }

@@ -9,6 +9,74 @@ module.exports = function ( grunt ) {
   grunt.registerTask( "default", defaultTask );
   grunt.registerTask( "primeCache", primeCache );
   grunt.registerTask( "watchCacheChange", watchCacheChange );
+  grunt.registerTask( "primeRedirectionCache", primeRedirectionCache );
+
+
+  /**
+   * Prime Listing Redirection
+   *
+   * grunt primeRedirectionCache
+   *
+   * DEBUG=prime:redirection grunt primeRedirectionCache
+   *
+   * DEBUG=prime:redirection nohup grunt primeRedirectionCache &
+   *
+   */
+  function primeRedirectionCache() {
+
+    var taskDone = this.async();
+    var debug = require( 'debug' )('prime:redirection');
+
+    var esQuery = {
+      "index": process.env.ES_INDEX,
+      "type": process.env.ES_TYPE,
+      "size": 1,
+      "from": 0,
+      "scroll": '300m',
+      "body": {
+        "query": {
+          "filtered": {
+            "filter": {
+              "bool": {
+                "must": [
+                  {
+                    "exists": { "field": "_permalink" }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var _step = 0;
+
+    scrollResults( esQuery, handleListing, function () {
+      debug( 'All listings primed.' );
+      taskDone();
+    } );
+
+    function handleListing( source, callback, doc ) {
+      // debug( '[%s] Priming [%s] ID.', _done, doc._id );
+      //debug( 'https://www.reddoorcompany.com/listing/' + doc._id );
+
+      _step++;
+
+      // debug( '[%s] Starting to prime redirection for [/listing/%s/].', _step, doc._id );
+
+      cache_prime_request( 'https://d2v5c8pxcauet3.cloudfront.net/listing/' + doc._id, { gzip: true }, function() {
+
+        cache_prime_request( 'https://d2v5c8pxcauet3.cloudfront.net/listing/' + doc._id, { gzip: false }, function() {
+          debug( '[%s] Finished priming redirection for [/listing/%s/].', _step, doc._id );
+          callback();
+        } );
+
+      } );
+
+    }
+
+  }
 
   /**
    *
@@ -210,7 +278,6 @@ function rabbit_request( target_url, request_done ) {
  * @param request_done
  */
 function cache_prime_request( target_url, options, request_done ) {
-  debug( '[%s] Making Cache Prime request to [%s].', _done, target_url );
 
   _.defaults( options, { gzip: true } );
 
@@ -228,6 +295,7 @@ function cache_prime_request( target_url, options, request_done ) {
       'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
     }
   };
+  debug( '[%s] Making Cache Prime request to [%s].', _done, _requestOptions.actualUrl );
 
   var _resultDetail = {
     url: _requestOptions.actualUrl,
