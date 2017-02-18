@@ -40,6 +40,12 @@ class Modal extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.open) {
+      this.searchInput.focus();
+    }
+  }
+
   handleClose(eve) {
     eve.preventDefault();
     this.props.closeModal();
@@ -82,9 +88,11 @@ class Modal extends Component {
           <div className="container">
             <i className="fa fa-search"></i>
             <input
+              autoComplete="off"
               className="form-control"
               id={Lib.THEME_PREFIX + "search-input"}
               onChange={this.handleSearchValueChange.bind(this)}
+              ref={(input) => { this.searchInput = input; }}
               type="text"
               value={this.state.searchValue}
             />

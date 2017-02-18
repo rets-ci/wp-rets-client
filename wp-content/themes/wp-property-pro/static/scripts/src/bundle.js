@@ -47685,6 +47685,13 @@
 	  }
 
 	  _createClass(Modal, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (this.props.open) {
+	        this.searchInput.focus();
+	      }
+	    }
+	  }, {
 	    key: 'handleClose',
 	    value: function handleClose(eve) {
 	      eve.preventDefault();
@@ -47700,6 +47707,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      var searchResults = this.props.searchResults;
 
 	      var resultsElements = searchResults.map(function (s, k) {
@@ -47756,9 +47765,13 @@
 	            { className: 'container' },
 	            _react2.default.createElement('i', { className: 'fa fa-search' }),
 	            _react2.default.createElement('input', {
+	              autoComplete: 'off',
 	              className: 'form-control',
 	              id: _lib.Lib.THEME_PREFIX + "search-input",
 	              onChange: this.handleSearchValueChange.bind(this),
+	              ref: function ref(input) {
+	                _this2.searchInput = input;
+	              },
 	              type: 'text',
 	              value: this.state.searchValue
 	            }),
