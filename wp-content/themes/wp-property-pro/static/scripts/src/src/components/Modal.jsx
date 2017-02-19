@@ -1,32 +1,34 @@
-import {openModal, setSearchProps} from '../actions/index.jsx';
+import { openModal, setSearchProps } from '../actions/index.jsx';
 import Api from '../containers/Api.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import { browserHistory } from 'react-router';
 import _ from 'lodash'
 import {Lib} from '../lib.jsx'
 
-const stateToProps = (state) => {
+const mapStateToProps = (state) => {
   return {
     open: state.modal ? state.modal.openModal : false,
     searchResults: _.get(state, 'searchPropsState.searchProps', []),
+    searchType: _.get(state, 'searchType.searchType', '')
   }
 };
 
-const dispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     closeModal: () => {
       dispatch(openModal(false));
     },
 
     searchHandler: (term) => {
-        let searchParams = {
-          term: term
-        };
-        Api.selectQuery(searchParams,
-          function (rows) {
-            dispatch(setSearchProps(rows));
-          }
-        );
+      let searchParams = {
+        term: term
+      };
+      Api.selectQuery(searchParams,
+        function (rows) {
+          dispatch(setSearchProps(rows));
+        }
+      );
     }
   };
 };
@@ -51,6 +53,12 @@ class Modal extends Component {
     this.props.closeModal();
   }
 
+  handleResultClick(eve, tax, term, searchType) {
+    eve.preventDefault();
+    console.log('handleResultClick');
+    browserHistory.push(`/search-result?term=${term}&tax=${tax}&searchType=${searchType}`);
+  }
+
   handleSearchValueChange(eve) {
     let val = eve.target.value;
     this.setState({searchValue: val});
@@ -59,8 +67,10 @@ class Modal extends Component {
 
   render() {
     let {
-      searchResults
+      searchResults,
+      searchType
     } = this.props;
+    let self = this;
     let resultsElements = searchResults.map((s, k) => {
       return (
         <div>
@@ -72,7 +82,11 @@ class Modal extends Component {
           {s.children.length ?
             <ol>
               {s.children.map((c, i) =>
-                <li key={i}><a href="#"><div className="container">{c.text}</div></a></li>
+                <li key={i}>
+                  <a href="#" onClick={(eve) => self.handleResultClick.bind(this)(eve, s.key, c.text, searchType)}>
+                    <div className="container">{c.text}</div>
+                  </a>
+                </li>
               )}
             </ol>
           : null}
@@ -108,6 +122,6 @@ class Modal extends Component {
 };
 
 export default connect(
-    stateToProps,
-    dispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Modal);
