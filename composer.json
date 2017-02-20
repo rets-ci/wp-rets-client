@@ -9,17 +9,10 @@
     }
   ],
   "extra": {
-    "settings_production-hotfix": {
-      "wp_debug_log": true,
-      "wp_debug_display": true,
-      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211"
-    },
     "settings_develop-v3-andy": {
       "wp_debug_log": true,
       "wp_debug_display": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211",
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
     "settings_latest-v3": {
@@ -28,17 +21,21 @@
       "wp_siteurl": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
       "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci",
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211",
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
     "settings_develop-dmitry": {
       "wp_debug_log": true,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
-      "wp_memcached_servers": "localhost:11211",
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
     "settings_production": {
-      "db_name": "www.reddoorcompany.com"
+      "db_name": "www.reddoorcompany.com.v2"
+    },
+    "settings_production-hotfix": {
+      "wp_debug_log": true,
+      "wp_debug_display": true,
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "db_name": "www.reddoorcompany.com.v2"
     },
     "settings": {
       "WP_PROPERTY_SETUP_ASSISTANT": true,
@@ -54,7 +51,7 @@
       "wp_debug_display": false,
       "RDC_RECAPTCHA_KEY": "6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5",
       "RDC_RECAPTCHA_SECRET": "6Lfn7xIUAAAAAHtv6LS1QgU01y68PjellGSb4cKD",
-      "_wp_memcached_servers": "api.wpcloud.io:23038",
+      "wp_memcached_servers": "api.wpcloud.io:23038",
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
