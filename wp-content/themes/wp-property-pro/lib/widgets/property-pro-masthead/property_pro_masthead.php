@@ -104,7 +104,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         'image' => [
           'type' => 'media',
           'label' => __('Image', 'wp-property-pro'),
-          'description' => __('Set backgound image file.', 'wp-property-pro'),
+          'description' => __('Set background image file.', 'wp-property-pro'),
         ],
 
         'search_options' => [
