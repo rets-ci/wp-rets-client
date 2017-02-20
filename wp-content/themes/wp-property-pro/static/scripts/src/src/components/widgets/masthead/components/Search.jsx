@@ -4,7 +4,7 @@ import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
 import SearchResultRow from './SearchResultRow.jsx';
 import FilterTerm from './filterTerm.jsx';
-import {openModal, setSearchProps, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchProps, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state, history) => {
     return {
         currentState: state,
         searchProps: _.get(state, 'searchPropsState.searchProps', []),
+        searchType: _.get(state, 'searchType.searchType', ''),
         filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
         history: history
     }
@@ -42,6 +43,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           });
           jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
           dispatch(setFilterTerms(terms));
+        },
+
+        setSearchType: (searchType) => {
+          dispatch(setSearchType(searchType));
         },
 
         clearTermFilter: () => {
@@ -75,80 +80,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 };
 
-const SearchContent = function ({currentState, searchHandler, searchProps, filterTerms, searchItemClick, doSearch, clearTermFilter, options}) {
-
-    let searchResults = [];
-    let filterTermsList = [];
-
-    if (filterTerms.length) {
-        filterTermsList = filterTerms.map((item) => {
-            return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
-        });
-    } else {
-        searchResults = searchProps.map((prop) => {
-            return (<SearchResultRow prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
-        });
-    }
-
-    let select_options_content = [];
-    let select_options_array = [];
-
-    let counter = 0;
-    for (let key in options) {
-
-        if (options[key] === false)
-            continue;
-
-        let option_array = _.split(key, Lib.STRING_ARRAY_DELIMITER);
-        let label = _.slice(option_array, 0, 1);
-        select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
-        select_options_content.push(<option
-            value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)} key={counter}>{label}</option>);
-
-        counter++;
-    }
-
-    let search_types;
-
-    if (select_options_content.length > 1)
-        search_types = (
-            <select id={Lib.THEME_PREFIX + "search_type"}>
-                {select_options_content}
-            </select>
-        );
-    else if (select_options_content.length === 1)
-        search_types = (
-            <input type="hidden" id={Lib.THEME_PREFIX + "search_type"} value={select_options_array[0]}/>
-        );
-
-    if (!search_types)
-        return (
-            <div></div>
-        );
-
-    return (
-        <div>
-            {search_types}
-            <input type="text" onKeyUp={searchHandler.bind(this, currentState)}
-                   id={Lib.THEME_PREFIX + "search-input"}/>
-            <a href="javascript:;" onClick={doSearch}>Search</a>
-            <div id={Lib.THEME_PREFIX + "filter-block"}>
-                {filterTermsList}
-            </div>
-            <ul id={Lib.THEME_PREFIX + "search-result"}>
-                {searchResults}
-            </ul>
-        </div>
-    )
-};
-
-class SearchContentOld extends Component {
+class SearchContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dropDownOpen: false,
-      labels: [],
-      searchType: ''
+      labels: []
     };
   }
   static propTypes = {
@@ -157,6 +94,7 @@ class SearchContentOld extends Component {
     searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
     searchItemClick: PropTypes.func,
+    searchType: PropTypes.string,
     doSearch: PropTypes.func,
     clearTermFilter: PropTypes.func,
     options: PropTypes.object.isRequired
@@ -168,9 +106,9 @@ class SearchContentOld extends Component {
       return labelsArr[0];
     });
     this.setState({
-      labels: labels,
-      searchType: labels.length ? labels[0] : ''
+      labels: labels
     });
+    this.props.setSearchType(labels.length ? labels[0] : '');
   }
 
   handleSearchDropDownChange(open) {
@@ -179,74 +117,23 @@ class SearchContentOld extends Component {
 
   handleSearchDropDownOptionSelect(option) {
     this.setState({
-      searchType: option,
       dropDownOpen: false
     });
+    this.props.setSearchType(option);
   }
 
   render() {
     let {
-      // clearTermFilter,
-      // doSearch,
-      // filterTerms,
       openSearchModal,
       options
-      // searchItemClick,
-      // searchHandler,
-      // searchProps
     } = this.props;
-    // let filterTermsList = [];
-    // let labels = [];
-    // let select_options_content = [];
-    // let select_options_array = [];
-    // let searchResults = [];
-    //
-    // if (filterTerms.length) {
-    //   filterTermsList = filterTerms.map((item) => {
-    //     return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
-    //   });
-    // } else {
-    //   searchResults = searchProps.map((prop, i) => {
-    //     return (<SearchResultRow key={i} prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
-    //   });
-    // }
-    // for (let key in options) {
-    //     if (options[key] === false)
-    //         continue;
-    //     let option_array = _.split(key, Lib.STRING_ARRAY_DELIMITER);
-    //     let label = _.slice(option_array, 0, 1);
-    //     labels.push(label);
-    //     select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
-    //     select_options_content.push(<option
-    //         key={key} value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)}>{label}</option>);
-    // }
-
-    // let search_types;
-    //
-    // if (select_options_content.length > 1) {
-    //     search_types = (
-    //         <select id={Lib.THEME_PREFIX + "search_type"}>
-    //             {select_options_content}
-    //         </select>
-    //     );
-    // } else if (select_options_content.length === 1) {
-    //   search_types = (
-    //     <input type="hidden" id={Lib.THEME_PREFIX + "search_type"} value={select_options_array[0]}/>
-    //   );
-    // }
-
-    // if (!search_types) {
-    //   return (
-    //     <div></div>
-    //   );
-    // }
     var self = this;
     return (
       <div className="search-box">
         <DropDownSearch
           labels={this.state.labels}
           open={this.state.dropDownOpen}
-          selectedOption={this.state.searchType}
+          selectedOption={this.props.searchType}
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
@@ -261,6 +148,6 @@ class SearchContentOld extends Component {
 const Search = connect(
     mapStateToProps,
     mapDispatchToProps
-)(SearchContentOld);
+)(SearchContent);
 
 export default Search

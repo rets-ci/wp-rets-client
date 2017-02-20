@@ -49,6 +49,13 @@ export const setMapMarkers = (mapMarkers) => {
     }
 };
 
+export const setSearchType = searchType => {
+  return {
+    type: Lib.SET_SEARCH_TYPE,
+    searchType: searchType
+  }
+};
+
 export const setFilterTerms = (filterTerms) => {
     return {
         type: Lib.SET_FILTER_TERMS_ACTION,

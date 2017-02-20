@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly
-// Feature Flag: WPP_FEATURE_FLAG_WPP_TYPE
+// Feature Flag: WPP_FEATURE_FLAG_WPP_LISTING_TYPE
 defined( 'ABSPATH' ) || exit;
 require_once RWMB_FIELDS_DIR . 'checkbox-list.php';
 
@@ -27,7 +27,7 @@ if ( ! class_exists( 'RWMB_Wpp_Property_Type_Field' ) ){
 		static function html( $meta, $field ){
 			$terms = array();
 			$_terms = get_terms( array(
-						'taxonomy' => 'wpp_type',
+						'taxonomy' => 'wpp_listing_type',
 						'hide_empty' => false,
 					) );
 			$options = $field['options'];
@@ -70,6 +70,28 @@ if ( ! class_exists( 'RWMB_Wpp_Property_Type_Field' ) ){
 			$html = ob_get_clean();
 
 			return $html;
+		}
+
+		/**
+		 * Standard meta retrieval
+		 *
+		 * @param int   $post_id
+		 * @param bool  $saved
+		 * @param array $field
+		 *
+		 * @return array
+		 */
+		static function meta( $post_id, $saved, $field )
+		{
+			$options = $field['options'];
+
+			$meta = parent::meta( $post_id, $saved, $field );
+			if (empty($meta)) {
+				$_meta = get_post_meta($post_id, 'property_type', true);
+				$term = get_term_by('slug', $_meta, 'wpp_listing_type');
+				$meta = isset($term->term_id)? (array) $term->term_id : $meta;
+			}
+			return $meta;
 		}
 
 		/**

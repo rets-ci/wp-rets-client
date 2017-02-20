@@ -288,7 +288,7 @@ namespace UsabilityDynamics\PropertyPro {
       }
 
       // Multiple databases.
-      if ($this->_settings['DB_0_HOST']) {
+      if (isset( $this->_settings['DB_0_HOST'] ) && $this->_settings['DB_0_HOST']) {
 
         foreach (Config::find_by_prefix($this->_settings, 'DB_0') as $_key => $_value) {
 

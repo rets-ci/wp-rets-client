@@ -15,6 +15,8 @@
  * @author     team@UD
  * @copyright  2012 Usability Dyanmics, Inc.
  */
+global $wp_properties;
+
 
 $object_label = array(
   'singular' => WPP_F::property_label('singular'),
@@ -28,7 +30,10 @@ if (isset($_REQUEST['message'])) {
   switch ($_REQUEST['message']) {
     case 'updated':
       $wp_messages['notice'][] = __("Settings updated.", ud_get_wp_property()->domain);
-      break;
+    break;
+    case 'restored':
+      $wp_messages['notice'][] = __("Settings restored from backup.", ud_get_wp_property()->domain);
+    break;
   }
 }
 
@@ -47,14 +52,20 @@ if (get_option('permalink_structure') == '') {
   $wrapper_classes[] = 'have_permalinks';
 }
 
+if( isset( $_GET['splash'] ) && $_GET['splash'] === 'setup-assistant' ) {
+  UsabilityDynamics\WPP\Setup_Assistant::render_page();
+  return;
+}
+
 ?>
 <div class="wrap <?php echo implode(' ', $wrapper_classes); ?>">
 
-  <h2
-    class='wpp_settings_page_header'><?php echo ud_get_wp_property('labels.name') . ' ' . __('Settings', ud_get_wp_property()->domain) ?>
+
+
+  <h2 class='wpp_settings_page_header'><?php echo ud_get_wp_property('labels.name') . ' ' . __('Settings', ud_get_wp_property()->domain) ?>
 
     <?php  if( defined( 'WP_PROPERTY_SETUP_ASSISTANT' ) && WP_PROPERTY_SETUP_ASSISTANT ) { ?>
-      <a class="wpp-setup-asst" href="<?php echo admin_url('index.php?page=wpp-setup-page'); ?>">
+      <a class="wpp-setup-asst" href="<?php echo admin_url('edit.php?post_type=property&page=property_settings&splash=setup-assistant'); ?>">
         <?php echo __('Setup Assistant', ud_get_wp_property()->domain); ?>
       </a>
     <?php } ?>
@@ -115,7 +126,7 @@ if (get_option('permalink_structure') == '') {
                 <li class="configuration_enable_comments"><?php echo WPP_F::checkbox("name=wpp_settings[configuration][enable_comments]&label=" . __('Enable comments', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['enable_comments']) ? $wp_properties['configuration']['enable_comments'] : false)); ?></li>
                 <li class="configuration_enable_revisions" data-feature-since="2.0.0"><?php echo WPP_F::checkbox("name=wpp_settings[configuration][enable_revisions]&label=" . __('Enable revisions', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['enable_revisions']) ? $wp_properties['configuration']['enable_revisions'] : false)); ?></li>
 
-                <?php if( defined( 'WP_PROPERTY_LAYOUTS' ) && WP_PROPERTY_LAYOUTS ) { ?>
+                <?php if( defined( 'WP_PROPERTY_LAYOUTS' ) && WP_PROPERTY_LAYOUTS === true ) { ?>
                 <li class="configuration_enable_layouts" data-feature-since="2.2.1"><?php echo WPP_F::checkbox("name=wpp_settings[configuration][enable_layouts]&label=" . __('Disable layouts', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['enable_layouts']) ? $wp_properties['configuration']['enable_layouts'] : false)); ?></li>
                 <?php } ?>
 
@@ -332,18 +343,21 @@ if (get_option('permalink_structure') == '') {
                     <br/>
                   </li>
                   <li><?php echo WPP_F::checkbox("name=wpp_settings[configuration][auto_delete_attachments]&label=" . sprintf(__('Automatically delete all %1s images and attachments when a %2s is deleted.', ud_get_wp_property()->domain), $object_label['singular'], $object_label['singular']), (isset($wp_properties['configuration']['auto_delete_attachments']) ? $wp_properties['configuration']['auto_delete_attachments'] : false)); ?></li>
-                  <li>
-                    <?php echo WPP_F::checkbox("name=wpp_settings[configuration][do_not_automatically_regenerate_thumbnails]&label=" . __('Disable "on-the-fly" image regeneration.', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['do_not_automatically_regenerate_thumbnails']) ? $wp_properties['configuration']['do_not_automatically_regenerate_thumbnails'] : true)); ?>
-                    <span
-                      class="description"><?php _e('Enabling this option may cause performance issues.', ud_get_wp_property()->domain); ?></span>
+
+                  <li class="hidden">
+                    <?php echo WPP_F::checkbox("name=wpp_settings[configuration][automatically_regenerate_thumbnail]&label=" . __('Enable "on-the-fly" image regeneration.', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['automatically_regenerate_thumbnail']) ? $wp_properties['configuration']['automatically_regenerate_thumbnail'] : true)); ?>
+                    <span class="description"><?php _e('Enabling this option may cause performance issues.', ud_get_wp_property()->domain); ?></span>
                   </li>
+
+
+                  <?php if( defined( 'WP_PROPERTY_FLAG_ENABLE_STANDARD_ATTRIBUTES_MATCHING' ) && WP_PROPERTY_FLAG_ENABLE_STANDARD_ATTRIBUTES_MATCHING ) { ?>
                   <li>
                     <?php //show standard attribute matching
                     echo WPP_F::checkbox("name=wpp_settings[configuration][show_advanced_options]&label=" . __('Enable Standard Attributes Matching and Terms', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['show_advanced_options']) ? $wp_properties['configuration']['show_advanced_options'] : false)); ?>
-                    <i class="description wpp-notice-for-match"
-                       title="<?php _e('This option is designed to help us find which attribute you want to show as Price, Address, etc and place it in correct place in our templates.', ud_get_wp_property()->domain); ?>">
-                      ? </i>
+                    <i class="description wpp-notice-for-match" title="<?php _e('This option is designed to help us find which attribute you want to show as Price, Address, etc and place it in correct place in our templates.', ud_get_wp_property()->domain); ?>"></i>
                   </li>
+                  <?php } ?>
+
                   <li>
                     <?php echo WPP_F::checkbox("name=wpp_settings[configuration][pre_release_update]&label=" . __('Enable pre-release updates.', ud_get_wp_property()->domain), (isset($wp_properties['configuration']['pre_release_update']) ? $wp_properties['configuration']['pre_release_update'] : false)); ?>
                     <br/>
@@ -630,10 +644,11 @@ if (get_option('permalink_structure') == '') {
         <div class="wpp_inner_tab wp-core-ui">
 
           <div class="wpp_settings_block">
-            <?php _e("Restore Backup of WP-Property Configuration", ud_get_wp_property()->domain); ?>
-            : <input name="wpp_settings[settings_from_backup]" class="" id="wpp_backup_file" type="file"/>
-            <a
-              href="<?php echo wp_nonce_url("edit.php?post_type=property&page=property_settings&wpp_action=download-wpp-backup", 'download-wpp-backup'); ?>"><?php _e('Download Backup of Current WP-Property Configuration.', ud_get_wp_property()->domain); ?></a>
+            <?php _e("Restore Backup of WP-Property Configuration", ud_get_wp_property()->domain); ?>: <input name="wpp_settings[settings_from_backup]" class="" id="wpp_backup_file" type="file" />
+            <br />
+            <a href="<?php echo wp_nonce_url("edit.php?post_type=property&page=property_settings&wpp_action=download-wpp-backup&wpp-backup-type=full", 'download-wpp-backup'); ?>"><?php _e('Download Entire WP-Property Configuration.', ud_get_wp_property()->domain); ?></a>
+            <br />
+            <a href="<?php echo wp_nonce_url("edit.php?post_type=property&page=property_settings&wpp_action=download-wpp-backup&wpp-backup-type=fields", 'download-wpp-backup'); ?>"><?php _e('Download Attributes Configuration.', ud_get_wp_property()->domain); ?></a>
           </div>
 
           <?php

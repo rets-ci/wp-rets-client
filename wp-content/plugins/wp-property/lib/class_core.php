@@ -84,43 +84,72 @@ class WPP_Core {
     if( defined( 'WP_PROPERTY_FIELD_ALIAS' ) && WP_PROPERTY_FIELD_ALIAS ) {
       add_filter( 'wpp_get_property', array( $this, 'apply_property_alias' ), 50, 2 );
       add_filter( 'wpp_get_properties_query', array( $this, 'apply_properties_query_alias' ), 50 );
+      // add_filter( 'get_post_metadata', array( $this, 'alias_get_post_metadata' ), 50, 4 );
     }
+
+  }
+
+  /**
+   * Direct Meta Override
+   *
+   * @param $false
+   * @param $object_id
+   * @param $meta_key
+   * @param $single
+   * @return mixed
+   */
+  static public function alias_get_post_metadata( $false, $object_id, $meta_key, $single ) {
+
+    if( $meta_key === 'short_address' ) {
+      return get_post_meta( $object_id, 'formatted_address_simple', $single );
+    }
+
+    if( $meta_key === 'address' ) {
+      return get_post_meta( $object_id, 'formatted_address', $single );
+    }
+
+    return $false;
 
   }
 
   /**
    * Apply field alias to property object.
    *
+   * - Alias will overwrite actual if alias exists, regardless of if actual exists.
+   *
    * @param $property
    * @param $args
    * @return mixed
    */
   static public function apply_property_alias( $property, $args ) {
-    global $wp_properties;
 
     $_result = array();
 
     // add terms to object.
-    foreach( (array) $wp_properties['taxonomies'] as $_tax => $_tax_setup) {
-
-      if( $_tax_setup['unique'] === '1' ) {
-        $property[$_tax] = join( ', ', wp_get_object_terms( $property['ID'], $_tax, array( 'fields' => 'names' ) ) );
-      } else {
-        $property[$_tax] = wp_get_object_terms( $property['ID'], $_tax, array( 'fields' => 'names' ) );
-      }
-    }
-
     // apply alias logic.
-    foreach( (array) WPP_F::get_alias_map() as $_alias => $_target ) {
+    foreach( (array) WPP_F::get_alias_map() as $_defined_field => $_target ) {
 
-      if( isset( $property[ $_target ] ) && $property[ $_target ] && ( !isset( $property[ $_alias ] ) || !$property[ $_alias ] ) ) {
-        $_result[] = "Applied target [$_target] alias to [$_alias].";
-        $property[ $_alias ] = $property[ $_target ] ;
+      // try meta, defined taxonomy
+      $_alias_value  = isset( $property[ $_target ] ) ? $property[ $_target ] : null;
+
+      // Support for dynamic taxonomies.
+      if( !$_alias_value ) {
+        WPP_F::verify_have_system_taxonomy( $_target );
+        $_alias_value = wp_get_object_terms( $property['ID'], $_target, array( 'fields' => 'names' ) );
+      }
+
+      // Alias value found.
+      if( $_alias_value ) {
+        $property[ $_defined_field ] = $_alias_value;
+        $_result[] = "Applied target [$_target] alias to [$_defined_field].";
       }
 
     }
 
-    // WPP_F::debug( 'apply_property_alias', array( 'id' => $property['ID'], 'result' => join( ",", $_result ) ) );
+    WPP_F::debug( 'apply_property_alias', array( 'id' => $property['ID']) );
+
+    //die( '<pre>' . print_r( $_result, true ) . '</pre>' );
+    //WPP_F::debug( 'apply_property_alias:detail',$_result );
 
     return $property;
 
@@ -147,7 +176,7 @@ class WPP_Core {
 
     }
 
-    WPP_F::debug( 'apply_properties_query_alias', array( 'query' => $query, 'result' => $_result ) );
+    //WPP_F::debug( 'apply_properties_query_alias', array( 'query' => $query, 'result' => $_result ) );
 
     return $query;
 
@@ -211,7 +240,7 @@ class WPP_Core {
     if( defined( 'WPP_API_REGISTER_URL' ) && WPP_API_REGISTER_URL ) {
       $_api_url = WPP_API_REGISTER_URL;
     } else {
-      $_api_url = 'https://api.usabilitydynamics.com/product/property/site/register/v1';
+      $_api_url = 'https://api.usabilitydynamics.com/product/property/register/v1';
     }
 
     $args = array(
@@ -288,7 +317,7 @@ class WPP_Core {
     }
     $ud_site_id = get_site_option('ud_site_id');
     $ud_site_public_key = get_site_option('ud_site_public_key');
-    $url = 'https://api.usabilitydynamics.com/product/v1/site/update_settings';
+    $url = 'https://api.usabilitydynamics.com/product/property/settings/v1/update';
     $find = array( 'http://', 'https://' );
     $replace = '';
     $output = str_replace( $find, $replace, $site_url );
@@ -370,29 +399,25 @@ class WPP_Core {
     //** Set up our default page for properties */
     WPP_F::register_properties_page();
 
-    //** Set up url of default property overview page */
-    // WPP_F::register_property_page_url();
-
-    //** Set up url of random property single page */
-    //WPP_F::register_property_single_url();
-
     //** Load all widgets and register widget areas */
     add_action( 'widgets_init', array( 'WPP_F', 'widgets_init' ) );
 
     do_action( 'wpp_init:end', $this );
-    if( defined( 'WPP_FEATURE_FLAG_WPP_TYPE' ) ) {
-      add_action( 'created_wpp_type', array($this, 'term_created_wpp_type'), 10, 2 );
-      add_action( 'edited_wpp_type', array($this, 'term_created_wpp_type'), 10, 2 );
-      add_action( 'delete_wpp_type', array($this, 'term_delete_wpp_type'), 10, 4 );
+
+    if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_TYPE' ) && WPP_FEATURE_FLAG_WPP_LISTING_TYPE ) {
+      add_action( 'created_wpp_listing_type', array($this, 'term_created_wpp_listing_type'), 10, 2 );
+      add_action( 'edited_wpp_listing_type', array($this, 'term_created_wpp_listing_type'), 10, 2 );
+      add_action( 'delete_wpp_listing_type', array($this, 'term_delete_wpp_listing_type'), 10, 4 );
       add_action( 'wpp_settings_save', array('WPP_F', 'create_property_type_terms'), 10, 2 );
 
       // Run activation task after plugin fully activated.
       if(get_option('wpp_activated') ){
-        WPP_F::add_wpp_type_from_existing_terms();
+        WPP_F::add_wpp_listing_type_from_existing_terms();
         WPP_F::create_property_type_terms($wp_properties, $wp_properties);
         delete_option('wpp_activated');
       }
     }
+
   }
 
   /**
@@ -416,7 +441,6 @@ class WPP_Core {
     add_action( 'wp_ajax_wpp_ajax_revalidate_all_addresses', create_function( "", '  echo WPP_F::revalidate_all_addresses(); die();' ) );
     add_action( 'wp_ajax_wpp_ajax_create_settings_backup', create_function( "", '  echo WPP_F::create_settings_backup(); die();' ) );
     add_action( 'wp_ajax_wpp_save_settings', create_function( "", ' die(WPP_F::save_settings());' ) );
-    add_action( 'wp_ajax_wpp_save_setup_settings', create_function( "", ' die(WPP_F::save_setup_settings());' ) );
     add_action( 'wp_ajax_wpp_save_freemius_settings', create_function( "", ' die(WPP_F::save_freemius_settings());' ) );
     add_action( 'wp_ajax_wpp_apply_default_value', create_function( "", ' die(WPP_F::apply_default_value());' ) );
     add_action( 'wp_ajax_wpp_ajax_print_wp_properties', create_function( "", ' global $wp_properties; print_r($wp_properties); die();' ) );
@@ -596,15 +620,11 @@ class WPP_Core {
     add_filter( 'wp_get_attachment_link', array( 'WPP_F', 'wp_get_attachment_link' ), 10, 6 );
 
     //** Make Property Featured Via AJAX */
-    if(
-      isset( $_REQUEST[ 'post_id' ] )
-      && isset( $_REQUEST[ '_wpnonce' ] )
-      && wp_verify_nonce( $_REQUEST[ '_wpnonce' ], "wpp_make_featured_" . $_REQUEST[ 'post_id' ] )
-    ) {
+    if( isset( $_REQUEST[ 'post_id' ] ) && isset( $_REQUEST[ '_wpnonce' ] ) && wp_verify_nonce( $_REQUEST[ '_wpnonce' ], "wpp_make_featured_" . $_REQUEST[ 'post_id' ] ) ) {
       add_action( 'wp_ajax_wpp_make_featured', create_function( "", '  $post_id = $_REQUEST[\'post_id\']; echo WPP_F::toggle_featured( $post_id ); die();' ) );
     }
 
-    add_filter( 'wpp::draw_stats::attributes', array( __CLASS__, 'make_attributes_hidden' ), 10, 2 );
+    add_filter( 'wpp::draw_stats::attributes', array( __CLASS__, 'make_attributes_hidden' ), 100, 2 );
 
     //** Post-init action hook */
     do_action( 'wpp_post_init' );
@@ -863,10 +883,10 @@ class WPP_Core {
 
     $update_data = $_REQUEST[ 'wpp_data' ][ 'meta' ];
 
-    if( defined( 'WPP_FEATURE_FLAG_WPP_TYPE' ) ) {
-      // if wpp_type is set then update property_type attribute.
-      if(isset($_REQUEST[ 'wpp_type' ])){
-        $term   = get_the_terms($post_id, 'wpp_type');
+    if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_TYPE' ) ) {
+      // if wpp_listing_type is set then update property_type attribute.
+      if(isset($_REQUEST[ 'wpp_listing_type' ])){
+        $term   = get_the_terms($post_id, 'wpp_listing_type');
         if(is_object($term[0]))
           update_post_meta($post_id, 'property_type', $term[0]->slug);
       }
@@ -1166,7 +1186,7 @@ class WPP_Core {
       $wp_query->is_page = true;
     }
 
-    wp_localize_script( 'wpp-localization', 'wpp', array( 'instance' => $this->get_instance() ) );
+    wp_localize_script( 'wpp-localization', 'wpp',array( 'instance' =>  apply_filters( 'wpp::localization::instance', $this->get_instance() ) ) );
 
     //** Load global wp-property script on all frontend pages */
     wp_enqueue_script( 'wp-property-global' );
@@ -1465,6 +1485,7 @@ class WPP_Core {
    *
    */
   public function get_l10n_data() {
+
     $l10n = array();
     //** Include the list of translations */
     $l10n_dir = ud_get_wp_property()->path( 'l10n.php', 'dir' );
@@ -1577,9 +1598,9 @@ class WPP_Core {
   }
 
   /**
-   * Add/update Property Type to $wp_properties when wpp_type 
+   * Add/update Property Type to $wp_properties when wpp_listing_type
    * created/updated outside of developer tab of settings page.
-   * Feature Flag: WPP_FEATURE_FLAG_WPP_TYPE
+   * Feature Flag: WPP_FEATURE_FLAG_WPP_LISTING_TYPE
    * 
    * @author Md. Alimuzzaman Alim
    * 
@@ -1587,9 +1608,9 @@ class WPP_Core {
    * @param int $tt_id
    * 
    */
-  function term_created_wpp_type($term_id, $tt_id){
+  function term_created_wpp_listing_type($term_id, $tt_id){
     global $wp_properties;
-    $term = get_term($term_id, 'wpp_type');
+    $term = get_term($term_id, 'wpp_listing_type');
     if(!in_array($term->slug, $wp_properties['property_types']) || $wp_properties['property_types'][$term->slug] != $term->name){
       $wp_properties['property_types'][$term->slug] = $term->name;
       $wp_properties['property_types_term_id'][$term->slug] = $term->term_id;
@@ -1602,9 +1623,9 @@ class WPP_Core {
   }
 
   /**
-   * Remove Property Type from $wp_properties when wpp_type 
+   * Remove Property Type from $wp_properties when wpp_listing_type
    * deleted outside of developer tab of settings page.
-   * Feature Flag: WPP_FEATURE_FLAG_WPP_TYPE
+   * Feature Flag: WPP_FEATURE_FLAG_WPP_LISTING_TYPE
    * 
    * @author Md. Alimuzzaman Alim
    * 
@@ -1613,7 +1634,7 @@ class WPP_Core {
    * @param int $term
    * 
    */
-  function term_delete_wpp_type($term_id, $tt_id, $term){
+  function term_delete_wpp_listing_type($term_id, $tt_id, $term){
     global $wp_properties;
     if(array_key_exists($term->slug, $wp_properties['property_types'])){
       unset($wp_properties['property_types'][$term->slug]);

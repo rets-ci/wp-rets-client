@@ -108,6 +108,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 							'textarea' => __( 'Text Area', 'so-widgets-bundle' ),
 							'select' => __( 'Dropdown Select', 'so-widgets-bundle' ),
 							'checkboxes' => __( 'Checkboxes', 'so-widgets-bundle' ),
+							'radio' => __( 'Radio', 'so-widgets-bundle' ),
 						),
 						'state_emitter' => array(
 							'callback' => 'select',
@@ -143,7 +144,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 						)
 					),
 
-					// This are for select and checkboxes
+					// This are for select, radio, and checkboxes
 					'options' => array(
 						'type' => 'repeater',
 						'label' => __( 'Options', 'so-widgets-bundle' ),
@@ -158,7 +159,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 
 						// These are only required for a few states
 						'state_handler' => array(
-							'field_type_{$repeater}[select,checkboxes]' => array('show'),
+							'field_type_{$repeater}[select,checkboxes,radio]' => array( 'show' ),
 							'_else[field_type_{$repeater}]' => array( 'hide' ),
 						),
 					),
@@ -712,7 +713,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 
 			?><div class="sow-form-field sow-form-field-<?php echo sanitize_html_class( $field['type'] ) ?>"><?php
 
-			$is_text_input_field = ($field['type'] != 'select' && $field['type'] != 'checkboxes');
+			$is_text_input_field = ( $field['type'] != 'select' && $field['type'] != 'radio' && $field['type'] != 'checkboxes');
 			// label should be rendered before the field, then CSS will do the exact positioning.
 			$render_label_before_field = ( $label_position != 'below' && $label_position != 'inside' ) || ( $label_position == 'inside' && ! $is_text_input_field );
 			if( empty( $label_position ) || $render_label_before_field ) {
@@ -992,7 +993,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 	}
 
 	function send_mail( $email_fields, $instance ){
-		$body = '<strong>From:</strong> <a href="mailto:' . sanitize_email( $email_fields['email'] ) . '">' . esc_html( $email_fields['name'] ) . "</a>\n\n";
+		$body = '<strong>From:</strong> <a href="mailto:' . sanitize_email( $email_fields['email'] ) . '">' . esc_html( $email_fields['name'] ) . '</a> &#60;' . sanitize_email( $email_fields['email'] ) . "&#62; \n\n";
 		foreach( $email_fields['message'] as $m ) {
 			$body .= '<strong>' . $m['label'] . ':</strong>';
 			$body .= "\n";

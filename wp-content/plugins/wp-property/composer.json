@@ -32,10 +32,7 @@
     "usabilitydynamics/wp-meta-box": "4.5.2.1",
     "usabilitydynamics/wp-meta-box-utilities": "1.0.2",
     "UsabilityDynamics/wp-gallery-metabox": "2.0.1",
-    "usabilitydynamics/wp-rets-client": "0.2.3",
-    "wp-property/wp-property-supermap": "4.0.4",
-    "wp-property/wp-property-agents": "2.0.6",
-    "wp-property/wp-property-terms": "dev-latest",
+    "usabilitydynamics/wp-tax-post-binding": "2.0.5",
     "freemius/wordpress-sdk": "^1.1.7",
     "ccampbell/chromephp": "^4.1"
   },
@@ -48,22 +45,33 @@
   },
   "archive": {
     "exclude": [
+      ".gitignore",
+      ".scrutinizer.yml",
       "alpha.php",
       "beta.php",
       "build.sh",
       "makefile",
       "node_modules",
-      ".gitignore",
       "test",
       "static/cache",
       "static/wiki",
       "circle.yml",
       "composer.lock",
       "gruntfile.js",
+      "vendor/libraries/usabilitydynamics/lib-ui/static/scripts/src",
+      "vendor/libraries/usabilitydynamics/lib-ui/static/scripts/editor",
+      "vendor/libraries/usabilitydynamics/lib-ui/static/styles/src",
+      "vendor/libraries/usabilitydynamics/lib-ui/static/test",
+      "vendor/libraries/usabilitydynamics/lib-ui/static/examples",
+      "vendor/libraries/usabilitydynamics/lib-ud-api-client/static/css/src",
+      "vendor/libraries/usabilitydynamics/lib-settings/test",
+      "vendor/libraries/usabilitydynamics/lib-utility/test",
+      "vendor/libraries/usabilitydynamics/lib-utility/scripts/src",
       "package.json"
     ]
   },
   "extra": {
+    "_build": {},
     "installer-paths": {
       "vendor/plugins/{$name}": [
         "type:wordpress-muplugin",
@@ -77,15 +85,11 @@
         "type:wordpress-library"
       ]
     },
-    "splashes": {
-      "install": "static/splashes/install.php",
-      "upgrade": "static/splashes/upgrade.php"
-    },
     "featureFlags": [
       {
-        "name": "Featured Flags",
-        "constant": "WP_PROPERTY_FLAG_WPP_FLAGS",
-        "description": "Property flags, for highlighting important information, stored in [wpp_flags]. Can be used to identify 'featured' properties.",
+        "name": "Listing Labels",
+        "constant": "WP_PROPERTY_FLAG_WPP_LISTING_LABEL",
+        "description": "Property flags, for highlighting important information, stored in [wpp_listing_label]. Can be used to identify 'featured' properties.",
         "since": "2.2.1",
         "enabled": true
       },
@@ -102,6 +106,13 @@
         "description": "Automated setup assistant.",
         "since": "2.2.1",
         "enabled": false
+      },
+      {
+        "name": "Responsive Slideshow",
+        "constant": "WP_PROPERTY_RESPONSIVE_SLIDESHOW",
+        "description": "Responsive slideshow feature, use [property_responsive_slideshow] shortcode.",
+        "since": "2.2.1",
+        "enabled": true
       },
       {
         "name": "Freemius",
@@ -125,16 +136,30 @@
         "enabled": false
       },
       {
+        "name": "Listing Permissions",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_PERMISSIONS",
+        "description": "Sets listing display permissions, stored in [wpp_listing_permissions].",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
         "name": "Standard Location Taxonomy",
-        "constant": "WPP_FEATURE_FLAG_WPP_LOCATION",
-        "description": "Standard property location taxonomy, stored in [wpp_location].",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION",
+        "description": "Standard property location taxonomy, stored in [wpp_listing_location].",
         "since": "2.2.1",
         "enabled": true
       },
       {
         "name": "Standard Property Type",
-        "constant": "WPP_FEATURE_FLAG_WPP_TYPE",
-        "description": "Standard property type taxonomy, stored in [wpp_type].",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_TYPE",
+        "description": "Standard property type taxonomy, stored in [wpp_listing_type].",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
+        "name": "Standard Property Status",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_STATUS",
+        "description": "Standard property status taxonomy [wpp_listing_status].",
         "since": "2.2.1",
         "enabled": true
       },
@@ -160,6 +185,27 @@
         "enabled": false
       },
       {
+        "name": "Enable Supermap Feature",
+        "constant": "WP_PROPERTY_FLAG_ENABLE_SUPERMAP",
+        "description": "Enable Supermap feature.",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
+        "name": "Enable Agents Feature",
+        "constant": "WP_PROPERTY_FLAG_ENABLE_AGENTS",
+        "description": "Enable Agent management.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "Enable Terms Feature",
+        "constant": "WP_PROPERTY_FLAG_ENABLE_TERMS",
+        "description": "Enable Terms management.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
         "name": "Enable Settings Search",
         "constant": "WP_PROPERTY_SETTINGS_SEARCH",
         "description": "Search settings.",
@@ -167,9 +213,30 @@
         "enabled": false
       },
       {
+        "name": "Standard Attributes Matching and Terms",
+        "constant": "WP_PROPERTY_FLAG_ENABLE_STANDARD_ATTRIBUTES_MATCHING",
+        "description": "Enable Standard Attributes Matching and Terms.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "Legacy Taxonomies",
+        "constant": "WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES",
+        "description": "Enable legacy [property_features] and [community_features] taxonomies. These have been replaced by [wpp_category].",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
         "name": "RETS Client Dashboard Widget",
         "constant": "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET",
         "description": "Dashboard widget for wp-rets-client, shows stats.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "Elasticsearch Service",
+        "constant": "WP_PROPERTY_ELASTICSEARCH_SERVICE",
+        "description": "Hosted Elasticsearch synchronization for listing data.",
         "since": "2.2.1",
         "enabled": false
       }
