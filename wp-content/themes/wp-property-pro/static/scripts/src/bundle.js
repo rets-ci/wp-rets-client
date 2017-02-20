@@ -60,24 +60,33 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _index = __webpack_require__(274);
+	var _reduxThunk = __webpack_require__(310);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+	var _SearchResult = __webpack_require__(274);
+
+	var _SearchResult2 = _interopRequireDefault(_SearchResult);
+
+	var _index = __webpack_require__(275);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _index3 = __webpack_require__(286);
+	var _index3 = __webpack_require__(287);
 
-	var _Home = __webpack_require__(287);
+	var _Home = __webpack_require__(288);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _HomeLayout = __webpack_require__(288);
+	var _HomeLayout = __webpack_require__(289);
 
 	var _HomeLayout2 = _interopRequireDefault(_HomeLayout);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// import App from './components/App.jsx';
-	var store = (0, _redux.createStore)(_index2.default);
+	var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default);
+
+	var store = (0, _redux.createStore)(_index2.default, middleware);
 
 	store.dispatch((0, _index3.initMenu)(bundle.menuItems));
 	store.dispatch((0, _index3.addPost)(bundle.post));
@@ -96,7 +105,8 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _HomeLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default })
-	    )
+	    ),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/search-result', component: _SearchResult2.default })
 	  )
 	), document.getElementById('root'));
 
@@ -29054,6 +29064,71 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {};
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {};
+	};
+
+	var SearchResult = function (_Component) {
+	  _inherits(SearchResult, _Component);
+
+	  function SearchResult(props) {
+	    _classCallCheck(this, SearchResult);
+
+	    var _this = _possibleConstructorReturn(this, (SearchResult.__proto__ || Object.getPrototypeOf(SearchResult)).call(this, props));
+
+	    console.log(props);
+	    _this.state = {};
+	    return _this;
+	  }
+
+	  _createClass(SearchResult, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Search Result'
+	      );
+	    }
+	  }]);
+
+	  return SearchResult;
+	}(_react.Component);
+
+	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchResult);
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
@@ -29061,43 +29136,47 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _post = __webpack_require__(275);
+	var _post = __webpack_require__(276);
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _menu = __webpack_require__(277);
+	var _menu = __webpack_require__(278);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
-	var _map = __webpack_require__(278);
+	var _map = __webpack_require__(279);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(279);
+	var _modal = __webpack_require__(280);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(280);
+	var _searchProps = __webpack_require__(281);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _mapProps = __webpack_require__(281);
+	var _mapProps = __webpack_require__(282);
 
 	var _mapProps2 = _interopRequireDefault(_mapProps);
 
-	var _mapMarkers = __webpack_require__(282);
+	var _mapMarkers = __webpack_require__(283);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _filterTerms = __webpack_require__(283);
+	var _searchType = __webpack_require__(311);
+
+	var _searchType2 = _interopRequireDefault(_searchType);
+
+	var _filterTerms = __webpack_require__(284);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(284);
+	var _userData = __webpack_require__(285);
 
 	var _userData2 = _interopRequireDefault(_userData);
 
-	var _testimonialsCarousel = __webpack_require__(285);
+	var _testimonialsCarousel = __webpack_require__(286);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -29109,6 +29188,7 @@
 	    mapState: _map2.default,
 	    modal: _modal2.default,
 	    searchPropsState: _searchProps2.default,
+	    searchType: _searchType2.default,
 	    mapPropsState: _mapProps2.default,
 	    mapMarkersState: _mapMarkers2.default,
 	    routing: _reactRouterRedux.routerReducer,
@@ -29120,7 +29200,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29129,7 +29209,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var post = function post() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29148,7 +29228,7 @@
 	exports.default = post;
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29167,6 +29247,7 @@
 	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
+	    SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
 	    SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
 
 	    THEME_PREFIX: 'wp-property-pro-',
@@ -29174,7 +29255,7 @@
 	};
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29183,7 +29264,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var menu = function menu() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29201,7 +29282,7 @@
 	exports.default = menu;
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29210,7 +29291,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var map = function map() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29232,7 +29313,7 @@
 	exports.default = map;
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29241,7 +29322,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var modal = function modal() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29260,7 +29341,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29269,7 +29350,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var searchProps = function searchProps() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29287,7 +29368,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29296,7 +29377,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var mapProps = function mapProps() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29314,7 +29395,7 @@
 	exports.default = mapProps;
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29323,7 +29404,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var mapMarkers = function mapMarkers() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29341,7 +29422,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29350,7 +29431,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var filterTerms = function filterTerms() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29368,7 +29449,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29377,7 +29458,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var userData = function userData() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29393,7 +29474,7 @@
 	exports.default = userData;
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29402,7 +29483,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var testimonialsCarousel = function testimonialsCarousel() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29420,7 +29501,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29428,9 +29509,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	var addPost = exports.addPost = function addPost(post) {
 	    return {
@@ -29481,6 +29562,13 @@
 	    };
 	};
 
+	var setSearchType = exports.setSearchType = function setSearchType(searchType) {
+	    return {
+	        type: _lib.Lib.SET_SEARCH_TYPE,
+	        searchType: searchType
+	    };
+	};
+
 	var setFilterTerms = exports.setFilterTerms = function setFilterTerms(filterTerms) {
 	    return {
 	        type: _lib.Lib.SET_FILTER_TERMS_ACTION,
@@ -29503,7 +29591,7 @@
 	};
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29557,7 +29645,7 @@
 	;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29572,31 +29660,31 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Header = __webpack_require__(289);
+	var _Header = __webpack_require__(290);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _UserPanel = __webpack_require__(292);
+	var _UserPanel = __webpack_require__(293);
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
-	var _Map = __webpack_require__(293);
+	var _Map = __webpack_require__(294);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
-	var _Modal = __webpack_require__(295);
+	var _Modal = __webpack_require__(296);
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
-	var _Masthead = __webpack_require__(296);
+	var _Masthead = __webpack_require__(297);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Testimonials = __webpack_require__(305);
+	var _Testimonials = __webpack_require__(306);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(307);
+	var _Subnavigation = __webpack_require__(308);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -29645,7 +29733,7 @@
 	;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29658,7 +29746,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Navigation = __webpack_require__(290);
+	var _Navigation = __webpack_require__(291);
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
@@ -29680,7 +29768,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29695,9 +29783,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(286);
+	var _index = __webpack_require__(287);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -29769,7 +29857,7 @@
 	exports.default = Navigation;
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -46860,7 +46948,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(203)(module)))
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46875,9 +46963,9 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(286);
+	var _index = __webpack_require__(287);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47138,7 +47226,7 @@
 	exports.default = UserPanel;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47155,13 +47243,13 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _index = __webpack_require__(286);
+	var _index = __webpack_require__(287);
 
-	var _Api = __webpack_require__(294);
+	var _Api = __webpack_require__(295);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47317,7 +47405,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map);
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47609,7 +47697,7 @@
 	exports.default = ApiObject;
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47620,9 +47708,9 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _index = __webpack_require__(286);
+	var _index = __webpack_require__(287);
 
-	var _Api = __webpack_require__(294);
+	var _Api = __webpack_require__(295);
 
 	var _Api2 = _interopRequireDefault(_Api);
 
@@ -47632,11 +47720,13 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _lodash = __webpack_require__(291);
+	var _reactRouter = __webpack_require__(216);
+
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47646,14 +47736,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var stateToProps = function stateToProps(state) {
+	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    open: state.modal ? state.modal.openModal : false,
-	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', [])
+	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
+	    searchType: _lodash2.default.get(state, 'searchType.searchType', '')
 	  };
 	};
 
-	var dispatchToProps = function dispatchToProps(dispatch, ownProps) {
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    closeModal: function closeModal() {
 	      dispatch((0, _index.openModal)(false));
@@ -47685,10 +47776,24 @@
 	  }
 
 	  _createClass(Modal, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (this.props.open) {
+	        this.searchInput.focus();
+	      }
+	    }
+	  }, {
 	    key: 'handleClose',
 	    value: function handleClose(eve) {
 	      eve.preventDefault();
 	      this.props.closeModal();
+	    }
+	  }, {
+	    key: 'handleResultClick',
+	    value: function handleResultClick(eve, tax, term, searchType) {
+	      eve.preventDefault();
+	      console.log('handleResultClick');
+	      _reactRouter.browserHistory.push('/search-result?term=' + term + '&tax=' + tax + '&searchType=' + searchType);
 	    }
 	  }, {
 	    key: 'handleSearchValueChange',
@@ -47700,8 +47805,13 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var searchResults = this.props.searchResults;
+	      var _this2 = this;
 
+	      var _props = this.props,
+	          searchResults = _props.searchResults,
+	          searchType = _props.searchType;
+
+	      var self = this;
 	      var resultsElements = searchResults.map(function (s, k) {
 	        return _react2.default.createElement(
 	          'div',
@@ -47728,7 +47838,9 @@
 	                { key: i },
 	                _react2.default.createElement(
 	                  'a',
-	                  { href: '#' },
+	                  { href: '#', onClick: function onClick(eve) {
+	                      return self.handleResultClick.bind(_this2)(eve, s.key, c.text, searchType);
+	                    } },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'container' },
@@ -47756,9 +47868,13 @@
 	            { className: 'container' },
 	            _react2.default.createElement('i', { className: 'fa fa-search' }),
 	            _react2.default.createElement('input', {
+	              autoComplete: 'off',
 	              className: 'form-control',
 	              id: _lib.Lib.THEME_PREFIX + "search-input",
 	              onChange: this.handleSearchValueChange.bind(this),
+	              ref: function ref(input) {
+	                _this2.searchInput = input;
+	              },
 	              type: 'text',
 	              value: this.state.searchValue
 	            }),
@@ -47783,10 +47899,10 @@
 
 	;
 
-	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Modal);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Modal);
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47801,15 +47917,15 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(297);
+	var _WidgetsUtil = __webpack_require__(298);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _SearchLayout = __webpack_require__(298);
+	var _SearchLayout = __webpack_require__(299);
 
 	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
 
-	var _TextLayout = __webpack_require__(304);
+	var _TextLayout = __webpack_require__(305);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -47860,7 +47976,7 @@
 	exports.default = Masthead;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47875,7 +47991,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47919,7 +48035,7 @@
 	exports.default = WidgetsUtil;
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47934,11 +48050,11 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _Search = __webpack_require__(299);
+	var _Search = __webpack_require__(300);
 
 	var _Search2 = _interopRequireDefault(_Search);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -47967,335 +48083,6 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 299 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _Api = __webpack_require__(294);
-
-	var _Api2 = _interopRequireDefault(_Api);
-
-	var _DropDownSearch = __webpack_require__(300);
-
-	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
-
-	var _SearchResultRow = __webpack_require__(302);
-
-	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
-
-	var _filterTerm = __webpack_require__(303);
-
-	var _filterTerm2 = _interopRequireDefault(_filterTerm);
-
-	var _index = __webpack_require__(286);
-
-	var _lib = __webpack_require__(276);
-
-	var _lodash = __webpack_require__(291);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var mapStateToProps = function mapStateToProps(state, history) {
-	    return {
-	        currentState: state,
-	        searchProps: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
-	        filterTerms: _lodash2.default.get(state, 'filterTermsState.filterTerms', []),
-	        history: history
-	    };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {
-	        openSearchModal: function openSearchModal(open) {
-	            dispatch((0, _index.openModal)(open));
-	        },
-
-	        searchHandler: function searchHandler(state, event) {
-	            var searchParams = {
-	                term: _lodash2.default.get(event, 'target.value', '')
-	            };
-	            _Api2.default.selectQuery(searchParams, function (rows) {
-	                dispatch((0, _index.setSearchProps)(rows));
-	            });
-	        },
-
-	        searchItemClick: function searchItemClick(tax, term, filterTerms) {
-	            var terms = filterTerms || [];
-	            terms.push({
-	                tax: tax,
-	                term: term
-	            });
-	            jQuery('#' + _lib.Lib.THEME_PREFIX + 'search-input').val('');
-	            dispatch((0, _index.setFilterTerms)(terms));
-	        },
-
-	        clearTermFilter: function clearTermFilter() {
-	            dispatch((0, _index.setFilterTerms)([]));
-	        },
-
-	        doSearch: function doSearch() {
-	            var tax = jQuery('.search-term').attr('data-tax');
-	            var term = jQuery('.search-term span').text();
-	            var searchTypeArray = _lodash2.default.split(jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val(), _lib.Lib.STRING_ARRAY_DELIMITER);
-	            var saleType = _lodash2.default.slice(searchTypeArray, 0, 1);
-	            var propertyTypes = _lodash2.default.slice(searchTypeArray, 1);
-
-	            var title = tax + ' - ' + term;
-	            var url = '/' + saleType + '/' + tax + '/' + term;
-
-	            history.pushState({}, title, url);
-	            jQuery('title').text(title);
-
-	            var params = {
-	                tax: tax,
-	                term: term,
-	                saleType: saleType,
-	                propertyTypes: propertyTypes
-	            };
-
-	            _Api2.default.search(params, function (response) {
-	                dispatch((0, _index.setMapProps)(response));
-	            });
-	        }
-	    };
-	};
-
-	var SearchContent = function SearchContent(_ref) {
-	    var currentState = _ref.currentState,
-	        searchHandler = _ref.searchHandler,
-	        searchProps = _ref.searchProps,
-	        filterTerms = _ref.filterTerms,
-	        searchItemClick = _ref.searchItemClick,
-	        doSearch = _ref.doSearch,
-	        clearTermFilter = _ref.clearTermFilter,
-	        options = _ref.options;
-
-
-	    var searchResults = [];
-	    var filterTermsList = [];
-
-	    if (filterTerms.length) {
-	        filterTermsList = filterTerms.map(function (item) {
-	            return _react2.default.createElement(_filterTerm2.default, { term: item.term, tax: item.tax, clearTermFilter: clearTermFilter });
-	        });
-	    } else {
-	        searchResults = searchProps.map(function (prop) {
-	            return _react2.default.createElement(_SearchResultRow2.default, { prop: prop, clickHandler: searchItemClick, filterTerms: filterTerms });
-	        });
-	    }
-
-	    var select_options_content = [];
-	    var select_options_array = [];
-
-	    var counter = 0;
-	    for (var key in options) {
-
-	        if (options[key] === false) continue;
-
-	        var option_array = _lodash2.default.split(key, _lib.Lib.STRING_ARRAY_DELIMITER);
-	        var label = _lodash2.default.slice(option_array, 0, 1);
-	        select_options_array.push(_lodash2.default.slice(option_array, 1).join(_lib.Lib.STRING_ARRAY_DELIMITER));
-	        select_options_content.push(_react2.default.createElement(
-	            'option',
-	            {
-	                value: _lodash2.default.slice(option_array, 1).join(_lib.Lib.STRING_ARRAY_DELIMITER), key: counter },
-	            label
-	        ));
-
-	        counter++;
-	    }
-
-	    var search_types = void 0;
-
-	    if (select_options_content.length > 1) search_types = _react2.default.createElement(
-	        'select',
-	        { id: _lib.Lib.THEME_PREFIX + "search_type" },
-	        select_options_content
-	    );else if (select_options_content.length === 1) search_types = _react2.default.createElement('input', { type: 'hidden', id: _lib.Lib.THEME_PREFIX + "search_type", value: select_options_array[0] });
-
-	    if (!search_types) return _react2.default.createElement('div', null);
-
-	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        search_types,
-	        _react2.default.createElement('input', { type: 'text', onKeyUp: searchHandler.bind(this, currentState),
-	            id: _lib.Lib.THEME_PREFIX + "search-input" }),
-	        _react2.default.createElement(
-	            'a',
-	            { href: 'javascript:;', onClick: doSearch },
-	            'Search'
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            { id: _lib.Lib.THEME_PREFIX + "filter-block" },
-	            filterTermsList
-	        ),
-	        _react2.default.createElement(
-	            'ul',
-	            { id: _lib.Lib.THEME_PREFIX + "search-result" },
-	            searchResults
-	        )
-	    );
-	};
-
-	var SearchContentOld = function (_Component) {
-	    _inherits(SearchContentOld, _Component);
-
-	    function SearchContentOld(props) {
-	        _classCallCheck(this, SearchContentOld);
-
-	        var _this = _possibleConstructorReturn(this, (SearchContentOld.__proto__ || Object.getPrototypeOf(SearchContentOld)).call(this, props));
-
-	        _this.state = {
-	            dropDownOpen: false,
-	            labels: [],
-	            searchType: ''
-	        };
-	        return _this;
-	    }
-
-	    _createClass(SearchContentOld, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var labels = Object.keys(this.props.options).map(function (o) {
-	                var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
-	                return labelsArr[0];
-	            });
-	            this.setState({
-	                labels: labels,
-	                searchType: labels.length ? labels[0] : ''
-	            });
-	        }
-	    }, {
-	        key: 'handleSearchDropDownChange',
-	        value: function handleSearchDropDownChange(open) {
-	            this.setState({ dropDownOpen: open });
-	        }
-	    }, {
-	        key: 'handleSearchDropDownOptionSelect',
-	        value: function handleSearchDropDownOptionSelect(option) {
-	            this.setState({
-	                searchType: option,
-	                dropDownOpen: false
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _props = this.props,
-	                openSearchModal = _props.openSearchModal,
-	                options = _props.options;
-	            // let filterTermsList = [];
-	            // let labels = [];
-	            // let select_options_content = [];
-	            // let select_options_array = [];
-	            // let searchResults = [];
-	            //
-	            // if (filterTerms.length) {
-	            //   filterTermsList = filterTerms.map((item) => {
-	            //     return (<FilterTerm term={item.term} tax={item.tax} clearTermFilter={clearTermFilter}/>)
-	            //   });
-	            // } else {
-	            //   searchResults = searchProps.map((prop, i) => {
-	            //     return (<SearchResultRow key={i} prop={prop} clickHandler={searchItemClick} filterTerms={filterTerms}/>)
-	            //   });
-	            // }
-	            // for (let key in options) {
-	            //     if (options[key] === false)
-	            //         continue;
-	            //     let option_array = _.split(key, Lib.STRING_ARRAY_DELIMITER);
-	            //     let label = _.slice(option_array, 0, 1);
-	            //     labels.push(label);
-	            //     select_options_array.push(_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER))
-	            //     select_options_content.push(<option
-	            //         key={key} value={_.slice(option_array, 1).join(Lib.STRING_ARRAY_DELIMITER)}>{label}</option>);
-	            // }
-
-	            // let search_types;
-	            //
-	            // if (select_options_content.length > 1) {
-	            //     search_types = (
-	            //         <select id={Lib.THEME_PREFIX + "search_type"}>
-	            //             {select_options_content}
-	            //         </select>
-	            //     );
-	            // } else if (select_options_content.length === 1) {
-	            //   search_types = (
-	            //     <input type="hidden" id={Lib.THEME_PREFIX + "search_type"} value={select_options_array[0]}/>
-	            //   );
-	            // }
-
-	            // if (!search_types) {
-	            //   return (
-	            //     <div></div>
-	            //   );
-	            // }
-
-	            var self = this;
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'search-box' },
-	                _react2.default.createElement(_DropDownSearch2.default, {
-	                    labels: this.state.labels,
-	                    open: this.state.dropDownOpen,
-	                    selectedOption: this.state.searchType,
-	                    handleChange: this.handleSearchDropDownChange.bind(this),
-	                    handleOptionSelect: this.handleSearchDropDownOptionSelect.bind(this)
-	                }),
-	                _react2.default.createElement(
-	                    'button',
-	                    { className: 'btn btn-search', onClick: function onClick() {
-	                            return self.props.openSearchModal(true);
-	                        }, type: 'button' },
-	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
-	                    ' Enter neighbohood, address, Zipcode'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return SearchContentOld;
-	}(_react.Component);
-
-	SearchContentOld.propTypes = {
-	    currentState: _react.PropTypes.object.isRequired,
-	    searchHandler: _react.PropTypes.func.isRequired,
-	    searchProps: _react.PropTypes.array,
-	    filterTerms: _react.PropTypes.array,
-	    searchItemClick: _react.PropTypes.func,
-	    doSearch: _react.PropTypes.func,
-	    clearTermFilter: _react.PropTypes.func,
-	    options: _react.PropTypes.object.isRequired
-	};
-	;
-
-	var Search = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchContentOld);
-
-	exports.default = Search;
-
-/***/ },
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -48311,7 +48098,217 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactOnclickoutside = __webpack_require__(301);
+	var _reactRedux = __webpack_require__(178);
+
+	var _Api = __webpack_require__(295);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _DropDownSearch = __webpack_require__(301);
+
+	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
+
+	var _SearchResultRow = __webpack_require__(303);
+
+	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
+
+	var _filterTerm = __webpack_require__(304);
+
+	var _filterTerm2 = _interopRequireDefault(_filterTerm);
+
+	var _index = __webpack_require__(287);
+
+	var _lib = __webpack_require__(277);
+
+	var _lodash = __webpack_require__(292);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state, history) {
+	  return {
+	    currentState: state,
+	    searchProps: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
+	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
+	    filterTerms: _lodash2.default.get(state, 'filterTermsState.filterTerms', []),
+	    history: history
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    openSearchModal: function openSearchModal(open) {
+	      dispatch((0, _index.openModal)(open));
+	    },
+
+	    searchHandler: function searchHandler(state, event) {
+	      var searchParams = {
+	        term: _lodash2.default.get(event, 'target.value', '')
+	      };
+	      _Api2.default.selectQuery(searchParams, function (rows) {
+	        dispatch((0, _index.setSearchProps)(rows));
+	      });
+	    },
+
+	    searchItemClick: function searchItemClick(tax, term, filterTerms) {
+	      var terms = filterTerms || [];
+	      terms.push({
+	        tax: tax,
+	        term: term
+	      });
+	      jQuery('#' + _lib.Lib.THEME_PREFIX + 'search-input').val('');
+	      dispatch((0, _index.setFilterTerms)(terms));
+	    },
+
+	    setSearchType: function setSearchType(searchType) {
+	      dispatch((0, _index.setSearchType)(searchType));
+	    },
+
+	    clearTermFilter: function clearTermFilter() {
+	      dispatch((0, _index.setFilterTerms)([]));
+	    },
+
+	    doSearch: function doSearch() {
+	      var tax = jQuery('.search-term').attr('data-tax');
+	      var term = jQuery('.search-term span').text();
+	      var searchTypeArray = _lodash2.default.split(jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val(), _lib.Lib.STRING_ARRAY_DELIMITER);
+	      var saleType = _lodash2.default.slice(searchTypeArray, 0, 1);
+	      var propertyTypes = _lodash2.default.slice(searchTypeArray, 1);
+
+	      var title = tax + ' - ' + term;
+	      var url = '/' + saleType + '/' + tax + '/' + term;
+
+	      history.pushState({}, title, url);
+	      jQuery('title').text(title);
+
+	      var params = {
+	        tax: tax,
+	        term: term,
+	        saleType: saleType,
+	        propertyTypes: propertyTypes
+	      };
+
+	      _Api2.default.search(params, function (response) {
+	        dispatch((0, _index.setMapProps)(response));
+	      });
+	    }
+	  };
+	};
+
+	var SearchContent = function (_Component) {
+	  _inherits(SearchContent, _Component);
+
+	  function SearchContent(props) {
+	    _classCallCheck(this, SearchContent);
+
+	    var _this = _possibleConstructorReturn(this, (SearchContent.__proto__ || Object.getPrototypeOf(SearchContent)).call(this, props));
+
+	    _this.state = {
+	      dropDownOpen: false,
+	      labels: []
+	    };
+	    return _this;
+	  }
+
+	  _createClass(SearchContent, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var labels = Object.keys(this.props.options).map(function (o) {
+	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
+	        return labelsArr[0];
+	      });
+	      this.setState({
+	        labels: labels
+	      });
+	      this.props.setSearchType(labels.length ? labels[0] : '');
+	    }
+	  }, {
+	    key: 'handleSearchDropDownChange',
+	    value: function handleSearchDropDownChange(open) {
+	      this.setState({ dropDownOpen: open });
+	    }
+	  }, {
+	    key: 'handleSearchDropDownOptionSelect',
+	    value: function handleSearchDropDownOptionSelect(option) {
+	      this.setState({
+	        dropDownOpen: false
+	      });
+	      this.props.setSearchType(option);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          openSearchModal = _props.openSearchModal,
+	          options = _props.options;
+
+	      var self = this;
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-box' },
+	        _react2.default.createElement(_DropDownSearch2.default, {
+	          labels: this.state.labels,
+	          open: this.state.dropDownOpen,
+	          selectedOption: this.props.searchType,
+	          handleChange: this.handleSearchDropDownChange.bind(this),
+	          handleOptionSelect: this.handleSearchDropDownOptionSelect.bind(this)
+	        }),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'btn btn-search', onClick: function onClick() {
+	              return self.props.openSearchModal(true);
+	            }, type: 'button' },
+	          _react2.default.createElement('i', { className: 'fa fa-search' }),
+	          ' Enter neighbohood, address, Zipcode'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SearchContent;
+	}(_react.Component);
+
+	SearchContent.propTypes = {
+	  currentState: _react.PropTypes.object.isRequired,
+	  searchHandler: _react.PropTypes.func.isRequired,
+	  searchProps: _react.PropTypes.array,
+	  filterTerms: _react.PropTypes.array,
+	  searchItemClick: _react.PropTypes.func,
+	  searchType: _react.PropTypes.string,
+	  doSearch: _react.PropTypes.func,
+	  clearTermFilter: _react.PropTypes.func,
+	  options: _react.PropTypes.object.isRequired
+	};
+	;
+
+	var Search = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchContent);
+
+	exports.default = Search;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactOnclickoutside = __webpack_require__(302);
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
@@ -48397,7 +48394,7 @@
 	exports.default = (0, _reactOnclickoutside2.default)(DropDownSearch);
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -48704,7 +48701,7 @@
 
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48719,7 +48716,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(276);
+	var _lib = __webpack_require__(277);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48789,7 +48786,7 @@
 	exports.default = SearchResultRowContent;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48849,7 +48846,7 @@
 	exports.default = filterTerm;
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48864,7 +48861,7 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -48892,7 +48889,7 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48907,17 +48904,17 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(297);
+	var _WidgetsUtil = __webpack_require__(298);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _DefaultLayout = __webpack_require__(306);
+	var _DefaultLayout = __webpack_require__(307);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
-	var _index = __webpack_require__(286);
+	var _index = __webpack_require__(287);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -49024,7 +49021,7 @@
 	exports.default = Testimonials;
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49039,7 +49036,7 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -49082,7 +49079,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49097,15 +49094,15 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _WidgetsUtil = __webpack_require__(297);
+	var _WidgetsUtil = __webpack_require__(298);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _lodash = __webpack_require__(291);
+	var _lodash = __webpack_require__(292);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _DefaultLayout = __webpack_require__(308);
+	var _DefaultLayout = __webpack_require__(309);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -49163,7 +49160,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49195,6 +49192,62 @@
 	};
 
 	exports.default = DefaultLayout;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch,
+	        getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(277);
+
+	var searchProps = function searchProps() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_SEARCH_TYPE:
+	            return Object.assign({}, state, {
+	                searchType: action.searchType
+	            });
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = searchProps;
 
 /***/ }
 /******/ ]);
