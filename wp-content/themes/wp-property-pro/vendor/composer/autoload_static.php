@@ -17,8 +17,7 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
     );
 
     public static $classMap = array (
-        'Property_Pro_Masthead_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/property_pro_masthead.php',
-        'SiteOrigin_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php',
+        'SiteOrigin_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-testimonials/base/property-pro-siteorigin-widget.class.php',
         'UsabilityDynamics\\API' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api.php',
         'UsabilityDynamics\\API\\Routes' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-routes.php',
         'UsabilityDynamics\\API\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-utility.php',
@@ -34,6 +33,11 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
         'UsabilityDynamics\\PropertyPro\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\PropertyPro\\Config' => __DIR__ . '/../..' . '/lib/classes/class-config.php',
         'UsabilityDynamics\\PropertyPro\\Customizer' => __DIR__ . '/../..' . '/lib/classes/class-customizer.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\ListingCarousel\\Property_Pro_Listing_Carousel_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-listing-carousel/property_pro_listing_carousel.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\Masthead\\Property_Pro_Masthead_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/property_pro_masthead.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\Subnavigation\\Property_Pro_Subnavigation_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-subnavigation/property_pro_subnavigation.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\Testimonials\\Property_Pro_Testimonials_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-testimonials/property_pro_testimonials.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\Tour\\Property_Pro_Tour_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-tour/property_pro_tour.php',
         'UsabilityDynamics\\Requires' => __DIR__ . '/..' . '/usabilitydynamics/lib-requires/lib/class-requires.php',
         'UsabilityDynamics\\Settings' => __DIR__ . '/..' . '/usabilitydynamics/lib-settings/lib/class-settings.php',
         'UsabilityDynamics\\Structure' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-structure.php',
