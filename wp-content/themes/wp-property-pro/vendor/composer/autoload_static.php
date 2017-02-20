@@ -17,7 +17,7 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
     );
 
     public static $classMap = array (
-        'SiteOrigin_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-testimonials/base/property-pro-siteorigin-widget.class.php',
+        'SiteOrigin_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-callout/base/property-pro-siteorigin-widget.class.php',
         'UsabilityDynamics\\API' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api.php',
         'UsabilityDynamics\\API\\Routes' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-routes.php',
         'UsabilityDynamics\\API\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-api/lib/class-api-utility.php',
@@ -33,6 +33,7 @@ class ComposerStaticInitd3aa6d80791543093ce78f0192117160
         'UsabilityDynamics\\PropertyPro\\Bootstrap' => __DIR__ . '/../..' . '/lib/classes/class-bootstrap.php',
         'UsabilityDynamics\\PropertyPro\\Config' => __DIR__ . '/../..' . '/lib/classes/class-config.php',
         'UsabilityDynamics\\PropertyPro\\Customizer' => __DIR__ . '/../..' . '/lib/classes/class-customizer.php',
+        'UsabilityDynamics\\PropertyPro\\Widget\\Callout\\Property_Pro_Callout_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-callout/property_pro_callout.php',
         'UsabilityDynamics\\PropertyPro\\Widget\\ListingCarousel\\Property_Pro_Listing_Carousel_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-listing-carousel/property_pro_listing_carousel.php',
         'UsabilityDynamics\\PropertyPro\\Widget\\Masthead\\Property_Pro_Masthead_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-masthead/property_pro_masthead.php',
         'UsabilityDynamics\\PropertyPro\\Widget\\Subnavigation\\Property_Pro_Subnavigation_Widget' => __DIR__ . '/../..' . '/lib/widgets/property-pro-subnavigation/property_pro_subnavigation.php',
