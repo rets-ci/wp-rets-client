@@ -7,7 +7,7 @@ Author URI:
 */
 
 
-namespace UsabilityDynamics\PropertyPro\PropertyProSubnavigation {
+namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
 
   if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-subnavigation/base/property-pro-siteorigin-widget.class.php';
 
@@ -77,5 +77,5 @@ namespace UsabilityDynamics\PropertyPro\PropertyProSubnavigation {
 
   }
 
-  siteorigin_widget_register('property-pro-subnavigation', __FILE__, 'UsabilityDynamics\PropertyPro\PropertyProSubnavigation\Property_Pro_Subnavigation_Widget');
+  siteorigin_widget_register('property-pro-subnavigation', __FILE__, 'UsabilityDynamics\PropertyPro\Widget\Subnavigation\Property_Pro_Subnavigation_Widget');
 }
