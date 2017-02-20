@@ -14,6 +14,165 @@ class WPP_F extends UsabilityDynamics\Utility
 {
 
   /**
+   * Insert Term.
+   *
+   * - If term exists, we update it. Otherwise its created.
+   * - All extra fields are inserted as term meta.
+   *
+   * @param $term_data
+   * @param $term_data._id - Unique ID, stored in term meta. Usually source ID. Native term_id used if not provided.
+   * @param $term_data._type - Taxonomy.
+   * @param $term_data._parent - ID of parent.
+   * @param $term_data.name - Print-friendly name of term.
+   * @param $term_data.slug - Optional, used for URL..
+   * @param $term_data.meta - Array, addedd to term_meta;
+   * @param $term_data.description - String. Default description of term.
+   * @param $term_data.post_meta - Array, added to post meta, extends relationship between term and post.
+   * @param $term_data.post_meta.description - Will overwrite term description for a post.
+   * @return array|WP_Error
+   */
+  static public function insert_term( $term_data ) {
+    global $wpdb;
+
+    $result = array(
+      '_id' => null,
+      '_type' => null,
+      'meta' => array(),
+      'errors' => array()
+    );
+
+    if( !isset( $term_data['_type'] )) {
+      return new WP_Error( 'missing-type' );
+    }
+    // try to find by [_id]
+    if( isset( $term_data['_id'] ) ) {
+      $_term_id = $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->termmeta as tm WHERE meta_key='%s' AND meta_value='%s';", array('_id', $term_data['_id'])));
+    }
+
+    // try to get by [name]
+    if( !$_term_id ) {
+      $_exists = term_exists( $term_data['name'], $term_data['_type'] );
+
+      if( $_exists ) {
+        $_term_id = $_exists['term_id'];
+      }
+    }
+
+    // Term not found, new term
+    if( !$_term_id ) {
+
+      $_term = wp_insert_term( $term_data['name'], $term_data['_type'], array(
+        'description'=> $term_data['description']
+      ));
+
+      $_term_id = $_term['term_id'];
+
+    }
+
+    // Could not create term.
+    if( !$_term_id ) {
+      return new WP_Error('unable-to-create-term', 'Can not create term.' );
+    }
+
+    $result['_id'] = $_term_id;
+    $result['_type'] = $term_data['_type'];
+    $result['name'] = $term_data['name'];
+    $result['slug'] = $term_data['slug'];
+
+    $term_data[ 'meta' ]['_id'] = $result[ '_id' ];
+
+    foreach( $term_data[ 'meta' ] as $_meta_key => $meta_value ) {
+      if( update_term_meta($_term_id, $_meta_key, $meta_value ) ) {}
+      $result['meta'][ $_meta_key ] = $meta_value;
+    }
+
+    return array_filter( $result );
+
+  }
+
+  /**
+   * Insert Multiple Terms
+   *
+   * @param $object_id
+   * @param $terms
+   * @return array
+   */
+  static public function insert_terms( $object_id, $terms ) {
+
+    $_terms = array();
+
+    $_results = array(
+      'post_id' => $object_id,
+      'set_terms' => array(),
+      'terms' => array(),
+      'meta_override' => array(),
+      'errors' => array()
+    );
+
+    foreach( $terms as $_index => $_term ) {
+
+      $_terms[ $_index ] = self::insert_term( $_term );
+
+      if( is_wp_error( $_terms[ $_index ] ) ) {
+        $_results['errors'][] = $_terms[ $_index ];
+        unset( $_terms[ $_index ] );
+        continue;
+      }
+
+      if( !is_wp_error( $_terms[ $_index ] ) ) {
+        $_results['set_terms'] = array_merge( $_results['set_terms'], wp_set_object_terms( $object_id, $_terms[ $_index ]['slug'], $_terms[ $_index ]['_type'], true ) );
+
+        if( isset( $_term['post_meta'] ) ) {
+          $_results['meta_override'][] = update_post_meta( $object_id, '_wpp_term_meta_override', $_term['post_meta'] );
+        }
+
+      } else {
+        $_results[ 'errors' ][] = $_terms[ $_index ];
+      }
+
+    }
+
+    $_results[ 'terms' ] = $_terms;
+
+    return $_results;
+
+  }
+
+
+  /**
+   * Registers a system taxonomy if needed with most essential arguments.
+   *
+   * @since 2.2.1
+   * @author potanin@UD
+   * @param string $taxonomy
+   * @return string
+   */
+  static public function verify_have_system_taxonomy($taxonomy = '')
+  {
+
+    if (taxonomy_exists($taxonomy)) {
+      return $taxonomy;
+    }
+
+    register_taxonomy($taxonomy, array( 'property' ), array(
+      'hierarchical' => true,
+      // 'update_count_callback' => null,
+      'labels' => array(),
+      'show_ui' => false,
+      'show_in_menu' => false,
+      'show_admin_column' => false,
+      'meta_box_cb' => false,
+      'query_var' => false,
+      'rewrite' => false
+    ));
+
+    if (taxonomy_exists($taxonomy)) {
+      return $taxonomy;
+    }
+
+  }
+
+  /**
    * Get Field Aliases
    *
    *
@@ -181,38 +340,6 @@ class WPP_F extends UsabilityDynamics\Utility
 
     $taxonomies = array();
 
-    // Add [wpp_listing_location] taxonomy.
-    if (defined('WPP_FEATURE_FLAG_WPP_LISTING_LOCATION') && WPP_FEATURE_FLAG_WPP_LISTING_LOCATION) {
-      $taxonomies['wpp_listing_location'] = array(
-        'default' => true,
-        'readonly' => true,
-        'hidden' => true,
-        'hierarchical' => true,
-        'public' => true,
-        'show_in_nav_menus' => true,
-        'show_ui' => false,
-        'show_tagcloud' => false,
-        'add_native_mtbox' => false,
-        'label' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
-        'labels' => array(
-          'name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
-          'singular_name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
-          'search_items' => _x('Search %s Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'all_items' => _x('All Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'parent_item' => _x('Parent Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'parent_item_colon' => _x('Parent Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'edit_item' => _x('Edit Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'update_item' => _x('Update Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'add_new_item' => _x('Add New Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'new_item_name' => _x('New Location', 'property location taxonomy', ud_get_wp_property()->domain),
-          'not_found' => _x('No location found', 'property location taxonomy', ud_get_wp_property()->domain),
-          'menu_name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
-        ),
-        'query_var' => 'location',
-        'rewrite' => array('slug' => 'location')
-      );
-    }
-
     // Add [property_features] and [community_features] taxonomies.
     if( defined( 'WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES') && WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES ) {
 
@@ -274,7 +401,45 @@ class WPP_F extends UsabilityDynamics\Utility
 
   }
 
+  /**
+   * Standard Taxonomies that can not be modified with Terms editor.
+   *
+   * @param array $taxonomies
+   * @return array
+   */
   static public function wpp_standard_taxonomies( $taxonomies = array() ) {
+
+    // Add [wpp_listing_location] taxonomy.
+    if (defined('WPP_FEATURE_FLAG_WPP_LISTING_LOCATION') && WPP_FEATURE_FLAG_WPP_LISTING_LOCATION) {
+      $taxonomies['wpp_listing_location'] = array(
+        'default' => true,
+        'readonly' => true,
+        'hidden' => true,
+        'hierarchical' => true,
+        'public' => true,
+        'show_in_nav_menus' => true,
+        'show_ui' => false,
+        'show_tagcloud' => false,
+        'add_native_mtbox' => false,
+        'label' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
+        'labels' => array(
+          'name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
+          'singular_name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
+          'search_items' => _x('Search %s Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'all_items' => _x('All Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'parent_item' => _x('Parent Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'parent_item_colon' => _x('Parent Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'edit_item' => _x('Edit Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'update_item' => _x('Update Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'add_new_item' => _x('Add New Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'new_item_name' => _x('New Location', 'property location taxonomy', ud_get_wp_property()->domain),
+          'not_found' => _x('No location found', 'property location taxonomy', ud_get_wp_property()->domain),
+          'menu_name' => sprintf(_x('%s Location', 'property location taxonomy', ud_get_wp_property()->domain), WPP_F::property_label()),
+        ),
+        'query_var' => 'location',
+        'rewrite' => array('slug' => 'location')
+      );
+    }
 
     // Add [wpp_listing_type] taxonomy.
     if (defined('WPP_FEATURE_FLAG_WPP_LISTING_TYPE') && WPP_FEATURE_FLAG_WPP_LISTING_TYPE ) {
@@ -409,8 +574,8 @@ class WPP_F extends UsabilityDynamics\Utility
     }
 
     // Generic [wpp_category] taxonomy for multiple terms.
-    if (defined('WPP_FEATURE_FLAG_WPP_CATEGORY') && WPP_FEATURE_FLAG_WPP_CATEGORY) {
-      $taxonomies['wpp_category'] = array(
+    if (defined('WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY') && WPP_FEATURE_FLAG_WPP_CATEGORY) {
+      $taxonomies['wpp_listing_category'] = array(
         'default' => true,
         'readonly' => true,
         'hidden' => true,
@@ -458,8 +623,8 @@ class WPP_F extends UsabilityDynamics\Utility
     // @note legacy taxonomies. (perhaps disable for new installers, but make available via some option)
     add_filter('wpp_taxonomies', array('WPP_F', 'wpp_commom_taxonomies'), 4 );
 
-    // New standard taxonomies.
-    add_filter('wpp_taxonomies', array('WPP_F', 'wpp_standard_taxonomies'), 10 );
+    // New standard taxonomies. Ran late, to force after Terms_Bootstrap::define_taxonomies
+    add_filter('wpp_taxonomies', array('WPP_F', 'wpp_standard_taxonomies'), 50 );
 
     // Setup taxonomies
     $wp_properties['taxonomies'] = apply_filters('wpp_taxonomies', array());
@@ -1511,7 +1676,7 @@ class WPP_F extends UsabilityDynamics\Utility
   {
     global $wpdb, $wp_properties;
 
-    if ($wp_properties['configuration']['auto_delete_attachments'] != 'true') {
+    if ( isset( $wp_properties['configuration']['auto_delete_attachments'] ) && $wp_properties['configuration']['auto_delete_attachments'] != 'true') {
       return;
     }
 
@@ -2020,39 +2185,6 @@ class WPP_F extends UsabilityDynamics\Utility
     }
 
     return $return;
-  }
-
-  /**
-   * Registers a system taxonomy if needed with most essential arguments.
-   *
-   * @since 2.2.1
-   * @author potanin@UD
-   * @param string $taxonomy
-   * @return string
-   */
-  static public function verify_have_system_taxonomy($taxonomy = '')
-  {
-
-    if (taxonomy_exists($taxonomy)) {
-      return $taxonomy;
-    }
-
-    register_taxonomy($taxonomy, array( 'property' ), array(
-      'hierarchical' => true,
-      // 'update_count_callback' => null,
-      'labels' => array(),
-      'show_ui' => false,
-      'show_in_menu' => false,
-      'show_admin_column' => false,
-      'meta_box_cb' => false,
-      'query_var' => false,
-      'rewrite' => false
-    ));
-
-    if (taxonomy_exists($taxonomy)) {
-      return $taxonomy;
-    }
-
   }
 
   /**
@@ -4472,7 +4604,7 @@ class WPP_F extends UsabilityDynamics\Utility
 
             $attributes = array();
 
-            $labels_to_keys = array_flip($wp_properties['property_stats']);
+            $labels_to_keys = array_flip( (array) $wp_properties['property_stats']);
 
             if (is_array($property_stats)) {
               foreach ($property_stats as $attribute_label => $value) {

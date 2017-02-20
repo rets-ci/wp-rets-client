@@ -90,6 +90,15 @@ namespace UsabilityDynamics\WPP {
 
         $_modified_settings = WPP_F::extend( $_current_settings, $_setup['schema'] );
 
+        if( is_array( $_modified_settings['property_stats_groups'] ) ) {
+          // $_modified_settings['property_stats_groups'] = array_unique( $_modified_settings['property_stats_groups'] );
+        }
+
+        // @note This kills c.rabbit.ci response via Varnish, perhaps some sort of log output somewhere.
+        if( is_array( $_modified_settings['searchable_attributes'] ) ) {
+          // $_modified_settings[ 'searchable_attributes' ] = array_unique( $_modified_settings[ 'searchable_attributes' ] );
+        }
+
         $_modified_settings['_updated'] = time();
 
         update_option( 'wpp_settings', $_modified_settings );
@@ -233,7 +242,7 @@ namespace UsabilityDynamics\WPP {
 
         $_schema = json_decode( wp_remote_retrieve_body( wp_remote_get( WPP_API_URL_STANDARDS . '/schema' ) ), true );
 
-        return $_schema['data'];
+        return isset( $_schema['data'] ) ? $_schema['data'] : array();
 
       }
 
