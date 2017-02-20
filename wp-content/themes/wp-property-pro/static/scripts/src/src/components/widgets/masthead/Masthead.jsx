@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import WidgetsUtil from '../WidgetsUtil.jsx'
 import SearchLayout from './layouts/SearchLayout.jsx'
 import TextLayout from './layouts/TextLayout.jsx'
+import Modal from './components/Modal.jsx'
 
 const mapStateToProps = (state) => {
     return {
@@ -25,18 +26,21 @@ const MastheadContent = ({rows}) => {
 
 
     let container;
+    let modal;
     switch (widget_cell.widget.fields.layout) {
         case 'text_layout':
             container = <TextLayout widget_cell={widget_cell} />;
             break;
         case 'search_layout':
         default:
+            modal = <Modal />;
             container = <SearchLayout widget_cell={widget_cell} />;
             break;
     }
 
     return (
         <div className="masthead" style={headerStyle}>
+            {modal}
             <div className="intro-wrap">
                 {container}
             </div>

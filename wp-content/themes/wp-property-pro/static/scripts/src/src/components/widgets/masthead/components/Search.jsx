@@ -24,27 +24,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(openModal(open));
         },
 
-        searchHandler: (state, event) => {
-            let searchParams = {
-              term: _.get(event, 'target.value', '')
-            };
-            Api.selectQuery(searchParams,
-              function (rows) {
-                  dispatch(setSearchProps(rows));
-              }
-            );
-        },
-
-        searchItemClick: (tax, term, filterTerms) => {
-          let terms = filterTerms || [];
-          terms.push({
-              tax: tax,
-              term: term
-          });
-          jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
-          dispatch(setFilterTerms(terms));
-        },
-
         setSearchType: (searchType) => {
           dispatch(setSearchType(searchType));
         },
@@ -90,10 +69,8 @@ class SearchContent extends Component {
   }
   static propTypes = {
     currentState: PropTypes.object.isRequired,
-    searchHandler: PropTypes.func.isRequired,
     searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
-    searchItemClick: PropTypes.func,
     searchType: PropTypes.string,
     doSearch: PropTypes.func,
     clearTermFilter: PropTypes.func,
