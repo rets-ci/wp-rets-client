@@ -6,7 +6,7 @@ Author: fq.jony@UD
 Author URI:
 */
 
-namespace UsabilityDynamics\PropertyPro\PropertyProTestimonials {
+namespace UsabilityDynamics\PropertyPro\Widget\Testimonials {
 
   if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-testimonials/base/property-pro-siteorigin-widget.class.php';
 
@@ -71,7 +71,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProTestimonials {
             'image' => [
               'type' => 'media',
               'label' => __('Image', 'wp-property-pro'),
-              'description' => __('Set backgound image file.', 'wp-property-pro'),
+              'description' => __('Set background image file.', 'wp-property-pro'),
             ],
           ]
 
@@ -107,5 +107,5 @@ namespace UsabilityDynamics\PropertyPro\PropertyProTestimonials {
 
   }
 
-  siteorigin_widget_register('property-pro-testimonials', __FILE__, 'UsabilityDynamics\PropertyPro\PropertyProTestimonials\Property_Pro_Testimonials_Widget');
+  siteorigin_widget_register('property-pro-testimonials', __FILE__, 'UsabilityDynamics\PropertyPro\Widget\Testimonials\Property_Pro_Testimonials_Widget');
 }

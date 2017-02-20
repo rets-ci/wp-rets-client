@@ -6,7 +6,7 @@ Author: fq.jony@UD
 Author URI:
 */
 
-namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
+namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
 
   if (!class_exists('SiteOrigin_Widget')) include_once get_stylesheet_directory() . '/lib/widgets/property-pro-masthead/base/property-pro-siteorigin-widget.class.php';
 
@@ -104,7 +104,7 @@ namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
         'image' => [
           'type' => 'media',
           'label' => __('Image', 'wp-property-pro'),
-          'description' => __('Set backgound image file.', 'wp-property-pro'),
+          'description' => __('Set background image file.', 'wp-property-pro'),
         ],
 
         'search_options' => [
@@ -123,6 +123,6 @@ namespace UsabilityDynamics\PropertyPro\PropertyProMasthead {
 
   }
 
-  siteorigin_widget_register('property-pro-masthead', __FILE__, 'UsabilityDynamics\PropertyPro\PropertyProMasthead\Property_Pro_Masthead_Widget');
+  siteorigin_widget_register('property-pro-masthead', __FILE__, 'UsabilityDynamics\PropertyPro\Widget\Masthead\Property_Pro_Masthead_Widget');
 
 }

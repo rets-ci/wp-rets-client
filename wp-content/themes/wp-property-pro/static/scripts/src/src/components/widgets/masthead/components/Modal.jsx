@@ -1,10 +1,10 @@
-import { openModal, setSearchProps } from '../actions/index.jsx';
-import Api from '../containers/Api.jsx';
+import { openModal, setSearchProps } from '../../../../actions/index.jsx';
+import Api from '../../../../containers/Api.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import _ from 'lodash'
-import {Lib} from '../lib.jsx'
+import {Lib} from '../../../../lib.jsx'
 
 const mapStateToProps = (state) => {
   return {

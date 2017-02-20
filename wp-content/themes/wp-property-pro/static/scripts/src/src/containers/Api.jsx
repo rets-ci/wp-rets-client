@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux';
+import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {}
@@ -140,6 +141,12 @@ class Api extends React.Component {
     }
 
     static suggest(params, callback) {
+
+        let text = _.get(params, 'text', '').replace(/\s+/g, '');
+
+        if(!text)
+            return;
+
         /**
          * @type {$.es.Client|*}
          */
@@ -154,7 +161,7 @@ class Api extends React.Component {
             size: 0,
             body: {
                 "regular": {
-                    "text": params.term.toLowerCase().replace(/\s+/g, ''),
+                    "text": text.toLowerCase(),
                     "completion": {"field": "_search._suggest"}
                 }
             }

@@ -2,9 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import SearchResultRow from './SearchResultRow.jsx';
-import FilterTerm from './filterTerm.jsx';
-import {openModal, setSearchProps, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -22,27 +20,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         openSearchModal: open => {
           dispatch(openModal(open));
-        },
-
-        searchHandler: (state, event) => {
-            let searchParams = {
-              term: _.get(event, 'target.value', '')
-            };
-            Api.selectQuery(searchParams,
-              function (rows) {
-                  dispatch(setSearchProps(rows));
-              }
-            );
-        },
-
-        searchItemClick: (tax, term, filterTerms) => {
-          let terms = filterTerms || [];
-          terms.push({
-              tax: tax,
-              term: term
-          });
-          jQuery('#' + Lib.THEME_PREFIX + 'search-input').val('');
-          dispatch(setFilterTerms(terms));
         },
 
         setSearchType: (searchType) => {
@@ -90,10 +67,8 @@ class SearchContent extends Component {
   }
   static propTypes = {
     currentState: PropTypes.object.isRequired,
-    searchHandler: PropTypes.func.isRequired,
     searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
-    searchItemClick: PropTypes.func,
     searchType: PropTypes.string,
     doSearch: PropTypes.func,
     clearTermFilter: PropTypes.func,
@@ -127,7 +102,7 @@ class SearchContent extends Component {
       openSearchModal,
       options
     } = this.props;
-    var self = this;
+    let self = this;
     return (
       <div className="search-box">
         <DropDownSearch
@@ -143,7 +118,7 @@ class SearchContent extends Component {
       </div>
     );
   }
-};
+}
 
 const Search = connect(
     mapStateToProps,

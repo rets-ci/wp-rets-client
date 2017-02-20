@@ -46,6 +46,10 @@
   cursor: pointer
 }
 
+.masthead{
+    background-size: cover !important;
+}
+
 
 /*
 Red Door Company Styles

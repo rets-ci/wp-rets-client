@@ -156,7 +156,7 @@ namespace UsabilityDynamics {
           $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
 
         $fields = [];
-        foreach ($widget as $key => $field) {
+        foreach ($widget as $k => $field) {
 
           if (is_array($field)) {
 
@@ -165,21 +165,21 @@ namespace UsabilityDynamics {
               unset($field['so_field_container_state']);
 
             foreach ($field as $item_key => $item)
-              if (array_key_exists('image', $item))
+              if (is_array($item) && array_key_exists('image', $item))
                 $field[$item_key]['image_src'] = $item['image'] ? wp_get_attachment_image_src($item['image'], 'full')[0] : '';
           }
 
           /** Siteorigin system fields no need in fields array */
-          if (in_array($key, ['_sow_form_id', 'panels_info']))
+          if (in_array($k, ['_sow_form_id', 'panels_info']))
             continue;
 
-          $fields[$key] = $field;
+          $fields[$k] = $field;
         }
 
         $widget['fields'] = $fields;
 
         $rows[$widget['panels_info']['grid']]['cells'][] = [
-          'weight' => $content['grid_cells'][$key]['weight'],
+          'weight' => isset($content['grid_cells'][$key]) ? $content['grid_cells'][$key]['weight'] : 0,
           'widget' => $widget
         ];
 
