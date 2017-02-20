@@ -316,13 +316,13 @@ if ( !function_exists( 'prepare_property_for_display' ) ):
             Replace address with generated taxonomy links.
             depend on add_display_address();
           */
-          if(defined( 'WPP_FEATURE_FLAG_WPP_LOCATION' )){
+          if(defined( 'WPP_FEATURE_FLAG_WPP_LISTING_LOCATION' )){
             $address_format = $wp_properties[ 'configuration' ][ 'display_address_format' ];
             preg_match_all('/\[(.*?)\]/', $address_format, $matches);
             if(isset($matches[1]) && is_array($matches[1])){
               foreach ($matches[1] as $value) {
                 $term_link = !empty($property[$value]) ? $property[$value] : "";
-                if($term_link && $term = get_term_by('name', $property[$value], 'wpp_location')){
+                if($term_link && $term = get_term_by('name', $property[$value], 'wpp_listing_location')){
                   $term_link = "<a href='" . get_term_link($term->term_id) . "'>{$term->name}</a>";
                 }
                 $address_format = str_replace("[$value]", $term_link, $address_format);
@@ -702,6 +702,15 @@ if ( !function_exists( 'draw_stats' ) ):
 
         $value .= "</ul>";
 
+      }
+
+      if($tag == "property_type" || $tag == "wpp_listing_type"){
+        $terms = wp_get_post_terms( $property->ID, "wpp_listing_type" );
+        if( count( $terms )) {
+          foreach( $terms as $key => $term ) {
+            $value = "<a href='" . get_term_link( $term->term_id, "wpp_listing_type" ) . "'>{$term->name}</a>";
+          }
+        }
       }
 
       //** Single "true" is converted to 1 by get_properties() we check 1 as well, as long as it isn't a numeric attribute */
