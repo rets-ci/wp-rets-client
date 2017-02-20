@@ -2,9 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import SearchResultRow from './SearchResultRow.jsx';
-import FilterTerm from './filterTerm.jsx';
-import {openModal, setSearchProps, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -104,7 +102,7 @@ class SearchContent extends Component {
       openSearchModal,
       options
     } = this.props;
-    var self = this;
+    let self = this;
     return (
       <div className="search-box">
         <DropDownSearch
@@ -120,7 +118,7 @@ class SearchContent extends Component {
       </div>
     );
   }
-};
+}
 
 const Search = connect(
     mapStateToProps,

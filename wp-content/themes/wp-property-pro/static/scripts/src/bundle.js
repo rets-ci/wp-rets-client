@@ -29733,11 +29733,11 @@
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Testimonials = __webpack_require__(308);
+	var _Testimonials = __webpack_require__(306);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _Subnavigation = __webpack_require__(310);
+	var _Subnavigation = __webpack_require__(308);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
@@ -47474,6 +47474,10 @@
 
 	var _reactRedux = __webpack_require__(178);
 
+	var _lodash = __webpack_require__(294);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47626,6 +47630,11 @@
 	    }, {
 	        key: 'suggest',
 	        value: function suggest(params, callback) {
+
+	            var text = _lodash2.default.get(params, 'text', '').replace(/\s+/g, '');
+
+	            if (!text) return;
+
 	            /**
 	             * @type {$.es.Client|*}
 	             */
@@ -47640,7 +47649,7 @@
 	                size: 0,
 	                body: {
 	                    "regular": {
-	                        "text": params.term.toLowerCase().replace(/\s+/g, ''),
+	                        "text": text.toLowerCase(),
 	                        "completion": { "field": "_search._suggest" }
 	                    }
 	                }
@@ -47772,11 +47781,11 @@
 
 	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
 
-	var _TextLayout = __webpack_require__(306);
+	var _TextLayout = __webpack_require__(304);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
-	var _Modal = __webpack_require__(307);
+	var _Modal = __webpack_require__(305);
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -47962,14 +47971,6 @@
 
 	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
 
-	var _SearchResultRow = __webpack_require__(304);
-
-	var _SearchResultRow2 = _interopRequireDefault(_SearchResultRow);
-
-	var _filterTerm = __webpack_require__(305);
-
-	var _filterTerm2 = _interopRequireDefault(_filterTerm);
-
 	var _index = __webpack_require__(289);
 
 	var _lib = __webpack_require__(278);
@@ -48119,7 +48120,7 @@
 	  clearTermFilter: _react.PropTypes.func,
 	  options: _react.PropTypes.object.isRequired
 	};
-	;
+
 
 	var Search = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchContent);
 
@@ -48540,151 +48541,6 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _lib = __webpack_require__(278);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SearchResultRowContent = function (_Component) {
-	  _inherits(SearchResultRowContent, _Component);
-
-	  function SearchResultRowContent() {
-	    _classCallCheck(this, SearchResultRowContent);
-
-	    return _possibleConstructorReturn(this, (SearchResultRowContent.__proto__ || Object.getPrototypeOf(SearchResultRowContent)).apply(this, arguments));
-	  }
-
-	  _createClass(SearchResultRowContent, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var taxTitle = this.props.prop.text;
-	      var children = this.props.prop.children.map(function (child) {
-	        var type = jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val();
-	        var id = child.id;
-	        var tax = _this2.props.prop.key;
-	        var term = child.text;
-	        var url = [type, tax, id.toLowerCase().replace(/\s+/g, '')].join('/');
-	        return _react2.default.createElement(
-	          'li',
-	          null,
-	          _react2.default.createElement(
-	            'a',
-	            { href: url, onClick: function (event) {
-	                this.props.clickHandler(tax, term, this.props.filterTerms);
-	                event.preventDefault();
-	                event.stopPropagation();
-	              }.bind(_this2)
-	            },
-	            id
-	          )
-	        );
-	      });
-	      return _react2.default.createElement(
-	        'li',
-	        null,
-	        taxTitle,
-	        _react2.default.createElement(
-	          'ul',
-	          null,
-	          children
-	        )
-	      );
-	    }
-	  }]);
-
-	  return SearchResultRowContent;
-	}(_react.Component);
-
-	SearchResultRowContent.propTypes = {
-	  prop: _react.PropTypes.object.isRequired,
-	  clickHandler: _react.PropTypes.func.isRequired,
-	  filterTerms: _react.PropTypes.array
-	};
-	exports.default = SearchResultRowContent;
-
-/***/ },
-/* 305 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        currentState: state
-	    };
-	};
-
-	var filterTermContent = function filterTermContent(_ref) {
-	    var term = _ref.term,
-	        tax = _ref.tax,
-	        clearTermFilter = _ref.clearTermFilter;
-
-
-	    if (!term) return _react2.default.createElement('div', null);
-
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'search-term', 'data-tax': tax },
-	        _react2.default.createElement(
-	            'b',
-	            null,
-	            tax
-	        ),
-	        ' - ',
-	        _react2.default.createElement(
-	            'span',
-	            null,
-	            term
-	        ),
-	        ' ',
-	        _react2.default.createElement(
-	            'a',
-	            {
-	                href: 'javascript:', onClick: clearTermFilter },
-	            'X'
-	        )
-	    );
-	};
-
-	var filterTerm = (0, _reactRedux.connect)(mapStateToProps)(filterTermContent);
-
-	exports.default = filterTerm;
-
-/***/ },
-/* 306 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
@@ -48722,7 +48578,7 @@
 	exports.default = SearchLayout;
 
 /***/ },
-/* 307 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48927,7 +48783,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Modal);
 
 /***/ },
-/* 308 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48946,7 +48802,7 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _DefaultLayout = __webpack_require__(309);
+	var _DefaultLayout = __webpack_require__(307);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -49059,7 +48915,7 @@
 	exports.default = Testimonials;
 
 /***/ },
-/* 309 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49117,7 +48973,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 310 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49140,7 +48996,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _DefaultLayout = __webpack_require__(311);
+	var _DefaultLayout = __webpack_require__(309);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -49198,7 +49054,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 311 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
