@@ -130,6 +130,35 @@ namespace UsabilityDynamics {
         'custom_content' => false
       ];
 
+      if (is_front_page()) {
+
+        /** Get footer menus */
+        $footer_structure = [
+          'top_footer' => [
+            get_theme_mod('property_pro_footer_top_menu_one'),
+            get_theme_mod('property_pro_footer_top_menu_two'),
+            get_theme_mod('property_pro_footer_top_menu_three'),
+            get_theme_mod('property_pro_footer_top_menu_four')
+          ],
+          'bottom_footer' => [
+            'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
+            'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
+          ]
+        ];
+
+        foreach ($footer_structure as $level_title=>$level)
+          foreach ($level as $key=>$menu_id){
+            $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+            $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
+              return [
+                'ID' => $item->ID,
+                'title' => $item->title,
+                'url' => $item->url
+              ];
+            }, wp_get_nav_menu_items($menu_id));
+          }
+      }
+
       // Builder content case
       if ($post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
@@ -155,6 +184,10 @@ namespace UsabilityDynamics {
         if (isset($widget['menu_select']))
           $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
 
+        /** Remove namespace from class name */
+        if(isset($widget['panels_info']['class']))
+          $widget['panels_info']['class'] = end(explode('\\', $widget['panels_info']['class']));
+
         $fields = [];
         foreach ($widget as $k => $field) {
 
@@ -172,6 +205,15 @@ namespace UsabilityDynamics {
           /** Siteorigin system fields no need in fields array */
           if (in_array($k, ['_sow_form_id', 'panels_info']))
             continue;
+
+          /** @TODO hack for array keys, because get_post_meta return keys without underscores */
+          if($k == 'search_options' && is_array($field)){
+            $new_field = [];
+            foreach ($field as $field_key=>$value)
+              $new_field[str_replace(' ', '_', $field_key)] = $value;
+
+            $field = $new_field;
+          }
 
           $fields[$k] = $field;
         }

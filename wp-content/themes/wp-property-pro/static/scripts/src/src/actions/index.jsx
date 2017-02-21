@@ -49,10 +49,12 @@ export const setMapMarkers = (mapMarkers) => {
     }
 };
 
-export const setSearchType = searchType => {
+export const setSearchType = searchObject => {
   return {
     type: Lib.SET_SEARCH_TYPE,
-    searchType: searchType
+    searchType: searchObject.searchType,
+    saleType: searchObject.saleType,
+    propertyTypes: searchObject.propertyTypes
   }
 };
 

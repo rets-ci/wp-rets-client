@@ -55,6 +55,10 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         return in_array($type, ['Land', 'Commercial']);
       });
 
+      /** Get properties keys for option key */
+      $general_property_types = array_keys($general_property_types);
+      $excluded_property_types = array_keys($excluded_property_types);
+
       $search_options = [];
       $delimiter = '-';
       foreach ([
@@ -71,7 +75,6 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
           $key = $excluded_property_types[strtolower($label)];
           $sale_type = 'Sale';
         }
-
 
         $search_options[$label . $delimiter . $sale_type . $delimiter . strtolower($key)] = [
           'type' => 'checkbox',

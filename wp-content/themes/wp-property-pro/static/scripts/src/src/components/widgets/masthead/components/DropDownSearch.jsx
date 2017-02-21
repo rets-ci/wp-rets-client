@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import onClickOutside from 'react-onclickoutside';
+import {Lib} from '../../../../lib.jsx';
 
 class DropDownSearch extends Component {
   static propTypes = {
@@ -18,10 +19,10 @@ class DropDownSearch extends Component {
    this.props.handleChange(false);
  }
 
- selectOption(eve, option) {
+ selectOption(eve, option, saleType, propertyTypes) {
    // consume the event argument before calling the parent callback
    eve.preventDefault();
-   this.props.handleOptionSelect(option);
+   this.props.handleOptionSelect(option, saleType, propertyTypes);
  }
 
   render() {
@@ -33,8 +34,10 @@ class DropDownSearch extends Component {
           <i className="fa fa-caret-down"></i>
         </div>
         <ul style={{display: this.props.open ? 'block' : 'none'}}>
-          {this.props.labels.map((l, i) =>
-            <li key={i}><a href="#" onClick={(eve) => self.selectOption.bind(this)(eve, l)}>{l}</a></li>
+          {this.props.labels.map((l, i) => {
+            let instance = this;
+            return (<li key={i}><a href="#" onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
+          }
           )}
         </ul>
       </div>

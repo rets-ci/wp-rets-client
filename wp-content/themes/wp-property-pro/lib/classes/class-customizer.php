@@ -87,6 +87,15 @@ namespace UsabilityDynamics\PropertyPro {
           case 'border-color':
             $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, $i['key'], $control_args));
             break;
+          case 'menus_select':
+            $i['choices'] = [
+              'Make a choice'
+            ];
+
+            foreach (get_terms('nav_menu', array('hide_empty' => true)) as $menu)
+              $i['choices'][$menu->term_id] = $menu->name;
+
+            $i['control'] = 'select';
           case 'select':
             $control_args = array_merge($control_args, [
               'choices' => $i['choices'],

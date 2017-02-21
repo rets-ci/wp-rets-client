@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import {openModal, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -22,37 +21,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(openModal(open));
         },
 
-        setSearchType: (searchType) => {
-          dispatch(setSearchType(searchType));
+        setSearchType: (searchType, saleType, propertyTypes) => {
+          dispatch(setSearchType({
+              searchType: searchType,
+              saleType: saleType,
+              propertyTypes: propertyTypes
+          }));
         },
 
         clearTermFilter: () => {
           dispatch(setFilterTerms([]));
-        },
-
-        doSearch: () => {
-          let tax = jQuery('.search-term').attr('data-tax');
-          let term = jQuery('.search-term span').text();
-          let searchTypeArray = _.split(jQuery('#' + Lib.THEME_PREFIX + 'search_type').val(), Lib.STRING_ARRAY_DELIMITER);
-          let saleType = _.slice(searchTypeArray, 0, 1);
-          let propertyTypes = _.slice(searchTypeArray, 1);
-
-          let title = tax + ' - ' + term;
-          let url = '/' + saleType + '/' + tax + '/' + term;
-
-          history.pushState({}, title, url);
-          jQuery('title').text(title);
-
-          let params = {
-              tax: tax,
-              term: term,
-              saleType: saleType,
-              propertyTypes: propertyTypes
-          };
-
-          Api.search(params, function (response) {
-              dispatch(setMapProps(response));
-          });
         }
     }
 };
@@ -62,7 +40,9 @@ class SearchContent extends Component {
     super(props);
     this.state = {
       dropDownOpen: false,
-      labels: []
+      labels: [],
+      saleTypes: [],
+      propertyTypes: []
     };
   }
   static propTypes = {
@@ -70,7 +50,6 @@ class SearchContent extends Component {
     searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
     searchType: PropTypes.string,
-    doSearch: PropTypes.func,
     clearTermFilter: PropTypes.func,
     options: PropTypes.object.isRequired
   };
@@ -80,21 +59,31 @@ class SearchContent extends Component {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
       return labelsArr[0];
     });
-    this.setState({
-      labels: labels
+    let saleTypes = Object.keys(this.props.options).map(o => {
+        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
+        return labelsArr[1];
     });
-    this.props.setSearchType(labels.length ? labels[0] : '');
+    let propertyTypes = Object.keys(this.props.options).map(o => {
+        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
+        return labelsArr.slice(2).join(Lib.STRING_ARRAY_DELIMITER);
+    });
+    this.setState({
+      labels: labels,
+      saleTypes: saleTypes,
+      propertyTypes: propertyTypes
+    });
+    this.props.setSearchType(labels.length ? labels[0] : '', saleTypes.length ? saleTypes[0] : '', propertyTypes.length ? propertyTypes[0] : '');
   }
 
   handleSearchDropDownChange(open) {
     this.setState({dropDownOpen: open});
   }
 
-  handleSearchDropDownOptionSelect(option) {
+  handleSearchDropDownOptionSelect(option, saleType, propertyTypes) {
     this.setState({
       dropDownOpen: false
     });
-    this.props.setSearchType(option);
+    this.props.setSearchType(option, saleType, propertyTypes);
   }
 
   render() {
@@ -107,6 +96,8 @@ class SearchContent extends Component {
       <div className="search-box">
         <DropDownSearch
           labels={this.state.labels}
+          saleTypes={this.state.saleTypes}
+          propertyTypes={this.state.propertyTypes}
           open={this.state.dropDownOpen}
           selectedOption={this.props.searchType}
           handleChange={this.handleSearchDropDownChange.bind(this)}
