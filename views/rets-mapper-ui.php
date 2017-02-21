@@ -1,13 +1,11 @@
 <?php
 global $wp_properties;
 
+$api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
 
-$api_url = 'https://api.rets.ci/v2/site/' . get_option('ud_site_id') . '/analysis?token=' . get_option('ud_site_secret_token');
+$_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get( $api_url ) ) );
 
-$_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get($api_url) ) );
-
-$field_alias = isset( $wp_properties['field_alias'] ) && is_array( $wp_properties['field_alias'] ) ? array_flip( $wp_properties['field_alias'] ) : array();
-
+$field_alias = isset( $wp_properties[ 'field_alias' ] ) && is_array( $wp_properties[ 'field_alias' ] ) ? array_flip( array_filter( $wp_properties[ 'field_alias' ] ) ) : array();
 if( get_transient( 'wp-rets-mapper-data' ) ) {
   $_analysis = get_transient( 'wp-rets-mapper-data' );
 } else {
@@ -17,13 +15,12 @@ if( get_transient( 'wp-rets-mapper-data' ) ) {
   set_transient( 'wp-rets-mapper-data', $_analysis, 90 );
 }
 
-
 wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/jquery.tablesorter.min.js' );
 
-if( isset( $api_url_response->errors )){
-  print_r('We have some errors.');
+if( isset( $api_url_response->errors ) ) {
+  print_r( 'We have some errors.' );
   echo '<pre>';
-  print_r($api_url_response);
+  print_r( $api_url_response );
   echo '</pre>';
 }
 
@@ -91,16 +88,19 @@ if( isset( $api_url_response->errors )){
           }
           ?>
         </div>
-      <?php } else { echo ''; }; ?>
+      <?php } else {
+        echo '';
+      }; ?>
     </td>
-<!--
-    <td><input class="mapper-alias" type="text" value=""></td>
-    <td><button class="add-alias" data-mapper-string="mapper-string-<?php //echo $c; ?>">Add</button></td>
-  </tr>
-<?php //} ?>
--->
+
+    <td class="hidden"><input class="mapper-alias" type="text" value=""></td>
+
     <td><?php echo isset( $field_alias[ $_field->key ] ) ? $field_alias[ $_field->key ] : '-'; ?></td>
-    <td><a class="wp-rets-mapper-action" data-action="hide">Hide</a></td>
+
+      <td>
+      <button class="wp-rets-mapper-action" data-action="hide">Hide</button>
+      <button class="add-alias hidden" data-mapper-string="mapper-string-<?php echo $c; ?>">Add</button>
+    </td>
 
   </tr>
 
@@ -114,22 +114,25 @@ if( isset( $api_url_response->errors )){
   echo( '<pre class="hidden">' . print_r( $_analysis, true ) . '</pre>' ); ?>
   </div>
 
+<pre>
+  <?php echo( '<pre>' . print_r( $field_alias, true ) . '</pre>' ); ?>
+</pre>
+
 <script>
 
   jQuery( document ).ready( function () {
 
-    if( !localStorage.getItem( 'wp-rets-hidden-fields' )) {
-      localStorage.setItem( 'wp-rets-hidden-fields', JSON.stringify( [
-        'tax_input.wpp_listing_category',
-        'tax_input.wpp_listing_status',
-        'tax_input.wpp_import_schedule_id',
-        'tax_input.wpp_location',
-        'meta_input.wpp::rets_pk'
-      ] ) );
-    }
+      if( !localStorage.getItem( 'wp-rets-hidden-fields' ) ) {
+        localStorage.setItem( 'wp-rets-hidden-fields', JSON.stringify( [
+          'tax_input.wpp_listing_category',
+          'tax_input.wpp_listing_status',
+          'tax_input.wpp_import_schedule_id',
+          'tax_input.wpp_location',
+          'meta_input.wpp::rets_pk'
+        ] ) );
+      }
 
-
-    jQuery( ".wp-rets-mapper-action" ).click( function () {
+      jQuery( ".wp-rets-mapper-action" ).click( function () {
 
         var _id = jQuery( this ).closest( '.wp-rets-mapper-group' ).data( 'rets-mapper-id' );
 
@@ -155,47 +158,49 @@ if( isset( $api_url_response->errors )){
 
       } );
 
-    // Hide hidden fields
-    if( localStorage.getItem( 'wp-rets-hidden-fields' ) ) {
-      var _hidden = JSON.parse( localStorage.getItem( 'wp-rets-hidden-fields' ) );
+      // Hide hidden fields
+      if( localStorage.getItem( 'wp-rets-hidden-fields' ) ) {
+        var _hidden = JSON.parse( localStorage.getItem( 'wp-rets-hidden-fields' ) );
 
-      _hidden.forEach(function( hiddenItem ) {
-        jQuery( '.wp-rets-mapper-group[data-rets-mapper-id="' + hiddenItem +'"]' ).hide();
-        console.info( 'wp-rets-client', 'hiding field', hiddenItem );
-      });
+        _hidden.forEach( function ( hiddenItem ) {
+          jQuery( '.wp-rets-mapper-group[data-rets-mapper-id="' + hiddenItem + '"]' ).hide();
+          console.info( 'wp-rets-client', 'hiding field', hiddenItem );
+        } );
 
-    }
+      }
 
       jQuery( "#rets-mapper-table" ).tablesorter( {
         cssAsc: 'asc',
         cssDesc: 'desc',
         widthFixed: true
       } );
+
       jQuery( '.mapper-show-info' ).on( 'click', function () {
         var current_class = '.' + jQuery( this ).data( 'info-block' );
         jQuery( current_class ).toggle();
       } );
-    jQuery('.add-alias').on('click', function(){
-      var current_string = '.' + jQuery(this).data('mapper-string');
 
-      var mapper_slug = jQuery(current_string + ' .mapper-slug').text();
-      var mapper_alias = jQuery(current_string + ' .mapper-alias').text();
+    jQuery( '.add-alias' ).on( 'click', function () {
+        var current_string = '.' + jQuery( this ).data( 'mapper-string' );
 
-      jQuery.post( ajaxurl, {
-        action: 'mapper_add_alias',
-        security: "<?php echo wp_create_nonce( "mapper-add-alias" ) ?>",
-        payload: {
-          slug: mapper_slug,
-          alias: mapper_alias
-        }
-      }, function( response ){
+        var mapper_slug = jQuery( current_string + ' .mapper-slug' ).text();
+        var mapper_alias = jQuery( current_string + ' .mapper-alias' ).text();
 
-        if ( response.ok ) {
-          jQuery(current_string).remove();
-        }
+        jQuery.post( ajaxurl, {
+          action: 'mapper/v1/add-alias',
+          security: "<?php echo wp_create_nonce( "mapper-add-alias" ) ?>",
+          payload: {
+            slug: mapper_slug,
+            alias: mapper_alias
+          }
+        }, function ( response ) {
 
-      });
-    });
+          if( response.ok ) {
+            jQuery( current_string ).remove();
+          }
+
+        } );
+      } );
     }
   );
 

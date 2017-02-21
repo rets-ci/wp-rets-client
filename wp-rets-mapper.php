@@ -22,7 +22,7 @@ add_action('admin_menu', function() {
 
 });
 
-add_action( 'wp_ajax_mapper_add_alias', 'mapper_add_alias' );
+add_action( 'wp_ajax_/mapper/v1/add-alias', 'mapper_add_alias' );
 
 function mapper_add_alias(){
 
@@ -41,7 +41,8 @@ function mapper_add_alias(){
     ))
    );
 
-  if ( is_wp_error( $response ) )
+  if ( is_wp_error( $response ) ) {
     wp_send_json_error( 'Something went wrong' );
-    
+  }
+
 }
