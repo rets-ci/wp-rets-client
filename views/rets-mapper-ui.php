@@ -20,7 +20,7 @@ if( get_transient( 'wp-rets-mapper-data' ) ) {
 
 wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/jquery.tablesorter.min.js' );
 
-if($api_url_response->errors){
+if( isset( $api_url_response->errors )){
   print_r('We have some errors.');
   echo '<pre>';
   print_r($api_url_response);
@@ -91,7 +91,7 @@ if($api_url_response->errors){
           }
           ?>
         </div>
-      <?php } else { echo '-'; }; ?>
+      <?php } else { echo ''; }; ?>
     </td>
 <!--
     <td><input class="mapper-alias" type="text" value=""></td>
@@ -117,7 +117,19 @@ if($api_url_response->errors){
 <script>
 
   jQuery( document ).ready( function () {
-      jQuery( ".wp-rets-mapper-action" ).click( function () {
+
+    if( !localStorage.getItem( 'wp-rets-hidden-fields' )) {
+      localStorage.setItem( 'wp-rets-hidden-fields', JSON.stringify( [
+        'tax_input.wpp_listing_category',
+        'tax_input.wpp_listing_status',
+        'tax_input.wpp_import_schedule_id',
+        'tax_input.wpp_location',
+        'meta_input.wpp::rets_pk'
+      ] ) );
+    }
+
+
+    jQuery( ".wp-rets-mapper-action" ).click( function () {
 
         var _id = jQuery( this ).closest( '.wp-rets-mapper-group' ).data( 'rets-mapper-id' );
 
@@ -171,7 +183,7 @@ if($api_url_response->errors){
 
       jQuery.post( ajaxurl, {
         action: 'mapper_add_alias',
-        security: <?php echo wp_create_nonce( "mapper-add-alias" ) ?>,
+        security: "<?php echo wp_create_nonce( "mapper-add-alias" ) ?>",
         payload: {
           slug: mapper_slug,
           alias: mapper_alias
