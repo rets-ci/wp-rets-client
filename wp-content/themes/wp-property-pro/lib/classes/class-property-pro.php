@@ -177,6 +177,15 @@ namespace UsabilityDynamics {
           if (in_array($k, ['_sow_form_id', 'panels_info']))
             continue;
 
+          /** @TODO hack for array keys, because get_post_meta return keys without underscores */
+          if($k == 'search_options' && is_array($field)){
+            $new_field = [];
+            foreach ($field as $field_key=>$value)
+              $new_field[str_replace(' ', '_', $field_key)] = $value;
+
+            $field = $new_field;
+          }
+
           $fields[$k] = $field;
         }
 

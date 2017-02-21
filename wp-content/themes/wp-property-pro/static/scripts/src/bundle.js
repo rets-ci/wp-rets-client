@@ -29469,7 +29469,9 @@
 	    switch (action.type) {
 	        case _lib.Lib.SET_SEARCH_TYPE:
 	            return Object.assign({}, state, {
-	                searchType: action.searchType
+	                searchType: action.searchType,
+	                saleType: action.saleType,
+	                propertyTypes: action.propertyTypes
 	            });
 	        default:
 	            return state;
@@ -29619,10 +29621,12 @@
 	    };
 	};
 
-	var setSearchType = exports.setSearchType = function setSearchType(searchType) {
+	var setSearchType = exports.setSearchType = function setSearchType(searchObject) {
 	    return {
 	        type: _lib.Lib.SET_SEARCH_TYPE,
-	        searchType: searchType
+	        searchType: searchObject.searchType,
+	        saleType: searchObject.saleType,
+	        propertyTypes: searchObject.propertyTypes
 	    };
 	};
 
@@ -47803,6 +47807,7 @@
 	        open = _ref.open;
 
 
+	    console.log(rows);
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('div', null);
@@ -48009,8 +48014,12 @@
 	      dispatch((0, _index.openModal)(open));
 	    },
 
-	    setSearchType: function setSearchType(searchType) {
-	      dispatch((0, _index.setSearchType)(searchType));
+	    setSearchType: function setSearchType(searchType, saleType, propertyTypes) {
+	      dispatch((0, _index.setSearchType)({
+	        searchType: searchType,
+	        saleType: saleType,
+	        propertyTypes: propertyTypes
+	      }));
 	    },
 
 	    clearTermFilter: function clearTermFilter() {
@@ -48054,7 +48063,9 @@
 
 	    _this.state = {
 	      dropDownOpen: false,
-	      labels: []
+	      labels: [],
+	      saleTypes: [],
+	      propertyTypes: []
 	    };
 	    return _this;
 	  }
@@ -48066,10 +48077,20 @@
 	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
 	        return labelsArr[0];
 	      });
-	      this.setState({
-	        labels: labels
+	      var saleTypes = Object.keys(this.props.options).map(function (o) {
+	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
+	        return labelsArr[1];
 	      });
-	      this.props.setSearchType(labels.length ? labels[0] : '');
+	      var propertyTypes = Object.keys(this.props.options).map(function (o) {
+	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
+	        return labelsArr.slice(2).join(_lib.Lib.STRING_ARRAY_DELIMITER);
+	      });
+	      this.setState({
+	        labels: labels,
+	        saleTypes: saleTypes,
+	        propertyTypes: propertyTypes
+	      });
+	      this.props.setSearchType(labels.length ? labels[0] : '', saleTypes.length ? saleTypes[0] : '', propertyTypes.length ? propertyTypes[0] : '');
 	    }
 	  }, {
 	    key: 'handleSearchDropDownChange',
@@ -48078,11 +48099,11 @@
 	    }
 	  }, {
 	    key: 'handleSearchDropDownOptionSelect',
-	    value: function handleSearchDropDownOptionSelect(option) {
+	    value: function handleSearchDropDownOptionSelect(option, saleType, propertyTypes) {
 	      this.setState({
 	        dropDownOpen: false
 	      });
-	      this.props.setSearchType(option);
+	      this.props.setSearchType(option, saleType, propertyTypes);
 	    }
 	  }, {
 	    key: 'render',
@@ -48097,6 +48118,8 @@
 	        { className: 'search-box' },
 	        _react2.default.createElement(_DropDownSearch2.default, {
 	          labels: this.state.labels,
+	          saleTypes: this.state.saleTypes,
+	          propertyTypes: this.state.propertyTypes,
 	          open: this.state.dropDownOpen,
 	          selectedOption: this.props.searchType,
 	          handleChange: this.handleSearchDropDownChange.bind(this),
@@ -48152,6 +48175,8 @@
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
+	var _lib = __webpack_require__(278);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48176,10 +48201,10 @@
 	    }
 	  }, {
 	    key: 'selectOption',
-	    value: function selectOption(eve, option) {
+	    value: function selectOption(eve, option, saleType, propertyTypes) {
 	      // consume the event argument before calling the parent callback
 	      eve.preventDefault();
-	      this.props.handleOptionSelect(option);
+	      this.props.handleOptionSelect(option, saleType, propertyTypes);
 	    }
 	  }, {
 	    key: 'render',
@@ -48202,13 +48227,14 @@
 	          'ul',
 	          { style: { display: this.props.open ? 'block' : 'none' } },
 	          this.props.labels.map(function (l, i) {
+	            var instance = _this2;
 	            return _react2.default.createElement(
 	              'li',
 	              { key: i },
 	              _react2.default.createElement(
 	                'a',
 	                { href: '#', onClick: function onClick(eve) {
-	                    return self.selectOption.bind(_this2)(eve, l);
+	                    return self.selectOption.bind(_this2)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i]);
 	                  } },
 	                l
 	              )
@@ -48590,7 +48616,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -48624,164 +48650,169 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    open: state.modal ? state.modal.openModal : false,
-	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
-	    searchType: _lodash2.default.get(state, 'searchType.searchType', '')
-	  };
+	    return {
+	        open: state.modal ? state.modal.openModal : false,
+	        searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
+	        searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
+	        saleType: _lodash2.default.get(state, 'searchType.saleType', ''),
+	        propertyTypes: _lodash2.default.get(state, 'searchType.propertyTypes', '')
+	    };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    closeModal: function closeModal() {
-	      dispatch((0, _index.openModal)(false));
-	    },
+	    return {
+	        closeModal: function closeModal() {
+	            dispatch((0, _index.openModal)(false));
+	        },
 
-	    searchHandler: function searchHandler(term) {
-	      var searchParams = {
-	        term: term
-	      };
-	      _Api2.default.selectQuery(searchParams, function (rows) {
-	        dispatch((0, _index.setSearchProps)(rows));
-	      });
-	    }
-	  };
+	        searchHandler: function searchHandler(term) {
+	            var searchParams = {
+	                term: term
+	            };
+	            _Api2.default.selectQuery(searchParams, function (rows) {
+	                dispatch((0, _index.setSearchProps)(rows));
+	            });
+	        }
+	    };
 	};
 
 	var Modal = function (_Component) {
-	  _inherits(Modal, _Component);
+	    _inherits(Modal, _Component);
 
-	  function Modal(props) {
-	    _classCallCheck(this, Modal);
+	    function Modal(props) {
+	        _classCallCheck(this, Modal);
 
-	    var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
 
-	    _this.state = {
-	      searchValue: ''
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Modal, [{
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(prevProps, prevState) {
-	      if (this.props.open) {
-	        this.searchInput.focus();
-	      }
+	        _this.state = {
+	            searchValue: ''
+	        };
+	        return _this;
 	    }
-	  }, {
-	    key: 'handleClose',
-	    value: function handleClose(eve) {
-	      eve.preventDefault();
-	      this.props.closeModal();
-	    }
-	  }, {
-	    key: 'handleResultClick',
-	    value: function handleResultClick(eve, tax, term, searchType) {
-	      eve.preventDefault();
-	      console.log('handleResultClick');
-	      _reactRouter.browserHistory.push('/search-result?term=' + term + '&tax=' + tax + '&searchType=' + searchType);
-	    }
-	  }, {
-	    key: 'handleSearchValueChange',
-	    value: function handleSearchValueChange(eve) {
-	      var val = eve.target.value;
-	      this.setState({ searchValue: val });
-	      this.props.searchHandler(val);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
 
-	      var _props = this.props,
-	          searchResults = _props.searchResults,
-	          searchType = _props.searchType;
+	    _createClass(Modal, [{
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate(prevProps, prevState) {
+	            if (this.props.open) {
+	                this.searchInput.focus();
+	            }
+	        }
+	    }, {
+	        key: 'handleClose',
+	        value: function handleClose(eve) {
+	            eve.preventDefault();
+	            this.props.closeModal();
+	        }
+	    }, {
+	        key: 'handleResultClick',
+	        value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
+	            eve.preventDefault();
+	            console.log('handleResultClick');
+	            _reactRouter.browserHistory.push('/' + saleType.toLowerCase() + '/' + tax + '/' + term + '/?wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term + '&searchType=' + searchType);
+	        }
+	    }, {
+	        key: 'handleSearchValueChange',
+	        value: function handleSearchValueChange(eve) {
+	            var val = eve.target.value;
+	            this.setState({ searchValue: val });
+	            this.props.searchHandler(val);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
 
-	      var self = this;
-	      var resultsElements = searchResults.map(function (s, k) {
-	        return _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'div',
-	            { key: k, className: 'search-title' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'h4',
-	                null,
-	                s.text
-	              )
-	            )
-	          ),
-	          s.children.length ? _react2.default.createElement(
-	            'ol',
-	            null,
-	            s.children.map(function (c, i) {
-	              return _react2.default.createElement(
-	                'li',
-	                { key: i },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, s.key, c.text, searchType);
-	                    } },
-	                  _react2.default.createElement(
+	            var _props = this.props,
+	                searchResults = _props.searchResults,
+	                searchType = _props.searchType,
+	                saleType = _props.saleType,
+	                propertyTypes = _props.propertyTypes;
+
+	            var self = this;
+	            var resultsElements = searchResults.map(function (s, k) {
+	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'container' },
-	                    c.text
-	                  )
+	                    null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { key: k, className: 'search-title' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'container' },
+	                            _react2.default.createElement(
+	                                'h4',
+	                                null,
+	                                s.text
+	                            )
+	                        )
+	                    ),
+	                    s.children.length ? _react2.default.createElement(
+	                        'ol',
+	                        null,
+	                        s.children.map(function (c, i) {
+	                            return _react2.default.createElement(
+	                                'li',
+	                                { key: i },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { href: '#',
+	                                        onClick: function onClick(eve) {
+	                                            return self.handleResultClick.bind(_this2)(eve, s.key, c.text, searchType, saleType, propertyTypes);
+	                                        } },
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'container' },
+	                                        c.text
+	                                    )
+	                                )
+	                            );
+	                        })
+	                    ) : null
+	                );
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'search-modal', style: { display: this.props.open ? 'block' : 'none' } },
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '#', className: 'close-panel', onClick: this.handleClose.bind(this) },
+	                    _react2.default.createElement('i', { className: 'fa fa-times' })
+	                ),
+	                _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'container' },
+	                        _react2.default.createElement('i', { className: 'fa fa-search' }),
+	                        _react2.default.createElement('input', {
+	                            autoComplete: 'off',
+	                            className: 'form-control',
+	                            id: _lib.Lib.THEME_PREFIX + "search-input",
+	                            onChange: this.handleSearchValueChange.bind(this),
+	                            ref: function ref(input) {
+	                                _this2.searchInput = input;
+	                            },
+	                            type: 'text',
+	                            value: this.state.searchValue
+	                        }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { type: 'button', className: 'btn btn-primary' },
+	                            'Search'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'search-modal-box' },
+	                    resultsElements
 	                )
-	              );
-	            })
-	          ) : null
-	        );
-	      });
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-modal', style: { display: this.props.open ? 'block' : 'none' } },
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: 'close-panel', onClick: this.handleClose.bind(this) },
-	          _react2.default.createElement('i', { className: 'fa fa-times' })
-	        ),
-	        _react2.default.createElement(
-	          'form',
-	          { method: 'get', className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement('i', { className: 'fa fa-search' }),
-	            _react2.default.createElement('input', {
-	              autoComplete: 'off',
-	              className: 'form-control',
-	              id: _lib.Lib.THEME_PREFIX + "search-input",
-	              onChange: this.handleSearchValueChange.bind(this),
-	              ref: function ref(input) {
-	                _this2.searchInput = input;
-	              },
-	              type: 'text',
-	              value: this.state.searchValue
-	            }),
-	            _react2.default.createElement(
-	              'button',
-	              { type: 'button', className: 'btn btn-primary' },
-	              'Search'
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'search-modal-box' },
-	          resultsElements
-	        )
-	      );
-	    }
-	  }]);
+	            );
+	        }
+	    }]);
 
-	  return Modal;
+	    return Modal;
 	}(_react.Component);
 
 	;

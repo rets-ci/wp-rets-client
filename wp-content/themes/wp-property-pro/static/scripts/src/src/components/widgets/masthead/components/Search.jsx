@@ -22,8 +22,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(openModal(open));
         },
 
-        setSearchType: (searchType) => {
-          dispatch(setSearchType(searchType));
+        setSearchType: (searchType, saleType, propertyTypes) => {
+          dispatch(setSearchType({
+              searchType: searchType,
+              saleType: saleType,
+              propertyTypes: propertyTypes
+          }));
         },
 
         clearTermFilter: () => {
@@ -62,7 +66,9 @@ class SearchContent extends Component {
     super(props);
     this.state = {
       dropDownOpen: false,
-      labels: []
+      labels: [],
+      saleTypes: [],
+      propertyTypes: []
     };
   }
   static propTypes = {
@@ -80,21 +86,31 @@ class SearchContent extends Component {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
       return labelsArr[0];
     });
-    this.setState({
-      labels: labels
+    let saleTypes = Object.keys(this.props.options).map(o => {
+        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
+        return labelsArr[1];
     });
-    this.props.setSearchType(labels.length ? labels[0] : '');
+    let propertyTypes = Object.keys(this.props.options).map(o => {
+        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
+        return labelsArr.slice(2).join(Lib.STRING_ARRAY_DELIMITER);
+    });
+    this.setState({
+      labels: labels,
+      saleTypes: saleTypes,
+      propertyTypes: propertyTypes
+    });
+    this.props.setSearchType(labels.length ? labels[0] : '', saleTypes.length ? saleTypes[0] : '', propertyTypes.length ? propertyTypes[0] : '');
   }
 
   handleSearchDropDownChange(open) {
     this.setState({dropDownOpen: open});
   }
 
-  handleSearchDropDownOptionSelect(option) {
+  handleSearchDropDownOptionSelect(option, saleType, propertyTypes) {
     this.setState({
       dropDownOpen: false
     });
-    this.props.setSearchType(option);
+    this.props.setSearchType(option, saleType, propertyTypes);
   }
 
   render() {
@@ -107,6 +123,8 @@ class SearchContent extends Component {
       <div className="search-box">
         <DropDownSearch
           labels={this.state.labels}
+          saleTypes={this.state.saleTypes}
+          propertyTypes={this.state.propertyTypes}
           open={this.state.dropDownOpen}
           selectedOption={this.props.searchType}
           handleChange={this.handleSearchDropDownChange.bind(this)}
