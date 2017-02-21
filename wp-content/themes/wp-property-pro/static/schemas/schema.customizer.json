@@ -11,6 +11,14 @@
     "property_pro_branding_section": {
       "title": "Branding",
       "priority": 32
+    },
+    "property_pro_footer_top_section": {
+      "title": "Footer top",
+      "priority": 33
+    },
+    "property_pro_footer_bottom_section": {
+      "title": "Footer bottom",
+      "priority": 34
     }
   },
   "settings": [
@@ -154,6 +162,72 @@
       "label": "Credential",
       "section": "property_pro_branding_section",
       "control": "text",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_top_menu_one",
+      "label": "Menu 1",
+      "section": "property_pro_footer_top_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_top_menu_two",
+      "label": "Menu 2",
+      "section": "property_pro_footer_top_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_top_menu_three",
+      "label": "Menu 3",
+      "section": "property_pro_footer_top_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_top_menu_four",
+      "label": "Menu 4",
+      "section": "property_pro_footer_top_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_bottom_menu",
+      "label": "Menu",
+      "section": "property_pro_footer_bottom_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_footer_bottom_menu_social",
+      "label": "Social menu",
+      "section": "property_pro_footer_bottom_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
       "selector": [
         "#selector"
       ]
