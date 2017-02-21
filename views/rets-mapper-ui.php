@@ -52,12 +52,12 @@ if( isset( $api_url_response->errors ) ) {
 
     <th scope="col" class="sortable"><a href="#"><span>Storage Type</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Slug</span><span class="sorting-indicator"></span></a></th>
-    <th scope="col" class="sortable"><a href="#"><span>Count</span><span class="sorting-indicator"></span></a></th>
+    <th scope="col" class="sortable" style="width: 100px"><a href="#"><span>Count</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable hidden"><a href="#"><span>Type</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable hidden"><a href="#"><span>Rate</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Values</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Alias</span><span class="sorting-indicator"></span></a></th>
-    <th scope="col" class=""><a href="#"><span>Action</span><span class="sorting-indicator"></span></a></th>
+    <th scope="col" class="" style="width: 150px"><a href="#"><span>Action</span><span class="sorting-indicator"></span></a></th>
 
   </tr>
   </thead>
@@ -66,7 +66,7 @@ if( isset( $api_url_response->errors ) ) {
 
   <?php foreach( $_analysis->data as $_field ) { ?>
     <?php $c++; ?>
-    <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?> mapper-string-<?php echo $c; ?>" data-rets-mapper-id="<?php echo $_field->_id; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
+    <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?> mapper-string-<?php echo $c; ?>" data-rets-mapper-id="<?php echo $_field->_id; ?>" data-rets-mapper-key="<?php echo $_field->key; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
     <th class="hidden"><?php echo $_field->_id; ?></th>
     <td><?php echo $_field->group; ?></td>
     <th class="mapper-slug"><?php echo $_field->key; ?></th>
@@ -93,13 +93,13 @@ if( isset( $api_url_response->errors ) ) {
       }; ?>
     </td>
 
-    <td class="hidden"><input class="mapper-alias" type="text" value=""></td>
+    <td class="rets-mapper-alias-cell">
+      <input class="mapper-alias regular-text" style="width:100%" type="text" value="<?php echo isset( $field_alias[ $_field->key ] ) ? $field_alias[ $_field->key ] : ''; ?>" />
+    </td>
 
-    <td><?php echo isset( $field_alias[ $_field->key ] ) ? $field_alias[ $_field->key ] : '-'; ?></td>
-
-      <td>
-      <button class="wp-rets-mapper-action" data-action="hide">Hide</button>
-      <button class="add-alias hidden" data-mapper-string="mapper-string-<?php echo $c; ?>">Add</button>
+    <td>
+      <button class="add-alias button" data-mapper-string="mapper-string-<?php echo $c; ?>">Add</button>
+      <button class="wp-rets-mapper-action button" data-action="hide">Hide</button>
     </td>
 
   </tr>
@@ -181,22 +181,26 @@ if( isset( $api_url_response->errors ) ) {
       } );
 
     jQuery( '.add-alias' ).on( 'click', function () {
-        var current_string = '.' + jQuery( this ).data( 'mapper-string' );
 
-        var mapper_slug = jQuery( current_string + ' .mapper-slug' ).text();
-        var mapper_alias = jQuery( current_string + ' .mapper-alias' ).text();
+      var self = this;
+
+      jQuery( self ).prop( 'disabled', true );
+      var _current_row = jQuery( this ).closest( 'tr.wp-rets-mapper-group' );
 
         jQuery.post( ajaxurl, {
-          action: 'mapper/v1/add-alias',
+          action: '/mapper/v1/add-alias',
           security: "<?php echo wp_create_nonce( "mapper-add-alias" ) ?>",
           payload: {
-            slug: mapper_slug,
-            alias: mapper_alias
+            id: _current_row.attr( 'data-rets-mapper-id' ),
+            key: _current_row.attr( 'data-rets-mapper-key' ),
+            alias: jQuery( 'input.mapper-alias', _current_row ).val()
           }
         }, function ( response ) {
 
+          jQuery( self ).prop( 'disabled', false );
+
           if( response.ok ) {
-            jQuery( current_string ).remove();
+            //jQuery( current_string ).remove();
           }
 
         } );

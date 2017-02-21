@@ -24,15 +24,37 @@ add_action('admin_menu', function() {
 
 add_action( 'wp_ajax_/mapper/v1/add-alias', 'mapper_add_alias' );
 
+/**
+ * Record alias.
+ *
+ */
 function mapper_add_alias(){
+  global $wp_properties;
 
-  check_ajax_referer( 'mapper_add_alias', 'security', 1 );
+  check_ajax_referer( 'mapper-add-alias', 'security', 1 );
 
   $payload = $_POST['payload'];
 
+  $_current_settings = get_option('wpp_settings');
+
+  $_current_settings[ 'field_alias' ][ $payload['alias' ] ] = $payload['key'];
+
+  $_current_settings['_updated'] = time();
+
+  update_option( 'wpp_settings', $_current_settings );
+
+  wp_send_json(array(
+    'ok' => true,
+    'alias' => $payload['alias' ],
+    'key' => $payload['key'],
+    'aliases' => $_current_settings[ 'field_alias' ]
+  ));
+
+  // @todo Implement later.
   $response = wp_remote_post( 'https://api.rets.ci/v2/site/set_site_mapping?token=' . get_option('ud_site_secret_token'), $request_data = array(
     'headers' => array(
-      'content-type' => 'application/json'
+      'content-type' => 'application/json',
+      'ud-access-token' => get_option('ud_site_secret_token')
     ),
     'body' => json_encode(array(
       'slug' => $payload['slug'],
