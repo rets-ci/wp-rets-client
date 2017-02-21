@@ -7,12 +7,13 @@ namespace Composer\Autoload;
 class ComposerStaticInit589bafad0d78fdaa0be7887063578b3b
 {
     public static $files = array (
-        'b19b183aa467dadb9e7c538535e7f296' => __DIR__ . '/../..' . '/wp-rets-client.php',
+        'aa33d7d08765e2232d2271599fc1e7eb' => __DIR__ . '/../..' . '/loader.php',
     );
 
     public static $classMap = array (
         'UsabilityDynamics\\Job' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-job.php',
         'UsabilityDynamics\\Loader' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-loader.php',
+        'UsabilityDynamics\\SAAS_UTIL\\Register' => __DIR__ . '/..' . '/usabilitydynamics/lib-wp-saas-util/lib/classes/class-wp-saas-util.php',
         'UsabilityDynamics\\Structure' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-structure.php',
         'UsabilityDynamics\\Term' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-term.php',
         'UsabilityDynamics\\Utility' => __DIR__ . '/..' . '/usabilitydynamics/lib-utility/lib/class-utility.php',
