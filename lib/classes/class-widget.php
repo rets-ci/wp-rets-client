@@ -79,34 +79,30 @@ namespace UsabilityDynamics\WPRETSC {
 //          echo 'System is not ready for RETS.CI. Refresh page or contact UsabilityDynamics, Inc.';
 //          return;
 //        }
+
         if( defined( 'UD_RETSCI_AJAX_API_URL' ) ) {
           $api_url = trailingslashit(UD_RETSCI_AJAX_API_URL);
         } else {
           $api_url = 'https://api.rets.ci/';
         }
 
-        if( defined( 'UD_RETS_API_URL' ) ) {
-          $url = UD_RETS_API_URL;
-        } else {
-          $url = 'https://api.usabilitydynamics.com/product';
-        }
-
         wp_enqueue_script( 'wpp_retsci_app', ud_get_wp_rets_client()->path( 'static/scripts/app.js', 'url' ), array( 'jquery' ) );
+
+        /*
 
         $data = json_encode(array(
           'retsci_site_id' => $this->is_retsci_site_id_registered(),
           'retsci_site_secret_token' => $this->is_retsci_site_secret_token_registered(),
           'user_data' => get_userdata(get_current_user_id()),
           'blog_id' => get_current_blog_id(),
-          'blog_url' => get_site_url(get_current_blog_id()),
-          'security' => wp_create_nonce( "wpp_retsci_subscriber" ),
-          'api_url' => $url
+          'security' => wp_create_nonce( "wpp_retsci_subscription" ),
+          'api_url' => $api_url
         ));
 
         ob_start();
-        include_once ud_get_wp_rets_client()->path( 'static/views/widget-subscriber.php', 'dir' );
-        echo apply_filters( 'wpp_retsci_widget_subscriber_content', ob_get_clean() );
-
+        include_once ud_get_wp_rets_client()->path( 'static/views/widget-subscription.php', 'dir' );
+        echo apply_filters( 'wpp_retsci_widget_subscription_content', ob_get_clean() );
+        */
 
         /**
          * If not registered on rets ci yet
@@ -127,8 +123,6 @@ namespace UsabilityDynamics\WPRETSC {
 
           return;
         }
-
-        // Register subscriber
 
         /**
          * Show stats

@@ -6,7 +6,7 @@ jQuery(function() {
   if ( jQuery( '.wpp_retsci_widget_stats').length ) {
     var container = jQuery( '.wpp_retsci_widget_stats');
     var config = container.data('config');
-    var url    = config.api_url + 'v1/site/' + config.site_id + '/status';
+    var url    = config.api_url + 'v2/site/' + config.site_id + '/status';
 
     jQuery.getJSON( url, { token: config.site_secret_token }, function( res ) {
       if ( res.ok ) {
@@ -56,7 +56,7 @@ jQuery(function() {
         payload: {
           ud_site_id: config.ud_site_id,
           ud_site_secret_token: config.ud_site_secret_token,
-          retsci_secret_token: config.retsci_site_secret_token,
+          retsci_site_secret_token: config.retsci_site_secret_token,
           api_url: config.api_url,
           credentials: data
         }
@@ -76,10 +76,10 @@ jQuery(function() {
     });
   }
 
-  if ( jQuery( '.wpp_retsci_widget_subscriber').length ) {
-    var container = jQuery( '.wpp_retsci_widget_subscriber' );
+  if ( jQuery( '.wpp_retsci_widget_subscription').length ) {
+    var container = jQuery( '.wpp_retsci_widget_subscription' );
     var config = container.data('config');
-    var signin_form = jQuery( '#subscriber-form', container );
+    var signin_form = jQuery( '#subscription-form', container );
 
     signin_form.on( 'submit', function() {
 
@@ -89,19 +89,17 @@ jQuery(function() {
       }, {});
 
       jQuery.post( ajaxurl, {
-        action: 'ajax_retsci_subscriber',
+        action: 'wpp_retsci_subscription',
         security: config.security,
         payload: {
           retsci_site_id: config.retsci_site_id,
-          retsci_secret_token: config.retsci_site_secret_token,
+          retsci_site_secret_token: config.retsci_site_secret_token,
           user_data: config.user_data,
           blog_id: config.blog_id,
-          blog_url: config.blog_url,
           credentials: data,
           api_url: config.api_url,
         }
       }, function( res ){
-        console.log(res);
 
         if ( res.ok ) {
           alert('Data added successfully.');

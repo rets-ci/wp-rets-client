@@ -13,7 +13,7 @@ namespace UsabilityDynamics\WPRETSC {
       public function __construct() {
 
         add_action( 'wp_ajax_wpp_retsci_signin', array( $this, 'ajax_retsci_signin' ) );
-        add_action( 'wp_ajax_ajax_retsci_subscriber', array( $this, 'ajax_retsci_subscriber' ) );
+        add_action( 'wp_ajax_wpp_retsci_subscription', array( $this, 'ajax_retsci_subscription' ) );
 
       }
 
@@ -26,7 +26,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $payload = $_POST['payload'];
 
-        $response = wp_remote_post( $payload['api_url'] . '/property/site/register/v1', $request_data = array(
+        $response = wp_remote_post( $payload['api_url'] . '/v1/site/register', $request_data = array(
           'headers' => array(
             'content-type' => 'application/json'
           ),
@@ -56,7 +56,7 @@ namespace UsabilityDynamics\WPRETSC {
           if ( !empty( $response_body->retsci_site_public_key ) )
             update_site_option( 'retsci_site_public_key', $response_body->retsci_site_public_key );
 
-          update_site_option( 'retsci_site_secret_token', $payload['retsci_site_secret_token'] );
+            update_site_option( 'retsci_site_secret_token', $payload['retsci_site_secret_token'] );
 
         }
 
@@ -64,30 +64,40 @@ namespace UsabilityDynamics\WPRETSC {
 
       }
 
-      public function ajax_retsci_subscriber() {
+      public function ajax_retsci_subscription() {
 
-        check_ajax_referer( 'wpp_retsci_subscriber', 'security', 1 );
+        check_ajax_referer( 'wpp_retsci_subscription', 'security', 1 );
 
         $payload = $_POST['payload'];
 
-        $response = wp_remote_post( $payload['api_url'] . '/retsci/blog/subscriber/v1', $request_data = array(
+        if (!get_site_option('rets_credential_url')) {
+          add_site_option('rets_credential_url', $_POST['url']);
+        }
+        if (!get_site_option('rets_credential_user')) {
+          add_site_option('rets_credential_url', $_POST['user']);
+        }
+        if (!get_site_option('rets_credential_url')) {
+          add_site_option('rets_credential_url', $_POST['password']);
+        }
+        if (!get_site_option('rets_credential_url')) {
+          add_site_option('rets_credential_url', $_POST['rets_version']);
+        }
+
+        $response = wp_remote_post( $payload['api_url'] . '/v1/blog/subscription', $request_data = array(
           'headers' => array(
             'content-type' => 'application/json'
           ),
           'body' => json_encode(array(
             'retsci_site_id' => $payload['retsci_site_id'],
-            'retsci_secret_token' => $payload['retsci_secret_token'],
+            'retsci_site_secret_token' => $payload['retsci_site_secret_token'],
             'user_data' => json_encode($payload['user_data']),
-            //'wp_site_data' => $payload['wp_site_data'],
-            'blog_id' => intval($payload['blog_id']),
-            'blog_url' => $payload['blog_url'],
-            'rets_credentials' => json_encode(array(
-              'login_url' => $payload['credentials']['url'],
-              'username' => $payload['credentials']['user'],
+            'rets_credentials' => array(
+              'url' => $payload['credentials']['url'],
+              'user' => $payload['credentials']['user'],
               'password' => $payload['credentials']['password'],
-              'version' => $payload['credentials']['rets_version'],
+              'rets_version' => $payload['credentials']['rets_version'],
               'user_agent' => $payload['credentials']['user_agent'],
-            ))
+            )
           ))
         ) );
 
@@ -97,35 +107,11 @@ namespace UsabilityDynamics\WPRETSC {
         $response_body = json_decode(wp_remote_retrieve_body($response));
 
         if ( !empty( $response_body->ok ) && $response_body->ok == true ) {
-          if (!get_option('rets_credential_login_url')) {
-            add_option('rets_credential_login_url', $payload['credentials']['url']);
-          } else {
-            update_option( 'rets_credential_login_url', $payload['credentials']['url'] );
-          }
-          if (!get_option('rets_credential_username')) {
-            add_option('rets_credential_username', $payload['credentials']['user']);
-          } else {
-            update_option( 'rets_credential_username', $payload['credentials']['user'] );
-          }
-          if (!get_option('rets_credential_password')) {
-            add_option('rets_credential_password', $payload['credentials']['password']);
-          } else {
-            update_option( 'rets_credential_password', $payload['credentials']['password'] );
-          }
-          if (!get_option('rets_credential_version')) {
-            add_option('rets_credential_version', $payload['credentials']['rets_version']);
-          } else {
-            update_option( 'rets_credential_version', $payload['credentials']['rets_version'] );
-          }
-          if (!get_option('rets_credential_user_agent')) {
-            add_option('rets_credential_user_agent', $payload['credentials']['user_agent']);
-          } else {
-            update_option( 'rets_credential_user_agent', $payload['credentials']['user_agent'] );
-          }
+          
         }
 
         wp_send_json($response_body);
-
+        
       }
     }
   }

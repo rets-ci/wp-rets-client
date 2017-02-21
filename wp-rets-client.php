@@ -26,6 +26,9 @@ if( !function_exists( 'ud_get_wp_rets_client' ) ) {
    *
    * @author Usability Dynamics, Inc.
    * @since 0.2.0
+   * @param bool $key
+   * @param null $default
+   * @return
    */
   function ud_get_wp_rets_client( $key = false, $default = null ) {
     $instance = \UsabilityDynamics\WPRETSC\Bootstrap::get_instance();
@@ -43,6 +46,11 @@ if( !function_exists( 'ud_check_wp_rets_client' ) ) {
    */
   function ud_check_wp_rets_client() {
     global $_ud_wp_rets_client_error;
+    
+    if( defined( 'WP_RETS_CLIENT_VENDOR_LOADED' ) ) {
+      return true;
+    }
+    
     try {
       //** Be sure composer.json exists */
       $file = dirname( __FILE__ ) . '/composer.json';
