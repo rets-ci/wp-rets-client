@@ -135,10 +135,10 @@ namespace UsabilityDynamics {
         /** Get footer menus */
         $footer_structure = [
           'top_footer' => [
-            'menu_1' => get_theme_mod('property_pro_footer_top_menu_one'),
-            'menu_2' => get_theme_mod('property_pro_footer_top_menu_two'),
-            'menu_3' => get_theme_mod('property_pro_footer_top_menu_three'),
-            'menu_4' => get_theme_mod('property_pro_footer_top_menu_four')
+            get_theme_mod('property_pro_footer_top_menu_one'),
+            get_theme_mod('property_pro_footer_top_menu_two'),
+            get_theme_mod('property_pro_footer_top_menu_three'),
+            get_theme_mod('property_pro_footer_top_menu_four')
           ],
           'bottom_footer' => [
             'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
@@ -147,14 +147,16 @@ namespace UsabilityDynamics {
         ];
 
         foreach ($footer_structure as $level_title=>$level)
-          foreach ($level as $key=>$menu_id)
-            $params['footer'][$level_title][$key] = array_map(function ($item) {
+          foreach ($level as $key=>$menu_id){
+            $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+            $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
               return [
                 'ID' => $item->ID,
                 'title' => $item->title,
                 'url' => $item->url
               ];
             }, wp_get_nav_menu_items($menu_id));
+          }
       }
 
       // Builder content case

@@ -29745,6 +29745,10 @@
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
+	var _Footer = __webpack_require__(310);
+
+	var _Footer2 = _interopRequireDefault(_Footer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29774,7 +29778,8 @@
 	        _react2.default.createElement(_Subnavigation2.default, null),
 	        _react2.default.createElement(_Map2.default, null),
 	        this.props.children,
-	        _react2.default.createElement(_Testimonials2.default, null)
+	        _react2.default.createElement(_Testimonials2.default, null),
+	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
 	  }]);
@@ -49092,6 +49097,284 @@
 	};
 
 	exports.default = DefaultLayout;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(294);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _FooterTop = __webpack_require__(311);
+
+	var _FooterTop2 = _interopRequireDefault(_FooterTop);
+
+	var _FooterBottom = __webpack_require__(313);
+
+	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Footer = function Footer() {
+	    return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
+	        'footer',
+	        { className: 'pagefooter' },
+	        _react2.default.createElement(_FooterTop2.default, null),
+	        _react2.default.createElement(_FooterBottom2.default, null)
+	    ) : null;
+	};
+
+	exports.default = Footer;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _FooterTopMenu = __webpack_require__(312);
+
+	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterTop = function FooterTop() {
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "top-footer" },
+	        _react2.default.createElement(
+	            "div",
+	            { className: "container" },
+	            _react2.default.createElement(
+	                "div",
+	                { className: "row" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-lg-3 footer-logo" },
+	                    _react2.default.createElement(
+	                        "a",
+	                        { href: bundle.site_url, title: "Red Door Company" },
+	                        _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/footer-logo.svg", alt: bundle.site_name,
+	                            className: "svg" })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-md-12 col-lg-9 footer-menu" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "row" },
+	                        bundle.footer.top_footer.map(function (menu) {
+	                            return _react2.default.createElement(_FooterTopMenu2.default, { menu: menu });
+	                        })
+	                    )
+	                )
+	            )
+	        )
+	    );
+	};
+
+	exports.default = FooterTop;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterTop = function FooterTop(_ref) {
+	    var menu = _ref.menu;
+
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "col-6 col-sm-6 col-lg-3" },
+	        _react2.default.createElement(
+	            "h5",
+	            null,
+	            menu.title
+	        ),
+	        _react2.default.createElement(
+	            "ul",
+	            null,
+	            menu.items.map(function (item) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    null,
+	                    _react2.default.createElement(
+	                        "a",
+	                        { href: item.url },
+	                        item.title
+	                    )
+	                );
+	            })
+	        )
+	    );
+	};
+
+	exports.default = FooterTop;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _FooterBottomMenu = __webpack_require__(314);
+
+	var _FooterBottomMenu2 = _interopRequireDefault(_FooterBottomMenu);
+
+	var _FooterBottomSocialMenu = __webpack_require__(315);
+
+	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterBottom = function FooterBottom() {
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "bottom-footer" },
+	        _react2.default.createElement(
+	            "div",
+	            { className: "container" },
+	            _react2.default.createElement(
+	                "div",
+	                { className: "row" },
+	                _react2.default.createElement(_FooterBottomMenu2.default, { menu: bundle.footer.bottom_footer.menu }),
+	                _react2.default.createElement(_FooterBottomSocialMenu2.default, { menu: bundle.footer.bottom_footer.social_menu })
+	            )
+	        )
+	    );
+	};
+
+	exports.default = FooterBottom;
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterTop = function FooterTop(_ref) {
+	    var menu = _ref.menu;
+
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "col-md-12 col-lg-7" },
+	        _react2.default.createElement(
+	            "ul",
+	            null,
+	            menu.items.map(function (item) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    null,
+	                    _react2.default.createElement(
+	                        "a",
+	                        { href: item.url },
+	                        item.title
+	                    )
+	                );
+	            })
+	        )
+	    );
+	};
+
+	exports.default = FooterTop;
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterTop = function FooterTop(_ref) {
+	    var menu = _ref.menu;
+
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "col-md-12 col-lg-5" },
+	        _react2.default.createElement(
+	            "div",
+	            { className: "social" },
+	            _react2.default.createElement(
+	                "span",
+	                null,
+	                menu.title
+	            ),
+	            menu.items.map(function (item) {
+	                return _react2.default.createElement(
+	                    "a",
+	                    { className: item.title.toLowerCase(), href: item.url, target: "_blank", title: item.title },
+	                    _react2.default.createElement("i", {
+	                        className: "fa fa-" + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
+	                );
+	            })
+	        )
+	    );
+	};
+
+	exports.default = FooterTop;
 
 /***/ }
 /******/ ]);
