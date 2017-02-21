@@ -155,6 +155,10 @@ namespace UsabilityDynamics {
         if (isset($widget['menu_select']))
           $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
 
+        /** Remove namespace from class name */
+        if(isset($widget['panels_info']['class']))
+          $widget['panels_info']['class'] = end(explode('\\', $widget['panels_info']['class']));
+
         $fields = [];
         foreach ($widget as $k => $field) {
 

@@ -7,11 +7,12 @@ import Modal from './components/Modal.jsx'
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows
+        rows: state.postState.rows,
+        open: state.modal ? state.modal.openModal : false
     }
 };
 
-const MastheadContent = ({rows}) => {
+const MastheadContent = ({rows, open}) => {
 
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
@@ -23,6 +24,11 @@ const MastheadContent = ({rows}) => {
     let headerStyle = {
         background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
     };
+
+    if(open)
+        headerStyle = Object.assign(headerStyle, {
+            zIndex: "11"
+        });
 
 
     let container;

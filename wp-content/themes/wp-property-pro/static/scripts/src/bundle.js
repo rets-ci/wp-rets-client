@@ -47793,12 +47793,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows
+	        rows: state.postState.rows,
+	        open: state.modal ? state.modal.openModal : false
 	    };
 	};
 
 	var MastheadContent = function MastheadContent(_ref) {
-	    var rows = _ref.rows;
+	    var rows = _ref.rows,
+	        open = _ref.open;
 
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
@@ -47808,6 +47810,10 @@
 	    var headerStyle = {
 	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
 	    };
+
+	    if (open) headerStyle = Object.assign(headerStyle, {
+	        zIndex: "11"
+	    });
 
 	    var container = void 0;
 	    var modal = void 0;
