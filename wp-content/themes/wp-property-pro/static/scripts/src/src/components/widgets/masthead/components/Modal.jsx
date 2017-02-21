@@ -77,7 +77,7 @@ class Modal extends Component {
         let self = this;
         let resultsElements = searchResults.map((s, k) => {
             return (
-                <div>
+                <div key={k}>
                     <div key={k} className="search-title">
                         <div className="container">
                             <h4>{s.text}</h4>

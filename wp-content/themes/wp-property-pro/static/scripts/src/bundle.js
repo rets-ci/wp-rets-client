@@ -47807,7 +47807,6 @@
 	        open = _ref.open;
 
 
-	    console.log(rows);
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
 	    if (!widget_cell) return _react2.default.createElement('div', null);
@@ -47974,10 +47973,6 @@
 
 	var _reactRedux = __webpack_require__(178);
 
-	var _Api = __webpack_require__(297);
-
-	var _Api2 = _interopRequireDefault(_Api);
-
 	var _DropDownSearch = __webpack_require__(302);
 
 	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
@@ -48024,31 +48019,6 @@
 
 	    clearTermFilter: function clearTermFilter() {
 	      dispatch((0, _index.setFilterTerms)([]));
-	    },
-
-	    doSearch: function doSearch() {
-	      var tax = jQuery('.search-term').attr('data-tax');
-	      var term = jQuery('.search-term span').text();
-	      var searchTypeArray = _lodash2.default.split(jQuery('#' + _lib.Lib.THEME_PREFIX + 'search_type').val(), _lib.Lib.STRING_ARRAY_DELIMITER);
-	      var saleType = _lodash2.default.slice(searchTypeArray, 0, 1);
-	      var propertyTypes = _lodash2.default.slice(searchTypeArray, 1);
-
-	      var title = tax + ' - ' + term;
-	      var url = '/' + saleType + '/' + tax + '/' + term;
-
-	      history.pushState({}, title, url);
-	      jQuery('title').text(title);
-
-	      var params = {
-	        tax: tax,
-	        term: term,
-	        saleType: saleType,
-	        propertyTypes: propertyTypes
-	      };
-
-	      _Api2.default.search(params, function (response) {
-	        dispatch((0, _index.setMapProps)(response));
-	      });
 	    }
 	  };
 	};
@@ -48145,7 +48115,6 @@
 	  searchProps: _react.PropTypes.array,
 	  filterTerms: _react.PropTypes.array,
 	  searchType: _react.PropTypes.string,
-	  doSearch: _react.PropTypes.func,
 	  clearTermFilter: _react.PropTypes.func,
 	  options: _react.PropTypes.object.isRequired
 	};
@@ -48708,7 +48677,7 @@
 	        value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
 	            eve.preventDefault();
 	            console.log('handleResultClick');
-	            _reactRouter.browserHistory.push('/' + saleType.toLowerCase() + '/' + tax + '/' + term + '/?wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term + '&searchType=' + searchType);
+	            _reactRouter.browserHistory.push('/' + saleType.toLowerCase() + '/' + tax + '/' + term + '/?wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	        }
 	    }, {
 	        key: 'handleSearchValueChange',
@@ -48732,7 +48701,7 @@
 	            var resultsElements = searchResults.map(function (s, k) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    null,
+	                    { key: k },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { key: k, className: 'search-title' },

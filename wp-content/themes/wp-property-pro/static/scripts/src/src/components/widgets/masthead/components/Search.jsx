@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Api from '../../../../containers/Api.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import {openModal, setSearchType, setFilterTerms, setMapProps} from '../../../../actions/index.jsx';
+import {openModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
@@ -32,31 +31,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         clearTermFilter: () => {
           dispatch(setFilterTerms([]));
-        },
-
-        doSearch: () => {
-          let tax = jQuery('.search-term').attr('data-tax');
-          let term = jQuery('.search-term span').text();
-          let searchTypeArray = _.split(jQuery('#' + Lib.THEME_PREFIX + 'search_type').val(), Lib.STRING_ARRAY_DELIMITER);
-          let saleType = _.slice(searchTypeArray, 0, 1);
-          let propertyTypes = _.slice(searchTypeArray, 1);
-
-          let title = tax + ' - ' + term;
-          let url = '/' + saleType + '/' + tax + '/' + term;
-
-          history.pushState({}, title, url);
-          jQuery('title').text(title);
-
-          let params = {
-              tax: tax,
-              term: term,
-              saleType: saleType,
-              propertyTypes: propertyTypes
-          };
-
-          Api.search(params, function (response) {
-              dispatch(setMapProps(response));
-          });
         }
     }
 };
@@ -76,7 +50,6 @@ class SearchContent extends Component {
     searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
     searchType: PropTypes.string,
-    doSearch: PropTypes.func,
     clearTermFilter: PropTypes.func,
     options: PropTypes.object.isRequired
   };
