@@ -8,6 +8,8 @@ class DropDownSearch extends Component {
     handleOptionSelect: PropTypes.func,
     labels: PropTypes.array,
     open: PropTypes.bool.isRequired,
+    propertyTypes: PropTypes.array.isRequired,
+    saleTypes: PropTypes.array.isRequired,
     selectedOption: PropTypes.string
   };
 

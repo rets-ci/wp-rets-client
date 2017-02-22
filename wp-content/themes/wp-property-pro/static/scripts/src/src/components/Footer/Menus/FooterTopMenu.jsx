@@ -7,8 +7,8 @@ const FooterTop = ({menu}) => {
             <h5>{menu.title}</h5>
             <ul>
                 {
-                    menu.items.map((item) =>
-                        <li><a href={item.url}>{item.title}</a></li>
+                    menu.items.map((item, i) =>
+                        <li key={i}><a href={item.url}>{item.title}</a></li>
                     )
                 }
             </ul>

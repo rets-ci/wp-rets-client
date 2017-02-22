@@ -301,7 +301,6 @@ class Api extends React.Component {
             method: "POST",
             body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
         };
-
         client.search(esQuery, function (error, response) {
             callback(response);
         });
