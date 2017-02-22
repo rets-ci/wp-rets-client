@@ -55,6 +55,10 @@ namespace UsabilityDynamics {
       /** Disable admin bar */
       add_action('after_setup_theme', [$this, 'remove_admin_bar']);
 
+      /** Add svg to mimes types */
+      define('ALLOW_UNFILTERED_UPLOADS', true);
+      add_action( 'upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1 );
+
     }
 
     /**
@@ -128,6 +132,12 @@ namespace UsabilityDynamics {
         'post_content' => $post->post_content,
         'post_type' => $post->post_type,
         'custom_content' => false
+      ];
+
+      $params['logos'] = [
+        'square_logo' => get_theme_mod('property_pro_company_square_logo'),
+        'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
+        'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
       ];
 
       if (is_front_page()) {
@@ -270,6 +280,12 @@ namespace UsabilityDynamics {
       if (!current_user_can('administrator') && !is_admin()) {
         show_admin_bar(false);
       }
+    }
+
+    function add_svg_to_upload_mimes( $upload_mimes ) {
+      $upload_mimes['svg'] = 'image/svg+xml';
+      $upload_mimes['svgz'] = 'image/svg+xml';
+      return $upload_mimes;
     }
 
   }

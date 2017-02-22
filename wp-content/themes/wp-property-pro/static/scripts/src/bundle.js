@@ -4500,9 +4500,9 @@
 	        _react2.default.createElement(
 	            'a',
 	            { className: 'navbar-brand', href: '/' },
-	            _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/logo.svg', alt: bundle.site_name,
+	            _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
 	                className: 'hidden-sm-down' }),
-	            _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/logo-mobile.svg', alt: bundle.site_name,
+	            _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
 	                className: 'hidden-md-up' })
 	        ),
 	        _react2.default.createElement(
@@ -48149,7 +48149,7 @@
 	                    _react2.default.createElement(
 	                        "a",
 	                        { href: bundle.site_url, title: bundle.site_name },
-	                        _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/footer-logo.svg", alt: bundle.site_name,
+	                        _react2.default.createElement("img", { src: bundle.logos.vertical_logo, alt: bundle.site_name,
 	                            className: "svg" })
 	                    )
 	                ),
