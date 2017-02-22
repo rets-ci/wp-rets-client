@@ -61,6 +61,7 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
+        $_methods[ 'wpp.flushCache' ] = array( $this, 'rpc_flush_cache' );
 
         return $_methods;
       }
@@ -95,6 +96,11 @@ namespace UsabilityDynamics\WPRETSC {
         register_rest_route( 'wp-rets-client/v1', '/getHistogram', array(
           'methods' => 'GET',
           'callback' => array( $this, 'rpc_get_modified_histogram' ),
+        ) );
+
+        register_rest_route( 'wp-rets-client/v1', '/flushCache', array(
+          'methods' => 'GET',
+          'callback' => array( $this, 'rpc_flush_cache' ),
         ) );
 
       }
@@ -270,6 +276,9 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         ud_get_wp_rets_client()->write_log( 'Have request wpp.editProperty request', 'debug' );
+
+        // Defer term counting until method called again.
+        wp_defer_term_counting( true );
 
         if( isset( $post_data[ 'meta_input' ][ 'rets_id' ] ) ) {
           $post_data[ 'meta_input' ][ 'wpp::rets_pk' ] = $post_data[ 'meta_input' ][ 'rets_id' ];
@@ -461,6 +470,9 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>', 'error' );
         }
 
+        // Term counts can/may be updated now.
+        wp_defer_term_counting( false );
+
         return array(
           "ok" => true,
           "post_id" => $_post_id,
@@ -483,6 +495,7 @@ namespace UsabilityDynamics\WPRETSC {
         ud_get_wp_rets_client()->write_log( "Have [" . count( $_post_data_tax_input ) . "] taxonomies to process.", 'debug' );
 
         foreach( (array) $_post_data_tax_input as $tax_name => $tax_tags ) {
+          ud_get_wp_rets_client()->write_log( "Starting to process [$tax_name] taxonomy.", 'debug' );
 
           // Ignore these taxonomies if we support [wpp_listing_location].
           if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_LOCATION' ) && WPP_FEATURE_FLAG_WPP_LISTING_LOCATION && in_array( $tax_name, array( 'rets_location_state', 'rets_location_county', 'rets_location_city', 'rets_location_route' ) ) ) {
@@ -495,7 +508,7 @@ namespace UsabilityDynamics\WPRETSC {
 
           // If WP-Property location flag is enabled, and we're doing the [wpp_listing_location] taxonomy, and the WPP_F::update_location_terms method is callable, process our wpp_listing_location terms.
           if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_LOCATION' ) && WPP_FEATURE_FLAG_WPP_LISTING_LOCATION && $tax_name === 'wpp_listing_location' && is_callable(array( 'WPP_F', 'update_location_terms' ) ) ) {
-            ud_get_wp_rets_client()->write_log( 'Handling [wpp_listing_location] taxonomy for [' . $_post_id .'] listing.', 'info' );
+            ud_get_wp_rets_client()->write_log( 'Handling [wpp_listing_location] taxonomy for [' . $_post_id .'] listing.', 'debug' );
 
             $_geo_tag_fields = array(
               "state" => isset( $_post_data_tax_input["rets_location_state"] ) ? reset( $_post_data_tax_input["rets_location_state"] ) : null,
@@ -910,6 +923,35 @@ namespace UsabilityDynamics\WPRETSC {
         ) );
 
         // die( 'Found [' . count( $query->posts ) . '] posts for [' . $data['schedule'] . '] schedule, using [' . DB_NAME . '] database in [' . timer_stop() . '] seconds.' );
+
+      }
+
+      /**
+       * Flush Cache.
+       *
+       * Mostly a placeholder for future.
+       *
+       * @author potanin@UD
+       * @param null $args
+       * @return null
+       */
+      public function rpc_flush_cache( $args = null ) {
+
+        $args = self::parseRequest( $args, array(
+          'taxonomies' => true
+        ) );
+
+        foreach( array( 'wpp_categorical') as $taxonomy ) {
+          wp_cache_delete( 'all_ids', $taxonomy );
+          wp_cache_delete( 'get', $taxonomy );
+          delete_option( "{$taxonomy}_children" );
+          _get_term_hierarchy( $taxonomy );
+
+        }
+
+        return self::send( array(
+          "ok" => true
+        ) );
 
       }
 

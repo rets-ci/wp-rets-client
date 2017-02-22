@@ -56,7 +56,6 @@ jQuery(function() {
         payload: {
           ud_site_id: config.ud_site_id,
           ud_site_secret_token: config.ud_site_secret_token,
-          retsci_site_secret_token: config.retsci_site_secret_token,
           api_url: config.api_url,
           credentials: data
         }
@@ -92,12 +91,12 @@ jQuery(function() {
         action: 'wpp_retsci_subscription',
         security: config.security,
         payload: {
-          retsci_site_id: config.retsci_site_id,
-          retsci_site_secret_token: config.retsci_site_secret_token,
+          ud_site_id: config.ud_site_id,
+          ud_site_secret_token: config.ud_site_secret_token,
           user_data: config.user_data,
           blog_id: config.blog_id,
           credentials: data,
-          api_url: config.api_url,
+          api_url: config.api_url
         }
       }, function( res ){
 
