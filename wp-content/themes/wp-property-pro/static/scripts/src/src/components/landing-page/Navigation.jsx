@@ -24,9 +24,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const NavigationContent = ({openUserPanel}) => (
     <nav className="navbar navbar-toggleable-md bg-faded">
         <a className="navbar-brand" href="/">
-            <img src="http://clients.codelabgh.com/reddoorcomp.dev/img/logo.svg" alt={bundle.site_name}
+            <img src={`${bundle.template_url}/static/images/src/logo.svg`} alt={bundle.site_name}
                  className="hidden-sm-down"/>
-            <img src="http://clients.codelabgh.com/reddoorcomp.dev/img/logo-mobile.svg" alt={bundle.site_name}
+            <img src={`${bundle.template_url}/static/images/src/logo-mobile.svg`} alt={bundle.site_name}
                  className="hidden-md-up"/>
         </a>
         <ul className="nav navbar-toggler-right">

@@ -11,7 +11,7 @@ class TopPanel extends Component {
           <div className="row">
             <div className="logo">
               <a href="/" title="Red Door Company">
-              <img src="http://clients.codelabgh.com/reddoorcomp.dev/img/logo-mobile.svg" alt="Red Door Company" />
+              <img src={`${bundle.template_url}/static/images/src/logo-mobile.svg`} alt="Red Door Company" />
               </a>
             </div>
             <span className="drop-nav">

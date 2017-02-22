@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import numeral from 'numeral';
+import Util from '../Util.jsx';
+import {Lib} from '../../lib.jsx';
 
 class SearchResultListing extends Component {
   render() {
@@ -10,7 +12,7 @@ class SearchResultListing extends Component {
              <div className="col-sm-6" key={i}>
                <div className="card">
                  <div className="card-img">
-                   <img className="card-img-top" src="http://clients.codelabgh.com/reddoorcomp.dev/img/listing-1.png" alt="Card image cap" />
+                   <img className="card-img-top" src={Util.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, Lib.PROPERTY_LISTING_IMAGE_SIZE)} alt="Card image cap" />
                    <ul className="direction-nav">
                       <li><a className="nav-prev" href="#"></a></li>
                       <li><a className="nav-next" href="#"></a></li>

@@ -1,29 +1,45 @@
 import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
+import {Lib} from '../lib.jsx'
+import _ from 'lodash'
 
 
 class Util extends React.Component {
 
-    static stringStyleToObject(stringStyle) {
+  static stringStyleToObject(stringStyle) {
 
-        let style = {};
-        let styleArray = stringStyle.split("\n");
+    let style = {};
+    let styleArray = stringStyle.split("\n");
 
-        for (let i in styleArray) {
-            let styleRow = styleArray[i].split(":");
-            let styleRowObject = {};
-            styleRowObject[styleRow[0]] = styleRow[1];
-            style = Object.assign({}, style, styleRowObject);
-        }
-
-        return style;
+    for (let i in styleArray) {
+      let styleRow = styleArray[i].split(":");
+      let styleRowObject = {};
+      styleRowObject[styleRow[0]] = styleRow[1];
+      style = Object.assign({}, style, styleRowObject);
     }
 
-    static parseURL(){
-        let path = location.pathname;
-        let apthArray = path.split('/');
-    }
+    return style;
+  }
+
+  static getThumbnailUrlBySize(thumbnailUrl, size) {
+    let urlArray = _.split(thumbnailUrl, Lib.URL_DELIMITER);
+    let fileName = _.last(urlArray);
+    let fileNameArray = _.split(fileName, Lib.EXTENSION_DELIMITER)
+
+    let fileNameWithSize = _.join([
+      fileNameArray[0],
+      size
+    ], Lib.STRING_ARRAY_DELIMITER);
+
+    let newFileName = _.join([
+        fileNameWithSize,
+        fileNameArray[1]
+      ],
+      Lib.EXTENSION_DELIMITER);
+
+    return _.replace(thumbnailUrl, fileName, newFileName);
+  }
 }
 
 export default Util;
