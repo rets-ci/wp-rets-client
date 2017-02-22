@@ -7,8 +7,8 @@ const FooterTop = ({menu}) => {
             <div className="social">
                 <span>{menu.title}</span>
                 {
-                    menu.items.map((item) =>
-                        <a className={item.title.toLowerCase()} href={item.url} target="_blank" title={item.title}><i
+                    menu.items.map((item, i) =>
+                        <a key={i} className={item.title.toLowerCase()} href={item.url} target="_blank" title={item.title}><i
                             className={`fa fa-${item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase()+'-f' : item.title.toLowerCase()}`}></i></a>
                     )
                 }

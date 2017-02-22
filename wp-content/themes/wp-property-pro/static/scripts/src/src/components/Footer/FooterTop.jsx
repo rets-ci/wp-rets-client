@@ -18,8 +18,8 @@ const FooterTop = () => {
                     <div className="col-md-12 col-lg-9 footer-menu">
                         <div className="row">
                             {
-                                bundle.footer.top_footer.map((menu) =>
-                                    <FooterTopMenu menu={menu}/>
+                                bundle.footer.top_footer.map((menu, i) =>
+                                    <FooterTopMenu key={i} menu={menu}/>
                                 )
                             }
                         </div>

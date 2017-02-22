@@ -16,6 +16,7 @@
     "file-loader": "^0.10.0",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
+    "numeral": "^2.0.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-history": "^0.18.2",

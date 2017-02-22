@@ -6,8 +6,8 @@ const FooterTop = ({menu}) => {
         <div className="col-md-12 col-lg-7">
             <ul>
                 {
-                    menu.items.map((item) =>
-                        <li><a href={item.url}>{item.title}</a></li>
+                    menu.items.map((item, i) =>
+                        <li key={i}><a href={item.url}>{item.title}</a></li>
                     )
                 }
             </ul>

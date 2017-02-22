@@ -58,7 +58,7 @@ class Modal extends Component {
     handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
         eve.preventDefault();
         console.log('handleResultClick');
-        browserHistory.push(`/${saleType.toLowerCase()}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+        browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
     }
 
     handleSearchValueChange(eve) {
