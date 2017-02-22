@@ -48642,6 +48642,10 @@
 
 	var _lib = __webpack_require__(2);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48720,18 +48724,20 @@
 	                      )
 	                    )
 	                  ),
-	                  _react2.default.createElement(
+	                  _lodash2.default.get(p, '_source._system.addressDetail', '') ? _react2.default.createElement(
 	                    'h4',
-	                    { className: 'card-title' },
+	                    {
+	                      className: 'card-title' },
 	                    p._source._system.addressDetail.streetNumber + ' ' + p._source._system.addressDetail.streetName
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  _lodash2.default.get(p, '_source._system.addressDetail', '') ? _react2.default.createElement(
 	                    'p',
-	                    { className: 'card-text' },
+	                    {
+	                      className: 'card-text' },
 	                    p._source._system.addressDetail.city,
 	                    ', ',
 	                    p._source._system.addressDetail.zipcode
-	                  ),
+	                  ) : null,
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'liting-info-box' },

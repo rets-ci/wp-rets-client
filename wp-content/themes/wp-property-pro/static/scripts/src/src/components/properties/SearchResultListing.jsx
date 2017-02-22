@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import numeral from 'numeral';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
+import _ from 'lodash';
 
 class SearchResultListing extends Component {
   render() {
@@ -26,8 +27,19 @@ class SearchResultListing extends Component {
                         <a href="#" className="hide" title="Hide"><i className="fa fa-eye-slash" aria-hidden="true"></i></a>
                      </span>
                    </div>
-                   <h4 className="card-title">{p._source._system.addressDetail.streetNumber + ' ' + p._source._system.addressDetail.streetName}</h4>
-                   <p className="card-text">{p._source._system.addressDetail.city}, {p._source._system.addressDetail.zipcode}</p>
+                   {
+                     _.get(p, '_source._system.addressDetail', '')
+                       ? <h4
+                         className="card-title">{p._source._system.addressDetail.streetNumber + ' ' + p._source._system.addressDetail.streetName}</h4>
+                       : null
+                   }
+                   {
+                     _.get(p, '_source._system.addressDetail', '')
+                       ? <p
+                         className="card-text">{p._source._system.addressDetail.city}, {p._source._system.addressDetail.zipcode}</p>
+                       : null
+                   }
+
                    <ul className="liting-info-box">
                       <li>{p._source.tax_input.bedrooms ? p._source.tax_input.bedrooms[0] + ' Bed' : ''}</li>
                       <li>{p._source.tax_input.bathrooms ? p._source.tax_input.bedrooms[0] + ' Bath' : ''}</li>
