@@ -42415,6 +42415,9 @@
 	        _this.state = {
 	            searchValue: ''
 	        };
+
+	        // Set default value for non-empty modal
+	        _this.props.searchHandler("Durham");
 	        return _this;
 	    }
 
