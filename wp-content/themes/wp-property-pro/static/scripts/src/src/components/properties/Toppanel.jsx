@@ -11,7 +11,7 @@ class TopPanel extends Component {
           <div className="row">
             <div className="logo">
               <a href="/" title={bundle.site_name}>
-              <img src={`${bundle.template_url}/static/images/src/logo-mobile.svg`} alt={bundle.site_name} />
+              <img src={bundle.logos.square_logo} alt={bundle.site_name} />
               </a>
             </div>
             <span className="drop-nav">

@@ -49867,7 +49867,7 @@
 	              _react2.default.createElement(
 	                "a",
 	                { href: "/", title: bundle.site_name },
-	                _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/logo-mobile.svg", alt: bundle.site_name })
+	                _react2.default.createElement("img", { src: bundle.logos.square_logo, alt: bundle.site_name })
 	              )
 	            ),
 	            _react2.default.createElement(
