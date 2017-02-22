@@ -9,7 +9,7 @@ const FooterTop = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-3 footer-logo">
-                        <a href={bundle.site_url} title="Red Door Company">
+                        <a href={bundle.site_url} title={bundle.site_name}>
                             <img src={`${bundle.template_url}/static/images/src/footer-logo.svg`} alt={bundle.site_name}
                                  className="svg"/>
                         </a>

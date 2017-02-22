@@ -4379,8 +4379,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import Map from './Map.jsx';
-
 
 	var Home = function (_Component) {
 	  _inherits(Home, _Component);
@@ -48147,7 +48145,7 @@
 	                    { className: "col-lg-3 footer-logo" },
 	                    _react2.default.createElement(
 	                        "a",
-	                        { href: bundle.site_url, title: "Red Door Company" },
+	                        { href: bundle.site_url, title: bundle.site_name },
 	                        _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/footer-logo.svg", alt: bundle.site_name,
 	                            className: "svg" })
 	                    )
@@ -49859,8 +49857,8 @@
 	              { className: "logo" },
 	              _react2.default.createElement(
 	                "a",
-	                { href: "/", title: "Red Door Company" },
-	                _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/logo-mobile.svg", alt: "Red Door Company" })
+	                { href: "/", title: bundle.site_name },
+	                _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/logo-mobile.svg", alt: bundle.site_name })
 	              )
 	            ),
 	            _react2.default.createElement(
