@@ -158,10 +158,11 @@
 	    };
 	};
 
-	var setMapProps = exports.setMapProps = function setMapProps(mapProps) {
+	var setMapProps = exports.setMapProps = function setMapProps(mapProps, total) {
 	    return {
 	        type: _lib.Lib.SET_MAP_PROPS_ACTION,
-	        mapProps: mapProps
+	        mapProps: mapProps,
+	        totalProps: total
 	    };
 	};
 
@@ -229,7 +230,8 @@
 	    STRING_ARRAY_DELIMITER: '-',
 	    URL_DELIMITER: '/',
 	    EXTENSION_DELIMITER: '.',
-	    PROPERTY_LISTING_IMAGE_SIZE: '435x230'
+	    PROPERTY_LISTING_IMAGE_SIZE: '435x230',
+	    PROPERTY_PER_PAGE: 18
 	};
 
 /***/ },
@@ -42823,6 +42825,7 @@
 	            query = JSON.stringify(query);
 
 	            var size = params.size || 500;
+	            var from = params.from || 0;
 
 	            var aggregations = JSON.stringify({});
 
@@ -42835,7 +42838,7 @@
 	                index: index,
 	                type: type,
 	                method: "POST",
-	                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}')
+	                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}')
 	            };
 	            client.search(esQuery, function (error, response) {
 	                callback(response);
@@ -48403,7 +48406,8 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    results: _lodash2.default.get(state, 'mapPropsState.mapProps', [])
+	    results: _lodash2.default.get(state, 'mapPropsState.mapProps', []),
+	    resultsTotal: _lodash2.default.get(state, 'mapPropsState.totalProps', 0)
 	  };
 	};
 
@@ -48414,12 +48418,12 @@
 	      var params = {
 	        propertyTypes: pt,
 	        saleType: saleType,
-	        size: 10,
+	        size: _lib.Lib.PROPERTY_PER_PAGE,
 	        tax: tax,
 	        term: term
 	      };
 	      _Api2.default.search(params, function (response) {
-	        dispatch((0, _index.setMapProps)(response.hits.hits.length ? response.hits.hits : []));
+	        dispatch((0, _index.setMapProps)(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
 	      });
 	    }
 	  };
@@ -48495,7 +48499,9 @@
 	                _react2.default.createElement(
 	                  'p',
 	                  null,
-	                  'There are 250 homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                  'There are ',
+	                  this.props.resultsTotal,
+	                  ' homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                )
 	              ),
 	              _react2.default.createElement(_SearchResultListing2.default, { properties: this.props.results })
@@ -50617,7 +50623,8 @@
 	    switch (action.type) {
 	        case _lib.Lib.SET_MAP_PROPS_ACTION:
 	            return Object.assign({}, state, {
-	                mapProps: action.mapProps
+	                mapProps: action.mapProps,
+	                totalProps: action.totalProps
 	            });
 	        default:
 	            return state;

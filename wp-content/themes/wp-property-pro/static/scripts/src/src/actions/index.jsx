@@ -35,10 +35,11 @@ export const setSearchProps = (searchProps) => {
     }
 };
 
-export const setMapProps = (mapProps) => {
+export const setMapProps = (mapProps, total) => {
     return {
         type: Lib.SET_MAP_PROPS_ACTION,
-        mapProps: mapProps
+        mapProps: mapProps,
+        totalProps: total
     }
 };
 
