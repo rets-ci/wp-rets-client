@@ -70,15 +70,15 @@
 
 	var _reactRouter = __webpack_require__(233);
 
-	var _reactRouterRedux = __webpack_require__(300);
+	var _reactRouterRedux = __webpack_require__(302);
 
-	var _index2 = __webpack_require__(305);
+	var _index2 = __webpack_require__(307);
 
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(49);
 
-	var _reduxThunk = __webpack_require__(317);
+	var _reduxThunk = __webpack_require__(319);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -158,10 +158,11 @@
 	    };
 	};
 
-	var setMapProps = exports.setMapProps = function setMapProps(mapProps) {
+	var setMapProps = exports.setMapProps = function setMapProps(mapProps, total) {
 	    return {
 	        type: _lib.Lib.SET_MAP_PROPS_ACTION,
-	        mapProps: mapProps
+	        mapProps: mapProps,
+	        totalProps: total
 	    };
 	};
 
@@ -226,7 +227,11 @@
 	    SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
 
 	    THEME_PREFIX: 'wp-property-pro-',
-	    STRING_ARRAY_DELIMITER: '-'
+	    STRING_ARRAY_DELIMITER: '-',
+	    URL_DELIMITER: '/',
+	    EXTENSION_DELIMITER: '.',
+	    PROPERTY_LISTING_IMAGE_SIZE: '435x230',
+	    PROPERTY_PER_PAGE: 18
 	};
 
 /***/ },
@@ -4376,8 +4381,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import Map from './Map.jsx';
-
 
 	var Home = function (_Component) {
 	  _inherits(Home, _Component);
@@ -4499,9 +4502,9 @@
 	        _react2.default.createElement(
 	            'a',
 	            { className: 'navbar-brand', href: '/' },
-	            _react2.default.createElement('img', { src: 'http://clients.codelabgh.com/reddoorcomp.dev/img/logo.svg', alt: bundle.site_name,
+	            _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
 	                className: 'hidden-sm-down' }),
-	            _react2.default.createElement('img', { src: 'http://clients.codelabgh.com/reddoorcomp.dev/img/logo-mobile.svg', alt: bundle.site_name,
+	            _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
 	                className: 'hidden-md-up' })
 	        ),
 	        _react2.default.createElement(
@@ -24189,9 +24192,11 @@
 	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
 	    };
 
-	    if (open) headerStyle = Object.assign(headerStyle, {
-	        zIndex: "11"
-	    });
+	    if (open) {
+	        headerStyle = Object.assign(headerStyle, {
+	            zIndex: "11"
+	        });
+	    }
 
 	    var container = void 0;
 	    var modal = void 0;
@@ -42412,6 +42417,9 @@
 	        _this.state = {
 	            searchValue: ''
 	        };
+
+	        // Set default value for non-empty modal
+	        _this.props.searchHandler("Durham");
 	        return _this;
 	    }
 
@@ -42817,6 +42825,7 @@
 	            query = JSON.stringify(query);
 
 	            var size = params.size || 500;
+	            var from = params.from || 0;
 
 	            var aggregations = JSON.stringify({});
 
@@ -42829,7 +42838,7 @@
 	                index: index,
 	                type: type,
 	                method: "POST",
-	                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}')
+	                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}')
 	            };
 	            client.search(esQuery, function (error, response) {
 	                callback(response);
@@ -48142,8 +48151,8 @@
 	                    { className: "col-lg-3 footer-logo" },
 	                    _react2.default.createElement(
 	                        "a",
-	                        { href: bundle.site_url, title: "Red Door Company" },
-	                        _react2.default.createElement("img", { src: bundle.template_url + "/static/images/src/footer-logo.svg", alt: bundle.site_name,
+	                        { href: bundle.site_url, title: bundle.site_name },
+	                        _react2.default.createElement("img", { src: bundle.logos.vertical_logo, alt: bundle.site_name,
 	                            className: "svg" })
 	                    )
 	                ),
@@ -48379,7 +48388,7 @@
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
-	var _Toppanel = __webpack_require__(299);
+	var _Toppanel = __webpack_require__(301);
 
 	var _Toppanel2 = _interopRequireDefault(_Toppanel);
 
@@ -48397,7 +48406,8 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    results: _lodash2.default.get(state, 'mapPropsState.mapProps', [])
+	    results: _lodash2.default.get(state, 'mapPropsState.mapProps', []),
+	    resultsTotal: _lodash2.default.get(state, 'mapPropsState.totalProps', 0)
 	  };
 	};
 
@@ -48408,12 +48418,12 @@
 	      var params = {
 	        propertyTypes: pt,
 	        saleType: saleType,
-	        size: 10,
+	        size: _lib.Lib.PROPERTY_PER_PAGE,
 	        tax: tax,
 	        term: term
 	      };
 	      _Api2.default.search(params, function (response) {
-	        dispatch((0, _index.setMapProps)(response.hits.hits.length ? response.hits.hits : []));
+	        dispatch((0, _index.setMapProps)(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
 	      });
 	    }
 	  };
@@ -48489,7 +48499,9 @@
 	                _react2.default.createElement(
 	                  'p',
 	                  null,
-	                  'There are 250 homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                  'There are ',
+	                  this.props.resultsTotal,
+	                  ' homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                )
 	              ),
 	              _react2.default.createElement(_SearchResultListing2.default, { properties: this.props.results })
@@ -48629,9 +48641,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(318);
+	var _numeral = __webpack_require__(299);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
+
+	var _Util = __webpack_require__(300);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	var _lib = __webpack_require__(2);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48669,7 +48691,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'card-img' },
-	                  _react2.default.createElement('img', { className: 'card-img-top', src: 'http://clients.codelabgh.com/reddoorcomp.dev/img/listing-1.png', alt: 'Card image cap' }),
+	                  _react2.default.createElement('img', { className: 'card-img-top', src: _Util2.default.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE), alt: 'Card image cap' }),
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'direction-nav' },
@@ -48711,18 +48733,20 @@
 	                      )
 	                    )
 	                  ),
-	                  _react2.default.createElement(
+	                  _lodash2.default.get(p, '_source._system.addressDetail', '') ? _react2.default.createElement(
 	                    'h4',
-	                    { className: 'card-title' },
+	                    {
+	                      className: 'card-title' },
 	                    p._source._system.addressDetail.streetNumber + ' ' + p._source._system.addressDetail.streetName
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  _lodash2.default.get(p, '_source._system.addressDetail', '') ? _react2.default.createElement(
 	                    'p',
-	                    { className: 'card-text' },
+	                    {
+	                      className: 'card-text' },
 	                    p._source._system.addressDetail.city,
 	                    ', ',
 	                    p._source._system.addressDetail.zipcode
-	                  ),
+	                  ) : null,
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'liting-info-box' },
@@ -48760,979 +48784,6 @@
 
 /***/ },
 /* 299 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var TopPanel = function (_Component) {
-	  _inherits(TopPanel, _Component);
-
-	  function TopPanel() {
-	    _classCallCheck(this, TopPanel);
-
-	    return _possibleConstructorReturn(this, (TopPanel.__proto__ || Object.getPrototypeOf(TopPanel)).apply(this, arguments));
-	  }
-
-	  _createClass(TopPanel, [{
-	    key: "render",
-	    value: function render() {
-	      return _react2.default.createElement(
-	        "header",
-	        { className: "top-panel" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "container-fluid" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "row" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "logo" },
-	              _react2.default.createElement(
-	                "a",
-	                { href: "/", title: "Red Door Company" },
-	                _react2.default.createElement("img", { src: "http://clients.codelabgh.com/reddoorcomp.dev/img/logo-mobile.svg", alt: "Red Door Company" })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "span",
-	              { className: "drop-nav" },
-	              _react2.default.createElement(
-	                "a",
-	                { href: "#" },
-	                "Rent ",
-	                _react2.default.createElement("i", { className: "fa fa-caret-down" })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "search-box-wrap" },
-	              _react2.default.createElement(
-	                "form",
-	                { method: "get", className: "clearfix hidden-md-down" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "bs-tags-box" },
-	                  _react2.default.createElement(
-	                    "div",
-	                    { className: "bs-tags-input" },
-	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default" },
-	                      _react2.default.createElement(
-	                        "span",
-	                        null,
-	                        _react2.default.createElement("i", { className: "fa fa-times" })
-	                      ),
-	                      " ",
-	                      this.props.searchTerm
-	                    ),
-	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
-	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
-	                        _react2.default.createElement(
-	                          "span",
-	                          null,
-	                          "+"
-	                        ),
-	                        " Bedroom"
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
-	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
-	                        _react2.default.createElement(
-	                          "span",
-	                          null,
-	                          "+"
-	                        ),
-	                        " Price"
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
-	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
-	                        _react2.default.createElement(
-	                          "span",
-	                          null,
-	                          "+"
-	                        ),
-	                        " More Filters"
-	                      )
-	                    ),
-	                    _react2.default.createElement("input", { type: "text", size: "1", placeholder: "" })
-	                  )
-	                ),
-	                _react2.default.createElement("input", { type: "text", defaultValue: "Raleigh,Raleigh2", "data-role": "tagsinput", className: "tagsinput" }),
-	                _react2.default.createElement("i", { className: "fa fa-search" })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "top-nav-bar" },
-	              _react2.default.createElement(
-	                "ul",
-	                null,
-	                _react2.default.createElement(
-	                  "li",
-	                  null,
-	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", title: "Favorites", className: "favorite" },
-	                    _react2.default.createElement("i", { className: "fa fa-heart" })
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  "li",
-	                  null,
-	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", title: "Notification", className: "notification" },
-	                    _react2.default.createElement("i", { className: "fa fa-bell" }),
-	                    " ",
-	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "indicator" },
-	                      _react2.default.createElement("i", { className: "fa fa-circle" })
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  "li",
-	                  null,
-	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", className: "side-navigation" },
-	                    _react2.default.createElement(
-	                      "span",
-	                      null,
-	                      "\u2630"
-	                    )
-	                  )
-	                )
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return TopPanel;
-	}(_react.Component);
-
-	TopPanel.propTypes = {
-	  searchTerm: _react.PropTypes.string
-	};
-	;
-
-	exports.default = TopPanel;
-
-/***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
-
-	var _reducer = __webpack_require__(301);
-
-	Object.defineProperty(exports, 'LOCATION_CHANGE', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reducer.LOCATION_CHANGE;
-	  }
-	});
-	Object.defineProperty(exports, 'routerReducer', {
-	  enumerable: true,
-	  get: function get() {
-	    return _reducer.routerReducer;
-	  }
-	});
-
-	var _actions = __webpack_require__(302);
-
-	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.CALL_HISTORY_METHOD;
-	  }
-	});
-	Object.defineProperty(exports, 'push', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.push;
-	  }
-	});
-	Object.defineProperty(exports, 'replace', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.replace;
-	  }
-	});
-	Object.defineProperty(exports, 'go', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.go;
-	  }
-	});
-	Object.defineProperty(exports, 'goBack', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.goBack;
-	  }
-	});
-	Object.defineProperty(exports, 'goForward', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.goForward;
-	  }
-	});
-	Object.defineProperty(exports, 'routerActions', {
-	  enumerable: true,
-	  get: function get() {
-	    return _actions.routerActions;
-	  }
-	});
-
-	var _sync = __webpack_require__(303);
-
-	var _sync2 = _interopRequireDefault(_sync);
-
-	var _middleware = __webpack_require__(304);
-
-	var _middleware2 = _interopRequireDefault(_middleware);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	exports.syncHistoryWithStore = _sync2['default'];
-	exports.routerMiddleware = _middleware2['default'];
-
-/***/ },
-/* 301 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports.routerReducer = routerReducer;
-	/**
-	 * This action type will be dispatched when your history
-	 * receives a location change.
-	 */
-	var LOCATION_CHANGE = exports.LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
-
-	var initialState = {
-	  locationBeforeTransitions: null
-	};
-
-	/**
-	 * This reducer will update the state with the most recent location history
-	 * has transitioned to. This may not be in sync with the router, particularly
-	 * if you have asynchronously-loaded routes, so reading from and relying on
-	 * this state is discouraged.
-	 */
-	function routerReducer() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-
-	  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-	      type = _ref.type,
-	      payload = _ref.payload;
-
-	  if (type === LOCATION_CHANGE) {
-	    return _extends({}, state, { locationBeforeTransitions: payload });
-	  }
-
-	  return state;
-	}
-
-/***/ },
-/* 302 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/**
-	 * This action type will be dispatched by the history actions below.
-	 * If you're writing a middleware to watch for navigation events, be sure to
-	 * look for actions of this type.
-	 */
-	var CALL_HISTORY_METHOD = exports.CALL_HISTORY_METHOD = '@@router/CALL_HISTORY_METHOD';
-
-	function updateLocation(method) {
-	  return function () {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return {
-	      type: CALL_HISTORY_METHOD,
-	      payload: { method: method, args: args }
-	    };
-	  };
-	}
-
-	/**
-	 * These actions correspond to the history API.
-	 * The associated routerMiddleware will capture these events before they get to
-	 * your reducer and reissue them as the matching function on your history.
-	 */
-	var push = exports.push = updateLocation('push');
-	var replace = exports.replace = updateLocation('replace');
-	var go = exports.go = updateLocation('go');
-	var goBack = exports.goBack = updateLocation('goBack');
-	var goForward = exports.goForward = updateLocation('goForward');
-
-	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
-
-/***/ },
-/* 303 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports['default'] = syncHistoryWithStore;
-
-	var _reducer = __webpack_require__(301);
-
-	var defaultSelectLocationState = function defaultSelectLocationState(state) {
-	  return state.routing;
-	};
-
-	/**
-	 * This function synchronizes your history state with the Redux store.
-	 * Location changes flow from history to the store. An enhanced history is
-	 * returned with a listen method that responds to store updates for location.
-	 *
-	 * When this history is provided to the router, this means the location data
-	 * will flow like this:
-	 * history.push -> store.dispatch -> enhancedHistory.listen -> router
-	 * This ensures that when the store state changes due to a replay or other
-	 * event, the router will be updated appropriately and can transition to the
-	 * correct router state.
-	 */
-	function syncHistoryWithStore(history, store) {
-	  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-	      _ref$selectLocationSt = _ref.selectLocationState,
-	      selectLocationState = _ref$selectLocationSt === undefined ? defaultSelectLocationState : _ref$selectLocationSt,
-	      _ref$adjustUrlOnRepla = _ref.adjustUrlOnReplay,
-	      adjustUrlOnReplay = _ref$adjustUrlOnRepla === undefined ? true : _ref$adjustUrlOnRepla;
-
-	  // Ensure that the reducer is mounted on the store and functioning properly.
-	  if (typeof selectLocationState(store.getState()) === 'undefined') {
-	    throw new Error('Expected the routing state to be available either as `state.routing` ' + 'or as the custom expression you can specify as `selectLocationState` ' + 'in the `syncHistoryWithStore()` options. ' + 'Ensure you have added the `routerReducer` to your store\'s ' + 'reducers via `combineReducers` or whatever method you use to isolate ' + 'your reducers.');
-	  }
-
-	  var initialLocation = void 0;
-	  var isTimeTraveling = void 0;
-	  var unsubscribeFromStore = void 0;
-	  var unsubscribeFromHistory = void 0;
-	  var currentLocation = void 0;
-
-	  // What does the store say about current location?
-	  var getLocationInStore = function getLocationInStore(useInitialIfEmpty) {
-	    var locationState = selectLocationState(store.getState());
-	    return locationState.locationBeforeTransitions || (useInitialIfEmpty ? initialLocation : undefined);
-	  };
-
-	  // Init initialLocation with potential location in store
-	  initialLocation = getLocationInStore();
-
-	  // If the store is replayed, update the URL in the browser to match.
-	  if (adjustUrlOnReplay) {
-	    var handleStoreChange = function handleStoreChange() {
-	      var locationInStore = getLocationInStore(true);
-	      if (currentLocation === locationInStore || initialLocation === locationInStore) {
-	        return;
-	      }
-
-	      // Update address bar to reflect store state
-	      isTimeTraveling = true;
-	      currentLocation = locationInStore;
-	      history.transitionTo(_extends({}, locationInStore, {
-	        action: 'PUSH'
-	      }));
-	      isTimeTraveling = false;
-	    };
-
-	    unsubscribeFromStore = store.subscribe(handleStoreChange);
-	    handleStoreChange();
-	  }
-
-	  // Whenever location changes, dispatch an action to get it in the store
-	  var handleLocationChange = function handleLocationChange(location) {
-	    // ... unless we just caused that location change
-	    if (isTimeTraveling) {
-	      return;
-	    }
-
-	    // Remember where we are
-	    currentLocation = location;
-
-	    // Are we being called for the first time?
-	    if (!initialLocation) {
-	      // Remember as a fallback in case state is reset
-	      initialLocation = location;
-
-	      // Respect persisted location, if any
-	      if (getLocationInStore()) {
-	        return;
-	      }
-	    }
-
-	    // Tell the store to update by dispatching an action
-	    store.dispatch({
-	      type: _reducer.LOCATION_CHANGE,
-	      payload: location
-	    });
-	  };
-	  unsubscribeFromHistory = history.listen(handleLocationChange);
-
-	  // History 3.x doesn't call listen synchronously, so fire the initial location change ourselves
-	  if (history.getCurrentLocation) {
-	    handleLocationChange(history.getCurrentLocation());
-	  }
-
-	  // The enhanced history uses store as source of truth
-	  return _extends({}, history, {
-	    // The listeners are subscribed to the store instead of history
-	    listen: function listen(listener) {
-	      // Copy of last location.
-	      var lastPublishedLocation = getLocationInStore(true);
-
-	      // Keep track of whether we unsubscribed, as Redux store
-	      // only applies changes in subscriptions on next dispatch
-	      var unsubscribed = false;
-	      var unsubscribeFromStore = store.subscribe(function () {
-	        var currentLocation = getLocationInStore(true);
-	        if (currentLocation === lastPublishedLocation) {
-	          return;
-	        }
-	        lastPublishedLocation = currentLocation;
-	        if (!unsubscribed) {
-	          listener(lastPublishedLocation);
-	        }
-	      });
-
-	      // History 2.x listeners expect a synchronous call. Make the first call to the
-	      // listener after subscribing to the store, in case the listener causes a
-	      // location change (e.g. when it redirects)
-	      if (!history.getCurrentLocation) {
-	        listener(lastPublishedLocation);
-	      }
-
-	      // Let user unsubscribe later
-	      return function () {
-	        unsubscribed = true;
-	        unsubscribeFromStore();
-	      };
-	    },
-
-
-	    // It also provides a way to destroy internal listeners
-	    unsubscribe: function unsubscribe() {
-	      if (adjustUrlOnReplay) {
-	        unsubscribeFromStore();
-	      }
-	      unsubscribeFromHistory();
-	    }
-	  });
-	}
-
-/***/ },
-/* 304 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports['default'] = routerMiddleware;
-
-	var _actions = __webpack_require__(302);
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	/**
-	 * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
-	 * provided history object. This will prevent these actions from reaching your
-	 * reducer or any middleware that comes after this one.
-	 */
-	function routerMiddleware(history) {
-	  return function () {
-	    return function (next) {
-	      return function (action) {
-	        if (action.type !== _actions.CALL_HISTORY_METHOD) {
-	          return next(action);
-	        }
-
-	        var _action$payload = action.payload,
-	            method = _action$payload.method,
-	            args = _action$payload.args;
-
-	        history[method].apply(history, _toConsumableArray(args));
-	      };
-	    };
-	  };
-	}
-
-/***/ },
-/* 305 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _reactRouterRedux = __webpack_require__(300);
-
-	var _redux = __webpack_require__(49);
-
-	var _post = __webpack_require__(306);
-
-	var _post2 = _interopRequireDefault(_post);
-
-	var _menu = __webpack_require__(307);
-
-	var _menu2 = _interopRequireDefault(_menu);
-
-	var _map = __webpack_require__(308);
-
-	var _map2 = _interopRequireDefault(_map);
-
-	var _modal = __webpack_require__(309);
-
-	var _modal2 = _interopRequireDefault(_modal);
-
-	var _searchProps = __webpack_require__(310);
-
-	var _searchProps2 = _interopRequireDefault(_searchProps);
-
-	var _mapProps = __webpack_require__(311);
-
-	var _mapProps2 = _interopRequireDefault(_mapProps);
-
-	var _mapMarkers = __webpack_require__(312);
-
-	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
-
-	var _searchType = __webpack_require__(313);
-
-	var _searchType2 = _interopRequireDefault(_searchType);
-
-	var _filterTerms = __webpack_require__(314);
-
-	var _filterTerms2 = _interopRequireDefault(_filterTerms);
-
-	var _userData = __webpack_require__(315);
-
-	var _userData2 = _interopRequireDefault(_userData);
-
-	var _testimonialsCarousel = __webpack_require__(316);
-
-	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var propertyProApp = (0, _redux.combineReducers)({
-	    postState: _post2.default,
-	    menuState: _menu2.default,
-	    mapState: _map2.default,
-	    modal: _modal2.default,
-	    searchPropsState: _searchProps2.default,
-	    searchType: _searchType2.default,
-	    mapPropsState: _mapProps2.default,
-	    mapMarkersState: _mapMarkers2.default,
-	    routing: _reactRouterRedux.routerReducer,
-	    filterTermsState: _filterTerms2.default,
-	    userDataState: _userData2.default,
-	    testimonialsCarouselState: _testimonialsCarousel2.default
-	});
-
-	exports.default = propertyProApp;
-
-/***/ },
-/* 306 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var post = function post() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.ADD_POST_ACTION:
-	            return Object.assign({}, state, {
-	                post: action.post,
-	                rows: action.post.post_content
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = post;
-
-/***/ },
-/* 307 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var menu = function menu() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.INIT_MENU_ACTION:
-	            return Object.assign({}, state, {
-	                menuItems: action.menuItems
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = menu;
-
-/***/ },
-/* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var map = function map() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.ADD_MAP_ACTION:
-	            var new_state = Object.assign({}, state);
-	            new_state.map = action.map;
-	            return new_state;
-	        case _lib.Lib.ADD_MARKER_ACTION:
-	            return Object.assign({}, state, {
-	                markers: state.markers.concat(action.markers)
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = map;
-
-/***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var modal = function modal() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.TOGGLE_MODAL_ACTION:
-	            return Object.assign({}, state, {
-	                openModal: action.open
-	            });
-	        default:
-	            return state;
-	    }
-	};
-
-	exports.default = modal;
-
-/***/ },
-/* 310 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var searchProps = function searchProps() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_SEARCH_PROPS_ACTION:
-	            return Object.assign({}, state, {
-	                searchProps: action.searchProps
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = searchProps;
-
-/***/ },
-/* 311 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var mapProps = function mapProps() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_MAP_PROPS_ACTION:
-	            return Object.assign({}, state, {
-	                mapProps: action.mapProps
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = mapProps;
-
-/***/ },
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var mapMarkers = function mapMarkers() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_MAP_MARKERS_ACTION:
-	            return Object.assign({}, state, {
-	                mapMarkers: action.mapMarkers
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = mapMarkers;
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var searchProps = function searchProps() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_SEARCH_TYPE:
-	            return Object.assign({}, state, {
-	                searchType: action.searchType,
-	                saleType: action.saleType,
-	                propertyTypes: action.propertyTypes
-	            });
-	        default:
-	            return state;
-	    }
-	};
-
-	exports.default = searchProps;
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var filterTerms = function filterTerms() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_FILTER_TERMS_ACTION:
-	            return Object.assign({}, state, {
-	                filterTerms: action.filterTerms
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = filterTerms;
-
-/***/ },
-/* 315 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var userData = function userData() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_USER_DATA_ACTION:
-	            return Object.assign({}, state, action.userData);
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = userData;
-
-/***/ },
-/* 316 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var testimonialsCarousel = function testimonialsCarousel() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION:
-	            return Object.assign({}, state, {
-	                activeItem: action.activeItem
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = testimonialsCarousel;
-
-/***/ },
-/* 317 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.__esModule = true;
-	function createThunkMiddleware(extraArgument) {
-	  return function (_ref) {
-	    var dispatch = _ref.dispatch,
-	        getState = _ref.getState;
-	    return function (next) {
-	      return function (action) {
-	        if (typeof action === 'function') {
-	          return action(dispatch, getState, extraArgument);
-	        }
-
-	        return next(action);
-	      };
-	    };
-	  };
-	}
-
-	var thunk = createThunkMiddleware();
-	thunk.withExtraArgument = createThunkMiddleware;
-
-	exports['default'] = thunk;
-
-/***/ },
-/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -50691,6 +49742,1059 @@
 	return numeral;
 	}));
 
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(84);
+
+	var _reactRedux = __webpack_require__(38);
+
+	var _lib = __webpack_require__(2);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Util = function (_React$Component) {
+	  _inherits(Util, _React$Component);
+
+	  function Util() {
+	    _classCallCheck(this, Util);
+
+	    return _possibleConstructorReturn(this, (Util.__proto__ || Object.getPrototypeOf(Util)).apply(this, arguments));
+	  }
+
+	  _createClass(Util, null, [{
+	    key: 'stringStyleToObject',
+	    value: function stringStyleToObject(stringStyle) {
+
+	      var style = {};
+	      var styleArray = stringStyle.split("\n");
+
+	      for (var i in styleArray) {
+	        var styleRow = styleArray[i].split(":");
+	        var styleRowObject = {};
+	        styleRowObject[styleRow[0]] = styleRow[1];
+	        style = Object.assign({}, style, styleRowObject);
+	      }
+
+	      return style;
+	    }
+	  }, {
+	    key: 'getThumbnailUrlBySize',
+	    value: function getThumbnailUrlBySize(thumbnailUrl, size) {
+	      var urlArray = _lodash2.default.split(thumbnailUrl, _lib.Lib.URL_DELIMITER);
+	      var fileName = _lodash2.default.last(urlArray);
+	      var fileNameArray = _lodash2.default.split(fileName, _lib.Lib.EXTENSION_DELIMITER);
+
+	      var fileNameWithSize = _lodash2.default.join([fileNameArray[0], size], _lib.Lib.STRING_ARRAY_DELIMITER);
+
+	      var newFileName = _lodash2.default.join([fileNameWithSize, fileNameArray[1]], _lib.Lib.EXTENSION_DELIMITER);
+
+	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
+	    }
+	  }]);
+
+	  return Util;
+	}(_react2.default.Component);
+
+	exports.default = Util;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var TopPanel = function (_Component) {
+	  _inherits(TopPanel, _Component);
+
+	  function TopPanel() {
+	    _classCallCheck(this, TopPanel);
+
+	    return _possibleConstructorReturn(this, (TopPanel.__proto__ || Object.getPrototypeOf(TopPanel)).apply(this, arguments));
+	  }
+
+	  _createClass(TopPanel, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "header",
+	        { className: "top-panel" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "container-fluid" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "row" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "logo" },
+	              _react2.default.createElement(
+	                "a",
+	                { href: "/", title: bundle.site_name },
+	                _react2.default.createElement("img", { src: bundle.logos.square_logo, alt: bundle.site_name })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "span",
+	              { className: "drop-nav" },
+	              _react2.default.createElement(
+	                "a",
+	                { href: "#" },
+	                "Rent ",
+	                _react2.default.createElement("i", { className: "fa fa-caret-down" })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "search-box-wrap" },
+	              _react2.default.createElement(
+	                "form",
+	                { method: "get", className: "clearfix hidden-md-down" },
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "bs-tags-box" },
+	                  _react2.default.createElement(
+	                    "div",
+	                    { className: "bs-tags-input" },
+	                    _react2.default.createElement(
+	                      "span",
+	                      { className: "tag badge badge-default" },
+	                      _react2.default.createElement(
+	                        "span",
+	                        null,
+	                        _react2.default.createElement("i", { className: "fa fa-times" })
+	                      ),
+	                      " ",
+	                      this.props.searchTerm
+	                    ),
+	                    _react2.default.createElement(
+	                      "span",
+	                      { className: "tag badge badge-default addfilter" },
+	                      _react2.default.createElement(
+	                        "a",
+	                        { href: "#" },
+	                        _react2.default.createElement(
+	                          "span",
+	                          null,
+	                          "+"
+	                        ),
+	                        " Bedroom"
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      "span",
+	                      { className: "tag badge badge-default addfilter" },
+	                      _react2.default.createElement(
+	                        "a",
+	                        { href: "#" },
+	                        _react2.default.createElement(
+	                          "span",
+	                          null,
+	                          "+"
+	                        ),
+	                        " Price"
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      "span",
+	                      { className: "tag badge badge-default addfilter" },
+	                      _react2.default.createElement(
+	                        "a",
+	                        { href: "#" },
+	                        _react2.default.createElement(
+	                          "span",
+	                          null,
+	                          "+"
+	                        ),
+	                        " More Filters"
+	                      )
+	                    ),
+	                    _react2.default.createElement("input", { type: "text", size: "1", placeholder: "" })
+	                  )
+	                ),
+	                _react2.default.createElement("input", { type: "text", defaultValue: "Raleigh,Raleigh2", "data-role": "tagsinput", className: "tagsinput" }),
+	                _react2.default.createElement("i", { className: "fa fa-search" })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "top-nav-bar" },
+	              _react2.default.createElement(
+	                "ul",
+	                null,
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "#", title: "Favorites", className: "favorite" },
+	                    _react2.default.createElement("i", { className: "fa fa-heart" })
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "#", title: "Notification", className: "notification" },
+	                    _react2.default.createElement("i", { className: "fa fa-bell" }),
+	                    " ",
+	                    _react2.default.createElement(
+	                      "span",
+	                      { className: "indicator" },
+	                      _react2.default.createElement("i", { className: "fa fa-circle" })
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  "li",
+	                  null,
+	                  _react2.default.createElement(
+	                    "a",
+	                    { href: "#", className: "side-navigation" },
+	                    _react2.default.createElement(
+	                      "span",
+	                      null,
+	                      "\u2630"
+	                    )
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return TopPanel;
+	}(_react.Component);
+
+	TopPanel.propTypes = {
+	  searchTerm: _react.PropTypes.string
+	};
+	;
+
+	exports.default = TopPanel;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
+
+	var _reducer = __webpack_require__(303);
+
+	Object.defineProperty(exports, 'LOCATION_CHANGE', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reducer.LOCATION_CHANGE;
+	  }
+	});
+	Object.defineProperty(exports, 'routerReducer', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reducer.routerReducer;
+	  }
+	});
+
+	var _actions = __webpack_require__(304);
+
+	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.CALL_HISTORY_METHOD;
+	  }
+	});
+	Object.defineProperty(exports, 'push', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.push;
+	  }
+	});
+	Object.defineProperty(exports, 'replace', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.replace;
+	  }
+	});
+	Object.defineProperty(exports, 'go', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.go;
+	  }
+	});
+	Object.defineProperty(exports, 'goBack', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.goBack;
+	  }
+	});
+	Object.defineProperty(exports, 'goForward', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.goForward;
+	  }
+	});
+	Object.defineProperty(exports, 'routerActions', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.routerActions;
+	  }
+	});
+
+	var _sync = __webpack_require__(305);
+
+	var _sync2 = _interopRequireDefault(_sync);
+
+	var _middleware = __webpack_require__(306);
+
+	var _middleware2 = _interopRequireDefault(_middleware);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	exports.syncHistoryWithStore = _sync2['default'];
+	exports.routerMiddleware = _middleware2['default'];
+
+/***/ },
+/* 303 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.routerReducer = routerReducer;
+	/**
+	 * This action type will be dispatched when your history
+	 * receives a location change.
+	 */
+	var LOCATION_CHANGE = exports.LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
+
+	var initialState = {
+	  locationBeforeTransitions: null
+	};
+
+	/**
+	 * This reducer will update the state with the most recent location history
+	 * has transitioned to. This may not be in sync with the router, particularly
+	 * if you have asynchronously-loaded routes, so reading from and relying on
+	 * this state is discouraged.
+	 */
+	function routerReducer() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+
+	  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+	      type = _ref.type,
+	      payload = _ref.payload;
+
+	  if (type === LOCATION_CHANGE) {
+	    return _extends({}, state, { locationBeforeTransitions: payload });
+	  }
+
+	  return state;
+	}
+
+/***/ },
+/* 304 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * This action type will be dispatched by the history actions below.
+	 * If you're writing a middleware to watch for navigation events, be sure to
+	 * look for actions of this type.
+	 */
+	var CALL_HISTORY_METHOD = exports.CALL_HISTORY_METHOD = '@@router/CALL_HISTORY_METHOD';
+
+	function updateLocation(method) {
+	  return function () {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return {
+	      type: CALL_HISTORY_METHOD,
+	      payload: { method: method, args: args }
+	    };
+	  };
+	}
+
+	/**
+	 * These actions correspond to the history API.
+	 * The associated routerMiddleware will capture these events before they get to
+	 * your reducer and reissue them as the matching function on your history.
+	 */
+	var push = exports.push = updateLocation('push');
+	var replace = exports.replace = updateLocation('replace');
+	var go = exports.go = updateLocation('go');
+	var goBack = exports.goBack = updateLocation('goBack');
+	var goForward = exports.goForward = updateLocation('goForward');
+
+	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports['default'] = syncHistoryWithStore;
+
+	var _reducer = __webpack_require__(303);
+
+	var defaultSelectLocationState = function defaultSelectLocationState(state) {
+	  return state.routing;
+	};
+
+	/**
+	 * This function synchronizes your history state with the Redux store.
+	 * Location changes flow from history to the store. An enhanced history is
+	 * returned with a listen method that responds to store updates for location.
+	 *
+	 * When this history is provided to the router, this means the location data
+	 * will flow like this:
+	 * history.push -> store.dispatch -> enhancedHistory.listen -> router
+	 * This ensures that when the store state changes due to a replay or other
+	 * event, the router will be updated appropriately and can transition to the
+	 * correct router state.
+	 */
+	function syncHistoryWithStore(history, store) {
+	  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+	      _ref$selectLocationSt = _ref.selectLocationState,
+	      selectLocationState = _ref$selectLocationSt === undefined ? defaultSelectLocationState : _ref$selectLocationSt,
+	      _ref$adjustUrlOnRepla = _ref.adjustUrlOnReplay,
+	      adjustUrlOnReplay = _ref$adjustUrlOnRepla === undefined ? true : _ref$adjustUrlOnRepla;
+
+	  // Ensure that the reducer is mounted on the store and functioning properly.
+	  if (typeof selectLocationState(store.getState()) === 'undefined') {
+	    throw new Error('Expected the routing state to be available either as `state.routing` ' + 'or as the custom expression you can specify as `selectLocationState` ' + 'in the `syncHistoryWithStore()` options. ' + 'Ensure you have added the `routerReducer` to your store\'s ' + 'reducers via `combineReducers` or whatever method you use to isolate ' + 'your reducers.');
+	  }
+
+	  var initialLocation = void 0;
+	  var isTimeTraveling = void 0;
+	  var unsubscribeFromStore = void 0;
+	  var unsubscribeFromHistory = void 0;
+	  var currentLocation = void 0;
+
+	  // What does the store say about current location?
+	  var getLocationInStore = function getLocationInStore(useInitialIfEmpty) {
+	    var locationState = selectLocationState(store.getState());
+	    return locationState.locationBeforeTransitions || (useInitialIfEmpty ? initialLocation : undefined);
+	  };
+
+	  // Init initialLocation with potential location in store
+	  initialLocation = getLocationInStore();
+
+	  // If the store is replayed, update the URL in the browser to match.
+	  if (adjustUrlOnReplay) {
+	    var handleStoreChange = function handleStoreChange() {
+	      var locationInStore = getLocationInStore(true);
+	      if (currentLocation === locationInStore || initialLocation === locationInStore) {
+	        return;
+	      }
+
+	      // Update address bar to reflect store state
+	      isTimeTraveling = true;
+	      currentLocation = locationInStore;
+	      history.transitionTo(_extends({}, locationInStore, {
+	        action: 'PUSH'
+	      }));
+	      isTimeTraveling = false;
+	    };
+
+	    unsubscribeFromStore = store.subscribe(handleStoreChange);
+	    handleStoreChange();
+	  }
+
+	  // Whenever location changes, dispatch an action to get it in the store
+	  var handleLocationChange = function handleLocationChange(location) {
+	    // ... unless we just caused that location change
+	    if (isTimeTraveling) {
+	      return;
+	    }
+
+	    // Remember where we are
+	    currentLocation = location;
+
+	    // Are we being called for the first time?
+	    if (!initialLocation) {
+	      // Remember as a fallback in case state is reset
+	      initialLocation = location;
+
+	      // Respect persisted location, if any
+	      if (getLocationInStore()) {
+	        return;
+	      }
+	    }
+
+	    // Tell the store to update by dispatching an action
+	    store.dispatch({
+	      type: _reducer.LOCATION_CHANGE,
+	      payload: location
+	    });
+	  };
+	  unsubscribeFromHistory = history.listen(handleLocationChange);
+
+	  // History 3.x doesn't call listen synchronously, so fire the initial location change ourselves
+	  if (history.getCurrentLocation) {
+	    handleLocationChange(history.getCurrentLocation());
+	  }
+
+	  // The enhanced history uses store as source of truth
+	  return _extends({}, history, {
+	    // The listeners are subscribed to the store instead of history
+	    listen: function listen(listener) {
+	      // Copy of last location.
+	      var lastPublishedLocation = getLocationInStore(true);
+
+	      // Keep track of whether we unsubscribed, as Redux store
+	      // only applies changes in subscriptions on next dispatch
+	      var unsubscribed = false;
+	      var unsubscribeFromStore = store.subscribe(function () {
+	        var currentLocation = getLocationInStore(true);
+	        if (currentLocation === lastPublishedLocation) {
+	          return;
+	        }
+	        lastPublishedLocation = currentLocation;
+	        if (!unsubscribed) {
+	          listener(lastPublishedLocation);
+	        }
+	      });
+
+	      // History 2.x listeners expect a synchronous call. Make the first call to the
+	      // listener after subscribing to the store, in case the listener causes a
+	      // location change (e.g. when it redirects)
+	      if (!history.getCurrentLocation) {
+	        listener(lastPublishedLocation);
+	      }
+
+	      // Let user unsubscribe later
+	      return function () {
+	        unsubscribed = true;
+	        unsubscribeFromStore();
+	      };
+	    },
+
+
+	    // It also provides a way to destroy internal listeners
+	    unsubscribe: function unsubscribe() {
+	      if (adjustUrlOnReplay) {
+	        unsubscribeFromStore();
+	      }
+	      unsubscribeFromHistory();
+	    }
+	  });
+	}
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = routerMiddleware;
+
+	var _actions = __webpack_require__(304);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	/**
+	 * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
+	 * provided history object. This will prevent these actions from reaching your
+	 * reducer or any middleware that comes after this one.
+	 */
+	function routerMiddleware(history) {
+	  return function () {
+	    return function (next) {
+	      return function (action) {
+	        if (action.type !== _actions.CALL_HISTORY_METHOD) {
+	          return next(action);
+	        }
+
+	        var _action$payload = action.payload,
+	            method = _action$payload.method,
+	            args = _action$payload.args;
+
+	        history[method].apply(history, _toConsumableArray(args));
+	      };
+	    };
+	  };
+	}
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRouterRedux = __webpack_require__(302);
+
+	var _redux = __webpack_require__(49);
+
+	var _post = __webpack_require__(308);
+
+	var _post2 = _interopRequireDefault(_post);
+
+	var _menu = __webpack_require__(309);
+
+	var _menu2 = _interopRequireDefault(_menu);
+
+	var _map = __webpack_require__(310);
+
+	var _map2 = _interopRequireDefault(_map);
+
+	var _modal = __webpack_require__(311);
+
+	var _modal2 = _interopRequireDefault(_modal);
+
+	var _searchProps = __webpack_require__(312);
+
+	var _searchProps2 = _interopRequireDefault(_searchProps);
+
+	var _mapProps = __webpack_require__(313);
+
+	var _mapProps2 = _interopRequireDefault(_mapProps);
+
+	var _mapMarkers = __webpack_require__(314);
+
+	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
+
+	var _searchType = __webpack_require__(315);
+
+	var _searchType2 = _interopRequireDefault(_searchType);
+
+	var _filterTerms = __webpack_require__(316);
+
+	var _filterTerms2 = _interopRequireDefault(_filterTerms);
+
+	var _userData = __webpack_require__(317);
+
+	var _userData2 = _interopRequireDefault(_userData);
+
+	var _testimonialsCarousel = __webpack_require__(318);
+
+	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var propertyProApp = (0, _redux.combineReducers)({
+	    postState: _post2.default,
+	    menuState: _menu2.default,
+	    mapState: _map2.default,
+	    modal: _modal2.default,
+	    searchPropsState: _searchProps2.default,
+	    searchType: _searchType2.default,
+	    mapPropsState: _mapProps2.default,
+	    mapMarkersState: _mapMarkers2.default,
+	    routing: _reactRouterRedux.routerReducer,
+	    filterTermsState: _filterTerms2.default,
+	    userDataState: _userData2.default,
+	    testimonialsCarouselState: _testimonialsCarousel2.default
+	});
+
+	exports.default = propertyProApp;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var post = function post() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.ADD_POST_ACTION:
+	            return Object.assign({}, state, {
+	                post: action.post,
+	                rows: action.post.post_content
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = post;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var menu = function menu() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.INIT_MENU_ACTION:
+	            return Object.assign({}, state, {
+	                menuItems: action.menuItems
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = menu;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var map = function map() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.ADD_MAP_ACTION:
+	            var new_state = Object.assign({}, state);
+	            new_state.map = action.map;
+	            return new_state;
+	        case _lib.Lib.ADD_MARKER_ACTION:
+	            return Object.assign({}, state, {
+	                markers: state.markers.concat(action.markers)
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = map;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var modal = function modal() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.TOGGLE_MODAL_ACTION:
+	            return Object.assign({}, state, {
+	                openModal: action.open
+	            });
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = modal;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var searchProps = function searchProps() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_SEARCH_PROPS_ACTION:
+	            return Object.assign({}, state, {
+	                searchProps: action.searchProps
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = searchProps;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var mapProps = function mapProps() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_MAP_PROPS_ACTION:
+	            return Object.assign({}, state, {
+	                mapProps: action.mapProps,
+	                totalProps: action.totalProps
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = mapProps;
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var mapMarkers = function mapMarkers() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_MAP_MARKERS_ACTION:
+	            return Object.assign({}, state, {
+	                mapMarkers: action.mapMarkers
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = mapMarkers;
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var searchProps = function searchProps() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_SEARCH_TYPE:
+	            return Object.assign({}, state, {
+	                searchType: action.searchType,
+	                saleType: action.saleType,
+	                propertyTypes: action.propertyTypes
+	            });
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = searchProps;
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var filterTerms = function filterTerms() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_FILTER_TERMS_ACTION:
+	            return Object.assign({}, state, {
+	                filterTerms: action.filterTerms
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = filterTerms;
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var userData = function userData() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_USER_DATA_ACTION:
+	            return Object.assign({}, state, action.userData);
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = userData;
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var testimonialsCarousel = function testimonialsCarousel() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION:
+	            return Object.assign({}, state, {
+	                activeItem: action.activeItem
+	            });
+	        default:
+	            return state;
+	    }
+	};
+	exports.default = testimonialsCarousel;
+
+/***/ },
+/* 319 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch,
+	        getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
 
 /***/ }
 /******/ ]);

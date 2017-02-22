@@ -255,6 +255,7 @@ class Api extends React.Component {
         query = JSON.stringify(query);
 
         let size = params.size || 500;
+        let from = params.from || 0;
 
         let aggregations = JSON.stringify({});
 
@@ -299,7 +300,7 @@ class Api extends React.Component {
             index: index,
             type: type,
             method: "POST",
-            body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ',"sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
+            body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
         };
         client.search(esQuery, function (error, response) {
             callback(response);

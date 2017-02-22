@@ -1,6 +1,6 @@
 import {addPost, initMenu, setSearchProps} from './actions/index.jsx';
-import LandingPage from './components/landing-page/Index.jsx'
-import LandingPageLayout from './components/landing-page/Layout.jsx';
+import FrontPage from './components/front-page/Index.jsx'
+import FrontPageLayout from './components/front-page/Layout.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import React from 'react';
 import {render} from 'react-dom';
@@ -25,8 +25,8 @@ const history = syncHistoryWithStore(browserHistory, store);
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={LandingPageLayout}>
-        <IndexRoute component={LandingPage} />
+      <Route path="/" component={FrontPageLayout}>
+        <IndexRoute component={FrontPage} />
       </Route>
       <Route path="/:sale/:tax/:term" component={MapSearchResults} />
     </Router>

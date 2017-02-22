@@ -39,9 +39,14 @@ class Modal extends Component {
 
     constructor(props) {
         super(props);
+
+
         this.state = {
             searchValue: ''
         };
+
+        // Set default value for non-empty modal
+        this.props.searchHandler("Durham");
     }
 
     componentDidUpdate(prevProps, prevState) {

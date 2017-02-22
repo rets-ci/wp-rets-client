@@ -25,10 +25,12 @@ const MastheadContent = ({rows, open}) => {
         background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
     };
 
-    if(open)
-        headerStyle = Object.assign(headerStyle, {
-            zIndex: "11"
-        });
+    if(open){
+      headerStyle = Object.assign(headerStyle, {
+        zIndex: "11"
+      });
+    }
+
 
 
     let container;

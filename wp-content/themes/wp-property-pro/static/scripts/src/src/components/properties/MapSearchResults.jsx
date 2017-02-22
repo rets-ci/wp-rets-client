@@ -10,7 +10,8 @@ import _ from 'lodash';
 
 const mapStateToProps = (state) => {
   return {
-    results: _.get(state, 'mapPropsState.mapProps', [])
+    results: _.get(state, 'mapPropsState.mapProps', []),
+    resultsTotal: _.get(state, 'mapPropsState.totalProps', 0)
   }
 };
 
@@ -21,12 +22,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       let params = {
         propertyTypes: pt,
         saleType: saleType,
-        size: 10,
+        size: Lib.PROPERTY_PER_PAGE,
         tax: tax,
         term: term
       };
       Api.search(params, function (response) {
-        dispatch(setMapProps(response.hits.hits.length ? response.hits.hits : []));
+        dispatch(setMapProps(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
       });
     }
   };
@@ -71,7 +72,7 @@ class MapSearchResults extends Component {
               <div className="listing-sidebar">
               	<div className="headtitle">
                	  <h1>{term} Homes for {sale}</h1>
-               	  <p>There are 250 homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.</p>
+               	  <p>There are {this.props.resultsTotal} homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.</p>
                 </div>
                 <SearchResultListing properties={this.props.results} />
               </div>

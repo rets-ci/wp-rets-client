@@ -10,8 +10,8 @@ class TopPanel extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="logo">
-              <a href="/" title="Red Door Company">
-              <img src="http://clients.codelabgh.com/reddoorcomp.dev/img/logo-mobile.svg" alt="Red Door Company" />
+              <a href="/" title={bundle.site_name}>
+              <img src={bundle.logos.square_logo} alt={bundle.site_name} />
               </a>
             </div>
             <span className="drop-nav">
