@@ -1,27 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import {setUserData} from '../../actions/index.jsx';
 import _ from 'lodash'
 
-const mapStateToProps = (state) => {
-    return {
-        userData: _.get(state, 'userDataState', {})
-    }
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        openUserPanel: () => {
-            let userData = Object.assign({}, ownProps.userData, {
-                panelOpened: true
-            });
-
-            dispatch(setUserData(userData));
-        }
-    }
-};
-
-const NavigationContent = ({openUserPanel}) => (
+const Navigation = ({openUserPanel}) => (
     <nav className="navbar navbar-toggleable-md bg-faded">
         <a className="navbar-brand" href={bundle.site_url} title={bundle.site_name}>
           {
@@ -47,10 +27,5 @@ const NavigationContent = ({openUserPanel}) => (
         </ul>
     </nav>
 );
-
-const Navigation = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(NavigationContent);
 
 export default Navigation;
