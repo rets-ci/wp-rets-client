@@ -23,11 +23,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const NavigationContent = ({openUserPanel}) => (
     <nav className="navbar navbar-toggleable-md bg-faded">
-        <a className="navbar-brand" href="/">
-            <img src={bundle.logos.horizontal_logo} alt={bundle.site_name}
-                 className="hidden-sm-down"/>
-            <img src={bundle.logos.square_logo} alt={bundle.site_name}
-                 className="hidden-md-up"/>
+        <a className="navbar-brand" href={bundle.site_url} title={bundle.site_name}>
+          {
+            _.get(bundle, 'logos.horizontal_logo', null)
+              ? <img src={bundle.logos.horizontal_logo} alt={bundle.site_name}
+                     className="hidden-sm-down"/>
+              : null
+          }
+          {
+            _.get(bundle, 'logos.square_logo', null)
+              ? <img src={bundle.logos.square_logo} alt={bundle.site_name}
+                     className="hidden-md-up"/>
+              : null
+          }
         </a>
         <ul className="nav navbar-toggler-right">
             <li className="nav-item">

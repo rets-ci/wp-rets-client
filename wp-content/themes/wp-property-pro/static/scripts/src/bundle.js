@@ -4501,11 +4501,11 @@
 	        { className: 'navbar navbar-toggleable-md bg-faded' },
 	        _react2.default.createElement(
 	            'a',
-	            { className: 'navbar-brand', href: '/' },
-	            _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
-	                className: 'hidden-sm-down' }),
-	            _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
-	                className: 'hidden-md-up' })
+	            { className: 'navbar-brand', href: bundle.site_url, title: bundle.site_name },
+	            _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
+	                className: 'hidden-sm-down' }) : null,
+	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
+	                className: 'hidden-md-up' }) : null
 	        ),
 	        _react2.default.createElement(
 	            'ul',
@@ -48119,10 +48119,10 @@
 /* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
@@ -48133,43 +48133,47 @@
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var FooterTop = function FooterTop() {
 
-	    return _react2.default.createElement(
-	        "div",
-	        { className: "top-footer" },
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'top-footer' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'container' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
 	        _react2.default.createElement(
-	            "div",
-	            { className: "container" },
-	            _react2.default.createElement(
-	                "div",
-	                { className: "row" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "col-lg-3 footer-logo" },
-	                    _react2.default.createElement(
-	                        "a",
-	                        { href: bundle.site_url, title: bundle.site_name },
-	                        _react2.default.createElement("img", { src: bundle.logos.vertical_logo, alt: bundle.site_name,
-	                            className: "svg" })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "col-md-12 col-lg-9 footer-menu" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "row" },
-	                        bundle.footer.top_footer.map(function (menu, i) {
-	                            return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
-	                        })
-	                    )
-	                )
-	            )
+	          'div',
+	          { className: 'col-lg-3 footer-logo' },
+	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
+	            'a',
+	            { href: bundle.site_url, title: bundle.site_name },
+	            _react2.default.createElement('img', { src: bundle.logos.vertical_logo, alt: bundle.site_name,
+	              className: 'svg' })
+	          ) : null
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-md-12 col-lg-9 footer-menu' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            bundle.footer.top_footer.map(function (menu, i) {
+	              return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
+	            })
+	          )
 	        )
-	    );
+	      )
+	    )
+	  );
 	};
 
 	exports.default = FooterTop;
@@ -49872,7 +49876,7 @@
 	              { className: "logo" },
 	              _react2.default.createElement(
 	                "a",
-	                { href: "/", title: bundle.site_name },
+	                { href: bundle.site_url, title: bundle.site_name },
 	                _react2.default.createElement("img", { src: bundle.logos.square_logo, alt: bundle.site_name })
 	              )
 	            ),
