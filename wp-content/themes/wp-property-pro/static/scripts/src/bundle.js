@@ -42465,7 +42465,7 @@
 	            var resultsElements = searchResults.map(function (s, k) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    { key: k },
+	                    { key: k, className: 'search-result-group' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { key: k, className: 'search-title' },
@@ -42527,7 +42527,8 @@
 	                                _this2.searchInput = input;
 	                            },
 	                            type: 'text',
-	                            value: this.state.searchValue
+	                            value: this.state.searchValue,
+	                            placeholder: 'Enter address, city ...'
 	                        }),
 	                        _react2.default.createElement(
 	                            'button',
@@ -42601,50 +42602,59 @@
 	        key: 'getAggregationsFields',
 	        value: function getAggregationsFields() {
 	            return {
-	                "elementary_school": {
-	                    "icons": {
-	                        "main": "school-elementary-solid",
-	                        "outline": "school-elementary-outline"
-	                    },
-	                    "slug": "elementary_school",
-	                    "title": "Elementary School",
-	                    "field": "tax_input.elementary_school",
-	                    "search_field": "_search.elementary_school"
+	                "location_address": {
+	                    "slug": "location_address",
+	                    "title": "Address",
+	                    "field": "meta_input.location_address",
+	                    "search_field": "_search.location_address"
 	                },
-	                "middle_school": {
-	                    "icons": { "main": "school-middle-solid", "outline": "school-middle-outline" },
-	                    "slug": "middle_school",
-	                    "title": "Middle School",
-	                    "field": "tax_input.middle_school",
-	                    "search_field": "_search.middle_school"
-	                },
-	                "high_school": {
-	                    "icons": { "main": "school-high-solid", "outline": "school-high-outline" },
-	                    "slug": "high_school",
-	                    "title": "High School",
-	                    "field": "tax_input.high_school",
-	                    "search_field": "_search.high_school"
+	                "mls_id": {
+	                    "slug": "mls_id",
+	                    "title": "MLS ID",
+	                    "field": "tax_input.mls_id",
+	                    "search_field": "_search.mls_id"
 	                },
 	                "location_city": {
-	                    "icons": { "main": "school-elementary-solid", "outline": "school-elementary-outline" },
 	                    "slug": "city",
 	                    "title": "City",
 	                    "field": "tax_input.location_city",
 	                    "search_field": "_search.location_city"
 	                },
 	                "location_zip": {
-	                    "icons": { "main": "school-elementary-solid", "outline": "school-elementary-outline" },
 	                    "slug": "zip",
 	                    "title": "Zip",
 	                    "field": "_system.addressDetail.zipcode",
 	                    "search_field": "_search.location_zip"
 	                },
 	                "location_county": {
-	                    "icons": { "main": "school-elementary-solid", "outline": "school-elementary-outline" },
 	                    "slug": "county",
 	                    "title": "County",
 	                    "field": "tax_input.location_county",
 	                    "search_field": "_search.location_county"
+	                },
+	                "subdivision": {
+	                    "slug": "subdivision",
+	                    "title": "Subdivision",
+	                    "field": "tax_input.subdivision",
+	                    "search_field": "_search.subdivision"
+	                },
+	                "elementary_school": {
+	                    "slug": "elementary_school",
+	                    "title": "Elementary School",
+	                    "field": "tax_input.elementary_school",
+	                    "search_field": "_search.elementary_school"
+	                },
+	                "middle_school": {
+	                    "slug": "middle_school",
+	                    "title": "Middle School",
+	                    "field": "tax_input.middle_school",
+	                    "search_field": "_search.middle_school"
+	                },
+	                "high_school": {
+	                    "slug": "high_school",
+	                    "title": "High School",
+	                    "field": "tax_input.high_school",
+	                    "search_field": "_search.high_school"
 	                }
 	            };
 	        }
@@ -42720,6 +42730,7 @@
 	                        rows.push(_data);
 	                    }
 	                }
+	                console.log(rows);
 	                callback(rows);
 	            });
 	        }

@@ -82,7 +82,7 @@ class Modal extends Component {
         let self = this;
         let resultsElements = searchResults.map((s, k) => {
             return (
-                <div key={k}>
+                <div key={k} className="search-result-group">
                     <div key={k} className="search-title">
                         <div className="container">
                             <h4>{s.text}</h4>
@@ -121,6 +121,7 @@ class Modal extends Component {
                             }}
                             type="text"
                             value={this.state.searchValue}
+                            placeholder="Enter address, city ..."
                         />
                         <button type="button" className="btn btn-primary">Search</button>
                     </div>

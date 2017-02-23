@@ -66,7 +66,8 @@
       "rule-title": "font-family",
       "selector": [
         ".pageheader h1",
-        ".testimonial h4"
+        ".testimonial h4",
+        ".masthead .search-modal .search-modal-box ol li .container"
       ]
     },
     {
@@ -93,7 +94,9 @@
         ".testimonial .userInfo .userBox p",
         ".testimonial .userInfo .userBox span",
         ".subnavigation ul li span",
-        ".subnavigation ul li a"
+        ".subnavigation ul li a",
+        ".masthead .search-modal #wp-property-pro-search-input",
+        ".masthead .search-modal .search-modal-box h4"
       ]
     },
     {
