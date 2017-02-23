@@ -55,18 +55,13 @@
       "default": "0",
       "choices": {
         "0": "Make a choice",
-        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
-        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
-        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
-        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
-        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
-        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
+        "'Playfair Display', serif": "'Playfair Display', serif"
       },
       "rule-title": "font-family",
       "selector": [
         ".pageheader h1",
-        ".testimonial h4"
+        ".testimonial h4",
+        ".masthead .search-modal .search-modal-box ol li .container"
       ]
     },
     {
@@ -78,13 +73,7 @@
       "default": "0",
       "choices": {
         "0": "Select Option",
-        "Arial, Helvetica, sans-serif": "Arial, Helvetica, sans-serif",
-        "\"Arial Black\", Gadget, sans-serif": "\"Arial Black\", Gadget, sans-serif",
-        "\"Comic Sans MS\", cursive, sans-serif": "\"Comic Sans MS\", cursive, sans-serif",
-        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif": "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
-        "Tahoma, Geneva, sans-serif": "Tahoma, Geneva, sans-serif",
-        "\"Trebuchet MS\", Helvetica, sans-serif": "\"Trebuchet MS\", Helvetica, sans-serif",
-        "Verdana, Geneva, sans-serif": "Verdana, Geneva, sans-serif"
+        "'Lato', sans-serif": "'Lato', sans-serif"
       },
       "rule-title": "font-family",
       "selector": [
@@ -93,7 +82,9 @@
         ".testimonial .userInfo .userBox p",
         ".testimonial .userInfo .userBox span",
         ".subnavigation ul li span",
-        ".subnavigation ul li a"
+        ".subnavigation ul li a",
+        ".masthead .search-modal #wp-property-pro-search-input",
+        ".masthead .search-modal .search-modal-box h4"
       ]
     },
     {

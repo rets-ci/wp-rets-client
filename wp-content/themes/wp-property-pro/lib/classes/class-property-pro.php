@@ -56,7 +56,9 @@ namespace UsabilityDynamics {
       add_action('after_setup_theme', [$this, 'remove_admin_bar']);
 
       /** Add svg to mimes types */
-      define('ALLOW_UNFILTERED_UPLOADS', true);
+      if(!defined('ALLOW_UNFILTERED_UPLOADS'))
+        define('ALLOW_UNFILTERED_UPLOADS', true);
+
       add_action( 'upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1 );
 
     }

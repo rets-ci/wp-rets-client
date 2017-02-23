@@ -10,7 +10,7 @@ class TopPanel extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="logo">
-              <a href="/" title={bundle.site_name}>
+              <a href={bundle.site_url} title={bundle.site_name}>
               <img src={bundle.logos.square_logo} alt={bundle.site_name} />
               </a>
             </div>
