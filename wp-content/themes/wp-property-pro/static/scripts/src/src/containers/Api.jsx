@@ -211,7 +211,7 @@ class Api extends React.Component {
         if (_buckets.length > 0) {
           data = Object.assign({}, data, {
             key: aggregationKey,
-            text: aggregationsFields[aggregationKey].title,
+            text: 'Popular ' + aggregationsFields[aggregationKey].title,
             children: _buckets
           });
           rows.push(data);
