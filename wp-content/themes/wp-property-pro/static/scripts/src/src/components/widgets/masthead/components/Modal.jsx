@@ -31,6 +31,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     dispatch(setSearchProps(rows));
                 }
             );
+        },
+        topQuery: () => {
+          Api.topAggsQuery({
+              size: Lib.TOP_AGGREGATIONS_COUNT
+            },
+            function (rows) {
+              dispatch(setSearchProps(rows));
+            }
+          );
         }
     };
 };
@@ -45,8 +54,8 @@ class Modal extends Component {
             searchValue: ''
         };
 
-        // Set default value for non-empty modal
-        this.props.searchHandler("Durham");
+      // Set default values
+      this.props.topQuery();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -69,7 +78,12 @@ class Modal extends Component {
     handleSearchValueChange(eve) {
         let val = eve.target.value;
         this.setState({searchValue: val});
-        this.props.searchHandler(val);
+
+        if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH)
+          this.props.topQuery();
+        else
+          this.props.searchHandler(val);
+
     }
 
     render() {

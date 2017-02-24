@@ -2,7 +2,11 @@
 
 add_action('admin_init', function() {
 
-  if( $_GET['test'] !== 'term-test' ) {
+  if( function_exists( 'add_term_ordering_support' ) ) {
+    add_term_ordering_support ('wpp_listing_category');
+  }
+
+  if( !isset( $_GET['test'] ) || $_GET['test'] !== 'term-test' ) {
     return;
   }
 

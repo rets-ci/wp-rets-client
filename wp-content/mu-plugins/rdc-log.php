@@ -9,11 +9,16 @@
  *
  */
 
-function rdc_log( $data, $detail ) {
+function rdc_log( $data, $detail = array() ) {
   $data = "\n" . date("F j, Y, g:i a") . " - " . $data;
 
   @file_put_contents('/var/www/wp-content/debug-rdc.log', $data, FILE_APPEND );
-  @file_put_contents('/var/www/wp-content/debug-rdc.log', print_r($detail, true), FILE_APPEND );
+
+
+  if( $detail && !empty( $detail ) ) {
+    @file_put_contents('/var/www/wp-content/debug-rdc.log', print_r($detail, true), FILE_APPEND );
+  }
+
   if( file_exists( '/var/www/wp-content/debug-rdc.log' ) ) {
   }
 

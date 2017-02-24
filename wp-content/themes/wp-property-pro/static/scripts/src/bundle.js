@@ -231,7 +231,9 @@
 	    URL_DELIMITER: '/',
 	    EXTENSION_DELIMITER: '.',
 	    PROPERTY_LISTING_IMAGE_SIZE: '435x230',
-	    PROPERTY_PER_PAGE: 18
+	    PROPERTY_PER_PAGE: 18,
+	    MIN_SEARCH_KEY_LENGTH: 3,
+	    TOP_AGGREGATIONS_COUNT: 5
 	};
 
 /***/ },
@@ -42413,6 +42415,13 @@
 	            _Api2.default.selectQuery(searchParams, function (rows) {
 	                dispatch((0, _index.setSearchProps)(rows));
 	            });
+	        },
+	        topQuery: function topQuery() {
+	            _Api2.default.topAggsQuery({
+	                size: _lib.Lib.TOP_AGGREGATIONS_COUNT
+	            }, function (rows) {
+	                dispatch((0, _index.setSearchProps)(rows));
+	            });
 	        }
 	    };
 	};
@@ -42429,8 +42438,8 @@
 	            searchValue: ''
 	        };
 
-	        // Set default value for non-empty modal
-	        _this.props.searchHandler("Durham");
+	        // Set default values
+	        _this.props.topQuery();
 	        return _this;
 	    }
 
@@ -42459,7 +42468,8 @@
 	        value: function handleSearchValueChange(eve) {
 	            var val = eve.target.value;
 	            this.setState({ searchValue: val });
-	            this.props.searchHandler(val);
+
+	            if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) this.props.topQuery();else this.props.searchHandler(val);
 	        }
 	    }, {
 	        key: 'render',
@@ -42586,6 +42596,8 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _lib = __webpack_require__(2);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42679,7 +42691,7 @@
 
 	            var rows = [];
 
-	            if (!params.term || params.term.length < 3) {
+	            if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
 	                callback(rows);
 	                return;
 	            }
@@ -42739,6 +42751,76 @@
 	                            children: _buckets
 	                        });
 	                        rows.push(_data);
+	                    }
+	                }
+	                callback(rows);
+	            });
+	        }
+	    }, {
+	        key: 'topAggsQuery',
+	        value: function topAggsQuery(params, callback) {
+
+	            var client = new jQuery.es.Client({
+	                hosts: 'https://' + bundle.elasticsearch_host
+	            });
+
+	            var _source = {
+	                "query": { "match": { "post_status": "publish" } },
+	                "aggs": {}
+	            };
+
+	            var aggregationsFields = this.getAggregationsFields();
+	            for (var key in aggregationsFields) {
+
+	                if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	                var data = aggregationsFields[key];
+
+	                _source.aggs[key] = {
+	                    filters: { filters: {} },
+	                    aggs: {}
+	                };
+
+	                _source.aggs[key] = { terms: {
+	                        field: data.field,
+	                        size: _lodash2.default.get(params, 'size', 0),
+	                        order: { "_count": "desc" }
+	                    } };
+	            }
+	            client.search({
+	                index: 'v5',
+	                type: 'property',
+	                method: "POST",
+	                size: 0,
+	                body: _source
+	            }, function selectQueryResponse(err, response) {
+
+	                var rows = [];
+	                for (var aggregationKey in response.aggregations) {
+
+	                    var someAggregation = response.aggregations[aggregationKey];
+
+	                    var _buckets = [];
+
+	                    var _data2 = null;
+	                    for (var ind in someAggregation.buckets) {
+
+	                        _data2 = someAggregation.buckets[ind];
+
+	                        _buckets.push({
+	                            id: _data2.key,
+	                            text: _data2.key,
+	                            count: _data2.doc_count,
+	                            taxonomy: _data2.slug
+	                        });
+	                    }
+	                    if (_buckets.length > 0) {
+	                        _data2 = Object.assign({}, _data2, {
+	                            key: aggregationKey,
+	                            text: 'Popular ' + aggregationsFields[aggregationKey].title,
+	                            children: _buckets
+	                        });
+	                        rows.push(_data2);
 	                    }
 	                }
 	                callback(rows);
