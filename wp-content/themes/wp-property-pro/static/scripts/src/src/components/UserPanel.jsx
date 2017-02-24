@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {setUserData} from '../../actions/index.jsx';
+import {setUserData} from '../actions/index.jsx';
 import _ from 'lodash'
 
 const mapStateToProps = (state) => {
