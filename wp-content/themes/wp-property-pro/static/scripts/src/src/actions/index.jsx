@@ -35,9 +35,11 @@ export const setSearchProps = (searchProps) => {
     }
 };
 
-export const setSearchResults = (searchResults, total) => {
+export const setSearchResults = (query, searchResults, total, append) => {
     return {
         type: Lib.SET_SEARCH_RESULTS_ACTION,
+        append: append,
+        query: query,
         searchResults: searchResults,
         totalProps: total
     }

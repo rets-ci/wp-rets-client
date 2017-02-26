@@ -1,16 +1,7 @@
 import React from 'react'
-import {connect} from 'react-redux';
 import _ from 'lodash'
 
-const mapStateToProps = (state) => {
-    return {}
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-
-};
-
-class Api extends React.Component {
+class Api {
 
   static getAggregationsFields() {
     return {
@@ -70,6 +61,119 @@ class Api extends React.Component {
       }
     };
   }
+
+    static createESSearchQuery(params) {
+      let terms = {};
+      terms['tax_input.' + params.tax] = [
+        params.term
+      ];
+
+      let query = {
+        "bool": {
+          "must": [
+            {
+              "exists": {
+                "field": "_system.location"
+              }
+            },
+            {
+              "terms": {
+                "tax_input.sale_type": [
+                  params.saleType
+                ]
+              }
+            },
+            {
+              "terms": {
+                "meta_input.property_type": params.propertyTypes
+              }
+            }
+          ],
+          "must_not": [
+            {
+              "term": {
+                "tax_input.location_latitude": "0"
+              }
+            },
+            {
+              "term": {
+                "tax_input.location_longitude": "0"
+              }
+            },
+            {
+              "missing": {
+                "field": "tax_input.location_latitude"
+              }
+            },
+            {
+              "missing": {
+                "field": "tax_input.location_longitude"
+              }
+            }
+        ]
+        }
+      };
+
+      if (params.locationFilter) {
+        // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
+        query.bool = Object.assign(query.bool, {
+          "filter": {
+            "geo_bounding_box": {
+              "_system.location": {
+                "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
+                "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
+              }
+            }
+          }
+        });
+      } else {
+        query.bool.must.push({"terms": terms});
+      }
+
+      query = JSON.stringify(query);
+
+      let size = params.size || 500;
+      let from = params.from || 0;
+
+      let aggregations = JSON.stringify({});
+
+      let source = JSON.stringify([
+          "post_title",
+          "tax_input.location_latitude",
+          "tax_input.location_longitude",
+          "_permalink",
+          "_system.neighborhood",
+          "_system.google_place_id",
+          "_system .available_date",
+          "_system.addressDetail",
+          "_system.available_date",
+          "_system.location",
+          "_system.listed_date",
+          "_system.agency_listing",
+          "_metrics.score.total",
+          "meta_input.rets_thumbnail_url",
+          "tax_input.listing_type",
+          "tax_input.bedrooms",
+          "tax_input.bathrooms",
+          "tax_input.price",
+          "tax_input.total_living_area_sqft",
+          "tax_input.days_on_market",
+          "tax_input.acres",
+          "tax_input.price_per_sqft",
+          "tax_input.approximate_lot_size",
+          "tax_input.subdivision",
+          "tax_input.neighborhood",
+          "tax_input.added",
+          "tax_input.sale_type",
+          "tax_input.location_city",
+          "tax_input .location_street_number",
+          "tax_input.location_direction",
+          "tax_input.location_street",
+          "tax_input.location_unit"
+      ]);
+
+      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+    }
 
     static selectQuery(params, callback) {
 
@@ -179,122 +283,13 @@ class Api extends React.Component {
         });
     }
 
-    static search(params, callback) {
+    static search(query, callback) {
         /**
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
           hosts: 'https://' + bundle.elasticsearch_host
         });
-
-        let terms = {};
-        terms['tax_input.' + params.tax] = [
-          params.term
-        ];
-
-        let query = {
-          "bool": {
-            "must": [
-              {
-                "exists": {
-                  "field": "_system.location"
-                }
-              },
-              {
-                "terms": {
-                  "tax_input.sale_type": [
-                    params.saleType
-                  ]
-                }
-              },
-              {
-                "terms": {
-                  "meta_input.property_type": params.propertyTypes
-                }
-              }
-            ],
-            "must_not": [
-              {
-                "term": {
-                  "tax_input.location_latitude": "0"
-                }
-              },
-              {
-                "term": {
-                  "tax_input.location_longitude": "0"
-                }
-              },
-              {
-                "missing": {
-                  "field": "tax_input.location_latitude"
-                }
-              },
-              {
-                "missing": {
-                  "field": "tax_input.location_longitude"
-                }
-              }
-          ]
-          }
-        };
-
-        if (params.locationFilter) {
-          // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-          query.bool = Object.assign(query.bool, {
-            "filter": {
-              "geo_bounding_box": {
-                "_system.location": {
-                  "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
-                  "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
-                }
-              }
-            }
-          });
-        } else {
-          query.bool.must.push({"terms": terms});
-        }
-
-        query = JSON.stringify(query);
-
-        let size = params.size || 500;
-        let from = params.from || 0;
-
-        let aggregations = JSON.stringify({});
-
-        let source = JSON.stringify([
-            "post_title",
-            "tax_input.location_latitude",
-            "tax_input.location_longitude",
-            "_permalink",
-            "_system.neighborhood",
-            "_system.google_place_id",
-            "_system .available_date",
-            "_system.addressDetail",
-            "_system.available_date",
-            "_system.location",
-            "_system.listed_date",
-            "_system.agency_listing",
-            "_metrics.score.total",
-            "meta_input.rets_thumbnail_url",
-            "tax_input.listing_type",
-            "tax_input.bedrooms",
-            "tax_input.bathrooms",
-            "tax_input.price",
-            "tax_input.total_living_area_sqft",
-            "tax_input.days_on_market",
-            "tax_input.acres",
-            "tax_input.price_per_sqft",
-            "tax_input.approximate_lot_size",
-            "tax_input.subdivision",
-            "tax_input.neighborhood",
-            "tax_input.added",
-            "tax_input.sale_type",
-            "tax_input.location_city",
-            "tax_input .location_street_number",
-            "tax_input.location_direction",
-            "tax_input.location_street",
-            "tax_input.location_unit"
-        ]);
 
         let index = 'v5',
             type = 'property';
@@ -303,20 +298,12 @@ class Api extends React.Component {
             index: index,
             type: type,
             method: "POST",
-            body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
+            body: query,
         };
         client.search(esQuery, function (error, response) {
           callback(response);
         });
-
     }
-
-
 }
 
-const ApiObject = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Api);
-
-export default ApiObject;
+export default Api;

@@ -5,6 +5,11 @@ import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 
 class SearchResultListing extends Component {
+  static propTypes = {
+    allowPagination: PropTypes.bool.isRequired,
+    properties: PropTypes.array.isRequired,
+    seeMoreHandler: PropTypes.func.isRequired
+  }
   render() {
     return (
       <div className="listing-wrap">
@@ -50,6 +55,14 @@ class SearchResultListing extends Component {
              </div>
            )}
         </div>
+        {this.props.allowPagination ?
+          <div style={{overflow: 'hidden'}}>
+            <div style={{float: 'right'}}>
+              <p>Showing {this.props.properties.length} results</p>
+              <button onClick={this.props.seeMoreHandler}>See more</button>
+            </div>
+          </div>
+        : null}
       </div>
     );
   }
