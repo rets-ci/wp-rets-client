@@ -126,7 +126,7 @@ namespace UsabilityDynamics {
         'menuItems' => $menu_items
       ];
 
-      $params['post'] = [
+      $params['post'] = isset( $post ) ? [
         'post_date' => $post->post_date,
         'post_modified' => $post->post_modified,
         'post_parent' => $post->post_parent,
@@ -134,7 +134,7 @@ namespace UsabilityDynamics {
         'post_content' => $post->post_content,
         'post_type' => $post->post_type,
         'custom_content' => false
-      ];
+      ] : array();
 
       $params['logos'] = [
         'square_logo' => get_theme_mod('property_pro_company_square_logo'),
@@ -172,7 +172,7 @@ namespace UsabilityDynamics {
       }
 
       // Builder content case
-      if ($post_data = get_post_meta($post->ID, 'panels_data', true)) {
+      if ( isset( $post ) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
         $params['post']['post_content'] = self::rebuild_builder_content($post_data);
       }

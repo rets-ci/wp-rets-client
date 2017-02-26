@@ -50,26 +50,34 @@ namespace UsabilityDynamics\WPP {
         // If wpp_categorical used, add term page UI.
         if( defined( 'WPP_FEATURE_FLAG_WPP_CATEGORICAL' ) && WPP_FEATURE_FLAG_WPP_CATEGORICAL ) {
           add_action( 'wpp_categorical_edit_form_fields', array( $this, 'edit_form_fields' ), 20, 2 );
-          add_action( 'manage_wpp_categorical_custom_column', array( $this, 'wpp_categorical_custom_column' ), 20, 3 );
           add_filter( 'manage_edit-wpp_categorical_columns', array( $this, 'wpp_categorical_columns' ), 20 );
+          add_action( 'manage_wpp_categorical_custom_column', array( $this, 'term_meta_columns' ), 20, 3 );
         }
 
         if( defined( 'WPP_FEATURE_FLAG_WPP_SCHOOLS' ) && WPP_FEATURE_FLAG_WPP_SCHOOLS ) {
           add_action( 'wpp_schools_edit_form_fields', array( $this, 'edit_form_fields' ), 20, 2 );
           //add_action( 'manage_wpp_schools_custom_column', array( $this, 'wpp_schools_custom_column' ), 20, 3 );
-          //add_filter( 'manage_edit-wpp_schools_columns', array( $this, 'wpp_schools_columns' ), 20 );
+          add_filter( 'manage_edit-wpp_schools_custom_column', array( $this, 'term_meta_columns' ), 20, 3 );
         }
 
         // Add custom columns to Taxonomy table.
         if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_LOCATION' ) && WPP_FEATURE_FLAG_WPP_LISTING_LOCATION ) {
           add_filter( 'manage_wpp_listing_location_custom_columns', array( $this, 'wpp_listing_location_custom_columns' ), 20  );
-          //add_filter( 'manage_edit-wpp_listing_location_columns', array( $this, 'wpp_listing_location_columns' ), 20, 3 );
+          add_filter( 'manage_wpp_listing_location_custom_column', array( $this, 'term_meta_columns' ), 20, 3 );
         }
+
+        if( defined( 'WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY' ) && WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY ) {
+          add_filter( 'manage_edit-wpp_listing_category_columns', array( $this, 'wpp_listing_category_columns' ), 20 );
+          add_filter( 'manage_wpp_listing_category_custom_column', array( $this, 'term_meta_columns' ), 20, 3 );
+        }
+
 
       }
 
       /**
-       * Categorical Term Data
+       * Term Meta Column Data
+       *
+       * @todo Fix hardcoded /listing/ prefix.
        *
        * @author potanin@UD
        *
@@ -77,38 +85,57 @@ namespace UsabilityDynamics\WPP {
        * @param $column_name
        * @param $term_id
        */
-      public function wpp_categorical_custom_column( $nothing, $column_name, $term_id ) {
+      public function term_meta_columns( $nothing, $column_name, $term_id ) {
+
+        $_type = get_term_meta( $term_id, '_type', true );
+
+        if( $column_name === 'term_id' ) {
+          echo $term_id;
+          return;
+        }
 
         if( $column_name === 'source' ) {
-          $source = get_term_meta( $term_id, 'source', true );
+          $source = get_term_meta( $term_id, $column_name, true );
           echo $source ? $source : '-';
+          return;
         }
 
         if( $column_name === '_id' ) {
           $type = get_term_meta( $term_id, '_id', true );
           echo $type ? $type : '-';
+          return;
         }
 
-      }
+        if( $column_name === '_type' ) {
+          $type = get_term_meta( $term_id, '_type', true );
+          echo $type ? $type : '-';
+          return;
+        }
 
-      /**
-       * Display values for custom meta fields.
-       *
-       * @param $nothing
-       * @param $column_name
-       * @param $term_id
-       */
-      public function wpp_listing_location_columns( $nothing, $column_name, $term_id ) {
+        if( $column_name === '_updated' ) {
+          $_value = get_term_meta( $term_id, '_updated', true );
+          echo $_value ? human_time_diff( $_value ) . ' ago' : '-';
+          return;
+        }
 
-        if( $column_name === 'source' ) {
-          $source = get_term_meta( $term_id, 'source', true );
+        if( $column_name === '_created' ) {
+          $_value = get_term_meta( $term_id, '_created', true );
+          echo $_value ? human_time_diff( $_value ) . ' ago' : '-';
+          return;
+        }
+
+        if( $column_name === 'url_path' ) {
+          $_value = get_term_meta( $term_id, $_type . '-' . $column_name, true );
+          echo $_value ? ( '<a href="' . home_url( '/listings' . $_value . '' ) . '" target="_blank">/listings' . $_value . '</a>' ) : '-';
+          return;
+        }
+
+
+        if( $_type ) {
+          $source = get_term_meta( $term_id, $_type .'-'.$column_name, true );
           echo $source ? $source : '-';
         }
 
-        if( $column_name === '_id' ) {
-          $type = get_term_meta( $term_id, '_id', true );
-          echo $type ? $type : '-';
-        }
 
       }
 
@@ -122,6 +149,24 @@ namespace UsabilityDynamics\WPP {
        */
       public function wpp_categorical_columns( $columns ) {
         $columns['source'] = 'Source';
+        //$columns['_id'] = 'ID';
+        return $columns;
+      }
+
+      public function wpp_listing_category_columns( $columns ) {
+
+        //$columns['slug'];
+
+        $columns['_id'] = 'Unique ID';
+        $columns['term_id'] = 'ID';
+
+        $columns['url_slug'] = 'Slug';
+        $columns['url_path'] = 'Path';
+
+        $columns['_type'] = 'Type';
+        $columns['_updated'] = 'Updated';
+        $columns['_created'] = 'Created';
+
         //$columns['_id'] = 'ID';
         return $columns;
       }
@@ -300,82 +345,114 @@ namespace UsabilityDynamics\WPP {
        */
       public function admin_init()
       {
-        global $wp_properties;
 
         // Add metaboxes
         do_action('wpp_metaboxes');
 
+        // Advanced rewrite rules.
+        if( defined( 'WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES' ) && WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES ) {
+          register_setting( 'wp-property', 'wpp_permalinks' );
+          add_settings_section( 'wpp-permalink', 'WP-Property Permalinks', array( 'UsabilityDynamics\WPP\Admin', 'render_permalink_settings' ), 'permalink' );
+        }
+
         // Download backup of configuration or fields
         if ( isset($_REQUEST['page']) && $_REQUEST['page'] == 'property_settings' && isset($_REQUEST['wpp_action']) && $_REQUEST['wpp_action'] == 'download-wpp-backup' && isset($_REQUEST['_wpnonce']) && wp_verify_nonce($_REQUEST['_wpnonce'], 'download-wpp-backup') ) {
-          $sitename = sanitize_key(get_bloginfo('name'));
-
-          header("Cache-Control: private,no-cache,no-store");
-          header("Content-Description: File Transfer");
-          header("Content-Transfer-Encoding: binary");
-          header('Content-Type: text/plain; charset=' . get_option('blog_charset'), true);
-
-          $_options = array(
-            'type' => 'full',
-            'timestamp' => time(),
-            'filename' => $sitename . '-wp-property.' . date('Y-m-d') . '.json'
-          );
-
-          //if backup of data from setup-assistant
-          // get backed-up data for download
-          if (isset($_REQUEST['timestamp'])) {
-            $data = get_option('wpp_property_backups');
-            $wp_properties = $data[$_REQUEST['timestamp']];
-          }
-
-          // May be extend backup data by add-ons options.
-          if( isset( $_GET['wpp-backup-type'] ) && $_GET['wpp-backup-type'] === 'fields' ) {
-
-            // overwrite some backup options.
-            $_options['type'] = 'fields';
-            $_options['filename'] = $sitename . '-wp-property.fields.' . date('Y-m-d') . '.json';
-
-            $data = apply_filters('wpp::backup::data', array('wpp_settings' => array(
-              'location_matters' => $wp_properties['location_matters'],
-              'hidden_attributes' => $wp_properties['hidden_attributes'],
-              'searchable_attributes' => $wp_properties['searchable_attributes'],
-              'searchable_property_types' => $wp_properties['searchable_property_types'],
-              'property_inheritance' => $wp_properties['property_inheritance'],
-              'property_stats' => $wp_properties['property_stats'],
-              'property_types' => $wp_properties['property_types'],
-              'property_stats_groups' => $wp_properties['property_stats_groups'],
-              'sortable_attributes' => $wp_properties['sortable_attributes'],
-              'searchable_attr_fields' => $wp_properties['searchable_attr_fields'],
-              'predefined_search_values' => $wp_properties['predefined_search_values'],
-              'admin_attr_fields' => $wp_properties['admin_attr_fields'],
-              'predefined_values' => $wp_properties['predefined_values'],
-              'default_values' => $wp_properties['default_values'],
-              'property_groups' => $wp_properties['property_groups'],
-              'geo_type_attributes' => $wp_properties['geo_type_attributes'],
-              'numeric_attributes' => $wp_properties['numeric_attributes'],
-              'currency_attributes' => $wp_properties['currency_attributes']
-            )), $_options );
-
-          }
-
-          if( isset( $_GET['wpp-backup-type'] ) && $_GET['wpp-backup-type'] === 'full' ) {
-            $data = apply_filters('wpp::backup::data', array('wpp_settings' => $wp_properties), $_options );
-          }
-
-          if( isset( $_options['filename'] ) ) {
-            header("Content-Disposition: attachment; filename=" . $_options['filename'] );
-          }
-
-          if( isset( $_options['filename'] ) && isset( $data ) ) {
-            die(json_encode($data, JSON_PRETTY_PRINT));
-          }
-
-          die();
-
+          self::download_settings_backup();
         }
 
       }
 
       /**
+       * Add Rewrite Options section.
+       *
+       * @author potanin@UD
+       */
+      static public function render_permalink_settings() {
+        global $wp_properties;
+
+        $rewrite_rules = isset( $wp_properties['configuration']['rewrite_rules'] ) ? $wp_properties['configuration']['rewrite_rules'] : '';
+        $structures = array();
+
+        //echo 'eg_setting_section_callback_function';
+        include ud_get_wp_property()->path( "static/views/admin/permalink-settings.php", 'dir' );
+      }
+
+      /**
+       * Download backup of configuration or fields
+       *
+       * @author potanin@UD
+       */
+      static public function download_settings_backup() {
+        global $wp_properties;
+
+        $sitename = sanitize_key(get_bloginfo('name'));
+
+        header("Cache-Control: private,no-cache,no-store");
+        header("Content-Description: File Transfer");
+        header("Content-Transfer-Encoding: binary");
+        header('Content-Type: text/plain; charset=' . get_option('blog_charset'), true);
+
+        $_options = array(
+          'type' => 'full',
+          'timestamp' => time(),
+          'filename' => $sitename . '-wp-property.' . date('Y-m-d') . '.json'
+        );
+
+        //if backup of data from setup-assistant
+        // get backed-up data for download
+        if (isset($_REQUEST['timestamp'])) {
+          $data = get_option('wpp_property_backups');
+          $wp_properties = $data[$_REQUEST['timestamp']];
+        }
+
+        // May be extend backup data by add-ons options.
+        if( isset( $_GET['wpp-backup-type'] ) && $_GET['wpp-backup-type'] === 'fields' ) {
+
+          // overwrite some backup options.
+          $_options['type'] = 'fields';
+          $_options['filename'] = $sitename . '-wp-property.fields.' . date('Y-m-d') . '.json';
+
+          $data = apply_filters('wpp::backup::data', array('wpp_settings' => array(
+            'location_matters' => $wp_properties['location_matters'],
+            'hidden_attributes' => $wp_properties['hidden_attributes'],
+            'searchable_attributes' => $wp_properties['searchable_attributes'],
+            'searchable_property_types' => $wp_properties['searchable_property_types'],
+            'property_inheritance' => $wp_properties['property_inheritance'],
+            'property_stats' => $wp_properties['property_stats'],
+            'property_types' => $wp_properties['property_types'],
+            'property_stats_groups' => $wp_properties['property_stats_groups'],
+            'sortable_attributes' => $wp_properties['sortable_attributes'],
+            'searchable_attr_fields' => $wp_properties['searchable_attr_fields'],
+            'predefined_search_values' => $wp_properties['predefined_search_values'],
+            'admin_attr_fields' => $wp_properties['admin_attr_fields'],
+            'predefined_values' => $wp_properties['predefined_values'],
+            'default_values' => $wp_properties['default_values'],
+            'property_groups' => $wp_properties['property_groups'],
+            'geo_type_attributes' => $wp_properties['geo_type_attributes'],
+            'numeric_attributes' => $wp_properties['numeric_attributes'],
+            'currency_attributes' => $wp_properties['currency_attributes']
+          )), $_options );
+
+        }
+
+        if( isset( $_GET['wpp-backup-type'] ) && $_GET['wpp-backup-type'] === 'full' ) {
+          $data = apply_filters('wpp::backup::data', array('wpp_settings' => $wp_properties), $_options );
+        }
+
+        if( isset( $_options['filename'] ) ) {
+          header("Content-Disposition: attachment; filename=" . $_options['filename'] );
+        }
+
+        if( isset( $_options['filename'] ) && isset( $data ) ) {
+          die(json_encode($data, JSON_PRETTY_PRINT));
+        }
+
+        die();
+
+      }
+
+      /**
+       * Add Settings page, under Property menu.
        *
        */
       public function admin_menu()
