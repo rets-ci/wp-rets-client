@@ -1,5 +1,5 @@
 import Api from '../../containers/Api.jsx';
-import {setMapProps} from '../../actions/index.jsx';
+import {setSearchResults} from '../../actions/index.jsx';
 import {Lib} from '../../lib.jsx'
 import Map from './Map.jsx';
 import React, {Component, PropTypes} from 'react';
@@ -10,24 +10,29 @@ import _ from 'lodash';
 
 const mapStateToProps = (state) => {
   return {
-    results: _.get(state, 'mapPropsState.mapProps', []),
-    resultsTotal: _.get(state, 'mapPropsState.totalProps', 0)
+    results: _.get(state, 'searchResults.searchResults', []),
+    resultsTotal: _.get(state, 'searchResults.totalProps', 0)
   }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    doSearch: (tax, term, saleType, propertyTypes) => {
+    doSearch: (tax, term, saleType, propertyTypes, locationFilter, geoCoordinates) => {
       let pt = propertyTypes.split(Lib.STRING_ARRAY_DELIMITER);
       let params = {
+        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
+        locationFilter: locationFilter || false,
         propertyTypes: pt,
         saleType: saleType,
         size: Lib.PROPERTY_PER_PAGE,
         tax: tax,
-        term: term
+        term: term,
+        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
       };
       Api.search(params, function (response) {
-        dispatch(setMapProps(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
+        console.log('response');
+        console.log(response);
+        dispatch(setSearchResults(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
       });
     }
   };
@@ -55,8 +60,10 @@ class MapSearchResults extends Component {
   render() {
     let {
       sale,
+      tax,
       term
     } = this.props.params;
+    let propertyTypes = this.props.location.query['wpp_search[property_types]'];
     return (
       <div>
         {this.props.results.length ?
@@ -67,7 +74,7 @@ class MapSearchResults extends Component {
                 <div className="caption">
            	   	  <span>Only showing {this.props.results.length} listings. Zoom in, or use filters to narrow your search.</span>
            	    </div>
-                <Map properties={this.props.results} />
+                <Map properties={this.props.results} searchByCoordinates={(locationFilter, geoCoordinates) => this.props.doSearch(tax, term, sale, propertyTypes, locationFilter, geoCoordinates)} />
               </div>
               <div className="listing-sidebar">
               	<div className="headtitle">

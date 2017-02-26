@@ -40,6 +40,24 @@ class Util extends React.Component {
 
     return _.replace(thumbnailUrl, fileName, newFileName);
   }
+
+  static es_geo_bounding_box_obj_format(params) {
+    let {
+      sw,
+      ne
+    } = params;
+    let coors = {
+      topLeft: {
+        lat: sw.lat,
+        lon: ne.lon
+      },
+      bottomRight: {
+        lat: ne.lat,
+        lon: sw.lon
+      }
+    };
+    return coors;
+  }
 }
 
 export default Util;

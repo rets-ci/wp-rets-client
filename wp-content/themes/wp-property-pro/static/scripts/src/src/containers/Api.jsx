@@ -184,82 +184,75 @@ class Api extends React.Component {
          * @type {$.es.Client|*}
          */
         let client = new jQuery.es.Client({
-            hosts: 'https://' + bundle.elasticsearch_host
+          hosts: 'https://' + bundle.elasticsearch_host
         });
 
         let terms = {};
         terms['tax_input.' + params.tax] = [
-            params.term
+          params.term
         ];
 
         let query = {
-            "bool": {
-                "must": [
-                    {
-                        "exists": {
-                            "field": "_system.location"
-                        }
-                    },
-                    {
-                        "terms": terms
-                    },
-                    {
-                        "terms": {
-                            "tax_input.sale_type": [
-                                params.saleType
-                            ]
-                        }
-                    },
-                    {
-                        "terms": {
-                            "meta_input.property_type": params.propertyTypes
-                        }
-
-                    }
-                ],
-                "must_not": [
-                    {
-                        "term": {
-                            "tax_input.location_latitude": "0"
-                        }
-                    },
-                    {
-                        "term": {
-                            "tax_input.location_longitude": "0"
-                        }
-                    },
-                    {
-                        "missing": {
-                            "field": "tax_input.location_latitude"
-                        }
-                    },
-                    {
-                        "missing": {
-                            "field": "tax_input.location_longitude"
-                        }
-                    }
-                ]
-            }
+          "bool": {
+            "must": [
+              {
+                "exists": {
+                  "field": "_system.location"
+                }
+              },
+              {
+                "terms": {
+                  "tax_input.sale_type": [
+                    params.saleType
+                  ]
+                }
+              },
+              {
+                "terms": {
+                  "meta_input.property_type": params.propertyTypes
+                }
+              }
+            ],
+            "must_not": [
+              {
+                "term": {
+                  "tax_input.location_latitude": "0"
+                }
+              },
+              {
+                "term": {
+                  "tax_input.location_longitude": "0"
+                }
+              },
+              {
+                "missing": {
+                  "field": "tax_input.location_latitude"
+                }
+              },
+              {
+                "missing": {
+                  "field": "tax_input.location_longitude"
+                }
+              }
+          ]
+          }
         };
 
-        if (params.locationFilter)
-            query.bool = Object.assign(query.bool, {
-                "filter": {
-                    "geo_bounding_box": {
-                        "_system.location": {
-                            "top_left": {
-                                "lat": params.topLeft.lat,
-                                "lon": params.topLeft.lon
-                            },
-                            "bottom_right": {
-                                "lat": params.bottomRight.lat,
-                                "lon": params.bottomRight.lon
-                            }
-
-                        }
-                    }
+        if (params.locationFilter) {
+          // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
+          query.bool = Object.assign(query.bool, {
+            "filter": {
+              "geo_bounding_box": {
+                "_system.location": {
+                  "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
+                  "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
                 }
-            });
+              }
+            }
+          });
+        } else {
+          query.bool.must.push({"terms": terms});
+        }
 
         query = JSON.stringify(query);
 
@@ -278,6 +271,7 @@ class Api extends React.Component {
             "_system .available_date",
             "_system.addressDetail",
             "_system.available_date",
+            "_system.location",
             "_system.listed_date",
             "_system.agency_listing",
             "_metrics.score.total",
@@ -312,7 +306,7 @@ class Api extends React.Component {
             body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}'),
         };
         client.search(esQuery, function (error, response) {
-            callback(response);
+          callback(response);
         });
 
     }
