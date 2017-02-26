@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import {Lib} from '../lib.jsx'
 
 class Api {
 
@@ -183,7 +184,7 @@ class Api {
 
         let rows = [];
 
-        if (!params.term || params.term.length < 3) {
+        if (!params.term || params.term.length < Lib.MIN_SEARCH_KEY_LENGTH) {
             callback(rows);
             return;
         }
@@ -252,6 +253,79 @@ class Api {
             callback(rows);
         });
     }
+
+  static topAggsQuery(params, callback) {
+
+    let client = new jQuery.es.Client({
+      hosts: 'https://' + bundle.elasticsearch_host
+    });
+
+    let _source = {
+      "query": {"match": {"post_status": "publish"}},
+      "aggs": {}
+    };
+
+
+    let aggregationsFields = this.getAggregationsFields();
+    for (let key in aggregationsFields) {
+
+      if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+      let data = aggregationsFields[key];
+
+      _source.aggs[key] = {
+        filters: {filters: {}},
+        aggs: {}
+      };
+
+      _source.aggs[key] = {terms: {
+        field: data.field,
+        size: _.get(params, 'size', 0),
+        order: { "_count": "desc"}
+      }}
+    }
+    client.search({
+      index: 'v5',
+      type: 'property',
+      method: "POST",
+      size: 0,
+      body: _source
+    }, function selectQueryResponse(err, response) {
+
+      let rows = [];
+      for (let aggregationKey in response.aggregations) {
+
+        let someAggregation = response.aggregations[aggregationKey];
+
+        let _buckets = [];
+
+        let data = null;
+        for (let ind in someAggregation.buckets) {
+
+          data = someAggregation.buckets[ind];
+
+          _buckets.push({
+            id: data.key,
+            text: data.key,
+            count: data.doc_count,
+            taxonomy: data.slug
+          });
+
+        }
+        if (_buckets.length > 0) {
+          data = Object.assign({}, data, {
+            key: aggregationKey,
+            text: 'Popular ' + aggregationsFields[aggregationKey].title,
+            children: _buckets
+          });
+          rows.push(data);
+        }
+
+
+      }
+      callback(rows);
+    });
+  }
 
     static suggest(params, callback) {
 

@@ -31,7 +31,7 @@ namespace RedDoorCompany\Policy {
 
     $_plugins[] = 'wp-rabbit/wp-rabbit.php';
     $_plugins[] = 'wp-upstream/wp-upstream.php';
-    $_plugins[] = 'simple-history/index.php';
+    //$_plugins[] = 'simple-history/index.php';
     $_plugins[] = 'siteorigin-panels/siteorigin-panels.php';
     $_plugins[] = 'so-widgets-bundle/so-widgets-bundle.php';
     $_plugins[] = 'wp-stateless/wp-stateless-media.php';

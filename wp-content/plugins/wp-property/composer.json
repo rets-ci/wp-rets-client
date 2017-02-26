@@ -35,7 +35,8 @@
     "UsabilityDynamics/wp-gallery-metabox": "2.0.1",
     "usabilitydynamics/wp-tax-post-binding": "2.0.5",
     "freemius/wordpress-sdk": "^1.1.7",
-    "ccampbell/chromephp": "^4.1"
+    "ccampbell/chromephp": "^4.1",
+    "10up/elasticpress": "^2.1"
   },
   "require-dev": {
     "usabilitydynamics/lib-wp-phpunit": "master",
@@ -88,13 +89,6 @@
     },
     "featureFlags": [
       {
-        "name": "Listing Labels",
-        "constant": "WP_PROPERTY_FLAG_WPP_LISTING_LABEL",
-        "description": "Property flags, for highlighting important information, stored in [wpp_listing_label]. Can be used to identify 'featured' properties.",
-        "since": "2.2.1",
-        "enabled": true
-      },
-      {
         "name": "Layouts",
         "constant": "WP_PROPERTY_LAYOUTS",
         "description": "Layouts for WP Property. When enabled, disabled legacy Sidebars and PHP Templates.",
@@ -138,8 +132,22 @@
       },
       {
         "name": "Listing Permissions",
-        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_PERMISSIONS",
-        "description": "Sets listing display permissions, stored in [wpp_listing_permissions].",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_POLICY",
+        "description": "Sets listing display permissions, stored in [wpp_listing_policy].",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
+        "name": "Schools Standard Taxonomy",
+        "constant": "WPP_FEATURE_FLAG_WPP_SCHOOLS",
+        "description": "Adds standard taxonomy for schools as [wpp_schools].",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
+        "name": "Listing Labels",
+        "constant": "WP_PROPERTY_FLAG_WPP_LISTING_LABEL",
+        "description": "Property flags, for highlighting important information, stored in [wpp_listing_label]. Can be used to identify 'featured' properties.",
         "since": "2.2.1",
         "enabled": true
       },
@@ -147,6 +155,20 @@
         "name": "Standard Location Taxonomy",
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION",
         "description": "Standard property location taxonomy, stored in [wpp_listing_location].",
+        "since": "2.2.1",
+        "enabled": true
+      },
+      {
+        "name": "Advanced Rewrite Rules",
+        "constant": "WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES",
+        "description": "Improved rewrite rules.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "Landing Page Categories",
+        "constant": "WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY",
+        "description": "Dynamic terms for landing pages, stored in [wpp_listing_category].",
         "since": "2.2.1",
         "enabled": true
       },
@@ -166,8 +188,8 @@
       },
       {
         "name": "Property Categories",
-        "constant": "WPP_FEATURE_FLAG_WPP_CATEGORY",
-        "description": "Taxonomy for general property terms, stored in [wpp_category]",
+        "constant": "WPP_FEATURE_FLAG_WPP_CATEGORICAL",
+        "description": "Taxonomy for general property terms, stored in [wpp_categorical]",
         "since": "2.2.1",
         "enabled": true
       },
@@ -181,7 +203,14 @@
       {
         "name": "Meta Attributes",
         "constant": "WP_PROPERTY_LEGACY_META_ATTRIBUTES",
-        "description": "Legacy Meta fields. In v2.2.1 meta fields have been merged with attributes.",
+        "description": "Legacy Meta fields. In v2.2.1 meta fields have been merged with attributes. This includes default Phone Number.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "Legacy Attribute Input Types",
+        "constant": "WP_PROPERTY_LEGACY_ATTRIBUTE_INPUT_TYPES",
+        "description": "Enables legacy input types such as radio, wysiwyg, etc.",
         "since": "2.2.1",
         "enabled": false
       },
@@ -223,7 +252,7 @@
       {
         "name": "Legacy Taxonomies",
         "constant": "WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES",
-        "description": "Enable legacy [property_features] and [community_features] taxonomies. These have been replaced by [wpp_category].",
+        "description": "Enable legacy [property_features] and [community_features] taxonomies. These have been replaced by [wpp_categorical].",
         "since": "2.2.1",
         "enabled": false
       },

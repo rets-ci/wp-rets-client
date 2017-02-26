@@ -5,10 +5,13 @@
  *
  * ## Changes
  *
+ * #### 2.0.2
+ * * Removed comment from excluded groups
+ *
  * #### 2.0.1
  * * Added automatic WP_CACHE_KEY_SALT setting based on DB_NAME.
  *
- * @version 2.0.1
+ * @version 2.0.2
  */
 /**
  * Adds a value to cache.
@@ -802,7 +805,7 @@ class WP_Object_Cache {
    *
    * @var array
    */
-  public $no_mc_groups = array( 'comment', 'counts' );
+  public $no_mc_groups = array( 'counts' );
 
   /**
    * Prefix used for global groups.
