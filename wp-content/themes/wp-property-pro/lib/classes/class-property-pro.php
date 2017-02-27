@@ -177,6 +177,8 @@ namespace UsabilityDynamics {
         $params['post']['post_content'] = self::rebuild_builder_content($post_data);
       }
 
+      /** Get header layout */
+      $params['post']['header_layout'] = get_post_meta($post->ID, 'header_layout', true) ? get_post_meta($post->ID, 'header_layout', true) : '';
       return $params;
     }
 
@@ -250,7 +252,7 @@ namespace UsabilityDynamics {
 
       switch ($_GET['pageType']) {
         case 'json':
-          ob_start('property_pro_buffer_handler');
+          ob_start([$this, 'property_pro_buffer_handler']);
           break;
         default;
       }
