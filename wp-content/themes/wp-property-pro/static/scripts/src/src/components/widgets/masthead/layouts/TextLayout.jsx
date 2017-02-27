@@ -6,13 +6,13 @@ const SearchLayout = ({widget_cell}) => {
     return (
         <div className="container">
             {
-                _.get(widget_cell, 'widget.fields.subtitle', '')
-                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
+                _.get(widget_cell, 'widget.fields.title', '')
+                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.title}</p>
                     : null
             }
             {
-                _.get(widget_cell, 'widget.fields.title', '')
-                ? <h1>{widget_cell.widget.fields.title}</h1>
+                _.get(widget_cell, 'widget.fields.subtitle', '')
+                ? <h1>{widget_cell.widget.fields.subtitle}</h1>
                 : null
             }
         </div>
