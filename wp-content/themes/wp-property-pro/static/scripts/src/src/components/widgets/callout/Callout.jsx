@@ -14,9 +14,7 @@ const CalloutContent = ({rows}) => {
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Callout_Widget', rows);
 
     if (!widget_cell)
-        return (
-            <section className="callout"></section>
-        );
+        return null;
 
     let container;
     switch (widget_cell.widget.fields.layout) {

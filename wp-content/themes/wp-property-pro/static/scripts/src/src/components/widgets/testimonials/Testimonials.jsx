@@ -26,9 +26,7 @@ const TestimonialsContent = ({rows, activeItem, switchActiveTestimonial}) => {
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
     if (!widget_cell)
-        return (
-            <section className="testimonial"></section>
-        );
+        return null;
 
     let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
         <li className={i === activeItem ? "active-slide" : ""} key={i}>

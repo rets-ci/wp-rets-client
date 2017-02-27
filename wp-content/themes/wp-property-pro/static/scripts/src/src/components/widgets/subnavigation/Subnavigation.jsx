@@ -15,9 +15,7 @@ const SubnavigationContent = ({rows}) => {
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
     if (!widget_cell)
-        return (
-            <section className="subnavigation"></section>
-        );
+        return null;
 
     let items = _.get(widget_cell, 'widget.fields.menu_items', []).map((item, i) => (
         <li key={i}>

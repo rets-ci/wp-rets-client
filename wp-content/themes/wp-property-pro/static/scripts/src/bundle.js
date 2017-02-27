@@ -4421,7 +4421,6 @@
 	  var post = _ref.post,
 	      openUserPanel = _ref.openUserPanel;
 
-	  console.log(_lodash2.default.get(post, 'header_layout', null));
 	  if (post === {} || _lodash2.default.indexOf([null, 'search'], _lodash2.default.get(post, 'header_layout', null)) !== -1) {
 	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
 	  }
@@ -24457,7 +24456,7 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
-	    if (!widget_cell) return _react2.default.createElement('div', null);
+	    if (!widget_cell) return null;
 
 	    var headerStyle = {
 	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
@@ -48152,7 +48151,7 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Callout_Widget', rows);
 
-	    if (!widget_cell) return _react2.default.createElement('section', { className: 'callout' });
+	    if (!widget_cell) return null;
 
 	    var container = void 0;
 	    switch (widget_cell.widget.fields.layout) {
@@ -48268,7 +48267,7 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
-	    if (!widget_cell) return _react2.default.createElement('section', { className: 'testimonial' });
+	    if (!widget_cell) return null;
 
 	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
@@ -48445,7 +48444,7 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
-	    if (!widget_cell) return _react2.default.createElement('section', { className: 'subnavigation' });
+	    if (!widget_cell) return null;
 
 	    var items = _lodash2.default.get(widget_cell, 'widget.fields.menu_items', []).map(function (item, i) {
 	        return _react2.default.createElement(

@@ -17,9 +17,7 @@ const MastheadContent = ({rows, open}) => {
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
     if (!widget_cell)
-        return (
-            <div></div>
-        );
+        return null;
 
     let headerStyle = {
         background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
