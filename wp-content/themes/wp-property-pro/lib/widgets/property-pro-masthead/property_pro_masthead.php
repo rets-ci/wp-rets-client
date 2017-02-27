@@ -72,7 +72,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         if (in_array($label, ['Rent', 'Sale']))
           $key = implode($delimiter, $general_property_types);
         else {
-          $key = isset( $excluded_property_types[strtolower($label)] ) ? $excluded_property_types[strtolower($label)] : null;
+          $key = $excluded_property_types[array_search(strtolower($label), $excluded_property_types)];
           $sale_type = 'Sale';
         }
 
