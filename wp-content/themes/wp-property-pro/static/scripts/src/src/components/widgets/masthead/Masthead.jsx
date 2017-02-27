@@ -1,13 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import WidgetsUtil from '../WidgetsUtil.jsx'
-import SearchLayout from './layouts/SearchLayout.jsx'
-import TextLayout from './layouts/TextLayout.jsx'
-import Modal from './components/Modal.jsx'
+import {connect} from 'react-redux';
+import _ from 'lodash';
+import WidgetsUtil from '../WidgetsUtil.jsx';
+import SearchLayout from './layouts/SearchLayout.jsx';
+import TextLayout from './layouts/TextLayout.jsx';
+import Modal from './components/Modal.jsx';
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows,
+        rows: _.get(state, 'postState.rows', []),
         open: state.modal ? state.modal.openModal : false
     }
 };
@@ -16,8 +17,9 @@ const MastheadContent = ({rows, open}) => {
 
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
-    if (!widget_cell)
+    if (!widget_cell){
         return null;
+    }
 
     let headerStyle = {
         background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
@@ -28,8 +30,6 @@ const MastheadContent = ({rows, open}) => {
         zIndex: "11"
       });
     }
-
-
 
     let container;
     let modal;

@@ -79,10 +79,11 @@ class Modal extends Component {
         let val = eve.target.value;
         this.setState({searchValue: val});
 
-        if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH)
+        if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH){
           this.props.topQuery();
-        else
+        }else{
           this.props.searchHandler(val);
+        }
 
     }
 
@@ -147,7 +148,7 @@ class Modal extends Component {
         );
     }
 }
-;
+
 
 export default connect(
     mapStateToProps,

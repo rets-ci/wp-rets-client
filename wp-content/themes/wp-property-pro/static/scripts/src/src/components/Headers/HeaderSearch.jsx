@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import _ from 'lodash';
 
 class HeaderSearch extends Component {
   static propTypes = {
@@ -10,9 +11,14 @@ class HeaderSearch extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="logo">
-              <a href={bundle.site_url} title={bundle.site_name}>
-                <img src={bundle.logos.square_logo} alt={bundle.site_name} />
-              </a>
+              {
+                _.get(bundle, 'logos.square_logo', null)
+                  ?
+                  <a href={bundle.site_url} title={bundle.site_name}>
+                    <img src={bundle.logos.square_logo} alt={bundle.site_name}/>
+                  </a>
+                  : null
+              }
             </div>
             <span className="drop-nav">
               <a href="#">Rent <i className="fa fa-caret-down"></i></a>

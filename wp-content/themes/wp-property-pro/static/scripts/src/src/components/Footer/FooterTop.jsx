@@ -25,9 +25,11 @@ const FooterTop = () => {
           <div className="col-md-12 col-lg-9 footer-menu">
             <div className="row">
               {
-                bundle.footer.top_footer.map((menu, i) =>
-                  <FooterTopMenu key={i} menu={menu}/>
-                )
+                _.get(bundle, 'footer.top_footer', null)
+                  ? bundle.footer.top_footer.map((menu, i) =>
+                    <FooterTopMenu key={i} menu={menu}/>
+                  )
+                  : null
               }
             </div>
           </div>

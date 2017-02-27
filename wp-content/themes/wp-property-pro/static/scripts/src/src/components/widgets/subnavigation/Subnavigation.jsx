@@ -6,7 +6,7 @@ import DefaultLayout from './layouts/DefaultLayout.jsx'
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows
+        rows: _.get(state, 'postState.rows')
     }
 };
 
@@ -14,8 +14,9 @@ const SubnavigationContent = ({rows}) => {
 
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
-    if (!widget_cell)
+    if (!widget_cell){
         return null;
+    }
 
     let items = _.get(widget_cell, 'widget.fields.menu_items', []).map((item, i) => (
         <li key={i}>
@@ -34,7 +35,6 @@ const SubnavigationContent = ({rows}) => {
             container = <DefaultLayout items={items}/>;
             break;
     }
-
 
     return (
         <section className="subnavigation">

@@ -1,7 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
 
-
 class WidgetsUtil extends React.Component {
 
     static getWidgetByKey(key, rows) {

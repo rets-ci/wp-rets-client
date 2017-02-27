@@ -1,19 +1,15 @@
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Post from '../components/Post.jsx'
+import _ from 'lodash';
 
 const mapStateToProps = (state) => {
-    return {
-        rows: state.postState.rows
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {}
+  return {
+    rows: _.get(state, 'postState.rows')
+  }
 };
 
 const PostContent = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps
 )(Post);
 
 export default PostContent

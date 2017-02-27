@@ -7,13 +7,6 @@ export const addPost = (post) => {
     }
 };
 
-export const addMap = (map) => {
-    return {
-        type: Lib.ADD_MAP_ACTION,
-        map: map
-    }
-};
-
 export const openModal = (open) => {
   return {
     type: Lib.TOGGLE_MODAL_ACTION,
@@ -35,13 +28,6 @@ export const setSearchResults = (query, searchResults, total, append) => {
         query: query,
         searchResults: searchResults,
         totalProps: total
-    }
-};
-
-export const setMapMarkers = (mapMarkers) => {
-    return {
-        type: Lib.SET_MAP_MARKERS_ACTION,
-        mapMarkers: mapMarkers
     }
 };
 

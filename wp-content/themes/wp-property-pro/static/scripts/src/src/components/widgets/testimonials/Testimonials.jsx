@@ -7,7 +7,7 @@ import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows,
+        rows: _.get(state, 'postState.rows', []),
         activeItem: _.get(state, 'testimonialsCarouselState.activeItem', 0)
     }
 };
@@ -22,11 +22,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const TestimonialsContent = ({rows, activeItem, switchActiveTestimonial}) => {
 
-
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
-    if (!widget_cell)
+    if (!widget_cell){
         return null;
+    }
 
     let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
         <li className={i === activeItem ? "active-slide" : ""} key={i}>

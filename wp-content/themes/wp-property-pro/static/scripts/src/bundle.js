@@ -129,7 +129,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addMap = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
@@ -137,13 +137,6 @@
 	    return {
 	        type: _lib.Lib.ADD_POST_ACTION,
 	        post: post
-	    };
-	};
-
-	var addMap = exports.addMap = function addMap(map) {
-	    return {
-	        type: _lib.Lib.ADD_MAP_ACTION,
-	        map: map
 	    };
 	};
 
@@ -168,13 +161,6 @@
 	        query: query,
 	        searchResults: searchResults,
 	        totalProps: total
-	    };
-	};
-
-	var setMapMarkers = exports.setMapMarkers = function setMapMarkers(mapMarkers) {
-	    return {
-	        type: _lib.Lib.SET_MAP_MARKERS_ACTION,
-	        mapMarkers: mapMarkers
 	    };
 	};
 
@@ -23857,7 +23843,7 @@
 /* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23868,6 +23854,10 @@
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23887,148 +23877,148 @@
 	  }
 
 	  _createClass(HeaderSearch, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "header",
-	        { className: "top-panel" },
+	        'header',
+	        { className: 'top-panel' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "container-fluid" },
+	          'div',
+	          { className: 'container-fluid' },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "row" },
+	            'div',
+	            { className: 'row' },
 	            _react2.default.createElement(
-	              "div",
-	              { className: "logo" },
-	              _react2.default.createElement(
-	                "a",
+	              'div',
+	              { className: 'logo' },
+	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	                'a',
 	                { href: bundle.site_url, title: bundle.site_name },
-	                _react2.default.createElement("img", { src: bundle.logos.square_logo, alt: bundle.site_name })
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name })
+	              ) : null
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'drop-nav' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#' },
+	                'Rent ',
+	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
 	              )
 	            ),
 	            _react2.default.createElement(
-	              "span",
-	              { className: "drop-nav" },
+	              'div',
+	              { className: 'search-box-wrap' },
 	              _react2.default.createElement(
-	                "a",
-	                { href: "#" },
-	                "Rent ",
-	                _react2.default.createElement("i", { className: "fa fa-caret-down" })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "search-box-wrap" },
-	              _react2.default.createElement(
-	                "form",
-	                { method: "get", className: "clearfix hidden-md-down" },
+	                'form',
+	                { method: 'get', className: 'clearfix hidden-md-down' },
 	                _react2.default.createElement(
-	                  "div",
-	                  { className: "bs-tags-box" },
+	                  'div',
+	                  { className: 'bs-tags-box' },
 	                  _react2.default.createElement(
-	                    "div",
-	                    { className: "bs-tags-input" },
+	                    'div',
+	                    { className: 'bs-tags-input' },
 	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default" },
+	                      'span',
+	                      { className: 'tag badge badge-default' },
 	                      _react2.default.createElement(
-	                        "span",
+	                        'span',
 	                        null,
-	                        _react2.default.createElement("i", { className: "fa fa-times" })
+	                        _react2.default.createElement('i', { className: 'fa fa-times' })
 	                      ),
-	                      " ",
+	                      ' ',
 	                      this.props.searchTerm
 	                    ),
 	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
+	                      'span',
+	                      { className: 'tag badge badge-default addfilter' },
 	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
+	                        'a',
+	                        { href: '#' },
 	                        _react2.default.createElement(
-	                          "span",
+	                          'span',
 	                          null,
-	                          "+"
+	                          '+'
 	                        ),
-	                        " Bedroom"
+	                        ' Bedroom'
 	                      )
 	                    ),
 	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
+	                      'span',
+	                      { className: 'tag badge badge-default addfilter' },
 	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
+	                        'a',
+	                        { href: '#' },
 	                        _react2.default.createElement(
-	                          "span",
+	                          'span',
 	                          null,
-	                          "+"
+	                          '+'
 	                        ),
-	                        " Price"
+	                        ' Price'
 	                      )
 	                    ),
 	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "tag badge badge-default addfilter" },
+	                      'span',
+	                      { className: 'tag badge badge-default addfilter' },
 	                      _react2.default.createElement(
-	                        "a",
-	                        { href: "#" },
+	                        'a',
+	                        { href: '#' },
 	                        _react2.default.createElement(
-	                          "span",
+	                          'span',
 	                          null,
-	                          "+"
+	                          '+'
 	                        ),
-	                        " More Filters"
+	                        ' More Filters'
 	                      )
 	                    ),
-	                    _react2.default.createElement("input", { type: "text", size: "1", placeholder: "" })
+	                    _react2.default.createElement('input', { type: 'text', size: '1', placeholder: '' })
 	                  )
 	                ),
-	                _react2.default.createElement("input", { type: "text", defaultValue: "Raleigh,Raleigh2", "data-role": "tagsinput", className: "tagsinput" }),
-	                _react2.default.createElement("i", { className: "fa fa-search" })
+	                _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: 'tagsinput' }),
+	                _react2.default.createElement('i', { className: 'fa fa-search' })
 	              )
 	            ),
 	            _react2.default.createElement(
-	              "div",
-	              { className: "top-nav-bar" },
+	              'div',
+	              { className: 'top-nav-bar' },
 	              _react2.default.createElement(
-	                "ul",
+	                'ul',
 	                null,
 	                _react2.default.createElement(
-	                  "li",
+	                  'li',
 	                  null,
 	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", title: "Favorites", className: "favorite" },
-	                    _react2.default.createElement("i", { className: "fa fa-heart" })
+	                    'a',
+	                    { href: '#', title: 'Favorites', className: 'favorite' },
+	                    _react2.default.createElement('i', { className: 'fa fa-heart' })
 	                  )
 	                ),
 	                _react2.default.createElement(
-	                  "li",
+	                  'li',
 	                  null,
 	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", title: "Notification", className: "notification" },
-	                    _react2.default.createElement("i", { className: "fa fa-bell" }),
-	                    " ",
+	                    'a',
+	                    { href: '#', title: 'Notification', className: 'notification' },
+	                    _react2.default.createElement('i', { className: 'fa fa-bell' }),
+	                    ' ',
 	                    _react2.default.createElement(
-	                      "span",
-	                      { className: "indicator" },
-	                      _react2.default.createElement("i", { className: "fa fa-circle" })
+	                      'span',
+	                      { className: 'indicator' },
+	                      _react2.default.createElement('i', { className: 'fa fa-circle' })
 	                    )
 	                  )
 	                ),
 	                _react2.default.createElement(
-	                  "li",
+	                  'li',
 	                  null,
 	                  _react2.default.createElement(
-	                    "a",
-	                    { href: "#", onClick: this.props.openUserPanel, className: "side-navigation" },
+	                    'a',
+	                    { href: '#', onClick: this.props.openUserPanel, className: 'side-navigation' },
 	                    _react2.default.createElement(
-	                      "span",
+	                      'span',
 	                      null,
-	                      "\u2630"
+	                      '\u2630'
 	                    )
 	                  )
 	                )
@@ -24416,6 +24406,10 @@
 
 	var _reactRedux = __webpack_require__(36);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	var _WidgetsUtil = __webpack_require__(81);
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
@@ -24436,7 +24430,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows,
+	        rows: _lodash2.default.get(state, 'postState.rows', []),
 	        open: state.modal ? state.modal.openModal : false
 	    };
 	};
@@ -24448,7 +24442,9 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
 
-	    if (!widget_cell) return null;
+	    if (!widget_cell) {
+	        return null;
+	    }
 
 	    var headerStyle = {
 	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
@@ -24590,7 +24586,7 @@
 	            { className: 'hidden-sm-down' },
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: widget_cell.widget.fields.search_options })
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', []) })
 	    );
 	};
 
@@ -24784,8 +24780,6 @@
 	var _reactOnclickoutside = __webpack_require__(85);
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
-
-	var _lib = __webpack_require__(2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42718,7 +42712,11 @@
 	            var val = eve.target.value;
 	            this.setState({ searchValue: val });
 
-	            if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) this.props.topQuery();else this.props.searchHandler(val);
+	            if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	                this.props.topQuery();
+	            } else {
+	                this.props.searchHandler(val);
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -42818,8 +42816,6 @@
 
 	    return Modal;
 	}(_react.Component);
-
-	;
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Modal);
 
@@ -48129,11 +48125,15 @@
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows
+	        rows: _lodash2.default.get(state, 'postState.rows', [])
 	    };
 	};
 
@@ -48143,7 +48143,9 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Callout_Widget', rows);
 
-	    if (!widget_cell) return null;
+	    if (!widget_cell) {
+	        return null;
+	    }
 
 	    var container = void 0;
 	    switch (widget_cell.widget.fields.layout) {
@@ -48180,6 +48182,10 @@
 
 	var _reactRedux = __webpack_require__(36);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DefaultLayout = function DefaultLayout(_ref) {
@@ -48188,17 +48194,16 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _react2.default.createElement(
+	    _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
 	      'p',
 	      null,
 	      item.title
-	    ),
-	    ' ',
-	    _react2.default.createElement(
+	    ) : null,
+	    _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
 	      'a',
-	      { href: item.button.url, className: 'btn btn-contact' },
+	      { href: _lodash2.default.get(item, 'button.url', bundle.site_url), className: 'btn btn-contact' },
 	      item.button.label
-	    )
+	    ) : null
 	  );
 	};
 
@@ -48238,7 +48243,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows,
+	        rows: _lodash2.default.get(state, 'postState.rows', []),
 	        activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
 	    };
 	};
@@ -48259,7 +48264,9 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
 
-	    if (!widget_cell) return null;
+	    if (!widget_cell) {
+	        return null;
+	    }
 
 	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	        return _react2.default.createElement(
@@ -48343,7 +48350,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
@@ -48359,37 +48366,37 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DefaultLayout = function DefaultLayout(_ref) {
-	    var widget_cell = _ref.widget_cell,
-	        testimonials_reviews = _ref.testimonials_reviews,
-	        testimonials_authors = _ref.testimonials_authors;
+	  var widget_cell = _ref.widget_cell,
+	      testimonials_reviews = _ref.testimonials_reviews,
+	      testimonials_authors = _ref.testimonials_authors;
 
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h4',
-	            null,
-	            widget_cell.widget.fields.title
-	        ) : null,
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'sliderContent' },
-	            _react2.default.createElement(
-	                'ul',
-	                { className: 'slides' },
-	                testimonials_reviews
-	            )
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'userInfo' },
-	            _react2.default.createElement(
-	                'ul',
-	                { className: 'slides' },
-	                testimonials_authors
-	            )
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'container' },
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h4',
+	      null,
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
+	      'div',
+	      { className: 'sliderContent' },
+	      _react2.default.createElement(
+	        'ul',
+	        { className: 'slides' },
+	        testimonials_reviews
+	      )
+	    ),
+	    _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
+	      'div',
+	      { className: 'userInfo' },
+	      _react2.default.createElement(
+	        'ul',
+	        { className: 'slides' },
+	        testimonials_authors
+	      )
+	    )
+	  );
 	};
 
 	exports.default = DefaultLayout;
@@ -48426,7 +48433,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        rows: state.postState.rows
+	        rows: _lodash2.default.get(state, 'postState.rows')
 	    };
 	};
 
@@ -48436,7 +48443,9 @@
 
 	    var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
-	    if (!widget_cell) return null;
+	    if (!widget_cell) {
+	        return null;
+	    }
 
 	    var items = _lodash2.default.get(widget_cell, 'widget.fields.menu_items', []).map(function (item, i) {
 	        return _react2.default.createElement(
@@ -48482,7 +48491,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
@@ -48491,20 +48500,23 @@
 
 	var _reactRedux = __webpack_require__(36);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DefaultLayout = function DefaultLayout(_ref) {
-	    var items = _ref.items;
-
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	            'ul',
-	            { className: 'clearfix' },
-	            items
-	        )
-	    );
+	  var items = _ref.items;
+	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
+	    'div',
+	    { className: 'container' },
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'clearfix' },
+	      items
+	    )
+	  );
 	};
 
 	exports.default = DefaultLayout;
@@ -48516,7 +48528,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
@@ -48538,12 +48550,12 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Footer = function Footer() {
-	    return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
-	        'footer',
-	        { className: 'pagefooter' },
-	        _react2.default.createElement(_FooterTop2.default, null),
-	        _react2.default.createElement(_FooterBottom2.default, null)
-	    ) : null;
+	  return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
+	    'footer',
+	    { className: 'pagefooter' },
+	    _react2.default.createElement(_FooterTop2.default, null),
+	    _react2.default.createElement(_FooterBottom2.default, null)
+	  ) : null;
 	};
 
 	exports.default = Footer;
@@ -48599,9 +48611,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
-	            bundle.footer.top_footer.map(function (menu, i) {
+	            _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
 	              return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
-	            })
+	            }) : null
 	          )
 	        )
 	      )
@@ -48615,46 +48627,54 @@
 /* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var FooterTop = function FooterTop(_ref) {
-	    var menu = _ref.menu;
+	  var menu = _ref.menu;
 
 
-	    return _react2.default.createElement(
-	        "div",
-	        { className: "col-6 col-sm-6 col-lg-3" },
-	        _react2.default.createElement(
-	            "h5",
-	            null,
-	            menu.title
-	        ),
-	        _react2.default.createElement(
-	            "ul",
-	            null,
-	            menu.items.map(function (item, i) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: i },
-	                    _react2.default.createElement(
-	                        "a",
-	                        { href: item.url },
-	                        item.title
-	                    )
-	                );
-	            })
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'col-6 col-sm-6 col-lg-3' },
+	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h5',
+	        null,
+	        menu.title
+	      ),
+	      _react2.default.createElement(
+	        'ul',
+	        null,
+	        menu.items.map(function (item, i) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: i },
+	            _react2.default.createElement(
+	              'a',
+	              { href: item.url },
+	              item.title
+	            )
+	          );
+	        })
+	      )
+	    )
+	  );
 	};
 
 	exports.default = FooterTop;
@@ -48663,7 +48683,7 @@
 /* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -48672,6 +48692,10 @@
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	var _FooterBottomMenu = __webpack_require__(298);
 
@@ -48686,16 +48710,16 @@
 	var FooterBottom = function FooterBottom() {
 
 	    return _react2.default.createElement(
-	        "div",
-	        { className: "bottom-footer" },
+	        'div',
+	        { className: 'bottom-footer' },
 	        _react2.default.createElement(
-	            "div",
-	            { className: "container" },
+	            'div',
+	            { className: 'container' },
 	            _react2.default.createElement(
-	                "div",
-	                { className: "row" },
-	                _react2.default.createElement(_FooterBottomMenu2.default, { menu: bundle.footer.bottom_footer.menu }),
-	                _react2.default.createElement(_FooterBottomSocialMenu2.default, { menu: bundle.footer.bottom_footer.social_menu })
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(_FooterBottomMenu2.default, { menu: _lodash2.default.get(bundle, 'footer.bottom_footer.menu', {}) }),
+	                _react2.default.createElement(_FooterBottomSocialMenu2.default, { menu: _lodash2.default.get(bundle, 'footer.bottom_footer.social_menu', {}) })
 	            )
 	        )
 	    );
@@ -48707,41 +48731,45 @@
 /* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var FooterTop = function FooterTop(_ref) {
-	    var menu = _ref.menu;
+	  var menu = _ref.menu;
 
 
-	    return _react2.default.createElement(
-	        "div",
-	        { className: "col-md-12 col-lg-7" },
-	        _react2.default.createElement(
-	            "ul",
-	            null,
-	            menu.items.map(function (item, i) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: i },
-	                    _react2.default.createElement(
-	                        "a",
-	                        { href: item.url },
-	                        item.title
-	                    )
-	                );
-	            })
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'col-md-12 col-lg-7' },
+	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
+	      'ul',
+	      null,
+	      menu.items.map(function (item, i) {
+	        return _react2.default.createElement(
+	          'li',
+	          { key: i },
+	          _react2.default.createElement(
+	            'a',
+	            { href: item.url },
+	            item.title
+	          )
+	        );
+	      })
+	    )
+	  );
 	};
 
 	exports.default = FooterTop;
@@ -48750,43 +48778,47 @@
 /* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var FooterTop = function FooterTop(_ref) {
-	    var menu = _ref.menu;
+	  var menu = _ref.menu;
 
 
-	    return _react2.default.createElement(
-	        "div",
-	        { className: "col-md-12 col-lg-5" },
-	        _react2.default.createElement(
-	            "div",
-	            { className: "social" },
-	            _react2.default.createElement(
-	                "span",
-	                null,
-	                menu.title
-	            ),
-	            menu.items.map(function (item, i) {
-	                return _react2.default.createElement(
-	                    "a",
-	                    { key: i, className: item.title.toLowerCase(), href: item.url, target: "_blank", title: item.title },
-	                    _react2.default.createElement("i", {
-	                        className: "fa fa-" + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
-	                );
-	            })
-	        )
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'col-md-12 col-lg-5' },
+	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
+	      'div',
+	      { className: 'social' },
+	      _react2.default.createElement(
+	        'span',
+	        null,
+	        menu.title
+	      ),
+	      menu.items.map(function (item, i) {
+	        return _react2.default.createElement(
+	          'a',
+	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title },
+	          _react2.default.createElement('i', {
+	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
+	        );
+	      })
+	    )
+	  );
 	};
 
 	exports.default = FooterTop;
@@ -49086,7 +49118,7 @@
 	        var bounds = _this2.map.getBounds();
 	        var ne = bounds.getNorthEast();
 	        var sw = bounds.getSouthWest();
-	        _this2.props.searchByCoordinates(true, _Util2.default.es_geo_bounding_box_obj_format({
+	        _this2.props.searchByCoordinates(true, _Util2.default.esGeoBoundingBoxObjFormat({
 	          ne: {
 	            lat: ne.lat(),
 	            lon: ne.lng()
@@ -49208,8 +49240,8 @@
 	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
 	    }
 	  }, {
-	    key: 'es_geo_bounding_box_obj_format',
-	    value: function es_geo_bounding_box_obj_format(params) {
+	    key: 'esGeoBoundingBoxObjFormat',
+	    value: function esGeoBoundingBoxObjFormat(params) {
 	      var sw = params.sw,
 	          ne = params.ne;
 

@@ -6,7 +6,6 @@ import _ from 'lodash'
 const SearchLayout = ({widget_cell}) => {
     return (
         <div className="container">
-
             {
                 _.get(widget_cell, 'widget.fields.title', '')
                     ? <h1>{widget_cell.widget.fields.title}</h1>
@@ -17,7 +16,7 @@ const SearchLayout = ({widget_cell}) => {
                     ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
-            <Search options={widget_cell.widget.fields.search_options}/>
+            <Search options={_.get(widget_cell, 'widget.fields.search_options', [])}/>
         </div>
     );
 };

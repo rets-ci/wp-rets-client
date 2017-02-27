@@ -1,11 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import WidgetsUtil from '../WidgetsUtil.jsx'
-import DefaultLayout from './layouts/DefaultLayout.jsx'
+import {connect} from 'react-redux';
+import WidgetsUtil from '../WidgetsUtil.jsx';
+import DefaultLayout from './layouts/DefaultLayout.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state) => {
     return {
-        rows: state.postState.rows
+        rows: _.get(state, 'postState.rows', [])
     }
 };
 
@@ -13,8 +14,9 @@ const CalloutContent = ({rows}) => {
 
     let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Callout_Widget', rows);
 
-    if (!widget_cell)
+    if (!widget_cell){
         return null;
+    }
 
     let container;
     switch (widget_cell.widget.fields.layout) {
@@ -23,7 +25,6 @@ const CalloutContent = ({rows}) => {
             container = <DefaultLayout item={widget_cell.widget.fields}/>;
             break;
     }
-
 
     return (
     <section className="callout">
