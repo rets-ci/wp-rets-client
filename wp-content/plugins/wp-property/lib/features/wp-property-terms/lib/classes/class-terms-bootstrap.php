@@ -42,7 +42,7 @@ namespace UsabilityDynamics\WPP {
           /** Add Settings on Developer Tab */
           add_filter( 'wpp::settings_developer::tabs', function( $tabs ){
             $tabs['terms'] = array(
-              'label' => __( 'Terms', ud_get_wpp_terms()->domain ),
+              'label' => __( 'Taxonomies', ud_get_wpp_terms()->domain ),
               'template' => ud_get_wpp_terms()->path( 'static/views/admin/settings-developer-terms.php', 'dir' ),
               'order' => 25
             );
@@ -58,8 +58,10 @@ namespace UsabilityDynamics\WPP {
           add_action( 'wpp::types::inherited_attributes', function( $property_slug ){
             include ud_get_wpp_terms()->path( 'static/views/admin/settings-inherited-terms.php', 'dir' );
           } );
+
           // Priority must be greater than 1 for save_settings to make tax post binding work.
           add_action( 'wpp::save_settings', array( $this, 'save_settings' ) );
+
           // Add terms settings to backup
           add_filter( 'wpp::backup::data', array( $this, 'backup_settings' ), 50, 2 );
 
@@ -80,6 +82,7 @@ namespace UsabilityDynamics\WPP {
 
         /** Add Meta Box to manage taxonomies on Edit Property page. */
         add_filter( 'wpp::meta_boxes', array( $this, 'add_meta_box' ), 99 );
+
         /** Handle inherited taxonomies on property saving. */
         add_action( 'save_property', array( $this, 'save_property' ), 11 );
 
@@ -87,6 +90,7 @@ namespace UsabilityDynamics\WPP {
         add_filter( 'get_queryable_keys', array( $this, 'get_queryable_keys' ) );
         add_filter( 'wpp::get_properties::custom_case', array( $this, 'custom_search_case' ), 99, 2 );
         add_filter( 'wpp::get_properties::custom_key', array( $this, 'custom_search_query' ), 99, 3 );
+
         /** Add Search fields on 'All Properties' page ( admin panel ) */
         add_filter( 'wpp::overview::filter::fields', array( $this, 'get_filter_fields' ) );
 
@@ -204,6 +208,70 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       * Makes sure WPP-Terms doesn't override read-only taxonomies.
+       *
+       * @todo Update to allow labels to be overwritten for readonly taxonomies. - potanin@UD
+       *
+       * @param $taxonomies - Paseed down via wpp_taxonomies filter, not yet registered with WP.
+       */
+      public function prepare_taxonomies( $taxonomies ) {
+
+        /** Be sure that we have any taxonomy to register. If not, we set default taxonomies of WP-Property. */
+        if( !$this->get( 'config.taxonomies' ) ) {
+          $this->set( 'config.taxonomies', $taxonomies );
+          $types = array();
+          foreach ($taxonomies as $taxonomy => $data) {
+            $types[$taxonomy] = isset($data['unique']) && $data['unique'] ? 'unique' : '';
+          }
+          $this->set( 'config.types', $types );
+        }
+
+        $_taxonomies = $this->get( 'config.taxonomies', array() );
+
+        foreach( $taxonomies as $_taxonomy => $_taxonomy_data ) {
+
+
+          // Make sure we dont override any [readonly] taxonomies.
+          if( isset( $_taxonomy_data[ 'readonly' ] ) && $_taxonomy_data[ 'readonly' ]) {
+
+            if( isset( $_taxonomies[ $_taxonomy ] ) ) {
+              $_original_taxonomy = $_taxonomies[ $_taxonomy ];
+            }
+
+            $_taxonomies[ $_taxonomy ] = $_taxonomy_data;
+
+            // Preserve [wpp_term_meta_fields] fields.
+            if( isset( $_original_taxonomy ) && !isset( $_taxonomies[ $_taxonomy ]['wpp_term_meta_fields'] ) && isset( $_original_taxonomy['wpp_term_meta_fields'] ) ) {
+              $_taxonomies[ $_taxonomy ]['wpp_term_meta_fields'] = $_original_taxonomy['wpp_term_meta_fields'];
+            }
+
+            // Allow show_in_menu setting to be set
+            if( isset( $_original_taxonomy ) && !isset( $_taxonomies[ $_taxonomy ]['show_in_menu'] ) && isset( $_original_taxonomy['show_in_menu'] ) ) {
+              $_taxonomies[ $_taxonomy ]['show_in_menu'] = $_original_taxonomy['show_in_menu'];
+            }
+
+            // Allow rich_taxonomy to be enabled.
+            if( isset( $_original_taxonomy ) && !isset( $_taxonomies[ $_taxonomy ]['rich_taxonomy'] ) && isset( $_original_taxonomy['rich_taxonomy'] ) ) {
+              $_taxonomies[ $_taxonomy ]['rich_taxonomy'] = $_original_taxonomy['rich_taxonomy'];
+            }
+
+            // Allow rich_taxonomy to be enabled.
+            if( isset( $_original_taxonomy ) && !isset( $_taxonomies[ $_taxonomy ]['query_var'] ) && isset( $_original_taxonomy['query_var'] ) ) {
+              $_taxonomies[ $_taxonomy ]['query_var'] = $_original_taxonomy['query_var'];
+            }
+            if( isset( $_original_taxonomy ) && !isset( $_taxonomies[ $_taxonomy ]['rewrite'] ) && isset( $_original_taxonomy['rewrite'] ) ) {
+              $_taxonomies[ $_taxonomy ]['rewrite'] = $_original_taxonomy['rewrite'];
+            }
+
+          }
+
+        }
+
+        $this->set( 'config.taxonomies', $_taxonomies );
+
+      }
+
+      /**
        * Maybe extend taxonomy functionality
        *
        */
@@ -214,9 +282,11 @@ namespace UsabilityDynamics\WPP {
         $exclude = array();
 
         foreach( $taxonomies as $key => $data ) {
+
           if( !isset( $data[ 'rich_taxonomy' ] ) || !$data[ 'rich_taxonomy' ] ) {
             array_push( $exclude, $key );
           }
+
         }
 
         new \UsabilityDynamics\CFTPB\Loader( array(
@@ -277,7 +347,6 @@ namespace UsabilityDynamics\WPP {
 
         $taxonomies = $this->get( 'config.taxonomies', array() );
 
-
         if( !empty($taxonomies) && is_array($taxonomies) ) {
           foreach( $taxonomies as $k => $v ) {
 
@@ -309,6 +378,7 @@ namespace UsabilityDynamics\WPP {
             ) );
           }
         }
+
         return $fields;
       }
 
@@ -462,6 +532,11 @@ namespace UsabilityDynamics\WPP {
               if( empty( $v[ 'label' ] ) && count( $data[ 'wpp_terms' ] ) == 1 ) {
                 break;
               }
+
+              // Converting types to unique field
+              if(isset($data[ 'wpp_terms' ][ 'types' ][$taxonomy]) && $unique = $data[ 'wpp_terms' ][ 'types' ][$taxonomy]){
+                $v['unique'] = $unique == 'unique'? true: false;
+              }
               $taxonomies[ $taxonomy ] = $this->prepare_taxonomy( $v, $taxonomy );
             }
             $this->set( 'config.taxonomies', $taxonomies );
@@ -505,10 +580,10 @@ namespace UsabilityDynamics\WPP {
        * @param $settings
        * @param $option
        */
-      public function update_option_wpp_settings( $old_value = null, $settings, $option = '' ) {
+      public function update_option_wpp_settings( $old_value = null, $settings = array(), $option = '' ) {
 
         $_wpp_terms = array(
-          'taxonomies' => $settings['taxonomies'],
+          'taxonomies' => isset( $settings ) && isset( $settings['taxonomies'] ) ? $settings['taxonomies'] : array(),
 
           // Groups term belongs to.
           'groups' => array(),
@@ -525,7 +600,7 @@ namespace UsabilityDynamics\WPP {
           $_wpp_terms['taxonomies'] = $settings['taxonomies'];
         }
 
-        foreach( $settings['taxonomies'] as $_taxonomy => $_taxonomy_data ) {
+        foreach( (array) $settings['taxonomies'] as $_taxonomy => $_taxonomy_data ) {
 
           // Removed legacy/unused field(s)
           if( isset( $_taxonomy_data['wpp_hidden'] )  && !$_taxonomy_data['wpp_hidden'] ) {
@@ -542,13 +617,17 @@ namespace UsabilityDynamics\WPP {
           }
 
           // Verify rewrite rules are legic.
-          if( isset( $_taxonomy_data['rewrite'] ) &&  isset( $_taxonomy_data['rewrite']['slug'] ) ) {
+          if( isset( $_taxonomy_data['rewrite'] ) && isset( $_taxonomy_data['rewrite']['slug'] ) ) {
 
-            $_wpp_terms['taxonomies'][ $_taxonomy ]['rewrite'] = array(
-              'slug' => isset( $_taxonomy_data['rewrite']['slug'] ) ? $_taxonomy_data['rewrite']['slug'] : null,
-              'hierarchical' => isset( $_taxonomy_data['rewrite']['hierarchical'] ) ? $_taxonomy_data['rewrite']['hierarchical'] : true,
-              'with_front' => isset( $_taxonomy_data['rewrite']['with_front'] ) ? $_taxonomy_data['rewrite']['with_front'] : false
-            );
+            if( $_wpp_terms['taxonomies'][ $_taxonomy ]['rewrite'] !== false ) {
+
+              $_wpp_terms['taxonomies'][ $_taxonomy ]['rewrite'] = array(
+                'slug' => isset( $_taxonomy_data['rewrite']['slug'] ) ? $_taxonomy_data['rewrite']['slug'] : null,
+                'hierarchical' => isset( $_taxonomy_data['rewrite']['hierarchical'] ) ? $_taxonomy_data['rewrite']['hierarchical'] : true,
+                'with_front' => isset( $_taxonomy_data['rewrite']['with_front'] ) ? $_taxonomy_data['rewrite']['with_front'] : false
+              );
+
+            }
 
           } else {
             unset( $_wpp_terms['taxonomies'][ $_taxonomy ]['rewrite'] );
@@ -795,7 +874,9 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
-       * Define our custom taxonomies on wpp_taxonomies hook
+       * Define our custom taxonomies on wpp_taxonomies hook on level 30 after WPP_F::wpp_commom_taxonomies
+       *
+       *
        * @param $taxonomies
        * @return \UsabilityDynamics\type
        */
@@ -822,15 +903,7 @@ namespace UsabilityDynamics\WPP {
           )
         ));
 
-        /** Be sure that we have any taxonomy to register. If not, we set default taxonomies of WP-Property. */
-        if( !$this->get( 'config.taxonomies' ) ) {
-          $this->set( 'config.taxonomies', $taxonomies );
-          $types = array();
-          foreach ($taxonomies as $taxonomy => $data) {
-            $types[$taxonomy] = isset($data['unique']) && $data['unique'] ? 'unique' : '';
-          }
-          $this->set( 'config.types', $types );
-        }
+        $this->prepare_taxonomies( $taxonomies );
 
         /**
          * Rich Taxonomies ( adds taxonomy post type )
@@ -999,7 +1072,8 @@ namespace UsabilityDynamics\WPP {
           }
         }
 
-        if( $args[ 'hierarchical' ] ) {
+        // Ensure [hierarchical] is set unless [rewrite] is explicitly set to false.
+        if( $args[ 'hierarchical' ] && isset( $args[ 'rewrite' ] ) && $args[ 'rewrite' ] !== false ) {
           $args[ 'rewrite' ][ 'hierarchical' ] = true;
         }
 

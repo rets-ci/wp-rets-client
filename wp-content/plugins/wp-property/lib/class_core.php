@@ -70,7 +70,6 @@ class WPP_Core {
     /**
      * Updated remote settings to UD
      */
-    // add_action( 'wpp::save_settings', array( $this, 'update_site_settings' ) );
 
     add_filter( 'wpp_get_properties_query', array( $this, 'fix_tax_property_query' ));
 
@@ -123,11 +122,18 @@ class WPP_Core {
     // apply alias logic.
     foreach( (array) WPP_F::get_alias_map() as $_defined_field => $_target ) {
 
+      if( strpos( $_target, 'tax_input.' ) === 0 ) {
+        $_term_group_match = explode( '.', $_target );
+        $_alias_value = wp_get_object_terms( $property['ID'], $_term_group_match[1], array( 'fields' => 'names' ) );
+      }
+
       // try meta, defined taxonomy
-      $_alias_value  = isset( $property[ $_target ] ) ? $property[ $_target ] : null;
+      if( !isset( $_alias_value ) || !$_alias_value ) {
+        $_alias_value  = isset( $property[ $_target ] ) ? $property[ $_target ] : null;
+      }
 
       // Support for dynamic taxonomies.
-      if( !$_alias_value ) {
+      if( !isset( $_alias_value ) || !$_alias_value ) {
         WPP_F::verify_have_system_taxonomy( $_target );
         $_alias_value = wp_get_object_terms( $property['ID'], $_target, array( 'fields' => 'names' ) );
       }
@@ -196,6 +202,8 @@ class WPP_Core {
 
   /**
    * Update remote settings
+   *
+   * @depreciated
    *
    */
   public function update_site_settings() {
@@ -918,7 +926,7 @@ class WPP_Core {
    * @since 0.5
    * @param $actions
    * @param $post
-   * @return
+   * @return mixed
    */
   function property_row_actions( $actions, $post ) {
     if( $post->post_type != 'property' )
@@ -1503,7 +1511,9 @@ class WPP_Core {
   function term_created_wpp_listing_type($term_id, $tt_id){
     global $wp_properties;
     $term = get_term($term_id, 'wpp_listing_type');
+
     if(!in_array($term->slug, $wp_properties['property_types']) || $wp_properties['property_types'][$term->slug] != $term->name){
+
       $wp_properties['property_types'][$term->slug] = $term->name;
       $wp_properties['property_types_term_id'][$term->slug] = $term->term_id;
 

@@ -2,8 +2,8 @@
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.0
 Tested up to: 4.7.2
-Stable tag: 2.4.24
-Build time: 2017-02-03T14:18:43+02:00
+Stable tag: 2.4.25
+Build time: 2017-02-21T09:54:44+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -95,6 +95,9 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.4.25 - 21 February 2017 =
+* Fixed how widget wrapper IDs are generated.
 
 = 2.4.24 - 3 February 2017 =
 * Add row ID to style wrapper instead of actual row.

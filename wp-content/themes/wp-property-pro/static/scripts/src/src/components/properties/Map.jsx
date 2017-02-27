@@ -1,15 +1,26 @@
 import React, {Component, PropTypes} from 'react';
-
+import Util from '../Util.jsx';
 export default class Map extends Component {
   static propTypes = {
+    searchByCoordinates: PropTypes.func.isRequired,
     properties: PropTypes.array.isRequired
   };
-
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.markers = [];
+  }
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
     if (nextProps.properties.length) {
+      this.clearAllMarkers();
       this.setPropertyMarkers(nextProps.properties);
     }
+  }
+
+  clearAllMarkers() {
+    this.markers.forEach(m => {
+      m.setMap(null);
+    });
   }
 
   componentDidMount() {
@@ -27,17 +38,28 @@ export default class Map extends Component {
       let bounds = this.map.getBounds();
       let ne = bounds.getNorthEast();
       let sw = bounds.getSouthWest();
-      // TODO: call query with the new geo locations
+      this.props.searchByCoordinates(true, Util.es_geo_bounding_box_obj_format(
+        {
+          ne: {
+            lat: ne.lat(),
+            lon: ne.lng()
+          },
+          sw: {
+            lat: sw.lat(),
+            lon: sw.lng()
+          }
+        }));
     });
   }
 
   setPropertyMarkers(properties) {
     properties.forEach((p) => {
       let latLng = new window.google.maps.LatLng(p._source.tax_input.location_latitude ,p._source.tax_input.location_longitude);
-      new window.google.maps.Marker({
+      let marker = new window.google.maps.Marker({
         position: latLng,
         map: this.map
       });
+      this.markers.push(marker);
     });
   }
 

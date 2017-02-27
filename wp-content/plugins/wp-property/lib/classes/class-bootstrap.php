@@ -6,6 +6,8 @@
  */
 namespace UsabilityDynamics\WPP {
 
+  use WPP_Core;
+  use WPP_F;
   use UsabilityDynamics\SAAS_UTIL\Register;
 
   if (!class_exists('UsabilityDynamics\WPP\Bootstrap')) {
@@ -27,6 +29,10 @@ namespace UsabilityDynamics\WPP {
 
       public $layouts_settings = null;
 
+      public $layouts = null;
+
+      public $elastic = null;
+
       private $register;
 
       /**
@@ -45,6 +51,7 @@ namespace UsabilityDynamics\WPP {
       /**
        * May be load WP-Property Features
        *
+       * @todo Fix issue with Elasticpress activation triggering fatal error. (if (WP_PROPERTY_ELASTICSEARCH_SERVICE) flag is on)
        * @TODO: Fix Flag conditions: constants are still not defined on this step.
        *
        * @author peshkov@UD
@@ -140,6 +147,9 @@ namespace UsabilityDynamics\WPP {
         // Register site with SaaS Services.
         $this->register = class_exists( 'UsabilityDynamics\SAAS_UTIL\Register' ) ? new Register( 'property' ) : null;
 
+        // $this->register->register_blog();
+        // $this->register->create_subscription();
+
         //** Initiate Attributes Handler */
         new Attributes();
 
@@ -149,6 +159,11 @@ namespace UsabilityDynamics\WPP {
         //** Handles Export (XML/JSON/CSV) functionality */
         new Export();
 
+        // Invoke Elasticsearch Handler.
+        if( defined( 'WP_PROPERTY_ELASTICSEARCH_SERVICE' ) && WP_PROPERTY_ELASTICSEARCH_SERVICE && class_exists( 'UsabilityDynamics\WPP\Elasticsearch' )) {
+          $this->elastic = new Elasticsearch();
+        }
+
         /** Initiate WPML class if WPML plugin activated. **/
         if (function_exists('icl_object_id')) {
           new \UsabilityDynamics\WPP\WPML();
@@ -157,12 +172,15 @@ namespace UsabilityDynamics\WPP {
         if (is_admin()) {
           //** Initiate Admin Handler */
           new Admin();
+
           //** Initiate Meta Box Handler */
           new Meta_Box();
+
           //** Setup Gallery Meta Box ( wp-gallery-metabox ) */
           add_action('be_gallery_metabox_post_types', function ($post_types = array()) {
             return array('property');
           });
+
           add_filter('be_gallery_metabox_remove', '__return_false');
         }
 
@@ -191,13 +209,13 @@ namespace UsabilityDynamics\WPP {
         /**
          * Initiate the plugin
          */
-        $this->core = new \WPP_Core();
+        $this->core = new WPP_Core();
 
         /**
          * Flush WP-Property cache
          */
         if (get_transient('wpp_cache_flush')) {
-          \WPP_F::clear_cache();
+          WPP_F::clear_cache();
           delete_transient('wpp_cache_flush');
         }
 
@@ -205,13 +223,17 @@ namespace UsabilityDynamics\WPP {
         add_filter('site_transient_update_plugins', array('UsabilityDynamics\WPP\Bootstrap', 'update_check_handler'), 10, 2);
         add_filter('upgrader_process_complete', array('UsabilityDynamics\WPP\Bootstrap', 'upgrader_process_complete'), 10, 2);
 
-        // New layout feature.
-        if (!empty($wp_properties['configuration']['enable_layouts']) && $wp_properties['configuration']['enable_layouts'] == 'false') {
-          $this->layouts_settings = new Layouts_Settings();
-          new Layouts();
+        // New layout feature. Feature flag must be enabled.
+        if( defined( 'WP_PROPERTY_LAYOUTS' ) && WP_PROPERTY_LAYOUTS === true ) {
 
-          //** WP Property Customizer */
-          new WP_Property_Customizer();
+          if( !empty( $wp_properties[ 'configuration' ][ 'enable_layouts' ] ) && $wp_properties[ 'configuration' ][ 'enable_layouts' ] == 'false' ) {
+            $this->layouts_settings = new Layouts_Settings();
+            $this->layouts = new Layouts();
+
+            //** WP Property Customizer */
+            new WP_Property_Customizer();
+          }
+
         }
 
       }

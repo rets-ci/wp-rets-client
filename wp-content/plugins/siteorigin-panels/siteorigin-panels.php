@@ -3,7 +3,7 @@
 Plugin Name: Page Builder by SiteOrigin
 Plugin URI: https://siteorigin.com/page-builder/
 Description: A drag and drop, responsive page builder that simplifies building your website.
-Version: 2.4.24
+Version: 2.4.25
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 License: GPL3
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: http://siteorigin.com/page-builder/#donate
 */
 
-define('SITEORIGIN_PANELS_VERSION', '2.4.24');
+define('SITEORIGIN_PANELS_VERSION', '2.4.25');
 if ( ! defined('SITEORIGIN_PANELS_JS_SUFFIX' ) ) {
 	define('SITEORIGIN_PANELS_JS_SUFFIX', '.min');
 }
@@ -738,7 +738,6 @@ function siteorigin_panels_get_current_admin_panels_data( ){
  * @return string
  */
 function siteorigin_panels_generate_css($post_id, $panels_data = false){
-	// Exit if we don't have panels data
 	if( empty($panels_data) ) {
 		$panels_data = get_post_meta( $post_id, 'panels_data', true );
 		$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post_id );
@@ -988,26 +987,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 	$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post_id );
 	if( empty( $panels_data ) || empty( $panels_data['grids'] ) ) return '';
-
-	// Filter the widgets to add indexes
-	if ( !empty( $panels_data['widgets'] ) ) {
-		$last_gi = 0;
-		$last_ci = 0;
-		$last_wi = 0;
-		foreach ( $panels_data['widgets'] as $wid => &$widget_info ) {
-
-			if ( $widget_info['panels_info']['grid'] != $last_gi ) {
-				$last_gi = $widget_info['panels_info']['grid'];
-				$last_ci = 0;
-				$last_wi = 0;
-			}
-			elseif ( $widget_info['panels_info']['cell'] != $last_ci ) {
-				$last_ci = $widget_info['panels_info']['cell'];
-				$last_wi = 0;
-			}
-			$widget_info['panels_info']['cell_index'] = $last_wi++;
-		}
-	}
 
 	// Create the skeleton of the grids
 	$grids = array();
@@ -1564,7 +1543,7 @@ function siteorigin_panels_process_panels_data( $panels_data ){
 			// Filter the widgets to add indexes
 			if ( $widget['panels_info']['grid'] != $last_gi ) {
 				$last_gi = $widget['panels_info']['grid'];
-				$last_ci = 0;
+				$last_ci = $widget['panels_info']['cell'];
 				$last_wi = 0;
 			}
 			elseif ( $widget['panels_info']['cell'] != $last_ci ) {

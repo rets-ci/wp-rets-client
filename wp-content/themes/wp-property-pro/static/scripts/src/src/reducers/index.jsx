@@ -5,7 +5,7 @@ import menuState from './menu.jsx';
 import mapState from './map.jsx';
 import modal from './modal.jsx';
 import searchPropsState from './searchProps.jsx';
-import mapPropsState from './mapProps.jsx';
+import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
 import searchType from './searchType.jsx';
 import filterTermsState from './filterTerms.jsx';
@@ -18,8 +18,8 @@ const propertyProApp = combineReducers({
     mapState,
     modal,
     searchPropsState,
+    searchResults,
     searchType,
-    mapPropsState,
     mapMarkersState,
     routing: routerReducer,
     filterTermsState,

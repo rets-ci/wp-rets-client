@@ -119,7 +119,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setMapProps = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
@@ -158,10 +158,12 @@
 	    };
 	};
 
-	var setMapProps = exports.setMapProps = function setMapProps(mapProps, total) {
+	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
 	    return {
-	        type: _lib.Lib.SET_MAP_PROPS_ACTION,
-	        mapProps: mapProps,
+	        type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
+	        append: append,
+	        query: query,
+	        searchResults: searchResults,
 	        totalProps: total
 	    };
 	};
@@ -219,7 +221,7 @@
 	    ADD_MARKER_ACTION: 'ADD_MARKER',
 	    TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
 	    SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
-	    SET_MAP_PROPS_ACTION: 'SET_MAP_PROPS',
+	    SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
 	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
@@ -231,7 +233,9 @@
 	    URL_DELIMITER: '/',
 	    EXTENSION_DELIMITER: '.',
 	    PROPERTY_LISTING_IMAGE_SIZE: '435x230',
-	    PROPERTY_PER_PAGE: 18
+	    PROPERTY_PER_PAGE: 18,
+	    MIN_SEARCH_KEY_LENGTH: 3,
+	    TOP_AGGREGATIONS_COUNT: 5
 	};
 
 /***/ },
@@ -42413,6 +42417,13 @@
 	            _Api2.default.selectQuery(searchParams, function (rows) {
 	                dispatch((0, _index.setSearchProps)(rows));
 	            });
+	        },
+	        topQuery: function topQuery() {
+	            _Api2.default.topAggsQuery({
+	                size: _lib.Lib.TOP_AGGREGATIONS_COUNT
+	            }, function (rows) {
+	                dispatch((0, _index.setSearchProps)(rows));
+	            });
 	        }
 	    };
 	};
@@ -42429,8 +42440,8 @@
 	            searchValue: ''
 	        };
 
-	        // Set default value for non-empty modal
-	        _this.props.searchHandler("Durham");
+	        // Set default values
+	        _this.props.topQuery();
 	        return _this;
 	    }
 
@@ -42459,7 +42470,8 @@
 	        value: function handleSearchValueChange(eve) {
 	            var val = eve.target.value;
 	            this.setState({ searchValue: val });
-	            this.props.searchHandler(val);
+
+	            if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) this.props.topQuery();else this.props.searchHandler(val);
 	        }
 	    }, {
 	        key: 'render',
@@ -42571,7 +42583,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -42580,299 +42592,353 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(40);
-
 	var _lodash = __webpack_require__(38);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _lib = __webpack_require__(2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var Api = function () {
+	  function Api() {
+	    _classCallCheck(this, Api);
+	  }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {};
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {};
-
-	var Api = function (_React$Component) {
-	    _inherits(Api, _React$Component);
-
-	    function Api() {
-	        _classCallCheck(this, Api);
-
-	        return _possibleConstructorReturn(this, (Api.__proto__ || Object.getPrototypeOf(Api)).apply(this, arguments));
+	  _createClass(Api, null, [{
+	    key: 'getAggregationsFields',
+	    value: function getAggregationsFields() {
+	      return {
+	        "location_address": {
+	          "slug": "location_address",
+	          "title": "Address",
+	          "field": "meta_input.location_address",
+	          "search_field": "_search.location_address"
+	        },
+	        "mls_id": {
+	          "slug": "mls_id",
+	          "title": "MLS ID",
+	          "field": "tax_input.mls_id",
+	          "search_field": "_search.mls_id"
+	        },
+	        "location_city": {
+	          "slug": "city",
+	          "title": "City",
+	          "field": "tax_input.location_city",
+	          "search_field": "_search.location_city"
+	        },
+	        "location_zip": {
+	          "slug": "zip",
+	          "title": "Zip",
+	          "field": "_system.addressDetail.zipcode",
+	          "search_field": "_search.location_zip"
+	        },
+	        "location_county": {
+	          "slug": "county",
+	          "title": "County",
+	          "field": "tax_input.location_county",
+	          "search_field": "_search.location_county"
+	        },
+	        "subdivision": {
+	          "slug": "subdivision",
+	          "title": "Subdivision",
+	          "field": "tax_input.subdivision",
+	          "search_field": "_search.subdivision"
+	        },
+	        "elementary_school": {
+	          "slug": "elementary_school",
+	          "title": "Elementary School",
+	          "field": "tax_input.elementary_school",
+	          "search_field": "_search.elementary_school"
+	        },
+	        "middle_school": {
+	          "slug": "middle_school",
+	          "title": "Middle School",
+	          "field": "tax_input.middle_school",
+	          "search_field": "_search.middle_school"
+	        },
+	        "high_school": {
+	          "slug": "high_school",
+	          "title": "High School",
+	          "field": "tax_input.high_school",
+	          "search_field": "_search.high_school"
+	        }
+	      };
 	    }
+	  }, {
+	    key: 'createESSearchQuery',
+	    value: function createESSearchQuery(params) {
+	      var terms = {};
+	      terms['tax_input.' + params.tax] = [params.term];
 
-	    _createClass(Api, null, [{
-	        key: 'getAggregationsFields',
-	        value: function getAggregationsFields() {
-	            return {
-	                "location_address": {
-	                    "slug": "location_address",
-	                    "title": "Address",
-	                    "field": "meta_input.location_address",
-	                    "search_field": "_search.location_address"
-	                },
-	                "mls_id": {
-	                    "slug": "mls_id",
-	                    "title": "MLS ID",
-	                    "field": "tax_input.mls_id",
-	                    "search_field": "_search.mls_id"
-	                },
-	                "location_city": {
-	                    "slug": "city",
-	                    "title": "City",
-	                    "field": "tax_input.location_city",
-	                    "search_field": "_search.location_city"
-	                },
-	                "location_zip": {
-	                    "slug": "zip",
-	                    "title": "Zip",
-	                    "field": "_system.addressDetail.zipcode",
-	                    "search_field": "_search.location_zip"
-	                },
-	                "location_county": {
-	                    "slug": "county",
-	                    "title": "County",
-	                    "field": "tax_input.location_county",
-	                    "search_field": "_search.location_county"
-	                },
-	                "subdivision": {
-	                    "slug": "subdivision",
-	                    "title": "Subdivision",
-	                    "field": "tax_input.subdivision",
-	                    "search_field": "_search.subdivision"
-	                },
-	                "elementary_school": {
-	                    "slug": "elementary_school",
-	                    "title": "Elementary School",
-	                    "field": "tax_input.elementary_school",
-	                    "search_field": "_search.elementary_school"
-	                },
-	                "middle_school": {
-	                    "slug": "middle_school",
-	                    "title": "Middle School",
-	                    "field": "tax_input.middle_school",
-	                    "search_field": "_search.middle_school"
-	                },
-	                "high_school": {
-	                    "slug": "high_school",
-	                    "title": "High School",
-	                    "field": "tax_input.high_school",
-	                    "search_field": "_search.high_school"
-	                }
-	            };
-	        }
-	    }, {
-	        key: 'selectQuery',
-	        value: function selectQuery(params, callback) {
-
-	            var client = new jQuery.es.Client({
-	                hosts: 'https://' + bundle.elasticsearch_host
-	            });
-
-	            var rows = [];
-
-	            if (!params.term || params.term.length < 3) {
-	                callback(rows);
-	                return;
+	      var query = {
+	        "bool": {
+	          "must": [{
+	            "exists": {
+	              "field": "_system.location"
 	            }
-
-	            var _source = {
-	                "query": { "match": { "post_status": "publish" } },
-	                "aggs": {}
-	            };
-
-	            var aggregationsFields = this.getAggregationsFields();
-	            for (var key in aggregationsFields) {
-
-	                if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-	                var data = aggregationsFields[key];
-
-	                _source.aggs[key] = {
-	                    filters: { filters: {} },
-	                    aggs: {}
-	                };
-
-	                _source.aggs[key]['filters']['filters'][key] = { term: {} };
-	                _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
-	                _source.aggs[key]['aggs'][key] = { terms: { field: data.field } };
+	          }, {
+	            "terms": {
+	              "tax_input.sale_type": [params.saleType]
 	            }
-	            client.search({
-	                index: 'v5',
-	                type: 'property',
-	                method: "POST",
-	                size: 0,
-	                body: _source
-	            }, function selectQueryResponse(err, response) {
-
-	                var rows = [];
-	                for (var aggregationKey in response.aggregations) {
-
-	                    var someAggregation = response.aggregations[aggregationKey];
-
-	                    var _buckets = [];
-
-	                    var _data = null;
-	                    for (var ind in someAggregation.buckets[aggregationKey][aggregationKey].buckets) {
-
-	                        _data = someAggregation.buckets[aggregationKey][aggregationKey].buckets[ind];
-
-	                        _buckets.push({
-	                            id: _data.key,
-	                            text: _data.key,
-	                            count: _data.doc_count,
-	                            taxonomy: _data.slug
-	                        });
-	                    }
-	                    if (_buckets.length > 0) {
-	                        _data = Object.assign({}, _data, {
-	                            key: aggregationKey,
-	                            text: aggregationsFields[aggregationKey].title,
-	                            children: _buckets
-	                        });
-	                        rows.push(_data);
-	                    }
-	                }
-	                callback(rows);
-	            });
+	          }, {
+	            "terms": {
+	              "meta_input.property_type": params.propertyTypes
+	            }
+	          }],
+	          "must_not": [{
+	            "term": {
+	              "tax_input.location_latitude": "0"
+	            }
+	          }, {
+	            "term": {
+	              "tax_input.location_longitude": "0"
+	            }
+	          }, {
+	            "missing": {
+	              "field": "tax_input.location_latitude"
+	            }
+	          }, {
+	            "missing": {
+	              "field": "tax_input.location_longitude"
+	            }
+	          }]
 	        }
-	    }, {
-	        key: 'suggest',
-	        value: function suggest(params, callback) {
+	      };
 
-	            var text = _lodash2.default.get(params, 'text', '').replace(/\s+/g, '');
+	      if (params.locationFilter) {
+	        // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
+	        query.bool = Object.assign(query.bool, {
+	          "filter": {
+	            "geo_bounding_box": {
+	              "_system.location": {
+	                "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
+	                "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
+	              }
+	            }
+	          }
+	        });
+	      } else {
+	        query.bool.must.push({ "terms": terms });
+	      }
 
-	            if (!text) return;
+	      query = JSON.stringify(query);
 
-	            /**
-	             * @type {$.es.Client|*}
-	             */
-	            var client = new jQuery.es.Client({
-	                hosts: 'https://' + bundle.elasticsearch_host
+	      var size = params.size || 500;
+	      var from = params.from || 0;
+
+	      var aggregations = JSON.stringify({});
+
+	      var source = JSON.stringify(["post_title", "tax_input.location_latitude", "tax_input.location_longitude", "_permalink", "_system.neighborhood", "_system.google_place_id", "_system .available_date", "_system.addressDetail", "_system.available_date", "_system.location", "_system.listed_date", "_system.agency_listing", "_metrics.score.total", "meta_input.rets_thumbnail_url", "tax_input.listing_type", "tax_input.bedrooms", "tax_input.bathrooms", "tax_input.price", "tax_input.total_living_area_sqft", "tax_input.days_on_market", "tax_input.acres", "tax_input.price_per_sqft", "tax_input.approximate_lot_size", "tax_input.subdivision", "tax_input.neighborhood", "tax_input.added", "tax_input.sale_type", "tax_input.location_city", "tax_input .location_street_number", "tax_input.location_direction", "tax_input.location_street", "tax_input.location_unit"]);
+
+	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+	    }
+	  }, {
+	    key: 'selectQuery',
+	    value: function selectQuery(params, callback) {
+
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      var rows = [];
+
+	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	        callback(rows);
+	        return;
+	      }
+
+	      var _source = {
+	        "query": { "match": { "post_status": "publish" } },
+	        "aggs": {}
+	      };
+
+	      var aggregationsFields = this.getAggregationsFields();
+	      for (var key in aggregationsFields) {
+
+	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	        var data = aggregationsFields[key];
+
+	        _source.aggs[key] = {
+	          filters: { filters: {} },
+	          aggs: {}
+	        };
+
+	        _source.aggs[key]['filters']['filters'][key] = { term: {} };
+	        _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
+	        _source.aggs[key]['aggs'][key] = { terms: { field: data.field } };
+	      }
+	      client.search({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: _source
+	      }, function selectQueryResponse(err, response) {
+
+	        var rows = [];
+	        for (var aggregationKey in response.aggregations) {
+
+	          var someAggregation = response.aggregations[aggregationKey];
+
+	          var _buckets = [];
+
+	          var _data = null;
+	          for (var ind in someAggregation.buckets[aggregationKey][aggregationKey].buckets) {
+
+	            _data = someAggregation.buckets[aggregationKey][aggregationKey].buckets[ind];
+
+	            _buckets.push({
+	              id: _data.key,
+	              text: _data.key,
+	              count: _data.doc_count,
+	              taxonomy: _data.slug
 	            });
-
-	            client.suggest({
-	                index: 'v5',
-	                type: 'property',
-	                method: "POST",
-	                size: 0,
-	                body: {
-	                    "regular": {
-	                        "text": text.toLowerCase(),
-	                        "completion": { "field": "_search._suggest" }
-	                    }
-	                }
-	            }, function (error, response) {
-	                callback(response);
+	          }
+	          if (_buckets.length > 0) {
+	            _data = Object.assign({}, _data, {
+	              key: aggregationKey,
+	              text: aggregationsFields[aggregationKey].title,
+	              children: _buckets
 	            });
+	            rows.push(_data);
+	          }
 	        }
-	    }, {
-	        key: 'search',
-	        value: function search(params, callback) {
-	            /**
-	             * @type {$.es.Client|*}
-	             */
-	            var client = new jQuery.es.Client({
-	                hosts: 'https://' + bundle.elasticsearch_host
+	        callback(rows);
+	      });
+	    }
+	  }, {
+	    key: 'topAggsQuery',
+	    value: function topAggsQuery(params, callback) {
+
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      var _source = {
+	        "query": { "match": { "post_status": "publish" } },
+	        "aggs": {}
+	      };
+
+	      var aggregationsFields = this.getAggregationsFields();
+	      for (var key in aggregationsFields) {
+
+	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	        var data = aggregationsFields[key];
+
+	        _source.aggs[key] = {
+	          filters: { filters: {} },
+	          aggs: {}
+	        };
+
+	        _source.aggs[key] = { terms: {
+	            field: data.field,
+	            size: _lodash2.default.get(params, 'size', 0),
+	            order: { "_count": "desc" }
+	          } };
+	      }
+	      client.search({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: _source
+	      }, function selectQueryResponse(err, response) {
+
+	        var rows = [];
+	        for (var aggregationKey in response.aggregations) {
+
+	          var someAggregation = response.aggregations[aggregationKey];
+
+	          var _buckets = [];
+
+	          var _data2 = null;
+	          for (var ind in someAggregation.buckets) {
+
+	            _data2 = someAggregation.buckets[ind];
+
+	            _buckets.push({
+	              id: _data2.key,
+	              text: _data2.key,
+	              count: _data2.doc_count,
+	              taxonomy: _data2.slug
 	            });
-
-	            var terms = {};
-	            terms['tax_input.' + params.tax] = [params.term];
-
-	            var query = {
-	                "bool": {
-	                    "must": [{
-	                        "exists": {
-	                            "field": "_system.location"
-	                        }
-	                    }, {
-	                        "terms": terms
-	                    }, {
-	                        "terms": {
-	                            "tax_input.sale_type": [params.saleType]
-	                        }
-	                    }, {
-	                        "terms": {
-	                            "meta_input.property_type": params.propertyTypes
-	                        }
-
-	                    }],
-	                    "must_not": [{
-	                        "term": {
-	                            "tax_input.location_latitude": "0"
-	                        }
-	                    }, {
-	                        "term": {
-	                            "tax_input.location_longitude": "0"
-	                        }
-	                    }, {
-	                        "missing": {
-	                            "field": "tax_input.location_latitude"
-	                        }
-	                    }, {
-	                        "missing": {
-	                            "field": "tax_input.location_longitude"
-	                        }
-	                    }]
-	                }
-	            };
-
-	            if (params.locationFilter) query.bool = Object.assign(query.bool, {
-	                "filter": {
-	                    "geo_bounding_box": {
-	                        "_system.location": {
-	                            "top_left": {
-	                                "lat": params.topLeft.lat,
-	                                "lon": params.topLeft.lon
-	                            },
-	                            "bottom_right": {
-	                                "lat": params.bottomRight.lat,
-	                                "lon": params.bottomRight.lon
-	                            }
-
-	                        }
-	                    }
-	                }
+	          }
+	          if (_buckets.length > 0) {
+	            _data2 = Object.assign({}, _data2, {
+	              key: aggregationKey,
+	              text: 'Popular ' + aggregationsFields[aggregationKey].title,
+	              children: _buckets
 	            });
-
-	            query = JSON.stringify(query);
-
-	            var size = params.size || 500;
-	            var from = params.from || 0;
-
-	            var aggregations = JSON.stringify({});
-
-	            var source = JSON.stringify(["post_title", "tax_input.location_latitude", "tax_input.location_longitude", "_permalink", "_system.neighborhood", "_system.google_place_id", "_system .available_date", "_system.addressDetail", "_system.available_date", "_system.listed_date", "_system.agency_listing", "_metrics.score.total", "meta_input.rets_thumbnail_url", "tax_input.listing_type", "tax_input.bedrooms", "tax_input.bathrooms", "tax_input.price", "tax_input.total_living_area_sqft", "tax_input.days_on_market", "tax_input.acres", "tax_input.price_per_sqft", "tax_input.approximate_lot_size", "tax_input.subdivision", "tax_input.neighborhood", "tax_input.added", "tax_input.sale_type", "tax_input.location_city", "tax_input .location_street_number", "tax_input.location_direction", "tax_input.location_street", "tax_input.location_unit"]);
-
-	            var index = 'v5',
-	                type = 'property';
-
-	            var esQuery = {
-	                index: index,
-	                type: type,
-	                method: "POST",
-	                body: JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}')
-	            };
-	            client.search(esQuery, function (error, response) {
-	                callback(response);
-	            });
+	            rows.push(_data2);
+	          }
 	        }
-	    }]);
+	        callback(rows);
+	      });
+	    }
+	  }, {
+	    key: 'suggest',
+	    value: function suggest(params, callback) {
 
-	    return Api;
-	}(_react2.default.Component);
+	      var text = _lodash2.default.get(params, 'text', '').replace(/\s+/g, '');
 
-	var ApiObject = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Api);
+	      if (!text) return;
 
-	exports.default = ApiObject;
+	      /**
+	       * @type {$.es.Client|*}
+	       */
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      client.suggest({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: {
+	          "regular": {
+	            "text": text.toLowerCase(),
+	            "completion": { "field": "_search._suggest" }
+	          }
+	        }
+	      }, function (error, response) {
+	        callback(response);
+	      });
+	    }
+	  }, {
+	    key: 'search',
+	    value: function search(query, callback) {
+	      /**
+	       * @type {$.es.Client|*}
+	       */
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      var index = 'v5',
+	          type = 'property';
+
+	      var esQuery = {
+	        index: index,
+	        type: type,
+	        method: "POST",
+	        body: query
+	      };
+	      client.search(esQuery, function (error, response) {
+	        callback(response);
+	      });
+	    }
+	  }]);
+
+	  return Api;
+	}();
+
+	exports.default = Api;
 
 /***/ },
 /* 233 */
@@ -48409,7 +48475,7 @@
 
 	var _reactRedux = __webpack_require__(40);
 
-	var _SearchResultListing = __webpack_require__(298);
+	var _SearchResultListing = __webpack_require__(299);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
@@ -48431,24 +48497,52 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    results: _lodash2.default.get(state, 'mapPropsState.mapProps', []),
-	    resultsTotal: _lodash2.default.get(state, 'mapPropsState.totalProps', 0)
+	    query: _lodash2.default.get(state, 'searchResults.query', []),
+	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
+	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
+	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0)
 	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-	    doSearch: function doSearch(tax, term, saleType, propertyTypes) {
+	    doSearchWithParams: function doSearchWithParams(params) {
+	      var from = params.from,
+	          tax = params.tax,
+	          term = params.term,
+	          saleType = params.saleType,
+	          propertyTypes = params.propertyTypes,
+	          locationFilter = params.locationFilter,
+	          geoCoordinates = params.geoCoordinates;
+
 	      var pt = propertyTypes.split(_lib.Lib.STRING_ARRAY_DELIMITER);
-	      var params = {
+	      var searchParams = {
+	        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
+	        from: from,
+	        locationFilter: locationFilter || false,
 	        propertyTypes: pt,
 	        saleType: saleType,
 	        size: _lib.Lib.PROPERTY_PER_PAGE,
 	        tax: tax,
-	        term: term
+	        term: term,
+	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
 	      };
-	      _Api2.default.search(params, function (response) {
-	        dispatch((0, _index.setMapProps)(response.hits.hits.length ? response.hits.hits : [], response.hits.total));
+	      var query = _Api2.default.createESSearchQuery(searchParams);
+	      _Api2.default.search(query, function (response) {
+	        if (response.hits.hits.length) {
+	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, false));
+	        } else {
+	          console.log('query with params returned no data');
+	        }
+	      });
+	    },
+	    doSearchWithQuery: function doSearchWithQuery(query, append) {
+	      _Api2.default.search(query, function (response) {
+	        if (response.hits.hits.length) {
+	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, append));
+	        } else {
+	          console.log('query with standard query returned no data');
+	        }
 	      });
 	    }
 	  };
@@ -48463,6 +48557,7 @@
 	    var _this = _possibleConstructorReturn(this, (MapSearchResults.__proto__ || Object.getPrototypeOf(MapSearchResults)).call(this, props));
 
 	    _this.state = {};
+	    _this.displayedProperties = [];
 	    return _this;
 	  }
 
@@ -48473,19 +48568,38 @@
 	      var tax = this.props.params.tax;
 	      var term = this.props.params.term;
 	      var propertyTypes = this.props.location.query['wpp_search[property_types]'];
-	      this.props.doSearch(tax, term, saleType, propertyTypes);
+	      this.props.doSearchWithParams({
+	        tax: tax,
+	        term: term,
+	        saleType: saleType,
+	        propertyTypes: propertyTypes
+	      });
+	    }
+	  }, {
+	    key: 'seeMoreHandler',
+	    value: function seeMoreHandler() {
+	      var modifiedQuery = this.props.query;
+	      modifiedQuery.from = this.props.displayedResults.length;
+	      this.props.doSearchWithQuery(modifiedQuery, true);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      var _props$params = this.props.params,
 	          sale = _props$params.sale,
+	          tax = _props$params.tax,
 	          term = _props$params.term;
+	      var _props = this.props,
+	          displayedResults = _props.displayedResults,
+	          results = _props.results;
 
+	      var propertyTypes = this.props.location.query['wpp_search[property_types]'];
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        this.props.results.length ? _react2.default.createElement(
+	        displayedResults.length ? _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(_Toppanel2.default, { searchTerm: term }),
@@ -48502,11 +48616,13 @@
 	                  'span',
 	                  null,
 	                  'Only showing ',
-	                  this.props.results.length,
+	                  displayedResults.length,
 	                  ' listings. Zoom in, or use filters to narrow your search.'
 	                )
 	              ),
-	              _react2.default.createElement(_Map2.default, { properties: this.props.results })
+	              _react2.default.createElement(_Map2.default, { properties: displayedResults, searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
+	                  return _this2.props.doSearchWithParams({ tax: tax, term: term, saleType: sale, propertyTypes: propertyTypes, locationFilter: locationFilter, geoCoordinates: geoCoordinates });
+	                } })
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -48529,7 +48645,7 @@
 	                  ' homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                )
 	              ),
-	              _react2.default.createElement(_SearchResultListing2.default, { properties: this.props.results })
+	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length, properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
 	            )
 	          )
 	        ) : _react2.default.createElement(
@@ -48545,7 +48661,9 @@
 	}(_react.Component);
 
 	MapSearchResults.propTypes = {
-	  doSearch: _react.PropTypes.func.isRequired,
+	  doSearchWithParams: _react.PropTypes.func.isRequired,
+	  doSearchWithQuery: _react.PropTypes.func.isRequired,
+	  params: _react.PropTypes.object,
 	  results: _react.PropTypes.array.isRequired
 	};
 	;
@@ -48568,6 +48686,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Util = __webpack_require__(298);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48579,19 +48701,30 @@
 	var Map = function (_Component) {
 	  _inherits(Map, _Component);
 
-	  function Map() {
+	  function Map(props) {
 	    _classCallCheck(this, Map);
 
-	    return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+
+	    _this.state = {};
+	    _this.markers = [];
+	    return _this;
 	  }
 
 	  _createClass(Map, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      console.log('componentWillReceiveProps', nextProps);
 	      if (nextProps.properties.length) {
+	        this.clearAllMarkers();
 	        this.setPropertyMarkers(nextProps.properties);
 	      }
+	    }
+	  }, {
+	    key: 'clearAllMarkers',
+	    value: function clearAllMarkers() {
+	      this.markers.forEach(function (m) {
+	        m.setMap(null);
+	      });
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -48612,7 +48745,16 @@
 	        var bounds = _this2.map.getBounds();
 	        var ne = bounds.getNorthEast();
 	        var sw = bounds.getSouthWest();
-	        // TODO: call query with the new geo locations
+	        _this2.props.searchByCoordinates(true, _Util2.default.es_geo_bounding_box_obj_format({
+	          ne: {
+	            lat: ne.lat(),
+	            lon: ne.lng()
+	          },
+	          sw: {
+	            lat: sw.lat(),
+	            lon: sw.lng()
+	          }
+	        }));
 	      });
 	    }
 	  }, {
@@ -48622,10 +48764,11 @@
 
 	      properties.forEach(function (p) {
 	        var latLng = new window.google.maps.LatLng(p._source.tax_input.location_latitude, p._source.tax_input.location_longitude);
-	        new window.google.maps.Marker({
+	        var marker = new window.google.maps.Marker({
 	          position: latLng,
 	          map: _this3.map
 	        });
+	        _this3.markers.push(marker);
 	      });
 	    }
 	  }, {
@@ -48646,6 +48789,7 @@
 	}(_react.Component);
 
 	Map.propTypes = {
+	  searchByCoordinates: _react.PropTypes.func.isRequired,
 	  properties: _react.PropTypes.array.isRequired
 	};
 	exports.default = Map;
@@ -48666,11 +48810,108 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(299);
+	var _reactDom = __webpack_require__(84);
+
+	var _reactRedux = __webpack_require__(40);
+
+	var _lib = __webpack_require__(2);
+
+	var _lodash = __webpack_require__(38);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Util = function (_React$Component) {
+	  _inherits(Util, _React$Component);
+
+	  function Util() {
+	    _classCallCheck(this, Util);
+
+	    return _possibleConstructorReturn(this, (Util.__proto__ || Object.getPrototypeOf(Util)).apply(this, arguments));
+	  }
+
+	  _createClass(Util, null, [{
+	    key: 'stringStyleToObject',
+	    value: function stringStyleToObject(stringStyle) {
+
+	      var style = {};
+	      var styleArray = stringStyle.split("\n");
+
+	      for (var i in styleArray) {
+	        var styleRow = styleArray[i].split(":");
+	        var styleRowObject = {};
+	        styleRowObject[styleRow[0]] = styleRow[1];
+	        style = Object.assign({}, style, styleRowObject);
+	      }
+
+	      return style;
+	    }
+	  }, {
+	    key: 'getThumbnailUrlBySize',
+	    value: function getThumbnailUrlBySize(thumbnailUrl, size) {
+	      var urlArray = _lodash2.default.split(thumbnailUrl, _lib.Lib.URL_DELIMITER);
+	      var fileName = _lodash2.default.last(urlArray);
+	      var fileNameArray = _lodash2.default.split(fileName, _lib.Lib.EXTENSION_DELIMITER);
+
+	      var fileNameWithSize = _lodash2.default.join([fileNameArray[0], size], _lib.Lib.STRING_ARRAY_DELIMITER);
+
+	      var newFileName = _lodash2.default.join([fileNameWithSize, fileNameArray[1]], _lib.Lib.EXTENSION_DELIMITER);
+
+	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
+	    }
+	  }, {
+	    key: 'es_geo_bounding_box_obj_format',
+	    value: function es_geo_bounding_box_obj_format(params) {
+	      var sw = params.sw,
+	          ne = params.ne;
+
+	      var coors = {
+	        topLeft: {
+	          lat: sw.lat,
+	          lon: ne.lon
+	        },
+	        bottomRight: {
+	          lat: ne.lat,
+	          lon: sw.lon
+	        }
+	      };
+	      return coors;
+	    }
+	  }]);
+
+	  return Util;
+	}(_react2.default.Component);
+
+	exports.default = Util;
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _numeral = __webpack_require__(300);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
-	var _Util = __webpack_require__(300);
+	var _Util = __webpack_require__(298);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -48795,7 +49036,27 @@
 	              )
 	            );
 	          })
-	        )
+	        ),
+	        this.props.allowPagination ? _react2.default.createElement(
+	          'div',
+	          { style: { overflow: 'hidden' } },
+	          _react2.default.createElement(
+	            'div',
+	            { style: { float: 'right' } },
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Showing ',
+	              this.props.properties.length,
+	              ' results'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: this.props.seeMoreHandler },
+	              'See more'
+	            )
+	          )
+	        ) : null
 	      );
 	    }
 	  }]);
@@ -48803,12 +49064,17 @@
 	  return SearchResultListing;
 	}(_react.Component);
 
+	SearchResultListing.propTypes = {
+	  allowPagination: _react.PropTypes.bool.isRequired,
+	  properties: _react.PropTypes.array.isRequired,
+	  seeMoreHandler: _react.PropTypes.func.isRequired
+	};
 	;
 
 	exports.default = SearchResultListing;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -49769,85 +50035,6 @@
 
 
 /***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(84);
-
-	var _reactRedux = __webpack_require__(40);
-
-	var _lib = __webpack_require__(2);
-
-	var _lodash = __webpack_require__(38);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Util = function (_React$Component) {
-	  _inherits(Util, _React$Component);
-
-	  function Util() {
-	    _classCallCheck(this, Util);
-
-	    return _possibleConstructorReturn(this, (Util.__proto__ || Object.getPrototypeOf(Util)).apply(this, arguments));
-	  }
-
-	  _createClass(Util, null, [{
-	    key: 'stringStyleToObject',
-	    value: function stringStyleToObject(stringStyle) {
-
-	      var style = {};
-	      var styleArray = stringStyle.split("\n");
-
-	      for (var i in styleArray) {
-	        var styleRow = styleArray[i].split(":");
-	        var styleRowObject = {};
-	        styleRowObject[styleRow[0]] = styleRow[1];
-	        style = Object.assign({}, style, styleRowObject);
-	      }
-
-	      return style;
-	    }
-	  }, {
-	    key: 'getThumbnailUrlBySize',
-	    value: function getThumbnailUrlBySize(thumbnailUrl, size) {
-	      var urlArray = _lodash2.default.split(thumbnailUrl, _lib.Lib.URL_DELIMITER);
-	      var fileName = _lodash2.default.last(urlArray);
-	      var fileNameArray = _lodash2.default.split(fileName, _lib.Lib.EXTENSION_DELIMITER);
-
-	      var fileNameWithSize = _lodash2.default.join([fileNameArray[0], size], _lib.Lib.STRING_ARRAY_DELIMITER);
-
-	      var newFileName = _lodash2.default.join([fileNameWithSize, fileNameArray[1]], _lib.Lib.EXTENSION_DELIMITER);
-
-	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
-	    }
-	  }]);
-
-	  return Util;
-	}(_react2.default.Component);
-
-	exports.default = Util;
-
-/***/ },
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -50445,9 +50632,9 @@
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _mapProps = __webpack_require__(313);
+	var _searchResults = __webpack_require__(313);
 
-	var _mapProps2 = _interopRequireDefault(_mapProps);
+	var _searchResults2 = _interopRequireDefault(_searchResults);
 
 	var _mapMarkers = __webpack_require__(314);
 
@@ -50477,8 +50664,8 @@
 	    mapState: _map2.default,
 	    modal: _modal2.default,
 	    searchPropsState: _searchProps2.default,
+	    searchResults: _searchResults2.default,
 	    searchType: _searchType2.default,
-	    mapPropsState: _mapProps2.default,
 	    mapMarkersState: _mapMarkers2.default,
 	    routing: _reactRouterRedux.routerReducer,
 	    filterTermsState: _filterTerms2.default,
@@ -50636,26 +50823,35 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _lib = __webpack_require__(2);
 
-	var mapProps = function mapProps() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
+	var searchResults = function searchResults() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
 
-	    switch (action.type) {
-	        case _lib.Lib.SET_MAP_PROPS_ACTION:
-	            return Object.assign({}, state, {
-	                mapProps: action.mapProps,
-	                totalProps: action.totalProps
-	            });
-	        default:
-	            return state;
-	    }
+	  switch (action.type) {
+	    case _lib.Lib.SET_SEARCH_RESULTS_ACTION:
+	      var displayedResults = [];
+	      if (action.append) {
+	        displayedResults = state.displayedResults.concat(action.searchResults);
+	      } else {
+	        displayedResults = action.searchResults;
+	      }
+	      return Object.assign({}, state, {
+	        displayedResults: displayedResults,
+	        query: action.query,
+	        searchResults: action.searchResults,
+	        totalProps: action.totalProps
+	      });
+	    default:
+	      return state;
+	  }
 	};
-	exports.default = mapProps;
+
+	exports.default = searchResults;
 
 /***/ },
 /* 314 */
