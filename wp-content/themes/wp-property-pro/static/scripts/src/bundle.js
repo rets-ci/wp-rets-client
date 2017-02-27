@@ -78,7 +78,7 @@
 
 	var _redux = __webpack_require__(47);
 
-	var _reduxThunk = __webpack_require__(322);
+	var _reduxThunk = __webpack_require__(321);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -92,7 +92,6 @@
 
 	var store = (0, _redux.createStore)(_index3.default, middleware);
 
-	store.dispatch((0, _index.initMenu)(bundle.menuItems));
 	store.dispatch((0, _index.addPost)(bundle.post));
 	store.dispatch((0, _index.setSearchProps)([]));
 
@@ -130,7 +129,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addMap = exports.initMenu = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setMapMarkers = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addMap = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
@@ -138,13 +137,6 @@
 	    return {
 	        type: _lib.Lib.ADD_POST_ACTION,
 	        post: post
-	    };
-	};
-
-	var initMenu = exports.initMenu = function initMenu(menuItems) {
-	    return {
-	        type: _lib.Lib.INIT_MENU_ACTION,
-	        menuItems: menuItems
 	    };
 	};
 
@@ -50800,43 +50792,39 @@
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _menu = __webpack_require__(312);
-
-	var _menu2 = _interopRequireDefault(_menu);
-
-	var _map = __webpack_require__(313);
+	var _map = __webpack_require__(312);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(314);
+	var _modal = __webpack_require__(313);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(315);
+	var _searchProps = __webpack_require__(314);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(316);
+	var _searchResults = __webpack_require__(315);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(317);
+	var _mapMarkers = __webpack_require__(316);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(318);
+	var _searchType = __webpack_require__(317);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(319);
+	var _filterTerms = __webpack_require__(318);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(320);
+	var _userData = __webpack_require__(319);
 
 	var _userData2 = _interopRequireDefault(_userData);
 
-	var _testimonialsCarousel = __webpack_require__(321);
+	var _testimonialsCarousel = __webpack_require__(320);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -50844,7 +50832,6 @@
 
 	var propertyProApp = (0, _redux.combineReducers)({
 	    postState: _post2.default,
-	    menuState: _menu2.default,
 	    mapState: _map2.default,
 	    modal: _modal2.default,
 	    searchPropsState: _searchProps2.default,
@@ -50905,33 +50892,6 @@
 
 	var _lib = __webpack_require__(2);
 
-	var menu = function menu() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.INIT_MENU_ACTION:
-	            return Object.assign({}, state, {
-	                menuItems: action.menuItems
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = menu;
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
 	var map = function map() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var action = arguments[1];
@@ -50952,7 +50912,7 @@
 	exports.default = map;
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50980,7 +50940,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51007,7 +50967,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51044,7 +51004,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51071,7 +51031,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51101,7 +51061,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 319 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51128,7 +51088,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 320 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51153,7 +51113,7 @@
 	exports.default = userData;
 
 /***/ },
-/* 321 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51180,7 +51140,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 322 */
+/* 321 */
 /***/ function(module, exports) {
 
 	'use strict';

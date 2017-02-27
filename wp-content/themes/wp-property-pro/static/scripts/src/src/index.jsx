@@ -16,7 +16,6 @@ const middleware = applyMiddleware(ReduxThunk);
 
 let store = createStore(propertyProApp, middleware);
 
-store.dispatch(initMenu(bundle.menuItems));
 store.dispatch(addPost(bundle.post));
 store.dispatch(setSearchProps([]));
 

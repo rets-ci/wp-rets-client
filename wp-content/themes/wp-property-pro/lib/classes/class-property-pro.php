@@ -110,20 +110,11 @@ namespace UsabilityDynamics {
     {
       global $post;
 
-      $menu_items = array_map(function ($item) {
-        return [
-          'ID' => $item->ID,
-          'title' => $item->title,
-          'url' => $item->url
-        ];
-      }, wp_get_nav_menu_items('main_menu'));
-
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
-        'site_name' => esc_attr(get_bloginfo('name')),
-        'menuItems' => $menu_items
+        'site_name' => esc_attr(get_bloginfo('name'))
       ];
 
       $params['post'] = isset( $post ) ? [
