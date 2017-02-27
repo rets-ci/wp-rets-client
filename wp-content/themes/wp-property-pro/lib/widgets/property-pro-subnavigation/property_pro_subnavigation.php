@@ -48,6 +48,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
     function initialize_form()
     {
       $menus = [];
+
+      /** Get available navigation menus */
       foreach (get_terms('nav_menu', array('hide_empty' => true)) as $menu) {
         $menus[$menu->term_id] = $menu->name;
       }
