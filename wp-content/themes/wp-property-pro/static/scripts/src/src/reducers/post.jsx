@@ -1,11 +1,12 @@
 import {Lib} from "../lib.jsx";
+import _ from 'lodash';
 
 const post = (state = {}, action) => {
     switch (action.type) {
         case Lib.ADD_POST_ACTION:
             return Object.assign({}, state, {
                 post: action.post,
-                rows: action.post.post_content
+                rows: _.get(action, 'post.post_content', {})
             });
         default:
             return state

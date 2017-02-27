@@ -4421,8 +4421,8 @@
 	  var post = _ref.post,
 	      openUserPanel = _ref.openUserPanel;
 
-
-	  if (post === {} || _lodash2.default.indexOf(['', 'search'], _lodash2.default.get(post, 'header_layout', null)) !== -1) {
+	  console.log(_lodash2.default.get(post, 'header_layout', null));
+	  if (post === {} || _lodash2.default.indexOf([null, 'search'], _lodash2.default.get(post, 'header_layout', null)) !== -1) {
 	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
 	  }
 
