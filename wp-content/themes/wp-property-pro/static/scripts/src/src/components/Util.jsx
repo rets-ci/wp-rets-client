@@ -41,7 +41,7 @@ class Util extends React.Component {
     return _.replace(thumbnailUrl, fileName, newFileName);
   }
 
-  static es_geo_bounding_box_obj_format(params) {
+  static esGeoBoundingBoxObjFormat(params) {
     let {
       sw,
       ne
@@ -57,6 +57,38 @@ class Util extends React.Component {
       }
     };
     return coors;
+  }
+
+  static getPageContent(url, callback){
+
+    jQuery.ajax({
+      url: url,
+      type: 'get',
+      data: {
+        pageType: 'json'
+      },
+      dataType: 'json',
+      success: function (data) {
+       callback(data);
+      }
+    });
+
+  }
+
+  static getPageContent(url, callback){
+
+    jQuery.ajax({
+      url: url,
+      type: 'get',
+      data: {
+        pageType: 'json'
+      },
+      dataType: 'json',
+      success: function (data) {
+       callback(data);
+      }
+    });
+
   }
 }
 

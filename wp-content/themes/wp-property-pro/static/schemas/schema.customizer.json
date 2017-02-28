@@ -32,7 +32,8 @@
       "selector": [
         ".subnavigation ul li a:hover",
         ".subnavigation ul li a:focus",
-        ".subnavigation ul li a:hover svg path"
+        ".subnavigation ul li a:hover svg path",
+        ".callout .container p"
       ]
     },
     {
@@ -84,7 +85,9 @@
         ".subnavigation ul li span",
         ".subnavigation ul li a",
         ".masthead .search-modal #wp-property-pro-search-input",
-        ".masthead .search-modal .search-modal-box h4"
+        ".masthead .search-modal .search-modal-box h4",
+        ".callout .container p",
+        ".callout .container a"
       ]
     },
     {

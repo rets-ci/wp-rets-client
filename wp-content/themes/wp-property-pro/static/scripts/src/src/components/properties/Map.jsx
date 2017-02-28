@@ -38,7 +38,7 @@ export default class Map extends Component {
       let bounds = this.map.getBounds();
       let ne = bounds.getNorthEast();
       let sw = bounds.getSouthWest();
-      this.props.searchByCoordinates(true, Util.es_geo_bounding_box_obj_format(
+      this.props.searchByCoordinates(true, Util.esGeoBoundingBoxObjFormat(
         {
           ne: {
             lat: ne.lat(),

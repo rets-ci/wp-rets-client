@@ -5,7 +5,6 @@ import Map from './Map.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import SearchResultListing from './SearchResultListing.jsx';
-import Toppanel from './Toppanel.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = state => {
@@ -110,7 +109,6 @@ class MapSearchResults extends Component {
       <div>
         {displayedResults.length ?
           <div>
-            <Toppanel searchTerm={term} />
             <section className="container-fluid search-map-container">
               <div className="listing-map">
                 <div className="caption">

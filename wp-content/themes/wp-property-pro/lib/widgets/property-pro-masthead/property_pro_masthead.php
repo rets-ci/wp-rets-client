@@ -51,16 +51,18 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         return !in_array($type, ['Land', 'Commercial']);
       });
 
-      $excluded_property_types = array_filter($wp_properties['property_types'], function ($type) {
+      $additional_property_types = array_filter($wp_properties['property_types'], function ($type) {
         return in_array($type, ['Land', 'Commercial']);
       });
 
       /** Get properties keys for option key */
       $general_property_types = array_keys($general_property_types);
-      $excluded_property_types = array_keys($excluded_property_types);
+      $additional_property_types = array_keys($additional_property_types);
 
       $search_options = [];
       $delimiter = '-';
+
+      /** Build search options array */
       foreach ([
                  'Rent',
                  'Sale',
@@ -72,7 +74,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         if (in_array($label, ['Rent', 'Sale']))
           $key = implode($delimiter, $general_property_types);
         else {
-          $key = isset( $excluded_property_types[strtolower($label)] ) ? $excluded_property_types[strtolower($label)] : null;
+          $key = $additional_property_types[array_search(strtolower($label), $additional_property_types)];
           $sale_type = 'Sale';
         }
 
