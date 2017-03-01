@@ -11,9 +11,12 @@ const FooterTop = ({menu}) => {
           :
           <ul>
             {
+              _.get(menu, 'items', null)
+              ?
               menu.items.map((item, i) =>
                 <li key={i}><a href={item.url}>{item.title}</a></li>
               )
+              : null
             }
           </ul>
       }

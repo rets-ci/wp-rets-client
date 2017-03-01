@@ -48661,7 +48661,7 @@
 	      _react2.default.createElement(
 	        'ul',
 	        null,
-	        menu.items.map(function (item, i) {
+	        _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	          return _react2.default.createElement(
 	            'li',
 	            { key: i },
@@ -48671,7 +48671,7 @@
 	              item.title
 	            )
 	          );
-	        })
+	        }) : null
 	      )
 	    )
 	  );
@@ -48757,7 +48757,7 @@
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'ul',
 	      null,
-	      menu.items.map(function (item, i) {
+	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'li',
 	          { key: i },
@@ -48767,7 +48767,7 @@
 	            item.title
 	          )
 	        );
-	      })
+	      }) : null
 	    )
 	  );
 	};
@@ -48809,14 +48809,14 @@
 	        null,
 	        menu.title
 	      ),
-	      menu.items.map(function (item, i) {
+	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
 	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );
-	      })
+	      }) : null
 	    )
 	  );
 	};
