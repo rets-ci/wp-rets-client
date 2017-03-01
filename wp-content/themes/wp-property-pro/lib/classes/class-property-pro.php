@@ -41,7 +41,7 @@ namespace UsabilityDynamics {
       $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
 
-      //** Enables Customizer for Options. */
+      /** Enables Customizer for Options. */
       $this->customizer();
 
       /** Scripts action section */
@@ -56,10 +56,10 @@ namespace UsabilityDynamics {
       add_action('after_setup_theme', [$this, 'remove_admin_bar']);
 
       /** Add svg to mimes types */
-      if(!defined('ALLOW_UNFILTERED_UPLOADS'))
+      if (!defined('ALLOW_UNFILTERED_UPLOADS'))
         define('ALLOW_UNFILTERED_UPLOADS', true);
 
-      add_action( 'upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1 );
+      add_action('upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1);
 
     }
 
@@ -110,23 +110,16 @@ namespace UsabilityDynamics {
     {
       global $post;
 
-      $menu_items = array_map(function ($item) {
-        return [
-          'ID' => $item->ID,
-          'title' => $item->title,
-          'url' => $item->url
-        ];
-      }, wp_get_nav_menu_items('main_menu'));
-
+      /** Init params variable */
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
-        'site_name' => esc_attr(get_bloginfo('name')),
-        'menuItems' => $menu_items
+        'site_name' => esc_attr(get_bloginfo('name'))
       ];
 
-      $params['post'] = isset( $post ) ? [
+      /** Build post data array */
+      $params['post'] = isset($post) ? [
         'post_date' => $post->post_date,
         'post_modified' => $post->post_modified,
         'post_parent' => $post->post_parent,
@@ -134,8 +127,9 @@ namespace UsabilityDynamics {
         'post_content' => $post->post_content,
         'post_type' => $post->post_type,
         'custom_content' => false
-      ] : array();
+      ] : [];
 
+      /** Get company logos */
       $params['logos'] = [
         'square_logo' => get_theme_mod('property_pro_company_square_logo'),
         'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
@@ -158,8 +152,8 @@ namespace UsabilityDynamics {
           ]
         ];
 
-        foreach ($footer_structure as $level_title=>$level)
-          foreach ($level as $key=>$menu_id){
+        foreach ($footer_structure as $level_title => $level) {
+          foreach ($level as $key => $menu_id) {
             $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
             $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
               return [
@@ -169,14 +163,20 @@ namespace UsabilityDynamics {
               ];
             }, wp_get_nav_menu_items($menu_id));
           }
+        }
       }
 
-      // Builder content case
-      if ( isset( $post ) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
+      /** Get customizer colors settings */
+      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
+
+      /** Builder content case */
+      if (isset($post) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
         $params['post']['post_content'] = self::rebuild_builder_content($post_data);
       }
 
+      /** Get header layout */
+      $params['post']['header_layout'] = get_post_meta($post->ID, 'header_layout', true) ? get_post_meta($post->ID, 'header_layout', true) : null;
       return $params;
     }
 
@@ -197,8 +197,10 @@ namespace UsabilityDynamics {
           $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
 
         /** Remove namespace from class name */
-        if(isset($widget['panels_info']['class']))
-          $widget['panels_info']['class'] = end(explode('\\', $widget['panels_info']['class']));
+        if (isset($widget['panels_info']['class'])){
+          $classes = explode('\\', $widget['panels_info']['class']);
+          $widget['panels_info']['class'] = count($classes) ? end($classes) : '';
+        }
 
         $fields = [];
         foreach ($widget as $k => $field) {
@@ -219,12 +221,45 @@ namespace UsabilityDynamics {
             continue;
 
           /** @TODO hack for array keys, because get_post_meta return keys without underscores */
-          if($k == 'search_options' && is_array($field)){
+          if ($k == 'search_options' && is_array($field)) {
             $new_field = [];
-            foreach ($field as $field_key=>$value)
+            foreach ($field as $field_key => $value)
               $new_field[str_replace(' ', '_', $field_key)] = $value;
 
             $field = $new_field;
+          }
+
+          if ($k == 'posts') {
+
+            /** explode args string */
+            $argsArr = explode('&', $field);
+
+            $args = [];
+
+            /** Build args array for posts query */
+            foreach ($argsArr as $arg) {
+              $argArr = explode('=', $arg);
+              $key = $argArr[0];
+              $value = $argArr[1];
+
+              if ($key === 'post_type' && $value === '_all') {
+                $value = 'any';
+              }
+
+              if ($key === 'post__in') {
+                $key = 'include';
+                $value = explode(',', $value);
+              }
+
+              $args[$key] = $value;
+            }
+
+            $field = get_posts($args);
+
+            /** Update posts array */
+            foreach($field as &$post){
+              $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+            }
           }
 
           $fields[$k] = $field;
@@ -250,7 +285,7 @@ namespace UsabilityDynamics {
 
       switch ($_GET['pageType']) {
         case 'json':
-          ob_start('property_pro_buffer_handler');
+          ob_start([$this, 'property_pro_buffer_handler']);
           break;
         default;
       }
@@ -284,7 +319,8 @@ namespace UsabilityDynamics {
       }
     }
 
-    function add_svg_to_upload_mimes( $upload_mimes ) {
+    function add_svg_to_upload_mimes($upload_mimes)
+    {
       $upload_mimes['svg'] = 'image/svg+xml';
       $upload_mimes['svgz'] = 'image/svg+xml';
       return $upload_mimes;

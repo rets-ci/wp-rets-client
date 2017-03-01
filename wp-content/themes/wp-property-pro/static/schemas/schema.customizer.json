@@ -32,7 +32,9 @@
       "selector": [
         ".subnavigation ul li a:hover",
         ".subnavigation ul li a:focus",
-        ".subnavigation ul li a:hover svg path"
+        ".subnavigation ul li a:hover svg path",
+        ".subnavigation ul li a.active",
+        ".callout .container a"
       ]
     },
     {
@@ -83,8 +85,11 @@
         ".testimonial .userInfo .userBox span",
         ".subnavigation ul li span",
         ".subnavigation ul li a",
+        ".subnavigation a.btn-contact",
         ".masthead .search-modal #wp-property-pro-search-input",
-        ".masthead .search-modal .search-modal-box h4"
+        ".masthead .search-modal .search-modal-box h4",
+        ".callout .container p",
+        ".callout .container a"
       ]
     },
     {

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import onClickOutside from 'react-onclickoutside';
-import {Lib} from '../../../../lib.jsx';
 
 class DropDownSearch extends Component {
   static propTypes = {

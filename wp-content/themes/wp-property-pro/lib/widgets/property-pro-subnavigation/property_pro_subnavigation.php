@@ -48,6 +48,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
     function initialize_form()
     {
       $menus = [];
+
+      /** Get available navigation menus */
       foreach (get_terms('nav_menu', array('hide_empty' => true)) as $menu) {
         $menus[$menu->term_id] = $menu->name;
       }
@@ -58,8 +60,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
           'label' => __('Layout', 'wp-property-pro'),
           'default' => 'text',
           'options' => [
-            'text' => __('Text', 'wp-property-pro'),
-            'icon' => __('Icon', 'wp-property-pro')
+            'text_layout' => __('Text', 'wp-property-pro'),
+            'icon_layout' => __('Icon', 'wp-property-pro')
           ],
         ],
         'menu_select' => [

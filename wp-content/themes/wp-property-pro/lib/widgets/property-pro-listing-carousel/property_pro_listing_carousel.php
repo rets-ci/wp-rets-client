@@ -61,6 +61,10 @@ namespace UsabilityDynamics\PropertyPro\Widget\ListingCarousel {
         'subtitle' => [
           'type' => 'text',
           'label' => __('Subtitle', 'wp-property-pro'),
+        ],
+        'posts' => [
+          'type' => 'posts',
+          'label' => __('Posts query', 'wp-property-pro'),
         ]
       ];
     }
