@@ -48529,10 +48529,10 @@
 	      _react2.default.createElement(
 	        'ul',
 	        null,
-	        posts.map(function (post) {
+	        posts.map(function (post, key) {
 	          return _react2.default.createElement(
 	            'li',
-	            null,
+	            { key: key },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'card' },
@@ -48578,7 +48578,7 @@
 	                    _react2.default.createElement(
 	                      'a',
 	                      { href: '#', className: 'hide', title: 'Hide' },
-	                      _react2.default.createElement('i', { 'class': 'fa fa-eye-slash', 'aria-hidden': 'true' })
+	                      _react2.default.createElement('i', { className: 'fa fa-eye-slash', 'aria-hidden': 'true' })
 	                    )
 	                  )
 	                ),

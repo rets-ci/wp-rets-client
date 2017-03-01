@@ -26,8 +26,8 @@ const DefaultLayout = ({item}) => {
           ? <div className="listing-carousel clearfix">
             <ul>
               {
-                posts.map((post) =>
-                    <li>
+                posts.map((post, key) =>
+                    <li key={key}>
                       <div className="card">
                         <div className="card-img">
                           <img className="card-img-top" src={Util.getThumbnailUrlBySize(post.thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)} alt="Card image cap"/>
@@ -43,7 +43,7 @@ const DefaultLayout = ({item}) => {
                             <span className="action-btn-group">
               <a href="#" className="favorite active" title="Save as favorite"><i className="fa fa-heart"
                                                                               aria-hidden="true"></i></a>
-              <a href="#" className="hide" title="Hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+              <a href="#" className="hide" title="Hide"><i className="fa fa-eye-slash" aria-hidden="true"></i></a>
               </span>
                           </div>
                           <h4 className="card-title">{post.post_title}</h4>
