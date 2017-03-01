@@ -18,6 +18,16 @@ const CalloutContent = ({rows}) => {
         return null;
     }
 
+  let primaryColor = _.get(bundle, 'colors.primary_color', null);
+  let style =
+      primaryColor !== null
+        ?
+        {
+          "backgroundColor": primaryColor
+        }
+        : {}
+    ;
+
     let container;
     switch (widget_cell.widget.fields.layout) {
         case 'default_layout':
@@ -27,7 +37,7 @@ const CalloutContent = ({rows}) => {
     }
 
     return (
-    <section className="callout">
+    <section className="callout" style={style}>
       {container}
     </section>
     );

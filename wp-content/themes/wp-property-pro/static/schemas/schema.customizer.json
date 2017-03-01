@@ -34,7 +34,7 @@
         ".subnavigation ul li a:focus",
         ".subnavigation ul li a:hover svg path",
         ".subnavigation ul li a.active",
-        ".callout .container p"
+        ".callout .container a"
       ]
     },
     {

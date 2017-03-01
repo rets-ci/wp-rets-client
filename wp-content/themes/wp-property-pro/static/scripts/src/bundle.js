@@ -48147,6 +48147,11 @@
 	        return null;
 	    }
 
+	    var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
+	    var style = primaryColor !== null ? {
+	        "backgroundColor": primaryColor
+	    } : {};
+
 	    var container = void 0;
 	    switch (widget_cell.widget.fields.layout) {
 	        case 'default_layout':
@@ -48157,7 +48162,7 @@
 
 	    return _react2.default.createElement(
 	        'section',
-	        { className: 'callout' },
+	        { className: 'callout', style: style },
 	        container
 	    );
 	};
