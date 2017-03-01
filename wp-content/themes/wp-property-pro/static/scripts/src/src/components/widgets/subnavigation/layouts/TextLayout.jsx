@@ -3,15 +3,25 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 const TextLayout = ({items}) => {
-  let contact_us = {};
+  let contactUs = {};
   let links = [];
   for (let i in items) {
     if (_.get(items[i], 'classes.0', null) === 'contact_us') {
-      contact_us = items[i];
+      contactUs = items[i];
     } else {
       links.push(items[i]);
     }
   }
+
+  let primaryColor = _.get(bundle, 'colors.primary_color', null);
+  let style =
+      primaryColor !== null
+        ?
+        {
+          "backgroundColor": primaryColor
+        }
+        : {}
+    ;
 
   return (_.isEmpty(items)
       ? null
@@ -19,11 +29,11 @@ const TextLayout = ({items}) => {
       <div className="row">
 
         {
-          _.isEmpty(contact_us)
+          _.isEmpty(contactUs)
             ? null
             :
             <div className="col-lg-4 push-lg-8 text-center">
-              <a href={contact_us.url} className="btn btn-contact">{contact_us.title}</a>
+              <a href={contactUs.url} className="btn btn-contact" style={style}>{contactUs.title}</a>
             </div>
         }
 

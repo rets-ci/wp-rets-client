@@ -166,6 +166,9 @@ namespace UsabilityDynamics {
         }
       }
 
+      /** Get customizer colors settings */
+      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
+
       /** Builder content case */
       if (isset($post) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;

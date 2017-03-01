@@ -48555,26 +48555,31 @@
 	var TextLayout = function TextLayout(_ref) {
 	  var items = _ref.items;
 
-	  var contact_us = {};
+	  var contactUs = {};
 	  var links = [];
 	  for (var i in items) {
 	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'contact_us') {
-	      contact_us = items[i];
+	      contactUs = items[i];
 	    } else {
 	      links.push(items[i]);
 	    }
 	  }
 
+	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
+	  var style = primaryColor !== null ? {
+	    "backgroundColor": primaryColor
+	  } : {};
+
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: 'row' },
-	    _lodash2.default.isEmpty(contact_us) ? null : _react2.default.createElement(
+	    _lodash2.default.isEmpty(contactUs) ? null : _react2.default.createElement(
 	      'div',
 	      { className: 'col-lg-4 push-lg-8 text-center' },
 	      _react2.default.createElement(
 	        'a',
-	        { href: contact_us.url, className: 'btn btn-contact' },
-	        contact_us.title
+	        { href: contactUs.url, className: 'btn btn-contact', style: style },
+	        contactUs.title
 	      )
 	    ),
 	    links.length ? _react2.default.createElement(
