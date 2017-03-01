@@ -2,49 +2,49 @@ import React from 'react';
 import {connect} from 'react-redux'
 import WidgetsUtil from '../WidgetsUtil.jsx'
 import _ from 'lodash'
-import DefaultLayout from './layouts/DefaultLayout.jsx'
+import IconLayout from './layouts/IconLayout.jsx'
+import TextLayout from './layouts/TextLayout.jsx'
 
 const mapStateToProps = (state) => {
-    return {
-        rows: _.get(state, 'postState.rows')
-    }
+  return {
+    rows: _.get(state, 'postState.rows')
+  }
 };
 
 const SubnavigationContent = ({rows}) => {
 
-    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
+  let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
-    if (!widget_cell){
-        return null;
-    }
+  if (!widget_cell) {
+    return null;
+  }
 
-    let items = _.get(widget_cell, 'widget.fields.menu_items', []).map((item, i) => (
-        <li key={i}>
-            <a href={item.url} title={item.title}>
-                <img src={bundle.template_url + '/static/images/src/' + _.get(item, 'classes.0', '') + "-icon.svg"}
-                     alt={item.title}/>
-                <span>{item.title}</span>
-            </a>
-        </li>
-    ));
+  let items = _.get(widget_cell, 'widget.fields.menu_items', []);
 
-    let container;
-    switch (widget_cell.widget.fields.layout) {
-        case 'default_layout':
-        default:
-            container = <DefaultLayout items={items}/>;
-            break;
-    }
+  let container;
+  let classes = "subnavigation";
+  switch (widget_cell.widget.fields.layout) {
+    case 'icon_layout':
+      container = <IconLayout items={items}/>;
+      break;
+    case 'text_layout':
+      classes = "subnavigation module2";
+    default:
+      container = <TextLayout items={items}/>
+      break;
+  }
 
-    return (
-        <section className="subnavigation">
-            {container}
-        </section>
-    );
+  return (
+    <section className={classes}>
+      <div className="container">
+        {container}
+      </div>
+    </section>
+  );
 };
 
 const Subnavigation = connect(
-    mapStateToProps
+  mapStateToProps
 )(SubnavigationContent);
 
 export default Subnavigation;

@@ -60,8 +60,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
           'label' => __('Layout', 'wp-property-pro'),
           'default' => 'text',
           'options' => [
-            'text' => __('Text', 'wp-property-pro'),
-            'icon' => __('Icon', 'wp-property-pro')
+            'text_layout' => __('Text', 'wp-property-pro'),
+            'icon_layout' => __('Icon', 'wp-property-pro')
           ],
         ],
         'menu_select' => [
