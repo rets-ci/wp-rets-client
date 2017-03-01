@@ -227,6 +227,39 @@ namespace UsabilityDynamics {
             $field = $new_field;
           }
 
+          if ($k == 'posts') {
+
+            /** explode args string */
+            $argsArr = explode('&', $field);
+
+            $args = [];
+
+            /** Build args array for posts query */
+            foreach ($argsArr as $arg) {
+              $argArr = explode('=', $arg);
+              $key = $argArr[0];
+              $value = $argArr[1];
+
+              if ($key === 'post_type' && $value === '_all') {
+                $value = 'any';
+              }
+
+              if ($key === 'post__in') {
+                $key = 'include';
+                $value = explode(',', $value);
+              }
+
+              $args[$key] = $value;
+            }
+
+            $field = get_posts($args);
+
+            /** Update posts array */
+            foreach($field as &$post){
+              $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+            }
+          }
+
           $fields[$k] = $field;
         }
 
