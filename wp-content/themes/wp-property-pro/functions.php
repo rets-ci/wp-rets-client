@@ -26,7 +26,8 @@ require_once get_template_directory() . '/lib/classes/class-customizer.php';
 
 if (class_exists('SiteOrigin_Widget')) {
   require_once get_template_directory() . '/lib/widgets/property-pro-masthead/property_pro_masthead.php';
-  require_once get_template_directory() . '/lib/widgets/property-pro-testimonials/property_pro_testimonials.php';
   require_once get_template_directory() . '/lib/widgets/property-pro-subnavigation/property_pro_subnavigation.php';
+  require_once get_template_directory() . '/lib/widgets/property-pro-listing-carousel/property_pro_listing_carousel.php';
+  require_once get_template_directory() . '/lib/widgets/property-pro-testimonials/property_pro_testimonials.php';
   require_once get_template_directory() . '/lib/widgets/property-pro-callout/property_pro_callout.php';
 }

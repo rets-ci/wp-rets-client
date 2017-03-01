@@ -166,6 +166,9 @@ namespace UsabilityDynamics {
         }
       }
 
+      /** Get customizer colors settings */
+      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
+
       /** Builder content case */
       if (isset($post) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
@@ -194,8 +197,10 @@ namespace UsabilityDynamics {
           $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
 
         /** Remove namespace from class name */
-        if (isset($widget['panels_info']['class']))
-          $widget['panels_info']['class'] = end(explode('\\', $widget['panels_info']['class']));
+        if (isset($widget['panels_info']['class'])){
+          $classes = explode('\\', $widget['panels_info']['class']);
+          $widget['panels_info']['class'] = count($classes) ? end($classes) : '';
+        }
 
         $fields = [];
         foreach ($widget as $k => $field) {
@@ -222,6 +227,39 @@ namespace UsabilityDynamics {
               $new_field[str_replace(' ', '_', $field_key)] = $value;
 
             $field = $new_field;
+          }
+
+          if ($k == 'posts') {
+
+            /** explode args string */
+            $argsArr = explode('&', $field);
+
+            $args = [];
+
+            /** Build args array for posts query */
+            foreach ($argsArr as $arg) {
+              $argArr = explode('=', $arg);
+              $key = $argArr[0];
+              $value = $argArr[1];
+
+              if ($key === 'post_type' && $value === '_all') {
+                $value = 'any';
+              }
+
+              if ($key === 'post__in') {
+                $key = 'include';
+                $value = explode(',', $value);
+              }
+
+              $args[$key] = $value;
+            }
+
+            $field = get_posts($args);
+
+            /** Update posts array */
+            foreach($field as &$post){
+              $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+            }
           }
 
           $fields[$k] = $field;
