@@ -6672,7 +6672,7 @@
 	    _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
 	      'span',
 	      { className: 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/menu-icon.svg", alt: 'Menu icon' })
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon' })
 	    ) : null,
 	    _react2.default.createElement(
 	      'div',
@@ -24104,7 +24104,7 @@
 	                _react2.default.createElement(
 	                    'a',
 	                    { href: '#' },
-	                    _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/default-avatar.svg", alt: 'default-avatar',
+	                    _react2.default.createElement('img', { src: bundle.static_images_url + "default-avatar.svg", alt: 'default-avatar',
 	                        className: 'default-user' }),
 	                    _react2.default.createElement(
 	                        'h5',
@@ -24124,7 +24124,7 @@
 	                _react2.default.createElement(
 	                    'a',
 	                    { href: '#' },
-	                    _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/paresh.png", alt: '', className: 'default-user' }),
+	                    _react2.default.createElement('img', { src: bundle.static_images_url + "paresh.png", alt: '', className: 'default-user' }),
 	                    _react2.default.createElement(
 	                        'h5',
 	                        null,
@@ -24138,7 +24138,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        null,
-	                        _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/settings.svg", alt: '' })
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "settings.svg", alt: '' })
 	                    )
 	                )
 	            )
@@ -24158,7 +24158,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/home-for-you.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "home-for-you.svg",
 	                                alt: 'home-for-you' })
 	                        ),
 	                        ' Home For You ',
@@ -24178,7 +24178,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/shared-favorites.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "shared-favorites.svg",
 	                                alt: 'shared-favorites' })
 	                        ),
 	                        ' Shared Favorites ',
@@ -24198,7 +24198,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/comments.svg", alt: 'comments' })
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "comments.svg", alt: 'comments' })
 	                        ),
 	                        'Comments'
 	                    )
@@ -24212,7 +24212,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/search-homes.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "search-homes.svg",
 	                                alt: 'search-homes' })
 	                        ),
 	                        ' Search Homes'
@@ -24227,7 +24227,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/favorites.svg", alt: 'favorites' })
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "favorites.svg", alt: 'favorites' })
 	                        ),
 	                        'Favorites'
 	                    )
@@ -24241,7 +24241,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/saved-searches.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "saved-searches.svg",
 	                                alt: 'saved-searches' })
 	                        ),
 	                        ' Saved Searches'
@@ -24256,7 +24256,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buy-with-us.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buy-with-us.svg",
 	                                alt: 'buy-with-us' })
 	                        ),
 	                        ' Buy With Us'
@@ -24271,7 +24271,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buyers-guide.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buyers-guide.svg",
 	                                alt: 'buyers-guide' })
 	                        ),
 	                        ' Home Buyer\u2019s Guide'
@@ -24286,7 +24286,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buyers-blog.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buyers-blog.svg",
 	                                alt: 'buyers-blog' })
 	                        ),
 	                        ' Home Buyer\u2019s Blog'
@@ -48913,7 +48913,7 @@
 	        _react2.default.createElement(
 	          'a',
 	          { href: item.url, title: item.title },
-	          _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/' + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
+	          _react2.default.createElement('img', { src: bundle.static_images_url + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
 	            alt: item.title }),
 	          _react2.default.createElement(
 	            'span',

@@ -10,7 +10,7 @@ const HeaderDefault = ({openUserPanel}) => {
         _.get(bundle, 'template_url', null)
           ?
           <span className="menu-icon hidden-md-up" onClick={openUserPanel}>
-          <img src={bundle.template_url + "/static/images/src/menu-icon.svg"} alt="Menu icon"/>
+          <img src={bundle.static_images_url + "menu-icon.svg"} alt="Menu icon"/>
         </span>
           : null
       }
