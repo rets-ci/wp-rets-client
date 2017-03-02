@@ -127,6 +127,7 @@ namespace UsabilityDynamics {
         'post_title' => $post->post_title,
         'post_content' => $post->post_content,
         'post_type' => $post->post_type,
+        'post_url' => get_permalink($post->ID),
         'custom_content' => false
       ] : [];
 

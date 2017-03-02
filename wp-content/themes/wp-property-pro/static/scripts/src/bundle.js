@@ -48835,12 +48835,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    rows: _lodash2.default.get(state, 'postState.rows')
+	    rows: _lodash2.default.get(state, 'postState.rows'),
+	    currentUrl: _lodash2.default.get(state, 'postState.post.post_url', '')
 	  };
 	};
 
 	var SubnavigationContent = function SubnavigationContent(_ref) {
-	  var rows = _ref.rows;
+	  var rows = _ref.rows,
+	      currentUrl = _ref.currentUrl;
 
 
 	  var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
@@ -48855,12 +48857,12 @@
 	  var classes = "subnavigation";
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'icon_layout':
-	      container = _react2.default.createElement(_IconLayout2.default, { items: items });
+	      container = _react2.default.createElement(_IconLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	    case 'text_layout':
 	      classes = "subnavigation module2";
 	    default:
-	      container = _react2.default.createElement(_TextLayout2.default, { items: items });
+	      container = _react2.default.createElement(_TextLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	  }
 
@@ -48902,14 +48904,16 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var IconLayout = function IconLayout(_ref) {
-	  var items = _ref.items;
+	  var items = _ref.items,
+	      currentUrl = _ref.currentUrl;
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'ul',
 	    { className: 'clearfix' },
 	    items.map(function (item, i) {
+	      var classes = item.url === currentUrl ? 'active' : '';
 	      return _react2.default.createElement(
 	        'li',
-	        { key: i },
+	        { key: i, className: classes },
 	        _react2.default.createElement(
 	          'a',
 	          { href: item.url, title: item.title },
@@ -48951,7 +48955,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TextLayout = function TextLayout(_ref) {
-	  var items = _ref.items;
+	  var items = _ref.items,
+	      currentUrl = _ref.currentUrl;
 
 	  var contactUs = {};
 	  var links = [];
@@ -48987,9 +48992,10 @@
 	        'ul',
 	        null,
 	        links.map(function (link, key) {
+	          var classes = link.url === currentUrl ? 'active' : '';
 	          return _react2.default.createElement(
 	            'li',
-	            { key: key },
+	            { key: key, className: classes },
 	            _react2.default.createElement(
 	              'a',
 	              { href: link.url },

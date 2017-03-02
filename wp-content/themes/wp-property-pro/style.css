@@ -71,6 +71,10 @@
     font-weight: 700 !important;
 }
 
+.subnavigation ul li.active a {
+    color: #cd2027;
+}
+
 
 /*
 Red Door Company Styles
