@@ -58,6 +58,28 @@
     cursor: pointer;
 }
 
+.search-box .drop-search{
+    width: 135px !important;
+}
+
+.userInfo li .userBox img{
+    max-height: 59px;
+    border-radius: 25px 25px;
+}
+
+.testimonial h4{
+    font-weight: 700 !important;
+}
+
+.subnavigation ul li.active a {
+    color: #cd2027;
+}
+
+.listing-sidebar{
+    overflow: auto;
+}
+
+
 /*
 Red Door Company Styles
 Date: 2017-02-07

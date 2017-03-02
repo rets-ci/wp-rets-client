@@ -76,9 +76,15 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
-    let saleType = this.props.params.sale;
-    let tax = this.props.params.tax;
-    let term = this.props.params.term;
+    // TODO temporary comment this, until done with elastic search API
+    // let saleType = this.props.params.sale;
+    // let tax = this.props.params.tax;
+    // let term = this.props.params.term;
+
+    let saleType = this.props.location.query['wpp_search[sale_type]'];
+    let tax = this.props.location.query['wpp_search[tax]'];
+    let term = this.props.location.query['wpp_search[term]'];
+
     let propertyTypes = this.props.location.query['wpp_search[property_types]'];
     this.props.doSearchWithParams({
       tax: tax,

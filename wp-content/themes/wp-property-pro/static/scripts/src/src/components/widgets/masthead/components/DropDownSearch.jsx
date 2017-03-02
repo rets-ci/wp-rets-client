@@ -26,8 +26,27 @@ class DropDownSearch extends Component {
    this.props.handleOptionSelect(option, saleType, propertyTypes);
  }
 
+  shouldComponentUpdate() {
+    if(this.props.labels.length === 1) {
+      return typeof this.props.selectedOption === 'undefined';
+    }
+
+    return true;
+  }
+
+  componentDidMount(){
+    if(this.props.labels.length === 1){
+      this.props.handleOptionSelect(this.props.labels[0], this.props.saleTypes[0], this.props.propertyTypes[0]);
+    }
+  }
+
   render() {
     let self = this;
+
+    if(this.props.labels.length === 1){
+      return (<div></div>);
+    }
+
     return (
       <div className="drop-search">
         <div id="search-options-type-container" onClick={() => self.props.handleChange(true)}>

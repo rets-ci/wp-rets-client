@@ -28,12 +28,15 @@ history.listen(
   })
 );
 
+// TODO temporary comment this, until done with elastic search API
+// <Route path="/:sale/:tax/:term" component={MapSearchResults} />
+
 render(
   <Provider store={store}>
     <Router history={history}>
         <Route path="/" component={PageLayout} >
           <IndexRoute component = {PageContent} />
-          <Route path="/:sale/:tax/:term" component={MapSearchResults} />
+          <Route path="/properties" component={MapSearchResults} />
           <Route path="*" component={PageContent} />
         </Route>
     </Router>

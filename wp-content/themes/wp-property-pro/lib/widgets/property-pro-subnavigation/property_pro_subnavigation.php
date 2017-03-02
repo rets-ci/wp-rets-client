@@ -66,7 +66,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Subnavigation {
         ],
         'menu_select' => [
           'type' => 'select',
-          'label' => __('Menu select', 'wp-property-pro'),
+          'label' => __('Menu', 'wp-property-pro'),
           'options' => $menus
         ]
       ];

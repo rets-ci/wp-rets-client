@@ -114,7 +114,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PageContent2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/:sale/:tax/:term', component: _MapSearchResults2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/properties', component: _MapSearchResults2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _PageContent2.default })
 	    )
 	  )
@@ -6672,7 +6672,7 @@
 	    _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
 	      'span',
 	      { className: 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/menu-icon.svg", alt: 'Menu icon' })
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon' })
 	    ) : null,
 	    _react2.default.createElement(
 	      'div',
@@ -24104,7 +24104,7 @@
 	                _react2.default.createElement(
 	                    'a',
 	                    { href: '#' },
-	                    _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/default-avatar.svg", alt: 'default-avatar',
+	                    _react2.default.createElement('img', { src: bundle.static_images_url + "default-avatar.svg", alt: 'default-avatar',
 	                        className: 'default-user' }),
 	                    _react2.default.createElement(
 	                        'h5',
@@ -24124,7 +24124,7 @@
 	                _react2.default.createElement(
 	                    'a',
 	                    { href: '#' },
-	                    _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/paresh.png", alt: '', className: 'default-user' }),
+	                    _react2.default.createElement('img', { src: bundle.static_images_url + "paresh.png", alt: '', className: 'default-user' }),
 	                    _react2.default.createElement(
 	                        'h5',
 	                        null,
@@ -24138,7 +24138,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        null,
-	                        _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/settings.svg", alt: '' })
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "settings.svg", alt: '' })
 	                    )
 	                )
 	            )
@@ -24158,7 +24158,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/home-for-you.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "home-for-you.svg",
 	                                alt: 'home-for-you' })
 	                        ),
 	                        ' Home For You ',
@@ -24178,7 +24178,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/shared-favorites.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "shared-favorites.svg",
 	                                alt: 'shared-favorites' })
 	                        ),
 	                        ' Shared Favorites ',
@@ -24198,7 +24198,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/comments.svg", alt: 'comments' })
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "comments.svg", alt: 'comments' })
 	                        ),
 	                        'Comments'
 	                    )
@@ -24212,7 +24212,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/search-homes.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "search-homes.svg",
 	                                alt: 'search-homes' })
 	                        ),
 	                        ' Search Homes'
@@ -24227,7 +24227,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/favorites.svg", alt: 'favorites' })
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "favorites.svg", alt: 'favorites' })
 	                        ),
 	                        'Favorites'
 	                    )
@@ -24241,7 +24241,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/saved-searches.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "saved-searches.svg",
 	                                alt: 'saved-searches' })
 	                        ),
 	                        ' Saved Searches'
@@ -24256,7 +24256,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buy-with-us.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buy-with-us.svg",
 	                                alt: 'buy-with-us' })
 	                        ),
 	                        ' Buy With Us'
@@ -24271,7 +24271,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buyers-guide.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buyers-guide.svg",
 	                                alt: 'buyers-guide' })
 	                        ),
 	                        ' Home Buyer\u2019s Guide'
@@ -24286,7 +24286,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            _react2.default.createElement('img', { src: bundle.template_url + "/static/images/src/buyers-blog.svg",
+	                            _react2.default.createElement('img', { src: bundle.static_images_url + "buyers-blog.svg",
 	                                alt: 'buyers-blog' })
 	                        ),
 	                        ' Home Buyer\u2019s Blog'
@@ -24452,7 +24452,7 @@
 	    }
 
 	    var headerStyle = {
-	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
+	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + widget_cell.widget.fields.image_position + " no-repeat"
 	    };
 
 	    if (open) {
@@ -24724,6 +24724,11 @@
 	          openSearchModal = _props.openSearchModal,
 	          options = _props.options;
 
+
+	      if (this.state.labels.length === 0) {
+	        return null;
+	      }
+
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
@@ -24743,7 +24748,7 @@
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
-	          ' Enter neighbohood, address, Zipcode'
+	          ' Address, City, Zip, or Neighborhood.'
 	        )
 	      );
 	    }
@@ -24816,11 +24821,32 @@
 	      this.props.handleOptionSelect(option, saleType, propertyTypes);
 	    }
 	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+	      if (this.props.labels.length === 1) {
+	        return typeof this.props.selectedOption === 'undefined';
+	      }
+
+	      return true;
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.props.labels.length === 1) {
+	        this.props.handleOptionSelect(this.props.labels[0], this.props.saleTypes[0], this.props.propertyTypes[0]);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
 	      var self = this;
+
+	      if (this.props.labels.length === 1) {
+	        return _react2.default.createElement('div', null);
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'drop-search' },
@@ -42707,7 +42733,8 @@
 	    key: 'handleResultClick',
 	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
 	      eve.preventDefault();
-	      _reactRouter.browserHistory.push('/' + saleType + '/' + tax + '/' + term + '/?wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+	      _reactRouter.browserHistory.push('/properties?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	    }
 	  }, {
 	    key: 'handleSearchValueChange',
@@ -48809,12 +48836,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    rows: _lodash2.default.get(state, 'postState.rows')
+	    rows: _lodash2.default.get(state, 'postState.rows'),
+	    currentUrl: _lodash2.default.get(state, 'postState.post.post_url', '')
 	  };
 	};
 
 	var SubnavigationContent = function SubnavigationContent(_ref) {
-	  var rows = _ref.rows;
+	  var rows = _ref.rows,
+	      currentUrl = _ref.currentUrl;
 
 
 	  var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
@@ -48829,12 +48858,12 @@
 	  var classes = "subnavigation";
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'icon_layout':
-	      container = _react2.default.createElement(_IconLayout2.default, { items: items });
+	      container = _react2.default.createElement(_IconLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	    case 'text_layout':
 	      classes = "subnavigation module2";
 	    default:
-	      container = _react2.default.createElement(_TextLayout2.default, { items: items });
+	      container = _react2.default.createElement(_TextLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	  }
 
@@ -48876,18 +48905,20 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var IconLayout = function IconLayout(_ref) {
-	  var items = _ref.items;
+	  var items = _ref.items,
+	      currentUrl = _ref.currentUrl;
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'ul',
 	    { className: 'clearfix' },
 	    items.map(function (item, i) {
+	      var classes = item.url === currentUrl ? 'active' : '';
 	      return _react2.default.createElement(
 	        'li',
-	        { key: i },
+	        { key: i, className: classes },
 	        _react2.default.createElement(
 	          'a',
 	          { href: item.url, title: item.title },
-	          _react2.default.createElement('img', { src: bundle.template_url + '/static/images/src/' + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
+	          _react2.default.createElement('img', { src: bundle.static_images_url + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
 	            alt: item.title }),
 	          _react2.default.createElement(
 	            'span',
@@ -48925,12 +48956,13 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TextLayout = function TextLayout(_ref) {
-	  var items = _ref.items;
+	  var items = _ref.items,
+	      currentUrl = _ref.currentUrl;
 
 	  var contactUs = {};
 	  var links = [];
 	  for (var i in items) {
-	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'contact_us') {
+	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'btn') {
 	      contactUs = items[i];
 	    } else {
 	      links.push(items[i]);
@@ -48961,9 +48993,10 @@
 	        'ul',
 	        null,
 	        links.map(function (link, key) {
+	          var classes = link.url === currentUrl ? 'active' : '';
 	          return _react2.default.createElement(
 	            'li',
-	            { key: key },
+	            { key: key, className: classes },
 	            _react2.default.createElement(
 	              'a',
 	              { href: link.url },
@@ -49395,9 +49428,14 @@
 	  _createClass(MapSearchResults, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var saleType = this.props.params.sale;
-	      var tax = this.props.params.tax;
-	      var term = this.props.params.term;
+	      // let saleType = this.props.params.sale;
+	      // let tax = this.props.params.tax;
+	      // let term = this.props.params.term;
+
+	      var saleType = this.props.location.query['wpp_search[sale_type]'];
+	      var tax = this.props.location.query['wpp_search[tax]'];
+	      var term = this.props.location.query['wpp_search[term]'];
+
 	      var propertyTypes = this.props.location.query['wpp_search[property_types]'];
 	      this.props.doSearchWithParams({
 	        tax: tax,

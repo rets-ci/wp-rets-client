@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
-const TextLayout = ({items}) => {
+const TextLayout = ({items, currentUrl}) => {
   let contactUs = {};
   let links = [];
   for (let i in items) {
-    if (_.get(items[i], 'classes.0', null) === 'contact_us') {
+    if (_.get(items[i], 'classes.0', null) === 'btn') {
       contactUs = items[i];
     } else {
       links.push(items[i]);
@@ -27,7 +27,6 @@ const TextLayout = ({items}) => {
       ? null
       :
       <div className="row">
-
         {
           _.isEmpty(contactUs)
             ? null
@@ -36,15 +35,16 @@ const TextLayout = ({items}) => {
               <a href={contactUs.url} className="btn btn-contact" style={style}>{contactUs.title}</a>
             </div>
         }
-
         {
           links.length
             ?
             <div className="col-lg-8 pull-lg-4">
               <ul>
                 {
-                  links.map((link, key) =>
-                    <li key={key}><a href={link.url}>{link.title}</a></li>
+                  links.map((link, key) => {
+                      let classes = link.url === currentUrl ? 'active' : '';
+                      return (<li key={key} className={classes}><a href={link.url}>{link.title}</a></li>)
+                    }
                   )
                 }
               </ul>
@@ -53,8 +53,6 @@ const TextLayout = ({items}) => {
         }
       </div>
   );
-
-
-}
+};
 
 export default TextLayout;

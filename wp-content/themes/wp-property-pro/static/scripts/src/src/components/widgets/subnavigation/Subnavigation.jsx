@@ -7,11 +7,12 @@ import TextLayout from './layouts/TextLayout.jsx'
 
 const mapStateToProps = (state) => {
   return {
-    rows: _.get(state, 'postState.rows')
+    rows: _.get(state, 'postState.rows'),
+    currentUrl: _.get(state, 'postState.post.post_url', ''),
   }
 };
 
-const SubnavigationContent = ({rows}) => {
+const SubnavigationContent = ({rows, currentUrl}) => {
 
   let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
 
@@ -25,12 +26,12 @@ const SubnavigationContent = ({rows}) => {
   let classes = "subnavigation";
   switch (widget_cell.widget.fields.layout) {
     case 'icon_layout':
-      container = <IconLayout items={items}/>;
+      container = <IconLayout items={items} currentUrl={currentUrl}/>;
       break;
     case 'text_layout':
       classes = "subnavigation module2";
     default:
-      container = <TextLayout items={items}/>
+      container = <TextLayout items={items} currentUrl={currentUrl}/>
       break;
   }
 

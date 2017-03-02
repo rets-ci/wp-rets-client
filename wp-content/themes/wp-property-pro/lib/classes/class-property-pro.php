@@ -115,7 +115,8 @@ namespace UsabilityDynamics {
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
-        'site_name' => esc_attr(get_bloginfo('name'))
+        'site_name' => esc_attr(get_bloginfo('name')),
+        'static_images_url' => get_template_directory_uri() . '/static/images/src/'
       ];
 
       /** Build post data array */
@@ -126,6 +127,7 @@ namespace UsabilityDynamics {
         'post_title' => $post->post_title,
         'post_content' => $post->post_content,
         'post_type' => $post->post_type,
+        'post_url' => get_permalink($post->ID),
         'custom_content' => false
       ] : [];
 
@@ -221,15 +223,20 @@ namespace UsabilityDynamics {
             continue;
 
           /** @TODO hack for array keys, because get_post_meta return keys without underscores */
-          if ($k == 'search_options' && is_array($field)) {
+          if ($k === 'search_options' && is_array($field)) {
             $new_field = [];
-            foreach ($field as $field_key => $value)
+            foreach ($field as $field_key => $value){
+              if(!$value){
+                continue;
+              }
+
               $new_field[str_replace(' ', '_', $field_key)] = $value;
+            }
 
             $field = $new_field;
           }
 
-          if ($k == 'posts') {
+          if ($k === 'posts') {
 
             /** explode args string */
             $argsArr = explode('&', $field);
@@ -262,6 +269,10 @@ namespace UsabilityDynamics {
             }
           }
 
+          if($k === 'image_position'){
+            $field = str_replace('_', ' ', $field);
+          }
+
           $fields[$k] = $field;
         }
 
@@ -273,7 +284,6 @@ namespace UsabilityDynamics {
         ];
 
       }
-
       return $rows;
     }
 

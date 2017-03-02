@@ -27,6 +27,9 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
         get_template_directory_uri().'/lib/widgets/property-pro-masthead'
       );
 
+      /** Disable widget styles panel */
+      add_filter( 'siteorigin_panels_widget_style_fields', '__return_false', 11 );
+
     }
 
     function initialize()
@@ -91,8 +94,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
           'label' => __('Layout', 'wp-property-pro'),
           'default' => 'search_layout',
           'options' => [
-            'search_layout' => __('Search layout', 'wp-property-pro'),
-            'text_layout' => __('Text layout', 'wp-property-pro'),
+            'search_layout' => __('Title, Description', 'wp-property-pro'),
+            'text_layout' => __('Subtitle, Title', 'wp-property-pro'),
           ],
         ],
 
@@ -108,8 +111,25 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
 
         'image' => [
           'type' => 'media',
-          'label' => __('Image', 'wp-property-pro'),
+          'label' => __('Background Image', 'wp-property-pro'),
           'description' => __('Set background image file.', 'wp-property-pro'),
+        ],
+
+        'image_position' => [
+          'type' => 'select',
+          'label' => __('Background image position', 'wp-property-pro'),
+          'default' => 'left_top',
+          'options' => [
+            'left_top' => __('left_top', 'wp-property-pro'),
+            'left_center' => __('left_center', 'wp-property-pro'),
+            'left_bottom' => __('left_bottom', 'wp-property-pro'),
+            'right_top' => __('right_top', 'wp-property-pro'),
+            'right_center' => __('right_center', 'wp-property-pro'),
+            'right_bottom' => __('right_bottom', 'wp-property-pro'),
+            'center_top' => __('center_top', 'wp-property-pro'),
+            'center_center' => __('center_center', 'wp-property-pro'),
+            'center_bottom' => __('center_bottom', 'wp-property-pro'),
+          ],
         ],
 
         'search_options' => [

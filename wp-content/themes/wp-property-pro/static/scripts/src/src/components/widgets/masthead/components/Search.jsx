@@ -91,6 +91,11 @@ class SearchContent extends Component {
       openSearchModal,
       options
     } = this.props;
+
+    if(this.state.labels.length === 0){
+      return null;
+    }
+
     let self = this;
     return (
       <div className="search-box">
@@ -104,7 +109,7 @@ class SearchContent extends Component {
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
         <button className="btn btn-search" onClick={() => self.props.openSearchModal(true)} type="button">
-          <i className="fa fa-search"></i> Enter neighbohood, address, Zipcode
+          <i className="fa fa-search"></i> Address, City, Zip, or Neighborhood.
         </button>
       </div>
     );
