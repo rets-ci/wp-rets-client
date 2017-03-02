@@ -6,13 +6,13 @@ import {Lib} from '../../../../lib.jsx'
 import _ from 'lodash'
 
 const mapStateToProps = (state, history) => {
-    return {
-        currentState: state,
-        searchProps: _.get(state, 'searchPropsState.searchProps', []),
-        searchType: _.get(state, 'searchType.searchType', ''),
-        filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
-        history: history
-    }
+  return {
+    currentState: state,
+    searchProps: _.get(state, 'searchPropsState.searchProps', []),
+    searchType: _.get(state, 'searchType.searchType', ''),
+    filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
+    history: history
+  }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

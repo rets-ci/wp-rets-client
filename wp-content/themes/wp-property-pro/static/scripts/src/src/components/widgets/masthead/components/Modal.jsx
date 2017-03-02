@@ -7,94 +7,96 @@ import _ from 'lodash'
 import {Lib} from '../../../../lib.jsx'
 
 const mapStateToProps = (state) => {
-    return {
-        open: state.modal ? state.modal.openModal : false,
-        searchResults: _.get(state, 'searchPropsState.searchProps', []),
-        searchType: _.get(state, 'searchType.searchType', ''),
-        saleType: _.get(state, 'searchType.saleType', ''),
-        propertyTypes: _.get(state, 'searchType.propertyTypes', '')
-    }
+  return {
+    open: state.modal ? state.modal.openModal : false,
+    searchResults: _.get(state, 'searchPropsState.searchProps', []),
+    searchType: _.get(state, 'searchType.searchType', ''),
+    saleType: _.get(state, 'searchType.saleType', ''),
+    propertyTypes: _.get(state, 'searchType.propertyTypes', '')
+  }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        closeModal: () => {
-            dispatch(openModal(false));
-        },
+      closeModal: () => {
+        dispatch(openModal(false));
+      },
 
-        searchHandler: (term) => {
-            let searchParams = {
-                term: term
-            };
-            Api.selectQuery(searchParams,
-                function (rows) {
-                    dispatch(setSearchProps(rows));
-                }
-            );
-        },
-        topQuery: () => {
-          Api.topAggsQuery({
-              size: Lib.TOP_AGGREGATIONS_COUNT
-            },
-            function (rows) {
+      searchHandler: (term) => {
+        let searchParams = {
+          term: term
+        };
+        Api.selectQuery(searchParams,
+          function (rows) {
               dispatch(setSearchProps(rows));
-            }
-          );
+          }
+        );
+      },
+      topQuery: () => {
+        Api.topAggsQuery({
+          size: Lib.TOP_AGGREGATIONS_COUNT
+        },
+        function (rows) {
+          dispatch(setSearchProps(rows));
         }
+        );
+      }
     };
 };
 
 class Modal extends Component {
 
     constructor(props) {
-        super(props);
-
-
-        this.state = {
-            searchValue: ''
-        };
-
+      super(props);
+      this.state = {
+        searchValue: ''
+      };
       // Set default values
       this.props.topQuery();
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.open) {
-            this.searchInput.focus();
-        }
+      if (this.props.open) {
+        this.searchInput.focus();
+      }
     }
 
     handleClose(eve) {
-        eve.preventDefault();
-        this.props.closeModal();
+      eve.preventDefault();
+      this.props.closeModal();
     }
 
     handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
-        eve.preventDefault();
-        console.log('handleResultClick');
-        browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+      eve.preventDefault();
+      browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
     }
 
     handleSearchValueChange(eve) {
-        let val = eve.target.value;
-        this.setState({searchValue: val});
+      let val = eve.target.value;
+      this.setState({searchValue: val});
 
-        if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH){
-          this.props.topQuery();
-        }else{
-          this.props.searchHandler(val);
-        }
+      if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH){
+        this.props.topQuery();
+      }else{
+        this.props.searchHandler(val);
+      }
+    }
 
+    handleKeyPress(event) {
+      if (event.keyCode === 27) {
+        // ESC key
+        this.props.closeModal();
+      }
     }
 
     render() {
-        let {
-            searchResults,
-            searchType,
-            saleType,
-            propertyTypes
-        } = this.props;
-        let self = this;
+      let {
+        searchResults,
+        searchType,
+        saleType,
+        propertyTypes
+      } = this.props;
+      let self = this;
         let resultsElements = searchResults.map((s, k) => {
             return (
                 <div key={k} className="search-result-group">
@@ -119,8 +121,8 @@ class Modal extends Component {
             )
         });
         return (
-            <div className="search-modal" style={{display: this.props.open ? 'block' : 'none'}}>
-                <a href="#" className="close-panel" onClick={this.handleClose.bind(this)}>
+            <div className="search-modal" onKeyDown={this.handleKeyPress.bind(this)} style={{display: this.props.open ? 'block' : 'none'}}>
+                <a href="#" className="close-panel" onClick={(e) => {e.preventDefault(); this.props.closeModal();}}>
                     <i className="fa fa-times"></i>
                 </a>
                 <form method="get" className="form-inline">
@@ -151,6 +153,6 @@ class Modal extends Component {
 
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Modal);
