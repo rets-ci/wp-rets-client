@@ -75,6 +75,10 @@
     color: #cd2027;
 }
 
+.listing-sidebar{
+    overflow: auto;
+}
+
 
 /*
 Red Door Company Styles

@@ -114,7 +114,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PageContent2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/:sale/:tax/:term', component: _MapSearchResults2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/properties', component: _MapSearchResults2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _PageContent2.default })
 	    )
 	  )
@@ -42733,7 +42733,8 @@
 	    key: 'handleResultClick',
 	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
 	      eve.preventDefault();
-	      _reactRouter.browserHistory.push('/' + saleType + '/' + tax + '/' + term + '/?wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+	      _reactRouter.browserHistory.push('/properties?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	    }
 	  }, {
 	    key: 'handleSearchValueChange',
@@ -48961,7 +48962,7 @@
 	  var contactUs = {};
 	  var links = [];
 	  for (var i in items) {
-	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'contact_us') {
+	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'btn') {
 	      contactUs = items[i];
 	    } else {
 	      links.push(items[i]);
@@ -49427,9 +49428,14 @@
 	  _createClass(MapSearchResults, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var saleType = this.props.params.sale;
-	      var tax = this.props.params.tax;
-	      var term = this.props.params.term;
+	      // let saleType = this.props.params.sale;
+	      // let tax = this.props.params.tax;
+	      // let term = this.props.params.term;
+
+	      var saleType = this.props.location.query['wpp_search[sale_type]'];
+	      var tax = this.props.location.query['wpp_search[tax]'];
+	      var term = this.props.location.query['wpp_search[term]'];
+
 	      var propertyTypes = this.props.location.query['wpp_search[property_types]'];
 	      this.props.doSearchWithParams({
 	        tax: tax,
