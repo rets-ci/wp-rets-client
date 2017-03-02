@@ -58,6 +58,11 @@
     cursor: pointer;
 }
 
+.search-box .drop-search{
+    width: 135px !important;
+}
+
+
 /*
 Red Door Company Styles
 Date: 2017-02-07

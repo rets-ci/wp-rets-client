@@ -223,8 +223,13 @@ namespace UsabilityDynamics {
           /** @TODO hack for array keys, because get_post_meta return keys without underscores */
           if ($k == 'search_options' && is_array($field)) {
             $new_field = [];
-            foreach ($field as $field_key => $value)
+            foreach ($field as $field_key => $value){
+              if(!$value){
+                continue;
+              }
+
               $new_field[str_replace(' ', '_', $field_key)] = $value;
+            }
 
             $field = $new_field;
           }
@@ -262,6 +267,10 @@ namespace UsabilityDynamics {
             }
           }
 
+          if($k == 'image_position'){
+            $field = str_replace('_', ' ', $field);
+          }
+
           $fields[$k] = $field;
         }
 
@@ -273,7 +282,6 @@ namespace UsabilityDynamics {
         ];
 
       }
-
       return $rows;
     }
 

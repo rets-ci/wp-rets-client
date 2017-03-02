@@ -24452,7 +24452,7 @@
 	    }
 
 	    var headerStyle = {
-	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
+	        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + widget_cell.widget.fields.image_position + " no-repeat"
 	    };
 
 	    if (open) {
@@ -24724,6 +24724,11 @@
 	          openSearchModal = _props.openSearchModal,
 	          options = _props.options;
 
+
+	      if (this.state.labels.length === 0) {
+	        return null;
+	      }
+
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
@@ -24743,7 +24748,7 @@
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
-	          ' Enter neighbohood, address, Zipcode'
+	          ' Address, City, Zip, or Neighborhood.'
 	        )
 	      );
 	    }
@@ -24816,11 +24821,32 @@
 	      this.props.handleOptionSelect(option, saleType, propertyTypes);
 	    }
 	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+	      if (this.props.labels.length === 1) {
+	        return typeof this.props.selectedOption === 'undefined';
+	      }
+
+	      return true;
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.props.labels.length === 1) {
+	        this.props.handleOptionSelect(this.props.labels[0], this.props.saleTypes[0], this.props.propertyTypes[0]);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
 	      var self = this;
+
+	      if (this.props.labels.length === 1) {
+	        return _react2.default.createElement('div', null);
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'drop-search' },

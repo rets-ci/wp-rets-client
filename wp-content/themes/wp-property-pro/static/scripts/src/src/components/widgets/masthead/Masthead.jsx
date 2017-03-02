@@ -22,7 +22,7 @@ const MastheadContent = ({rows, open}) => {
     }
 
     let headerStyle = {
-        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") center center no-repeat"
+        background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + widget_cell.widget.fields.image_position + " no-repeat"
     };
 
     if(open){
