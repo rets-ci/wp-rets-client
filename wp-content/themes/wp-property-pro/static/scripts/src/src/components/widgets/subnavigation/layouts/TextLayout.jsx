@@ -6,7 +6,7 @@ const TextLayout = ({items, currentUrl}) => {
   let contactUs = {};
   let links = [];
   for (let i in items) {
-    if (_.get(items[i], 'classes.0', null) === 'contact_us') {
+    if (_.get(items[i], 'classes.0', null) === 'btn') {
       contactUs = items[i];
     } else {
       links.push(items[i]);
