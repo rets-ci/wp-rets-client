@@ -64,7 +64,8 @@ class DropDownSearch extends Component {
         <ul style={{display: this.props.open ? 'block' : 'none'}}>
           {this.props.labels.map((l, i) => {
             let instance = this;
-            return (<li key={i}><a href="#" onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
+            let linkClasses = this.props.selectedOption === l ? 'active' : '';
+            return (<li key={i}><a href="#" className={linkClasses} onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
           }
           )}
         </ul>

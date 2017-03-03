@@ -35,7 +35,9 @@
         ".subnavigation ul li a:hover svg path",
         ".subnavigation ul li a.active",
         ".callout .container a",
-        ".search-box .drop-search li a:hover"
+        ".search-box .drop-search li a:hover",
+        ".search-box .drop-search li a:focus",
+        ".search-box .drop-search li a.active"
       ]
     },
     {

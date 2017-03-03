@@ -24883,12 +24883,13 @@
 	          { style: { display: this.props.open ? 'block' : 'none' } },
 	          this.props.labels.map(function (l, i) {
 	            var instance = _this2;
+	            var linkClasses = _this2.props.selectedOption === l ? 'active' : '';
 	            return _react2.default.createElement(
 	              'li',
 	              { key: i },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', onClick: function onClick(eve) {
+	                { href: '#', className: linkClasses, onClick: function onClick(eve) {
 	                    return self.selectOption.bind(_this2)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i]);
 	                  } },
 	                l
