@@ -7,13 +7,13 @@ const Navigation = ({openUserPanel}) => (
           {
             _.get(bundle, 'logos.horizontal_logo', null)
               ? <img src={bundle.logos.horizontal_logo} alt={bundle.site_name}
-                     className="hidden-sm-down"/>
+                     className="hidden-sm-down logo"/>
               : null
           }
           {
             _.get(bundle, 'logos.square_logo', null)
               ? <img src={bundle.logos.square_logo} alt={bundle.site_name}
-                     className="hidden-md-up"/>
+                     className="hidden-md-up logo"/>
               : null
           }
         </a>

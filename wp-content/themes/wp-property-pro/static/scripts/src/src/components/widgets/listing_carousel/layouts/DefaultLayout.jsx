@@ -26,39 +26,46 @@ const DefaultLayout = ({item}) => {
           ? <div className="listing-carousel clearfix">
             <ul>
               {
-                posts.map((post, key) =>
-                    <li key={key}>
-                      <div className="card">
-                        <div className="card-img">
-                          <img className="card-img-top" src={Util.getThumbnailUrlBySize(post.thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)} alt="Card image cap"/>
-                          <ul className="direction-nav">
-                            <li><a className="nav-prev" href="#"></a></li>
-                            <li><a className="nav-next" href="#"></a></li>
-                          </ul>
-                        </div>
+                posts.map((post, key) => {
 
-                        <div className="card-block">
-                          <div className="listing-top">
-                            <span className="price">$1,249,000</span>
-                            <span className="action-btn-group">
+                  // TODO Ash you can find gallery_images urls array at post.gallery_images
+
+                    return (
+                      <li key={key}>
+                        <div className="card">
+                          <div className="card-img">
+                            <img className="card-img-top"
+                                 src={Util.getThumbnailUrlBySize(post.thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
+                                 alt="Card image cap"/>
+                            <ul className="direction-nav">
+                              <li><a className="nav-prev" href="#"></a></li>
+                              <li><a className="nav-next" href="#"></a></li>
+                            </ul>
+                          </div>
+
+                          <div className="card-block">
+                            <div className="listing-top">
+                              <span className="price">$1,249,000</span>
+                              <span className="action-btn-group">
               <a href="#" className="favorite active" title="Save as favorite"><i className="fa fa-heart"
-                                                                              aria-hidden="true"></i></a>
+                                                                                  aria-hidden="true"></i></a>
               <a href="#" className="hide" title="Hide"><i className="fa fa-eye-slash" aria-hidden="true"></i></a>
               </span>
+                            </div>
+                            <h4 className="card-title">{post.post_title}</h4>
+                            <p className="card-text">Durham, NC 27712</p>
+                            <ul className="liting-info-box">
+                              <li>3 Bed</li>
+                              <li>2 Bath</li>
+                              <li>1,142 SF</li>
+                            </ul>
                           </div>
-                          <h4 className="card-title">{post.post_title}</h4>
-                          <p className="card-text">Durham, NC 27712</p>
-                          <ul className="liting-info-box">
-                            <li>3 Bed</li>
-                            <li>2 Bath</li>
-                            <li>1,142 SF</li>
-                          </ul>
                         </div>
-                      </div>
-                    </li>
+                      </li>
+                    )
+                  }
                 )
               }
-
             </ul>
 
           </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import WidgetsUtil from '../WidgetsUtil.jsx';
-import SearchLayout from './layouts/SearchLayout.jsx';
-import TextLayout from './layouts/TextLayout.jsx';
+import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
+import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import Modal from './components/Modal.jsx';
 
 const mapStateToProps = (state) => {
@@ -34,23 +34,23 @@ const MastheadContent = ({rows, open}) => {
     let container;
     let modal;
     switch (widget_cell.widget.fields.layout) {
-        case 'text_layout':
-            container = <TextLayout widget_cell={widget_cell} />;
+        case 'subtitle_title_layout':
+            container = <SubtitleTitleLayout widget_cell={widget_cell} />;
             break;
-        case 'search_layout':
+        case 'title_description_layout':
         default:
             modal = <Modal />;
-            container = <SearchLayout widget_cell={widget_cell} />;
+            container = <TitleDescriptionLayout widget_cell={widget_cell} />;
             break;
     }
 
     return (
-        <div className="masthead" style={headerStyle}>
+        <section className="masthead" style={headerStyle}>
             {modal}
             <div className="intro-wrap">
                 {container}
             </div>
-        </div>
+        </section>
     );
 };
 

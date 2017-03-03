@@ -86,6 +86,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default);
@@ -117,7 +121,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PageContent2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/properties', component: _MapSearchResults2.default }),
+	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _PageContent2.default })
 	    )
 	  )
@@ -6670,12 +6674,12 @@
 
 
 	  return _react2.default.createElement(
-	    'header',
-	    { className: 'pageheader' },
+	    'section',
+	    { className: 'toolbar' },
 	    _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
 	      'span',
 	      { className: 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon' })
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon', className: 'logo' })
 	    ) : null,
 	    _react2.default.createElement(
 	      'div',
@@ -6715,9 +6719,9 @@
 	            'a',
 	            { className: 'navbar-brand', href: bundle.site_url, title: bundle.site_name },
 	            _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
-	                className: 'hidden-sm-down' }) : null,
+	                className: 'hidden-sm-down logo' }) : null,
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
-	                className: 'hidden-md-up' }) : null
+	                className: 'hidden-md-up logo' }) : null
 	        ),
 	        _react2.default.createElement(
 	            'ul',
@@ -23883,7 +23887,7 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'header',
+	        'section',
 	        { className: 'top-panel' },
 	        _react2.default.createElement(
 	          'div',
@@ -23897,7 +23901,7 @@
 	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	                'a',
 	                { href: bundle.site_url, title: bundle.site_name },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name })
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo' })
 	              ) : null
 	            ),
 	            _react2.default.createElement(
@@ -24422,13 +24426,13 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _SearchLayout = __webpack_require__(82);
+	var _TitleDescriptionLayout = __webpack_require__(82);
 
-	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
+	var _TitleDescriptionLayout2 = _interopRequireDefault(_TitleDescriptionLayout);
 
-	var _TextLayout = __webpack_require__(232);
+	var _SubtitleTitleLayout = __webpack_require__(232);
 
-	var _TextLayout2 = _interopRequireDefault(_TextLayout);
+	var _SubtitleTitleLayout2 = _interopRequireDefault(_SubtitleTitleLayout);
 
 	var _Modal = __webpack_require__(233);
 
@@ -24467,18 +24471,18 @@
 	    var container = void 0;
 	    var modal = void 0;
 	    switch (widget_cell.widget.fields.layout) {
-	        case 'text_layout':
-	            container = _react2.default.createElement(_TextLayout2.default, { widget_cell: widget_cell });
+	        case 'subtitle_title_layout':
+	            container = _react2.default.createElement(_SubtitleTitleLayout2.default, { widget_cell: widget_cell });
 	            break;
-	        case 'search_layout':
+	        case 'title_description_layout':
 	        default:
 	            modal = _react2.default.createElement(_Modal2.default, null);
-	            container = _react2.default.createElement(_SearchLayout2.default, { widget_cell: widget_cell });
+	            container = _react2.default.createElement(_TitleDescriptionLayout2.default, { widget_cell: widget_cell });
 	            break;
 	    }
 
 	    return _react2.default.createElement(
-	        'div',
+	        'section',
 	        { className: 'masthead', style: headerStyle },
 	        modal,
 	        _react2.default.createElement(
@@ -24578,7 +24582,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchLayout = function SearchLayout(_ref) {
+	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
 	    var widget_cell = _ref.widget_cell;
 
 	    return _react2.default.createElement(
@@ -24598,7 +24602,7 @@
 	    );
 	};
 
-	exports.default = SearchLayout;
+	exports.default = TitleDescriptionLayout;
 
 /***/ },
 /* 83 */
@@ -24728,8 +24732,13 @@
 	          options = _props.options;
 
 
+	      var style = {};
 	      if (this.state.labels.length === 0) {
 	        return null;
+	      } else if (this.state.labels.length === 1) {
+	        style = {
+	          'padding-left': '15px'
+	        };
 	      }
 
 	      var self = this;
@@ -24747,7 +24756,7 @@
 	        }),
 	        _react2.default.createElement(
 	          'button',
-	          { className: 'btn btn-search', onClick: function onClick() {
+	          { className: 'btn btn-search', style: style, onClick: function onClick() {
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
@@ -24850,9 +24859,17 @@
 	        return _react2.default.createElement('div', null);
 	      }
 
+	      var dropSearchStyle = {};
+	      var primaryColor = _.get(bundle, 'colors.primary_color', null);
+	      if (primaryColor) {
+	        dropSearchStyle = {
+	          'backgroundColor': primaryColor
+	        };
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'drop-search' },
+	        { className: 'drop-search', style: dropSearchStyle },
 	        _react2.default.createElement(
 	          'div',
 	          { id: 'search-options-type-container', onClick: function onClick() {
@@ -24866,12 +24883,13 @@
 	          { style: { display: this.props.open ? 'block' : 'none' } },
 	          this.props.labels.map(function (l, i) {
 	            var instance = _this2;
+	            var linkClasses = _this2.props.selectedOption === l ? 'active' : '';
 	            return _react2.default.createElement(
 	              'li',
 	              { key: i },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', onClick: function onClick(eve) {
+	                { href: '#', className: linkClasses, onClick: function onClick(eve) {
 	                    return self.selectOption.bind(_this2)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i]);
 	                  } },
 	                l
@@ -42602,13 +42620,17 @@
 
 	var _reactRedux = __webpack_require__(36);
 
+	var _Search = __webpack_require__(83);
+
+	var _Search2 = _interopRequireDefault(_Search);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchLayout = function SearchLayout(_ref) {
+	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
 	    var widget_cell = _ref.widget_cell;
 
 	    return _react2.default.createElement(
@@ -42623,11 +42645,12 @@
 	            'h1',
 	            null,
 	            widget_cell.widget.fields.subtitle
-	        ) : null
+	        ) : null,
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', []) })
 	    );
 	};
 
-	exports.default = SearchLayout;
+	exports.default = SubtitleTitleLayout;
 
 /***/ },
 /* 233 */
@@ -48571,6 +48594,9 @@
 	        'ul',
 	        null,
 	        posts.map(function (post, key) {
+
+	          // TODO Ash you can find gallery_images urls array at post.gallery_images
+
 	          return _react2.default.createElement(
 	            'li',
 	            { key: key },
@@ -48580,7 +48606,9 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'card-img' },
-	                _react2.default.createElement('img', { className: 'card-img-top', src: _Util2.default.getThumbnailUrlBySize(post.thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE), alt: 'Card image cap' }),
+	                _react2.default.createElement('img', { className: 'card-img-top',
+	                  src: _Util2.default.getThumbnailUrlBySize(post.thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE),
+	                  alt: 'Card image cap' }),
 	                _react2.default.createElement(
 	                  'ul',
 	                  { className: 'direction-nav' },
@@ -48988,7 +49016,7 @@
 	      { className: 'col-lg-4 push-lg-8 text-center' },
 	      _react2.default.createElement(
 	        'a',
-	        { href: contactUs.url, className: 'btn btn-contact', style: style },
+	        { href: contactUs.url, className: 'btn btn-subnavigation', style: style },
 	        contactUs.title
 	      )
 	    ),

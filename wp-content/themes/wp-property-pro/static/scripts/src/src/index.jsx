@@ -11,6 +11,7 @@ import propertyProApp from './reducers/index.jsx';
 import {applyMiddleware, createStore} from 'redux';
 import ReduxThunk from 'redux-thunk';
 import Util from './components/Util.jsx';
+import _ from 'lodash';
 
 const middleware = applyMiddleware(ReduxThunk);
 
@@ -36,7 +37,11 @@ render(
     <Router history={history}>
         <Route path="/" component={PageLayout} >
           <IndexRoute component = {PageContent} />
-          <Route path="/properties" component={MapSearchResults} />
+          {
+            _.get(wpp, 'instance.settings.configuration.base_slug', null)
+            ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
+            : null
+          }
           <Route path="*" component={PageContent} />
         </Route>
     </Router>

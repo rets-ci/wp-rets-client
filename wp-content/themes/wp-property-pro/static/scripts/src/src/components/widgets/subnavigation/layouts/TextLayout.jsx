@@ -32,7 +32,7 @@ const TextLayout = ({items, currentUrl}) => {
             ? null
             :
             <div className="col-lg-4 push-lg-8 text-center">
-              <a href={contactUs.url} className="btn btn-contact" style={style}>{contactUs.title}</a>
+              <a href={contactUs.url} className="btn btn-subnavigation" style={style}>{contactUs.title}</a>
             </div>
         }
         {

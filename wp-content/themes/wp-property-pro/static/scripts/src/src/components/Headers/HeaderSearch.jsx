@@ -7,7 +7,7 @@ class HeaderSearch extends Component {
   };
   render() {
     return (
-      <header className="top-panel">
+      <section className="top-panel">
         <div className="container-fluid">
           <div className="row">
             <div className="logo">
@@ -15,7 +15,7 @@ class HeaderSearch extends Component {
                 _.get(bundle, 'logos.square_logo', null)
                   ?
                   <a href={bundle.site_url} title={bundle.site_name}>
-                    <img src={bundle.logos.square_logo} alt={bundle.site_name}/>
+                    <img src={bundle.logos.square_logo} alt={bundle.site_name} className="logo" />
                   </a>
                   : null
               }
@@ -47,7 +47,7 @@ class HeaderSearch extends Component {
             </div>
           </div>
         </div>
-      </header>
+      </section>
     );
   }
 }

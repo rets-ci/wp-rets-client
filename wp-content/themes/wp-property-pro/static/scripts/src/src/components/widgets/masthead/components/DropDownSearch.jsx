@@ -47,8 +47,16 @@ class DropDownSearch extends Component {
       return (<div></div>);
     }
 
+    let dropSearchStyle = {};
+    let primaryColor = _.get(bundle, 'colors.primary_color', null);
+    if(primaryColor){
+      dropSearchStyle = {
+        'backgroundColor': primaryColor
+      }
+    }
+
     return (
-      <div className="drop-search">
+      <div className="drop-search" style={dropSearchStyle}>
         <div id="search-options-type-container" onClick={() => self.props.handleChange(true)}>
           {this.props.selectedOption}
           <i className="fa fa-caret-down"></i>
@@ -56,7 +64,8 @@ class DropDownSearch extends Component {
         <ul style={{display: this.props.open ? 'block' : 'none'}}>
           {this.props.labels.map((l, i) => {
             let instance = this;
-            return (<li key={i}><a href="#" onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
+            let linkClasses = this.props.selectedOption === l ? 'active' : '';
+            return (<li key={i}><a href="#" className={linkClasses} onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
           }
           )}
         </ul>

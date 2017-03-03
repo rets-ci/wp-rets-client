@@ -94,8 +94,8 @@ namespace UsabilityDynamics\PropertyPro\Widget\Masthead {
           'label' => __('Layout', 'wp-property-pro'),
           'default' => 'search_layout',
           'options' => [
-            'search_layout' => __('Title, Description', 'wp-property-pro'),
-            'text_layout' => __('Subtitle, Title', 'wp-property-pro'),
+            'title_description_layout' => __('Title, Description', 'wp-property-pro'),
+            'subtitle_title_layout' => __('Subtitle, Title', 'wp-property-pro'),
           ],
         ],
 

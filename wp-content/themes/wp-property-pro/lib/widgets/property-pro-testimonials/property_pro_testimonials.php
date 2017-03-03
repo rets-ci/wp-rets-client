@@ -93,7 +93,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Testimonials {
         ],
         'testimonials' => [
           'type' => 'section',
-          'label' => __('Search', 'wp-property-pro'),
+          'label' => __('Testimonials', 'wp-property-pro'),
           'hide' => false,
           'fields' => $testimonials
         ]

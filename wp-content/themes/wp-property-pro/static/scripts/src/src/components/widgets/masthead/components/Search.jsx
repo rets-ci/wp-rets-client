@@ -92,8 +92,13 @@ class SearchContent extends Component {
       options
     } = this.props;
 
+    let style = {};
     if(this.state.labels.length === 0){
       return null;
+    }else if(this.state.labels.length === 1){
+      style = {
+        'padding-left': '15px'
+      }
     }
 
     let self = this;
@@ -108,7 +113,7 @@ class SearchContent extends Component {
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
-        <button className="btn btn-search" onClick={() => self.props.openSearchModal(true)} type="button">
+        <button className="btn btn-search" style={style} onClick={() => self.props.openSearchModal(true)} type="button">
           <i className="fa fa-search"></i> Address, City, Zip, or Neighborhood.
         </button>
       </div>
