@@ -104,6 +104,9 @@
 	  });
 	});
 
+	// TODO temporary comment this, until done with elastic search API
+	// <Route path="/:sale/:tax/:term" component={MapSearchResults} />
+
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
@@ -42733,7 +42736,10 @@
 	    key: 'handleResultClick',
 	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
 	      eve.preventDefault();
+
+	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+
 	      _reactRouter.browserHistory.push('/properties?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	    }
 	  }, {
@@ -49428,6 +49434,7 @@
 	  _createClass(MapSearchResults, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      // TODO temporary comment this, until done with elastic search API
 	      // let saleType = this.props.params.sale;
 	      // let tax = this.props.params.tax;
 	      // let term = this.props.params.term;

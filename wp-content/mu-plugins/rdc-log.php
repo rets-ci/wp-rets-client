@@ -15,13 +15,12 @@ function rdc_log( $data, $detail = array() ) {
     UD_ChromePhp::log(date("F j, Y, g:i a"), 'rdc-log', $data);
   }
 
-
   $data = "\n" . date("F j, Y, g:i a") . " - " . $data;
 
-  @file_put_contents('/var/www/wp-content/debug-rdc.log', $data, FILE_APPEND );
-
   if( $detail && !empty( $detail ) ) {
-    @file_put_contents('/var/www/wp-content/debug-rdc.log', print_r($detail, true), FILE_APPEND );
+    @file_put_contents('/var/www/wp-content/debug-rdc.log', $data . ' ' . print_r($detail, true), FILE_APPEND );
+  } else {
+    @file_put_contents('/var/www/wp-content/debug-rdc.log', $data, FILE_APPEND );
   }
 
   if( file_exists( '/var/www/wp-content/debug-rdc.log' ) ) {}
