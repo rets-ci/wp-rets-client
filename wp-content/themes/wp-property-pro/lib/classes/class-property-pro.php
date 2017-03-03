@@ -266,6 +266,18 @@ namespace UsabilityDynamics {
             /** Update posts array */
             foreach($field as &$post){
               $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+
+              // Get gallery images
+              $post->gallery_images = [];
+              if($attached_images = get_attached_media('image', $post->ID)){
+                foreach ($attached_images as $im){
+                  if($post->thumbnail === $im->guid){
+                    continue;
+                  }
+
+                  $post->gallery_images[] = $im->guid;
+                }
+              }
             }
           }
 

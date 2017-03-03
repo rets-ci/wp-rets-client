@@ -48594,6 +48594,7 @@
 	        'ul',
 	        null,
 	        posts.map(function (post, key) {
+	          console.log(post);
 	          return _react2.default.createElement(
 	            'li',
 	            { key: key },
@@ -48603,7 +48604,9 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'card-img' },
-	                _react2.default.createElement('img', { className: 'card-img-top', src: _Util2.default.getThumbnailUrlBySize(post.thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE), alt: 'Card image cap' }),
+	                _react2.default.createElement('img', { className: 'card-img-top',
+	                  src: _Util2.default.getThumbnailUrlBySize(post.thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE),
+	                  alt: 'Card image cap' }),
 	                _react2.default.createElement(
 	                  'ul',
 	                  { className: 'direction-nav' },
