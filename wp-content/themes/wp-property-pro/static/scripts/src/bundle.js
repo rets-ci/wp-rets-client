@@ -86,6 +86,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default);
@@ -104,6 +108,9 @@
 	  });
 	});
 
+	// TODO temporary comment this, until done with elastic search API
+	// <Route path="/:sale/:tax/:term" component={MapSearchResults} />
+
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
@@ -114,7 +121,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PageContent2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/properties', component: _MapSearchResults2.default }),
+	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _PageContent2.default })
 	    )
 	  )
@@ -42733,7 +42740,10 @@
 	    key: 'handleResultClick',
 	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
 	      eve.preventDefault();
+
+	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+
 	      _reactRouter.browserHistory.push('/properties?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	    }
 	  }, {
@@ -49428,6 +49438,7 @@
 	  _createClass(MapSearchResults, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      // TODO temporary comment this, until done with elastic search API
 	      // let saleType = this.props.params.sale;
 	      // let tax = this.props.params.tax;
 	      // let term = this.props.params.term;
