@@ -6674,12 +6674,12 @@
 
 
 	  return _react2.default.createElement(
-	    'header',
-	    { className: 'pageheader' },
+	    'section',
+	    { className: 'toolbar' },
 	    _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
 	      'span',
 	      { className: 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon' })
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon', className: 'logo' })
 	    ) : null,
 	    _react2.default.createElement(
 	      'div',
@@ -6719,9 +6719,9 @@
 	            'a',
 	            { className: 'navbar-brand', href: bundle.site_url, title: bundle.site_name },
 	            _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
-	                className: 'hidden-sm-down' }) : null,
+	                className: 'hidden-sm-down logo' }) : null,
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
-	                className: 'hidden-md-up' }) : null
+	                className: 'hidden-md-up logo' }) : null
 	        ),
 	        _react2.default.createElement(
 	            'ul',
@@ -23887,7 +23887,7 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'header',
+	        'section',
 	        { className: 'top-panel' },
 	        _react2.default.createElement(
 	          'div',
@@ -23901,7 +23901,7 @@
 	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	                'a',
 	                { href: bundle.site_url, title: bundle.site_name },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name })
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo' })
 	              ) : null
 	            ),
 	            _react2.default.createElement(
