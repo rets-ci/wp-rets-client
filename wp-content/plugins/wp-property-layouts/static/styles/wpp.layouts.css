@@ -1,0 +1,9 @@
+#side-sortables #layout_type-adder {
+  display: none;
+}
+.wpp-layouts-placeholder {
+  min-height: 100px;
+  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.19);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.19);
+}

@@ -49,7 +49,15 @@ namespace UsabilityDynamics\WPRETSC {
         new Media();
 
         // Register site with SaaS Services.
-        $this->register = class_exists( 'UsabilityDynamics\SAAS_UTIL\Register' ) ? new Register( 'property' ) : null;
+        // Register Product with SaaS Services.
+        if( class_exists( 'UsabilityDynamics\SAAS_UTIL\Register' ) && $this->get_schema( "extra.saasProduct", false ) ) {
+          Register::product( $this->get_schema( "extra.saasProduct" ), array(
+            "name" => $this->name,
+            "slug" => $this->slug,
+            "version" => $this->args[ "version" ],
+            "type" => "plugin"
+          ) );
+        }
 
         // 3d-party compatibility
         new Connectors\Loader();
@@ -84,10 +92,11 @@ namespace UsabilityDynamics\WPRETSC {
               'new_item_name'     => __( 'New Schedule Name', ud_get_wp_rets_client()->domain ),
               'menu_name'         => __( 'Schedules' ),
             ),
+            'public'            => false,
             'show_ui'           => true,
             'show_in_menu'      => false,
             'show_admin_column' => false,
-            'meta_box_cb' => false,
+            'meta_box_cb'       => false,
             'query_var'         => false,
             'rewrite'           => false
           ) );

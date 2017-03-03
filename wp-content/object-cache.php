@@ -798,14 +798,14 @@ class WP_Object_Cache {
    *
    * @var array
    */
-  public $global_groups = array( 'users', 'userlogins', 'usermeta', 'site-options', 'site-lookup', 'blog-lookup', 'blog-details', 'rss' );
+  public $global_groups = array( 'users', 'userlogins', 'usermeta', 'site-options', 'site-lookup', 'blog-lookup', 'blog-details', 'rss', 'group1' );
 
   /**
    * List of groups not saved to Memcached.
    *
    * @var array
    */
-  public $no_mc_groups = array( 'counts' );
+  public $no_mc_groups = array(  'options', 'site-transient' );
 
   /**
    * Prefix used for global groups.
@@ -870,18 +870,28 @@ class WP_Object_Cache {
     $this->thirty_days = 60 * 60 * 24 * 30;
     $this->now         = time();
 
-    register_shutdown_function(function() {
+    // register_shutdown_function('show_cache_debug');
+
+    function show_cache_debug() {
       global $wp_object_cache;
 
       if( defined( 'WP_CLI' ) ) {
-        // die( '<pre>' . print_r( $wp_object_cache->m->getStats(), true ) . '</pre>' );
-        // die( '<pre>' . print_r( $wp_object_cache->servers, true ) . '</pre>' );
-        // die( '<pre>' . print_r( array_keys( $wp_object_cache->cache ), true ) . '</pre>' );
+        //echo( '<pre>' . print_r( array_keys( $wp_object_cache->cache ), true ) . '</pre>' );
+        //echo( '<pre>' . print_r( wp_cache_fetch_all(), true ) . '</pre>' );
+        echo( '<pre>' . print_r( $wp_object_cache->m->getStats(), true ) . '</pre>' );
+        //die( '<pre>' . print_r( $wp_object_cache->servers, true ) . '</pre>' );
       }
 
-    });
+
+    }
 
 
+
+
+  }
+
+  static public function debug( $data  ) {
+    // error_log( $_SERVER['REQUEST_URI'] . ' - ' . $_SERVER['HTTP_USER_AGENT'] . $data );
   }
 
   /**
@@ -913,6 +923,8 @@ class WP_Object_Cache {
 
     $derived_key = $this->buildKey( $key, $group );
     $expiration  = $this->sanitize_expiration( $expiration );
+
+    self::debug( 'add: '. $group . ' - ' . $derived_key);
 
     // If group is a non-Memcached group, save to runtime cache, not Memcached
     if ( in_array( $group, $this->no_mc_groups ) ) {
@@ -1319,19 +1331,27 @@ class WP_Object_Cache {
     // Assume object is not found
     $found = false;
 
+    self::debug( 'get: '. $group . ' - ' . $derived_key);
+
     // If either $cache_db, or $cas_token is set, must hit Memcached and bypass runtime cache
     if ( func_num_args() > 6 && ! in_array( $group, $this->no_mc_groups ) ) {
+      //self::debug( 'get local: '. $group . ' - ' . $derived_key);
+
       if ( $byKey )
         $value = $this->m->getByKey( $server_key, $derived_key, $cache_cb, $cas_token );
       else
         $value = $this->m->get( $derived_key, $cache_cb, $cas_token );
     } else {
+
       if ( isset( $this->cache[$derived_key] ) ) {
+        self::debug( 'get: '. $group . ' - ' . $derived_key . '(local)');
+
         $found = true;
         return is_object( $this->cache[$derived_key] ) ? clone $this->cache[$derived_key] : $this->cache[$derived_key];
       } elseif ( in_array( $group, $this->no_mc_groups ) ) {
         return false;
       } else {
+        //self::debug( 'get remote: '. $group . ' - ' . $derived_key);
         if ( $byKey )
           $value = $this->m->getByKey( $server_key, $derived_key );
         else

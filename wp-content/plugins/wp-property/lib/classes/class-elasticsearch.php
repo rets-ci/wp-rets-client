@@ -43,6 +43,7 @@ namespace UsabilityDynamics\WPP {
           // Only allow property post type if we are running our version of Elasticpress.
           add_filter( 'ep_admin_supported_post_types', array( $this, 'ep_admin_supported_post_types' ) );
           add_filter( 'ep_indexable_post_types', array( $this, 'ep_indexable_post_types' ), 50, 1 );
+          add_filter( 'ep_indexable_post_status', array( $this, 'ep_indexable_post_status' ), 50, 1 );
 
           // Remove menus.
           add_action( 'admin_menu', array( $this, 'admin_menu' ), 200 );
@@ -52,13 +53,23 @@ namespace UsabilityDynamics\WPP {
 
         }
 
+        add_filter( 'option_ep_index_meta', array( $this, 'option_ep_index_meta' ) );
+        add_filter( 'option_ep_active_modules', array( $this, 'option_ep_active_modules' ) );
+
+        // Can't change these in mapping.
+        add_filter( 'ep_default_index_number_of_replicas', array( $this, 'ep_default_index_number_of_replicas' ) );
+        add_filter( 'ep_default_index_number_of_shards', array( $this, 'ep_default_index_number_of_shards' ) );
+
         // Add Mapping.
         add_filter( 'ep_config_mapping', array( $this, 'ep_config_mapping' ) );
 
         // Add our request headers.
         add_filter( 'ep_format_request_headers', array( $this, 'ep_format_request_headers' ) );
 
-        add_filter( 'ep_post_sync_args', array( $this, 'ep_post_sync_args' ), 50, 2 );
+        add_filter( 'ep_post_sync_args_post_prepare_meta', array( $this, 'ep_post_sync_args_post_prepare_meta' ), 40, 2 );
+        add_filter( 'ep_post_sync_args', array( $this, 'ep_post_sync_args' ), 40, 2 );
+        add_filter( 'ep_post_sync_args', array( $this, 'post_title_suggest' ), 50, 2 );
+        add_filter( 'ep_post_sync_args', array( $this, 'filter_term_suggest' ), 60, 2 );
 
         // Set index-name.
         add_filter( 'ep_index_name', array( $this, 'ep_index_name' ), 50, 2 );
@@ -70,6 +81,42 @@ namespace UsabilityDynamics\WPP {
         add_action( 'ep_index_post_retrieve_raw_response', array( $this, 'ep_index_post_retrieve_raw_response' ), 50, 3 );
         // add_filter( 'ep_config_mapping_request', array( $this, 'ep_config_mapping_request' ), 50, 3 );
 
+      }
+
+      /**
+       * Always off because it'll be always on. Prevents it from starting to sync.
+       *
+       * The process can still start in browser and run using AJAX but it will not record state.
+       *
+       * @param $value
+       * @return bool
+       */
+      public function option_ep_index_meta( $value ) {
+        return array( );
+      }
+
+      public function option_ep_active_modules( $value ) {
+        return array( 'search', 'admin' );
+      }
+
+      /**
+       * Number of shards for index.
+       *
+       * @param $value
+       * @return int
+       */
+      public function ep_default_index_number_of_shards( $value ) {
+        return 3;
+      }
+
+      /**
+       * Number of replicas for index.
+       *
+       * @param $value
+       * @return int
+       */
+      public function ep_default_index_number_of_replicas( $value ) {
+        return 0;
       }
 
       /**
@@ -141,6 +188,118 @@ namespace UsabilityDynamics\WPP {
       }
 
       /**
+       * Exclude fields from [meta], like [wpp_location_pin].
+       *
+       * @param $post_args
+       * @param $post_id
+       * @return mixed
+       */
+      public function ep_post_sync_args_post_prepare_meta( $post_args, $post_id  ) {
+
+        unset( $post_args['meta']['wpp_location_pin'] );
+
+        return $post_args;
+      }
+
+      /**
+       * Adds [title_suggest] field for autocompletion.
+       *
+       * @todo Expand the input array with common terms.
+       *
+       * @param $post_args
+       * @param $post_id
+       * @return mixed
+       */
+      public function post_title_suggest( $post_args, $post_id ) {
+
+        $post_args['title_suggest'] = array(
+          "input" => array(
+            $post_args['post_title']
+          ),
+          "output" => $post_args['post_title'],
+          "payload" => array(
+            "post_id" => $post_id,
+            "post_status" => $post_args['post_status'],
+            "post_title" => $post_args['post_title'],
+            "post_name" => $post_args['post_name'],
+            "permalink" => str_replace( array( get_home_url(), get_site_url() ), '', $post_args['permalink'] )
+          )
+        );
+
+        $post_args['title_suggest'] = apply_filters( 'wpp:elastic:title_suggest', $post_args['title_suggest'], $post_args, $post_id );
+
+        // lowercase/tokenize fields.
+        foreach( $post_args['title_suggest']['input'] as $_input_index => $_input_vaue ) {
+          $post_args['title_suggest']['input'][ $_input_index  ] = str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $_input_vaue ) ) );
+        }
+
+        return $post_args;
+
+      }
+
+      /**
+       * Create [term_suggest] list.
+       *
+       *
+       *
+       * @param $post_args
+       * @param $post_id
+       * @return mixed
+       */
+      public function filter_term_suggest( $post_args, $post_id ) {
+
+        $_suggestion_taxonomies = array(
+          'wpp_location',
+          'wpp_schools',
+          'wpp_listing_type',
+          'wpp_listing_status',
+          'wpp_listing_label',
+          'wpp_agent',
+          'wpp_office',
+          //'wpp_listing_category'
+        );
+
+        if ( ! empty( $post_args['terms'] ) ) {
+          foreach ( $post_args['terms'] as $_tax => $taxonomy ) {
+
+            foreach ( $taxonomy as $term ) {
+
+              if( !in_array( $_tax, $_suggestion_taxonomies )) {
+                continue;
+              }
+
+              $_term_metadata = WPP_F::get_term_metadata( get_term( $term['term_id'], $_tax ) );
+
+              $suggest[] = array(
+                "input" => array_unique( array(
+                  str_replace( '&amp;', '&', $term['name'] ),
+                  strtolower( str_replace( '&amp;', '&', $term['name'] ) ),
+                  str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $term['name'] ) ) )
+                )),
+                "output" => $term['name'],
+                "payload" => array_filter( array(
+                  "term_id" => $term['term_id'],
+                  "term_type" => isset( $_term_metadata['term_type'] ) ? $_term_metadata['term_type'] : null,
+                  "slug" => $term['slug'],
+                  "name" => str_replace( '&amp;', '&', $term['name'] ),
+                  "tax" => $_tax,
+                  "url_path" => isset( $_term_metadata['url_path'] ) ? $_term_metadata['url_path'] : null
+                ))
+              );
+
+            }
+
+          }
+        }
+
+        if ( ! empty( $suggest ) ) {
+          $post_args['term_suggest'] = $suggest;
+        }
+
+        return $post_args;
+      }
+
+      /**
        * Set api.realty.ci Index Name
        *
        * @param $index_name
@@ -169,7 +328,11 @@ namespace UsabilityDynamics\WPP {
        * @return array
        */
       static public function ep_admin_supported_post_types( $post_types = array() ) {
-        return array( 'property' => 'property' );
+
+        return array(
+          'property' => 'property'
+        );
+
       }
 
       /**
@@ -180,7 +343,22 @@ namespace UsabilityDynamics\WPP {
        */
       static public function ep_indexable_post_types( $post_types = array() ) {
 
-        return array( 'property' => 'property' );
+        return array(
+          'property' => 'property'
+        );
+
+      }
+
+      /**
+       * Define publishable post statuses.
+       *
+       * @param array $post_types
+       * @return array
+       */
+      static public function ep_indexable_post_status( $post_types = array() ) {
+
+        return array('publish');
+
       }
 
       /**
@@ -188,7 +366,9 @@ namespace UsabilityDynamics\WPP {
        *
        *
        *    wp elasticpress put-mapping
-       *    wp elasticpress index --posts-per-page=1 --nobulk --post-type=property
+       *    wp elasticpress index --nobulk --post-type=property
+       *    wp elasticpress index --posts-per-page=1 --post-type=property
+       *    wp elasticpress index --posts-per-page=50 --post-type=property
        *
        *
        * @param $mapping
@@ -196,17 +376,51 @@ namespace UsabilityDynamics\WPP {
        */
       static public function ep_config_mapping( $mapping ) {
 
-        $mapping['settings']['index']['number_of_replicas'] = (int) 1;
-        $mapping['settings']['index']['ep_default_index_number_of_shards'] = (int) 2;
+        $mapping['settings']['analysis']['filter']['autocomplete_filter'] = array(
+          "min_gram" => 1,
+          "max_gram" => 20,
+          "type" => "edge_ngram"
+        );
 
-        $mapping['mappings']['post']['dynamic_templates'][] = array(
-          "wpp_location_geohash" => array(
-            "match" => "wpp_location_geohash",
-            "mapping" => array(
-              "type" => "geo_point",
-              //"geohash_precision" => "1km"
-            )
-          )
+        $mapping['settings']['analysis']['filter']['nGram_filter'] = array(
+          "type" => "edge_ngram",
+          "token_chars" => array(
+            "letter",
+            "digit",
+            "punctuation",
+            "symbol"
+          ),
+          "min_gram" => 1,
+          "max_gram" => 10,
+        );
+        $mapping['settings']['analysis']['analyzer']['autocomplete'] = array(
+          "type" => "custom",
+          "filter" => array(
+            "lowercase",
+            "autocomplete_filter"
+          ),
+          "tokenizer" => "standard"
+        );
+
+        $mapping['settings']['analysis']['analyzer']['nGram_analyzer'] = array(
+          "type" => "custom",
+          "filter" => array(
+            "lowercase",
+            "asciifolding",
+            "nGram_filter"
+          ),
+          "tokenizer" => "whitespace",
+          "max_token_length" => 500
+        );
+
+        $mapping['settings']['analysis']['analyzer']['whitespace_analyzer'] = array(
+          "type" => "custom",
+          "filter" => array(
+            "lowercase",
+            "asciifolding"
+          ),
+          "tokenizer" => "whitespace",
+          "max_token_length" => 500
         );
 
         $mapping['mappings']['post']['dynamic_templates'][] = array(
@@ -306,17 +520,31 @@ namespace UsabilityDynamics\WPP {
           ),
         );
 
-        $mapping['mappings']['post']['properties']['post_meta']['properties']['wpp_location_geohash'] = array(
-          "type" => "geo_point"
-        );
-
         $mapping['mappings']['post']['properties']['post_meta']['properties']['wpp_location_pin'] = array(
+          "lat_lon" => true,
+          "ignore_malformed" => true,
           "type" => "geo_point"
         );
 
         $mapping['mappings']['post']['properties']['tax_input'] = array( "type" => "object" );
 
-        //die(json_encode($mapping['mappings']['post']['dynamic_templates'], JSON_PRETTY_PRINT));
+        $mapping['mappings']['post']['properties']['title_suggest'] = array(
+          'type' => 'completion',
+          'analyzer' => 'nGram_analyzer',
+          'search_analyzer' => 'whitespace_analyzer',
+          'preserve_separators' => true,
+          'preserve_position_increments' => true,
+          'max_input_length' => 50,
+          'payloads' => true
+        );
+
+        $mapping['mappings']['post']['properties']['term_suggest'] = array(
+          'type' => 'completion',
+          'analyzer' => 'whitespace',
+          'search_analyzer' => 'whitespace_analyzer',
+          'payloads' => true
+        );
+
         //die(json_encode($mapping, JSON_PRETTY_PRINT));
 
         return $mapping;
