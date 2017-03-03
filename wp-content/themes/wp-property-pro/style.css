@@ -64,10 +64,10 @@
 
 .userInfo li .userBox img{
     max-height: 59px;
-    border-radius: 25px 25px;
+    border-radius: 50%;
 }
 
-.testimonial h4{
+.testimonial .userInfo .userBox p{
     font-weight: 700 !important;
 }
 
