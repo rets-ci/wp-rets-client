@@ -48594,7 +48594,9 @@
 	        'ul',
 	        null,
 	        posts.map(function (post, key) {
-	          console.log(post);
+
+	          // TODO Ash you can find gallery_images urls array at post.gallery_images
+
 	          return _react2.default.createElement(
 	            'li',
 	            { key: key },
@@ -49014,7 +49016,7 @@
 	      { className: 'col-lg-4 push-lg-8 text-center' },
 	      _react2.default.createElement(
 	        'a',
-	        { href: contactUs.url, className: 'btn btn-contact', style: style },
+	        { href: contactUs.url, className: 'btn btn-subnavigation', style: style },
 	        contactUs.title
 	      )
 	    ),
