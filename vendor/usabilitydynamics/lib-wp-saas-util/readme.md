@@ -1,13 +1,124 @@
 ### Usage
 
-Run somewhere in init class:
+To register Site/Product:
 
+```php
+use UsabilityDynamics\SAAS_UTIL\Register;
+
+// Stripe Product ID. Required.
+$product_id = "prod_AB8hYwVjwdfiSJ";
+
+// Any custom meta. Optional.
+$meta = array(
+ "name" => "WP-Property",
+ "slug" => "wp-property",
+ "version" => "2.2.0.1"
+);
+
+Register::product( $product_id, $meta );
 ```
-$this->saas = new Register( 'invoice' );
+
+### API Methods
+
+The library also contains the set of API methods.
+( Note, methods are getting/setting data ONLY for particular Site/Blog )
+
+#### Subscriptions
+
+To Get all available Subscriptions Plans for particular Product
+
+```php
+/**
+ * @param string $product_id. Product ID
+ * @return array | WP_Error
+ */
+Register:get_subscriptions( $product_id );
+```
+
+To Get all current active Subscriptions for particular Product
+
+```php
+/**
+ * @param string $product_id Product ID
+ * @return array | WP_Error
+ */
+Register:get_current_subscriptions( $product_id );
+```
+
+To add Subscription for particular Product
+
+```php
+/**
+ * @param string $product_id. Product ID
+ * @param string $subscription_id. Subscription ID
+ * @return array | WP_Error
+ */
+Register:add_subscription( $product_id, $subscription_id );
+```
+
+To remove Subscription for particular Product.
+( Note, if no subscriptions left, default one will be set! )
+
+```php
+/**
+ * @param string $product_id Product ID
+ * @param string $subscription Subscription ID
+ * @return array | WP_Error
+ */
+Register:delete_subscription( $product_id, $subscription );
+```
+
+#### Billing
+
+To return Billing Information for particular Product
+
+```php
+/**
+ * @param string $product_id Product ID
+ * @return array | WP_Error
+ */
+Register:get_billing( $product_id );
+```
+
+To add/update Billing Information
+
+```php
+/**
+ * @param string $product_id
+ * @param array $card
+ * @return array | WP_Error
+ */
+Register:update_billing( $product_id, array(
+  // Required
+  "number" => "1111111111111111",
+  "exp_month" => 12,
+  "exp_year" => 19,
+  // Optional
+  "address_city" => "New-York",
+  "address_country" => "",
+  "address_line1" => "",
+  "address_line2" => "",
+  "address_state" => "NY",
+  "address_zip" => ""
+) );
+```
+
+To remove Billing Information.
+( Note, it resets all subscriptions to free ones )
+
+```php
+/**
+ * @param string $product_id
+ * @return array | WP_Error
+ */
+Register:delete_billing( $product_id );
 ```
 
 ### Debugging
-Get current registration state or flush state. This will force registartion to run again if it is currently in back-off state.
+
+#### Site registration
+
+Get current registration state or flush state. This will force registration to run again if it is currently in back-off state.
 
 ```
 wp transient get ud_registration_state
@@ -30,9 +141,7 @@ When registration attempt is ran, we record the results of last run like so:
       "deployment_hash": "d30cd3cf49dbb705a9f5e9b5689a1400-d3e39b81bcfeeb8f865d734c5b4ac6da-1daf5c23010c8917508c461e9ed0fd0f",
       "home_url": "https://usabilitydynamics-sandbox-uds-io-site-registration.c.rabbit.ci",
       "xmlrpc_url": "https://usabilitydynamics-sandbox-uds-io-site-registration.c.rabbit.ci/xmlrpc.php",
-      "rest_url": "https://usabilitydynamics-sandbox-uds-io-site-registration.c.rabbit.ci/wp-json",
-      "user_id": 1,
-      "message": "Doing site registration, please give me [ud_site_id] and [ud_site_public_key]."
+      "rest_url": "https://usabilitydynamics-sandbox-uds-io-site-registration.c.rabbit.ci/wp-json"
     }
   },
   "response": {
@@ -50,7 +159,7 @@ wp transient delete ud_registration_state
 ```
 
 #### API URL
-To override the registartion API, set `UD_API_REGISTER_URL` constant. Example:
+To override the registration API, set `UD_API_REGISTER_URL` constant. Example:
 
 ```
 define( 'UD_API_REGISTER_URL', 'https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/' );
