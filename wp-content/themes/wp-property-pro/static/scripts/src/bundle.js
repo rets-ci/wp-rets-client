@@ -24426,13 +24426,13 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _SearchLayout = __webpack_require__(82);
+	var _TitleDescriptionLayout = __webpack_require__(82);
 
-	var _SearchLayout2 = _interopRequireDefault(_SearchLayout);
+	var _TitleDescriptionLayout2 = _interopRequireDefault(_TitleDescriptionLayout);
 
-	var _TextLayout = __webpack_require__(232);
+	var _SubtitleTitleLayout = __webpack_require__(232);
 
-	var _TextLayout2 = _interopRequireDefault(_TextLayout);
+	var _SubtitleTitleLayout2 = _interopRequireDefault(_SubtitleTitleLayout);
 
 	var _Modal = __webpack_require__(233);
 
@@ -24471,18 +24471,18 @@
 	    var container = void 0;
 	    var modal = void 0;
 	    switch (widget_cell.widget.fields.layout) {
-	        case 'text_layout':
-	            container = _react2.default.createElement(_TextLayout2.default, { widget_cell: widget_cell });
+	        case 'subtitle_title_layout':
+	            container = _react2.default.createElement(_SubtitleTitleLayout2.default, { widget_cell: widget_cell });
 	            break;
-	        case 'search_layout':
+	        case 'title_description_layout':
 	        default:
 	            modal = _react2.default.createElement(_Modal2.default, null);
-	            container = _react2.default.createElement(_SearchLayout2.default, { widget_cell: widget_cell });
+	            container = _react2.default.createElement(_TitleDescriptionLayout2.default, { widget_cell: widget_cell });
 	            break;
 	    }
 
 	    return _react2.default.createElement(
-	        'div',
+	        'section',
 	        { className: 'masthead', style: headerStyle },
 	        modal,
 	        _react2.default.createElement(
@@ -24582,7 +24582,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchLayout = function SearchLayout(_ref) {
+	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
 	    var widget_cell = _ref.widget_cell;
 
 	    return _react2.default.createElement(
@@ -24602,7 +24602,7 @@
 	    );
 	};
 
-	exports.default = SearchLayout;
+	exports.default = TitleDescriptionLayout;
 
 /***/ },
 /* 83 */
@@ -24732,8 +24732,13 @@
 	          options = _props.options;
 
 
+	      var style = {};
 	      if (this.state.labels.length === 0) {
 	        return null;
+	      } else if (this.state.labels.length === 1) {
+	        style = {
+	          'padding-left': '15px'
+	        };
 	      }
 
 	      var self = this;
@@ -24751,7 +24756,7 @@
 	        }),
 	        _react2.default.createElement(
 	          'button',
-	          { className: 'btn btn-search', onClick: function onClick() {
+	          { className: 'btn btn-search', style: style, onClick: function onClick() {
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
@@ -24854,9 +24859,17 @@
 	        return _react2.default.createElement('div', null);
 	      }
 
+	      var dropSearchStyle = {};
+	      var primaryColor = _.get(bundle, 'colors.primary_color', null);
+	      if (primaryColor) {
+	        dropSearchStyle = {
+	          'backgroundColor': primaryColor
+	        };
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'drop-search' },
+	        { className: 'drop-search', style: dropSearchStyle },
 	        _react2.default.createElement(
 	          'div',
 	          { id: 'search-options-type-container', onClick: function onClick() {
@@ -42606,13 +42619,17 @@
 
 	var _reactRedux = __webpack_require__(36);
 
+	var _Search = __webpack_require__(83);
+
+	var _Search2 = _interopRequireDefault(_Search);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchLayout = function SearchLayout(_ref) {
+	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
 	    var widget_cell = _ref.widget_cell;
 
 	    return _react2.default.createElement(
@@ -42627,11 +42644,12 @@
 	            'h1',
 	            null,
 	            widget_cell.widget.fields.subtitle
-	        ) : null
+	        ) : null,
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', []) })
 	    );
 	};
 
-	exports.default = SearchLayout;
+	exports.default = SubtitleTitleLayout;
 
 /***/ },
 /* 233 */

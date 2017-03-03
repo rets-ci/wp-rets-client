@@ -47,8 +47,16 @@ class DropDownSearch extends Component {
       return (<div></div>);
     }
 
+    let dropSearchStyle = {};
+    let primaryColor = _.get(bundle, 'colors.primary_color', null);
+    if(primaryColor){
+      dropSearchStyle = {
+        'backgroundColor': primaryColor
+      }
+    }
+
     return (
-      <div className="drop-search">
+      <div className="drop-search" style={dropSearchStyle}>
         <div id="search-options-type-container" onClick={() => self.props.handleChange(true)}>
           {this.props.selectedOption}
           <i className="fa fa-caret-down"></i>
