@@ -30,7 +30,7 @@
       "important": false,
       "default": "#000000",
       "selector": [
-`        ".subnavigation.module2 ul li a:hover",
+        ".subnavigation.module2 ul li a:hover",
         ".subnavigation ul li a:hover",
         ".subnavigation.module2 ul li a:focus",
         ".subnavigation ul li a:focus",
