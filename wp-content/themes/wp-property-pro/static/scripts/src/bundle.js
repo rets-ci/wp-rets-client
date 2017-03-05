@@ -48710,18 +48710,11 @@
 	  _createClass(PropertyCard, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.swiper = new Swiper(this.swiperElement);
-	    }
-	  }, {
-	    key: 'swiperSlideElement',
-	    value: function swiperSlideElement(image_url) {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'swiper-slide' },
-	        _react2.default.createElement('img', {
-	          src: _Util2.default.getThumbnailUrlBySize(image_url, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE),
-	          alt: 'Card image cap' })
-	      );
+	      console.log('component did mount');
+	      this.swiper = new Swiper(this.swiperElement, {
+	        preloadImages: false,
+	        lazyLoading: true
+	      });
 	    }
 	  }, {
 	    key: 'handleNavigation',
@@ -48759,14 +48752,25 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'swiper-wrapper' },
-	                this.swiperSlideElement(thumbnail),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'swiper-slide' },
+	                  _react2.default.createElement('img', {
+	                    alt: 'Card image cap',
+	                    className: 'swiper-lazy',
+	                    src: _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
+	                  })
+	                ),
 	                gallery_images.map(function (d, k) {
 	                  return _react2.default.createElement(
 	                    'div',
 	                    { className: 'swiper-slide', key: k },
 	                    _react2.default.createElement('img', {
-	                      src: _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE),
-	                      alt: 'Card image cap' })
+	                      alt: 'Card image cap',
+	                      className: 'swiper-lazy',
+	                      'data-src': _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
+	                    }),
+	                    _react2.default.createElement('div', { className: 'swiper-lazy-preloader' })
 	                  );
 	                })
 	              )

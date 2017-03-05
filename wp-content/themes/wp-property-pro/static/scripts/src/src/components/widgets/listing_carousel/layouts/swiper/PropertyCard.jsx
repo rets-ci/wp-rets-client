@@ -8,15 +8,11 @@ export default class PropertyCard extends Component {
   }
 
   componentDidMount() {
-    this.swiper = new Swiper(this.swiperElement);
-  }
-
-  swiperSlideElement(image_url) {
-    return (<div className="swiper-slide">
-      <img
-         src={Util.getThumbnailUrlBySize(image_url, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
-         alt="Card image cap"/>
-    </div>)
+    console.log('component did mount');
+    this.swiper = new Swiper(this.swiperElement, {
+      preloadImages: false,
+      lazyLoading: true
+    });
   }
 
   handleNavigation(direction) {
@@ -39,12 +35,21 @@ export default class PropertyCard extends Component {
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                {this.swiperSlideElement(thumbnail)}
+                <div className="swiper-slide">
+                  <img
+                    alt="Card image cap"
+                    className="swiper-lazy"
+                    src={Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
+                  />
+                </div>
                 {gallery_images.map((d, k) =>
                   <div className="swiper-slide" key={k}>
                     <img
-                       src={Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
-                       alt="Card image cap"/>
+                      alt="Card image cap"
+                      className="swiper-lazy"
+                      data-src={Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
+                    />
+                    <div className="swiper-lazy-preloader"></div>
                   </div>
                 )}
               </div>
