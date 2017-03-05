@@ -30,7 +30,7 @@ export default class PropertyCard extends Component {
       thumbnail
     } = this.props.data;
     return (
-      <div className="card swiper-slide" style={{}}>
+      <div className="card card-homepage swiper-slide">
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>

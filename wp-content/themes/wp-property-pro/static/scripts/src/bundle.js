@@ -48737,7 +48737,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'card swiper-slide', style: {} },
+	        { className: 'card card-homepage swiper-slide' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-img' },
@@ -55608,7 +55608,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'card-img' },
-	                  _react2.default.createElement('img', { className: 'card-img-top', src: _Util2.default.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE), alt: 'Card image cap' }),
+	                  _react2.default.createElement('img', { className: 'card-img-top', src: p._source.meta_input ? _Util2.default.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, '400x230') : '', alt: 'Card image cap' }),
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'direction-nav' },
