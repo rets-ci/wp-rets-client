@@ -290,6 +290,9 @@ namespace UsabilityDynamics {
             foreach ($field as &$fg){
               $fg['image_section']['image_src'] = $fg['image_section']['image'] ? wp_get_attachment_image_src($fg['image_section']['image'], 'full')[0] : '';
               unset($fg['image_section']['so_field_container_state']);
+
+              $fg['image_section']['image_position'] = str_replace('_', ' ', $fg['image_section']['image_position']);
+
               if(count($fg['features'])){
                 foreach ($fg['features'] as &$feature){
                   unset($feature['button_section']['so_field_container_state']);

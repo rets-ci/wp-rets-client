@@ -56,7 +56,7 @@
 
 	var _PageContent2 = _interopRequireDefault(_PageContent);
 
-	var _MapSearchResults = __webpack_require__(311);
+	var _MapSearchResults = __webpack_require__(315);
 
 	var _MapSearchResults2 = _interopRequireDefault(_MapSearchResults);
 
@@ -70,15 +70,15 @@
 
 	var _reactRouter = __webpack_require__(77);
 
-	var _reactRouterRedux = __webpack_require__(315);
+	var _reactRouterRedux = __webpack_require__(319);
 
-	var _index2 = __webpack_require__(320);
+	var _index2 = __webpack_require__(324);
 
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(47);
 
-	var _reduxThunk = __webpack_require__(331);
+	var _reduxThunk = __webpack_require__(335);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -29285,7 +29285,11 @@
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-	var _Footer = __webpack_require__(305);
+	var _Tour = __webpack_require__(305);
+
+	var _Tour2 = _interopRequireDefault(_Tour);
+
+	var _Footer = __webpack_require__(309);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -29314,6 +29318,7 @@
 	        null,
 	        _react2.default.createElement(_Masthead2.default, null),
 	        _react2.default.createElement(_Subnavigation2.default, null),
+	        _react2.default.createElement(_Tour2.default, null),
 	        _react2.default.createElement(_ListingCarousel2.default, null),
 	        _react2.default.createElement(_Callout2.default, null),
 	        _react2.default.createElement(_Testimonials2.default, null),
@@ -55053,15 +55058,305 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(36);
+
+	var _WidgetsUtil = __webpack_require__(134);
+
+	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
+
+	var _DefaultLayout = __webpack_require__(306);
+
+	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterTop = __webpack_require__(306);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    rows: _lodash2.default.get(state, 'postState.rows', [])
+	  };
+	};
+
+	var TourContent = function TourContent(_ref) {
+	  var rows = _ref.rows;
+
+
+	  var widget_cell = _WidgetsUtil2.default.getWidgetByKey('Property_Pro_Tour_Widget', rows);
+
+	  if (!widget_cell) {
+	    return null;
+	  }
+
+	  var container = void 0;
+	  console.log(widget_cell.widget.fields);
+	  switch (widget_cell.widget.fields.layout) {
+	    case 'default_layout':
+	    default:
+	      container = _react2.default.createElement(_DefaultLayout2.default, { item: widget_cell.widget.fields });
+	      break;
+	  }
+
+	  return _react2.default.createElement(
+	    'section',
+	    { className: 'tour-section' },
+	    container
+	  );
+	};
+
+	var Tour = (0, _reactRedux.connect)(mapStateToProps)(TourContent);
+
+	exports.default = Tour;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(36);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _FeatureGroup = __webpack_require__(307);
+
+	var _FeatureGroup2 = _interopRequireDefault(_FeatureGroup);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DefaultLayout = function DefaultLayout(_ref) {
+	  var item = _ref.item;
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'widget-tour' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'headtitle text-center' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	          'h2',
+	          null,
+	          item.title
+	        ) : null,
+	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	          'p',
+	          null,
+	          item.subtitle
+	        ) : null
+	      )
+	    ),
+	    _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
+	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, key: key });
+	    })
+	  );
+	};
+
+	exports.default = DefaultLayout;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(36);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _Feature = __webpack_require__(308);
+
+	var _Feature2 = _interopRequireDefault(_Feature);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FeatureGroup = function FeatureGroup(_ref) {
+	  var featureGroup = _ref.featureGroup,
+	      key = _ref.key;
+
+
+	  var counter = 1;
+	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
+
+	  var widgetBoxClasses = _lodash2.default.get(featureGroup, 'background', null) === 'full' ? "widget-box widget-bg widget2" : "widget-box";
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-7 push-lg-5" : "col-lg-7";
+	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-5 push-lg-7";
+
+	  return _react2.default.createElement(
+	    'section',
+	    { className: widgetBoxClasses, key: key },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'row no-gutters' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: featureGroupBackgroundClasses },
+	        _lodash2.default.get(featureGroup, 'image_section.image_src', null) ? _react2.default.createElement('img', { src: featureGroup.image_section.image_src, alt: '', className: 'img-fluid' }) : null
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'widget-inner' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row no-gutters' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: featureGroupContentClasses },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'tour-widget-content' },
+	              _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
+	                var last = featuresCount === counter;
+	                counter++;
+	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, key: k });
+	              })
+	            )
+	          )
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = FeatureGroup;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(36);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Feature = function Feature(_ref) {
+	  var feature = _ref.feature,
+	      last = _ref.last,
+	      key = _ref.key;
+
+
+	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
+	  var buttonStyle = primaryColor !== null ? {
+	    "backgroundColor": primaryColor
+	  } : {};
+
+	  return _react2.default.createElement(
+	    'div',
+	    { key: key },
+	    _lodash2.default.get(feature, 'title', null) ? _react2.default.createElement(
+	      'h3',
+	      null,
+	      feature.title
+	    ) : null,
+	    _lodash2.default.get(feature, 'description', null) ? _react2.default.createElement(
+	      'p',
+	      null,
+	      feature.description
+	    ) : null,
+	    _lodash2.default.get(feature, 'button.label', null) && _lodash2.default.get(feature, 'button.url', null) ? _react2.default.createElement(
+	      'a',
+	      { href: feature.button.url, className: 'btn btn-primary', style: buttonStyle },
+	      feature.button.label
+	    ) : null,
+	    _react2.default.createElement(
+	      'blockquote',
+	      null,
+	      _lodash2.default.get(feature, 'testimonial_section.review', null) ? _react2.default.createElement(
+	        'p',
+	        null,
+	        feature.testimonial_section.review
+	      ) : null,
+	      _react2.default.createElement(
+	        'cite',
+	        { className: 'clearfix' },
+	        _lodash2.default.get(feature, 'testimonial_section.image_src', null) ? _react2.default.createElement(
+	          'span',
+	          null,
+	          _react2.default.createElement('img', { src: feature.testimonial_section.image_src,
+	            alt: _lodash2.default.get(feature, 'testimonial_section.name', '') })
+	        ) : null,
+	        _lodash2.default.get(feature, 'testimonial_section.name', null) ? _react2.default.createElement(
+	          'h5',
+	          null,
+	          feature.testimonial_section.name
+	        ) : null,
+	        _lodash2.default.get(feature, 'testimonial_section.location', null) ? _react2.default.createElement(
+	          'p',
+	          null,
+	          feature.testimonial_section.location
+	        ) : null
+	      )
+	    ),
+	    last ? null : _react2.default.createElement('hr', null)
+	  );
+	};
+
+	exports.default = Feature;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _FooterTop = __webpack_require__(310);
 
 	var _FooterTop2 = _interopRequireDefault(_FooterTop);
 
-	var _FooterBottom = __webpack_require__(308);
+	var _FooterBottom = __webpack_require__(312);
 
 	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
 
@@ -55079,7 +55374,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 306 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55092,7 +55387,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterTopMenu = __webpack_require__(307);
+	var _FooterTopMenu = __webpack_require__(311);
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
@@ -55142,7 +55437,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 307 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55198,7 +55493,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 308 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55215,11 +55510,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterBottomMenu = __webpack_require__(309);
+	var _FooterBottomMenu = __webpack_require__(313);
 
 	var _FooterBottomMenu2 = _interopRequireDefault(_FooterBottomMenu);
 
-	var _FooterBottomSocialMenu = __webpack_require__(310);
+	var _FooterBottomSocialMenu = __webpack_require__(314);
 
 	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
 
@@ -55246,7 +55541,7 @@
 	exports.default = FooterBottom;
 
 /***/ },
-/* 309 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55293,7 +55588,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 310 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55342,7 +55637,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 311 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55361,7 +55656,7 @@
 
 	var _lib = __webpack_require__(2);
 
-	var _Map = __webpack_require__(312);
+	var _Map = __webpack_require__(316);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
@@ -55371,7 +55666,7 @@
 
 	var _reactRedux = __webpack_require__(36);
 
-	var _SearchResultListing = __webpack_require__(313);
+	var _SearchResultListing = __webpack_require__(317);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
@@ -55568,7 +55863,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MapSearchResults);
 
 /***/ },
-/* 312 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55692,7 +55987,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 313 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55707,7 +56002,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(314);
+	var _numeral = __webpack_require__(318);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -55874,7 +56169,7 @@
 	exports.default = SearchResultListing;
 
 /***/ },
-/* 314 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -56835,7 +57130,7 @@
 
 
 /***/ },
-/* 315 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56845,7 +57140,7 @@
 	});
 	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
 
-	var _reducer = __webpack_require__(316);
+	var _reducer = __webpack_require__(320);
 
 	Object.defineProperty(exports, 'LOCATION_CHANGE', {
 	  enumerable: true,
@@ -56860,7 +57155,7 @@
 	  }
 	});
 
-	var _actions = __webpack_require__(317);
+	var _actions = __webpack_require__(321);
 
 	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
 	  enumerable: true,
@@ -56905,11 +57200,11 @@
 	  }
 	});
 
-	var _sync = __webpack_require__(318);
+	var _sync = __webpack_require__(322);
 
 	var _sync2 = _interopRequireDefault(_sync);
 
-	var _middleware = __webpack_require__(319);
+	var _middleware = __webpack_require__(323);
 
 	var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -56919,7 +57214,7 @@
 	exports.routerMiddleware = _middleware2['default'];
 
 /***/ },
-/* 316 */
+/* 320 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -56962,7 +57257,7 @@
 	}
 
 /***/ },
-/* 317 */
+/* 321 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57004,7 +57299,7 @@
 	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
 
 /***/ },
-/* 318 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57017,7 +57312,7 @@
 
 	exports['default'] = syncHistoryWithStore;
 
-	var _reducer = __webpack_require__(316);
+	var _reducer = __webpack_require__(320);
 
 	var defaultSelectLocationState = function defaultSelectLocationState(state) {
 	  return state.routing;
@@ -57164,7 +57459,7 @@
 	}
 
 /***/ },
-/* 319 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57174,7 +57469,7 @@
 	});
 	exports['default'] = routerMiddleware;
 
-	var _actions = __webpack_require__(317);
+	var _actions = __webpack_require__(321);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -57202,7 +57497,7 @@
 	}
 
 /***/ },
-/* 320 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57211,47 +57506,47 @@
 	    value: true
 	});
 
-	var _reactRouterRedux = __webpack_require__(315);
+	var _reactRouterRedux = __webpack_require__(319);
 
 	var _redux = __webpack_require__(47);
 
-	var _post = __webpack_require__(321);
+	var _post = __webpack_require__(325);
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _map = __webpack_require__(322);
+	var _map = __webpack_require__(326);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(323);
+	var _modal = __webpack_require__(327);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(324);
+	var _searchProps = __webpack_require__(328);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(325);
+	var _searchResults = __webpack_require__(329);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(326);
+	var _mapMarkers = __webpack_require__(330);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(327);
+	var _searchType = __webpack_require__(331);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(328);
+	var _filterTerms = __webpack_require__(332);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(329);
+	var _userData = __webpack_require__(333);
 
 	var _userData2 = _interopRequireDefault(_userData);
 
-	var _testimonialsCarousel = __webpack_require__(330);
+	var _testimonialsCarousel = __webpack_require__(334);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -57274,7 +57569,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 321 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57308,7 +57603,7 @@
 	exports.default = post;
 
 /***/ },
-/* 322 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57339,7 +57634,7 @@
 	exports.default = map;
 
 /***/ },
-/* 323 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57367,7 +57662,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 324 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57394,7 +57689,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 325 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57431,7 +57726,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 326 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57458,7 +57753,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 327 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57488,7 +57783,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 328 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57515,7 +57810,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 329 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57540,7 +57835,7 @@
 	exports.default = userData;
 
 /***/ },
-/* 330 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57567,7 +57862,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 331 */
+/* 335 */
 /***/ function(module, exports) {
 
 	'use strict';

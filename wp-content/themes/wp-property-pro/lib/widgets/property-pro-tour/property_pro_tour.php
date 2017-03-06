@@ -78,7 +78,7 @@ namespace UsabilityDynamics\PropertyPro\Widget\Tour {
             ],
             'background' => [
               'type' => 'select',
-              'label' => __('Layout', 'wp-property-pro'),
+              'label' => __('Background', 'wp-property-pro'),
               'default' => 'part',
               'options' => [
                 'part' => __('Style 1', 'wp-property-pro'),

@@ -79,6 +79,10 @@
     overflow: auto;
 }
 
+.tour-widget-content blockquote cite span img{
+    max-height: 40px;
+    border-radius: 50%;
+}
 
 /*
 Red Door Company Styles
