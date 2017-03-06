@@ -1,9 +1,10 @@
 import React from 'react';
-import _ from 'lodash'
+import _ from 'lodash';
+import {browserHistory} from 'react-router';
 
 const Navigation = ({openUserPanel}) => (
     <nav className="navbar navbar-toggleable-md bg-faded">
-        <a className="navbar-brand" href={bundle.site_url} title={bundle.site_name}>
+        <a className="navbar-brand" href={bundle.site_url} onClick={(eve) => {eve.preventDefault();browserHistory.push('')}} title={bundle.site_name}>
           {
             _.get(bundle, 'logos.horizontal_logo', null)
               ? <img src={bundle.logos.horizontal_logo} alt={bundle.site_name}
