@@ -143,7 +143,7 @@ class Modal extends Component {
                             }}
                             type="text"
                             value={this.state.searchValue}
-                            placeholder="Enter address, city ..."
+                            placeholder="Address, City, Zip, or Neighborhood"
                         />
                         <button type="button" className="btn btn-primary">Search</button>
                     </div>

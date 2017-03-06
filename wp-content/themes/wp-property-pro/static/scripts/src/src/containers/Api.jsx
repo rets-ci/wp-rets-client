@@ -63,6 +63,35 @@ class Api {
     };
   }
 
+  static getTopAggregationsFields() {
+    return {
+      "location_city": {
+        "slug": "city",
+        "title": "City",
+        "field": "tax_input.location_city",
+        "search_field": "_search.location_city"
+      },
+      "location_zip": {
+        "slug": "zip",
+        "title": "Zip",
+        "field": "_system.addressDetail.zipcode",
+        "search_field": "_search.location_zip"
+      },
+      "location_county": {
+        "slug": "county",
+        "title": "County",
+        "field": "tax_input.location_county",
+        "search_field": "_search.location_county"
+      },
+      "subdivision": {
+        "slug": "subdivision",
+        "title": "Subdivision",
+        "field": "tax_input.subdivision",
+        "search_field": "_search.subdivision"
+      }
+    };
+  }
+
     static createESSearchQuery(params) {
       let terms = {};
       terms['tax_input.' + params.tax] = [
@@ -220,9 +249,13 @@ class Api {
         }, function selectQueryResponse(err, response) {
 
             let rows = [];
-            for (let aggregationKey in response.aggregations) {
+            for (let aggregationKey in aggregationsFields) {
 
-                let someAggregation = response.aggregations[aggregationKey];
+              let someAggregation = _.get(response.aggregations, aggregationKey, null);
+
+              if(someAggregation === null){
+                continue;
+              }
 
                 let _buckets = [];
 
@@ -266,7 +299,7 @@ class Api {
     };
 
 
-    let aggregationsFields = this.getAggregationsFields();
+    let aggregationsFields = this.getTopAggregationsFields();
     for (let key in aggregationsFields) {
 
       if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
@@ -293,9 +326,13 @@ class Api {
     }, function selectQueryResponse(err, response) {
 
       let rows = [];
-      for (let aggregationKey in response.aggregations) {
+      for (let aggregationKey in aggregationsFields) {
 
-        let someAggregation = response.aggregations[aggregationKey];
+        let someAggregation = _.get(response.aggregations, aggregationKey, null);
+
+        if(someAggregation === null){
+          continue;
+        }
 
         let _buckets = [];
 

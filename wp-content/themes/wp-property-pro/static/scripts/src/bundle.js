@@ -47792,7 +47792,7 @@
 	              },
 	              type: 'text',
 	              value: this.state.searchValue,
-	              placeholder: 'Enter address, city ...'
+	              placeholder: 'Address, City, Zip, or Neighborhood'
 	            }),
 	            _react2.default.createElement(
 	              'button',
@@ -47903,6 +47903,36 @@
 	          "title": "High School",
 	          "field": "tax_input.high_school",
 	          "search_field": "_search.high_school"
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'getTopAggregationsFields',
+	    value: function getTopAggregationsFields() {
+	      return {
+	        "location_city": {
+	          "slug": "city",
+	          "title": "City",
+	          "field": "tax_input.location_city",
+	          "search_field": "_search.location_city"
+	        },
+	        "location_zip": {
+	          "slug": "zip",
+	          "title": "Zip",
+	          "field": "_system.addressDetail.zipcode",
+	          "search_field": "_search.location_zip"
+	        },
+	        "location_county": {
+	          "slug": "county",
+	          "title": "County",
+	          "field": "tax_input.location_county",
+	          "search_field": "_search.location_county"
+	        },
+	        "subdivision": {
+	          "slug": "subdivision",
+	          "title": "Subdivision",
+	          "field": "tax_input.subdivision",
+	          "search_field": "_search.subdivision"
 	        }
 	      };
 	    }
@@ -48019,9 +48049,13 @@
 	      }, function selectQueryResponse(err, response) {
 
 	        var rows = [];
-	        for (var aggregationKey in response.aggregations) {
+	        for (var aggregationKey in aggregationsFields) {
 
-	          var someAggregation = response.aggregations[aggregationKey];
+	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
+
+	          if (someAggregation === null) {
+	            continue;
+	          }
 
 	          var _buckets = [];
 
@@ -48062,7 +48096,7 @@
 	        "aggs": {}
 	      };
 
-	      var aggregationsFields = this.getAggregationsFields();
+	      var aggregationsFields = this.getTopAggregationsFields();
 	      for (var key in aggregationsFields) {
 
 	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
@@ -48089,9 +48123,13 @@
 	      }, function selectQueryResponse(err, response) {
 
 	        var rows = [];
-	        for (var aggregationKey in response.aggregations) {
+	        for (var aggregationKey in aggregationsFields) {
 
-	          var someAggregation = response.aggregations[aggregationKey];
+	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
+
+	          if (someAggregation === null) {
+	            continue;
+	          }
 
 	          var _buckets = [];
 
