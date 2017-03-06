@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
 import {openModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx'
@@ -104,6 +105,13 @@ class SearchContent extends Component {
     let self = this;
     return (
       <div className="search-box">
+        <MobileTabsSearch
+          labels={this.state.labels}
+          saleTypes={this.state.saleTypes}
+          propertyTypes={this.state.propertyTypes}
+          selectedOption={this.props.searchType}
+          handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
+        />
         <DropDownSearch
           labels={this.state.labels}
           saleTypes={this.state.saleTypes}
