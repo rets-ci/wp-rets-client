@@ -39,7 +39,7 @@ function mapper_add_alias(){
 
   $_current_settings[ 'field_alias' ][ $payload['alias' ] ] = $payload['key'];
 
-  $_current_settings['_updated'] = time();
+  $_current_settings[ '_updated' ] = time();
 
   update_option( 'wpp_settings', $_current_settings );
 
