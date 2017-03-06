@@ -27,11 +27,15 @@
     "react-router-redux": "^4.0.8",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "swiper": "^3.4.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "css-loader": "^0.26.2",
+    "style-loader": "^0.13.2"
+  },
   "scripts": {
     "build": "webpack --debug",
     "watch": "webpack --watch --progress"

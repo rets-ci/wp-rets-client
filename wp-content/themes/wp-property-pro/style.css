@@ -164,7 +164,7 @@ html, body { height: 100%; margin: 0; }
 .listings p a { color: #e64c3c; text-decoration: underline; }
 
 .listings { padding: 60px 0 0; overflow: hidden; }
-.listing-carousel { width: 80em; }
+.listing-carousel { width: 87em; }
 .listing-carousel ul { list-style-type: none; margin: 0; padding: 0; }
 .listing-carousel>ul>li { float: left; width: 31.200%; margin-right: 3%; }
 .listing-carousel>ul>li:last-child { margin-right: 0; }
@@ -192,6 +192,10 @@ html, body { height: 100%; margin: 0; }
 
 .card-img { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; position: relative;  }
 
+.card-homepage {
+  width: 400px !important;
+  height: 390px !important;
+}
 
 .listing-control-nav { margin: 85px 0 0; text-align:center;  }
 .listing-control-nav a { border-radius: 50px; background-color: #e9eff3; width: 60px; height: 60px; text-align: center; line-height: 70px; display: inline-block; margin: 0 10px;  }
