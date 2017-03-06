@@ -54454,7 +54454,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -54861,7 +54861,7 @@
 	      { className: 'col-lg-4 push-lg-8 text-center' },
 	      _react2.default.createElement(
 	        'a',
-	        { href: contactUs.url, className: 'btn btn-subnavigation', style: style },
+	        { href: contactUs.url, className: 'btn', style: style },
 	        contactUs.title
 	      )
 	    ),
