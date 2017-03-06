@@ -29667,7 +29667,7 @@
 	        return null;
 	      } else if (this.state.labels.length === 1) {
 	        style = {
-	          'padding-left': '15px'
+	          'paddingLeft': '15px'
 	        };
 	      }
 
