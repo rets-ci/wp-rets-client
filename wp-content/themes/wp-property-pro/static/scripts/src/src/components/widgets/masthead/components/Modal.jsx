@@ -72,7 +72,7 @@ class Modal extends Component {
       // TODO temporary comment this, until done with elastic search API
       // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
 
-      browserHistory.push(`/properties?wpp_search[tax]=${tax}&wpp_search[term]=${term}&wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+      browserHistory.push(`/${_.get(wpp, 'instance.settings.configuration.base_slug')}?wpp_search[tax]=${tax}&wpp_search[term]=${term}&wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
       this.props.closeModal();
     }
 
