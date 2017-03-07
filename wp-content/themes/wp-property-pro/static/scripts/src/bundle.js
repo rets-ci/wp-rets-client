@@ -55202,21 +55202,28 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var widgetBoxClasses = _lodash2.default.get(featureGroup, 'background', null) === 'full' ? "widget-box widget-bg widget2" : "widget-box";
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-7 push-lg-5" : "col-lg-7";
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? "col-lg-7 push-lg-5 background" : "col-lg-7 background";
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-5 push-lg-7";
+
+	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
+	    "background": "url(" + featureGroup.image_section.image_src + ")",
+	    "backgroundPosition": featureGroup.image_section.image_position
+	  } : {};
+
+	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
+	    backgroundStyle = Object.assign({}, backgroundStyle, {
+	      "backgroundSize": "cover",
+	      "minWidth": "100%"
+	    });
+	  }
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: widgetBoxClasses, key: key },
+	    { className: 'widget-box', key: key },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row no-gutters' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: featureGroupBackgroundClasses },
-	        _lodash2.default.get(featureGroup, 'image_section.image_src', null) ? _react2.default.createElement('img', { src: featureGroup.image_section.image_src, alt: '', className: 'img-fluid' }) : null
-	      )
+	      { className: 'row no-gutters background-block' },
+	      _react2.default.createElement('div', { className: featureGroupBackgroundClasses, style: backgroundStyle })
 	    ),
 	    _react2.default.createElement(
 	      'div',
@@ -55294,10 +55301,10 @@
 	      null,
 	      feature.description
 	    ) : null,
-	    _lodash2.default.get(feature, 'button.label', null) && _lodash2.default.get(feature, 'button.url', null) ? _react2.default.createElement(
+	    _lodash2.default.get(feature, 'button_section.label', null) && _lodash2.default.get(feature, 'button_section.url', null) ? _react2.default.createElement(
 	      'a',
-	      { href: feature.button.url, className: 'btn btn-primary', style: buttonStyle },
-	      feature.button.label
+	      { href: feature.button_section.url, className: 'btn btn-primary', style: buttonStyle },
+	      feature.button_section.label
 	    ) : null,
 	    _react2.default.createElement(
 	      'blockquote',

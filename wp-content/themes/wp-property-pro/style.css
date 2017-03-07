@@ -84,6 +84,10 @@
     border-radius: 50%;
 }
 
+.tour-section .widget-tour .widget-box .background-block > .background{
+    min-height: 800px;
+}
+
 /*
 Red Door Company Styles
 Date: 2017-02-07
@@ -591,7 +595,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .widget-tour .headtitle p { color: #8b8c8d; font-size: 18px; font-weight: 500; line-height: 35px; margin: 0 12%; }
 .widget-box { margin-bottom: 112px; position: relative; }
 .widget-box:last-child { margin-bottom: 0; }
-.widget-box .tour-widget-content { background-color: rgba(255, 255, 255, 0.95); margin: 65px 0  58px -150px; padding: 44px 50px; }
+.widget-box .tour-widget-content { background-color: rgba(255, 255, 255, 0.95); margin: 65px 0  58px 0; padding: 44px 50px; }
 .tour-widget-content h3 {  font-size: 32px; font-weight: 700; line-height: 50px; margin-bottom: 1rem; }
 .tour-widget-content p { color: #8b8c8d; font-size: 18px; font-weight: 500; line-height: 30px; padding-right: 0; }
 .tour-widget-content blockquote { margin: 30px 0 0; }
@@ -602,7 +606,6 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .tour-widget-content blockquote cite h5, .tour-widget-content blockquote cite p { margin: 0; line-height: 17px; }
 .tour-widget-content blockquote cite h5 { margin-bottom: 5px; }
 .tour-widget-content blockquote cite p { font-style: normal; }
-.widget-box.widget2 .tour-widget-content { margin-left: 0; margin-right: -190px; }
 .widget-box.widget2 .tour-widget-content p { padding-right: 0; }
 .widget-box.widget-bg { background-color: #e5e0dd; }
 .widget-box.widget3 .tour-widget-content { margin-left: 0; margin-right: -190px; }
