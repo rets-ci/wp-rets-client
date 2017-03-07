@@ -177,8 +177,8 @@ namespace UsabilityDynamics {
         $params['post']['post_content'] = self::rebuild_builder_content($post_data);
       }
 
-      /** Get header layout */
-      $params['post']['header_layout'] = get_post_meta($post->ID, 'header_layout', true) ? get_post_meta($post->ID, 'header_layout', true) : null;
+      /** Get toolbar layout meta */
+      $params['post']['propertypro_toolbar_layout'] = get_post_meta($post->ID, 'propertypro_toolbar_layout', true) ? get_post_meta($post->ID, 'propertypro_toolbar_layout', true) : null;
       return $params;
     }
 

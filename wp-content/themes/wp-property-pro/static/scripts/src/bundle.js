@@ -4406,7 +4406,7 @@
 	  var post = _ref.post,
 	      openUserPanel = _ref.openUserPanel;
 
-	  if (post === {} || _lodash2.default.indexOf([null, 'search'], _lodash2.default.get(post, 'header_layout', null)) !== -1) {
+	  if (_lodash2.default.get(post, 'propertypro_toolbar_layout', null) !== null || _lodash2.default.replace(location.pathname, '/', '') === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
 	  }
 
