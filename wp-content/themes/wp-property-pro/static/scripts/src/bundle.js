@@ -54992,11 +54992,11 @@
 	  var items = _ref.items,
 	      currentUrl = _ref.currentUrl;
 
-	  var contactUs = {};
+	  var btn = {};
 	  var links = [];
 	  for (var i in items) {
 	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'btn') {
-	      contactUs = items[i];
+	      btn = items[i];
 	    } else {
 	      links.push(items[i]);
 	    }
@@ -55010,34 +55010,30 @@
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: 'row' },
-	    _lodash2.default.isEmpty(contactUs) ? null : _react2.default.createElement(
-	      'div',
-	      { className: 'col-lg-4 push-lg-8 text-center' },
-	      _react2.default.createElement(
-	        'a',
-	        { href: contactUs.url, className: 'btn', style: style },
-	        contactUs.title
-	      )
-	    ),
 	    links.length ? _react2.default.createElement(
-	      'div',
-	      { className: 'col-lg-8 pull-lg-4' },
-	      _react2.default.createElement(
-	        'ul',
-	        null,
-	        links.map(function (link, key) {
-	          var classes = link.url === currentUrl ? 'active' : '';
-	          return _react2.default.createElement(
-	            'li',
-	            { key: key, className: classes },
-	            _react2.default.createElement(
-	              'a',
-	              { href: link.url },
-	              link.title
-	            )
-	          );
-	        })
-	      )
+	      'ul',
+	      null,
+	      _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
+	        'li',
+	        { className: 'subnavigation-btn' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: btn.url, className: 'btn', style: style },
+	          btn.title
+	        )
+	      ),
+	      links.map(function (link, key) {
+	        var classes = link.url === currentUrl ? 'active' : '';
+	        return _react2.default.createElement(
+	          'li',
+	          { key: key, className: classes },
+	          _react2.default.createElement(
+	            'a',
+	            { href: link.url },
+	            link.title
+	          )
+	        );
+	      })
 	    ) : null
 	  );
 	};
