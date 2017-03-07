@@ -72,7 +72,9 @@
       "selector": [
         ".pageheader h1",
         ".testimonial h4",
-        ".masthead .search-modal .search-modal-box ol li .container"
+        ".masthead .search-modal .search-modal-box ol li .container",
+        ".widget-tour .headtitle h2",
+        ".tour-widget-content h3"
       ]
     },
     {
@@ -98,7 +100,9 @@
         ".masthead .search-modal #wp-property-pro-search-input",
         ".masthead .search-modal .search-modal-box h4",
         ".callout .container p",
-        ".callout .container a"
+        ".callout .container a",
+        ".widget-tour .headtitle p",
+        ".tour-widget-content p"
       ]
     },
     {

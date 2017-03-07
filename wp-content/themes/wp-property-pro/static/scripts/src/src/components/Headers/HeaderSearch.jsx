@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import _ from 'lodash';
+import {browserHistory} from 'react-router';
 
 class HeaderSearch extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ class HeaderSearch extends Component {
               {
                 _.get(bundle, 'logos.square_logo', null)
                   ?
-                  <a href={bundle.site_url} title={bundle.site_name}>
+                  <a href={bundle.site_url} onClick={(eve) => {eve.preventDefault();browserHistory.push('')}} title={bundle.site_name}>
                     <img src={bundle.logos.square_logo} alt={bundle.site_name} className="logo" />
                   </a>
                   : null
