@@ -55091,7 +55091,7 @@
 	  }
 
 	  var container = void 0;
-	  console.log(widget_cell.widget.fields);
+
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'default_layout':
 	    default:
