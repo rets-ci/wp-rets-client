@@ -70,15 +70,15 @@
 
 	var _reactRouter = __webpack_require__(77);
 
-	var _reactRouterRedux = __webpack_require__(319);
+	var _reactRouterRedux = __webpack_require__(326);
 
-	var _index2 = __webpack_require__(324);
+	var _index2 = __webpack_require__(331);
 
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(47);
 
-	var _reduxThunk = __webpack_require__(335);
+	var _reduxThunk = __webpack_require__(342);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -54608,7 +54608,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -56019,6 +56019,10 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _reactWaypoint = __webpack_require__(319);
+
+	var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56039,9 +56043,13 @@
 	  _createClass(SearchResultListing, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'listing-wrap' },
+	        { className: 'listing-wrap', ref: function ref(r) {
+	            return _this2.listingWrapElement = r;
+	          } },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
@@ -56148,11 +56156,9 @@
 	              this.props.properties.length,
 	              ' results'
 	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: this.props.seeMoreHandler },
-	              'See more'
-	            )
+	            _react2.default.createElement(_reactWaypoint2.default, {
+	              onEnter: this.props.seeMoreHandler
+	            })
 	          )
 	        ) : null
 	      );
@@ -57141,9 +57147,807 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _consolidatedEvents = __webpack_require__(320);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var POSITIONS = {
+	  above: 'above',
+	  inside: 'inside',
+	  below: 'below',
+	  invisible: 'invisible'
+	};
+
+	var defaultProps = {
+	  topOffset: '0px',
+	  bottomOffset: '0px',
+	  horizontal: false,
+	  onEnter: function onEnter() {},
+	  onLeave: function onLeave() {},
+	  onPositionChange: function onPositionChange() {},
+
+	  fireOnRapidScroll: true
+	};
+
+	function debugLog() {
+	  console.log(arguments); // eslint-disable-line no-console
+	}
+
+	/**
+	 * @param {object} bounds An object with bounds data for the waypoint and
+	 *   scrollable parent
+	 * @return {string} The current position of the waypoint in relation to the
+	 *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+	 *   `POSITIONS.below`, or `POSITIONS.inside`.
+	 */
+	function getCurrentPosition(bounds) {
+	  if (bounds.viewportBottom - bounds.viewportTop === 0) {
+	    return POSITIONS.invisible;
+	  }
+
+	  // top is within the viewport
+	  if (bounds.viewportTop <= bounds.waypointTop && bounds.waypointTop <= bounds.viewportBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  // bottom is within the viewport
+	  if (bounds.viewportTop <= bounds.waypointBottom && bounds.waypointBottom <= bounds.viewportBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  // top is above the viewport and bottom is below the viewport
+	  if (bounds.waypointTop <= bounds.viewportTop && bounds.viewportBottom <= bounds.waypointBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  if (bounds.viewportBottom < bounds.waypointTop) {
+	    return POSITIONS.below;
+	  }
+
+	  if (bounds.waypointTop < bounds.viewportTop) {
+	    return POSITIONS.above;
+	  }
+
+	  return POSITIONS.invisible;
+	}
+
+	/**
+	 * Attempts to parse the offset provided as a prop as a pixel value. If
+	 * parsing fails, then `undefined` is returned. Three examples of values that
+	 * will be successfully parsed are:
+	 * `20`
+	 * "20px"
+	 * "20"
+	 *
+	 * @param {string|number} str A string of the form "{number}" or "{number}px",
+	 *   or just a number.
+	 * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+	 *   was neither a number nor string ending in "px".
+	 */
+	function parseOffsetAsPixels(str) {
+	  if (!isNaN(parseFloat(str)) && isFinite(str)) {
+	    return parseFloat(str);
+	  } else if (str.slice(-2) === 'px') {
+	    return parseFloat(str.slice(0, -2));
+	  }
+	}
+
+	/**
+	 * Attempts to parse the offset provided as a prop as a percentage. For
+	 * instance, if the component has been provided with the string "20%" as
+	 * a value of one of the offset props. If the value matches, then it returns
+	 * a numeric version of the prop. For instance, "20%" would become `0.2`.
+	 * If `str` isn't a percentage, then `undefined` will be returned.
+	 *
+	 * @param {string} str The value of an offset prop to be converted to a
+	 *   number.
+	 * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+	 *   was not a percentage.
+	 */
+	function parseOffsetAsPercentage(str) {
+	  if (str.slice(-1) === '%') {
+	    return parseFloat(str.slice(0, -1)) / 100;
+	  }
+	}
+
+	/**
+	 * @param {string|number} offset
+	 * @param {number} contextHeight
+	 * @return {number} A number representing `offset` converted into pixels.
+	 */
+	function computeOffsetPixels(offset, contextHeight) {
+	  var pixelOffset = parseOffsetAsPixels(offset);
+
+	  if (typeof pixelOffset === 'number') {
+	    return pixelOffset;
+	  }
+
+	  var percentOffset = parseOffsetAsPercentage(offset);
+	  if (typeof percentOffset === 'number') {
+	    return percentOffset * contextHeight;
+	  }
+	}
+
+	/**
+	 * When an element's type is a string, it represents a DOM node with that tag name
+	 * https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html#dom-elements
+	 *
+	 * @param {React.element} Component
+	 * @return {bool} Whether the component is a DOM Element
+	 */
+	function isDOMElement(Component) {
+	  return typeof Component.type === 'string';
+	}
+
+	/**
+	 * Raise an error if "children" isn't a single DOM Element
+	 *
+	 * @param {React.element|null} children
+	 * @return {undefined}
+	 */
+	function ensureChildrenIsSingleDOMElement(children) {
+	  if (children) {
+	    _react2.default.Children.only(children);
+
+	    if (!isDOMElement(children)) {
+	      throw new Error('You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>).');
+	    }
+	  }
+	}
+
+	/**
+	 * Calls a function when you scroll to the element.
+	 */
+
+	var Waypoint = function (_React$Component) {
+	  _inherits(Waypoint, _React$Component);
+
+	  function Waypoint(props) {
+	    _classCallCheck(this, Waypoint);
+
+	    var _this = _possibleConstructorReturn(this, (Waypoint.__proto__ || Object.getPrototypeOf(Waypoint)).call(this, props));
+
+	    _this.refElement = function (e) {
+	      return _this._ref = e;
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Waypoint, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      ensureChildrenIsSingleDOMElement(this.props.children);
+
+	      if (this.props.scrollableParent) {
+	        // eslint-disable-line react/prop-types
+	        throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      this._handleScroll = this._handleScroll.bind(this);
+	      this.scrollableAncestor = this._findScrollableAncestor();
+
+	      if (this.props.debug) {
+	        debugLog('scrollableAncestor', this.scrollableAncestor);
+	      }
+
+	      this.scrollEventListenerHandle = (0, _consolidatedEvents.addEventListener)(this.scrollableAncestor, 'scroll', this._handleScroll, { passive: true });
+
+	      this.resizeEventListenerHandle = (0, _consolidatedEvents.addEventListener)(window, 'resize', this._handleScroll, { passive: true });
+
+	      // this._ref may occasionally not be set at this time. To help ensure that
+	      // this works smoothly, we want to delay the initial execution until the
+	      // next tick.
+	      this.initialTimeout = setTimeout(function () {
+	        _this2._handleScroll(null);
+	      }, 0);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      ensureChildrenIsSingleDOMElement(nextProps.children);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      // The element may have moved.
+	      this._handleScroll(null);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      (0, _consolidatedEvents.removeEventListener)(this.scrollEventListenerHandle);
+	      (0, _consolidatedEvents.removeEventListener)(this.resizeEventListenerHandle);
+
+	      clearTimeout(this.initialTimeout);
+	    }
+
+	    /**
+	     * Traverses up the DOM to find an ancestor container which has an overflow
+	     * style that allows for scrolling.
+	     *
+	     * @return {Object} the closest ancestor element with an overflow style that
+	     *   allows for scrolling. If none is found, the `window` object is returned
+	     *   as a fallback.
+	     */
+
+	  }, {
+	    key: '_findScrollableAncestor',
+	    value: function _findScrollableAncestor() {
+	      if (this.props.scrollableAncestor) {
+	        return this.props.scrollableAncestor;
+	      }
+
+	      var node = this._ref;
+
+	      while (node.parentNode) {
+	        node = node.parentNode;
+
+	        if (node === document) {
+	          // This particular node does not have a computed style.
+	          continue;
+	        }
+
+	        if (node === document.documentElement) {
+	          // This particular node does not have a scroll bar, it uses the window.
+	          continue;
+	        }
+
+	        var style = window.getComputedStyle(node);
+	        var overflowDirec = this.props.horizontal ? style.getPropertyValue('overflow-x') : style.getPropertyValue('overflow-y');
+	        var overflow = overflowDirec || style.getPropertyValue('overflow');
+
+	        if (overflow === 'auto' || overflow === 'scroll') {
+	          return node;
+	        }
+	      }
+
+	      // A scrollable ancestor element was not found, which means that we need to
+	      // do stuff on window.
+	      return window;
+	    }
+
+	    /**
+	     * @param {Object} event the native scroll event coming from the scrollable
+	     *   ancestor, or resize event coming from the window. Will be undefined if
+	     *   called by a React lifecyle method
+	     */
+
+	  }, {
+	    key: '_handleScroll',
+	    value: function _handleScroll(event) {
+	      if (!this._ref) {
+	        // There's a chance we end up here after the component has been unmounted.
+	        return;
+	      }
+
+	      var bounds = this._getBounds();
+	      var currentPosition = getCurrentPosition(bounds);
+	      var previousPosition = this._previousPosition;
+
+	      if (this.props.debug) {
+	        debugLog('currentPosition', currentPosition);
+	        debugLog('previousPosition', previousPosition);
+	      }
+
+	      // Save previous position as early as possible to prevent cycles
+	      this._previousPosition = currentPosition;
+
+	      if (previousPosition === currentPosition) {
+	        // No change since last trigger
+	        return;
+	      }
+
+	      var callbackArg = {
+	        currentPosition: currentPosition,
+	        previousPosition: previousPosition,
+	        event: event,
+	        waypointTop: bounds.waypointTop,
+	        waypointBottom: bounds.waypointBottom,
+	        viewportTop: bounds.viewportTop,
+	        viewportBottom: bounds.viewportBottom
+	      };
+	      this.props.onPositionChange.call(this, callbackArg);
+
+	      if (currentPosition === POSITIONS.inside) {
+	        this.props.onEnter.call(this, callbackArg);
+	      } else if (previousPosition === POSITIONS.inside) {
+	        this.props.onLeave.call(this, callbackArg);
+	      }
+
+	      var isRapidScrollDown = previousPosition === POSITIONS.below && currentPosition === POSITIONS.above;
+	      var isRapidScrollUp = previousPosition === POSITIONS.above && currentPosition === POSITIONS.below;
+
+	      if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
+	        // If the scroll event isn't fired often enough to occur while the
+	        // waypoint was visible, we trigger both callbacks anyway.
+	        this.props.onEnter.call(this, {
+	          currentPosition: POSITIONS.inside,
+	          previousPosition: previousPosition,
+	          event: event,
+	          waypointTop: bounds.waypointTop,
+	          waypointBottom: bounds.waypointBottom,
+	          viewportTop: bounds.viewportTop,
+	          viewportBottom: bounds.viewportBottom
+	        });
+	        this.props.onLeave.call(this, {
+	          currentPosition: currentPosition,
+	          previousPosition: POSITIONS.inside,
+	          event: event,
+	          waypointTop: bounds.waypointTop,
+	          waypointBottom: bounds.waypointBottom,
+	          viewportTop: bounds.viewportTop,
+	          viewportBottom: bounds.viewportBottom
+	        });
+	      }
+	    }
+	  }, {
+	    key: '_getBounds',
+	    value: function _getBounds() {
+	      var horizontal = this.props.horizontal;
+
+	      var _ref$getBoundingClien = this._ref.getBoundingClientRect();
+
+	      var left = _ref$getBoundingClien.left;
+	      var top = _ref$getBoundingClien.top;
+	      var right = _ref$getBoundingClien.right;
+	      var bottom = _ref$getBoundingClien.bottom;
+
+	      var waypointTop = horizontal ? left : top;
+	      var waypointBottom = horizontal ? right : bottom;
+
+	      var contextHeight = void 0;
+	      var contextScrollTop = void 0;
+	      if (this.scrollableAncestor === window) {
+	        contextHeight = horizontal ? window.innerWidth : window.innerHeight;
+	        contextScrollTop = 0;
+	      } else {
+	        contextHeight = horizontal ? this.scrollableAncestor.offsetWidth : this.scrollableAncestor.offsetHeight;
+	        contextScrollTop = horizontal ? this.scrollableAncestor.getBoundingClientRect().left : this.scrollableAncestor.getBoundingClientRect().top;
+	      }
+
+	      if (this.props.debug) {
+	        debugLog('waypoint top', waypointTop);
+	        debugLog('waypoint bottom', waypointBottom);
+	        debugLog('scrollableAncestor height', contextHeight);
+	        debugLog('scrollableAncestor scrollTop', contextScrollTop);
+	      }
+
+	      var _props = this.props;
+	      var bottomOffset = _props.bottomOffset;
+	      var topOffset = _props.topOffset;
+
+	      var topOffsetPx = computeOffsetPixels(topOffset, contextHeight);
+	      var bottomOffsetPx = computeOffsetPixels(bottomOffset, contextHeight);
+	      var contextBottom = contextScrollTop + contextHeight;
+
+	      return {
+	        waypointTop: waypointTop,
+	        waypointBottom: waypointBottom,
+	        viewportTop: contextScrollTop + topOffsetPx,
+	        viewportBottom: contextBottom - bottomOffsetPx
+	      };
+	    }
+
+	    /**
+	     * @return {Object}
+	     */
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      var children = this.props.children;
+
+
+	      if (!children) {
+	        // We need an element that we can locate in the DOM to determine where it is
+	        // rendered relative to the top of its context.
+	        return _react2.default.createElement('span', { ref: this.refElement, style: { fontSize: 0 } });
+	      }
+
+	      var ref = function ref(node) {
+	        _this3.refElement(node);
+	        if (children.ref) {
+	          children.ref(node);
+	        }
+	      };
+
+	      return _react2.default.cloneElement(children, { ref: ref });
+	    }
+	  }]);
+
+	  return Waypoint;
+	}(_react2.default.Component);
+
+	exports.default = Waypoint;
+
+
+	Waypoint.propTypes = {
+	  children: _react.PropTypes.element,
+	  debug: _react.PropTypes.bool,
+	  onEnter: _react.PropTypes.func,
+	  onLeave: _react.PropTypes.func,
+	  onPositionChange: _react.PropTypes.func,
+	  fireOnRapidScroll: _react.PropTypes.bool,
+	  scrollableAncestor: _react.PropTypes.any,
+	  horizontal: _react.PropTypes.bool,
+
+	  // `topOffset` can either be a number, in which case its a distance from the
+	  // top of the container in pixels, or a string value. Valid string values are
+	  // of the form "20px", which is parsed as pixels, or "20%", which is parsed
+	  // as a percentage of the height of the containing element.
+	  // For instance, if you pass "-20%", and the containing element is 100px tall,
+	  // then the waypoint will be triggered when it has been scrolled 20px beyond
+	  // the top of the containing element.
+	  topOffset: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+
+	  // `bottomOffset` is like `topOffset`, but for the bottom of the container.
+	  bottomOffset: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number])
+	};
+
+	Waypoint.above = POSITIONS.above;
+	Waypoint.below = POSITIONS.below;
+	Waypoint.inside = POSITIONS.inside;
+	Waypoint.invisible = POSITIONS.invisible;
+	Waypoint.getWindow = function () {
+	  if (typeof window !== 'undefined') {
+	    return window;
+	  }
+	};
+	Waypoint.defaultProps = defaultProps;
+	Waypoint.displayName = 'Waypoint';
+	module.exports = exports['default'];
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.EVENT_HANDLERS_KEY = undefined;
+	exports.addEventListener = addEventListener;
+	exports.removeEventListener = removeEventListener;
+
+	var _normalizeEventOptions = __webpack_require__(321);
+
+	var _normalizeEventOptions2 = _interopRequireDefault(_normalizeEventOptions);
+
+	var _TargetEventHandlers = __webpack_require__(324);
+
+	var _TargetEventHandlers2 = _interopRequireDefault(_TargetEventHandlers);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	// Export to make testing possible.
+	var EVENT_HANDLERS_KEY = exports.EVENT_HANDLERS_KEY = '__consolidated_events_handlers__';
+
+	function addEventListener(target, eventName, listener, options) {
+	  if (!target[EVENT_HANDLERS_KEY]) {
+	    // eslint-disable-next-line no-param-reassign
+	    target[EVENT_HANDLERS_KEY] = new _TargetEventHandlers2['default'](target);
+	  }
+	  var normalizedEventOptions = (0, _normalizeEventOptions2['default'])(options);
+	  return target[EVENT_HANDLERS_KEY].add(eventName, listener, normalizedEventOptions);
+	}
+
+	function removeEventListener(eventHandle) {
+	  var target = eventHandle.target;
+
+	  // There can be a race condition where the target may no longer exist when
+	  // this function is called, e.g. when a React component is unmounting.
+	  // Guarding against this prevents the following error:
+	  //
+	  //   Cannot read property 'removeEventListener' of undefined
+
+	  if (target) {
+	    target[EVENT_HANDLERS_KEY]['delete'](eventHandle);
+	  }
+	}
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = normalizeEventOptions;
+
+	var _canUsePassiveEventListeners = __webpack_require__(322);
+
+	var _canUsePassiveEventListeners2 = _interopRequireDefault(_canUsePassiveEventListeners);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function normalizeEventOptions(eventOptions) {
+	  if (!eventOptions) {
+	    return undefined;
+	  }
+
+	  if (!(0, _canUsePassiveEventListeners2['default'])()) {
+	    // If the browser does not support the passive option, then it is expecting
+	    // a boolean for the options argument to specify whether it should use
+	    // capture or not. In more modern browsers, this is passed via the `capture`
+	    // option, so let's just hoist that value up.
+	    return !!eventOptions.capture;
+	  }
+
+	  return eventOptions;
+	}
+
+/***/ },
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = canUsePassiveEventListeners;
+
+	var _canUseDOM = __webpack_require__(323);
+
+	var _canUseDOM2 = _interopRequireDefault(_canUseDOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	// Adapted from Modernizr
+	// https://github.com/Modernizr/Modernizr/blob/5eea7e2a/feature-detects/dom/passiveeventlisteners.js#L26-L35
+	function testPassiveEventListeners() {
+	  if (!_canUseDOM2['default']) {
+	    return false;
+	  }
+
+	  var supportsPassiveOption = false;
+	  try {
+	    var opts = Object.defineProperty({}, 'passive', {
+	      get: function () {
+	        function get() {
+	          supportsPassiveOption = true;
+	        }
+
+	        return get;
+	      }()
+	    });
+	    window.addEventListener('test', null, opts);
+	  } catch (e) {
+	    // do nothing
+	  }
+
+	  return supportsPassiveOption;
+	}
+
+	var memoized = void 0;
+
+	function canUsePassiveEventListeners() {
+	  if (memoized === undefined) {
+	    memoized = testPassiveEventListeners();
+	  }
+	  return memoized;
+	}
+
+/***/ },
+/* 323 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var CAN_USE_DOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+	exports['default'] = CAN_USE_DOM;
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _eventOptionsKey = __webpack_require__(325);
+
+	var _eventOptionsKey2 = _interopRequireDefault(_eventOptionsKey);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var TargetEventHandlers = function () {
+	  function TargetEventHandlers(target) {
+	    _classCallCheck(this, TargetEventHandlers);
+
+	    this.target = target;
+	    this.events = {};
+	  }
+
+	  _createClass(TargetEventHandlers, [{
+	    key: 'getEventHandlers',
+	    value: function () {
+	      function getEventHandlers(eventName, options) {
+	        var key = String(eventName) + ' ' + String((0, _eventOptionsKey2['default'])(options));
+
+	        if (!this.events[key]) {
+	          this.events[key] = {
+	            size: 0,
+	            index: 0,
+	            handlers: {},
+	            handleEvent: undefined
+	          };
+	        }
+	        return this.events[key];
+	      }
+
+	      return getEventHandlers;
+	    }()
+	  }, {
+	    key: 'handleEvent',
+	    value: function () {
+	      function handleEvent(eventName, options, event) {
+	        var _getEventHandlers = this.getEventHandlers(eventName, options),
+	            handlers = _getEventHandlers.handlers;
+
+	        Object.keys(handlers).forEach(function (index) {
+	          var handler = handlers[index];
+	          if (handler) {
+	            // We need to check for presence here because a handler function may
+	            // cause later handlers to get removed. This can happen if you for
+	            // instance have a waypoint that unmounts another waypoint as part of an
+	            // onEnter/onLeave handler.
+	            handler(event);
+	          }
+	        });
+	      }
+
+	      return handleEvent;
+	    }()
+	  }, {
+	    key: 'add',
+	    value: function () {
+	      function add(eventName, listener, options) {
+	        // options has already been normalized at this point.
+	        var eventHandlers = this.getEventHandlers(eventName, options);
+
+	        if (eventHandlers.size === 0) {
+	          eventHandlers.handleEvent = this.handleEvent.bind(this, eventName, options);
+
+	          this.target.addEventListener(eventName, eventHandlers.handleEvent, options);
+	        }
+
+	        eventHandlers.size += 1;
+	        eventHandlers.index += 1;
+	        eventHandlers.handlers[eventHandlers.index] = listener;
+
+	        return {
+	          target: this.target,
+	          eventName: eventName,
+	          options: options,
+	          index: eventHandlers.index
+	        };
+	      }
+
+	      return add;
+	    }()
+	  }, {
+	    key: 'delete',
+	    value: function () {
+	      function _delete(_ref) {
+	        var eventName = _ref.eventName,
+	            index = _ref.index,
+	            options = _ref.options;
+
+	        // options has already been normalized at this point.
+	        var eventHandlers = this.getEventHandlers(eventName, options);
+
+	        if (eventHandlers.size === 0) {
+	          // There are no matching event handlers, so no work to be done here.
+	          return;
+	        }
+
+	        if (eventHandlers.handlers[index]) {
+	          delete eventHandlers.handlers[index];
+	          eventHandlers.size -= 1;
+	        }
+
+	        if (eventHandlers.size === 0) {
+	          this.target.removeEventListener(eventName, eventHandlers.handleEvent, options);
+
+	          eventHandlers.handleEvent = undefined;
+	        }
+	      }
+
+	      return _delete;
+	    }()
+	  }]);
+
+	  return TargetEventHandlers;
+	}();
+
+	exports['default'] = TargetEventHandlers;
+
+/***/ },
+/* 325 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = eventOptionsKey;
+	/* eslint-disable no-bitwise */
+
+	/**
+	 * Generate a unique key for any set of event options
+	 */
+	function eventOptionsKey(normalizedEventOptions) {
+	  if (!normalizedEventOptions) {
+	    return 0;
+	  }
+
+	  // If the browser does not support passive event listeners, the normalized
+	  // event options will be a boolean.
+	  if (normalizedEventOptions === true) {
+	    return 100;
+	  }
+
+	  // At this point, the browser supports passive event listeners, so we expect
+	  // the event options to be an object with possible properties of capture,
+	  // passive, and once.
+	  //
+	  // We want to consistently return the same value, regardless of the order of
+	  // these properties, so let's use binary maths to assign each property to a
+	  // bit, and then add those together (with an offset to account for the
+	  // booleans at the beginning of this function).
+	  var capture = normalizedEventOptions.capture << 0;
+	  var passive = normalizedEventOptions.passive << 1;
+	  var once = normalizedEventOptions.once << 2;
+	  return capture + passive + once;
+	}
+
+/***/ },
+/* 326 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
 
-	var _reducer = __webpack_require__(320);
+	var _reducer = __webpack_require__(327);
 
 	Object.defineProperty(exports, 'LOCATION_CHANGE', {
 	  enumerable: true,
@@ -57158,7 +57962,7 @@
 	  }
 	});
 
-	var _actions = __webpack_require__(321);
+	var _actions = __webpack_require__(328);
 
 	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
 	  enumerable: true,
@@ -57203,11 +58007,11 @@
 	  }
 	});
 
-	var _sync = __webpack_require__(322);
+	var _sync = __webpack_require__(329);
 
 	var _sync2 = _interopRequireDefault(_sync);
 
-	var _middleware = __webpack_require__(323);
+	var _middleware = __webpack_require__(330);
 
 	var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -57217,7 +58021,7 @@
 	exports.routerMiddleware = _middleware2['default'];
 
 /***/ },
-/* 320 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57260,7 +58064,7 @@
 	}
 
 /***/ },
-/* 321 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57302,7 +58106,7 @@
 	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
 
 /***/ },
-/* 322 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57315,7 +58119,7 @@
 
 	exports['default'] = syncHistoryWithStore;
 
-	var _reducer = __webpack_require__(320);
+	var _reducer = __webpack_require__(327);
 
 	var defaultSelectLocationState = function defaultSelectLocationState(state) {
 	  return state.routing;
@@ -57462,7 +58266,7 @@
 	}
 
 /***/ },
-/* 323 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57472,7 +58276,7 @@
 	});
 	exports['default'] = routerMiddleware;
 
-	var _actions = __webpack_require__(321);
+	var _actions = __webpack_require__(328);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -57500,7 +58304,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57509,47 +58313,47 @@
 	    value: true
 	});
 
-	var _reactRouterRedux = __webpack_require__(319);
+	var _reactRouterRedux = __webpack_require__(326);
 
 	var _redux = __webpack_require__(47);
 
-	var _post = __webpack_require__(325);
+	var _post = __webpack_require__(332);
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _map = __webpack_require__(326);
+	var _map = __webpack_require__(333);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(327);
+	var _modal = __webpack_require__(334);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(328);
+	var _searchProps = __webpack_require__(335);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(329);
+	var _searchResults = __webpack_require__(336);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(330);
+	var _mapMarkers = __webpack_require__(337);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(331);
+	var _searchType = __webpack_require__(338);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(332);
+	var _filterTerms = __webpack_require__(339);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(333);
+	var _userData = __webpack_require__(340);
 
 	var _userData2 = _interopRequireDefault(_userData);
 
-	var _testimonialsCarousel = __webpack_require__(334);
+	var _testimonialsCarousel = __webpack_require__(341);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -57572,7 +58376,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 325 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57606,7 +58410,7 @@
 	exports.default = post;
 
 /***/ },
-/* 326 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57637,7 +58441,7 @@
 	exports.default = map;
 
 /***/ },
-/* 327 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57665,7 +58469,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 328 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57692,7 +58496,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 329 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57729,7 +58533,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 330 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57756,7 +58560,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 331 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57786,7 +58590,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 332 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57813,7 +58617,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 333 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57838,7 +58642,7 @@
 	exports.default = userData;
 
 /***/ },
-/* 334 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57865,7 +58669,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 335 */
+/* 342 */
 /***/ function(module, exports) {
 
 	'use strict';

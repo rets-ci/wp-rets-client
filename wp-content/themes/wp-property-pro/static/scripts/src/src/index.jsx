@@ -35,15 +35,15 @@ history.listen(
 render(
   <Provider store={store}>
     <Router history={history}>
-        <Route path="/" component={PageLayout} >
-          <IndexRoute component = {PageContent} />
-          {
-            _.get(wpp, 'instance.settings.configuration.base_slug', null)
-            ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
-            : null
-          }
-          <Route path="*" component={PageContent} />
-        </Route>
+      <Route path="/" component={PageLayout} >
+        <IndexRoute component = {PageContent} />
+        {
+          _.get(wpp, 'instance.settings.configuration.base_slug', null)
+          ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
+          : null
+        }
+        <Route path="*" component={PageContent} />
+      </Route>
     </Router>
   </Provider>,
   document.getElementById('root')
