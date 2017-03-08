@@ -47761,12 +47761,12 @@
 	      var searchParams = {
 	        term: term
 	      };
-	      _Api2.default.selectQuery(searchParams, function (rows) {
+	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
 	        dispatch((0, _index.setSearchProps)(rows));
 	      });
 	    },
 	    topQuery: function topQuery() {
-	      _Api2.default.topAggsQuery({
+	      _Api2.default.topQuery({
 	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
 	      }, function (rows) {
 	        dispatch((0, _index.setSearchProps)(rows));
@@ -47970,58 +47970,84 @@
 	  }
 
 	  _createClass(Api, null, [{
+	    key: 'getEsClient',
+	    value: function getEsClient() {
+
+	      /**
+	       * @type {$.es.Client|*}
+	       */
+	      return new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+	    }
+	  }, {
+	    key: 'getEsIndex',
+	    value: function getEsIndex() {
+	      return 'v3/search';
+	    }
+	  }, {
+	    key: 'getEsType',
+	    value: function getEsType() {
+	      return 'property';
+	    }
+	  }, {
+	    key: 'getEsMethod',
+	    value: function getEsMethod() {
+	      return 'POST';
+	    }
+	  }, {
 	    key: 'getAggregationsFields',
 	    value: function getAggregationsFields() {
 	      return {
-	        "location_address": {
+	        "wpp_address": {
 	          "slug": "location_address",
 	          "title": "Address",
 	          "field": "meta_input.location_address",
 	          "search_field": "_search.location_address"
 	        },
-	        "mls_id": {
+	        "wpp_listing_mls_number": {
 	          "slug": "mls_id",
 	          "title": "MLS ID",
 	          "field": "tax_input.mls_id",
 	          "search_field": "_search.mls_id"
 	        },
-	        "location_city": {
+	        "wpp_location_city_state": {
 	          "slug": "city",
 	          "title": "City",
 	          "field": "tax_input.location_city",
 	          "search_field": "_search.location_city"
 	        },
-	        "location_zip": {
+	        "wpp_location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
 	          "search_field": "_search.location_zip"
 	        },
-	        "location_county": {
+	        "wpp_location_county": {
 	          "slug": "county",
 	          "title": "County",
 	          "field": "tax_input.location_county",
 	          "search_field": "_search.location_county"
 	        },
-	        "subdivision": {
+	        "wpp_location_subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
 	          "field": "tax_input.subdivision",
 	          "search_field": "_search.subdivision"
 	        },
-	        "elementary_school": {
+	        "wpp_schools_elementary_school": {
 	          "slug": "elementary_school",
 	          "title": "Elementary School",
 	          "field": "tax_input.elementary_school",
 	          "search_field": "_search.elementary_school"
 	        },
-	        "middle_school": {
+	        "wpp_schools_middle_school": {
 	          "slug": "middle_school",
 	          "title": "Middle School",
 	          "field": "tax_input.middle_school",
 	          "search_field": "_search.middle_school"
 	        },
-	        "high_school": {
+	        "wpp_schools_high_school": {
 	          "slug": "high_school",
 	          "title": "High School",
 	          "field": "tax_input.high_school",
@@ -48033,68 +48059,218 @@
 	    key: 'getTopAggregationsFields',
 	    value: function getTopAggregationsFields() {
 	      return {
-	        "location_city": {
+	        "wpp_location_city_state": {
 	          "slug": "city",
 	          "title": "City",
-	          "field": "tax_input.location_city",
-	          "search_field": "_search.location_city"
+	          "field": "tax_input.wpp_location_city_state",
+	          "search_field": "_search.wpp_location_city_state"
 	        },
-	        "location_zip": {
+	        "wpp_location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
 	          "search_field": "_search.location_zip"
 	        },
-	        "location_county": {
+	        "wpp_location_county": {
 	          "slug": "county",
 	          "title": "County",
-	          "field": "tax_input.location_county",
-	          "search_field": "_search.location_county"
+	          "field": "tax_input.wpp_location_county",
+	          "search_field": "_search.wpp_location_county"
 	        },
-	        "subdivision": {
+	        "wpp_location_subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
-	          "field": "tax_input.subdivision",
-	          "search_field": "_search.subdivision"
+	          "field": "tax_input.wpp_location_subdivision",
+	          "search_field": "_search.wpp_location_subdivision"
 	        }
 	      };
+	    }
+	  }, {
+	    key: 'autocompleteQuery',
+	    value: function autocompleteQuery(params, callback) {
+
+	      var client = Api.getEsClient();
+
+	      var rows = [];
+
+	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	        callback(rows);
+	        return;
+	      }
+
+	      var aggregationsFields = this.getAggregationsFields();
+
+	      var body = {
+	        "post-suggest": {
+	          "text": params.term,
+	          "completion": {
+	            "field": "title_suggest"
+	          }
+	        },
+	        "term-suggest": {
+	          "text": params.term,
+	          "completion": {
+	            "field": "term_suggest"
+	          }
+	        }
+	      };
+
+	      client.suggest({
+	        index: Api.getEsIndex(),
+	        type: Api.getEsType(),
+	        method: Api.getEsMethod(),
+	        size: 0,
+	        body: body
+	      }, function selectQueryResponse(err, response) {
+
+	        var rows = [];
+	        // TODO need implement for post-suggest
+	        for (var aggregationKey in aggregationsFields) {
+	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
+	            continue;
+	          }
+
+	          var data = null;
+	          var _buckets = [];
+
+	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
+	          for (var i in termSuggest) {
+	            var term = termSuggest[i];
+
+	            if (_lodash2.default.get(term, 'options', null) === null) {
+	              continue;
+	            }
+
+	            for (var ind in term.options) {
+	              var option = term.options[ind];
+
+	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
+	                _buckets.push({
+	                  id: _lodash2.default.get(option, 'text', ''),
+	                  text: _lodash2.default.get(option, 'text', ''),
+	                  count: _lodash2.default.get(option, 'score', ''),
+	                  taxonomy: _lodash2.default.get(option, 'payload.tax', '')
+	                });
+	              }
+	            }
+	          }
+
+	          if (_buckets.length > 0) {
+	            data = Object.assign({}, data, {
+	              key: aggregationKey,
+	              text: aggregationsFields[aggregationKey].title,
+	              children: _buckets
+	            });
+	            rows.push(data);
+	          }
+	        }
+
+	        callback(rows);
+	      });
+	    }
+	  }, {
+	    key: 'topQuery',
+	    value: function topQuery(params, callback) {
+
+	      var client = Api.getEsClient();
+
+	      var rows = [];
+
+	      var body = {
+	        "aggs": {}
+	      };
+
+	      var aggregationsFields = this.getTopAggregationsFields();
+	      for (var key in aggregationsFields) {
+
+	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	        var data = aggregationsFields[key];
+
+	        body.aggs[key] = {
+	          filters: { filters: {} },
+	          aggs: {}
+	        };
+
+	        body.aggs[key] = {
+	          terms: {
+	            field: data.field,
+	            size: _lodash2.default.get(params, 'size', 0),
+	            order: { "_count": "desc" }
+	          }
+	        };
+	      }
+
+	      client.search({
+	        index: Api.getEsIndex(),
+	        type: Api.getEsType(),
+	        method: Api.getEsMethod(),
+	        size: params.size || 0,
+	        body: body
+	      }, function selectQueryResponse(err, response) {
+
+	        for (var aggregationKey in aggregationsFields) {
+	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
+	            continue;
+	          }
+
+	          var _data = null;
+	          var _buckets = [];
+
+	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
+	          for (var i in termSuggest) {
+	            var term = termSuggest[i];
+
+	            if (_lodash2.default.get(term, 'options', null) === null) {
+	              continue;
+	            }
+
+	            for (var ind in term.options) {
+	              var option = term.options[ind];
+
+	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
+	                _buckets.push({
+	                  id: _lodash2.default.get(option, 'text', ''),
+	                  text: _lodash2.default.get(option, 'text', ''),
+	                  count: _lodash2.default.get(option, 'score', ''),
+	                  taxonomy: _lodash2.default.get(option, 'payload.tax', '')
+	                });
+	              }
+	            }
+	          }
+
+	          if (_buckets.length > 0) {
+	            _data = Object.assign({}, _data, {
+	              key: aggregationKey,
+	              text: aggregationsFields[aggregationKey].title,
+	              children: _buckets
+	            });
+	            rows.push(_data);
+	          }
+	        }
+
+	        callback(rows);
+	      });
 	    }
 	  }, {
 	    key: 'createESSearchQuery',
 	    value: function createESSearchQuery(params) {
 	      var terms = {};
-	      terms['tax_input.' + params.tax] = [params.term];
+	      terms['terms.' + params.tax] = [params.term];
 
 	      var query = {
 	        "bool": {
 	          "must": [{
 	            "exists": {
-	              "field": "_system.location"
+	              "field": "post_meta.wpp_location_pin"
 	            }
 	          }, {
 	            "terms": {
-	              "tax_input.sale_type": [params.saleType]
+	              "terms.wpp_listing_status": ['for-' + params.saleType.toLowerCase()]
 	            }
 	          }, {
 	            "terms": {
-	              "meta_input.property_type": params.propertyTypes
-	            }
-	          }],
-	          "must_not": [{
-	            "term": {
-	              "tax_input.location_latitude": "0"
-	            }
-	          }, {
-	            "term": {
-	              "tax_input.location_longitude": "0"
-	            }
-	          }, {
-	            "missing": {
-	              "field": "tax_input.location_latitude"
-	            }
-	          }, {
-	            "missing": {
-	              "field": "tax_input.location_longitude"
+	              "terms.wpp_listing_type": params.propertyTypes
 	            }
 	          }]
 	        }
@@ -48102,12 +48278,18 @@
 
 	      if (params.locationFilter) {
 	        // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-	        query.bool = Object.assign(query.bool, {
+	        query.filter = Object.assign(query.filter, {
 	          "filter": {
 	            "geo_bounding_box": {
-	              "_system.location": {
-	                "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
-	                "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
+	              "post_meta.wpp_location_pin": {
+	                "top_left": {
+	                  "lat": "37.797962",
+	                  "lon": "-78.6787949"
+	                },
+	                "bottom_right": {
+	                  "lat": "35.797962",
+	                  "lon": "-74.6787949"
+	                }
 	              }
 	            }
 	          }
@@ -48123,210 +48305,20 @@
 
 	      var aggregations = JSON.stringify({});
 
-	      var source = JSON.stringify(["post_title", "tax_input.location_latitude", "tax_input.location_longitude", "_permalink", "_system.neighborhood", "_system.google_place_id", "_system .available_date", "_system.addressDetail", "_system.available_date", "_system.location", "_system.listed_date", "_system.agency_listing", "_metrics.score.total", "meta_input.rets_thumbnail_url", "tax_input.listing_type", "tax_input.bedrooms", "tax_input.bathrooms", "tax_input.price", "tax_input.total_living_area_sqft", "tax_input.days_on_market", "tax_input.acres", "tax_input.price_per_sqft", "tax_input.approximate_lot_size", "tax_input.subdivision", "tax_input.neighborhood", "tax_input.added", "tax_input.sale_type", "tax_input.location_city", "tax_input .location_street_number", "tax_input.location_direction", "tax_input.location_street", "tax_input.location_unit"]);
+	      var source = JSON.stringify(["post_title", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_price_per_sqft", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name"]);
 
-	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
-	    }
-	  }, {
-	    key: 'selectQuery',
-	    value: function selectQuery(params, callback) {
-
-	      var client = new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
-
-	      var rows = [];
-
-	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
-	        callback(rows);
-	        return;
-	      }
-
-	      var _source = {
-	        "query": { "match": { "post_status": "publish" } },
-	        "aggs": {}
-	      };
-
-	      var aggregationsFields = this.getAggregationsFields();
-	      for (var key in aggregationsFields) {
-
-	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-	        var data = aggregationsFields[key];
-
-	        _source.aggs[key] = {
-	          filters: { filters: {} },
-	          aggs: {}
-	        };
-
-	        _source.aggs[key]['filters']['filters'][key] = { term: {} };
-	        _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
-	        _source.aggs[key]['aggs'][key] = { terms: { field: data.field } };
-	      }
-	      client.search({
-	        index: 'v5',
-	        type: 'property',
-	        method: "POST",
-	        size: 0,
-	        body: _source
-	      }, function selectQueryResponse(err, response) {
-
-	        var rows = [];
-	        for (var aggregationKey in aggregationsFields) {
-
-	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
-
-	          if (someAggregation === null) {
-	            continue;
-	          }
-
-	          var _buckets = [];
-
-	          var _data = null;
-	          for (var ind in someAggregation.buckets[aggregationKey][aggregationKey].buckets) {
-
-	            _data = someAggregation.buckets[aggregationKey][aggregationKey].buckets[ind];
-
-	            _buckets.push({
-	              id: _data.key,
-	              text: _data.key,
-	              count: _data.doc_count,
-	              taxonomy: _data.slug
-	            });
-	          }
-	          if (_buckets.length > 0) {
-	            _data = Object.assign({}, _data, {
-	              key: aggregationKey,
-	              text: aggregationsFields[aggregationKey].title,
-	              children: _buckets
-	            });
-	            rows.push(_data);
-	          }
-	        }
-	        callback(rows);
-	      });
-	    }
-	  }, {
-	    key: 'topAggsQuery',
-	    value: function topAggsQuery(params, callback) {
-
-	      var client = new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
-
-	      var _source = {
-	        "query": { "match": { "post_status": "publish" } },
-	        "aggs": {}
-	      };
-
-	      var aggregationsFields = this.getTopAggregationsFields();
-	      for (var key in aggregationsFields) {
-
-	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-	        var data = aggregationsFields[key];
-
-	        _source.aggs[key] = {
-	          filters: { filters: {} },
-	          aggs: {}
-	        };
-
-	        _source.aggs[key] = { terms: {
-	            field: data.field,
-	            size: _lodash2.default.get(params, 'size', 0),
-	            order: { "_count": "desc" }
-	          } };
-	      }
-	      client.search({
-	        index: 'v5',
-	        type: 'property',
-	        method: "POST",
-	        size: 0,
-	        body: _source
-	      }, function selectQueryResponse(err, response) {
-
-	        var rows = [];
-	        for (var aggregationKey in aggregationsFields) {
-
-	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
-
-	          if (someAggregation === null) {
-	            continue;
-	          }
-
-	          var _buckets = [];
-
-	          var _data2 = null;
-	          for (var ind in someAggregation.buckets) {
-
-	            _data2 = someAggregation.buckets[ind];
-
-	            _buckets.push({
-	              id: _data2.key,
-	              text: _data2.key,
-	              count: _data2.doc_count,
-	              taxonomy: _data2.slug
-	            });
-	          }
-	          if (_buckets.length > 0) {
-	            _data2 = Object.assign({}, _data2, {
-	              key: aggregationKey,
-	              text: 'Popular ' + aggregationsFields[aggregationKey].title,
-	              children: _buckets
-	            });
-	            rows.push(_data2);
-	          }
-	        }
-	        callback(rows);
-	      });
-	    }
-	  }, {
-	    key: 'suggest',
-	    value: function suggest(params, callback) {
-
-	      var text = _lodash2.default.get(params, 'text', '').replace(/\s+/g, '');
-
-	      if (!text) return;
-
-	      /**
-	       * @type {$.es.Client|*}
-	       */
-	      var client = new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
-
-	      client.suggest({
-	        index: 'v5',
-	        type: 'property',
-	        method: "POST",
-	        size: 0,
-	        body: {
-	          "regular": {
-	            "text": text.toLowerCase(),
-	            "completion": { "field": "_search._suggest" }
-	          }
-	        }
-	      }, function (error, response) {
-	        callback(response);
-	      });
+	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
 	    }
 	  }, {
 	    key: 'search',
 	    value: function search(query, callback) {
-	      /**
-	       * @type {$.es.Client|*}
-	       */
-	      var client = new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
 
-	      var index = 'v5',
-	          type = 'property';
+	      var client = Api.getEsClient();
 
 	      var esQuery = {
-	        index: index,
-	        type: type,
-	        method: "POST",
+	        index: Api.getEsIndex(),
+	        type: Api.getEsType(),
+	        method: Api.getEsMethod(),
 	        body: query
 	      };
 	      client.search(esQuery, function (error, response) {
@@ -55719,7 +55711,7 @@
 	      };
 	      var query = _Api2.default.createESSearchQuery(searchParams);
 	      _Api2.default.search(query, function (response) {
-	        if (response.hits.hits.length) {
+	        if (response.hits.total) {
 	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, false));
 	        } else {
 	          console.log('query with params returned no data');

@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       };
       let query = Api.createESSearchQuery(searchParams);
       Api.search(query, function (response) {
-        if (response.hits.hits.length) {
+        if (response.hits.total) {
           dispatch(setSearchResults(query, response.hits.hits, response.hits.total, false));
         } else {
           console.log('query with params returned no data');

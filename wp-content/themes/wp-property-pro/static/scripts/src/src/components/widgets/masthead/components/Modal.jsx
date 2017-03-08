@@ -26,14 +26,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         let searchParams = {
           term: term
         };
-        Api.selectQuery(searchParams,
+        Api.autocompleteQuery(searchParams,
           function (rows) {
               dispatch(setSearchProps(rows));
           }
         );
       },
       topQuery: () => {
-        Api.topAggsQuery({
+        Api.topQuery({
           size: Lib.TOP_AGGREGATIONS_COUNT
         },
         function (rows) {
