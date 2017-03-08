@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import WidgetsUtil from '../WidgetsUtil.jsx';
-import Swiper from './layouts/swiper/Index.jsx';
+import Swiper from './layouts/Defaultlayout.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state) => {

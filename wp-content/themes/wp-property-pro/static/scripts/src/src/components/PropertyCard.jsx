@@ -1,6 +1,7 @@
-import {Lib} from '../../../../../lib.jsx';
+import {Lib} from '../lib.jsx';
 import React, {Component, PropTypes} from 'react';
-import Util from '../../../../Util.jsx';
+import Util from './Util.jsx';
+import Swiper from './Swiper.jsx';
 
 export default class PropertyCard extends Component {
   static propTypes = {
@@ -9,7 +10,7 @@ export default class PropertyCard extends Component {
 
   componentDidMount() {
     console.log('component did mount');
-    this.swiper = new Swiper(this.swiperElement, {
+    this.swiper = Swiper.init(this.swiperElement, {
       preloadImages: false,
       lazyLoading: true
     });

@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import PropertyCard from './PropertyCard.jsx';
-import Swiper from 'swiper';
+import PropertyCard from '../../../PropertyCard.jsx';
+import Swiper from '../../../Swiper.jsx';
 
 require('swiper-css');
 
@@ -15,12 +15,12 @@ export default class DefaultLayout extends Component {
   }
 
   componentDidMount() {
-   this.swiper = new Swiper(this.swiperElement, {
-     slidesPerView: 'auto',
-     nextButton: this.swiperElementNext,
-     prevButton: this.swiperElementPrev,
-     spaceBetween: 20
-   });
+    this.swiper = Swiper.init(this.swiperElement, {
+      slidesPerView: 'auto',
+      nextButton: this.swiperElementNext,
+      prevButton: this.swiperElementPrev,
+      spaceBetween: 20
+    });
   }
 
   render() {
