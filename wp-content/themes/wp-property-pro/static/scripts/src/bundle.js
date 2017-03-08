@@ -48754,7 +48754,12 @@
 	  _createClass(DefaultLayout, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.swiper = _Swiper2.default.init(this.swiperElement, this.swiperElementPrev, this.swiperElementNext);
+	      this.swiper = _Swiper2.default.init(this.swiperElement, {
+	        slidesPerView: 'auto',
+	        nextButton: this.swiperElementNext,
+	        prevButton: this.swiperElementPrev,
+	        spaceBetween: 20
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -48847,6 +48852,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _Swiper = __webpack_require__(297);
+
+	var _Swiper2 = _interopRequireDefault(_Swiper);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48868,7 +48877,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      console.log('component did mount');
-	      this.swiper = new Swiper(this.swiperElement, {
+	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        preloadImages: false,
 	        lazyLoading: true
 	      });
@@ -48889,7 +48898,11 @@
 
 	      var _props$data = this.props.data,
 	          gallery_images = _props$data.gallery_images,
-	          post_title = _props$data.post_title,
+	          address = _props$data.address,
+	          full_address = _props$data.full_address,
+	          beds = _props$data.beds,
+	          baths = _props$data.baths,
+	          price = _props$data.price,
 	          thumbnail = _props$data.thumbnail;
 
 	      return _react2.default.createElement(
@@ -48961,7 +48974,8 @@
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'price' },
-	              '$1,249,000'
+	              '$',
+	              price
 	            ),
 	            _react2.default.createElement(
 	              'span',
@@ -48981,12 +48995,12 @@
 	          _react2.default.createElement(
 	            'h4',
 	            { className: 'card-title' },
-	            post_title
+	            address
 	          ),
 	          _react2.default.createElement(
 	            'p',
 	            { className: 'card-text' },
-	            'Durham, NC 27712'
+	            full_address
 	          ),
 	          _react2.default.createElement(
 	            'ul',
@@ -48994,12 +49008,14 @@
 	            _react2.default.createElement(
 	              'li',
 	              null,
-	              '3 Bed'
+	              beds,
+	              ' Bed'
 	            ),
 	            _react2.default.createElement(
 	              'li',
 	              null,
-	              '2 Bath'
+	              baths,
+	              ' Bath'
 	            ),
 	            _react2.default.createElement(
 	              'li',
@@ -49166,14 +49182,8 @@
 
 	  _createClass(Swiper, null, [{
 	    key: 'init',
-	    value: function init(swiperElement, swiperElementPrev, swiperElementNext) {
-	      console.log('init run');
-	      return new _swiper2.default(swiperElement, {
-	        slidesPerView: 'auto',
-	        nextButton: swiperElementNext,
-	        prevButton: swiperElementPrev,
-	        spaceBetween: 20
-	      });
+	    value: function init(swiperElement, params) {
+	      return new _swiper2.default(swiperElement, params);
 	    }
 	  }]);
 

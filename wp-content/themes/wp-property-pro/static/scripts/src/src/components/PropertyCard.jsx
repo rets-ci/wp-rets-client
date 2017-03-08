@@ -27,7 +27,11 @@ export default class PropertyCard extends Component {
   render() {
     let {
       gallery_images,
-      post_title,
+      address,
+      full_address,
+      beds,
+      baths,
+      price,
       thumbnail
     } = this.props.data;
     return (
@@ -63,7 +67,7 @@ export default class PropertyCard extends Component {
         </div>
         <div className="card-block">
           <div className="listing-top">
-            <span className="price">$1,249,000</span>
+            <span className="price">${price}</span>
             <span className="action-btn-group">
               <a href="#" className="favorite active" title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
@@ -73,11 +77,11 @@ export default class PropertyCard extends Component {
               </a>
             </span>
           </div>
-          <h4 className="card-title">{post_title}</h4>
-          <p className="card-text">Durham, NC 27712</p>
+          <h4 className="card-title">{address}</h4>
+          <p className="card-text">{full_address}</p>
           <ul className="liting-info-box">
-            <li>3 Bed</li>
-            <li>2 Bath</li>
+            <li>{beds} Bed</li>
+            <li>{baths} Bath</li>
             <li>1,142 SF</li>
           </ul>
         </div>

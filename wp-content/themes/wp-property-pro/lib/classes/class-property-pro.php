@@ -263,6 +263,12 @@ namespace UsabilityDynamics {
             /** Update posts array */
             foreach($field as &$post){
               $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+              $property_detail = get_property( $post->ID );
+              $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
+              $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
+              $post->full_address = isset($property_detail['formatted_address']) ? $property_detail['formatted_address'] : '';
+              $post->beds = isset($property_detail['rets_beds']) ? $property_detail['rets_beds'] : '';
+              $post->baths = isset($property_detail['rets_baths_full']) ? $property_detail['rets_baths_full'] : '';
 
               // Get gallery images
               $post->gallery_images = [];
