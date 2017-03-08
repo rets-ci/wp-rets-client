@@ -2,10 +2,21 @@
 global $wp_properties;
 
 $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
+$field_alias = array();
 
 $_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get( $api_url ) ) );
 
-$field_alias = isset( $wp_properties[ 'field_alias' ] ) && is_array( $wp_properties[ 'field_alias' ] ) ? array_flip( array_filter( $wp_properties[ 'field_alias' ] ) ) : array();
+// iterate over all field aliases and create our field-alias arary ONLY for fields that belong to a group. This is a way of filtering out aliases to non-existant fields.
+foreach( $wp_properties[ 'field_alias' ] as $_field_key => $_field_alias ) {
+
+  if( $_field_alias ) {
+    $_attribute_data = UsabilityDynamics\WPP\Attributes::get_attribute_data( $_field_key );
+    if( isset( $_attribute_data['group'])) {
+      $field_alias[ $_field_alias ]  = $_field_key ;
+    }
+  }
+}
+
 if( get_transient( 'wp-rets-mapper-data' ) ) {
   $_analysis = get_transient( 'wp-rets-mapper-data' );
 } else {
@@ -124,7 +135,7 @@ if( isset( $api_url_response->errors ) ) {
 
       if( !localStorage.getItem( 'wp-rets-hidden-fields' ) ) {
         localStorage.setItem( 'wp-rets-hidden-fields', JSON.stringify( [
-          'tax_input.wpp_categorical',
+          'tax_input.wpp_listing_category',
           'tax_input.wpp_listing_status',
           'tax_input.wpp_import_schedule_id',
           'tax_input.wpp_location',

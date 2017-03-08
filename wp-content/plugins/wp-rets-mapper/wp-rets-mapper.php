@@ -39,7 +39,7 @@ function mapper_add_alias(){
 
   $_current_settings[ 'field_alias' ][ $payload['alias' ] ] = $payload['key'];
 
-  $_current_settings['_updated'] = time();
+  $_current_settings[ '_updated' ] = time();
 
   update_option( 'wpp_settings', $_current_settings );
 
@@ -66,5 +66,29 @@ function mapper_add_alias(){
   if ( is_wp_error( $response ) ) {
     wp_send_json_error( 'Something went wrong' );
   }
+
+}
+
+function rets_mapper_get_analysis() {
+
+  $_cache = wp_cache_get( 'rets-analysis', 'wp-rets-mapper' );
+
+  if( $_cache && is_object( $_cache ) ) {
+    $_cache->_cached = true;
+    return $_cache;
+  }
+  $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
+
+  $api_url_response = wp_remote_get( $api_url );
+
+  if( is_wp_error( $api_url_response ) ) {
+    return $api_url_response;
+  }
+
+  $_analysis = json_decode( wp_remote_retrieve_body( $api_url_response ) );
+
+  wp_cache_set( 'rets-analysis', $_analysis, 'wp-rets-mapper', 30 );
+
+  return $_analysis;
 
 }

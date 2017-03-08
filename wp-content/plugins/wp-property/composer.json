@@ -34,6 +34,7 @@
     "usabilitydynamics/wp-meta-box-utilities": "1.0.2",
     "UsabilityDynamics/wp-gallery-metabox": "2.0.1",
     "usabilitydynamics/wp-tax-post-binding": "2.0.5",
+    "usabilitydynamics/wp-rets-client": "0.3.0",
     "freemius/wordpress-sdk": "^1.1.7",
     "ccampbell/chromephp": "^4.1",
     "10up/elasticpress": "^2.1"
@@ -107,7 +108,7 @@
         "constant": "WP_PROPERTY_RESPONSIVE_SLIDESHOW",
         "description": "Responsive slideshow feature, use [property_responsive_slideshow] shortcode.",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Freemius",
@@ -121,7 +122,7 @@
         "constant": "WPP_FEATURE_FLAG_SETTINGS_BACKUPS",
         "description": "Enables automaic backups of the WP-Property settings. Backups stored in [wpp_property_backups] option.",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Disable Editor",
@@ -135,28 +136,28 @@
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_POLICY",
         "description": "Sets listing display permissions, stored in [wpp_listing_policy].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Schools Standard Taxonomy",
         "constant": "WPP_FEATURE_FLAG_WPP_SCHOOLS",
         "description": "Adds standard taxonomy for schools as [wpp_schools].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Listing Labels",
         "constant": "WP_PROPERTY_FLAG_WPP_LISTING_LABEL",
         "description": "Property flags, for highlighting important information, stored in [wpp_listing_label]. Can be used to identify 'featured' properties.",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Standard Location Taxonomy",
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_LOCATION",
         "description": "Standard property location taxonomy, stored in [wpp_location].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Advanced Rewrite Rules",
@@ -170,56 +171,63 @@
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_CATEGORY",
         "description": "Dynamic terms for landing pages, stored in [wpp_listing_category].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Standard Property Type",
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_TYPE",
         "description": "Standard property type taxonomy, stored in [wpp_listing_type].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Standard Property Status",
         "constant": "WPP_FEATURE_FLAG_WPP_LISTING_STATUS",
         "description": "Standard property status taxonomy [wpp_listing_status].",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
+      },
+      {
+        "name": "Rooms",
+        "constant": "WPP_FEATURE_FLAG_WPP_ROOMS",
+        "description": "Adds UI for adding standard rooms.",
+        "since": "2.2.1",
+        "enabled": false
       },
       {
         "name": "Categorical Taxonomy",
         "constant": "WPP_FEATURE_FLAG_WPP_CATEGORICAL",
         "description": "Taxonomy for general property terms, stored in [wpp_categorical]",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Field Aliases",
         "constant": "WP_PROPERTY_FIELD_ALIAS",
         "description": "Meta aliases for WP-Property.",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Meta Attributes",
         "constant": "WP_PROPERTY_LEGACY_META_ATTRIBUTES",
         "description": "Legacy Meta fields. In v2.2.1 meta fields have been merged with attributes. This includes default Phone Number.",
         "since": "2.2.1",
-        "enabled": false
+        "enabled": true
       },
       {
         "name": "Legacy Attribute Input Types",
         "constant": "WP_PROPERTY_LEGACY_ATTRIBUTE_INPUT_TYPES",
         "description": "Enables legacy input types such as radio, wysiwyg, etc.",
         "since": "2.2.1",
-        "enabled": false
+        "enabled": true
       },
       {
         "name": "Enable Supermap Feature",
         "constant": "WP_PROPERTY_FLAG_ENABLE_SUPERMAP",
         "description": "Enable Supermap feature.",
         "since": "2.2.1",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": "Enable Agents Feature",
@@ -254,12 +262,19 @@
         "constant": "WP_PROPERTY_FLAG_ENABLE_LEGACY_TAXONOMIES",
         "description": "Enable legacy [property_features] and [community_features] taxonomies. These have been replaced by [wpp_categorical].",
         "since": "2.2.1",
-        "enabled": false
+        "enabled": true
       },
       {
         "name": "Elasticsearch Service",
         "constant": "WP_PROPERTY_ELASTICSEARCH_SERVICE",
         "description": "Hosted Elasticsearch synchronization for listing data.",
+        "since": "2.2.1",
+        "enabled": false
+      },
+      {
+        "name": "RETSCI Client",
+        "constant": "RETSCI_FEATURE_FLAG",
+        "description": "Integrated WP-RETS Client plugin",
         "since": "2.2.1",
         "enabled": false
       }

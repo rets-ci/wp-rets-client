@@ -28,7 +28,7 @@ if( !class_exists( 'RWMB_Wpp_Readonly_Field' ) && class_exists( 'RWMB_Text_Field
         $field[ 'placeholder' ],
         $field[ 'size' ],
         $field[ 'datalist' ] ? "list='{$field['datalist']['id']}'" : '',
-        self::datalist_html( $field )
+        $meta
       );
     }
 

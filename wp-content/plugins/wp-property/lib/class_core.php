@@ -21,7 +21,7 @@ class WPP_Core {
     global $wp_properties;
 
     // Determine if memory limit is low and increase it
-    if( (int)ini_get( 'memory_limit' ) < 128 ) {
+    if( (int)ini_get( 'memory_limit' ) < 128 && (int)ini_get( 'memory_limit' ) > 0 ) {
       ini_set( 'memory_limit', '128M' );
     }
 
@@ -489,7 +489,7 @@ class WPP_Core {
       // wp_register_style( 'wp-property-frontend', WPP_URL . 'styles/wp_properties.css', array(), WPP_Version );
 
       // load the new v2.3 styles
-      if( defined( 'WP_PROPERTY_LAYOUTS' ) && WP_PROPERTY_LAYOUTS === true ) {
+      if( WP_PROPERTY_LAYOUTS ) {
         wp_register_style( 'wp-property-frontend', WPP_URL . 'styles/wpp.public.v2.3.css', array(), WPP_Version );
       }
 
@@ -1353,11 +1353,26 @@ class WPP_Core {
       return;
     }
 
+    $is_cap_added = false;
     foreach( $wpp_capabilities as $cap => $value ) {
       if( empty( $role->capabilities[ $cap ] ) ) {
         $role->add_cap( $cap );
+        $is_cap_added = true;
       }
     }
+
+    // If current user with admin privileges
+    // And we just set new caps for admin role
+    // We re-set the current user with new caps
+    // Issue: https://github.com/wp-property/wp-property/issues/413
+    if ( $is_cap_added && current_user_can( 'manage_options' ) ) {
+      global $current_user;
+      $user_id = get_current_user_id();
+      $current_user = null;
+      WPP_F::debug( 'Update current user with new caps' );
+      wp_set_current_user($user_id);
+    }
+
   }
 
   /**
