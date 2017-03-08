@@ -305,7 +305,7 @@ namespace UsabilityDynamics\WPP {
             'not_found_in_trash' => __( 'No Layouts found in Trash.', ud_get_wp_property_layouts()->domain )
           ),
           'show_in_menu' => 'edit.php?post_type=property',
-          'supports' => array( 'title', 'editor', 'revisions', 'thumbnail', 'custom-fields' ),
+          'supports' => array( 'title', 'editor', 'revisions', 'thumbnail' ),
           'taxonomies' => array( 'wpp_layout_type', 'wpp_layout_api' )
         ) );
 
