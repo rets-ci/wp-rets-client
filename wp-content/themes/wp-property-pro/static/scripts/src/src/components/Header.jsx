@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const HeaderContent = ({post, openUserPanel}) => {
-  if(post === {} || _.indexOf([null, 'search'], _.get(post, 'header_layout', null)) !== -1){
+  if(_.get(post, 'propertypro_toolbar_layout', null) !== null || _.replace(location.pathname, '/', '') === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
     return (
       <HeaderSearch openUserPanel={openUserPanel} />
     );

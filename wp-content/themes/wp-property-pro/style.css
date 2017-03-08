@@ -84,6 +84,10 @@
     border-radius: 50%;
 }
 
+.tour-section .widget-tour .widget-box .background-block > .background{
+    min-height: 800px;
+}
+
 /*
 Red Door Company Styles
 Date: 2017-02-07
@@ -319,8 +323,8 @@ body.fixed { height: 100%; overflow: hidden; }
 .search-title { color: #8b8c8d; font-size: 16px; font-weight: 500; line-height: 37px; }
 .search-modal-box ol { list-style-type: none; margin: 0 0 30px; padding: 0;  }
 .search-modal-box ol li { display: block; }
-.search-modal-box ol li:hover { background-color: rgba(255,255,255,.5); }
-.search-modal-box ol li a { display: block; font-size: 24px; margin: auto; font-weight: 400; line-height: 52px; color: #474747; }
+.search-modal-box ol li:hover, .search-modal-box ol li:focus { background-color: rgba(255,255,255,.5); }
+.search-modal-box ol li a { display: block; font-size: 2rem; margin: auto; font-weight: 400; line-height: 52px; color: #414141; }
 
 
 
@@ -591,7 +595,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .widget-tour .headtitle p { color: #8b8c8d; font-size: 18px; font-weight: 500; line-height: 35px; margin: 0 12%; }
 .widget-box { margin-bottom: 112px; position: relative; }
 .widget-box:last-child { margin-bottom: 0; }
-.widget-box .tour-widget-content { background-color: rgba(255, 255, 255, 0.95); margin: 65px 0  58px -150px; padding: 44px 50px; }
+.widget-box .tour-widget-content { background-color: rgba(255, 255, 255, 0.95); margin: 65px 0  58px 0; padding: 44px 50px; }
 .tour-widget-content h3 {  font-size: 32px; font-weight: 700; line-height: 50px; margin-bottom: 1rem; }
 .tour-widget-content p { color: #8b8c8d; font-size: 18px; font-weight: 500; line-height: 30px; padding-right: 0; }
 .tour-widget-content blockquote { margin: 30px 0 0; }
@@ -602,7 +606,6 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .tour-widget-content blockquote cite h5, .tour-widget-content blockquote cite p { margin: 0; line-height: 17px; }
 .tour-widget-content blockquote cite h5 { margin-bottom: 5px; }
 .tour-widget-content blockquote cite p { font-style: normal; }
-.widget-box.widget2 .tour-widget-content { margin-left: 0; margin-right: -190px; }
 .widget-box.widget2 .tour-widget-content p { padding-right: 0; }
 .widget-box.widget-bg { background-color: #e5e0dd; }
 .widget-box.widget3 .tour-widget-content { margin-left: 0; margin-right: -190px; }
@@ -615,8 +618,10 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 
 .masthead.module3 h1 { margin-bottom: .2em; margin: 0 10% .70em; }
 .masthead.module3 .intro-wrap { padding: 14% 0 140px; }
+.subnavigation.module2 ul{ width: 90%; }
+.subnavigation.module2 ul .subnavigation-btn{ float: right; text-align: center; }
 .subnavigation.module2 ul li { width: auto; border: 0; }
-.subnavigation.module2 ul li a { float: left; height: auto; padding: 28px 8px 26px; color: #c1c3c4; font-size: 18px; font-weight: 500; border-bottom: 4px solid transparent; margin-right: 15px; }
+.subnavigation.module2 ul li a { display: inline-block; float: none; height: auto; padding: 28px 8px 26px; color: #c1c3c4; font-size: 18px; font-weight: 500; border-bottom: 4px solid transparent; margin-right: 15px; }
 .subnavigation.module2 ul li:last-child a { margin-right: 0; }
 .subnavigation.module2 ul li.active a { border-bottom-color: #d33320; color: #d33320;}
 .subnavigation.module2 .btn { font-size: 18px; color: #fff; font-weight: 700; line-height: 24px; padding: 10px 22px; margin-top: 20px; }
@@ -729,6 +734,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .masthead.module3 .intro-wrap { padding: 160px 0 90px; }
     .masthead.module3 h1 { margin: 0 0 .70em; padding: 0; }
     .masthead.module2 h1 { font-size: 2.3rem; padding-top: 55px; }
+    .subnavigation.module2 ul .subnavigation-btn{ float: none; width: 100%; }
     .subnavigation.module2 { text-align: center; }
     .subnavigation.module2 .btn { margin-bottom: 15px; }
     .subnavigation.module2 ul li { float: none; display: inline-block; width: auto; border: 0; margin: 0 0 -6px; }

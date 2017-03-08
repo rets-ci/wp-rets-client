@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 const TextLayout = ({items, currentUrl}) => {
-  let contactUs = {};
+  let btn = {};
   let links = [];
   for (let i in items) {
     if (_.get(items[i], 'classes.0', null) === 'btn') {
-      contactUs = items[i];
+      btn = items[i];
     } else {
       links.push(items[i]);
     }
@@ -28,27 +28,25 @@ const TextLayout = ({items, currentUrl}) => {
       :
       <div className="row">
         {
-          _.isEmpty(contactUs)
-            ? null
-            :
-            <div className="col-lg-4 push-lg-8 text-center">
-              <a href={contactUs.url} className="btn" style={style}>{contactUs.title}</a>
-            </div>
-        }
-        {
           links.length
             ?
-            <div className="col-lg-8 pull-lg-4">
-              <ul>
-                {
-                  links.map((link, key) => {
-                      let classes = link.url === currentUrl ? 'active' : '';
-                      return (<li key={key} className={classes}><a href={link.url}>{link.title}</a></li>)
-                    }
-                  )
-                }
-              </ul>
-            </div>
+            <ul>
+              {
+                _.isEmpty(btn)
+                  ? null
+                  :
+                  <li className="subnavigation-btn">
+                    <a href={btn.url} className="btn" style={style}>{btn.title}</a>
+                  </li>
+              }
+              {
+                links.map((link, key) => {
+                    let classes = link.url === currentUrl ? 'active' : '';
+                    return (<li key={key} className={classes}><a href={link.url}>{link.title}</a></li>)
+                  }
+                )
+              }
+            </ul>
             : null
         }
       </div>

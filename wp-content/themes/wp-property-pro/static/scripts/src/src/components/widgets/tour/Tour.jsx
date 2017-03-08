@@ -19,7 +19,7 @@ const TourContent = ({rows}) => {
   }
 
   let container;
-  console.log(widget_cell.widget.fields);
+
   switch (widget_cell.widget.fields.layout) {
     case 'default_layout':
     default:

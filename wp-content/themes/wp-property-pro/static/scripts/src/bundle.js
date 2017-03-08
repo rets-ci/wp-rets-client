@@ -4406,7 +4406,7 @@
 	  var post = _ref.post,
 	      openUserPanel = _ref.openUserPanel;
 
-	  if (post === {} || _lodash2.default.indexOf([null, 'search'], _lodash2.default.get(post, 'header_layout', null)) !== -1) {
+	  if (_lodash2.default.get(post, 'propertypro_toolbar_layout', null) !== null || _lodash2.default.replace(location.pathname, '/', '') === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
 	  }
 
@@ -54992,11 +54992,11 @@
 	  var items = _ref.items,
 	      currentUrl = _ref.currentUrl;
 
-	  var contactUs = {};
+	  var btn = {};
 	  var links = [];
 	  for (var i in items) {
 	    if (_lodash2.default.get(items[i], 'classes.0', null) === 'btn') {
-	      contactUs = items[i];
+	      btn = items[i];
 	    } else {
 	      links.push(items[i]);
 	    }
@@ -55010,34 +55010,30 @@
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: 'row' },
-	    _lodash2.default.isEmpty(contactUs) ? null : _react2.default.createElement(
-	      'div',
-	      { className: 'col-lg-4 push-lg-8 text-center' },
-	      _react2.default.createElement(
-	        'a',
-	        { href: contactUs.url, className: 'btn', style: style },
-	        contactUs.title
-	      )
-	    ),
 	    links.length ? _react2.default.createElement(
-	      'div',
-	      { className: 'col-lg-8 pull-lg-4' },
-	      _react2.default.createElement(
-	        'ul',
-	        null,
-	        links.map(function (link, key) {
-	          var classes = link.url === currentUrl ? 'active' : '';
-	          return _react2.default.createElement(
-	            'li',
-	            { key: key, className: classes },
-	            _react2.default.createElement(
-	              'a',
-	              { href: link.url },
-	              link.title
-	            )
-	          );
-	        })
-	      )
+	      'ul',
+	      null,
+	      _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
+	        'li',
+	        { className: 'subnavigation-btn' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: btn.url, className: 'btn', style: style },
+	          btn.title
+	        )
+	      ),
+	      links.map(function (link, key) {
+	        var classes = link.url === currentUrl ? 'active' : '';
+	        return _react2.default.createElement(
+	          'li',
+	          { key: key, className: classes },
+	          _react2.default.createElement(
+	            'a',
+	            { href: link.url },
+	            link.title
+	          )
+	        );
+	      })
 	    ) : null
 	  );
 	};
@@ -55091,7 +55087,7 @@
 	  }
 
 	  var container = void 0;
-	  console.log(widget_cell.widget.fields);
+
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'default_layout':
 	    default:
@@ -55202,21 +55198,28 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var widgetBoxClasses = _lodash2.default.get(featureGroup, 'background', null) === 'full' ? "widget-box widget-bg widget2" : "widget-box";
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-7 push-lg-5" : "col-lg-7";
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? "col-lg-7 push-lg-5 background" : "col-lg-7 background";
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-5 push-lg-7";
+
+	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
+	    "background": "url(" + featureGroup.image_section.image_src + ")",
+	    "backgroundPosition": featureGroup.image_section.image_position
+	  } : {};
+
+	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
+	    backgroundStyle = Object.assign({}, backgroundStyle, {
+	      "backgroundSize": "cover",
+	      "minWidth": "100%"
+	    });
+	  }
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: widgetBoxClasses, key: key },
+	    { className: 'widget-box', key: key },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row no-gutters' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: featureGroupBackgroundClasses },
-	        _lodash2.default.get(featureGroup, 'image_section.image_src', null) ? _react2.default.createElement('img', { src: featureGroup.image_section.image_src, alt: '', className: 'img-fluid' }) : null
-	      )
+	      { className: 'row no-gutters background-block' },
+	      _react2.default.createElement('div', { className: featureGroupBackgroundClasses, style: backgroundStyle })
 	    ),
 	    _react2.default.createElement(
 	      'div',
@@ -55294,10 +55297,10 @@
 	      null,
 	      feature.description
 	    ) : null,
-	    _lodash2.default.get(feature, 'button.label', null) && _lodash2.default.get(feature, 'button.url', null) ? _react2.default.createElement(
+	    _lodash2.default.get(feature, 'button_section.label', null) && _lodash2.default.get(feature, 'button_section.url', null) ? _react2.default.createElement(
 	      'a',
-	      { href: feature.button.url, className: 'btn btn-primary', style: buttonStyle },
-	      feature.button.label
+	      { href: feature.button_section.url, className: 'btn btn-primary', style: buttonStyle },
+	      feature.button_section.label
 	    ) : null,
 	    _react2.default.createElement(
 	      'blockquote',

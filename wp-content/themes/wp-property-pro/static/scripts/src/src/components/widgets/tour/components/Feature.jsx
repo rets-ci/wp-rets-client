@@ -27,8 +27,8 @@ const Feature = ({feature, last, key}) => {
           : null
       }
       {
-        _.get(feature, 'button.label', null) && _.get(feature, 'button.url', null)
-          ? <a href={feature.button.url} className="btn btn-primary" style={buttonStyle}>{feature.button.label}</a>
+        _.get(feature, 'button_section.label', null) && _.get(feature, 'button_section.url', null)
+          ? <a href={feature.button_section.url} className="btn btn-primary" style={buttonStyle}>{feature.button_section.label}</a>
           : null
       }
       <blockquote>
