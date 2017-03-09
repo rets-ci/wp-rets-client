@@ -56,7 +56,7 @@
 
 	var _PageContent2 = _interopRequireDefault(_PageContent);
 
-	var _MapSearchResults = __webpack_require__(316);
+	var _MapSearchResults = __webpack_require__(315);
 
 	var _MapSearchResults2 = _interopRequireDefault(_MapSearchResults);
 
@@ -70,15 +70,15 @@
 
 	var _reactRouter = __webpack_require__(77);
 
-	var _reactRouterRedux = __webpack_require__(320);
+	var _reactRouterRedux = __webpack_require__(326);
 
-	var _index2 = __webpack_require__(325);
+	var _index2 = __webpack_require__(331);
 
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(47);
 
-	var _reduxThunk = __webpack_require__(336);
+	var _reduxThunk = __webpack_require__(342);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -29281,15 +29281,15 @@
 
 	var _ListingCarousel2 = _interopRequireDefault(_ListingCarousel);
 
-	var _Subnavigation = __webpack_require__(303);
+	var _Subnavigation = __webpack_require__(302);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-	var _Tour = __webpack_require__(306);
+	var _Tour = __webpack_require__(305);
 
 	var _Tour2 = _interopRequireDefault(_Tour);
 
-	var _Footer = __webpack_require__(310);
+	var _Footer = __webpack_require__(309);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -47761,12 +47761,12 @@
 	      var searchParams = {
 	        term: term
 	      };
-	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
+	      _Api2.default.selectQuery(searchParams, function (rows) {
 	        dispatch((0, _index.setSearchProps)(rows));
 	      });
 	    },
 	    topQuery: function topQuery() {
-	      _Api2.default.topQuery({
+	      _Api2.default.topAggsQuery({
 	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
 	      }, function (rows) {
 	        dispatch((0, _index.setSearchProps)(rows));
@@ -47970,84 +47970,58 @@
 	  }
 
 	  _createClass(Api, null, [{
-	    key: 'getEsClient',
-	    value: function getEsClient() {
-
-	      /**
-	       * @type {$.es.Client|*}
-	       */
-	      return new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
-	    }
-	  }, {
-	    key: 'getEsIndex',
-	    value: function getEsIndex() {
-	      return 'v3/search';
-	    }
-	  }, {
-	    key: 'getEsType',
-	    value: function getEsType() {
-	      return 'property';
-	    }
-	  }, {
-	    key: 'getEsMethod',
-	    value: function getEsMethod() {
-	      return 'POST';
-	    }
-	  }, {
 	    key: 'getAggregationsFields',
 	    value: function getAggregationsFields() {
 	      return {
-	        "wpp_address": {
+	        "location_address": {
 	          "slug": "location_address",
 	          "title": "Address",
 	          "field": "meta_input.location_address",
 	          "search_field": "_search.location_address"
 	        },
-	        "wpp_listing_mls_number": {
+	        "mls_id": {
 	          "slug": "mls_id",
 	          "title": "MLS ID",
 	          "field": "tax_input.mls_id",
 	          "search_field": "_search.mls_id"
 	        },
-	        "wpp_location_city_state": {
+	        "location_city": {
 	          "slug": "city",
 	          "title": "City",
 	          "field": "tax_input.location_city",
 	          "search_field": "_search.location_city"
 	        },
-	        "wpp_location_zip": {
+	        "location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
 	          "search_field": "_search.location_zip"
 	        },
-	        "wpp_location_county": {
+	        "location_county": {
 	          "slug": "county",
 	          "title": "County",
 	          "field": "tax_input.location_county",
 	          "search_field": "_search.location_county"
 	        },
-	        "wpp_location_subdivision": {
+	        "subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
 	          "field": "tax_input.subdivision",
 	          "search_field": "_search.subdivision"
 	        },
-	        "wpp_schools_elementary_school": {
+	        "elementary_school": {
 	          "slug": "elementary_school",
 	          "title": "Elementary School",
 	          "field": "tax_input.elementary_school",
 	          "search_field": "_search.elementary_school"
 	        },
-	        "wpp_schools_middle_school": {
+	        "middle_school": {
 	          "slug": "middle_school",
 	          "title": "Middle School",
 	          "field": "tax_input.middle_school",
 	          "search_field": "_search.middle_school"
 	        },
-	        "wpp_schools_high_school": {
+	        "high_school": {
 	          "slug": "high_school",
 	          "title": "High School",
 	          "field": "tax_input.high_school",
@@ -48059,218 +48033,68 @@
 	    key: 'getTopAggregationsFields',
 	    value: function getTopAggregationsFields() {
 	      return {
-	        "wpp_location_city_state": {
+	        "location_city": {
 	          "slug": "city",
 	          "title": "City",
-	          "field": "tax_input.wpp_location_city_state",
-	          "search_field": "_search.wpp_location_city_state"
+	          "field": "tax_input.location_city",
+	          "search_field": "_search.location_city"
 	        },
-	        "wpp_location_zip": {
+	        "location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
 	          "search_field": "_search.location_zip"
 	        },
-	        "wpp_location_county": {
+	        "location_county": {
 	          "slug": "county",
 	          "title": "County",
-	          "field": "tax_input.wpp_location_county",
-	          "search_field": "_search.wpp_location_county"
+	          "field": "tax_input.location_county",
+	          "search_field": "_search.location_county"
 	        },
-	        "wpp_location_subdivision": {
+	        "subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
-	          "field": "tax_input.wpp_location_subdivision",
-	          "search_field": "_search.wpp_location_subdivision"
+	          "field": "tax_input.subdivision",
+	          "search_field": "_search.subdivision"
 	        }
 	      };
-	    }
-	  }, {
-	    key: 'autocompleteQuery',
-	    value: function autocompleteQuery(params, callback) {
-
-	      var client = Api.getEsClient();
-
-	      var rows = [];
-
-	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
-	        callback(rows);
-	        return;
-	      }
-
-	      var aggregationsFields = this.getAggregationsFields();
-
-	      var body = {
-	        "post-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "title_suggest"
-	          }
-	        },
-	        "term-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "term_suggest"
-	          }
-	        }
-	      };
-
-	      client.suggest({
-	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
-	        method: Api.getEsMethod(),
-	        size: 0,
-	        body: body
-	      }, function selectQueryResponse(err, response) {
-
-	        var rows = [];
-	        // TODO need implement for post-suggest
-	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
-	            continue;
-	          }
-
-	          var data = null;
-	          var _buckets = [];
-
-	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
-	          for (var i in termSuggest) {
-	            var term = termSuggest[i];
-
-	            if (_lodash2.default.get(term, 'options', null) === null) {
-	              continue;
-	            }
-
-	            for (var ind in term.options) {
-	              var option = term.options[ind];
-
-	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
-	                _buckets.push({
-	                  id: _lodash2.default.get(option, 'text', ''),
-	                  text: _lodash2.default.get(option, 'text', ''),
-	                  count: _lodash2.default.get(option, 'score', ''),
-	                  taxonomy: _lodash2.default.get(option, 'payload.tax', '')
-	                });
-	              }
-	            }
-	          }
-
-	          if (_buckets.length > 0) {
-	            data = Object.assign({}, data, {
-	              key: aggregationKey,
-	              text: aggregationsFields[aggregationKey].title,
-	              children: _buckets
-	            });
-	            rows.push(data);
-	          }
-	        }
-
-	        callback(rows);
-	      });
-	    }
-	  }, {
-	    key: 'topQuery',
-	    value: function topQuery(params, callback) {
-
-	      var client = Api.getEsClient();
-
-	      var rows = [];
-
-	      var body = {
-	        "aggs": {}
-	      };
-
-	      var aggregationsFields = this.getTopAggregationsFields();
-	      for (var key in aggregationsFields) {
-
-	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-	        var data = aggregationsFields[key];
-
-	        body.aggs[key] = {
-	          filters: { filters: {} },
-	          aggs: {}
-	        };
-
-	        body.aggs[key] = {
-	          terms: {
-	            field: data.field,
-	            size: _lodash2.default.get(params, 'size', 0),
-	            order: { "_count": "desc" }
-	          }
-	        };
-	      }
-
-	      client.search({
-	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
-	        method: Api.getEsMethod(),
-	        size: params.size || 0,
-	        body: body
-	      }, function selectQueryResponse(err, response) {
-
-	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
-	            continue;
-	          }
-
-	          var _data = null;
-	          var _buckets = [];
-
-	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
-	          for (var i in termSuggest) {
-	            var term = termSuggest[i];
-
-	            if (_lodash2.default.get(term, 'options', null) === null) {
-	              continue;
-	            }
-
-	            for (var ind in term.options) {
-	              var option = term.options[ind];
-
-	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
-	                _buckets.push({
-	                  id: _lodash2.default.get(option, 'text', ''),
-	                  text: _lodash2.default.get(option, 'text', ''),
-	                  count: _lodash2.default.get(option, 'score', ''),
-	                  taxonomy: _lodash2.default.get(option, 'payload.tax', '')
-	                });
-	              }
-	            }
-	          }
-
-	          if (_buckets.length > 0) {
-	            _data = Object.assign({}, _data, {
-	              key: aggregationKey,
-	              text: aggregationsFields[aggregationKey].title,
-	              children: _buckets
-	            });
-	            rows.push(_data);
-	          }
-	        }
-
-	        callback(rows);
-	      });
 	    }
 	  }, {
 	    key: 'createESSearchQuery',
 	    value: function createESSearchQuery(params) {
 	      var terms = {};
-	      terms['terms.' + params.tax] = [params.term];
+	      terms['tax_input.' + params.tax] = [params.term];
 
 	      var query = {
 	        "bool": {
 	          "must": [{
 	            "exists": {
-	              "field": "post_meta.wpp_location_pin"
+	              "field": "_system.location"
 	            }
 	          }, {
 	            "terms": {
-	              "terms.wpp_listing_status": ['for-' + params.saleType.toLowerCase()]
+	              "tax_input.sale_type": [params.saleType]
 	            }
 	          }, {
 	            "terms": {
-	              "terms.wpp_listing_type": params.propertyTypes
+	              "meta_input.property_type": params.propertyTypes
+	            }
+	          }],
+	          "must_not": [{
+	            "term": {
+	              "tax_input.location_latitude": "0"
+	            }
+	          }, {
+	            "term": {
+	              "tax_input.location_longitude": "0"
+	            }
+	          }, {
+	            "missing": {
+	              "field": "tax_input.location_latitude"
+	            }
+	          }, {
+	            "missing": {
+	              "field": "tax_input.location_longitude"
 	            }
 	          }]
 	        }
@@ -48278,18 +48102,12 @@
 
 	      if (params.locationFilter) {
 	        // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-	        query.filter = Object.assign(query.filter, {
+	        query.bool = Object.assign(query.bool, {
 	          "filter": {
 	            "geo_bounding_box": {
-	              "post_meta.wpp_location_pin": {
-	                "top_left": {
-	                  "lat": "37.797962",
-	                  "lon": "-78.6787949"
-	                },
-	                "bottom_right": {
-	                  "lat": "35.797962",
-	                  "lon": "-74.6787949"
-	                }
+	              "_system.location": {
+	                "bottom_right": [+params.topLeft.lon, +params.topLeft.lat],
+	                "top_left": [+params.bottomRight.lon, +params.bottomRight.lat]
 	              }
 	            }
 	          }
@@ -48305,20 +48123,210 @@
 
 	      var aggregations = JSON.stringify({});
 
-	      var source = JSON.stringify(["post_title", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_price_per_sqft", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name"]);
+	      var source = JSON.stringify(["post_title", "tax_input.location_latitude", "tax_input.location_longitude", "_permalink", "_system.neighborhood", "_system.google_place_id", "_system .available_date", "_system.addressDetail", "_system.available_date", "_system.location", "_system.listed_date", "_system.agency_listing", "_metrics.score.total", "meta_input.rets_thumbnail_url", "tax_input.listing_type", "tax_input.bedrooms", "tax_input.bathrooms", "tax_input.price", "tax_input.total_living_area_sqft", "tax_input.days_on_market", "tax_input.acres", "tax_input.price_per_sqft", "tax_input.approximate_lot_size", "tax_input.subdivision", "tax_input.neighborhood", "tax_input.added", "tax_input.sale_type", "tax_input.location_city", "tax_input .location_street_number", "tax_input.location_direction", "tax_input.location_street", "tax_input.location_unit"]);
 
-	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"_system.agency_listing":{"order":"asc"}},{"_metrics.score.total":{"order":"desc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+	    }
+	  }, {
+	    key: 'selectQuery',
+	    value: function selectQuery(params, callback) {
+
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      var rows = [];
+
+	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	        callback(rows);
+	        return;
+	      }
+
+	      var _source = {
+	        "query": { "match": { "post_status": "publish" } },
+	        "aggs": {}
+	      };
+
+	      var aggregationsFields = this.getAggregationsFields();
+	      for (var key in aggregationsFields) {
+
+	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	        var data = aggregationsFields[key];
+
+	        _source.aggs[key] = {
+	          filters: { filters: {} },
+	          aggs: {}
+	        };
+
+	        _source.aggs[key]['filters']['filters'][key] = { term: {} };
+	        _source.aggs[key]['filters']['filters'][key].term[data.search_field] = params.term.toLowerCase();
+	        _source.aggs[key]['aggs'][key] = { terms: { field: data.field } };
+	      }
+	      client.search({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: _source
+	      }, function selectQueryResponse(err, response) {
+
+	        var rows = [];
+	        for (var aggregationKey in aggregationsFields) {
+
+	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
+
+	          if (someAggregation === null) {
+	            continue;
+	          }
+
+	          var _buckets = [];
+
+	          var _data = null;
+	          for (var ind in someAggregation.buckets[aggregationKey][aggregationKey].buckets) {
+
+	            _data = someAggregation.buckets[aggregationKey][aggregationKey].buckets[ind];
+
+	            _buckets.push({
+	              id: _data.key,
+	              text: _data.key,
+	              count: _data.doc_count,
+	              taxonomy: _data.slug
+	            });
+	          }
+	          if (_buckets.length > 0) {
+	            _data = Object.assign({}, _data, {
+	              key: aggregationKey,
+	              text: aggregationsFields[aggregationKey].title,
+	              children: _buckets
+	            });
+	            rows.push(_data);
+	          }
+	        }
+	        callback(rows);
+	      });
+	    }
+	  }, {
+	    key: 'topAggsQuery',
+	    value: function topAggsQuery(params, callback) {
+
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      var _source = {
+	        "query": { "match": { "post_status": "publish" } },
+	        "aggs": {}
+	      };
+
+	      var aggregationsFields = this.getTopAggregationsFields();
+	      for (var key in aggregationsFields) {
+
+	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
+
+	        var data = aggregationsFields[key];
+
+	        _source.aggs[key] = {
+	          filters: { filters: {} },
+	          aggs: {}
+	        };
+
+	        _source.aggs[key] = { terms: {
+	            field: data.field,
+	            size: _lodash2.default.get(params, 'size', 0),
+	            order: { "_count": "desc" }
+	          } };
+	      }
+	      client.search({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: _source
+	      }, function selectQueryResponse(err, response) {
+
+	        var rows = [];
+	        for (var aggregationKey in aggregationsFields) {
+
+	          var someAggregation = _lodash2.default.get(response.aggregations, aggregationKey, null);
+
+	          if (someAggregation === null) {
+	            continue;
+	          }
+
+	          var _buckets = [];
+
+	          var _data2 = null;
+	          for (var ind in someAggregation.buckets) {
+
+	            _data2 = someAggregation.buckets[ind];
+
+	            _buckets.push({
+	              id: _data2.key,
+	              text: _data2.key,
+	              count: _data2.doc_count,
+	              taxonomy: _data2.slug
+	            });
+	          }
+	          if (_buckets.length > 0) {
+	            _data2 = Object.assign({}, _data2, {
+	              key: aggregationKey,
+	              text: 'Popular ' + aggregationsFields[aggregationKey].title,
+	              children: _buckets
+	            });
+	            rows.push(_data2);
+	          }
+	        }
+	        callback(rows);
+	      });
+	    }
+	  }, {
+	    key: 'suggest',
+	    value: function suggest(params, callback) {
+
+	      var text = _lodash2.default.get(params, 'text', '').replace(/\s+/g, '');
+
+	      if (!text) return;
+
+	      /**
+	       * @type {$.es.Client|*}
+	       */
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
+
+	      client.suggest({
+	        index: 'v5',
+	        type: 'property',
+	        method: "POST",
+	        size: 0,
+	        body: {
+	          "regular": {
+	            "text": text.toLowerCase(),
+	            "completion": { "field": "_search._suggest" }
+	          }
+	        }
+	      }, function (error, response) {
+	        callback(response);
+	      });
 	    }
 	  }, {
 	    key: 'search',
 	    value: function search(query, callback) {
+	      /**
+	       * @type {$.es.Client|*}
+	       */
+	      var client = new jQuery.es.Client({
+	        hosts: 'https://' + bundle.elasticsearch_host
+	      });
 
-	      var client = Api.getEsClient();
+	      var index = 'v5',
+	          type = 'property';
 
 	      var esQuery = {
-	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
-	        method: Api.getEsMethod(),
+	        index: index,
+	        type: type,
+	        method: "POST",
 	        body: query
 	      };
 	      client.search(esQuery, function (error, response) {
@@ -48657,9 +48665,9 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _Defaultlayout = __webpack_require__(294);
+	var _Index = __webpack_require__(294);
 
-	var _Defaultlayout2 = _interopRequireDefault(_Defaultlayout);
+	var _Index2 = _interopRequireDefault(_Index);
 
 	var _lodash = __webpack_require__(76);
 
@@ -48687,7 +48695,7 @@
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'default_layout':
 	    default:
-	      container = _react2.default.createElement(_Defaultlayout2.default, { item: widget_cell.widget.fields });
+	      container = _react2.default.createElement(_Index2.default, { item: widget_cell.widget.fields });
 	      break;
 	  }
 
@@ -48728,9 +48736,9 @@
 
 	var _PropertyCard2 = _interopRequireDefault(_PropertyCard);
 
-	var _Swiper = __webpack_require__(297);
+	var _swiper = __webpack_require__(297);
 
-	var _Swiper2 = _interopRequireDefault(_Swiper);
+	var _swiper2 = _interopRequireDefault(_swiper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48740,7 +48748,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(299);
+	__webpack_require__(298);
 
 	var DefaultLayout = function (_Component) {
 	  _inherits(DefaultLayout, _Component);
@@ -48754,7 +48762,7 @@
 	  _createClass(DefaultLayout, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.swiper = _Swiper2.default.init(this.swiperElement, {
+	      this.swiper = new _swiper2.default(this.swiperElement, {
 	        slidesPerView: 'auto',
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
@@ -48852,10 +48860,6 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _Swiper = __webpack_require__(297);
-
-	var _Swiper2 = _interopRequireDefault(_Swiper);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48877,7 +48881,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      console.log('component did mount');
-	      this.swiper = _Swiper2.default.init(this.swiperElement, {
+	      this.swiper = new Swiper(this.swiperElement, {
 	        preloadImages: false,
 	        lazyLoading: true
 	      });
@@ -48898,11 +48902,7 @@
 
 	      var _props$data = this.props.data,
 	          gallery_images = _props$data.gallery_images,
-	          address = _props$data.address,
-	          full_address = _props$data.full_address,
-	          beds = _props$data.beds,
-	          baths = _props$data.baths,
-	          price = _props$data.price,
+	          post_title = _props$data.post_title,
 	          thumbnail = _props$data.thumbnail;
 
 	      return _react2.default.createElement(
@@ -48974,8 +48974,7 @@
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'price' },
-	              '$',
-	              price
+	              '$1,249,000'
 	            ),
 	            _react2.default.createElement(
 	              'span',
@@ -48995,12 +48994,12 @@
 	          _react2.default.createElement(
 	            'h4',
 	            { className: 'card-title' },
-	            address
+	            post_title
 	          ),
 	          _react2.default.createElement(
 	            'p',
 	            { className: 'card-text' },
-	            full_address
+	            'Durham, NC 27712'
 	          ),
 	          _react2.default.createElement(
 	            'ul',
@@ -49008,14 +49007,12 @@
 	            _react2.default.createElement(
 	              'li',
 	              null,
-	              beds,
-	              ' Bed'
+	              '3 Bed'
 	            ),
 	            _react2.default.createElement(
 	              'li',
 	              null,
-	              baths,
-	              ' Bath'
+	              '2 Bath'
 	            ),
 	            _react2.default.createElement(
 	              'li',
@@ -49151,50 +49148,6 @@
 
 /***/ },
 /* 297 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(4);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _swiper = __webpack_require__(298);
-
-	var _swiper2 = _interopRequireDefault(_swiper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	__webpack_require__(299);
-
-	var Swiper = function () {
-	  function Swiper() {
-	    _classCallCheck(this, Swiper);
-	  }
-
-	  _createClass(Swiper, null, [{
-	    key: 'init',
-	    value: function init(swiperElement, params) {
-	      return new _swiper2.default(swiperElement, params);
-	    }
-	  }]);
-
-	  return Swiper;
-	}();
-
-	exports.default = Swiper;
-	;
-
-/***/ },
-/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -54533,16 +54486,16 @@
 
 
 /***/ },
-/* 299 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(300);
+	var content = __webpack_require__(299);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(302)(content, {});
+	var update = __webpack_require__(301)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -54559,10 +54512,10 @@
 	}
 
 /***/ },
-/* 300 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(301)();
+	exports = module.exports = __webpack_require__(300)();
 	// imports
 
 
@@ -54573,7 +54526,7 @@
 
 
 /***/ },
-/* 301 */
+/* 300 */
 /***/ function(module, exports) {
 
 	/*
@@ -54629,7 +54582,7 @@
 
 
 /***/ },
-/* 302 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -54655,7 +54608,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -54881,7 +54834,7 @@
 
 
 /***/ },
-/* 303 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54904,11 +54857,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _IconLayout = __webpack_require__(304);
+	var _IconLayout = __webpack_require__(303);
 
 	var _IconLayout2 = _interopRequireDefault(_IconLayout);
 
-	var _TextLayout = __webpack_require__(305);
+	var _TextLayout = __webpack_require__(304);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -54963,7 +54916,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 304 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55014,7 +54967,7 @@
 	exports.default = IconLayout;
 
 /***/ },
-/* 305 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55088,7 +55041,7 @@
 	exports.default = TextLayout;
 
 /***/ },
-/* 306 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55107,7 +55060,7 @@
 
 	var _WidgetsUtil2 = _interopRequireDefault(_WidgetsUtil);
 
-	var _DefaultLayout = __webpack_require__(307);
+	var _DefaultLayout = __webpack_require__(306);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -55154,7 +55107,7 @@
 	exports.default = Tour;
 
 /***/ },
-/* 307 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55173,7 +55126,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FeatureGroup = __webpack_require__(308);
+	var _FeatureGroup = __webpack_require__(307);
 
 	var _FeatureGroup2 = _interopRequireDefault(_FeatureGroup);
 
@@ -55212,7 +55165,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 308 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55231,7 +55184,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _Feature = __webpack_require__(309);
+	var _Feature = __webpack_require__(308);
 
 	var _Feature2 = _interopRequireDefault(_Feature);
 
@@ -55299,7 +55252,7 @@
 	exports.default = FeatureGroup;
 
 /***/ },
-/* 309 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55385,7 +55338,7 @@
 	exports.default = Feature;
 
 /***/ },
-/* 310 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55402,11 +55355,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterTop = __webpack_require__(311);
+	var _FooterTop = __webpack_require__(310);
 
 	var _FooterTop2 = _interopRequireDefault(_FooterTop);
 
-	var _FooterBottom = __webpack_require__(313);
+	var _FooterBottom = __webpack_require__(312);
 
 	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
 
@@ -55424,7 +55377,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 311 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55437,7 +55390,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterTopMenu = __webpack_require__(312);
+	var _FooterTopMenu = __webpack_require__(311);
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
@@ -55487,7 +55440,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 312 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55543,7 +55496,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55560,11 +55513,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterBottomMenu = __webpack_require__(314);
+	var _FooterBottomMenu = __webpack_require__(313);
 
 	var _FooterBottomMenu2 = _interopRequireDefault(_FooterBottomMenu);
 
-	var _FooterBottomSocialMenu = __webpack_require__(315);
+	var _FooterBottomSocialMenu = __webpack_require__(314);
 
 	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
 
@@ -55591,7 +55544,7 @@
 	exports.default = FooterBottom;
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55638,7 +55591,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55687,7 +55640,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55706,7 +55659,7 @@
 
 	var _lib = __webpack_require__(2);
 
-	var _Map = __webpack_require__(317);
+	var _Map = __webpack_require__(316);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
@@ -55716,7 +55669,7 @@
 
 	var _reactRedux = __webpack_require__(36);
 
-	var _SearchResultListing = __webpack_require__(318);
+	var _SearchResultListing = __webpack_require__(317);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
@@ -55766,7 +55719,7 @@
 	      };
 	      var query = _Api2.default.createESSearchQuery(searchParams);
 	      _Api2.default.search(query, function (response) {
-	        if (response.hits.total) {
+	        if (response.hits.hits.length) {
 	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, false));
 	        } else {
 	          console.log('query with params returned no data');
@@ -55913,7 +55866,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MapSearchResults);
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56037,7 +55990,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56052,7 +56005,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(319);
+	var _numeral = __webpack_require__(318);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -56065,6 +56018,10 @@
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _reactWaypoint = __webpack_require__(319);
+
+	var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56086,9 +56043,13 @@
 	  _createClass(SearchResultListing, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'listing-wrap' },
+	        { className: 'listing-wrap', ref: function ref(r) {
+	            return _this2.listingWrapElement = r;
+	          } },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
@@ -56195,11 +56156,9 @@
 	              this.props.properties.length,
 	              ' results'
 	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: this.props.seeMoreHandler },
-	              'See more'
-	            )
+	            _react2.default.createElement(_reactWaypoint2.default, {
+	              onEnter: this.props.seeMoreHandler
+	            })
 	          )
 	        ) : null
 	      );
@@ -56219,7 +56178,7 @@
 	exports.default = SearchResultListing;
 
 /***/ },
-/* 319 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -57180,7 +57139,805 @@
 
 
 /***/ },
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _consolidatedEvents = __webpack_require__(320);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var POSITIONS = {
+	  above: 'above',
+	  inside: 'inside',
+	  below: 'below',
+	  invisible: 'invisible'
+	};
+
+	var defaultProps = {
+	  topOffset: '0px',
+	  bottomOffset: '0px',
+	  horizontal: false,
+	  onEnter: function onEnter() {},
+	  onLeave: function onLeave() {},
+	  onPositionChange: function onPositionChange() {},
+
+	  fireOnRapidScroll: true
+	};
+
+	function debugLog() {
+	  console.log(arguments); // eslint-disable-line no-console
+	}
+
+	/**
+	 * @param {object} bounds An object with bounds data for the waypoint and
+	 *   scrollable parent
+	 * @return {string} The current position of the waypoint in relation to the
+	 *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+	 *   `POSITIONS.below`, or `POSITIONS.inside`.
+	 */
+	function getCurrentPosition(bounds) {
+	  if (bounds.viewportBottom - bounds.viewportTop === 0) {
+	    return POSITIONS.invisible;
+	  }
+
+	  // top is within the viewport
+	  if (bounds.viewportTop <= bounds.waypointTop && bounds.waypointTop <= bounds.viewportBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  // bottom is within the viewport
+	  if (bounds.viewportTop <= bounds.waypointBottom && bounds.waypointBottom <= bounds.viewportBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  // top is above the viewport and bottom is below the viewport
+	  if (bounds.waypointTop <= bounds.viewportTop && bounds.viewportBottom <= bounds.waypointBottom) {
+	    return POSITIONS.inside;
+	  }
+
+	  if (bounds.viewportBottom < bounds.waypointTop) {
+	    return POSITIONS.below;
+	  }
+
+	  if (bounds.waypointTop < bounds.viewportTop) {
+	    return POSITIONS.above;
+	  }
+
+	  return POSITIONS.invisible;
+	}
+
+	/**
+	 * Attempts to parse the offset provided as a prop as a pixel value. If
+	 * parsing fails, then `undefined` is returned. Three examples of values that
+	 * will be successfully parsed are:
+	 * `20`
+	 * "20px"
+	 * "20"
+	 *
+	 * @param {string|number} str A string of the form "{number}" or "{number}px",
+	 *   or just a number.
+	 * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+	 *   was neither a number nor string ending in "px".
+	 */
+	function parseOffsetAsPixels(str) {
+	  if (!isNaN(parseFloat(str)) && isFinite(str)) {
+	    return parseFloat(str);
+	  } else if (str.slice(-2) === 'px') {
+	    return parseFloat(str.slice(0, -2));
+	  }
+	}
+
+	/**
+	 * Attempts to parse the offset provided as a prop as a percentage. For
+	 * instance, if the component has been provided with the string "20%" as
+	 * a value of one of the offset props. If the value matches, then it returns
+	 * a numeric version of the prop. For instance, "20%" would become `0.2`.
+	 * If `str` isn't a percentage, then `undefined` will be returned.
+	 *
+	 * @param {string} str The value of an offset prop to be converted to a
+	 *   number.
+	 * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+	 *   was not a percentage.
+	 */
+	function parseOffsetAsPercentage(str) {
+	  if (str.slice(-1) === '%') {
+	    return parseFloat(str.slice(0, -1)) / 100;
+	  }
+	}
+
+	/**
+	 * @param {string|number} offset
+	 * @param {number} contextHeight
+	 * @return {number} A number representing `offset` converted into pixels.
+	 */
+	function computeOffsetPixels(offset, contextHeight) {
+	  var pixelOffset = parseOffsetAsPixels(offset);
+
+	  if (typeof pixelOffset === 'number') {
+	    return pixelOffset;
+	  }
+
+	  var percentOffset = parseOffsetAsPercentage(offset);
+	  if (typeof percentOffset === 'number') {
+	    return percentOffset * contextHeight;
+	  }
+	}
+
+	/**
+	 * When an element's type is a string, it represents a DOM node with that tag name
+	 * https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html#dom-elements
+	 *
+	 * @param {React.element} Component
+	 * @return {bool} Whether the component is a DOM Element
+	 */
+	function isDOMElement(Component) {
+	  return typeof Component.type === 'string';
+	}
+
+	/**
+	 * Raise an error if "children" isn't a single DOM Element
+	 *
+	 * @param {React.element|null} children
+	 * @return {undefined}
+	 */
+	function ensureChildrenIsSingleDOMElement(children) {
+	  if (children) {
+	    _react2.default.Children.only(children);
+
+	    if (!isDOMElement(children)) {
+	      throw new Error('You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>).');
+	    }
+	  }
+	}
+
+	/**
+	 * Calls a function when you scroll to the element.
+	 */
+
+	var Waypoint = function (_React$Component) {
+	  _inherits(Waypoint, _React$Component);
+
+	  function Waypoint(props) {
+	    _classCallCheck(this, Waypoint);
+
+	    var _this = _possibleConstructorReturn(this, (Waypoint.__proto__ || Object.getPrototypeOf(Waypoint)).call(this, props));
+
+	    _this.refElement = function (e) {
+	      return _this._ref = e;
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Waypoint, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      ensureChildrenIsSingleDOMElement(this.props.children);
+
+	      if (this.props.scrollableParent) {
+	        // eslint-disable-line react/prop-types
+	        throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      this._handleScroll = this._handleScroll.bind(this);
+	      this.scrollableAncestor = this._findScrollableAncestor();
+
+	      if (this.props.debug) {
+	        debugLog('scrollableAncestor', this.scrollableAncestor);
+	      }
+
+	      this.scrollEventListenerHandle = (0, _consolidatedEvents.addEventListener)(this.scrollableAncestor, 'scroll', this._handleScroll, { passive: true });
+
+	      this.resizeEventListenerHandle = (0, _consolidatedEvents.addEventListener)(window, 'resize', this._handleScroll, { passive: true });
+
+	      // this._ref may occasionally not be set at this time. To help ensure that
+	      // this works smoothly, we want to delay the initial execution until the
+	      // next tick.
+	      this.initialTimeout = setTimeout(function () {
+	        _this2._handleScroll(null);
+	      }, 0);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      ensureChildrenIsSingleDOMElement(nextProps.children);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      // The element may have moved.
+	      this._handleScroll(null);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (!Waypoint.getWindow()) {
+	        return;
+	      }
+
+	      (0, _consolidatedEvents.removeEventListener)(this.scrollEventListenerHandle);
+	      (0, _consolidatedEvents.removeEventListener)(this.resizeEventListenerHandle);
+
+	      clearTimeout(this.initialTimeout);
+	    }
+
+	    /**
+	     * Traverses up the DOM to find an ancestor container which has an overflow
+	     * style that allows for scrolling.
+	     *
+	     * @return {Object} the closest ancestor element with an overflow style that
+	     *   allows for scrolling. If none is found, the `window` object is returned
+	     *   as a fallback.
+	     */
+
+	  }, {
+	    key: '_findScrollableAncestor',
+	    value: function _findScrollableAncestor() {
+	      if (this.props.scrollableAncestor) {
+	        return this.props.scrollableAncestor;
+	      }
+
+	      var node = this._ref;
+
+	      while (node.parentNode) {
+	        node = node.parentNode;
+
+	        if (node === document) {
+	          // This particular node does not have a computed style.
+	          continue;
+	        }
+
+	        if (node === document.documentElement) {
+	          // This particular node does not have a scroll bar, it uses the window.
+	          continue;
+	        }
+
+	        var style = window.getComputedStyle(node);
+	        var overflowDirec = this.props.horizontal ? style.getPropertyValue('overflow-x') : style.getPropertyValue('overflow-y');
+	        var overflow = overflowDirec || style.getPropertyValue('overflow');
+
+	        if (overflow === 'auto' || overflow === 'scroll') {
+	          return node;
+	        }
+	      }
+
+	      // A scrollable ancestor element was not found, which means that we need to
+	      // do stuff on window.
+	      return window;
+	    }
+
+	    /**
+	     * @param {Object} event the native scroll event coming from the scrollable
+	     *   ancestor, or resize event coming from the window. Will be undefined if
+	     *   called by a React lifecyle method
+	     */
+
+	  }, {
+	    key: '_handleScroll',
+	    value: function _handleScroll(event) {
+	      if (!this._ref) {
+	        // There's a chance we end up here after the component has been unmounted.
+	        return;
+	      }
+
+	      var bounds = this._getBounds();
+	      var currentPosition = getCurrentPosition(bounds);
+	      var previousPosition = this._previousPosition;
+
+	      if (this.props.debug) {
+	        debugLog('currentPosition', currentPosition);
+	        debugLog('previousPosition', previousPosition);
+	      }
+
+	      // Save previous position as early as possible to prevent cycles
+	      this._previousPosition = currentPosition;
+
+	      if (previousPosition === currentPosition) {
+	        // No change since last trigger
+	        return;
+	      }
+
+	      var callbackArg = {
+	        currentPosition: currentPosition,
+	        previousPosition: previousPosition,
+	        event: event,
+	        waypointTop: bounds.waypointTop,
+	        waypointBottom: bounds.waypointBottom,
+	        viewportTop: bounds.viewportTop,
+	        viewportBottom: bounds.viewportBottom
+	      };
+	      this.props.onPositionChange.call(this, callbackArg);
+
+	      if (currentPosition === POSITIONS.inside) {
+	        this.props.onEnter.call(this, callbackArg);
+	      } else if (previousPosition === POSITIONS.inside) {
+	        this.props.onLeave.call(this, callbackArg);
+	      }
+
+	      var isRapidScrollDown = previousPosition === POSITIONS.below && currentPosition === POSITIONS.above;
+	      var isRapidScrollUp = previousPosition === POSITIONS.above && currentPosition === POSITIONS.below;
+
+	      if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
+	        // If the scroll event isn't fired often enough to occur while the
+	        // waypoint was visible, we trigger both callbacks anyway.
+	        this.props.onEnter.call(this, {
+	          currentPosition: POSITIONS.inside,
+	          previousPosition: previousPosition,
+	          event: event,
+	          waypointTop: bounds.waypointTop,
+	          waypointBottom: bounds.waypointBottom,
+	          viewportTop: bounds.viewportTop,
+	          viewportBottom: bounds.viewportBottom
+	        });
+	        this.props.onLeave.call(this, {
+	          currentPosition: currentPosition,
+	          previousPosition: POSITIONS.inside,
+	          event: event,
+	          waypointTop: bounds.waypointTop,
+	          waypointBottom: bounds.waypointBottom,
+	          viewportTop: bounds.viewportTop,
+	          viewportBottom: bounds.viewportBottom
+	        });
+	      }
+	    }
+	  }, {
+	    key: '_getBounds',
+	    value: function _getBounds() {
+	      var horizontal = this.props.horizontal;
+
+	      var _ref$getBoundingClien = this._ref.getBoundingClientRect();
+
+	      var left = _ref$getBoundingClien.left;
+	      var top = _ref$getBoundingClien.top;
+	      var right = _ref$getBoundingClien.right;
+	      var bottom = _ref$getBoundingClien.bottom;
+
+	      var waypointTop = horizontal ? left : top;
+	      var waypointBottom = horizontal ? right : bottom;
+
+	      var contextHeight = void 0;
+	      var contextScrollTop = void 0;
+	      if (this.scrollableAncestor === window) {
+	        contextHeight = horizontal ? window.innerWidth : window.innerHeight;
+	        contextScrollTop = 0;
+	      } else {
+	        contextHeight = horizontal ? this.scrollableAncestor.offsetWidth : this.scrollableAncestor.offsetHeight;
+	        contextScrollTop = horizontal ? this.scrollableAncestor.getBoundingClientRect().left : this.scrollableAncestor.getBoundingClientRect().top;
+	      }
+
+	      if (this.props.debug) {
+	        debugLog('waypoint top', waypointTop);
+	        debugLog('waypoint bottom', waypointBottom);
+	        debugLog('scrollableAncestor height', contextHeight);
+	        debugLog('scrollableAncestor scrollTop', contextScrollTop);
+	      }
+
+	      var _props = this.props;
+	      var bottomOffset = _props.bottomOffset;
+	      var topOffset = _props.topOffset;
+
+	      var topOffsetPx = computeOffsetPixels(topOffset, contextHeight);
+	      var bottomOffsetPx = computeOffsetPixels(bottomOffset, contextHeight);
+	      var contextBottom = contextScrollTop + contextHeight;
+
+	      return {
+	        waypointTop: waypointTop,
+	        waypointBottom: waypointBottom,
+	        viewportTop: contextScrollTop + topOffsetPx,
+	        viewportBottom: contextBottom - bottomOffsetPx
+	      };
+	    }
+
+	    /**
+	     * @return {Object}
+	     */
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      var children = this.props.children;
+
+
+	      if (!children) {
+	        // We need an element that we can locate in the DOM to determine where it is
+	        // rendered relative to the top of its context.
+	        return _react2.default.createElement('span', { ref: this.refElement, style: { fontSize: 0 } });
+	      }
+
+	      var ref = function ref(node) {
+	        _this3.refElement(node);
+	        if (children.ref) {
+	          children.ref(node);
+	        }
+	      };
+
+	      return _react2.default.cloneElement(children, { ref: ref });
+	    }
+	  }]);
+
+	  return Waypoint;
+	}(_react2.default.Component);
+
+	exports.default = Waypoint;
+
+
+	Waypoint.propTypes = {
+	  children: _react.PropTypes.element,
+	  debug: _react.PropTypes.bool,
+	  onEnter: _react.PropTypes.func,
+	  onLeave: _react.PropTypes.func,
+	  onPositionChange: _react.PropTypes.func,
+	  fireOnRapidScroll: _react.PropTypes.bool,
+	  scrollableAncestor: _react.PropTypes.any,
+	  horizontal: _react.PropTypes.bool,
+
+	  // `topOffset` can either be a number, in which case its a distance from the
+	  // top of the container in pixels, or a string value. Valid string values are
+	  // of the form "20px", which is parsed as pixels, or "20%", which is parsed
+	  // as a percentage of the height of the containing element.
+	  // For instance, if you pass "-20%", and the containing element is 100px tall,
+	  // then the waypoint will be triggered when it has been scrolled 20px beyond
+	  // the top of the containing element.
+	  topOffset: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+
+	  // `bottomOffset` is like `topOffset`, but for the bottom of the container.
+	  bottomOffset: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number])
+	};
+
+	Waypoint.above = POSITIONS.above;
+	Waypoint.below = POSITIONS.below;
+	Waypoint.inside = POSITIONS.inside;
+	Waypoint.invisible = POSITIONS.invisible;
+	Waypoint.getWindow = function () {
+	  if (typeof window !== 'undefined') {
+	    return window;
+	  }
+	};
+	Waypoint.defaultProps = defaultProps;
+	Waypoint.displayName = 'Waypoint';
+	module.exports = exports['default'];
+
+/***/ },
 /* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.EVENT_HANDLERS_KEY = undefined;
+	exports.addEventListener = addEventListener;
+	exports.removeEventListener = removeEventListener;
+
+	var _normalizeEventOptions = __webpack_require__(321);
+
+	var _normalizeEventOptions2 = _interopRequireDefault(_normalizeEventOptions);
+
+	var _TargetEventHandlers = __webpack_require__(324);
+
+	var _TargetEventHandlers2 = _interopRequireDefault(_TargetEventHandlers);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	// Export to make testing possible.
+	var EVENT_HANDLERS_KEY = exports.EVENT_HANDLERS_KEY = '__consolidated_events_handlers__';
+
+	function addEventListener(target, eventName, listener, options) {
+	  if (!target[EVENT_HANDLERS_KEY]) {
+	    // eslint-disable-next-line no-param-reassign
+	    target[EVENT_HANDLERS_KEY] = new _TargetEventHandlers2['default'](target);
+	  }
+	  var normalizedEventOptions = (0, _normalizeEventOptions2['default'])(options);
+	  return target[EVENT_HANDLERS_KEY].add(eventName, listener, normalizedEventOptions);
+	}
+
+	function removeEventListener(eventHandle) {
+	  var target = eventHandle.target;
+
+	  // There can be a race condition where the target may no longer exist when
+	  // this function is called, e.g. when a React component is unmounting.
+	  // Guarding against this prevents the following error:
+	  //
+	  //   Cannot read property 'removeEventListener' of undefined
+
+	  if (target) {
+	    target[EVENT_HANDLERS_KEY]['delete'](eventHandle);
+	  }
+	}
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = normalizeEventOptions;
+
+	var _canUsePassiveEventListeners = __webpack_require__(322);
+
+	var _canUsePassiveEventListeners2 = _interopRequireDefault(_canUsePassiveEventListeners);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function normalizeEventOptions(eventOptions) {
+	  if (!eventOptions) {
+	    return undefined;
+	  }
+
+	  if (!(0, _canUsePassiveEventListeners2['default'])()) {
+	    // If the browser does not support the passive option, then it is expecting
+	    // a boolean for the options argument to specify whether it should use
+	    // capture or not. In more modern browsers, this is passed via the `capture`
+	    // option, so let's just hoist that value up.
+	    return !!eventOptions.capture;
+	  }
+
+	  return eventOptions;
+	}
+
+/***/ },
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = canUsePassiveEventListeners;
+
+	var _canUseDOM = __webpack_require__(323);
+
+	var _canUseDOM2 = _interopRequireDefault(_canUseDOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	// Adapted from Modernizr
+	// https://github.com/Modernizr/Modernizr/blob/5eea7e2a/feature-detects/dom/passiveeventlisteners.js#L26-L35
+	function testPassiveEventListeners() {
+	  if (!_canUseDOM2['default']) {
+	    return false;
+	  }
+
+	  var supportsPassiveOption = false;
+	  try {
+	    var opts = Object.defineProperty({}, 'passive', {
+	      get: function () {
+	        function get() {
+	          supportsPassiveOption = true;
+	        }
+
+	        return get;
+	      }()
+	    });
+	    window.addEventListener('test', null, opts);
+	  } catch (e) {
+	    // do nothing
+	  }
+
+	  return supportsPassiveOption;
+	}
+
+	var memoized = void 0;
+
+	function canUsePassiveEventListeners() {
+	  if (memoized === undefined) {
+	    memoized = testPassiveEventListeners();
+	  }
+	  return memoized;
+	}
+
+/***/ },
+/* 323 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var CAN_USE_DOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+	exports['default'] = CAN_USE_DOM;
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _eventOptionsKey = __webpack_require__(325);
+
+	var _eventOptionsKey2 = _interopRequireDefault(_eventOptionsKey);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var TargetEventHandlers = function () {
+	  function TargetEventHandlers(target) {
+	    _classCallCheck(this, TargetEventHandlers);
+
+	    this.target = target;
+	    this.events = {};
+	  }
+
+	  _createClass(TargetEventHandlers, [{
+	    key: 'getEventHandlers',
+	    value: function () {
+	      function getEventHandlers(eventName, options) {
+	        var key = String(eventName) + ' ' + String((0, _eventOptionsKey2['default'])(options));
+
+	        if (!this.events[key]) {
+	          this.events[key] = {
+	            size: 0,
+	            index: 0,
+	            handlers: {},
+	            handleEvent: undefined
+	          };
+	        }
+	        return this.events[key];
+	      }
+
+	      return getEventHandlers;
+	    }()
+	  }, {
+	    key: 'handleEvent',
+	    value: function () {
+	      function handleEvent(eventName, options, event) {
+	        var _getEventHandlers = this.getEventHandlers(eventName, options),
+	            handlers = _getEventHandlers.handlers;
+
+	        Object.keys(handlers).forEach(function (index) {
+	          var handler = handlers[index];
+	          if (handler) {
+	            // We need to check for presence here because a handler function may
+	            // cause later handlers to get removed. This can happen if you for
+	            // instance have a waypoint that unmounts another waypoint as part of an
+	            // onEnter/onLeave handler.
+	            handler(event);
+	          }
+	        });
+	      }
+
+	      return handleEvent;
+	    }()
+	  }, {
+	    key: 'add',
+	    value: function () {
+	      function add(eventName, listener, options) {
+	        // options has already been normalized at this point.
+	        var eventHandlers = this.getEventHandlers(eventName, options);
+
+	        if (eventHandlers.size === 0) {
+	          eventHandlers.handleEvent = this.handleEvent.bind(this, eventName, options);
+
+	          this.target.addEventListener(eventName, eventHandlers.handleEvent, options);
+	        }
+
+	        eventHandlers.size += 1;
+	        eventHandlers.index += 1;
+	        eventHandlers.handlers[eventHandlers.index] = listener;
+
+	        return {
+	          target: this.target,
+	          eventName: eventName,
+	          options: options,
+	          index: eventHandlers.index
+	        };
+	      }
+
+	      return add;
+	    }()
+	  }, {
+	    key: 'delete',
+	    value: function () {
+	      function _delete(_ref) {
+	        var eventName = _ref.eventName,
+	            index = _ref.index,
+	            options = _ref.options;
+
+	        // options has already been normalized at this point.
+	        var eventHandlers = this.getEventHandlers(eventName, options);
+
+	        if (eventHandlers.size === 0) {
+	          // There are no matching event handlers, so no work to be done here.
+	          return;
+	        }
+
+	        if (eventHandlers.handlers[index]) {
+	          delete eventHandlers.handlers[index];
+	          eventHandlers.size -= 1;
+	        }
+
+	        if (eventHandlers.size === 0) {
+	          this.target.removeEventListener(eventName, eventHandlers.handleEvent, options);
+
+	          eventHandlers.handleEvent = undefined;
+	        }
+	      }
+
+	      return _delete;
+	    }()
+	  }]);
+
+	  return TargetEventHandlers;
+	}();
+
+	exports['default'] = TargetEventHandlers;
+
+/***/ },
+/* 325 */
+/***/ function(module, exports) {
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = eventOptionsKey;
+	/* eslint-disable no-bitwise */
+
+	/**
+	 * Generate a unique key for any set of event options
+	 */
+	function eventOptionsKey(normalizedEventOptions) {
+	  if (!normalizedEventOptions) {
+	    return 0;
+	  }
+
+	  // If the browser does not support passive event listeners, the normalized
+	  // event options will be a boolean.
+	  if (normalizedEventOptions === true) {
+	    return 100;
+	  }
+
+	  // At this point, the browser supports passive event listeners, so we expect
+	  // the event options to be an object with possible properties of capture,
+	  // passive, and once.
+	  //
+	  // We want to consistently return the same value, regardless of the order of
+	  // these properties, so let's use binary maths to assign each property to a
+	  // bit, and then add those together (with an offset to account for the
+	  // booleans at the beginning of this function).
+	  var capture = normalizedEventOptions.capture << 0;
+	  var passive = normalizedEventOptions.passive << 1;
+	  var once = normalizedEventOptions.once << 2;
+	  return capture + passive + once;
+	}
+
+/***/ },
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57190,7 +57947,7 @@
 	});
 	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
 
-	var _reducer = __webpack_require__(321);
+	var _reducer = __webpack_require__(327);
 
 	Object.defineProperty(exports, 'LOCATION_CHANGE', {
 	  enumerable: true,
@@ -57205,7 +57962,7 @@
 	  }
 	});
 
-	var _actions = __webpack_require__(322);
+	var _actions = __webpack_require__(328);
 
 	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
 	  enumerable: true,
@@ -57250,11 +58007,11 @@
 	  }
 	});
 
-	var _sync = __webpack_require__(323);
+	var _sync = __webpack_require__(329);
 
 	var _sync2 = _interopRequireDefault(_sync);
 
-	var _middleware = __webpack_require__(324);
+	var _middleware = __webpack_require__(330);
 
 	var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -57264,7 +58021,7 @@
 	exports.routerMiddleware = _middleware2['default'];
 
 /***/ },
-/* 321 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57307,7 +58064,7 @@
 	}
 
 /***/ },
-/* 322 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57349,7 +58106,7 @@
 	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
 
 /***/ },
-/* 323 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57362,7 +58119,7 @@
 
 	exports['default'] = syncHistoryWithStore;
 
-	var _reducer = __webpack_require__(321);
+	var _reducer = __webpack_require__(327);
 
 	var defaultSelectLocationState = function defaultSelectLocationState(state) {
 	  return state.routing;
@@ -57509,7 +58266,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57519,7 +58276,7 @@
 	});
 	exports['default'] = routerMiddleware;
 
-	var _actions = __webpack_require__(322);
+	var _actions = __webpack_require__(328);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -57547,7 +58304,7 @@
 	}
 
 /***/ },
-/* 325 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57556,47 +58313,47 @@
 	    value: true
 	});
 
-	var _reactRouterRedux = __webpack_require__(320);
+	var _reactRouterRedux = __webpack_require__(326);
 
 	var _redux = __webpack_require__(47);
 
-	var _post = __webpack_require__(326);
+	var _post = __webpack_require__(332);
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _map = __webpack_require__(327);
+	var _map = __webpack_require__(333);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(328);
+	var _modal = __webpack_require__(334);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(329);
+	var _searchProps = __webpack_require__(335);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(330);
+	var _searchResults = __webpack_require__(336);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(331);
+	var _mapMarkers = __webpack_require__(337);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(332);
+	var _searchType = __webpack_require__(338);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(333);
+	var _filterTerms = __webpack_require__(339);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(334);
+	var _userData = __webpack_require__(340);
 
 	var _userData2 = _interopRequireDefault(_userData);
 
-	var _testimonialsCarousel = __webpack_require__(335);
+	var _testimonialsCarousel = __webpack_require__(341);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -57619,7 +58376,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 326 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57653,7 +58410,7 @@
 	exports.default = post;
 
 /***/ },
-/* 327 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57684,7 +58441,7 @@
 	exports.default = map;
 
 /***/ },
-/* 328 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57712,7 +58469,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 329 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57739,7 +58496,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 330 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57776,7 +58533,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 331 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57803,7 +58560,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 332 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57833,7 +58590,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 333 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57860,7 +58617,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 334 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57885,7 +58642,7 @@
 	exports.default = userData;
 
 /***/ },
-/* 335 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57912,7 +58669,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 336 */
+/* 342 */
 /***/ function(module, exports) {
 
 	'use strict';

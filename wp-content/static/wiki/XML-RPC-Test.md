@@ -15,3 +15,9 @@ curl --data @wp-content/static/data/removeDuplicatedMLS.xml http://localhost/xml
 ```
 curl --data @wp-content/static/data/wpp.updatePropertyMeta.xml http://localhost/xmlrpc.php
 ```
+
+### Update Property
+
+```
+curl -H "x-selected-branch:develop-v3-andy" --data @wp-content/static/test/fixtures/property-2112152.xml http://localhost/xmlrpc.php
+```
