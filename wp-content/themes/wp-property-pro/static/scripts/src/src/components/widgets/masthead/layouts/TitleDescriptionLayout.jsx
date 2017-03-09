@@ -16,7 +16,7 @@ const TitleDescriptionLayout = ({widget_cell}) => {
                     ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
-            <Search options={_.get(widget_cell, 'widget.fields.search_options', [])}/>
+            <Search options={_.get(widget_cell, 'widget.fields.search_options', null) ? (_.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options) : {}} />
         </div>
     );
 };

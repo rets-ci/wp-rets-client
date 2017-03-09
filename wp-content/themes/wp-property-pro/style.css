@@ -59,7 +59,7 @@
 }
 
 .search-box .drop-search{
-    width: 135px !important;
+    width: 145px !important;
 }
 
 .userInfo li .userBox img{
@@ -94,6 +94,22 @@
 
 .card-img .direction-nav a{
     z-index: 999999 !important;
+}
+
+.masthead h1.bottom-title{
+    margin: 0 0 .70em;
+}
+
+#search-options-type-container{
+    font-size: 1.15rem;
+}
+
+.search-box .drop-search i{
+    position: relative;
+    float: right;
+    display: block;
+    top: 30px;
+    right: 10px;
 }
 
 /*

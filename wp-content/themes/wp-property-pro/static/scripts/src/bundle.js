@@ -231,7 +231,8 @@
 	    PROPERTY_LISTING_IMAGE_SIZE: '400x230',
 	    PROPERTY_PER_PAGE: 18,
 	    MIN_SEARCH_KEY_LENGTH: 3,
-	    TOP_AGGREGATIONS_COUNT: 5
+	    TOP_AGGREGATIONS_COUNT: 5,
+	    MOBILE_WIDTH: 768
 	};
 
 /***/ },
@@ -29401,13 +29402,17 @@
 
 	    var container = void 0;
 	    var modal = void 0;
+
+	    if (!_lodash2.default.isEmpty(_lodash2.default.get(widget_cell, 'widget.fields.search_options', {}))) {
+	        modal = _react2.default.createElement(_Modal2.default, null);
+	    }
+
 	    switch (widget_cell.widget.fields.layout) {
 	        case 'subtitle_title_layout':
 	            container = _react2.default.createElement(_SubtitleTitleLayout2.default, { widget_cell: widget_cell });
 	            break;
 	        case 'title_description_layout':
 	        default:
-	            modal = _react2.default.createElement(_Modal2.default, null);
 	            container = _react2.default.createElement(_TitleDescriptionLayout2.default, { widget_cell: widget_cell });
 	            break;
 	    }
@@ -29529,7 +29534,7 @@
 	            { className: 'hidden-sm-down' },
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', []) })
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
 	    );
 	};
 
@@ -29676,6 +29681,11 @@
 	        };
 	      }
 
+	      var placeholder = 'Address, City, Zip, or Neighborhood.';
+	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
+	        placeholder = 'Address, City, Zip.';
+	      }
+
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
@@ -29702,7 +29712,8 @@
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
-	          ' Address, City, Zip, or Neighborhood.'
+	          ' ',
+	          placeholder
 	        )
 	      );
 	    }
@@ -47685,17 +47696,17 @@
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
 	            { className: 'hidden-sm-down' },
-	            widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	            'h1',
-	            null,
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', []) })
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	            'h1',
+	            { className: 'bottom-title' },
+	            widget_cell.widget.fields.title
+	        ) : null,
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
 	    );
 	};
 
