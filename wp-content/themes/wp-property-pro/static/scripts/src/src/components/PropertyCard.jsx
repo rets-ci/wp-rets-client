@@ -45,7 +45,7 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <a href="#" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)} className="card card-homepage swiper-slide">
+      <div onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)} className="card card-homepage swiper-slide">
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
@@ -101,7 +101,7 @@ export default class PropertyCard extends Component {
             <li>1,142 SF</li>
           </ul>
         </div>
-      </a>
+      </div>
     );
   }
 }

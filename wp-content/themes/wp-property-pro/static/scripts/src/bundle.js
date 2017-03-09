@@ -48930,8 +48930,8 @@
 
 	      var self = this;
 	      return _react2.default.createElement(
-	        'a',
-	        { href: '#', onClick: function onClick(eve) {
+	        'div',
+	        { onClick: function onClick(eve) {
 	            return self.handlePropertyClick.bind(_this2)(eve, permalink);
 	          }, className: 'card card-homepage swiper-slide' },
 	        _react2.default.createElement(
