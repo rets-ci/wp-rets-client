@@ -2,17 +2,25 @@ import {Lib} from '../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import Util from './Util.jsx';
 import Swiper from './Swiper.jsx';
+import {browserHistory} from 'react-router';
 
 export default class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   }
 
+  handlePropertyClick(eve, url) {
+    eve.preventDefault();
+
+    browserHistory.push(url);
+  }
+
   componentDidMount() {
     console.log('component did mount');
     this.swiper = Swiper.init(this.swiperElement, {
       preloadImages: false,
-      lazyLoading: true
+      lazyLoading: true,
+      loop: true
     });
   }
 
@@ -27,6 +35,7 @@ export default class PropertyCard extends Component {
   render() {
     let {
       gallery_images,
+      permalink,
       address,
       full_address,
       beds,
@@ -34,8 +43,9 @@ export default class PropertyCard extends Component {
       price,
       thumbnail
     } = this.props.data;
+    let self = this;
     return (
-      <div className="card card-homepage swiper-slide">
+      <a href="#" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)} className="card card-homepage swiper-slide">
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
@@ -61,8 +71,14 @@ export default class PropertyCard extends Component {
             </div>
           </div>
           <ul className="direction-nav">
-            <li><a className="nav-prev" onClick={(e) => { e.preventDefault(); return this.handleNavigation.bind(this)('prev'); } } href="#"></a></li>
-            <li><a className="nav-next" onClick={(e) => { e.preventDefault(); return this.handleNavigation.bind(this)('next'); } } href="#"></a></li>
+            <li><a className="nav-prev" onClick={(e) => {
+              e.preventDefault();
+              return this.handleNavigation.bind(this)('prev');
+            } } href="#"></a></li>
+            <li><a className="nav-next" onClick={(e) => {
+              e.preventDefault();
+              return this.handleNavigation.bind(this)('next');
+            } } href="#"></a></li>
           </ul>
         </div>
         <div className="card-block">
@@ -85,7 +101,7 @@ export default class PropertyCard extends Component {
             <li>1,142 SF</li>
           </ul>
         </div>
-      </div>
+      </a>
     );
   }
 }

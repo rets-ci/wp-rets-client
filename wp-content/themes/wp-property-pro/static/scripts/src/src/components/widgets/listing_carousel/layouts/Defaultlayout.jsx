@@ -19,7 +19,8 @@ export default class DefaultLayout extends Component {
       slidesPerView: 'auto',
       nextButton: this.swiperElementNext,
       prevButton: this.swiperElementPrev,
-      spaceBetween: 20
+      spaceBetween: 20,
+      loop: true
     });
   }
 

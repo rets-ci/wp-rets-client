@@ -48758,7 +48758,8 @@
 	        slidesPerView: 'auto',
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
-	        spaceBetween: 20
+	        spaceBetween: 20,
+	        loop: true
 	      });
 	    }
 	  }, {
@@ -48856,6 +48857,8 @@
 
 	var _Swiper2 = _interopRequireDefault(_Swiper);
 
+	var _reactRouter = __webpack_require__(77);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48874,12 +48877,20 @@
 	  }
 
 	  _createClass(PropertyCard, [{
+	    key: 'handlePropertyClick',
+	    value: function handlePropertyClick(eve, url) {
+	      eve.preventDefault();
+
+	      _reactRouter.browserHistory.push(url);
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      console.log('component did mount');
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        preloadImages: false,
-	        lazyLoading: true
+	        lazyLoading: true,
+	        loop: true
 	      });
 	    }
 	  }, {
@@ -48898,6 +48909,7 @@
 
 	      var _props$data = this.props.data,
 	          gallery_images = _props$data.gallery_images,
+	          permalink = _props$data.permalink,
 	          address = _props$data.address,
 	          full_address = _props$data.full_address,
 	          beds = _props$data.beds,
@@ -48905,9 +48917,12 @@
 	          price = _props$data.price,
 	          thumbnail = _props$data.thumbnail;
 
+	      var self = this;
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'card card-homepage swiper-slide' },
+	        'a',
+	        { href: '#', onClick: function onClick(eve) {
+	            return self.handlePropertyClick.bind(_this2)(eve, permalink);
+	          }, className: 'card card-homepage swiper-slide' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-img' },
@@ -48953,14 +48968,16 @@
 	              'li',
 	              null,
 	              _react2.default.createElement('a', { className: 'nav-prev', onClick: function onClick(e) {
-	                  e.preventDefault();return _this2.handleNavigation.bind(_this2)('prev');
+	                  e.preventDefault();
+	                  return _this2.handleNavigation.bind(_this2)('prev');
 	                }, href: '#' })
 	            ),
 	            _react2.default.createElement(
 	              'li',
 	              null,
 	              _react2.default.createElement('a', { className: 'nav-next', onClick: function onClick(e) {
-	                  e.preventDefault();return _this2.handleNavigation.bind(_this2)('next');
+	                  e.preventDefault();
+	                  return _this2.handleNavigation.bind(_this2)('next');
 	                }, href: '#' })
 	            )
 	          )
