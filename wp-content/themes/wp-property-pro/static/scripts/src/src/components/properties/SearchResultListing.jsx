@@ -3,6 +3,7 @@ import numeral from 'numeral';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
+import Waypoint from 'react-waypoint';
 
 class SearchResultListing extends Component {
   static propTypes = {
@@ -10,9 +11,10 @@ class SearchResultListing extends Component {
     properties: PropTypes.array.isRequired,
     seeMoreHandler: PropTypes.func.isRequired
   }
+
   render() {
     return (
-      <div className="listing-wrap">
+      <div className="listing-wrap" ref={(r) => this.listingWrapElement = r}>
         <div className="row">
           {this.props.properties.map((p, i) =>
              <div className="col-sm-6" key={i}>
@@ -58,8 +60,11 @@ class SearchResultListing extends Component {
         {this.props.allowPagination ?
           <div style={{overflow: 'hidden'}}>
             <div style={{float: 'right'}}>
+
               <p>Showing {this.props.properties.length} results</p>
-              <button onClick={this.props.seeMoreHandler}>See more</button>
+              <Waypoint
+                onEnter={this.props.seeMoreHandler}
+              />
             </div>
           </div>
         : null}
