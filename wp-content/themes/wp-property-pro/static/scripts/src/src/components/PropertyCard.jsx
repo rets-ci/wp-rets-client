@@ -45,12 +45,12 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)} className="card card-homepage swiper-slide">
+      <div className="card card-homepage swiper-slide">
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide">
+                <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)}>
                   <img
                     alt="Card image cap"
                     className="swiper-lazy"
@@ -81,7 +81,7 @@ export default class PropertyCard extends Component {
             } } href="#"></a></li>
           </ul>
         </div>
-        <div className="card-block">
+        <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)}>
           <div className="listing-top">
             <span className="price">${price}</span>
             <span className="action-btn-group">

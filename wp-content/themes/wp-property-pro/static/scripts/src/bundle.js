@@ -48931,9 +48931,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { onClick: function onClick(eve) {
-	            return self.handlePropertyClick.bind(_this2)(eve, permalink);
-	          }, className: 'card card-homepage swiper-slide' },
+	        { className: 'card card-homepage swiper-slide' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-img' },
@@ -48950,7 +48948,9 @@
 	                { className: 'swiper-wrapper' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'swiper-slide' },
+	                  { className: 'swiper-slide', onClick: function onClick(eve) {
+	                      return self.handlePropertyClick.bind(_this2)(eve, permalink);
+	                    } },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
 	                    className: 'swiper-lazy',
@@ -48995,7 +48995,9 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-block' },
+	          { className: 'card-block', onClick: function onClick(eve) {
+	              return self.handlePropertyClick.bind(_this2)(eve, permalink);
+	            } },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'listing-top' },
