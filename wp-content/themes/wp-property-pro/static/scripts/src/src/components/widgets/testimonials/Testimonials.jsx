@@ -1,13 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import WidgetsUtil from '../WidgetsUtil.jsx'
 import DefaultLayout from './layouts/DefaultLayout.jsx'
 import {setTestimonialsActiveItem} from '../../../actions/index.jsx'
 import _ from 'lodash'
 
 const mapStateToProps = (state) => {
     return {
-        rows: _.get(state, 'postState.rows', []),
         activeItem: _.get(state, 'testimonialsCarouselState.activeItem', 0)
     }
 };
@@ -20,9 +18,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 };
 
-const TestimonialsContent = ({rows, activeItem, switchActiveTestimonial}) => {
-
-    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Testimonials_Widget', rows);
+const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial}) => {
 
     if (!widget_cell){
         return null;
