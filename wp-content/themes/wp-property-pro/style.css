@@ -75,6 +75,10 @@
     color: #cd2027;
 }
 
+.subnavigation.module2 nav{
+    width: 100%;
+}
+
 .listing-sidebar{
     overflow: auto;
 }

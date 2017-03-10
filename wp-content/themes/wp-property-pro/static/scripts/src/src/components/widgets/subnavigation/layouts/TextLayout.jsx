@@ -27,28 +27,33 @@ const TextLayout = ({items, currentUrl}) => {
       ? null
       :
       <div className="row">
-        {
-          links.length
-            ?
-            <ul>
-              {
-                _.isEmpty(btn)
-                  ? null
-                  :
-                  <li className="subnavigation-btn">
-                    <a href={btn.url} className="btn" style={style}>{btn.title}</a>
-                  </li>
-              }
-              {
-                links.map((link, key) => {
-                    let classes = link.url === currentUrl ? 'active' : '';
-                    return (<li key={key} className={classes}><a href={link.url}>{link.title}</a></li>)
-                  }
-                )
-              }
-            </ul>
-            : null
-        }
+        <nav>
+          {
+            links.length
+              ?
+              <ul>
+                {
+                  _.isEmpty(btn)
+                    ? null
+                    :
+                    <li className="subnavigation-btn">
+                      <a href={btn.url} className="btn" style={style}>{btn.title}</a>
+                    </li>
+                }
+                {
+                  links.map((link, key) => {
+                      if (link.url === currentUrl) {
+                        return (<li key={key} className="active"><a href={link.url}>{link.title}</a></li>)
+                      } else {
+                        return (<li key={key}><a href={link.url}>{link.title}</a></li>)
+                      }
+                    }
+                  )
+                }
+              </ul>
+              : null
+          }
+        </nav>
       </div>
   );
 };

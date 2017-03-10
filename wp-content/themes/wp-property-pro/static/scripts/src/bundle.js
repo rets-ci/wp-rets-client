@@ -55087,31 +55087,46 @@
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: 'row' },
-	    links.length ? _react2.default.createElement(
-	      'ul',
+	    _react2.default.createElement(
+	      'nav',
 	      null,
-	      _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
-	        'li',
-	        { className: 'subnavigation-btn' },
-	        _react2.default.createElement(
-	          'a',
-	          { href: btn.url, className: 'btn', style: style },
-	          btn.title
-	        )
-	      ),
-	      links.map(function (link, key) {
-	        var classes = link.url === currentUrl ? 'active' : '';
-	        return _react2.default.createElement(
+	      links.length ? _react2.default.createElement(
+	        'ul',
+	        null,
+	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
 	          'li',
-	          { key: key, className: classes },
+	          { className: 'subnavigation-btn' },
 	          _react2.default.createElement(
 	            'a',
-	            { href: link.url },
-	            link.title
+	            { href: btn.url, className: 'btn', style: style },
+	            btn.title
 	          )
-	        );
-	      })
-	    ) : null
+	        ),
+	        links.map(function (link, key) {
+	          if (link.url === currentUrl) {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: key, className: 'active' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: link.url },
+	                link.title
+	              )
+	            );
+	          } else {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: key },
+	              _react2.default.createElement(
+	                'a',
+	                { href: link.url },
+	                link.title
+	              )
+	            );
+	          }
+	        })
+	      ) : null
+	    )
 	  );
 	};
 
