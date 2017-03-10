@@ -854,7 +854,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 }
 
 .tour-widget-content h3{
-    width: 400px;
+    font-weight: 400;
 }
 
 .card-img .direction-nav a{
