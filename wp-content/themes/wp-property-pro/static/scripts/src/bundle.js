@@ -48928,7 +48928,7 @@
 
 	      var _props$data = this.props.data,
 	          gallery_images = _props$data.gallery_images,
-	          permalink = _props$data.permalink,
+	          relative_permalink = _props$data.relative_permalink,
 	          address = _props$data.address,
 	          full_address = _props$data.full_address,
 	          beds = _props$data.beds,
@@ -48957,7 +48957,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'swiper-slide', onClick: function onClick(eve) {
-	                      return self.handlePropertyClick.bind(_this2)(eve, permalink);
+	                      return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	                    } },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
@@ -49004,7 +49004,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-block', onClick: function onClick(eve) {
-	              return self.handlePropertyClick.bind(_this2)(eve, permalink);
+	              return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	            } },
 	          _react2.default.createElement(
 	            'div',
