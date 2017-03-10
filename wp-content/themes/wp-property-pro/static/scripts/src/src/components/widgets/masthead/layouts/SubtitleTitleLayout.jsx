@@ -7,16 +7,16 @@ const SubtitleTitleLayout = ({widget_cell}) => {
     return (
         <div className="container">
             {
-                _.get(widget_cell, 'widget.fields.title', '')
-                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.title}</p>
+                _.get(widget_cell, 'widget.fields.subtitle', '')
+                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
             {
-                _.get(widget_cell, 'widget.fields.subtitle', '')
-                ? <h1>{widget_cell.widget.fields.subtitle}</h1>
+                _.get(widget_cell, 'widget.fields.title', '')
+                ? <h1 className="bottom-title">{widget_cell.widget.fields.title}</h1>
                 : null
             }
-            <Search options={_.get(widget_cell, 'widget.fields.search_options', [])}/>
+            <Search options={_.get(widget_cell, 'widget.fields.search_options', null) ? (_.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options) : {}} />
         </div>
     );
 };

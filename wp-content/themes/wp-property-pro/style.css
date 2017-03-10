@@ -11,82 +11,6 @@
  * Tags: real estate
  *
  */
-.cell-2 {
-    width: 50%;
-    float: left;
-}
-
-.line {
-    background-color: grey;
-    margin-bottom: 10px;
-}
-
-.clear {
-    clear: both;
-}
-
-.cell-item {
-    overflow-wrap: break-word;
-}
-
-#wp-property-pro-map {
-    height: 200px;
-    width: 400px;
-    display: none;
-}
-
-#wp-property-pro-search-result {
-    overflow-y: scroll;
-    background: grey;
-    height: 100px;
-    width: 200px;
-}
-
-#search-options-type-container:hover {
-  cursor: pointer
-}
-
-.masthead{
-    background-size: cover !important;
-}
-
-.search-result-group{
-    text-align: left;
-}
-
-.toolbar .menu-icon{
-    cursor: pointer;
-}
-
-.search-box .drop-search{
-    width: 135px !important;
-}
-
-.userInfo li .userBox img{
-    max-height: 59px;
-    border-radius: 50%;
-}
-
-.testimonial .userInfo .userBox p{
-    font-weight: 700 !important;
-}
-
-.subnavigation ul li.active a {
-    color: #cd2027;
-}
-
-.listing-sidebar{
-    overflow: auto;
-}
-
-.tour-widget-content blockquote cite span img{
-    max-height: 40px;
-    border-radius: 50%;
-}
-
-.tour-section .widget-tour .widget-box .background-block > .background{
-    min-height: 800px;
-}
 
 /*
 Red Door Company Styles
@@ -862,4 +786,129 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .bottom-footer li { margin: 0 4px; }
     .subnavigation ul li a { height: 180px; }
 
+}
+
+
+/* Additional rules */
+#wp-property-pro-map {
+    height: 200px;
+    width: 400px;
+    display: none;
+}
+
+#wp-property-pro-search-result {
+    overflow-y: scroll;
+    background: grey;
+    height: 100px;
+    width: 200px;
+}
+
+#search-options-type-container:hover {
+    cursor: pointer
+}
+
+.masthead{
+    background-size: cover !important;
+}
+
+.search-result-group{
+    text-align: left;
+}
+
+.toolbar .menu-icon{
+    cursor: pointer;
+}
+
+.search-box .drop-search{
+    width: 145px !important;
+}
+
+.userInfo li .userBox img{
+    max-height: 59px;
+    border-radius: 50%;
+}
+
+.testimonial .userInfo .userBox p{
+    font-weight: 700 !important;
+}
+
+.subnavigation ul li.active a {
+    color: #cd2027;
+}
+
+.subnavigation.module2 nav{
+    width: 100%;
+}
+
+.listing-sidebar{
+    overflow: auto;
+}
+
+.tour-widget-content blockquote cite span img{
+    max-height: 40px;
+    border-radius: 50%;
+}
+
+.tour-section .widget-tour .widget-box .background-block > .background{
+    min-height: 800px;
+}
+
+.tour-widget-content h3{
+    font-weight: 400;
+}
+
+.card-img .direction-nav a{
+    z-index: 999999 !important;
+}
+
+.masthead h1.bottom-title{
+    margin: 0 0 .70em;
+}
+
+#search-options-type-container{
+    font-size: 1.15rem;
+}
+
+.search-box .drop-search i{
+    position: relative;
+    float: right;
+    display: block;
+    top: 30px;
+    right: 10px;
+}
+
+.listings .listing-carousel .card{
+    cursor: pointer;
+}
+
+.top-panel .logo{
+    width: 34px;
+    float: none;
+}
+
+.search-modal form .btn{
+    font-size: 1.1rem;
+}
+
+.search-modal-box ol li a{
+    font-size: 2.5rem;
+}
+
+.search-modal form input.form-control{
+    padding: 8px 15px 8px 0;
+    width: 93%;
+}
+
+.search-modal form input.withPadding{
+    padding: 8px 15px 8px 15px;
+}
+
+.masthead .search-modal .search-modal-box h4,
+.search-modal form .form-control,
+.search-modal form i{
+    font-size: 1.5rem;
+}
+
+.search-modal form i{
+    margin-top: -15px;
 }

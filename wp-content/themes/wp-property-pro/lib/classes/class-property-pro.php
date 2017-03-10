@@ -138,33 +138,30 @@ namespace UsabilityDynamics {
         'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
       ];
 
-      if (is_front_page()) {
+      /** Get footer menus */
+      $footer_structure = [
+        'top_footer' => [
+          get_theme_mod('property_pro_footer_top_menu_one'),
+          get_theme_mod('property_pro_footer_top_menu_two'),
+          get_theme_mod('property_pro_footer_top_menu_three'),
+          get_theme_mod('property_pro_footer_top_menu_four')
+        ],
+        'bottom_footer' => [
+          'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
+          'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
+        ]
+      ];
 
-        /** Get footer menus */
-        $footer_structure = [
-          'top_footer' => [
-            get_theme_mod('property_pro_footer_top_menu_one'),
-            get_theme_mod('property_pro_footer_top_menu_two'),
-            get_theme_mod('property_pro_footer_top_menu_three'),
-            get_theme_mod('property_pro_footer_top_menu_four')
-          ],
-          'bottom_footer' => [
-            'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
-            'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
-          ]
-        ];
-
-        foreach ($footer_structure as $level_title => $level) {
-          foreach ($level as $key => $menu_id) {
-            $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
-            $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
-              return [
-                'ID' => $item->ID,
-                'title' => $item->title,
-                'url' => $item->url
-              ];
-            }, wp_get_nav_menu_items($menu_id));
-          }
+      foreach ($footer_structure as $level_title => $level) {
+        foreach ($level as $key => $menu_id) {
+          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
+            return [
+              'ID' => $item->ID,
+              'title' => $item->title,
+              'url' => $item->url
+            ];
+          }, wp_get_nav_menu_items($menu_id));
         }
       }
 
@@ -266,6 +263,13 @@ namespace UsabilityDynamics {
             /** Update posts array */
             foreach($field as &$post){
               $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+              $post->permalink = str_replace(home_url(), "", get_permalink($post));
+              $property_detail = get_property( $post->ID );
+              $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
+              $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
+              $post->full_address = isset($property_detail['formatted_address']) ? $property_detail['formatted_address'] : '';
+              $post->beds = isset($property_detail['rets_beds']) ? $property_detail['rets_beds'] : '';
+              $post->baths = isset($property_detail['rets_baths_full']) ? $property_detail['rets_baths_full'] : '';
 
               // Get gallery images
               $post->gallery_images = [];
@@ -298,6 +302,8 @@ namespace UsabilityDynamics {
                   unset($feature['button_section']['so_field_container_state']);
                   unset($feature['testimonial_section']['so_field_container_state']);
                   $feature['testimonial_section']['image_src'] = $feature['testimonial_section']['image'] ? wp_get_attachment_image_src($feature['testimonial_section']['image'], 'full')[0] : '';
+                  $feature['title'] = htmlspecialchars_decode($feature['title']);
+                  $feature['description'] = htmlspecialchars_decode($feature['description']);
                 }
               }
             }
@@ -314,6 +320,7 @@ namespace UsabilityDynamics {
         ];
 
       }
+
       return $rows;
     }
 

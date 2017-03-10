@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import WidgetsUtil from '../WidgetsUtil.jsx';
-import Swiper from './layouts/swiper/Index.jsx';
+import Defaultlayout from './layouts/Defaultlayout.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state) => {
@@ -22,7 +22,7 @@ const ListingCarouselContent = ({rows}) => {
   switch (widget_cell.widget.fields.layout) {
     case 'default_layout':
     default:
-      container = <Swiper item={widget_cell.widget.fields}/>;
+      container = <Defaultlayout item={widget_cell.widget.fields}/>;
       break;
   }
 
