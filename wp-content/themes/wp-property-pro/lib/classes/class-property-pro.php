@@ -302,6 +302,8 @@ namespace UsabilityDynamics {
                   unset($feature['button_section']['so_field_container_state']);
                   unset($feature['testimonial_section']['so_field_container_state']);
                   $feature['testimonial_section']['image_src'] = $feature['testimonial_section']['image'] ? wp_get_attachment_image_src($feature['testimonial_section']['image'], 'full')[0] : '';
+                  $feature['title'] = htmlspecialchars_decode($feature['title']);
+                  $feature['description'] = htmlspecialchars_decode($feature['description']);
                 }
               }
             }
@@ -318,6 +320,7 @@ namespace UsabilityDynamics {
         ];
 
       }
+
       return $rows;
     }
 
