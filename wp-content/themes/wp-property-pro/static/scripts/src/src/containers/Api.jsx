@@ -131,13 +131,15 @@ class Api {
       "post-suggest": {
         "text": params.term,
         "completion": {
-          "field": "title_suggest"
+          "field": "title_suggest",
+          "size": 5
         }
       },
       "term-suggest": {
         "text": params.term,
         "completion": {
-          "field": "term_suggest"
+          "field": "term_suggest",
+          "size": 20
         }
       }
     };
@@ -283,7 +285,7 @@ class Api {
 
   static createESSearchQuery(params) {
     let terms = {};
-    terms['terms.' + params.tax] = [
+    terms["terms." + params.tax + ".name.raw"] = [
       params.term
     ];
 
@@ -295,18 +297,19 @@ class Api {
               "field": "post_meta.wpp_location_pin"
             }
           },
-          {
-            "terms": {
-              "terms.wpp_listing_status": [
-                'for-' + params.saleType.toLowerCase()
-              ]
-            }
-          },
-          {
-            "terms": {
-              "terms.wpp_listing_type": params.propertyTypes
-            }
-          }
+          // TODO temporary comment it, need some testing for it.
+          // {
+          //   "terms": {
+          //     "terms.wpp_listing_status.name.raw": [
+          //       'for-' + params.saleType.toLowerCase()
+          //     ]
+          //   }
+          // },
+          // {
+          //   "terms": {
+          //     "terms.wpp_listing_type.name.raw": params.propertyTypes
+          //   }
+          // }
         ]
       }
     };
@@ -358,7 +361,9 @@ class Api {
       "post_meta.rets_lot_size_area",
       "post_meta.rets_street_number",
       "post_meta.rets_directions",
-      "post_meta.rets_street_name"
+      "post_meta.rets_street_name",
+      "post_meta.rets_thumbnail_url",
+      "wpp_media"
     ]);
 
     return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
@@ -370,9 +375,10 @@ class Api {
 
     let esQuery = {
       index: Api.getEsIndex(),
-      type: Api.getEsType(),
+      type: 'post',
       method: Api.getEsMethod(),
       body: query,
+      size: 18
     };
     client.search(esQuery, function (error, response) {
       callback(response);

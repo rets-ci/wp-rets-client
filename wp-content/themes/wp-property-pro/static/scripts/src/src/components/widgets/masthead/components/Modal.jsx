@@ -115,7 +115,7 @@ class Modal extends Component {
                             {s.children.map((c, i) =>
                                 <li key={i}>
                                     <a href="#"
-                                       onClick={(eve) => self.handleResultClick.bind(this)(eve, s.key, c.text, searchType, saleType, propertyTypes)}>
+                                       onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes)}>
                                         <div className="container">{c.text}</div>
                                     </a>
                                 </li>

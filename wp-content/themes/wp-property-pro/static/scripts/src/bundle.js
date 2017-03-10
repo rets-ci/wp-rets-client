@@ -47854,7 +47854,7 @@
 	                  'a',
 	                  { href: '#',
 	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, s.key, c.text, searchType, saleType, propertyTypes);
+	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes);
 	                    } },
 	                  _react2.default.createElement(
 	                    'div',
@@ -48091,13 +48091,15 @@
 	        "post-suggest": {
 	          "text": params.term,
 	          "completion": {
-	            "field": "title_suggest"
+	            "field": "title_suggest",
+	            "size": 5
 	          }
 	        },
 	        "term-suggest": {
 	          "text": params.term,
 	          "completion": {
-	            "field": "term_suggest"
+	            "field": "term_suggest",
+	            "size": 20
 	          }
 	        }
 	      };
@@ -48243,21 +48245,13 @@
 	    key: 'createESSearchQuery',
 	    value: function createESSearchQuery(params) {
 	      var terms = {};
-	      terms['terms.' + params.tax] = [params.term];
+	      terms["terms." + params.tax + ".name.raw"] = [params.term];
 
 	      var query = {
 	        "bool": {
 	          "must": [{
 	            "exists": {
 	              "field": "post_meta.wpp_location_pin"
-	            }
-	          }, {
-	            "terms": {
-	              "terms.wpp_listing_status": ['for-' + params.saleType.toLowerCase()]
-	            }
-	          }, {
-	            "terms": {
-	              "terms.wpp_listing_type": params.propertyTypes
 	            }
 	          }]
 	        }
@@ -48292,7 +48286,7 @@
 
 	      var aggregations = JSON.stringify({});
 
-	      var source = JSON.stringify(["post_title", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_price_per_sqft", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name"]);
+	      var source = JSON.stringify(["post_title", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_price_per_sqft", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "wpp_media"]);
 
 	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
 	    }
@@ -48304,9 +48298,10 @@
 
 	      var esQuery = {
 	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
+	        type: 'post',
 	        method: Api.getEsMethod(),
-	        body: query
+	        body: query,
+	        size: 18
 	      };
 	      client.search(esQuery, function (error, response) {
 	        callback(response);
@@ -55929,8 +55924,8 @@
 	      var _this2 = this;
 
 	      var initialCoordinates = {
-	        lat: +this.props.properties[0]._source.tax_input.location_latitude[0],
-	        lng: +this.props.properties[0]._source.tax_input.location_longitude[0]
+	        lat: +this.props.properties[0]._source.post_meta.wpp_location_latitude[0],
+	        lng: +this.props.properties[0]._source.post_meta.wpp_location_longitude[0]
 	      };
 	      this.map = new window.google.maps.Map(this.mapElement, {
 	        center: initialCoordinates,
@@ -55960,7 +55955,7 @@
 	      var _this3 = this;
 
 	      properties.forEach(function (p) {
-	        var latLng = new window.google.maps.LatLng(p._source.tax_input.location_latitude, p._source.tax_input.location_longitude);
+	        var latLng = new window.google.maps.LatLng(p._source.post_meta.wpp_location_latitude, p._source.post_meta.wpp_location_longitude);
 	        var marker = new window.google.maps.Marker({
 	          position: latLng,
 	          map: _this3.map
@@ -56065,7 +56060,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'card-img' },
-	                  _react2.default.createElement('img', { className: 'card-img-top', src: p._source.meta_input ? _Util2.default.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, '400x230') : '', alt: 'Card image cap' }),
+	                  _react2.default.createElement('img', { className: 'card-img-top', src: p._source.post_meta ? _Util2.default.getThumbnailUrlBySize(p._source.post_meta.rets_thumbnail_url, '400x230') : '', alt: 'Card image cap' }),
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'direction-nav' },
@@ -56090,7 +56085,7 @@
 	                    _react2.default.createElement(
 	                      'span',
 	                      { className: 'price' },
-	                      (0, _numeral2.default)(p._source.tax_input.price[0]).format('$0,0.00')
+	                      (0, _numeral2.default)(_lodash2.default.get(p, '_source.post_meta.rets_price_per_sqft[0]', 0)).format('$0,0.00')
 	                    ),
 	                    _react2.default.createElement(
 	                      'span',
@@ -56127,17 +56122,17 @@
 	                    _react2.default.createElement(
 	                      'li',
 	                      null,
-	                      p._source.tax_input.bedrooms ? p._source.tax_input.bedrooms[0] + ' Bed' : ''
+	                      p._source.post_meta.rets_beds ? p._source.post_meta.rets_beds[0] + ' Bed' : ''
 	                    ),
 	                    _react2.default.createElement(
 	                      'li',
 	                      null,
-	                      p._source.tax_input.bathrooms ? p._source.tax_input.bedrooms[0] + ' Bath' : ''
+	                      p._source.post_meta.rets_total_baths ? p._source.post_meta.rets_total_baths[0] + ' Bath' : ''
 	                    ),
 	                    _react2.default.createElement(
 	                      'li',
 	                      null,
-	                      p._source.tax_input.price_per_sqft ? p._source.tax_input.bedrooms[0] + ' SF' : ''
+	                      p._source.post_meta.rets_price_per_sqft ? p._source.post_meta.rets_price_per_sqft[0] + ' SF' : ''
 	                    )
 	                  )
 	                )
