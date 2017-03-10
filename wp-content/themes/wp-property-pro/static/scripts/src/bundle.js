@@ -48835,6 +48835,8 @@
 	      console.log('component did mount');
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        preloadImages: false,
+	        lazyLoadingOnTransitionStart: true,
+	        effect: 'fade',
 	        lazyLoading: true,
 	        loop: true
 	      });

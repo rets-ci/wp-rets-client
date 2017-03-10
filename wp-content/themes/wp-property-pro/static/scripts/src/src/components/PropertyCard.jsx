@@ -19,6 +19,8 @@ export default class PropertyCard extends Component {
     console.log('component did mount');
     this.swiper = Swiper.init(this.swiperElement, {
       preloadImages: false,
+      lazyLoadingOnTransitionStart: true,
+      effect: 'fade',
       lazyLoading: true,
       loop: true
     });
