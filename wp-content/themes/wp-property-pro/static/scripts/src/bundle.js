@@ -47899,6 +47899,14 @@
 	          ) : null
 	        );
 	      });
+
+	      var placeholder = 'Address, City, Zip, or Neighborhood.';
+	      var inputClasses = 'form-control';
+	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
+	        placeholder = 'Address, City, Zip.';
+	        inputClasses = 'form-control withPadding';
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'search-modal', onKeyDown: this.handleKeyPress.bind(this), style: { display: this.props.open ? 'block' : 'none' } },
@@ -47918,7 +47926,7 @@
 	            _react2.default.createElement('i', { className: 'fa fa-search' }),
 	            _react2.default.createElement('input', {
 	              autoComplete: 'off',
-	              className: 'form-control',
+	              className: inputClasses,
 	              id: _lib.Lib.THEME_PREFIX + "search-input",
 	              onChange: this.handleSearchValueChange.bind(this),
 	              ref: function ref(input) {
@@ -47926,9 +47934,9 @@
 	              },
 	              type: 'text',
 	              value: this.state.searchValue,
-	              placeholder: 'Address, City, Zip, or Neighborhood'
+	              placeholder: placeholder
 	            }),
-	            _react2.default.createElement(
+	            window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
 	              'button',
 	              { type: 'button', className: 'btn btn-primary' },
 	              'Search'

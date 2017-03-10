@@ -125,6 +125,14 @@ class Modal extends Component {
                 </div>
             )
         });
+
+      let placeholder = 'Address, City, Zip, or Neighborhood.';
+      let inputClasses = 'form-control';
+      if(window.innerWidth < Lib.MOBILE_WIDTH){
+        placeholder = 'Address, City, Zip.';
+        inputClasses = 'form-control withPadding'
+      }
+
         return (
             <div className="search-modal" onKeyDown={this.handleKeyPress.bind(this)} style={{display: this.props.open ? 'block' : 'none'}}>
                 <a href="#" className="close-panel" onClick={(e) => {e.preventDefault(); this.props.closeModal();}}>
@@ -135,7 +143,7 @@ class Modal extends Component {
                         <i className="fa fa-search"></i>
                         <input
                             autoComplete="off"
-                            className="form-control"
+                            className={inputClasses}
                             id={Lib.THEME_PREFIX + "search-input"}
                             onChange={this.handleSearchValueChange.bind(this)}
                             ref={(input) => {
@@ -143,9 +151,13 @@ class Modal extends Component {
                             }}
                             type="text"
                             value={this.state.searchValue}
-                            placeholder="Address, City, Zip, or Neighborhood"
+                            placeholder={placeholder}
                         />
-                        <button type="button" className="btn btn-primary">Search</button>
+                      {
+                        window.innerWidth < Lib.MOBILE_WIDTH
+                          ? null
+                          : <button type="button" className="btn btn-primary">Search</button>
+                      }
                     </div>
                 </form>
                 <div className="search-modal-box">
