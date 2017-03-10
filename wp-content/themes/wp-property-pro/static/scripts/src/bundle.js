@@ -55819,8 +55819,8 @@
 	      };
 	      var query = _Api2.default.createESSearchQuery(searchParams);
 	      _Api2.default.search(query, function (response) {
-	        if (response.hits.total) {
-	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, false));
+	        if (_lodash2.default.get(response, 'hits.total', null)) {
+	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
 	        } else {
 	          console.log('query with params returned no data');
 	        }
@@ -55828,8 +55828,8 @@
 	    },
 	    doSearchWithQuery: function doSearchWithQuery(query, append) {
 	      _Api2.default.search(query, function (response) {
-	        if (response.hits.hits.length) {
-	          dispatch((0, _index.setSearchResults)(query, response.hits.hits, response.hits.total, append));
+	        if (_lodash2.default.get(response, 'hits.total', null)) {
+	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
 	          console.log('query with standard query returned no data');
 	        }
