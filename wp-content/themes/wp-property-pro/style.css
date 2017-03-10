@@ -116,6 +116,11 @@
     cursor: pointer;
 }
 
+.top-panel .logo{
+    width: 34px;
+    float: none;
+}
+
 /*
 Red Door Company Styles
 Date: 2017-02-07
