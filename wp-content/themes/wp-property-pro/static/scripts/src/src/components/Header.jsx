@@ -7,7 +7,7 @@ import _ from 'lodash'
 
 const mapStateToProps = (state) => {
   return {
-    post: _.get(state, 'postState.post', {})
+    routing: state.routing
   }
 };
 
@@ -19,15 +19,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({post, openUserPanel}) => {
-  if(_.get(post, 'propertypro_toolbar_layout', null) !== null || _.replace(location.pathname, '/', '') === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
-    return (
-      <HeaderSearch openUserPanel={openUserPanel} />
-    );
+const HeaderContent = ({routing, openUserPanel}) => {
+  let pathname = routing.locationBeforeTransitions.pathname;
+  let headerElement;
+  if( _.replace(pathname, '/', '') === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
+    headerElement = <HeaderSearch openUserPanel={openUserPanel} />;
+  } else {
+    headerElement = <HeaderDefault openUserPanel={openUserPanel} />;
   }
 
   return (
-    <HeaderDefault openUserPanel={openUserPanel} />
+    <div>{headerElement}</div>
   );
 };
 
