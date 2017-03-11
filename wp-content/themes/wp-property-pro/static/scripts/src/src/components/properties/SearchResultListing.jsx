@@ -20,7 +20,7 @@ class SearchResultListing extends Component {
              <div className="col-sm-6" key={i}>
                <div className="card">
                  <div className="card-img">
-                   <img className="card-img-top" src={p._source.meta_input ? Util.getThumbnailUrlBySize(p._source.meta_input.rets_thumbnail_url, '400x230') : ''} alt="Card image cap" />
+                   <img className="card-img-top" src={p._source.post_meta ? Util.getThumbnailUrlBySize(p._source.post_meta.rets_thumbnail_url, '400x230') : ''} alt="Card image cap" />
                    <ul className="direction-nav">
                       <li><a className="nav-prev" href="#"></a></li>
                       <li><a className="nav-next" href="#"></a></li>
@@ -28,7 +28,7 @@ class SearchResultListing extends Component {
                  </div>
                  <div className="card-block">
                    <div className="listing-top">
-                      <span className="price">{numeral(p._source.tax_input.price[0]).format('$0,0.00')}</span>
+                      <span className="price">{numeral(_.get(p, '_source.post_meta.rets_price_per_sqft[0]', 0)).format('$0,0.00')}</span>
                       <span className="action-btn-group">
                         <a href="#" className="favorite active" title="Save as favorite"><i className="fa fa-heart" aria-hidden="true"></i></a>
                         <a href="#" className="hide" title="Hide"><i className="fa fa-eye-slash" aria-hidden="true"></i></a>
@@ -48,9 +48,9 @@ class SearchResultListing extends Component {
                    }
 
                    <ul className="liting-info-box">
-                      <li>{p._source.tax_input.bedrooms ? p._source.tax_input.bedrooms[0] + ' Bed' : ''}</li>
-                      <li>{p._source.tax_input.bathrooms ? p._source.tax_input.bedrooms[0] + ' Bath' : ''}</li>
-                      <li>{p._source.tax_input.price_per_sqft ? p._source.tax_input.bedrooms[0] + ' SF' : ''}</li>
+                      <li>{p._source.post_meta.rets_beds ? p._source.post_meta.rets_beds[0] + ' Bed' : ''}</li>
+                      <li>{p._source.post_meta.rets_total_baths ? p._source.post_meta.rets_total_baths[0] + ' Bath' : ''}</li>
+                      <li>{p._source.post_meta.rets_price_per_sqft ? p._source.post_meta.rets_price_per_sqft[0] + ' SF' : ''}</li>
                    </ul>
                  </div>
                </div>

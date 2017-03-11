@@ -1,21 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import WidgetsUtil from '../WidgetsUtil.jsx';
 import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import Modal from './components/Modal.jsx';
 
 const mapStateToProps = (state) => {
     return {
-        rows: _.get(state, 'postState.rows', []),
         open: state.modal ? state.modal.openModal : false
     }
 };
 
-const MastheadContent = ({rows, open}) => {
-
-    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Masthead_Widget', rows);
+const MastheadContent = ({widget_cell, open}) => {
 
     if (!widget_cell){
         return null;

@@ -1,18 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import WidgetsUtil from '../WidgetsUtil.jsx';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
 import _ from 'lodash';
 
-const mapStateToProps = (state) => {
-    return {
-        rows: _.get(state, 'postState.rows', [])
-    }
-};
 
-const CalloutContent = ({rows}) => {
-
-    let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Callout_Widget', rows);
+const Callout = ({widget_cell}) => {
 
     if (!widget_cell){
         return null;
@@ -42,9 +34,5 @@ const CalloutContent = ({rows}) => {
     </section>
     );
 };
-
-const Callout = connect(
-    mapStateToProps
-)(CalloutContent);
 
 export default Callout;

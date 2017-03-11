@@ -1,20 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import WidgetsUtil from '../WidgetsUtil.jsx'
 import _ from 'lodash'
 import IconLayout from './layouts/IconLayout.jsx'
 import TextLayout from './layouts/TextLayout.jsx'
 
 const mapStateToProps = (state) => {
   return {
-    rows: _.get(state, 'postState.rows'),
     currentUrl: _.get(state, 'postState.post.post_url', ''),
   }
 };
 
-const SubnavigationContent = ({rows, currentUrl}) => {
-
-  let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Subnavigation_Widget', rows);
+const SubnavigationContent = ({widget_cell, currentUrl}) => {
 
   if (!widget_cell) {
     return null;

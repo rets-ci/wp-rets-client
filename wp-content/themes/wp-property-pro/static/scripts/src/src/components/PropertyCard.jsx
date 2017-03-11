@@ -19,6 +19,8 @@ export default class PropertyCard extends Component {
     console.log('component did mount');
     this.swiper = Swiper.init(this.swiperElement, {
       preloadImages: false,
+      lazyLoadingOnTransitionStart: true,
+      effect: 'fade',
       lazyLoading: true,
       loop: true
     });
@@ -35,7 +37,7 @@ export default class PropertyCard extends Component {
   render() {
     let {
       gallery_images,
-      permalink,
+      relative_permalink,
       address,
       full_address,
       beds,
@@ -50,7 +52,7 @@ export default class PropertyCard extends Component {
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)}>
+                <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
                   <img
                     alt="Card image cap"
                     className="swiper-lazy"
@@ -81,7 +83,7 @@ export default class PropertyCard extends Component {
             } } href="#"></a></li>
           </ul>
         </div>
-        <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, permalink)}>
+        <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className="listing-top">
             <span className="price">${price}</span>
             <span className="action-btn-group">

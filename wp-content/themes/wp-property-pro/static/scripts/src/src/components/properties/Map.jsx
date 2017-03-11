@@ -25,8 +25,8 @@ export default class Map extends Component {
 
   componentDidMount() {
     let initialCoordinates = {
-      lat: +this.props.properties[0]._source.tax_input.location_latitude[0],
-      lng: +this.props.properties[0]._source.tax_input.location_longitude[0]
+      lat: +this.props.properties[0]._source.post_meta.wpp_location_latitude[0],
+      lng: +this.props.properties[0]._source.post_meta.wpp_location_longitude[0]
     };
     this.map = new window.google.maps.Map(this.mapElement, {
       center: initialCoordinates,
@@ -54,7 +54,7 @@ export default class Map extends Component {
 
   setPropertyMarkers(properties) {
     properties.forEach((p) => {
-      let latLng = new window.google.maps.LatLng(p._source.tax_input.location_latitude ,p._source.tax_input.location_longitude);
+      let latLng = new window.google.maps.LatLng(p._source.post_meta.wpp_location_latitude ,p._source.post_meta.wpp_location_longitude);
       let marker = new window.google.maps.Marker({
         position: latLng,
         map: this.map

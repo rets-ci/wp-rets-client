@@ -263,7 +263,7 @@ namespace UsabilityDynamics {
             /** Update posts array */
             foreach($field as &$post){
               $post->thumbnail = get_the_post_thumbnail_url($post->ID);
-              $post->permalink = str_replace(home_url(), "", get_permalink($post));
+              $post->relative_permalink = str_replace(home_url(), "", get_permalink($post));
               $property_detail = get_property( $post->ID );
               $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
               $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
