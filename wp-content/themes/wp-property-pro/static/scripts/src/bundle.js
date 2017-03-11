@@ -56022,13 +56022,24 @@
 	var SearchResultListing = function (_Component) {
 	  _inherits(SearchResultListing, _Component);
 
-	  function SearchResultListing() {
+	  function SearchResultListing(props) {
 	    _classCallCheck(this, SearchResultListing);
 
-	    return _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).call(this, props));
+
+	    _this.state = { loading: false };
+	    return _this;
 	  }
 
 	  _createClass(SearchResultListing, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.properties !== this.props.properties) {
+	        console.log('resetting loading');
+	        this.setState({ loading: false });
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -56137,6 +56148,12 @@
 	          _react2.default.createElement(
 	            'div',
 	            { style: { float: 'right' } },
+	            this.state.loading ? _react2.default.createElement(
+	              'div',
+	              { className: 'spinner' },
+	              _react2.default.createElement('div', { className: 'double-bounce1' }),
+	              _react2.default.createElement('div', { className: 'double-bounce2' })
+	            ) : null,
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -56145,7 +56162,9 @@
 	              ' results'
 	            ),
 	            _react2.default.createElement(_reactWaypoint2.default, {
-	              onEnter: this.props.seeMoreHandler
+	              onEnter: function onEnter() {
+	                _this2.setState({ loading: true });_this2.props.seeMoreHandler();
+	              }
 	            })
 	          )
 	        ) : null

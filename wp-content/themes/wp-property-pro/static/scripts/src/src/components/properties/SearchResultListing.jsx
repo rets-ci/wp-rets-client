@@ -12,6 +12,18 @@ class SearchResultListing extends Component {
     seeMoreHandler: PropTypes.func.isRequired
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {loading: false};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.properties !== this.props.properties) {
+      console.log('resetting loading');
+      this.setState({loading: false});
+    }
+  }
+
   render() {
     return (
       <div className="listing-wrap" ref={(r) => this.listingWrapElement = r}>
@@ -60,10 +72,15 @@ class SearchResultListing extends Component {
         {this.props.allowPagination ?
           <div style={{overflow: 'hidden'}}>
             <div style={{float: 'right'}}>
-
+              {this.state.loading ?
+                <div className="spinner">
+                  <div className="double-bounce1"></div>
+                  <div className="double-bounce2"></div>
+                </div>
+              : null}
               <p>Showing {this.props.properties.length} results</p>
               <Waypoint
-                onEnter={this.props.seeMoreHandler}
+                onEnter={() => { this.setState({loading: true}); this.props.seeMoreHandler(); }}
               />
             </div>
           </div>
