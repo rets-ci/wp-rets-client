@@ -1,17 +1,28 @@
-import {Lib} from '../../../../../lib.jsx';
+import {Lib} from '../lib.jsx';
 import React, {Component, PropTypes} from 'react';
-import Util from '../../../../Util.jsx';
+import Util from './Util.jsx';
+import Swiper from './Swiper.jsx';
+import {browserHistory} from 'react-router';
 
 export default class PropertyCard extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   }
 
+  handlePropertyClick(eve, url) {
+    eve.preventDefault();
+
+    browserHistory.push(url);
+  }
+
   componentDidMount() {
     console.log('component did mount');
-    this.swiper = new Swiper(this.swiperElement, {
+    this.swiper = Swiper.init(this.swiperElement, {
       preloadImages: false,
-      lazyLoading: true
+      lazyLoadingOnTransitionStart: true,
+      effect: 'fade',
+      lazyLoading: true,
+      loop: true
     });
   }
 
@@ -26,16 +37,22 @@ export default class PropertyCard extends Component {
   render() {
     let {
       gallery_images,
-      post_title,
+      relative_permalink,
+      address,
+      full_address,
+      beds,
+      baths,
+      price,
       thumbnail
     } = this.props.data;
+    let self = this;
     return (
       <div className="card card-homepage swiper-slide">
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide">
+                <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
                   <img
                     alt="Card image cap"
                     className="swiper-lazy"
@@ -56,13 +73,19 @@ export default class PropertyCard extends Component {
             </div>
           </div>
           <ul className="direction-nav">
-            <li><a className="nav-prev" onClick={(e) => { e.preventDefault(); return this.handleNavigation.bind(this)('prev'); } } href="#"></a></li>
-            <li><a className="nav-next" onClick={(e) => { e.preventDefault(); return this.handleNavigation.bind(this)('next'); } } href="#"></a></li>
+            <li><a className="nav-prev" onClick={(e) => {
+              e.preventDefault();
+              return this.handleNavigation.bind(this)('prev');
+            } } href="#"></a></li>
+            <li><a className="nav-next" onClick={(e) => {
+              e.preventDefault();
+              return this.handleNavigation.bind(this)('next');
+            } } href="#"></a></li>
           </ul>
         </div>
-        <div className="card-block">
+        <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className="listing-top">
-            <span className="price">$1,249,000</span>
+            <span className="price">${price}</span>
             <span className="action-btn-group">
               <a href="#" className="favorite active" title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
@@ -72,11 +95,11 @@ export default class PropertyCard extends Component {
               </a>
             </span>
           </div>
-          <h4 className="card-title">{post_title}</h4>
-          <p className="card-text">Durham, NC 27712</p>
+          <h4 className="card-title">{address}</h4>
+          <p className="card-text">{full_address}</p>
           <ul className="liting-info-box">
-            <li>3 Bed</li>
-            <li>2 Bath</li>
+            <li>{beds} Bed</li>
+            <li>{baths} Bath</li>
             <li>1,142 SF</li>
           </ul>
         </div>

@@ -42,8 +42,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       };
       let query = Api.createESSearchQuery(searchParams);
       Api.search(query, function (response) {
-        if (response.hits.hits.length) {
-          dispatch(setSearchResults(query, response.hits.hits, response.hits.total, false));
+        if (_.get(response, 'hits.total', null)) {
+          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
         } else {
           console.log('query with params returned no data');
         }
@@ -51,8 +51,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     doSearchWithQuery: (query, append) => {
       Api.search(query, response => {
-        if (response.hits.hits.length) {
-          dispatch(setSearchResults(query, response.hits.hits, response.hits.total, append));
+        if (_.get(response, 'hits.total', null)) {
+          dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
           console.log('query with standard query returned no data');
         }

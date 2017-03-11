@@ -102,6 +102,11 @@ class SearchContent extends Component {
       }
     }
 
+    let placeholder = 'Address, City, Zip, or Neighborhood.';
+    if(window.innerWidth < Lib.MOBILE_WIDTH){
+      placeholder = 'Address, City, Zip.';
+    }
+
     let self = this;
     return (
       <div className="search-box">
@@ -122,7 +127,7 @@ class SearchContent extends Component {
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
         <button className="btn btn-search" style={style} onClick={() => self.props.openSearchModal(true)} type="button">
-          <i className="fa fa-search"></i> Address, City, Zip, or Neighborhood.
+          <i className="fa fa-search"></i> {placeholder}
         </button>
       </div>
     );

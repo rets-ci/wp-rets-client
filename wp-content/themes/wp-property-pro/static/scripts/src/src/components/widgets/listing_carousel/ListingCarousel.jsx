@@ -1,18 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import WidgetsUtil from '../WidgetsUtil.jsx';
-import Swiper from './layouts/swiper/Index.jsx';
-import _ from 'lodash';
+import Defaultlayout from './layouts/Defaultlayout.jsx';
 
-const mapStateToProps = (state) => {
-  return {
-    rows: _.get(state, 'postState.rows', [])
-  }
-};
-
-const ListingCarouselContent = ({rows}) => {
-
-  let widget_cell = WidgetsUtil.getWidgetByKey('Property_Pro_Listing_Carousel_Widget', rows);
+const ListingCarousel = ({widget_cell}) => {
 
   if (!widget_cell) {
     return null;
@@ -22,7 +11,7 @@ const ListingCarouselContent = ({rows}) => {
   switch (widget_cell.widget.fields.layout) {
     case 'default_layout':
     default:
-      container = <Swiper item={widget_cell.widget.fields}/>;
+      container = <Defaultlayout item={widget_cell.widget.fields}/>;
       break;
   }
 
@@ -32,9 +21,5 @@ const ListingCarouselContent = ({rows}) => {
     </section>
   );
 };
-
-const ListingCarousel = connect(
-  mapStateToProps
-)(ListingCarouselContent);
 
 export default ListingCarousel;

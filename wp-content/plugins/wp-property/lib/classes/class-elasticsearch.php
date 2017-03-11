@@ -212,10 +212,15 @@ namespace UsabilityDynamics\WPP {
        */
       public function post_title_suggest( $post_args, $post_id ) {
 
+        $input = array(
+          $post_args['post_title'],
+          strtolower( $post_args['post_title'] ),
+          str_replace( array( '-' ), ' ', strtolower( sanitize_title( $post_args['post_title'] ) ) ),
+          str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $post_args['post_title'] ) ) ),
+        );
+
         $post_args['title_suggest'] = array(
-          "input" => array(
-            $post_args['post_title']
-          ),
+          "input" => $input,
           "output" => $post_args['post_title'],
           "payload" => array(
             "post_id" => $post_id,
@@ -227,11 +232,6 @@ namespace UsabilityDynamics\WPP {
         );
 
         $post_args['title_suggest'] = apply_filters( 'wpp:elastic:title_suggest', $post_args['title_suggest'], $post_args, $post_id );
-
-        // lowercase/tokenize fields.
-        foreach( (array) $post_args['title_suggest']['input'] as $_input_index => $_input_vaue ) {
-          $post_args['title_suggest']['input'][ $_input_index  ] = str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $_input_vaue ) ) );
-        }
 
         return $post_args;
 
