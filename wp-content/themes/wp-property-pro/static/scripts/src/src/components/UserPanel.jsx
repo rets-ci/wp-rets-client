@@ -1,28 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {setUserData} from '../actions/index.jsx';
+import {toggleUserPanel} from '../actions/index.jsx';
 import _ from 'lodash'
 
 const mapStateToProps = (state) => {
-    return {
-        userData: _.get(state, 'userDataState', {})
-    }
+  return {
+    panelOpen: state.panel.open
+  }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        closeUserPanel: () => {
-            let userData = Object.assign({}, ownProps.userData, {
-                panelOpened: false
-            });
-
-            dispatch(setUserData(userData));
-        }
+  return {
+    closeUserPanel: () => {
+      dispatch(toggleUserPanel(false));
     }
+  }
 };
 
-const UserPanelContent = ({userData, closeUserPanel}) => (
-    <div className={"user-panel " + (_.get(userData, 'panelOpened', false) === true ? "on" : "")}>
+const UserPanelContent = ({panelOpen, closeUserPanel}) => (
+    <div className={"user-panel " + (panelOpen ? "on" : "")}>
         <a href="#" className="close-panel" onClick={(event) => {
             closeUserPanel();
             event.preventDefault();

@@ -1,25 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {setUserData} from '../actions/index.jsx';
+import {toggleUserPanel} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx'
 import HeaderSearch from './Headers/HeaderSearch.jsx'
 import _ from 'lodash'
 
 const mapStateToProps = (state) => {
   return {
-    post: _.get(state, 'postState.post', {}),
-    userData: _.get(state, 'userDataState', {})
+    post: _.get(state, 'postState.post', {})
   }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openUserPanel: () => {
-      let userData = Object.assign({}, ownProps.userData, {
-        panelOpened: true
-      });
-
-      dispatch(setUserData(userData));
+      dispatch(toggleUserPanel(true));
     }
   }
 };

@@ -134,71 +134,71 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
 	var addPost = exports.addPost = function addPost(post) {
-	    return {
-	        type: _lib.Lib.ADD_POST_ACTION,
-	        post: post
-	    };
+	  return {
+	    type: _lib.Lib.ADD_POST_ACTION,
+	    post: post
+	  };
 	};
 
 	var openModal = exports.openModal = function openModal(open) {
-	    return {
-	        type: _lib.Lib.TOGGLE_MODAL_ACTION,
-	        open: open
-	    };
+	  return {
+	    type: _lib.Lib.TOGGLE_MODAL_ACTION,
+	    open: open
+	  };
 	};
 
 	var setSearchProps = exports.setSearchProps = function setSearchProps(searchProps) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
-	        searchProps: searchProps
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
+	    searchProps: searchProps
+	  };
 	};
 
 	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
-	        append: append,
-	        query: query,
-	        searchResults: searchResults,
-	        totalProps: total
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
+	    append: append,
+	    query: query,
+	    searchResults: searchResults,
+	    totalProps: total
+	  };
 	};
 
 	var setSearchType = exports.setSearchType = function setSearchType(searchObject) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_TYPE,
-	        searchType: searchObject.searchType,
-	        saleType: searchObject.saleType,
-	        propertyTypes: searchObject.propertyTypes
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_TYPE,
+	    searchType: searchObject.searchType,
+	    saleType: searchObject.saleType,
+	    propertyTypes: searchObject.propertyTypes
+	  };
 	};
 
 	var setFilterTerms = exports.setFilterTerms = function setFilterTerms(filterTerms) {
-	    return {
-	        type: _lib.Lib.SET_FILTER_TERMS_ACTION,
-	        filterTerms: filterTerms
-	    };
+	  return {
+	    type: _lib.Lib.SET_FILTER_TERMS_ACTION,
+	    filterTerms: filterTerms
+	  };
 	};
 
-	var setUserData = exports.setUserData = function setUserData(userData) {
-	    return {
-	        type: _lib.Lib.SET_USER_DATA_ACTION,
-	        userData: userData
-	    };
+	var toggleUserPanel = exports.toggleUserPanel = function toggleUserPanel(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_USER_PANEL,
+	    open: open
+	  };
 	};
 
 	var setTestimonialsActiveItem = exports.setTestimonialsActiveItem = function setTestimonialsActiveItem(activeItem) {
-	    return {
-	        type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
-	        activeItem: activeItem
-	    };
+	  return {
+	    type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+	    activeItem: activeItem
+	  };
 	};
 
 /***/ },
@@ -208,31 +208,31 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var Lib = exports.Lib = {
-	    ADD_POST_ACTION: 'ADD_POST',
-	    INIT_MENU_ACTION: 'INIT_MENU',
-	    ADD_MAP_ACTION: 'ADD_MAP',
-	    ADD_MARKER_ACTION: 'ADD_MARKER',
-	    TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
-	    SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
-	    SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
-	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
-	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
-	    SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
-	    SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
-
-	    THEME_PREFIX: 'wp-property-pro-',
-	    STRING_ARRAY_DELIMITER: '-',
-	    URL_DELIMITER: '/',
-	    EXTENSION_DELIMITER: '.',
-	    PROPERTY_LISTING_IMAGE_SIZE: '400x230',
-	    PROPERTY_PER_PAGE: 18,
-	    MIN_SEARCH_KEY_LENGTH: 3,
-	    TOP_AGGREGATIONS_COUNT: 5,
-	    MOBILE_WIDTH: 768
+	  ADD_MAP_ACTION: 'ADD_MAP',
+	  ADD_MARKER_ACTION: 'ADD_MARKER',
+	  ADD_POST_ACTION: 'ADD_POST',
+	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
+	  EXTENSION_DELIMITER: '.',
+	  INIT_MENU_ACTION: 'INIT_MENU',
+	  MIN_SEARCH_KEY_LENGTH: 3,
+	  MOBILE_WIDTH: 768,
+	  PROPERTY_LISTING_IMAGE_SIZE: '400x230',
+	  PROPERTY_PER_PAGE: 18,
+	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
+	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
+	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
+	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
+	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
+	  SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
+	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
+	  STRING_ARRAY_DELIMITER: '-',
+	  THEME_PREFIX: 'wp-property-pro-',
+	  TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
+	  TOP_AGGREGATIONS_COUNT: 5,
+	  URL_DELIMITER: '/'
 	};
 
 /***/ },
@@ -4386,19 +4386,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    post: _lodash2.default.get(state, 'postState.post', {}),
-	    userData: _lodash2.default.get(state, 'userDataState', {})
+	    post: _lodash2.default.get(state, 'postState.post', {})
 	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    openUserPanel: function openUserPanel() {
-	      var userData = Object.assign({}, ownProps.userData, {
-	        panelOpened: true
-	      });
-
-	      dispatch((0, _index.setUserData)(userData));
+	      dispatch((0, _index.toggleUserPanel)(true));
 	    }
 	  };
 	};
@@ -28998,28 +28993,24 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        userData: _lodash2.default.get(state, 'userDataState', {})
+	        panelOpen: state.panel.open
 	    };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	    return {
 	        closeUserPanel: function closeUserPanel() {
-	            var userData = Object.assign({}, ownProps.userData, {
-	                panelOpened: false
-	            });
-
-	            dispatch((0, _index.setUserData)(userData));
+	            dispatch((0, _index.toggleUserPanel)(false));
 	        }
 	    };
 	};
 
 	var UserPanelContent = function UserPanelContent(_ref) {
-	    var userData = _ref.userData,
+	    var panelOpen = _ref.panelOpen,
 	        closeUserPanel = _ref.closeUserPanel;
 	    return _react2.default.createElement(
 	        'div',
-	        { className: "user-panel " + (_lodash2.default.get(userData, 'panelOpened', false) === true ? "on" : "") },
+	        { className: "user-panel " + (panelOpen ? "on" : "") },
 	        _react2.default.createElement(
 	            'a',
 	            { href: '#', className: 'close-panel', onClick: function onClick(event) {
@@ -58346,9 +58337,9 @@
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(340);
+	var _panel = __webpack_require__(340);
 
-	var _userData2 = _interopRequireDefault(_userData);
+	var _panel2 = _interopRequireDefault(_panel);
 
 	var _testimonialsCarousel = __webpack_require__(341);
 
@@ -58366,7 +58357,7 @@
 	    mapMarkersState: _mapMarkers2.default,
 	    routing: _reactRouterRedux.routerReducer,
 	    filterTermsState: _filterTerms2.default,
-	    userDataState: _userData2.default,
+	    panel: _panel2.default,
 	    testimonialsCarouselState: _testimonialsCarousel2.default
 	});
 
@@ -58620,23 +58611,28 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _lib = __webpack_require__(2);
 
-	var userData = function userData() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
+	var panel = function panel() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
+	  var action = arguments[1];
 
-	    switch (action.type) {
-	        case _lib.Lib.SET_USER_DATA_ACTION:
-	            return Object.assign({}, state, action.userData);
-	        default:
-	            return state;
-	    }
+	  switch (action.type) {
+	    case _lib.Lib.TOGGLE_USER_PANEL:
+	      return _extends({}, state, {
+	        open: action.open
+	      });
+	    default:
+	      return state;
+	  }
 	};
-	exports.default = userData;
+
+	exports.default = panel;
 
 /***/ },
 /* 341 */
