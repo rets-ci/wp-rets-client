@@ -4386,7 +4386,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    post: _lodash2.default.get(state, 'postState.post', {})
+	    routing: state.routing
 	  };
 	};
 
@@ -4399,14 +4399,24 @@
 	};
 
 	var HeaderContent = function HeaderContent(_ref) {
-	  var post = _ref.post,
+	  var routing = _ref.routing,
 	      openUserPanel = _ref.openUserPanel;
 
-	  if (_lodash2.default.get(post, 'propertypro_toolbar_layout', null) !== null || _lodash2.default.replace(location.pathname, '/', '') === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
-	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
+	  var pathname = routing.locationBeforeTransitions.pathname;
+	  // this will ensure that all "/" characters is removed from the string
+	  var pathRoot = pathname.replace(/\//g, '');
+	  var headerElement = void 0;
+	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
+	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
+	  } else {
+	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
 	  }
 
-	  return _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    headerElement
+	  );
 	};
 
 	var Header = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderContent);
@@ -47781,7 +47791,6 @@
 
 	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
-
 	      _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	      this.props.closeModal();
 	    }

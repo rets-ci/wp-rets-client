@@ -21,8 +21,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const HeaderContent = ({routing, openUserPanel}) => {
   let pathname = routing.locationBeforeTransitions.pathname;
+  // this will ensure that all "/" characters is removed from the string
+  let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
-  if( _.replace(pathname, '/', '') === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
+  if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
     headerElement = <HeaderSearch openUserPanel={openUserPanel} />;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel} />;
