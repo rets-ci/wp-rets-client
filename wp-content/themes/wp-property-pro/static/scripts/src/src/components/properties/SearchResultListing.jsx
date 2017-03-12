@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import numeral from 'numeral';
 import Util from '../Util.jsx';
+import LoadingIcon from '../LoadingIcon.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import Waypoint from 'react-waypoint';
@@ -73,10 +74,7 @@ class SearchResultListing extends Component {
           <div style={{overflow: 'hidden'}}>
             <div style={{float: 'right'}}>
               {this.state.loading ?
-                <div className="spinner">
-                  <div className="double-bounce1"></div>
-                  <div className="double-bounce2"></div>
-                </div>
+                <LoadingIcon />
               : null}
               <p>Showing {this.props.properties.length} results</p>
               <Waypoint

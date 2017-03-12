@@ -55654,6 +55654,10 @@
 
 	var _index = __webpack_require__(1);
 
+	var _LoadingIcon = __webpack_require__(343);
+
+	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
+
 	var _lib = __webpack_require__(2);
 
 	var _Map = __webpack_require__(316);
@@ -55840,11 +55844,7 @@
 	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length, properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
 	            )
 	          )
-	        ) : _react2.default.createElement(
-	          'p',
-	          null,
-	          'Loading results...'
-	        )
+	        ) : _react2.default.createElement(_LoadingIcon2.default, { style: { position: 'absolute', left: '50%', top: '30%' } })
 	      );
 	    }
 	  }]);
@@ -56010,6 +56010,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _LoadingIcon = __webpack_require__(343);
+
+	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
+
 	var _lib = __webpack_require__(2);
 
 	var _lodash = __webpack_require__(76);
@@ -56157,12 +56161,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { style: { float: 'right' } },
-	            this.state.loading ? _react2.default.createElement(
-	              'div',
-	              { className: 'spinner' },
-	              _react2.default.createElement('div', { className: 'double-bounce1' }),
-	              _react2.default.createElement('div', { className: 'double-bounce2' })
-	            ) : null,
+	            this.state.loading ? _react2.default.createElement(_LoadingIcon2.default, null) : null,
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -58716,6 +58715,60 @@
 	thunk.withExtraArgument = createThunkMiddleware;
 
 	exports['default'] = thunk;
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoadingIcon = function (_Component) {
+	  _inherits(LoadingIcon, _Component);
+
+	  function LoadingIcon() {
+	    _classCallCheck(this, LoadingIcon);
+
+	    return _possibleConstructorReturn(this, (LoadingIcon.__proto__ || Object.getPrototypeOf(LoadingIcon)).apply(this, arguments));
+	  }
+
+	  _createClass(LoadingIcon, [{
+	    key: "render",
+	    value: function render() {
+	      var style = this.props.style;
+
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "spinner", style: style },
+	        _react2.default.createElement("div", { className: "double-bounce1" }),
+	        _react2.default.createElement("div", { className: "double-bounce2" })
+	      );
+	    }
+	  }]);
+
+	  return LoadingIcon;
+	}(_react.Component);
+
+	;
+
+	exports.default = LoadingIcon;
 
 /***/ }
 /******/ ]);
