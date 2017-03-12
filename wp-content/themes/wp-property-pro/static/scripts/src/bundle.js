@@ -102,11 +102,12 @@
 	// Create an enhanced router history that syncs navigation events with the store
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
-	history.listen(function (location) {
-	  return _Util2.default.getPageContent(location.pathname, function (data) {
-	    store.dispatch((0, _index.addPost)(data.post));
-	  });
-	});
+	// commented out for now until we come up with a better solution
+	// history.listen(
+	//   location => Util.getPageContent(location.pathname, (data) => {
+	//     store.dispatch(addPost(data.post))
+	//   })
+	// );
 
 	// TODO temporary comment this, until done with elastic search API
 	// <Route path="/:sale/:tax/:term" component={MapSearchResults} />

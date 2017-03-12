@@ -23,11 +23,12 @@ store.dispatch(setSearchProps([]));
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
 
-history.listen(
-  location => Util.getPageContent(location.pathname, (data) => {
-    store.dispatch(addPost(data.post))
-  })
-);
+// commented out for now until we come up with a better solution
+// history.listen(
+//   location => Util.getPageContent(location.pathname, (data) => {
+//     store.dispatch(addPost(data.post))
+//   })
+// );
 
 // TODO temporary comment this, until done with elastic search API
 // <Route path="/:sale/:tax/:term" component={MapSearchResults} />
