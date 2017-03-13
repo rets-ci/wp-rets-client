@@ -48698,6 +48698,7 @@
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        slidesPerView: 'auto',
+	        centeredSlides: true,
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
 	        spaceBetween: 20,
