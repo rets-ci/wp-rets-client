@@ -238,6 +238,12 @@ namespace UsabilityDynamics\WPP {
           str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $post_args['post_title'] ) ) ),
         );
 
+        $parts = explode( ' ', $post_args['post_title'] );
+        foreach( $parts as $k => $v ) {
+          unset( $parts[ $k ] );
+          $input[] = trim( implode( ' ', $parts ) );
+        }
+
         $post_args['title_suggest'] = array(
           "input" => $input,
         );
