@@ -350,20 +350,22 @@ class Api {
       "permalink",
       "post_meta.google_place_id",
       "post_meta.formatted_address",
+      "post_meta.formatted_address_simple",
       "post_meta.wpp_location_pin",
       "post_meta.rets_list_date",
       "post_meta.rets_thumbnail_url",
       "terms.wpp_listing_type",
       "post_meta.rets_beds",
       "post_meta.rets_total_baths",
-      "post_meta.rets_price_per_sqft",
+      "post_meta.rets_list_price",
       "post_meta.rets_living_area",
       "post_meta.rets_lot_size_area",
       "post_meta.rets_street_number",
       "post_meta.rets_directions",
       "post_meta.rets_street_name",
       "post_meta.rets_thumbnail_url",
-      "wpp_media"
+      "wpp_media",
+      "tax_input"
     ]);
 
     return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
