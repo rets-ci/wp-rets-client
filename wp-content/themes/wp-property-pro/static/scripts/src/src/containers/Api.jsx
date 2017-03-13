@@ -294,45 +294,44 @@ class Api {
         "must": [
           {
             "exists": {
-              "field": "post_meta.wpp_location_pin"
+              "field": "wpp_location_pin"
             }
-          },
-          // TODO temporary comment it, need some testing for it.
-          // {
-          //   "terms": {
-          //     "terms.wpp_listing_status.name.raw": [
-          //       'for-' + params.saleType.toLowerCase()
-          //     ]
-          //   }
-          // },
-          // {
-          //   "terms": {
-          //     "terms.wpp_listing_type.name.raw": params.propertyTypes
-          //   }
-          // }
+          }
         ]
       }
     };
 
     if (params.locationFilter) {
       // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-      query.filter = Object.assign(query.filter, {
-        "filter": {
+      query.bool.filter = {
           "geo_bounding_box": {
-            "post_meta.wpp_location_pin": {
-              "top_left": {
-                "lat": "37.797962",
-                "lon": "-78.6787949"
-              },
+            "wpp_location_pin": {
+              "top_left":
+                {
+                  "lat": params.topLeft.lat,
+                  "lon": params.topLeft.lon
+                },
               "bottom_right": {
-                "lat": "35.797962",
-                "lon": "-74.6787949"
+                "lat": params.bottomRight.lat,
+                "lon": params.bottomRight.lon
               }
             }
           }
-        }
-      });
+        };
     } else {
+      // TODO temporary comment it, need some testing for it.
+      // query.bool.must.push({
+      //   "terms": {
+      //     "terms.wpp_listing_status.name.raw": [
+      //       'for-' + params.saleType.toLowerCase()
+      //     ]
+      //   }
+      // });
+      // query.bool.must.push({
+      //   "terms": {
+      //     "terms.wpp_listing_type.name.raw": params.propertyTypes
+      //   }
+      // });
       query.bool.must.push({"terms": terms});
     }
 

@@ -46,17 +46,16 @@ class Util extends React.Component {
       sw,
       ne
     } = params;
-    let coors = {
+    return {
       topLeft: {
-        lat: sw.lat,
-        lon: ne.lon
-      },
-      bottomRight: {
         lat: ne.lat,
         lon: sw.lon
+      },
+      bottomRight: {
+        lat: sw.lat,
+        lon: ne.lon
       }
     };
-    return coors;
   }
 
   static getPageContent(url, callback){
