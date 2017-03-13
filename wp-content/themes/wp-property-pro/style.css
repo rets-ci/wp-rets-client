@@ -911,6 +911,13 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .search-modal form i{
     margin-top: -15px;
 }
+
+/* testimonials */
+.sliderContent .slides > li {
+    width: 100%;
+    min-height: 235px;
+}
+
 /* spinner */
 
 .spinner {

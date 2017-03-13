@@ -294,45 +294,44 @@ class Api {
         "must": [
           {
             "exists": {
-              "field": "post_meta.wpp_location_pin"
+              "field": "wpp_location_pin"
             }
-          },
-          // TODO temporary comment it, need some testing for it.
-          // {
-          //   "terms": {
-          //     "terms.wpp_listing_status.name.raw": [
-          //       'for-' + params.saleType.toLowerCase()
-          //     ]
-          //   }
-          // },
-          // {
-          //   "terms": {
-          //     "terms.wpp_listing_type.name.raw": params.propertyTypes
-          //   }
-          // }
+          }
         ]
       }
     };
 
     if (params.locationFilter) {
       // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-      query.filter = Object.assign(query.filter, {
-        "filter": {
+      query.bool.filter = {
           "geo_bounding_box": {
-            "post_meta.wpp_location_pin": {
-              "top_left": {
-                "lat": "37.797962",
-                "lon": "-78.6787949"
-              },
+            "wpp_location_pin": {
+              "top_left":
+                {
+                  "lat": params.topLeft.lat,
+                  "lon": params.topLeft.lon
+                },
               "bottom_right": {
-                "lat": "35.797962",
-                "lon": "-74.6787949"
+                "lat": params.bottomRight.lat,
+                "lon": params.bottomRight.lon
               }
             }
           }
-        }
-      });
+        };
     } else {
+      // TODO temporary comment it, need some testing for it.
+      // query.bool.must.push({
+      //   "terms": {
+      //     "terms.wpp_listing_status.name.raw": [
+      //       'for-' + params.saleType.toLowerCase()
+      //     ]
+      //   }
+      // });
+      // query.bool.must.push({
+      //   "terms": {
+      //     "terms.wpp_listing_type.name.raw": params.propertyTypes
+      //   }
+      // });
       query.bool.must.push({"terms": terms});
     }
 
@@ -350,20 +349,22 @@ class Api {
       "permalink",
       "post_meta.google_place_id",
       "post_meta.formatted_address",
+      "post_meta.formatted_address_simple",
       "post_meta.wpp_location_pin",
       "post_meta.rets_list_date",
       "post_meta.rets_thumbnail_url",
       "terms.wpp_listing_type",
       "post_meta.rets_beds",
       "post_meta.rets_total_baths",
-      "post_meta.rets_price_per_sqft",
+      "post_meta.rets_list_price",
       "post_meta.rets_living_area",
       "post_meta.rets_lot_size_area",
       "post_meta.rets_street_number",
       "post_meta.rets_directions",
       "post_meta.rets_street_name",
       "post_meta.rets_thumbnail_url",
-      "wpp_media"
+      "wpp_media",
+      "tax_input"
     ]);
 
     return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
