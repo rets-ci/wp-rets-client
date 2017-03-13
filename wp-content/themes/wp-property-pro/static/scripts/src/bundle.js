@@ -102,11 +102,12 @@
 	// Create an enhanced router history that syncs navigation events with the store
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
-	history.listen(function (location) {
-	  return _Util2.default.getPageContent(location.pathname, function (data) {
-	    store.dispatch((0, _index.addPost)(data.post));
-	  });
-	});
+	// commented out for now until we come up with a better solution
+	// history.listen(
+	//   location => Util.getPageContent(location.pathname, (data) => {
+	//     store.dispatch(addPost(data.post))
+	//   })
+	// );
 
 	// TODO temporary comment this, until done with elastic search API
 	// <Route path="/:sale/:tax/:term" component={MapSearchResults} />
@@ -134,71 +135,71 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	exports.setTestimonialsActiveItem = exports.setUserData = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
 	var addPost = exports.addPost = function addPost(post) {
-	    return {
-	        type: _lib.Lib.ADD_POST_ACTION,
-	        post: post
-	    };
+	  return {
+	    type: _lib.Lib.ADD_POST_ACTION,
+	    post: post
+	  };
 	};
 
 	var openModal = exports.openModal = function openModal(open) {
-	    return {
-	        type: _lib.Lib.TOGGLE_MODAL_ACTION,
-	        open: open
-	    };
+	  return {
+	    type: _lib.Lib.TOGGLE_MODAL_ACTION,
+	    open: open
+	  };
 	};
 
 	var setSearchProps = exports.setSearchProps = function setSearchProps(searchProps) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
-	        searchProps: searchProps
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
+	    searchProps: searchProps
+	  };
 	};
 
 	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
-	        append: append,
-	        query: query,
-	        searchResults: searchResults,
-	        totalProps: total
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
+	    append: append,
+	    query: query,
+	    searchResults: searchResults,
+	    totalProps: total
+	  };
 	};
 
 	var setSearchType = exports.setSearchType = function setSearchType(searchObject) {
-	    return {
-	        type: _lib.Lib.SET_SEARCH_TYPE,
-	        searchType: searchObject.searchType,
-	        saleType: searchObject.saleType,
-	        propertyTypes: searchObject.propertyTypes
-	    };
+	  return {
+	    type: _lib.Lib.SET_SEARCH_TYPE,
+	    searchType: searchObject.searchType,
+	    saleType: searchObject.saleType,
+	    propertyTypes: searchObject.propertyTypes
+	  };
 	};
 
 	var setFilterTerms = exports.setFilterTerms = function setFilterTerms(filterTerms) {
-	    return {
-	        type: _lib.Lib.SET_FILTER_TERMS_ACTION,
-	        filterTerms: filterTerms
-	    };
+	  return {
+	    type: _lib.Lib.SET_FILTER_TERMS_ACTION,
+	    filterTerms: filterTerms
+	  };
 	};
 
-	var setUserData = exports.setUserData = function setUserData(userData) {
-	    return {
-	        type: _lib.Lib.SET_USER_DATA_ACTION,
-	        userData: userData
-	    };
+	var toggleUserPanel = exports.toggleUserPanel = function toggleUserPanel(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_USER_PANEL,
+	    open: open
+	  };
 	};
 
 	var setTestimonialsActiveItem = exports.setTestimonialsActiveItem = function setTestimonialsActiveItem(activeItem) {
-	    return {
-	        type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
-	        activeItem: activeItem
-	    };
+	  return {
+	    type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+	    activeItem: activeItem
+	  };
 	};
 
 /***/ },
@@ -208,31 +209,31 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var Lib = exports.Lib = {
-	    ADD_POST_ACTION: 'ADD_POST',
-	    INIT_MENU_ACTION: 'INIT_MENU',
-	    ADD_MAP_ACTION: 'ADD_MAP',
-	    ADD_MARKER_ACTION: 'ADD_MARKER',
-	    TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
-	    SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
-	    SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
-	    SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	    SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
-	    SET_USER_DATA_ACTION: 'SET_USER_DATA',
-	    SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
-	    SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
-
-	    THEME_PREFIX: 'wp-property-pro-',
-	    STRING_ARRAY_DELIMITER: '-',
-	    URL_DELIMITER: '/',
-	    EXTENSION_DELIMITER: '.',
-	    PROPERTY_LISTING_IMAGE_SIZE: '400x230',
-	    PROPERTY_PER_PAGE: 18,
-	    MIN_SEARCH_KEY_LENGTH: 3,
-	    TOP_AGGREGATIONS_COUNT: 5,
-	    MOBILE_WIDTH: 768
+	  ADD_MAP_ACTION: 'ADD_MAP',
+	  ADD_MARKER_ACTION: 'ADD_MARKER',
+	  ADD_POST_ACTION: 'ADD_POST',
+	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
+	  EXTENSION_DELIMITER: '.',
+	  INIT_MENU_ACTION: 'INIT_MENU',
+	  MIN_SEARCH_KEY_LENGTH: 3,
+	  MOBILE_WIDTH: 768,
+	  PROPERTY_LISTING_IMAGE_SIZE: '400x230',
+	  PROPERTY_PER_PAGE: 18,
+	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
+	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
+	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
+	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
+	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
+	  SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
+	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
+	  STRING_ARRAY_DELIMITER: '-',
+	  THEME_PREFIX: 'wp-property-pro-',
+	  TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
+	  TOP_AGGREGATIONS_COUNT: 5,
+	  URL_DELIMITER: '/'
 	};
 
 /***/ },
@@ -4386,32 +4387,37 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    post: _lodash2.default.get(state, 'postState.post', {}),
-	    userData: _lodash2.default.get(state, 'userDataState', {})
+	    routing: state.routing
 	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    openUserPanel: function openUserPanel() {
-	      var userData = Object.assign({}, ownProps.userData, {
-	        panelOpened: true
-	      });
-
-	      dispatch((0, _index.setUserData)(userData));
+	      dispatch((0, _index.toggleUserPanel)(true));
 	    }
 	  };
 	};
 
 	var HeaderContent = function HeaderContent(_ref) {
-	  var post = _ref.post,
+	  var routing = _ref.routing,
 	      openUserPanel = _ref.openUserPanel;
 
-	  if (_lodash2.default.get(post, 'propertypro_toolbar_layout', null) !== null || _lodash2.default.replace(location.pathname, '/', '') === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
-	    return _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
+	  var pathname = routing.locationBeforeTransitions.pathname;
+	  // this will ensure that all "/" characters is removed from the string
+	  var pathRoot = pathname.replace(/\//g, '');
+	  var headerElement = void 0;
+	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
+	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
+	  } else {
+	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
 	  }
 
-	  return _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    headerElement
+	  );
 	};
 
 	var Header = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderContent);
@@ -28998,28 +29004,24 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        userData: _lodash2.default.get(state, 'userDataState', {})
+	        panelOpen: state.panel.open
 	    };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	    return {
 	        closeUserPanel: function closeUserPanel() {
-	            var userData = Object.assign({}, ownProps.userData, {
-	                panelOpened: false
-	            });
-
-	            dispatch((0, _index.setUserData)(userData));
+	            dispatch((0, _index.toggleUserPanel)(false));
 	        }
 	    };
 	};
 
 	var UserPanelContent = function UserPanelContent(_ref) {
-	    var userData = _ref.userData,
+	    var panelOpen = _ref.panelOpen,
 	        closeUserPanel = _ref.closeUserPanel;
 	    return _react2.default.createElement(
 	        'div',
-	        { className: "user-panel " + (_lodash2.default.get(userData, 'panelOpened', false) === true ? "on" : "") },
+	        { className: "user-panel " + (panelOpen ? "on" : "") },
 	        _react2.default.createElement(
 	            'a',
 	            { href: '#', className: 'close-panel', onClick: function onClick(event) {
@@ -47790,7 +47792,6 @@
 
 	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
-
 	      _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
 	      this.props.closeModal();
 	    }
@@ -54617,7 +54618,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -55654,6 +55655,10 @@
 
 	var _index = __webpack_require__(1);
 
+	var _LoadingIcon = __webpack_require__(343);
+
+	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
+
 	var _lib = __webpack_require__(2);
 
 	var _Map = __webpack_require__(316);
@@ -55840,11 +55845,7 @@
 	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length, properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
 	            )
 	          )
-	        ) : _react2.default.createElement(
-	          'p',
-	          null,
-	          'Loading results...'
-	        )
+	        ) : _react2.default.createElement(_LoadingIcon2.default, { style: { position: 'absolute', left: '50%', top: '30%' } })
 	      );
 	    }
 	  }]);
@@ -56010,6 +56011,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _LoadingIcon = __webpack_require__(343);
+
+	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
+
 	var _lib = __webpack_require__(2);
 
 	var _lodash = __webpack_require__(76);
@@ -56031,13 +56036,24 @@
 	var SearchResultListing = function (_Component) {
 	  _inherits(SearchResultListing, _Component);
 
-	  function SearchResultListing() {
+	  function SearchResultListing(props) {
 	    _classCallCheck(this, SearchResultListing);
 
-	    return _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).call(this, props));
+
+	    _this.state = { loading: false };
+	    return _this;
 	  }
 
 	  _createClass(SearchResultListing, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.properties !== this.props.properties) {
+	        console.log('resetting loading');
+	        this.setState({ loading: false });
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -56146,6 +56162,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { style: { float: 'right' } },
+	            this.state.loading ? _react2.default.createElement(_LoadingIcon2.default, null) : null,
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -56154,7 +56171,9 @@
 	              ' results'
 	            ),
 	            _react2.default.createElement(_reactWaypoint2.default, {
-	              onEnter: this.props.seeMoreHandler
+	              onEnter: function onEnter() {
+	                _this2.setState({ loading: true });_this2.props.seeMoreHandler();
+	              }
 	            })
 	          )
 	        ) : null
@@ -58346,9 +58365,9 @@
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _userData = __webpack_require__(340);
+	var _panel = __webpack_require__(340);
 
-	var _userData2 = _interopRequireDefault(_userData);
+	var _panel2 = _interopRequireDefault(_panel);
 
 	var _testimonialsCarousel = __webpack_require__(341);
 
@@ -58366,7 +58385,7 @@
 	    mapMarkersState: _mapMarkers2.default,
 	    routing: _reactRouterRedux.routerReducer,
 	    filterTermsState: _filterTerms2.default,
-	    userDataState: _userData2.default,
+	    panel: _panel2.default,
 	    testimonialsCarouselState: _testimonialsCarousel2.default
 	});
 
@@ -58620,23 +58639,28 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _lib = __webpack_require__(2);
 
-	var userData = function userData() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
+	var panel = function panel() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
+	  var action = arguments[1];
 
-	    switch (action.type) {
-	        case _lib.Lib.SET_USER_DATA_ACTION:
-	            return Object.assign({}, state, action.userData);
-	        default:
-	            return state;
-	    }
+	  switch (action.type) {
+	    case _lib.Lib.TOGGLE_USER_PANEL:
+	      return _extends({}, state, {
+	        open: action.open
+	      });
+	    default:
+	      return state;
+	  }
 	};
-	exports.default = userData;
+
+	exports.default = panel;
 
 /***/ },
 /* 341 */
@@ -58692,6 +58716,60 @@
 	thunk.withExtraArgument = createThunkMiddleware;
 
 	exports['default'] = thunk;
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoadingIcon = function (_Component) {
+	  _inherits(LoadingIcon, _Component);
+
+	  function LoadingIcon() {
+	    _classCallCheck(this, LoadingIcon);
+
+	    return _possibleConstructorReturn(this, (LoadingIcon.__proto__ || Object.getPrototypeOf(LoadingIcon)).apply(this, arguments));
+	  }
+
+	  _createClass(LoadingIcon, [{
+	    key: "render",
+	    value: function render() {
+	      var style = this.props.style;
+
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "spinner", style: style },
+	        _react2.default.createElement("div", { className: "double-bounce1" }),
+	        _react2.default.createElement("div", { className: "double-bounce2" })
+	      );
+	    }
+	  }]);
+
+	  return LoadingIcon;
+	}(_react.Component);
+
+	;
+
+	exports.default = LoadingIcon;
 
 /***/ }
 /******/ ]);

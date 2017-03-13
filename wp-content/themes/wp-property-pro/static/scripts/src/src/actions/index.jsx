@@ -1,10 +1,10 @@
 import {Lib} from '../lib.jsx'
 
 export const addPost = (post) => {
-    return {
-        type: Lib.ADD_POST_ACTION,
-        post: post
-    }
+  return {
+    type: Lib.ADD_POST_ACTION,
+    post: post
+  }
 };
 
 export const openModal = (open) => {
@@ -15,20 +15,20 @@ export const openModal = (open) => {
 };
 
 export const setSearchProps = (searchProps) => {
-    return {
-        type: Lib.SET_SEARCH_PROPS_ACTION,
-        searchProps: searchProps
-    }
+  return {
+    type: Lib.SET_SEARCH_PROPS_ACTION,
+    searchProps: searchProps
+  }
 };
 
 export const setSearchResults = (query, searchResults, total, append) => {
-    return {
-        type: Lib.SET_SEARCH_RESULTS_ACTION,
-        append: append,
-        query: query,
-        searchResults: searchResults,
-        totalProps: total
-    }
+  return {
+    type: Lib.SET_SEARCH_RESULTS_ACTION,
+    append: append,
+    query: query,
+    searchResults: searchResults,
+    totalProps: total
+  }
 };
 
 export const setSearchType = searchObject => {
@@ -41,22 +41,22 @@ export const setSearchType = searchObject => {
 };
 
 export const setFilterTerms = (filterTerms) => {
-    return {
-        type: Lib.SET_FILTER_TERMS_ACTION,
-        filterTerms: filterTerms
-    }
+  return {
+    type: Lib.SET_FILTER_TERMS_ACTION,
+    filterTerms: filterTerms
+  }
 };
 
-export const setUserData = (userData) => {
-    return {
-        type: Lib.SET_USER_DATA_ACTION,
-        userData: userData
-    }
-};
+export const toggleUserPanel = (open) => {
+  return {
+    type: Lib.TOGGLE_USER_PANEL,
+    open: open
+  }
+}
 
 export const setTestimonialsActiveItem = (activeItem) => {
-    return {
-        type: Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
-        activeItem: activeItem
-    }
+  return {
+    type: Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+    activeItem: activeItem
+  }
 };

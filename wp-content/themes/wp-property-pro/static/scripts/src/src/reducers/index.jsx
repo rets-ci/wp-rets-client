@@ -8,7 +8,7 @@ import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
 import searchType from './searchType.jsx';
 import filterTermsState from './filterTerms.jsx';
-import userDataState from './userData.jsx';
+import panel from './panel.jsx';
 import testimonialsCarouselState from './testimonialsCarousel.jsx';
 
 const propertyProApp = combineReducers({
@@ -21,7 +21,7 @@ const propertyProApp = combineReducers({
     mapMarkersState,
     routing: routerReducer,
     filterTermsState,
-    userDataState,
+    panel,
     testimonialsCarouselState
 });
 

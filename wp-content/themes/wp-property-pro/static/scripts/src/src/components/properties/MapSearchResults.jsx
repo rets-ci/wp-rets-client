@@ -1,6 +1,7 @@
 import Api from '../../containers/Api.jsx';
 import {setSearchResults} from '../../actions/index.jsx';
-import {Lib} from '../../lib.jsx'
+import LoadingIcon from '../LoadingIcon.jsx';
+import {Lib} from '../../lib.jsx';
 import Map from './Map.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -131,7 +132,7 @@ class MapSearchResults extends Component {
               </div>
             </section>
           </div>
-        : <p>Loading results...</p>}
+        : <LoadingIcon style={{position: 'absolute', left: '50%', top: '30%'}} />}
       </div>
     )
   }

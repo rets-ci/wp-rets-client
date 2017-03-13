@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import numeral from 'numeral';
 import Util from '../Util.jsx';
+import LoadingIcon from '../LoadingIcon.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import Waypoint from 'react-waypoint';
@@ -10,6 +11,18 @@ class SearchResultListing extends Component {
     allowPagination: PropTypes.bool.isRequired,
     properties: PropTypes.array.isRequired,
     seeMoreHandler: PropTypes.func.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {loading: false};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.properties !== this.props.properties) {
+      console.log('resetting loading');
+      this.setState({loading: false});
+    }
   }
 
   render() {
@@ -60,10 +73,12 @@ class SearchResultListing extends Component {
         {this.props.allowPagination ?
           <div style={{overflow: 'hidden'}}>
             <div style={{float: 'right'}}>
-
+              {this.state.loading ?
+                <LoadingIcon />
+              : null}
               <p>Showing {this.props.properties.length} results</p>
               <Waypoint
-                onEnter={this.props.seeMoreHandler}
+                onEnter={() => { this.setState({loading: true}); this.props.seeMoreHandler(); }}
               />
             </div>
           </div>
