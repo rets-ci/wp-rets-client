@@ -48802,6 +48802,10 @@
 
 	var _reactRouter = __webpack_require__(77);
 
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48896,11 +48900,10 @@
 	                    'div',
 	                    { className: 'swiper-slide', key: k },
 	                    _react2.default.createElement('img', {
-	                      alt: 'Card image cap',
+	                      alt: _lodash2.default.isEmpty(d) ? 'Card image cap' : '',
 	                      className: 'swiper-lazy',
 	                      'data-src': _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
-	                    }),
-	                    _react2.default.createElement('div', { className: 'swiper-lazy-preloader' })
+	                    })
 	                  );
 	                })
 	              )

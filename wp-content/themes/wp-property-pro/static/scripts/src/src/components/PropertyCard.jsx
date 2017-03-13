@@ -3,6 +3,7 @@ import React, {Component, PropTypes} from 'react';
 import Util from './Util.jsx';
 import Swiper from './Swiper.jsx';
 import {browserHistory} from 'react-router';
+import _ from 'lodash';
 
 export default class PropertyCard extends Component {
   static propTypes = {
@@ -62,11 +63,10 @@ export default class PropertyCard extends Component {
                 {gallery_images.map((d, k) =>
                   <div className="swiper-slide" key={k}>
                     <img
-                      alt="Card image cap"
+                      alt={_.isEmpty(d) ? 'Card image cap' : ''}
                       className="swiper-lazy"
                       data-src={Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
                     />
-                    <div className="swiper-lazy-preloader"></div>
                   </div>
                 )}
               </div>
