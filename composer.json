@@ -67,7 +67,7 @@
       "__WPP_FEATURE_FLAG_ADVANCED_REWRITE_RULES": true,
       "RETSCI_FEATURE_FLAG_DASHBOARD_WIDGET": true,
       "WP_HTTP_BLOCK_EXTERNAL": true,
-      "WP_ACCESSIBLE_HOSTS": "realty-ci-api-realty-ci-production.c.rabbit.ci,api.realty.ci,c.rabbit.ci,www.usabilitydynamics.com,,api.usabilitydynamics.com,api.rets.ci,api.wordpress.org,downloads.wordpress.org",
+      "WP_ACCESSIBLE_HOSTS": "api.wpcloud.io,realty-ci-api-realty-ci-production.c.rabbit.ci,api.realty.ci,c.rabbit.ci,www.usabilitydynamics.com,,api.usabilitydynamics.com,api.rets.ci,api.wordpress.org,downloads.wordpress.org",
 
       "_UD_RETSCI_AJAX_API_URL": "https://rets-ci-api-rets-ci-v0-5-0.c.rabbit.ci/",
       "_WPP_API_URL_STANDARDS": "https://usabilitydynamics-node-product-api-staging.c.rabbit.ci/property/standard/v1",
@@ -86,6 +86,7 @@
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
+      "EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
       "wp_cache": true,
       "concatenate_scripts": true,
       "sunrise": false,
