@@ -1,29 +1,21 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import Icon from '../components/Icon.jsx';
 import _ from 'lodash';
 
 const IconLayout = ({items, currentUrl}) =>
-    _.isEmpty(items)
-      ? null
-      :
-
-      <ul className="clearfix">
-        {
-          items.map((item, i) => {
-            let classes = item.url === currentUrl ? 'active' : '';
-            return (
-              <li key={i} className={classes}>
-                <a href={item.url} title={item.title}>
-                  <img src={bundle.static_images_url + _.get(item, 'classes.0', '') + "-icon.svg"}
-                       alt={item.title}/>
-                  <span>{item.title}</span>
-                </a>
-              </li>
-            )
-          })
-        }
-      </ul>
-  ;
+  _.isEmpty(items)
+    ? null
+    : <ul className="clearfix">
+      {
+        items.map((item, i) => {
+          if (item.url === currentUrl) {
+            return (<li key={i} className='active'><Icon item={item}/></li>);
+          } else {
+            return (<li key={i}><Icon item={item}/></li>);
+          }
+        })
+      }
+    </ul>;
 
 
 export default IconLayout;
