@@ -102,9 +102,9 @@ class SearchContent extends Component {
       }
     }
 
-    let placeholder = 'Address, City, Zip, or Neighborhood.';
+    let placeholder = 'Address, City, Zip, or Neighborhood';
     if(window.innerWidth < Lib.MOBILE_WIDTH){
-      placeholder = 'Address, City, Zip.';
+      placeholder = 'Address, City, Zip';
     }
 
     let self = this;

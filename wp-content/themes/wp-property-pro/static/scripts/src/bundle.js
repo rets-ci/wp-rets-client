@@ -29651,9 +29651,9 @@
 	        };
 	      }
 
-	      var placeholder = 'Address, City, Zip, or Neighborhood.';
+	      var placeholder = 'Address, City, Zip, or Neighborhood';
 	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
-	        placeholder = 'Address, City, Zip.';
+	        placeholder = 'Address, City, Zip';
 	      }
 
 	      var self = this;
