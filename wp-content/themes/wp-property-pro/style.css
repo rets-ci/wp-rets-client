@@ -932,6 +932,15 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     margin-left: -10px;
 }
 
+/* tour widget */
+.widget-tour .headtitle h2{
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 60px;
+    margin: 0 0 .30em;
+    text-align: center;
+}
+
 /* spinner */
 
 .spinner {
