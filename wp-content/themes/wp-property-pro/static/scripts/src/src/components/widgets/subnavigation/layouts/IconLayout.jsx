@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../components/Icon.jsx';
+import IconItem from './item/IconItem.jsx';
 import _ from 'lodash';
 
 const IconLayout = ({items, currentUrl}) =>
@@ -10,9 +10,9 @@ const IconLayout = ({items, currentUrl}) =>
         {
           items.map((item, i) => {
             if (item.url === currentUrl) {
-              return (<li key={i} className='active'><Icon item={item}/></li>);
+              return (<li key={i} className='active'><IconItem item={item}/></li>);
             } else {
-              return (<li key={i}><Icon item={item}/></li>);
+              return (<li key={i}><IconItem item={item}/></li>);
             }
           })
         }

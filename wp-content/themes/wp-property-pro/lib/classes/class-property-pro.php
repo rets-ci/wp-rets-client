@@ -193,7 +193,11 @@ namespace UsabilityDynamics {
 
         /** Get menu items */
         if (isset($widget['menu_select']))
-          $widget['menu_items'] = $widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : [];
+          $widget['menu_items'] = array_map(function ($item) {
+            $item->relative_url = str_replace(home_url(), "", $item->url);
+            return $item;
+          }, ($widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : []));
+
 
         /** Remove namespace from class name */
         if (isset($widget['panels_info']['class'])){

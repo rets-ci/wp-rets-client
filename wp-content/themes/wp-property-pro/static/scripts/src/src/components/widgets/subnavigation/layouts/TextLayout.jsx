@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import TextItem from './item/TextItem.jsx';
 import _ from 'lodash';
+
 
 const TextLayout = ({items, currentUrl}) => {
   let btn = {};
@@ -26,33 +28,33 @@ const TextLayout = ({items, currentUrl}) => {
   return (_.isEmpty(items)
       ? null
       :
-        <nav>
-          {
-            links.length
-              ?
-              <ul className="clearfix">
-                {
-                  _.isEmpty(btn)
-                    ? null
-                    :
-                    <li className="subnavigation-btn">
-                      <a href={btn.url} className="btn" style={style}>{btn.title}</a>
-                    </li>
-                }
-                {
-                  links.map((link, key) => {
-                      if (link.url === currentUrl) {
-                        return (<li key={key} className="active"><a href={link.url}>{link.title}</a></li>)
-                      } else {
-                        return (<li key={key}><a href={link.url}>{link.title}</a></li>)
-                      }
+      <nav>
+        {
+          links.length
+            ?
+            <ul className="clearfix">
+              {
+                _.isEmpty(btn)
+                  ? null
+                  :
+                  <li className="subnavigation-btn">
+                    <a href={btn.url} className="btn" style={style}>{btn.title}</a>
+                  </li>
+              }
+              {
+                links.map((link, key) => {
+                    if (link.url === currentUrl) {
+                      return (<li key={key} className="active"><TextItem item={link} /></li>)
+                    } else {
+                      return (<li key={key}><TextItem item={link} /></li>)
                     }
-                  )
-                }
-              </ul>
-              : null
-          }
-        </nav>
+                  }
+                )
+              }
+            </ul>
+            : null
+        }
+      </nav>
   );
 };
 
