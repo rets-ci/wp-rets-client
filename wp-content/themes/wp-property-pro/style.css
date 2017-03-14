@@ -542,7 +542,6 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 
 .masthead.module3 h1 { margin-bottom: .2em; margin: 0 10% .70em; }
 .masthead.module3 .intro-wrap { padding: 14% 0 140px; }
-.subnavigation.module2 ul{ width: 90%; }
 .subnavigation.module2 ul .subnavigation-btn{ float: right; text-align: center; }
 .subnavigation.module2 ul li { width: auto; border: 0; }
 .subnavigation.module2 ul li a { display: inline-block; float: none; height: auto; padding: 28px 8px 26px; color: #c1c3c4; font-size: 18px; font-weight: 500; border-bottom: 4px solid transparent; margin-right: 15px; }
