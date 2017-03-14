@@ -128,23 +128,25 @@ class Api {
     let aggregationsFields = this.getAggregationsFields();
 
     let body = {
-      "post-suggest": {
-        "text": params.term,
-        "completion": {
-          "field": "title_suggest",
-          "size": 5
-        }
-      },
-      "term-suggest": {
-        "text": params.term,
-        "completion": {
-          "field": "term_suggest",
-          "size": 20
+      "suggest": {
+        "post-suggest": {
+          "text": params.term,
+          "completion": {
+            "field": "title_suggest",
+            "size": Lib.POST_SUGGEST_COUNT
+          }
+        },
+        "term-suggest": {
+          "text": params.term,
+          "completion": {
+            "field": "term_suggest",
+            "size": Lib.TERM_SUGGEST_COUNT
+          }
         }
       }
     };
 
-    client.suggest({
+    client.search({
       index: Api.getEsIndex(),
       type: Api.getEsType(),
       method: Api.getEsMethod(),
@@ -153,16 +155,15 @@ class Api {
     }, function selectQueryResponse(err, response) {
 
       let rows = [];
-      // TODO need implement for post-suggest
       for (let aggregationKey in aggregationsFields) {
-        if (_.get(response, 'term-suggest', null) === null) {
-          continue;
+        if (_.get(response, 'suggest.term-suggest', null) === null) {
+          break;
         }
 
         let data = null;
         let _buckets = [];
 
-        let termSuggest = _.get(response, 'term-suggest');
+        let termSuggest = _.get(response, 'suggest.term-suggest');
         for (let i in termSuggest) {
           let term = termSuggest[i];
 
@@ -193,6 +194,40 @@ class Api {
           });
           rows.push(data);
         }
+      }
+
+      let data = null;
+      let _buckets = [];
+
+      let postsSuggest = _.get(response, 'suggest.post-suggest');
+      for (let c in postsSuggest) {
+        let posts = postsSuggest[c];
+
+        if (_.get(posts, 'options', null) === null) {
+          continue;
+        }
+
+        for (let ind in posts.options) {
+          let option = posts.options[ind];
+
+          if (_.get(option, '_source', null) !== null) {
+
+            _buckets.push({
+              id: _.get(option, '_source.post_title', ''),
+              text: _.get(option, '_source.post_title', ''),
+              url: _.get(option, '_source.post_name', null) ? [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(option, '_source.post_name', null)].join('/') : ''
+            });
+          }
+        }
+      }
+
+      if (_buckets.length > 0) {
+        data = Object.assign({}, data, {
+          key: 'properties',
+          text: 'Properties',
+          children: _buckets
+        });
+        rows.push(data);
       }
 
       callback(rows);

@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 const TitleDescriptionLayout = ({widget_cell}) => {
     return (
-        <div className="container">
+        <div className="container masthead-title-container">
             {
                 _.get(widget_cell, 'widget.fields.title', '')
                     ? <h1>{widget_cell.widget.fields.title}</h1>

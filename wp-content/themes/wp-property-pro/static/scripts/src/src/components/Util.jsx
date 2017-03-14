@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import {Lib} from '../lib.jsx'
+import {browserHistory} from 'react-router';
 import _ from 'lodash'
 
 
@@ -72,6 +73,15 @@ class Util extends React.Component {
       }
     });
 
+  }
+
+  static goToUrl(url){
+
+    if(_.isEmpty(url)){
+      return null;
+    }
+
+    browserHistory.push(url);
   }
 }
 

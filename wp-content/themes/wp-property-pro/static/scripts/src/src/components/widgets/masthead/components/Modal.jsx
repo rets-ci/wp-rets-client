@@ -66,12 +66,20 @@ class Modal extends Component {
       this.props.closeModal();
     }
 
-    handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
+    handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
       eve.preventDefault();
 
       // TODO temporary comment this, until done with elastic search API
       // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
-      browserHistory.push(`/${_.get(wpp, 'instance.settings.configuration.base_slug')}?wpp_search[tax]=${tax}&wpp_search[term]=${term}&wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+
+      if(url === null){
+        // Properties results page
+        browserHistory.push(`/${_.get(wpp, 'instance.settings.configuration.base_slug')}?wpp_search[tax]=${tax}&wpp_search[term]=${term}&wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+      }else{
+        // Single property page
+        browserHistory.push(url);
+      }
+
       this.props.closeModal();
     }
 
@@ -114,7 +122,7 @@ class Modal extends Component {
                             {s.children.map((c, i) =>
                                 <li key={i}>
                                     <a href="#"
-                                       onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes)}>
+                                       onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes, _.get(c, 'url', null))}>
                                         <div className="container">{c.text}</div>
                                     </a>
                                 </li>

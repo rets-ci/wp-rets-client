@@ -56,7 +56,7 @@
 
 	var _PageContent2 = _interopRequireDefault(_PageContent);
 
-	var _MapSearchResults = __webpack_require__(315);
+	var _MapSearchResults = __webpack_require__(317);
 
 	var _MapSearchResults2 = _interopRequireDefault(_MapSearchResults);
 
@@ -70,15 +70,15 @@
 
 	var _reactRouter = __webpack_require__(77);
 
-	var _reactRouterRedux = __webpack_require__(327);
+	var _reactRouterRedux = __webpack_require__(329);
 
-	var _index2 = __webpack_require__(332);
+	var _index2 = __webpack_require__(334);
 
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(47);
 
-	var _reduxThunk = __webpack_require__(343);
+	var _reduxThunk = __webpack_require__(345);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -233,7 +233,9 @@
 	  THEME_PREFIX: 'wp-property-pro-',
 	  TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
-	  URL_DELIMITER: '/'
+	  URL_DELIMITER: '/',
+	  POST_SUGGEST_COUNT: 5,
+	  TERM_SUGGEST_COUNT: 20
 	};
 
 /***/ },
@@ -6730,9 +6732,9 @@
 	                    eve.preventDefault();_reactRouter.browserHistory.push('');
 	                }, title: bundle.site_name },
 	            _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
-	                className: 'hidden-sm-down logo' }) : null,
+	                className: 'hidden-sm-down logo horizontal-logo' }) : null,
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
-	                className: 'hidden-md-up logo' }) : null
+	                className: 'hidden-md-up logo square-logo' }) : null
 	        ),
 	        _react2.default.createElement(
 	            'ul',
@@ -28834,7 +28836,7 @@
 	                { href: bundle.site_url, onClick: function onClick(eve) {
 	                    eve.preventDefault();_reactRouter.browserHistory.push('');
 	                  }, title: bundle.site_name },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo' })
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo square-logo' })
 	              ) : null
 	            ),
 	            _react2.default.createElement(
@@ -29294,11 +29296,11 @@
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-	var _Tour = __webpack_require__(305);
+	var _Tour = __webpack_require__(307);
 
 	var _Tour2 = _interopRequireDefault(_Tour);
 
-	var _Footer = __webpack_require__(309);
+	var _Footer = __webpack_require__(311);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -29493,7 +29495,7 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'container masthead-title-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	            'h1',
 	            null,
@@ -29651,9 +29653,9 @@
 	        };
 	      }
 
-	      var placeholder = 'Address, City, Zip, or Neighborhood.';
+	      var placeholder = 'Address, City, Zip, or Neighborhood';
 	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
-	        placeholder = 'Address, City, Zip.';
+	        placeholder = 'Address, City, Zip';
 	      }
 
 	      var self = this;
@@ -47665,7 +47667,7 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'container masthead-subtitle-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
 	            { className: 'hidden-sm-down' },
@@ -47787,12 +47789,20 @@
 	    }
 	  }, {
 	    key: 'handleResultClick',
-	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
+	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
 	      eve.preventDefault();
 
 	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
-	      _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+
+	      if (url === null) {
+	        // Properties results page
+	        _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+	      } else {
+	        // Single property page
+	        _reactRouter.browserHistory.push(url);
+	      }
+
 	      this.props.closeModal();
 	    }
 	  }, {
@@ -47855,7 +47865,7 @@
 	                  'a',
 	                  { href: '#',
 	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes);
+	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
 	                    } },
 	                  _react2.default.createElement(
 	                    'div',
@@ -48089,23 +48099,25 @@
 	      var aggregationsFields = this.getAggregationsFields();
 
 	      var body = {
-	        "post-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "title_suggest",
-	            "size": 5
-	          }
-	        },
-	        "term-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "term_suggest",
-	            "size": 20
+	        "suggest": {
+	          "post-suggest": {
+	            "text": params.term,
+	            "completion": {
+	              "field": "title_suggest",
+	              "size": _lib.Lib.POST_SUGGEST_COUNT
+	            }
+	          },
+	          "term-suggest": {
+	            "text": params.term,
+	            "completion": {
+	              "field": "term_suggest",
+	              "size": _lib.Lib.TERM_SUGGEST_COUNT
+	            }
 	          }
 	        }
 	      };
 
-	      client.suggest({
+	      client.search({
 	        index: Api.getEsIndex(),
 	        type: Api.getEsType(),
 	        method: Api.getEsMethod(),
@@ -48114,16 +48126,15 @@
 	      }, function selectQueryResponse(err, response) {
 
 	        var rows = [];
-	        // TODO need implement for post-suggest
 	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
-	            continue;
+	          if (_lodash2.default.get(response, 'suggest.term-suggest', null) === null) {
+	            break;
 	          }
 
-	          var data = null;
-	          var _buckets = [];
+	          var _data = null;
+	          var _buckets2 = [];
 
-	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
+	          var termSuggest = _lodash2.default.get(response, 'suggest.term-suggest');
 	          for (var i in termSuggest) {
 	            var term = termSuggest[i];
 
@@ -48135,7 +48146,7 @@
 	              var option = term.options[ind];
 
 	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
-	                _buckets.push({
+	                _buckets2.push({
 	                  id: _lodash2.default.get(option, 'text', ''),
 	                  text: _lodash2.default.get(option, 'text', ''),
 	                  count: _lodash2.default.get(option, 'score', ''),
@@ -48145,14 +48156,48 @@
 	            }
 	          }
 
-	          if (_buckets.length > 0) {
-	            data = Object.assign({}, data, {
+	          if (_buckets2.length > 0) {
+	            _data = Object.assign({}, _data, {
 	              key: aggregationKey,
 	              text: aggregationsFields[aggregationKey].title,
-	              children: _buckets
+	              children: _buckets2
 	            });
-	            rows.push(data);
+	            rows.push(_data);
 	          }
+	        }
+
+	        var data = null;
+	        var _buckets = [];
+
+	        var postsSuggest = _lodash2.default.get(response, 'suggest.post-suggest');
+	        for (var c in postsSuggest) {
+	          var posts = postsSuggest[c];
+
+	          if (_lodash2.default.get(posts, 'options', null) === null) {
+	            continue;
+	          }
+
+	          for (var _ind in posts.options) {
+	            var _option = posts.options[_ind];
+
+	            if (_lodash2.default.get(_option, '_source', null) !== null) {
+
+	              _buckets.push({
+	                id: _lodash2.default.get(_option, '_source.post_title', ''),
+	                text: _lodash2.default.get(_option, '_source.post_title', ''),
+	                url: _lodash2.default.get(_option, '_source.post_name', null) ? [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(_option, '_source.post_name', null)].join('/') : ''
+	              });
+	            }
+	          }
+	        }
+
+	        if (_buckets.length > 0) {
+	          data = Object.assign({}, data, {
+	            key: 'properties',
+	            text: 'Properties',
+	            children: _buckets
+	          });
+	          rows.push(data);
 	        }
 
 	        callback(rows);
@@ -48204,7 +48249,7 @@
 	            continue;
 	          }
 
-	          var _data = null;
+	          var _data2 = null;
 	          var _buckets = [];
 
 	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
@@ -48230,12 +48275,12 @@
 	          }
 
 	          if (_buckets.length > 0) {
-	            _data = Object.assign({}, _data, {
+	            _data2 = Object.assign({}, _data2, {
 	              key: aggregationKey,
 	              text: aggregationsFields[aggregationKey].title,
 	              children: _buckets
 	            });
-	            rows.push(_data);
+	            rows.push(_data2);
 	          }
 	        }
 
@@ -49036,6 +49081,8 @@
 
 	var _lib = __webpack_require__(2);
 
+	var _reactRouter = __webpack_require__(77);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -49118,6 +49165,16 @@
 	          callback(data);
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'goToUrl',
+	    value: function goToUrl(url) {
+
+	      if (_lodash2.default.isEmpty(url)) {
+	        return null;
+	      }
+
+	      _reactRouter.browserHistory.push(url);
 	    }
 	  }]);
 
@@ -54881,7 +54938,7 @@
 
 	var _IconLayout2 = _interopRequireDefault(_IconLayout);
 
-	var _TextLayout = __webpack_require__(304);
+	var _TextLayout = __webpack_require__(305);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -54946,7 +55003,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(36);
+	var _IconItem = __webpack_require__(304);
+
+	var _IconItem2 = _interopRequireDefault(_IconItem);
 
 	var _lodash = __webpack_require__(76);
 
@@ -54958,26 +55017,27 @@
 	  var items = _ref.items,
 	      currentUrl = _ref.currentUrl;
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
-	    'ul',
-	    { className: 'clearfix' },
-	    items.map(function (item, i) {
-	      var classes = item.url === currentUrl ? 'active' : '';
-	      return _react2.default.createElement(
-	        'li',
-	        { key: i, className: classes },
-	        _react2.default.createElement(
-	          'a',
-	          { href: item.url, title: item.title },
-	          _react2.default.createElement('img', { src: bundle.static_images_url + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
-	            alt: item.title }),
-	          _react2.default.createElement(
-	            'span',
-	            null,
-	            item.title
-	          )
-	        )
-	      );
-	    })
+	    'nav',
+	    null,
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'clearfix' },
+	      items.map(function (item, i) {
+	        if (item.url === currentUrl) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: i, className: 'active' },
+	            _react2.default.createElement(_IconItem2.default, { item: item })
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: i },
+	            _react2.default.createElement(_IconItem2.default, { item: item })
+	          );
+	        }
+	      })
+	    )
 	  );
 	};
 
@@ -54997,7 +55057,55 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var IconItem = function IconItem(_ref) {
+	  var item = _ref.item;
+	  return _lodash2.default.isEmpty(item) ? null : _react2.default.createElement(
+	    'a',
+	    { href: item.url, title: item.title, onClick: function onClick(eve) {
+	        eve.preventDefault();
+	        _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	      } },
+	    _react2.default.createElement('img', { src: bundle.static_images_url + _lodash2.default.get(item, 'classes.0', '') + "-icon.svg",
+	      alt: item.title }),
+	    _react2.default.createElement(
+	      'span',
+	      null,
+	      item.title
+	    )
+	  );
+	};
+
+	exports.default = IconItem;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _reactRedux = __webpack_require__(36);
+
+	var _TextItem = __webpack_require__(306);
+
+	var _TextItem2 = _interopRequireDefault(_TextItem);
 
 	var _lodash = __webpack_require__(76);
 
@@ -55025,55 +55133,43 @@
 	  } : {};
 
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
-	    'div',
-	    { className: 'row' },
-	    _react2.default.createElement(
-	      'nav',
-	      null,
-	      links.length ? _react2.default.createElement(
-	        'ul',
-	        null,
-	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
-	          'li',
-	          { className: 'subnavigation-btn' },
-	          _react2.default.createElement(
-	            'a',
-	            { href: btn.url, className: 'btn', style: style },
-	            btn.title
-	          )
-	        ),
-	        links.map(function (link, key) {
-	          if (link.url === currentUrl) {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key, className: 'active' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: link.url },
-	                link.title
-	              )
-	            );
-	          } else {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key },
-	              _react2.default.createElement(
-	                'a',
-	                { href: link.url },
-	                link.title
-	              )
-	            );
-	          }
-	        })
-	      ) : null
-	    )
+	    'nav',
+	    null,
+	    links.length ? _react2.default.createElement(
+	      'ul',
+	      { className: 'clearfix' },
+	      _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
+	        'li',
+	        { className: 'subnavigation-btn' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: btn.url, className: 'btn', style: style },
+	          btn.title
+	        )
+	      ),
+	      links.map(function (link, key) {
+	        if (link.url === currentUrl) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: key, className: 'active' },
+	            _react2.default.createElement(_TextItem2.default, { item: link })
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: key },
+	            _react2.default.createElement(_TextItem2.default, { item: link })
+	          );
+	        }
+	      })
+	    ) : null
 	  );
 	};
 
 	exports.default = TextLayout;
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55086,7 +55182,45 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DefaultLayout = __webpack_require__(306);
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	var _lodash = __webpack_require__(76);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var TextItem = function TextItem(_ref) {
+	  var item = _ref.item;
+	  return _lodash2.default.isEmpty(item) ? null : _react2.default.createElement(
+	    'a',
+	    { href: item.url, onClick: function onClick(eve) {
+	        eve.preventDefault();
+	        _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	      } },
+	    item.title
+	  );
+	};
+
+	exports.default = TextItem;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(4);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _DefaultLayout = __webpack_require__(308);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -55119,7 +55253,7 @@
 	exports.default = Tour;
 
 /***/ },
-/* 306 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55138,7 +55272,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FeatureGroup = __webpack_require__(307);
+	var _FeatureGroup = __webpack_require__(309);
 
 	var _FeatureGroup2 = _interopRequireDefault(_FeatureGroup);
 
@@ -55177,7 +55311,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 307 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55196,7 +55330,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _Feature = __webpack_require__(308);
+	var _Feature = __webpack_require__(310);
 
 	var _Feature2 = _interopRequireDefault(_Feature);
 
@@ -55211,7 +55345,7 @@
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
 	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? "col-lg-7 push-lg-5 background" : "col-lg-7 background";
-	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-5 push-lg-6";
+	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
 	    "background": "url(" + featureGroup.image_section.image_src + ")",
@@ -55264,7 +55398,7 @@
 	exports.default = FeatureGroup;
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55350,7 +55484,7 @@
 	exports.default = Feature;
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55367,11 +55501,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterTop = __webpack_require__(310);
+	var _FooterTop = __webpack_require__(312);
 
 	var _FooterTop2 = _interopRequireDefault(_FooterTop);
 
-	var _FooterBottom = __webpack_require__(312);
+	var _FooterBottom = __webpack_require__(314);
 
 	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
 
@@ -55389,7 +55523,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55402,9 +55536,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterTopMenu = __webpack_require__(311);
+	var _FooterTopMenu = __webpack_require__(313);
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
+
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	var _lodash = __webpack_require__(76);
 
@@ -55428,9 +55566,12 @@
 	          { className: 'col-lg-3 footer-logo' },
 	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
 	            'a',
-	            { href: bundle.site_url, title: bundle.site_name },
+	            { href: bundle.site_url, title: bundle.site_name, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl('/');
+	              } },
 	            _react2.default.createElement('img', { src: bundle.logos.vertical_logo, alt: bundle.site_name,
-	              className: 'svg' })
+	              className: 'svg vertical-logo' })
 	          ) : null
 	        ),
 	        _react2.default.createElement(
@@ -55452,7 +55593,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 311 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55464,6 +55605,10 @@
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	var _lodash = __webpack_require__(76);
 
@@ -55495,7 +55640,10 @@
 	            { key: i },
 	            _react2.default.createElement(
 	              'a',
-	              { href: item.url },
+	              { href: item.url, onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	                } },
 	              item.title
 	            )
 	          );
@@ -55508,7 +55656,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 312 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55525,11 +55673,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _FooterBottomMenu = __webpack_require__(313);
+	var _FooterBottomMenu = __webpack_require__(315);
 
 	var _FooterBottomMenu2 = _interopRequireDefault(_FooterBottomMenu);
 
-	var _FooterBottomSocialMenu = __webpack_require__(314);
+	var _FooterBottomSocialMenu = __webpack_require__(316);
 
 	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
 
@@ -55556,7 +55704,7 @@
 	exports.default = FooterBottom;
 
 /***/ },
-/* 313 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55568,6 +55716,10 @@
 	var _react = __webpack_require__(4);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	var _lodash = __webpack_require__(76);
 
@@ -55591,7 +55743,10 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            'a',
-	            { href: item.url },
+	            { href: item.url, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	              } },
 	            item.title
 	          )
 	        );
@@ -55603,7 +55758,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55652,7 +55807,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55669,13 +55824,13 @@
 
 	var _index = __webpack_require__(1);
 
-	var _LoadingIcon = __webpack_require__(316);
+	var _LoadingIcon = __webpack_require__(318);
 
 	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
 
 	var _lib = __webpack_require__(2);
 
-	var _Map = __webpack_require__(317);
+	var _Map = __webpack_require__(319);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
@@ -55685,7 +55840,7 @@
 
 	var _reactRedux = __webpack_require__(36);
 
-	var _SearchResultListing = __webpack_require__(318);
+	var _SearchResultListing = __webpack_require__(320);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
@@ -55878,7 +56033,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MapSearchResults);
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -55932,7 +56087,7 @@
 	exports.default = LoadingIcon;
 
 /***/ },
-/* 317 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56056,7 +56211,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 318 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56071,7 +56226,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(319);
+	var _numeral = __webpack_require__(321);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -56079,7 +56234,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _LoadingIcon = __webpack_require__(316);
+	var _LoadingIcon = __webpack_require__(318);
 
 	var _LoadingIcon2 = _interopRequireDefault(_LoadingIcon);
 
@@ -56089,7 +56244,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _reactWaypoint = __webpack_require__(320);
+	var _reactWaypoint = __webpack_require__(322);
 
 	var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
 
@@ -56287,7 +56442,7 @@
 	exports.default = SearchResultListing;
 
 /***/ },
-/* 319 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -57248,7 +57403,7 @@
 
 
 /***/ },
-/* 320 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57263,7 +57418,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _consolidatedEvents = __webpack_require__(321);
+	var _consolidatedEvents = __webpack_require__(323);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57739,7 +57894,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 321 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -57749,11 +57904,11 @@
 	exports.addEventListener = addEventListener;
 	exports.removeEventListener = removeEventListener;
 
-	var _normalizeEventOptions = __webpack_require__(322);
+	var _normalizeEventOptions = __webpack_require__(324);
 
 	var _normalizeEventOptions2 = _interopRequireDefault(_normalizeEventOptions);
 
-	var _TargetEventHandlers = __webpack_require__(325);
+	var _TargetEventHandlers = __webpack_require__(327);
 
 	var _TargetEventHandlers2 = _interopRequireDefault(_TargetEventHandlers);
 
@@ -57786,7 +57941,7 @@
 	}
 
 /***/ },
-/* 322 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -57794,7 +57949,7 @@
 	});
 	exports['default'] = normalizeEventOptions;
 
-	var _canUsePassiveEventListeners = __webpack_require__(323);
+	var _canUsePassiveEventListeners = __webpack_require__(325);
 
 	var _canUsePassiveEventListeners2 = _interopRequireDefault(_canUsePassiveEventListeners);
 
@@ -57817,7 +57972,7 @@
 	}
 
 /***/ },
-/* 323 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -57825,7 +57980,7 @@
 	});
 	exports['default'] = canUsePassiveEventListeners;
 
-	var _canUseDOM = __webpack_require__(324);
+	var _canUseDOM = __webpack_require__(326);
 
 	var _canUseDOM2 = _interopRequireDefault(_canUseDOM);
 
@@ -57867,7 +58022,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 326 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -57878,7 +58033,7 @@
 	exports['default'] = CAN_USE_DOM;
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -57887,7 +58042,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _eventOptionsKey = __webpack_require__(326);
+	var _eventOptionsKey = __webpack_require__(328);
 
 	var _eventOptionsKey2 = _interopRequireDefault(_eventOptionsKey);
 
@@ -58008,7 +58163,7 @@
 	exports['default'] = TargetEventHandlers;
 
 /***/ },
-/* 326 */
+/* 328 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -58046,7 +58201,7 @@
 	}
 
 /***/ },
-/* 327 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58056,7 +58211,7 @@
 	});
 	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
 
-	var _reducer = __webpack_require__(328);
+	var _reducer = __webpack_require__(330);
 
 	Object.defineProperty(exports, 'LOCATION_CHANGE', {
 	  enumerable: true,
@@ -58071,7 +58226,7 @@
 	  }
 	});
 
-	var _actions = __webpack_require__(329);
+	var _actions = __webpack_require__(331);
 
 	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
 	  enumerable: true,
@@ -58116,11 +58271,11 @@
 	  }
 	});
 
-	var _sync = __webpack_require__(330);
+	var _sync = __webpack_require__(332);
 
 	var _sync2 = _interopRequireDefault(_sync);
 
-	var _middleware = __webpack_require__(331);
+	var _middleware = __webpack_require__(333);
 
 	var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -58130,7 +58285,7 @@
 	exports.routerMiddleware = _middleware2['default'];
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -58173,7 +58328,7 @@
 	}
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -58215,7 +58370,7 @@
 	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
 
 /***/ },
-/* 330 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58228,7 +58383,7 @@
 
 	exports['default'] = syncHistoryWithStore;
 
-	var _reducer = __webpack_require__(328);
+	var _reducer = __webpack_require__(330);
 
 	var defaultSelectLocationState = function defaultSelectLocationState(state) {
 	  return state.routing;
@@ -58375,7 +58530,7 @@
 	}
 
 /***/ },
-/* 331 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58385,7 +58540,7 @@
 	});
 	exports['default'] = routerMiddleware;
 
-	var _actions = __webpack_require__(329);
+	var _actions = __webpack_require__(331);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -58413,7 +58568,7 @@
 	}
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58422,47 +58577,47 @@
 	    value: true
 	});
 
-	var _reactRouterRedux = __webpack_require__(327);
+	var _reactRouterRedux = __webpack_require__(329);
 
 	var _redux = __webpack_require__(47);
 
-	var _post = __webpack_require__(333);
+	var _post = __webpack_require__(335);
 
 	var _post2 = _interopRequireDefault(_post);
 
-	var _map = __webpack_require__(334);
+	var _map = __webpack_require__(336);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(335);
+	var _modal = __webpack_require__(337);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
-	var _searchProps = __webpack_require__(336);
+	var _searchProps = __webpack_require__(338);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(337);
+	var _searchResults = __webpack_require__(339);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(338);
+	var _mapMarkers = __webpack_require__(340);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(339);
+	var _searchType = __webpack_require__(341);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(340);
+	var _filterTerms = __webpack_require__(342);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _panel = __webpack_require__(341);
+	var _panel = __webpack_require__(343);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _testimonialsCarousel = __webpack_require__(342);
+	var _testimonialsCarousel = __webpack_require__(344);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
@@ -58485,7 +58640,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 333 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58519,7 +58674,7 @@
 	exports.default = post;
 
 /***/ },
-/* 334 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58550,7 +58705,7 @@
 	exports.default = map;
 
 /***/ },
-/* 335 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58578,7 +58733,7 @@
 	exports.default = modal;
 
 /***/ },
-/* 336 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58605,7 +58760,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 337 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58642,7 +58797,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 338 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58669,7 +58824,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 339 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58699,7 +58854,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 340 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58726,7 +58881,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 341 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58756,7 +58911,7 @@
 	exports.default = panel;
 
 /***/ },
-/* 342 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58783,7 +58938,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 343 */
+/* 345 */
 /***/ function(module, exports) {
 
 	'use strict';
