@@ -669,6 +669,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .category-nav { height: auto; }
     .category-nav ul li { display: inline; width: auto; border: 0; }
     .category-nav ul li a { font-size: 1.050rem; height: auto; font-weight: 500; line-height: 55px; margin-right: 20px; }
+    .tour-section .widget-tour .widget-box .background-block > .background{ min-height: 500px !important; }
 }
 
 
