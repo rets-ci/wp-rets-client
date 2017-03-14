@@ -55065,48 +55065,44 @@
 	  } : {};
 
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
-	    'div',
-	    { className: 'row' },
-	    _react2.default.createElement(
-	      'nav',
-	      null,
-	      links.length ? _react2.default.createElement(
-	        'ul',
-	        null,
-	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
-	          'li',
-	          { className: 'subnavigation-btn' },
-	          _react2.default.createElement(
-	            'a',
-	            { href: btn.url, className: 'btn', style: style },
-	            btn.title
-	          )
-	        ),
-	        links.map(function (link, key) {
-	          if (link.url === currentUrl) {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key, className: 'active' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: link.url },
-	                link.title
-	              )
-	            );
-	          } else {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key },
-	              _react2.default.createElement(
-	                'a',
-	                { href: link.url },
-	                link.title
-	              )
-	            );
-	          }
-	        })
-	      ) : null
-	    )
+	    'nav',
+	    null,
+	    links.length ? _react2.default.createElement(
+	      'ul',
+	      { className: 'clearfix' },
+	      _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
+	        'li',
+	        { className: 'subnavigation-btn' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: btn.url, className: 'btn', style: style },
+	          btn.title
+	        )
+	      ),
+	      links.map(function (link, key) {
+	        if (link.url === currentUrl) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: key, className: 'active' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: link.url },
+	              link.title
+	            )
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: key },
+	            _react2.default.createElement(
+	              'a',
+	              { href: link.url },
+	              link.title
+	            )
+	          );
+	        }
+	      })
+	    ) : null
 	  );
 	};
 

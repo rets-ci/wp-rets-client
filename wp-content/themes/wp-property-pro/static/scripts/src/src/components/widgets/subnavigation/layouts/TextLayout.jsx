@@ -26,12 +26,11 @@ const TextLayout = ({items, currentUrl}) => {
   return (_.isEmpty(items)
       ? null
       :
-      <div className="row">
         <nav>
           {
             links.length
               ?
-              <ul>
+              <ul className="clearfix">
                 {
                   _.isEmpty(btn)
                     ? null
@@ -54,7 +53,6 @@ const TextLayout = ({items, currentUrl}) => {
               : null
           }
         </nav>
-      </div>
   );
 };
 
