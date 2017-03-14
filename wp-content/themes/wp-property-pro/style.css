@@ -932,6 +932,11 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     margin-left: -10px;
 }
 
+/* masthead widget */
+.masthead .intro-wrap{
+    padding: 30px 0 180px;
+}
+
 /* tour widget */
 .widget-tour .headtitle h2{
     font-size: 40px;
