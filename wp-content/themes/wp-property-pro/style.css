@@ -940,6 +940,13 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     padding: 30px 0 180px;
 }
 
+.masthead .masthead-title-container{
+    margin-top: 95px;
+}
+.masthead .masthead-subtitle-container{
+    margin-top: 105px;
+}
+
 /* tour widget */
 .widget-tour .headtitle h2{
     font-size: 40px;

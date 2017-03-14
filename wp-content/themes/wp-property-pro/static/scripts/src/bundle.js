@@ -29495,7 +29495,7 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'container masthead-title-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	            'h1',
 	            null,
@@ -47667,7 +47667,7 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'container masthead-subtitle-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
 	            { className: 'hidden-sm-down' },
