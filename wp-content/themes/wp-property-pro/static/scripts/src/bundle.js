@@ -55540,6 +55540,10 @@
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -55562,7 +55566,10 @@
 	          { className: 'col-lg-3 footer-logo' },
 	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
 	            'a',
-	            { href: bundle.site_url, title: bundle.site_name },
+	            { href: bundle.site_url, title: bundle.site_name, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl('/');
+	              } },
 	            _react2.default.createElement('img', { src: bundle.logos.vertical_logo, alt: bundle.site_name,
 	              className: 'svg vertical-logo' })
 	          ) : null
@@ -55599,6 +55606,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -55629,7 +55640,10 @@
 	            { key: i },
 	            _react2.default.createElement(
 	              'a',
-	              { href: item.url },
+	              { href: item.url, onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	                } },
 	              item.title
 	            )
 	          );
@@ -55703,6 +55717,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Util = __webpack_require__(295);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	var _lodash = __webpack_require__(76);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -55725,7 +55743,10 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            'a',
-	            { href: item.url },
+	            { href: item.url, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url', null));
+	              } },
 	            item.title
 	          )
 	        );

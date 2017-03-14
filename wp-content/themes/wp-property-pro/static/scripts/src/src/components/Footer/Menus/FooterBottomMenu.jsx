@@ -1,4 +1,5 @@
 import React from 'react';
+import Util from '../../Util.jsx';
 import _ from 'lodash';
 
 const FooterTop = ({menu}) => {
@@ -12,11 +13,14 @@ const FooterTop = ({menu}) => {
           <ul>
             {
               _.get(menu, 'items', null)
-              ?
-              menu.items.map((item, i) =>
-                <li key={i}><a href={item.url}>{item.title}</a></li>
-              )
-              : null
+                ?
+                menu.items.map((item, i) =>
+                  <li key={i}><a href={item.url} onClick={(eve) => {
+                    eve.preventDefault();
+                    Util.goToUrl(_.get(item, 'relative_url', null))
+                  }}>{item.title}</a></li>
+                )
+                : null
             }
           </ul>
       }

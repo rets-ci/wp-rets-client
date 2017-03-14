@@ -1,5 +1,6 @@
 import React from 'react';
 import FooterTopMenu from './Menus/FooterTopMenu.jsx';
+import Util from '../Util.jsx';
 import _ from 'lodash'
 
 const FooterTop = () => {
@@ -13,7 +14,10 @@ const FooterTop = () => {
             {
               _.get(bundle, 'logos.vertical_logo', null)
                 ?
-                <a href={bundle.site_url} title={bundle.site_name}>
+                <a href={bundle.site_url} title={bundle.site_name} onClick={(eve) => {
+                  eve.preventDefault();
+                  Util.goToUrl('/')
+                }}>
                   <img src={bundle.logos.vertical_logo} alt={bundle.site_name}
                        className="svg vertical-logo"/>
                 </a>

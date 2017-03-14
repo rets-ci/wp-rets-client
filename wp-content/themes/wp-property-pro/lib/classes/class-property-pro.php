@@ -159,7 +159,8 @@ namespace UsabilityDynamics {
             return [
               'ID' => $item->ID,
               'title' => $item->title,
-              'url' => $item->url
+              'url' => $item->url,
+              'relative_url' => str_replace(home_url(), "", $item->url)
             ];
           }, wp_get_nav_menu_items($menu_id));
         }
