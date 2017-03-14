@@ -43,7 +43,7 @@ class EP_Terms_Index {
           'meta' => array(
             'type' => 'object'
           ),
-          'suggest' => array(
+          'term_suggest' => array(
             'type' => 'completion',
             'analyzer' => 'whitespace',
             'search_analyzer' => 'whitespace_analyzer'
