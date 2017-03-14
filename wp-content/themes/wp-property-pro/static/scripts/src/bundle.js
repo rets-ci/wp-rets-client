@@ -54960,23 +54960,27 @@
 	  var items = _ref.items,
 	      currentUrl = _ref.currentUrl;
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
-	    'ul',
-	    { className: 'clearfix' },
-	    items.map(function (item, i) {
-	      if (item.url === currentUrl) {
-	        return _react2.default.createElement(
-	          'li',
-	          { key: i, className: 'active' },
-	          _react2.default.createElement(_Icon2.default, { item: item })
-	        );
-	      } else {
-	        return _react2.default.createElement(
-	          'li',
-	          { key: i },
-	          _react2.default.createElement(_Icon2.default, { item: item })
-	        );
-	      }
-	    })
+	    'nav',
+	    null,
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'clearfix' },
+	      items.map(function (item, i) {
+	        if (item.url === currentUrl) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: i, className: 'active' },
+	            _react2.default.createElement(_Icon2.default, { item: item })
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: i },
+	            _react2.default.createElement(_Icon2.default, { item: item })
+	          );
+	        }
+	      })
+	    )
 	  );
 	};
 
