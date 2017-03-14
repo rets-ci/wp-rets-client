@@ -110,7 +110,7 @@ class EP_Terms_Index {
       "taxonomy" => $taxonomy,
       "url_path" => str_replace( home_url(), '', get_term_link( $_term ) ),
       "meta" => $meta,
-      "suggest" => array(
+      "term_suggest" => array(
         "input" => $input
       )
     );
