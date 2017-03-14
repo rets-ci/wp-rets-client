@@ -233,7 +233,9 @@
 	  THEME_PREFIX: 'wp-property-pro-',
 	  TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
-	  URL_DELIMITER: '/'
+	  URL_DELIMITER: '/',
+	  POST_SUGGEST_COUNT: 5,
+	  TERM_SUGGEST_COUNT: 20
 	};
 
 /***/ },
@@ -47787,12 +47789,20 @@
 	    }
 	  }, {
 	    key: 'handleResultClick',
-	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes) {
+	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
 	      eve.preventDefault();
 
 	      // TODO temporary comment this, until done with elastic search API
 	      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
-	      _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+
+	      if (url === null) {
+	        // Properties results page
+	        _reactRouter.browserHistory.push('/' + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + '?wpp_search[tax]=' + tax + '&wpp_search[term]=' + term + '&wpp_search[sale_type]=' + saleType + '&wpp_search[property_types]=' + propertyTypes + '&_taxonomy=' + tax + '&_term=' + term);
+	      } else {
+	        // Single property page
+	        _reactRouter.browserHistory.push(url);
+	      }
+
 	      this.props.closeModal();
 	    }
 	  }, {
@@ -47855,7 +47865,7 @@
 	                  'a',
 	                  { href: '#',
 	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes);
+	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
 	                    } },
 	                  _react2.default.createElement(
 	                    'div',
@@ -48089,23 +48099,25 @@
 	      var aggregationsFields = this.getAggregationsFields();
 
 	      var body = {
-	        "post-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "title_suggest",
-	            "size": 5
-	          }
-	        },
-	        "term-suggest": {
-	          "text": params.term,
-	          "completion": {
-	            "field": "term_suggest",
-	            "size": 20
+	        "suggest": {
+	          "post-suggest": {
+	            "text": params.term,
+	            "completion": {
+	              "field": "title_suggest",
+	              "size": _lib.Lib.POST_SUGGEST_COUNT
+	            }
+	          },
+	          "term-suggest": {
+	            "text": params.term,
+	            "completion": {
+	              "field": "term_suggest",
+	              "size": _lib.Lib.TERM_SUGGEST_COUNT
+	            }
 	          }
 	        }
 	      };
 
-	      client.suggest({
+	      client.search({
 	        index: Api.getEsIndex(),
 	        type: Api.getEsType(),
 	        method: Api.getEsMethod(),
@@ -48114,16 +48126,15 @@
 	      }, function selectQueryResponse(err, response) {
 
 	        var rows = [];
-	        // TODO need implement for post-suggest
 	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
-	            continue;
+	          if (_lodash2.default.get(response, 'suggest.term-suggest', null) === null) {
+	            break;
 	          }
 
-	          var data = null;
-	          var _buckets = [];
+	          var _data = null;
+	          var _buckets2 = [];
 
-	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
+	          var termSuggest = _lodash2.default.get(response, 'suggest.term-suggest');
 	          for (var i in termSuggest) {
 	            var term = termSuggest[i];
 
@@ -48135,7 +48146,7 @@
 	              var option = term.options[ind];
 
 	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
-	                _buckets.push({
+	                _buckets2.push({
 	                  id: _lodash2.default.get(option, 'text', ''),
 	                  text: _lodash2.default.get(option, 'text', ''),
 	                  count: _lodash2.default.get(option, 'score', ''),
@@ -48145,14 +48156,48 @@
 	            }
 	          }
 
-	          if (_buckets.length > 0) {
-	            data = Object.assign({}, data, {
+	          if (_buckets2.length > 0) {
+	            _data = Object.assign({}, _data, {
 	              key: aggregationKey,
 	              text: aggregationsFields[aggregationKey].title,
-	              children: _buckets
+	              children: _buckets2
 	            });
-	            rows.push(data);
+	            rows.push(_data);
 	          }
+	        }
+
+	        var data = null;
+	        var _buckets = [];
+
+	        var postsSuggest = _lodash2.default.get(response, 'suggest.post-suggest');
+	        for (var c in postsSuggest) {
+	          var posts = postsSuggest[c];
+
+	          if (_lodash2.default.get(posts, 'options', null) === null) {
+	            continue;
+	          }
+
+	          for (var _ind in posts.options) {
+	            var _option = posts.options[_ind];
+
+	            if (_lodash2.default.get(_option, '_source', null) !== null) {
+
+	              _buckets.push({
+	                id: _lodash2.default.get(_option, '_source.post_title', ''),
+	                text: _lodash2.default.get(_option, '_source.post_title', ''),
+	                url: _lodash2.default.get(_option, '_source.post_name', null) ? [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(_option, '_source.post_name', null)].join('/') : ''
+	              });
+	            }
+	          }
+	        }
+
+	        if (_buckets.length > 0) {
+	          data = Object.assign({}, data, {
+	            key: 'properties',
+	            text: 'Properties',
+	            children: _buckets
+	          });
+	          rows.push(data);
 	        }
 
 	        callback(rows);
@@ -48204,7 +48249,7 @@
 	            continue;
 	          }
 
-	          var _data = null;
+	          var _data2 = null;
 	          var _buckets = [];
 
 	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
@@ -48230,12 +48275,12 @@
 	          }
 
 	          if (_buckets.length > 0) {
-	            _data = Object.assign({}, _data, {
+	            _data2 = Object.assign({}, _data2, {
 	              key: aggregationKey,
 	              text: aggregationsFields[aggregationKey].title,
 	              children: _buckets
 	            });
-	            rows.push(_data);
+	            rows.push(_data2);
 	          }
 	        }
 
