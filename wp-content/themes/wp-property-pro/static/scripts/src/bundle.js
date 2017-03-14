@@ -6730,9 +6730,9 @@
 	                    eve.preventDefault();_reactRouter.browserHistory.push('');
 	                }, title: bundle.site_name },
 	            _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
-	                className: 'hidden-sm-down logo' }) : null,
+	                className: 'hidden-sm-down logo horizontal-logo' }) : null,
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name,
-	                className: 'hidden-md-up logo' }) : null
+	                className: 'hidden-md-up logo square-logo' }) : null
 	        ),
 	        _react2.default.createElement(
 	            'ul',
@@ -28834,7 +28834,7 @@
 	                { href: bundle.site_url, onClick: function onClick(eve) {
 	                    eve.preventDefault();_reactRouter.browserHistory.push('');
 	                  }, title: bundle.site_name },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo' })
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: bundle.site_name, className: 'logo square-logo' })
 	              ) : null
 	            ),
 	            _react2.default.createElement(
@@ -55430,7 +55430,7 @@
 	            'a',
 	            { href: bundle.site_url, title: bundle.site_name },
 	            _react2.default.createElement('img', { src: bundle.logos.vertical_logo, alt: bundle.site_name,
-	              className: 'svg' })
+	              className: 'svg vertical-logo' })
 	          ) : null
 	        ),
 	        _react2.default.createElement(

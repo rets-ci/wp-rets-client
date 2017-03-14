@@ -15,7 +15,7 @@ const FooterTop = () => {
                 ?
                 <a href={bundle.site_url} title={bundle.site_name}>
                   <img src={bundle.logos.vertical_logo} alt={bundle.site_name}
-                       className="svg"/>
+                       className="svg vertical-logo"/>
                 </a>
 
                 : null
