@@ -48160,8 +48160,8 @@
 
 	              if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey || _lodash2.default.get(option, '_source.term_type', null) === _lodash2.default.get(aggregationsFields[aggregationKey], 'old_key', null)) {
 	                _buckets2.push({
-	                  id: _lodash2.default.get(option, 'text', ''),
-	                  text: _lodash2.default.get(option, 'text', ''),
+	                  id: _lodash2.default.get(option, '_id', ''),
+	                  text: _lodash2.default.get(option, '_source.slug', ''),
 	                  count: _lodash2.default.get(option, 'score', ''),
 	                  taxonomy: _lodash2.default.get(option, '_source.taxonomy', '')
 	                });

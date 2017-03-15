@@ -187,8 +187,8 @@ class Api {
 
             if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
               _buckets.push({
-                id: _.get(option, 'text', ''),
-                text: _.get(option, 'text', ''),
+                id: _.get(option, '_id', ''),
+                text: _.get(option, '_source.slug', ''),
                 count: _.get(option, 'score', ''),
                 taxonomy: _.get(option, '_source.taxonomy', '')
               });
