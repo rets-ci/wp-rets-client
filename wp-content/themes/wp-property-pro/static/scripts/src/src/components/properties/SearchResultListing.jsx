@@ -1,10 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import numeral from 'numeral';
-import Util from '../Util.jsx';
 import LoadingIcon from '../LoadingIcon.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import Waypoint from 'react-waypoint';
+import PropertyCard from '../PropertyCard.jsx';
 
 class SearchResultListing extends Component {
   static propTypes = {
@@ -49,54 +48,22 @@ class SearchResultListing extends Component {
                 }
               }
 
-              return ( <div className="col-sm-6" key={i}>
-                <div className="card">
-                  <div className="card-img">
-                    {
-                      _.get(p, '_source.post_meta.rets_thumbnail_url', null)
-                        ?
-                        <img className="card-img-top"
-                             src={Util.getThumbnailUrlBySize(p._source.post_meta.rets_thumbnail_url, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
-                             alt="Card image cap"/>
-                        : null
-                    }
+              let item = {
+                gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
+                relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
+                address: _.get(p, '_source.post_meta.rets_address', ''),
+                full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
+                beds: _.get(p, '_source.post_meta.rets_beds', 0),
+                baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
+                price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
+                thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+              };
 
-                    <ul className="direction-nav">
-                      <li><a className="nav-prev" href="#"></a></li>
-                      <li><a className="nav-next" href="#"></a></li>
-                    </ul>
-                  </div>
-                  <div className="card-block">
-                    <div className="listing-top">
-                      <span
-                        className="price">{numeral(_.get(p, '_source.post_meta.rets_list_price[0]', 0)).format('$0,0.00')}</span>
-                      <span className="action-btn-group">
-                        <a href="#" className="favorite active" title="Save as favorite"><i className="fa fa-heart"
-                                                                                            aria-hidden="true"></i></a>
-                        <a href="#" className="hide" title="Hide"><i className="fa fa-eye-slash" aria-hidden="true"></i></a>
-                     </span>
-                    </div>
-                    {
-                      _.get(p, '_source.post_meta.formatted_address_simple', '')
-                        ? <h4
-                          className="card-title">{p._source.post_meta.formatted_address_simple}</h4>
-                        : null
-                    }
-                    {
-                      city && zipCode
-                        ? <p
-                          className="card-text">{city}, {zipCode}</p>
-                        : null
-                    }
-
-                    <ul className="liting-info-box">
-                      <li>{p._source.post_meta.rets_beds ? p._source.post_meta.rets_beds[0] + ' Bed' : ''}</li>
-                      <li>{p._source.post_meta.rets_total_baths ? p._source.post_meta.rets_total_baths[0] + ' Bath' : ''}</li>
-                      <li>{p._source.post_meta.rets_price_per_sqft ? p._source.post_meta.rets_price_per_sqft[0] + ' SF' : ''}</li>
-                    </ul>
-                  </div>
+              return (
+                <div className="col-sm-6" key={i}>
+                  <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT}/>
                 </div>
-              </div>)
+              )
             }
           )}
         </div>
@@ -120,6 +87,5 @@ class SearchResultListing extends Component {
     );
   }
 }
-;
 
 export default SearchResultListing;

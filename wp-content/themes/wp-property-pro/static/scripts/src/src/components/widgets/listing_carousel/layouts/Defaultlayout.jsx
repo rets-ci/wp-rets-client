@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import {Lib} from '../../../../lib.jsx';
 import PropertyCard from '../../../PropertyCard.jsx';
 import Swiper from '../../../Swiper.jsx';
 
@@ -52,7 +53,7 @@ export default class DefaultLayout extends Component {
                     {
                       posts.map((post, key) => {
                         return (
-                          <PropertyCard data={post} key={key} />
+                          <PropertyCard data={post} listType={Lib.PROPERTIES_LIST_CAROUSEL} key={key} />
                         )
                       })
                     }

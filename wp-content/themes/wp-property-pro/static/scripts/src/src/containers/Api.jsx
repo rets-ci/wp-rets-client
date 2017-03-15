@@ -374,6 +374,7 @@ class Api {
 
     let source = JSON.stringify([
       "post_title",
+      "post_name",
       "post_meta.wpp_location_latitude",
       "post_meta.wpp_location_longitude",
       "permalink",
