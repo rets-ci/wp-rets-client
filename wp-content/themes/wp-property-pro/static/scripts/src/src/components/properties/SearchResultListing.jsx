@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import LoadingIcon from '../LoadingIcon.jsx';
+import LoadingCircle from '../LoadingCircle.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import Waypoint from 'react-waypoint';
@@ -71,7 +71,7 @@ class SearchResultListing extends Component {
           <div style={{overflow: 'hidden'}}>
             <div style={{float: 'right'}}>
               {this.state.loading ?
-                <LoadingIcon />
+                <LoadingCircle />
                 : null}
               <p>Showing {this.props.properties.length} results</p>
               <Waypoint

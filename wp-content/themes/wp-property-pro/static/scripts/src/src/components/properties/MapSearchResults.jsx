@@ -1,6 +1,6 @@
 import Api from '../../containers/Api.jsx';
 import {setSearchResults} from '../../actions/index.jsx';
-import LoadingIcon from '../LoadingIcon.jsx';
+import LoadingCircle from '../LoadingCircle.jsx';
 import {Lib} from '../../lib.jsx';
 import Map from './Map.jsx';
 import React, {Component, PropTypes} from 'react';
@@ -132,7 +132,7 @@ class MapSearchResults extends Component {
               </div>
             </section>
           </div>
-        : <LoadingIcon style={{position: 'absolute', left: '50%', top: '30%'}} />}
+        : <LoadingCircle style={{position: 'absolute', left: '50%', top: '30%'}} />}
       </div>
     )
   }
