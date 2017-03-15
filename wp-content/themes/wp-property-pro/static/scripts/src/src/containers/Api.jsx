@@ -320,9 +320,7 @@ class Api {
 
   static createESSearchQuery(params) {
     let terms = {};
-    terms["terms." + params.tax + ".name.raw"] = [
-      params.term
-    ];
+    terms["terms." + params.tax + ".slug"] = params.term;
 
     let query = {
       "bool": {
@@ -354,20 +352,17 @@ class Api {
           }
         };
     } else {
-      // TODO temporary comment it, need some testing for it.
-      // query.bool.must.push({
-      //   "terms": {
-      //     "terms.wpp_listing_status.name.raw": [
-      //       'for-' + params.saleType.toLowerCase()
-      //     ]
-      //   }
-      // });
-      // query.bool.must.push({
-      //   "terms": {
-      //     "terms.wpp_listing_type.name.raw": params.propertyTypes
-      //   }
-      // });
-      query.bool.must.push({"terms": terms});
+      query.bool.must.push({
+        "term": {
+          "terms.wpp_listing_status.slug": 'for-' + params.saleType.toLowerCase()
+        }
+      });
+      query.bool.must.push({
+        "terms": {
+          "terms.wpp_listing_type.slug": params.propertyTypes
+        }
+      });
+      query.bool.must.push({"term": terms});
     }
 
     query = JSON.stringify(query);
