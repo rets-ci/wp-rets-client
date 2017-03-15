@@ -103,7 +103,10 @@ class EP_Terms_Index {
       return;
     }
 
+    //WP_CLI::log( 'Starting indexing term ' . $term[ 'term_id' ] );
+
     $_term = get_term( $term['term_id'], $taxonomy );
+
     $meta = WPP_F::get_term_metadata( $_term );
     $term_type = isset( $meta['term_type'] ) ? $meta['term_type'] : null;
 
@@ -113,10 +116,11 @@ class EP_Terms_Index {
       str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $term['name'] ) ) )
     ) );
 
-    $context = array( $taxonomy );
+    $context_term_type = array( $taxonomy );
     if( !empty( $term_type ) ) {
-      $context[] = $term_type;
+      $context_term_type[] = $term_type;
     }
+    $context_term_type = array_unique( $context_term_type );
 
     $args = array(
       "term_id" => $term['term_id'],
@@ -124,11 +128,13 @@ class EP_Terms_Index {
       "slug" => $term['slug'],
       "name" => $term['name'],
       "taxonomy" => $taxonomy,
-      "url_path" => str_replace( home_url(), '', get_term_link( $_term ) ),
+      "url_path" => str_replace( home_url(), '', get_term_link( $_term, $taxonomy ) ),
       "meta" => $meta,
       "term_suggest" => array(
         "input" => $input,
-        "context" => $context
+        "contexts" => array(
+          "term_type" => $context_term_type
+        )
       )
     );
 
@@ -141,6 +147,8 @@ class EP_Terms_Index {
     }
 
     $this->terms[] = $term['term_id'];
+
+    //WP_CLI::log( 'Ended indexing term ' . $term[ 'term_id' ] );
 
   }
 
