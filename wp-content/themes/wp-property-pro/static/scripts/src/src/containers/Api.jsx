@@ -174,12 +174,12 @@ class Api {
           for (let ind in term.options) {
             let option = term.options[ind];
 
-            if (_.get(option, 'payload.term_type', null) === aggregationKey) {
+            if (_.get(option, '_source.term_type', null) === aggregationKey) {
               _buckets.push({
                 id: _.get(option, 'text', ''),
                 text: _.get(option, 'text', ''),
                 count: _.get(option, 'score', ''),
-                taxonomy: _.get(option, 'payload.tax', '')
+                taxonomy: _.get(option, '_source.taxonomy', '')
               });
 
             }
@@ -402,7 +402,8 @@ class Api {
       "tax_input"
     ]);
 
-    return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+    // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+    return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
   static search(query, callback) {
