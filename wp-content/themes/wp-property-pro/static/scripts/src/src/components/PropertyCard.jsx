@@ -1,5 +1,6 @@
 import {Lib} from '../lib.jsx';
 import React, {Component, PropTypes} from 'react';
+import numeral from 'numeral';
 import Util from './Util.jsx';
 import Swiper from './Swiper.jsx';
 import {browserHistory} from 'react-router';
@@ -7,7 +8,8 @@ import _ from 'lodash';
 
 export default class PropertyCard extends Component {
   static propTypes = {
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    listType: PropTypes.string.isRequired
   }
 
   handlePropertyClick(eve, url) {
@@ -48,7 +50,7 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div className="card card-homepage swiper-slide">
+      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? "card card-homepage swiper-slide" : "card"}>
         <div className="card-img">
           <div className="card-img-top">
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
@@ -85,7 +87,7 @@ export default class PropertyCard extends Component {
         </div>
         <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className="listing-top">
-            <span className="price">${price}</span>
+            <span className="price">{numeral(price).format('$0,0.00')}</span>
             <span className="action-btn-group">
               <a href="#" className="favorite active" title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>

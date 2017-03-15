@@ -28,59 +28,61 @@ class Api {
 
   static getAggregationsFields() {
     return {
-      "wpp_address": {
-        "slug": "location_address",
-        "title": "Address",
-        "field": "meta_input.location_address",
-        "search_field": "_search.location_address"
-      },
       "wpp_listing_mls_number": {
         "slug": "mls_id",
         "title": "MLS ID",
         "field": "tax_input.mls_id",
-        "search_field": "_search.mls_id"
+        "search_field": "_search.mls_id",
+        "old_key": "mls-id"
       },
       "wpp_location_city_state": {
         "slug": "city",
         "title": "City",
         "field": "tax_input.location_city",
-        "search_field": "_search.location_city"
+        "search_field": "_search.location_city",
+        "old_key": "location-city-state"
       },
       "wpp_location_zip": {
         "slug": "zip",
         "title": "Zip",
         "field": "_system.addressDetail.zipcode",
-        "search_field": "_search.location_zip"
+        "search_field": "_search.location_zip",
+        "old_key": "location-zipcode"
       },
       "wpp_location_county": {
         "slug": "county",
         "title": "County",
         "field": "tax_input.location_county",
-        "search_field": "_search.location_county"
+        "search_field": "_search.location_county",
+        "old_key": "location-county"
       },
       "wpp_location_subdivision": {
         "slug": "subdivision",
         "title": "Subdivision",
         "field": "tax_input.subdivision",
-        "search_field": "_search.subdivision"
+        "search_field": "_search.subdivision",
+        "old_key": "subdivision"
       },
       "wpp_schools_elementary_school": {
         "slug": "elementary_school",
         "title": "Elementary School",
         "field": "tax_input.elementary_school",
-        "search_field": "_search.elementary_school"
+        "search_field": "_search.elementary_school",
+        "old_key": "elementary-school"
       },
       "wpp_schools_middle_school": {
         "slug": "middle_school",
         "title": "Middle School",
         "field": "tax_input.middle_school",
-        "search_field": "_search.middle_school"
+        "search_field": "_search.middle_school",
+        "old_key": "middle-school"
       },
       "wpp_schools_high_school": {
         "slug": "high_school",
         "title": "High School",
         "field": "tax_input.high_school",
-        "search_field": "_search.high_school"
+        "search_field": "_search.high_school",
+        "old_key": "high-school"
       }
     };
   }
@@ -126,6 +128,12 @@ class Api {
     }
 
     let aggregationsFields = this.getAggregationsFields();
+    let termTypes = [];
+    for(let i in aggregationsFields){
+      let agg = aggregationsFields[i];
+      termTypes.push(i);
+      termTypes.push(_.get(agg, 'old_key', ''));
+    }
 
     let body = {
       "suggest": {
@@ -140,7 +148,10 @@ class Api {
           "text": params.term,
           "completion": {
             "field": "term_suggest",
-            "size": Lib.TERM_SUGGEST_COUNT
+            "size": Lib.TERM_SUGGEST_COUNT,
+            "contexts": {
+              "term_type": termTypes
+            }
           }
         }
       }
@@ -174,12 +185,12 @@ class Api {
           for (let ind in term.options) {
             let option = term.options[ind];
 
-            if (_.get(option, 'payload.term_type', null) === aggregationKey) {
+            if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
               _buckets.push({
-                id: _.get(option, 'text', ''),
-                text: _.get(option, 'text', ''),
+                id: _.get(option, '_id', ''),
+                text: _.get(option, '_source.slug', ''),
                 count: _.get(option, 'score', ''),
-                taxonomy: _.get(option, 'payload.tax', '')
+                taxonomy: _.get(option, '_source.taxonomy', '')
               });
 
             }
@@ -320,9 +331,7 @@ class Api {
 
   static createESSearchQuery(params) {
     let terms = {};
-    terms["terms." + params.tax + ".name.raw"] = [
-      params.term
-    ];
+    terms["terms." + params.tax + ".slug"] = params.term;
 
     let query = {
       "bool": {
@@ -354,20 +363,17 @@ class Api {
           }
         };
     } else {
-      // TODO temporary comment it, need some testing for it.
-      // query.bool.must.push({
-      //   "terms": {
-      //     "terms.wpp_listing_status.name.raw": [
-      //       'for-' + params.saleType.toLowerCase()
-      //     ]
-      //   }
-      // });
-      // query.bool.must.push({
-      //   "terms": {
-      //     "terms.wpp_listing_type.name.raw": params.propertyTypes
-      //   }
-      // });
-      query.bool.must.push({"terms": terms});
+      query.bool.must.push({
+        "term": {
+          "terms.wpp_listing_status.slug": 'for-' + params.saleType.toLowerCase()
+        }
+      });
+      query.bool.must.push({
+        "terms": {
+          "terms.wpp_listing_type.slug": params.propertyTypes
+        }
+      });
+      query.bool.must.push({"term": terms});
     }
 
     query = JSON.stringify(query);
@@ -379,6 +385,7 @@ class Api {
 
     let source = JSON.stringify([
       "post_title",
+      "post_name",
       "post_meta.wpp_location_latitude",
       "post_meta.wpp_location_longitude",
       "permalink",
@@ -402,7 +409,8 @@ class Api {
       "tax_input"
     ]);
 
-    return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+    // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
+    return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
   static search(query, callback) {
