@@ -235,7 +235,9 @@
 	  TOP_AGGREGATIONS_COUNT: 5,
 	  URL_DELIMITER: '/',
 	  POST_SUGGEST_COUNT: 5,
-	  TERM_SUGGEST_COUNT: 20
+	  TERM_SUGGEST_COUNT: 20,
+	  PROPERTIES_LIST_CAROUSEL: "carousel",
+	  PROPERTIES_LIST_DEFAULT: "default"
 	};
 
 /***/ },
@@ -47997,59 +47999,61 @@
 	    key: 'getAggregationsFields',
 	    value: function getAggregationsFields() {
 	      return {
-	        "wpp_address": {
-	          "slug": "location_address",
-	          "title": "Address",
-	          "field": "meta_input.location_address",
-	          "search_field": "_search.location_address"
-	        },
 	        "wpp_listing_mls_number": {
 	          "slug": "mls_id",
 	          "title": "MLS ID",
 	          "field": "tax_input.mls_id",
-	          "search_field": "_search.mls_id"
+	          "search_field": "_search.mls_id",
+	          "old_key": "mls-id"
 	        },
 	        "wpp_location_city_state": {
 	          "slug": "city",
 	          "title": "City",
 	          "field": "tax_input.location_city",
-	          "search_field": "_search.location_city"
+	          "search_field": "_search.location_city",
+	          "old_key": "location-city-state"
 	        },
 	        "wpp_location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
-	          "search_field": "_search.location_zip"
+	          "search_field": "_search.location_zip",
+	          "old_key": "location-zipcode"
 	        },
 	        "wpp_location_county": {
 	          "slug": "county",
 	          "title": "County",
 	          "field": "tax_input.location_county",
-	          "search_field": "_search.location_county"
+	          "search_field": "_search.location_county",
+	          "old_key": "location-county"
 	        },
 	        "wpp_location_subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
 	          "field": "tax_input.subdivision",
-	          "search_field": "_search.subdivision"
+	          "search_field": "_search.subdivision",
+	          "old_key": "subdivision"
 	        },
 	        "wpp_schools_elementary_school": {
 	          "slug": "elementary_school",
 	          "title": "Elementary School",
 	          "field": "tax_input.elementary_school",
-	          "search_field": "_search.elementary_school"
+	          "search_field": "_search.elementary_school",
+	          "old_key": "elementary-school"
 	        },
 	        "wpp_schools_middle_school": {
 	          "slug": "middle_school",
 	          "title": "Middle School",
 	          "field": "tax_input.middle_school",
-	          "search_field": "_search.middle_school"
+	          "search_field": "_search.middle_school",
+	          "old_key": "middle-school"
 	        },
 	        "wpp_schools_high_school": {
 	          "slug": "high_school",
 	          "title": "High School",
 	          "field": "tax_input.high_school",
-	          "search_field": "_search.high_school"
+	          "search_field": "_search.high_school",
+	          "old_key": "high-school"
 	        }
 	      };
 	    }
@@ -48097,6 +48101,12 @@
 	      }
 
 	      var aggregationsFields = this.getAggregationsFields();
+	      var termTypes = [];
+	      for (var i in aggregationsFields) {
+	        var agg = aggregationsFields[i];
+	        termTypes.push(i);
+	        termTypes.push(_lodash2.default.get(agg, 'old_key', ''));
+	      }
 
 	      var body = {
 	        "suggest": {
@@ -48111,7 +48121,10 @@
 	            "text": params.term,
 	            "completion": {
 	              "field": "term_suggest",
-	              "size": _lib.Lib.TERM_SUGGEST_COUNT
+	              "size": _lib.Lib.TERM_SUGGEST_COUNT,
+	              "contexts": {
+	                "term_type": termTypes
+	              }
 	            }
 	          }
 	        }
@@ -48135,8 +48148,8 @@
 	          var _buckets2 = [];
 
 	          var termSuggest = _lodash2.default.get(response, 'suggest.term-suggest');
-	          for (var i in termSuggest) {
-	            var term = termSuggest[i];
+	          for (var _i in termSuggest) {
+	            var term = termSuggest[_i];
 
 	            if (_lodash2.default.get(term, 'options', null) === null) {
 	              continue;
@@ -48145,7 +48158,7 @@
 	            for (var ind in term.options) {
 	              var option = term.options[ind];
 
-	              if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey) {
+	              if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey || _lodash2.default.get(option, '_source.term_type', null) === _lodash2.default.get(aggregationsFields[aggregationKey], 'old_key', null)) {
 	                _buckets2.push({
 	                  id: _lodash2.default.get(option, 'text', ''),
 	                  text: _lodash2.default.get(option, 'text', ''),
@@ -48720,6 +48733,8 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _lib = __webpack_require__(2);
+
 	var _PropertyCard = __webpack_require__(294);
 
 	var _PropertyCard2 = _interopRequireDefault(_PropertyCard);
@@ -48792,7 +48807,7 @@
 	              'div',
 	              { className: 'swiper-wrapper' },
 	              posts.map(function (post, key) {
-	                return _react2.default.createElement(_PropertyCard2.default, { data: post, key: key });
+	                return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
 	              })
 	            )
 	          )
@@ -48927,7 +48942,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'card card-homepage swiper-slide' },
+	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? "card card-homepage swiper-slide" : "card" },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-img' },
@@ -49056,7 +49071,8 @@
 	}(_react.Component);
 
 	PropertyCard.propTypes = {
-	  data: _react.PropTypes.object.isRequired
+	  data: _react.PropTypes.object.isRequired,
+	  listType: _react.PropTypes.string.isRequired
 	};
 	exports.default = PropertyCard;
 
@@ -57283,7 +57299,7 @@
 	            return _react2.default.createElement(
 	              'div',
 	              { className: 'col-sm-6', key: i },
-	              _react2.default.createElement(_PropertyCard2.default, { data: item })
+	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT })
 	            );
 	          })
 	        ),
