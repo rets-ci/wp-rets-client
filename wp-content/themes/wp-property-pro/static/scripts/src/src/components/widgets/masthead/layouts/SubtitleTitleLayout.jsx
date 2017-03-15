@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 const SubtitleTitleLayout = ({widget_cell}) => {
     return (
-        <div className="container">
+        <div className="container masthead-subtitle-container">
             {
                 _.get(widget_cell, 'widget.fields.subtitle', '')
                     ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>

@@ -16,7 +16,7 @@ class HeaderSearch extends Component {
                 _.get(bundle, 'logos.square_logo', null)
                   ?
                   <a href={bundle.site_url} onClick={(eve) => {eve.preventDefault();browserHistory.push('')}} title={bundle.site_name}>
-                    <img src={bundle.logos.square_logo} alt={bundle.site_name} className="logo" />
+                    <img src={bundle.logos.square_logo} alt={bundle.site_name} className="logo square-logo" />
                   </a>
                   : null
               }
