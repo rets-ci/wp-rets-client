@@ -46,7 +46,13 @@ class EP_Terms_Index {
           'term_suggest' => array(
             'type' => 'completion',
             'analyzer' => 'whitespace',
-            'search_analyzer' => 'whitespace_analyzer'
+            'search_analyzer' => 'whitespace_analyzer',
+            'contexts' => array(
+              array(
+                'name' => 'term_type',
+                'type' => 'category'
+              )
+            )
           )
         ),
       );
@@ -99,19 +105,30 @@ class EP_Terms_Index {
 
     $_term = get_term( $term['term_id'], $taxonomy );
     $meta = WPP_F::get_term_metadata( $_term );
+    $term_type = isset( $meta['term_type'] ) ? $meta['term_type'] : null;
 
-    $input = array( $term[ 'name' ], $term[ 'slug' ] );
+    $input = array_unique( array(
+      str_replace( '&amp;', '&', $term['name'] ),
+      strtolower( str_replace( '&amp;', '&', $term['name'] ) ),
+      str_replace( array( ' ', '-', ',', '.' ), '', strtolower( sanitize_title( $term['name'] ) ) )
+    ) );
+
+    $context = array( $taxonomy );
+    if( !empty( $term_type ) ) {
+      $context[] = $term_type;
+    }
 
     $args = array(
       "term_id" => $term['term_id'],
-      "term_type" => isset( $meta['term_type'] ) ? $meta['term_type'] : null,
+      "term_type" => $term_type,
       "slug" => $term['slug'],
       "name" => $term['name'],
       "taxonomy" => $taxonomy,
       "url_path" => str_replace( home_url(), '', get_term_link( $_term ) ),
       "meta" => $meta,
       "term_suggest" => array(
-        "input" => $input
+        "input" => $input,
+        "context" => $context
       )
     );
 
