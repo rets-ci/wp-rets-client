@@ -70,9 +70,6 @@ namespace UsabilityDynamics\PropertyPro {
       // Fix value types.
       $this->_settings = Config::normalize($this->_settings, true);
 
-      // Apply branch-specific composer.json configuration.
-      $this->_settings = Config::apply_branch_settings($this->_settings, $this);
-
       // Handle Database.
       $this->parseDatabase();
 
@@ -230,49 +227,6 @@ namespace UsabilityDynamics\PropertyPro {
       }
 
       return $_settings;
-
-    }
-
-    /**
-     * Allow composer.json to include branch-specific settings, e.g. settings_staging
-     *
-     * Ported out of DDP.
-     *
-     * @param $settings
-     * @param $instance
-     *
-     * @return array|mixed
-     * @internal param $array
-     *
-     */
-    public function apply_branch_settings($settings, $instance)
-    {
-
-      if (defined('WP_CLI') && isset($_SERVER['GIT_BRANCH']) && $_SERVER['GIT_BRANCH']) {
-        $_branch = strtolower($_SERVER['GIT_BRANCH']);
-      }
-
-      // Get branch specific settings (they can override general settings)
-      if (!isset($_branch) || !$_branch && (isset($_SERVER['HTTP_X_SELECTED_BRANCH']) && $_SERVER['HTTP_X_SELECTED_BRANCH'])) {
-        $_branch = strtolower($_SERVER['HTTP_X_SELECTED_BRANCH']);
-      }
-
-      if (!isset($_branch) || !$_branch) {
-        return $settings;
-      }
-
-      // Try to load branch-specific settings.
-      $env_settings = Config::parseComposer($instance->composer_file, 'settings_' . $_branch);
-
-      if ($env_settings) {
-        $env_settings = Config::flatten($env_settings);
-        $env_settings = Config::normalize($env_settings);
-        $env_settings = Config::replacePatterns($env_settings, $_SERVER);
-        $env_settings = Config::normalize($env_settings, true);
-        $settings = array_merge($settings, $env_settings);
-      }
-
-      return $settings;
 
     }
 
