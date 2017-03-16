@@ -1,5 +1,4 @@
 <?php
-global $wp_properties;
 
 $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
 $field_alias = array();
@@ -7,7 +6,7 @@ $field_alias = array();
 $_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get( $api_url ) ) );
 
 // iterate over all field aliases and create our field-alias arary ONLY for fields that belong to a group. This is a way of filtering out aliases to non-existant fields.
-foreach( $wp_properties[ 'field_alias' ] as $_field_key => $_field_alias ) {
+foreach( ud_get_wp_property( 'field_alias', array() ) as $_field_key => $_field_alias ) {
 
   if( $_field_alias ) {
     $_attribute_data = UsabilityDynamics\WPP\Attributes::get_attribute_data( $_field_key );
@@ -54,7 +53,11 @@ if( isset( $api_url_response->errors ) ) {
 
 <div class="wrap">
   <h3>RETS.ci Field Mapper</h3>
-<p><?php echo $_analysis->message; ?>.</p>
+
+  <?php if( $_analysis && isset( $_analysis->message ) ) : ?>
+    <p><?php echo $_analysis->message; ?>.</p>
+  <?php endif; ?>
+
 
 <table id="rets-mapper-table" class="widefat fixed tablesorter">
   <thead>
@@ -74,8 +77,7 @@ if( isset( $api_url_response->errors ) ) {
   </thead>
   <tbody>
   <?php $c = 0; ?>
-
-  <?php foreach( $_analysis->data as $_field ) { ?>
+  <?php if( isset( $_analysis->data ) ) foreach( $_analysis->data as $_field ) { ?>
     <?php $c++; ?>
     <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?> mapper-string-<?php echo $c; ?>" data-rets-mapper-id="<?php echo $_field->_id; ?>" data-rets-mapper-key="<?php echo $_field->key; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
     <th class="hidden"><?php echo $_field->_id; ?></th>
