@@ -26,7 +26,7 @@ class SearchResultListing extends Component {
 
   render() {
     return (
-      <div className="listing-wrap" ref={(r) => this.listingWrapElement = r}>
+      <div className={Lib.THEME_CLASSES_PREFIX+"listing-wrap"} ref={(r) => this.listingWrapElement = r}>
         <div className="row">
           {this.props.properties.map((p, i) => {
 

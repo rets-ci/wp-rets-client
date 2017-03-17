@@ -1,16 +1,17 @@
 import React from 'react';
 import FooterTopMenu from './Menus/FooterTopMenu.jsx';
 import Util from '../Util.jsx';
-import _ from 'lodash'
+import {Lib} from '../../lib.jsx';
+import _ from 'lodash';
 
 const FooterTop = () => {
 
   return (
-    <div className="top-footer">
+    <div className={Lib.THEME_CLASSES_PREFIX+"top-footer"}>
 
       <div className="container">
         <div className="row">
-          <div className="col-lg-3 footer-logo">
+          <div className={`col-lg-3 ${Lib.THEME_CLASSES_PREFIX}footer-logo`}>
             {
               _.get(bundle, 'logos.vertical_logo', null)
                 ?
@@ -19,14 +20,14 @@ const FooterTop = () => {
                   Util.goToUrl('/')
                 }}>
                   <img src={bundle.logos.vertical_logo} alt={bundle.site_name}
-                       className="svg vertical-logo"/>
+                       className={`${Lib.THEME_CLASSES_PREFIX}svg ${Lib.THEME_CLASSES_PREFIX}vertical-logo`}/>
                 </a>
 
                 : null
             }
           </div>
 
-          <div className="col-md-12 col-lg-9 footer-menu">
+          <div className={`col-md-12 col-lg-9 ${Lib.THEME_CLASSES_PREFIX}footer-menu`}>
             <div className="row">
               {
                 _.get(bundle, 'footer.top_footer', null)

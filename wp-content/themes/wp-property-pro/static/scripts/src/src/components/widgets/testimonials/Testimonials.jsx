@@ -1,8 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import DefaultLayout from './layouts/DefaultLayout.jsx'
-import {setTestimonialsActiveItem} from '../../../actions/index.jsx'
-import _ from 'lodash'
+import {connect} from 'react-redux';
+import DefaultLayout from './layouts/DefaultLayout.jsx';
+import {setTestimonialsActiveItem} from '../../../actions/index.jsx';
+import {Lib} from '../../../lib.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state) => {
     return {
@@ -25,7 +26,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     }
 
     let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
-        <li className={i === activeItem ? "active-slide" : ""} key={i}>
+        <li className={i === activeItem ? Lib.THEME_CLASSES_PREFIX+"active-slide" : ""} key={i}>
             <blockquote>
                 <div className="rating">
                     <i className="fa fa-star" aria-hidden="true"></i>
@@ -41,13 +42,13 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     ));
 
     let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
-        <li className={i === activeItem ? "active" : ""} key={i}>
+        <li className={i === activeItem ? Lib.THEME_CLASSES_PREFIX+"active" : ""} key={i}>
             <a href="#" onClick={(event) => {
                 switchActiveTestimonial(i);
                 event.preventDefault();
                 event.stopPropagation();
             }}>
-                <div className="userBox">
+                <div className={Lib.THEME_CLASSES_PREFIX+"userBox"}>
                     {
                         _.get(testimonial, 'image_src', '')
                             ? <img src={testimonial.image_src} alt={testimonial.title}/>
@@ -77,7 +78,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     }
 
     return (
-        <section className="testimonial">
+        <section className={Lib.THEME_CLASSES_PREFIX+"testimonial"}>
             {container}
         </section>
     );

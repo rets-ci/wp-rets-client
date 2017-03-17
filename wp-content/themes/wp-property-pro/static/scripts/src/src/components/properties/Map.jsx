@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Util from '../Util.jsx';
+import {Lib} from '../../lib.jsx';
+
 export default class Map extends Component {
   static propTypes = {
     searchByCoordinates: PropTypes.func.isRequired,
@@ -68,7 +70,7 @@ export default class Map extends Component {
       height: '100%',
     };
     return (
-      <div id="Map" ref={(r) => this.mapElement = r} style={mapStyle}></div>
+      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} ref={(r) => this.mapElement = r} style={mapStyle}></div>
     );
   }
 }

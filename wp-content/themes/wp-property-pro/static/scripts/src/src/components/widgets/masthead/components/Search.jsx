@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
 import {openModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
-import {Lib} from '../../../../lib.jsx'
-import _ from 'lodash'
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state, history) => {
   return {
@@ -109,7 +109,7 @@ class SearchContent extends Component {
 
     let self = this;
     return (
-      <div className="search-box">
+      <div className={Lib.THEME_CLASSES_PREFIX+"search-box"}>
         <MobileTabsSearch
           labels={this.state.labels}
           saleTypes={this.state.saleTypes}

@@ -1,11 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import Search from '../components/Search.jsx'
-import _ from 'lodash'
+import {connect} from 'react-redux';
+import Search from '../components/Search.jsx';
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const TitleDescriptionLayout = ({widget_cell}) => {
     return (
-        <div className="container masthead-title-container">
+        <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-title-container`}>
             {
                 _.get(widget_cell, 'widget.fields.title', '')
                     ? <h1>{widget_cell.widget.fields.title}</h1>

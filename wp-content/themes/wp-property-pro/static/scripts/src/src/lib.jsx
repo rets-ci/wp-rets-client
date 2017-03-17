@@ -24,5 +24,6 @@ export const Lib = {
   POST_SUGGEST_COUNT: 5,
   TERM_SUGGEST_COUNT: 20,
   PROPERTIES_LIST_CAROUSEL: "carousel",
-  PROPERTIES_LIST_DEFAULT: "default"
+  PROPERTIES_LIST_DEFAULT: "default",
+  THEME_CLASSES_PREFIX: "propertypro-"
 };
