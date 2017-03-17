@@ -20,6 +20,9 @@ export default class PageLayout extends Component {
 
     // Get page content query
     let url = window.location.pathname + window.location.search;
+
+    let self = this;
+
     jQuery.ajax({
       url: url,
       type: 'get',
@@ -29,7 +32,7 @@ export default class PageLayout extends Component {
       dataType: 'json',
       success: function (data) {
         if(_.get(data, 'post', null))
-          this.setState({post: data.post});
+          self.setState({post: data.post});
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.log(textStatus, errorThrown);

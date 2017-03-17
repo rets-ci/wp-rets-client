@@ -54789,6 +54789,9 @@
 
 	      // Get page content query
 	      var url = window.location.pathname + window.location.search;
+
+	      var self = this;
+
 	      jQuery.ajax({
 	        url: url,
 	        type: 'get',
@@ -54797,7 +54800,7 @@
 	        },
 	        dataType: 'json',
 	        success: function success(data) {
-	          if (_lodash2.default.get(data, 'post', null)) this.setState({ post: data.post });
+	          if (_lodash2.default.get(data, 'post', null)) self.setState({ post: data.post });
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
 	          console.log(textStatus, errorThrown);
