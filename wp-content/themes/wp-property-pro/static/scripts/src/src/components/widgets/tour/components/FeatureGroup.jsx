@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import Feature from './Feature.jsx';
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const FeatureGroup = ({featureGroup, key}) => {
 
@@ -26,15 +27,15 @@ const FeatureGroup = ({featureGroup, key}) => {
   }
 
   return (
-    <section className="widget-box" key={key}>
-      <div className="row no-gutters background-block">
+    <section className={Lib.THEME_CLASSES_PREFIX+"widget-box"} key={key}>
+      <div className={`row no-gutters ${Lib.THEME_CLASSES_PREFIX}background-block`}>
         <div className={featureGroupBackgroundClasses} style={backgroundStyle}></div>
       </div>
-      <div className="widget-inner">
+      <div className={Lib.THEME_CLASSES_PREFIX+"widget-inner"}>
         <div className="container">
           <div className="row no-gutters">
             <div className={featureGroupContentClasses}>
-              <div className="tour-widget-content">
+              <div className={Lib.THEME_CLASSES_PREFIX+"tour-widget-content"}>
                 {
                   _.get(featureGroup, 'features', []).map((feature, k) => {
                       let last = featuresCount === counter;

@@ -37,10 +37,9 @@
 namespace UsabilityDynamics\CloudFront {
 
   // Do nothing for CLI, Crons or Admin.
-	if( defined( 'WP_CLI' ) || defined( 'DOING_CRON' ) ) {
+	if( defined( 'WP_CLI' ) || defined( 'DOING_CRON' ) || ( defined( 'CLOUDFRONT_DISABLED' ) && CLOUDFRONT_DISABLED ) ) {
 		return;
 	}
-
 
   // Support CloudFront SSL termination.
   Handlers::check_ssl();

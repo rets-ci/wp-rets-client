@@ -21,6 +21,16 @@
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
+    "settings_develop-v3-local": {
+      "wp_debug_log": true,
+      "wp_debug_display": true,
+      "wp_siteurl": "http://www.reddoorcompany.loc",
+      "wp_home": "http://www.reddoorcompany.loc",
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "cloudfront_disabled": true,
+      "memcached_disabled": true,
+      "db_name": "www.reddoorcompany.com/latest-v3"
+    },
     "settings_latest-v3": {
       "wp_debug_log": true,
       "wp_debug_display": true,
@@ -35,7 +45,8 @@
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
     "settings_production": {
-      "db_name": "www.reddoorcompany.com.v2"
+      "db_name": "www.reddoorcompany.com.v2",
+      "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-1"
     },
     "settings_production-hotfix": {
       "wp_debug_log": true,
@@ -122,7 +133,8 @@
         "write": 5,
         "charset": "utf8",
         "collate": "utf8_general_ci"
-      }
+      },
+      "WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY": "UA-31717595-2"
     }
   },
   "config": {

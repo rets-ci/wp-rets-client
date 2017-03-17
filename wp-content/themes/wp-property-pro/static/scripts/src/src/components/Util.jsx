@@ -59,22 +59,6 @@ class Util extends React.Component {
     };
   }
 
-  static getPageContent(url, callback){
-
-    jQuery.ajax({
-      url: url,
-      type: 'get',
-      data: {
-        pageType: 'json'
-      },
-      dataType: 'json',
-      success: function (data) {
-       callback(data);
-      }
-    });
-
-  }
-
   static goToUrl(url){
 
     if(_.isEmpty(url)){

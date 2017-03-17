@@ -3,8 +3,8 @@ import Api from '../../../../containers/Api.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import _ from 'lodash'
-import {Lib} from '../../../../lib.jsx'
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state) => {
   return {
@@ -111,8 +111,8 @@ class Modal extends Component {
       let self = this;
         let resultsElements = searchResults.map((s, k) => {
             return (
-                <div key={k} className="search-result-group">
-                    <div key={k} className="search-title">
+                <div key={k} className={Lib.THEME_CLASSES_PREFIX+"search-result-group"}>
+                    <div key={k} className={Lib.THEME_CLASSES_PREFIX+"search-title"}>
                         <div className="container">
                             <h4>{s.text}</h4>
                         </div>
@@ -137,12 +137,12 @@ class Modal extends Component {
       let inputClasses = 'form-control';
       if(window.innerWidth < Lib.MOBILE_WIDTH){
         placeholder = 'Address, City, Zip.';
-        inputClasses = 'form-control withPadding'
+        inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}withPadding`
       }
 
         return (
-            <div className="search-modal" onKeyDown={this.handleKeyPress.bind(this)} style={{display: this.props.open ? 'block' : 'none'}}>
-                <a href="#" className="close-panel" onClick={(e) => {e.preventDefault(); this.props.closeModal();}}>
+            <div className={Lib.THEME_CLASSES_PREFIX+"search-modal"} onKeyDown={this.handleKeyPress.bind(this)} style={{display: this.props.open ? 'block' : 'none'}}>
+                <a href="#" className={Lib.THEME_CLASSES_PREFIX+"close-panel"} onClick={(e) => {e.preventDefault(); this.props.closeModal();}}>
                     <i className="fa fa-times"></i>
                 </a>
                 <form method="get" className="form-inline">
@@ -167,7 +167,7 @@ class Modal extends Component {
                       }
                     </div>
                 </form>
-                <div className="search-modal-box">
+                <div className={Lib.THEME_CLASSES_PREFIX+"search-modal-box"}>
                     {resultsElements}
                 </div>
             </div>

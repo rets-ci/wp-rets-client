@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {Lib} from '../../../../lib.jsx';
 
 class MobileTabsSearch extends Component {
   static propTypes = {
@@ -41,11 +42,11 @@ class MobileTabsSearch extends Component {
     }
 
     return (
-      <div className="find-home-type hidden-md-up">
+      <div className={`${Lib.THEME_CLASSES_PREFIX}find-home-type hidden-md-up`}>
       <ul>
         {this.props.labels.map((l, i) => {
             let instance = this;
-            let linkClasses = this.props.selectedOption === l ? 'active' : '';
+            let linkClasses = this.props.selectedOption === l ? Lib.THEME_CLASSES_PREFIX+'active' : '';
             return (<li key={i} className={linkClasses}><a href="#" onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
           }
         )}

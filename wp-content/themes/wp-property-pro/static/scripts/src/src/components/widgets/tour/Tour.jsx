@@ -1,5 +1,6 @@
 import React from 'react';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
+import {Lib} from '../../../lib.jsx';
 
 const Tour = ({widget_cell}) => {
 
@@ -17,7 +18,7 @@ const Tour = ({widget_cell}) => {
   }
 
   return (
-    <section className="tour-section">
+    <section className={Lib.THEME_CLASSES_PREFIX+"tour-section"}>
       {container}
     </section>
   );

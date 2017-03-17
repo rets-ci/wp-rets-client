@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import DefaultLayout from './layouts/DefaultLayout.jsx';
+import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
-
 
 const Callout = ({widget_cell}) => {
 
@@ -29,7 +29,7 @@ const Callout = ({widget_cell}) => {
     }
 
     return (
-    <section className="callout" style={style}>
+    <section className={Lib.THEME_CLASSES_PREFIX+"callout"} style={style}>
       {container}
     </section>
     );

@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import FeatureGroup from './../components/FeatureGroup.jsx';
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const DefaultLayout = ({item}) => {
   return (
-    <div className="widget-tour">
-      <div className="headtitle text-center">
+    <div className={Lib.THEME_CLASSES_PREFIX+"widget-tour"}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}headtitle text-center`}>
         <div className="container">
           {
             _.get(item, 'title', null)

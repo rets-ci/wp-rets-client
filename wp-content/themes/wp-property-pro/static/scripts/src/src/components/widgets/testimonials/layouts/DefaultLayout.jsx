@@ -1,6 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import _ from 'lodash'
+import {connect} from 'react-redux';
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}) => {
   return (
@@ -16,8 +17,8 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
         _.isEmpty(testimonials_reviews)
           ? null
           :
-          <div className="sliderContent">
-            <ul className="slides">
+          <div className={Lib.THEME_CLASSES_PREFIX+"sliderContent"}>
+            <ul className={Lib.THEME_CLASSES_PREFIX+"slides"}>
               {testimonials_reviews}
             </ul>
           </div>
@@ -27,8 +28,8 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
         _.isEmpty(testimonials_authors)
           ? null
           :
-          <div className="userInfo">
-            <ul className="slides">
+          <div className={Lib.THEME_CLASSES_PREFIX+"userInfo"}>
+            <ul className={Lib.THEME_CLASSES_PREFIX+"slides"}>
               {testimonials_authors}
             </ul>
           </div>

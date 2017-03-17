@@ -1,4 +1,5 @@
 import React from 'react';
+import {Lib} from '../../../lib.jsx'
 import _ from 'lodash';
 
 const FooterTop = ({menu}) => {
@@ -9,7 +10,7 @@ const FooterTop = ({menu}) => {
         _.isEmpty(menu)
           ? null
           :
-          <div className="social">
+          <div className={Lib.THEME_CLASSES_PREFIX+"social"}>
             <span>{menu.title}</span>
             {
               _.get(menu, 'items', null)

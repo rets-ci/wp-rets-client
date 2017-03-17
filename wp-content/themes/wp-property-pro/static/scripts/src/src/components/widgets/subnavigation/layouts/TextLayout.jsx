@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TextItem from './item/TextItem.jsx';
+import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
-
 
 const TextLayout = ({items, currentUrl}) => {
   let btn = {};
@@ -37,14 +37,14 @@ const TextLayout = ({items, currentUrl}) => {
                 _.isEmpty(btn)
                   ? null
                   :
-                  <li className="subnavigation-btn">
+                  <li className={Lib.THEME_CLASSES_PREFIX+"subnavigation-btn"}>
                     <a href={btn.url} className="btn" style={style}>{btn.title}</a>
                   </li>
               }
               {
                 links.map((link, key) => {
                     if (link.url === currentUrl) {
-                      return (<li key={key} className="active"><TextItem item={link} /></li>)
+                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX+"active"}><TextItem item={link} /></li>)
                     } else {
                       return (<li key={key}><TextItem item={link} /></li>)
                     }

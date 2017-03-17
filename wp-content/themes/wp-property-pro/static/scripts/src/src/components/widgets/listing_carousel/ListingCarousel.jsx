@@ -1,5 +1,6 @@
 import React from 'react';
 import Defaultlayout from './layouts/Defaultlayout.jsx';
+import {Lib} from '../../../lib.jsx';
 
 const ListingCarousel = ({widget_cell}) => {
 
@@ -16,7 +17,7 @@ const ListingCarousel = ({widget_cell}) => {
   }
 
   return (
-    <section className="listings">
+    <section className={Lib.THEME_CLASSES_PREFIX+"listings"}>
       {container}
     </section>
   );
