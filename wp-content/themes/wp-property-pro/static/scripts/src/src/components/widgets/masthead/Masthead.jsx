@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import Modal from './components/Modal.jsx';
+import {Lib} from '../../../lib.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state) => {
     return {
@@ -45,9 +46,9 @@ const MastheadContent = ({widget_cell, open}) => {
     }
 
     return (
-        <section className="masthead" style={headerStyle}>
+        <section className={Lib.THEME_CLASSES_PREFIX+"masthead"} style={headerStyle}>
             {modal}
-            <div className="intro-wrap">
+            <div className={Lib.THEME_CLASSES_PREFIX+"intro-wrap"}>
                 {container}
             </div>
         </section>

@@ -50,9 +50,9 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? "card card-homepage swiper-slide" : "card"}>
-        <div className="card-img">
-          <div className="card-img-top">
+      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : "card"}>
+        <div className={Lib.THEME_CLASSES_PREFIX+"card-img"}>
+          <div className={Lib.THEME_CLASSES_PREFIX+"card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
                 <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
@@ -74,32 +74,32 @@ export default class PropertyCard extends Component {
               </div>
             </div>
           </div>
-          <ul className="direction-nav">
-            <li><a className="nav-prev" onClick={(e) => {
+          <ul className={Lib.THEME_CLASSES_PREFIX+"direction-nav"}>
+            <li><a className={Lib.THEME_CLASSES_PREFIX+"nav-prev"} onClick={(e) => {
               e.preventDefault();
               return this.handleNavigation.bind(this)('prev');
             } } href="#"></a></li>
-            <li><a className="nav-next" onClick={(e) => {
+            <li><a className={Lib.THEME_CLASSES_PREFIX+"nav-next"} onClick={(e) => {
               e.preventDefault();
               return this.handleNavigation.bind(this)('next');
             } } href="#"></a></li>
           </ul>
         </div>
         <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
-          <div className="listing-top">
-            <span className="price">{numeral(price).format('$0,0.00')}</span>
-            <span className="action-btn-group">
-              <a href="#" className="favorite active" title="Save as favorite">
+          <div className={Lib.THEME_CLASSES_PREFIX+"listing-top"}>
+            <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{numeral(price).format('$0,0.00')}</span>
+            <span className={Lib.THEME_CLASSES_PREFIX+"action-btn-group"}>
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`} title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
               </a>
-              <a href="#" className="hide" title="Hide">
+              <a href="#" className={Lib.THEME_CLASSES_PREFIX+"hide"} title="Hide">
                 <i className="fa fa-eye-slash" aria-hidden="true"></i>
               </a>
             </span>
           </div>
           <h4 className="card-title">{address}</h4>
           <p className="card-text">{full_address}</p>
-          <ul className="liting-info-box">
+          <ul className={Lib.THEME_CLASSES_PREFIX+"liting-info-box"}>
             <li>{beds} Bed</li>
             <li>{baths} Bath</li>
             <li>1,142 SF</li>

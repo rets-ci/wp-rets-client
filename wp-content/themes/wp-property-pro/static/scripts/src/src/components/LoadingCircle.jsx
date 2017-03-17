@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {Lib} from '../lib.jsx';
 
 class LoadingCircle extends Component {
   render() {
@@ -6,9 +7,9 @@ class LoadingCircle extends Component {
       style
     } = this.props;
     return (
-      <div className="spinner-circle" style={style}>
-        <div className="double-bounce1"></div>
-        <div className="double-bounce2"></div>
+      <div className={Lib.THEME_CLASSES_PREFIX+"spinner-circle"} style={style}>
+        <div className={Lib.THEME_CLASSES_PREFIX+"double-bounce1"}></div>
+        <div className={Lib.THEME_CLASSES_PREFIX+"double-bounce2"}></div>
       </div>
     );
   }

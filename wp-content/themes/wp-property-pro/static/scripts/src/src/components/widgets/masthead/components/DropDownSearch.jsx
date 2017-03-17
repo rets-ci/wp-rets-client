@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import onClickOutside from 'react-onclickoutside';
+import {Lib} from '../../../../lib.jsx';
 
 class DropDownSearch extends Component {
   static propTypes = {
@@ -56,7 +57,7 @@ class DropDownSearch extends Component {
     }
 
     return (
-      <div className="drop-search" style={dropSearchStyle}>
+      <div className={Lib.THEME_CLASSES_PREFIX+"drop-search"} style={dropSearchStyle}>
         <div id="search-options-type-container" onClick={() => self.props.handleChange(true)}>
           {this.props.selectedOption}
           <i className="fa fa-caret-down"></i>
@@ -64,7 +65,7 @@ class DropDownSearch extends Component {
         <ul style={{display: this.props.open ? 'block' : 'none'}}>
           {this.props.labels.map((l, i) => {
             let instance = this;
-            let linkClasses = this.props.selectedOption === l ? 'active' : '';
+            let linkClasses = this.props.selectedOption === l ? Lib.THEME_CLASSES_PREFIX+'active' : '';
             return (<li key={i}><a href="#" className={linkClasses} onClick={(eve) => self.selectOption.bind(this)(eve, l, instance.props.saleTypes[i], instance.props.propertyTypes[i])}>{l}</a></li>)
           }
           )}
@@ -72,6 +73,6 @@ class DropDownSearch extends Component {
       </div>
     );
   }
-};
+}
 
 export default onClickOutside(DropDownSearch);

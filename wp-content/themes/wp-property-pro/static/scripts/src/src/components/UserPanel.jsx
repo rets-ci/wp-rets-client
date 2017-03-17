@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {toggleUserPanel} from '../actions/index.jsx';
-import _ from 'lodash'
+import {Lib} from '../lib.jsx';
 
 const mapStateToProps = (state) => {
   return {
@@ -18,72 +18,72 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const UserPanelContent = ({panelOpen, closeUserPanel}) => (
-    <div className={"user-panel " + (panelOpen ? "on" : "")}>
-        <a href="#" className="close-panel" onClick={(event) => {
-            closeUserPanel();
-            event.preventDefault();
-            event.stopPropagation();
-        }}><i className="fa fa-times"></i></a>
-        <div className="user-info-box">
-            <div className="status notlogged">
-                <a href="#">
-                    <img src={bundle.static_images_url + "default-avatar.svg"} alt="default-avatar"
-                         className="default-user"/>
-                    <h5>Sign up now</h5>
-                    <p>Search, find and manage property</p>
-                </a>
-            </div>
+  <div className={Lib.THEME_CLASSES_PREFIX+"user-panel " + (panelOpen ? Lib.THEME_CLASSES_PREFIX+"on" : "")}>
+    <a href="#" className={Lib.THEME_CLASSES_PREFIX+"close-panel"} onClick={(event) => {
+      closeUserPanel();
+      event.preventDefault();
+      event.stopPropagation();
+    }}><i className="fa fa-times"></i></a>
+    <div className={Lib.THEME_CLASSES_PREFIX+"user-info-box"}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}status ${Lib.THEME_CLASSES_PREFIX}notlogged`}>
+        <a href="#">
+          <img src={bundle.static_images_url + "default-avatar.svg"} alt="default-avatar"
+               className={Lib.THEME_CLASSES_PREFIX+"default-user"}/>
+          <h5>Sign up now</h5>
+          <p>Search, find and manage property</p>
+        </a>
+      </div>
 
-            <div className="status">
-                <a href="#">
-                    <img src={bundle.static_images_url + "paresh.png"} alt="" className="default-user"/>
-                    <h5>Paresh Khatri</h5>
-                    <p>Home buyer</p>
-                    <span><img src={bundle.static_images_url + "settings.svg"} alt=""/></span>
-                </a>
-            </div>
-        </div>
+      <div className={Lib.THEME_CLASSES_PREFIX+"status"}>
+        <a href="#">
+          <img src={bundle.static_images_url + "paresh.png"} alt="" className={Lib.THEME_CLASSES_PREFIX+"default-user"}/>
+          <h5>Paresh Khatri</h5>
+          <p>Home buyer</p>
+          <span><img src={bundle.static_images_url + "settings.svg"} alt=""/></span>
+        </a>
+      </div>
+    </div>
 
-        <div className="user-navigation">
-            <ol className="clearfix">
-                <li><a href="#" title="Home For You">
+    <div className={Lib.THEME_CLASSES_PREFIX+"user-navigation"}>
+      <ol className="clearfix">
+        <li><a href="#" title="Home For You">
                     <span><img src={bundle.static_images_url + "home-for-you.svg"}
-                               alt="home-for-you"/></span> Home For You <span className="tag">8</span></a></li>
-                <li><a href="#" title="Shared Favorites">
+                               alt="home-for-you"/></span> Home For You <span className={Lib.THEME_CLASSES_PREFIX+"tag"}>8</span></a></li>
+        <li><a href="#" title="Shared Favorites">
                     <span><img src={bundle.static_images_url + "shared-favorites.svg"}
-                               alt="shared-favorites"/></span> Shared Favorites <span className="tag">8</span></a></li>
-                <li><a href="#" title="Comments">
-                    <span><img src={bundle.static_images_url + "comments.svg"} alt="comments"/></span>
-                    Comments</a></li>
-                <li><a href="#" title="Search Homes">
+                               alt="shared-favorites"/></span> Shared Favorites <span className={Lib.THEME_CLASSES_PREFIX+"tag"}>8</span></a></li>
+        <li><a href="#" title="Comments">
+          <span><img src={bundle.static_images_url + "comments.svg"} alt="comments"/></span>
+          Comments</a></li>
+        <li><a href="#" title="Search Homes">
                     <span><img src={bundle.static_images_url + "search-homes.svg"}
                                alt="search-homes"/></span> Search Homes</a></li>
-                <li><a href="#" title="Favorites">
-                    <span><img src={bundle.static_images_url + "favorites.svg"} alt="favorites"/></span>
-                    Favorites</a></li>
-                <li><a href="#" title="Saved Searches">
+        <li><a href="#" title="Favorites">
+          <span><img src={bundle.static_images_url + "favorites.svg"} alt="favorites"/></span>
+          Favorites</a></li>
+        <li><a href="#" title="Saved Searches">
                     <span><img src={bundle.static_images_url + "saved-searches.svg"}
                                alt="saved-searches"/></span> Saved Searches</a></li>
-                <li><a href="#" title="Buy With Us">
+        <li><a href="#" title="Buy With Us">
                     <span><img src={bundle.static_images_url + "buy-with-us.svg"}
                                alt="buy-with-us"/></span> Buy With Us</a></li>
-                <li><a href="#" title="Home Buyer’s Guide">
+        <li><a href="#" title="Home Buyer’s Guide">
                     <span><img src={bundle.static_images_url + "buyers-guide.svg"}
                                alt="buyers-guide"/></span> Home Buyer’s Guide</a></li>
-                <li><a href="#" title="Home Buyer’s Blog">
+        <li><a href="#" title="Home Buyer’s Blog">
                     <span><img src={bundle.static_images_url + "buyers-blog.svg"}
                                alt="buyers-blog"/></span> Home Buyer’s Blog</a></li>
-            </ol>
-        </div>
-        <div className="more">
-            <a href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>
-        </div>
+      </ol>
     </div>
+    <div className={Lib.THEME_CLASSES_PREFIX+"more"}>
+      <a href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>
+    </div>
+  </div>
 );
 
 const UserPanel = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(UserPanelContent);
 
 export default UserPanel

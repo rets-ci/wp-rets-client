@@ -1,11 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
-import {Lib} from '../../../../lib.jsx';
 import PropertyCard from '../../../PropertyCard.jsx';
 import Swiper from '../../../Swiper.jsx';
-
-require('swiper-css');
+import {Lib} from '../../../../lib.jsx';
+import _ from 'lodash';
 
 export default class DefaultLayout extends Component {
   static propTypes = {
@@ -47,7 +45,7 @@ export default class DefaultLayout extends Component {
         {
           posts.length
             ?
-              <div className="listing-carousel clearfix">
+              <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel clearfix`}>
                 <div className="swiper-container" ref={(r) => this.swiperElement = r} style={{width: '100%', height: '400px'}}>
                   <div className="swiper-wrapper">
                     {
@@ -62,9 +60,9 @@ export default class DefaultLayout extends Component {
               </div>
             : null
         }
-        <div className="listing-control-nav">
-          <a href="#" className="prev-nav" ref={(r) => this.swiperElementPrev = r}><i className="fa fa-angle-left"></i></a>
-          <a href="#" className="next-nav" ref={(r) => this.swiperElementNext = r}><i className="fa fa-angle-right"></i></a>
+        <div className={Lib.THEME_CLASSES_PREFIX+"listing-control-nav"}>
+          <a href="#" className={Lib.THEME_CLASSES_PREFIX+"prev-nav"} ref={(r) => this.swiperElementPrev = r}><i className="fa fa-angle-left"></i></a>
+          <a href="#" className={Lib.THEME_CLASSES_PREFIX+"next-nav"} ref={(r) => this.swiperElementNext = r}><i className="fa fa-angle-right"></i></a>
         </div>
       </div>
     );

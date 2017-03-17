@@ -17,9 +17,11 @@
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     </script>
+  <?php if(defined('WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY')): ?>
     <script type="text/javascript">
-        ga('create', '<?php echo GOOGLE_ANALYTICS_API_KEY; ?>', 'auto');
+        ga('create', '<?php echo WP_PROPERTY_PRO_GOOGLE_ANALYTICS_API_KEY; ?>', 'auto');
     </script>
+  <?php endif; ?>
 </head>
 
 <body <?php body_class(); ?>>

@@ -116,15 +116,15 @@ class MapSearchResults extends Component {
       <div>
         {displayedResults.length ?
           <div>
-            <section className="container-fluid search-map-container">
-              <div className="listing-map">
-                <div className="caption">
+            <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
+              <div className={Lib.THEME_CLASSES_PREFIX+"listing-map"}>
+                <div className={Lib.THEME_CLASSES_PREFIX+"caption"}>
            	   	  <span>Only showing {displayedResults.length} listings. Zoom in, or use filters to narrow your search.</span>
            	    </div>
                 <Map properties={displayedResults} searchByCoordinates={(locationFilter, geoCoordinates) => this.props.doSearchWithParams({tax: tax, term: term, saleType: sale, propertyTypes: propertyTypes, locationFilter: locationFilter, geoCoordinates: geoCoordinates})} />
               </div>
-              <div className="listing-sidebar">
-              	<div className="headtitle">
+              <div className={Lib.THEME_CLASSES_PREFIX+"listing-sidebar"}>
+              	<div className={Lib.THEME_CLASSES_PREFIX+"headtitle"}>
                	  <h1>{term} Homes for {sale}</h1>
                	  <p>There are {this.props.resultsTotal} homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.</p>
                 </div>

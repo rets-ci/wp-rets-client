@@ -2,7 +2,6 @@ import {addPost, initMenu, setSearchProps} from './actions/index.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import PageContent from './components/PageContent.jsx';
-import Util from './components/Util.jsx';
 import _ from 'lodash';
 import React from 'react';
 import {render} from 'react-dom';
@@ -28,7 +27,11 @@ render(
     <Router history={history}>
       <Route path="/" component={PageLayout}>
         <IndexRoute component = {PageContent} />
-        <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
+        {
+          _.get(wpp, 'instance.settings.configuration.base_slug', null)
+            ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
+            : null
+        }
         <Route path="*" component={PageContent} />
       </Route>
     </Router>
