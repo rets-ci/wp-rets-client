@@ -21,6 +21,16 @@
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "db_name": "www.reddoorcompany.com/latest-v3"
     },
+    "settings_develop-v3-local": {
+      "wp_debug_log": true,
+      "wp_debug_display": true,
+      "wp_siteurl": "http://www.reddoorcompany.loc",
+      "wp_home": "http://www.reddoorcompany.loc",
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "cloudfront_disabled": true,
+      "memcached_disabled": true,
+      "db_name": "www.reddoorcompany.com/latest-v3"
+    },
     "settings_latest-v3": {
       "wp_debug_log": true,
       "wp_debug_display": true,
