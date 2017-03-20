@@ -50,7 +50,7 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
+      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
         <div className={Lib.THEME_CLASSES_PREFIX+"card-img"}>
           <div className={Lib.THEME_CLASSES_PREFIX+"card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>

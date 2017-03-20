@@ -47903,7 +47903,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
+	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
