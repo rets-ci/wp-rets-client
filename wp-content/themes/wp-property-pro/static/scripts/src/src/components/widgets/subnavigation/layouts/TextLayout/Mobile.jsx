@@ -48,6 +48,10 @@ class Mobile extends Component {
       }
     }
 
+    if(_.isEmpty(selectedOption) && !_.isEmpty(links)){
+      selectedOption = _.get(links, '0.title', '')
+    }
+
     let primaryColor = _.get(bundle, 'colors.primary_color', null);
     let btnStyle =
         primaryColor !== null

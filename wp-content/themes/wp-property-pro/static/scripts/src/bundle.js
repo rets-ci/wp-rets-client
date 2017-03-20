@@ -57796,6 +57796,10 @@
 	        }
 	      }
 
+	      if (_lodash2.default.isEmpty(selectedOption) && !_lodash2.default.isEmpty(links)) {
+	        selectedOption = _lodash2.default.get(links, '0.title', '');
+	      }
+
 	      var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
 	      var btnStyle = primaryColor !== null ? {
 	        "backgroundColor": primaryColor
