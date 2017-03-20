@@ -102,26 +102,26 @@ html, body { height: 100%; margin: 0; }
 .propertypro-listing-carousel>ul>li { float: left; width: 31.200%; margin-right: 3%; }
 .propertypro-listing-carousel>ul>li:last-child { margin-right: 0; }
 
-.card { border-radius: 12px; border-color: #d2dae0; background-color: #ffffff; opacity: 0.99; }
-.card .card-block { position: relative; }
-.card .propertypro-listing-top { position: absolute; top: -38px; left: 0; width: 100%; padding: 0 25px; z-index: 3; }
-.card .propertypro-listing-top .propertypro-price { color: #fff; font-size: 24px; font-weight: 700; line-height: 24px; position: relative; top: -5px; }
-.card .propertypro-listing-top .propertypro-action-btn-group { float: right; }
-.card .propertypro-listing-top .propertypro-action-btn-group a { width: 50px; height: 50px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 50px; background-color: #ffffff; float: left; text-align: center; line-height: 52px; margin: 12px 0 0 10px;  }
-.card .propertypro-listing-top .propertypro-action-btn-group a:hover { color: #d33320; }
-.card .propertypro-listing-top .propertypro-action-btn-group i { font-size: 18px; color: rgba(65, 65, 65, 0.5); -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -o-transition: all .3s ease; -ms-transition: all .3s ease; transition: all .3s ease; }
-.card .propertypro-listing-top .propertypro-action-btn-group a.propertypro-active, .card .propertypro-listing-top .propertypro-action-btn-group a:hover { background-color: #d33320; }
-.card .propertypro-listing-top .propertypro-action-btn-group .propertypro-active i, .card .propertypro-listing-top .propertypro-action-btn-group a:hover i { color: #fff; }
-.card .propertypro-listing-top .propertypro-action-btn-group .propertypro-hide i { font-size: 20px; }
-.card .card-block { padding: 1.2rem 1.5rem 1.5rem; position: relative; z-index:99; }
-.card .card-block:before { content: ""; position: absolute; top: -115px; left: 0; width: 100%; z-index:2; border-radius: 10px 10px 0 0;
+.propertypro-card { border-radius: 12px; border-color: #d2dae0; background-color: #ffffff; opacity: 0.99; }
+.propertypro-card .propertypro-card-block { position: relative; }
+.propertypro-card .propertypro-listing-top { position: absolute; top: -38px; left: 0; width: 100%; padding: 0 25px; z-index: 3; }
+.propertypro-card .propertypro-listing-top .propertypro-price { color: #fff; font-size: 24px; font-weight: 700; line-height: 24px; position: relative; top: -5px; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group { float: right; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group a { width: 50px; height: 50px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 50px; background-color: #ffffff; float: left; text-align: center; line-height: 52px; margin: 12px 0 0 10px;  }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover { color: #d33320; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group i { font-size: 18px; color: rgba(65, 65, 65, 0.5); -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -o-transition: all .3s ease; -ms-transition: all .3s ease; transition: all .3s ease; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group a.propertypro-active, .card .propertypro-listing-top .propertypro-action-btn-group a:hover { background-color: #d33320; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-active i, .card .propertypro-listing-top .propertypro-action-btn-group a:hover i { color: #fff; }
+.propertypro-card .propertypro-listing-top .propertypro-action-btn-group .propertypro-hide i { font-size: 20px; }
+.propertypro-card .propertypro-card-block { padding: 1.2rem 1.5rem 1.5rem; position: relative; z-index:99; }
+.propertypro-card .propertypro-card-block:before { content: ""; position: absolute; top: -115px; left: 0; width: 100%; z-index:2; border-radius: 10px 10px 0 0;
     background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%); border-radius: 5px 5px 0 0; height: 115px; }
-.card .card-title { font-weight: 700; font-size: 1.1rem; line-height: 22px; margin: 0; }
-.card .card-text { color: #8b8c8d; font-size: .95rem; line-height: 24px; padding: 0; text-align: left; }
-.card .card-block ul { list-style-type: none; margin: 0; padding: 0; }
-.card .card-block li { display: inline; float: left; line-height: 16px; border-right: 1px solid #cad3d9; padding: 0 10px; font-weight: 600; }
-.card .card-block li:first-child { padding-left: 0; }
-.card .card-block li:last-child { border-right: 0; }
+.propertypro-card .propertypro-card-title { font-weight: 700; font-size: 1.1rem; line-height: 22px; margin: 0; }
+.propertypro-card .propertypro-card-text { color: #8b8c8d; font-size: .95rem; line-height: 24px; padding: 0; text-align: left; }
+.propertypro-card .propertypro-card-block ul { list-style-type: none; margin: 0; padding: 0; }
+.propertypro-card .propertypro-card-block li { display: inline; float: left; line-height: 16px; border-right: 1px solid #cad3d9; padding: 0 10px; font-weight: 600; }
+.propertypro-card .propertypro-card-block li:first-child { padding-left: 0; }
+.propertypro-card .propertypro-card-block li:last-child { border-right: 0; }
 
 .propertypro-card-img { display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; position: relative;  }
 
@@ -143,8 +143,8 @@ html, body { height: 100%; margin: 0; }
 .propertypro-card-img .propertypro-direction-nav a.propertypro-nav-next:before { content: '\f105'; }
 .propertypro-card-img .propertypro-direction-nav .propertypro-nav-prev { left: 10px; }
 .propertypro-card-img .propertypro-direction-nav .propertypro-nav-next { right: 10px; }
-.card:hover .propertypro-direction-nav .propertypro-nav-prev,
-.card:hover .propertypro-direction-nav .propertypro-nav-next { opacity: 1; }
+.propertypro-card:hover .propertypro-direction-nav .propertypro-nav-prev,
+.propertypro-card:hover .propertypro-direction-nav .propertypro-nav-next { opacity: 1; }
 
 /* User Panel */
 .propertypro-user-panel { position: fixed; height: 100%; width: 420px; box-shadow: 0 20px 24px rgba(0, 0, 0, 0.1); background-color: #ffffff; z-index: 9999; top: 0; right: 0; display: none; }
@@ -365,7 +365,7 @@ html,body { height: 100%; }
 
 
 .propertypro-listing-wrap { padding: 25px; }
-.propertypro-listing-wrap .card { margin-bottom: 25px; }
+.propertypro-listing-wrap .propertypro-card { margin-bottom: 25px; }
 .propertypro-listing-sidebar .propertypro-top-footer { padding: 45px 25px 30px; }
 .propertypro-listing-sidebar .propertypro-top-footer .propertypro-svg { margin: 0 0 0 -5px; }
 .propertypro-listing-sidebar .footerlogo { text-align: left; padding-bottom: 15px; float: left; }
@@ -389,9 +389,9 @@ html,body { height: 100%; }
 .search-map.propertypro-active .propertypro-top-panel { height: 280px; }
 .search-map.propertypro-active .propertypro-search-map-container { padding-top: 280px; }
 .propertypro-listing-sidebar .propertypro-headtitle .btn { margin-left: 15px; font-size: .90rem; color: #fff; border-radius: 3px; color: #fff; background-color: #d33320; }
-.search-map .card { position: relative; overflow: hidden;  }
-.search-map .card:before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; background-color: #f28200; height: 3px; display:none; }
-.search-map .card:hover:before, .search-map .card.selected:before { display: block; }
+.search-map .propertypro-card { position: relative; overflow: hidden;  }
+.search-map .propertypro-card:before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; background-color: #f28200; height: 3px; display:none; }
+.search-map .propertypro-card:hover:before, .search-map .propertypro-card.selected:before { display: block; }
 
 
 /* Search Map -> Search Map Property Single Comment */
@@ -782,10 +782,10 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .user-panel { width: 85%; }
     .propertypro-pagefooter { text-align: center; }
     .propertypro-listing-carousel>ul>li { width: 25%; margin-right: 2%; }
-    .card .card-title { font-size: 1rem;  }
-    .card .propertypro-listing-top .propertypro-price { font-size: 22px; }
-    .card .card-text { font-size: .85rem; }
-    .card .card-block li { padding: 0 10px; font-size: .90rem; }
+    .propertypro-card .propertypro-card-title { font-size: 1rem;  }
+    .propertypro-card .propertypro-listing-top .propertypro-price { font-size: 22px; }
+    .propertypro-card .propertypro-card-text { font-size: .85rem; }
+    .propertypro-card .propertypro-card-block li { padding: 0 10px; font-size: .90rem; }
     .search-filter-nav ul li a  { height: 95px; }
     .search-filter-nav ul li a span { display: none; }
 }
@@ -799,20 +799,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 }
 
 /* Additional rules */
-#wp-property-pro-map {
-    height: 200px;
-    width: 400px;
-    display: none;
-}
 
-#wp-property-pro-search-result {
-    overflow-y: scroll;
-    background: grey;
-    height: 100px;
-    width: 200px;
-}
-
-#search-options-type-container:hover {
+#propertypro-search-options-type-container:hover {
     cursor: pointer
 }
 
@@ -824,7 +812,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     text-align: left;
 }
 
-.propertypro-toolbar .menu-icon{
+.propertypro-toolbar .propertypro-menu-icon{
     cursor: pointer;
 }
 
@@ -858,7 +846,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     border-radius: 50%;
 }
 
-.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .background{
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background{
     min-height: 800px;
 }
 
@@ -874,7 +862,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     margin: 0 0 .70em;
 }
 
-#search-options-type-container{
+#propertyprosearch-options-type-container{
     font-size: 1.15rem;
 }
 
@@ -886,7 +874,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     right: 10px;
 }
 
-.propertypro-listings .propertypro-listing-carousel .card{
+.propertypro-listings .propertypro-listing-carousel .propertypro-card{
     cursor: pointer;
 }
 

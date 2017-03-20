@@ -47903,7 +47903,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : "card" },
+	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
@@ -47966,7 +47966,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-block', onClick: function onClick(eve) {
+	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block', onClick: function onClick(eve) {
 	              return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	            } },
 	          _react2.default.createElement(
@@ -47994,12 +47994,12 @@
 	          ),
 	          _react2.default.createElement(
 	            'h4',
-	            { className: 'card-title' },
+	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title' },
 	            address
 	          ),
 	          _react2.default.createElement(
 	            'p',
-	            { className: 'card-text' },
+	            { className: 'card-text ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-text' },
 	            full_address
 	          ),
 	          _react2.default.createElement(
@@ -56220,7 +56220,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search", style: dropSearchStyle },
 	        _react2.default.createElement(
 	          'div',
-	          { id: 'search-options-type-container', onClick: function onClick() {
+	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
 	              return self.props.handleChange(true);
 	            } },
 	          this.props.selectedOption,
@@ -58020,7 +58020,7 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? "col-lg-7 push-lg-5 background" : "col-lg-7 background";
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background' : 'col-lg-7 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background';
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
