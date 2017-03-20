@@ -1,61 +1,33 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import TextItem from './item/TextItem.jsx';
-import {Lib} from '../../../../lib.jsx';
-import _ from 'lodash';
+import React, {Component, PropTypes} from 'react';
+import Desktop from './TextLayout/Desktop.jsx';
+import Mobile from './TextLayout/Mobile.jsx';
 
-const TextLayout = ({items, currentUrl}) => {
-  let btn = {};
-  let links = [];
-  for (let i in items) {
-    if (_.get(items[i], 'classes.0', null) === 'btn') {
-      btn = items[i];
-    } else {
-      links.push(items[i]);
-    }
+class TextLayout extends Component {
+  static propTypes = {
+    items: PropTypes.array.isRequired,
+    currentUrl: PropTypes.string.isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropDownOpen: false
+    };
   }
 
-  let primaryColor = _.get(bundle, 'colors.primary_color', null);
-  let style =
-      primaryColor !== null
-        ?
-        {
-          "backgroundColor": primaryColor
-        }
-        : {}
-    ;
+  handleSearchDropDownChange(open) {
+    this.setState({dropDownOpen: open});
+  }
 
-  return (_.isEmpty(items)
-      ? null
-      :
+  render() {
+    return (
       <nav>
-        {
-          links.length
-            ?
-            <ul className="clearfix">
-              {
-                _.isEmpty(btn)
-                  ? null
-                  :
-                  <li className={Lib.THEME_CLASSES_PREFIX+"subnavigation-btn"}>
-                    <a href={btn.url} className="btn" style={style}>{btn.title}</a>
-                  </li>
-              }
-              {
-                links.map((link, key) => {
-                    if (link.url === currentUrl) {
-                      return (<li key={key} className={Lib.THEME_CLASSES_PREFIX+"active"}><TextItem item={link} /></li>)
-                    } else {
-                      return (<li key={key}><TextItem item={link} /></li>)
-                    }
-                  }
-                )
-              }
-            </ul>
-            : null
-        }
+        <Mobile items={this.props.items} currentUrl={this.props.currentUrl} dropDownOpen={this.state.dropDownOpen}
+                handleChange={this.handleSearchDropDownChange.bind(this)}/>
+        <Desktop items={this.props.items} currentUrl={this.props.currentUrl}/>
       </nav>
-  );
-};
+    );
+  }
+}
 
 export default TextLayout;

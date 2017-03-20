@@ -43,7 +43,12 @@
         ".callout .container a",
         ".search-box .drop-search li a:hover",
         ".search-box .drop-search li a:focus",
-        ".search-box .drop-search li a.active"
+        ".search-box .drop-search li a.active",
+        ".propertypro-subnavigation-mobile-selected-option",
+        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a.propertypro-active",
+        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:hover",
+        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:focus",
+        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:active"
       ]
     },
     {
@@ -102,7 +107,8 @@
         ".callout .container p",
         ".callout .container a",
         ".widget-tour .headtitle p",
-        ".tour-widget-content p"
+        ".tour-widget-content p",
+        ".propertypro-subnavigation-mobile-selected-option"
       ]
     },
     {
