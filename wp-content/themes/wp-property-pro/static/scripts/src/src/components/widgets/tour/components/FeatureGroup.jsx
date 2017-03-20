@@ -9,7 +9,7 @@ const FeatureGroup = ({featureGroup, key}) => {
   let counter = 1;
   let featuresCount = _.get(featureGroup, 'features', []).length;
 
-  let featureGroupBackgroundClasses = _.get(featureGroup, 'layout', null) === 'left' && _.get(featureGroup, 'background', null) !== 'full' ? "col-lg-7 push-lg-5 background" : "col-lg-7 background";
+  let featureGroupBackgroundClasses = _.get(featureGroup, 'layout', null) === 'left' && _.get(featureGroup, 'background', null) !== 'full' ? `col-lg-7 push-lg-5 ${Lib.THEME_CLASSES_PREFIX}background` : `col-lg-7 ${Lib.THEME_CLASSES_PREFIX}background`;
   let featureGroupContentClasses = _.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
   let backgroundStyle = _.get(featureGroup, 'image_section.image_src', null) !== null

@@ -50,7 +50,7 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : "card"}>
+      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
         <div className={Lib.THEME_CLASSES_PREFIX+"card-img"}>
           <div className={Lib.THEME_CLASSES_PREFIX+"card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
@@ -85,7 +85,7 @@ export default class PropertyCard extends Component {
             } } href="#"></a></li>
           </ul>
         </div>
-        <div className="card-block" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
+        <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`} onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className={Lib.THEME_CLASSES_PREFIX+"listing-top"}>
             <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{numeral(price).format('$0,0.00')}</span>
             <span className={Lib.THEME_CLASSES_PREFIX+"action-btn-group"}>
@@ -97,8 +97,8 @@ export default class PropertyCard extends Component {
               </a>
             </span>
           </div>
-          <h4 className="card-title">{address}</h4>
-          <p className="card-text">{full_address}</p>
+          <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title`}>{address}</h4>
+          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{full_address}</p>
           <ul className={Lib.THEME_CLASSES_PREFIX+"liting-info-box"}>
             <li>{beds} Bed</li>
             <li>{baths} Bath</li>
