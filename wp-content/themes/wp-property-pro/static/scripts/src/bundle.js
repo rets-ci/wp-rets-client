@@ -56,9 +56,9 @@
 
 	var _PageLayout2 = _interopRequireDefault(_PageLayout);
 
-	var _PageContent = __webpack_require__(300);
+	var _Page = __webpack_require__(348);
 
-	var _PageContent2 = _interopRequireDefault(_PageContent);
+	var _Page2 = _interopRequireDefault(_Page);
 
 	var _lodash = __webpack_require__(36);
 
@@ -86,14 +86,10 @@
 
 	var store = (0, _redux.createStore)(_index3.default);
 
-	store.dispatch((0, _index.addPost)(bundle.post));
 	store.dispatch((0, _index.setSearchProps)([]));
 
 	// Create an enhanced router history that syncs navigation events with the store
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
-
-	// TODO temporary comment this, until done with elastic search API
-	// <Route path="/:sale/:tax/:term" component={MapSearchResults} />
 
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -104,9 +100,9 @@
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PageContent2.default }),
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
-	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _PageContent2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _Page2.default })
 	    )
 	  )
 	), document.getElementById('root'));
@@ -54798,7 +54794,9 @@
 	        },
 	        dataType: 'json',
 	        success: function success(data) {
-	          if (_lodash2.default.get(data, 'post', null)) self.setState({ post: data.post });
+	          if (_lodash2.default.get(data, 'post', null)) {
+	            self.setState({ post: data.post });
+	          }
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
 	          console.log(textStatus, errorThrown);
@@ -54808,6 +54806,10 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
+	      var children = this.props.children;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { style: { height: '100%' } },
@@ -54816,7 +54818,11 @@
 	          null,
 	          _react2.default.createElement(_UserPanel2.default, null),
 	          _react2.default.createElement(_Header2.default, null),
-	          this.props.children
+	          _react2.default.Children.map(children, function (child, i) {
+	            return _react2.default.cloneElement(child, {
+	              rows: _this2.state.post.post_content
+	            });
+	          })
 	        ) : _react2.default.createElement(_LoadingAccordion2.default, { style: { display: 'flex', width: '100%', height: '100%' } })
 	      );
 	    }
@@ -55561,124 +55567,7 @@
 	exports.default = UserPanel;
 
 /***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(187);
-
-	var _Masthead = __webpack_require__(301);
-
-	var _Masthead2 = _interopRequireDefault(_Masthead);
-
-	var _lodash = __webpack_require__(36);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _Callout = __webpack_require__(309);
-
-	var _Callout2 = _interopRequireDefault(_Callout);
-
-	var _Testimonials = __webpack_require__(311);
-
-	var _Testimonials2 = _interopRequireDefault(_Testimonials);
-
-	var _ListingCarousel = __webpack_require__(313);
-
-	var _ListingCarousel2 = _interopRequireDefault(_ListingCarousel);
-
-	var _Subnavigation = __webpack_require__(315);
-
-	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
-
-	var _Tour = __webpack_require__(322);
-
-	var _Tour2 = _interopRequireDefault(_Tour);
-
-	var _Footer = __webpack_require__(326);
-
-	var _Footer2 = _interopRequireDefault(_Footer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    rows: _lodash2.default.get(state, 'postState.rows', [])
-	  };
-	};
-
-	var Page = function (_Component) {
-	  _inherits(Page, _Component);
-
-	  function Page() {
-	    _classCallCheck(this, Page);
-
-	    return _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).apply(this, arguments));
-	  }
-
-	  _createClass(Page, [{
-	    key: 'render',
-	    value: function render() {
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        this.props.rows.map(function (row) {
-	          var cells = _lodash2.default.get(row, 'cells', []);
-
-	          return cells.map(function (cell) {
-	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	              case 'Property_Pro_Masthead_Widget':
-	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Subnavigation_Widget':
-	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Tour_Widget':
-	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Listing_Carousel_Widget':
-	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Callout_Widget':
-	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Testimonials_Widget':
-	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                break;
-	            }
-	          });
-	        }),
-	        _react2.default.createElement(_Footer2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return Page;
-	}(_react.Component);
-
-	var PageContent = (0, _reactRedux.connect)(mapStateToProps)(Page);
-
-	exports.default = PageContent;
-
-/***/ },
+/* 300 */,
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -59228,6 +59117,606 @@
 	    }
 	};
 	exports.default = testimonialsCarousel;
+
+/***/ },
+/* 348 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(5);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(187);
+
+	var _Masthead = __webpack_require__(301);
+
+	var _Masthead2 = _interopRequireDefault(_Masthead);
+
+	var _lodash = __webpack_require__(36);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _Callout = __webpack_require__(309);
+
+	var _Callout2 = _interopRequireDefault(_Callout);
+
+	var _Testimonials = __webpack_require__(311);
+
+	var _Testimonials2 = _interopRequireDefault(_Testimonials);
+
+	var _ListingCarousel = __webpack_require__(313);
+
+	var _ListingCarousel2 = _interopRequireDefault(_ListingCarousel);
+
+	var _Subnavigation = __webpack_require__(315);
+
+	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
+
+	var _Tour = __webpack_require__(322);
+
+	var _Tour2 = _interopRequireDefault(_Tour);
+
+	var _Footer = __webpack_require__(326);
+
+	var _Footer2 = _interopRequireDefault(_Footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Page = function (_Component) {
+	  _inherits(Page, _Component);
+
+	  function Page() {
+	    _classCallCheck(this, Page);
+
+	    return _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).apply(this, arguments));
+	  }
+
+	  _createClass(Page, [{
+	    key: 'render',
+	    value: function render() {
+	      var rows = this.props.rows;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        rows.map(function (row) {
+	          var cells = _lodash2.default.get(row, 'cells', []);
+
+	          return cells.map(function (cell) {
+	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	              case 'Property_Pro_Masthead_Widget':
+	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Subnavigation_Widget':
+	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Tour_Widget':
+	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Listing_Carousel_Widget':
+	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Callout_Widget':
+	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Testimonials_Widget':
+	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                break;
+	            }
+	          });
+	        }),
+	        _react2.default.createElement(_Footer2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return Page;
+	}(_react.Component);
+
+	Page.propTypes = {
+	  rows: _react.PropTypes.array
+	};
+	exports.default = Page;
+
+/***/ },
+/* 349 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _index = __webpack_require__(1);
+
+	var _reactRedux = __webpack_require__(187);
+
+	var _lib = __webpack_require__(2);
+
+	var _react = __webpack_require__(5);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {};
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    openPropertiesModal: function openPropertiesModal(open) {
+	      dispatch((0, _index.openPropertiesModal)(open));
+	    }
+	  };
+	};
+
+	var PropertiesModal = function (_Component) {
+	  _inherits(PropertiesModal, _Component);
+
+	  function PropertiesModal() {
+	    _classCallCheck(this, PropertiesModal);
+
+	    return _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).apply(this, arguments));
+	  }
+
+	  _createClass(PropertiesModal, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + _lib.Lib.THEME_CLASSES_PREFIX + "advanced-filter", style: { display: this.props.open ? 'block' : 'none' } },
+	        _react2.default.createElement(
+	          'a',
+	          { onClick: function onClick() {
+	              return _this2.props.openPropertiesModal(false);
+	            }, href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel" + " " + _lib.Lib.THEME_CLASSES_PREFIX + "hidden-md-down" },
+	          _react2.default.createElement('i', { className: 'fa fa-times' })
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { method: 'get', className: 'clearfix hidden-md-down' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement('i', { className: 'fa fa-search' }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    _react2.default.createElement('i', { className: 'fa fa-times' })
+	                  ),
+	                  ' Raleigh'
+	                ),
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    _react2.default.createElement('i', { className: 'fa fa-times' })
+	                  ),
+	                  ' Raleigh'
+	                ),
+	                _react2.default.createElement('input', { type: 'text', size: '1', placeholder: 'Select bedroom type, amenities' })
+	              )
+	            ),
+	            _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'button-group' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn-reset' },
+	                'Reset'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn btn-primary' },
+	                'View 746 Properties'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-filter-nav hidden-lg-up' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'ul',
+	              { className: 'clearfix' },
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', title: 'Buy' },
+	                  _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Buy'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', title: 'Rent' },
+	                  _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Rent'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', title: 'Commercial' },
+	                  _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Commercial'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', title: 'Land' },
+	                  _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Land'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-modal-box' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'filter-section' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'Location ',
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  '(City, School, Neighborhood, Zip)'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-type' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
+	                  'Raleigh'
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn btn-primary' },
+	                  '+ More Locations'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'filter-section' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'Bedrooms ',
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  '(Minimum)'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn btn-primary selected' },
+	                '1+'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn btn-primary' },
+	                '2+'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn btn-primary' },
+	                '3+'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn btn-primary' },
+	                '4+'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'filter-section' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'Price'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'range-slider' },
+	                _react2.default.createElement('div', { className: 'slider-line' }),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'range-grid' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    'No Min'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    '1000'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col active' },
+	                    '1500'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col active' },
+	                    '2000'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col active' },
+	                    '2500'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col active' },
+	                    '3000'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col active' },
+	                    '3500'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    '4000'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    '4500'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    '5000'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'range-grid-col' },
+	                    'No Max'
+	                  )
+	                ),
+	                _react2.default.createElement('span', { className: 'slider-bar' }),
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'bs-slider from type_last', style: { left: "0%" } },
+	                  '100K'
+	                ),
+	                _react2.default.createElement(
+	                  'span',
+	                  { className: 'bs-slider to', style: { right: "0%" } },
+	                  '600K'
+	                )
+	              ),
+	              _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'additional-filter' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-section' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  'Bathrooms ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(Minimum)'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn btn-primary selected' },
+	                  '1+'
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn btn-primary' },
+	                  '2+'
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn btn-primary' },
+	                  '3+'
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn btn-primary' },
+	                  '4+'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', className: 'view-link' },
+	              '+ View More Filters'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'filter-footernav hidden-lg-up' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn btn-reset' },
+	              'Reset'
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'nav-item-right' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn-cancel' },
+	                'Cancel'
+	              ),
+	              ' ',
+	              _react2.default.createElement(
+	                'i',
+	                null,
+	                '|'
+	              ),
+	              ' ',
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: 'btn-apply' },
+	                'Apply'
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PropertiesModal;
+	}(_react.Component);
+
+	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var locationModal = function locationModal() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _lib.Lib.TOGGLE_LOCATION_MODAL_ACTION:
+	      return Object.assign({}, state, {
+	        open: action.open
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	exports.default = locationModal;
+
+/***/ },
+/* 351 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _lib = __webpack_require__(2);
+
+	var propertiesModal = function propertiesModal() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _lib.Lib.TOGGLE_PROPERTIES_MODAL_ACTION:
+	      return Object.assign({}, state, {
+	        open: action.open
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	exports.default = propertiesModal;
 
 /***/ }
 /******/ ]);
