@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const mapStateToProps = (state) => {
     return {
-        open: state.modal ? state.modal.openModal : false
+        open: state.locationModal ? state.locationModal.open : false
     }
 };
 

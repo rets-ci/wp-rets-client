@@ -116,7 +116,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openModal = exports.addPost = undefined;
+	exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = exports.addPost = undefined;
 
 	var _lib = __webpack_require__(2);
 
@@ -127,9 +127,16 @@
 	  };
 	};
 
-	var openModal = exports.openModal = function openModal(open) {
+	var openLocationModal = exports.openLocationModal = function openLocationModal(open) {
 	  return {
-	    type: _lib.Lib.TOGGLE_MODAL_ACTION,
+	    type: _lib.Lib.TOGGLE_LOCATION_MODAL_ACTION,
+	    open: open
+	  };
+	};
+
+	var openPropertiesModal = exports.openPropertiesModal = function openPropertiesModal(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
 	    open: open
 	  };
 	};
@@ -210,7 +217,8 @@
 	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
 	  STRING_ARRAY_DELIMITER: '-',
 	  THEME_PREFIX: 'wp-property-pro-',
-	  TOGGLE_MODAL_ACTION: 'TOGGLE_MODAL',
+	  TOGGLE_LOCATION_MODAL_ACTION: 'TOGGLE_LOCATION_MODAL',
+	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
 	  URL_DELIMITER: '/',
 	  POST_SUGGEST_COUNT: 5,
@@ -248,6 +256,10 @@
 
 	var _Map2 = _interopRequireDefault(_Map);
 
+	var _PropertiesModal = __webpack_require__(349);
+
+	var _PropertiesModal2 = _interopRequireDefault(_PropertiesModal);
+
 	var _react = __webpack_require__(5);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -274,6 +286,7 @@
 	  return {
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
 	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
+	    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
 	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
 	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0)
 	  };
@@ -374,6 +387,7 @@
 	          term = _props$params.term;
 	      var _props = this.props,
 	          displayedResults = _props.displayedResults,
+	          propertiesModalOpen = _props.propertiesModalOpen,
 	          results = _props.results;
 
 	      var propertyTypes = this.props.location.query['wpp_search[property_types]'];
@@ -383,6 +397,7 @@
 	        displayedResults.length ? _react2.default.createElement(
 	          'div',
 	          null,
+	          _react2.default.createElement(_PropertiesModal2.default, { open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
 	            { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
@@ -22055,13 +22070,15 @@
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _lib = __webpack_require__(2);
 
 	var _react = __webpack_require__(5);
 
@@ -22085,15 +22102,15 @@
 	  }
 
 	  _createClass(LoadingCircle, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      var style = this.props.style;
 
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "spinner-circle", style: style },
-	        _react2.default.createElement("div", { className: "double-bounce1" }),
-	        _react2.default.createElement("div", { className: "double-bounce2" })
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle", style: style },
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce1" }),
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce2" })
 	      );
 	    }
 	  }]);
@@ -47861,7 +47878,6 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log('component did mount');
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        preloadImages: false,
 	        lazyLoadingOnTransitionStart: true,
@@ -54780,7 +54796,6 @@
 	  _createClass(PageLayout, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-
 	      // Get page content query
 	      var url = window.location.pathname + window.location.search;
 
@@ -55038,6 +55053,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _index = __webpack_require__(1);
+
 	var _react = __webpack_require__(5);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -55045,6 +55062,8 @@
 	var _lodash = __webpack_require__(36);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _reactRedux = __webpack_require__(187);
 
 	var _reactRouter = __webpack_require__(224);
 
@@ -55058,6 +55077,18 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {};
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    openPropertiesModal: function openPropertiesModal(open) {
+	      dispatch((0, _index.openPropertiesModal)(open));
+	    }
+	  };
+	};
+
 	var HeaderSearch = function (_Component) {
 	  _inherits(HeaderSearch, _Component);
 
@@ -55070,6 +55101,8 @@
 	  _createClass(HeaderSearch, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
@@ -55156,13 +55189,15 @@
 	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
 	                      _react2.default.createElement(
 	                        'a',
-	                        { href: '#' },
+	                        { href: '#', onClick: function onClick() {
+	                            return _this2.props.openPropertiesModal(true);
+	                          } },
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
 	                          '+'
 	                        ),
-	                        ' More Filters'
+	                        'More Filters'
 	                      )
 	                    ),
 	                    _react2.default.createElement('input', { type: 'text', size: '1', placeholder: '' })
@@ -55229,7 +55264,7 @@
 	HeaderSearch.propTypes = {
 	  searchTerm: _react.PropTypes.string
 	};
-	exports.default = HeaderSearch;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderSearch);
 
 /***/ },
 /* 298 */
@@ -55605,7 +55640,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        open: state.modal ? state.modal.openModal : false
+	        open: state.locationModal ? state.locationModal.open : false
 	    };
 	};
 
@@ -55766,7 +55801,7 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    openSearchModal: function openSearchModal(open) {
-	      dispatch((0, _index.openModal)(open));
+	      dispatch((0, _index.openLocationModal)(open));
 	    },
 
 	    setSearchType: function setSearchType(searchType, saleType, propertyTypes) {
@@ -56549,7 +56584,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    open: state.modal ? state.modal.openModal : false,
+	    open: state.locationModal ? state.locationModal.open : false,
 	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
 	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
 	    saleType: _lodash2.default.get(state, 'searchType.saleType', ''),
@@ -56560,7 +56595,7 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    closeModal: function closeModal() {
-	      dispatch((0, _index.openModal)(false));
+	      dispatch((0, _index.openLocationModal)(false));
 	    },
 
 	    searchHandler: function searchHandler(term) {
@@ -58770,9 +58805,13 @@
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _modal = __webpack_require__(340);
+	var _locationModal = __webpack_require__(350);
 
-	var _modal2 = _interopRequireDefault(_modal);
+	var _locationModal2 = _interopRequireDefault(_locationModal);
+
+	var _propertiesModal = __webpack_require__(351);
+
+	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
 	var _searchProps = __webpack_require__(341);
 
@@ -58807,7 +58846,8 @@
 	var propertyProApp = (0, _redux.combineReducers)({
 	    postState: _post2.default,
 	    mapState: _map2.default,
-	    modal: _modal2.default,
+	    locationModal: _locationModal2.default,
+	    propertiesModal: _propertiesModal2.default,
 	    searchPropsState: _searchProps2.default,
 	    searchResults: _searchResults2.default,
 	    searchType: _searchType2.default,
@@ -58886,34 +58926,7 @@
 	exports.default = map;
 
 /***/ },
-/* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var modal = function modal() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.TOGGLE_MODAL_ACTION:
-	            return Object.assign({}, state, {
-	                openModal: action.open
-	            });
-	        default:
-	            return state;
-	    }
-	};
-
-	exports.default = modal;
-
-/***/ },
+/* 340 */,
 /* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
