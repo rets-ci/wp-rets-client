@@ -219,9 +219,9 @@ namespace UsabilityDynamics\WPP {
       /**
        * Makes sure WPP-Terms doesn't override read-only taxonomies.
        *
-       * @todo Update to allow labels to be overwritten for readonly taxonomies. - potanin@UD
+       * @todo Update to allow labels to be overwritten for system taxonomies. - potanin@UD
        *
-       * @param $taxonomies - Paseed down via wpp_taxonomies filter, not yet registered with WP.
+       * @param $taxonomies - Passed down via wpp_taxonomies filter, not yet registered with WP.
        */
       public function prepare_taxonomies( $taxonomies ) {
 
@@ -239,9 +239,8 @@ namespace UsabilityDynamics\WPP {
 
         foreach( $taxonomies as $_taxonomy => $_taxonomy_data ) {
 
-
-          // Make sure we dont override any [readonly] taxonomies.
-          if( isset( $_taxonomy_data[ 'readonly' ] ) && $_taxonomy_data[ 'readonly' ]) {
+          // Make sure we dont override any [system] taxonomies.
+          if( isset( $_taxonomy_data[ 'system' ] ) && $_taxonomy_data[ 'system' ]) {
 
             if( isset( $_taxonomies[ $_taxonomy ] ) ) {
               $_original_taxonomy = $_taxonomies[ $_taxonomy ];
@@ -789,6 +788,8 @@ namespace UsabilityDynamics\WPP {
 
         foreach($taxonomies as $k => $d) {
 
+          $d = $this->prepare_taxonomy( $d );
+
           $field = array();
 
           switch( true ) {
@@ -812,20 +813,34 @@ namespace UsabilityDynamics\WPP {
 
             default:
               /** Do not add taxonomy field if native meta box is being used for it. */
-              if( (isset($d[ 'add_native_mtbox' ]) && $d[ 'add_native_mtbox' ])
-               || (isset($wp_properties['taxonomies'][$k]['hidden']) && $wp_properties['taxonomies'][$k]['hidden'])) {
+              if( (isset($d[ 'add_native_mtbox' ]) && $d[ 'add_native_mtbox' ])) {
                 break;
               }
-              $field = array(
-                'name' => $d['label'],
-                'id' => $k,
-                'type' => 'wpp_taxonomy',
-                'multiple' => ( isset( $types[ $k ] ) && $types[ $k ] == 'unique' ? false : true ),
-                'options' => array(
-                  'taxonomy' => $k,
-                  'type' => ( isset( $d[ 'hierarchical' ] ) && $d[ 'hierarchical' ] == true ? 'select_tree' : 'select_advanced' ),
-                  'args' => array(),
-              ) );
+              if( isset($d[ 'readonly' ]) && $d[ 'readonly' ] ) {
+                $field = array(
+                  'name' => $d['label'],
+                  'id' => $k,
+                  //'type' => 'wpp_taxonomy_readonly',
+                  'type' => 'wpp_taxonomy',
+                  'options' => array(
+                    'taxonomy' => $k,
+                    'hierarchical' => ( isset( $d[ 'hierarchical' ] ) && $d[ 'hierarchical' ] == true ? true : false ),
+                    'type' => ( isset( $d[ 'hierarchical' ] ) && $d[ 'hierarchical' ] == true ? 'select_tree' : 'select_advanced' ),
+                    'meta' => ( isset( $d[ 'meta' ] ) && $d[ 'meta' ] == true ? true : false ),
+                    'args' => array(),
+                  ) );
+              } else {
+                $field = array(
+                  'name' => $d['label'],
+                  'id' => $k,
+                  'type' => 'wpp_taxonomy',
+                  'multiple' => ( isset( $types[ $k ] ) && $types[ $k ] == 'unique' ? false : true ),
+                  'options' => array(
+                    'taxonomy' => $k,
+                    'type' => ( isset( $d[ 'hierarchical' ] ) && $d[ 'hierarchical' ] == true ? 'select_tree' : 'select_advanced' ),
+                    'args' => array(),
+                  ) );
+              }
               break;
           }
 
@@ -1059,8 +1074,10 @@ namespace UsabilityDynamics\WPP {
         $args = wp_parse_args( $args, array(
           'default' => false,
           'readonly' => false,
-          'unique' => true,
+          'system' => false,
+          'meta' => false,
           'hidden' => false,
+          'unique' => true,
           'label' => $taxonomy,
           'labels' => array(),
           'public' => false,
@@ -1083,6 +1100,8 @@ namespace UsabilityDynamics\WPP {
         foreach( $args as &$arg ) {
           if( is_string( $arg ) && $arg === 'true' ) {
             $arg = true;
+          } else if( is_string( $arg ) && $arg === 'false' ) {
+            $arg = false;
           }
         }
 
