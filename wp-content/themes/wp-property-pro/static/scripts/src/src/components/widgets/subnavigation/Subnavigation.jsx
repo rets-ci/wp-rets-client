@@ -34,7 +34,7 @@ const SubnavigationContent = ({widget_cell, currentUrl}) => {
 
   return (
     <section className={classes}>
-      <div className="container">
+      <div className={`container ${Lib.THEME_CLASSES_PREFIX}subnavigation-container`}>
         {container}
       </div>
     </section>
