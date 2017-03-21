@@ -252,7 +252,7 @@
     },
     {
       "key": "property_pro_blog_subnavigation_menu",
-      "label": "Blog subnavigation menu",
+      "label": "Subnavigation",
       "section": "property_pro_blog_section",
       "control": "menus_select",
       "important": false,
