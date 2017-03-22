@@ -2,6 +2,7 @@ import {addPost, initMenu, setSearchProps} from './actions/index.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
+import Archive from './components/blog/Archive.jsx';
 import _ from 'lodash';
 import React from 'react';
 import {render} from 'react-dom';
@@ -26,6 +27,16 @@ render(
         {
           _.get(wpp, 'instance.settings.configuration.base_slug', null)
             ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults} />
+            : null
+        }
+        {
+          _.get(bundle, 'blog_base', null)
+            ? <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '')} component={Archive} />
+            : null
+        }
+        {
+          _.get(bundle, 'category_base', null)
+            ? <Route path={"/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"} component={Archive} />
             : null
         }
         <Route path="*" component={Page} />

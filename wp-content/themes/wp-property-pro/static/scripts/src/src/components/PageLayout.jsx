@@ -51,6 +51,7 @@ export default class PageLayout extends Component {
             <UserPanel />
             <Header />
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
+               post: this.state.post,
                rows: this.state.post.post_content
              }))}
           </div>

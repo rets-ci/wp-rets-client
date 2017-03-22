@@ -67,3 +67,11 @@ export const setTestimonialsActiveItem = (activeItem) => {
     activeItem: activeItem
   }
 };
+
+export const setBlogPosts = (posts, allowPagination) => {
+  return {
+    type: Lib.SET_BLOG_POSTS_ACTION,
+    posts: posts,
+    allowPagination: allowPagination
+  }
+};

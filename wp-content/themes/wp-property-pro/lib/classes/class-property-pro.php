@@ -61,6 +61,12 @@ namespace UsabilityDynamics {
 
       add_action('upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1);
 
+      /** Add ajax actions */
+
+      /** Get posts list */
+      add_action('wp_ajax_get_posts', [$this, 'get_blog_posts_handler']);
+      add_action('wp_ajax_nopriv_get_posts', [$this, 'get_blog_posts_handler']);
+
     }
 
     /**
@@ -110,17 +116,24 @@ namespace UsabilityDynamics {
     {
       global $post;
 
+      /** Get blog post id */
+      $blog_post_id = get_option('page_for_posts');
+
       /** Init params variable */
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
         'template_url' => get_template_directory_uri(),
         'site_name' => esc_attr(get_bloginfo('name')),
-        'static_images_url' => get_template_directory_uri() . '/static/images/src/'
+        'static_images_url' => get_template_directory_uri() . '/static/images/src/',
+        'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
+        'category_base' => get_option('category_base') ? get_option('category_base') : 'category'
       ];
+
 
       /** Build post data array */
       $params['post'] = isset($post) ? [
+        'post_id' => $post->ID,
         'post_date' => $post->post_date,
         'post_modified' => $post->post_modified,
         'post_parent' => $post->post_parent,
@@ -130,6 +143,50 @@ namespace UsabilityDynamics {
         'post_url' => get_permalink($post->ID),
         'custom_content' => false
       ] : [];
+
+      /** Is blog page ? */
+      if (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
+        $category_id = get_query_var('cat');
+
+        /** Get blog post some data */
+        $post_title = get_post_field('post_title', $blog_post_id);
+        $post_content = get_post_field('post_content', $blog_post_id);
+
+        if ($category_id) {
+          $category = get_category($category_id);
+        }
+
+        /** Payload for blog/archive page */
+        $params['post']['blog_content'] = [
+          'masthead' => [
+            'widget' => [
+              'fields' => [
+                'layout' => $category_id ? 'subtitle_title_layout' : 'title_description_layout',
+                'title' => $category_id ? $category->name : $post_title,
+                'subtitle' => $category_id ? $post_title : $post_content,
+                'image_src' => $blog_post_id ? get_the_post_thumbnail_url($blog_post_id) : '',
+                'image_position' => 'center center'
+              ]
+            ]
+          ],
+          'subnavigation' => [
+            'widget' => [
+              'fields' => [
+                'layout' => 'text_layout',
+                'menu_items' => array_map(function ($item) {
+                  return [
+                    'ID' => $item->ID,
+                    'title' => $item->title,
+                    'url' => $item->url,
+                    'relative_url' => str_replace(home_url(), "", $item->url)
+                  ];
+                }, wp_get_nav_menu_items(get_theme_mod('property_pro_blog_subnavigation_menu')))
+              ]
+            ]
+          ],
+          'category_id' => $category_id,
+        ];
+      }
 
       /** Get company logos */
       $params['logos'] = [
@@ -180,6 +237,74 @@ namespace UsabilityDynamics {
       return $params;
     }
 
+    /**
+     * Get posts for blog/archive page
+     *
+     * @param $args
+     * @param bool $just_count
+     * @return array
+     */
+    function get_blog_posts($args, $just_count = false)
+    {
+
+      /** Increase paged by 1 for check next page and save previous value */
+      $paged = $args['paged'];
+      $args['paged'] += 1;
+
+      $found_posts = count(get_posts($args));
+
+      if ($just_count) {
+        return [$found_posts];
+      }
+
+      $args['paged'] = $paged;
+
+      $posts = array_map(function ($post) {
+        return [
+          'ID' => $post->ID,
+          'title' => $post->post_title,
+          'excerpt' => $post->post_excerpt,
+          'image_src' => get_the_post_thumbnail_url($post->ID),
+          'url' => get_permalink($post->ID),
+          'relative_url' => str_replace(home_url(), "", get_permalink($post->ID))
+        ];
+      }, get_posts($args));
+
+      return [$posts, $found_posts];
+    }
+
+    /**
+     * Handler for ajax query which request blog posts
+     *
+     */
+    function get_blog_posts_handler()
+    {
+
+      $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
+      $posts_per_page = 6;
+
+      $args = [
+        'post_type' => 'post',
+        'posts_per_page' => $posts_per_page,
+      ];
+
+      $args['paged'] = isset($_GET['from']) && !empty($_GET['from']) ? round($_GET['from'] / $posts_per_page) + 1 : 1;
+
+      if ($category_id) {
+        $args['category'] = $category_id;
+      }
+
+      list($posts, $found_posts) = $this->get_blog_posts($args);
+
+      echo wp_json_encode([
+        'posts' => $posts,
+        'allowPagination' => $found_posts > 0
+      ]);
+
+      wp_die();
+    }
+
+
     /** Rebuild builder data array */
     private static function rebuild_builder_content($content)
     {
@@ -201,7 +326,7 @@ namespace UsabilityDynamics {
 
 
         /** Remove namespace from class name */
-        if (isset($widget['panels_info']['class'])){
+        if (isset($widget['panels_info']['class'])) {
           $classes = explode('\\', $widget['panels_info']['class']);
           $widget['panels_info']['class'] = count($classes) ? end($classes) : '';
         }
@@ -227,8 +352,8 @@ namespace UsabilityDynamics {
           /** @TODO hack for array keys, because get_post_meta return keys without underscores */
           if ($k === 'search_options' && is_array($field)) {
             $new_field = [];
-            foreach ($field as $field_key => $value){
-              if(!$value){
+            foreach ($field as $field_key => $value) {
+              if (!$value) {
                 continue;
               }
 
@@ -266,10 +391,10 @@ namespace UsabilityDynamics {
             $field = get_posts($args);
 
             /** Update posts array */
-            foreach($field as &$post){
+            foreach ($field as &$post) {
               $post->thumbnail = get_the_post_thumbnail_url($post->ID);
               $post->relative_permalink = str_replace(home_url(), "", get_permalink($post));
-              $property_detail = get_property( $post->ID );
+              $property_detail = get_property($post->ID);
               $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
               $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
               $post->full_address = isset($property_detail['formatted_address']) ? $property_detail['formatted_address'] : '';
@@ -278,9 +403,9 @@ namespace UsabilityDynamics {
 
               // Get gallery images
               $post->gallery_images = [];
-              if($attached_images = get_attached_media('image', $post->ID)){
-                foreach ($attached_images as $im){
-                  if($post->thumbnail === $im->guid){
+              if ($attached_images = get_attached_media('image', $post->ID)) {
+                foreach ($attached_images as $im) {
+                  if ($post->thumbnail === $im->guid) {
                     continue;
                   }
 
@@ -290,20 +415,20 @@ namespace UsabilityDynamics {
             }
           }
 
-          if($k === 'image_position'){
+          if ($k === 'image_position') {
             $field = str_replace('_', ' ', $field);
           }
 
           /** Rebuild structure of feature groups and features */
-          if($k === 'feature_groups' && is_array($field)){
-            foreach ($field as &$fg){
+          if ($k === 'feature_groups' && is_array($field)) {
+            foreach ($field as &$fg) {
               $fg['image_section']['image_src'] = $fg['image_section']['image'] ? wp_get_attachment_image_src($fg['image_section']['image'], 'full')[0] : '';
               unset($fg['image_section']['so_field_container_state']);
 
               $fg['image_section']['image_position'] = str_replace('_', ' ', $fg['image_section']['image_position']);
 
-              if(count($fg['features'])){
-                foreach ($fg['features'] as &$feature){
+              if (count($fg['features'])) {
+                foreach ($fg['features'] as &$feature) {
                   unset($feature['button_section']['so_field_container_state']);
                   unset($feature['testimonial_section']['so_field_container_state']);
                   $feature['testimonial_section']['image_src'] = $feature['testimonial_section']['image'] ? wp_get_attachment_image_src($feature['testimonial_section']['image'], 'full')[0] : '';

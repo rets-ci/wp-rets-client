@@ -11,6 +11,7 @@ import searchType from './searchType.jsx';
 import filterTermsState from './filterTerms.jsx';
 import panel from './panel.jsx';
 import testimonialsCarouselState from './testimonialsCarousel.jsx';
+import blogPostsState from './blogPosts.jsx';
 
 const propertyProApp = combineReducers({
     postState,
@@ -24,7 +25,8 @@ const propertyProApp = combineReducers({
     routing: routerReducer,
     filterTermsState,
     panel,
-    testimonialsCarouselState
+    testimonialsCarouselState,
+    blogPostsState
 });
 
 export default propertyProApp
