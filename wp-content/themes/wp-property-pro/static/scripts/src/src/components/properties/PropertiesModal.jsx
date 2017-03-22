@@ -19,7 +19,7 @@ class PropertiesModal extends Component {
   render() {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + Lib.THEME_CLASSES_PREFIX + "advanced-filter"} style={{display: this.props.open ? 'block' : 'none'}}>
-        <a onClick={() => this.props.openPropertiesModal(false)}href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " " + Lib.THEME_CLASSES_PREFIX + "hidden-md-down"}>
+        <a onClick={() => this.props.openPropertiesModal(false)}href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down"}>
           <i className="fa fa-times"></i></a>
         <form method="get" className="clearfix hidden-md-down">
           <div className="container">
