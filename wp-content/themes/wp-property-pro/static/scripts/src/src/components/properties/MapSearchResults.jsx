@@ -3,6 +3,7 @@ import {setSearchResults} from '../../actions/index.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
 import {Lib} from '../../lib.jsx';
 import Map from './Map.jsx';
+import PropertiesModal from './PropertiesModal.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import SearchResultListing from './SearchResultListing.jsx';
@@ -12,6 +13,7 @@ const mapStateToProps = state => {
   return {
     query: _.get(state, 'searchResults.query', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
+    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
     resultsTotal: _.get(state, 'searchResults.totalProps', 0)
   }
@@ -109,6 +111,7 @@ class MapSearchResults extends Component {
     } = this.props.params;
     let {
       displayedResults,
+      propertiesModalOpen,
       results
     } = this.props;
     let propertyTypes = this.props.location.query['wpp_search[property_types]'];
@@ -116,6 +119,7 @@ class MapSearchResults extends Component {
       <div>
         {displayedResults.length ?
           <div>
+            <PropertiesModal open={propertiesModalOpen} />
             <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
               <div className={Lib.THEME_CLASSES_PREFIX+"listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX+"caption"}>

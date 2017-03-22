@@ -2,7 +2,8 @@ import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
 import postState from './post.jsx';
 import mapState from './map.jsx';
-import modal from './modal.jsx';
+import locationModal from './location-modal.jsx';
+import propertiesModal from './properties-modal.jsx';
 import searchPropsState from './searchProps.jsx';
 import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';
@@ -14,7 +15,8 @@ import testimonialsCarouselState from './testimonialsCarousel.jsx';
 const propertyProApp = combineReducers({
     postState,
     mapState,
-    modal,
+    locationModal,
+    propertiesModal,
     searchPropsState,
     searchResults,
     searchType,

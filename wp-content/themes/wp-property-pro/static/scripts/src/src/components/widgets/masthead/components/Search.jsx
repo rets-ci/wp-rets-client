@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
-import {openModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
+import {openLocationModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
@@ -19,7 +19,7 @@ const mapStateToProps = (state, history) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         openSearchModal: open => {
-          dispatch(openModal(open));
+          dispatch(openLocationModal(open));
         },
 
         setSearchType: (searchType, saleType, propertyTypes) => {
