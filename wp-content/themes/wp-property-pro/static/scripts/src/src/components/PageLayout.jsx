@@ -17,7 +17,6 @@ export default class PageLayout extends Component {
   }
 
   componentDidMount() {
-
     // Get page content query
     let url = window.location.pathname + window.location.search;
 
@@ -30,9 +29,10 @@ export default class PageLayout extends Component {
         pageType: 'json'
       },
       dataType: 'json',
-      success: function (data) {
-        if(_.get(data, 'post', null))
+      success: data => {
+        if(_.get(data, 'post', null)) {
           self.setState({post: data.post});
+        }
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.log(textStatus, errorThrown);
@@ -41,13 +41,18 @@ export default class PageLayout extends Component {
   }
 
   render() {
+    let {
+      children
+    } = this.props;
     return (
       <div style={{height: '100%'}}>
         {Object.keys(this.state.post).length ?
           <div>
             <UserPanel />
             <Header />
-            {this.props.children}
+            {React.Children.map(children, (child, i) => React.cloneElement(child, {
+               rows: this.state.post.post_content
+             }))}
           </div>
         : <LoadingAccordion style={{display: 'flex', width: '100%', height: '100%'}} />}
       </div>

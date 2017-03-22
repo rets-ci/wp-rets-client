@@ -1,4 +1,4 @@
-import {openModal, setSearchProps} from '../../../../actions/index.jsx';
+import {openLocationModal, setSearchProps} from '../../../../actions/index.jsx';
 import Api from '../../../../containers/Api.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const mapStateToProps = (state) => {
   return {
-    open: state.modal ? state.modal.openModal : false,
+    open: state.locationModal ? state.locationModal.open : false,
     searchResults: _.get(state, 'searchPropsState.searchProps', []),
     searchType: _.get(state, 'searchType.searchType', ''),
     saleType: _.get(state, 'searchType.saleType', ''),
@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
       closeModal: () => {
-        dispatch(openModal(false));
+        dispatch(openLocationModal(false));
       },
 
       searchHandler: (term) => {
