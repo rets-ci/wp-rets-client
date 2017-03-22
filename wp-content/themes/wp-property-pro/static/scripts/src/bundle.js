@@ -64,10 +64,6 @@
 
 	var _Archive2 = _interopRequireDefault(_Archive);
 
-	var _lodash = __webpack_require__(36);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
 	var _react = __webpack_require__(5);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -85,6 +81,10 @@
 	var _index3 = _interopRequireDefault(_index2);
 
 	var _redux = __webpack_require__(198);
+
+	var _lodash = __webpack_require__(36);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -107,7 +107,8 @@
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, ''), component: _Archive2.default }) : null,
-	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle", component: _Archive2.default }) : null,
+	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
+	        component: _Archive2.default }) : null,
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _Page2.default })
 	    )
 	  )
@@ -122,16 +123,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = exports.addPost = undefined;
+	exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = undefined;
 
 	var _lib = __webpack_require__(2);
-
-	var addPost = exports.addPost = function addPost(post) {
-	  return {
-	    type: _lib.Lib.ADD_POST_ACTION,
-	    post: post
-	  };
-	};
 
 	var openLocationModal = exports.openLocationModal = function openLocationModal(open) {
 	  return {
@@ -214,7 +208,6 @@
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
-	  ADD_POST_ACTION: 'ADD_POST',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
 	  EXTENSION_DELIMITER: '.',
 	  INIT_MENU_ACTION: 'INIT_MENU',
@@ -59712,58 +59705,53 @@
 
 	var _redux = __webpack_require__(198);
 
-	var _post = __webpack_require__(342);
-
-	var _post2 = _interopRequireDefault(_post);
-
-	var _map = __webpack_require__(343);
+	var _map = __webpack_require__(342);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _locationModal = __webpack_require__(344);
+	var _locationModal = __webpack_require__(343);
 
 	var _locationModal2 = _interopRequireDefault(_locationModal);
 
-	var _propertiesModal = __webpack_require__(345);
+	var _propertiesModal = __webpack_require__(344);
 
 	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
-	var _searchProps = __webpack_require__(346);
+	var _searchProps = __webpack_require__(345);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(347);
+	var _searchResults = __webpack_require__(346);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(348);
+	var _mapMarkers = __webpack_require__(347);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _searchType = __webpack_require__(349);
+	var _searchType = __webpack_require__(348);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(350);
+	var _filterTerms = __webpack_require__(349);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _panel = __webpack_require__(351);
+	var _panel = __webpack_require__(350);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _testimonialsCarousel = __webpack_require__(352);
+	var _testimonialsCarousel = __webpack_require__(351);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
-	var _blogPosts = __webpack_require__(353);
+	var _blogPosts = __webpack_require__(352);
 
 	var _blogPosts2 = _interopRequireDefault(_blogPosts);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var propertyProApp = (0, _redux.combineReducers)({
-	    postState: _post2.default,
 	    mapState: _map2.default,
 	    locationModal: _locationModal2.default,
 	    propertiesModal: _propertiesModal2.default,
@@ -59782,40 +59770,6 @@
 
 /***/ },
 /* 342 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _lib = __webpack_require__(2);
-
-	var _lodash = __webpack_require__(36);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var post = function post() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _lib.Lib.ADD_POST_ACTION:
-	            return Object.assign({}, state, {
-	                post: action.post,
-	                rows: _lodash2.default.get(action, 'post.post_content', {})
-	            });
-	        default:
-	            return state;
-	    }
-	};
-	exports.default = post;
-
-/***/ },
-/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59846,7 +59800,7 @@
 	exports.default = map;
 
 /***/ },
-/* 344 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59874,7 +59828,7 @@
 	exports.default = locationModal;
 
 /***/ },
-/* 345 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59902,7 +59856,7 @@
 	exports.default = propertiesModal;
 
 /***/ },
-/* 346 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59929,7 +59883,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 347 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59966,7 +59920,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 348 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59993,7 +59947,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 349 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -60023,7 +59977,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 350 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -60050,7 +60004,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 351 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -60080,7 +60034,7 @@
 	exports.default = panel;
 
 /***/ },
-/* 352 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -60107,7 +60061,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 353 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

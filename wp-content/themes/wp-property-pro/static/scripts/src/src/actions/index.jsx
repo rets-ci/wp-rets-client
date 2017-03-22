@@ -1,12 +1,5 @@
 import {Lib} from '../lib.jsx'
 
-export const addPost = (post) => {
-  return {
-    type: Lib.ADD_POST_ACTION,
-    post: post
-  }
-};
-
 export const openLocationModal = (open) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
@@ -59,7 +52,7 @@ export const toggleUserPanel = (open) => {
     type: Lib.TOGGLE_USER_PANEL,
     open: open
   }
-}
+};
 
 export const setTestimonialsActiveItem = (activeItem) => {
   return {
