@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-class Page extends Component {
+class ArchiveContent extends Component {
   static propTypes = {
     post: PropTypes.object.required
   };
@@ -66,9 +66,9 @@ class Page extends Component {
 }
 
 
-const PageContent = connect(
+const Archive = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Page);
+)(ArchiveContent);
 
-export default PageContent;
+export default Archive;

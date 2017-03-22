@@ -59054,16 +59054,16 @@
 	  };
 	};
 
-	var Page = function (_Component) {
-	  _inherits(Page, _Component);
+	var ArchiveContent = function (_Component) {
+	  _inherits(ArchiveContent, _Component);
 
-	  function Page() {
-	    _classCallCheck(this, Page);
+	  function ArchiveContent() {
+	    _classCallCheck(this, ArchiveContent);
 
-	    return _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (ArchiveContent.__proto__ || Object.getPrototypeOf(ArchiveContent)).apply(this, arguments));
 	  }
 
-	  _createClass(Page, [{
+	  _createClass(ArchiveContent, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var content = _lodash2.default.get(this.props.post, 'blog_content', {});
@@ -59088,17 +59088,17 @@
 	    }
 	  }]);
 
-	  return Page;
+	  return ArchiveContent;
 	}(_react.Component);
 
-	Page.propTypes = {
+	ArchiveContent.propTypes = {
 	  post: _react.PropTypes.object.required
 	};
 
 
-	var PageContent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Page);
+	var Archive = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ArchiveContent);
 
-	exports.default = PageContent;
+	exports.default = Archive;
 
 /***/ },
 /* 334 */
