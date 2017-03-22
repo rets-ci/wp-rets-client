@@ -1,7 +1,21 @@
+import {openPropertiesModal} from '../../actions/index.jsx';
 import React, {Component, PropTypes} from 'react';
 import _ from 'lodash';
+import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Lib} from '../../lib.jsx';
+
+const mapStateToProps = state => {
+  return {}
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    openPropertiesModal: open => {
+      dispatch(openPropertiesModal(open));
+    }
+  }
+};
 
 class HeaderSearch extends Component {
   static propTypes = {
@@ -32,7 +46,12 @@ class HeaderSearch extends Component {
                     <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times"></i></span> {this.props.searchTerm}</span>
                     <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}><a href="#"><span>+</span> Bedroom</a></span>
                     <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}><a href="#"><span>+</span> Price</a></span>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}><a href="#"><span>+</span> More Filters</a></span>
+                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+                      <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+                        <span>+</span>
+                        More Filters
+                      </a>
+                    </span>
                     <input type="text" size="1" placeholder="" />
                   </div>
                 </div>
@@ -54,4 +73,7 @@ class HeaderSearch extends Component {
   }
 }
 
-export default HeaderSearch;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderSearch);

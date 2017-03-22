@@ -7,9 +7,16 @@ export const addPost = (post) => {
   }
 };
 
-export const openModal = (open) => {
+export const openLocationModal = (open) => {
   return {
-    type: Lib.TOGGLE_MODAL_ACTION,
+    type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
+    open: open
+  }
+};
+
+export const openPropertiesModal = (open) => {
+  return {
+    type: Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
     open: open
   }
 };

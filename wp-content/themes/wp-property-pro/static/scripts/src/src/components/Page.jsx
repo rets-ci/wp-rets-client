@@ -9,20 +9,19 @@ import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
 import Footer from './Footer.jsx';
 
-const mapStateToProps = (state) => {
-  return {
-    rows: _.get(state, 'postState.rows', [])
-  }
-};
-
 class Page extends Component {
+  static propTypes = {
+    rows: PropTypes.array
+  }
 
   render() {
-
+    let {
+      rows
+    } = this.props
     return (
       <div>
         {
-          this.props.rows.map((row) => {
+          rows.map((row) => {
             let cells = _.get(row, 'cells', []);
 
             return cells.map(((cell) => {
@@ -57,9 +56,4 @@ class Page extends Component {
   }
 }
 
-
-const PageContent = connect(
-  mapStateToProps
-)(Page);
-
-export default PageContent;
+export default Page;
