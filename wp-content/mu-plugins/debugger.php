@@ -24,7 +24,7 @@ if( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( isset( $_SERVER['REQUEST_
   return;
 }
 
-if( defined( 'DOING_AJAX' ) || !class_exists( 'UD_ChromePhp' ) ) {
+if( defined( 'DOING_AJAX' ) ) {
   return;
 }
 
