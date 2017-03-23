@@ -61,6 +61,9 @@ namespace UsabilityDynamics {
 
       add_action('upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1);
 
+      /** Register guide post type */
+      add_action( 'init', [$this, 'property_pro_register_guide_post_type'] );
+
       /** Add ajax actions */
 
       /** Get posts list */
@@ -529,6 +532,35 @@ namespace UsabilityDynamics {
       $upload_mimes['svg'] = 'image/svg+xml';
       $upload_mimes['svgz'] = 'image/svg+xml';
       return $upload_mimes;
+    }
+
+    /**
+     * Register guide post type
+     *
+     */
+    function property_pro_register_guide_post_type(){
+      $args = [
+        'public' => true,
+        'labels'  => [
+          'name' => 'Guides',
+          'singular_name' => 'Guide',
+        ],
+        'rewrite' => [
+          'slug' => 'guide'
+        ],
+        'hierarchical' => true,
+        'show_in_rest' => true,
+        'supports' => [
+          'title',
+          'editor',
+          'author',
+          'excerpt',
+          'thumbnail',
+          'revisions',
+          'page-attributes'
+        ]
+      ];
+      register_post_type( 'propertypro-guide', $args );
     }
 
   }
