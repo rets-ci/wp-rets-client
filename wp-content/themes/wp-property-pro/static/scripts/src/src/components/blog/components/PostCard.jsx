@@ -16,7 +16,7 @@ export default class PostCard extends Component {
       relative_url
     } = this.props.data;
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX+"post-item"}>
+      <section className={`${Lib.THEME_CLASSES_PREFIX}post-item col-lg-6`}>
         <div className={Lib.THEME_CLASSES_PREFIX+"post-image"}>
           <a href={url} title={title} onClick={(e) => {
             e.preventDefault();
@@ -34,7 +34,7 @@ export default class PostCard extends Component {
           </h2>
           <p>{excerpt}</p>
         </div>
-      </div>
+      </section>
     );
   }
 }

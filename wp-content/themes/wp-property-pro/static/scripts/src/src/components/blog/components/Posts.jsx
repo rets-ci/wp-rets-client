@@ -56,9 +56,7 @@ class Posts extends Component {
                   };
 
                   return (
-                    <div className="col-lg-6" key={i}>
-                      <PostCard data={item}/>
-                    </div>
+                      <PostCard data={item} key={i}/>
                   )
                 }
               )

@@ -144,6 +144,34 @@ namespace UsabilityDynamics {
         'custom_content' => false
       ] : [];
 
+      /** Is single page */
+      if (is_single()) {
+        $params['post']['is_blog_single'] = true;
+        if ($categories = get_the_category($post->ID)) {
+          $params['post']['category_title'] = $categories['0']->cat_name;
+          $args = [
+            'category' => $categories[0]->cat_ID,
+            'post_type' => 'post',
+            'posts_per_page' => '2',
+          ];
+          $params['post']['related_posts'] = $this->get_blog_posts($args)['posts'];
+        }
+        $params['widgets'] = [
+          'masthead' => [
+            'widget' => [
+              'fields' => [
+                'layout' => 'blog_single_layout',
+                'title' => $post->post_title,
+                'image_src' => get_the_post_thumbnail_url($post->ID),
+                'image_position' => 'center center',
+                'post_title' => $post->post_title,
+                'post_url' => get_permalink($post->ID),
+              ]
+            ]
+          ]
+        ];
+      }
+
       /** Is blog page ? */
       if (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
         $category_id = get_query_var('cat');
