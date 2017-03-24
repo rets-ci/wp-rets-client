@@ -27,5 +27,6 @@ export const Lib = {
   PROPERTIES_LIST_CAROUSEL: "carousel",
   PROPERTIES_LIST_DEFAULT: "default",
   THEME_CLASSES_PREFIX: "propertypro-",
-  AJAX_GET_POSTS_ACTION: "get_posts"
+  AJAX_GET_POSTS_ACTION: "get_posts",
+  ELASTIC_SEARCH_FUZZINESS_COUNT: 1
 };

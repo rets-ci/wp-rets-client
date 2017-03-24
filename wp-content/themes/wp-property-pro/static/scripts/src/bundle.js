@@ -234,7 +234,8 @@
 	  PROPERTIES_LIST_CAROUSEL: "carousel",
 	  PROPERTIES_LIST_DEFAULT: "default",
 	  THEME_CLASSES_PREFIX: "propertypro-",
-	  AJAX_GET_POSTS_ACTION: "get_posts"
+	  AJAX_GET_POSTS_ACTION: "get_posts",
+	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1
 	};
 
 /***/ },
@@ -536,56 +537,64 @@
 	          "title": "MLS ID",
 	          "field": "tax_input.mls_id",
 	          "search_field": "_search.mls_id",
-	          "old_key": "mls-id"
+	          "old_key": "mls-id",
+	          "taxonomy": "wpp_listing"
 	        },
 	        "wpp_location_city_state": {
 	          "slug": "city",
 	          "title": "City",
 	          "field": "tax_input.location_city",
 	          "search_field": "_search.location_city",
-	          "old_key": "location-city-state"
+	          "old_key": "location-city-state",
+	          "taxonomy": "wpp_location"
 	        },
 	        "wpp_location_zip": {
 	          "slug": "zip",
 	          "title": "Zip",
 	          "field": "_system.addressDetail.zipcode",
 	          "search_field": "_search.location_zip",
-	          "old_key": "location-zipcode"
+	          "old_key": "location-zipcode",
+	          "taxonomy": "wpp_location"
 	        },
 	        "wpp_location_county": {
 	          "slug": "county",
 	          "title": "County",
 	          "field": "tax_input.location_county",
 	          "search_field": "_search.location_county",
-	          "old_key": "location-county"
+	          "old_key": "location-county",
+	          "taxonomy": "wpp_location"
 	        },
 	        "wpp_location_subdivision": {
 	          "slug": "subdivision",
 	          "title": "Subdivision",
 	          "field": "tax_input.subdivision",
 	          "search_field": "_search.subdivision",
-	          "old_key": "subdivision"
+	          "old_key": "subdivision",
+	          "taxonomy": "wpp_location"
 	        },
 	        "wpp_schools_elementary_school": {
 	          "slug": "elementary_school",
 	          "title": "Elementary School",
 	          "field": "tax_input.elementary_school",
 	          "search_field": "_search.elementary_school",
-	          "old_key": "elementary-school"
+	          "old_key": "elementary-school",
+	          "taxonomy": "wpp_schools"
 	        },
 	        "wpp_schools_middle_school": {
 	          "slug": "middle_school",
 	          "title": "Middle School",
 	          "field": "tax_input.middle_school",
 	          "search_field": "_search.middle_school",
-	          "old_key": "middle-school"
+	          "old_key": "middle-school",
+	          "taxonomy": "wpp_schools"
 	        },
 	        "wpp_schools_high_school": {
 	          "slug": "high_school",
 	          "title": "High School",
 	          "field": "tax_input.high_school",
 	          "search_field": "_search.high_school",
-	          "old_key": "high-school"
+	          "old_key": "high-school",
+	          "taxonomy": "wpp_schools"
 	        }
 	      };
 	    }
@@ -633,33 +642,38 @@
 	      }
 
 	      var aggregationsFields = this.getAggregationsFields();
-	      var termTypes = [];
+	      var suggest = {
+	        "post-suggest": {
+	          "text": params.term,
+	          "completion": {
+	            "field": "title_suggest",
+	            "fuzzy": {
+	              "fuzziness": 1
+	            },
+	            "size": _lib.Lib.POST_SUGGEST_COUNT
+	          }
+	        }
+	      };
 	      for (var i in aggregationsFields) {
 	        var agg = aggregationsFields[i];
-	        termTypes.push(i);
-	        termTypes.push(_lodash2.default.get(agg, 'old_key', ''));
+
+	        suggest[i] = {
+	          "text": params.term,
+	          "completion": {
+	            "field": "term_suggest",
+	            "fuzzy": {
+	              "fuzziness": _lib.Lib.ELASTIC_SEARCH_FUZZINESS_COUNT
+	            },
+	            "size": _lib.Lib.TERM_SUGGEST_COUNT,
+	            "contexts": {
+	              "term_type": [i, _lodash2.default.get(agg, 'old_key', '')]
+	            }
+	          }
+	        };
 	      }
 
 	      var body = {
-	        "suggest": {
-	          "post-suggest": {
-	            "text": params.term,
-	            "completion": {
-	              "field": "title_suggest",
-	              "size": _lib.Lib.POST_SUGGEST_COUNT
-	            }
-	          },
-	          "term-suggest": {
-	            "text": params.term,
-	            "completion": {
-	              "field": "term_suggest",
-	              "size": _lib.Lib.TERM_SUGGEST_COUNT,
-	              "contexts": {
-	                "term_type": termTypes
-	              }
-	            }
-	          }
-	        }
+	        suggest: suggest
 	      };
 
 	      client.search({
@@ -672,31 +686,36 @@
 
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'suggest.term-suggest', null) === null) {
-	            break;
-	          }
 
 	          var _data = null;
 	          var _buckets2 = [];
 
-	          var termSuggest = _lodash2.default.get(response, 'suggest.term-suggest');
-	          for (var _i in termSuggest) {
-	            var term = termSuggest[_i];
-
-	            if (_lodash2.default.get(term, 'options', null) === null) {
+	          var suggestResponse = _lodash2.default.get(response, 'suggest');
+	          for (var _i in suggestResponse) {
+	            var terms = suggestResponse[_i];
+	            if (_i === 'post-suggest') {
 	              continue;
 	            }
 
-	            for (var ind in term.options) {
-	              var option = term.options[ind];
+	            for (var tInd in terms) {
 
-	              if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey || _lodash2.default.get(option, '_source.term_type', null) === _lodash2.default.get(aggregationsFields[aggregationKey], 'old_key', null)) {
-	                _buckets2.push({
-	                  id: _lodash2.default.get(option, '_id', ''),
-	                  text: _lodash2.default.get(option, '_source.slug', ''),
-	                  count: _lodash2.default.get(option, 'score', ''),
-	                  taxonomy: _lodash2.default.get(option, '_source.taxonomy', '')
-	                });
+	              var term = terms[tInd];
+
+	              if (_lodash2.default.get(term, 'options', null) === null) {
+	                continue;
+	              }
+
+	              for (var ind in term.options) {
+	                var option = term.options[ind];
+
+	                if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey || _lodash2.default.get(option, '_source.term_type', null) === _lodash2.default.get(aggregationsFields[aggregationKey], 'old_key', null)) {
+	                  _buckets2.push({
+	                    id: _lodash2.default.get(option, '_id', ''),
+	                    text: _lodash2.default.get(option, '_source.slug', ''),
+	                    count: _lodash2.default.get(option, 'score', ''),
+	                    taxonomy: _lodash2.default.get(option, '_source.taxonomy', '')
+	                  });
+	                }
 	              }
 	            }
 	          }
