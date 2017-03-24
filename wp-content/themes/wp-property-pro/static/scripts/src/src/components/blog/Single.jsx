@@ -30,7 +30,7 @@ class Single extends Component {
         <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
           <div className="container">
             {
-              _.get(this.props.post, 'category_title', null)
+              _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
                 ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
                   <h4>More {this.props.post.category_title} Articles</h4>
                 </div>

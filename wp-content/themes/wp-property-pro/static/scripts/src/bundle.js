@@ -58795,7 +58795,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'container' },
-	            _lodash2.default.get(this.props.post, 'category_title', null) ? _react2.default.createElement(
+	            _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
 	              _react2.default.createElement(
