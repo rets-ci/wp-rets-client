@@ -599,32 +599,58 @@
 	      };
 	    }
 	  }, {
-	    key: 'getTopAggregationsFields',
-	    value: function getTopAggregationsFields() {
+	    key: 'getTopAggregations',
+	    value: function getTopAggregations() {
 	      return {
-	        "wpp_location_city_state": {
-	          "slug": "city",
-	          "title": "City",
-	          "field": "tax_input.wpp_location_city_state",
-	          "search_field": "_search.wpp_location_city_state"
-	        },
-	        "wpp_location_zip": {
-	          "slug": "zip",
-	          "title": "Zip",
-	          "field": "_system.addressDetail.zipcode",
-	          "search_field": "_search.location_zip"
-	        },
-	        "wpp_location_county": {
-	          "slug": "county",
-	          "title": "County",
-	          "field": "tax_input.wpp_location_county",
-	          "search_field": "_search.wpp_location_county"
-	        },
-	        "wpp_location_subdivision": {
-	          "slug": "subdivision",
-	          "title": "Subdivision",
-	          "field": "tax_input.wpp_location_subdivision",
-	          "search_field": "_search.wpp_location_subdivision"
+	        "aggs": {
+	          "wpp_location_city_state_name": {
+	            "terms": {
+	              "title": "City",
+	              "field": "tax_input.wpp_location.wpp_location_city_state.name.raw"
+	            }
+	          },
+	          "wpp_location_city_state_slug": {
+	            "terms": {
+	              "title": "City",
+	              "field": "tax_input.wpp_location.wpp_location_city_state.slug"
+	            }
+	          },
+	          "wpp_location_zip_name": {
+	            "terms": {
+	              "title": "Zipcode",
+	              "field": "tax_input.wpp_location.wpp_location_zip.name.raw"
+	            }
+	          },
+	          "wpp_location_zip_slug": {
+	            "terms": {
+	              "title": "Zipcode",
+	              "field": "tax_input.wpp_location.wpp_location_zip.slug"
+	            }
+	          },
+	          "wpp_location_county_name": {
+	            "terms": {
+	              "title": "County",
+	              "field": "tax_input.wpp_location.wpp_location_county.name.raw"
+	            }
+	          },
+	          "wpp_location_county_slug": {
+	            "terms": {
+	              "title": "County",
+	              "field": "tax_input.wpp_location.wpp_location_county.slug"
+	            }
+	          },
+	          "wpp_location_subdivision_name": {
+	            "terms": {
+	              "title": "Subdivision",
+	              "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
+	            }
+	          },
+	          "wpp_location_subdivision_slug": {
+	            "terms": {
+	              "title": "Subdivision",
+	              "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
+	            }
+	          }
 	        }
 	      };
 	    }
@@ -711,7 +737,8 @@
 	                if (_lodash2.default.get(option, '_source.term_type', null) === aggregationKey || _lodash2.default.get(option, '_source.term_type', null) === _lodash2.default.get(aggregationsFields[aggregationKey], 'old_key', null)) {
 	                  _buckets2.push({
 	                    id: _lodash2.default.get(option, '_id', ''),
-	                    text: _lodash2.default.get(option, '_source.slug', ''),
+	                    text: _lodash2.default.get(option, '_source.name', ''),
+	                    term: _lodash2.default.get(option, '_source.slug', ''),
 	                    count: _lodash2.default.get(option, 'score', ''),
 	                    taxonomy: _lodash2.default.get(option, '_source.taxonomy', '')
 	                  });
@@ -775,76 +802,66 @@
 
 	      var rows = [];
 
+	      var aggregations = this.getTopAggregations().aggs;
 	      var body = {
 	        "aggs": {}
 	      };
+	      for (var aggIndex in aggregations) {
+	        var aggregation = aggregations[aggIndex];
 
-	      var aggregationsFields = this.getTopAggregationsFields();
-	      for (var key in aggregationsFields) {
-
-	        if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-	        var data = aggregationsFields[key];
-
-	        body.aggs[key] = {
-	          filters: { filters: {} },
-	          aggs: {}
-	        };
-
-	        body.aggs[key] = {
-	          terms: {
-	            field: data.field,
-	            size: _lodash2.default.get(params, 'size', 0),
-	            order: { "_count": "desc" }
+	        body.aggs[aggIndex] = {
+	          "terms": {
+	            "field": _lodash2.default.get(aggregation, 'terms.field', ''),
+	            "size": params.size || 0
 	          }
 	        };
 	      }
 
 	      client.search({
 	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
+	        type: 'post',
 	        method: Api.getEsMethod(),
 	        size: params.size || 0,
 	        body: body
 	      }, function selectQueryResponse(err, response) {
 
-	        for (var aggregationKey in aggregationsFields) {
-	          if (_lodash2.default.get(response, 'term-suggest', null) === null) {
+	        var responseAggs = _lodash2.default.get(response, 'aggregations');
+
+	        for (var i in responseAggs) {
+
+	          if (i.indexOf('slug') !== -1) {
 	            continue;
 	          }
 
-	          var _data2 = null;
+	          var data = null;
 	          var _buckets = [];
+	          var term = responseAggs[i];
 
-	          var termSuggest = _lodash2.default.get(response, 'term-suggest');
-	          for (var i in termSuggest) {
-	            var term = termSuggest[i];
+	          if (_lodash2.default.get(term, 'buckets', null) === null) {
+	            continue;
+	          }
 
-	            if (_lodash2.default.get(term, 'options', null) === null) {
-	              continue;
-	            }
+	          for (var ind in term.buckets) {
+	            var bucket = term.buckets[ind];
 
-	            for (var ind in term.options) {
-	              var option = term.options[ind];
-
-	              if (_lodash2.default.get(option, 'payload.term_type', null) === aggregationKey) {
-	                _buckets.push({
-	                  id: _lodash2.default.get(option, 'text', ''),
-	                  text: _lodash2.default.get(option, 'text', ''),
-	                  count: _lodash2.default.get(option, 'score', ''),
-	                  taxonomy: _lodash2.default.get(option, 'payload.tax', '')
-	                });
-	              }
+	            if (_lodash2.default.get(bucket, 'key', null) !== null) {
+	              _buckets.push({
+	                id: _lodash2.default.get(bucket, 'key', ''),
+	                text: _lodash2.default.get(bucket, 'key', ''),
+	                term: _lodash2.default.get(responseAggs[_lodash2.default.replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
+	                count: _lodash2.default.get(bucket, 'doc_count', ''),
+	                taxonomy: 'wpp_location'
+	              });
 	            }
 	          }
 
 	          if (_buckets.length > 0) {
-	            _data2 = Object.assign({}, _data2, {
-	              key: aggregationKey,
-	              text: aggregationsFields[aggregationKey].title,
+	            data = Object.assign({}, data, {
+	              key: i,
+	              text: _lodash2.default.get(aggregations[i], 'terms.title'),
 	              children: _buckets
 	            });
-	            rows.push(_data2);
+	            rows.push(data);
 	          }
 	        }
 
@@ -47407,9 +47424,9 @@
 	            var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
 
 	            for (var termInd in listingLocation) {
-	              var term = listingLocation[termInd];
+	              var term = listingLocation[termInd][0];
 
-	              switch (term.meta.term_type) {
+	              switch (term.term_type) {
 	                case 'location-city-state':
 	                  city = term.name;
 	                  break;
@@ -57378,7 +57395,7 @@
 	                  'a',
 	                  { href: '#',
 	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.text, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
 	                    } },
 	                  _react2.default.createElement(
 	                    'div',

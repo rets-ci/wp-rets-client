@@ -95,31 +95,57 @@ class Api {
     };
   }
 
-  static getTopAggregationsFields() {
+  static getTopAggregations() {
     return {
-      "wpp_location_city_state": {
-        "slug": "city",
-        "title": "City",
-        "field": "tax_input.wpp_location_city_state",
-        "search_field": "_search.wpp_location_city_state"
-      },
-      "wpp_location_zip": {
-        "slug": "zip",
-        "title": "Zip",
-        "field": "_system.addressDetail.zipcode",
-        "search_field": "_search.location_zip"
-      },
-      "wpp_location_county": {
-        "slug": "county",
-        "title": "County",
-        "field": "tax_input.wpp_location_county",
-        "search_field": "_search.wpp_location_county"
-      },
-      "wpp_location_subdivision": {
-        "slug": "subdivision",
-        "title": "Subdivision",
-        "field": "tax_input.wpp_location_subdivision",
-        "search_field": "_search.wpp_location_subdivision"
+      "aggs": {
+        "wpp_location_city_state_name": {
+          "terms": {
+            "title": "City",
+            "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
+          }
+        },
+        "wpp_location_city_state_slug": {
+          "terms": {
+            "title": "City",
+            "field": "tax_input.wpp_location.wpp_location_city_state.slug",
+          }
+        },
+        "wpp_location_zip_name": {
+          "terms": {
+            "title": "Zipcode",
+            "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
+          }
+        },
+        "wpp_location_zip_slug": {
+          "terms": {
+            "title": "Zipcode",
+            "field": "tax_input.wpp_location.wpp_location_zip.slug",
+          }
+        },
+        "wpp_location_county_name": {
+          "terms": {
+            "title": "County",
+            "field": "tax_input.wpp_location.wpp_location_county.name.raw"
+          }
+        },
+        "wpp_location_county_slug": {
+          "terms": {
+            "title": "County",
+            "field": "tax_input.wpp_location.wpp_location_county.slug"
+          }
+        },
+        "wpp_location_subdivision_name": {
+          "terms": {
+            "title": "Subdivision",
+            "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
+          }
+        },
+        "wpp_location_subdivision_slug": {
+          "terms": {
+            "title": "Subdivision",
+            "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
+          }
+        }
       }
     };
   }
@@ -205,7 +231,8 @@ class Api {
               if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
                 _buckets.push({
                   id: _.get(option, '_id', ''),
-                  text: _.get(option, '_source.slug', ''),
+                  text: _.get(option, '_source.name', ''),
+                  term: _.get(option, '_source.slug', ''),
                   count: _.get(option, 'score', ''),
                   taxonomy: _.get(option, '_source.taxonomy', '')
                 });
@@ -269,74 +296,64 @@ class Api {
 
     let rows = [];
 
+    let aggregations = this.getTopAggregations().aggs;
     let body = {
       "aggs": {}
     };
+    for(let aggIndex in aggregations){
+      let aggregation = aggregations[aggIndex];
 
-    let aggregationsFields = this.getTopAggregationsFields();
-    for (let key in aggregationsFields) {
-
-      if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-      let data = aggregationsFields[key];
-
-      body.aggs[key] = {
-        filters: {filters: {}},
-        aggs: {}
-      };
-
-      body.aggs[key] = {
-        terms: {
-          field: data.field,
-          size: _.get(params, 'size', 0),
-          order: {"_count": "desc"}
+      body.aggs[aggIndex] = {
+        "terms": {
+          "field": _.get(aggregation, 'terms.field', ''),
+          "size": params.size || 0
         }
       }
     }
 
     client.search({
       index: Api.getEsIndex(),
-      type: Api.getEsType(),
+      type: 'post',
       method: Api.getEsMethod(),
       size: params.size || 0,
       body: body
     }, function selectQueryResponse(err, response) {
 
-      for (let aggregationKey in aggregationsFields) {
-        if (_.get(response, 'term-suggest', null) === null) {
+      let responseAggs = _.get(response, 'aggregations');
+
+      for (let i in responseAggs) {
+
+        if(i.indexOf('slug') !== -1){
           continue;
         }
 
         let data = null;
         let _buckets = [];
+        let term = responseAggs[i];
 
-        let termSuggest = _.get(response, 'term-suggest');
-        for (let i in termSuggest) {
-          let term = termSuggest[i];
+        if (_.get(term, 'buckets', null) === null) {
+          continue;
+        }
 
-          if (_.get(term, 'options', null) === null) {
-            continue;
-          }
+        for (let ind in term.buckets) {
+          let bucket = term.buckets[ind];
 
-          for (let ind in term.options) {
-            let option = term.options[ind];
+          if (_.get(bucket, 'key', null) !== null) {
+            _buckets.push({
+              id: _.get(bucket, 'key', ''),
+              text: _.get(bucket, 'key', ''),
+              term: _.get(responseAggs[_.replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
+              count: _.get(bucket, 'doc_count', ''),
+              taxonomy: 'wpp_location'
+            });
 
-            if (_.get(option, 'payload.term_type', null) === aggregationKey) {
-              _buckets.push({
-                id: _.get(option, 'text', ''),
-                text: _.get(option, 'text', ''),
-                count: _.get(option, 'score', ''),
-                taxonomy: _.get(option, 'payload.tax', '')
-              });
-
-            }
           }
         }
 
         if (_buckets.length > 0) {
           data = Object.assign({}, data, {
-            key: aggregationKey,
-            text: aggregationsFields[aggregationKey].title,
+            key: i,
+            text: _.get(aggregations[i], 'terms.title'),
             children: _buckets
           });
           rows.push(data);
