@@ -72,6 +72,9 @@ namespace UsabilityDynamics\WPP {
             'taxonomy' => array(
               'type' => 'keyword',
             ),
+            'parent' => array(
+              'type' => 'long',
+            ),
             'url_path' => array(
               'type' => 'text',
               'fields' => array(
@@ -163,10 +166,10 @@ namespace UsabilityDynamics\WPP {
 
         $args = array(
           "term_id" => $term['term_id'],
-          "term_type" => $term_type,
           "term_type" => apply_filters( 'wpp:term_type', ( !empty( $term_type ) ? $term_type : $taxonomy ), $term, $meta ),
           "slug" => $term['slug'],
           "name" => $term['name'],
+          "parent" => $_term->parent,
           "taxonomy" => $taxonomy,
           "url_path" => str_replace( home_url(), '', get_term_link( $_term, $taxonomy ) ),
           "meta" => $meta,
