@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
+import renderHTML from 'react-render-html';
 import {Lib} from '../../../lib.jsx';
+import _ from 'lodash';
 
 class PostContent extends Component {
   static propTypes = {
@@ -7,11 +9,12 @@ class PostContent extends Component {
   };
 
   render() {
-
     return (
-      <section className={Lib.THEME_CLASSES_PREFIX + "post-content"}>
-        <div className="container">{content}</div>
-      </section>
+      _.get(this.props, 'content', null)
+        ? <section className={Lib.THEME_CLASSES_PREFIX + "post-content"}>
+          <div className="container">{renderHTML(this.props.content)}</div>
+        </section>
+        : null
     )
   }
 }

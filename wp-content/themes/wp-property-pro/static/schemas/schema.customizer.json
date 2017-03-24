@@ -111,7 +111,11 @@
         ".propertypro-callout .container a",
         ".propertypro-widget-tour .propertypro-headtitle p",
         ".propertypro-tour-widget-content p",
-        ".propertypro-subnavigation-mobile-selected-option"
+        ".propertypro-subnavigation-mobile-selected-option",
+        ".propertypro-post-content",
+        ".propertypro-post-content h2",
+        ".propertypro-post-content a",
+        ".propertypro-post-content li"
       ]
     },
     {

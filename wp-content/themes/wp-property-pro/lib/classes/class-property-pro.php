@@ -156,10 +156,13 @@ namespace UsabilityDynamics {
             'category' => $categories[0]->cat_ID,
             'post_type' => 'post',
             'posts_per_page' => '2',
+            'exclude' => [
+              $post->ID
+            ]
           ];
-          $params['post']['related_posts'] = $this->get_blog_posts($args)['posts'];
+          list($params['post']['related_posts']) = $this->get_blog_posts($args);
         }
-        $params['widgets'] = [
+        $params['post']['widgets'] = [
           'masthead' => [
             'widget' => [
               'fields' => [
@@ -174,9 +177,8 @@ namespace UsabilityDynamics {
           ]
         ];
       }
-
       /** Is blog page ? */
-      if (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
+      elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
         $category_id = get_query_var('cat');
 
         /** Get blog post some data */

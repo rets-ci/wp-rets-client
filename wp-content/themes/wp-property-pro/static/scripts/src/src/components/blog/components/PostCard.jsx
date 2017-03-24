@@ -17,23 +17,25 @@ export default class PostCard extends Component {
     } = this.props.data;
     return (
       <section className={`${Lib.THEME_CLASSES_PREFIX}post-item col-lg-6`}>
-        <div className={Lib.THEME_CLASSES_PREFIX+"post-image"}>
+        <div className={Lib.THEME_CLASSES_PREFIX + "post-image"}>
           <a href={url} title={title} onClick={(e) => {
             e.preventDefault();
-            Util.goToUrl(relative_url)}
+            Util.goToUrl(relative_url)
+          }
           }>
             <img src={image_src} alt={title} className="img-fluid"/>
           </a>
         </div>
-        <div className={Lib.THEME_CLASSES_PREFIX+"post-excerpt"}>
-          <h2 className={Lib.THEME_CLASSES_PREFIX+"post-title"}>
+        <header className={Lib.THEME_CLASSES_PREFIX + "post-excerpt"}>
+          <h5 className={Lib.THEME_CLASSES_PREFIX + "post-title"}>
             <a href={url} onClick={(e) => {
               e.preventDefault();
-              Util.goToUrl(relative_url)}
+              Util.goToUrl(relative_url)
+            }
             }>{title}</a>
-          </h2>
-          <p>{excerpt}</p>
-        </div>
+          </h5>
+        </header>
+        <p>{excerpt}</p>
       </section>
     );
   }
