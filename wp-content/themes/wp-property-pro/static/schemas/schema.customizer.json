@@ -12,13 +12,17 @@
       "title": "Branding",
       "priority": 32
     },
+    "property_pro_blog_section": {
+      "title": "Blog",
+      "priority": 33
+    },
     "property_pro_footer_top_section": {
       "title": "Footer top",
-      "priority": 33
+      "priority": 34
     },
     "property_pro_footer_bottom_section": {
       "title": "Footer bottom",
-      "priority": 34
+      "priority": 35
     }
   },
   "settings": [
@@ -107,7 +111,11 @@
         ".propertypro-callout .container a",
         ".propertypro-widget-tour .propertypro-headtitle p",
         ".propertypro-tour-widget-content p",
-        ".propertypro-subnavigation-mobile-selected-option"
+        ".propertypro-subnavigation-mobile-selected-option",
+        ".propertypro-post-content",
+        ".propertypro-post-content h2",
+        ".propertypro-post-content a",
+        ".propertypro-post-content li"
       ]
     },
     {
@@ -239,6 +247,17 @@
       "key": "property_pro_footer_bottom_menu_social",
       "label": "Social menu",
       "section": "property_pro_footer_bottom_section",
+      "control": "menus_select",
+      "important": false,
+      "default": "0",
+      "selector": [
+        "#selector"
+      ]
+    },
+    {
+      "key": "property_pro_blog_subnavigation_menu",
+      "label": "Subnavigation",
+      "section": "property_pro_blog_section",
       "control": "menus_select",
       "important": false,
       "default": "0",

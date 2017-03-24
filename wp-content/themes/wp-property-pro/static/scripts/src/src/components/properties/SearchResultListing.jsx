@@ -36,9 +36,9 @@ class SearchResultListing extends Component {
               let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
 
               for (let termInd in listingLocation) {
-                let term = listingLocation[termInd];
+                let term = listingLocation[termInd][0];
 
-                switch (term.meta.term_type) {
+                switch (term.term_type) {
                   case 'location-city-state':
                     city = term.name;
                     break;

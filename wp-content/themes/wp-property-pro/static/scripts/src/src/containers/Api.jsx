@@ -4,7 +4,7 @@ import {Lib} from '../lib.jsx'
 
 class Api {
 
-  static getEsClient(){
+  static getEsClient() {
 
     /**
      * @type {$.es.Client|*}
@@ -18,11 +18,11 @@ class Api {
     return 'v3/search';
   }
 
-  static getEsType(){
+  static getEsType() {
     return 'property';
   }
 
-  static getEsMethod(){
+  static getEsMethod() {
     return 'POST';
   }
 
@@ -33,85 +33,119 @@ class Api {
         "title": "MLS ID",
         "field": "tax_input.mls_id",
         "search_field": "_search.mls_id",
-        "old_key": "mls-id"
+        "old_key": "mls-id",
+        "taxonomy": "wpp_listing"
       },
       "wpp_location_city_state": {
         "slug": "city",
         "title": "City",
         "field": "tax_input.location_city",
         "search_field": "_search.location_city",
-        "old_key": "location-city-state"
+        "old_key": "location-city-state",
+        "taxonomy": "wpp_location"
       },
       "wpp_location_zip": {
         "slug": "zip",
         "title": "Zip",
         "field": "_system.addressDetail.zipcode",
         "search_field": "_search.location_zip",
-        "old_key": "location-zipcode"
+        "old_key": "location-zipcode",
+        "taxonomy": "wpp_location"
       },
       "wpp_location_county": {
         "slug": "county",
         "title": "County",
         "field": "tax_input.location_county",
         "search_field": "_search.location_county",
-        "old_key": "location-county"
+        "old_key": "location-county",
+        "taxonomy": "wpp_location"
       },
       "wpp_location_subdivision": {
         "slug": "subdivision",
         "title": "Subdivision",
         "field": "tax_input.subdivision",
         "search_field": "_search.subdivision",
-        "old_key": "subdivision"
+        "old_key": "subdivision",
+        "taxonomy": "wpp_location"
       },
       "wpp_schools_elementary_school": {
         "slug": "elementary_school",
         "title": "Elementary School",
         "field": "tax_input.elementary_school",
         "search_field": "_search.elementary_school",
-        "old_key": "elementary-school"
+        "old_key": "elementary-school",
+        "taxonomy": "wpp_schools"
       },
       "wpp_schools_middle_school": {
         "slug": "middle_school",
         "title": "Middle School",
         "field": "tax_input.middle_school",
         "search_field": "_search.middle_school",
-        "old_key": "middle-school"
+        "old_key": "middle-school",
+        "taxonomy": "wpp_schools"
       },
       "wpp_schools_high_school": {
         "slug": "high_school",
         "title": "High School",
         "field": "tax_input.high_school",
         "search_field": "_search.high_school",
-        "old_key": "high-school"
+        "old_key": "high-school",
+        "taxonomy": "wpp_schools"
       }
     };
   }
 
-  static getTopAggregationsFields() {
+  static getTopAggregations() {
     return {
-      "wpp_location_city_state": {
-        "slug": "city",
-        "title": "City",
-        "field": "tax_input.wpp_location_city_state",
-        "search_field": "_search.wpp_location_city_state"
-      },
-      "wpp_location_zip": {
-        "slug": "zip",
-        "title": "Zip",
-        "field": "_system.addressDetail.zipcode",
-        "search_field": "_search.location_zip"
-      },
-      "wpp_location_county": {
-        "slug": "county",
-        "title": "County",
-        "field": "tax_input.wpp_location_county",
-        "search_field": "_search.wpp_location_county"
-      },
-      "wpp_location_subdivision": {
-        "slug": "subdivision",
-        "title": "Subdivision",
-        "field": "tax_input.wpp_location_subdivision",
-        "search_field": "_search.wpp_location_subdivision"
+      "aggs": {
+        "wpp_location_city_state_name": {
+          "terms": {
+            "title": "City",
+            "field": "tax_input.wpp_location.wpp_location_city_state.name.raw",
+          }
+        },
+        "wpp_location_city_state_slug": {
+          "terms": {
+            "title": "City",
+            "field": "tax_input.wpp_location.wpp_location_city_state.slug",
+          }
+        },
+        "wpp_location_zip_name": {
+          "terms": {
+            "title": "Zipcode",
+            "field": "tax_input.wpp_location.wpp_location_zip.name.raw",
+          }
+        },
+        "wpp_location_zip_slug": {
+          "terms": {
+            "title": "Zipcode",
+            "field": "tax_input.wpp_location.wpp_location_zip.slug",
+          }
+        },
+        "wpp_location_county_name": {
+          "terms": {
+            "title": "County",
+            "field": "tax_input.wpp_location.wpp_location_county.name.raw"
+          }
+        },
+        "wpp_location_county_slug": {
+          "terms": {
+            "title": "County",
+            "field": "tax_input.wpp_location.wpp_location_county.slug"
+          }
+        },
+        "wpp_location_subdivision_name": {
+          "terms": {
+            "title": "Subdivision",
+            "field": "tax_input.wpp_location.wpp_location_subdivision.name.raw"
+          }
+        },
+        "wpp_location_subdivision_slug": {
+          "terms": {
+            "title": "Subdivision",
+            "field": "tax_input.wpp_location.wpp_location_subdivision.slug"
+          }
+        }
       }
     };
   }
@@ -128,33 +162,38 @@ class Api {
     }
 
     let aggregationsFields = this.getAggregationsFields();
-    let termTypes = [];
-    for(let i in aggregationsFields){
+    let suggest = {
+      "post-suggest": {
+        "text": params.term,
+        "completion": {
+          "field": "title_suggest",
+          "fuzzy": {
+            "fuzziness": 1
+          },
+          "size": Lib.POST_SUGGEST_COUNT
+        }
+      }
+    };
+    for (let i in aggregationsFields) {
       let agg = aggregationsFields[i];
-      termTypes.push(i);
-      termTypes.push(_.get(agg, 'old_key', ''));
+
+      suggest[i] = {
+        "text": params.term,
+        "completion": {
+          "field": "term_suggest",
+          "fuzzy": {
+            "fuzziness": Lib.ELASTIC_SEARCH_FUZZINESS_COUNT
+          },
+          "size": Lib.TERM_SUGGEST_COUNT,
+          "contexts": {
+            "term_type": [i, _.get(agg, 'old_key', '')]
+          }
+        }
+      };
     }
 
     let body = {
-      "suggest": {
-        "post-suggest": {
-          "text": params.term,
-          "completion": {
-            "field": "title_suggest",
-            "size": Lib.POST_SUGGEST_COUNT
-          }
-        },
-        "term-suggest": {
-          "text": params.term,
-          "completion": {
-            "field": "term_suggest",
-            "size": Lib.TERM_SUGGEST_COUNT,
-            "contexts": {
-              "term_type": termTypes
-            }
-          }
-        }
-      }
+      suggest
     };
 
     client.search({
@@ -167,32 +206,38 @@ class Api {
 
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
-        if (_.get(response, 'suggest.term-suggest', null) === null) {
-          break;
-        }
 
         let data = null;
         let _buckets = [];
 
-        let termSuggest = _.get(response, 'suggest.term-suggest');
-        for (let i in termSuggest) {
-          let term = termSuggest[i];
-
-          if (_.get(term, 'options', null) === null) {
+        let suggestResponse = _.get(response, 'suggest');
+        for (let i in suggestResponse) {
+          let terms = suggestResponse[i];
+          if(i === 'post-suggest'){
             continue;
           }
 
-          for (let ind in term.options) {
-            let option = term.options[ind];
+          for(var tInd in terms){
 
-            if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
-              _buckets.push({
-                id: _.get(option, '_id', ''),
-                text: _.get(option, '_source.slug', ''),
-                count: _.get(option, 'score', ''),
-                taxonomy: _.get(option, '_source.taxonomy', '')
-              });
+            let term = terms[tInd];
 
+            if (_.get(term, 'options', null) === null) {
+              continue;
+            }
+
+            for (let ind in term.options) {
+              let option = term.options[ind];
+
+              if (_.get(option, '_source.term_type', null) === aggregationKey || _.get(option, '_source.term_type', null) === _.get(aggregationsFields[aggregationKey], 'old_key', null)) {
+                _buckets.push({
+                  id: _.get(option, '_id', ''),
+                  text: _.get(option, '_source.name', ''),
+                  term: _.get(option, '_source.slug', ''),
+                  count: _.get(option, 'score', ''),
+                  taxonomy: _.get(option, '_source.taxonomy', '')
+                });
+
+              }
             }
           }
         }
@@ -251,74 +296,64 @@ class Api {
 
     let rows = [];
 
+    let aggregations = this.getTopAggregations().aggs;
     let body = {
       "aggs": {}
     };
+    for(let aggIndex in aggregations){
+      let aggregation = aggregations[aggIndex];
 
-    let aggregationsFields = this.getTopAggregationsFields();
-    for (let key in aggregationsFields) {
-
-      if (key === 'length' || !aggregationsFields.hasOwnProperty(key)) continue;
-
-      let data = aggregationsFields[key];
-
-      body.aggs[key] = {
-        filters: {filters: {}},
-        aggs: {}
-      };
-
-      body.aggs[key] = {
-        terms: {
-          field: data.field,
-          size: _.get(params, 'size', 0),
-          order: {"_count": "desc"}
+      body.aggs[aggIndex] = {
+        "terms": {
+          "field": _.get(aggregation, 'terms.field', ''),
+          "size": params.size || 0
         }
       }
     }
 
     client.search({
       index: Api.getEsIndex(),
-      type: Api.getEsType(),
+      type: 'post',
       method: Api.getEsMethod(),
       size: params.size || 0,
       body: body
     }, function selectQueryResponse(err, response) {
 
-      for (let aggregationKey in aggregationsFields) {
-        if (_.get(response, 'term-suggest', null) === null) {
+      let responseAggs = _.get(response, 'aggregations');
+
+      for (let i in responseAggs) {
+
+        if(i.indexOf('slug') !== -1){
           continue;
         }
 
         let data = null;
         let _buckets = [];
+        let term = responseAggs[i];
 
-        let termSuggest = _.get(response, 'term-suggest');
-        for (let i in termSuggest) {
-          let term = termSuggest[i];
+        if (_.get(term, 'buckets', null) === null) {
+          continue;
+        }
 
-          if (_.get(term, 'options', null) === null) {
-            continue;
-          }
+        for (let ind in term.buckets) {
+          let bucket = term.buckets[ind];
 
-          for (let ind in term.options) {
-            let option = term.options[ind];
+          if (_.get(bucket, 'key', null) !== null) {
+            _buckets.push({
+              id: _.get(bucket, 'key', ''),
+              text: _.get(bucket, 'key', ''),
+              term: _.get(responseAggs[_.replace(i, 'name', 'slug')].buckets[ind], 'key', ''),
+              count: _.get(bucket, 'doc_count', ''),
+              taxonomy: 'wpp_location'
+            });
 
-            if (_.get(option, 'payload.term_type', null) === aggregationKey) {
-              _buckets.push({
-                id: _.get(option, 'text', ''),
-                text: _.get(option, 'text', ''),
-                count: _.get(option, 'score', ''),
-                taxonomy: _.get(option, 'payload.tax', '')
-              });
-
-            }
           }
         }
 
         if (_buckets.length > 0) {
           data = Object.assign({}, data, {
-            key: aggregationKey,
-            text: aggregationsFields[aggregationKey].title,
+            key: i,
+            text: _.get(aggregations[i], 'terms.title'),
             children: _buckets
           });
           rows.push(data);
@@ -348,20 +383,19 @@ class Api {
     if (params.locationFilter) {
       // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
       query.bool.filter = {
-          "geo_bounding_box": {
-            "wpp_location_pin": {
-              "top_left":
-                {
-                  "lat": params.topLeft.lat,
-                  "lon": params.topLeft.lon
-                },
-              "bottom_right": {
-                "lat": params.bottomRight.lat,
-                "lon": params.bottomRight.lon
-              }
+        "geo_bounding_box": {
+          "wpp_location_pin": {
+            "top_left": {
+              "lat": params.topLeft.lat,
+              "lon": params.topLeft.lon
+            },
+            "bottom_right": {
+              "lat": params.bottomRight.lat,
+              "lon": params.bottomRight.lon
             }
           }
-        };
+        }
+      };
     } else {
       query.bool.must.push({
         "term": {

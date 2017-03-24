@@ -51,7 +51,8 @@ export default class PageLayout extends Component {
             <UserPanel />
             <Header />
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
-               rows: this.state.post.post_content
+               post: _.get(this.state, 'post', {}),
+               rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
              }))}
           </div>
         : <LoadingAccordion style={{display: 'flex', width: '100%', height: '100%'}} />}
