@@ -898,12 +898,12 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-tagsinput { display: none; }
 .propertypro-advanced-filter .propertypro-bs-tags-box { float: left; width: 72%; margin-left: 40px; }
 .propertypro-advanced-filter form .button-group .btn-primary { float: right; }
+.propertypro-advanced-filter form .btn { font-size: .95rem; }
 .propertypro-bs-tags-box .propertypro-tag, .filter-section .propertypro-tag { border-radius: 3px; border: 1px solid #d2dae0; background-color: rgba(237, 242, 245, 0.5); font-size: 1rem; font-weight: 500; line-height: 34px; color: #414141; padding: .2em .8em; margin: 0 .2em .30em 0; }
 .propertypro-bs-tags-box .propertypro-tag i { position: relative; font-size: 10px; left: auto; top: -2px; margin: 0 5px 0 0; color: #000; cursor: pointer; }
 .propertypro-bs-tags-box input { border: none; box-shadow: none; outline: none; background-color: transparent; padding: 0 6px; margin: 0;
     width: 50%; max-width: 400px; line-height: 40px; color: rgba(139, 140, 141, 0.4); font-size: 1.40rem; font-weight: 500 }
 .propertypro-advanced-filter .btn-reset { color: #d33320; font-size: 15px; font-weight: 500; line-height: 50px; }
-
 
 /* testimonials */
 .propertypro-sliderContent .propertypro-slides > li {

@@ -30,6 +30,7 @@
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.13.2",
     "swiper": "^3.4.1",
+    "urijs": "^1.18.9",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^2.3.0"

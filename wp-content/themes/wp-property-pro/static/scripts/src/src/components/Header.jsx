@@ -1,9 +1,10 @@
-import React from 'react';
-import {connect} from 'react-redux'
 import {toggleUserPanel} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx'
 import HeaderSearch from './Headers/HeaderSearch.jsx'
 import _ from 'lodash'
+import React from 'react';
+import {connect} from 'react-redux'
+import Util from './Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -25,12 +26,7 @@ const HeaderContent = ({location, openUserPanel}) => {
   let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
   if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
-    let searchFilters = {};
-    for (var k in location.query) {
-      if (k.startsWith('wpp_search')) {
-        searchFilters[k] = location.query[k];
-      }
-    }
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters} />;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel} />;
