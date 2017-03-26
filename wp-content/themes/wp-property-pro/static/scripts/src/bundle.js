@@ -54989,7 +54989,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -55269,13 +55269,10 @@
 	  }
 
 	  _createClass(PageLayout, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
+	    key: 'fetchData',
+	    value: function fetchData(url) {
 	      // Get page content query
-	      var url = window.location.pathname + window.location.search;
-
 	      var self = this;
-
 	      jQuery.ajax({
 	        url: url,
 	        type: 'get',
@@ -55292,6 +55289,23 @@
 	          console.log(textStatus, errorThrown);
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var url = window.location.pathname + window.location.search;
+	      this.fetchData(url);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var currentUrl = this.props.location.pathname + nextProps.location.search;
+	      var nextUrl = nextProps.location.pathname + nextProps.location.search;
+	      if (nextUrl !== currentUrl) {
+	        // reset the post content
+	        this.setState({ post: {} });
+	        this.fetchData(nextUrl);
+	      }
 	    }
 	  }, {
 	    key: 'render',
