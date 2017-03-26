@@ -16,11 +16,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 class PropertiesModal extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
   render() {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + Lib.THEME_CLASSES_PREFIX + "advanced-filter"} style={{display: this.props.open ? 'block' : 'none'}}>
-        <a onClick={() => this.props.openPropertiesModal(false)}href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down"}>
-          <i className="fa fa-times"></i></a>
+        <a onClick={() => this.props.openPropertiesModal(false)} href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down"}>
+          <i className="fa fa-times"></i>
+        </a>
         <form method="get" className="clearfix hidden-md-down">
           <div className="container">
             <i className="fa fa-search"></i>

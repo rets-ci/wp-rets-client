@@ -46956,10 +46956,13 @@
 	var PropertiesModal = function (_Component) {
 	  _inherits(PropertiesModal, _Component);
 
-	  function PropertiesModal() {
+	  function PropertiesModal(props) {
 	    _classCallCheck(this, PropertiesModal);
 
-	    return _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).call(this, props));
+
+	    _this.state = {};
+	    return _this;
 	  }
 
 	  _createClass(PropertiesModal, [{
@@ -55312,7 +55315,9 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var children = this.props.children;
+	      var _props = this.props,
+	          children = _props.children,
+	          location = _props.location;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -55321,7 +55326,7 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(_UserPanel2.default, null),
-	          _react2.default.createElement(_Header2.default, null),
+	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
 	            return _react2.default.cloneElement(child, {
 	              post: _lodash2.default.get(_this2.state, 'post', {}),
@@ -55374,9 +55379,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
-	    routing: state.routing
+	    location: ownProps.location
 	  };
 	};
 
@@ -55389,15 +55394,21 @@
 	};
 
 	var HeaderContent = function HeaderContent(_ref) {
-	  var routing = _ref.routing,
+	  var location = _ref.location,
 	      openUserPanel = _ref.openUserPanel;
 
-	  var pathname = routing.locationBeforeTransitions.pathname;
+	  var pathname = location.pathname;
 	  // this will ensure that all "/" characters is removed from the string
 	  var pathRoot = pathname.replace(/\//g, '');
 	  var headerElement = void 0;
 	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
-	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel });
+	    var searchFilters = {};
+	    for (var k in location.query) {
+	      if (k.startsWith('wpp_search')) {
+	        searchFilters[k] = location.query[k];
+	      }
+	    }
+	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel, searchFilters: searchFilters });
 	  } else {
 	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
 	  }
@@ -55543,8 +55554,6 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _index = __webpack_require__(1);
-
 	var _react = __webpack_require__(5);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -55553,9 +55562,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _reactRedux = __webpack_require__(187);
-
 	var _reactRouter = __webpack_require__(224);
+
+	var _SearchFilters = __webpack_require__(414);
+
+	var _SearchFilters2 = _interopRequireDefault(_SearchFilters);
 
 	var _lib = __webpack_require__(2);
 
@@ -55566,18 +55577,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {};
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    openPropertiesModal: function openPropertiesModal(open) {
-	      dispatch((0, _index.openPropertiesModal)(open));
-	    }
-	  };
-	};
 
 	var HeaderSearch = function (_Component) {
 	  _inherits(HeaderSearch, _Component);
@@ -55591,8 +55590,9 @@
 	  _createClass(HeaderSearch, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var searchFilters = this.props.searchFilters;
 
+	      var saleType = searchFilters['wpp_search[sale_type]'];
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
@@ -55619,84 +55619,12 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '#' },
-	                'Rent ',
+	                saleType,
+	                ' ',
 	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
 	              )
 	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap" },
-	              _react2.default.createElement(
-	                'form',
-	                { method: 'get', className: 'clearfix hidden-md-down' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
-	                      _react2.default.createElement(
-	                        'span',
-	                        null,
-	                        _react2.default.createElement('i', { className: 'fa fa-times' })
-	                      ),
-	                      ' ',
-	                      this.props.searchTerm
-	                    ),
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#' },
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '+'
-	                        ),
-	                        ' Bedroom'
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#' },
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '+'
-	                        ),
-	                        ' Price'
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', onClick: function onClick() {
-	                            return _this2.props.openPropertiesModal(true);
-	                          } },
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '+'
-	                        ),
-	                        'More Filters'
-	                      )
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', size: '1', placeholder: '' })
-	                  )
-	                ),
-	                _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
-	                _react2.default.createElement('i', { className: 'fa fa-search' })
-	              )
-	            ),
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
 	            _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
@@ -55752,9 +55680,10 @@
 	}(_react.Component);
 
 	HeaderSearch.propTypes = {
-	  searchTerm: _react.PropTypes.string
+	  searchTerm: _react.PropTypes.string,
+	  searchFilters: _react.PropTypes.object.isRequired
 	};
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderSearch);
+	exports.default = HeaderSearch;
 
 /***/ },
 /* 299 */
@@ -75387,6 +75316,158 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ },
+/* 414 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _index = __webpack_require__(1);
+
+	var _lib = __webpack_require__(2);
+
+	var _react = __webpack_require__(5);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(187);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    filters: ownProps.filters
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    openPropertiesModal: function openPropertiesModal(open) {
+	      dispatch((0, _index.openPropertiesModal)(open));
+	    }
+	  };
+	};
+
+	var searchFilters = function (_Component) {
+	  _inherits(searchFilters, _Component);
+
+	  function searchFilters() {
+	    _classCallCheck(this, searchFilters);
+
+	    return _possibleConstructorReturn(this, (searchFilters.__proto__ || Object.getPrototypeOf(searchFilters)).apply(this, arguments));
+	  }
+
+	  _createClass(searchFilters, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var filters = this.props.filters;
+
+	      var term = filters['wpp_search[term]'];
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap" },
+	        _react2.default.createElement(
+	          'form',
+	          { method: 'get', className: 'clearfix hidden-md-down' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  _react2.default.createElement('i', { className: 'fa fa-times' })
+	                ),
+	                ' ',
+	                term
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', onClick: function onClick() {
+	                      return _this2.props.openPropertiesModal(true);
+	                    } },
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '+'
+	                  ),
+	                  ' Bedroom'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', onClick: function onClick() {
+	                      return _this2.props.openPropertiesModal(true);
+	                    } },
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '+'
+	                  ),
+	                  ' Price'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', onClick: function onClick() {
+	                      return _this2.props.openPropertiesModal(true);
+	                    } },
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '+'
+	                  ),
+	                  'More Filters'
+	                )
+	              ),
+	              _react2.default.createElement('input', { type: 'text', size: '1', placeholder: '' })
+	            )
+	          ),
+	          _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
+	          _react2.default.createElement('i', { className: 'fa fa-search' })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return searchFilters;
+	}(_react.Component);
+
+	searchFilters.propTypes = {
+	  filters: _react.PropTypes.object.isRequired
+	};
+	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(searchFilters);
 
 /***/ }
 /******/ ]);
