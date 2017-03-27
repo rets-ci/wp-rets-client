@@ -24,7 +24,7 @@ class Posts extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.posts !== this.props.posts) {
+    if (nextProps.posts !== this.props.posts || _.isEmpty(nextProps.posts)) {
       this.setState({loading: false});
     }
   }
@@ -43,7 +43,7 @@ class Posts extends Component {
       <section className={Lib.THEME_CLASSES_PREFIX + "blog-posts"}>
         <div className="container">
           <div className="row">
-            {!_.isEmpty(this.props.posts) ?
+            {!this.state.loading ?
               this.props.posts.map((p, i) => {
 
                   let item = {

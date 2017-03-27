@@ -64,6 +64,9 @@ namespace UsabilityDynamics {
       /** Register guide post type */
       add_action( 'init', [$this, 'property_pro_register_guide_post_type'] );
 
+      /** Register taxonomy for guide post type */
+      add_action( 'init', [$this, 'property_pro_register_guide_post_type_taxonomy'] );
+
       /** Add ajax actions */
 
       /** Get posts list */
@@ -563,6 +566,25 @@ namespace UsabilityDynamics {
         ]
       ];
       register_post_type( 'propertypro-guide', $args );
+    }
+
+    function property_pro_register_guide_post_type_taxonomy(){
+
+      $labels = [
+        'name'              => 'Categories',
+        'singular_name'     => 'Category'
+      ];
+
+      $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'propertypro-guide-category' ),
+      );
+
+      register_taxonomy( 'propertypro-guide-category', ['propertypro-guide'], $args );
     }
 
   }
