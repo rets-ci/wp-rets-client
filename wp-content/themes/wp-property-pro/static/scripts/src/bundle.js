@@ -77874,7 +77874,7 @@
 	  _createClass(Posts, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.posts !== this.props.posts) {
+	      if (nextProps.posts !== this.props.posts || _lodash2.default.isEmpty(nextProps.posts)) {
 	        this.setState({ loading: false });
 	      }
 	    }
@@ -77902,7 +77902,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
-	            !_lodash2.default.isEmpty(this.props.posts) ? this.props.posts.map(function (p, i) {
+	            !this.state.loading ? this.props.posts.map(function (p, i) {
 
 	              var item = {
 	                title: _lodash2.default.get(p, 'title', ''),
