@@ -1,17 +1,10 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import IconLayout from './layouts/IconLayout.jsx';
 import TextLayout from './layouts/TextLayout.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const mapStateToProps = (state) => {
-  return {
-    currentUrl: _.get(state, 'postState.post.post_url', ''),
-  }
-};
-
-const SubnavigationContent = ({widget_cell, currentUrl}) => {
+const Subnavigation = ({widget_cell, currentUrl}) => {
 
   if (!widget_cell) {
     return null;
@@ -40,9 +33,5 @@ const SubnavigationContent = ({widget_cell, currentUrl}) => {
     </section>
   );
 };
-
-const Subnavigation = connect(
-  mapStateToProps
-)(SubnavigationContent);
 
 export default Subnavigation;

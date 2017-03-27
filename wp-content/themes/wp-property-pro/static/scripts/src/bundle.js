@@ -58252,7 +58252,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -59505,6 +59505,7 @@
 	  _createClass(Page, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
 
 	      if (_lodash2.default.get(this.props, 'post.is_blog_single', null)) {
 	        return _react2.default.createElement(_Single2.default, { post: _lodash2.default.get(this.props, 'post', {}) });
@@ -59524,7 +59525,7 @@
 	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
 	                break;
 	              case 'Property_Pro_Subnavigation_Widget':
-	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell });
+	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
 	                break;
 	              case 'Property_Pro_Tour_Widget':
 	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
@@ -61303,8 +61304,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(187);
-
 	var _IconLayout = __webpack_require__(323);
 
 	var _IconLayout2 = _interopRequireDefault(_IconLayout);
@@ -61321,13 +61320,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    currentUrl: _lodash2.default.get(state, 'postState.post.post_url', '')
-	  };
-	};
-
-	var SubnavigationContent = function SubnavigationContent(_ref) {
+	var Subnavigation = function Subnavigation(_ref) {
 	  var widget_cell = _ref.widget_cell,
 	      currentUrl = _ref.currentUrl;
 
@@ -61361,8 +61354,6 @@
 	    )
 	  );
 	};
-
-	var Subnavigation = (0, _reactRedux.connect)(mapStateToProps)(SubnavigationContent);
 
 	exports.default = Subnavigation;
 
