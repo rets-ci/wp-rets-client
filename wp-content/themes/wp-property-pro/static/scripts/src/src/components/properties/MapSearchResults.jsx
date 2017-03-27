@@ -8,6 +8,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import SearchResultListing from './SearchResultListing.jsx';
 import _ from 'lodash';
+import Util from '../Util.jsx';
 
 const mapStateToProps = state => {
   return {
@@ -111,15 +112,17 @@ class MapSearchResults extends Component {
     } = this.props.params;
     let {
       displayedResults,
+      location,
       propertiesModalOpen,
       results
     } = this.props;
-    let propertyTypes = this.props.location.query['wpp_search[property_types]'];
+    let propertyTypes = location.query['wpp_search[property_types]'];
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
     return (
       <div>
         {displayedResults.length ?
           <div>
-            <PropertiesModal open={propertiesModalOpen} />
+            <PropertiesModal searchFilters={searchFilters} open={propertiesModalOpen} />
             <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
               <div className={Lib.THEME_CLASSES_PREFIX+"listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX+"caption"}>

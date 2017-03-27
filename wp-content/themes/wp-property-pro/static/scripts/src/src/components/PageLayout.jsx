@@ -16,12 +16,9 @@ export default class PageLayout extends Component {
     };
   }
 
-  componentDidMount() {
+  fetchData(url) {
     // Get page content query
-    let url = window.location.pathname + window.location.search;
-
     let self = this;
-
     jQuery.ajax({
       url: url,
       type: 'get',
@@ -40,16 +37,32 @@ export default class PageLayout extends Component {
     });
   }
 
+  componentDidMount() {
+    let url = window.location.pathname + window.location.search;
+    this.fetchData(url);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let currentUrl = this.props.location.pathname + nextProps.location.search;
+    let nextUrl = nextProps.location.pathname + nextProps.location.search;
+    if (nextUrl !== currentUrl) {
+      // reset the post content
+      this.setState({post: {}});
+      this.fetchData(nextUrl);
+    }
+  }
+
   render() {
     let {
-      children
+      children,
+      location
     } = this.props;
     return (
       <div style={{height: '100%'}}>
         {Object.keys(this.state.post).length ?
           <div>
             <UserPanel />
-            <Header />
+            <Header location={location} />
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
                post: _.get(this.state, 'post', {}),
                rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
