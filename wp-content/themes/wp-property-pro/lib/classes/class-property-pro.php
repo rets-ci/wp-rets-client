@@ -561,8 +561,7 @@ namespace UsabilityDynamics {
           'author',
           'excerpt',
           'thumbnail',
-          'revisions',
-          'page-attributes'
+          'revisions'
         ]
       ];
       register_post_type( 'propertypro-guide', $args );
