@@ -11,6 +11,10 @@ class GalleryPropertiesWidget extends WP_Widget
    */
   function __construct()
   {
+    if (!WPP_LEGACY_WIDGETS && !is_admin()) {
+      wp_enqueue_script('wp-property-gallery');
+    }
+
     parent::__construct(false, $name = sprintf(__('%1s Gallery', ud_get_wp_property()->domain), WPP_F::property_label()), array('description' => __('List of all images attached to the current property', ud_get_wp_property()->domain)));
   }
 
@@ -70,7 +74,12 @@ class GalleryPropertiesWidget extends WP_Widget
     */
 
     $html[] = $before_widget;
-    $html[] = "<div class='wpp_gallery_widget'>";
+
+    if (WPP_LEGACY_WIDGETS) {
+      $html[] = "<div class='wpp_gallery_widget'>";
+    } else {
+      $html[] = "<div class='wpp_gallery_widget_v2'>";
+    }
 
     if ($title) {
       $html[] = $before_title . $title . $after_title;
@@ -93,7 +102,9 @@ class GalleryPropertiesWidget extends WP_Widget
         $thumb_image_alt = !empty($alt) ? trim(strip_tags($alt)) : $thumb_image_title;
         ?>
         <div class="sidebar_gallery_item swiper-slide">
-          <?php if (!empty($big_image_type)) : ?>
+          <?php
+          if (!WPP_LEGACY_WIDGETS) echo '<div class="swiper-slide-wrapper">';
+          if (!empty($big_image_type)) : ?>
             <?php $big_image = wpp_get_image_link($image['attachment_id'], $big_image_type); ?>
             <a href="<?php echo $big_image; ?>" class="thumbnail" rel="property_gallery">
               <img src="<?php echo $thumb_image; ?>"
@@ -116,7 +127,9 @@ class GalleryPropertiesWidget extends WP_Widget
 
           <?php if ($show_description == 'on') { ?>
             <div class="wpp_image_widget_description"><?php echo $image['post_content']; ?></div>
-          <?php } ?>
+          <?php }
+          if (!WPP_LEGACY_WIDGETS) echo '</div>';
+          ?>
 
         </div>
         <?php
