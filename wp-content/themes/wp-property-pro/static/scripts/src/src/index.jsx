@@ -3,6 +3,7 @@ import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
 import Archive from './components/blog/Archive.jsx';
+import GuideArchive from './components/guide/Archive.jsx';
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
@@ -38,6 +39,12 @@ render(
           _.get(bundle, 'category_base', null)
             ? <Route path={"/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"}
                      component={Archive}/>
+            : null
+        }
+        {
+          _.get(bundle, 'guide_category_base', null)
+            ? <Route path={"/" + _.get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle"}
+                     component={GuideArchive}/>
             : null
         }
         <Route path="*" component={Page}/>

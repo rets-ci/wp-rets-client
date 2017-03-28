@@ -21,11 +21,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 const HeaderContent = ({location, openUserPanel}) => {
-  let pathname = location.pathname;
+  let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
-  if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
+  if(pathRoot.indexOf('guide') !== -1){
+    return null;
+  }else if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters} />;
   } else {

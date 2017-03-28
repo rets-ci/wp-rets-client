@@ -2,10 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {toggleUserPanel} from '../actions/index.jsx';
 import {Lib} from '../lib.jsx';
+import _ from 'lodash';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    panelOpen: state.panel.open
+    panelOpen: state.panel.open,
+    location: _.get(ownProps, 'location')
   }
 };
 
@@ -17,7 +19,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const UserPanelContent = ({panelOpen, closeUserPanel}) => (
+const UserPanelContent = ({panelOpen, closeUserPanel}) => {
+
+  // Exclude render User panel for guide blog
+  let pathname = _.get(location, 'pathname', '');
+  let pathRoot = pathname.replace(/\//g, '');
+  if(pathRoot.indexOf('guide') !== -1){
+    return null;
+  }
+
+  return (
   <div className={Lib.THEME_CLASSES_PREFIX+"user-panel " + (panelOpen ? Lib.THEME_CLASSES_PREFIX+"on" : "")}>
     <a href="#" className={Lib.THEME_CLASSES_PREFIX+"close-panel"} onClick={(event) => {
       closeUserPanel();
@@ -79,7 +90,7 @@ const UserPanelContent = ({panelOpen, closeUserPanel}) => (
       <a href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>
     </div>
   </div>
-);
+)};
 
 const UserPanel = connect(
   mapStateToProps,

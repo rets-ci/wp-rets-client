@@ -10,6 +10,7 @@ namespace UsabilityDynamics {
 
   use UsabilityDynamics\PropertyPro\Customizer;
   Use UsabilityDynamics\Theme\Scaffold;
+  use WPModel\Post;
 
   /**
    * Festival Theme
@@ -125,6 +126,10 @@ namespace UsabilityDynamics {
       /** Get blog post id */
       $blog_post_id = get_option('page_for_posts');
 
+      /**  */
+      $guide_category = 'propertypro-guide-category';
+      $guide_post_type = 'propertypro-guide';
+
       /** Init params variable */
       $params = [
         'site_url' => site_url(),
@@ -133,7 +138,8 @@ namespace UsabilityDynamics {
         'site_name' => esc_attr(get_bloginfo('name')),
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
-        'category_base' => get_option('category_base') ? get_option('category_base') : 'category'
+        'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
+        'guide_category_base' => $guide_category
       ];
 
 
@@ -222,6 +228,96 @@ namespace UsabilityDynamics {
           ],
           'category_id' => $category_id,
         ];
+      }/** Is guide archive page ? */
+      elseif(is_tax($guide_category)){
+
+        /** Get current term */
+        $term = get_queried_object();
+
+        /** @var Post $rand_posts
+         *  Rand post related with current term of child for get thumbnail
+         *
+         */
+        $rand_posts = get_posts([
+          'post_type' => $guide_post_type,
+          'posts_per_page' => 1,
+          'orderby'   => 'rand',
+          'tax_query' => [
+            [
+              'taxonomy' => $guide_category,
+              'field' => 'id',
+              'terms' => array_merge([$term->term_id], get_term_children($term->term_id, $guide_category)),
+              'include_children' => true
+            ]
+          ]
+        ]);
+
+        /** Masthead widget payload */
+        $params['post']['guide_content']['masthead'] = [
+          'widget' => [
+            'fields' => [
+              'layout' => 'guide_layout',
+              'title' => $term->name,
+              'subtitle' => $term->description,
+              'image_src' => $rand_posts ? get_the_post_thumbnail_url($rand_posts[0]->ID) : ''
+            ]
+          ]
+        ];
+
+        /** Get child articles */
+        $content = array_map(function($guide){
+          return [
+            'title' => $guide->post_title,
+            'excerpt' => $guide->post_excerpt,
+            'image_src' => get_the_post_thumbnail_url($guide->ID),
+          ];
+        }, get_posts([
+          'post_type' => $guide_post_type,
+          'tax_query' => [
+            [
+              'taxonomy' => $guide_category,
+              'field' => 'id',
+              'terms' => $term->term_id,
+              'include_children' => false
+            ]
+          ]
+        ]));
+
+        /** Merge articles with child terms */
+        $params['post']['guide_content']['items'] = array_merge($content, array_map(function($child){
+
+          $child_term = get_term($child);
+
+          $child_posts = array_map(function($guide){
+            return [
+              'ID' => $guide->ID,
+              'title' => $guide->post_title,
+              'excerpt' => $guide->post_excerpt,
+              'relative_url' => get_permalink($guide->ID),
+            ];
+          },get_posts([
+            'post_type' => 'propertypro-guide',
+            'tax_query' => [
+              [
+                'taxonomy' => 'propertypro-guide-category',
+                'field' => 'id',
+                'terms' => $child,
+                'include_children' => false
+              ]
+            ]
+          ]));
+
+          $rand_child_post_index = rand(0, count($child_posts) - 1);
+
+          return [
+            'title' => $child_term->name,
+            'url' => get_term_link($child, 'propertypro-guide-category'),
+            'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
+            'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
+            'children' => $child_posts
+          ];
+        }, get_term_children($term->term_id, $guide_category)));
+
       }
 
       /** Get company logos */

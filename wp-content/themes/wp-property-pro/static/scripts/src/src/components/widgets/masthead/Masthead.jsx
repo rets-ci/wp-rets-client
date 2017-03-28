@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
+import GuideLayout from './layouts/GuideLayout.jsx'
 import Modal from './components/Modal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
@@ -20,7 +21,7 @@ const MastheadContent = ({widget_cell, open}) => {
   }
 
   let headerStyle = {
-    background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + widget_cell.widget.fields.image_position + " no-repeat"
+    background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + _.get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
   };
 
   if (open) {
@@ -42,6 +43,13 @@ const MastheadContent = ({widget_cell, open}) => {
       break;
     case 'blog_single_layout':
       container = <BlogSingleLayout widget_cell={widget_cell}/>;
+      break;
+    case 'guide_layout':
+      return (
+        <section className={Lib.THEME_CLASSES_PREFIX + "guide-masthead"} style={headerStyle}>
+          <GuideLayout widget_cell={widget_cell} />
+        </section>
+      );
       break;
     case 'title_description_layout':
     default:

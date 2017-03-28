@@ -61,7 +61,7 @@ export default class PageLayout extends Component {
       <div style={{height: '100%'}}>
         {Object.keys(this.state.post).length ?
           <div>
-            <UserPanel />
+            <UserPanel location={location} />
             <Header location={location} />
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
                post: _.get(this.state, 'post', {}),
