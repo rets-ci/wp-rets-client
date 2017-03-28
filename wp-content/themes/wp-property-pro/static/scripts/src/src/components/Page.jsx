@@ -1,23 +1,30 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Masthead from './widgets/masthead/Masthead.jsx';
-import _ from 'lodash';
 import Callout from './widgets/callout/Callout.jsx';
 import Testimonials from './widgets/testimonials/Testimonials.jsx';
 import ListingCarousel from './widgets/listing_carousel/ListingCarousel.jsx';
 import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
+import Single from './blog/Single.jsx';
 import Footer from './Footer.jsx';
+import _ from 'lodash';
 
 class Page extends Component {
   static propTypes = {
+    post: PropTypes.object,
     rows: PropTypes.array
-  }
+  };
 
   render() {
+
+    if (_.get(this.props, 'post.is_blog_single', null)) {
+      return <Single post={_.get(this.props, 'post', {})}/>
+    }
+
     let {
       rows
-    } = this.props
+    } = this.props;
     return (
       <div>
         {
@@ -30,7 +37,7 @@ class Page extends Component {
                       return <Masthead widget_cell={cell}/>;
                       break;
                     case 'Property_Pro_Subnavigation_Widget':
-                      return <Subnavigation widget_cell={cell}/>;
+                      return <Subnavigation widget_cell={cell} currentUrl={_.get(this.props, 'post.post_url', '')}/>;
                       break;
                     case 'Property_Pro_Tour_Widget':
                       return <Tour widget_cell={cell}/>;

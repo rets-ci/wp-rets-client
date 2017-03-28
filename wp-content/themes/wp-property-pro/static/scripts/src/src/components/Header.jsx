@@ -1,13 +1,14 @@
-import React from 'react';
-import {connect} from 'react-redux'
 import {toggleUserPanel} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx'
 import HeaderSearch from './Headers/HeaderSearch.jsx'
 import _ from 'lodash'
+import React from 'react';
+import {connect} from 'react-redux'
+import Util from './Util.jsx';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    routing: state.routing
+    location: ownProps.location
   }
 };
 
@@ -19,13 +20,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({routing, openUserPanel}) => {
-  let pathname = routing.locationBeforeTransitions.pathname;
+const HeaderContent = ({location, openUserPanel}) => {
+  let pathname = location.pathname;
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
   if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
-    headerElement = <HeaderSearch openUserPanel={openUserPanel} />;
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
+    headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters} />;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel} />;
   }

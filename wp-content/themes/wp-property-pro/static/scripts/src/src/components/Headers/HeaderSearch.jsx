@@ -1,27 +1,19 @@
-import {openPropertiesModal} from '../../actions/index.jsx';
 import React, {Component, PropTypes} from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
-
-const mapStateToProps = state => {
-  return {}
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    openPropertiesModal: open => {
-      dispatch(openPropertiesModal(open));
-    }
-  }
-};
 
 class HeaderSearch extends Component {
   static propTypes = {
-    searchTerm: PropTypes.string
+    searchTerm: PropTypes.string,
+    searchFilters: PropTypes.object.isRequired
   };
   render() {
+    let {
+      searchFilters
+    } = this.props;
+    let saleType = searchFilters['wpp_search[sale_type]'];
     return (
       <section className={Lib.THEME_CLASSES_PREFIX+"top-panel"}>
         <div className="container-fluid">
@@ -37,28 +29,9 @@ class HeaderSearch extends Component {
               }
             </div>
             <span className={Lib.THEME_CLASSES_PREFIX+"drop-nav"}>
-              <a href="#">Rent <i className="fa fa-caret-down"></i></a>
+              <a href="#">{saleType} <i className="fa fa-caret-down"></i></a>
             </span>
-            <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap"}>
-              <form method="get" className="clearfix hidden-md-down">
-                <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
-                  <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times"></i></span> {this.props.searchTerm}</span>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}><a href="#"><span>+</span> Bedroom</a></span>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}><a href="#"><span>+</span> Price</a></span>
-                    <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-                      <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                        <span>+</span>
-                        More Filters
-                      </a>
-                    </span>
-                    <input type="text" size="1" placeholder="" />
-                  </div>
-                </div>
-                <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
-                <i className="fa fa-search"></i>
-              </form>
-            </div>
+            <SearchFilters filters={searchFilters} />
             <div className={Lib.THEME_CLASSES_PREFIX+"top-nav-bar"}>
               <ul>
                 <li><a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX+"favorite"}><i className="fa fa-heart"></i></a></li>
@@ -73,7 +46,4 @@ class HeaderSearch extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HeaderSearch);
+export default HeaderSearch;

@@ -4,9 +4,22 @@ import {Provider} from 'react-redux'
 import {Lib} from '../lib.jsx'
 import {browserHistory} from 'react-router';
 import _ from 'lodash'
-
+import URI from 'urijs';
 
 class Util extends React.Component {
+
+  static getSearchFiltersFromURL(url) {
+    let uri = new URI(url);
+    // uri.search this will map array parameters into proper structures
+    let query = uri.search(true);
+    let searchFilters = {};
+    for (var k in query) {
+      if (k.startsWith('wpp_search')) {
+        searchFilters[k] = query[k];
+      }
+    }
+    return searchFilters;
+  }
 
   static stringStyleToObject(stringStyle) {
 
