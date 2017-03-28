@@ -78249,6 +78249,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Util = __webpack_require__(40);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	var _lib = __webpack_require__(2);
 
 	var _lodash = __webpack_require__(36);
@@ -78275,6 +78279,8 @@
 	  _createClass(ArticleCard, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-item' },
@@ -78287,7 +78293,14 @@
 	            _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
 	              'h2',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
-	              _lodash2.default.get(this.props.article, 'title')
+	              _react2.default.createElement(
+	                'a',
+	                { href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
+	                    eve.preventDefault();
+	                    _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
+	                  } },
+	                _lodash2.default.get(this.props.article, 'title')
+	              )
 	            ) : null,
 	            _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
 	              'p',

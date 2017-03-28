@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
@@ -14,7 +15,10 @@ class ArticleCard extends Component {
         <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
           {
             _.get(this.props.article, 'title', null)
-              ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}>{_.get(this.props.article, 'title')}</h2>
+              ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}><a href={_.get(this.props.article, 'url', '')} onClick={(eve) => {
+                eve.preventDefault();
+                Util.goToUrl(_.get(this.props.article, 'relative_url', ''));
+              }} >{_.get(this.props.article, 'title')}</a></h2>
               : null
           }
           {

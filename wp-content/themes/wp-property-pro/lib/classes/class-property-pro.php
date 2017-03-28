@@ -270,6 +270,8 @@ namespace UsabilityDynamics {
             'title' => $guide->post_title,
             'excerpt' => $guide->post_excerpt,
             'image_src' => get_the_post_thumbnail_url($guide->ID),
+            'url' => get_permalink($guide->ID),
+            'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
           ];
         }, get_posts([
           'post_type' => $guide_post_type,
@@ -293,7 +295,8 @@ namespace UsabilityDynamics {
               'ID' => $guide->ID,
               'title' => $guide->post_title,
               'excerpt' => $guide->post_excerpt,
-              'relative_url' => get_permalink($guide->ID),
+              'url' => get_permalink($guide->ID),
+              'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
             ];
           },get_posts([
             'post_type' => 'propertypro-guide',
