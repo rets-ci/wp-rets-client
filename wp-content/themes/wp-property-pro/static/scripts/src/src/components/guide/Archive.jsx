@@ -17,7 +17,7 @@ class Archive extends Component {
 
     let cards = _.get(content, 'items', []).map((item, i) => {
       return (
-        <div className="row" key={i}>
+        <div className="col-md-12" key={i}>
           {
             _.get(item, 'children', null)
               ? <CategoryCard category={item}/>
@@ -37,8 +37,8 @@ class Archive extends Component {
             <Masthead widget_cell={_.get(content, 'masthead')}/>
           </div>
           <div className="col-md-6">
-            <div className={Lib.THEME_CLASSES_PREFIX + "guide-content"}>
-              <div className="container">
+            <div className="row">
+              <div className={Lib.THEME_CLASSES_PREFIX + "guide-content"}>
                 {cards}
               </div>
             </div>

@@ -4,6 +4,7 @@ import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
 import GuideLayout from './layouts/GuideLayout.jsx'
+import GuideSingleLayout from './layouts/GuideSingleLayout.jsx'
 import Modal from './components/Modal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
@@ -14,7 +15,7 @@ const mapStateToProps = (state) => {
   }
 };
 
-const MastheadContent = ({widget_cell, open}) => {
+const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticleHandler}) => {
 
   if (!widget_cell) {
     return null;
@@ -49,6 +50,11 @@ const MastheadContent = ({widget_cell, open}) => {
         <section className={Lib.THEME_CLASSES_PREFIX + "guide-masthead"} style={headerStyle}>
           <GuideLayout widget_cell={widget_cell} />
         </section>
+      );
+      break;
+    case 'guide_single_layout':
+      return (
+        <GuideSingleLayout widget_cell={widget_cell} headerStyle={headerStyle} returnToArchiveHandler={returnToArchiveHandler} nextArticleHandler={nextArticleHandler} />
       );
       break;
     case 'title_description_layout':

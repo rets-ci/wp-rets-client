@@ -7,6 +7,7 @@ import ListingCarousel from './widgets/listing_carousel/ListingCarousel.jsx';
 import Subnavigation from './widgets/subnavigation/Subnavigation.jsx';
 import Tour from './widgets/tour/Tour.jsx';
 import Single from './blog/Single.jsx';
+import GuideSingle from './guide/Single.jsx';
 import Footer from './Footer.jsx';
 import _ from 'lodash';
 
@@ -20,6 +21,10 @@ class Page extends Component {
 
     if (_.get(this.props, 'post.is_blog_single', null)) {
       return <Single post={_.get(this.props, 'post', {})}/>
+    }
+
+    if (_.get(this.props, 'post.is_guide_single', null)) {
+      return <GuideSingle post={_.get(this.props, 'post', {})}/>
     }
 
     let {

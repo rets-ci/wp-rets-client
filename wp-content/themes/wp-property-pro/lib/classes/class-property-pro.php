@@ -158,33 +158,68 @@ namespace UsabilityDynamics {
 
       /** Is single page */
       if (is_single()) {
-        $params['post']['is_blog_single'] = true;
-        if ($categories = get_the_category($post->ID)) {
-          $params['post']['category_title'] = $categories['0']->cat_name;
-          $args = [
-            'category' => $categories[0]->cat_ID,
-            'post_type' => 'post',
-            'posts_per_page' => '2',
-            'exclude' => [
-              $post->ID
-            ]
-          ];
-          list($params['post']['related_posts']) = $this->get_blog_posts($args);
-        }
-        $params['post']['widgets'] = [
-          'masthead' => [
+
+        /** Is guide single page ? */
+        if($post->post_type === $guide_post_type){
+          $params['post']['is_guide_single'] = true;
+          $params['post']['guide_single_content']['content'] = $post->post_content;
+
+          /** Get top parent category relative for current guide */
+          $terms = get_the_terms($post->ID, $guide_category);
+          $term_id = $terms ? $terms[0]->term_id : 0;
+          $term_parent = 0;
+          while ($term_id) {
+            $term = get_term($term_id);
+            $term_id = $term->parent;
+            $term_parent = $term->term_id;
+          }
+          $params['post']['guide_single_content']['parent_category_relative_link'] = str_replace(home_url(), "", get_term_link($term_parent, $guide_category));
+
+          /** Get next guide relative link */
+          $next_post = get_previous_post();
+          $params['post']['guide_single_content']['next_article_relative_link'] = $next_post ? str_replace(home_url(), "", get_permalink($next_post->ID)) : '';
+
+          /** Masthead widget payload */
+          $params['post']['guide_single_content']['masthead'] = [
             'widget' => [
               'fields' => [
-                'layout' => 'blog_single_layout',
+                'layout' => 'guide_single_layout',
                 'title' => $post->post_title,
-                'image_src' => get_the_post_thumbnail_url($post->ID),
-                'image_position' => 'center center',
-                'post_title' => $post->post_title,
-                'post_url' => get_permalink($post->ID),
+                'subtitle' => $post->post_excerpt,
+                'image_src' => isset($post->ID) ? get_the_post_thumbnail_url($post->ID) : ''
               ]
             ]
-          ]
-        ];
+          ];
+        } /** Is blog single page */
+        else{
+          $params['post']['is_blog_single'] = true;
+          if ($categories = get_the_category($post->ID)) {
+            $params['post']['category_title'] = $categories['0']->cat_name;
+            $args = [
+              'category' => $categories[0]->cat_ID,
+              'post_type' => 'post',
+              'posts_per_page' => '2',
+              'exclude' => [
+                $post->ID
+              ]
+            ];
+            list($params['post']['related_posts']) = $this->get_blog_posts($args);
+          }
+          $params['post']['widgets'] = [
+            'masthead' => [
+              'widget' => [
+                'fields' => [
+                  'layout' => 'blog_single_layout',
+                  'title' => $post->post_title,
+                  'image_src' => get_the_post_thumbnail_url($post->ID),
+                  'image_position' => 'center center',
+                  'post_title' => $post->post_title,
+                  'post_url' => get_permalink($post->ID),
+                ]
+              ]
+            ]
+          ];
+        }
       }
       /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
@@ -228,99 +263,98 @@ namespace UsabilityDynamics {
           ],
           'category_id' => $category_id,
         ];
-      }/** Is guide archive page ? */
+      }/** Is guide ? */
       elseif(is_tax($guide_category)){
 
         /** Get current term */
         $term = get_queried_object();
 
-        /** @var Post $rand_posts
-         *  Rand post related with current term of child for get thumbnail
-         *
-         */
-        $rand_posts = get_posts([
-          'post_type' => $guide_post_type,
-          'posts_per_page' => 1,
-          'orderby'   => 'rand',
-          'tax_query' => [
-            [
-              'taxonomy' => $guide_category,
-              'field' => 'id',
-              'terms' => array_merge([$term->term_id], get_term_children($term->term_id, $guide_category)),
-              'include_children' => true
+          /** @var Post $rand_posts
+           *  Rand post related with current term of child for get thumbnail
+           *
+           */
+          $rand_posts = get_posts([
+            'post_type' => $guide_post_type,
+            'posts_per_page' => 1,
+            'orderby'   => 'rand',
+            'tax_query' => [
+              [
+                'taxonomy' => $guide_category,
+                'field' => 'id',
+                'terms' => array_merge([$term->term_id], get_term_children($term->term_id, $guide_category)),
+                'include_children' => true
+              ]
             ]
-          ]
-        ]);
+          ]);
 
-        /** Masthead widget payload */
-        $params['post']['guide_content']['masthead'] = [
-          'widget' => [
-            'fields' => [
-              'layout' => 'guide_layout',
-              'title' => $term->name,
-              'subtitle' => $term->description,
-              'image_src' => $rand_posts ? get_the_post_thumbnail_url($rand_posts[0]->ID) : ''
+          /** Masthead widget payload */
+          $params['post']['guide_content']['masthead'] = [
+            'widget' => [
+              'fields' => [
+                'layout' => 'guide_layout',
+                'title' => $term->name,
+                'subtitle' => $term->description,
+                'image_src' => $rand_posts ? get_the_post_thumbnail_url($rand_posts[0]->ID) : ''
+              ]
             ]
-          ]
-        ];
-
-        /** Get child articles */
-        $content = array_map(function($guide){
-          return [
-            'title' => $guide->post_title,
-            'excerpt' => $guide->post_excerpt,
-            'image_src' => get_the_post_thumbnail_url($guide->ID),
-            'url' => get_permalink($guide->ID),
-            'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
           ];
-        }, get_posts([
-          'post_type' => $guide_post_type,
-          'tax_query' => [
-            [
-              'taxonomy' => $guide_category,
-              'field' => 'id',
-              'terms' => $term->term_id,
-              'include_children' => false
-            ]
-          ]
-        ]));
 
-        /** Merge articles with child terms */
-        $params['post']['guide_content']['items'] = array_merge($content, array_map(function($child){
-
-          $child_term = get_term($child);
-
-          $child_posts = array_map(function($guide){
+          /** Get child articles */
+          $content = array_map(function($guide){
             return [
-              'ID' => $guide->ID,
               'title' => $guide->post_title,
               'excerpt' => $guide->post_excerpt,
+              'image_src' => get_the_post_thumbnail_url($guide->ID),
               'url' => get_permalink($guide->ID),
               'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
             ];
-          },get_posts([
-            'post_type' => 'propertypro-guide',
+          }, get_posts([
+            'post_type' => $guide_post_type,
             'tax_query' => [
               [
-                'taxonomy' => 'propertypro-guide-category',
+                'taxonomy' => $guide_category,
                 'field' => 'id',
-                'terms' => $child,
+                'terms' => $term->term_id,
                 'include_children' => false
               ]
             ]
           ]));
 
-          $rand_child_post_index = rand(0, count($child_posts) - 1);
+          /** Merge articles with child terms */
+          $params['post']['guide_content']['items'] = array_merge($content, array_map(function($child){
 
-          return [
-            'title' => $child_term->name,
-            'url' => get_term_link($child, 'propertypro-guide-category'),
-            'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
-            'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
-            'children' => $child_posts
-          ];
-        }, get_term_children($term->term_id, $guide_category)));
+            $child_term = get_term($child);
 
+            $child_posts = array_map(function($guide){
+              return [
+                'ID' => $guide->ID,
+                'title' => $guide->post_title,
+                'excerpt' => $guide->post_excerpt,
+                'url' => get_permalink($guide->ID),
+                'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
+              ];
+            },get_posts([
+              'post_type' => 'propertypro-guide',
+              'tax_query' => [
+                [
+                  'taxonomy' => 'propertypro-guide-category',
+                  'field' => 'id',
+                  'terms' => $child,
+                  'include_children' => false
+                ]
+              ]
+            ]));
+
+            $rand_child_post_index = rand(0, count($child_posts) - 1);
+
+            return [
+              'title' => $child_term->name,
+              'url' => get_term_link($child, 'propertypro-guide-category'),
+              'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
+              'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
+              'children' => $child_posts
+            ];
+          }, get_term_children($term->term_id, $guide_category)));
       }
 
       /** Get company logos */

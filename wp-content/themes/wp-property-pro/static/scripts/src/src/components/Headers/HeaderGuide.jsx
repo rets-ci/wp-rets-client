@@ -38,7 +38,7 @@ const HeaderGuide = () => {
                 <a href={bundle.site_url} onClick={(eve) => {
                   eve.preventDefault();
                   Util.goToUrl('/');
-                }} className="btn btn-primary btn-back">
+                }} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}btn-back-to-home`}>
                   <fa className="fa fa-arrow-left"></fa>
                   Return Home</a>
               </li>
