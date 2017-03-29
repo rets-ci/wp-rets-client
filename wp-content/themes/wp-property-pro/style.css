@@ -504,7 +504,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-widget-box { margin-bottom: 112px; position: relative; }
 .propertypro-widget-box:last-child { margin-bottom: 0; }
 .propertypro-widget-box .propertypro-tour-widget-content { background-color: rgba(255, 255, 255, 0.95); margin: 65px 0  58px 0; padding: 44px 50px; }
-.propertypro-tour-widget-content h3 {  font-size: 32px; font-weight: 700; line-height: 50px; margin-bottom: 1rem; }
+.propertypro-tour-widget-content h3 {  font-size: 32px; line-height: 50px; margin-bottom: 1rem; font-weight: 400; }
 .propertypro-tour-widget-content p { color: #8b8c8d; font-size: 18px; font-weight: 500; line-height: 30px; padding-right: 0; }
 .propertypro-tour-widget-content blockquote { margin: 30px 0 0; }
 .propertypro-tour-widget-content blockquote p { font-size: 16px; font-weight: 500; font-style: italic; line-height: 28px; }
@@ -705,7 +705,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .category-nav { height: auto; }
     .category-nav ul li { display: inline; width: auto; border: 0; }
     .category-nav ul li a { font-size: 1.050rem; height: auto; font-weight: 500; line-height: 55px; margin-right: 20px; }
-    .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .background{ min-height: 500px !important; }
+    .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background{ min-height: 500px !important; }
     .propertypro-search-box{ box-shadow: none; }
     .propertypro-find-home-type { max-width: 400px; }
     .propertypro-find-home-type li { padding: 0 20px; }
@@ -892,10 +892,6 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 
 .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background{
     min-height: 800px;
-}
-
-.propertypro-tour-widget-content h3{
-    font-weight: 400;
 }
 
 .propertypro-card-img .propertypro-direction-nav a{

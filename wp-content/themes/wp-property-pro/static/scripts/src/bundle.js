@@ -62241,10 +62241,11 @@
 	    ) : null,
 	    _lodash2.default.get(feature, 'button_section.label', null) && _lodash2.default.get(feature, 'button_section.url', null) ? _react2.default.createElement(
 	      'a',
-	      { href: feature.button_section.url, className: 'btn btn-primary', style: buttonStyle },
+	      { href: feature.button_section.url, className: 'btn btn-primary',
+	        style: buttonStyle },
 	      feature.button_section.label
 	    ) : null,
-	    _react2.default.createElement(
+	    _lodash2.default.get(feature, 'testimonial_section.review', null) ? _react2.default.createElement(
 	      'blockquote',
 	      null,
 	      _lodash2.default.get(feature, 'testimonial_section.review', null) ? _react2.default.createElement(
@@ -62272,7 +62273,7 @@
 	          feature.testimonial_section.location
 	        ) : null
 	      )
-	    ),
+	    ) : null,
 	    last ? null : _react2.default.createElement('hr', null)
 	  );
 	};
