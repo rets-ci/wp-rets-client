@@ -16,12 +16,13 @@ class Archive extends Component {
     let content = _.get(this.props.post, 'guide_content', {});
 
     let cards = _.get(content, 'items', []).map((item, i) => {
+      let last = _.get(content, 'items', []).length === i + 1;
       return (
         <div className="col-md-12" key={i}>
           {
             _.get(item, 'children', null)
-              ? <CategoryCard category={item}/>
-              : <ArticleCard article={item}/>
+              ? <CategoryCard category={item} last={last}/>
+              : <ArticleCard article={item} last={last}/>
           }
         </div>
       )
@@ -32,11 +33,13 @@ class Archive extends Component {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6">
-            <HeaderGuide/>
-            <Masthead widget_cell={_.get(content, 'masthead')}/>
+          <div className="col-lg-6">
+            <div className="row">
+              <HeaderGuide headerStyle={{zIndex: "12"}}/>
+              <Masthead widget_cell={_.get(content, 'masthead')}/>
+            </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-lg-6">
             <div className="row">
               <div className={Lib.THEME_CLASSES_PREFIX + "guide-content"}>
                 {cards}

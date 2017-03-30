@@ -162,7 +162,7 @@ namespace UsabilityDynamics {
         /** Is guide single page ? */
         if($post->post_type === $guide_post_type){
           $params['post']['is_guide_single'] = true;
-          $params['post']['guide_single_content']['content'] = $post->post_content;
+          $params['post']['guide_single_content']['content'] = apply_filters('the_content', $post->post_content);
 
           /** Get top parent category relative for current guide */
           $terms = get_the_terms($post->ID, $guide_category);
@@ -176,7 +176,37 @@ namespace UsabilityDynamics {
           $params['post']['guide_single_content']['parent_category_relative_link'] = str_replace(home_url(), "", get_term_link($term_parent, $guide_category));
 
           /** Get next guide relative link */
-          $next_post = get_previous_post();
+
+          /** Get all posts ids in guide terms */
+          $termIds = get_term_children($term_parent, $guide_category);
+          $ids = [];
+          foreach ($termIds as $termId) {
+            $ids = array_merge($ids, get_posts([
+              'post_type' => $guide_post_type,
+              'posts_per_page' => -1,
+              'fields' => 'ids',
+              'tax_query' => [
+                [
+                  'taxonomy' => $guide_category,
+                  'field' => 'id',
+                  'terms' => $termId
+                ]
+              ]
+            ]));
+          }
+
+          $next_post = null;
+          if ($ids) {
+            /** Get current post index */
+            $current_post_index = array_search($post->ID, $ids);
+
+            /** Get next post index */
+            $next_index = is_numeric($current_post_index) ? $current_post_index + 1 : 0;
+
+            /** Get next post data */
+            $next_post = get_post(isset($ids[$next_index]) ? $ids[$next_index] : $ids[0]);
+          }
+
           $params['post']['guide_single_content']['next_article_relative_link'] = $next_post ? str_replace(home_url(), "", get_permalink($next_post->ID)) : '';
 
           /** Masthead widget payload */
@@ -335,6 +365,7 @@ namespace UsabilityDynamics {
               ];
             },get_posts([
               'post_type' => 'propertypro-guide',
+              'posts_per_page' => -1,
               'tax_query' => [
                 [
                   'taxonomy' => 'propertypro-guide-category',

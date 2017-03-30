@@ -33,15 +33,17 @@ class Single extends Component {
 
     return (
       <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
-        <div className="row">
+        <div className="row no-gutters">
           <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
-            <div className="col-md-6">
-              <HeaderGuide/>
-              <Masthead widget_cell={_.get(content, 'masthead', '')}
-                        returnToArchiveHandler={this.returnToArchiveHandler.bind(this)}
-                        nextArticleHandler={this.nextArticleHandler.bind(this)}/>
+            <div className="col-lg-6">
+              <div className="row">
+                <HeaderGuide headerStyle={{zIndex: "12"}}/>
+                <Masthead widget_cell={_.get(content, 'masthead', '')}
+                          returnToArchiveHandler={this.returnToArchiveHandler.bind(this)}
+                          nextArticleHandler={this.nextArticleHandler.bind(this)}/>
+              </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-lg-6">
               <div className="row">
                 {
                   _.get(content, 'content', null)
