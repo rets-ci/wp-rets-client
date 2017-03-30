@@ -635,7 +635,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-category-card .propertypro-category-card-content ul li a, .propertypro-article-card .propertypro-article-card-content ul li a { color: #8b8c8d; }
 .propertypro-category-card .propertypro-category-card-content ul li:active a, .propertypro-category-card .propertypro-category-card-content ul li:focus a, .propertypro-category-card .propertypro-category-card-content ul li:hover a,
 .propertypro-category-card .propertypro-category-card-content ul li:hover { color: #d03528; cursor: pointer; }
-.propertypro-category-card img, .propertypro-article-card img { width: 100%; height: 100%; }
+.propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img { width: 100%; height: 100%; }
 .propertypro-guide-content .propertypro-guide-item.propertypro-last{ margin-bottom: 0; }
 
 .propertypro-guide-detail h2, .propertypro-article-content h2 { font-size: 1.30rem; line-height: 26px; margin: 0 0 1em; }

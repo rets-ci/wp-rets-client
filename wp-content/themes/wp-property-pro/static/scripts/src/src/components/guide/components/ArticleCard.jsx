@@ -45,9 +45,9 @@ class ArticleCard extends Component {
             {
               _.get(this.props.article, 'image_src', null)
                 ?
-                <img className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}
-                     src={_.get(this.props.article, 'image_src')}
-                     alt={_.get(this.props.article, 'title', '')}/>
+                <div style={{
+                  background: "url("+_.get(this.props.article, 'image_src')+") 50% 50% no-repeat"
+                }} className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}></div>
                 : null
             }
           </div>

@@ -56,8 +56,9 @@ class CategoryCard extends Component {
           <div className="col-sm-4">
             {
               _.get(this.props.category, 'image_src', null)
-                ? <img src={_.get(this.props.category, 'image_src')}
-                       className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}/>
+                ? <div style={{
+                  background: "url("+_.get(this.props.category, 'image_src')+") 50% 50% no-repeat"
+                }} className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}></div>
 
                 : null
             }

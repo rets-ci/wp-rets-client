@@ -78537,8 +78537,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('img', { src: _lodash2.default.get(this.props.category, 'image_src'),
-	              className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
+	            _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
@@ -78648,9 +78649,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('img', { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img",
-	              src: _lodash2.default.get(this.props.article, 'image_src'),
-	              alt: _lodash2.default.get(this.props.article, 'title', '') }) : null
+	            _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
