@@ -77960,7 +77960,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, null),
+	                _react2.default.createElement(_HeaderGuide2.default, { headerStyle: { zIndex: "12" } }),
 	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
 	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
 	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
@@ -78020,11 +78020,13 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var HeaderGuide = function HeaderGuide() {
+	var HeaderGuide = function HeaderGuide(_ref) {
+	  var headerStyle = _ref.headerStyle;
+
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar", style: headerStyle },
 	    _react2.default.createElement(
 	      'nav',
 	      { className: 'navbar navbar-toggleable-md bg-faded' },
@@ -78397,7 +78399,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'row' },
-	              _react2.default.createElement(_HeaderGuide2.default, null),
+	              _react2.default.createElement(_HeaderGuide2.default, { headerStyle: { zIndex: "12" } }),
 	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
 	            )
 	          ),

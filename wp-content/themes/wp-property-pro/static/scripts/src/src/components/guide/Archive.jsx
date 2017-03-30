@@ -35,7 +35,7 @@ class Archive extends Component {
         <div className="row">
           <div className="col-lg-6">
             <div className="row">
-              <HeaderGuide/>
+              <HeaderGuide headerStyle={{zIndex: "12"}}/>
               <Masthead widget_cell={_.get(content, 'masthead')}/>
             </div>
           </div>
