@@ -610,20 +610,16 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 /* Home Buyers Guide */
 .propertypro-guide-container { padding-left: 0; padding-right: 0; }
 .propertypro-guide-container .propertypro-guide-head { height: 100vh; }
-
 .propertypro-guide-head { text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover; color: #fff; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index:9; }
 .propertypro-guide-head:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); }
-
 .tax-propertypro-guide-category .propertypro-toolbar { position: absolute; z-index: 12; padding: 20px 10px 0 15px; left: 0; top: 0; width: 100%; }
 .propertypro-toolbar .propertypro-btn-back-to-home { border-radius: 3px; border-width: 2px; border-color: rgba(255,255,255,.2); background: none; line-height: 22px; font-size: .90rem; padding-left: 15px; padding-right: 15px; margin-top: 10px; }
 .propertypro-toolbar .propertypro-btn-back-to-home .fa { font-size: 13px; margin-right: 5px; }
 .propertypro-toolbar .propertypro-menu-icon{ cursor: pointer; }
-
 .propertypro-guide-masthead, .propertypro-article-masthead {  width: 100%; height: 100%; display: table; position: absolute; top: 0; left: 0; z-index: 11; text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 .propertypro-guide-masthead header, .propertypro-article-masthead header {  display: table-cell; vertical-align: middle; }
 .propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 2.8rem; font-weight: normal; line-height: 1.2; margin-bottom: .50em; }
 .propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.35rem; line-height: 1.6; padding: 0 10%; }
-
 .propertypro-guide-content, .propertypro-article-content { background-color: #e6ecf0; padding: 25px 0; }
 .propertypro-guide-content { padding-bottom: 0 !important; }
 .propertypro-article-content { padding: 25px 30px; }
@@ -635,13 +631,11 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-category-card .propertypro-category-card-content ul li a, .propertypro-article-card .propertypro-article-card-content ul li a { color: #8b8c8d; }
 .propertypro-category-card .propertypro-category-card-content ul li:active a, .propertypro-category-card .propertypro-category-card-content ul li:focus a, .propertypro-category-card .propertypro-category-card-content ul li:hover a,
 .propertypro-category-card .propertypro-category-card-content ul li:hover { color: #d03528; cursor: pointer; }
-.propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img { width: 100%; height: 100%; }
+.propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img { width: 100%; height: 100%; background-size: cover !important; }
 .propertypro-guide-content .propertypro-guide-item.propertypro-last{ margin-bottom: 0; }
-
 .propertypro-guide-detail h2, .propertypro-article-content h2 { font-size: 1.30rem; line-height: 26px; margin: 0 0 1em; }
 .propertypro-guide-detail p, .propertypro-article-content p {  color: #8b8c8d; font-size: 1rem; font-weight: 500; line-height: 24px; margin: 0 0 1.8em; }
 .propertypro-article-content h2 { color: #000000; }
-
 .propertypro-article-masthead nav { position: absolute; width: 100%; z-index: 11; height: 60px; bottom: 0; left: 0; }
 .propertypro-article-masthead nav ol { list-style-type: none; margin: 0; padding: 0; }
 .propertypro-article-masthead nav li { display: inline-block; float: left; width: 50%; }
@@ -652,7 +646,6 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-article-masthead li.propertypro-nav-item-back a .fa, .propertypro-article-masthead li.propertypro-nav-item-prev a .fa { margin-right: 5px; }
 .propertypro-article-masthead li.propertypro-nav-item-next a .fa { margin-left: 5px; }
 .single-propertypro-guide .propertypro-toolbar{ z-index: 20; }
-
 .propertypro-guide-header{ height: 100vh; }
 
 /*-----------------------------------------------------------------------------------*/
