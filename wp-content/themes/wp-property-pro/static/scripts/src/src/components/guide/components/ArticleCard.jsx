@@ -5,39 +5,52 @@ import _ from 'lodash';
 
 class ArticleCard extends Component {
   static propTypes = {
-    article: PropTypes.object
+    article: PropTypes.object,
+    last: PropTypes.bool
   };
 
   render() {
+
+    let sectionClasses = `${Lib.THEME_CLASSES_PREFIX}article-card ${Lib.THEME_CLASSES_PREFIX}guide-item`;
+
+    if (this.props.last) {
+      sectionClasses += ` ${Lib.THEME_CLASSES_PREFIX}last`;
+    }
+
     return (
-      <section className={`${Lib.THEME_CLASSES_PREFIX}article-card ${Lib.THEME_CLASSES_PREFIX}guide-item`}>
+      <section className={sectionClasses}>
         <div className="row">
-        <div className="col-sm-8">
-          <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
-            {
-              _.get(this.props.article, 'title', null)
-                ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}><a
-                  href={_.get(this.props.article, 'url', '')} onClick={(eve) => {
-                  eve.preventDefault();
-                  Util.goToUrl(_.get(this.props.article, 'relative_url', ''));
-                }}>{_.get(this.props.article, 'title')}</a></h2>
-                : null
-            }
-            {
-              _.get(this.props.article, 'excerpt', null)
-                ? <p className={Lib.THEME_CLASSES_PREFIX + "article-excerpt"}>{_.get(this.props.article, 'excerpt')}</p>
-                : null
-            }
-          </header>
-        </div>
-        {
-          _.get(this.props.article, 'image_src', null)
-            ? <div className="col-sm-4">
-              <img className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"} src={_.get(this.props.article, 'image_src')}
-                   alt={_.get(this.props.article, 'title', '')}/>
+          <div className="col-sm-8">
+            <div className={Lib.THEME_CLASSES_PREFIX + "article-card-content"}>
+              <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
+                {
+                  _.get(this.props.article, 'title', null)
+                    ? <h2 className={Lib.THEME_CLASSES_PREFIX + "article-title"}><a
+                      href={_.get(this.props.article, 'url', '')} onClick={(eve) => {
+                      eve.preventDefault();
+                      Util.goToUrl(_.get(this.props.article, 'relative_url', ''));
+                    }}>{_.get(this.props.article, 'title')}</a></h2>
+                    : null
+                }
+                {
+                  _.get(this.props.article, 'excerpt', null)
+                    ? <p
+                      className={Lib.THEME_CLASSES_PREFIX + "article-excerpt"}>{_.get(this.props.article, 'excerpt')}</p>
+                    : null
+                }
+              </header>
             </div>
-            : null
-        }
+          </div>
+          <div className="col-sm-4">
+            {
+              _.get(this.props.article, 'image_src', null)
+                ?
+                <img className={Lib.THEME_CLASSES_PREFIX + "guide-item-img"}
+                     src={_.get(this.props.article, 'image_src')}
+                     alt={_.get(this.props.article, 'title', '')}/>
+                : null
+            }
+          </div>
         </div>
       </section>
     )

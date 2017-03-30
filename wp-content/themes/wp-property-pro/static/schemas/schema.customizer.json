@@ -82,7 +82,8 @@
         ".propertypro-testimonial h4",
         ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box ol li .container",
         ".propertypro-widget-tour .propertypro-headtitle h2",
-        ".propertypro-tour-widget-content h3"
+        ".propertypro-tour-widget-content h3",
+        ".propertypro-guide-masthead h1"
       ]
     },
     {
@@ -115,7 +116,11 @@
         ".propertypro-post-content",
         ".propertypro-post-content h2",
         ".propertypro-post-content a",
-        ".propertypro-post-content li"
+        ".propertypro-post-content li",
+        ".propertypro-guide-content .propertypro-category-card .propertypro-category-header",
+        ".propertypro-guide-content .propertypro-category-card .propertypro-category-navigation",
+        ".propertypro-article-content h2",
+        ".propertypro-article-content p"
       ]
     },
     {

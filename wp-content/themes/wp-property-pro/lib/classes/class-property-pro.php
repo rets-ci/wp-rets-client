@@ -162,7 +162,7 @@ namespace UsabilityDynamics {
         /** Is guide single page ? */
         if($post->post_type === $guide_post_type){
           $params['post']['is_guide_single'] = true;
-          $params['post']['guide_single_content']['content'] = $post->post_content;
+          $params['post']['guide_single_content']['content'] = apply_filters('the_content', $post->post_content);
 
           /** Get top parent category relative for current guide */
           $terms = get_the_terms($post->ID, $guide_category);
