@@ -60578,6 +60578,10 @@
 	var BlogSingleLayout = function BlogSingleLayout(_ref) {
 	  var widget_cell = _ref.widget_cell;
 
+
+	  var twitterLink = null;
+	  if (_lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null)) twitterLink = 'https://twitter.com/home?' + encodeURIComponent('status=' + _lodash2.default.get(widget_cell, 'widget.fields.post_title') + ' ' + _lodash2.default.get(widget_cell, 'widget.fields.post_url')).replace(/'/g, "%27").replace(/"/g, "%22");
+
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
@@ -60600,12 +60604,12 @@
 	          target: '_blank', title: 'Facebook' },
 	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	      ) : null,
-	      _react2.default.createElement(
+	      twitterLink ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: '#', target: '_blank', title: 'Twitter' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank', title: 'Twitter' },
 	        _react2.default.createElement('i', {
 	          className: 'fa fa-twitter' })
-	      ),
+	      ) : null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
 	        'a',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",

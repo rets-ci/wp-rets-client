@@ -3,6 +3,11 @@ import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
 const BlogSingleLayout = ({widget_cell}) => {
+
+  let twitterLink = null;
+  if(_.get(widget_cell, 'widget.fields.post_url', null) && _.get(widget_cell, 'widget.fields.post_title', null))
+    twitterLink = 'https://twitter.com/home?'+encodeURIComponent('status='+_.get(widget_cell, 'widget.fields.post_title')+' '+_.get(widget_cell, 'widget.fields.post_url')).replace(/'/g,"%27").replace(/"/g,"%22");
+
   return (
     <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-title-container`}>
       <header>
@@ -20,8 +25,13 @@ const BlogSingleLayout = ({widget_cell}) => {
                  target="_blank" title="Facebook"><i className="fa fa-facebook-f"></i></a>
             : null
         }
-        <a className={Lib.THEME_CLASSES_PREFIX + "twitter"} href="#" target="_blank" title="Twitter"><i
-          className="fa fa-twitter"></i></a>
+        {
+          twitterLink
+          ? <a className={Lib.THEME_CLASSES_PREFIX + "twitter"} href={twitterLink} target="_blank" title="Twitter"><i
+              className="fa fa-twitter"></i></a>
+          : null
+        }
+
         {
           _.get(widget_cell, 'widget.fields.post_url', null) && _.get(widget_cell, 'widget.fields.post_title', null)
             ? <a className={Lib.THEME_CLASSES_PREFIX + "linkedin"}
