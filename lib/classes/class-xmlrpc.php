@@ -1264,6 +1264,7 @@ namespace UsabilityDynamics\WPRETSC {
           $log = 'No post ID provided';
           array_push( $response[ 'logs' ], $log );
           ud_get_wp_rets_client()->write_log( $log, 'info' );
+          $response['ok'] = false;
           return $response;
         }
 
