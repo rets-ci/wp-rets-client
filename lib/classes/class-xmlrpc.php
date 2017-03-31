@@ -90,7 +90,7 @@ namespace UsabilityDynamics\WPRETSC {
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/deleteProperty', array(
-          'methods' => 'DELETE',
+          'methods' => array( 'POST', 'GET' ),
           'callback' => array( $this, 'rpc_delete_property' ),
         ) );
 
