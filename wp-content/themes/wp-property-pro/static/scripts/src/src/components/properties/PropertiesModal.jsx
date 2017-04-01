@@ -29,7 +29,7 @@ class PropertiesModal extends Component {
     let {
       searchFilters
     } = this.props;
-    let term = searchFilters['wpp_search[term]'];
+    let term = searchFilters['term'];
     return (
       <div>
         {this.props.open ?

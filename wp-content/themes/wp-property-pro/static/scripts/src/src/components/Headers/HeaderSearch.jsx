@@ -6,14 +6,13 @@ import {Lib} from '../../lib.jsx';
 
 class HeaderSearch extends Component {
   static propTypes = {
-    searchTerm: PropTypes.string,
     searchFilters: PropTypes.object.isRequired
   };
   render() {
     let {
       searchFilters
     } = this.props;
-    let saleType = searchFilters['wpp_search[sale_type]'];
+    let saleType = searchFilters['sale_type'];
     return (
       <section className={Lib.THEME_CLASSES_PREFIX+"top-panel"}>
         <div className="container-fluid">

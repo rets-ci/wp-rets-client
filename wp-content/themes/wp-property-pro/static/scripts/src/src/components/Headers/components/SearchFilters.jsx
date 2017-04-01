@@ -25,7 +25,7 @@ class searchFilters extends Component {
     let {
       filters
     } = this.props;
-    let term = filters['wpp_search[term]'];
+    let term = filters['term'];
     return (
       <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap"}>
         <form method="get" className="clearfix hidden-md-down">
