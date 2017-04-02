@@ -10,10 +10,11 @@ import SearchResultListing from './SearchResultListing.jsx';
 import _ from 'lodash';
 import Util from '../Util.jsx';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     query: _.get(state, 'searchResults.query', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
+    queryParams: ownProps.location.query,
     propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
     resultsTotal: _.get(state, 'searchResults.totalProps', 0)
@@ -22,26 +23,19 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    doSearchWithParams: (params) => {
+    standardSearch: (params) => {
       let {
-        from,
-        tax,
-        term,
-        saleType,
-        propertyTypes,
         locationFilter,
+        property_types,
         geoCoordinates
       } = params;
-      let pt = propertyTypes.split(Lib.STRING_ARRAY_DELIMITER);
+      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
       let searchParams = {
+        ...params,
         bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
-        from: from,
         locationFilter: locationFilter || false,
-        propertyTypes: pt,
-        saleType: saleType,
+        property_types: pt,
         size: Lib.PROPERTY_PER_PAGE,
-        tax: tax,
-        term: term,
         topLeft: geoCoordinates ? geoCoordinates.topLeft : null
       };
       let query = Api.createESSearchQuery(searchParams);
@@ -61,15 +55,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           console.log('query with standard query returned no data');
         }
       });
+    },
+    resetSearchResults: () => {
+      dispatch(setSearchResults({}, [], 0));
     }
   };
 };
 
 class MapSearchResults extends Component {
   static propTypes = {
-    doSearchWithParams: PropTypes.func.isRequired,
     doSearchWithQuery: PropTypes.func.isRequired,
+    location: PropTypes.object,
     params: PropTypes.object,
+    resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired
   };
 
@@ -80,28 +78,26 @@ class MapSearchResults extends Component {
   }
 
   componentDidMount() {
-    // TODO temporary comment this, until done with elastic search API
-    // let saleType = this.props.params.sale;
-    // let tax = this.props.params.tax;
-    // let term = this.props.params.term;
+    this.applyQueryFilters();
+  }
 
-    let saleType = this.props.location.query['wpp_search[sale_type]'];
-    let tax = this.props.location.query['wpp_search[tax]'];
-    let term = this.props.location.query['wpp_search[term]'];
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(nextProps.queryParams, this.props.queryParams)) {
+      this.props.resetSearchResults();
+      this.applyQueryFilters();
+    }
 
-    let propertyTypes = this.props.location.query['wpp_search[property_types]'];
-    this.props.doSearchWithParams({
-      tax: tax,
-      term: term,
-      saleType: saleType,
-      propertyTypes: propertyTypes
-    });
   }
 
   seeMoreHandler() {
     let modifiedQuery = this.props.query;
     modifiedQuery.from = this.props.displayedResults.length;
     this.props.doSearchWithQuery(modifiedQuery, true);
+  }
+
+  applyQueryFilters() {
+    let searchFiltes = Util.getSearchFiltersFromURL(window.location.href);
+    this.props.standardSearch(searchFiltes);
   }
 
   render() {
@@ -122,13 +118,13 @@ class MapSearchResults extends Component {
       <div>
         {displayedResults.length ?
           <div>
-            <PropertiesModal searchFilters={searchFilters} open={propertiesModalOpen} />
+            <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch} open={propertiesModalOpen} />
             <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
               <div className={Lib.THEME_CLASSES_PREFIX+"listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX+"caption"}>
            	   	  <span>Only showing {displayedResults.length} listings. Zoom in, or use filters to narrow your search.</span>
            	    </div>
-                <Map properties={displayedResults} searchByCoordinates={(locationFilter, geoCoordinates) => this.props.doSearchWithParams({tax: tax, term: term, saleType: sale, propertyTypes: propertyTypes, locationFilter: locationFilter, geoCoordinates: geoCoordinates})} />
+                <Map properties={displayedResults} searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({...Util.getSearchFiltersFromURL(window.location.href), locationFilter: locationFilter, geoCoordinates: geoCoordinates})} />
               </div>
               <div className={Lib.THEME_CLASSES_PREFIX+"listing-sidebar"}>
               	<div className={Lib.THEME_CLASSES_PREFIX+"headtitle"}>

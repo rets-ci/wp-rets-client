@@ -25,13 +25,18 @@ class searchFilters extends Component {
     let {
       filters
     } = this.props;
-    let term = filters['term'];
+    let termFilter = filters['term'];
+    let termFilters = Object.keys(termFilter).map(t => {
+      return {tax: t, value: termFilter[t]}
+    });
     return (
       <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap"}>
         <form method="get" className="clearfix hidden-md-down">
           <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
             <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
-              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times"></i></span> {term}</span>
+              {termFilters.map(t =>
+                <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times"></i></span> {t.value}</span>
+              )}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
                 <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                   <span>+</span> Bedroom</a>
