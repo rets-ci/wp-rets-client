@@ -62661,7 +62661,7 @@
 	      )
 	    ),
 	    _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
-	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, key: key });
+	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
 	    })
 	  );
 	};
@@ -62698,7 +62698,7 @@
 
 	var FeatureGroup = function FeatureGroup(_ref) {
 	  var featureGroup = _ref.featureGroup,
-	      key = _ref.key;
+	      ind = _ref.ind;
 
 
 	  var counter = 1;
@@ -62721,7 +62721,7 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-box", key: key },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-box", key: ind },
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'row no-gutters ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block' },
@@ -62745,7 +62745,7 @@
 	              _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
 	                var last = featuresCount === counter;
 	                counter++;
-	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, key: k });
+	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
 	              })
 	            )
 	          )
@@ -62782,7 +62782,7 @@
 	var Feature = function Feature(_ref) {
 	  var feature = _ref.feature,
 	      last = _ref.last,
-	      key = _ref.key;
+	      ind = _ref.ind;
 
 
 	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
@@ -62792,7 +62792,7 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { key: key },
+	    { key: ind },
 	    _lodash2.default.get(feature, 'title', null) ? _react2.default.createElement(
 	      'h3',
 	      null,

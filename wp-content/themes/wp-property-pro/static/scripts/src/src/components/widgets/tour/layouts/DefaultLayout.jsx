@@ -25,7 +25,7 @@ const DefaultLayout = ({item}) => {
       </div>
       {
         _.get(item, 'feature_groups', []).map((featureGroup, key) =>
-          <FeatureGroup featureGroup={featureGroup} key={key} />
+          <FeatureGroup featureGroup={featureGroup} ind={key} key={key} />
         )
       }
     </div>
