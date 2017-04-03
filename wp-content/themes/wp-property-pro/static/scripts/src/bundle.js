@@ -79070,7 +79070,7 @@
 	                    {
 	                      href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
 	                        eve.preventDefault();
-	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'url', ''));
+	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
 	                      } },
 	                    _lodash2.default.get(this.props.category, 'title')
 	                  )
