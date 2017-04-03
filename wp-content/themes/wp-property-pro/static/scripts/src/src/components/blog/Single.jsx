@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 class Single extends Component {
   static propTypes = {
-    post: PropTypes.object.required
+    post: PropTypes.object.isRequired
   };
 
   render() {

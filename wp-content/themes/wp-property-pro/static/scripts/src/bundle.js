@@ -62947,7 +62947,7 @@
 	}(_react.Component);
 
 	Single.propTypes = {
-	  post: _react.PropTypes.object.required
+	  post: _react.PropTypes.object.isRequired
 	};
 	exports.default = Single;
 
@@ -63110,7 +63110,7 @@
 	}(_react.Component);
 
 	PostContent.propTypes = {
-	  content: _react.PropTypes.string.required
+	  content: _react.PropTypes.string.isRequired
 	};
 	exports.default = PostContent;
 
