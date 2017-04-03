@@ -15,8 +15,6 @@ import _ from 'lodash';
 
 let store = createStore(propertyProApp);
 
-// store.dispatch(setSearchProps([]));
-
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
 

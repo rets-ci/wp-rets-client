@@ -94,8 +94,6 @@
 
 	var store = (0, _redux.createStore)(_index3.default);
 
-	// store.dispatch(setSearchProps([]));
-
 	// Create an enhanced router history that syncs navigation events with the store
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
