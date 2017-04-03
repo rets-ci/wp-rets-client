@@ -366,7 +366,9 @@ class Api {
 
   static createESSearchQuery(params) {
     let terms = {};
-    terms["terms." + params.tax + ".slug"] = params.term;
+    Object.keys(params.term).forEach(tax => {
+      terms["terms." + tax + ".slug"] = params.term[tax];
+    });
 
     let query = {
       "bool": {
@@ -397,16 +399,27 @@ class Api {
         }
       };
     } else {
-      query.bool.must.push({
-        "term": {
-          "terms.wpp_listing_status.slug": 'for-' + params.saleType.toLowerCase()
-        }
-      });
-      query.bool.must.push({
-        "terms": {
-          "terms.wpp_listing_type.slug": params.propertyTypes
-        }
-      });
+      if (params.sale_type) {
+        query.bool.must.push({
+          "term": {
+            "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
+          }
+        });
+      }
+      if (params.property_types && params.property_types.length) {
+        query.bool.must.push({
+          "terms": {
+            "terms.wpp_listing_type.slug": params.property_types
+          }
+        });
+      }
+      if (params.bedrooms) {
+        query.bool.must.push({
+          "term": {
+            "post_meta.rets_beds": params.bedrooms
+          }
+        });
+      }
       query.bool.must.push({"term": terms});
     }
 

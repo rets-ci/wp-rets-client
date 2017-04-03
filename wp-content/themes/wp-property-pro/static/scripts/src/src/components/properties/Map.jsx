@@ -27,8 +27,8 @@ export default class Map extends Component {
 
   componentDidMount() {
     let initialCoordinates = {
-      lat: +this.props.properties[0]._source.post_meta.wpp_location_latitude[0],
-      lng: +this.props.properties[0]._source.post_meta.wpp_location_longitude[0]
+      lat: +this.props.properties[0]._source.post_meta.wpp_location_pin[0],
+      lng: +this.props.properties[0]._source.post_meta.wpp_location_pin[1]
     };
     this.map = new window.google.maps.Map(this.mapElement, {
       center: initialCoordinates,

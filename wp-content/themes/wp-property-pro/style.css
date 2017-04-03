@@ -286,6 +286,7 @@ body.fixed { height: 100%; overflow: hidden; }
 .propertypro-advanced-filter form i { font-size: 24px; margin-top: 5px;  }
 .propertypro-advanced-filter form .button-group { float: right; width: 265px; height: 50px; }
 .propertypro-advanced-filter form .btn-primary { border-radius: 3px; background-color: #d33320; border-color: #d33320; width: auto; line-height: 25px; color: #fff; padding: .60em 2em; }
+.propertypro-advanced-filter form .btn-disabled { border-color: #d6dee3; background-color: #d6dee3; color: #b6bec4;}
 .propertypro-tagsinput { display: none; }
 .propertypro-advanced-filter .propertypro-bs-tags-box { float: left; width: 72%; margin-left: 40px; }
 .propertypro-advanced-filter form .button-group .btn-primary { float: right; }
@@ -410,7 +411,6 @@ html,body { height: 100%; }
 .search-map .propertypro-card { position: relative; overflow: hidden;  }
 .search-map .propertypro-card:before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; background-color: #f28200; height: 3px; display:none; }
 .search-map .propertypro-card:hover:before, .search-map .propertypro-card.selected:before { display: block; }
-
 
 /* Search Map -> Search Map Property Single Comment */
 .single-property-single { width: 510px; height: 100%; position: absolute; left: -510px; box-shadow: -2px 1px 2px rgba(0, 0, 0, 0.08);

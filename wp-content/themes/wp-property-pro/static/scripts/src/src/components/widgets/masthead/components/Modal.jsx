@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
+import URL from 'urijs';
 
 const mapStateToProps = (state) => {
   return {
@@ -70,11 +71,17 @@ class Modal extends Component {
       eve.preventDefault();
 
       // TODO temporary comment this, until done with elastic search API
-      // browserHistory.push(`/${saleType}/${tax}/${term}/?wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
 
-      if(url === null){
+      if(url === null) {
         // Properties results page
-        browserHistory.push(`/${_.get(wpp, 'instance.settings.configuration.base_slug')}?wpp_search[tax]=${tax}&wpp_search[term]=${term}&wpp_search[sale_type]=${saleType}&wpp_search[property_types]=${propertyTypes}&_taxonomy=${tax}&_term=${term}`);
+        let url = new URL();
+        url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+        url.setSearch({
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']']: term,
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
+        });
+        browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
       }else{
         // Single property page
         browserHistory.push(url);

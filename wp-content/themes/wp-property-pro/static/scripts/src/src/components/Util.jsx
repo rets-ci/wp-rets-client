@@ -1,24 +1,18 @@
-import React from 'react'
-import {render} from 'react-dom'
-import {Provider} from 'react-redux'
-import {Lib} from '../lib.jsx'
+import React from 'react';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {Lib} from '../lib.jsx';
 import {browserHistory} from 'react-router';
-import _ from 'lodash'
+import _ from 'lodash';
 import URI from 'urijs';
+import qs from 'qs';
 
 class Util extends React.Component {
 
   static getSearchFiltersFromURL(url) {
     let uri = new URI(url);
-    // uri.search this will map array parameters into proper structures
-    let query = uri.search(true);
-    let searchFilters = {};
-    for (var k in query) {
-      if (k.startsWith('wpp_search')) {
-        searchFilters[k] = query[k];
-      }
-    }
-    return searchFilters;
+    let query = qs.parse(uri.query());
+    return query[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   }
 
   static stringStyleToObject(stringStyle) {
