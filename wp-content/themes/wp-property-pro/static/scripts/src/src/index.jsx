@@ -1,4 +1,3 @@
-import {setSearchProps} from './actions/index.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
