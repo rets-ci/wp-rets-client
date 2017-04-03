@@ -50879,7 +50879,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'a',
-	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? "btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
+	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? _lib.Lib.THEME_CLASSES_PREFIX + "btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
 	                  'View Properties'
 	                )
 	              )

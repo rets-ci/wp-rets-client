@@ -115,7 +115,7 @@ class PropertiesModal extends Component {
                   <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly />
                 <div className="button-group">
                    <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
-                   <a href="#" className={"btn btn-primary " + (!anyFilterChange ? "btn-disabled" : null)} onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
+                   <a href="#" className={"btn btn-primary " + (!anyFilterChange ? Lib.THEME_CLASSES_PREFIX+"btn-disabled" : null)} onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
                 </div>
               </div>
             </form>
