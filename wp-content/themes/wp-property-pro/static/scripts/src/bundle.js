@@ -140,8 +140,6 @@
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
-	var _lib = __webpack_require__(36);
-
 	var _Map = __webpack_require__(39);
 
 	var _Map2 = _interopRequireDefault(_Map);
@@ -160,13 +158,15 @@
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
-	var _lodash = __webpack_require__(34);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
 	var _Util = __webpack_require__(40);
 
 	var _Util2 = _interopRequireDefault(_Util);
+
+	var _lib = __webpack_require__(36);
+
+	var _lodash = __webpack_require__(34);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -288,7 +288,8 @@
 	        displayedResults.length ? _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch, open: propertiesModalOpen }),
+	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
+	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
 	            { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
@@ -303,11 +304,15 @@
 	                  null,
 	                  'Only showing ',
 	                  displayedResults.length,
-	                  ' listings. Zoom in, or use filters to narrow your search.'
+	                  'listings. Zoom in, or use filters to narrow your search.'
 	                )
 	              ),
-	              _react2.default.createElement(_Map2.default, { properties: displayedResults, searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href), { locationFilter: locationFilter, geoCoordinates: geoCoordinates }));
+	              _react2.default.createElement(_Map2.default, { properties: displayedResults,
+	                searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
+	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href), {
+	                    locationFilter: locationFilter,
+	                    geoCoordinates: geoCoordinates
+	                  }));
 	                } })
 	            ),
 	            _react2.default.createElement(
@@ -331,10 +336,11 @@
 	                  ' homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                )
 	              ),
-	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length, properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
 	            )
 	          )
-	        ) : _react2.default.createElement(_LoadingCircle2.default, { style: { position: 'absolute', left: '50%', top: '30%' } })
+	        ) : _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" })
 	      );
 	    }
 	  }]);
@@ -349,8 +355,6 @@
 	  resetSearchResults: _react.PropTypes.func.isRequired,
 	  results: _react.PropTypes.array.isRequired
 	};
-	;
-
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MapSearchResults);
 
 /***/ },
@@ -22143,11 +22147,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _lib = __webpack_require__(36);
-
 	var _react = __webpack_require__(3);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _lib = __webpack_require__(36);
+
+	var _lodash = __webpack_require__(34);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22169,11 +22177,14 @@
 	  _createClass(LoadingCircle, [{
 	    key: 'render',
 	    value: function render() {
-	      var style = this.props.style;
+	      var additionalClass = this.props.additionalClass;
+
+
+	      var classNames = additionalClass && _lodash2.default.isString(additionalClass) ? _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-circle ' + additionalClass : _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle";
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle", style: style },
+	        { className: classNames },
 	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce1" }),
 	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce2" })
 	      );
@@ -59045,6 +59056,8 @@
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
+	var _lib = __webpack_require__(36);
+
 	var _lodash = __webpack_require__(34);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -59121,7 +59134,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { style: { height: '100%' } },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
 	          null,

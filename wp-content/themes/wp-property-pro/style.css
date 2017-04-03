@@ -64,6 +64,8 @@ html, body { height: 100%; margin: 0; }
 .navbar-toggler { color: #fff; display: block!important; outline: none!important; cursor: pointer; font-size: 1.150rem; top: 5px; position: relative;  }
 .navbar-toggler span { font-size: 28px; float: left; margin: -4px 10px 0 0; }
 
+.propertypro-page-layout-container { height: 100%; }
+
 /*-----------------------------------------------------------------------------------*/
 /*  Logos
 /*-----------------------------------------------------------------------------------*/
@@ -373,6 +375,7 @@ html,body { height: 100%; }
 .search-map { overflow-x: hidden; }
 .propertypro-search-map-container {  display: flex; overflow: hidden; height: 100vh; padding-top: 80px; position: relative; width: 100%;
     backface-visibility: hidden; will-change: overflow; padding-left: 0; padding-right: 0; }
+.propertypro-search-result-loading { position: absolute !important; left: 50%; top: 30%; }
 .propertypro-listing-map { float: left; width: 40%; position: relative; }
 .propertypro-listing-map .propertypro-caption { height: 50px; background-color: #9a9a9a; opacity: 0.8; color: #fff; padding: 0 15px; font-size: .85rem; display: table; width: 100%; position: absolute; top: 0; left: 0; z-index: 9; }
 .propertypro-listing-map .propertypro-caption span { display: table-cell; vertical-align: middle; font-size: .95rem; font-weight: 700; line-height: 15px; }
