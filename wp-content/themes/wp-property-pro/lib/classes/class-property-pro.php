@@ -253,7 +253,7 @@ namespace UsabilityDynamics {
       }
       /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
-        $category_id = get_query_var('cat');
+        $category_id = (int) get_query_var('cat');
 
         /** Get blog post some data */
         $post_title = get_post_field('post_title', $blog_post_id);

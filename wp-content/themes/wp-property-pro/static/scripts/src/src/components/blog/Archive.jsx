@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class ArchiveContent extends Component {
   static propTypes = {
-    post: PropTypes.object.required
+    post: PropTypes.object.isRequired
   };
 
   componentDidMount(){
@@ -57,7 +57,7 @@ class ArchiveContent extends Component {
     return (
       <div>
         <Masthead widget_cell={_.get(content, 'masthead')}/>
-        <Subnavigation widget_cell={_.get(content, 'subnavigation')}/>
+        <Subnavigation widget_cell={_.get(content, 'subnavigation')} currentUrl={_.get(this.props.post, 'post_url', '')}/>
         <Posts seeMoreHandler={this.props.getPosts} categoryId={_.get(content, 'category_id')}/>
         <Footer/>
       </div>
