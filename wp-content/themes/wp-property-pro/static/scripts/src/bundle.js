@@ -59133,7 +59133,7 @@
 	              rows: _lodash2.default.get(_this2.state, 'post.custom_content', null) ? _this2.state.post.post_content : []
 	            });
 	          })
-	        ) : _react2.default.createElement(_LoadingAccordion2.default, { style: { display: 'flex', width: '100%', height: '100%' } })
+	        ) : _react2.default.createElement(_LoadingAccordion2.default, null)
 	      );
 	    }
 	  }]);
@@ -59680,14 +59680,13 @@
 	  _createClass(LoadingAccordion, [{
 	    key: 'render',
 	    value: function render() {
-	      var style = this.props.style;
 
 	      return _react2.default.createElement(
 	        'div',
-	        { style: style },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-container" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-accordion", style: { margin: 'auto' } },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-accordion" },
 	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
 	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
 	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),

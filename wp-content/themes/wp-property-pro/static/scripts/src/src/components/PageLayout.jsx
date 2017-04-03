@@ -7,7 +7,7 @@ import _ from 'lodash';
 export default class PageLayout extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -68,7 +68,7 @@ export default class PageLayout extends Component {
                rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
              }))}
           </div>
-        : <LoadingAccordion style={{display: 'flex', width: '100%', height: '100%'}} />}
+        : <LoadingAccordion />}
       </div>
     );
   }
