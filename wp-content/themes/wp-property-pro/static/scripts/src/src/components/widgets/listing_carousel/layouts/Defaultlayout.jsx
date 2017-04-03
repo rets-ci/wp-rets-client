@@ -46,7 +46,7 @@ export default class DefaultLayout extends Component {
           posts.length
             ?
               <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel clearfix`}>
-                <div className="swiper-container" ref={(r) => this.swiperElement = r} style={{width: '100%', height: '400px'}}>
+                <div className={`swiper-container ${Lib.THEME_CLASSES_PREFIX}listing-carousel-container`} ref={(r) => this.swiperElement = r}>
                   <div className="swiper-wrapper">
                     {
                       posts.map((post, key) => {

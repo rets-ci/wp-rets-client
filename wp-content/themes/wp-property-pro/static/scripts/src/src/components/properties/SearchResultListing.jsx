@@ -68,8 +68,8 @@ class SearchResultListing extends Component {
           )}
         </div>
         {this.props.allowPagination ?
-          <div style={{overflow: 'hidden'}}>
-            <div style={{float: 'right'}}>
+          <div className={Lib.THEME_CLASSES_PREFIX+"search-result-container"} >
+            <div className={Lib.THEME_CLASSES_PREFIX+"search-result-inner-container"}>
               {this.state.loading ?
                 <LoadingCircle />
                 : null}

@@ -22306,12 +22306,9 @@
 	    value: function render() {
 	      var _this4 = this;
 
-	      var mapStyle = {
-	        height: '100%'
-	      };
-	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", ref: function ref(r) {
+	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", className: _lib.Lib.THEME_CLASSES_PREFIX + "map-container", ref: function ref(r) {
 	          return _this4.mapElement = r;
-	        }, style: mapStyle });
+	        } });
 	    }
 	  }]);
 
@@ -50831,7 +50828,7 @@
 	        null,
 	        this.props.open ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + _lib.Lib.THEME_CLASSES_PREFIX + "advanced-filter", style: { display: this.props.open ? 'block' : 'none' } },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + _lib.Lib.THEME_CLASSES_PREFIX + "advanced-filter" },
 	          _react2.default.createElement(
 	            'a',
 	            { onClick: function onClick() {
@@ -50879,7 +50876,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'a',
-	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? _lib.Lib.THEME_CLASSES_PREFIX + "btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
+	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? "btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
 	                  'View Properties'
 	                )
 	              )
@@ -51086,12 +51083,12 @@
 	                  _react2.default.createElement('span', { className: 'slider-bar' }),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider from type_last', style: { left: "0%" } },
+	                    { className: 'bs-slider from type_last ' + _lib.Lib.THEME_CLASSES_PREFIX + 'left' },
 	                    '100K'
 	                  ),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider to', style: { right: "0%" } },
+	                    { className: 'bs-slider to ' + _lib.Lib.THEME_CLASSES_PREFIX + 'right' },
 	                    '600K'
 	                  )
 	                ),
@@ -51272,10 +51269,10 @@
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',
-	          { style: { overflow: 'hidden' } },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-container" },
 	          _react2.default.createElement(
 	            'div',
-	            { style: { float: 'right' } },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-inner-container" },
 	            this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : null,
 	            _react2.default.createElement(
 	              'p',
@@ -60439,13 +60436,12 @@
 	          options = _props.options;
 
 
-	      var style = {};
+	      var searchBtnClasses = 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-search';
+
 	      if (this.state.labels.length === 0) {
 	        return null;
 	      } else if (this.state.labels.length === 1) {
-	        style = {
-	          'paddingLeft': '15px'
-	        };
+	        searchBtnClasses += " " + _lib.Lib.THEME_CLASSES_PREFIX + "short-padding";
 	      }
 
 	      var placeholder = 'Address, City, Zip, or Neighborhood';
@@ -60475,7 +60471,7 @@
 	        }),
 	        _react2.default.createElement(
 	          'button',
-	          { className: 'btn btn-search', style: style, onClick: function onClick() {
+	          { className: searchBtnClasses, onClick: function onClick() {
 	              return self.props.openSearchModal(true);
 	            }, type: 'button' },
 	          _react2.default.createElement('i', { className: 'fa fa-search' }),
@@ -60711,7 +60707,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'ul',
-	          { style: { display: this.props.open ? 'block' : 'none' } },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + (this.props.open ? 'display' : 'hide') },
 	          this.props.labels.map(function (l, i) {
 	            var instance = _this2;
 	            var linkClasses = _this2.props.selectedOption === l ? _lib.Lib.THEME_CLASSES_PREFIX + 'active' : '';
@@ -61512,9 +61508,14 @@
 	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'withPadding';
 	      }
 
+	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
+	      if (!this.props.open) {
+	        searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'hide';
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal", onKeyDown: this.handleKeyPress.bind(this), style: { display: this.props.open ? 'block' : 'none' } },
+	        { className: searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
 	          'a',
 	          { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(e) {
@@ -61988,9 +61989,9 @@
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel clearfix' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'swiper-container', ref: function ref(r) {
+	            { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container', ref: function ref(r) {
 	                return _this2.swiperElement = r;
-	              }, style: { width: '100%', height: '400px' } },
+	              } },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'swiper-wrapper' },
@@ -62485,13 +62486,17 @@
 	        "backgroundColor": primaryColor
 	      } : {};
 
+	      var selectedOptionClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile-selected-option ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
+	      if (this.props.dropDownOpen) {
+	        selectedOptionClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile-selected-option ' + _lib.Lib.THEME_CLASSES_PREFIX + 'hide';
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'hidden-lg-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile' },
 	        _react2.default.createElement(
 	          'div',
-	          { style: { display: this.props.dropDownOpen ? 'none' : 'block' },
-	            className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-mobile-selected-option",
+	          { className: selectedOptionClasses,
 	            onClick: function onClick() {
 	              return self.handleChange.bind(_this2)(!_this2.props.dropDownOpen);
 	            } },
@@ -62500,7 +62505,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'ul',
-	          { style: { display: this.props.dropDownOpen ? 'block' : 'none' } },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + (this.props.dropDownOpen ? 'display' : 'hide') },
 	          links.map(function (l, i) {
 	            var linkClasses = selectedOption === _lodash2.default.get(l, 'title') ? _lib.Lib.THEME_CLASSES_PREFIX + 'active' : '';
 	            if (selectedOption === _lodash2.default.get(l, 'title')) {
@@ -78524,7 +78529,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, { headerStyle: { zIndex: "12" } }),
+	                _react2.default.createElement(_HeaderGuide2.default, null),
 	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
 	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
 	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
@@ -78584,13 +78589,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var HeaderGuide = function HeaderGuide(_ref) {
-	  var headerStyle = _ref.headerStyle;
-
+	var HeaderGuide = function HeaderGuide() {
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar", style: headerStyle },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-toolbar' },
 	    _react2.default.createElement(
 	      'nav',
 	      { className: 'navbar navbar-toggleable-md bg-faded' },
@@ -78963,7 +78966,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'row' },
-	              _react2.default.createElement(_HeaderGuide2.default, { headerStyle: { zIndex: "12" } }),
+	              _react2.default.createElement(_HeaderGuide2.default, null),
 	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
 	            )
 	          ),

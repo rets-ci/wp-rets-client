@@ -95,7 +95,7 @@ class PropertiesModal extends Component {
     return (
       <div>
         {this.props.open ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + Lib.THEME_CLASSES_PREFIX + "advanced-filter"} style={{display: this.props.open ? 'block' : 'none'}}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + Lib.THEME_CLASSES_PREFIX + "advanced-filter"}>
             <a onClick={() => this.props.openPropertiesModal(false)} href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down"}>
               <i className="fa fa-times"></i>
             </a>
@@ -115,7 +115,7 @@ class PropertiesModal extends Component {
                   <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly />
                 <div className="button-group">
                    <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
-                   <a href="#" className={"btn btn-primary " + (!anyFilterChange ? Lib.THEME_CLASSES_PREFIX+"btn-disabled" : null)} onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
+                   <a href="#" className={"btn btn-primary " + (!anyFilterChange ? "btn-disabled" : null)} onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
                 </div>
               </div>
             </form>
@@ -184,8 +184,8 @@ class PropertiesModal extends Component {
                         <span className="range-grid-col">No Max</span>
                      </div>
                      <span className="slider-bar"></span>
-                     <span className="bs-slider from type_last" style={{left: "0%"}}>100K</span>
-                     <span className="bs-slider to" style={{right: "0%"}}>600K</span>
+                     <span className={`bs-slider from type_last ${Lib.THEME_CLASSES_PREFIX}left`}>100K</span>
+                     <span className={`bs-slider to ${Lib.THEME_CLASSES_PREFIX}right`}>600K</span>
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>

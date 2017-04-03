@@ -147,8 +147,13 @@ class Modal extends Component {
         inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}withPadding`
       }
 
+        let searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}display`;
+        if(!this.props.open){
+          searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}hide`;
+        }
+
         return (
-            <div className={Lib.THEME_CLASSES_PREFIX+"search-modal"} onKeyDown={this.handleKeyPress.bind(this)} style={{display: this.props.open ? 'block' : 'none'}}>
+            <div className={searchModalClasses} onKeyDown={this.handleKeyPress.bind(this)}>
                 <a href="#" className={Lib.THEME_CLASSES_PREFIX+"close-panel"} onClick={(e) => {e.preventDefault(); this.props.closeModal();}}>
                     <i className="fa fa-times"></i>
                 </a>
