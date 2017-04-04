@@ -1,39 +1,29 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import {Lib} from '../lib.jsx';
 import {browserHistory} from 'react-router';
-import _ from 'lodash';
+import {Provider} from 'react-redux';
 import URI from 'urijs';
 import qs from 'qs';
+import {Lib} from '../lib.jsx';
+import _ from 'lodash';
 
 class Util extends React.Component {
 
   static getSearchFiltersFromURL(url) {
     let uri = new URI(url);
     let query = qs.parse(uri.query());
-    return query[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+
+    return !_.isEmpty(query) ? _.get(query, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {}) : {};
   }
 
-  static stringStyleToObject(stringStyle) {
-
-    let style = {};
-    let styleArray = stringStyle.split("\n");
-
-    for (let i in styleArray) {
-      let styleRow = styleArray[i].split(":");
-      let styleRowObject = {};
-      styleRowObject[styleRow[0]] = styleRow[1];
-      style = Object.assign({}, style, styleRowObject);
-    }
-
-    return style;
-  }
-
-  static getThumbnailUrlBySize(thumbnailUrl, size) {
+  static getThumbnailUrlBySize(thumbnailUrl = '', size = Lib.PROPERTY_LISTING_IMAGE_SIZE) {
     let urlArray = _.split(thumbnailUrl, Lib.URL_DELIMITER);
-    let fileName = _.last(urlArray);
+    let fileName = !_.isEmpty(urlArray) ? _.last(urlArray) : '';
     let fileNameArray = _.split(fileName, Lib.EXTENSION_DELIMITER)
+
+    if (_.isEmpty(fileNameArray)) {
+      return '';
+    }
 
     let fileNameWithSize = _.join([
       fileNameArray[0],
@@ -66,9 +56,9 @@ class Util extends React.Component {
     };
   }
 
-  static goToUrl(url){
+  static goToUrl(url) {
 
-    if(_.isEmpty(url)){
+    if (_.isEmpty(url)) {
       return null;
     }
 

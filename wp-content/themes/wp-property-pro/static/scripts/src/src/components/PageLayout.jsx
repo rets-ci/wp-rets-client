@@ -22,7 +22,7 @@ export default class PageLayout extends Component {
     let self = this;
     jQuery.ajax({
       url: url,
-      type: 'get',
+      type: 'GET',
       data: {
         pageType: 'json'
       },
