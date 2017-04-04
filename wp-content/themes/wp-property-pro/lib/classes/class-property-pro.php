@@ -131,7 +131,7 @@ namespace UsabilityDynamics {
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
-        'guide_category_base' => 'propertypro-guide-category',
+        'guide_category_base' => 'guide',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
@@ -753,7 +753,10 @@ namespace UsabilityDynamics {
         'show_ui' => true,
         'show_admin_column' => true,
         'query_var' => true,
-        'rewrite' => array('slug' => 'propertypro-guide-category'),
+        'rewrite' => array(
+          'slug' => 'guide',
+          'with_front' => false
+        ),
       );
 
       register_taxonomy('propertypro-guide-category', ['propertypro-guide'], $args);
