@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
-const Feature = ({feature, last, key}) => {
+const Feature = ({feature, last, ind}) => {
 
   let primaryColor = _.get(bundle, 'colors.primary_color', null);
   let buttonStyle =
@@ -15,7 +15,7 @@ const Feature = ({feature, last, key}) => {
     ;
 
   return (
-    <div key={key}>
+    <div key={ind}>
       {
         _.get(feature, 'title', null)
           ? <h3>{feature.title}</h3>

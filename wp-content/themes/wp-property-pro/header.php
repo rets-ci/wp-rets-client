@@ -25,4 +25,4 @@
 </head>
 
 <body <?php body_class(); ?>>
-<div id="root"></div>
+<div id="<?php echo defined('THEME_PREFIX') ? THEME_PREFIX : ''; ?>root"></div>

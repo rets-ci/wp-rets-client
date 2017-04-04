@@ -3,10 +3,10 @@ import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 
-const HeaderGuide = ({headerStyle}) => {
+const HeaderGuide = () => {
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX + "toolbar"} style={headerStyle}>
+    <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}guide-toolbar`}>
       <nav className="navbar navbar-toggleable-md bg-faded">
         {
           _.get(bundle, 'template_url', null)

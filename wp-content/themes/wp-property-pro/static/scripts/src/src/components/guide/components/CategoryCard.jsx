@@ -27,7 +27,7 @@ class CategoryCard extends Component {
                     ? <h2 className={Lib.THEME_CLASSES_PREFIX + "category-title"}><a
                       href={_.get(this.props.category, 'url', '')} onClick={(eve) => {
                       eve.preventDefault();
-                      Util.goToUrl(_.get(this.props.category, 'url', ''));
+                      Util.goToUrl(_.get(this.props.category, 'relative_url', ''));
                     }}>{_.get(this.props.category, 'title')}</a></h2>
                     : null
                 }

@@ -93,13 +93,12 @@ class SearchContent extends Component {
       options
     } = this.props;
 
-    let style = {};
+    let searchBtnClasses = `btn ${Lib.THEME_CLASSES_PREFIX}btn-search`;
+
     if(this.state.labels.length === 0){
       return null;
     }else if(this.state.labels.length === 1){
-      style = {
-        'paddingLeft': '15px'
-      }
+      searchBtnClasses += " " + Lib.THEME_CLASSES_PREFIX + "short-padding";
     }
 
     let placeholder = 'Address, City, Zip, or Neighborhood';
@@ -126,7 +125,7 @@ class SearchContent extends Component {
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
-        <button className="btn btn-search" style={style} onClick={() => self.props.openSearchModal(true)} type="button">
+        <button className={searchBtnClasses} onClick={() => self.props.openSearchModal(true)} type="button">
           <i className="fa fa-search"></i> {placeholder}
         </button>
       </div>

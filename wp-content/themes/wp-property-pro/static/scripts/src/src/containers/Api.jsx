@@ -1,29 +1,11 @@
-import React from 'react'
-import _ from 'lodash'
-import {Lib} from '../lib.jsx'
+import React from 'react';
+import {Lib} from '../lib.jsx';
+import _ from 'lodash';
 
 class Api {
 
-  static getEsClient() {
-
-    /**
-     * @type {$.es.Client|*}
-     */
-    return new jQuery.es.Client({
-      hosts: 'https://' + bundle.elasticsearch_host
-    });
-  }
-
-  static getEsIndex() {
-    return 'v3/search';
-  }
-
-  static getEsType() {
-    return 'property';
-  }
-
-  static getEsMethod() {
-    return 'POST';
+  static getRequestUrl(searchType = 'post', size = Lib.PROPERTY_PER_PAGE) {
+    return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
   }
 
   static getAggregationsFields() {
@@ -152,8 +134,6 @@ class Api {
 
   static autocompleteQuery(params, callback) {
 
-    let client = Api.getEsClient();
-
     let rows = [];
 
     if (!params.term || params.term.length < Lib.MIN_SEARCH_KEY_LENGTH) {
@@ -196,14 +176,10 @@ class Api {
       suggest
     };
 
-    client.search({
-      index: Api.getEsIndex(),
-      type: Api.getEsType(),
-      method: Api.getEsMethod(),
-      size: 0,
-      body: body
-    }, function selectQueryResponse(err, response) {
-
+    Api.makeRequest({
+      'url': Api.getRequestUrl('property', 0),
+      'query': body
+    }, function (response) {
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
 
@@ -213,11 +189,11 @@ class Api {
         let suggestResponse = _.get(response, 'suggest');
         for (let i in suggestResponse) {
           let terms = suggestResponse[i];
-          if(i === 'post-suggest'){
+          if (i === 'post-suggest') {
             continue;
           }
 
-          for(var tInd in terms){
+          for (let tInd in terms) {
 
             let term = terms[tInd];
 
@@ -292,15 +268,13 @@ class Api {
 
   static topQuery(params, callback) {
 
-    let client = Api.getEsClient();
-
     let rows = [];
 
     let aggregations = this.getTopAggregations().aggs;
     let body = {
       "aggs": {}
     };
-    for(let aggIndex in aggregations){
+    for (let aggIndex in aggregations) {
       let aggregation = aggregations[aggIndex];
 
       body.aggs[aggIndex] = {
@@ -311,19 +285,15 @@ class Api {
       }
     }
 
-    client.search({
-      index: Api.getEsIndex(),
-      type: 'post',
-      method: Api.getEsMethod(),
-      size: params.size || 0,
-      body: body
-    }, function selectQueryResponse(err, response) {
-
+    Api.makeRequest({
+      'url': Api.getRequestUrl('post', params.size || 0),
+      'query': body
+    }, function (response) {
       let responseAggs = _.get(response, 'aggregations');
 
       for (let i in responseAggs) {
 
-        if(i.indexOf('slug') !== -1){
+        if (i.indexOf('slug') !== -1) {
           continue;
         }
 
@@ -462,17 +432,35 @@ class Api {
 
   static search(query, callback) {
 
-    let client = Api.getEsClient();
+    Api.makeRequest({
+        'url': Api.getRequestUrl(),
+        'query': query
+      },
+      callback);
 
-    let esQuery = {
-      index: Api.getEsIndex(),
-      type: 'post',
-      method: Api.getEsMethod(),
-      body: query,
-      size: 18
-    };
-    client.search(esQuery, function (error, response) {
-      callback(response);
+  }
+
+  static makeRequest(data, callback) {
+
+    if (_.isEmpty(_.get(data, 'url', null)) || _.isEmpty(_.get(data, 'query', null))) {
+      console.log('Missing url or query object');
+      return false;
+    }
+
+    jQuery.ajax({
+      url: _.get(data, 'url'),
+      dataType: 'json',
+      type: 'POST',
+      contentType: 'application/json',
+      crossDomain: true,
+      data: JSON.stringify(_.get(data, 'query')),
+      success: function (response) {
+        if (typeof callback !== 'undefined') {
+          callback(response);
+        } else {
+          console.log('Missing callback');
+        }
+      }
     });
   }
 }

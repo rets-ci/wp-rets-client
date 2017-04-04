@@ -66,11 +66,8 @@ export default class Map extends Component {
   }
 
   render() {
-    let mapStyle = {
-      height: '100%',
-    };
     return (
-      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} ref={(r) => this.mapElement = r} style={mapStyle}></div>
+      <div id={Lib.THEME_CLASSES_PREFIX+"Map"} className={Lib.THEME_CLASSES_PREFIX+"map-container"} ref={(r) => this.mapElement = r} ></div>
     );
   }
 }

@@ -3,12 +3,10 @@ import {Lib} from '../lib.jsx';
 
 class LoadingAccordion extends Component {
   render() {
-    let {
-      style
-    } = this.props;
+
     return (
-      <div style={style}>
-        <div className={Lib.THEME_CLASSES_PREFIX+"spinner-accordion"} style={{margin: 'auto'}}>
+      <div className={Lib.THEME_CLASSES_PREFIX+"spinner-container"}>
+        <div className={Lib.THEME_CLASSES_PREFIX+"spinner-accordion"}>
           <div className={Lib.THEME_CLASSES_PREFIX+"rect1"}></div>
           <div className={Lib.THEME_CLASSES_PREFIX+"rect2"}></div>
           <div className={Lib.THEME_CLASSES_PREFIX+"rect3"}></div>
