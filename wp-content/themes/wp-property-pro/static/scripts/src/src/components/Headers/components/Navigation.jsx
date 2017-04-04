@@ -4,7 +4,7 @@ import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
 const Navigation = ({openUserPanel}) => (
-  <nav className="navbar navbar-toggleable-md bg-faded">
+  <nav className={`navbar navbar-toggleable-md bg-faded ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>
     <a className="navbar-brand" href={bundle.site_url} onClick={(eve) => {eve.preventDefault();browserHistory.push('')}} title={bundle.site_name}>
       {
         _.get(bundle, 'logos.horizontal_logo', null)

@@ -59307,7 +59307,7 @@
 	  var openUserPanel = _ref.openUserPanel;
 	  return _react2.default.createElement(
 	    'nav',
-	    { className: 'navbar navbar-toggleable-md bg-faded' },
+	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
 	      'a',
 	      { className: 'navbar-brand', href: bundle.site_url, onClick: function onClick(eve) {

@@ -772,6 +772,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .btn.propertypro-login-box { border-radius: 3px; font-weight: 700; border-color: #d33320; font-size: 1.20rem; margin-right: -15px; background-color: #d33320; }
     .navbar-brand { margin-left: 10px; }
     .propertypro-toolbar { height: auto; padding-bottom: 60px; }
+    .propertypro-menu-icon{ float: left; }
+    .propertypro-navigation-navbar { margin-top: -10px; }
     .propertypro-masthead h1 { font-size: 2.80rem; padding: 0 10%; }
     .propertypro-masthead.propertypro-module2 p { font-size: 1.5rem; }
     .propertypro-masthead.propertypro-module2 .propertypro-intro-wrap { padding: 40px 0 80px; }
