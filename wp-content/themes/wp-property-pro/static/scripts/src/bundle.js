@@ -59310,7 +59310,7 @@
 	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
 	      'a',
-	      { className: 'navbar-brand', href: bundle.site_url, onClick: function onClick(eve) {
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand', href: bundle.site_url, onClick: function onClick(eve) {
 	          eve.preventDefault();_reactRouter.browserHistory.push('');
 	        }, title: bundle.site_name },
 	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: bundle.site_name,
