@@ -4,7 +4,7 @@ import Feature from './Feature.jsx';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
-const FeatureGroup = ({featureGroup, key}) => {
+const FeatureGroup = ({featureGroup, ind}) => {
 
   let counter = 1;
   let featuresCount = _.get(featureGroup, 'features', []).length;
@@ -27,7 +27,7 @@ const FeatureGroup = ({featureGroup, key}) => {
   }
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX+"widget-box"} key={key}>
+    <section className={Lib.THEME_CLASSES_PREFIX+"widget-box"} key={ind}>
       <div className={`row no-gutters ${Lib.THEME_CLASSES_PREFIX}background-block`}>
         <div className={featureGroupBackgroundClasses} style={backgroundStyle}></div>
       </div>
@@ -40,7 +40,7 @@ const FeatureGroup = ({featureGroup, key}) => {
                   _.get(featureGroup, 'features', []).map((feature, k) => {
                       let last = featuresCount === counter;
                       counter++;
-                      return (<Feature feature={feature} last={last} key={k}/>)
+                      return (<Feature feature={feature} last={last} ind={k} key={k}/>)
                     }
                   )
                 }

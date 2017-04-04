@@ -1,14 +1,14 @@
 import Api from '../../containers/Api.jsx';
 import {setSearchResults} from '../../actions/index.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
-import {Lib} from '../../lib.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from './PropertiesModal.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import SearchResultListing from './SearchResultListing.jsx';
-import _ from 'lodash';
 import Util from '../Util.jsx';
+import {Lib} from '../../lib.jsx';
+import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -118,30 +118,39 @@ class MapSearchResults extends Component {
       <div>
         {displayedResults.length ?
           <div>
-            <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch} open={propertiesModalOpen} />
+            <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
+                             open={propertiesModalOpen}/>
             <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
-              <div className={Lib.THEME_CLASSES_PREFIX+"listing-map"}>
-                <div className={Lib.THEME_CLASSES_PREFIX+"caption"}>
-           	   	  <span>Only showing {displayedResults.length} listings. Zoom in, or use filters to narrow your search.</span>
-           	    </div>
-                <Map properties={displayedResults} searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({...Util.getSearchFiltersFromURL(window.location.href), locationFilter: locationFilter, geoCoordinates: geoCoordinates})} />
-              </div>
-              <div className={Lib.THEME_CLASSES_PREFIX+"listing-sidebar"}>
-              	<div className={Lib.THEME_CLASSES_PREFIX+"headtitle"}>
-               	  <h1>{term} Homes for {sale}</h1>
-               	  <p>There are {this.props.resultsTotal} homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.</p>
+              <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
+                  <span>Only showing {displayedResults.length}
+                    listings. Zoom in, or use filters to narrow your search.</span>
                 </div>
-                <SearchResultListing allowPagination={this.props.resultsTotal > this.props.displayedResults.length} properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)} />
+                <Map properties={displayedResults}
+                     searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
+                       ...Util.getSearchFiltersFromURL(window.location.href),
+                       locationFilter: locationFilter,
+                       geoCoordinates: geoCoordinates
+                     })}/>
+              </div>
+              <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
+                  <h1>{term} Homes for {sale}</h1>
+                  <p>There are {this.props.resultsTotal} homes for sale that are priced between $250,000 and $500,00
+                    with three to five betweens and two to three bathrooms.</p>
+                </div>
+                <SearchResultListing allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+                                     properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
               </div>
             </section>
           </div>
-        : <LoadingCircle style={{position: 'absolute', left: '50%', top: '30%'}} />}
+          : <LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>}
       </div>
     )
   }
-};
+}
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(MapSearchResults);

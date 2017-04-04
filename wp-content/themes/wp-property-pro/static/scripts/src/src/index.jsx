@@ -1,4 +1,3 @@
-import {setSearchProps} from './actions/index.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
@@ -11,11 +10,10 @@ import {browserHistory, IndexRoute, Router, Route} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
 import propertyProApp from './reducers/index.jsx';
 import {createStore} from 'redux';
+import {Lib} from './lib.jsx';
 import _ from 'lodash';
 
 let store = createStore(propertyProApp);
-
-store.dispatch(setSearchProps([]));
 
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
@@ -51,5 +49,5 @@ render(
       </Route>
     </Router>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById(Lib.THEME_CLASSES_PREFIX + 'root')
 );

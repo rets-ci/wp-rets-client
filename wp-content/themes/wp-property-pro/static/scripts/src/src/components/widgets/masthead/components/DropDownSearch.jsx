@@ -62,7 +62,7 @@ class DropDownSearch extends Component {
           {this.props.selectedOption}
           <i className="fa fa-caret-down"></i>
         </div>
-        <ul style={{display: this.props.open ? 'block' : 'none'}}>
+        <ul className={Lib.THEME_CLASSES_PREFIX + (this.props.open ? 'display' : 'hide')}>
           {this.props.labels.map((l, i) => {
             let instance = this;
             let linkClasses = this.props.selectedOption === l ? Lib.THEME_CLASSES_PREFIX+'active' : '';

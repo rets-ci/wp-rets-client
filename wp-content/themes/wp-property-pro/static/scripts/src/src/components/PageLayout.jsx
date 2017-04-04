@@ -2,12 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
 import UserPanel from './UserPanel.jsx';
+import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
 export default class PageLayout extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -27,11 +28,11 @@ export default class PageLayout extends Component {
       },
       dataType: 'json',
       success: data => {
-        if(_.get(data, 'post', null)) {
+        if (_.get(data, 'post', null)) {
           self.setState({post: data.post});
         }
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus, errorThrown);
       }
     });
@@ -58,17 +59,17 @@ export default class PageLayout extends Component {
       location
     } = this.props;
     return (
-      <div style={{height: '100%'}}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container"}>
         {Object.keys(this.state.post).length ?
           <div>
-            <UserPanel location={location} />
-            <Header location={location} />
+            <UserPanel location={location}/>
+            <Header location={location}/>
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
-               post: _.get(this.state, 'post', {}),
-               rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
-             }))}
+              post: _.get(this.state, 'post', {}),
+              rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
+            }))}
           </div>
-        : <LoadingAccordion style={{display: 'flex', width: '100%', height: '100%'}} />}
+          : <LoadingAccordion />}
       </div>
     );
   }

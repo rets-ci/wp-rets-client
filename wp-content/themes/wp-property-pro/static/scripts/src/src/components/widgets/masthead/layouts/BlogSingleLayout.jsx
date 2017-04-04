@@ -22,7 +22,7 @@ const BlogSingleLayout = ({widget_cell}) => {
           _.get(widget_cell, 'widget.fields.post_url', null)
             ? <a className={Lib.THEME_CLASSES_PREFIX + "facebook"}
                  href={"https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url}
-                 target="_blank" title="Facebook"><i className="fa fa-facebook-f"></i></a>
+                 target="_blank" title="Facebook" rel="noopener"><i className="fa fa-facebook-f"></i></a>
             : null
         }
         {

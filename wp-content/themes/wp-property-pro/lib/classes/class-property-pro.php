@@ -43,36 +43,36 @@ namespace UsabilityDynamics {
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
 
       /** Enables Customizer for Options. */
-      $this->customizer();
+      $this->property_pro_customizer();
 
       /** Scripts action section */
-      add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
-      add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
+      add_action('wp_enqueue_scripts', [$this, 'property_pro_enqueue_scripts']);
+      add_action('admin_enqueue_scripts', [$this, 'property_pro_enqueue_admin_scripts']);
 
       /** Buffering output */
-      add_action('init', [$this, 'start_buffer_output_content']);
-      add_action('shutdown', [$this, 'end_buffer_output_content'], 100);
+      add_action('init', [$this, 'property_pro_start_buffer_output_content']);
+      add_action('shutdown', [$this, 'property_pro_end_buffer_output_content'], 100);
 
       /** Disable admin bar */
-      add_action('after_setup_theme', [$this, 'remove_admin_bar']);
+      add_action('after_setup_theme', [$this, 'property_pro_remove_admin_bar']);
 
       /** Add svg to mimes types */
       if (!defined('ALLOW_UNFILTERED_UPLOADS'))
         define('ALLOW_UNFILTERED_UPLOADS', true);
 
-      add_action('upload_mimes', [$this, 'add_svg_to_upload_mimes'], 10, 1);
+      add_action('upload_mimes', [$this, 'property_pro_add_svg_to_upload_mimes'], 10, 1);
 
       /** Register guide post type */
-      add_action( 'init', [$this, 'property_pro_register_guide_post_type'] );
+      add_action('init', [$this, 'property_pro_register_guide_post_type']);
 
       /** Register taxonomy for guide post type */
-      add_action( 'init', [$this, 'property_pro_register_guide_post_type_taxonomy'] );
+      add_action('init', [$this, 'property_pro_register_guide_post_type_taxonomy']);
 
       /** Add ajax actions */
 
       /** Get posts list */
-      add_action('wp_ajax_get_posts', [$this, 'get_blog_posts_handler']);
-      add_action('wp_ajax_nopriv_get_posts', [$this, 'get_blog_posts_handler']);
+      add_action('wp_ajax_get_posts', [$this, 'property_pro_get_blog_posts_handler']);
+      add_action('wp_ajax_nopriv_get_posts', [$this, 'property_pro_get_blog_posts_handler']);
 
     }
 
@@ -80,7 +80,7 @@ namespace UsabilityDynamics {
      * Adds settings to customizer
      * @param array $options
      */
-    public function customizer($options = [])
+    public function property_pro_customizer($options = [])
     {
 
       if (class_exists('\UsabilityDynamics\PropertyPro\Customizer')) {
@@ -88,7 +88,7 @@ namespace UsabilityDynamics {
       }
     }
 
-    function enqueue_scripts()
+    function property_pro_enqueue_scripts()
     {
 
       wp_enqueue_script('jquery');
@@ -96,11 +96,10 @@ namespace UsabilityDynamics {
       wp_enqueue_style('style', get_stylesheet_uri());
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
-      wp_enqueue_script('elastic-search', $this->_scriptsDir . '/src/elasticsearch.jquery.js', [], null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
       wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . GOOGLE_API_KEY);
 
-      $params = $this->get_page_content();
+      $params = $this->property_pro_get_base_info();
 
       /**
        * @TODO Add elasticsearch host to wp property settings and get value from it,
@@ -110,7 +109,7 @@ namespace UsabilityDynamics {
       wp_localize_script('jquery', 'bundle', $params);
     }
 
-    function enqueue_admin_scripts()
+    function property_pro_enqueue_admin_scripts()
     {
 
       wp_enqueue_style('admin_style', $this->_stylesDir . '/admin/admin.css');
@@ -119,18 +118,11 @@ namespace UsabilityDynamics {
       wp_enqueue_script('admin_script', $this->_scriptsDir . '/admin/admin.js', [], null, true);
     }
 
-    private function get_page_content()
+    private function property_pro_get_base_info()
     {
-      global $post;
 
-      /** Get blog post id */
       $blog_post_id = get_option('page_for_posts');
 
-      /**  */
-      $guide_category = 'propertypro-guide-category';
-      $guide_post_type = 'propertypro-guide';
-
-      /** Init params variable */
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
@@ -139,9 +131,65 @@ namespace UsabilityDynamics {
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
-        'guide_category_base' => $guide_category
+        'guide_category_base' => 'propertypro-guide-category',
+        'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
+      /** Get company logos */
+      $params['logos'] = [
+        'square_logo' => get_theme_mod('property_pro_company_square_logo'),
+        'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
+        'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
+      ];
+
+      /** Get footer menus */
+      $footer_structure = [
+        'top_footer' => [
+          get_theme_mod('property_pro_footer_top_menu_one'),
+          get_theme_mod('property_pro_footer_top_menu_two'),
+          get_theme_mod('property_pro_footer_top_menu_three'),
+          get_theme_mod('property_pro_footer_top_menu_four')
+        ],
+        'bottom_footer' => [
+          'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
+          'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
+        ]
+      ];
+
+      foreach ($footer_structure as $level_title => $level) {
+        foreach ($level as $key => $menu_id) {
+          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
+          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
+            return [
+              'ID' => $item->ID,
+              'title' => $item->title,
+              'url' => $item->url,
+              'relative_url' => str_replace(home_url(), "", $item->url)
+            ];
+          }, wp_get_nav_menu_items($menu_id));
+        }
+      }
+
+      /** Get customizer colors settings */
+      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
+
+      return $params;
+
+    }
+
+    private function property_pro_get_page_content()
+    {
+      global $post;
+
+      /** Get blog post id */
+      $blog_post_id = get_option('page_for_posts');
+
+      /** Init guide category and post type variables */
+      $guide_category = 'propertypro-guide-category';
+      $guide_post_type = 'propertypro-guide';
+
+      /** Init params variable */
+      $params = $this->property_pro_get_base_info();
 
       /** Build post data array */
       $params['post'] = isset($post) ? [
@@ -160,7 +208,7 @@ namespace UsabilityDynamics {
       if (is_single()) {
 
         /** Is guide single page ? */
-        if($post->post_type === $guide_post_type){
+        if ($post->post_type === $guide_post_type) {
           $params['post']['is_guide_single'] = true;
           $params['post']['guide_single_content']['content'] = apply_filters('the_content', $post->post_content);
 
@@ -221,7 +269,7 @@ namespace UsabilityDynamics {
             ]
           ];
         } /** Is blog single page */
-        else{
+        else {
           $params['post']['is_blog_single'] = true;
           if ($categories = get_the_category($post->ID)) {
             $params['post']['category_title'] = $categories['0']->cat_name;
@@ -233,7 +281,7 @@ namespace UsabilityDynamics {
                 $post->ID
               ]
             ];
-            list($params['post']['related_posts']) = $this->get_blog_posts($args);
+            list($params['post']['related_posts']) = $this->property_pro_get_blog_posts($args);
           }
           $params['post']['widgets'] = [
             'masthead' => [
@@ -250,10 +298,9 @@ namespace UsabilityDynamics {
             ]
           ];
         }
-      }
-      /** Is blog page ? */
+      } /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
-        $category_id = get_query_var('cat');
+        $category_id = (int)get_query_var('cat');
 
         /** Get blog post some data */
         $post_title = get_post_field('post_title', $blog_post_id);
@@ -293,147 +340,107 @@ namespace UsabilityDynamics {
           ],
           'category_id' => $category_id,
         ];
-      }/** Is guide ? */
-      elseif(is_tax($guide_category)){
+      } /** Is guide ? */
+      elseif (is_tax($guide_category)) {
 
         /** Get current term */
         $term = get_queried_object();
 
-          /** @var Post $rand_posts
-           *  Rand post related with current term of child for get thumbnail
-           *
-           */
-          $rand_posts = get_posts([
-            'post_type' => $guide_post_type,
-            'posts_per_page' => 1,
-            'orderby'   => 'rand',
-            'tax_query' => [
-              [
-                'taxonomy' => $guide_category,
-                'field' => 'id',
-                'terms' => array_merge([$term->term_id], get_term_children($term->term_id, $guide_category)),
-                'include_children' => true
-              ]
+        /** @var Post $rand_posts
+         *  Rand post related with current term of child for get thumbnail
+         *
+         */
+        $rand_posts = get_posts([
+          'post_type' => $guide_post_type,
+          'posts_per_page' => 1,
+          'orderby' => 'rand',
+          'tax_query' => [
+            [
+              'taxonomy' => $guide_category,
+              'field' => 'id',
+              'terms' => array_merge([$term->term_id], get_term_children($term->term_id, $guide_category)),
+              'include_children' => true
             ]
-          ]);
+          ]
+        ]);
 
-          /** Masthead widget payload */
-          $params['post']['guide_content']['masthead'] = [
-            'widget' => [
-              'fields' => [
-                'layout' => 'guide_layout',
-                'title' => $term->name,
-                'subtitle' => $term->description,
-                'image_src' => $rand_posts ? get_the_post_thumbnail_url($rand_posts[0]->ID) : ''
-              ]
+        /** Masthead widget payload */
+        $params['post']['guide_content']['masthead'] = [
+          'widget' => [
+            'fields' => [
+              'layout' => 'guide_layout',
+              'title' => $term->name,
+              'subtitle' => $term->description,
+              'image_src' => $rand_posts ? get_the_post_thumbnail_url($rand_posts[0]->ID) : ''
             ]
+          ]
+        ];
+
+        /** Get child articles */
+        $content = array_map(function ($guide) {
+          return [
+            'title' => $guide->post_title,
+            'excerpt' => $guide->post_excerpt,
+            'image_src' => get_the_post_thumbnail_url($guide->ID),
+            'url' => get_permalink($guide->ID),
+            'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
           ];
+        }, get_posts([
+          'post_type' => $guide_post_type,
+          'tax_query' => [
+            [
+              'taxonomy' => $guide_category,
+              'field' => 'id',
+              'terms' => $term->term_id,
+              'include_children' => false
+            ]
+          ]
+        ]));
 
-          /** Get child articles */
-          $content = array_map(function($guide){
+        /** Merge articles with child terms */
+        $params['post']['guide_content']['items'] = array_merge($content, array_map(function ($child) {
+
+          $child_term = get_term($child);
+
+          $child_posts = array_map(function ($guide) {
             return [
+              'ID' => $guide->ID,
               'title' => $guide->post_title,
               'excerpt' => $guide->post_excerpt,
-              'image_src' => get_the_post_thumbnail_url($guide->ID),
               'url' => get_permalink($guide->ID),
               'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
             ];
           }, get_posts([
-            'post_type' => $guide_post_type,
+            'post_type' => 'propertypro-guide',
+            'posts_per_page' => -1,
             'tax_query' => [
               [
-                'taxonomy' => $guide_category,
+                'taxonomy' => 'propertypro-guide-category',
                 'field' => 'id',
-                'terms' => $term->term_id,
+                'terms' => $child,
                 'include_children' => false
               ]
             ]
           ]));
 
-          /** Merge articles with child terms */
-          $params['post']['guide_content']['items'] = array_merge($content, array_map(function($child){
+          $rand_child_post_index = rand(0, count($child_posts) - 1);
 
-            $child_term = get_term($child);
-
-            $child_posts = array_map(function($guide){
-              return [
-                'ID' => $guide->ID,
-                'title' => $guide->post_title,
-                'excerpt' => $guide->post_excerpt,
-                'url' => get_permalink($guide->ID),
-                'relative_url' => str_replace(home_url(), "", get_permalink($guide->ID))
-              ];
-            },get_posts([
-              'post_type' => 'propertypro-guide',
-              'posts_per_page' => -1,
-              'tax_query' => [
-                [
-                  'taxonomy' => 'propertypro-guide-category',
-                  'field' => 'id',
-                  'terms' => $child,
-                  'include_children' => false
-                ]
-              ]
-            ]));
-
-            $rand_child_post_index = rand(0, count($child_posts) - 1);
-
-            return [
-              'title' => $child_term->name,
-              'url' => get_term_link($child, 'propertypro-guide-category'),
-              'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
-              'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
-              'children' => $child_posts
-            ];
-          }, get_term_children($term->term_id, $guide_category)));
+          return [
+            'title' => $child_term->name,
+            'url' => get_term_link($child, 'propertypro-guide-category'),
+            'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
+            'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
+            'children' => $child_posts
+          ];
+        }, get_term_children($term->term_id, $guide_category)));
       }
-
-      /** Get company logos */
-      $params['logos'] = [
-        'square_logo' => get_theme_mod('property_pro_company_square_logo'),
-        'horizontal_logo' => get_theme_mod('property_pro_company_horizontal_logo'),
-        'vertical_logo' => get_theme_mod('property_pro_company_vertical_logo')
-      ];
-
-      /** Get footer menus */
-      $footer_structure = [
-        'top_footer' => [
-          get_theme_mod('property_pro_footer_top_menu_one'),
-          get_theme_mod('property_pro_footer_top_menu_two'),
-          get_theme_mod('property_pro_footer_top_menu_three'),
-          get_theme_mod('property_pro_footer_top_menu_four')
-        ],
-        'bottom_footer' => [
-          'menu' => get_theme_mod('property_pro_footer_bottom_menu'),
-          'social_menu' => get_theme_mod('property_pro_footer_bottom_menu_social')
-        ]
-      ];
-
-      foreach ($footer_structure as $level_title => $level) {
-        foreach ($level as $key => $menu_id) {
-          $params['footer'][$level_title][$key]['title'] = wp_get_nav_menu_object($menu_id)->name;
-          $params['footer'][$level_title][$key]['items'] = array_map(function ($item) {
-            return [
-              'ID' => $item->ID,
-              'title' => $item->title,
-              'url' => $item->url,
-              'relative_url' => str_replace(home_url(), "", $item->url)
-            ];
-          }, wp_get_nav_menu_items($menu_id));
-        }
-      }
-
-      /** Get customizer colors settings */
-      $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
 
       /** Builder content case */
       if (isset($post) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
-        $params['post']['post_content'] = self::rebuild_builder_content($post_data);
+        $params['post']['post_content'] = self::property_pro_rebuild_builder_content($post_data);
       }
 
-      /** Get toolbar layout meta */
-      $params['post']['propertypro_toolbar_layout'] = get_post_meta($post->ID, 'propertypro_toolbar_layout', true) ? get_post_meta($post->ID, 'propertypro_toolbar_layout', true) : null;
       return $params;
     }
 
@@ -444,7 +451,7 @@ namespace UsabilityDynamics {
      * @param bool $just_count
      * @return array
      */
-    function get_blog_posts($args, $just_count = false)
+    function property_pro_get_blog_posts($args, $just_count = false)
     {
 
       /** Increase paged by 1 for check next page and save previous value */
@@ -477,7 +484,7 @@ namespace UsabilityDynamics {
      * Handler for ajax query which request blog posts
      *
      */
-    function get_blog_posts_handler()
+    function property_pro_get_blog_posts_handler()
     {
 
       $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
@@ -494,7 +501,7 @@ namespace UsabilityDynamics {
         $args['category'] = $category_id;
       }
 
-      list($posts, $found_posts) = $this->get_blog_posts($args);
+      list($posts, $found_posts) = $this->property_pro_get_blog_posts($args);
 
       echo wp_json_encode([
         'posts' => $posts,
@@ -506,7 +513,7 @@ namespace UsabilityDynamics {
 
 
     /** Rebuild builder data array */
-    private static function rebuild_builder_content($content)
+    private static function property_pro_rebuild_builder_content($content)
     {
       $rows = [];
 
@@ -654,7 +661,7 @@ namespace UsabilityDynamics {
       return $rows;
     }
 
-    function start_buffer_output_content()
+    function property_pro_start_buffer_output_content()
     {
       if (!isset($_GET['pageType']))
         return;
@@ -668,7 +675,7 @@ namespace UsabilityDynamics {
       }
     }
 
-    function end_buffer_output_content()
+    function property_pro_end_buffer_output_content()
     {
       if (!isset($_GET['pageType']))
         return;
@@ -685,18 +692,18 @@ namespace UsabilityDynamics {
 
     function property_pro_buffer_handler($output)
     {
-      $params = $this->get_page_content();
+      $params = $this->property_pro_get_page_content();
       return wp_json_encode($params);
     }
 
-    function remove_admin_bar()
+    function property_pro_remove_admin_bar()
     {
       if (!current_user_can('administrator') && !is_admin()) {
         show_admin_bar(false);
       }
     }
 
-    function add_svg_to_upload_mimes($upload_mimes)
+    function property_pro_add_svg_to_upload_mimes($upload_mimes)
     {
       $upload_mimes['svg'] = 'image/svg+xml';
       $upload_mimes['svgz'] = 'image/svg+xml';
@@ -707,10 +714,11 @@ namespace UsabilityDynamics {
      * Register guide post type
      *
      */
-    function property_pro_register_guide_post_type(){
+    function property_pro_register_guide_post_type()
+    {
       $args = [
         'public' => true,
-        'labels'  => [
+        'labels' => [
           'name' => 'Guides',
           'singular_name' => 'Guide',
         ],
@@ -728,26 +736,27 @@ namespace UsabilityDynamics {
           'revisions'
         ]
       ];
-      register_post_type( 'propertypro-guide', $args );
+      register_post_type('propertypro-guide', $args);
     }
 
-    function property_pro_register_guide_post_type_taxonomy(){
+    function property_pro_register_guide_post_type_taxonomy()
+    {
 
       $labels = [
-        'name'              => 'Categories',
-        'singular_name'     => 'Category'
+        'name' => 'Categories',
+        'singular_name' => 'Category'
       ];
 
       $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
         'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'propertypro-guide-category' ),
+        'query_var' => true,
+        'rewrite' => array('slug' => 'propertypro-guide-category'),
       );
 
-      register_taxonomy( 'propertypro-guide-category', ['propertypro-guide'], $args );
+      register_taxonomy('propertypro-guide-category', ['propertypro-guide'], $args);
     }
 
   }
