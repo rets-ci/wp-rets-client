@@ -61147,7 +61147,7 @@
 	        'a',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
 	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
-	          target: '_blank', title: 'Facebook' },
+	          target: '_blank', title: 'Facebook', rel: 'noopener' },
 	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	      ) : null,
 	      twitterLink ? _react2.default.createElement(
@@ -78424,7 +78424,7 @@
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
-	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title },
+	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );
