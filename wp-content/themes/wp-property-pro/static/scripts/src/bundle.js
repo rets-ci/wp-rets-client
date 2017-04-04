@@ -84,7 +84,7 @@
 
 	var _redux = __webpack_require__(198);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -162,9 +162,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -373,11 +373,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(34);
+	var _lib = __webpack_require__(34);
+
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _lib = __webpack_require__(36);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -389,30 +389,12 @@
 	  }
 
 	  _createClass(Api, null, [{
-	    key: 'getEsClient',
-	    value: function getEsClient() {
+	    key: 'getRequestUrl',
+	    value: function getRequestUrl() {
+	      var searchType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'post';
+	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_PER_PAGE;
 
-	      /**
-	       * @type {$.es.Client|*}
-	       */
-	      return new jQuery.es.Client({
-	        hosts: 'https://' + bundle.elasticsearch_host
-	      });
-	    }
-	  }, {
-	    key: 'getEsIndex',
-	    value: function getEsIndex() {
-	      return 'v3/search';
-	    }
-	  }, {
-	    key: 'getEsType',
-	    value: function getEsType() {
-	      return 'property';
-	    }
-	  }, {
-	    key: 'getEsMethod',
-	    value: function getEsMethod() {
-	      return 'POST';
+	      return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
 	    }
 	  }, {
 	    key: 'getAggregationsFields',
@@ -544,8 +526,6 @@
 	    key: 'autocompleteQuery',
 	    value: function autocompleteQuery(params, callback) {
 
-	      var client = Api.getEsClient();
-
 	      var rows = [];
 
 	      if (!params.term || params.term.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
@@ -588,14 +568,10 @@
 	        suggest: suggest
 	      };
 
-	      client.search({
-	        index: Api.getEsIndex(),
-	        type: Api.getEsType(),
-	        method: Api.getEsMethod(),
-	        size: 0,
-	        body: body
-	      }, function selectQueryResponse(err, response) {
-
+	      Api.makeRequest({
+	        'url': Api.getRequestUrl('property', 0),
+	        'query': body
+	      }, function (response) {
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
 
@@ -684,8 +660,6 @@
 	    key: 'topQuery',
 	    value: function topQuery(params, callback) {
 
-	      var client = Api.getEsClient();
-
 	      var rows = [];
 
 	      var aggregations = this.getTopAggregations().aggs;
@@ -703,14 +677,10 @@
 	        };
 	      }
 
-	      client.search({
-	        index: Api.getEsIndex(),
-	        type: 'post',
-	        method: Api.getEsMethod(),
-	        size: params.size || 0,
-	        body: body
-	      }, function selectQueryResponse(err, response) {
-
+	      Api.makeRequest({
+	        'url': Api.getRequestUrl('post', params.size || 0),
+	        'query': body
+	      }, function (response) {
 	        var responseAggs = _lodash2.default.get(response, 'aggregations');
 
 	        for (var i in responseAggs) {
@@ -829,17 +799,34 @@
 	    key: 'search',
 	    value: function search(query, callback) {
 
-	      var client = Api.getEsClient();
+	      Api.makeRequest({
+	        'url': Api.getRequestUrl(),
+	        'query': query
+	      }, callback);
+	    }
+	  }, {
+	    key: 'makeRequest',
+	    value: function makeRequest(data, callback) {
 
-	      var esQuery = {
-	        index: Api.getEsIndex(),
-	        type: 'post',
-	        method: Api.getEsMethod(),
-	        body: query,
-	        size: 18
-	      };
-	      client.search(esQuery, function (error, response) {
-	        callback(response);
+	      if (_lodash2.default.isEmpty(_lodash2.default.get(data, 'url', null)) || _lodash2.default.isEmpty(_lodash2.default.get(data, 'query', null))) {
+	        console.log('Missing url or query object');
+	        return false;
+	      }
+
+	      jQuery.ajax({
+	        url: _lodash2.default.get(data, 'url'),
+	        dataType: 'json',
+	        type: 'POST',
+	        contentType: 'application/json',
+	        crossDomain: true,
+	        data: JSON.stringify(_lodash2.default.get(data, 'query')),
+	        success: function success(response) {
+	          if (typeof callback !== 'undefined') {
+	            callback(response);
+	          } else {
+	            console.log('Missing callback');
+	          }
+	        }
 	      });
 	    }
 	  }]);
@@ -4905,6 +4892,49 @@
 
 /***/ },
 /* 34 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var Lib = exports.Lib = {
+	  ADD_MAP_ACTION: 'ADD_MAP',
+	  ADD_MARKER_ACTION: 'ADD_MARKER',
+	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
+	  EXTENSION_DELIMITER: '.',
+	  INIT_MENU_ACTION: 'INIT_MENU',
+	  MIN_SEARCH_KEY_LENGTH: 3,
+	  MOBILE_WIDTH: 768,
+	  PROPERTY_LISTING_IMAGE_SIZE: '400x230',
+	  PROPERTY_PER_PAGE: 18,
+	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
+	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
+	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
+	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
+	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
+	  SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
+	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
+	  SET_BLOG_POSTS_ACTION: 'SET_BLOG_POSTS',
+	  STRING_ARRAY_DELIMITER: '-',
+	  THEME_PREFIX: 'wp-property-pro-',
+	  TOGGLE_LOCATION_MODAL_ACTION: 'TOGGLE_LOCATION_MODAL',
+	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
+	  TOP_AGGREGATIONS_COUNT: 5,
+	  URL_DELIMITER: '/',
+	  POST_SUGGEST_COUNT: 5,
+	  TERM_SUGGEST_COUNT: 20,
+	  PROPERTIES_LIST_CAROUSEL: "carousel",
+	  PROPERTIES_LIST_DEFAULT: "default",
+	  THEME_CLASSES_PREFIX: "propertypro-",
+	  AJAX_GET_POSTS_ACTION: "get_posts",
+	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
+	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search"
+	};
+
+/***/ },
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -21992,10 +22022,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(35)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(36)(module)))
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -22011,49 +22041,6 @@
 
 
 /***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var Lib = exports.Lib = {
-	  ADD_MAP_ACTION: 'ADD_MAP',
-	  ADD_MARKER_ACTION: 'ADD_MARKER',
-	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
-	  EXTENSION_DELIMITER: '.',
-	  INIT_MENU_ACTION: 'INIT_MENU',
-	  MIN_SEARCH_KEY_LENGTH: 3,
-	  MOBILE_WIDTH: 768,
-	  PROPERTY_LISTING_IMAGE_SIZE: '400x230',
-	  PROPERTY_PER_PAGE: 18,
-	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
-	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
-	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
-	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
-	  SET_TESTIMONIAL_ACTIVE_ITEM_ACTION: 'SET_TESTIMONIAL_ACTIVE_ITEM',
-	  SET_USER_DATA_ACTION: 'SET_USER_DATA',
-	  SET_BLOG_POSTS_ACTION: 'SET_BLOG_POSTS',
-	  STRING_ARRAY_DELIMITER: '-',
-	  THEME_PREFIX: 'wp-property-pro-',
-	  TOGGLE_LOCATION_MODAL_ACTION: 'TOGGLE_LOCATION_MODAL',
-	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
-	  TOP_AGGREGATIONS_COUNT: 5,
-	  URL_DELIMITER: '/',
-	  POST_SUGGEST_COUNT: 5,
-	  TERM_SUGGEST_COUNT: 20,
-	  PROPERTIES_LIST_CAROUSEL: "carousel",
-	  PROPERTIES_LIST_DEFAULT: "default",
-	  THEME_CLASSES_PREFIX: "propertypro-",
-	  AJAX_GET_POSTS_ACTION: "get_posts",
-	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
-	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search"
-	};
-
-/***/ },
 /* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22064,7 +22051,7 @@
 	});
 	exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = undefined;
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var openLocationModal = exports.openLocationModal = function openLocationModal(open) {
 	  return {
@@ -22151,9 +22138,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -22218,7 +22205,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22341,11 +22328,11 @@
 
 	var _reactRedux = __webpack_require__(187);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var _reactRouter = __webpack_require__(224);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -41321,7 +41308,7 @@
 
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(35)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(36)(module)))
 
 /***/ },
 /* 212 */
@@ -49750,7 +49737,7 @@
 
 	}(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36)(module), (function() { return this; }())))
 
 /***/ },
 /* 279 */
@@ -50706,9 +50693,9 @@
 
 	var _reactRedux = __webpack_require__(187);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var _react = __webpack_require__(3);
 
@@ -51172,9 +51159,9 @@
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -52113,7 +52100,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var _react = __webpack_require__(3);
 
@@ -52133,7 +52120,7 @@
 
 	var _reactRouter = __webpack_require__(224);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59053,9 +59040,9 @@
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59177,7 +59164,7 @@
 
 	var _HeaderSearch2 = _interopRequireDefault(_HeaderSearch);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59253,9 +59240,9 @@
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59298,9 +59285,9 @@
 
 	var _reactRouter = __webpack_require__(224);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59369,7 +59356,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -59379,7 +59366,7 @@
 
 	var _SearchFilters2 = _interopRequireDefault(_SearchFilters);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59509,7 +59496,7 @@
 
 	var _index = __webpack_require__(37);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var _react = __webpack_require__(3);
 
@@ -59668,7 +59655,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59732,9 +59719,9 @@
 
 	var _index = __webpack_require__(37);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -60054,7 +60041,7 @@
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -60173,9 +60160,9 @@
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -60274,9 +60261,9 @@
 
 	var _Search2 = _interopRequireDefault(_Search);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -60332,9 +60319,9 @@
 
 	var _index = __webpack_require__(37);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -60515,7 +60502,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60628,7 +60615,7 @@
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61069,9 +61056,9 @@
 
 	var _Search2 = _interopRequireDefault(_Search);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61113,9 +61100,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61183,9 +61170,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61226,9 +61213,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61322,9 +61309,9 @@
 
 	var _reactRouter = __webpack_require__(224);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61583,9 +61570,9 @@
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61637,9 +61624,9 @@
 
 	var _reactRedux = __webpack_require__(187);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61688,9 +61675,9 @@
 
 	var _index = __webpack_require__(37);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61811,9 +61798,9 @@
 
 	var _reactRedux = __webpack_require__(187);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -61873,7 +61860,7 @@
 
 	var _Defaultlayout2 = _interopRequireDefault(_Defaultlayout);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61928,9 +61915,9 @@
 
 	var _Swiper2 = _interopRequireDefault(_Swiper);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62054,9 +62041,9 @@
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62117,9 +62104,9 @@
 
 	var _IconItem2 = _interopRequireDefault(_IconItem);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62173,7 +62160,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62292,9 +62279,9 @@
 
 	var _TextItem2 = _interopRequireDefault(_TextItem);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62373,7 +62360,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62417,9 +62404,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62583,7 +62570,7 @@
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62633,9 +62620,9 @@
 
 	var _FeatureGroup2 = _interopRequireDefault(_FeatureGroup);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62693,9 +62680,9 @@
 
 	var _Feature2 = _interopRequireDefault(_Feature);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62778,7 +62765,7 @@
 
 	var _reactRedux = __webpack_require__(187);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62881,9 +62868,9 @@
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -62976,7 +62963,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63073,9 +63060,9 @@
 
 	var _reactRenderHtml2 = _interopRequireDefault(_reactRenderHtml);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78126,9 +78113,9 @@
 
 	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78167,9 +78154,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78235,7 +78222,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78302,9 +78289,9 @@
 
 	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78348,7 +78335,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78398,9 +78385,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78467,9 +78454,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78581,9 +78568,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78666,9 +78653,9 @@
 
 	var _index = __webpack_require__(37);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78780,9 +78767,9 @@
 
 	var _PostCard2 = _interopRequireDefault(_PostCard);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -78916,9 +78903,9 @@
 
 	var _HeaderGuide2 = _interopRequireDefault(_HeaderGuide);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -79016,9 +79003,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -79144,9 +79131,9 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -79690,7 +79677,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var map = function map() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79721,7 +79708,7 @@
 	  value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var locationModal = function locationModal() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79749,7 +79736,7 @@
 	  value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var propertiesModal = function propertiesModal() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
@@ -79777,7 +79764,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var searchProps = function searchProps() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79804,7 +79791,7 @@
 	  value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var searchResults = function searchResults() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79841,7 +79828,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var mapMarkers = function mapMarkers() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79868,7 +79855,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var searchProps = function searchProps() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79898,7 +79885,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var filterTerms = function filterTerms() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79927,7 +79914,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var panel = function panel() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
@@ -79955,7 +79942,7 @@
 	    value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
 	var testimonialsCarousel = function testimonialsCarousel() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -79982,9 +79969,9 @@
 	  value: true
 	});
 
-	var _lib = __webpack_require__(36);
+	var _lib = __webpack_require__(34);
 
-	var _lodash = __webpack_require__(34);
+	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 

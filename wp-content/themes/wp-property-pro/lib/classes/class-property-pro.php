@@ -96,7 +96,6 @@ namespace UsabilityDynamics {
       wp_enqueue_style('style', get_stylesheet_uri());
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
-      wp_enqueue_script('elastic-search', $this->_scriptsDir . '/src/elasticsearch.jquery.js', [], null, true);
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
       wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . GOOGLE_API_KEY);
 
