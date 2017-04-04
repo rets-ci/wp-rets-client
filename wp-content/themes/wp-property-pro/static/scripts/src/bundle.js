@@ -84,6 +84,8 @@
 
 	var _redux = __webpack_require__(198);
 
+	var _lib = __webpack_require__(34);
+
 	var _lodash = __webpack_require__(35);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -114,7 +116,7 @@
 	      _react2.default.createElement(_reactRouter.Route, { path: '*', component: _Page2.default })
 	    )
 	  )
-	), document.getElementById('root'));
+	), document.getElementById(_lib.Lib.THEME_CLASSES_PREFIX + 'root'));
 
 /***/ },
 /* 1 */
@@ -4892,13 +4894,21 @@
 
 /***/ },
 /* 34 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.Lib = undefined;
+
+	var _lodash = __webpack_require__(35);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
@@ -4927,7 +4937,7 @@
 	  TERM_SUGGEST_COUNT: 20,
 	  PROPERTIES_LIST_CAROUSEL: "carousel",
 	  PROPERTIES_LIST_DEFAULT: "default",
-	  THEME_CLASSES_PREFIX: "propertypro-",
+	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search"
