@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 class PostContent extends Component {
   static propTypes = {
-    content: PropTypes.string.required
+    content: PropTypes.string.isRequired
   };
 
   render() {

@@ -37,7 +37,7 @@ class Single extends Component {
           <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
             <div className="col-lg-6">
               <div className="row">
-                <HeaderGuide headerStyle={{zIndex: "12"}}/>
+                <HeaderGuide/>
                 <Masthead widget_cell={_.get(content, 'masthead', '')}
                           returnToArchiveHandler={this.returnToArchiveHandler.bind(this)}
                           nextArticleHandler={this.nextArticleHandler.bind(this)}/>

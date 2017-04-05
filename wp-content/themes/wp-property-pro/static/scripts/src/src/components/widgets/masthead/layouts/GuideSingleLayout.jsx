@@ -3,6 +3,15 @@ import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
 const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, nextArticleHandler}) => {
+
+  let prevLinkText = 'Return to Guide';
+  let nextLinkText = 'Next Article';
+
+  if (window.innerWidth < Lib.MOBILE_WIDTH) {
+    prevLinkText = 'Guide';
+    nextLinkText = 'Next';
+  }
+
   return (
     <section className={Lib.THEME_CLASSES_PREFIX + "article-masthead"} style={headerStyle}>
       <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>
@@ -25,7 +34,7 @@ const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, ne
               returnToArchiveHandler();
             }}>
               <fa className="fa fa-arrow-left"></fa>
-              Return to Guide
+              {prevLinkText}
             </a>
           </li>
           <li className={Lib.THEME_CLASSES_PREFIX + "nav-item-next"}>
@@ -33,7 +42,7 @@ const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, ne
               eve.preventDefault();
               nextArticleHandler();
             }}>
-              Next Article
+              {nextLinkText}
               <fa className="fa fa-arrow-right"></fa>
             </a>
           </li>

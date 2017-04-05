@@ -62,15 +62,19 @@ class Mobile extends Component {
           : {}
       ;
 
+    let selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}display`;
+    if(this.props.dropDownOpen){
+      selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}hide`;
+    }
+
     return (
       <div className={`hidden-lg-up ${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile`}>
-        <div style={{display: this.props.dropDownOpen ? 'none' : 'block'}}
-             className={Lib.THEME_CLASSES_PREFIX + "subnavigation-mobile-selected-option"}
+        <div className={selectedOptionClasses}
              onClick={() => self.handleChange.bind(this)(!this.props.dropDownOpen)}>
           {selectedOption}
           <i className={this.props.dropDownOpen ? "fa fa-angle-up" : "fa fa-angle-down"}></i>
         </div>
-        <ul style={{display: this.props.dropDownOpen ? 'block' : 'none'}}>
+        <ul className={Lib.THEME_CLASSES_PREFIX + (this.props.dropDownOpen ? 'display' : 'hide')}>
           {links.map((l, i) => {
               let linkClasses = selectedOption === _.get(l, 'title') ? Lib.THEME_CLASSES_PREFIX + 'active' : '';
               if (selectedOption === _.get(l, 'title')) {
