@@ -385,8 +385,10 @@ class Api {
       }
       if (params.bedrooms) {
         query.bool.must.push({
-          "term": {
-            "post_meta.rets_beds": params.bedrooms
+          "range": {
+            "post_meta.rets_beds": {
+              "gte": params.bedrooms
+            }
           }
         });
       }
