@@ -58,7 +58,10 @@
         ".propertypro-category-card .propertypro-category-card-content ul li:focus",
         ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:hover",
         ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:focus",
-        ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:active"
+        ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:active",
+        ".propertypro-blog-posts .propertypro-post-title a:hover",
+        ".propertypro-blog-posts .propertypro-post-title a:focus",
+        ".propertypro-blog-posts .propertypro-post-title a:active"
       ]
     },
     {

@@ -468,11 +468,16 @@ namespace UsabilityDynamics {
       $args['paged'] = $paged;
 
       $posts = array_map(function ($post) {
+
+        $attachment_id = get_post_thumbnail_id($post->ID);
+
         return [
           'ID' => $post->ID,
           'title' => $post->post_title,
           'excerpt' => $post->post_excerpt,
           'image_src' => get_the_post_thumbnail_url($post->ID),
+          'image_title' => $attachment_id ? get_the_title($attachment_id) : '',
+          'image_alt' => $attachment_id ? get_post_meta($attachment_id, '_wp_attachment_image_alt', true) : '',
           'url' => get_permalink($post->ID),
           'relative_url' => str_replace(home_url(), "", get_permalink($post->ID))
         ];
