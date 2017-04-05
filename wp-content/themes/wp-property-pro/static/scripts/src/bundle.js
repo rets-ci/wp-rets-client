@@ -29130,6 +29130,7 @@
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
 	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
 	    queryParams: ownProps.location.query,
+	    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
 	    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
 	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
 	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0)
@@ -29152,7 +29153,9 @@
 	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
 	      });
 	      var query = _Api2.default.createESSearchQuery(searchParams);
+	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
 	      _Api2.default.search(query, function (response) {
+	        dispatch((0, _index.toggleMapSearchResultsLoading)(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
 	        } else {
@@ -29161,7 +29164,9 @@
 	      });
 	    },
 	    doSearchWithQuery: function doSearchWithQuery(query, append) {
+	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
 	      _Api2.default.search(query, function (response) {
+	        dispatch((0, _index.toggleMapSearchResultsLoading)(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
@@ -29226,15 +29231,17 @@
 	      var _props = this.props,
 	          displayedResults = _props.displayedResults,
 	          location = _props.location,
+	          mapSearchResultsLoading = _props.mapSearchResultsLoading,
 	          propertiesModalOpen = _props.propertiesModalOpen,
 	          results = _props.results;
 
 	      var propertyTypes = location.query['wpp_search[property_types]'];
 	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href);
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        displayedResults.length ? _react2.default.createElement(
+	      var elementToShow = void 0;
+	      if (mapSearchResultsLoading) {
+	        elementToShow = _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" });
+	      } else {
+	        elementToShow = _react2.default.createElement(
 	          'div',
 	          null,
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
@@ -29256,7 +29263,7 @@
 	                  'listings. Zoom in, or use filters to narrow your search.'
 	                )
 	              ),
-	              _react2.default.createElement(_Map2.default, { properties: displayedResults,
+	              displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
 	                searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
 	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href), {
 	                    locationFilter: locationFilter,
@@ -29264,7 +29271,7 @@
 	                  }));
 	                } })
 	            ),
-	            _react2.default.createElement(
+	            displayedResults.length ? _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
 	              _react2.default.createElement(
@@ -29287,9 +29294,26 @@
 	              ),
 	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
 	                properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	            ) : _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                _react2.default.createElement(
+	                  'h1',
+	                  null,
+	                  'No results to show. Please adjust the filters to select a different range of properties'
+	                )
+	              )
 	            )
 	          )
-	        ) : _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" })
+	        );
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        elementToShow
 	      );
 	    }
 	  }]);
@@ -29300,6 +29324,7 @@
 	MapSearchResults.propTypes = {
 	  doSearchWithQuery: _react.PropTypes.func.isRequired,
 	  location: _react.PropTypes.object,
+	  mapSearchResultsLoading: _react.PropTypes.bool.isRequired,
 	  params: _react.PropTypes.object,
 	  resetSearchResults: _react.PropTypes.func.isRequired,
 	  results: _react.PropTypes.array.isRequired
@@ -29724,8 +29749,10 @@
 	        }
 	        if (params.bedrooms) {
 	          query.bool.must.push({
-	            "term": {
-	              "post_meta.rets_beds": params.bedrooms
+	            "range": {
+	              "post_meta.rets_beds": {
+	                "gte": params.bedrooms
+	              }
 	            }
 	          });
 	        }
@@ -29823,6 +29850,7 @@
 	  STRING_ARRAY_DELIMITER: '-',
 	  THEME_PREFIX: 'wp-property-pro-',
 	  TOGGLE_LOCATION_MODAL_ACTION: 'TOGGLE_LOCATION_MODAL',
+	  TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED: 'TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED',
 	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
 	  URL_DELIMITER: '/',
@@ -46936,7 +46964,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = undefined;
+	exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.openPropertiesModal = exports.openLocationModal = undefined;
 
 	var _lib = __webpack_require__(276);
 
@@ -46984,6 +47012,13 @@
 	  return {
 	    type: _lib.Lib.SET_FILTER_TERMS_ACTION,
 	    filterTerms: filterTerms
+	  };
+	};
+
+	var toggleMapSearchResultsLoading = exports.toggleMapSearchResultsLoading = function toggleMapSearchResultsLoading(loading) {
+	  return {
+	    type: _lib.Lib.TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED,
+	    loading: loading
 	  };
 	};
 
@@ -47136,8 +47171,8 @@
 	      var _this2 = this;
 
 	      var initialCoordinates = {
-	        lat: +this.props.properties[0]._source.post_meta.wpp_location_pin[0],
-	        lng: +this.props.properties[0]._source.post_meta.wpp_location_pin[1]
+	        lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+	        lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
 	      };
 	      this.map = new window.google.maps.Map(this.mapElement, {
 	        center: initialCoordinates,
@@ -79771,6 +79806,10 @@
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
+	var _mapSearchResultsLoading = __webpack_require__(431);
+
+	var _mapSearchResultsLoading2 = _interopRequireDefault(_mapSearchResultsLoading);
+
 	var _searchType = __webpack_require__(426);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
@@ -79801,6 +79840,7 @@
 	    searchResults: _searchResults2.default,
 	    searchType: _searchType2.default,
 	    mapMarkersState: _mapMarkers2.default,
+	    mapSearchResultsLoading: _mapSearchResultsLoading2.default,
 	    routing: _reactRouterRedux.routerReducer,
 	    filterTermsState: _filterTerms2.default,
 	    panel: _panel2.default,
@@ -80142,6 +80182,33 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ },
+/* 431 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _lib = __webpack_require__(276);
+
+	var mapSearchResultsLoading = function mapSearchResultsLoading() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { loading: false };
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _lib.Lib.TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED:
+	      return Object.assign({}, state, {
+	        loading: action.loading
+	      });
+	    default:
+	      return state;
+	  }
+	};
+	exports.default = mapSearchResultsLoading;
 
 /***/ }
 /******/ ]);
