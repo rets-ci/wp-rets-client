@@ -754,6 +754,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .propertypro-guide-detail { padding-right: 30px; padding-left: 30px; }
     .propertypro-guide-masthead, .propertypro-article-masthead { position: static !important; }
     .propertypro-article-masthead { height: 100vh; }
+    .propertypro-article-masthead .propertypro-article-header h1 { font-size: 36px; }
+    .propertypro-article-masthead .propertypro-article-header p { display: none; }
     .propertypro-article-masthead nav {position: fixed; padding-top: 10px; }
     .propertypro-guide-content{ padding: 0; }
     .propertypro-guide-item { margin: 0 -15px 15px !important; }
