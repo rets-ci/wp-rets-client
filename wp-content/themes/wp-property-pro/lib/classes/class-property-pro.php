@@ -131,7 +131,7 @@ namespace UsabilityDynamics {
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
-        'guide_category_base' => 'guide',
+        'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
@@ -723,7 +723,8 @@ namespace UsabilityDynamics {
           'singular_name' => 'Guide',
         ],
         'rewrite' => [
-          'slug' => 'guide'
+          'slug' => 'guide',
+          'with_front' => false
         ],
         'hierarchical' => true,
         'show_in_rest' => true,
@@ -754,7 +755,7 @@ namespace UsabilityDynamics {
         'show_admin_column' => true,
         'query_var' => true,
         'rewrite' => array(
-          'slug' => 'guide',
+          'slug' => 'guides',
           'with_front' => false
         ),
       );
