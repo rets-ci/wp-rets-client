@@ -754,7 +754,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .propertypro-guide-detail { padding-right: 30px; padding-left: 30px; }
     .propertypro-guide-masthead, .propertypro-article-masthead { position: static !important; }
     .propertypro-article-masthead { height: 100vh; }
-    .propertypro-article-masthead nav {position: fixed; }
+    .propertypro-article-masthead nav {position: fixed; padding-top: 10px; }
     .propertypro-guide-content{ padding: 0; }
     .propertypro-guide-item { margin: 0 -15px 15px !important; }
     .propertypro-guide-content .propertypro-guide-item.propertypro-last { margin: 0 -15px !important; }

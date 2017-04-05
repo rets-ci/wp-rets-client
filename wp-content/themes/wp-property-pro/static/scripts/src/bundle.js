@@ -47258,10 +47258,17 @@
 	    }
 	  }, {
 	    key: 'getThumbnailUrlBySize',
-	    value: function getThumbnailUrlBySize(thumbnailUrl, size) {
+	    value: function getThumbnailUrlBySize() {
+	      var thumbnailUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE;
+
 	      var urlArray = _lodash2.default.split(thumbnailUrl, _lib.Lib.URL_DELIMITER);
-	      var fileName = _lodash2.default.last(urlArray);
+	      var fileName = !_lodash2.default.isEmpty(urlArray) ? _lodash2.default.last(urlArray) : '';
 	      var fileNameArray = _lodash2.default.split(fileName, _lib.Lib.EXTENSION_DELIMITER);
+
+	      if (_lodash2.default.isEmpty(fileNameArray)) {
+	        return '';
+	      }
 
 	      var fileNameWithSize = _lodash2.default.join([fileNameArray[0], size], _lib.Lib.STRING_ARRAY_DELIMITER);
 
@@ -61599,6 +61606,15 @@
 	      returnToArchiveHandler = _ref.returnToArchiveHandler,
 	      nextArticleHandler = _ref.nextArticleHandler;
 
+
+	  var prevLinkText = 'Return to Guide';
+	  var nextLinkText = 'Next Article';
+
+	  if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
+	    prevLinkText = 'Guide';
+	    nextLinkText = 'Next';
+	  }
+
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-masthead", style: headerStyle },
@@ -61632,7 +61648,7 @@
 	                returnToArchiveHandler();
 	              } },
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            'Return to Guide'
+	            prevLinkText
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -61644,7 +61660,7 @@
 	                eve.preventDefault();
 	                nextArticleHandler();
 	              } },
-	            'Next Article',
+	            nextLinkText,
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
 	          )
 	        )
