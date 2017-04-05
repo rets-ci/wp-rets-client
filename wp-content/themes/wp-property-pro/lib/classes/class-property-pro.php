@@ -271,6 +271,7 @@ namespace UsabilityDynamics {
         } /** Is blog single page */
         else {
           $params['post']['is_blog_single'] = true;
+          $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
             $params['post']['category_title'] = $categories['0']->cat_name;
             $args = [

@@ -63290,9 +63290,9 @@
 	          'article',
 	          null,
 	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	          _lodash2.default.get(this.props.post, 'post_content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.post_content }) : null
+	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
 	        ),
-	        _react2.default.createElement(
+	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
 	          'section',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	          _react2.default.createElement(
@@ -63309,15 +63309,15 @@
 	                ' Articles'
 	              )
 	            ) : null,
-	            _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	            _react2.default.createElement(
 	              'div',
 	              { className: 'row' },
 	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
 	                return _react2.default.createElement(_PostCard2.default, { data: item });
 	              })
-	            ) : null
+	            )
 	          )
-	        ),
+	        ) : null,
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
