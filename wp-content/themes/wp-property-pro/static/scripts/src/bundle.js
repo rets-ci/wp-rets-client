@@ -47258,10 +47258,17 @@
 	    }
 	  }, {
 	    key: 'getThumbnailUrlBySize',
-	    value: function getThumbnailUrlBySize(thumbnailUrl, size) {
+	    value: function getThumbnailUrlBySize() {
+	      var thumbnailUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE;
+
 	      var urlArray = _lodash2.default.split(thumbnailUrl, _lib.Lib.URL_DELIMITER);
-	      var fileName = _lodash2.default.last(urlArray);
+	      var fileName = !_lodash2.default.isEmpty(urlArray) ? _lodash2.default.last(urlArray) : '';
 	      var fileNameArray = _lodash2.default.split(fileName, _lib.Lib.EXTENSION_DELIMITER);
+
+	      if (_lodash2.default.isEmpty(fileNameArray)) {
+	        return '';
+	      }
 
 	      var fileNameWithSize = _lodash2.default.join([fileNameArray[0], size], _lib.Lib.STRING_ARRAY_DELIMITER);
 
@@ -61599,6 +61606,15 @@
 	      returnToArchiveHandler = _ref.returnToArchiveHandler,
 	      nextArticleHandler = _ref.nextArticleHandler;
 
+
+	  var prevLinkText = 'Return to Guide';
+	  var nextLinkText = 'Next Article';
+
+	  if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
+	    prevLinkText = 'Guide';
+	    nextLinkText = 'Next';
+	  }
+
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-masthead", style: headerStyle },
@@ -61632,7 +61648,7 @@
 	                returnToArchiveHandler();
 	              } },
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            'Return to Guide'
+	            prevLinkText
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -61644,7 +61660,7 @@
 	                eve.preventDefault();
 	                nextArticleHandler();
 	              } },
-	            'Next Article',
+	            nextLinkText,
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
 	          )
 	        )
@@ -63274,9 +63290,9 @@
 	          'article',
 	          null,
 	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	          _lodash2.default.get(this.props.post, 'post_content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.post_content }) : null
+	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
 	        ),
-	        _react2.default.createElement(
+	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
 	          'section',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	          _react2.default.createElement(
@@ -63293,15 +63309,15 @@
 	                ' Articles'
 	              )
 	            ) : null,
-	            _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	            _react2.default.createElement(
 	              'div',
 	              { className: 'row' },
 	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
 	                return _react2.default.createElement(_PostCard2.default, { data: item });
 	              })
-	            ) : null
+	            )
 	          )
-	        ),
+	        ) : null,
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -63337,6 +63353,10 @@
 
 	var _lib = __webpack_require__(276);
 
+	var _lodash = __webpack_require__(277);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63361,6 +63381,8 @@
 	          title = _props$data.title,
 	          excerpt = _props$data.excerpt,
 	          image_src = _props$data.image_src,
+	          image_title = _props$data.image_title,
+	          image_alt = _props$data.image_alt,
 	          url = _props$data.url,
 	          relative_url = _props$data.relative_url;
 
@@ -63376,7 +63398,7 @@
 	                e.preventDefault();
 	                _Util2.default.goToUrl(relative_url);
 	              } },
-	            _react2.default.createElement('img', { src: image_src, alt: title, className: 'img-fluid' })
+	            _react2.default.createElement('img', { src: image_src, alt: _lodash2.default.isEmpty(image_alt) ? image_title : image_alt, className: 'img-fluid' })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -79209,6 +79231,8 @@
 	                title: _lodash2.default.get(p, 'title', ''),
 	                excerpt: _lodash2.default.get(p, 'excerpt', ''),
 	                image_src: _lodash2.default.get(p, 'image_src', ''),
+	                image_title: _lodash2.default.get(p, 'image_title', ''),
+	                image_alt: _lodash2.default.get(p, 'image_alt', ''),
 	                url: _lodash2.default.get(p, 'url', ''),
 	                relative_url: _lodash2.default.get(p, 'relative_url', '')
 

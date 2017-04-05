@@ -52,7 +52,16 @@
         ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a.propertypro-active",
         ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:hover",
         ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:focus",
-        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:active"
+        ".propertypro-subnavigation .propertypro-subnavigation-mobile ul li a:active",
+        ".propertypro-category-card .propertypro-category-card-content ul li:hover",
+        ".propertypro-category-card .propertypro-category-card-content ul li:active",
+        ".propertypro-category-card .propertypro-category-card-content ul li:focus",
+        ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:hover",
+        ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:focus",
+        ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:active",
+        ".propertypro-blog-posts .propertypro-post-title a:hover",
+        ".propertypro-blog-posts .propertypro-post-title a:focus",
+        ".propertypro-blog-posts .propertypro-post-title a:active"
       ]
     },
     {
@@ -83,7 +92,10 @@
         ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box ol li .container",
         ".propertypro-widget-tour .propertypro-headtitle h2",
         ".propertypro-tour-widget-content h3",
-        ".propertypro-guide-masthead h1"
+        ".propertypro-guide-masthead h1",
+        ".propertypro-article-masthead h1",
+        ".propertypro-article-content h2",
+        ".propertypro-article-content h3"
       ]
     },
     {
@@ -119,8 +131,12 @@
         ".propertypro-post-content li",
         ".propertypro-guide-content .propertypro-category-card .propertypro-category-header",
         ".propertypro-guide-content .propertypro-category-card .propertypro-category-navigation",
-        ".propertypro-article-content h2",
-        ".propertypro-article-content p"
+        ".propertypro-article-content p",
+        ".propertypro-toolbar .propertypro-btn-back-to-home",
+        ".propertypro-article-masthead p",
+        ".propertypro-nav-item-prev a",
+        ".propertypro-nav-item-next a",
+        ".propertypro-guide-masthead .propertypro-guide-excerpt"
       ]
     },
     {

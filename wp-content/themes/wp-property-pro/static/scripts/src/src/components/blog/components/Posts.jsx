@@ -50,6 +50,8 @@ class Posts extends Component {
                     title: _.get(p, 'title', ''),
                     excerpt: _.get(p, 'excerpt', ''),
                     image_src: _.get(p, 'image_src', ''),
+                    image_title: _.get(p, 'image_title', ''),
+                    image_alt: _.get(p, 'image_alt', ''),
                     url: _.get(p, 'url', ''),
                     relative_url: _.get(p, 'relative_url', ''),
 

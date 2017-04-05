@@ -22,33 +22,34 @@ class Single extends Component {
               : null
           }
           {
-            _.get(this.props.post, 'post_content', null)
-              ? <PostContent content={this.props.post.post_content}/>
+            _.get(this.props.post, 'content', null)
+              ? <PostContent content={this.props.post.content}/>
               : null
           }
         </article>
-        <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
-          <div className="container">
-            {
-              _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
-                ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
-                  <h4>More {this.props.post.category_title} Articles</h4>
-                </div>
-                : null
-            }
-            {
-              _.get(this.props.post, 'related_posts', []).length
-                ? <div className="row">
+        {
+          _.get(this.props.post, 'related_posts', []).length
+            ?
+            <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
+              <div className="container">
+                {
+                  _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
+                    ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
+                      <h4>More {this.props.post.category_title} Articles</h4>
+                    </div>
+                    : null
+                }
+                <div className="row">
                   {
                     _.get(this.props.post, 'related_posts', []).map((item) =>
                       <PostCard data={item}/>
                     )
                   }
                 </div>
-                : null
-            }
-          </div>
-        </section>
+              </div>
+            </section>
+            : null
+        }
         <Footer/>
       </div>
     )

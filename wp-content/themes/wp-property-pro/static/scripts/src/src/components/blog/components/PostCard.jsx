@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Util from '../../Util.jsx';
 import {Lib} from '../../../lib.jsx';
+import _ from 'lodash';
 
 export default class PostCard extends Component {
   static propTypes = {
@@ -12,6 +13,8 @@ export default class PostCard extends Component {
       title,
       excerpt,
       image_src,
+      image_title,
+      image_alt,
       url,
       relative_url
     } = this.props.data;
@@ -23,7 +26,7 @@ export default class PostCard extends Component {
             Util.goToUrl(relative_url)
           }
           }>
-            <img src={image_src} alt={title} className="img-fluid"/>
+            <img src={image_src} alt={_.isEmpty(image_alt) ? image_title : image_alt} className="img-fluid"/>
           </a>
         </div>
         <header className={Lib.THEME_CLASSES_PREFIX + "post-excerpt"}>

@@ -131,7 +131,7 @@ namespace UsabilityDynamics {
         'static_images_url' => get_template_directory_uri() . '/static/images/src/',
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
-        'guide_category_base' => 'guide',
+        'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
@@ -271,6 +271,7 @@ namespace UsabilityDynamics {
         } /** Is blog single page */
         else {
           $params['post']['is_blog_single'] = true;
+          $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
             $params['post']['category_title'] = $categories['0']->cat_name;
             $args = [
@@ -467,11 +468,16 @@ namespace UsabilityDynamics {
       $args['paged'] = $paged;
 
       $posts = array_map(function ($post) {
+
+        $attachment_id = get_post_thumbnail_id($post->ID);
+
         return [
           'ID' => $post->ID,
           'title' => $post->post_title,
           'excerpt' => $post->post_excerpt,
           'image_src' => get_the_post_thumbnail_url($post->ID),
+          'image_title' => $attachment_id ? get_the_title($attachment_id) : '',
+          'image_alt' => $attachment_id ? get_post_meta($attachment_id, '_wp_attachment_image_alt', true) : '',
           'url' => get_permalink($post->ID),
           'relative_url' => str_replace(home_url(), "", get_permalink($post->ID))
         ];
@@ -723,7 +729,8 @@ namespace UsabilityDynamics {
           'singular_name' => 'Guide',
         ],
         'rewrite' => [
-          'slug' => 'guide'
+          'slug' => 'guide',
+          'with_front' => false
         ],
         'hierarchical' => true,
         'show_in_rest' => true,
@@ -754,7 +761,7 @@ namespace UsabilityDynamics {
         'show_admin_column' => true,
         'query_var' => true,
         'rewrite' => array(
-          'slug' => 'guide',
+          'slug' => 'guides',
           'with_front' => false
         ),
       );
