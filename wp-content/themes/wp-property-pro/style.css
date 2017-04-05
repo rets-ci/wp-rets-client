@@ -626,7 +626,9 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-toolbar .propertypro-menu-icon{ cursor: pointer; }
 .propertypro-guide-toolbar{ z-index: 12; }
 .propertypro-guide-masthead, .propertypro-article-masthead {  width: 100%; height: 100%; display: table; position: absolute; top: 0; left: 0; z-index: 11; text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.propertypro-article-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-guide-masthead header, .propertypro-article-masthead header {  display: table-cell; vertical-align: middle; }
+.propertypro-article-masthead header { z-index: 1; position: relative; }
 .propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 2.8rem; font-weight: normal; line-height: 1.2; margin-bottom: .50em; }
 .propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.35rem; line-height: 1.6; padding: 0 10%; }
 .propertypro-guide-content, .propertypro-article-content { background-color: #e6ecf0; padding: 25px 0; }
