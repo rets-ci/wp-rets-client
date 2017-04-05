@@ -51244,7 +51244,7 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
 	    bedroomOptions: bedroomOptions,
-	    bedroomSelected: ownProps.searchFilters.bedrooms || "1"
+	    bedroomSelected: ownProps.searchFilters.bedrooms || null
 	  };
 	};
 
@@ -51381,7 +51381,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'a',
-	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? "btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
+	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
 	                  'View Properties'
 	                )
 	              )
@@ -51649,7 +51649,7 @@
 	}(_react.Component);
 
 	PropertiesModal.propTypes = {
-	  bedroomSelected: _react.PropTypes.string.isRequired,
+	  bedroomSelected: _react.PropTypes.string,
 	  searchFilters: _react.PropTypes.object.isRequired,
 	  standardSearch: _react.PropTypes.func.isRequired
 	};
@@ -60070,6 +60070,42 @@
 
 	      var filters = this.props.filters;
 
+	      var bedroomsFilter = filters['bedrooms'];
+	      var bedroomsElement = void 0;
+	      if (bedroomsFilter) {
+	        bedroomsElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: function onClick() {
+	                return _this2.props.openPropertiesModal(true);
+	              } })
+	          ),
+	          ' ',
+	          bedroomsFilter,
+	          '+ Beds'
+	        );
+	      } else {
+	        bedroomsElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', onClick: function onClick() {
+	                return _this2.props.openPropertiesModal(true);
+	              } },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '+'
+	            ),
+	            ' Bedroom'
+	          )
+	        );
+	      }
+
 	      var termFilter = filters['term'];
 	      var termFilters = Object.keys(termFilter).map(function (t) {
 	        return { tax: t, value: termFilter[t] };
@@ -60093,28 +60129,15 @@
 	                  _react2.default.createElement(
 	                    'span',
 	                    null,
-	                    _react2.default.createElement('i', { className: 'fa fa-times' })
+	                    _react2.default.createElement('i', { className: 'fa fa-times', onClick: function onClick() {
+	                        return _this2.props.openPropertiesModal(true);
+	                      } })
 	                  ),
 	                  ' ',
 	                  t.value
 	                );
 	              }),
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick() {
-	                      return _this2.props.openPropertiesModal(true);
-	                    } },
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '+'
-	                  ),
-	                  ' Bedroom'
-	                )
-	              ),
+	              bedroomsElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },

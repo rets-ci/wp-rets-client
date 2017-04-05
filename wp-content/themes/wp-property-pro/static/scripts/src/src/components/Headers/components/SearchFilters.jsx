@@ -25,6 +25,21 @@ class searchFilters extends Component {
     let {
       filters
     } = this.props;
+    let bedroomsFilter = filters['bedrooms'];
+    let bedroomsElement;
+    if (bedroomsFilter) {
+      bedroomsElement = (
+        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
+          <span><i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i></span> {bedroomsFilter}+ Beds</span>
+      );
+    } else {
+      bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+        <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+          <span>+</span> Bedroom
+        </a>
+      </span>);
+    }
+
     let termFilter = filters['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
@@ -35,12 +50,9 @@ class searchFilters extends Component {
           <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
             <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
               {termFilters.map(t =>
-                <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times"></i></span> {t.value}</span>
+                <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i></span> {t.value}</span>
               )}
-              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-                <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                  <span>+</span> Bedroom</a>
-                </span>
+              {bedroomsElement}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
                 <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                   <span>+</span> Price</a>
