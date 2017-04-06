@@ -29516,7 +29516,11 @@
 	            "fuzzy": {
 	              "fuzziness": 1
 	            },
-	            "size": _lib.Lib.POST_SUGGEST_COUNT
+	            "size": _lib.Lib.POST_SUGGEST_COUNT,
+	            "contexts": {
+	              "listing_status": ['for-' + params.saleType.toLowerCase()],
+	              "listing_type": params.propertyTypes.split(_lib.Lib.STRING_ARRAY_DELIMITER)
+	            }
 	          }
 	        }
 	      };
@@ -61741,12 +61745,6 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _index = __webpack_require__(278);
-
-	var _Api = __webpack_require__(275);
-
-	var _Api2 = _interopRequireDefault(_Api);
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -61755,15 +61753,21 @@
 
 	var _reactRouter = __webpack_require__(178);
 
+	var _urijs = __webpack_require__(282);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
+
+	var _index = __webpack_require__(278);
+
+	var _Api = __webpack_require__(275);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
 	var _lib = __webpack_require__(276);
 
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _urijs = __webpack_require__(282);
-
-	var _urijs2 = _interopRequireDefault(_urijs);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61791,9 +61795,12 @@
 	      dispatch((0, _index.openLocationModal)(false));
 	    },
 
-	    searchHandler: function searchHandler(term) {
+	    searchHandler: function searchHandler(term, saleType, propertyTypes) {
+
 	      var searchParams = {
-	        term: term
+	        term: term,
+	        saleType: saleType,
+	        propertyTypes: propertyTypes
 	      };
 	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
 	        dispatch((0, _index.setSearchProps)(rows));
@@ -61869,7 +61876,7 @@
 	      if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
 	        this.props.topQuery();
 	      } else {
-	        this.props.searchHandler(val);
+	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
 	      }
 	    }
 	  }, {
