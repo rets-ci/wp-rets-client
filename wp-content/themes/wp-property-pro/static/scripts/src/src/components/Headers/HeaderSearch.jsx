@@ -14,7 +14,7 @@ class HeaderSearch extends Component {
     let {
       searchFilters
     } = this.props;
-    let saleType = _.get(searchFilters, 'sale_type', '');
+    let saleType = searchFilters['sale_type'];
     return (
       <section className={Lib.THEME_CLASSES_PREFIX + "top-panel"}>
         <div className="container-fluid">
