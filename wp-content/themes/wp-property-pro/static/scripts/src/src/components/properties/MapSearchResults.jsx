@@ -1,5 +1,5 @@
 import Api from '../../containers/Api.jsx';
-import {setSearchResults} from '../../actions/index.jsx';
+import {setSearchResults, toggleMapSearchResultsLoading} from '../../actions/index.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from './PropertiesModal.jsx';
@@ -15,6 +15,7 @@ const mapStateToProps = (state, ownProps) => {
     query: _.get(state, 'searchResults.query', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     queryParams: ownProps.location.query,
+    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
     propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
     resultsTotal: _.get(state, 'searchResults.totalProps', 0)
@@ -39,7 +40,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         topLeft: geoCoordinates ? geoCoordinates.topLeft : null
       };
       let query = Api.createESSearchQuery(searchParams);
+      dispatch(toggleMapSearchResultsLoading(true));
       Api.search(query, function (response) {
+        dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
         } else {
@@ -48,7 +51,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     doSearchWithQuery: (query, append) => {
+      dispatch(toggleMapSearchResultsLoading(true));
       Api.search(query, response => {
+        dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
@@ -66,6 +71,7 @@ class MapSearchResults extends Component {
   static propTypes = {
     doSearchWithQuery: PropTypes.func.isRequired,
     location: PropTypes.object,
+    mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
     resetSearchResults: PropTypes.func.isRequired,
     results: PropTypes.array.isRequired
@@ -109,30 +115,36 @@ class MapSearchResults extends Component {
     let {
       displayedResults,
       location,
+      mapSearchResultsLoading,
       propertiesModalOpen,
       results
     } = this.props;
     let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
-    return (
-      <div>
-        {displayedResults.length ?
-          <div>
-            <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
-                             open={propertiesModalOpen}/>
-            <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
-              <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
-                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-                  <span>Only showing {displayedResults.length}
-                    listings. Zoom in, or use filters to narrow your search.</span>
-                </div>
+    let elementToShow;
+    if (mapSearchResultsLoading) {
+      elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
+    } else {
+      elementToShow = (
+        <div>
+          <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
+                           open={propertiesModalOpen}/>
+          <section className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
+              <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
+                <span>Only showing {displayedResults.length}
+                  listings. Zoom in, or use filters to narrow your search.</span>
+              </div>
+              {displayedResults.length &&
                 <Map properties={displayedResults}
                      searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
                        ...Util.getSearchFiltersFromURL(window.location.href),
                        locationFilter: locationFilter,
                        geoCoordinates: geoCoordinates
                      })}/>
-              </div>
+              }
+            </div>
+            {displayedResults.length ?
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
                 <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
                   <h1>{term} Homes for {sale}</h1>
@@ -142,9 +154,20 @@ class MapSearchResults extends Component {
                 <SearchResultListing allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
                                      properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
               </div>
-            </section>
-          </div>
-          : <LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>}
+            :
+              <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
+                  <h1>No results to show. Please adjust the filters to select a different range of properties</h1>
+                </div>
+              </div>
+            }
+          </section>
+        </div>
+      );
+    }
+    return (
+      <div>
+        {elementToShow}
       </div>
     )
   }
