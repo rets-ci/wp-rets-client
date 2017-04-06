@@ -142,17 +142,18 @@ namespace UsabilityDynamics\PropertyPro {
        *
        * @return array
        */
-      public function get_asset_data() {
+      public function get_asset_data()
+      {
         $data = array();
-        foreach( (array)$this->get( 'settings' ) as $setting ) {
-          if( is_array( $setting[ 'css' ] ) && count( $setting[ 'css' ] ) ){
-            foreach( $setting[ 'css' ] as $rule ){
+        foreach ((array)$this->get('settings') as $setting) {
+          if (is_array($setting['css']) && count($setting['css'])) {
+            foreach ($setting['css'] as $rule) {
 
-              if(isset($setting['rule-title']))
+              if (isset($setting['rule-title']))
                 $rule['style'] = $setting['rule-title'];
 
-              if( !empty( $rule ) && $rule[ 'style' ] && $style = $this->generate_css( $rule ) ) {
-                $data[ $setting[ 'key' ] . '-' . $rule[ 'style' ] ] = $style;
+              if (!empty($rule) && $rule['style'] && $style = $this->generate_css($rule)) {
+                $data[$setting['key'] . '-' . $rule['style']] = $style;
               }
             }
           }
@@ -175,6 +176,172 @@ namespace UsabilityDynamics\PropertyPro {
           return false;
         }
         return json_decode(file_get_contents($file), true);
+      }
+
+      /**
+       * * Override base method
+       * Prepares settings
+       *
+       * @author fq.jony@UD
+       *
+       * @param $i
+       * @return mixed
+       */
+      public function prepare_setting($i)
+      {
+
+        $i = wp_parse_args($i, [
+          'key' => false,
+          'label' => false,
+          'section' => false,
+          'control' => false, // values: 'background-image', 'color', 'background-color', 'border-color', 'image'
+          'selector' => false,
+          'min_width' => '',
+          'max_width' => '',
+          'extra_controls' => false
+        ]);
+
+        try {
+
+          $sections = $this->get('sections');
+          if (!$i['section'] || !key_exists($i['section'], $sections)) {
+            throw new \Exception("Name of section {$i[ 'section' ]} is undefined.");
+          }
+
+          if (empty($i['key'])) {
+            throw new \Exception("Key of setting is undefined.");
+          }
+
+          if (empty($i['control'])) {
+            throw new \Exception("Control for Setting is undefined.");
+          }
+
+          if (empty($i['selector'])) {
+            throw new \Exception("Selector is undefined.");
+          }
+
+          /** Setup the thing we're looping */
+          $to_parse = [$i];
+          /** Now see if we have any extra items to parse */
+          if (is_array($i['extra_controls']) && count($i['extra_controls'])) {
+            $to_add = $i;
+            foreach ($i['extra_controls'] as $control => $selector) {
+              $to_add['control'] = $control;
+              $to_add['selector'] = $selector;
+              $to_add['min_width'] = $i['min_width'];
+              $to_add['max_width'] = $i['max_width'];
+              $to_parse[] = $to_add;
+            }
+          }
+
+          /** Setup what we're returning */
+          $css = [];
+
+          foreach ($to_parse as $i) {
+            //** Add CSS rules */
+            $media_query = '';
+            if (!empty($i['min_width']) || !empty($i['max_width'])) {
+              $media_query .= 'only screen and';
+              if (!empty($i['min_width'])) {
+                $media_query .= ' (min-width: ' . $i['min_width'] . ')';
+              }
+              if (!empty($i['max_width'])) {
+                $media_query .= ' (max-width: ' . $i['max_width'] . ')';
+              }
+            }
+
+            $rule = [
+              'mod_name' => $i['key'],
+              'selector' => $i['selector'],
+              'style' => false,
+              'prefix' => '',
+              'postfix' => '',
+              'media_query' => $media_query,
+              'type' => 'style', // style, image
+              'important' => true, // must default to true for backwards compatibility
+            ];
+            switch ($i['control']) {
+              case 'text':
+                /** Not sure how to use this yet */
+                continue;
+                break;
+              case 'font':
+                $rule['style'] = 'font';
+                break;
+              case 'font-family':
+                $rule['style'] = 'font-family';
+                break;
+              case 'image':
+                $rule['type'] = 'image';
+                break;
+              case 'background-image':
+                $rule['style'] = 'background-image';
+                $rule['prefix'] = 'url(';
+                $rule['postfix'] = ')';
+                break;
+              case 'color':
+                $rule['style'] = 'color';
+                break;
+              case 'background-color':
+                $rule['style'] = 'background-color';
+                break;
+              case 'border-color':
+                $rule['style'] = 'border-color';
+                break;
+              default:
+                $rule['style'] = $i['control'];
+                //** Custom CSS rules must be added using the hook below. */
+                $rule = apply_filters("lib-wp-theme::customizer::css::{$i[ 'control' ]}", $rule, $i);
+                if (empty($rule['style'])) {
+                  throw new \Exception("CSS rules are incorrect. Check control '{$i[ 'control' ]}'");
+                }
+                break;
+            }
+
+            /** Add on the important rule */
+            if (isset($i['important'])) {
+              $rule['important'] = (bool)$i['important'];
+            }
+            /** Add it onto the css */
+            $css[] = $rule;
+
+            /** Additional rules with additional styles */
+            if (isset($i['additional_rules'])) {
+              if (is_array($i['additional_rules'])) {
+                foreach ($i['additional_rules'] as $add_rule) {
+                  if (isset($add_rule['style']) && !empty($add_rule['style'])) {
+                    $rule = [
+                      'mod_name' => $i['key'],
+                      'selector' => isset($add_rule['selector']) ? $add_rule['selector'] : [],
+                      'style' => $add_rule['style'],
+                      'prefix' => '',
+                      'postfix' => '',
+                      'media_query' => $media_query,
+                      'type' => 'style', // style, image
+                      'important' => true // must default to true for backwards compatibility
+                    ];
+                    /** Add on the important rule */
+                    if (isset($i['important'])) {
+                      $rule['important'] = (bool)$i['important'];
+                    }
+                    $css[] = $rule;
+                  }
+                }
+              }
+            }
+          }
+
+          /** Return it */
+          $i['css'] = $css;
+          return $i;
+
+        } catch (\Exception $e) {
+          $i = false;
+          // Filter can be used for logs.
+          do_action('lib-wp-theme::customizer::error', 'Customizer Error: ' . $e->getMessage() . " Setting '{$i['label']} ( {$i['key']} )' can not be initialized.");
+        }
+
+        return $i;
       }
     }
   }

@@ -34,6 +34,9 @@
       "important": false,
       "default": "#000000",
       "selector": [
+        "a:hover",
+        "a:active",
+        "a:focus",
         ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:hover",
         ".propertypro-subnavigation ul li:not(.propertypro-subnavigation-btn) a:hover",
         ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:focus",
@@ -61,7 +64,38 @@
         ".propertypro-category-card .propertypro-category-card-content .propertypro-category-title a:active",
         ".propertypro-blog-posts .propertypro-post-title a:hover",
         ".propertypro-blog-posts .propertypro-post-title a:focus",
-        ".propertypro-blog-posts .propertypro-post-title a:active"
+        ".propertypro-blog-posts .propertypro-post-title a:active",
+        ".propertypro-user-info-box .propertypro-status.propertypro-notlogged h5",
+        ".propertypro-user-navigation li a:hover",
+        ".propertypro-user-navigation li a:active",
+        ".propertypro-user-navigation li a:focus",
+        ".propertypro-top-footer li a:hover",
+        ".propertypro-top-footer li a:active",
+        ".propertypro-top-footer li a:focus",
+        ".search-filter-nav ul li a:hover",
+        ".search-filter-nav ul li a:active",
+        ".search-filter-nav ul li a:focus",
+        ".listing-type-box ul li a:hover",
+        ".listing-type-box ul li a:active",
+        ".listing-type-box ul li a:focus"
+      ],
+      "additional_rules": [
+        {
+          "style": "background-color",
+          "selector": [
+            ".propertypro-login-box:hover",
+            ".propertypro-login-box:active",
+            ".propertypro-login-box:focus"
+          ]
+        },
+        {
+          "style": "border-color",
+          "selector": [
+            ".propertypro-login-box:hover",
+            ".propertypro-login-box:active",
+            ".propertypro-login-box:focus"
+          ]
+        }
       ]
     },
     {

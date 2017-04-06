@@ -78,21 +78,19 @@ class Mobile extends Component {
           {links.map((l, i) => {
               let linkClasses = selectedOption === _.get(l, 'title') ? Lib.THEME_CLASSES_PREFIX + 'active' : '';
               if (selectedOption === _.get(l, 'title')) {
-                return (<li key={i}>
+                return (<li onClick={this.props.dropDownOpen && i === 0 ? () => self.handleChange.bind(this)(!this.props.dropDownOpen) : null} key={i}>
                   <a href={_.get(l, 'url')} className={linkClasses}
                      onClick={(eve) => self.selectOption.bind(this)(eve, _.get(l, 'relative_url'))}>{l.title}</a>
                   {this.props.dropDownOpen && i === 0 ?
-                    <i onClick={() => self.handleChange.bind(this)(!this.props.dropDownOpen)}
-                       className={"fa fa-angle-up"}></i> : null}
+                    <i className={"fa fa-angle-up"}></i> : null}
                 </li>)
               }
               else {
-                return (<li key={i}>
+                return (<li onClick={this.props.dropDownOpen && i === 0 ? () => self.handleChange.bind(this)(!this.props.dropDownOpen) : null} key={i}>
                   <a href={_.get(l, 'url')}
                      onClick={(eve) => self.selectOption.bind(this)(eve, _.get(l, 'relative_url'))}>{l.title}</a>
                   {this.props.dropDownOpen && i === 0 ?
-                    <i onClick={() => self.handleChange.bind(this)(!this.props.dropDownOpen)}
-                       className={"fa fa-angle-up"}></i> : null}
+                    <i className={"fa fa-angle-up"}></i> : null}
                 </li>)
               }
 
