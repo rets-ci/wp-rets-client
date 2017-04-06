@@ -59,7 +59,6 @@ html, body { height: 100%; margin: 0; }
 
 .navbar { border: 0; background: transparent; margin: 0; padding-top: 0; padding-bottom: 0; }
 .propertypro-login-box, .propertypro-login-box:visited { background: transparent; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.4) ; outline: none; margin-right: 10px; color: #fff; }
-.propertypro-login-box:active, .propertypro-login-box:hover {  border-color: #d33320; background-color: #d33320;  }
 .navbar-toggler { color: #fff; display: block!important; outline: none!important; cursor: pointer; font-size: 1.150rem; top: 5px; position: relative;  }
 .navbar-toggler span { font-size: 28px; float: left; margin: -4px 10px 0 0; }
 

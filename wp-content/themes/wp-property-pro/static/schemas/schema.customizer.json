@@ -78,6 +78,24 @@
         ".listing-type-box ul li a:hover",
         ".listing-type-box ul li a:active",
         ".listing-type-box ul li a:focus"
+      ],
+      "additional_rules": [
+        {
+          "style": "background-color",
+          "selector": [
+            ".propertypro-login-box:hover",
+            ".propertypro-login-box:active",
+            ".propertypro-login-box:focus"
+          ]
+        },
+        {
+          "style": "border-color",
+          "selector": [
+            ".propertypro-login-box:hover",
+            ".propertypro-login-box:active",
+            ".propertypro-login-box:focus"
+          ]
+        }
       ]
     },
     {
