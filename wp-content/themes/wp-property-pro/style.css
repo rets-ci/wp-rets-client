@@ -23,7 +23,6 @@ Date: 2017-02-07
 /*-----------------------------------------------------------------------------------*/
 body { font-weight: 400; color: #414141; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; }
 a { color: #414141; outline: none; text-decoration: none!important; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -o-transition: all .3s ease; -ms-transition: all .3s ease; transition: all .3s ease;}
-a:hover, a:active { color: #cd2027; text-decoration: none; }
 input:focus, textarea:focus {outline: none;}
 p { margin-bottom: 1.20em; line-height: 1.4; }
 
@@ -104,7 +103,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-subnavigation ul li:last-child { border-right: 0; }
 .propertypro-subnavigation ul li a { display: block; height: 260px; text-align: center; color: #414141;  display:table-cell;
     vertical-align:middle; }
-.propertypro-subnavigation ul li a:hover, .propertypro-subnavigation ul li a:focus { color: #cd2027; }
 .propertypro-subnavigation ul li a:hover svg path { fill: red; }
 .propertypro-subnavigation ul li a span { display: block; font-size: 1.25rem; font-weight: 700; margin: 20px 0 0; }
 .propertypro-subnavigation.propertypro-module2 nav{ width: 100%; }
@@ -178,7 +176,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-user-info-box span { position: absolute; right: 25px; top: 28px; }
 .propertypro-user-info-box .propertypro-status { display: none; }
 .propertypro-user-info-box .propertypro-status.propertypro-notlogged { display: block; }
-.propertypro-user-info-box .propertypro-status.propertypro-notlogged h5 { color: #cd2027; }
 .propertypro-user-info-box .propertypro-status.propertypro-loggedin { display: block; }
 .propertypro-user-info-box .propertypro-status.propertypro-loggedin h5 { color: #414141 }
 .modal-backdrop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1040; background-color: #000; opacity: 1; }
@@ -188,7 +185,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-user-navigation ol { overflow: auto; display: block; list-style-type: none; margin: 0; padding: 0 0 15px; }
 .propertypro-user-navigation li:nth-child(3n+0) { border-bottom: 1px solid #d2dae0;  }
 .propertypro-user-navigation li a { display: block; padding: 0 35px; font-size: 1.050rem; font-weight: 600; line-height: 65px; position: relative; }
-.propertypro-user-navigation li a:active, .user-navigation li a:focus { color: #cd2027; }
 .propertypro-user-navigation li a span { display: inline-block; margin-right: 15px; }
 .propertypro-user-navigation ol li:last-child { border: 0; }
 .propertypro-user-panel .propertypro-more { border-top: 1px solid #d2dae0; position: absolute; bottom: 0; left: 0; width: 100%; background-color:#fff; z-index: 9; }
@@ -240,7 +236,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {display: block;}
 .propertypro-top-footer h5 { color: #8b8c8d; font-size: .80rem; font-weight: 500; line-height: 24px; margin: 0 0 1em; text-transform: uppercase; }
 .propertypro-top-footer ul { margin: 0; padding: 0; list-style-type: none; }
 .propertypro-top-footer li a {  color: #414141; font-size: 16px; font-weight: 600; line-height:35px; }
-.propertypro-top-footer li a:hover, .propertypro-top-footer li a:active { color: #cd2027; }
 .propertypro-bottom-footer ul { margin: 0; padding: 0; list-style-type: none; }
 .propertypro-bottom-footer li { display: inline; }
 .propertypro-bottom-footer li a { font-weight: 600; margin-right: 25px; font-size: 1.10rem; }
@@ -342,7 +337,6 @@ body.fixed { height: 100%; overflow: hidden; }
 .search-filter-nav ul li:last-child { border-right: 0; }
 .search-filter-nav ul li a { display: block; height: 140px; text-align: center; color: rgba(139, 140, 141, 0.6); display:table-cell;
     vertical-align:middle; }
-.search-filter-nav ul li a:hover, .search-filter-nav ul li a:focus { color: #cd2027; }
 .search-filter-nav ul li a span { display: block; font-size: 1.15rem; font-weight: 700; margin: 20px 0 0; }
 
 .filter-footernav { box-shadow: 0 0 24px rgba(224, 230, 234, 0.6); background-color: #ffffff; position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px 0; z-index: 99; }
@@ -412,7 +406,6 @@ html,body { height: 100%; }
 .listing-type-box ul li:last-child { border-right: 0; }
 .listing-type-box ul li a { display: block; height: 200px; text-align: center; color: rgba(139, 140, 141, 0.6); display:table-cell;
     vertical-align:middle; }
-.listing-type-box ul li a:hover, .search-filter-nav ul li a:focus { color: #cd2027; }
 .listing-type-box ul li a span { display: block; font-size: 1.15rem; font-weight: 700; margin: 20px 0 0; color: #fff; }
 
 .search-map.propertypro-active .propertypro-top-panel { height: 280px; }
