@@ -29513,9 +29513,6 @@
 	          "text": params.term,
 	          "completion": {
 	            "field": "title_suggest",
-	            "fuzzy": {
-	              "fuzziness": 1
-	            },
 	            "size": _lib.Lib.POST_SUGGEST_COUNT,
 	            "contexts": {
 	              "listing_status": ['for-' + params.saleType.toLowerCase()],
@@ -29531,9 +29528,6 @@
 	          "text": params.term,
 	          "completion": {
 	            "field": "term_suggest",
-	            "fuzzy": {
-	              "fuzziness": _lib.Lib.ELASTIC_SEARCH_FUZZINESS_COUNT
-	            },
 	            "size": _lib.Lib.TERM_SUGGEST_COUNT,
 	            "contexts": {
 	              "term_type": [i, _lodash2.default.get(agg, 'old_key', '')]
@@ -29864,8 +29858,8 @@
 	  PROPERTIES_LIST_DEFAULT: "default",
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
-	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
-	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search"
+	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
+	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
 	};
 
 /***/ },
@@ -51414,7 +51408,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'range-slider' },
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "range-slider" },
 	                  _react2.default.createElement('div', { className: 'slider-line' }),
 	                  _react2.default.createElement(
 	                    'div',
@@ -51475,15 +51469,15 @@
 	                      'No Max'
 	                    )
 	                  ),
-	                  _react2.default.createElement('span', { className: 'slider-bar' }),
+	                  _react2.default.createElement('span', { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-bar" }),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider from type_last ' + _lib.Lib.THEME_CLASSES_PREFIX + 'left' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-slider from type_last ' + _lib.Lib.THEME_CLASSES_PREFIX + 'left' },
 	                    '100K'
 	                  ),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider to ' + _lib.Lib.THEME_CLASSES_PREFIX + 'right' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-slider to ' + _lib.Lib.THEME_CLASSES_PREFIX + 'right' },
 	                    '600K'
 	                  )
 	                ),
@@ -51491,14 +51485,14 @@
 	              ),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: 'view-link' },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link" },
 	                '+ View More Filters'
 	              )
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'filter-footernav hidden-lg-up' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
@@ -61114,17 +61108,9 @@
 	        return _react2.default.createElement('div', null);
 	      }
 
-	      var dropSearchStyle = {};
-	      var primaryColor = _.get(bundle, 'colors.primary_color', null);
-	      if (primaryColor) {
-	        dropSearchStyle = {
-	          'backgroundColor': primaryColor
-	        };
-	      }
-
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search", style: dropSearchStyle },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search" },
 	        _react2.default.createElement(
 	          'div',
 	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
@@ -61859,7 +61845,7 @@
 	        var _url = new _urijs2.default();
 	        _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
 	        _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']', term), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
-	        _reactRouter.browserHistory.push(decodeURIComponent(_url.pathname() + _url.search()));
+	        _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
 	      } else {
 	        // Single property page
 	        _reactRouter.browserHistory.push(url);
@@ -62039,11 +62025,6 @@
 	        return null;
 	    }
 
-	    var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	    var style = primaryColor !== null ? {
-	        "backgroundColor": primaryColor
-	    } : {};
-
 	    var container = void 0;
 	    switch (widget_cell.widget.fields.layout) {
 	        case 'default_layout':
@@ -62054,7 +62035,7 @@
 
 	    return _react2.default.createElement(
 	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout", style: style },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout" },
 	        container
 	    );
 	};
@@ -62754,11 +62735,6 @@
 	    }
 	  }
 
-	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	  var style = primaryColor !== null ? {
-	    "backgroundColor": primaryColor
-	  } : {};
-
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-desktop" },
@@ -62785,7 +62761,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-btn" },
 	        _react2.default.createElement(
 	          'a',
-	          { href: btn.url, className: 'btn', style: style },
+	          { href: btn.url, className: 'btn' },
 	          btn.title
 	        )
 	      )
@@ -62877,10 +62853,36 @@
 	  function Mobile(props) {
 	    _classCallCheck(this, Mobile);
 
-	    return _possibleConstructorReturn(this, (Mobile.__proto__ || Object.getPrototypeOf(Mobile)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Mobile.__proto__ || Object.getPrototypeOf(Mobile)).call(this, props));
+
+	    _this.state = {
+	      buttonDisplay: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Mobile, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      window.addEventListener('scroll', this.handleScroll.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('scroll', this.handleScroll.bind(this));
+	    }
+	  }, {
+	    key: 'handleScroll',
+	    value: function handleScroll(event) {
+	      var scrollTop = _lodash2.default.get(event, 'srcElement.body.scrollTop', _lodash2.default.get(event, 'pageY', 0));
+
+	      if (scrollTop <= _lib.Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && _lodash2.default.get(this.state, 'buttonDisplay', false)) {
+	        this.setState({ buttonDisplay: false });
+	      } else if (scrollTop > _lib.Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && !_lodash2.default.get(this.state, 'buttonDisplay', false)) {
+	        this.setState({ buttonDisplay: true });
+	      }
+	    }
+	  }, {
 	    key: 'handleClickOutside',
 	    value: function handleClickOutside(evt) {
 	      this.props.handleChange(false);
@@ -62920,11 +62922,6 @@
 	      if (_lodash2.default.isEmpty(selectedOption) && !_lodash2.default.isEmpty(links)) {
 	        selectedOption = _lodash2.default.get(links, '0.title', '');
 	      }
-
-	      var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	      var btnStyle = primaryColor !== null ? {
-	        "backgroundColor": primaryColor
-	      } : {};
 
 	      var selectedOptionClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile-selected-option ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
 	      if (this.props.dropDownOpen) {
@@ -62985,7 +62982,7 @@
 	        ),
 	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
 	          'a',
-	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn', style: btnStyle },
+	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn ' + (_lodash2.default.get(this.state, 'buttonDisplay', false) === false ? _lib.Lib.THEME_CLASSES_PREFIX + 'hide' : '') },
 	          btn.title
 	        )
 	      );
@@ -63216,6 +63213,8 @@
 
 	var _reactRedux = __webpack_require__(233);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -63226,12 +63225,6 @@
 	  var feature = _ref.feature,
 	      last = _ref.last,
 	      ind = _ref.ind;
-
-
-	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	  var buttonStyle = primaryColor !== null ? {
-	    "backgroundColor": primaryColor
-	  } : {};
 
 	  return _react2.default.createElement(
 	    'div',
@@ -63248,8 +63241,7 @@
 	    ) : null,
 	    _lodash2.default.get(feature, 'button_section.label', null) && _lodash2.default.get(feature, 'button_section.url', null) ? _react2.default.createElement(
 	      'a',
-	      { href: feature.button_section.url, className: 'btn btn-primary',
-	        style: buttonStyle },
+	      { href: feature.button_section.url, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'tour-widget-content-button' },
 	      feature.button_section.label
 	    ) : null,
 	    _lodash2.default.get(feature, 'testimonial_section.review', null) ? _react2.default.createElement(

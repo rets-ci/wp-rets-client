@@ -168,7 +168,7 @@ class PropertiesModal extends Component {
                  </div>
                  <div className="filter-section">
                    <h3>Price</h3>
-                   <div className="range-slider">
+                   <div className={Lib.THEME_CLASSES_PREFIX+"range-slider"}>
                      <div className="slider-line"></div>
                      <div className="range-grid">
                         <span className="range-grid-col">No Min</span>
@@ -183,17 +183,17 @@ class PropertiesModal extends Component {
                         <span className="range-grid-col">5000</span>
                         <span className="range-grid-col">No Max</span>
                      </div>
-                     <span className="slider-bar"></span>
-                     <span className={`bs-slider from type_last ${Lib.THEME_CLASSES_PREFIX}left`}>100K</span>
-                     <span className={`bs-slider to ${Lib.THEME_CLASSES_PREFIX}right`}>600K</span>
+                     <span className={Lib.THEME_CLASSES_PREFIX+"slider-bar"}></span>
+                     <span className={`${Lib.THEME_CLASSES_PREFIX}bs-slider from type_last ${Lib.THEME_CLASSES_PREFIX}left`}>100K</span>
+                     <span className={`${Lib.THEME_CLASSES_PREFIX}bs-slider to ${Lib.THEME_CLASSES_PREFIX}right`}>600K</span>
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
 
-                 <a href="#" className="view-link">+ View More Filters</a>
+                 <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"}>+ View More Filters</a>
                </div>
             </div>
-            <div className="filter-footernav hidden-lg-up">
+            <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
               <div className="container">
                 <button className="btn btn-reset">Reset</button>
                 <span className="nav-item-right">

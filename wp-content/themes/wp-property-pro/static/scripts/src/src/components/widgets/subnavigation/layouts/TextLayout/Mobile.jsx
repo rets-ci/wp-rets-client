@@ -14,6 +14,28 @@ class Mobile extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      buttonDisplay: false
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+
+  handleScroll(event) {
+    let scrollTop = _.get(event, 'srcElement.body.scrollTop', _.get(event, 'pageY', 0));
+
+    if (scrollTop <= Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && _.get(this.state, 'buttonDisplay', false)) {
+      this.setState({buttonDisplay: false});
+    } else if (scrollTop > Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && !_.get(this.state, 'buttonDisplay', false)) {
+      this.setState({buttonDisplay: true});
+    }
   }
 
   handleClickOutside(evt) {
@@ -51,16 +73,6 @@ class Mobile extends Component {
     if(_.isEmpty(selectedOption) && !_.isEmpty(links)){
       selectedOption = _.get(links, '0.title', '')
     }
-
-    let primaryColor = _.get(bundle, 'colors.primary_color', null);
-    let btnStyle =
-        primaryColor !== null
-          ?
-          {
-            "backgroundColor": primaryColor
-          }
-          : {}
-      ;
 
     let selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}display`;
     if(this.props.dropDownOpen){
@@ -101,7 +113,7 @@ class Mobile extends Component {
           _.isEmpty(btn)
             ? null
             :
-            <a href={btn.url} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn`} style={btnStyle}>{btn.title}</a>
+            <a href={btn.url} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn ${_.get(this.state, 'buttonDisplay', false) === false ? Lib.THEME_CLASSES_PREFIX+'hide' : ''}`}>{btn.title}</a>
         }
       </div>
     );

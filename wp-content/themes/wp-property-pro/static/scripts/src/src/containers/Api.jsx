@@ -147,9 +147,6 @@ class Api {
         "text": params.term,
         "completion": {
           "field": "title_suggest",
-          "fuzzy": {
-            "fuzziness": 1
-          },
           "size": Lib.POST_SUGGEST_COUNT,
           "contexts": {
             "listing_status": ['for-' + params.saleType.toLowerCase()],
@@ -165,9 +162,6 @@ class Api {
         "text": params.term,
         "completion": {
           "field": "term_suggest",
-          "fuzzy": {
-            "fuzziness": Lib.ELASTIC_SEARCH_FUZZINESS_COUNT
-          },
           "size": Lib.TERM_SUGGEST_COUNT,
           "contexts": {
             "term_type": [i, _.get(agg, 'old_key', '')]

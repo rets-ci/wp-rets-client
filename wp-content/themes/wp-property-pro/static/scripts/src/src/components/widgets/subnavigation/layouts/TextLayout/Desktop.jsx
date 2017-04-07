@@ -15,16 +15,6 @@ const Desktop = ({items, currentUrl}) => {
     }
   }
 
-  let primaryColor = _.get(bundle, 'colors.primary_color', null);
-  let style =
-      primaryColor !== null
-        ?
-        {
-          "backgroundColor": primaryColor
-        }
-        : {}
-    ;
-
   return (_.isEmpty(items)
       ? null
       :
@@ -48,7 +38,7 @@ const Desktop = ({items, currentUrl}) => {
                   ? null
                   :
                   <li className={Lib.THEME_CLASSES_PREFIX + "subnavigation-btn"}>
-                    <a href={btn.url} className="btn" style={style}>{btn.title}</a>
+                    <a href={btn.url} className="btn">{btn.title}</a>
                   </li>
               }
             </ul>

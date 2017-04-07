@@ -153,7 +153,7 @@ namespace UsabilityDynamics\PropertyPro {
                 $rule['style'] = $setting['rule-title'];
 
               if (!empty($rule) && $rule['style'] && $style = $this->generate_css($rule)) {
-                $data[$setting['key'] . '-' . $rule['style']] = $style;
+                $data[$rule['id']] = $style;
               }
             }
           }
@@ -298,6 +298,9 @@ namespace UsabilityDynamics\PropertyPro {
                 break;
             }
 
+            /** Add unique id to rule array based on key and style */
+            $rule['id'] = $i['key'] . '-' . $rule['style'];
+
             /** Add on the important rule */
             if (isset($i['important'])) {
               $rule['important'] = (bool)$i['important'];
@@ -308,9 +311,23 @@ namespace UsabilityDynamics\PropertyPro {
             /** Additional rules with additional styles */
             if (isset($i['additional_rules'])) {
               if (is_array($i['additional_rules'])) {
-                foreach ($i['additional_rules'] as $add_rule) {
+                foreach ($i['additional_rules'] as $key => $add_rule) {
                   if (isset($add_rule['style']) && !empty($add_rule['style'])) {
+
+                    //** Add CSS rules */
+                    $media_query = '';
+                    if (!empty($add_rule['min_width']) || !empty($add_rule['max_width'])) {
+                      $media_query .= 'only screen and';
+                      if (!empty($add_rule['min_width'])) {
+                        $media_query .= ' (min-width: ' . $add_rule['min_width'] . ')';
+                      }
+                      if (!empty($add_rule['max_width'])) {
+                        $media_query .= ' (max-width: ' . $add_rule['max_width'] . ')';
+                      }
+                    }
+
                     $rule = [
+                      'id' => $i['key'] . '-' . $add_rule['style'] . '-' . $key,
                       'mod_name' => $i['key'],
                       'selector' => isset($add_rule['selector']) ? $add_rule['selector'] : [],
                       'style' => $add_rule['style'],
@@ -321,8 +338,8 @@ namespace UsabilityDynamics\PropertyPro {
                       'important' => true // must default to true for backwards compatibility
                     ];
                     /** Add on the important rule */
-                    if (isset($i['important'])) {
-                      $rule['important'] = (bool)$i['important'];
+                    if (isset($add_rule['important'])) {
+                      $rule['important'] = (bool)$add_rule['important'];
                     }
                     $css[] = $rule;
                   }

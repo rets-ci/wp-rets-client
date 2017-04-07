@@ -84,7 +84,7 @@ class Modal extends Component {
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
         });
-        browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
+        browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
       }else{
         // Single property page
         browserHistory.push(url);
