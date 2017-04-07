@@ -29865,7 +29865,8 @@
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
-	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search"
+	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
+	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
 	};
 
 /***/ },
@@ -62859,10 +62860,36 @@
 	  function Mobile(props) {
 	    _classCallCheck(this, Mobile);
 
-	    return _possibleConstructorReturn(this, (Mobile.__proto__ || Object.getPrototypeOf(Mobile)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Mobile.__proto__ || Object.getPrototypeOf(Mobile)).call(this, props));
+
+	    _this.state = {
+	      buttonDisplay: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Mobile, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      window.addEventListener('scroll', this.handleScroll.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('scroll', this.handleScroll.bind(this));
+	    }
+	  }, {
+	    key: 'handleScroll',
+	    value: function handleScroll(event) {
+	      var scrollTop = _lodash2.default.get(event, 'srcElement.body.scrollTop', _lodash2.default.get(event, 'pageY', 0));
+
+	      if (scrollTop <= _lib.Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && _lodash2.default.get(this.state, 'buttonDisplay', false)) {
+	        this.setState({ buttonDisplay: false });
+	      } else if (scrollTop > _lib.Lib.SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY && !_lodash2.default.get(this.state, 'buttonDisplay', false)) {
+	        this.setState({ buttonDisplay: true });
+	      }
+	    }
+	  }, {
 	    key: 'handleClickOutside',
 	    value: function handleClickOutside(evt) {
 	      this.props.handleChange(false);
@@ -62962,7 +62989,7 @@
 	        ),
 	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
 	          'a',
-	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn' },
+	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn ' + (_lodash2.default.get(this.state, 'buttonDisplay', false) === false ? _lib.Lib.THEME_CLASSES_PREFIX + 'hide' : '') },
 	          btn.title
 	        )
 	      );
