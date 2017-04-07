@@ -29513,9 +29513,6 @@
 	          "text": params.term,
 	          "completion": {
 	            "field": "title_suggest",
-	            "fuzzy": {
-	              "fuzziness": 1
-	            },
 	            "size": _lib.Lib.POST_SUGGEST_COUNT,
 	            "contexts": {
 	              "listing_status": ['for-' + params.saleType.toLowerCase()],
@@ -29531,9 +29528,6 @@
 	          "text": params.term,
 	          "completion": {
 	            "field": "term_suggest",
-	            "fuzzy": {
-	              "fuzziness": _lib.Lib.ELASTIC_SEARCH_FUZZINESS_COUNT
-	            },
 	            "size": _lib.Lib.TERM_SUGGEST_COUNT,
 	            "contexts": {
 	              "term_type": [i, _lodash2.default.get(agg, 'old_key', '')]
@@ -29864,7 +29858,6 @@
 	  PROPERTIES_LIST_DEFAULT: "default",
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
-	  ELASTIC_SEARCH_FUZZINESS_COUNT: 1,
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
 	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
 	};
