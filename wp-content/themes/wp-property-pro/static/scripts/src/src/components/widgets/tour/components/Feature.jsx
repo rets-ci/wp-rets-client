@@ -1,19 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
 
 const Feature = ({feature, last, ind}) => {
-
-  let primaryColor = _.get(bundle, 'colors.primary_color', null);
-  let buttonStyle =
-      primaryColor !== null
-        ?
-        {
-          "backgroundColor": primaryColor
-        }
-        : {}
-    ;
-
   return (
     <div key={ind}>
       {
@@ -28,8 +18,7 @@ const Feature = ({feature, last, ind}) => {
       }
       {
         _.get(feature, 'button_section.label', null) && _.get(feature, 'button_section.url', null)
-          ? <a href={feature.button_section.url} className="btn btn-primary"
-               style={buttonStyle}>{feature.button_section.label}</a>
+          ? <a href={feature.button_section.url} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}tour-widget-content-button`}>{feature.button_section.label}</a>
           : null
       }
       {

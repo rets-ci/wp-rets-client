@@ -51414,7 +51414,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'range-slider' },
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "range-slider" },
 	                  _react2.default.createElement('div', { className: 'slider-line' }),
 	                  _react2.default.createElement(
 	                    'div',
@@ -51475,15 +51475,15 @@
 	                      'No Max'
 	                    )
 	                  ),
-	                  _react2.default.createElement('span', { className: 'slider-bar' }),
+	                  _react2.default.createElement('span', { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-bar" }),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider from type_last ' + _lib.Lib.THEME_CLASSES_PREFIX + 'left' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-slider from type_last ' + _lib.Lib.THEME_CLASSES_PREFIX + 'left' },
 	                    '100K'
 	                  ),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'bs-slider to ' + _lib.Lib.THEME_CLASSES_PREFIX + 'right' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-slider to ' + _lib.Lib.THEME_CLASSES_PREFIX + 'right' },
 	                    '600K'
 	                  )
 	                ),
@@ -51491,14 +51491,14 @@
 	              ),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: 'view-link' },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link" },
 	                '+ View More Filters'
 	              )
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'filter-footernav hidden-lg-up' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
@@ -62031,11 +62031,6 @@
 	        return null;
 	    }
 
-	    var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	    var style = primaryColor !== null ? {
-	        "backgroundColor": primaryColor
-	    } : {};
-
 	    var container = void 0;
 	    switch (widget_cell.widget.fields.layout) {
 	        case 'default_layout':
@@ -62046,7 +62041,7 @@
 
 	    return _react2.default.createElement(
 	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout", style: style },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout" },
 	        container
 	    );
 	};
@@ -63198,6 +63193,8 @@
 
 	var _reactRedux = __webpack_require__(233);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -63208,12 +63205,6 @@
 	  var feature = _ref.feature,
 	      last = _ref.last,
 	      ind = _ref.ind;
-
-
-	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	  var buttonStyle = primaryColor !== null ? {
-	    "backgroundColor": primaryColor
-	  } : {};
 
 	  return _react2.default.createElement(
 	    'div',
@@ -63230,8 +63221,7 @@
 	    ) : null,
 	    _lodash2.default.get(feature, 'button_section.label', null) && _lodash2.default.get(feature, 'button_section.url', null) ? _react2.default.createElement(
 	      'a',
-	      { href: feature.button_section.url, className: 'btn btn-primary',
-	        style: buttonStyle },
+	      { href: feature.button_section.url, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'tour-widget-content-button' },
 	      feature.button_section.label
 	    ) : null,
 	    _lodash2.default.get(feature, 'testimonial_section.review', null) ? _react2.default.createElement(

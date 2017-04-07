@@ -10,16 +10,6 @@ const Callout = ({widget_cell}) => {
         return null;
     }
 
-  let primaryColor = _.get(bundle, 'colors.primary_color', null);
-  let style =
-      primaryColor !== null
-        ?
-        {
-          "backgroundColor": primaryColor
-        }
-        : {}
-    ;
-
     let container;
     switch (widget_cell.widget.fields.layout) {
         case 'default_layout':
@@ -29,7 +19,7 @@ const Callout = ({widget_cell}) => {
     }
 
     return (
-    <section className={Lib.THEME_CLASSES_PREFIX+"callout"} style={style}>
+    <section className={Lib.THEME_CLASSES_PREFIX+"callout"}>
       {container}
     </section>
     );
