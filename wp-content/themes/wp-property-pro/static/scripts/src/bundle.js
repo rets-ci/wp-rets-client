@@ -61114,17 +61114,9 @@
 	        return _react2.default.createElement('div', null);
 	      }
 
-	      var dropSearchStyle = {};
-	      var primaryColor = _.get(bundle, 'colors.primary_color', null);
-	      if (primaryColor) {
-	        dropSearchStyle = {
-	          'backgroundColor': primaryColor
-	        };
-	      }
-
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search", style: dropSearchStyle },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search" },
 	        _react2.default.createElement(
 	          'div',
 	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
@@ -62754,11 +62746,6 @@
 	    }
 	  }
 
-	  var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	  var style = primaryColor !== null ? {
-	    "backgroundColor": primaryColor
-	  } : {};
-
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-desktop" },
@@ -62785,7 +62772,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-btn" },
 	        _react2.default.createElement(
 	          'a',
-	          { href: btn.url, className: 'btn', style: style },
+	          { href: btn.url, className: 'btn' },
 	          btn.title
 	        )
 	      )
@@ -62921,11 +62908,6 @@
 	        selectedOption = _lodash2.default.get(links, '0.title', '');
 	      }
 
-	      var primaryColor = _lodash2.default.get(bundle, 'colors.primary_color', null);
-	      var btnStyle = primaryColor !== null ? {
-	        "backgroundColor": primaryColor
-	      } : {};
-
 	      var selectedOptionClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile-selected-option ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
 	      if (this.props.dropDownOpen) {
 	        selectedOptionClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile-selected-option ' + _lib.Lib.THEME_CLASSES_PREFIX + 'hide';
@@ -62985,7 +62967,7 @@
 	        ),
 	        _lodash2.default.isEmpty(btn) ? null : _react2.default.createElement(
 	          'a',
-	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn', style: btnStyle },
+	          { href: btn.url, className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-btn' },
 	          btn.title
 	        )
 	      );

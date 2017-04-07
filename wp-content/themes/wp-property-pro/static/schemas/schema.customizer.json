@@ -77,7 +77,9 @@
         ".search-filter-nav ul li a:focus",
         ".listing-type-box ul li a:hover",
         ".listing-type-box ul li a:active",
-        ".listing-type-box ul li a:focus"
+        ".listing-type-box ul li a:focus",
+        ".propertypro-testimonial .propertypro-slides li .rating i",
+        ".propertypro-sliderContent .propertypro-slides li p"
       ],
       "additional_rules": [
         {
@@ -85,7 +87,17 @@
           "selector": [
             ".propertypro-login-box:hover",
             ".propertypro-login-box:active",
-            ".propertypro-login-box:focus"
+            ".propertypro-login-box:focus",
+            ".propertypro-search-box .propertypro-drop-search",
+            ".propertypro-subnavigation-btn a",
+            "a.propertypro-subnavigation-btn"
+          ]
+        },
+        {
+          "style": "background-color",
+          "max_width": "47.938em",
+          "selector": [
+            ".propertypro-login-box"
           ]
         },
         {
@@ -94,6 +106,13 @@
             ".propertypro-login-box:hover",
             ".propertypro-login-box:active",
             ".propertypro-login-box:focus"
+          ]
+        },
+        {
+          "style": "border-color",
+          "max_width": "47.938em",
+          "selector": [
+            ".propertypro-login-box"
           ]
         }
       ]

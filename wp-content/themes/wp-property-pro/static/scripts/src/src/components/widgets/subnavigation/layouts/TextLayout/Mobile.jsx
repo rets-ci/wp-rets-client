@@ -52,16 +52,6 @@ class Mobile extends Component {
       selectedOption = _.get(links, '0.title', '')
     }
 
-    let primaryColor = _.get(bundle, 'colors.primary_color', null);
-    let btnStyle =
-        primaryColor !== null
-          ?
-          {
-            "backgroundColor": primaryColor
-          }
-          : {}
-      ;
-
     let selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}display`;
     if(this.props.dropDownOpen){
       selectedOptionClasses = `${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile-selected-option ${Lib.THEME_CLASSES_PREFIX}hide`;
@@ -101,7 +91,7 @@ class Mobile extends Component {
           _.isEmpty(btn)
             ? null
             :
-            <a href={btn.url} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn`} style={btnStyle}>{btn.title}</a>
+            <a href={btn.url} className={`btn ${Lib.THEME_CLASSES_PREFIX}subnavigation-btn`}>{btn.title}</a>
         }
       </div>
     );
