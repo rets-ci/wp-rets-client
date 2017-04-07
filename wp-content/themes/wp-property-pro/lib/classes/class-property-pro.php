@@ -666,7 +666,9 @@ namespace UsabilityDynamics {
 
       switch ($_GET['pageType']) {
         case 'json':
-          ob_end_flush();
+          if(ob_get_level()){
+            ob_end_flush();
+          }
           break;
         default;
       }
