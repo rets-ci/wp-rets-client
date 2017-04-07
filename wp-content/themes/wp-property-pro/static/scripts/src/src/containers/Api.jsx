@@ -150,7 +150,11 @@ class Api {
           "fuzzy": {
             "fuzziness": 1
           },
-          "size": Lib.POST_SUGGEST_COUNT
+          "size": Lib.POST_SUGGEST_COUNT,
+          "contexts": {
+            "listing_status": ['for-' + params.saleType.toLowerCase()],
+            "listing_type": params.propertyTypes.split(Lib.STRING_ARRAY_DELIMITER)
+          }
         }
       }
     };

@@ -16,7 +16,7 @@ export default class DefaultLayout extends Component {
   componentDidMount() {
     this.swiper = Swiper.init(this.swiperElement, {
       slidesPerView: 'auto',
-      centeredSlides: true,
+      centeredSlides: false,
       nextButton: this.swiperElementNext,
       prevButton: this.swiperElementPrev,
       spaceBetween: 20,

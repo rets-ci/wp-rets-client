@@ -1,11 +1,11 @@
-import {openLocationModal, setSearchProps} from '../../../../actions/index.jsx';
-import Api from '../../../../containers/Api.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import URL from 'urijs';
+import {openLocationModal, setSearchProps} from '../../../../actions/index.jsx';
+import Api from '../../../../containers/Api.jsx';
 import {Lib} from '../../../../lib.jsx';
 import _ from 'lodash';
-import URL from 'urijs';
 
 const mapStateToProps = (state) => {
   return {
@@ -23,9 +23,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch(openLocationModal(false));
       },
 
-      searchHandler: (term) => {
+      searchHandler: (term, saleType, propertyTypes) => {
+
         let searchParams = {
-          term: term
+          term: term,
+          saleType: saleType,
+          propertyTypes: propertyTypes
         };
         Api.autocompleteQuery(searchParams,
           function (rows) {
@@ -97,7 +100,7 @@ class Modal extends Component {
       if(!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH){
         this.props.topQuery();
       }else{
-        this.props.searchHandler(val);
+        this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''));
       }
     }
 
