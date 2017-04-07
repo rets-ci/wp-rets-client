@@ -61845,7 +61845,7 @@
 	        var _url = new _urijs2.default();
 	        _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
 	        _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']', term), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
-	        _reactRouter.browserHistory.push(decodeURIComponent(_url.pathname() + _url.search()));
+	        _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
 	      } else {
 	        // Single property page
 	        _reactRouter.browserHistory.push(url);
