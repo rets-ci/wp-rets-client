@@ -29164,9 +29164,9 @@
 	      });
 	    },
 	    doSearchWithQuery: function doSearchWithQuery(query, append) {
-	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
+	      // dispatch(toggleMapSearchResultsLoading(true));
 	      _Api2.default.search(query, function (response) {
-	        dispatch((0, _index.toggleMapSearchResultsLoading)(false));
+	        // dispatch(toggleMapSearchResultsLoading(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
