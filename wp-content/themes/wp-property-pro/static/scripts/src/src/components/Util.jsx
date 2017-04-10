@@ -64,6 +64,12 @@ class Util extends React.Component {
 
     browserHistory.push(url);
   }
+
+  static removeQueryFromURL(currentUrl, key, value) {
+    let uri = new URI(currentUrl);
+    uri.removeSearch({[key]: value});
+    return uri.pathname() + uri.search();
+  }
 }
 
 export default Util;
