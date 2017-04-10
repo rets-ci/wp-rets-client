@@ -79077,7 +79077,7 @@
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
 	            _react2.default.createElement(
 	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "" },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
 	              'Return Home'
 	            )
 	          )
