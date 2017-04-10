@@ -608,7 +608,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-guide-head { text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover; color: #fff; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index:9; }
 .propertypro-guide-head:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); }
 .propertypro-toolbar .propertypro-btn-back-to-home { border-radius: 3px; border-width: 2px; border-color: rgba(255,255,255,.2); background: none; line-height: 1.5rem; font-size: .875rem; padding-left: 15px; padding-right: 15px; margin-top: 10px; }
-.propertypro-toolbar .propertypro-btn-back-to-home .propertypro-btn-back-to-home-content { font-size: 0.3125rem; }
+.propertypro-toolbar .propertypro-btn-back-to-home .propertypro-btn-back-to-home-content { margin-left: 0.3125rem; }
 .propertypro-toolbar .propertypro-menu-icon{ cursor: pointer; }
 .propertypro-guide-toolbar{ z-index: 12; padding-left: 1.5rem; }
 .propertypro-guide-masthead, .propertypro-article-masthead {  width: 100%; height: 100%; display: table; position: absolute; top: 0; left: 0; z-index: 11; text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
