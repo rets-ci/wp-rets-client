@@ -92,7 +92,8 @@
         ".propertypro-view-link",
         ".propertypro-filter-footernav .nav-item-right a.btn-apply",
         ".propertypro-top-panel form .propertypro-addfilter a",
-        ".propertypro-top-nav-bar li .propertypro-indicator"
+        ".propertypro-top-nav-bar li .propertypro-indicator",
+        ".propertypro-article-content a"
       ],
       "additional_rules": [
         {

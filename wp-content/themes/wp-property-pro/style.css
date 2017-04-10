@@ -787,7 +787,10 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
     .propertypro-guide-container .propertypro-guide-head { height: 80vh; }
     .propertypro-guide-masthead h1 { padding-top: 12%;  }
     .propertypro-article-masthead {position: static; height: 100vh; }
-    .propertypro-article-masthead .propertypro-article-header h1 { font-size: 2.25rem; }
+    .propertypro-article-masthead .propertypro-article-header h1 { font-size: 2rem; }
+    .propertypro-article-content { padding: 50px 30px 25px; }
+    .propertypro-article-content h2 { font-size: 2rem; }
+    .propertypro-article-content p { font-size: 1.5rem }
 }
 
 /* Extra small devices (portrait phones, less than 640px) */
