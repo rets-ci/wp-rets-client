@@ -2,6 +2,7 @@ import {openPropertiesModal} from '../../../actions/index.jsx';
 import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import Util from '../../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -13,6 +14,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
+    },
+    removeSearchFilter(key, value) {
+      let updatedURL = Util.removeQueryFromURL(window.location.href, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[' + key + ']', value);
+      Util.goToUrl(updatedURL);
     }
   }
 };
@@ -30,7 +35,7 @@ class searchFilters extends Component {
     if (bedroomsFilter) {
       bedroomsElement = (
         <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i></span> {bedroomsFilter}+ Beds</span>
+          <span><i className="fa fa-times" onClick={() => this.props.removeSearchFilter('bedrooms', bedroomsFilter)}></i></span> {bedroomsFilter}+ Beds</span>
       );
     } else {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>

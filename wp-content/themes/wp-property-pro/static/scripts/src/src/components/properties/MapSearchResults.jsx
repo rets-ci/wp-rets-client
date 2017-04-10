@@ -51,9 +51,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     doSearchWithQuery: (query, append) => {
-      dispatch(toggleMapSearchResultsLoading(true));
+      // dispatch(toggleMapSearchResultsLoading(true));
       Api.search(query, response => {
-        dispatch(toggleMapSearchResultsLoading(false));
+        // dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
