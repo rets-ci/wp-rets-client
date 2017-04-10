@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "css-loader": "^0.26.2",
+    "nouislider": "^9.2.0",
+    "numeral": "^2.0.6",
     "style-loader": "^0.13.2"
   },
   "scripts": {

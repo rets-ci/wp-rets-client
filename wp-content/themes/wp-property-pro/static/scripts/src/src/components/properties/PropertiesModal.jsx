@@ -2,6 +2,7 @@
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
+import Price from './Filters/Price.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
@@ -168,24 +169,8 @@ class PropertiesModal extends Component {
                  </div>
                  <div className="filter-section">
                    <h3>Price</h3>
-                   <div className={Lib.THEME_CLASSES_PREFIX+"range-slider"}>
-                     <div className="slider-line"></div>
-                     <div className="range-grid">
-                        <span className="range-grid-col">No Min</span>
-                        <span className="range-grid-col">1000</span>
-                        <span className="range-grid-col active">1500</span>
-                        <span className="range-grid-col active">2000</span>
-                        <span className="range-grid-col active">2500</span>
-                        <span className="range-grid-col active">3000</span>
-                        <span className="range-grid-col active">3500</span>
-                        <span className="range-grid-col">4000</span>
-                        <span className="range-grid-col">4500</span>
-                        <span className="range-grid-col">5000</span>
-                        <span className="range-grid-col">No Max</span>
-                     </div>
-                     <span className={Lib.THEME_CLASSES_PREFIX+"slider-bar"}></span>
-                     <span className={`${Lib.THEME_CLASSES_PREFIX}bs-slider from type_last ${Lib.THEME_CLASSES_PREFIX}left`}>100K</span>
-                     <span className={`${Lib.THEME_CLASSES_PREFIX}bs-slider to ${Lib.THEME_CLASSES_PREFIX}right`}>600K</span>
+                   <div>
+                     <Price />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
