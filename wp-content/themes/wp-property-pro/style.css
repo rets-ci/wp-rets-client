@@ -47,7 +47,6 @@ h1, h2, h3, h4, h5 { font-family: inherit; font-weight: 700; font-size: inherit;
 /*-----------------------------------------------------------------------------------*/
 html, body { height: 100%; margin: 0; }
 #propertypro-root {height: 100%;}
-.btn { box-shadow: none!important; }
 .propertypro-toolbar { color: #fff; position: absolute; top: 15px; left: 0; width: 100%; z-index:10; }
 .propertypro-masthead { text-align: center; background-color: rgba(0,0,0,.4); background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index:9; }
 .propertypro-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
@@ -57,7 +56,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-masthead .propertypro-masthead-title-container { margin-top: 95px; }
 .propertypro-masthead .propertypro-masthead-subtitle-container{ margin-top: 105px; }
 
-.navbar { border: 0; background: transparent; margin: 0; padding-top: 0; padding-bottom: 0; }
 .propertypro-login-box, .propertypro-login-box:visited { background: transparent; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.4) ; outline: none; margin-right: 10px; color: #fff; }
 .navbar-toggler { color: #fff; display: block!important; outline: none!important; cursor: pointer; font-size: 1.150rem; top: 5px; position: relative;  }
 .navbar-toggler span { font-size: 28px; float: left; margin: -4px 10px 0 0; }
@@ -72,8 +70,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-square-logo{ max-width: 50px; margin-left: -10px; }
 
 
-.navbar-brand { float: left; }
-.nav { top: .55em; }
 .menu-icon { position: absolute; top: 10px; left: -12px; z-index: 99; }
 
 .propertypro-search-box { box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); border-radius: 5px; max-width: 720px; margin: 55px auto 0; position: relative; }
@@ -611,18 +607,18 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-guide-container .propertypro-guide-head { height: 100vh; }
 .propertypro-guide-head { text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover; color: #fff; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index:9; }
 .propertypro-guide-head:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); }
-.propertypro-toolbar .propertypro-btn-back-to-home { border-radius: 3px; border-width: 2px; border-color: rgba(255,255,255,.2); background: none; line-height: 22px; font-size: .90rem; padding-left: 15px; padding-right: 15px; margin-top: 10px; }
-.propertypro-toolbar .propertypro-btn-back-to-home .fa { font-size: 13px; margin-right: 5px; }
+.propertypro-toolbar .propertypro-btn-back-to-home { border-radius: 3px; border-width: 2px; border-color: rgba(255,255,255,.2); background: none; line-height: 1.5rem; font-size: .875rem; padding-left: 15px; padding-right: 15px; margin-top: 10px; }
+.propertypro-toolbar .propertypro-btn-back-to-home .propertypro-btn-back-to-home-content { font-size: 0.3125rem; }
 .propertypro-toolbar .propertypro-menu-icon{ cursor: pointer; }
-.propertypro-guide-toolbar{ z-index: 12; }
+.propertypro-guide-toolbar{ z-index: 12; padding-left: 1.5rem; }
 .propertypro-guide-masthead, .propertypro-article-masthead {  width: 100%; height: 100%; display: table; position: absolute; top: 0; left: 0; z-index: 11; text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 .propertypro-guide-masthead { display: block; }
 .propertypro-guide-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-article-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-guide-masthead header, .propertypro-article-masthead header {  display: table-cell; vertical-align: middle; }
 .propertypro-guide-masthead header, .propertypro-article-masthead header { z-index: 1; position: relative; }
-.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 2.8rem; font-weight: normal; line-height: 1.2; margin-bottom: .50em; }
-.propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.35rem; line-height: 1.6; padding: 0 10%; }
+.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 3rem; font-weight: normal; line-height: 3.75rem; margin-bottom: .50em; }
+.propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.5rem; line-height: 2.25rem; padding: 0 10%; }
 .propertypro-guide-content, .propertypro-article-content { background-color: #e6ecf0; padding: 25px 0; }
 .propertypro-guide-content { padding-bottom: 0 !important; }
 .propertypro-article-content { padding: 25px 30px; }
@@ -635,8 +631,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-category-card .propertypro-category-card-content ul li:active a, .propertypro-category-card .propertypro-category-card-content ul li:focus a,
 .propertypro-category-card .propertypro-category-card-content ul li:hover a { color: #d03528; cursor: pointer; }
 .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img { width: 100%; height: 100%; background-size: cover !important; }
-.propertypro-guide-detail h2, .propertypro-article-content h2 { font-size: 1.30rem; line-height: 26px; margin: 0 0 1em; }
-.propertypro-guide-detail p, .propertypro-article-content p {  color: #8b8c8d; font-size: 1rem; font-weight: 500; line-height: 24px; margin: 0 0 1.8em; }
+.propertypro-article-content h2 { font-size: 1.5rem; line-height: 1.5rem; margin: 0 0 1em; }
+.propertypro-article-content p {  color: #8b8c8d; font-size: 1.125rem; font-weight: 500; line-height: 2rem; margin: 0 0 3.125rem }
 .propertypro-article-content h2 { color: #000000; font-weight: normal; }
 .propertypro-article-masthead nav { position: absolute; width: 100%; z-index: 11; height: 60px; bottom: 0; left: 0; }
 .propertypro-article-masthead nav ol { list-style-type: none; margin: 0; padding: 0; }
