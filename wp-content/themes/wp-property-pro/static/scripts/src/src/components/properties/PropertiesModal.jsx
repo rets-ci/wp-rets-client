@@ -53,6 +53,10 @@ class PropertiesModal extends Component {
     });
   }
 
+  handlePriceSelect(min, max) {
+    //TODO: handle filtering on price filter here
+  }
+
   updateFilter(property, val) {
     let changeToSet = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + property + "]"]: val};
     let url = new URI(window.location.href);
@@ -170,7 +174,7 @@ class PropertiesModal extends Component {
                  <div className="filter-section">
                    <h3>Price</h3>
                    <div>
-                     <Price />
+                     <Price handleOnClick={this.handlePriceSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
