@@ -64,11 +64,9 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
   }
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX + "masthead"} style={headerStyle}>
+    <section className={`jumbotron ${Lib.THEME_CLASSES_PREFIX}masthead`} style={headerStyle}>
       {modal}
-      <div className={Lib.THEME_CLASSES_PREFIX + "intro-wrap"}>
-        {container}
-      </div>
+      {container}
     </section>
   );
 };

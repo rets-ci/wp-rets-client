@@ -1,4 +1,4 @@
-import $ from 'jquery';
+//import $ from 'jquery';
 import numeral from 'numeral';
 import React, {Component, PropTypes} from 'react';
 

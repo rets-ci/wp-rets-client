@@ -48,11 +48,11 @@ h1, h2, h3, h4, h5 { font-family: inherit; font-weight: 700; font-size: inherit;
 html, body { height: 100%; margin: 0; }
 #propertypro-root {height: 100%;}
 .propertypro-toolbar { color: #fff; position: absolute; top: 15px; left: 0; width: 100%; z-index:10; }
-.propertypro-masthead { text-align: center; background-color: rgba(0,0,0,.4); background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; z-index:9; }
+.propertypro-masthead { background-color: rgba(0,0,0,.4); background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; position: relative; }
 .propertypro-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
-.propertypro-masthead .propertypro-intro-wrap { position: relative; z-index: 2; padding: 30px 0 180px; }
+.propertypro-masthead .propertypro-intro-wrap { position: relative; z-index: 1; padding-bottom: 11.25rem; }
 .propertypro-masthead h1 { text-align: center; font-size: 3.40rem; font-weight: normal; margin: 0 0 .70em; }
-.propertypro-masthead .propertypro-intro-wrap p { font-size: 2rem; margin: 0 18%; text-align:center; }
+.propertypro-masthead .propertypro-intro-wrap p { font-size: 2rem; }
 .propertypro-masthead .propertypro-masthead-title-container { margin-top: 95px; }
 .propertypro-masthead .propertypro-masthead-subtitle-container{ margin-top: 105px; }
 
