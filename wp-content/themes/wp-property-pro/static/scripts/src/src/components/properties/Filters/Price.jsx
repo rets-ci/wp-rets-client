@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import numeral from 'numeral';
 import React, {Component, PropTypes} from 'react';
 
@@ -65,7 +64,7 @@ class Price extends Component {
   render() {
     return (
       <div>
-        <div ref={(r) => this.slider = r} style={{margin: '0 auto'}}></div>
+        <div ref={(r) => this.slider = r}></div>
       </div>
     );
   }
