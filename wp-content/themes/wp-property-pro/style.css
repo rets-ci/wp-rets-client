@@ -1003,6 +1003,12 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
   }
 }
 
+/* noUISlider overrides */
+
+.noUi-connect {
+  background: #d03528 !important;
+}
+
 /** Additional rules **/
 .propertypro-left { left: 0; }
 .propertypro-right { right: 0; }
