@@ -62010,10 +62010,6 @@
 
 	var _lib = __webpack_require__(276);
 
-	var _lodash = __webpack_require__(277);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
@@ -62022,17 +62018,7 @@
 	  return _react2.default.createElement(
 	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
-	    _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
-	      'span',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	        className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
-	    ) : null,
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'container-fluid' },
-	      _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
-	    )
+	    _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
 	  );
 	};
 	exports.default = HeaderDefault;
@@ -62067,48 +62053,57 @@
 	    'nav',
 	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
-	      'a',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand',
-	        href: _lodash2.default.get(bundle, 'site_url', ''),
-	        onClick: function onClick(eve) {
-	          eve.preventDefault();
-	          _reactRouter.browserHistory.push('');
-	        }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	      _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	    ),
-	    _react2.default.createElement(
-	      'ul',
-	      { className: 'nav navbar-toggler-right' },
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items px-3' },
+	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
+	        'a',
+	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
+	        _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
+	          className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
+	      ) : null,
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item' },
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	          'Login'
-	        )
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand mr-auto',
+	          href: _lodash2.default.get(bundle, 'site_url', ''),
+	          onClick: function onClick(eve) {
+	            eve.preventDefault();
+	            _reactRouter.browserHistory.push('');
+	          }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
 	      ),
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item hidden-sm-down' },
+	        'ul',
+	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'navbar-toggler', type: 'button', onClick: openUserPanel },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            'span',
-	            null,
-	            '\u2630'
-	          ),
-	          ' Menu'
+	            'a',
+	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
+	            'Login'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          { className: 'nav-item hidden-sm-down' },
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'button', className: _lib.Lib.THEME_CLASSES_PREFIX + "navigation-menu-button", onClick: openUserPanel },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '\u2630'
+	            ),
+	            ' Menu'
+	          )
 	        )
 	      )
 	    )
 	  );
 	};
-
 	exports.default = Navigation;
 
 /***/ },
