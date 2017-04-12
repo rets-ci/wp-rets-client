@@ -61889,7 +61889,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -62551,7 +62551,7 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
+	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
@@ -62875,33 +62875,37 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        rows.map(function (row) {
-	          var cells = _lodash2.default.get(row, 'cells', []);
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          rows.map(function (row) {
+	            var cells = _lodash2.default.get(row, 'cells', []);
 
-	          return cells.map(function (cell) {
-	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	              case 'Property_Pro_Masthead_Widget':
-	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Subnavigation_Widget':
-	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
-	                break;
-	              case 'Property_Pro_Tour_Widget':
-	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Listing_Carousel_Widget':
-	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Callout_Widget':
-	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Testimonials_Widget':
-	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                break;
-	            }
-	          });
-	        }),
+	            return cells.map(function (cell) {
+	              switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	                case 'Property_Pro_Masthead_Widget':
+	                  return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Subnavigation_Widget':
+	                  return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
+	                  break;
+	                case 'Property_Pro_Tour_Widget':
+	                  return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Listing_Carousel_Widget':
+	                  return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Callout_Widget':
+	                  return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Testimonials_Widget':
+	                  return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                  break;
+	              }
+	            });
+	          })
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }

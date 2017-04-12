@@ -29,7 +29,7 @@ const UserPanelContent = ({panelOpen, closeUserPanel}) => {
   }
 
   return (
-  <div className={Lib.THEME_CLASSES_PREFIX+"user-panel " + (panelOpen ? Lib.THEME_CLASSES_PREFIX+"on" : "")}>
+  <section className={Lib.THEME_CLASSES_PREFIX+"user-panel " + (panelOpen ? Lib.THEME_CLASSES_PREFIX+"on" : "")}>
     <a href="#" className={Lib.THEME_CLASSES_PREFIX+"close-panel"} onClick={(event) => {
       closeUserPanel();
       event.preventDefault();
@@ -89,7 +89,7 @@ const UserPanelContent = ({panelOpen, closeUserPanel}) => {
     <div className={Lib.THEME_CLASSES_PREFIX+"more"}>
       <a href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>
     </div>
-  </div>
+  </section>
 )};
 
 const UserPanel = connect(
