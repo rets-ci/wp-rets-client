@@ -173,6 +173,7 @@
       },
       "rule-title": "font-family",
       "selector": [
+        "h1",
         ".propertypro-testimonial h4",
         ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box ol li .container",
         ".propertypro-widget-tour .propertypro-headtitle h2",
@@ -196,6 +197,7 @@
       },
       "rule-title": "font-family",
       "selector": [
+        "p",
         ".pageheader p.hidden-sm-down",
         ".propertypro-testimonial .propertypro-sliderContent blockquote p",
         ".propertypro-testimonial .propertypro-userInfo .propertypro-userBox p",

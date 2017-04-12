@@ -63027,7 +63027,7 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead', style: headerStyle },
+	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
 	    modal,
 	    container
 	  );
@@ -63070,15 +63070,15 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container pt-4 pb-3' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	            'h1',
-	            null,
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title mb-2' },
 	            widget_cell.widget.fields.title
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
-	            { className: 'hidden-sm-down' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle mb-2 hidden-sm-down' },
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
 	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
@@ -63235,7 +63235,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto mt-1' },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,

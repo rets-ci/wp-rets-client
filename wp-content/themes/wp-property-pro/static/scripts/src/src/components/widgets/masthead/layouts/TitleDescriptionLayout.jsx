@@ -6,15 +6,15 @@ import _ from 'lodash';
 
 const TitleDescriptionLayout = ({widget_cell}) => {
     return (
-        <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-title-container`}>
+        <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-title-container pt-4 pb-3`}>
             {
                 _.get(widget_cell, 'widget.fields.title', '')
-                    ? <h1>{widget_cell.widget.fields.title}</h1>
+                    ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}masthead-title mb-2`}>{widget_cell.widget.fields.title}</h1>
                     : null
             }
             {
                 _.get(widget_cell, 'widget.fields.subtitle', '')
-                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
+                    ? <p className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle mb-2 hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
             <Search options={_.get(widget_cell, 'widget.fields.search_options', null) ? (_.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options) : {}} />
