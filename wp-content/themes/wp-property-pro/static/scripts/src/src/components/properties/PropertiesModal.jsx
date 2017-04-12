@@ -18,7 +18,8 @@ let bedroomOptions = [
 const mapStateToProps = (state, ownProps) => {
   return {
     bedroomOptions: bedroomOptions,
-    bedroomSelected: ownProps.searchFilters.bedrooms || null
+    bedroomSelected: ownProps.searchFilters.bedrooms || null,
+    priceSelected: ownProps.searchFilters.price || {}
   }
 };
 
@@ -41,26 +42,35 @@ class PropertiesModal extends Component {
     super(props);
     this.state = {
       bedroomSelected: props.bedroomSelected,
+      priceSelected: props.priceSelected,
       updatedFilters: Object.assign({}, props.searchFilters)
     };
   }
 
   handleBedroomSelect(val) {
-    let filter = this.updateFilter('bedrooms', val);
+    let update = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
+    let filter = this.getUpdatedQueryFilter(update);
     this.setState({
       bedroomSelected: val,
       updatedFilters: filter
     });
   }
 
-  handlePriceSelect(min, max) {
-    //TODO: handle filtering on price filter here
+  handlePriceSelect(start, to) {
+    let update = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: to,
+    };
+    let filter = this.getUpdatedQueryFilter(update);
+    this.setState({
+      priceSelected: {start: start, to: to},
+      updatedFilters: filter
+    });
   }
 
-  updateFilter(property, val) {
-    let changeToSet = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + property + "]"]: val};
+  getUpdatedQueryFilter(update) {
     let url = new URI(window.location.href);
-    url.setSearch(changeToSet);
+    url.setSearch(update);
     return url.search(true);
   }
 
@@ -74,8 +84,9 @@ class PropertiesModal extends Component {
   resetFilters() {
     this.setState({
       bedroomSelected: this.props.bedroomSelected,
+      priceSelected: this.props.priceSelected,
       updatedFilters: Object.assign({}, this.props.searchFilters)
-    })
+    });
   }
 
   render() {
@@ -83,15 +94,19 @@ class PropertiesModal extends Component {
       bedroomOptions,
       searchFilters
     } = this.props;
+
     let {
       bedroomSelected,
+      priceSelected,
       updatedFilters
     } = this.state;
+
     let bedroomElements = bedroomOptions.map(d => ({
       name: d.name,
       selected: d.value === bedroomSelected,
       value: d.value
     }));
+
     let anyFilterChange = !isEqual(searchFilters, updatedFilters);
     let termFilter = searchFilters['term'];
     let termFilters = Object.keys(termFilter).map(t => {
@@ -174,7 +189,7 @@ class PropertiesModal extends Component {
                  <div className="filter-section">
                    <h3>Price</h3>
                    <div>
-                     <Price handleOnClick={this.handlePriceSelect.bind(this)} />
+                     <Price start={+priceSelected.start} to={+priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>

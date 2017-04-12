@@ -51255,7 +51255,8 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
 	    bedroomOptions: bedroomOptions,
-	    bedroomSelected: ownProps.searchFilters.bedrooms || null
+	    bedroomSelected: ownProps.searchFilters.bedrooms || null,
+	    priceSelected: ownProps.searchFilters.price || {}
 	  };
 	};
 
@@ -51277,6 +51278,7 @@
 
 	    _this.state = {
 	      bedroomSelected: props.bedroomSelected,
+	      priceSelected: props.priceSelected,
 	      updatedFilters: Object.assign({}, props.searchFilters)
 	    };
 	    return _this;
@@ -51285,7 +51287,8 @@
 	  _createClass(PropertiesModal, [{
 	    key: 'handleBedroomSelect',
 	    value: function handleBedroomSelect(val) {
-	      var filter = this.updateFilter('bedrooms', val);
+	      var update = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]", val);
+	      var filter = this.getUpdatedQueryFilter(update);
 	      this.setState({
 	        bedroomSelected: val,
 	        updatedFilters: filter
@@ -51293,15 +51296,21 @@
 	    }
 	  }, {
 	    key: 'handlePriceSelect',
-	    value: function handlePriceSelect(min, max) {
-	      //TODO: handle filtering on price filter here
+	    value: function handlePriceSelect(start, to) {
+	      var _update2;
+
+	      var update = (_update2 = {}, _defineProperty(_update2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", start), _defineProperty(_update2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", to), _update2);
+	      var filter = this.getUpdatedQueryFilter(update);
+	      this.setState({
+	        priceSelected: { start: start, to: to },
+	        updatedFilters: filter
+	      });
 	    }
 	  }, {
-	    key: 'updateFilter',
-	    value: function updateFilter(property, val) {
-	      var changeToSet = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + property + "]", val);
+	    key: 'getUpdatedQueryFilter',
+	    value: function getUpdatedQueryFilter(update) {
 	      var url = new _urijs2.default(window.location.href);
-	      url.setSearch(changeToSet);
+	      url.setSearch(update);
 	      return url.search(true);
 	    }
 	  }, {
@@ -51317,6 +51326,7 @@
 	    value: function resetFilters() {
 	      this.setState({
 	        bedroomSelected: this.props.bedroomSelected,
+	        priceSelected: this.props.priceSelected,
 	        updatedFilters: Object.assign({}, this.props.searchFilters)
 	      });
 	    }
@@ -51330,7 +51340,9 @@
 	          searchFilters = _props.searchFilters;
 	      var _state = this.state,
 	          bedroomSelected = _state.bedroomSelected,
+	          priceSelected = _state.priceSelected,
 	          updatedFilters = _state.updatedFilters;
+
 
 	      var bedroomElements = bedroomOptions.map(function (d) {
 	        return {
@@ -51339,6 +51351,7 @@
 	          value: d.value
 	        };
 	      });
+
 	      var anyFilterChange = !(0, _lodash.isEqual)(searchFilters, updatedFilters);
 	      var termFilter = searchFilters['term'];
 	      var termFilters = Object.keys(termFilter).map(function (t) {
@@ -51541,7 +51554,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  null,
-	                  _react2.default.createElement(_Price2.default, { handleOnClick: this.handlePriceSelect.bind(this) })
+	                  _react2.default.createElement(_Price2.default, { start: +priceSelected.start, to: +priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
 	                ),
 	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
@@ -51646,6 +51659,10 @@
 	  _createClass(Price, [{
 	    key: 'render',
 	    value: function render() {
+	      var _props = this.props,
+	          start = _props.start,
+	          to = _props.to;
+
 	      var min = 100000;
 	      var max = 1000000;
 	      var range = {
@@ -51657,7 +51674,7 @@
 	      percentages.forEach(function (p) {
 	        range[p + '%'] = [min + min * (p / 100)];
 	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: 150000, to: 400000, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || 150000, to: to || 400000, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -51665,6 +51682,8 @@
 	}(_react.Component);
 
 	Price.propTypes = {
+	  start: _react.PropTypes.number,
+	  to: _react.PropTypes.number,
 	  handleOnClick: _react.PropTypes.func.isRequired
 	};
 	;
@@ -51748,7 +51767,7 @@
 	          start = _props.start,
 	          to = _props.to;
 
-	      var slider = noUiSlider.create(this.slider, {
+	      this.slider = noUiSlider.create(this.sliderElement, {
 	        connect: true,
 	        format: sliderFormatter,
 	        pips: {
@@ -51762,11 +51781,18 @@
 	        tooltips: true
 	      });
 
-	      slider.on('change', function (data) {
-	        var start = data[0];
-	        var to = data[1];
+	      this.slider.on('change', function (values, handle, unencoded) {
+	        var start = Math.round(unencoded[0]);
+	        var to = Math.round(unencoded[1]);
 	        handleOnClick(start, to);
 	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
+	        this.sliderElement.noUiSlider.set([nextProps.start, nextProps.to]);
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -51777,7 +51803,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement('div', { ref: function ref(r) {
-	            return _this2.slider = r;
+	            return _this2.sliderElement = r;
 	          } })
 	      );
 	    }

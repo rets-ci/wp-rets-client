@@ -24,9 +24,7 @@ let sliderFormatter = {
     }
     return returnVal;
   },
-  from: val => {
-    return val;
-  }
+  from: val => val
 };
 
 class Slider extends Component {
@@ -49,7 +47,7 @@ class Slider extends Component {
       start,
       to
     } = this.props;
-    let slider = noUiSlider.create(this.slider, {
+    this.slider = noUiSlider.create(this.sliderElement, {
     	connect: true,
       format: sliderFormatter,
       pips: {
@@ -63,17 +61,23 @@ class Slider extends Component {
       tooltips: true
     });
 
-    slider.on('change', function(data){
-      let start = data[0];
-      let to = data[1];
+    this.slider.on('change', function(values, handle, unencoded){
+      let start = Math.round(unencoded[0]);
+      let to = Math.round(unencoded[1]);
       handleOnClick(start, to);
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
+      this.sliderElement.noUiSlider.set([nextProps.start, nextProps.to]);
+    }
   }
 
   render() {
     return (
       <div>
-        <div ref={(r) => this.slider = r}></div>
+        <div ref={(r) => this.sliderElement = r}></div>
       </div>
     );
   }
