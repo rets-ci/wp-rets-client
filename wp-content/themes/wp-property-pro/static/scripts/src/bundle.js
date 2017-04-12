@@ -61942,6 +61942,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -61980,8 +61982,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
-	    null,
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
 	    headerElement
 	  );
 	};
@@ -62008,18 +62010,12 @@
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
-	var _lib = __webpack_require__(276);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
-	    _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
-	  );
+	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
 	};
 	exports.default = HeaderDefault;
 
@@ -62158,84 +62154,80 @@
 
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
-	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
+	        'div',
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	              'a',
+	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  _reactRouter.browserHistory.push('');
+	                }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	              _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	                className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
+	            ) : null
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
-	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
-	                'a',
-	                { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	                    eve.preventDefault();
-	                    _reactRouter.browserHistory.push('');
-	                  }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
-	              ) : null
-	            ),
+	              'a',
+	              { href: '#' },
+	              saleType,
+	              ' ',
+	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	            )
+	          ),
+	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
 	            _react2.default.createElement(
-	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	              'ul',
+	              null,
 	              _react2.default.createElement(
-	                'a',
-	                { href: '#' },
-	                saleType,
-	                ' ',
-	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	              )
-	            ),
-	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
-	              _react2.default.createElement(
-	                'ul',
+	                'li',
 	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
-	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-heart' })
-	                  )
-	                ),
+	                  'a',
+	                  { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-heart' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-bell' }),
+	                  ' ',
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                    'span',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
 	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-bell' }),
-	                    ' ',
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
-	                      _react2.default.createElement('i', {
-	                        className: 'fa fa-circle' })
-	                    )
+	                      className: 'fa fa-circle' })
 	                  )
-	                ),
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', onClick: this.props.openUserPanel,
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', onClick: this.props.openUserPanel,
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      '\u2630'
-	                    )
+	                    'span',
+	                    null,
+	                    '\u2630'
 	                  )
 	                )
 	              )

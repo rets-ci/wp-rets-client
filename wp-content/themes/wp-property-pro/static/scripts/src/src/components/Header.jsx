@@ -4,6 +4,7 @@ import {toggleUserPanel} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
 import Util from './Util.jsx';
+import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
@@ -35,7 +36,7 @@ const HeaderContent = ({location, openUserPanel}) => {
   }
 
   return (
-    <div>{headerElement}</div>
+    <section className={Lib.THEME_CLASSES_PREFIX + "toolbar"}>{headerElement}</section>
   );
 };
 
