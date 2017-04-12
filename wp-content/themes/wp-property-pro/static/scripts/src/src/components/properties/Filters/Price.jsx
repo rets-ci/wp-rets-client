@@ -3,8 +3,8 @@ import Slider from '../Components/Slider.jsx';
 
 class Price extends Component {
   static propTypes = {
-    start: PropTypes.number,
-    to: PropTypes.number,
+    start: PropTypes.any,
+    to: PropTypes.any,
     handleOnClick: PropTypes.func.isRequired
   };
 

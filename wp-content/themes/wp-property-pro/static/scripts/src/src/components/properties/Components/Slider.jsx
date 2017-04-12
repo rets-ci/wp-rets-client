@@ -1,3 +1,4 @@
+import {Lib} from '../../../lib.jsx';
 import numeral from 'numeral';
 import React, {Component, PropTypes} from 'react';
 
@@ -11,9 +12,9 @@ let sliderFormatter = {
   to: val => {
   	let returnVal;
     if (val === min) {
-      returnVal = "No Min";
+      returnVal = Lib.RANGE_SLIDER_NO_MIN_TEXT;
     } else if (val === max) {
-      returnVal = "No Max";
+      returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
     } else {
       let numeralNumber = numeral(val);
       if (val >= 100000) {
@@ -31,8 +32,8 @@ class Slider extends Component {
   static propTypes = {
     handleOnClick: PropTypes.func.isRequired,
     range: PropTypes.object.isRequired,
-    start: PropTypes.number.isRequired,
-    to: PropTypes.number.isRequired
+    start: PropTypes.any,
+    to: PropTypes.any
   }
 
   constructor(props) {
@@ -56,21 +57,23 @@ class Slider extends Component {
         format: sliderFormatter
       },
       range: range,
-    	start: [start, to],
+    	start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
       step: 10000,
       tooltips: true
     });
 
     this.slider.on('change', function(values, handle, unencoded){
-      let start = Math.round(unencoded[0]);
-      let to = Math.round(unencoded[1]);
+      let start = values[0] === Lib.RANGE_SLIDER_NO_MIN_TEXT ? Lib.RANGE_SLIDER_NO_MIN_TEXT : Math.round(unencoded[0]);
+      let to = values[1] === Lib.RANGE_SLIDER_NO_MAX_TEXT ? Lib.RANGE_SLIDER_NO_MAX_TEXT : Math.round(unencoded[1]);
       handleOnClick(start, to);
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
-      this.sliderElement.noUiSlider.set([nextProps.start, nextProps.to]);
+      let start = nextProps.start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : nextProps.start;
+      let to = nextProps.to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : nextProps.to;
+      this.sliderElement.noUiSlider.set([start, to]);
     }
   }
 

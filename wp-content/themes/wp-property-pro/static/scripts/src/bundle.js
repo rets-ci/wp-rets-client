@@ -29754,6 +29754,21 @@
 	            }
 	          });
 	        }
+	        if (params.price) {
+	          var range = {};
+	          if (params.price.start !== _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	            range.gte = params.price.start;
+	          }
+
+	          if (params.price.to !== _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	            range.lt = params.price.to;
+	          }
+	          query.bool.must.push({
+	            "range": {
+	              "post_meta.rets_list_price": range
+	            }
+	          });
+	        }
 	        query.bool.must.push({ "term": terms });
 	      }
 
@@ -29837,6 +29852,8 @@
 	  MOBILE_WIDTH: 768,
 	  PROPERTY_LISTING_IMAGE_SIZE: '400x230',
 	  PROPERTY_PER_PAGE: 18,
+	  RANGE_SLIDER_NO_MIN_TEXT: 'No Min',
+	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
@@ -51554,7 +51571,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  null,
-	                  _react2.default.createElement(_Price2.default, { start: +priceSelected.start, to: +priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
+	                  _react2.default.createElement(_Price2.default, { start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
 	                ),
 	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
@@ -51682,8 +51699,8 @@
 	}(_react.Component);
 
 	Price.propTypes = {
-	  start: _react.PropTypes.number,
-	  to: _react.PropTypes.number,
+	  start: _react.PropTypes.any,
+	  to: _react.PropTypes.any,
 	  handleOnClick: _react.PropTypes.func.isRequired
 	};
 	;
@@ -51701,6 +51718,8 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _lib = __webpack_require__(276);
 
 	var _numeral = __webpack_require__(294);
 
@@ -51728,9 +51747,9 @@
 	  to: function to(val) {
 	    var returnVal = void 0;
 	    if (val === min) {
-	      returnVal = "No Min";
+	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
 	    } else if (val === max) {
-	      returnVal = "No Max";
+	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	    } else {
 	      var numeralNumber = (0, _numeral2.default)(val);
 	      if (val >= 100000) {
@@ -51776,14 +51795,14 @@
 	          format: sliderFormatter
 	        },
 	        range: range,
-	        start: [start, to],
+	        start: [start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
 	        step: 10000,
 	        tooltips: true
 	      });
 
 	      this.slider.on('change', function (values, handle, unencoded) {
-	        var start = Math.round(unencoded[0]);
-	        var to = Math.round(unencoded[1]);
+	        var start = values[0] === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT : Math.round(unencoded[0]);
+	        var to = values[1] === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT : Math.round(unencoded[1]);
 	        handleOnClick(start, to);
 	      });
 	    }
@@ -51791,7 +51810,9 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
-	        this.sliderElement.noUiSlider.set([nextProps.start, nextProps.to]);
+	        var start = nextProps.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : nextProps.start;
+	        var to = nextProps.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : nextProps.to;
+	        this.sliderElement.noUiSlider.set([start, to]);
 	      }
 	    }
 	  }, {
@@ -51815,8 +51836,8 @@
 	Slider.propTypes = {
 	  handleOnClick: _react.PropTypes.func.isRequired,
 	  range: _react.PropTypes.object.isRequired,
-	  start: _react.PropTypes.number.isRequired,
-	  to: _react.PropTypes.number.isRequired
+	  start: _react.PropTypes.any,
+	  to: _react.PropTypes.any
 	};
 	;
 
