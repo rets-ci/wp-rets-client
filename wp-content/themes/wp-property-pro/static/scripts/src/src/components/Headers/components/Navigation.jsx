@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const Navigation = ({openUserPanel}) => (
   <nav className={`navbar navbar-toggleable-md ${Lib.THEME_CLASSES_PREFIX}navigation-navbar`}>
-    <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items px-3`}>
+    <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
       {
         _.get(bundle, 'static_images_url', null)
           ?

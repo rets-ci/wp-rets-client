@@ -62177,7 +62177,7 @@
 	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items px-3' },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
 	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
 	        'a',
 	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
@@ -81531,39 +81531,43 @@
 	    _react2.default.createElement(
 	      'nav',
 	      { className: 'navbar navbar-toggleable-md' },
-	      _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
-	        'a',
-	        { className: 'navbar-brand', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	            eve.preventDefault();
-	            _Util2.default.goToUrl('/');
-	          } },
-	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	      ) : null,
-	      _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
-	        'ul',
-	        { className: 'nav navbar-toggler-right' },
-	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
+	        _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
+	          'a',
+	          { className: 'navbar-brand mr-auto', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	              eve.preventDefault();
+	              _Util2.default.goToUrl('/');
+	            } },
+	          _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	            className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	          _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	            className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	        ) : null,
+	        _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
+	          'ul',
+	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	          _react2.default.createElement(
-	            'a',
-	            { href: bundle.site_url, onClick: function onClick(eve) {
-	                _react2.default.createElement('the', null);
-	                eve.preventDefault();
-	                _Util2.default.goToUrl('/');
-	              }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	            'li',
+	            { className: 'nav-item' },
 	            _react2.default.createElement(
-	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
-	              'Return Home'
+	              'a',
+	              { href: bundle.site_url, onClick: function onClick(eve) {
+	                  _react2.default.createElement('the', null);
+	                  eve.preventDefault();
+	                  _Util2.default.goToUrl('/');
+	                }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
+	                'Return Home'
+	              )
 	            )
 	          )
-	        )
-	      ) : null
+	        ) : null
+	      )
 	    )
 	  );
 	};
