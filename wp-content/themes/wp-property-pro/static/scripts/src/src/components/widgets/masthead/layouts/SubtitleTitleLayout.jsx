@@ -6,10 +6,10 @@ import _ from 'lodash';
 
 const SubtitleTitleLayout = ({widget_cell}) => {
     return (
-        <div className={`container ${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-container`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}masthead-title-container mx-auto`}>
             {
                 _.get(widget_cell, 'widget.fields.subtitle', '')
-                    ? <p className="hidden-sm-down">{widget_cell.widget.fields.subtitle}</p>
+                    ? <p className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle-top hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
             {

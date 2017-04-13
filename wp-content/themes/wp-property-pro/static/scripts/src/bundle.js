@@ -63994,10 +63994,10 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-container' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
-	            { className: 'hidden-sm-down' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(

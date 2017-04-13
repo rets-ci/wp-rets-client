@@ -42,7 +42,6 @@ html, body { height: 100%; margin: 0; }
 .propertypro-masthead .propertypro-intro-wrap { position: relative; z-index: 1; padding-bottom: 11.25rem; }
 .propertypro-masthead .propertypro-intro-wrap p { font-size: 2rem; }
 .propertypro-masthead .propertypro-masthead-title-container { position: relative; z-index: 1; max-width: 850px; margin-top: 11rem; margin-bottom: 7rem; }
-.propertypro-masthead .propertypro-masthead-subtitle-container{ margin-top: 105px; }
 
 .propertypro-login-box, .propertypro-login-box:visited { background: transparent; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.4) ; outline: none; color: #fff; }
 .propertypro-navigation-cotrols { margin: auto 0; flex-direction: inherit; }
@@ -607,7 +606,7 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-article-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-guide-masthead header, .propertypro-article-masthead header {  display: table-cell; vertical-align: middle; }
 .propertypro-guide-masthead header, .propertypro-article-masthead header { z-index: 1; position: relative; }
-.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 3rem; font-weight: normal; line-height: 3.75rem; margin-bottom: .50em; }
+.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 3rem; font-weight: normal; line-height: 3.125rem; margin-bottom: .50em; }
 .propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.5rem; line-height: 2.25rem; padding: 0 10%; }
 .propertypro-guide-content, .propertypro-article-content { background-color: #e6ecf0; padding: 25px 0; }
 .propertypro-guide-content { padding-bottom: 0 !important; }
@@ -1006,5 +1005,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 
 
 /** Masthead **/
-.propertypro-masthead-title, .propertypro-masthead-subtitle { line-height: 3.125rem; margin-bottom: 2rem; }
-.propertypro-masthead-subtitle{ font-size: 1.75rem; margin-bottom: 3.5rem; }
+.propertypro-masthead-title, .propertypro-masthead-subtitle, .propertypro-masthead-subtitle-top { line-height: 3.125rem; }
+.propertypro-masthead-title { margin-bottom: 2rem; }
+.propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle { font-size: 1.75rem; }
+.propertypro-masthead-subtitle { margin-bottom: 3.5rem; }
+.propertypro-masthead-subtitle-top { margin-bottom: 2.5rem; }
