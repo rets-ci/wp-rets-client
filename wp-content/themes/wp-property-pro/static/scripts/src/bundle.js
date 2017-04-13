@@ -29224,10 +29224,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var _props$params = this.props.params,
-	          sale = _props$params.sale,
-	          tax = _props$params.tax,
-	          term = _props$params.term;
 	      var _props = this.props,
 	          displayedResults = _props.displayedResults,
 	          location = _props.location,
@@ -29280,16 +29276,17 @@
 	                _react2.default.createElement(
 	                  'h1',
 	                  null,
-	                  term,
-	                  ' Homes for ',
-	                  sale
+	                  'Homes for ',
+	                  searchFilters.sale_type
 	                ),
 	                _react2.default.createElement(
 	                  'p',
 	                  null,
 	                  'There are ',
 	                  this.props.resultsTotal,
-	                  ' homes for sale that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                  ' homes for ',
+	                  searchFilters.sale_type,
+	                  ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                )
 	              ),
 	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
@@ -51566,12 +51563,17 @@
 	                _react2.default.createElement(
 	                  'h3',
 	                  null,
-	                  'Price'
+	                  'Price ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(Range)'
+	                  )
 	                ),
 	                _react2.default.createElement(
 	                  'div',
 	                  null,
-	                  _react2.default.createElement(_Price2.default, { start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
+	                  _react2.default.createElement(_Price2.default, { saleType: searchFilters.sale_type, start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
 	                ),
 	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
@@ -51677,21 +51679,40 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
+	          saleType = _props.saleType,
 	          start = _props.start,
 	          to = _props.to;
 
-	      var min = 100000;
-	      var max = 1000000;
-	      var range = {
+	      var defaults = {
+	        Sale: {
+	          start: 150000,
+	          to: 400000
+	        },
+	        Rent: {
+	          start: 500,
+	          to: 3000
+	        }
+	      };
+	      var min = void 0;
+	      var max = void 0;
+	      var range = {};
+	      var percentages = void 0;
+	      if (saleType === 'Sale') {
+	        min = 100000;
+	        max = 1000000;
+	      } else if (saleType === 'Rent') {
+	        min = 100;
+	        max = 5000;
+	      }
+	      range = {
 	        min: min,
 	        max: max
 	      };
-	      var percentages = [10, 25, 50, 75];
-
+	      percentages = [10, 25, 50, 75];
 	      percentages.forEach(function (p) {
 	        range[p + '%'] = [min + min * (p / 100)];
 	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || 150000, to: to || 400000, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -51699,6 +51720,7 @@
 	}(_react.Component);
 
 	Price.propTypes = {
+	  saleType: _react.PropTypes.string.isRequired,
 	  start: _react.PropTypes.any,
 	  to: _react.PropTypes.any,
 	  handleOnClick: _react.PropTypes.func.isRequired

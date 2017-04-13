@@ -108,11 +108,6 @@ class MapSearchResults extends Component {
 
   render() {
     let {
-      sale,
-      tax,
-      term
-    } = this.props.params;
-    let {
       displayedResults,
       location,
       mapSearchResultsLoading,
@@ -147,8 +142,8 @@ class MapSearchResults extends Component {
             {displayedResults.length ?
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
                 <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-                  <h1>{term} Homes for {sale}</h1>
-                  <p>There are {this.props.resultsTotal} homes for sale that are priced between $250,000 and $500,00
+                  <h1>Homes for {searchFilters.sale_type}</h1>
+                  <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced between $250,000 and $500,00
                     with three to five betweens and two to three bathrooms.</p>
                 </div>
                 <SearchResultListing allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
