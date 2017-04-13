@@ -63968,7 +63968,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -63990,23 +63990,33 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
-	    var widget_cell = _ref.widget_cell;
+	  var widget_cell = _ref.widget_cell;
 
-	    return _react2.default.createElement(
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'container' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	            'p',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
+	          'p',
+	          {
+	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
+	          widget_cell.widget.fields.subtitle
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
-	            widget_cell.widget.fields.title
+	          'h1',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
+	          widget_cell.widget.fields.title
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	    );
+	        _react2.default.createElement(_Search2.default, {
+	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	      )
+	    )
+	  );
 	};
 
 	exports.default = SubtitleTitleLayout;
