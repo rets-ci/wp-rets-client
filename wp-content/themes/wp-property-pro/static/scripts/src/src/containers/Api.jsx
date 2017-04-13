@@ -390,6 +390,21 @@ class Api {
           }
         });
       }
+      if (params.price) {
+        let range = {};
+        if (params.price.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          range.gte = params.price.start
+        }
+
+        if (params.price.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          range.lt = params.price.to
+        }
+        query.bool.must.push({
+          "range": {
+            "post_meta.rets_list_price": range
+          }
+        });
+      }
       query.bool.must.push({"term": terms});
     }
 
