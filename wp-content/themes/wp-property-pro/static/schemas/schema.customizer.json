@@ -173,15 +173,7 @@
       },
       "rule-title": "font-family",
       "selector": [
-        "h1",
-        ".propertypro-testimonial h4",
-        ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box ol li .container",
-        ".propertypro-widget-tour .propertypro-headtitle h2",
-        ".propertypro-tour-widget-content h3",
-        ".propertypro-guide-masthead h1",
-        ".propertypro-article-masthead h1",
-        ".propertypro-article-content h2",
-        ".propertypro-article-content h3"
+        "h1, h2, h3, h4"
       ]
     },
     {
@@ -197,33 +189,7 @@
       },
       "rule-title": "font-family",
       "selector": [
-        "p",
-        ".pageheader p.hidden-sm-down",
-        ".propertypro-testimonial .propertypro-sliderContent blockquote p",
-        ".propertypro-testimonial .propertypro-userInfo .propertypro-userBox p",
-        ".propertypro-testimonial .propertypro-userInfo .propertypro-userBox span",
-        ".propertypro-subnavigation ul li span",
-        ".propertypro-subnavigation ul li a",
-        ".propertypro-subnavigation a.btn-contact",
-        ".propertypro-masthead .propertypro-search-modal #wp-property-pro-search-input",
-        ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4",
-        ".propertypro-callout .container p",
-        ".propertypro-callout .container a",
-        ".propertypro-widget-tour .propertypro-headtitle p",
-        ".propertypro-tour-widget-content p",
-        ".propertypro-subnavigation-mobile-selected-option",
-        ".propertypro-post-content",
-        ".propertypro-post-content h2",
-        ".propertypro-post-content a",
-        ".propertypro-post-content li",
-        ".propertypro-guide-content .propertypro-category-card .propertypro-category-header",
-        ".propertypro-guide-content .propertypro-category-card .propertypro-category-navigation",
-        ".propertypro-article-content p",
-        ".propertypro-toolbar .propertypro-btn-back-to-home",
-        ".propertypro-article-masthead p",
-        ".propertypro-nav-item-prev a",
-        ".propertypro-nav-item-next a",
-        ".propertypro-guide-masthead .propertypro-guide-excerpt"
+        "body, p, span, input, button, select, textarea"
       ]
     },
     {
