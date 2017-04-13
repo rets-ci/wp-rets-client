@@ -51849,7 +51849,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.6
+	 * version : 2.0.4
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -51870,22 +51870,20 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.6',
+	        VERSION = '2.0.4',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0',
-	            scalePercentBy100: true
+	            defaultFormat: '0,0'
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat,
-	            scalePercentBy100: defaults.scalePercentBy100
+	            defaultFormat: defaults.defaultFormat
 	        };
 
 
@@ -51954,7 +51952,6 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
-	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -52030,7 +52027,6 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
-	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -52053,7 +52049,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, 0, roundingFunction);
+	                int = numeral._.toFixed(value, null, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -52078,12 +52074,6 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
-	            }
-
-	            if (int.length < leadingCount) {
-	                for (var i = leadingCount - int.length; i > 0; i--) {
-	                    int = '0' + int;
-	                }
 	            }
 
 	            if (thousands > -1) {
@@ -52243,8 +52233,9 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
+	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -52541,42 +52532,6 @@
 	    
 
 	(function() {
-	        numeral.register('format', 'bps', {
-	            regexps: {
-	                format: /(BPS)/,
-	                unformat: /(BPS)/
-	            },
-	            format: function(value, format, roundingFunction) {
-	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
-	                    output;
-
-	                value = value * 10000;
-
-	                // check for space before BPS
-	                format = format.replace(/\s?BPS/, '');
-
-	                output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	                if (numeral._.includes(output, ')')) {
-	                    output = output.split('');
-
-	                    output.splice(-1, 0, space + 'BPS');
-
-	                    output = output.join('');
-	                } else {
-	                    output = output + space + 'BPS';
-	                }
-
-	                return output;
-	            },
-	            unformat: function(string) {
-	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
-	            }
-	        });
-	})();
-
-
-	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -52586,17 +52541,10 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
-	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
-	            return decimal.suffixes.indexOf(item) < 0;
-	        }));
-	        var unformatRegex = allSuffixes.join('|');
-	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
-	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
-
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp(unformatRegex)
+	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -52695,7 +52643,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
+	                        output = numeral._.insert(output, ' ', i);
 	                        break;
 	                }
 	            }
@@ -52709,7 +52657,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
 	                        break;
 	                }
 	            }
@@ -52790,9 +52738,7 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            if (numeral.options.scalePercentBy100) {
-	                value = value * 100;
-	            }
+	            value = value * 100;
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -52812,11 +52758,7 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            var number = numeral._.stringToNumber(string);
-	            if (numeral.options.scalePercentBy100) {
-	                return number * 0.01;
-	            }
-	            return number;
+	            return numeral._.stringToNumber(string) * 0.01;
 	        }
 	    });
 	})();
@@ -55136,7 +55078,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -62074,7 +62016,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -62127,6 +62069,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -62165,8 +62109,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
-	    null,
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
 	    headerElement
 	  );
 	};
@@ -62193,32 +62137,12 @@
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
-	var _lib = __webpack_require__(276);
-
-	var _lodash = __webpack_require__(277);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
-	    _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
-	      'span',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	        className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
-	    ) : null,
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'container-fluid' },
-	      _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
-	    )
-	  );
+	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
 	};
 	exports.default = HeaderDefault;
 
@@ -62250,50 +62174,59 @@
 	  var openUserPanel = _ref.openUserPanel;
 	  return _react2.default.createElement(
 	    'nav',
-	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
+	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
-	      'a',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand',
-	        href: _lodash2.default.get(bundle, 'site_url', ''),
-	        onClick: function onClick(eve) {
-	          eve.preventDefault();
-	          _reactRouter.browserHistory.push('');
-	        }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	      _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	    ),
-	    _react2.default.createElement(
-	      'ul',
-	      { className: 'nav navbar-toggler-right' },
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items px-3' },
+	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
+	        'a',
+	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
+	        _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
+	          className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
+	      ) : null,
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item' },
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	          'Login'
-	        )
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand mr-auto',
+	          href: _lodash2.default.get(bundle, 'site_url', ''),
+	          onClick: function onClick(eve) {
+	            eve.preventDefault();
+	            _reactRouter.browserHistory.push('');
+	          }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
 	      ),
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item hidden-sm-down' },
+	        'ul',
+	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'navbar-toggler', type: 'button', onClick: openUserPanel },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            'span',
-	            null,
-	            '\u2630'
-	          ),
-	          ' Menu'
+	            'a',
+	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
+	            'Login'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          { className: 'nav-item hidden-sm-down' },
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'button', className: _lib.Lib.THEME_CLASSES_PREFIX + "navigation-menu-button", onClick: openUserPanel },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '\u2630'
+	            ),
+	            ' Menu'
+	          )
 	        )
 	      )
 	    )
 	  );
 	};
-
 	exports.default = Navigation;
 
 /***/ },
@@ -62348,84 +62281,80 @@
 
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
-	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
+	        'div',
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	              'a',
+	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  _reactRouter.browserHistory.push('');
+	                }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	              _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	                className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
+	            ) : null
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
-	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
-	                'a',
-	                { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	                    eve.preventDefault();
-	                    _reactRouter.browserHistory.push('');
-	                  }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
-	              ) : null
-	            ),
+	              'a',
+	              { href: '#' },
+	              saleType,
+	              ' ',
+	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	            )
+	          ),
+	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
 	            _react2.default.createElement(
-	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	              'ul',
+	              null,
 	              _react2.default.createElement(
-	                'a',
-	                { href: '#' },
-	                saleType,
-	                ' ',
-	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	              )
-	            ),
-	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
-	              _react2.default.createElement(
-	                'ul',
+	                'li',
 	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
-	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-heart' })
-	                  )
-	                ),
+	                  'a',
+	                  { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-heart' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-bell' }),
+	                  ' ',
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                    'span',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
 	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-bell' }),
-	                    ' ',
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
-	                      _react2.default.createElement('i', {
-	                        className: 'fa fa-circle' })
-	                    )
+	                      className: 'fa fa-circle' })
 	                  )
-	                ),
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', onClick: this.props.openUserPanel,
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', onClick: this.props.openUserPanel,
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      '\u2630'
-	                    )
+	                    'span',
+	                    null,
+	                    '\u2630'
 	                  )
 	                )
 	              )
@@ -62749,7 +62678,7 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
+	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
@@ -63073,33 +63002,37 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        rows.map(function (row) {
-	          var cells = _lodash2.default.get(row, 'cells', []);
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          rows.map(function (row) {
+	            var cells = _lodash2.default.get(row, 'cells', []);
 
-	          return cells.map(function (cell) {
-	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	              case 'Property_Pro_Masthead_Widget':
-	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Subnavigation_Widget':
-	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
-	                break;
-	              case 'Property_Pro_Tour_Widget':
-	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Listing_Carousel_Widget':
-	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Callout_Widget':
-	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Testimonials_Widget':
-	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                break;
-	            }
-	          });
-	        }),
+	            return cells.map(function (cell) {
+	              switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	                case 'Property_Pro_Masthead_Widget':
+	                  return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Subnavigation_Widget':
+	                  return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
+	                  break;
+	                case 'Property_Pro_Tour_Widget':
+	                  return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Listing_Carousel_Widget':
+	                  return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Callout_Widget':
+	                  return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Testimonials_Widget':
+	                  return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                  break;
+	              }
+	            });
+	          })
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -63221,13 +63154,9 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead", style: headerStyle },
+	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
 	    modal,
-	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "intro-wrap" },
-	      container
-	    )
+	    container
 	  );
 	};
 
@@ -63268,15 +63197,15 @@
 
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container pt-4 pb-3' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	            'h1',
-	            null,
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title mb-2' },
 	            widget_cell.widget.fields.title
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	            'p',
-	            { className: 'hidden-sm-down' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle mb-2 px-5 hidden-sm-down' },
 	            widget_cell.widget.fields.subtitle
 	        ) : null,
 	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
@@ -63433,7 +63362,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto mt-1' },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,
@@ -81591,7 +81520,7 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-toolbar' },
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md bg-faded' },
+	      { className: 'navbar navbar-toggleable-md' },
 	      _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
 	        'a',
 	        { className: 'navbar-brand', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
@@ -81612,11 +81541,16 @@
 	          _react2.default.createElement(
 	            'a',
 	            { href: bundle.site_url, onClick: function onClick(eve) {
+	                _react2.default.createElement('the', null);
 	                eve.preventDefault();
 	                _Util2.default.goToUrl('/');
 	              }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
 	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            'Return Home'
+	            _react2.default.createElement(
+	              'span',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
+	              'Return Home'
+	            )
 	          )
 	        )
 	      ) : null

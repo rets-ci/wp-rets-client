@@ -14,7 +14,7 @@ const TitleDescriptionLayout = ({widget_cell}) => {
             }
             {
                 _.get(widget_cell, 'widget.fields.subtitle', '')
-                    ? <p className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle mb-2 hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
+                    ? <p className={`${Lib.THEME_CLASSES_PREFIX}masthead-subtitle mb-2 px-5 hidden-sm-down`}>{widget_cell.widget.fields.subtitle}</p>
                     : null
             }
             <Search options={_.get(widget_cell, 'widget.fields.search_options', null) ? (_.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options) : {}} />
