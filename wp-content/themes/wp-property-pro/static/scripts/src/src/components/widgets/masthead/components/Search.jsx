@@ -108,7 +108,7 @@ class SearchContent extends Component {
 
     let self = this;
     return (
-      <div className={`${Lib.THEME_CLASSES_PREFIX}search-box mx-auto mt-1`}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-box mx-auto`}>
         <MobileTabsSearch
           labels={this.state.labels}
           saleTypes={this.state.saleTypes}

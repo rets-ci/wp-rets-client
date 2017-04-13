@@ -63171,7 +63171,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -63193,23 +63193,33 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
-	    var widget_cell = _ref.widget_cell;
+	  var widget_cell = _ref.widget_cell;
 
-	    return _react2.default.createElement(
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'container' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
 	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container pt-4 pb-3' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title mb-2' },
-	            widget_cell.widget.fields.title
+	          'h1',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
+	          widget_cell.widget.fields.title
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	            'p',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle mb-2 px-5 hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
+	          'p',
+	          {
+	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
+	          widget_cell.widget.fields.subtitle
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	    );
+	        _react2.default.createElement(_Search2.default, {
+	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	      )
+	    )
+	  );
 	};
 
 	exports.default = TitleDescriptionLayout;
@@ -63362,7 +63372,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto mt-1' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto' },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,
