@@ -65064,7 +65064,11 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-container' },
-	      container
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        container
+	      )
 	    )
 	  );
 	};
