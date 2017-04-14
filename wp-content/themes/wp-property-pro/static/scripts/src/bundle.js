@@ -64208,47 +64208,55 @@
 	    _react2.default.createElement(
 	      'header',
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	        widget_cell.widget.fields.title
-	      ) : null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	        'p',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	        widget_cell.widget.fields.subtitle
-	      ) : null
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-header-container mx-auto text-center' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	          'h1',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	          widget_cell.widget.fields.title
+	        ) : null,
+	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	          'p',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	          widget_cell.widget.fields.subtitle
+	        ) : null
+	      )
 	    ),
 	    _react2.default.createElement(
 	      'nav',
-	      null,
+	      { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation' },
 	      _react2.default.createElement(
-	        'ol',
-	        null,
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items' },
 	        _react2.default.createElement(
-	          'li',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-prev" },
+	          'ul',
+	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation-cotrols' },
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(eve) {
-	                eve.preventDefault();
-	                returnToArchiveHandler();
-	              } },
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            prevLinkText
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'li',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-next" },
+	            'li',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-prev text-center' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  returnToArchiveHandler();
+	                } },
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	              prevLinkText
+	            )
+	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(eve) {
-	                eve.preventDefault();
-	                nextArticleHandler();
-	              } },
-	            nextLinkText,
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
+	            'li',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-next text-center' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  nextArticleHandler();
+	                } },
+	              nextLinkText,
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
+	            )
 	          )
 	        )
 	      )
@@ -81494,24 +81502,28 @@
 	      var content = _lodash2.default.get(this.props.post, 'guide_single_content', {});
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	        'article',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	          _react2.default.createElement(
-	            'article',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
+	            'div',
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, null),
-	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
-	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
-	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(_HeaderGuide2.default, null),
+	                  _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
+	                    returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
+	                    nextArticleHandler: this.nextArticleHandler.bind(this) })
+	                )
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -81519,13 +81531,17 @@
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
-	                  'section',
-	                  {
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
-	                  (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
-	                ) : null
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
+	                    'section',
+	                    {
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
+	                    (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
+	                  ) : null
+	                )
 	              )
 	            )
 	          )

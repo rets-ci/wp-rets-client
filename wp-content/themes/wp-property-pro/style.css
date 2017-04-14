@@ -21,7 +21,7 @@ Date: 2017-02-07
 /*-----------------------------------------------------------------------------------*/
 /*  Global
 /*-----------------------------------------------------------------------------------*/
-body { font-weight: 400; color: #414141; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; }
+body { font-weight: 400; color: #ffffff; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; }
 a { color: #414141; outline: none; text-decoration: none!important; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -o-transition: all .3s ease; -ms-transition: all .3s ease; transition: all .3s ease;}
 input:focus, textarea:focus {outline: none;}
 p { margin-bottom: 1.20em; line-height: 1.4; }
@@ -38,7 +38,7 @@ body,p , input, button, select, textarea { letter-spacing: 1px; }
 /*-----------------------------------------------------------------------------------*/
 html, body { height: 100%; margin: 0; }
 #propertypro-root {height: 100%;}
-.propertypro-toolbar { color: #fff; position: absolute; top: 15px; left: 0; width: 100%; z-index:10; }
+.propertypro-toolbar { position: absolute; top: 15px; left: 0; width: 100%; z-index:10; }
 .propertypro-masthead { background-size: cover !important; color: #fff; position: relative; width: 100%; }
 .propertypro-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-masthead .propertypro-intro-wrap { position: relative; z-index: 1; padding-bottom: 11.25rem; }
@@ -46,7 +46,9 @@ html, body { height: 100%; margin: 0; }
 .propertypro-masthead .propertypro-masthead-title-container { position: relative; z-index: 1; max-width: 53rem; margin-top: 11rem; margin-bottom: 7rem; }
 
 .propertypro-login-box, .propertypro-login-box:visited { background: transparent; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.4) ; outline: none; color: #fff; }
-.propertypro-navigation-cotrols { margin: auto 0; flex-direction: inherit; }
+.propertypro-guide-navigation-cotrols,.propertypro-navigation-cotrols { margin: auto 0; flex-direction: inherit; }
+.propertypro-guide-navigation { padding: 0; position: absolute; width: 100%; z-index: 1; bottom: 0; left: 0; }
+.propertypro-guide-navigation-cotrols { width: 100%; }
 .propertypro-navigation-items { display: flex; width: 100%; }
 .propertypro-navigation-menu-button {     color: #fff; display: block!important; outline: none!important; cursor: pointer; font-size: 1.150rem; top: 5px; position: relative; padding: .25rem .75rem; border: 1px solid transparent; background: 0 0; line-height: 1; }
 .propertypro-navigation-menu-button span { font-size: 1.75rem; float: left; margin: -4px 10px 0 0; }
@@ -602,14 +604,14 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-toolbar .propertypro-btn-back-to-home .propertypro-btn-back-to-home-content { margin-left: 0.3125rem; }
 .propertypro-toolbar .propertypro-menu-icon{ cursor: pointer; }
 .propertypro-guide-toolbar{ z-index: 12; padding-left: 1.5rem; }
-.propertypro-guide-masthead, .propertypro-article-masthead {  width: 100%; height: 100%; display: table; position: absolute; top: 0; left: 0; z-index: 11; text-align: center; background-repeat: no-repeat; background-position: center center; background-size: cover !important; color: #fff; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.propertypro-guide-masthead, .propertypro-article-masthead { display: table; width: 100%; height: 100vh; background-size: cover !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 .propertypro-guide-masthead { display: block; }
 .propertypro-guide-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
 .propertypro-article-masthead:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.45); }
-.propertypro-guide-masthead header, .propertypro-article-masthead header {  display: table-cell; vertical-align: middle; }
-.propertypro-guide-masthead header, .propertypro-article-masthead header { z-index: 1; position: relative; }
-.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { padding: 0 5%; font-size: 3rem; font-weight: normal; line-height: 3.125rem; margin-bottom: .50em; }
-.propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.5rem; line-height: 2.25rem; padding: 0 10%; }
+.propertypro-guide-masthead header, .propertypro-article-masthead .propertypro-article-header { display: table-cell; vertical-align: middle; z-index: 1; position: relative; }
+.propertypro-article-masthead .propertypro-article-header-container { max-width: 40rem; }
+.propertypro-guide-masthead h1, .propertypro-article-masthead h1 { font-size: 3rem; margin-bottom: 1.5rem; }
+.propertypro-guide-masthead p, .propertypro-article-masthead p { font-size:1.5rem; line-height: 2.25rem; }
 .propertypro-guide-content, .propertypro-article-content { background-color: #e6ecf0; padding: 25px 0; }
 .propertypro-guide-content { padding-bottom: 0 !important; }
 .propertypro-article-content { padding: 25px 30px; }
@@ -626,10 +628,9 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .propertypro-article-content h2 { font-size: 1.5rem; line-height: 1.5rem; margin: 0 0 1em; }
 .propertypro-article-content p {  color: #8b8c8d; font-size: 1.125rem; font-weight: 500; line-height: 2rem; margin: 0 0 3.125rem }
 .propertypro-article-content h2 { color: #000000; font-weight: normal; }
-.propertypro-article-masthead nav { position: absolute; width: 100%; z-index: 11; height: 60px; bottom: 0; left: 0; }
 .propertypro-article-masthead nav ol { list-style-type: none; margin: 0; padding: 0; }
-.propertypro-article-masthead nav li { display: inline-block; float: left; width: 50%; }
-.propertypro-article-masthead nav li a { display: block; font-size: 1rem; line-height: 60px; text-align: center; color: #fff; }
+.propertypro-article-masthead nav li { flex: 1; }
+.propertypro-article-masthead nav li a { display: block; font-size: 1rem; line-height: 3.75rem; color: #fff; }
 .propertypro-article-masthead nav li a .fa { font-size: 0.6875rem; }
 .propertypro-article-masthead li.propertypro-nav-item-prev a, .propertypro-article-masthead li.propertypro-nav-item-back a { background-color: #434343; }
 .propertypro-article-masthead li.propertypro-nav-item-next a { background-color: #2b2b2b; }

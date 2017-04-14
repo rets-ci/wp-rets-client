@@ -32,30 +32,34 @@ class Single extends Component {
     let content = _.get(this.props.post, 'guide_single_content', {});
 
     return (
-      <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
-        <div className="row no-gutters">
-          <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
+      <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
+        <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
+          <div className="row no-gutters">
             <div className="col-lg-6">
-              <div className="row">
-                <HeaderGuide/>
-                <Masthead widget_cell={_.get(content, 'masthead', '')}
-                          returnToArchiveHandler={this.returnToArchiveHandler.bind(this)}
-                          nextArticleHandler={this.nextArticleHandler.bind(this)}/>
+              <div className="container">
+                <div className="row">
+                  <HeaderGuide/>
+                  <Masthead widget_cell={_.get(content, 'masthead', '')}
+                            returnToArchiveHandler={this.returnToArchiveHandler.bind(this)}
+                            nextArticleHandler={this.nextArticleHandler.bind(this)}/>
+                </div>
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="row">
-                {
-                  _.get(content, 'content', null)
-                    ? <section
-                      className={Lib.THEME_CLASSES_PREFIX + "article-content"}>{renderHTML(_.get(content, 'content'))}</section>
-                    : null
-                }
+              <div className="container">
+                <div className="row">
+                  {
+                    _.get(content, 'content', null)
+                      ? <section
+                        className={Lib.THEME_CLASSES_PREFIX + "article-content"}>{renderHTML(_.get(content, 'content'))}</section>
+                      : null
+                  }
+                </div>
               </div>
             </div>
-          </article>
+          </div>
         </div>
-      </div>
+      </article>
     )
   }
 }
