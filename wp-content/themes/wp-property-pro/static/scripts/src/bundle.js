@@ -64150,16 +64150,20 @@
 	  return _react2.default.createElement(
 	    'header',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-header" },
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h1',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	      'p',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
-	      widget_cell.widget.fields.subtitle
-	    ) : null
+	    _react2.default.createElement(
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-header-container mx-auto text-center' },
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	        widget_cell.widget.fields.title
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	        'p',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
+	        widget_cell.widget.fields.subtitle
+	      ) : null
+	    )
 	  );
 	};
 
@@ -81962,18 +81966,22 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
-	              _react2.default.createElement(_HeaderGuide2.default, null),
-	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(_HeaderGuide2.default, null),
+	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
+	              )
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -81981,11 +81989,15 @@
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
+	              { className: 'container' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
-	                cards
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
+	                  cards
+	                )
 	              )
 	            )
 	          )
