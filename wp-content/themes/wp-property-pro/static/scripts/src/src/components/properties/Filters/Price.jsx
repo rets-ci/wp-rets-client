@@ -3,6 +3,7 @@ import Slider from '../Components/Slider.jsx';
 
 class Price extends Component {
   static propTypes = {
+    saleType: PropTypes.string.isRequired,
     start: PropTypes.any,
     to: PropTypes.any,
     handleOnClick: PropTypes.func.isRequired
@@ -15,22 +16,41 @@ class Price extends Component {
 
   render() {
     let {
+      saleType,
       start,
       to
     } = this.props;
-    let min = 100000;
-    let max = 1000000;
-    let range = {
+    let defaults = {
+      Sale: {
+        start: 150000,
+        to: 400000
+      },
+      Rent: {
+        start: 500,
+        to: 3000
+      }
+    };
+    let min;
+    let max;
+    let range = {};
+    let percentages;
+    if (saleType === 'Sale') {
+      min = 100000;
+      max = 1000000;
+    } else if (saleType === 'Rent') {
+      min = 100;
+      max = 5000;
+    }
+    range = {
       min: min,
       max: max
     };
-    let percentages = [10, 25, 50, 75];
-
+    percentages = [10, 25, 50, 75];
     percentages.forEach(p => {
-    	range[p + '%'] = [min + (min * (p / 100))];
+      range[p + '%'] = [min + (min * (p / 100))];
     });
     return (
-      <Slider range={range} start={start || 150000} to={to || 400000} handleOnClick={this.props.handleOnClick} />
+      <Slider range={range} start={start || defaults[saleType].start} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
     )
   }
 };

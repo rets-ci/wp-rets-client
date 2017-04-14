@@ -187,9 +187,9 @@ class PropertiesModal extends Component {
                    )}
                  </div>
                  <div className="filter-section">
-                   <h3>Price</h3>
+                   <h3>Price <span>(Range)</span></h3>
                    <div>
-                     <Price start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
+                     <Price saleType={searchFilters.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
