@@ -64074,39 +64074,48 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
-	    _react2.default.createElement(
-	      'header',
-	      null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	        'h1',
-	        null,
-	        widget_cell.widget.fields.title
-	      ) : null
-	    ),
+	    { className: 'container' },
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
-	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
-	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
-	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
-	          target: '_blank', title: 'Facebook', rel: 'noopener' },
-	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
-	      ) : null,
-	      twitterLink ? _react2.default.createElement(
-	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank', title: 'Twitter' },
-	        _react2.default.createElement('i', {
-	          className: 'fa fa-twitter' })
-	      ) : null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
-	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
-	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
-	          target: '_blank', title: 'LinkedIn' },
-	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
-	      ) : null
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	        _react2.default.createElement(
+	          'header',
+	          null,
+	          _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	            'h1',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
+	            widget_cell.widget.fields.title
+	          ) : null
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
+	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
+	            'a',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
+	              href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
+	              target: '_blank', title: 'Facebook', rel: 'noopener' },
+	            _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
+	          ) : null,
+	          twitterLink ? _react2.default.createElement(
+	            'a',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank',
+	              title: 'Twitter' },
+	            _react2.default.createElement('i', {
+	              className: 'fa fa-twitter' })
+	          ) : null,
+	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
+	            'a',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
+	              href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
+	              target: '_blank', title: 'LinkedIn' },
+	            _react2.default.createElement('i', { className: 'fa fa-linkedin' })
+	          ) : null
+	        )
+	      )
 	    )
 	  );
 	};
@@ -65870,40 +65879,44 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
-	          'article',
-	          null,
-	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
-	        ),
-	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	          'section',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
+	          'div',
+	          { className: 'row' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
-	              _react2.default.createElement(
-	                'h4',
-	                null,
-	                'More ',
-	                this.props.post.category_title,
-	                ' Articles'
-	              )
-	            ) : null,
+	            'article',
+	            null,
+	            _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
+	            _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
+	          ),
+	          _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	            'section',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
-	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
-	                return _react2.default.createElement(_PostCard2.default, { data: item });
-	              })
+	              { className: 'container' },
+	              _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
+	                _react2.default.createElement(
+	                  'h4',
+	                  null,
+	                  'More ',
+	                  this.props.post.category_title,
+	                  ' Articles'
+	                )
+	              ) : null,
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
+	                  return _react2.default.createElement(_PostCard2.default, { data: item });
+	                })
+	              )
 	            )
-	          )
-	        ) : null,
-	        _react2.default.createElement(_Footer2.default, null)
+	          ) : null,
+	          _react2.default.createElement(_Footer2.default, null)
+	        )
 	      );
 	    }
 	  }]);

@@ -14,43 +14,45 @@ class Single extends Component {
   render() {
 
     return (
-      <div>
-        <article>
+      <div className="container-fluid">
+        <div className="row">
+          <article>
+            {
+              _.get(this.props.post, 'widgets.masthead', null)
+                ? <Masthead widget_cell={_.get(this.props.post, 'widgets.masthead')}/>
+                : null
+            }
+            {
+              _.get(this.props.post, 'content', null)
+                ? <PostContent content={this.props.post.content}/>
+                : null
+            }
+          </article>
           {
-            _.get(this.props.post, 'widgets.masthead', null)
-              ? <Masthead widget_cell={_.get(this.props.post, 'widgets.masthead')}/>
-              : null
-          }
-          {
-            _.get(this.props.post, 'content', null)
-              ? <PostContent content={this.props.post.content}/>
-              : null
-          }
-        </article>
-        {
-          _.get(this.props.post, 'related_posts', []).length
-            ?
-            <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
-              <div className="container">
-                {
-                  _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
-                    ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
-                      <h4>More {this.props.post.category_title} Articles</h4>
-                    </div>
-                    : null
-                }
-                <div className="row">
+            _.get(this.props.post, 'related_posts', []).length
+              ?
+              <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
+                <div className="container">
                   {
-                    _.get(this.props.post, 'related_posts', []).map((item) =>
-                      <PostCard data={item}/>
-                    )
+                    _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
+                      ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
+                        <h4>More {this.props.post.category_title} Articles</h4>
+                      </div>
+                      : null
                   }
+                  <div className="row">
+                    {
+                      _.get(this.props.post, 'related_posts', []).map((item) =>
+                        <PostCard data={item}/>
+                      )
+                    }
+                  </div>
                 </div>
-              </div>
-            </section>
-            : null
-        }
-        <Footer/>
+              </section>
+              : null
+          }
+          <Footer/>
+        </div>
       </div>
     )
   }

@@ -25,6 +25,8 @@ body { font-weight: 400; color: #414141; -webkit-font-smoothing: antialiased; -w
 a { color: #414141; outline: none; text-decoration: none!important; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -o-transition: all .3s ease; -ms-transition: all .3s ease; transition: all .3s ease;}
 input:focus, textarea:focus {outline: none;}
 p { margin-bottom: 1.20em; line-height: 1.4; }
+article { width: 100%; }
+h1 { line-height: 1.35; }
 
 /*-----------------------------------------------------------------------------------*/
 /*  Typography
@@ -1005,8 +1007,8 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 
 
 /** Masthead **/
-.propertypro-masthead-title, .propertypro-masthead-subtitle, .propertypro-masthead-subtitle-top { line-height: 3.125rem; }
 .propertypro-masthead-title { margin-bottom: 2rem; }
+.propertypro-masthead-blog-title { margin-bottom: 3rem; }
 .propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle { font-size: 1.75rem; }
 .propertypro-masthead-subtitle { margin-bottom: 3.5rem; }
 .propertypro-masthead-subtitle-top { margin-bottom: 2.5rem; }
