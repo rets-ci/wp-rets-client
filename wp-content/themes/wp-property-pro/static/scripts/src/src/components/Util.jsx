@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import React from 'react';
 import {render} from 'react-dom';
 import {browserHistory} from 'react-router';
@@ -8,6 +9,17 @@ import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
 class Util extends React.Component {
+
+  static formatPriceFilter(price) {
+    // format price
+    let formattedNumber = numeral(price);
+    if (price >= 100000) {
+      formattedNumber = formattedNumber.format('0a')
+    } else {
+      formattedNumber = formattedNumber.format('0,0');
+    }
+    return formattedNumber;
+  }
 
   static getSearchFiltersFromURL(url) {
     let uri = new URI(url);
@@ -69,6 +81,18 @@ class Util extends React.Component {
     let uri = new URI(currentUrl);
     uri.removeSearch({[key]: value});
     return uri.pathname() + uri.search();
+  }
+
+  static priceFilterSearchTagText(filter) {
+    if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
+      if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        return 'Under $' + this.formatPriceFilter(filter.to);
+      } else {
+        return 'Over $' + this.formatPriceFilter(filter.start);
+      }
+    } else {
+      return '$' + this.formatPriceFilter(filter.start) + '-$' + this.formatPriceFilter(filter.to);
+    }
   }
 }
 

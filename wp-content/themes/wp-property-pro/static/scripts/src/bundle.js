@@ -47254,6 +47254,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _numeral = __webpack_require__(294);
+
+	var _numeral2 = _interopRequireDefault(_numeral);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -47298,6 +47302,18 @@
 	  }
 
 	  _createClass(Util, null, [{
+	    key: 'formatPriceFilter',
+	    value: function formatPriceFilter(price) {
+	      // format price
+	      var formattedNumber = (0, _numeral2.default)(price);
+	      if (price >= 100000) {
+	        formattedNumber = formattedNumber.format('0a');
+	      } else {
+	        formattedNumber = formattedNumber.format('0,0');
+	      }
+	      return formattedNumber;
+	    }
+	  }, {
 	    key: 'getSearchFiltersFromURL',
 	    value: function getSearchFiltersFromURL(url) {
 	      var uri = new _urijs2.default(url);
@@ -47358,6 +47374,19 @@
 	      var uri = new _urijs2.default(currentUrl);
 	      uri.removeSearch(_defineProperty({}, key, value));
 	      return uri.pathname() + uri.search();
+	    }
+	  }, {
+	    key: 'priceFilterSearchTagText',
+	    value: function priceFilterSearchTagText(filter) {
+	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          return 'Under $' + this.formatPriceFilter(filter.to);
+	        } else {
+	          return 'Over $' + this.formatPriceFilter(filter.start);
+	        }
+	      } else {
+	        return '$' + this.formatPriceFilter(filter.start) + '-$' + this.formatPriceFilter(filter.to);
+	      }
 	    }
 	  }]);
 
@@ -51743,13 +51772,13 @@
 
 	var _lib = __webpack_require__(276);
 
-	var _numeral = __webpack_require__(294);
-
-	var _numeral2 = _interopRequireDefault(_numeral);
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51773,12 +51802,7 @@
 	    } else if (val === max) {
 	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	    } else {
-	      var numeralNumber = (0, _numeral2.default)(val);
-	      if (val >= 100000) {
-	        returnVal = numeralNumber.format('0a');
-	      } else {
-	        returnVal = numeralNumber.format('0,0');
-	      }
+	      returnVal = _Util2.default.formatPriceFilter(val);
 	    }
 	    return returnVal;
 	  },
@@ -62537,6 +62561,8 @@
 
 	      var bedroomsFilter = filters['bedrooms'];
 	      var bedroomsElement = void 0;
+	      var priceFilter = filters['price'];
+	      var priceElement = void 0;
 	      if (bedroomsFilter) {
 	        bedroomsElement = _react2.default.createElement(
 	          'span',
@@ -62567,6 +62593,39 @@
 	              '+'
 	            ),
 	            ' Bedroom'
+	          )
+	        );
+	      }
+
+	      if (priceFilter) {
+	        priceElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: function onClick() {
+	                return _this2.props.removeSearchFilter('price', priceFilter);
+	              } })
+	          ),
+	          ' ',
+	          _Util2.default.priceFilterSearchTagText(priceFilter)
+	        );
+	      } else {
+	        priceElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', onClick: function onClick() {
+	                return _this2.props.openPropertiesModal(true);
+	              } },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '+'
+	            ),
+	            ' Price'
 	          )
 	        );
 	      }
@@ -62603,22 +62662,7 @@
 	                );
 	              }),
 	              bedroomsElement,
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick() {
-	                      return _this2.props.openPropertiesModal(true);
-	                    } },
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '+'
-	                  ),
-	                  ' Price'
-	                )
-	              ),
+	              priceElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },

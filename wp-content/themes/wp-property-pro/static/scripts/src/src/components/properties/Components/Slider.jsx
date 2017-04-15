@@ -1,6 +1,6 @@
 import {Lib} from '../../../lib.jsx';
-import numeral from 'numeral';
 import React, {Component, PropTypes} from 'react';
+import Util from '../../Util.jsx';
 
 let noUiSlider = require('nouislider');
 require('nouislider/distribute/nouislider.css');
@@ -16,12 +16,7 @@ let sliderFormatter = {
     } else if (val === max) {
       returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
     } else {
-      let numeralNumber = numeral(val);
-      if (val >= 100000) {
-        returnVal = numeralNumber.format('0a')
-      } else {
-        returnVal = numeralNumber.format('0,0');
-      }
+      returnVal = Util.formatPriceFilter(val);
     }
     return returnVal;
   },
