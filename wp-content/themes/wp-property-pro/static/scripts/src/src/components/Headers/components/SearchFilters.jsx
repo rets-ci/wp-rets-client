@@ -12,12 +12,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
     },
-    removeSearchFilter(key, value) {
-      let updatedURL = Util.removeQueryFromURL(window.location.href, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[' + key + ']', value);
-      Util.goToUrl(updatedURL);
+
+    removeSearchFilter(filter) {
+      let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
+      Util.goToUrl(window.location.pathname + queryParam);
     }
   }
 };
@@ -26,6 +28,22 @@ class searchFilters extends Component {
   static propTypes = {
     filters: PropTypes.object.isRequired
   }
+
+  handleBedroomsFilterRemove(bedroomFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
+  handlePriceFilterRemove(priceFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: priceFilter.start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
   render() {
     let {
       filters
@@ -37,7 +55,7 @@ class searchFilters extends Component {
     if (bedroomsFilter) {
       bedroomsElement = (
         <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={() => this.props.removeSearchFilter('bedrooms', bedroomsFilter)}></i></span> {bedroomsFilter}+ Beds</span>
+          <span><i className="fa fa-times" onClick={this.handleBedroomsFilterRemove.bind(this, bedroomsFilter)}></i></span> {bedroomsFilter}+ Beds</span>
       );
     } else {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -50,7 +68,7 @@ class searchFilters extends Component {
     if (priceFilter) {
       priceElement = (
         <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={() => this.props.removeSearchFilter('price', priceFilter)}></i></span> {Util.priceFilterSearchTagText(priceFilter)}</span>
+          <span><i className="fa fa-times" onClick={this.handlePriceFilterRemove.bind(this, priceFilter)}></i></span> {Util.priceFilterSearchTagText(priceFilter)}</span>
       );
     } else {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>

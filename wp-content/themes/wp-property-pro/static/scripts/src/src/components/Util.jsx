@@ -14,18 +14,31 @@ class Util extends React.Component {
     // format price
     let formattedNumber = numeral(price);
     if (price >= 100000) {
-      formattedNumber = formattedNumber.format('0a')
+      formattedNumber = formattedNumber.format('$0a')
     } else {
-      formattedNumber = formattedNumber.format('0,0');
+      formattedNumber = formattedNumber.format('$0,0');
     }
     return formattedNumber;
   }
 
-  static getSearchFiltersFromURL(url) {
-    let uri = new URI(url);
-    let query = qs.parse(uri.query());
+  static getSearchFiltersFromURL(url, withoutPrefix) {
 
-    return !_.isEmpty(query) ? _.get(query, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {}) : {};
+    let searchFilter = {};
+    let uri = new URI(url);
+    if (!_.isEmpty(uri.query())) {
+      if (withoutPrefix) {
+        let query = qs.parse(uri.query());
+        searchFilter = _.get(query, Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {});
+      } else {
+        let query = uri.search(true);
+        for (var k in query) {
+          if (k.startsWith(Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX)) {
+            searchFilter[k] = query[k];
+          }
+        }
+      }
+    }
+    return searchFilter;
   }
 
   static getThumbnailUrlBySize(thumbnailUrl = '', size = Lib.PROPERTY_LISTING_IMAGE_SIZE) {
@@ -49,6 +62,13 @@ class Util extends React.Component {
       Lib.EXTENSION_DELIMITER);
 
     return _.replace(thumbnailUrl, fileName, newFileName);
+  }
+
+  static getQS(currentUrl, searchFilters) {
+    let uri = new URI(currentUrl);
+    uri.setSearch(searchFilters);
+    let query = qs.parse(uri.query());
+    return query;
   }
 
   static esGeoBoundingBoxObjFormat(params) {
@@ -86,13 +106,23 @@ class Util extends React.Component {
   static priceFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        return 'Under $' + this.formatPriceFilter(filter.to);
+        return 'Under ' + this.formatPriceFilter(filter.to);
       } else {
-        return 'Over $' + this.formatPriceFilter(filter.start);
+        return 'Over ' + this.formatPriceFilter(filter.start);
       }
     } else {
-      return '$' + this.formatPriceFilter(filter.start) + '-$' + this.formatPriceFilter(filter.to);
+      return this.formatPriceFilter(filter.start) + '-' + this.formatPriceFilter(filter.to);
     }
+  }
+
+  static updateQueryFilter(fullUrl, filter, updateType, returnObject) {
+    let url = new URI(fullUrl);
+    if (updateType === 'set') {
+      url.setSearch(filter);
+    } else if (updateType === 'remove') {
+      url.removeSearch(filter);
+    }
+    return returnObject ?  url.search(returnObject) : url.search();
   }
 }
 

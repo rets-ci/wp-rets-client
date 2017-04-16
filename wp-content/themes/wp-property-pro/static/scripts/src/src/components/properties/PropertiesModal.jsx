@@ -16,10 +16,12 @@ let bedroomOptions = [
 ];
 
 const mapStateToProps = (state, ownProps) => {
+  let searchFiltersFormatted = Util.getQS(window.location.href, ownProps.searchFilters)[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   return {
     bedroomOptions: bedroomOptions,
-    bedroomSelected: ownProps.searchFilters.bedrooms || null,
-    priceSelected: ownProps.searchFilters.price || {}
+    bedroomSelected: searchFiltersFormatted.bedrooms || null,
+    priceSelected: searchFiltersFormatted.price || {},
+    searchFiltersFormatted: searchFiltersFormatted
   }
 };
 
@@ -35,48 +37,42 @@ class PropertiesModal extends Component {
   static propTypes = {
     bedroomSelected: PropTypes.string,
     searchFilters: PropTypes.object.isRequired,
-    standardSearch: PropTypes.func.isRequired
+    searchFiltersFormatted: PropTypes.object.isRequired,
+    standardSearch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       bedroomSelected: props.bedroomSelected,
-      priceSelected: props.priceSelected,
-      updatedFilters: Object.assign({}, props.searchFilters)
+      localFilters: Object.assign({}, props.searchFilters),
+      priceSelected: props.priceSelected
     };
   }
 
   handleBedroomSelect(val) {
-    let update = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
-    let filter = this.getUpdatedQueryFilter(update);
+    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
     this.setState({
       bedroomSelected: val,
-      updatedFilters: filter
+      localFilters: Object.assign({}, this.state.localFilters, filter)
     });
   }
 
   handlePriceSelect(start, to) {
-    let update = {
+    let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: to,
     };
-    let filter = this.getUpdatedQueryFilter(update);
     this.setState({
-      priceSelected: {start: start, to: to},
-      updatedFilters: filter
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      priceSelected: {start: start, to: to}
     });
-  }
-
-  getUpdatedQueryFilter(update) {
-    let url = new URI(window.location.href);
-    url.setSearch(update);
-    return url.search(true);
   }
 
   saveFilters() {
     let url = new URI(window.location.href);
-    url.setSearch(this.state.updatedFilters);
+    let updatedSearchParams = Util.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
+    url.setSearch(updatedSearchParams);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
@@ -85,30 +81,29 @@ class PropertiesModal extends Component {
     this.setState({
       bedroomSelected: this.props.bedroomSelected,
       priceSelected: this.props.priceSelected,
-      updatedFilters: Object.assign({}, this.props.searchFilters)
+      localFilters: Object.assign({}, this.props.searchFilters)
     });
   }
 
   render() {
     let {
       bedroomOptions,
-      searchFilters
+      searchFilters,
+      searchFiltersFormatted
     } = this.props;
 
     let {
       bedroomSelected,
-      priceSelected,
-      updatedFilters
+      localFilters,
+      priceSelected
     } = this.state;
-
     let bedroomElements = bedroomOptions.map(d => ({
       name: d.name,
       selected: d.value === bedroomSelected,
       value: d.value
     }));
-
-    let anyFilterChange = !isEqual(searchFilters, updatedFilters);
-    let termFilter = searchFilters['term'];
+    let anyFilterChange = !isEqual(searchFilters, localFilters);
+    let termFilter = searchFiltersFormatted['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
     });
@@ -189,7 +184,7 @@ class PropertiesModal extends Component {
                  <div className="filter-section">
                    <h3>Price <span>(Range)</span></h3>
                    <div>
-                     <Price saleType={searchFilters.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
+                     <Price saleType={searchFiltersFormatted.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>

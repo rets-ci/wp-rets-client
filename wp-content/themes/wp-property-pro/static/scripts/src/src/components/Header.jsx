@@ -28,7 +28,7 @@ const HeaderContent = ({location, openUserPanel}) => {
   if (pathRoot.indexOf('guide') !== -1) {
     return null;
   } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
-    let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
