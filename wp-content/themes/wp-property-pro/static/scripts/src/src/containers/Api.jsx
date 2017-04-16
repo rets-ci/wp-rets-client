@@ -381,6 +381,15 @@ class Api {
           }
         });
       }
+      if (params.bathrooms) {
+        query.bool.must.push({
+          "range": {
+            "post_meta.rets_total_baths": {
+              "gte": params.bathrooms
+            }
+          }
+        });
+      }
       if (params.bedrooms) {
         query.bool.must.push({
           "range": {

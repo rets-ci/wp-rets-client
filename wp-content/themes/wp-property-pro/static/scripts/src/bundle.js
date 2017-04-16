@@ -29743,6 +29743,15 @@
 	            }
 	          });
 	        }
+	        if (params.bathrooms) {
+	          query.bool.must.push({
+	            "range": {
+	              "post_meta.rets_total_baths": {
+	                "gte": params.bathrooms
+	              }
+	            }
+	          });
+	        }
 	        if (params.bedrooms) {
 	          query.bool.must.push({
 	            "range": {
@@ -52345,12 +52354,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var bathroomOptions = [{ name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }];
+
 	var bedroomOptions = [{ name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }];
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  var searchFiltersFormatted = _Util2.default.getQS(window.location.href, ownProps.searchFilters)[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
 	  return {
 	    bedroomOptions: bedroomOptions,
+	    bathroomSelected: searchFiltersFormatted.bathrooms || null,
 	    bedroomSelected: searchFiltersFormatted.bedrooms || null,
 	    priceSelected: searchFiltersFormatted.price || {},
 	    searchFiltersFormatted: searchFiltersFormatted
@@ -52374,14 +52386,41 @@
 	    var _this = _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).call(this, props));
 
 	    _this.state = {
+	      bathroomSelected: props.bathroomSelected,
 	      bedroomSelected: props.bedroomSelected,
 	      localFilters: Object.assign({}, props.searchFilters),
+	      showAllFilters: false,
 	      priceSelected: props.priceSelected
 	    };
 	    return _this;
 	  }
 
 	  _createClass(PropertiesModal, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'handleBathroomSelect',
+	    value: function handleBathroomSelect(val) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]", val);
+	      this.setState({
+	        bathroomSelected: val,
+	        localFilters: Object.assign({}, this.state.localFilters, filter)
+	      });
+	    }
+	  }, {
 	    key: 'handleBedroomSelect',
 	    value: function handleBedroomSelect(val) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]", val);
@@ -52393,9 +52432,9 @@
 	  }, {
 	    key: 'handlePriceSelect',
 	    value: function handlePriceSelect(start, to) {
-	      var _filter2;
+	      var _filter3;
 
-	      var filter = (_filter2 = {}, _defineProperty(_filter2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", start), _defineProperty(_filter2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", to), _filter2);
+	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", to), _filter3);
 	      this.setState({
 	        localFilters: Object.assign({}, this.state.localFilters, filter),
 	        priceSelected: { start: start, to: to }
@@ -52411,12 +52450,24 @@
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
 	    }
 	  }, {
+	    key: 'displayAllFilters',
+	    value: function displayAllFilters(searchFiltersFormatted) {
+	      return !!searchFiltersFormatted['bathrooms'];
+	    }
+	  }, {
 	    key: 'resetFilters',
 	    value: function resetFilters() {
 	      this.setState({
 	        bedroomSelected: this.props.bedroomSelected,
 	        priceSelected: this.props.priceSelected,
 	        localFilters: Object.assign({}, this.props.searchFilters)
+	      });
+	    }
+	  }, {
+	    key: 'toggleViewAllFilters',
+	    value: function toggleViewAllFilters() {
+	      this.setState({
+	        showAllFilters: !this.state.showAllFilters
 	      });
 	    }
 	  }, {
@@ -52429,9 +52480,20 @@
 	          searchFilters = _props.searchFilters,
 	          searchFiltersFormatted = _props.searchFiltersFormatted;
 	      var _state = this.state,
+	          bathroomSelected = _state.bathroomSelected,
 	          bedroomSelected = _state.bedroomSelected,
 	          localFilters = _state.localFilters,
-	          priceSelected = _state.priceSelected;
+	          priceSelected = _state.priceSelected,
+	          showAllFilters = _state.showAllFilters;
+
+
+	      var bathroomElements = bathroomOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === bathroomSelected,
+	          value: d.value
+	        };
+	      });
 
 	      var bedroomElements = bedroomOptions.map(function (d) {
 	        return {
@@ -52652,8 +52714,39 @@
 	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
 	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement(
+	                    'h3',
+	                    null,
+	                    'Bathrooms ',
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      '(Minimum)'
+	                    )
+	                  ),
+	                  bathroomElements.map(function (d) {
+	                    return _react2.default.createElement(
+	                      'a',
+	                      { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                          return _this2.handleBathroomSelect.bind(_this2)(d.value);
+	                        } },
+	                      d.name
+	                    );
+	                  })
+	                )
+	              ),
+	              showAllFilters ? _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link" },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
+	                '- View Less Filters'
+	              ) : _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
 	                '+ View More Filters'
 	              )
 	            )
@@ -52701,6 +52794,7 @@
 	}(_react.Component);
 
 	PropertiesModal.propTypes = {
+	  bathroomSelected: _react.PropTypes.string,
 	  bedroomSelected: _react.PropTypes.string,
 	  searchFilters: _react.PropTypes.object.isRequired,
 	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
@@ -62584,6 +62678,12 @@
 	  }
 
 	  _createClass(searchFilters, [{
+	    key: 'handleBathroomsFilterRemove',
+	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
 	    key: 'handleBedroomsFilterRemove',
 	    value: function handleBedroomsFilterRemove(bedroomFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
@@ -62592,9 +62692,9 @@
 	  }, {
 	    key: 'handlePriceFilterRemove',
 	    value: function handlePriceFilterRemove(priceFilter) {
-	      var _filter2;
+	      var _filter3;
 
-	      var filter = (_filter2 = {}, _defineProperty(_filter2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter2);
+	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter3);
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
@@ -62604,10 +62704,27 @@
 
 	      var filters = this.props.filters;
 
+	      var bathroomsElement = void 0;
+	      var bathroomsFilter = filters['bathrooms'];
 	      var bedroomsFilter = filters['bedrooms'];
 	      var bedroomsElement = void 0;
 	      var priceFilter = filters['price'];
 	      var priceElement = void 0;
+
+	      if (bathroomsFilter) {
+	        bathroomsElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handleBathroomsFilterRemove.bind(this, bathroomsFilter) })
+	          ),
+	          ' ',
+	          bathroomsFilter,
+	          '+ Baths'
+	        );
+	      }
 	      if (bedroomsFilter) {
 	        bedroomsElement = _react2.default.createElement(
 	          'span',
@@ -62702,6 +62819,7 @@
 	                  t.value
 	                );
 	              }),
+	              bathroomsElement,
 	              bedroomsElement,
 	              priceElement,
 	              _react2.default.createElement(

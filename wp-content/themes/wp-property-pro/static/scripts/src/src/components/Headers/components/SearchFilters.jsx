@@ -29,6 +29,13 @@ class searchFilters extends Component {
     filters: PropTypes.object.isRequired
   }
 
+  handleBathroomsFilterRemove(bathroomsFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]']: bathroomsFilter
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
   handleBedroomsFilterRemove(bedroomFilter) {
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
@@ -48,10 +55,19 @@ class searchFilters extends Component {
     let {
       filters
     } = this.props;
+    let bathroomsElement;
+    let bathroomsFilter = filters['bathrooms'];
     let bedroomsFilter = filters['bedrooms'];
     let bedroomsElement;
     let priceFilter = filters['price'];
     let priceElement;
+
+    if (bathroomsFilter) {
+      bathroomsElement = (
+        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
+          <span><i className="fa fa-times" onClick={this.handleBathroomsFilterRemove.bind(this, bathroomsFilter)}></i></span> {bathroomsFilter}+ Baths</span>
+      )
+    }
     if (bedroomsFilter) {
       bedroomsElement = (
         <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
@@ -90,6 +106,7 @@ class searchFilters extends Component {
               {termFilters.map(t =>
                 <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i></span> {t.value}</span>
               )}
+              {bathroomsElement}
               {bedroomsElement}
               {priceElement}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>

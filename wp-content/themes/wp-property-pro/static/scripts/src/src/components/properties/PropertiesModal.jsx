@@ -8,6 +8,13 @@ import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';
 
+let bathroomOptions =[
+  {name: '1+', value: '1'},
+  {name: '2+', value: '2'},
+  {name: '3+', value: '3'},
+  {name: '4+', value: '4'}
+];
+
 let bedroomOptions = [
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
@@ -19,6 +26,7 @@ const mapStateToProps = (state, ownProps) => {
   let searchFiltersFormatted = Util.getQS(window.location.href, ownProps.searchFilters)[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   return {
     bedroomOptions: bedroomOptions,
+    bathroomSelected: searchFiltersFormatted.bathrooms || null,
     bedroomSelected: searchFiltersFormatted.bedrooms || null,
     priceSelected: searchFiltersFormatted.price || {},
     searchFiltersFormatted: searchFiltersFormatted
@@ -35,6 +43,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class PropertiesModal extends Component {
   static propTypes = {
+    bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
     searchFilters: PropTypes.object.isRequired,
     searchFiltersFormatted: PropTypes.object.isRequired,
@@ -44,10 +53,34 @@ class PropertiesModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
       localFilters: Object.assign({}, props.searchFilters),
+      showAllFilters: false,
       priceSelected: props.priceSelected
     };
+  }
+
+  componentDidMount() {
+    let showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+    this.setState({
+      showAllFilters: showAllFilters
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+    this.setState({
+      showAllFilters: showAllFilters
+    });
+  }
+
+  handleBathroomSelect(val) {
+    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]"]: val};
+    this.setState({
+      bathroomSelected: val,
+      localFilters: Object.assign({}, this.state.localFilters, filter)
+    });
   }
 
   handleBedroomSelect(val) {
@@ -77,11 +110,21 @@ class PropertiesModal extends Component {
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
 
+  displayAllFilters(searchFiltersFormatted) {
+    return !!searchFiltersFormatted['bathrooms'];
+  }
+
   resetFilters() {
     this.setState({
       bedroomSelected: this.props.bedroomSelected,
       priceSelected: this.props.priceSelected,
       localFilters: Object.assign({}, this.props.searchFilters)
+    });
+  }
+
+  toggleViewAllFilters() {
+    this.setState({
+      showAllFilters: !this.state.showAllFilters
     });
   }
 
@@ -93,10 +136,19 @@ class PropertiesModal extends Component {
     } = this.props;
 
     let {
+      bathroomSelected,
       bedroomSelected,
       localFilters,
-      priceSelected
+      priceSelected,
+      showAllFilters
     } = this.state;
+
+    let bathroomElements = bathroomOptions.map(d => ({
+      name: d.name,
+      selected: d.value === bathroomSelected,
+      value: d.value
+    }));
+
     let bedroomElements = bedroomOptions.map(d => ({
       name: d.name,
       selected: d.value === bedroomSelected,
@@ -189,7 +241,19 @@ class PropertiesModal extends Component {
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
 
-                 <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"}>+ View More Filters</a>
+                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <div>
+                    <h3>Bathrooms <span>(Minimum)</span></h3>
+                    {bathroomElements.map(d =>
+                      <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
+                    )}
+                  </div>
+                </div>
+                {showAllFilters ?
+                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
+                :
+                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
+                }
                </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
