@@ -28,6 +28,7 @@ class Slider extends Component {
     handleOnClick: PropTypes.func.isRequired,
     range: PropTypes.object.isRequired,
     start: PropTypes.any,
+    step: PropTypes.any,
     to: PropTypes.any
   }
 
@@ -41,6 +42,7 @@ class Slider extends Component {
       handleOnClick,
       range,
       start,
+      step,
       to
     } = this.props;
     this.slider = noUiSlider.create(this.sliderElement, {
@@ -53,7 +55,7 @@ class Slider extends Component {
       },
       range: range,
     	start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
-      step: 10000,
+      step: step,
       tooltips: true
     });
 

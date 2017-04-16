@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
 import Price from './Filters/Price.jsx';
+import SQFT from './Filters/SQFT.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
@@ -29,6 +30,7 @@ const mapStateToProps = (state, ownProps) => {
     bathroomSelected: searchFiltersFormatted.bathrooms || null,
     bedroomSelected: searchFiltersFormatted.bedrooms || null,
     priceSelected: searchFiltersFormatted.price || {},
+    sqftSelected: searchFiltersFormatted.sqft || {},
     searchFiltersFormatted: searchFiltersFormatted
   }
 };
@@ -57,7 +59,8 @@ class PropertiesModal extends Component {
       bedroomSelected: props.bedroomSelected,
       localFilters: Object.assign({}, props.searchFilters),
       showAllFilters: false,
-      priceSelected: props.priceSelected
+      priceSelected: props.priceSelected,
+      sqftSelected: props.sqftSelected
     };
   }
 
@@ -102,6 +105,17 @@ class PropertiesModal extends Component {
     });
   }
 
+  handleSQFTSelect(start, to) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: to,
+    };
+    this.setState({
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      sqftSelected: {start: start, to: to}
+    });
+  }
+
   saveFilters() {
     let url = new URI(window.location.href);
     let updatedSearchParams = Util.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
@@ -111,13 +125,14 @@ class PropertiesModal extends Component {
   }
 
   displayAllFilters(searchFiltersFormatted) {
-    return !!searchFiltersFormatted['bathrooms'];
+    return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
   }
 
   resetFilters() {
     this.setState({
       bedroomSelected: this.props.bedroomSelected,
       priceSelected: this.props.priceSelected,
+      sqftSelected: this.props.sqftSelected,
       localFilters: Object.assign({}, this.props.searchFilters)
     });
   }
@@ -140,7 +155,8 @@ class PropertiesModal extends Component {
       bedroomSelected,
       localFilters,
       priceSelected,
-      showAllFilters
+      showAllFilters,
+      sqftSelected
     } = this.state;
 
     let bathroomElements = bathroomOptions.map(d => ({
@@ -242,12 +258,17 @@ class PropertiesModal extends Component {
                  </div>
 
                 <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <h3>Bathrooms <span>(Minimum)</span></h3>
+                  {bathroomElements.map(d =>
+                    <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
+                  )}
+                </div>
+                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <h3>Total Size <span>(SQFT)</span></h3>
                   <div>
-                    <h3>Bathrooms <span>(Minimum)</span></h3>
-                    {bathroomElements.map(d =>
-                      <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
-                    )}
+                    <SQFT saleType={searchFiltersFormatted.sale_type} start={sqftSelected.start} to={sqftSelected.to} handleOnClick={this.handleSQFTSelect.bind(this)} />
                   </div>
+                  <input id="priceSlider" className="bs-hidden-input" />
                 </div>
                 {showAllFilters ?
                   <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>

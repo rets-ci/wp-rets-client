@@ -115,6 +115,18 @@ class Util extends React.Component {
     }
   }
 
+  static sqftFilterSearchTagText(filter) {
+    if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
+      if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        return 'Under ' + numeral(filter.to).format('0,0') + ' SQFT';
+      } else {
+        return 'Over ' + numeral(filter.start).format('0,0') + ' SQFT';
+      }
+    } else {
+      return numeral(filter.start).format('0,0') + '-' + numeral(filter.to).format('0,0') + ' SQFT';
+    }
+  }
+
   static updateQueryFilter(fullUrl, filter, updateType, returnObject) {
     let url = new URI(fullUrl);
     if (updateType === 'set') {

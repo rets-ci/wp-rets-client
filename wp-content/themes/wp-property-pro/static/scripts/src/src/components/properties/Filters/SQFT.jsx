@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Slider from '../Components/Slider.jsx';
 
-class Price extends Component {
+class SQFT extends Component {
   static propTypes = {
     saleType: PropTypes.string.isRequired,
     start: PropTypes.any,
@@ -22,12 +22,12 @@ class Price extends Component {
     } = this.props;
     let defaults = {
       Sale: {
-        start: 150000,
-        to: 400000
+        start: 1000,
+        to: 1250
       },
       Rent: {
-        start: 500,
-        to: 3000
+        start: 1000,
+        to: 1250
       }
     };
     let min;
@@ -35,14 +35,10 @@ class Price extends Component {
     let range = {};
     let step;
     let percentages;
-    if (saleType === 'Sale') {
-      min = 100000;
-      max = 1000000;
-      step = 10000;
-    } else if (saleType === 'Rent') {
-      min = 100;
-      max = 5000;
-      step = 10000;
+    if (saleType === 'Sale' || saleType === 'Rent') {
+      step = 500;
+      min = 1000;
+      max = 10000;
     }
     range = {
       min: min,
@@ -58,4 +54,4 @@ class Price extends Component {
   }
 };
 
-export default Price;
+export default SQFT;

@@ -29736,6 +29736,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.property_types && params.property_types.length) {
 	          query.bool.must.push({
 	            "terms": {
@@ -29743,6 +29744,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.bathrooms) {
 	          query.bool.must.push({
 	            "range": {
@@ -29752,6 +29754,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.bedrooms) {
 	          query.bool.must.push({
 	            "range": {
@@ -29761,6 +29764,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.price) {
 	          var range = {};
 	          if (params.price.start !== _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
@@ -47420,6 +47424,19 @@
 	      }
 	    }
 	  }, {
+	    key: 'sqftFilterSearchTagText',
+	    value: function sqftFilterSearchTagText(filter) {
+	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          return 'Under ' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
+	        } else {
+	          return 'Over ' + (0, _numeral2.default)(filter.start).format('0,0') + ' SQFT';
+	        }
+	      } else {
+	        return (0, _numeral2.default)(filter.start).format('0,0') + '-' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
+	      }
+	    }
+	  }, {
 	    key: 'updateQueryFilter',
 	    value: function updateQueryFilter(fullUrl, filter, updateType, returnObject) {
 	      var url = new _urijs2.default(fullUrl);
@@ -52330,6 +52347,10 @@
 
 	var _Price2 = _interopRequireDefault(_Price);
 
+	var _SQFT = __webpack_require__(437);
+
+	var _SQFT2 = _interopRequireDefault(_SQFT);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -52365,6 +52386,7 @@
 	    bathroomSelected: searchFiltersFormatted.bathrooms || null,
 	    bedroomSelected: searchFiltersFormatted.bedrooms || null,
 	    priceSelected: searchFiltersFormatted.price || {},
+	    sqftSelected: searchFiltersFormatted.sqft || {},
 	    searchFiltersFormatted: searchFiltersFormatted
 	  };
 	};
@@ -52390,7 +52412,8 @@
 	      bedroomSelected: props.bedroomSelected,
 	      localFilters: Object.assign({}, props.searchFilters),
 	      showAllFilters: false,
-	      priceSelected: props.priceSelected
+	      priceSelected: props.priceSelected,
+	      sqftSelected: props.sqftSelected
 	    };
 	    return _this;
 	  }
@@ -52441,6 +52464,17 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleSQFTSelect',
+	    value: function handleSQFTSelect(start, to) {
+	      var _filter4;
+
+	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", to), _filter4);
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        sqftSelected: { start: start, to: to }
+	      });
+	    }
+	  }, {
 	    key: 'saveFilters',
 	    value: function saveFilters() {
 	      var url = new _urijs2.default(window.location.href);
@@ -52452,7 +52486,7 @@
 	  }, {
 	    key: 'displayAllFilters',
 	    value: function displayAllFilters(searchFiltersFormatted) {
-	      return !!searchFiltersFormatted['bathrooms'];
+	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
 	    }
 	  }, {
 	    key: 'resetFilters',
@@ -52460,6 +52494,7 @@
 	      this.setState({
 	        bedroomSelected: this.props.bedroomSelected,
 	        priceSelected: this.props.priceSelected,
+	        sqftSelected: this.props.sqftSelected,
 	        localFilters: Object.assign({}, this.props.searchFilters)
 	      });
 	    }
@@ -52484,7 +52519,8 @@
 	          bedroomSelected = _state.bedroomSelected,
 	          localFilters = _state.localFilters,
 	          priceSelected = _state.priceSelected,
-	          showAllFilters = _state.showAllFilters;
+	          showAllFilters = _state.showAllFilters,
+	          sqftSelected = _state.sqftSelected;
 
 
 	      var bathroomElements = bathroomOptions.map(function (d) {
@@ -52717,28 +52753,44 @@
 	                'div',
 	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
 	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  'Bathrooms ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(Minimum)'
+	                  )
+	                ),
+	                bathroomElements.map(function (d) {
+	                  return _react2.default.createElement(
+	                    'a',
+	                    { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                        return _this2.handleBathroomSelect.bind(_this2)(d.value);
+	                      } },
+	                    d.name
+	                  );
+	                })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  'Total Size ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(SQFT)'
+	                  )
+	                ),
+	                _react2.default.createElement(
 	                  'div',
 	                  null,
-	                  _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    'Bathrooms ',
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      '(Minimum)'
-	                    )
-	                  ),
-	                  bathroomElements.map(function (d) {
-	                    return _react2.default.createElement(
-	                      'a',
-	                      { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
-	                          return _this2.handleBathroomSelect.bind(_this2)(d.value);
-	                        } },
-	                      d.name
-	                    );
-	                  })
-	                )
+	                  _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start, to: sqftSelected.to, handleOnClick: this.handleSQFTSelect.bind(this) })
+	                ),
+	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
 	              showAllFilters ? _react2.default.createElement(
 	                'a',
@@ -52865,13 +52917,16 @@
 	      var min = void 0;
 	      var max = void 0;
 	      var range = {};
+	      var step = void 0;
 	      var percentages = void 0;
 	      if (saleType === 'Sale') {
 	        min = 100000;
 	        max = 1000000;
+	        step = 10000;
 	      } else if (saleType === 'Rent') {
 	        min = 100;
 	        max = 5000;
+	        step = 10000;
 	      }
 	      range = {
 	        min: min,
@@ -52881,7 +52936,7 @@
 	      percentages.forEach(function (p) {
 	        range[p + '%'] = [min + min * (p / 100)];
 	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -52970,6 +53025,7 @@
 	          handleOnClick = _props.handleOnClick,
 	          range = _props.range,
 	          start = _props.start,
+	          step = _props.step,
 	          to = _props.to;
 
 	      this.slider = noUiSlider.create(this.sliderElement, {
@@ -52982,7 +53038,7 @@
 	        },
 	        range: range,
 	        start: [start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
-	        step: 10000,
+	        step: step,
 	        tooltips: true
 	      });
 
@@ -53023,6 +53079,7 @@
 	  handleOnClick: _react.PropTypes.func.isRequired,
 	  range: _react.PropTypes.object.isRequired,
 	  start: _react.PropTypes.any,
+	  step: _react.PropTypes.any,
 	  to: _react.PropTypes.any
 	};
 	;
@@ -62698,6 +62755,14 @@
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
+	    key: 'handleSQFTFilterRemove',
+	    value: function handleSQFTFilterRemove(sqftFilter) {
+	      var _filter4;
+
+	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter4);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -62710,6 +62775,8 @@
 	      var bedroomsElement = void 0;
 	      var priceFilter = filters['price'];
 	      var priceElement = void 0;
+	      var sqftFilter = filters['sqft'];
+	      var sqftElement = void 0;
 
 	      if (bathroomsFilter) {
 	        bathroomsElement = _react2.default.createElement(
@@ -62788,6 +62855,20 @@
 	        );
 	      }
 
+	      if (sqftFilter) {
+	        sqftElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handleSQFTFilterRemove.bind(this, sqftFilter) })
+	          ),
+	          ' ',
+	          _Util2.default.sqftFilterSearchTagText(sqftFilter)
+	        );
+	      }
+
 	      var termFilter = filters['term'];
 	      var termFilters = Object.keys(termFilter).map(function (t) {
 	        return { tax: t, value: termFilter[t] };
@@ -62822,6 +62903,7 @@
 	              bathroomsElement,
 	              bedroomsElement,
 	              priceElement,
+	              sqftElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
@@ -82899,6 +82981,99 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ },
+/* 437 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Slider = __webpack_require__(294);
+
+	var _Slider2 = _interopRequireDefault(_Slider);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SQFT = function (_Component) {
+	  _inherits(SQFT, _Component);
+
+	  function SQFT(props) {
+	    _classCallCheck(this, SQFT);
+
+	    var _this = _possibleConstructorReturn(this, (SQFT.__proto__ || Object.getPrototypeOf(SQFT)).call(this, props));
+
+	    _this.state = {};
+	    return _this;
+	  }
+
+	  _createClass(SQFT, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          saleType = _props.saleType,
+	          start = _props.start,
+	          to = _props.to;
+
+	      var defaults = {
+	        Sale: {
+	          start: 1000,
+	          to: 1250
+	        },
+	        Rent: {
+	          start: 1000,
+	          to: 1250
+	        }
+	      };
+	      var min = void 0;
+	      var max = void 0;
+	      var range = {};
+	      var step = void 0;
+	      var percentages = void 0;
+	      if (saleType === 'Sale' || saleType === 'Rent') {
+	        step = 500;
+	        min = 1000;
+	        max = 10000;
+	      }
+	      range = {
+	        min: min,
+	        max: max
+	      };
+	      percentages = [10, 25, 50, 75];
+	      percentages.forEach(function (p) {
+	        range[p + '%'] = [min + min * (p / 100)];
+	      });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	    }
+	  }]);
+
+	  return SQFT;
+	}(_react.Component);
+
+	SQFT.propTypes = {
+	  saleType: _react.PropTypes.string.isRequired,
+	  start: _react.PropTypes.any,
+	  to: _react.PropTypes.any,
+	  handleOnClick: _react.PropTypes.func.isRequired
+	};
+	;
+
+	exports.default = SQFT;
 
 /***/ }
 /******/ ]);

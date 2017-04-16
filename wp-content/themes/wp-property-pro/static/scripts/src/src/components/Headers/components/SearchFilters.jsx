@@ -51,6 +51,14 @@ class searchFilters extends Component {
     this.props.removeSearchFilter(filter);
   }
 
+  handleSQFTFilterRemove(sqftFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: sqftFilter.start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: sqftFilter.to,
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
   render() {
     let {
       filters
@@ -61,6 +69,8 @@ class searchFilters extends Component {
     let bedroomsElement;
     let priceFilter = filters['price'];
     let priceElement;
+    let sqftFilter = filters['sqft'];
+    let sqftElement;
 
     if (bathroomsFilter) {
       bathroomsElement = (
@@ -94,6 +104,13 @@ class searchFilters extends Component {
       </span>);
     }
 
+    if (sqftFilter) {
+      sqftElement = (
+        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
+          <span><i className="fa fa-times" onClick={this.handleSQFTFilterRemove.bind(this, sqftFilter)}></i></span> {Util.sqftFilterSearchTagText(sqftFilter)}</span>
+      )
+    }
+
     let termFilter = filters['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
@@ -109,6 +126,7 @@ class searchFilters extends Component {
               {bathroomsElement}
               {bedroomsElement}
               {priceElement}
+              {sqftElement}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
                 <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                   <span>+</span>
