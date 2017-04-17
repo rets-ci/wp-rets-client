@@ -86,7 +86,7 @@ export default class PropertyCard extends Component {
         </div>
         <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`} onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className={Lib.THEME_CLASSES_PREFIX+"listing-top"}>
-            <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{numeral(price).format('$0,0.00')}</span>
+            <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{Util.formatPriceFilter(price)}</span>
             <span className={Lib.THEME_CLASSES_PREFIX+"action-btn-group"}>
               <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`} title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
