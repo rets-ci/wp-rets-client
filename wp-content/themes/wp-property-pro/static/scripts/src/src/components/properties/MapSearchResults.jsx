@@ -102,8 +102,8 @@ class MapSearchResults extends Component {
   }
 
   applyQueryFilters() {
-    let searchFiltes = Util.getSearchFiltersFromURL(window.location.href);
-    this.props.standardSearch(searchFiltes);
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
+    this.props.standardSearch(searchFilters);
   }
 
   render() {
@@ -115,7 +115,8 @@ class MapSearchResults extends Component {
       results
     } = this.props;
     let propertyTypes = location.query['wpp_search[property_types]'];
-    let searchFilters = Util.getSearchFiltersFromURL(window.location.href);
+    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, false);
+
     let elementToShow;
     if (mapSearchResultsLoading) {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
@@ -133,7 +134,7 @@ class MapSearchResults extends Component {
               {displayedResults.length &&
                 <Map properties={displayedResults}
                      searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
-                       ...Util.getSearchFiltersFromURL(window.location.href),
+                       ...Util.getSearchFiltersFromURL(window.location.href, true),
                        locationFilter: locationFilter,
                        geoCoordinates: geoCoordinates
                      })}/>

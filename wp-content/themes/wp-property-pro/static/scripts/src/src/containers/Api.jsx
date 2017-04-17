@@ -374,6 +374,7 @@ class Api {
           }
         });
       }
+
       if (params.property_types && params.property_types.length) {
         query.bool.must.push({
           "terms": {
@@ -381,6 +382,17 @@ class Api {
           }
         });
       }
+
+      if (params.bathrooms) {
+        query.bool.must.push({
+          "range": {
+            "post_meta.rets_total_baths": {
+              "gte": params.bathrooms
+            }
+          }
+        });
+      }
+
       if (params.bedrooms) {
         query.bool.must.push({
           "range": {
@@ -390,6 +402,7 @@ class Api {
           }
         });
       }
+
       if (params.price) {
         let range = {};
         if (params.price.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {

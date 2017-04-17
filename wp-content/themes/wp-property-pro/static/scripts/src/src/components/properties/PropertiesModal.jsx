@@ -3,10 +3,18 @@ import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
 import Price from './Filters/Price.jsx';
+import SQFT from './Filters/SQFT.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';
+
+let bathroomOptions =[
+  {name: '1+', value: '1'},
+  {name: '2+', value: '2'},
+  {name: '3+', value: '3'},
+  {name: '4+', value: '4'}
+];
 
 let bedroomOptions = [
   {name: '1+', value: '1'},
@@ -16,10 +24,14 @@ let bedroomOptions = [
 ];
 
 const mapStateToProps = (state, ownProps) => {
+  let searchFiltersFormatted = Util.getQS(window.location.href, ownProps.searchFilters)[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   return {
     bedroomOptions: bedroomOptions,
-    bedroomSelected: ownProps.searchFilters.bedrooms || null,
-    priceSelected: ownProps.searchFilters.price || {}
+    bathroomSelected: searchFiltersFormatted.bathrooms || null,
+    bedroomSelected: searchFiltersFormatted.bedrooms || null,
+    priceSelected: searchFiltersFormatted.price || {},
+    sqftSelected: searchFiltersFormatted.sqft || {},
+    searchFiltersFormatted: searchFiltersFormatted
   }
 };
 
@@ -33,82 +45,133 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class PropertiesModal extends Component {
   static propTypes = {
+    bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
     searchFilters: PropTypes.object.isRequired,
-    standardSearch: PropTypes.func.isRequired
+    searchFiltersFormatted: PropTypes.object.isRequired,
+    standardSearch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
+      localFilters: Object.assign({}, props.searchFilters),
+      showAllFilters: false,
       priceSelected: props.priceSelected,
-      updatedFilters: Object.assign({}, props.searchFilters)
+      sqftSelected: props.sqftSelected
     };
   }
 
+  componentDidMount() {
+    let showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+    this.setState({
+      showAllFilters: showAllFilters
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+    this.setState({
+      showAllFilters: showAllFilters
+    });
+  }
+
+  handleBathroomSelect(val) {
+    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]"]: val};
+    this.setState({
+      bathroomSelected: val,
+      localFilters: Object.assign({}, this.state.localFilters, filter)
+    });
+  }
+
   handleBedroomSelect(val) {
-    let update = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
-    let filter = this.getUpdatedQueryFilter(update);
+    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
     this.setState({
       bedroomSelected: val,
-      updatedFilters: filter
+      localFilters: Object.assign({}, this.state.localFilters, filter)
     });
   }
 
   handlePriceSelect(start, to) {
-    let update = {
+    let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: start,
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: to,
     };
-    let filter = this.getUpdatedQueryFilter(update);
     this.setState({
-      priceSelected: {start: start, to: to},
-      updatedFilters: filter
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      priceSelected: {start: start, to: to}
     });
   }
 
-  getUpdatedQueryFilter(update) {
-    let url = new URI(window.location.href);
-    url.setSearch(update);
-    return url.search(true);
+  handleSQFTSelect(start, to) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: to,
+    };
+    this.setState({
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      sqftSelected: {start: start, to: to}
+    });
   }
 
   saveFilters() {
     let url = new URI(window.location.href);
-    url.setSearch(this.state.updatedFilters);
+    let updatedSearchParams = Util.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
+    url.setSearch(updatedSearchParams);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
+  }
+
+  displayAllFilters(searchFiltersFormatted) {
+    return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
   }
 
   resetFilters() {
     this.setState({
       bedroomSelected: this.props.bedroomSelected,
       priceSelected: this.props.priceSelected,
-      updatedFilters: Object.assign({}, this.props.searchFilters)
+      sqftSelected: this.props.sqftSelected,
+      localFilters: Object.assign({}, this.props.searchFilters)
+    });
+  }
+
+  toggleViewAllFilters() {
+    this.setState({
+      showAllFilters: !this.state.showAllFilters
     });
   }
 
   render() {
     let {
       bedroomOptions,
-      searchFilters
+      searchFilters,
+      searchFiltersFormatted
     } = this.props;
 
     let {
+      bathroomSelected,
       bedroomSelected,
+      localFilters,
       priceSelected,
-      updatedFilters
+      showAllFilters,
+      sqftSelected
     } = this.state;
+
+    let bathroomElements = bathroomOptions.map(d => ({
+      name: d.name,
+      selected: d.value === bathroomSelected,
+      value: d.value
+    }));
 
     let bedroomElements = bedroomOptions.map(d => ({
       name: d.name,
       selected: d.value === bedroomSelected,
       value: d.value
     }));
-
-    let anyFilterChange = !isEqual(searchFilters, updatedFilters);
-    let termFilter = searchFilters['term'];
+    let anyFilterChange = !isEqual(searchFilters, localFilters);
+    let termFilter = searchFiltersFormatted['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
     });
@@ -189,12 +252,29 @@ class PropertiesModal extends Component {
                  <div className="filter-section">
                    <h3>Price <span>(Range)</span></h3>
                    <div>
-                     <Price saleType={searchFilters.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
+                     <Price saleType={searchFiltersFormatted.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
                  </div>
 
-                 <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"}>+ View More Filters</a>
+                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <h3>Bathrooms <span>(Minimum)</span></h3>
+                  {bathroomElements.map(d =>
+                    <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
+                  )}
+                </div>
+                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <h3>Total Size <span>(SQFT)</span></h3>
+                  <div>
+                    <SQFT saleType={searchFiltersFormatted.sale_type} start={sqftSelected.start} to={sqftSelected.to} handleOnClick={this.handleSQFTSelect.bind(this)} />
+                  </div>
+                  <input id="priceSlider" className="bs-hidden-input" />
+                </div>
+                {showAllFilters ?
+                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
+                :
+                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
+                }
                </div>
             </div>
             <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>

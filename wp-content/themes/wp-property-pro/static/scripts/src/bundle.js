@@ -29093,7 +29093,7 @@
 
 	var _Map2 = _interopRequireDefault(_Map);
 
-	var _PropertiesModal = __webpack_require__(291);
+	var _PropertiesModal = __webpack_require__(292);
 
 	var _PropertiesModal2 = _interopRequireDefault(_PropertiesModal);
 
@@ -29216,8 +29216,8 @@
 	  }, {
 	    key: 'applyQueryFilters',
 	    value: function applyQueryFilters() {
-	      var searchFiltes = _Util2.default.getSearchFiltersFromURL(window.location.href);
-	      this.props.standardSearch(searchFiltes);
+	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
+	      this.props.standardSearch(searchFilters);
 	    }
 	  }, {
 	    key: 'render',
@@ -29232,7 +29232,8 @@
 	          results = _props.results;
 
 	      var propertyTypes = location.query['wpp_search[property_types]'];
-	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href);
+	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, false);
+
 	      var elementToShow = void 0;
 	      if (mapSearchResultsLoading) {
 	        elementToShow = _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" });
@@ -29261,7 +29262,7 @@
 	              ),
 	              displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
 	                searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href), {
+	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
 	                    locationFilter: locationFilter,
 	                    geoCoordinates: geoCoordinates
 	                  }));
@@ -29735,6 +29736,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.property_types && params.property_types.length) {
 	          query.bool.must.push({
 	            "terms": {
@@ -29742,6 +29744,17 @@
 	            }
 	          });
 	        }
+
+	        if (params.bathrooms) {
+	          query.bool.must.push({
+	            "range": {
+	              "post_meta.rets_total_baths": {
+	                "gte": params.bathrooms
+	              }
+	            }
+	          });
+	        }
+
 	        if (params.bedrooms) {
 	          query.bool.must.push({
 	            "range": {
@@ -29751,6 +29764,7 @@
 	            }
 	          });
 	        }
+
 	        if (params.price) {
 	          var range = {};
 	          if (params.price.start !== _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
@@ -47254,6 +47268,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _numeral = __webpack_require__(282);
+
+	var _numeral2 = _interopRequireDefault(_numeral);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -47264,11 +47282,11 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _urijs = __webpack_require__(282);
+	var _urijs = __webpack_require__(283);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
-	var _qs = __webpack_require__(286);
+	var _qs = __webpack_require__(287);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -47298,12 +47316,37 @@
 	  }
 
 	  _createClass(Util, null, [{
+	    key: 'formatPriceFilter',
+	    value: function formatPriceFilter(price) {
+	      // format price
+	      var formattedNumber = (0, _numeral2.default)(price);
+	      if (price >= 100000) {
+	        formattedNumber = formattedNumber.format('$0a');
+	      } else {
+	        formattedNumber = formattedNumber.format('$0,0');
+	      }
+	      return formattedNumber;
+	    }
+	  }, {
 	    key: 'getSearchFiltersFromURL',
-	    value: function getSearchFiltersFromURL(url) {
-	      var uri = new _urijs2.default(url);
-	      var query = _qs2.default.parse(uri.query());
+	    value: function getSearchFiltersFromURL(url, withoutPrefix) {
 
-	      return !_lodash2.default.isEmpty(query) ? _lodash2.default.get(query, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {}) : {};
+	      var searchFilter = {};
+	      var uri = new _urijs2.default(url);
+	      if (!_lodash2.default.isEmpty(uri.query())) {
+	        if (withoutPrefix) {
+	          var query = _qs2.default.parse(uri.query());
+	          searchFilter = _lodash2.default.get(query, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX, {});
+	        } else {
+	          var _query = uri.search(true);
+	          for (var k in _query) {
+	            if (k.startsWith(_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX)) {
+	              searchFilter[k] = _query[k];
+	            }
+	          }
+	        }
+	      }
+	      return searchFilter;
 	    }
 	  }, {
 	    key: 'getThumbnailUrlBySize',
@@ -47324,6 +47367,14 @@
 	      var newFileName = _lodash2.default.join([fileNameWithSize, fileNameArray[1]], _lib.Lib.EXTENSION_DELIMITER);
 
 	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
+	    }
+	  }, {
+	    key: 'getQS',
+	    value: function getQS(currentUrl, searchFilters) {
+	      var uri = new _urijs2.default(currentUrl);
+	      uri.setSearch(searchFilters);
+	      var query = _qs2.default.parse(uri.query());
+	      return query;
 	    }
 	  }, {
 	    key: 'esGeoBoundingBoxObjFormat',
@@ -47359,6 +47410,43 @@
 	      uri.removeSearch(_defineProperty({}, key, value));
 	      return uri.pathname() + uri.search();
 	    }
+	  }, {
+	    key: 'priceFilterSearchTagText',
+	    value: function priceFilterSearchTagText(filter) {
+	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          return 'Under ' + this.formatPriceFilter(filter.to);
+	        } else {
+	          return 'Over ' + this.formatPriceFilter(filter.start);
+	        }
+	      } else {
+	        return this.formatPriceFilter(filter.start) + '-' + this.formatPriceFilter(filter.to);
+	      }
+	    }
+	  }, {
+	    key: 'sqftFilterSearchTagText',
+	    value: function sqftFilterSearchTagText(filter) {
+	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          return 'Under ' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
+	        } else {
+	          return 'Over ' + (0, _numeral2.default)(filter.start).format('0,0') + ' SQFT';
+	        }
+	      } else {
+	        return (0, _numeral2.default)(filter.start).format('0,0') + '-' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
+	      }
+	    }
+	  }, {
+	    key: 'updateQueryFilter',
+	    value: function updateQueryFilter(fullUrl, filter, updateType, returnObject) {
+	      var url = new _urijs2.default(fullUrl);
+	      if (updateType === 'set') {
+	        url.setSearch(filter);
+	      } else if (updateType === 'remove') {
+	        url.removeSearch(filter);
+	      }
+	      return returnObject ? url.search(returnObject) : url.search();
+	    }
 	  }]);
 
 	  return Util;
@@ -47368,6 +47456,1025 @@
 
 /***/ },
 /* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
+	 * numeral.js
+	 * version : 2.0.6
+	 * author : Adam Draper
+	 * license : MIT
+	 * http://adamwdraper.github.com/Numeral-js/
+	 */
+
+	(function (global, factory) {
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof module === 'object' && module.exports) {
+	        module.exports = factory();
+	    } else {
+	        global.numeral = factory();
+	    }
+	}(this, function () {
+	    /************************************
+	        Variables
+	    ************************************/
+
+	    var numeral,
+	        _,
+	        VERSION = '2.0.6',
+	        formats = {},
+	        locales = {},
+	        defaults = {
+	            currentLocale: 'en',
+	            zeroFormat: null,
+	            nullFormat: null,
+	            defaultFormat: '0,0',
+	            scalePercentBy100: true
+	        },
+	        options = {
+	            currentLocale: defaults.currentLocale,
+	            zeroFormat: defaults.zeroFormat,
+	            nullFormat: defaults.nullFormat,
+	            defaultFormat: defaults.defaultFormat,
+	            scalePercentBy100: defaults.scalePercentBy100
+	        };
+
+
+	    /************************************
+	        Constructors
+	    ************************************/
+
+	    // Numeral prototype object
+	    function Numeral(input, number) {
+	        this._input = input;
+
+	        this._value = number;
+	    }
+
+	    numeral = function(input) {
+	        var value,
+	            kind,
+	            unformatFunction,
+	            regexp;
+
+	        if (numeral.isNumeral(input)) {
+	            value = input.value();
+	        } else if (input === 0 || typeof input === 'undefined') {
+	            value = 0;
+	        } else if (input === null || _.isNaN(input)) {
+	            value = null;
+	        } else if (typeof input === 'string') {
+	            if (options.zeroFormat && input === options.zeroFormat) {
+	                value = 0;
+	            } else if (options.nullFormat && input === options.nullFormat || !input.replace(/[^0-9]+/g, '').length) {
+	                value = null;
+	            } else {
+	                for (kind in formats) {
+	                    regexp = typeof formats[kind].regexps.unformat === 'function' ? formats[kind].regexps.unformat() : formats[kind].regexps.unformat;
+
+	                    if (regexp && input.match(regexp)) {
+	                        unformatFunction = formats[kind].unformat;
+
+	                        break;
+	                    }
+	                }
+
+	                unformatFunction = unformatFunction || numeral._.stringToNumber;
+
+	                value = unformatFunction(input);
+	            }
+	        } else {
+	            value = Number(input)|| null;
+	        }
+
+	        return new Numeral(input, value);
+	    };
+
+	    // version number
+	    numeral.version = VERSION;
+
+	    // compare numeral object
+	    numeral.isNumeral = function(obj) {
+	        return obj instanceof Numeral;
+	    };
+
+	    // helper functions
+	    numeral._ = _ = {
+	        // formats numbers separators, decimals places, signs, abbreviations
+	        numberToFormat: function(value, format, roundingFunction) {
+	            var locale = locales[numeral.options.currentLocale],
+	                negP = false,
+	                optDec = false,
+	                leadingCount = 0,
+	                abbr = '',
+	                trillion = 1000000000000,
+	                billion = 1000000000,
+	                million = 1000000,
+	                thousand = 1000,
+	                decimal = '',
+	                neg = false,
+	                abbrForce, // force abbreviation
+	                abs,
+	                min,
+	                max,
+	                power,
+	                int,
+	                precision,
+	                signed,
+	                thousands,
+	                output;
+
+	            // make sure we never format a null value
+	            value = value || 0;
+
+	            abs = Math.abs(value);
+
+	            // see if we should use parentheses for negative number or if we should prefix with a sign
+	            // if both are present we default to parentheses
+	            if (numeral._.includes(format, '(')) {
+	                negP = true;
+	                format = format.replace(/[\(|\)]/g, '');
+	            } else if (numeral._.includes(format, '+') || numeral._.includes(format, '-')) {
+	                signed = numeral._.includes(format, '+') ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
+	                format = format.replace(/[\+|\-]/g, '');
+	            }
+
+	            // see if abbreviation is wanted
+	            if (numeral._.includes(format, 'a')) {
+	                abbrForce = format.match(/a(k|m|b|t)?/);
+
+	                abbrForce = abbrForce ? abbrForce[1] : false;
+
+	                // check for space before abbreviation
+	                if (numeral._.includes(format, ' a')) {
+	                    abbr = ' ';
+	                }
+
+	                format = format.replace(new RegExp(abbr + 'a[kmbt]?'), '');
+
+	                if (abs >= trillion && !abbrForce || abbrForce === 't') {
+	                    // trillion
+	                    abbr += locale.abbreviations.trillion;
+	                    value = value / trillion;
+	                } else if (abs < trillion && abs >= billion && !abbrForce || abbrForce === 'b') {
+	                    // billion
+	                    abbr += locale.abbreviations.billion;
+	                    value = value / billion;
+	                } else if (abs < billion && abs >= million && !abbrForce || abbrForce === 'm') {
+	                    // million
+	                    abbr += locale.abbreviations.million;
+	                    value = value / million;
+	                } else if (abs < million && abs >= thousand && !abbrForce || abbrForce === 'k') {
+	                    // thousand
+	                    abbr += locale.abbreviations.thousand;
+	                    value = value / thousand;
+	                }
+	            }
+
+	            // check for optional decimals
+	            if (numeral._.includes(format, '[.]')) {
+	                optDec = true;
+	                format = format.replace('[.]', '.');
+	            }
+
+	            // break number and format
+	            int = value.toString().split('.')[0];
+	            precision = format.split('.')[1];
+	            thousands = format.indexOf(',');
+	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
+
+	            if (precision) {
+	                if (numeral._.includes(precision, '[')) {
+	                    precision = precision.replace(']', '');
+	                    precision = precision.split('[');
+	                    decimal = numeral._.toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
+	                } else {
+	                    decimal = numeral._.toFixed(value, precision.length, roundingFunction);
+	                }
+
+	                int = decimal.split('.')[0];
+
+	                if (numeral._.includes(decimal, '.')) {
+	                    decimal = locale.delimiters.decimal + decimal.split('.')[1];
+	                } else {
+	                    decimal = '';
+	                }
+
+	                if (optDec && Number(decimal.slice(1)) === 0) {
+	                    decimal = '';
+	                }
+	            } else {
+	                int = numeral._.toFixed(value, 0, roundingFunction);
+	            }
+
+	            // check abbreviation again after rounding
+	            if (abbr && !abbrForce && Number(int) >= 1000 && abbr !== locale.abbreviations.trillion) {
+	                int = String(Number(int) / 1000);
+
+	                switch (abbr) {
+	                    case locale.abbreviations.thousand:
+	                        abbr = locale.abbreviations.million;
+	                        break;
+	                    case locale.abbreviations.million:
+	                        abbr = locale.abbreviations.billion;
+	                        break;
+	                    case locale.abbreviations.billion:
+	                        abbr = locale.abbreviations.trillion;
+	                        break;
+	                }
+	            }
+
+
+	            // format number
+	            if (numeral._.includes(int, '-')) {
+	                int = int.slice(1);
+	                neg = true;
+	            }
+
+	            if (int.length < leadingCount) {
+	                for (var i = leadingCount - int.length; i > 0; i--) {
+	                    int = '0' + int;
+	                }
+	            }
+
+	            if (thousands > -1) {
+	                int = int.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + locale.delimiters.thousands);
+	            }
+
+	            if (format.indexOf('.') === 0) {
+	                int = '';
+	            }
+
+	            output = int + decimal + (abbr ? abbr : '');
+
+	            if (negP) {
+	                output = (negP && neg ? '(' : '') + output + (negP && neg ? ')' : '');
+	            } else {
+	                if (signed >= 0) {
+	                    output = signed === 0 ? (neg ? '-' : '+') + output : output + (neg ? '-' : '+');
+	                } else if (neg) {
+	                    output = '-' + output;
+	                }
+	            }
+
+	            return output;
+	        },
+	        // unformats numbers separators, decimals places, signs, abbreviations
+	        stringToNumber: function(string) {
+	            var locale = locales[options.currentLocale],
+	                stringOriginal = string,
+	                abbreviations = {
+	                    thousand: 3,
+	                    million: 6,
+	                    billion: 9,
+	                    trillion: 12
+	                },
+	                abbreviation,
+	                value,
+	                i,
+	                regexp;
+
+	            if (options.zeroFormat && string === options.zeroFormat) {
+	                value = 0;
+	            } else if (options.nullFormat && string === options.nullFormat || !string.replace(/[^0-9]+/g, '').length) {
+	                value = null;
+	            } else {
+	                value = 1;
+
+	                if (locale.delimiters.decimal !== '.') {
+	                    string = string.replace(/\./g, '').replace(locale.delimiters.decimal, '.');
+	                }
+
+	                for (abbreviation in abbreviations) {
+	                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
+
+	                    if (stringOriginal.match(regexp)) {
+	                        value *= Math.pow(10, abbreviations[abbreviation]);
+	                        break;
+	                    }
+	                }
+
+	                // check for negative number
+	                value *= (string.split('-').length + Math.min(string.split('(').length - 1, string.split(')').length - 1)) % 2 ? 1 : -1;
+
+	                // remove non numbers
+	                string = string.replace(/[^0-9\.]+/g, '');
+
+	                value *= Number(string);
+	            }
+
+	            return value;
+	        },
+	        isNaN: function(value) {
+	            return typeof value === 'number' && isNaN(value);
+	        },
+	        includes: function(string, search) {
+	            return string.indexOf(search) !== -1;
+	        },
+	        insert: function(string, subString, start) {
+	            return string.slice(0, start) + subString + string.slice(start);
+	        },
+	        reduce: function(array, callback /*, initialValue*/) {
+	            if (this === null) {
+	                throw new TypeError('Array.prototype.reduce called on null or undefined');
+	            }
+
+	            if (typeof callback !== 'function') {
+	                throw new TypeError(callback + ' is not a function');
+	            }
+
+	            var t = Object(array),
+	                len = t.length >>> 0,
+	                k = 0,
+	                value;
+
+	            if (arguments.length === 3) {
+	                value = arguments[2];
+	            } else {
+	                while (k < len && !(k in t)) {
+	                    k++;
+	                }
+
+	                if (k >= len) {
+	                    throw new TypeError('Reduce of empty array with no initial value');
+	                }
+
+	                value = t[k++];
+	            }
+	            for (; k < len; k++) {
+	                if (k in t) {
+	                    value = callback(value, t[k], k, t);
+	                }
+	            }
+	            return value;
+	        },
+	        /**
+	         * Computes the multiplier necessary to make x >= 1,
+	         * effectively eliminating miscalculations caused by
+	         * finite precision.
+	         */
+	        multiplier: function (x) {
+	            var parts = x.toString().split('.');
+
+	            return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
+	        },
+	        /**
+	         * Given a variable number of arguments, returns the maximum
+	         * multiplier that must be used to normalize an operation involving
+	         * all of them.
+	         */
+	        correctionFactor: function () {
+	            var args = Array.prototype.slice.call(arguments);
+
+	            return args.reduce(function(accum, next) {
+	                var mn = _.multiplier(next);
+	                return accum > mn ? accum : mn;
+	            }, 1);
+	        },
+	        /**
+	         * Implementation of toFixed() that treats floats more like decimals
+	         *
+	         * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
+	         * problems for accounting- and finance-related software.
+	         */
+	        toFixed: function(value, maxDecimals, roundingFunction, optionals) {
+	            var splitValue = value.toString().split('.'),
+	                minDecimals = maxDecimals - (optionals || 0),
+	                boundedPrecision,
+	                optionalsRegExp,
+	                power,
+	                output;
+
+	            // Use the smallest precision value possible to avoid errors from floating point representation
+	            if (splitValue.length === 2) {
+	              boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
+	            } else {
+	              boundedPrecision = minDecimals;
+	            }
+
+	            power = Math.pow(10, boundedPrecision);
+
+	            // Multiply up by precision, round accurately, then divide and use native toFixed():
+	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+
+	            if (optionals > maxDecimals - boundedPrecision) {
+	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
+	                output = output.replace(optionalsRegExp, '');
+	            }
+
+	            return output;
+	        }
+	    };
+
+	    // avaliable options
+	    numeral.options = options;
+
+	    // avaliable formats
+	    numeral.formats = formats;
+
+	    // avaliable formats
+	    numeral.locales = locales;
+
+	    // This function sets the current locale.  If
+	    // no arguments are passed in, it will simply return the current global
+	    // locale key.
+	    numeral.locale = function(key) {
+	        if (key) {
+	            options.currentLocale = key.toLowerCase();
+	        }
+
+	        return options.currentLocale;
+	    };
+
+	    // This function provides access to the loaded locale data.  If
+	    // no arguments are passed in, it will simply return the current
+	    // global locale object.
+	    numeral.localeData = function(key) {
+	        if (!key) {
+	            return locales[options.currentLocale];
+	        }
+
+	        key = key.toLowerCase();
+
+	        if (!locales[key]) {
+	            throw new Error('Unknown locale : ' + key);
+	        }
+
+	        return locales[key];
+	    };
+
+	    numeral.reset = function() {
+	        for (var property in defaults) {
+	            options[property] = defaults[property];
+	        }
+	    };
+
+	    numeral.zeroFormat = function(format) {
+	        options.zeroFormat = typeof(format) === 'string' ? format : null;
+	    };
+
+	    numeral.nullFormat = function (format) {
+	        options.nullFormat = typeof(format) === 'string' ? format : null;
+	    };
+
+	    numeral.defaultFormat = function(format) {
+	        options.defaultFormat = typeof(format) === 'string' ? format : '0.0';
+	    };
+
+	    numeral.register = function(type, name, format) {
+	        name = name.toLowerCase();
+
+	        if (this[type + 's'][name]) {
+	            throw new TypeError(name + ' ' + type + ' already registered.');
+	        }
+
+	        this[type + 's'][name] = format;
+
+	        return format;
+	    };
+
+
+	    numeral.validate = function(val, culture) {
+	        var _decimalSep,
+	            _thousandSep,
+	            _currSymbol,
+	            _valArray,
+	            _abbrObj,
+	            _thousandRegEx,
+	            localeData,
+	            temp;
+
+	        //coerce val to string
+	        if (typeof val !== 'string') {
+	            val += '';
+
+	            if (console.warn) {
+	                console.warn('Numeral.js: Value is not string. It has been co-erced to: ', val);
+	            }
+	        }
+
+	        //trim whitespaces from either sides
+	        val = val.trim();
+
+	        //if val is just digits return true
+	        if (!!val.match(/^\d+$/)) {
+	            return true;
+	        }
+
+	        //if val is empty return false
+	        if (val === '') {
+	            return false;
+	        }
+
+	        //get the decimal and thousands separator from numeral.localeData
+	        try {
+	            //check if the culture is understood by numeral. if not, default it to current locale
+	            localeData = numeral.localeData(culture);
+	        } catch (e) {
+	            localeData = numeral.localeData(numeral.locale());
+	        }
+
+	        //setup the delimiters and currency symbol based on culture/locale
+	        _currSymbol = localeData.currency.symbol;
+	        _abbrObj = localeData.abbreviations;
+	        _decimalSep = localeData.delimiters.decimal;
+	        if (localeData.delimiters.thousands === '.') {
+	            _thousandSep = '\\.';
+	        } else {
+	            _thousandSep = localeData.delimiters.thousands;
+	        }
+
+	        // validating currency symbol
+	        temp = val.match(/^[^\d]+/);
+	        if (temp !== null) {
+	            val = val.substr(1);
+	            if (temp[0] !== _currSymbol) {
+	                return false;
+	            }
+	        }
+
+	        //validating abbreviation symbol
+	        temp = val.match(/[^\d]+$/);
+	        if (temp !== null) {
+	            val = val.slice(0, -1);
+	            if (temp[0] !== _abbrObj.thousand && temp[0] !== _abbrObj.million && temp[0] !== _abbrObj.billion && temp[0] !== _abbrObj.trillion) {
+	                return false;
+	            }
+	        }
+
+	        _thousandRegEx = new RegExp(_thousandSep + '{2}');
+
+	        if (!val.match(/[^\d.,]/g)) {
+	            _valArray = val.split(_decimalSep);
+	            if (_valArray.length > 2) {
+	                return false;
+	            } else {
+	                if (_valArray.length < 2) {
+	                    return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx));
+	                } else {
+	                    if (_valArray[0].length === 1) {
+	                        return ( !! _valArray[0].match(/^\d+$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
+	                    } else {
+	                        return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
+	                    }
+	                }
+	            }
+	        }
+
+	        return false;
+	    };
+
+
+	    /************************************
+	        Numeral Prototype
+	    ************************************/
+
+	    numeral.fn = Numeral.prototype = {
+	        clone: function() {
+	            return numeral(this);
+	        },
+	        format: function(inputString, roundingFunction) {
+	            var value = this._value,
+	                format = inputString || options.defaultFormat,
+	                kind,
+	                output,
+	                formatFunction;
+
+	            // make sure we have a roundingFunction
+	            roundingFunction = roundingFunction || Math.round;
+
+	            // format based on value
+	            if (value === 0 && options.zeroFormat !== null) {
+	                output = options.zeroFormat;
+	            } else if (value === null && options.nullFormat !== null) {
+	                output = options.nullFormat;
+	            } else {
+	                for (kind in formats) {
+	                    if (format.match(formats[kind].regexps.format)) {
+	                        formatFunction = formats[kind].format;
+
+	                        break;
+	                    }
+	                }
+
+	                formatFunction = formatFunction || numeral._.numberToFormat;
+
+	                output = formatFunction(value, format, roundingFunction);
+	            }
+
+	            return output;
+	        },
+	        value: function() {
+	            return this._value;
+	        },
+	        input: function() {
+	            return this._input;
+	        },
+	        set: function(value) {
+	            this._value = Number(value);
+
+	            return this;
+	        },
+	        add: function(value) {
+	            var corrFactor = _.correctionFactor.call(null, this._value, value);
+
+	            function cback(accum, curr, currI, O) {
+	                return accum + Math.round(corrFactor * curr);
+	            }
+
+	            this._value = _.reduce([this._value, value], cback, 0) / corrFactor;
+
+	            return this;
+	        },
+	        subtract: function(value) {
+	            var corrFactor = _.correctionFactor.call(null, this._value, value);
+
+	            function cback(accum, curr, currI, O) {
+	                return accum - Math.round(corrFactor * curr);
+	            }
+
+	            this._value = _.reduce([value], cback, Math.round(this._value * corrFactor)) / corrFactor;
+
+	            return this;
+	        },
+	        multiply: function(value) {
+	            function cback(accum, curr, currI, O) {
+	                var corrFactor = _.correctionFactor(accum, curr);
+	                return Math.round(accum * corrFactor) * Math.round(curr * corrFactor) / Math.round(corrFactor * corrFactor);
+	            }
+
+	            this._value = _.reduce([this._value, value], cback, 1);
+
+	            return this;
+	        },
+	        divide: function(value) {
+	            function cback(accum, curr, currI, O) {
+	                var corrFactor = _.correctionFactor(accum, curr);
+	                return Math.round(accum * corrFactor) / Math.round(curr * corrFactor);
+	            }
+
+	            this._value = _.reduce([this._value, value], cback);
+
+	            return this;
+	        },
+	        difference: function(value) {
+	            return Math.abs(numeral(this._value).subtract(value).value());
+	        }
+	    };
+
+	    /************************************
+	        Default Locale && Format
+	    ************************************/
+
+	    numeral.register('locale', 'en', {
+	        delimiters: {
+	            thousands: ',',
+	            decimal: '.'
+	        },
+	        abbreviations: {
+	            thousand: 'k',
+	            million: 'm',
+	            billion: 'b',
+	            trillion: 't'
+	        },
+	        ordinal: function(number) {
+	            var b = number % 10;
+	            return (~~(number % 100 / 10) === 1) ? 'th' :
+	                (b === 1) ? 'st' :
+	                (b === 2) ? 'nd' :
+	                (b === 3) ? 'rd' : 'th';
+	        },
+	        currency: {
+	            symbol: '$'
+	        }
+	    });
+
+	    
+
+	(function() {
+	        numeral.register('format', 'bps', {
+	            regexps: {
+	                format: /(BPS)/,
+	                unformat: /(BPS)/
+	            },
+	            format: function(value, format, roundingFunction) {
+	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
+	                    output;
+
+	                value = value * 10000;
+
+	                // check for space before BPS
+	                format = format.replace(/\s?BPS/, '');
+
+	                output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	                if (numeral._.includes(output, ')')) {
+	                    output = output.split('');
+
+	                    output.splice(-1, 0, space + 'BPS');
+
+	                    output = output.join('');
+	                } else {
+	                    output = output + space + 'BPS';
+	                }
+
+	                return output;
+	            },
+	            unformat: function(string) {
+	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
+	            }
+	        });
+	})();
+
+
+	(function() {
+	        var decimal = {
+	            base: 1000,
+	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+	        },
+	        binary = {
+	            base: 1024,
+	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+	        };
+
+	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
+	            return decimal.suffixes.indexOf(item) < 0;
+	        }));
+	        var unformatRegex = allSuffixes.join('|');
+	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
+	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
+
+	    numeral.register('format', 'bytes', {
+	        regexps: {
+	            format: /([0\s]i?b)/,
+	            unformat: new RegExp(unformatRegex)
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var output,
+	                bytes = numeral._.includes(format, 'ib') ? binary : decimal,
+	                suffix = numeral._.includes(format, ' b') || numeral._.includes(format, ' ib') ? ' ' : '',
+	                power,
+	                min,
+	                max;
+
+	            // check for space before
+	            format = format.replace(/\s?i?b/, '');
+
+	            for (power = 0; power <= bytes.suffixes.length; power++) {
+	                min = Math.pow(bytes.base, power);
+	                max = Math.pow(bytes.base, power + 1);
+
+	                if (value === null || value === 0 || value >= min && value < max) {
+	                    suffix += bytes.suffixes[power];
+
+	                    if (min > 0) {
+	                        value = value / min;
+	                    }
+
+	                    break;
+	                }
+	            }
+
+	            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	            return output + suffix;
+	        },
+	        unformat: function(string) {
+	            var value = numeral._.stringToNumber(string),
+	                power,
+	                bytesMultiplier;
+
+	            if (value) {
+	                for (power = decimal.suffixes.length - 1; power >= 0; power--) {
+	                    if (numeral._.includes(string, decimal.suffixes[power])) {
+	                        bytesMultiplier = Math.pow(decimal.base, power);
+
+	                        break;
+	                    }
+
+	                    if (numeral._.includes(string, binary.suffixes[power])) {
+	                        bytesMultiplier = Math.pow(binary.base, power);
+
+	                        break;
+	                    }
+	                }
+
+	                value *= (bytesMultiplier || 1);
+	            }
+
+	            return value;
+	        }
+	    });
+	})();
+
+
+	(function() {
+	        numeral.register('format', 'currency', {
+	        regexps: {
+	            format: /(\$)/
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var locale = numeral.locales[numeral.options.currentLocale],
+	                symbols = {
+	                    before: format.match(/^([\+|\-|\(|\s|\$]*)/)[0],
+	                    after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]
+	                },
+	                output,
+	                symbol,
+	                i;
+
+	            // strip format of spaces and $
+	            format = format.replace(/\s?\$\s?/, '');
+
+	            // format the number
+	            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	            // update the before and after based on value
+	            if (value >= 0) {
+	                symbols.before = symbols.before.replace(/[\-\(]/, '');
+	                symbols.after = symbols.after.replace(/[\-\)]/, '');
+	            } else if (value < 0 && (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '('))) {
+	                symbols.before = '-' + symbols.before;
+	            }
+
+	            // loop through each before symbol
+	            for (i = 0; i < symbols.before.length; i++) {
+	                symbol = symbols.before[i];
+
+	                switch (symbol) {
+	                    case '$':
+	                        output = numeral._.insert(output, locale.currency.symbol, i);
+	                        break;
+	                    case ' ':
+	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
+	                        break;
+	                }
+	            }
+
+	            // loop through each after symbol
+	            for (i = symbols.after.length - 1; i >= 0; i--) {
+	                symbol = symbols.after[i];
+
+	                switch (symbol) {
+	                    case '$':
+	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
+	                        break;
+	                    case ' ':
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
+	                        break;
+	                }
+	            }
+
+
+	            return output;
+	        }
+	    });
+	})();
+
+
+	(function() {
+	        numeral.register('format', 'exponential', {
+	        regexps: {
+	            format: /(e\+|e-)/,
+	            unformat: /(e\+|e-)/
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var output,
+	                exponential = typeof value === 'number' && !numeral._.isNaN(value) ? value.toExponential() : '0e+0',
+	                parts = exponential.split('e');
+
+	            format = format.replace(/e[\+|\-]{1}0/, '');
+
+	            output = numeral._.numberToFormat(Number(parts[0]), format, roundingFunction);
+
+	            return output + 'e' + parts[1];
+	        },
+	        unformat: function(string) {
+	            var parts = numeral._.includes(string, 'e+') ? string.split('e+') : string.split('e-'),
+	                value = Number(parts[0]),
+	                power = Number(parts[1]);
+
+	            power = numeral._.includes(string, 'e-') ? power *= -1 : power;
+
+	            function cback(accum, curr, currI, O) {
+	                var corrFactor = numeral._.correctionFactor(accum, curr),
+	                    num = (accum * corrFactor) * (curr * corrFactor) / (corrFactor * corrFactor);
+	                return num;
+	            }
+
+	            return numeral._.reduce([value, Math.pow(10, power)], cback, 1);
+	        }
+	    });
+	})();
+
+
+	(function() {
+	        numeral.register('format', 'ordinal', {
+	        regexps: {
+	            format: /(o)/
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var locale = numeral.locales[numeral.options.currentLocale],
+	                output,
+	                ordinal = numeral._.includes(format, ' o') ? ' ' : '';
+
+	            // check for space before
+	            format = format.replace(/\s?o/, '');
+
+	            ordinal += locale.ordinal(value);
+
+	            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	            return output + ordinal;
+	        }
+	    });
+	})();
+
+
+	(function() {
+	        numeral.register('format', 'percentage', {
+	        regexps: {
+	            format: /(%)/,
+	            unformat: /(%)/
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var space = numeral._.includes(format, ' %') ? ' ' : '',
+	                output;
+
+	            if (numeral.options.scalePercentBy100) {
+	                value = value * 100;
+	            }
+
+	            // check for space before %
+	            format = format.replace(/\s?\%/, '');
+
+	            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	            if (numeral._.includes(output, ')')) {
+	                output = output.split('');
+
+	                output.splice(-1, 0, space + '%');
+
+	                output = output.join('');
+	            } else {
+	                output = output + space + '%';
+	            }
+
+	            return output;
+	        },
+	        unformat: function(string) {
+	            var number = numeral._.stringToNumber(string);
+	            if (numeral.options.scalePercentBy100) {
+	                return number * 0.01;
+	            }
+	            return number;
+	        }
+	    });
+	})();
+
+
+	(function() {
+	        numeral.register('format', 'time', {
+	        regexps: {
+	            format: /(:)/,
+	            unformat: /(:)/
+	        },
+	        format: function(value, format, roundingFunction) {
+	            var hours = Math.floor(value / 60 / 60),
+	                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
+	                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
+
+	            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+	        },
+	        unformat: function(string) {
+	            var timeArray = string.split(':'),
+	                seconds = 0;
+
+	            // turn hours and minutes into seconds and add them all up
+	            if (timeArray.length === 3) {
+	                // hours
+	                seconds = seconds + (Number(timeArray[0]) * 60 * 60);
+	                // minutes
+	                seconds = seconds + (Number(timeArray[1]) * 60);
+	                // seconds
+	                seconds = seconds + Number(timeArray[2]);
+	            } else if (timeArray.length === 2) {
+	                // minutes
+	                seconds = seconds + (Number(timeArray[0]) * 60);
+	                // seconds
+	                seconds = seconds + Number(timeArray[1]);
+	            }
+	            return Number(seconds);
+	        }
+	    });
+	})();
+
+	return numeral;
+	}));
+
+
+/***/ },
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -47387,10 +48494,10 @@
 	  // https://github.com/umdjs/umd/blob/master/returnExports.js
 	  if (typeof module === 'object' && module.exports) {
 	    // Node
-	    module.exports = factory(__webpack_require__(283), __webpack_require__(284), __webpack_require__(285));
+	    module.exports = factory(__webpack_require__(284), __webpack_require__(285), __webpack_require__(286));
 	  } else if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(283), __webpack_require__(284), __webpack_require__(285)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(284), __webpack_require__(285), __webpack_require__(286)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else {
 	    // Browser globals (root is window)
 	    root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
@@ -49627,7 +50734,7 @@
 
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/punycode v1.4.0 by @mathias */
@@ -50165,7 +51272,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(256)(module), (function() { return this; }())))
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -50356,7 +51463,7 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -50602,14 +51709,14 @@
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var stringify = __webpack_require__(287);
-	var parse = __webpack_require__(290);
-	var formats = __webpack_require__(289);
+	var stringify = __webpack_require__(288);
+	var parse = __webpack_require__(291);
+	var formats = __webpack_require__(290);
 
 	module.exports = {
 	    formats: formats,
@@ -50619,13 +51726,13 @@
 
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(288);
-	var formats = __webpack_require__(289);
+	var utils = __webpack_require__(289);
+	var formats = __webpack_require__(290);
 
 	var arrayPrefixGenerators = {
 	    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -50832,7 +51939,7 @@
 
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -51020,7 +52127,7 @@
 
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -51044,12 +52151,12 @@
 
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(288);
+	var utils = __webpack_require__(289);
 
 	var has = Object.prototype.hasOwnProperty;
 
@@ -51217,7 +52324,7 @@
 
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51236,9 +52343,13 @@
 
 	var _lib = __webpack_require__(276);
 
-	var _Price = __webpack_require__(292);
+	var _Price = __webpack_require__(293);
 
 	var _Price2 = _interopRequireDefault(_Price);
+
+	var _SQFT = __webpack_require__(437);
+
+	var _SQFT2 = _interopRequireDefault(_SQFT);
 
 	var _react = __webpack_require__(1);
 
@@ -51246,7 +52357,7 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _urijs = __webpack_require__(282);
+	var _urijs = __webpack_require__(283);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
@@ -51264,13 +52375,19 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var bathroomOptions = [{ name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }];
+
 	var bedroomOptions = [{ name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }];
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  var searchFiltersFormatted = _Util2.default.getQS(window.location.href, ownProps.searchFilters)[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
 	  return {
 	    bedroomOptions: bedroomOptions,
-	    bedroomSelected: ownProps.searchFilters.bedrooms || null,
-	    priceSelected: ownProps.searchFilters.price || {}
+	    bathroomSelected: searchFiltersFormatted.bathrooms || null,
+	    bedroomSelected: searchFiltersFormatted.bedrooms || null,
+	    priceSelected: searchFiltersFormatted.price || {},
+	    sqftSelected: searchFiltersFormatted.sqft || {},
+	    searchFiltersFormatted: searchFiltersFormatted
 	  };
 	};
 
@@ -51291,49 +52408,85 @@
 	    var _this = _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).call(this, props));
 
 	    _this.state = {
+	      bathroomSelected: props.bathroomSelected,
 	      bedroomSelected: props.bedroomSelected,
+	      localFilters: Object.assign({}, props.searchFilters),
+	      showAllFilters: false,
 	      priceSelected: props.priceSelected,
-	      updatedFilters: Object.assign({}, props.searchFilters)
+	      sqftSelected: props.sqftSelected
 	    };
 	    return _this;
 	  }
 
 	  _createClass(PropertiesModal, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'handleBathroomSelect',
+	    value: function handleBathroomSelect(val) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]", val);
+	      this.setState({
+	        bathroomSelected: val,
+	        localFilters: Object.assign({}, this.state.localFilters, filter)
+	      });
+	    }
+	  }, {
 	    key: 'handleBedroomSelect',
 	    value: function handleBedroomSelect(val) {
-	      var update = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]", val);
-	      var filter = this.getUpdatedQueryFilter(update);
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]", val);
 	      this.setState({
 	        bedroomSelected: val,
-	        updatedFilters: filter
+	        localFilters: Object.assign({}, this.state.localFilters, filter)
 	      });
 	    }
 	  }, {
 	    key: 'handlePriceSelect',
 	    value: function handlePriceSelect(start, to) {
-	      var _update2;
+	      var _filter3;
 
-	      var update = (_update2 = {}, _defineProperty(_update2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", start), _defineProperty(_update2, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", to), _update2);
-	      var filter = this.getUpdatedQueryFilter(update);
+	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", to), _filter3);
 	      this.setState({
-	        priceSelected: { start: start, to: to },
-	        updatedFilters: filter
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        priceSelected: { start: start, to: to }
 	      });
 	    }
 	  }, {
-	    key: 'getUpdatedQueryFilter',
-	    value: function getUpdatedQueryFilter(update) {
-	      var url = new _urijs2.default(window.location.href);
-	      url.setSearch(update);
-	      return url.search(true);
+	    key: 'handleSQFTSelect',
+	    value: function handleSQFTSelect(start, to) {
+	      var _filter4;
+
+	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", to), _filter4);
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        sqftSelected: { start: start, to: to }
+	      });
 	    }
 	  }, {
 	    key: 'saveFilters',
 	    value: function saveFilters() {
 	      var url = new _urijs2.default(window.location.href);
-	      url.setSearch(this.state.updatedFilters);
+	      var updatedSearchParams = _Util2.default.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
+	      url.setSearch(updatedSearchParams);
 	      this.props.openPropertiesModal(false);
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
+	    }
+	  }, {
+	    key: 'displayAllFilters',
+	    value: function displayAllFilters(searchFiltersFormatted) {
+	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
 	    }
 	  }, {
 	    key: 'resetFilters',
@@ -51341,7 +52494,15 @@
 	      this.setState({
 	        bedroomSelected: this.props.bedroomSelected,
 	        priceSelected: this.props.priceSelected,
-	        updatedFilters: Object.assign({}, this.props.searchFilters)
+	        sqftSelected: this.props.sqftSelected,
+	        localFilters: Object.assign({}, this.props.searchFilters)
+	      });
+	    }
+	  }, {
+	    key: 'toggleViewAllFilters',
+	    value: function toggleViewAllFilters() {
+	      this.setState({
+	        showAllFilters: !this.state.showAllFilters
 	      });
 	    }
 	  }, {
@@ -51351,12 +52512,24 @@
 
 	      var _props = this.props,
 	          bedroomOptions = _props.bedroomOptions,
-	          searchFilters = _props.searchFilters;
+	          searchFilters = _props.searchFilters,
+	          searchFiltersFormatted = _props.searchFiltersFormatted;
 	      var _state = this.state,
+	          bathroomSelected = _state.bathroomSelected,
 	          bedroomSelected = _state.bedroomSelected,
+	          localFilters = _state.localFilters,
 	          priceSelected = _state.priceSelected,
-	          updatedFilters = _state.updatedFilters;
+	          showAllFilters = _state.showAllFilters,
+	          sqftSelected = _state.sqftSelected;
 
+
+	      var bathroomElements = bathroomOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === bathroomSelected,
+	          value: d.value
+	        };
+	      });
 
 	      var bedroomElements = bedroomOptions.map(function (d) {
 	        return {
@@ -51365,9 +52538,8 @@
 	          value: d.value
 	        };
 	      });
-
-	      var anyFilterChange = !(0, _lodash.isEqual)(searchFilters, updatedFilters);
-	      var termFilter = searchFilters['term'];
+	      var anyFilterChange = !(0, _lodash.isEqual)(searchFilters, localFilters);
+	      var termFilter = searchFiltersFormatted['term'];
 	      var termFilters = Object.keys(termFilter).map(function (t) {
 	        return { tax: t, value: termFilter[t] };
 	      });
@@ -51573,13 +52745,60 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  null,
-	                  _react2.default.createElement(_Price2.default, { saleType: searchFilters.sale_type, start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
+	                  _react2.default.createElement(_Price2.default, { saleType: searchFiltersFormatted.sale_type, start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
 	                ),
 	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
 	              ),
 	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  'Bathrooms ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(Minimum)'
+	                  )
+	                ),
+	                bathroomElements.map(function (d) {
+	                  return _react2.default.createElement(
+	                    'a',
+	                    { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                        return _this2.handleBathroomSelect.bind(_this2)(d.value);
+	                      } },
+	                    d.name
+	                  );
+	                })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  'Total Size ',
+	                  _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '(SQFT)'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start, to: sqftSelected.to, handleOnClick: this.handleSQFTSelect.bind(this) })
+	                ),
+	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	              ),
+	              showAllFilters ? _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link" },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
+	                '- View Less Filters'
+	              ) : _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
 	                '+ View More Filters'
 	              )
 	            )
@@ -51627,8 +52846,10 @@
 	}(_react.Component);
 
 	PropertiesModal.propTypes = {
+	  bathroomSelected: _react.PropTypes.string,
 	  bedroomSelected: _react.PropTypes.string,
 	  searchFilters: _react.PropTypes.object.isRequired,
+	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
 	  standardSearch: _react.PropTypes.func.isRequired
 	};
 	;
@@ -51636,7 +52857,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51651,7 +52872,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Slider = __webpack_require__(293);
+	var _Slider = __webpack_require__(294);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
@@ -51696,13 +52917,16 @@
 	      var min = void 0;
 	      var max = void 0;
 	      var range = {};
+	      var step = void 0;
 	      var percentages = void 0;
 	      if (saleType === 'Sale') {
 	        min = 100000;
 	        max = 1000000;
+	        step = 10000;
 	      } else if (saleType === 'Rent') {
 	        min = 100;
 	        max = 5000;
+	        step = 10000;
 	      }
 	      range = {
 	        min: min,
@@ -51712,7 +52936,7 @@
 	      percentages.forEach(function (p) {
 	        range[p + '%'] = [min + min * (p / 100)];
 	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -51730,7 +52954,7 @@
 	exports.default = Price;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51743,13 +52967,13 @@
 
 	var _lib = __webpack_require__(276);
 
-	var _numeral = __webpack_require__(294);
-
-	var _numeral2 = _interopRequireDefault(_numeral);
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51773,12 +52997,7 @@
 	    } else if (val === max) {
 	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	    } else {
-	      var numeralNumber = (0, _numeral2.default)(val);
-	      if (val >= 100000) {
-	        returnVal = numeralNumber.format('0a');
-	      } else {
-	        returnVal = numeralNumber.format('0,0');
-	      }
+	      returnVal = _Util2.default.formatPriceFilter(val);
 	    }
 	    return returnVal;
 	  },
@@ -51806,6 +53025,7 @@
 	          handleOnClick = _props.handleOnClick,
 	          range = _props.range,
 	          start = _props.start,
+	          step = _props.step,
 	          to = _props.to;
 
 	      this.slider = noUiSlider.create(this.sliderElement, {
@@ -51818,7 +53038,7 @@
 	        },
 	        range: range,
 	        start: [start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
-	        step: 10000,
+	        step: step,
 	        tooltips: true
 	      });
 
@@ -51859,972 +53079,12 @@
 	  handleOnClick: _react.PropTypes.func.isRequired,
 	  range: _react.PropTypes.object.isRequired,
 	  start: _react.PropTypes.any,
+	  step: _react.PropTypes.any,
 	  to: _react.PropTypes.any
 	};
 	;
 
 	exports.default = Slider;
-
-/***/ },
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
-	 * numeral.js
-	 * version : 2.0.4
-	 * author : Adam Draper
-	 * license : MIT
-	 * http://adamwdraper.github.com/Numeral-js/
-	 */
-
-	(function (global, factory) {
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    } else if (typeof module === 'object' && module.exports) {
-	        module.exports = factory();
-	    } else {
-	        global.numeral = factory();
-	    }
-	}(this, function () {
-	    /************************************
-	        Variables
-	    ************************************/
-
-	    var numeral,
-	        _,
-	        VERSION = '2.0.4',
-	        formats = {},
-	        locales = {},
-	        defaults = {
-	            currentLocale: 'en',
-	            zeroFormat: null,
-	            nullFormat: null,
-	            defaultFormat: '0,0'
-	        },
-	        options = {
-	            currentLocale: defaults.currentLocale,
-	            zeroFormat: defaults.zeroFormat,
-	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat
-	        };
-
-
-	    /************************************
-	        Constructors
-	    ************************************/
-
-	    // Numeral prototype object
-	    function Numeral(input, number) {
-	        this._input = input;
-
-	        this._value = number;
-	    }
-
-	    numeral = function(input) {
-	        var value,
-	            kind,
-	            unformatFunction,
-	            regexp;
-
-	        if (numeral.isNumeral(input)) {
-	            value = input.value();
-	        } else if (input === 0 || typeof input === 'undefined') {
-	            value = 0;
-	        } else if (input === null || _.isNaN(input)) {
-	            value = null;
-	        } else if (typeof input === 'string') {
-	            if (options.zeroFormat && input === options.zeroFormat) {
-	                value = 0;
-	            } else if (options.nullFormat && input === options.nullFormat || !input.replace(/[^0-9]+/g, '').length) {
-	                value = null;
-	            } else {
-	                for (kind in formats) {
-	                    regexp = typeof formats[kind].regexps.unformat === 'function' ? formats[kind].regexps.unformat() : formats[kind].regexps.unformat;
-
-	                    if (regexp && input.match(regexp)) {
-	                        unformatFunction = formats[kind].unformat;
-
-	                        break;
-	                    }
-	                }
-
-	                unformatFunction = unformatFunction || numeral._.stringToNumber;
-
-	                value = unformatFunction(input);
-	            }
-	        } else {
-	            value = Number(input)|| null;
-	        }
-
-	        return new Numeral(input, value);
-	    };
-
-	    // version number
-	    numeral.version = VERSION;
-
-	    // compare numeral object
-	    numeral.isNumeral = function(obj) {
-	        return obj instanceof Numeral;
-	    };
-
-	    // helper functions
-	    numeral._ = _ = {
-	        // formats numbers separators, decimals places, signs, abbreviations
-	        numberToFormat: function(value, format, roundingFunction) {
-	            var locale = locales[numeral.options.currentLocale],
-	                negP = false,
-	                optDec = false,
-	                abbr = '',
-	                trillion = 1000000000000,
-	                billion = 1000000000,
-	                million = 1000000,
-	                thousand = 1000,
-	                decimal = '',
-	                neg = false,
-	                abbrForce, // force abbreviation
-	                abs,
-	                min,
-	                max,
-	                power,
-	                int,
-	                precision,
-	                signed,
-	                thousands,
-	                output;
-
-	            // make sure we never format a null value
-	            value = value || 0;
-
-	            abs = Math.abs(value);
-
-	            // see if we should use parentheses for negative number or if we should prefix with a sign
-	            // if both are present we default to parentheses
-	            if (numeral._.includes(format, '(')) {
-	                negP = true;
-	                format = format.replace(/[\(|\)]/g, '');
-	            } else if (numeral._.includes(format, '+') || numeral._.includes(format, '-')) {
-	                signed = numeral._.includes(format, '+') ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
-	                format = format.replace(/[\+|\-]/g, '');
-	            }
-
-	            // see if abbreviation is wanted
-	            if (numeral._.includes(format, 'a')) {
-	                abbrForce = format.match(/a(k|m|b|t)?/);
-
-	                abbrForce = abbrForce ? abbrForce[1] : false;
-
-	                // check for space before abbreviation
-	                if (numeral._.includes(format, ' a')) {
-	                    abbr = ' ';
-	                }
-
-	                format = format.replace(new RegExp(abbr + 'a[kmbt]?'), '');
-
-	                if (abs >= trillion && !abbrForce || abbrForce === 't') {
-	                    // trillion
-	                    abbr += locale.abbreviations.trillion;
-	                    value = value / trillion;
-	                } else if (abs < trillion && abs >= billion && !abbrForce || abbrForce === 'b') {
-	                    // billion
-	                    abbr += locale.abbreviations.billion;
-	                    value = value / billion;
-	                } else if (abs < billion && abs >= million && !abbrForce || abbrForce === 'm') {
-	                    // million
-	                    abbr += locale.abbreviations.million;
-	                    value = value / million;
-	                } else if (abs < million && abs >= thousand && !abbrForce || abbrForce === 'k') {
-	                    // thousand
-	                    abbr += locale.abbreviations.thousand;
-	                    value = value / thousand;
-	                }
-	            }
-
-	            // check for optional decimals
-	            if (numeral._.includes(format, '[.]')) {
-	                optDec = true;
-	                format = format.replace('[.]', '.');
-	            }
-
-	            // break number and format
-	            int = value.toString().split('.')[0];
-	            precision = format.split('.')[1];
-	            thousands = format.indexOf(',');
-
-	            if (precision) {
-	                if (numeral._.includes(precision, '[')) {
-	                    precision = precision.replace(']', '');
-	                    precision = precision.split('[');
-	                    decimal = numeral._.toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
-	                } else {
-	                    decimal = numeral._.toFixed(value, precision.length, roundingFunction);
-	                }
-
-	                int = decimal.split('.')[0];
-
-	                if (numeral._.includes(decimal, '.')) {
-	                    decimal = locale.delimiters.decimal + decimal.split('.')[1];
-	                } else {
-	                    decimal = '';
-	                }
-
-	                if (optDec && Number(decimal.slice(1)) === 0) {
-	                    decimal = '';
-	                }
-	            } else {
-	                int = numeral._.toFixed(value, null, roundingFunction);
-	            }
-
-	            // check abbreviation again after rounding
-	            if (abbr && !abbrForce && Number(int) >= 1000 && abbr !== locale.abbreviations.trillion) {
-	                int = String(Number(int) / 1000);
-
-	                switch (abbr) {
-	                    case locale.abbreviations.thousand:
-	                        abbr = locale.abbreviations.million;
-	                        break;
-	                    case locale.abbreviations.million:
-	                        abbr = locale.abbreviations.billion;
-	                        break;
-	                    case locale.abbreviations.billion:
-	                        abbr = locale.abbreviations.trillion;
-	                        break;
-	                }
-	            }
-
-
-	            // format number
-	            if (numeral._.includes(int, '-')) {
-	                int = int.slice(1);
-	                neg = true;
-	            }
-
-	            if (thousands > -1) {
-	                int = int.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + locale.delimiters.thousands);
-	            }
-
-	            if (format.indexOf('.') === 0) {
-	                int = '';
-	            }
-
-	            output = int + decimal + (abbr ? abbr : '');
-
-	            if (negP) {
-	                output = (negP && neg ? '(' : '') + output + (negP && neg ? ')' : '');
-	            } else {
-	                if (signed >= 0) {
-	                    output = signed === 0 ? (neg ? '-' : '+') + output : output + (neg ? '-' : '+');
-	                } else if (neg) {
-	                    output = '-' + output;
-	                }
-	            }
-
-	            return output;
-	        },
-	        // unformats numbers separators, decimals places, signs, abbreviations
-	        stringToNumber: function(string) {
-	            var locale = locales[options.currentLocale],
-	                stringOriginal = string,
-	                abbreviations = {
-	                    thousand: 3,
-	                    million: 6,
-	                    billion: 9,
-	                    trillion: 12
-	                },
-	                abbreviation,
-	                value,
-	                i,
-	                regexp;
-
-	            if (options.zeroFormat && string === options.zeroFormat) {
-	                value = 0;
-	            } else if (options.nullFormat && string === options.nullFormat || !string.replace(/[^0-9]+/g, '').length) {
-	                value = null;
-	            } else {
-	                value = 1;
-
-	                if (locale.delimiters.decimal !== '.') {
-	                    string = string.replace(/\./g, '').replace(locale.delimiters.decimal, '.');
-	                }
-
-	                for (abbreviation in abbreviations) {
-	                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
-
-	                    if (stringOriginal.match(regexp)) {
-	                        value *= Math.pow(10, abbreviations[abbreviation]);
-	                        break;
-	                    }
-	                }
-
-	                // check for negative number
-	                value *= (string.split('-').length + Math.min(string.split('(').length - 1, string.split(')').length - 1)) % 2 ? 1 : -1;
-
-	                // remove non numbers
-	                string = string.replace(/[^0-9\.]+/g, '');
-
-	                value *= Number(string);
-	            }
-
-	            return value;
-	        },
-	        isNaN: function(value) {
-	            return typeof value === 'number' && isNaN(value);
-	        },
-	        includes: function(string, search) {
-	            return string.indexOf(search) !== -1;
-	        },
-	        insert: function(string, subString, start) {
-	            return string.slice(0, start) + subString + string.slice(start);
-	        },
-	        reduce: function(array, callback /*, initialValue*/) {
-	            if (this === null) {
-	                throw new TypeError('Array.prototype.reduce called on null or undefined');
-	            }
-
-	            if (typeof callback !== 'function') {
-	                throw new TypeError(callback + ' is not a function');
-	            }
-
-	            var t = Object(array),
-	                len = t.length >>> 0,
-	                k = 0,
-	                value;
-
-	            if (arguments.length === 3) {
-	                value = arguments[2];
-	            } else {
-	                while (k < len && !(k in t)) {
-	                    k++;
-	                }
-
-	                if (k >= len) {
-	                    throw new TypeError('Reduce of empty array with no initial value');
-	                }
-
-	                value = t[k++];
-	            }
-	            for (; k < len; k++) {
-	                if (k in t) {
-	                    value = callback(value, t[k], k, t);
-	                }
-	            }
-	            return value;
-	        },
-	        /**
-	         * Computes the multiplier necessary to make x >= 1,
-	         * effectively eliminating miscalculations caused by
-	         * finite precision.
-	         */
-	        multiplier: function (x) {
-	            var parts = x.toString().split('.');
-
-	            return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
-	        },
-	        /**
-	         * Given a variable number of arguments, returns the maximum
-	         * multiplier that must be used to normalize an operation involving
-	         * all of them.
-	         */
-	        correctionFactor: function () {
-	            var args = Array.prototype.slice.call(arguments);
-
-	            return args.reduce(function(accum, next) {
-	                var mn = _.multiplier(next);
-	                return accum > mn ? accum : mn;
-	            }, 1);
-	        },
-	        /**
-	         * Implementation of toFixed() that treats floats more like decimals
-	         *
-	         * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
-	         * problems for accounting- and finance-related software.
-	         */
-	        toFixed: function(value, maxDecimals, roundingFunction, optionals) {
-	            var splitValue = value.toString().split('.'),
-	                minDecimals = maxDecimals - (optionals || 0),
-	                boundedPrecision,
-	                optionalsRegExp,
-	                power,
-	                output;
-
-	            // Use the smallest precision value possible to avoid errors from floating point representation
-	            if (splitValue.length === 2) {
-	              boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
-	            } else {
-	              boundedPrecision = minDecimals;
-	            }
-
-	            power = Math.pow(10, boundedPrecision);
-
-	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
-	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
-
-	            if (optionals > maxDecimals - boundedPrecision) {
-	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
-	                output = output.replace(optionalsRegExp, '');
-	            }
-
-	            return output;
-	        }
-	    };
-
-	    // avaliable options
-	    numeral.options = options;
-
-	    // avaliable formats
-	    numeral.formats = formats;
-
-	    // avaliable formats
-	    numeral.locales = locales;
-
-	    // This function sets the current locale.  If
-	    // no arguments are passed in, it will simply return the current global
-	    // locale key.
-	    numeral.locale = function(key) {
-	        if (key) {
-	            options.currentLocale = key.toLowerCase();
-	        }
-
-	        return options.currentLocale;
-	    };
-
-	    // This function provides access to the loaded locale data.  If
-	    // no arguments are passed in, it will simply return the current
-	    // global locale object.
-	    numeral.localeData = function(key) {
-	        if (!key) {
-	            return locales[options.currentLocale];
-	        }
-
-	        key = key.toLowerCase();
-
-	        if (!locales[key]) {
-	            throw new Error('Unknown locale : ' + key);
-	        }
-
-	        return locales[key];
-	    };
-
-	    numeral.reset = function() {
-	        for (var property in defaults) {
-	            options[property] = defaults[property];
-	        }
-	    };
-
-	    numeral.zeroFormat = function(format) {
-	        options.zeroFormat = typeof(format) === 'string' ? format : null;
-	    };
-
-	    numeral.nullFormat = function (format) {
-	        options.nullFormat = typeof(format) === 'string' ? format : null;
-	    };
-
-	    numeral.defaultFormat = function(format) {
-	        options.defaultFormat = typeof(format) === 'string' ? format : '0.0';
-	    };
-
-	    numeral.register = function(type, name, format) {
-	        name = name.toLowerCase();
-
-	        if (this[type + 's'][name]) {
-	            throw new TypeError(name + ' ' + type + ' already registered.');
-	        }
-
-	        this[type + 's'][name] = format;
-
-	        return format;
-	    };
-
-
-	    numeral.validate = function(val, culture) {
-	        var _decimalSep,
-	            _thousandSep,
-	            _currSymbol,
-	            _valArray,
-	            _abbrObj,
-	            _thousandRegEx,
-	            localeData,
-	            temp;
-
-	        //coerce val to string
-	        if (typeof val !== 'string') {
-	            val += '';
-
-	            if (console.warn) {
-	                console.warn('Numeral.js: Value is not string. It has been co-erced to: ', val);
-	            }
-	        }
-
-	        //trim whitespaces from either sides
-	        val = val.trim();
-
-	        //if val is just digits return true
-	        if (!!val.match(/^\d+$/)) {
-	            return true;
-	        }
-
-	        //if val is empty return false
-	        if (val === '') {
-	            return false;
-	        }
-
-	        //get the decimal and thousands separator from numeral.localeData
-	        try {
-	            //check if the culture is understood by numeral. if not, default it to current locale
-	            localeData = numeral.localeData(culture);
-	        } catch (e) {
-	            localeData = numeral.localeData(numeral.locale());
-	        }
-
-	        //setup the delimiters and currency symbol based on culture/locale
-	        _currSymbol = localeData.currency.symbol;
-	        _abbrObj = localeData.abbreviations;
-	        _decimalSep = localeData.delimiters.decimal;
-	        if (localeData.delimiters.thousands === '.') {
-	            _thousandSep = '\\.';
-	        } else {
-	            _thousandSep = localeData.delimiters.thousands;
-	        }
-
-	        // validating currency symbol
-	        temp = val.match(/^[^\d]+/);
-	        if (temp !== null) {
-	            val = val.substr(1);
-	            if (temp[0] !== _currSymbol) {
-	                return false;
-	            }
-	        }
-
-	        //validating abbreviation symbol
-	        temp = val.match(/[^\d]+$/);
-	        if (temp !== null) {
-	            val = val.slice(0, -1);
-	            if (temp[0] !== _abbrObj.thousand && temp[0] !== _abbrObj.million && temp[0] !== _abbrObj.billion && temp[0] !== _abbrObj.trillion) {
-	                return false;
-	            }
-	        }
-
-	        _thousandRegEx = new RegExp(_thousandSep + '{2}');
-
-	        if (!val.match(/[^\d.,]/g)) {
-	            _valArray = val.split(_decimalSep);
-	            if (_valArray.length > 2) {
-	                return false;
-	            } else {
-	                if (_valArray.length < 2) {
-	                    return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx));
-	                } else {
-	                    if (_valArray[0].length === 1) {
-	                        return ( !! _valArray[0].match(/^\d+$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-	                    } else {
-	                        return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-	                    }
-	                }
-	            }
-	        }
-
-	        return false;
-	    };
-
-
-	    /************************************
-	        Numeral Prototype
-	    ************************************/
-
-	    numeral.fn = Numeral.prototype = {
-	        clone: function() {
-	            return numeral(this);
-	        },
-	        format: function(inputString, roundingFunction) {
-	            var value = this._value,
-	                format = inputString || options.defaultFormat,
-	                kind,
-	                output,
-	                formatFunction;
-
-	            // make sure we have a roundingFunction
-	            roundingFunction = roundingFunction || Math.round;
-
-	            // format based on value
-	            if (value === 0 && options.zeroFormat !== null) {
-	                output = options.zeroFormat;
-	            } else if (value === null && options.nullFormat !== null) {
-	                output = options.nullFormat;
-	            } else {
-	                for (kind in formats) {
-	                    if (format.match(formats[kind].regexps.format)) {
-	                        formatFunction = formats[kind].format;
-
-	                        break;
-	                    }
-	                }
-
-	                formatFunction = formatFunction || numeral._.numberToFormat;
-
-	                output = formatFunction(value, format, roundingFunction);
-	            }
-
-	            return output;
-	        },
-	        value: function() {
-	            return this._value;
-	        },
-	        input: function() {
-	            return this._input;
-	        },
-	        set: function(value) {
-	            this._value = Number(value);
-
-	            return this;
-	        },
-	        add: function(value) {
-	            var corrFactor = _.correctionFactor.call(null, this._value, value);
-
-	            function cback(accum, curr, currI, O) {
-	                return accum + Math.round(corrFactor * curr);
-	            }
-
-	            this._value = _.reduce([this._value, value], cback, 0) / corrFactor;
-
-	            return this;
-	        },
-	        subtract: function(value) {
-	            var corrFactor = _.correctionFactor.call(null, this._value, value);
-
-	            function cback(accum, curr, currI, O) {
-	                return accum - Math.round(corrFactor * curr);
-	            }
-
-	            this._value = _.reduce([value], cback, Math.round(this._value * corrFactor)) / corrFactor;
-
-	            return this;
-	        },
-	        multiply: function(value) {
-	            function cback(accum, curr, currI, O) {
-	                var corrFactor = _.correctionFactor(accum, curr);
-	                return Math.round(accum * corrFactor) * Math.round(curr * corrFactor) / Math.round(corrFactor * corrFactor);
-	            }
-
-	            this._value = _.reduce([this._value, value], cback, 1);
-
-	            return this;
-	        },
-	        divide: function(value) {
-	            function cback(accum, curr, currI, O) {
-	                var corrFactor = _.correctionFactor(accum, curr);
-	                return Math.round(accum * corrFactor) / Math.round(curr * corrFactor);
-	            }
-
-	            this._value = _.reduce([this._value, value], cback);
-
-	            return this;
-	        },
-	        difference: function(value) {
-	            return Math.abs(numeral(this._value).subtract(value).value());
-	        }
-	    };
-
-	    /************************************
-	        Default Locale && Format
-	    ************************************/
-
-	    numeral.register('locale', 'en', {
-	        delimiters: {
-	            thousands: ',',
-	            decimal: '.'
-	        },
-	        abbreviations: {
-	            thousand: 'k',
-	            million: 'm',
-	            billion: 'b',
-	            trillion: 't'
-	        },
-	        ordinal: function(number) {
-	            var b = number % 10;
-	            return (~~(number % 100 / 10) === 1) ? 'th' :
-	                (b === 1) ? 'st' :
-	                (b === 2) ? 'nd' :
-	                (b === 3) ? 'rd' : 'th';
-	        },
-	        currency: {
-	            symbol: '$'
-	        }
-	    });
-
-	    
-
-	(function() {
-	        var decimal = {
-	            base: 1000,
-	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-	        },
-	        binary = {
-	            base: 1024,
-	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-	        };
-
-	    numeral.register('format', 'bytes', {
-	        regexps: {
-	            format: /([0\s]i?b)/,
-	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var output,
-	                bytes = numeral._.includes(format, 'ib') ? binary : decimal,
-	                suffix = numeral._.includes(format, ' b') || numeral._.includes(format, ' ib') ? ' ' : '',
-	                power,
-	                min,
-	                max;
-
-	            // check for space before
-	            format = format.replace(/\s?i?b/, '');
-
-	            for (power = 0; power <= bytes.suffixes.length; power++) {
-	                min = Math.pow(bytes.base, power);
-	                max = Math.pow(bytes.base, power + 1);
-
-	                if (value === null || value === 0 || value >= min && value < max) {
-	                    suffix += bytes.suffixes[power];
-
-	                    if (min > 0) {
-	                        value = value / min;
-	                    }
-
-	                    break;
-	                }
-	            }
-
-	            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	            return output + suffix;
-	        },
-	        unformat: function(string) {
-	            var value = numeral._.stringToNumber(string),
-	                power,
-	                bytesMultiplier;
-
-	            if (value) {
-	                for (power = decimal.suffixes.length - 1; power >= 0; power--) {
-	                    if (numeral._.includes(string, decimal.suffixes[power])) {
-	                        bytesMultiplier = Math.pow(decimal.base, power);
-
-	                        break;
-	                    }
-
-	                    if (numeral._.includes(string, binary.suffixes[power])) {
-	                        bytesMultiplier = Math.pow(binary.base, power);
-
-	                        break;
-	                    }
-	                }
-
-	                value *= (bytesMultiplier || 1);
-	            }
-
-	            return value;
-	        }
-	    });
-	})();
-
-
-	(function() {
-	        numeral.register('format', 'currency', {
-	        regexps: {
-	            format: /(\$)/
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var locale = numeral.locales[numeral.options.currentLocale],
-	                symbols = {
-	                    before: format.match(/^([\+|\-|\(|\s|\$]*)/)[0],
-	                    after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]
-	                },
-	                output,
-	                symbol,
-	                i;
-
-	            // strip format of spaces and $
-	            format = format.replace(/\s?\$\s?/, '');
-
-	            // format the number
-	            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	            // update the before and after based on value
-	            if (value >= 0) {
-	                symbols.before = symbols.before.replace(/[\-\(]/, '');
-	                symbols.after = symbols.after.replace(/[\-\)]/, '');
-	            } else if (value < 0 && (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '('))) {
-	                symbols.before = '-' + symbols.before;
-	            }
-
-	            // loop through each before symbol
-	            for (i = 0; i < symbols.before.length; i++) {
-	                symbol = symbols.before[i];
-
-	                switch (symbol) {
-	                    case '$':
-	                        output = numeral._.insert(output, locale.currency.symbol, i);
-	                        break;
-	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i);
-	                        break;
-	                }
-	            }
-
-	            // loop through each after symbol
-	            for (i = symbols.after.length - 1; i >= 0; i--) {
-	                symbol = symbols.after[i];
-
-	                switch (symbol) {
-	                    case '$':
-	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
-	                        break;
-	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
-	                        break;
-	                }
-	            }
-
-
-	            return output;
-	        }
-	    });
-	})();
-
-
-	(function() {
-	        numeral.register('format', 'exponential', {
-	        regexps: {
-	            format: /(e\+|e-)/,
-	            unformat: /(e\+|e-)/
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var output,
-	                exponential = typeof value === 'number' && !numeral._.isNaN(value) ? value.toExponential() : '0e+0',
-	                parts = exponential.split('e');
-
-	            format = format.replace(/e[\+|\-]{1}0/, '');
-
-	            output = numeral._.numberToFormat(Number(parts[0]), format, roundingFunction);
-
-	            return output + 'e' + parts[1];
-	        },
-	        unformat: function(string) {
-	            var parts = numeral._.includes(string, 'e+') ? string.split('e+') : string.split('e-'),
-	                value = Number(parts[0]),
-	                power = Number(parts[1]);
-
-	            power = numeral._.includes(string, 'e-') ? power *= -1 : power;
-
-	            function cback(accum, curr, currI, O) {
-	                var corrFactor = numeral._.correctionFactor(accum, curr),
-	                    num = (accum * corrFactor) * (curr * corrFactor) / (corrFactor * corrFactor);
-	                return num;
-	            }
-
-	            return numeral._.reduce([value, Math.pow(10, power)], cback, 1);
-	        }
-	    });
-	})();
-
-
-	(function() {
-	        numeral.register('format', 'ordinal', {
-	        regexps: {
-	            format: /(o)/
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var locale = numeral.locales[numeral.options.currentLocale],
-	                output,
-	                ordinal = numeral._.includes(format, ' o') ? ' ' : '';
-
-	            // check for space before
-	            format = format.replace(/\s?o/, '');
-
-	            ordinal += locale.ordinal(value);
-
-	            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	            return output + ordinal;
-	        }
-	    });
-	})();
-
-
-	(function() {
-	        numeral.register('format', 'percentage', {
-	        regexps: {
-	            format: /(%)/,
-	            unformat: /(%)/
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var space = numeral._.includes(format, ' %') ? ' ' : '',
-	                output;
-
-	            value = value * 100;
-
-	            // check for space before %
-	            format = format.replace(/\s?\%/, '');
-
-	            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	            if (numeral._.includes(output, ')')) {
-	                output = output.split('');
-
-	                output.splice(-1, 0, space + '%');
-
-	                output = output.join('');
-	            } else {
-	                output = output + space + '%';
-	            }
-
-	            return output;
-	        },
-	        unformat: function(string) {
-	            return numeral._.stringToNumber(string) * 0.01;
-	        }
-	    });
-	})();
-
-
-	(function() {
-	        numeral.register('format', 'time', {
-	        regexps: {
-	            format: /(:)/,
-	            unformat: /(:)/
-	        },
-	        format: function(value, format, roundingFunction) {
-	            var hours = Math.floor(value / 60 / 60),
-	                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
-	                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
-
-	            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-	        },
-	        unformat: function(string) {
-	            var timeArray = string.split(':'),
-	                seconds = 0;
-
-	            // turn hours and minutes into seconds and add them all up
-	            if (timeArray.length === 3) {
-	                // hours
-	                seconds = seconds + (Number(timeArray[0]) * 60 * 60);
-	                // minutes
-	                seconds = seconds + (Number(timeArray[1]) * 60);
-	                // seconds
-	                seconds = seconds + Number(timeArray[2]);
-	            } else if (timeArray.length === 2) {
-	                // minutes
-	                seconds = seconds + (Number(timeArray[0]) * 60);
-	                // seconds
-	                seconds = seconds + Number(timeArray[1]);
-	            }
-	            return Number(seconds);
-	        }
-	    });
-	})();
-
-	return numeral;
-	}));
-
 
 /***/ },
 /* 295 */
@@ -55100,7 +55360,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -56292,7 +56552,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(294);
+	var _numeral = __webpack_require__(282);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -56444,7 +56704,7 @@
 	            _react2.default.createElement(
 	              'span',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "price" },
-	              (0, _numeral2.default)(price).format('$0,0.00')
+	              _Util2.default.formatPriceFilter(price)
 	            ),
 	            _react2.default.createElement(
 	              'span',
@@ -62038,7 +62298,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
+	          null,
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -62091,8 +62351,6 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(276);
-
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -62124,15 +62382,15 @@
 	  if (pathRoot.indexOf('guide') !== -1) {
 	    return null;
 	  } else if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
-	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href);
+	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
 	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel, searchFilters: searchFilters });
 	  } else {
 	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    'div',
+	    null,
 	    headerElement
 	  );
 	};
@@ -62159,12 +62417,32 @@
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
+	var _lib = __webpack_require__(276);
+
+	var _lodash = __webpack_require__(277);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
+	      'span',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up', onClick: openUserPanel },
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
+	    ) : null,
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
+	    )
+	  );
 	};
 	exports.default = HeaderDefault;
 
@@ -62196,59 +62474,50 @@
 	  var openUserPanel = _ref.openUserPanel;
 	  return _react2.default.createElement(
 	    'nav',
-	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
+	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
-	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
-	        'a',
-	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
-	        _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	          className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
-	      ) : null,
+	      'a',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand',
+	        href: _lodash2.default.get(bundle, 'site_url', ''),
+	        onClick: function onClick(eve) {
+	          eve.preventDefault();
+	          _reactRouter.browserHistory.push('');
+	        }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	        className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	      _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	        className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	    ),
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'nav navbar-toggler-right' },
 	      _react2.default.createElement(
-	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand mr-auto',
-	          href: _lodash2.default.get(bundle, 'site_url', ''),
-	          onClick: function onClick(eve) {
-	            eve.preventDefault();
-	            _reactRouter.browserHistory.push('');
-	          }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	        'li',
+	        { className: 'nav-item' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
+	          'Login'
+	        )
 	      ),
 	      _react2.default.createElement(
-	        'ul',
-	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
+	        'li',
+	        { className: 'nav-item hidden-sm-down' },
 	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item' },
+	          'button',
+	          { className: 'navbar-toggler', type: 'button', onClick: openUserPanel },
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	            'Login'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item hidden-sm-down' },
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'button', className: _lib.Lib.THEME_CLASSES_PREFIX + "navigation-menu-button", onClick: openUserPanel },
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              '\u2630'
-	            ),
-	            ' Menu'
-	          )
+	            'span',
+	            null,
+	            '\u2630'
+	          ),
+	          ' Menu'
 	        )
 	      )
 	    )
 	  );
 	};
+
 	exports.default = Navigation;
 
 /***/ },
@@ -62303,80 +62572,84 @@
 
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container-fluid' },
+	        'section',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'container-fluid' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
-	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
-	              'a',
-	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  _reactRouter.browserHistory.push('');
-	                }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	              _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	                className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
-	            ) : null
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	            { className: 'row' },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#' },
-	              saleType,
-	              ' ',
-	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	            )
-	          ),
-	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	                'a',
+	                { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	                    eve.preventDefault();
+	                    _reactRouter.browserHistory.push('');
+	                  }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
+	              ) : null
+	            ),
 	            _react2.default.createElement(
-	              'ul',
-	              null,
+	              'span',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
 	              _react2.default.createElement(
-	                'li',
+	                'a',
+	                { href: '#' },
+	                saleType,
+	                ' ',
+	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              )
+	            ),
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	              _react2.default.createElement(
+	                'ul',
 	                null,
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-heart' })
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                null,
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-bell' }),
-	                  ' ',
+	                  'li',
+	                  null,
 	                  _react2.default.createElement(
-	                    'span',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
+	                    'a',
+	                    { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
 	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-circle' })
+	                      className: 'fa fa-heart' })
 	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                null,
+	                ),
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: this.props.openUserPanel,
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
+	                  'li',
+	                  null,
 	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '\u2630'
+	                    'a',
+	                    { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                    _react2.default.createElement('i', {
+	                      className: 'fa fa-bell' }),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'span',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
+	                      _react2.default.createElement('i', {
+	                        className: 'fa fa-circle' })
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  null,
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '#', onClick: this.props.openUserPanel,
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      '\u2630'
+	                    )
 	                  )
 	                )
 	              )
@@ -62424,6 +62697,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -62438,12 +62713,14 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
+
 	    openPropertiesModal: function openPropertiesModal(open) {
 	      dispatch((0, _index.openPropertiesModal)(open));
 	    },
-	    removeSearchFilter: function removeSearchFilter(key, value) {
-	      var updatedURL = _Util2.default.removeQueryFromURL(window.location.href, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[' + key + ']', value);
-	      _Util2.default.goToUrl(updatedURL);
+
+	    removeSearchFilter: function removeSearchFilter(filter) {
+	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
+	      _Util2.default.goToUrl(window.location.pathname + queryParam);
 	    }
 	  };
 	};
@@ -62458,14 +62735,63 @@
 	  }
 
 	  _createClass(searchFilters, [{
+	    key: 'handleBathroomsFilterRemove',
+	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
+	    key: 'handleBedroomsFilterRemove',
+	    value: function handleBedroomsFilterRemove(bedroomFilter) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
+	    key: 'handlePriceFilterRemove',
+	    value: function handlePriceFilterRemove(priceFilter) {
+	      var _filter3;
+
+	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter3);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
+	    key: 'handleSQFTFilterRemove',
+	    value: function handleSQFTFilterRemove(sqftFilter) {
+	      var _filter4;
+
+	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter4);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
 	      var filters = this.props.filters;
 
+	      var bathroomsElement = void 0;
+	      var bathroomsFilter = filters['bathrooms'];
 	      var bedroomsFilter = filters['bedrooms'];
 	      var bedroomsElement = void 0;
+	      var priceFilter = filters['price'];
+	      var priceElement = void 0;
+	      var sqftFilter = filters['sqft'];
+	      var sqftElement = void 0;
+
+	      if (bathroomsFilter) {
+	        bathroomsElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handleBathroomsFilterRemove.bind(this, bathroomsFilter) })
+	          ),
+	          ' ',
+	          bathroomsFilter,
+	          '+ Baths'
+	        );
+	      }
 	      if (bedroomsFilter) {
 	        bedroomsElement = _react2.default.createElement(
 	          'span',
@@ -62473,9 +62799,7 @@
 	          _react2.default.createElement(
 	            'span',
 	            null,
-	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: function onClick() {
-	                return _this2.props.removeSearchFilter('bedrooms', bedroomsFilter);
-	              } })
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handleBedroomsFilterRemove.bind(this, bedroomsFilter) })
 	          ),
 	          ' ',
 	          bedroomsFilter,
@@ -62497,6 +62821,51 @@
 	            ),
 	            ' Bedroom'
 	          )
+	        );
+	      }
+
+	      if (priceFilter) {
+	        priceElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handlePriceFilterRemove.bind(this, priceFilter) })
+	          ),
+	          ' ',
+	          _Util2.default.priceFilterSearchTagText(priceFilter)
+	        );
+	      } else {
+	        priceElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', onClick: function onClick() {
+	                return _this2.props.openPropertiesModal(true);
+	              } },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '+'
+	            ),
+	            ' Price'
+	          )
+	        );
+	      }
+
+	      if (sqftFilter) {
+	        sqftElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: this.handleSQFTFilterRemove.bind(this, sqftFilter) })
+	          ),
+	          ' ',
+	          _Util2.default.sqftFilterSearchTagText(sqftFilter)
 	        );
 	      }
 
@@ -62531,23 +62900,10 @@
 	                  t.value
 	                );
 	              }),
+	              bathroomsElement,
 	              bedroomsElement,
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick() {
-	                      return _this2.props.openPropertiesModal(true);
-	                    } },
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '+'
-	                  ),
-	                  ' Price'
-	                )
-	              ),
+	              priceElement,
+	              sqftElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
@@ -62700,7 +63056,7 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
+	    'div',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
@@ -63024,37 +63380,33 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
-	          rows.map(function (row) {
-	            var cells = _lodash2.default.get(row, 'cells', []);
+	        null,
+	        rows.map(function (row) {
+	          var cells = _lodash2.default.get(row, 'cells', []);
 
-	            return cells.map(function (cell) {
-	              switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	                case 'Property_Pro_Masthead_Widget':
-	                  return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Subnavigation_Widget':
-	                  return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
-	                  break;
-	                case 'Property_Pro_Tour_Widget':
-	                  return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Listing_Carousel_Widget':
-	                  return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Callout_Widget':
-	                  return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Testimonials_Widget':
-	                  return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                  break;
-	              }
-	            });
-	          })
-	        ),
+	          return cells.map(function (cell) {
+	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	              case 'Property_Pro_Masthead_Widget':
+	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Subnavigation_Widget':
+	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
+	                break;
+	              case 'Property_Pro_Tour_Widget':
+	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Listing_Carousel_Widget':
+	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Callout_Widget':
+	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Testimonials_Widget':
+	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                break;
+	            }
+	          });
+	        }),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -63176,9 +63528,13 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead", style: headerStyle },
 	    modal,
-	    container
+	    _react2.default.createElement(
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "intro-wrap" },
+	      container
+	    )
 	  );
 	};
 
@@ -63193,7 +63549,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -63215,33 +63571,23 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
-	  var widget_cell = _ref.widget_cell;
+	    var widget_cell = _ref.widget_cell;
 
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'container' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
+	    return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
-	          widget_cell.widget.fields.title
+	            'h1',
+	            null,
+	            widget_cell.widget.fields.title
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          {
-	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
-	          widget_cell.widget.fields.subtitle
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, {
-	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	      )
-	    )
-	  );
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	    );
 	};
 
 	exports.default = TitleDescriptionLayout;
@@ -63394,7 +63740,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box" },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,
@@ -63990,7 +64336,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -64012,33 +64358,23 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
-	  var widget_cell = _ref.widget_cell;
+	    var widget_cell = _ref.widget_cell;
 
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'container' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
+	    return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-container' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          {
-	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
-	          widget_cell.widget.fields.subtitle
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
-	          widget_cell.widget.fields.title
+	            'h1',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
+	            widget_cell.widget.fields.title
 	        ) : null,
-	        _react2.default.createElement(_Search2.default, {
-	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	      )
-	    )
-	  );
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	    );
 	};
 
 	exports.default = SubtitleTitleLayout;
@@ -64074,48 +64410,39 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container' },
+	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        null,
+	        widget_cell.widget.fields.title
+	      ) : null
+	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
-	        _react2.default.createElement(
-	          'header',
-	          null,
-	          _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
-	            widget_cell.widget.fields.title
-	          ) : null
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
-	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
-	              href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
-	              target: '_blank', title: 'Facebook', rel: 'noopener' },
-	            _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
-	          ) : null,
-	          twitterLink ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank',
-	              title: 'Twitter' },
-	            _react2.default.createElement('i', {
-	              className: 'fa fa-twitter' })
-	          ) : null,
-	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
-	              href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
-	              target: '_blank', title: 'LinkedIn' },
-	            _react2.default.createElement('i', { className: 'fa fa-linkedin' })
-	          ) : null
-	        )
-	      )
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
+	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
+	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
+	          target: '_blank', title: 'Facebook', rel: 'noopener' },
+	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
+	      ) : null,
+	      twitterLink ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank', title: 'Twitter' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-twitter' })
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
+	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
+	          target: '_blank', title: 'LinkedIn' },
+	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
+	      ) : null
 	    )
 	  );
 	};
@@ -64150,20 +64477,16 @@
 	  return _react2.default.createElement(
 	    'header',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-header" },
-	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-header-container mx-auto text-center' },
-	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	        widget_cell.widget.fields.title
-	      ) : null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	        'p',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
-	        widget_cell.widget.fields.subtitle
-	      ) : null
-	    )
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
+	      widget_cell.widget.fields.subtitle
+	    ) : null
 	  );
 	};
 
@@ -64212,55 +64535,47 @@
 	    _react2.default.createElement(
 	      'header',
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-header-container mx-auto text-center' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	          widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	          widget_cell.widget.fields.subtitle
-	        ) : null
-	      )
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	        widget_cell.widget.fields.title
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	        'p',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	        widget_cell.widget.fields.subtitle
+	      ) : null
 	    ),
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation' },
+	      null,
 	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items' },
+	        'ol',
+	        null,
 	        _react2.default.createElement(
-	          'ul',
-	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation-cotrols' },
+	          'li',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-prev" },
 	          _react2.default.createElement(
-	            'li',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-prev text-center' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  returnToArchiveHandler();
-	                } },
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	              prevLinkText
-	            )
-	          ),
+	            'a',
+	            { href: '#', onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                returnToArchiveHandler();
+	              } },
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	            prevLinkText
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-next" },
 	          _react2.default.createElement(
-	            'li',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-next text-center' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  nextArticleHandler();
-	                } },
-	              nextLinkText,
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
-	            )
+	            'a',
+	            { href: '#', onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                nextArticleHandler();
+	              } },
+	            nextLinkText,
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
 	          )
 	        )
 	      )
@@ -64290,7 +64605,7 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _urijs = __webpack_require__(282);
+	var _urijs = __webpack_require__(283);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
@@ -65064,11 +65379,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-container' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'row' },
-	        container
-	      )
+	      container
 	    )
 	  );
 	};
@@ -65895,44 +66206,40 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
+	          'article',
+	          null,
+	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
+	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
+	        ),
+	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	          'section',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	          _react2.default.createElement(
-	            'article',
-	            null,
-	            _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	            _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
-	          ),
-	          _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
+	            'div',
+	            { className: 'container' },
+	            _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
+	              _react2.default.createElement(
+	                'h4',
+	                null,
+	                'More ',
+	                this.props.post.category_title,
+	                ' Articles'
+	              )
+	            ) : null,
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
-	              _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
-	                _react2.default.createElement(
-	                  'h4',
-	                  null,
-	                  'More ',
-	                  this.props.post.category_title,
-	                  ' Articles'
-	                )
-	              ) : null,
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
-	                  return _react2.default.createElement(_PostCard2.default, { data: item });
-	                })
-	              )
+	              { className: 'row' },
+	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
+	                return _react2.default.createElement(_PostCard2.default, { data: item });
+	              })
 	            )
-	          ) : null,
-	          _react2.default.createElement(_Footer2.default, null)
-	        )
+	          )
+	        ) : null,
+	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
 	  }]);
@@ -81510,28 +81817,24 @@
 	      var content = _lodash2.default.get(this.props.post, 'guide_single_content', {});
 
 	      return _react2.default.createElement(
-	        'article',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
+	        'div',
+	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'row no-gutters' },
+	            'article',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(_HeaderGuide2.default, null),
-	                  _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
-	                    returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
-	                    nextArticleHandler: this.nextArticleHandler.bind(this) })
-	                )
+	                { className: 'row' },
+	                _react2.default.createElement(_HeaderGuide2.default, null),
+	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
+	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
+	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -81539,17 +81842,13 @@
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
-	                    'section',
-	                    {
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
-	                    (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
-	                  ) : null
-	                )
+	                { className: 'row' },
+	                _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
+	                  'section',
+	                  {
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
+	                  (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
+	                ) : null
 	              )
 	            )
 	          )
@@ -81599,44 +81898,35 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-toolbar' },
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
-	        _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
-	          'a',
-	          { className: 'navbar-brand mr-auto', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	              eve.preventDefault();
-	              _Util2.default.goToUrl('/');
-	            } },
-	          _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	            className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	          _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	            className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	        ) : null,
-	        _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
-	          'ul',
-	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
+	      { className: 'navbar navbar-toggleable-md bg-faded' },
+	      _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
+	        'a',
+	        { className: 'navbar-brand', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	            eve.preventDefault();
+	            _Util2.default.goToUrl('/');
+	          } },
+	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	      ) : null,
+	      _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
+	        'ul',
+	        { className: 'nav navbar-toggler-right' },
+	        _react2.default.createElement(
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            'li',
-	            { className: 'nav-item' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: bundle.site_url, onClick: function onClick(eve) {
-	                  _react2.default.createElement('the', null);
-	                  eve.preventDefault();
-	                  _Util2.default.goToUrl('/');
-	                }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
-	                'Return Home'
-	              )
-	            )
+	            'a',
+	            { href: bundle.site_url, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl('/');
+	              }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	            'Return Home'
 	          )
-	        ) : null
-	      )
+	        )
+	      ) : null
 	    )
 	  );
 	};
@@ -81970,22 +82260,18 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, null),
-	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
-	              )
+	              { className: 'row' },
+	              _react2.default.createElement(_HeaderGuide2.default, null),
+	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -81993,15 +82279,11 @@
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
+	              { className: 'row' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
-	                  cards
-	                )
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
+	                cards
 	              )
 	            )
 	          )
@@ -82699,6 +82981,99 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ },
+/* 437 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Slider = __webpack_require__(294);
+
+	var _Slider2 = _interopRequireDefault(_Slider);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SQFT = function (_Component) {
+	  _inherits(SQFT, _Component);
+
+	  function SQFT(props) {
+	    _classCallCheck(this, SQFT);
+
+	    var _this = _possibleConstructorReturn(this, (SQFT.__proto__ || Object.getPrototypeOf(SQFT)).call(this, props));
+
+	    _this.state = {};
+	    return _this;
+	  }
+
+	  _createClass(SQFT, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          saleType = _props.saleType,
+	          start = _props.start,
+	          to = _props.to;
+
+	      var defaults = {
+	        Sale: {
+	          start: 1000,
+	          to: 1250
+	        },
+	        Rent: {
+	          start: 1000,
+	          to: 1250
+	        }
+	      };
+	      var min = void 0;
+	      var max = void 0;
+	      var range = {};
+	      var step = void 0;
+	      var percentages = void 0;
+	      if (saleType === 'Sale' || saleType === 'Rent') {
+	        step = 500;
+	        min = 1000;
+	        max = 10000;
+	      }
+	      range = {
+	        min: min,
+	        max: max
+	      };
+	      percentages = [10, 25, 50, 75];
+	      percentages.forEach(function (p) {
+	        range[p + '%'] = [min + min * (p / 100)];
+	      });
+	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	    }
+	  }]);
+
+	  return SQFT;
+	}(_react.Component);
+
+	SQFT.propTypes = {
+	  saleType: _react.PropTypes.string.isRequired,
+	  start: _react.PropTypes.any,
+	  to: _react.PropTypes.any,
+	  handleOnClick: _react.PropTypes.func.isRequired
+	};
+	;
+
+	exports.default = SQFT;
 
 /***/ }
 /******/ ]);
