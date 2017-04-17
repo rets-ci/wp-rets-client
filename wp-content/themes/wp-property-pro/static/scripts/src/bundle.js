@@ -56667,7 +56667,8 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
+	        {
+	          className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
@@ -56684,12 +56685,13 @@
 	                { className: 'swiper-wrapper' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'swiper-slide', onClick: function onClick(eve) {
+	                  { className: 'swiper-slide',
+	                    onClick: function onClick(eve) {
 	                      return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	                    } },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
-	                    className: 'swiper-lazy',
+	                    className: 'swiper-lazy card-img-top',
 	                    src: _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
 	                  })
 	                ),
@@ -56699,7 +56701,7 @@
 	                    { className: 'swiper-slide', key: k },
 	                    _react2.default.createElement('img', {
 	                      alt: _lodash2.default.isEmpty(d) ? 'Card image cap' : '',
-	                      className: 'swiper-lazy',
+	                      className: 'swiper-lazy card-img-top',
 	                      'data-src': _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
 	                    })
 	                  );
@@ -56708,29 +56710,35 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav" },
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav-container" },
 	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-prev", onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  return _this2.handleNavigation.bind(_this2)('prev');
-	                }, href: '#' })
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-next", onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  return _this2.handleNavigation.bind(_this2)('next');
-	                }, href: '#' })
+	              'ul',
+	              { className: 'nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'direction-nav text-center' },
+	              _react2.default.createElement(
+	                'li',
+	                { className: 'nav-item mr-auto ' },
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-prev", onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    return _this2.handleNavigation.bind(_this2)('prev');
+	                  }, href: '#' })
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                { className: 'nav-item' },
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-next",
+	                  onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    return _this2.handleNavigation.bind(_this2)('next');
+	                  }, href: '#' })
+	              )
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block', onClick: function onClick(eve) {
+	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block',
+	            onClick: function onClick(eve) {
 	              return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	            } },
 	          _react2.default.createElement(
@@ -56746,7 +56754,8 @@
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "action-btn-group" },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active', title: 'Save as favorite' },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active',
+	                  title: 'Save as favorite' },
 	                _react2.default.createElement('i', { className: 'fa fa-heart', 'aria-hidden': 'true' })
 	              ),
 	              _react2.default.createElement(
@@ -56758,7 +56767,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'h4',
-	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title' },
+	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title m-0' },
 	            address
 	          ),
 	          _react2.default.createElement(
@@ -65327,52 +65336,60 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
-	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	            'h3',
-	            null,
-	            _lodash2.default.get(item, 'title')
-	          ) : null,
-	          _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	            'p',
-	            null,
-	            _lodash2.default.get(item, 'subtitle')
-	          ) : null,
-	          posts.length ? _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel clearfix' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
-	                ref: function ref(r) {
-	                  return _this2.swiperElement = r;
-	                } },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'swiper-wrapper' },
-	                posts.map(function (post, key) {
-	                  return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
-	                })
-	              )
-	            )
-	          ) : null,
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-control-nav" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "prev-nav", ref: function ref(r) {
-	                  return _this2.swiperElementPrev = r;
-	                } },
-	              _react2.default.createElement('i', {
-	                className: 'fa fa-angle-left' })
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info text-center' },
+	              _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	                'h3',
+	                { className: 'mx-auto' },
+	                _lodash2.default.get(item, 'title')
+	              ) : null,
+	              _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	                'p',
+	                null,
+	                _lodash2.default.get(item, 'subtitle')
+	              ) : null
 	            ),
+	            posts.length ? _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
+	                  ref: function ref(r) {
+	                    return _this2.swiperElement = r;
+	                  } },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'swiper-wrapper' },
+	                  posts.map(function (post, key) {
+	                    return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
+	                  })
+	                )
+	              )
+	            ) : null,
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "next-nav", ref: function ref(r) {
-	                  return _this2.swiperElementNext = r;
-	                } },
-	              _react2.default.createElement('i', {
-	                className: 'fa fa-angle-right' })
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3', ref: function ref(r) {
+	                    return _this2.swiperElementPrev = r;
+	                  } },
+	                _react2.default.createElement('i', {
+	                  className: 'fa fa-angle-left' })
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "next-nav", ref: function ref(r) {
+	                    return _this2.swiperElementNext = r;
+	                  } },
+	                _react2.default.createElement('i', {
+	                  className: 'fa fa-angle-right' })
+	              )
 	            )
 	          )
 	        )
