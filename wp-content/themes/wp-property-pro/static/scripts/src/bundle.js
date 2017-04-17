@@ -65032,7 +65032,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -65056,98 +65056,106 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
-	    };
+	  return {
+	    activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
+	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {
-	        switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
-	            dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
-	        }
-	    };
+	  return {
+	    switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
+	      dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
+	    }
+	  };
 	};
 
 	var TestimonialsContent = function TestimonialsContent(_ref) {
-	    var widget_cell = _ref.widget_cell,
-	        activeItem = _ref.activeItem,
-	        switchActiveTestimonial = _ref.switchActiveTestimonial;
+	  var widget_cell = _ref.widget_cell,
+	      activeItem = _ref.activeItem,
+	      switchActiveTestimonial = _ref.switchActiveTestimonial;
 
 
-	    if (!widget_cell) {
-	        return null;
-	    }
+	  if (!widget_cell) {
+	    return null;
+	  }
 
-	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
-	        return _react2.default.createElement(
-	            'li',
-	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
-	            _react2.default.createElement(
-	                'blockquote',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'rating' },
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
-	                ),
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    _lodash2.default.get(testimonial, 'review', '')
-	                )
-	            )
-	        );
-	    });
-
-	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
-	        return _react2.default.createElement(
-	            'li',
-	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active" : "", key: i },
-	            _react2.default.createElement(
-	                'a',
-	                { href: '#', onClick: function onClick(event) {
-	                        switchActiveTestimonial(i);
-	                        event.preventDefault();
-	                        event.stopPropagation();
-	                    } },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "userBox" },
-	                    _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, alt: testimonial.title }) : null,
-	                    _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
-	                        'p',
-	                        { className: 'hidden-sm-down' },
-	                        testimonial.title
-	                    ) : null,
-	                    _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
-	                        'span',
-	                        { className: 'hidden-sm-down' },
-	                        testimonial.subtitle
-	                    ) : null
-	                )
-	            )
-	        );
-	    });
-
-	    var container = void 0;
-	    switch (widget_cell.widget.fields.layout) {
-	        case 'default_layout':
-	        default:
-	            container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
-	                testimonials_authors: testimonials_authors });
-	            break;
-	    }
-
+	  var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	    return _react2.default.createElement(
-	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "testimonial" },
-	        container
+	      'li',
+	      { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
+	      _react2.default.createElement(
+	        'blockquote',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'rating' },
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          _lodash2.default.get(testimonial, 'review', '')
+	        )
+	      )
 	    );
+	  });
+
+	  var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    return _react2.default.createElement(
+	      'li',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + _lib.Lib.THEME_CLASSES_PREFIX + "active" : ""), key: i },
+	      _react2.default.createElement(
+	        'a',
+	        { href: '#', onClick: function onClick(event) {
+	            switchActiveTestimonial(i);
+	            event.preventDefault();
+	            event.stopPropagation();
+	          } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-box" },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-image" },
+	            _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, alt: testimonial.title }) : null
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-info" },
+	            _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
+	              'p',
+	              { className: 'hidden-sm-down' },
+	              testimonial.title
+	            ) : null,
+	            _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
+	              'span',
+	              { className: 'hidden-sm-down' },
+	              testimonial.subtitle
+	            ) : null
+	          )
+	        )
+	      )
+	    );
+	  });
+
+	  var container = void 0;
+	  switch (widget_cell.widget.fields.layout) {
+	    case 'default_layout':
+	    default:
+	      container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
+	        testimonials_authors: testimonials_authors });
+	      break;
+	  }
+
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial text-center' },
+	    container
+	  );
 	};
 
 	var Testimonials = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TestimonialsContent);
@@ -65186,27 +65194,35 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h4',
-	      null,
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
+	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "sliderContent" },
+	      { className: 'row' },
 	      _react2.default.createElement(
-	        'ul',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
-	        testimonials_reviews
-	      )
-	    ),
-	    _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "userInfo" },
-	      _react2.default.createElement(
-	        'ul',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
-	        testimonials_authors
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonials-container mx-auto' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	          'h4',
+	          null,
+	          widget_cell.widget.fields.title
+	        ) : null,
+	        _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-content" },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	            testimonials_reviews
+	          )
+	        ),
+	        _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "author-info" },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	            testimonials_authors
+	          )
+	        )
 	      )
 	    )
 	  );
