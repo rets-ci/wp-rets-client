@@ -7,10 +7,12 @@ import _ from 'lodash';
 const Footer = () =>
   _.get(bundle, 'footer', null)
     ?
-    <footer className={Lib.THEME_CLASSES_PREFIX+"pagefooter"}>
-      <FooterTop />
-      <FooterBottom/>
-    </footer>
+    <div className="row">
+      <footer className={Lib.THEME_CLASSES_PREFIX + "pagefooter"}>
+        <FooterTop />
+        <FooterBottom/>
+      </footer>
+    </div>
     : null;
 
 export default Footer;

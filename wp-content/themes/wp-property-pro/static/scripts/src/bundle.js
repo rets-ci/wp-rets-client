@@ -81549,10 +81549,14 @@
 
 	var Footer = function Footer() {
 	  return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
-	    "footer",
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
-	    _react2.default.createElement(_FooterTop2.default, null),
-	    _react2.default.createElement(_FooterBottom2.default, null)
+	    "div",
+	    { className: "row" },
+	    _react2.default.createElement(
+	      "footer",
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
+	      _react2.default.createElement(_FooterTop2.default, null),
+	      _react2.default.createElement(_FooterBottom2.default, null)
+	    )
 	  ) : null;
 	};
 
@@ -81595,13 +81599,13 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-footer" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container' },
+	      { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top-footer-container' },
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo' },
+	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo text-center' },
 	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
 	            'a',
 	            { href: bundle.site_url, title: bundle.site_name, onClick: function onClick(eve) {
@@ -81617,10 +81621,14 @@
 	          { className: 'col-md-12 col-lg-9 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-menu' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
-	            _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
-	              return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
-	            }) : null
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row' },
+	              _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
+	                return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
+	              }) : null
+	            )
 	          )
 	        )
 	      )
@@ -81648,6 +81656,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81663,19 +81673,19 @@
 	    { className: 'col-6 col-sm-6 col-lg-3' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-container" },
 	      _react2.default.createElement(
 	        'h5',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-title" },
 	        menu.title
 	      ),
 	      _react2.default.createElement(
 	        'ul',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-top-menu-links p-0' },
 	        _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	          return _react2.default.createElement(
 	            'li',
-	            { key: i },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-link", key: i },
 	            _react2.default.createElement(
 	              'a',
 	              { href: item.url, onClick: function onClick(eve) {
@@ -81730,7 +81740,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer" },
 	        _react2.default.createElement(
 	            "div",
-	            { className: "container" },
+	            { className: "container " + _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer-container" },
 	            _react2.default.createElement(
 	                "div",
 	                { className: "row" },
@@ -81761,6 +81771,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81776,11 +81788,11 @@
 	    { className: 'col-md-12 col-lg-7' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'ul',
-	      null,
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-bottom-menu-links p-0' },
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'li',
-	          { key: i },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-bottom-menu-link", key: i },
 	          _react2.default.createElement(
 	            'a',
 	            { href: item.url, onClick: function onClick(eve) {
@@ -81828,7 +81840,7 @@
 	    { className: 'col-md-12 col-lg-5' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "social" },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'social text-right' },
 	      _react2.default.createElement(
 	        'span',
 	        null,
@@ -81837,7 +81849,7 @@
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
-	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
+	          { key: i, className: item.title.toLowerCase() + ' text-center', href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );
