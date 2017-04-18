@@ -64826,42 +64826,38 @@
 	      var resultsElements = searchResults.map(function (s, k) {
 	        return _react2.default.createElement(
 	          'div',
-	          { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-group" },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
+	            { key: k, className: 'list-group text-left' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
+	              { key: k, className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group border-0 p-0' },
 	              _react2.default.createElement(
 	                'h4',
-	                null,
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
 	                s.text
 	              )
-	            )
-	          ),
-	          s.children.length ? _react2.default.createElement(
-	            'ol',
-	            null,
-	            s.children.map(function (c, i) {
-	              return _react2.default.createElement(
-	                'li',
-	                { key: i },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#',
-	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
-	                    } },
+	            ),
+	            s.children.length ? _react2.default.createElement(
+	              'ol',
+	              null,
+	              s.children.map(function (c, i) {
+	                return _react2.default.createElement(
+	                  'li',
+	                  { key: i },
 	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'container' },
+	                    'a',
+	                    { href: '#',
+	                      onClick: function onClick(eve) {
+	                        return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                      } },
 	                    c.text
 	                  )
-	                )
-	              );
-	            })
-	          ) : null
+	                );
+	              })
+	            ) : null
+	          )
 	        );
 	      });
 
@@ -64879,44 +64875,88 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(e) {
-	              e.preventDefault();_this2.props.closeModal();
-	            } },
-	          _react2.default.createElement('i', { className: 'fa fa-times' })
-	        ),
-	        _react2.default.createElement(
-	          'form',
-	          { method: 'get', className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement('i', { className: 'fa fa-search' }),
-	            _react2.default.createElement('input', {
-	              autoComplete: 'off',
-	              className: inputClasses,
-	              id: _lib.Lib.THEME_PREFIX + "search-input",
-	              onChange: this.handleSearchValueChange.bind(this),
-	              ref: function ref(input) {
-	                _this2.searchInput = input;
-	              },
-	              type: 'text',
-	              value: this.state.searchValue,
-	              placeholder: placeholder
-	            }),
-	            window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
-	              'button',
-	              { type: 'button', className: 'btn btn-primary' },
-	              'Search'
-	            )
-	          )
-	        ),
+	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
-	          resultsElements
+	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'modal-content ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Search'
+	                      ),
+	                      _react2.default.createElement('i', { className: 'fa fa-search' })
+	                    ),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Input'
+	                      ),
+	                      _react2.default.createElement('input', {
+	                        autoComplete: 'off',
+	                        className: inputClasses,
+	                        id: _lib.Lib.THEME_PREFIX + "search-input",
+	                        onChange: this.handleSearchValueChange.bind(this),
+	                        ref: function ref(input) {
+	                          _this2.searchInput = input;
+	                        },
+	                        type: 'text',
+	                        value: this.state.searchValue,
+	                        placeholder: placeholder
+	                      })
+	                    ),
+	                    window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
+	                      'button',
+	                      { type: 'button',
+	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
+	                      'Search'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _this2.props.closeModal();
+	                  }, 'aria-label': 'Close' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '\xD7'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
+	                resultsElements
+	              )
+	            )
+	          )
 	        )
 	      );
 	    }
