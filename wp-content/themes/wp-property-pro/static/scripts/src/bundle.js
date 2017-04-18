@@ -64877,7 +64877,7 @@
 	      var inputClasses = 'form-control';
 	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
 	        placeholder = 'Address, City, Zip.';
-	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'withPadding';
+	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'with-padding';
 	      }
 
 	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
@@ -82227,10 +82227,15 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
-	        _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'), currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
-	        _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') }),
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
+	          _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'),
+	            currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
+	          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') })
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
