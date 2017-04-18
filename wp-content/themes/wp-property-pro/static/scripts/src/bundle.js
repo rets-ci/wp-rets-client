@@ -65088,7 +65088,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'rating' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'rating mx-auto' },
 	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
 	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
 	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
@@ -65097,7 +65097,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'p',
-	          null,
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial-text m-0 px-4' },
 	          _lodash2.default.get(testimonial, 'review', '')
 	        )
 	      )
@@ -65210,7 +65210,7 @@
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-content" },
 	          _react2.default.createElement(
 	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
 	            testimonials_reviews
 	          )
 	        ),
@@ -65219,7 +65219,7 @@
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "author-info" },
 	          _react2.default.createElement(
 	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
 	            testimonials_authors
 	          )
 	        )

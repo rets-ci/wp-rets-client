@@ -78,7 +78,7 @@
         ".listing-type-box ul li a:hover",
         ".listing-type-box ul li a:active",
         ".listing-type-box ul li a:focus",
-        ".propertypro-testimonial .propertypro-slides li .rating i",
+        ".propertypro-testimonial .propertypro-slides li .propertypro-rating i",
         ".propertypro-sliderContent .propertypro-slides li p",
         ".propertypro-subnavigation.propertypro-module2 ul li.propertypro-active a",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover",

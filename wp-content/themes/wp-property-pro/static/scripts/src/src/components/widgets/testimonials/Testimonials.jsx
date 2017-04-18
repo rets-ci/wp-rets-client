@@ -28,7 +28,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
   let testimonials_reviews = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
     <li className={i === activeItem ? Lib.THEME_CLASSES_PREFIX + "active-slide" : ""} key={i}>
       <blockquote>
-        <div className="rating">
+        <div className={`${Lib.THEME_CLASSES_PREFIX}rating mx-auto`}>
           <i className="fa fa-star" aria-hidden="true"></i>
           <i className="fa fa-star" aria-hidden="true"></i>
           <i className="fa fa-star" aria-hidden="true"></i>
@@ -36,7 +36,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
           <i className="fa fa-star" aria-hidden="true"></i>
         </div>
 
-        <p>{_.get(testimonial, 'review', '')}</p>
+        <p className={`${Lib.THEME_CLASSES_PREFIX}testimonial-text m-0 px-4`}>{_.get(testimonial, 'review', '')}</p>
       </blockquote>
     </li>
   ));

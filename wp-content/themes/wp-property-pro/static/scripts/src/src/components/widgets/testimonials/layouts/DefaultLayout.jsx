@@ -19,7 +19,7 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
                  ? null
                  :
                  <div className={Lib.THEME_CLASSES_PREFIX + "slider-content"}>
-                   <ul className={Lib.THEME_CLASSES_PREFIX + "slides"}>
+                   <ul className={`${Lib.THEME_CLASSES_PREFIX}slides p-0`}>
                      {testimonials_reviews}
                    </ul>
                  </div>
@@ -30,7 +30,7 @@ const DefaultLayout = ({widget_cell, testimonials_reviews, testimonials_authors}
                  ? null
                  :
                  <div className={Lib.THEME_CLASSES_PREFIX + "author-info"}>
-                   <ul className={Lib.THEME_CLASSES_PREFIX + "slides"}>
+                   <ul className={`${Lib.THEME_CLASSES_PREFIX}slides p-0`}>
                      {testimonials_authors}
                    </ul>
                  </div>
