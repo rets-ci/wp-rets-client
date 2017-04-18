@@ -64829,30 +64829,42 @@
 	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { key: k, className: 'list-group text-left' },
+	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group' },
 	            _react2.default.createElement(
 	              'div',
-	              { key: k, className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group border-0 p-0' },
+	              { className: 'container' },
 	              _react2.default.createElement(
-	                'h4',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
-	                s.text
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'h4',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
+	                  s.text
+	                )
 	              )
 	            ),
 	            s.children.length ? _react2.default.createElement(
 	              'ol',
-	              null,
+	              { className: 'list-group' },
 	              s.children.map(function (c, i) {
 	                return _react2.default.createElement(
 	                  'li',
-	                  { key: i },
+	                  { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-item border-0 p-0', key: i },
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#',
-	                      onClick: function onClick(eve) {
-	                        return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
-	                      } },
-	                    c.text
+	                    'div',
+	                    { className: 'container' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'row' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'm-0',
+	                          onClick: function onClick(eve) {
+	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                          } },
+	                        c.text
+	                      )
+	                    )
 	                  )
 	                );
 	              })
@@ -64952,7 +64964,7 @@
 	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
+	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
 	                resultsElements
 	              )
 	            )

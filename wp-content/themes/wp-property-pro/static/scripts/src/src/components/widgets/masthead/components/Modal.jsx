@@ -122,18 +122,24 @@ class Modal extends Component {
     let resultsElements = searchResults.map((s, k) => {
       return (
         <div className="row">
-          <div key={k} className="list-group text-left">
-            <div key={k} className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}search-result-group border-0 p-0`}>
-              <h4 className={Lib.THEME_CLASSES_PREFIX + "search-title"}>{s.text}</h4>
+          <div key={k} className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
+            <div className="container">
+              <div className="row">
+                <h4 className={Lib.THEME_CLASSES_PREFIX + "search-title"}>{s.text}</h4>
+              </div>
             </div>
             {s.children.length ?
-              <ol>
+              <ol className="list-group">
                 {s.children.map((c, i) =>
-                  <li key={i}>
-                    <a href="#"
-                       onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _.get(c, 'url', null))}>
-                      {c.text}
-                    </a>
+                  <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}search-result-item border-0 p-0`} key={i}>
+                    <div className="container">
+                      <div className="row">
+                        <a href="#" className="m-0"
+                           onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _.get(c, 'url', null))}>
+                          {c.text}
+                        </a>
+                      </div>
+                    </div>
                   </li>
                 )}
               </ol>
@@ -147,7 +153,7 @@ class Modal extends Component {
     let inputClasses = 'form-control';
     if (window.innerWidth < Lib.MOBILE_WIDTH) {
       placeholder = 'Address, City, Zip.';
-      inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}withPadding`
+      inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}with-padding`
     }
 
     let searchModalClasses = `${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}display`;
@@ -200,7 +206,7 @@ class Modal extends Component {
               </button>
             </div>
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
-              <div className={`container ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
+              <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
                 {resultsElements}
               </div>
             </div>
