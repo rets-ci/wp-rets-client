@@ -871,38 +871,44 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /** Tour */
 
-.propertypro-widget-tour .propertypro-tour-widget-content-button {
-    border-radius: 3px;
-    font-size: 1.125rem;
-    color: #fff;
-    font-weight: 700;
-    line-height: 24px;
-    padding: 12px 22px;
+.propertypro-tour-section {
+    margin-top: 7rem;
 }
 
 .propertypro-widget-tour .propertypro-headtitle {
-    padding: 110px 0 121px;
+    margin-bottom: 7rem;
 }
 
 .propertypro-widget-tour .propertypro-headtitle h2 {
     font-size: 2.5rem;
     font-weight: 400;
-    line-height: 60px;
+    line-height: 3.75rem;
     margin: 0 0 .30em;
-    text-align: center;
+    color: #414141;
 }
 
 .propertypro-widget-tour .propertypro-headtitle p {
     color: #8b8c8d;
     font-size: 1.125rem;
     font-weight: 500;
-    line-height: 35px;
-    margin: 0 12%;
+    line-height: 1.2rem;
+}
+
+.propertypro-widget-inner {
+    position: absolute;
+    width: 100%;
 }
 
 .propertypro-widget-box {
-    margin-bottom: 112px;
-    position: relative;
+    margin-bottom: 7rem;
+}
+
+.propertypro-widget-tour .propertypro-tour-widget-content-button {
+    border-radius: 3px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    padding: .75rem 1.375rem;
 }
 
 .propertypro-widget-box:last-child {
@@ -911,64 +917,60 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-widget-box .propertypro-tour-widget-content {
     background-color: rgba(255, 255, 255, 0.95);
-    margin: 65px 0 58px 0;
-    padding: 44px 50px;
+    margin-top: 4rem;
+    padding: 2.75rem 3.125rem;
 }
 
 .propertypro-tour-widget-content h3 {
     font-size: 2rem;
-    line-height: 50px;
+    line-height: 3.125rem;
     margin-bottom: 1rem;
-    font-weight: 400;
+    color: #414141;
 }
 
 .propertypro-tour-widget-content p {
     color: #8b8c8d;
     font-size: 1.125rem;
     font-weight: 500;
-    line-height: 30px;
-    padding-right: 0;
+    line-height: 1.9rem;
 }
 
 .propertypro-tour-widget-content blockquote {
-    margin: 30px 0 0;
+    margin: 1.875rem 0 0;
 }
 
 .propertypro-tour-widget-content blockquote p {
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: .875rem;
     font-style: italic;
-    line-height: 28px;
-}
-
-.propertypro-tour-widget-content blockquote cite {
-    display: block;
-    font-style: normal;
+    line-height: 1.75rem;
 }
 
 .propertypro-tour-widget-content blockquote cite span {
     float: left;
-    margin-right: 10px;
-    width: 40px;
-    height: 40px;
+    margin-right: .6rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 100%;
     overflow: hidden;
 }
 
 .propertypro-tour-widget-content blockquote cite span img {
-    max-height: 40px;
-    border-radius: 50%;
+    max-height: 2.5rem;
 }
 
 .propertypro-tour-widget-content blockquote cite h5, .propertypro-tour-widget-content blockquote cite p {
     margin: 0;
-    line-height: 17px;
+    line-height: 1rem;
 }
 
 .propertypro-tour-widget-content blockquote cite h5 {
-    margin-bottom: 5px;
+    margin-bottom: .3rem;
+    color: #414141;
+    font-size: 1.125rem;
+    font-weight: 700;
 }
 
+.propertypro-tour-widget-content blockquote cite h5,
 .propertypro-tour-widget-content blockquote cite p {
     font-style: normal;
 }
@@ -981,36 +983,25 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     background-color: #e5e0dd;
 }
 
-.propertypro-widget-box.widget3 .propertypro-tour-widget-content {
-    margin-left: 0;
-    margin-right: -190px;
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block-full {
+    min-width: 100%;
 }
 
-.propertypro-widget-box.widget3 .propertypro-tour-widget-content p {
-    padding-right: 0;
+.propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block-full > .propertypro-background {
+    background-size: cover !important;
 }
 
 .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background {
-    min-height: 800px;
+    min-height: 50rem;
 }
 
 .propertypro-tour-widget-content hr {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    margin-right: 15%;
+    margin: 3rem 4rem 3rem 0;
     border-top: 1px solid #e1e1e1;
 }
 
 .propertypro-widget-box.widget-bg {
     background-color: #e5e0dd;
-}
-
-.propertypro-widget-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9;
 }
 
 /** Callout */

@@ -64021,7 +64021,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search" },
 	        _react2.default.createElement(
 	          'div',
-	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
 	              return self.props.handleChange(true);
 	            } },
 	          this.props.selectedOption,
@@ -66110,25 +66110,29 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-tour" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle text-center' },
+	      { className: 'container-fluid' },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
-	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	          'h2',
-	          null,
-	          item.title
-	        ) : null,
-	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	          'p',
-	          null,
-	          item.subtitle
-	        ) : null
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle mx-auto text-center' },
+	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	            'h2',
+	            null,
+	            item.title
+	          ) : null,
+	          _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	            'p',
+	            null,
+	            item.subtitle
+	          ) : null
+	        ),
+	        _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
+	          return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
+	        })
 	      )
-	    ),
-	    _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
-	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
-	    })
+	    )
 	  );
 	};
 
@@ -66170,7 +66174,8 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background' : 'col-lg-7 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background';
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5' : 'col-lg-7';
+	  featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block p-0';
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
@@ -66179,10 +66184,7 @@
 	  } : {};
 
 	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
-	    backgroundStyle = Object.assign({}, backgroundStyle, {
-	      "backgroundSize": "cover",
-	      "minWidth": "100%"
-	    });
+	    featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block-full';
 	  }
 
 	  return _react2.default.createElement(
@@ -66190,29 +66192,37 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-box", key: ind },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row no-gutters ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block' },
-	      _react2.default.createElement('div', { className: featureGroupBackgroundClasses, style: backgroundStyle })
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
+	      { className: 'container-fluid' },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: featureGroupBackgroundClasses },
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "background", style: backgroundStyle })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
 	          _react2.default.createElement(
 	            'div',
-	            { className: featureGroupContentClasses },
+	            { className: 'container' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
-	              _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
-	                var last = featuresCount === counter;
-	                counter++;
-	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
-	              })
+	              { className: 'row no-gutters' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: featureGroupContentClasses },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
+	                  _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
+	                    var last = featuresCount === counter;
+	                    counter++;
+	                    return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
+	                  })
+	                )
+	              )
 	            )
 	          )
 	        )
@@ -66254,7 +66264,7 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { key: ind },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content-container", key: ind },
 	    _lodash2.default.get(feature, 'title', null) ? _react2.default.createElement(
 	      'h3',
 	      null,
@@ -66284,7 +66294,7 @@
 	        _lodash2.default.get(feature, 'testimonial_section.image_src', null) ? _react2.default.createElement(
 	          'span',
 	          null,
-	          _react2.default.createElement('img', { src: feature.testimonial_section.image_src,
+	          _react2.default.createElement('img', { className: 'rounded-circle', src: feature.testimonial_section.image_src,
 	            alt: _lodash2.default.get(feature, 'testimonial_section.name', '') })
 	        ) : null,
 	        _lodash2.default.get(feature, 'testimonial_section.name', null) ? _react2.default.createElement(
