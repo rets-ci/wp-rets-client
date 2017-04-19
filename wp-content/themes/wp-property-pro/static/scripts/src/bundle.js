@@ -66364,6 +66364,23 @@
 	    key: 'render',
 	    value: function render() {
 
+	      var posts = _lodash2.default.get(this.props.post, 'related_posts', []);
+	      var groups = [];
+
+	      if (posts) {
+	        (function () {
+	          var postsGroup = [];
+	          posts.map(function (post) {
+	            postsGroup.push(post);
+
+	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
+	              groups.push(postsGroup);
+	              postsGroup = [];
+	            }
+	          });
+	        })();
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container-fluid' },
@@ -66382,28 +66399,40 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
-	              _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
-	                _react2.default.createElement(
-	                  'h4',
-	                  null,
-	                  'More ',
-	                  this.props.post.category_title,
-	                  ' Articles'
-	                )
-	              ) : null,
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
-	                _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
-	                  return _react2.default.createElement(_PostCard2.default, { data: item });
+	                _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'more-posts text-center' },
+	                  _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    'More ',
+	                    this.props.post.category_title,
+	                    ' Articles'
+	                  )
+	                ) : null
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                groups.map(function (g, group_index) {
+	                  var groupPosts = g.map(function (p, i) {
+	                    return _react2.default.createElement(_PostCard2.default, { data: p, key: i });
+	                  });
+	                  return _react2.default.createElement(
+	                    'div',
+	                    { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
+	                      key: group_index },
+	                    groupPosts
+	                  );
 	                })
 	              )
 	            )
-	          ) : null,
-	          _react2.default.createElement(_Footer2.default, null)
-	        )
+	          ) : null
+	        ),
+	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
 	  }]);
@@ -66575,7 +66604,15 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          (0, _reactRenderHtml2.default)(this.props.content)
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-content-container mx-auto text-justify' },
+	              (0, _reactRenderHtml2.default)(this.props.content)
+	            )
+	          )
 	        )
 	      ) : null;
 	    }

@@ -192,7 +192,8 @@
       "rule-title": "font-family",
       "selector": [
         "body, p, span, input, button, select, textarea",
-        ".propertypro-card .propertypro-card-title"
+        ".propertypro-card .propertypro-card-title",
+        ".propertypro-post-content h2"
       ]
     },
     {

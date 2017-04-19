@@ -13,6 +13,21 @@ class Single extends Component {
 
   render() {
 
+    let posts = _.get(this.props.post, 'related_posts', []);
+    let groups = [];
+
+    if (posts) {
+      let postsGroup = [];
+      posts.map((post) => {
+        postsGroup.push(post);
+
+        if (postsGroup.length === Lib.BLOG_POSTS_PER_ROW) {
+          groups.push(postsGroup);
+          postsGroup = [];
+        }
+      });
+    }
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -33,17 +48,24 @@ class Single extends Component {
               ?
               <section className={Lib.THEME_CLASSES_PREFIX + "related-posts"}>
                 <div className="container">
-                  {
-                    _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
-                      ? <div className={Lib.THEME_CLASSES_PREFIX + "more-posts"}>
-                        <h4>More {this.props.post.category_title} Articles</h4>
-                      </div>
-                      : null
-                  }
                   <div className="row">
                     {
-                      _.get(this.props.post, 'related_posts', []).map((item) =>
-                        <PostCard data={item}/>
+                      _.get(this.props.post, 'category_title', null) && _.get(this.props.post, 'related_posts', []).length
+                        ? <div className={`${Lib.THEME_CLASSES_PREFIX}more-posts text-center`}>
+                          <h4>More {this.props.post.category_title} Articles</h4>
+                        </div>
+                        : null
+                    }
+                  </div>
+                  <div className="row">
+                    {
+                      groups.map((g, group_index) => {
+                          let groupPosts = g.map((p, i) =>
+                            <PostCard data={p} key={i}/>
+                          );
+                          return (<div className={`card-deck ${Lib.THEME_CLASSES_PREFIX}blog-posts-row`}
+                                       key={group_index}>{groupPosts}</div>);
+                        }
                       )
                     }
                   </div>
@@ -51,8 +73,8 @@ class Single extends Component {
               </section>
               : null
           }
-          <Footer/>
         </div>
+        <Footer/>
       </div>
     )
   }
