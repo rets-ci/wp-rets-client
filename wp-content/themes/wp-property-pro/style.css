@@ -1007,32 +1007,29 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /** Callout */
 
 .propertypro-callout {
-    height: 221px;
+    height: 13.75rem;
+    line-height: 13.75rem;
     text-align: center;
     color: #fff;
 }
 
-.propertypro-callout > div {
-    height: 221px;
-    line-height: 230px;
+.propertypro-callout-container{
+    width: 53rem;
 }
 
 .propertypro-callout p {
     display: inline-block;
     font-size: 1.75rem;
     font-weight: 700;
-    line-height: 24px;
-    margin-right: 25px;
+    line-height: 1.5rem;
 }
 
-.propertypro-callout .btn {
+.propertypro-callout .propertypro-btn-contact {
     background-color: #ffffff;
     font-size: 1.125rem;
     font-weight: 700;
     line-height: 24px;
-    padding: 12px 30px;
-    position: relative;
-    top: -5px;
+    padding: .75rem 1.875rem;
 }
 
 /** Page Footer */

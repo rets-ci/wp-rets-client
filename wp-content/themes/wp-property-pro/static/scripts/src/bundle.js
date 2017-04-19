@@ -65063,16 +65063,37 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	      'p',
-	      null,
-	      item.title
-	    ) : null,
-	    _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
-	      'a',
-	      { href: _lodash2.default.get(item, 'button.url', bundle.site_url), className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
-	      item.button.label
-	    ) : null
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'callout-container mx-auto' },
+	        _react2.default.createElement(
+	          'nav',
+	          { className: 'navbar navbar-toggleable-md' },
+	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	            'p',
+	            { className: 'navbar-brand mr-auto my-auto' },
+	            item.title
+	          ) : null,
+	          _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
+	            'ul',
+	            { className: 'navbar-nav' },
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'a',
+	                { href: _lodash2.default.get(item, 'button.url', bundle.site_url),
+	                  className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
+	                item.button.label
+	              )
+	            )
+	          ) : null
+	        )
+	      )
+	    )
 	  );
 	};
 
