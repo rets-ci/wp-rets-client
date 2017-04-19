@@ -29887,7 +29887,8 @@
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
-	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
+	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
+	  BLOG_POSTS_PER_ROW: 2
 	};
 
 /***/ },
@@ -66472,10 +66473,10 @@
 
 	      return _react2.default.createElement(
 	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-item col-lg-6' },
+	        { className: 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-item border-0' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-image" },
+	          { className: 'card-img-top ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-image' },
 	          _react2.default.createElement(
 	            'a',
 	            { href: url, title: title, onClick: function onClick(e) {
@@ -66486,25 +66487,29 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'header',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-excerpt" },
+	          'div',
+	          { className: 'card-block p-0' },
 	          _react2.default.createElement(
-	            'h5',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-title" },
+	            'header',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-header" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: url, onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  _Util2.default.goToUrl(relative_url);
-	                } },
-	              title
+	              'h5',
+	              { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-title' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: url, onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _Util2.default.goToUrl(relative_url);
+	                  } },
+	                title
+	              )
 	            )
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'card-text' },
+	            excerpt
 	          )
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          excerpt
 	        )
 	      );
 	    }
@@ -82334,6 +82339,23 @@
 
 	      var self = this;
 
+	      var posts = _lodash2.default.get(this.props, 'posts', []);
+	      var groups = [];
+
+	      if (posts) {
+	        (function () {
+	          var postsGroup = [];
+	          posts.map(function (post) {
+	            postsGroup.push(post);
+
+	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
+	              groups.push(postsGroup);
+	              postsGroup = [];
+	            }
+	          });
+	        })();
+	      }
+
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "blog-posts" },
@@ -82343,32 +82365,43 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
-	            !this.state.loading ? this.props.posts.map(function (p, i) {
+	            !this.state.loading || groups ? groups.map(function (g, group_index) {
 
-	              var item = {
-	                title: _lodash2.default.get(p, 'title', ''),
-	                excerpt: _lodash2.default.get(p, 'excerpt', ''),
-	                image_src: _lodash2.default.get(p, 'image_src', ''),
-	                image_title: _lodash2.default.get(p, 'image_title', ''),
-	                image_alt: _lodash2.default.get(p, 'image_alt', ''),
-	                url: _lodash2.default.get(p, 'url', ''),
-	                relative_url: _lodash2.default.get(p, 'relative_url', '')
+	              var groupPosts = g.map(function (p, i) {
+	                return _react2.default.createElement(_PostCard2.default, { data: {
+	                    title: _lodash2.default.get(p, 'title', ''),
+	                    excerpt: _lodash2.default.get(p, 'excerpt', ''),
+	                    image_src: _lodash2.default.get(p, 'image_src', ''),
+	                    image_title: _lodash2.default.get(p, 'image_title', ''),
+	                    image_alt: _lodash2.default.get(p, 'image_alt', ''),
+	                    url: _lodash2.default.get(p, 'url', ''),
+	                    relative_url: _lodash2.default.get(p, 'relative_url', '')
 
-	              };
+	                  }, key: i });
+	              });
 
-	              return _react2.default.createElement(_PostCard2.default, { data: item, key: i });
+	              return _react2.default.createElement(
+	                'div',
+	                { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
+	                  key: group_index },
+	                groupPosts
+	              );
 	            }) : _react2.default.createElement(_LoadingCircle2.default, null)
 	          ),
 	          this.props.allowPagination ? _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more text-center' },
-	            this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(e) {
-	                  return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
-	                },
-	                className: 'btn btn-primary' },
-	              'Load More'
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more mx-auto' },
+	              this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: function onClick(e) {
+	                    return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
+	                  },
+	                  className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'load-more-link' },
+	                'Load More'
+	              )
 	            )
 	          ) : null
 	        )

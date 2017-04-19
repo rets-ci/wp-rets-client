@@ -541,11 +541,15 @@ ol.gallery-slider li.thumb-small:last-child { margin-bottom: 0; }
 .category-nav ul li a:hover, .category-nav ul li.propertypro-active a { color: #414141; }
 
 
-.propertypro-blog-posts, .propertypro-related-posts { padding: 50px 0 80px; }
-.propertypro-blog-posts .propertypro-post-item, .propertypro-related-posts .propertypro-post-item { margin-bottom: 90px; display:block; }
-.propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title { font-size: 1.6rem; line-height: 1.4; margin: 25px 15% 25px 0; }
-.propertypro-blog-posts p, .propertypro-related-posts p  { color: #8b8c8d; font-size: 1.125rem; font-weight: 500; line-height: 30px; }
-.propertypro-load-more .btn { border-radius: 3px; line-height: 40px; width: 400px; height: 60px; font-size: 1.125rem; font-weight: 700; color: #ffffff }
+.propertypro-blog-posts, .propertypro-related-posts { padding: 3rem 0 5rem; }
+.propertypro-blog-posts .propertypro-post-item:first-child{ margin-right: 3rem; }
+.propertypro-blog-posts .propertypro-post-item:last-child{ margin-left: 3rem; }
+.propertypro-related-posts .propertypro-post-item { margin-bottom: 90px; display:block; }
+.propertypro-blog-posts-row { margin-bottom: 5rem; }
+.propertypro-blog-posts .propertypro-post-header, .propertypro-related-posts .propertypro-post-header { margin: 1.5rem 1.5rem 1.5rem 0; }
+.propertypro-blog-posts .propertypro-post-title, .propertypro-related-posts .propertypro-post-title { font-size: 1.6rem; line-height: 2.5rem; font-weight: 700; }
+.propertypro-blog-posts p, .propertypro-related-posts p  { color: #8b8c8d; font-size: 1.125rem; line-height: 1.875rem; }
+.propertypro-load-more .propertypro-load-more-link { border-radius: .2rem; line-height: 2.5rem; width: 25rem; height: 3.75rem; font-size: 1.125rem; font-weight: 700; color: #ffffff; box-shadow: none; }
 .propertypro-share-post { width: 206px; margin: auto; }
 .propertypro-share-post a { width: 58px; height: 58px; display: inline-block; margin-right: 15px; border-radius: 100%; text-align: center; float: left; line-height: 62px; }
 .propertypro-share-post a:last-child { margin-right: 0; }
