@@ -294,7 +294,7 @@ body.fixed { height: 100%; overflow: hidden; }
 .propertypro-bs-tags-box input { border: none; box-shadow: none; outline: none; background-color: transparent; padding: 0 6px; margin: 0;
     width: 50%; max-width: 400px; line-height: 40px; color: rgba(139, 140, 141, 0.4); font-size: 1.40rem; font-weight: 500 }
 .propertypro-advanced-filter .btn-reset { font-size: 15px; font-weight: 500; line-height: 50px; }
-
+.propertypro-advanced-filter .propertypro-filter-slider { margin-top: 3em; }
 /* Range Slider Module */
 .propertypro-range-slider { clear: both; position: relative; display: block; height: 60px; }
 .propertypro-range-slider .slider-line { height: 8px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07); border-radius: 20px; background-color: #ffffff; opacity: 0.5; position: relative; display: block; overflow: hidden; outline: none !important; margin-top: 25px; }

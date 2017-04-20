@@ -1,9 +1,10 @@
- import {openPropertiesModal} from '../../actions/index.jsx';
+import {openPropertiesModal} from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
 import Price from './Filters/Price.jsx';
 import SQFT from './Filters/SQFT.jsx';
+import LotSize from './Filters/LotSize.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
@@ -31,6 +32,7 @@ const mapStateToProps = (state, ownProps) => {
     bedroomSelected: searchFiltersFormatted.bedrooms || null,
     priceSelected: searchFiltersFormatted.price || {},
     sqftSelected: searchFiltersFormatted.sqft || {},
+    lotSizeSelected: searchFiltersFormatted.lotSize || {},
     searchFiltersFormatted: searchFiltersFormatted
   }
 };
@@ -58,6 +60,7 @@ class PropertiesModal extends Component {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
       localFilters: Object.assign({}, props.searchFilters),
+      lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
       priceSelected: props.priceSelected,
       sqftSelected: props.sqftSelected
@@ -103,6 +106,10 @@ class PropertiesModal extends Component {
       localFilters: Object.assign({}, this.state.localFilters, filter),
       priceSelected: {start: start, to: to}
     });
+  }
+
+  handleLotSizeSelect(start, to) {
+    console.log('handleLotSizeSelect');
   }
 
   handleSQFTSelect(start, to) {
@@ -154,6 +161,7 @@ class PropertiesModal extends Component {
       bathroomSelected,
       bedroomSelected,
       localFilters,
+      lotSizeSelected,
       priceSelected,
       showAllFilters,
       sqftSelected
@@ -270,6 +278,13 @@ class PropertiesModal extends Component {
                   </div>
                   <input id="priceSlider" className="bs-hidden-input" />
                 </div>
+                {/* <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
+                  <h3>Lot Size <span>(Acres)</span></h3>
+                  <div>
+                    <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
+                  </div>
+                  <input id="priceSlider" className="bs-hidden-input" />
+                </div> */}
                 {showAllFilters ?
                   <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
                 :
