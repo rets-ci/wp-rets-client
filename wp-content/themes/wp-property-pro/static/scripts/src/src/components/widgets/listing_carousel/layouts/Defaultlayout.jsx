@@ -66,9 +66,9 @@ export default class DefaultLayout extends Component {
                 : null
             }
             <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
-              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}prev-nav mr-3`} ref={(r) => this.swiperElementPrev = r}><i
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}prev-nav mr-3 rounded-circle`} ref={(r) => this.swiperElementPrev = r}><i
                 className="fa fa-angle-left"></i></a>
-              <a href="#" className={Lib.THEME_CLASSES_PREFIX + "next-nav"} ref={(r) => this.swiperElementNext = r}><i
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}next-nav rounded-circle`} ref={(r) => this.swiperElementNext = r}><i
                 className="fa fa-angle-right"></i></a>
             </div>
           </div>

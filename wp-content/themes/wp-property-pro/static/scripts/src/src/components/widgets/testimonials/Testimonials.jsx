@@ -52,7 +52,7 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
           <div className={Lib.THEME_CLASSES_PREFIX + "user-image"}>
             {
               _.get(testimonial, 'image_src', '')
-                ? <img src={testimonial.image_src} alt={testimonial.title}/>
+                ? <img src={testimonial.image_src} className="rounded-circle" alt={testimonial.title}/>
                 : null
             }
           </div>

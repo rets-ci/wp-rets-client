@@ -64487,21 +64487,21 @@
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
 	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
 	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
 	              href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
 	              target: '_blank', title: 'Facebook', rel: 'noopener' },
 	            _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	          ) : null,
 	          twitterLink ? _react2.default.createElement(
 	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
 	              title: 'Twitter' },
 	            _react2.default.createElement('i', {
 	              className: 'fa fa-twitter' })
 	          ) : null,
 	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
 	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
 	              href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
 	              target: '_blank', title: 'LinkedIn' },
 	            _react2.default.createElement('i', { className: 'fa fa-linkedin' })
@@ -65199,7 +65199,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-image" },
-	            _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, alt: testimonial.title }) : null
+	            _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, className: 'rounded-circle', alt: testimonial.title }) : null
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -65470,7 +65470,7 @@
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3', ref: function ref(r) {
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle', ref: function ref(r) {
 	                    return _this2.swiperElementPrev = r;
 	                  } },
 	                _react2.default.createElement('i', {
@@ -65478,7 +65478,7 @@
 	              ),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "next-nav", ref: function ref(r) {
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle', ref: function ref(r) {
 	                    return _this2.swiperElementNext = r;
 	                  } },
 	                _react2.default.createElement('i', {
@@ -81978,7 +81978,7 @@
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
-	          { key: i, className: item.title.toLowerCase() + ' text-center', href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
+	          { key: i, className: item.title.toLowerCase() + ' text-center rounded-circle', href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );

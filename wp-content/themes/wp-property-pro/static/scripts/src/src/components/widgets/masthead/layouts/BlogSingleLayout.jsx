@@ -22,14 +22,14 @@ const BlogSingleLayout = ({widget_cell}) => {
           <div className={`${Lib.THEME_CLASSES_PREFIX}share-post clearfix`}>
             {
               _.get(widget_cell, 'widget.fields.post_url', null)
-                ? <a className={Lib.THEME_CLASSES_PREFIX + "facebook"}
+                ? <a className={`${Lib.THEME_CLASSES_PREFIX}facebook rounded-circle`}
                      href={"https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url}
                      target="_blank" title="Facebook" rel="noopener"><i className="fa fa-facebook-f"></i></a>
                 : null
             }
             {
               twitterLink
-                ? <a className={Lib.THEME_CLASSES_PREFIX + "twitter"} href={twitterLink} target="_blank"
+                ? <a className={`${Lib.THEME_CLASSES_PREFIX}twitter rounded-circle`} href={twitterLink} target="_blank"
                      title="Twitter"><i
                   className="fa fa-twitter"></i></a>
                 : null
@@ -37,7 +37,7 @@ const BlogSingleLayout = ({widget_cell}) => {
 
             {
               _.get(widget_cell, 'widget.fields.post_url', null) && _.get(widget_cell, 'widget.fields.post_title', null)
-                ? <a className={Lib.THEME_CLASSES_PREFIX + "linkedin"}
+                ? <a className={`${Lib.THEME_CLASSES_PREFIX}linkedin rounded-circle`}
                      href={"https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title}
                      target="_blank" title="LinkedIn"><i className="fa fa-linkedin"></i></a>
                 : null
