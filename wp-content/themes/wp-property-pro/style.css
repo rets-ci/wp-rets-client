@@ -2097,11 +2097,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-guide-content, .propertypro-article-content {
     background-color: #e6ecf0;
-    padding: 25px 0;
 }
 
 .propertypro-guide-content {
-    padding-bottom: 0 !important;
+    padding: .9375rem 0;
+}
+
+.propertypro-guide-list-item{
+    background-color: inherit;
+    margin: .1875rem .625rem !important;
 }
 
 .propertypro-article-content {
@@ -2111,20 +2115,18 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-guide-content .propertypro-guide-item {
     box-shadow: 0 22px 44px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.98);
-    display: block;
-    margin-bottom: 25px;
-    overflow: hidden;
-    position: relative;
-    margin-left: 15px;
-    margin-right: 15px;
 }
 
 .propertypro-category-header {
-    margin-bottom: 27px
+    margin-bottom: 1.75rem;
 }
 
 .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
     padding: 45px 35px 45px 45px;
+}
+
+.propertypro-category-card .propertypro-category-card-content .propertypro-category-navigation-item {
+    display: list-item;
 }
 
 .propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2 {
@@ -2431,11 +2433,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-guide-content, .propertypro-article-content {
         overflow: auto;
         height: 100vh;
-        padding: 25px 30px;
-    }
-
-    .propertypro-guide-content {
-        padding: 25px 0;
     }
 
     .propertypro-guide-nav {

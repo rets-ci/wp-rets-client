@@ -18,13 +18,13 @@ class Archive extends Component {
     let cards = _.get(content, 'items', []).map((item, i) => {
       let last = _.get(content, 'items', []).length === i + 1;
       return (
-        <div className="col-md-12" key={i}>
+        <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}guide-list-item border-0`} key={i}>
           {
             _.get(item, 'children', null)
               ? <CategoryCard category={item} last={last}/>
               : <ArticleCard article={item} last={last}/>
           }
-        </div>
+        </li>
       )
     });
 
@@ -42,8 +42,10 @@ class Archive extends Component {
           <div className="col-lg-6">
             <div className="container">
               <div className="row">
-                <div className={Lib.THEME_CLASSES_PREFIX + "guide-content"}>
-                  {cards}
+                <div className={`${Lib.THEME_CLASSES_PREFIX}guide-content`}>
+                  <ul className={`list-group ${Lib.THEME_CLASSES_PREFIX}guide-list`}>
+                    {cards}
+                  </ul>
                 </div>
               </div>
             </div>

@@ -82538,8 +82538,8 @@
 	      var cards = _lodash2.default.get(content, 'items', []).map(function (item, i) {
 	        var last = _lodash2.default.get(content, 'items', []).length === i + 1;
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'col-md-12', key: i },
+	          'li',
+	          { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list-item border-0', key: i },
 	          _lodash2.default.get(item, 'children', null) ? _react2.default.createElement(_CategoryCard2.default, { category: item, last: last }) : _react2.default.createElement(_ArticleCard2.default, { article: item, last: last })
 	        );
 	      });
@@ -82575,8 +82575,12 @@
 	                { className: 'row' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
-	                  cards
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-content' },
+	                  _react2.default.createElement(
+	                    'ul',
+	                    { className: 'list-group ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list' },
+	                    cards
+	                  )
 	                )
 	              )
 	            )
@@ -82653,60 +82657,64 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'container p-0' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-8' },
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
+	              { className: 'col-sm-8' },
 	              _react2.default.createElement(
-	                'header',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
-	                _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
-	                  'h2',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
+	                _react2.default.createElement(
+	                  'header',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
+	                  _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
+	                    'h2',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
+	                    _react2.default.createElement(
+	                      'a',
+	                      {
+	                        href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
+	                          eve.preventDefault();
+	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
+	                        } },
+	                      _lodash2.default.get(this.props.category, 'title')
+	                    )
+	                  ) : null
+	                ),
+	                _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
+	                  'nav',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
 	                  _react2.default.createElement(
-	                    'a',
-	                    {
-	                      href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
-	                        eve.preventDefault();
-	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
-	                      } },
-	                    _lodash2.default.get(this.props.category, 'title')
+	                    'ul',
+	                    { className: 'list-group' },
+	                    _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
+	                      return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
+	                        'li',
+	                        { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'category-navigation-item border-0 p-0', key: key },
+	                        _react2.default.createElement(
+	                          'a',
+	                          { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
+	                              eve.preventDefault();
+	                              _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
+	                            } },
+	                          _lodash2.default.get(item, 'title')
+	                        )
+	                      ) : null;
+	                    })
 	                  )
 	                ) : null
-	              ),
-	              _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
-	                'nav',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
-	                _react2.default.createElement(
-	                  'ul',
-	                  null,
-	                  _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
-	                    return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
-	                      'li',
-	                      { key: key },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
-	                            eve.preventDefault();
-	                            _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
-	                          } },
-	                        _lodash2.default.get(item, 'title')
-	                      )
-	                    ) : null;
-	                  })
-	                )
-	              ) : null
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-sm-4' },
+	              _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                  background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
-	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
@@ -82781,44 +82789,48 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'container' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-8' },
+	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
+	              { className: 'col-sm-8' },
 	              _react2.default.createElement(
-	                'header',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	                _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
-	                  'h2',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
-	                  _react2.default.createElement(
-	                    'a',
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
+	                _react2.default.createElement(
+	                  'header',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
+	                  _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
+	                    'h2',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
+	                    _react2.default.createElement(
+	                      'a',
+	                      {
+	                        href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
+	                          eve.preventDefault();
+	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
+	                        } },
+	                      _lodash2.default.get(this.props.article, 'title')
+	                    )
+	                  ) : null,
+	                  _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
+	                    'p',
 	                    {
-	                      href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
-	                        eve.preventDefault();
-	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
-	                      } },
-	                    _lodash2.default.get(this.props.article, 'title')
-	                  )
-	                ) : null,
-	                _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
-	                  'p',
-	                  {
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	                  _lodash2.default.get(this.props.article, 'excerpt')
-	                ) : null
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	                    _lodash2.default.get(this.props.article, 'excerpt')
+	                  ) : null
+	                )
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-sm-4' },
+	              _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                  background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
-	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );

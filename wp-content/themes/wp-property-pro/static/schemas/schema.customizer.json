@@ -193,7 +193,8 @@
       "selector": [
         "body, p, span, input, button, select, textarea",
         ".propertypro-card .propertypro-card-title",
-        ".propertypro-post-content h2"
+        ".propertypro-post-content h2",
+        ".propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2"
       ]
     },
     {
