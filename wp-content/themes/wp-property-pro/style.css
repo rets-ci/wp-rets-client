@@ -146,7 +146,7 @@ html, body {
     background: rgba(0, 0, 0, .45);
 }
 
-.propertypro-masthead .propertypro-masthead-title-container {
+.propertypro-masthead .propertypro-masthead-container {
     position: relative;
     z-index: 1;
     max-width: 53rem;
@@ -154,23 +154,23 @@ html, body {
     margin-bottom: 7rem;
 }
 
-.propertypro-masthead-title {
+.propertypro-masthead .propertypro-masthead-title {
     margin-bottom: 2rem;
 }
 
-.propertypro-masthead-blog-title {
+.propertypro-masthead .propertypro-masthead-blog-title {
     margin-bottom: 3rem;
 }
 
-.propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle {
+.propertypro-masthead .propertypro-masthead-subtitle-top, .propertypro-masthead-subtitle {
     font-size: 1.75rem;
 }
 
-.propertypro-masthead-subtitle {
+.propertypro-masthead .propertypro-masthead-subtitle {
     margin-bottom: 3.5rem;
 }
 
-.propertypro-masthead-subtitle-top {
+.propertypro-masthead .propertypro-masthead-subtitle-top {
     margin-bottom: 2.5rem;
 }
 

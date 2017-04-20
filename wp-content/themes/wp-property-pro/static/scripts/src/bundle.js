@@ -63558,7 +63558,8 @@
 	      );
 	      break;
 	    case 'guide_single_layout':
-	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle, returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
+	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle,
+	        returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
 	      break;
 	    case 'title_description_layout':
 	    default:
@@ -63570,7 +63571,15 @@
 	    'section',
 	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
 	    modal,
-	    container
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'container' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        container
+	      )
+	    )
 	  );
 	};
 
@@ -63611,28 +63620,19 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
-	          widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          {
-	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
-	          widget_cell.widget.fields.subtitle
-	        ) : null,
-	        _react2.default.createElement(_Search2.default, {
-	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	      )
-	    )
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      {
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
+	      widget_cell.widget.fields.subtitle
+	    ) : null,
+	    _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
 	  );
 	};
 
@@ -64408,28 +64408,20 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container mx-auto' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          {
-	            className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
-	          widget_cell.widget.fields.subtitle
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
-	          widget_cell.widget.fields.title
-	        ) : null,
-	        _react2.default.createElement(_Search2.default, {
-	          options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	      )
-	    )
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      {
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
+	      widget_cell.widget.fields.subtitle
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _react2.default.createElement(_Search2.default, {
+	      options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
 	  );
 	};
 
@@ -64466,48 +64458,40 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container' },
+	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container' },
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
+	        widget_cell.widget.fields.title
+	      ) : null
+	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
-	        _react2.default.createElement(
-	          'header',
-	          null,
-	          _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
-	            widget_cell.widget.fields.title
-	          ) : null
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
-	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
-	              href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
-	              target: '_blank', title: 'Facebook', rel: 'noopener' },
-	            _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
-	          ) : null,
-	          twitterLink ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
-	              title: 'Twitter' },
-	            _react2.default.createElement('i', {
-	              className: 'fa fa-twitter' })
-	          ) : null,
-	          _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
-	            'a',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
-	              href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
-	              target: '_blank', title: 'LinkedIn' },
-	            _react2.default.createElement('i', { className: 'fa fa-linkedin' })
-	          ) : null
-	        )
-	      )
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
+	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
+	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
+	          target: '_blank', title: 'Facebook', rel: 'noopener' },
+	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
+	      ) : null,
+	      twitterLink ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
+	          title: 'Twitter' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-twitter' })
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
+	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
+	          target: '_blank', title: 'LinkedIn' },
+	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
+	      ) : null
 	    )
 	  );
 	};
