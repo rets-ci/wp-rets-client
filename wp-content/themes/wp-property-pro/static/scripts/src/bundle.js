@@ -56717,7 +56717,7 @@
 	              _react2.default.createElement(
 	                'li',
 	                { className: 'nav-item mr-auto ' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-prev", onClick: function onClick(e) {
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle', onClick: function onClick(e) {
 	                    e.preventDefault();
 	                    return _this2.handleNavigation.bind(_this2)('prev');
 	                  }, href: '#' })
@@ -56725,7 +56725,7 @@
 	              _react2.default.createElement(
 	                'li',
 	                { className: 'nav-item' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-next",
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-next rounded-circle',
 	                  onClick: function onClick(e) {
 	                    e.preventDefault();
 	                    return _this2.handleNavigation.bind(_this2)('next');

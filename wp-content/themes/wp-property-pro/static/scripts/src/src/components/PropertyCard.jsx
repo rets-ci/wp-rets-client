@@ -77,11 +77,11 @@ export default class PropertyCard extends Component {
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX+"direction-nav-container"}>
             <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
-              <li className="nav-item mr-auto "><a className={Lib.THEME_CLASSES_PREFIX + "nav-prev"} onClick={(e) => {
+              <li className="nav-item mr-auto "><a className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`} onClick={(e) => {
                 e.preventDefault();
                 return this.handleNavigation.bind(this)('prev');
               } } href="#"></a></li>
-              <li className="nav-item"><a className={Lib.THEME_CLASSES_PREFIX + "nav-next"}
+              <li className="nav-item"><a className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
                                                          onClick={(e) => {
                                                            e.preventDefault();
                                                            return this.handleNavigation.bind(this)('next');
