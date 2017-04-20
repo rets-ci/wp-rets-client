@@ -47121,16 +47121,14 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: classNames },
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce1" }),
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce2" })
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
 	      );
 	    }
 	  }]);
 
 	  return LoadingCircle;
 	}(_react.Component);
-
-	;
 
 	exports.default = LoadingCircle;
 
@@ -63013,15 +63011,23 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-container" },
+	        { className: 'container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-accordion" },
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-container my-auto' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-accordion text-center' },
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -63029,8 +63035,6 @@
 
 	  return LoadingAccordion;
 	}(_react.Component);
-
-	;
 
 	exports.default = LoadingAccordion;
 
