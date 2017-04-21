@@ -27,7 +27,7 @@ const FooterTop = () => {
           </div>
 
           <div className={`col-md-12 col-lg-9 ${Lib.THEME_CLASSES_PREFIX}footer-menu`}>
-            <div className="container">
+            <div className="container-fluid">
               <div className="row">
                 {
                   _.get(bundle, 'footer.top_footer', null)

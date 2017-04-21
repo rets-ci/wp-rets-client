@@ -171,7 +171,7 @@ html, body {
 .propertypro-search-box {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    max-width: 720px;
+    max-width: 45rem;
     position: relative;
 }
 
@@ -262,8 +262,7 @@ html, body {
 /** Masthead search mobile */
 
 .propertypro-find-home-type {
-    max-width: 280px;
-    margin: 25px auto 40px;
+    margin: 2rem auto 2.5rem;
 }
 
 .propertypro-find-home-type ul {
@@ -520,6 +519,7 @@ html, body {
     color: #8b8c8d;
     font-size: .95rem;
     line-height: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .propertypro-card .propertypro-card-block li {
@@ -2387,6 +2387,58 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*  Responsive (Media queries)
 /*-----------------------------------------------------------------------------------*/
 
+/* Medium devices (tablets, less than 1199px) */
+@media screen and (max-width: 74.938em) {
+
+    .propertypro-subnavigation .propertypro-subnavigation-container,
+    .propertypro-subnavigation .propertypro-subnavigation-container nav{
+        width: 100%;
+    }
+
+    .propertypro-subnavigation .propertypro-subnavigation-container nav li{
+        width: 50%;
+    }
+}
+
+@media (max-width: 62.000em) and (min-width: 47.938em) {
+    .propertypro-testimonial .propertypro-author-info{
+        width: 100%;
+    }
+
+    .propertypro-top-footer .propertypro-footer-logo {
+        text-align: left !important;
+        margin-bottom: 2rem;
+        padding-left: 2rem;
+    }
+
+    .propertypro-top-footer .propertypro-footer-top-menu-title{
+        font-size: 1.125rem;
+    }
+
+    .propertypro-top-footer .propertypro-footer-top-menu-link a{
+        font-size: 1.25rem;
+        line-height: 3.125rem;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-link {
+        display: inline-block;
+        width: 20%;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
+    .propertypro-bottom-footer .propertypro-social{
+        text-align: center !important;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links{
+        margin-top: 2rem;
+    }
+
+    .propertypro-bottom-footer .propertypro-social{
+        margin: 2rem 0;
+    }
+}
+
 /* Medium devices (tablets, more than 992px) */
 @media screen and (min-width: 62.000em) {
     .propertypro-bottom-footer {
@@ -2429,328 +2481,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
-/* Desktop devices (Laption, more than 1199px) */
-@media screen and (min-width: 74.938em) {
-    .propertypro-listing-map img {
-        width: 100%;
-    }
-}
-
-/* Large devices (more than 1400px) */
-@media screen and (min-width: 87.500em) {
-
-    .propertypro-top-panel .propertypro-search-box-wrap {
-        width: 76.80%;
-    }
-
-    .propertypro-top-panel .propertypro-bs-tags-box input {
-        width: 100%;
-        max-width: 920px;
-    }
-}
-
-/* Medium devices (tablets, less than 1199px) */
-@media screen and (max-width: 74.938em) {
-
-    .propertypro-advanced-filter .propertypro-bs-tags-box {
-        width: 66%;
-    }
-
-    .propertypro-advanced-filter form .btn-primary {
-        padding: .60em 1.5em;
-    }
-}
-
-/* Medium devices (tablets, less than 992px) */
-@media screen and (max-width: 61.938em) {
-    .propertypro-bottom-footer .row > div {
-        text-align: center !important;
-    }
-
-    .propertypro-bottom-footer .propertypro-social {
-        margin-top: 20px;
-    }
-
-    .propertypro-bottom-footer {
-        padding: 45px 0;
-    }
-
-    .propertypro-top-footer {
-        background-color: #e9eff3;
-        padding: 65px 0;
-    }
-
-    .propertypro-pagefooter .propertypro-top-footer div.propertypro-footer-logo {
-        margin-bottom: 22px;
-    }
-
-    .propertypro-top-footer .row .row > div {
-        margin-bottom: 25px;
-    }
-
-    .propertypro-top-footer .row .row > div:nth-of-type(3),
-    .propertypro-top-footer .row .row > div:nth-of-type(4) {
-        margin-bottom: 0;
-    }
-
-    .propertypro-top-footer h5 {
-        font-size: .95rem;
-    }
-
-    .propertypro-bottom-footer li {
-        display: inline-block;
-        margin: 0 8px;
-    }
-
-    .propertypro-bottom-footer li a {
-        margin: 0;
-    }
-
-    .propertypro-slider-content .propertypro-slides li p {
-        padding: 0;
-    }
-
-    .propertypro-listings h3 {
-        line-height: 45px;
-        margin-bottom: 1.1em;
-    }
-
-    .propertypro-listings p {
-        padding: 0;
-    }
-
-    .propertypro-callout {
-        height: auto;
-        padding: 35px 0;
-    }
-
-    .propertypro-callout > div {
-        height: auto;
-        line-height: 25px;
-    }
-
-    .propertypro-callout p {
-        display: block;
-        font-size: 1.375rem;
-        line-height: 24px;
-        margin-right: 0;
-    }
-
-    .propertypro-callout .btn {
-        top: 0;
-    }
-
-    .propertypro-widget-tour .propertypro-headtitle {
-        padding: 60px 0;
-    }
-
-    .propertypro-widget-box .propertypro-tour-widget-content {
-        margin: 0 0;
-        padding: 35px;
-    }
-
-    .propertypro-widget-inner {
-        margin-top: -280px;
-        position: relative;
-    }
-
-    .propertypro-widget-inner > div {
-        width: 96%;
-    }
-
-    .propertypro-widget-box img.img-fluid {
-        max-width: auto;
-        width: 100%;
-    }
-
-    .propertypro-widget-box, .propertypro-widget-box:last-child {
-        position: relative;
-        margin-bottom: 112px;
-    }
-
-    .propertypro-widget-box.widget2 .propertypro-tour-widget-content,
-    .propertypro-widget-box.widget3 .propertypro-tour-widget-content {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .propertypro-widget-box.widget-bg {
-        background-color: #fff;
-    }
-
-    .propertypro-masthead.module3 h1 {
-        margin: 0 0 .70em;
-        padding: 0;
-    }
-
-    .propertypro-masthead.propertypro-module2 h1 {
-        font-size: 2.3rem;
-        padding-top: 55px;
-    }
-
-    .propertypro-subnavigation.propertypro-module2 ul .propertypro-subnavigation-btn {
-        float: none;
-        width: 100%;
-    }
-
-    .propertypro-subnavigation.propertypro-module2 {
-        text-align: center;
-    }
-
-    .propertypro-subnavigation.propertypro-module2 .btn {
-        margin-bottom: 15px;
-    }
-
-    .propertypro-subnavigation.propertypro-module2 ul li {
-        float: none;
-        display: inline-block;
-        width: 100%;
-        height: 100px;
-        line-height: 100px;
-        border: 0;
-        margin: 0;
-        border-bottom: 1px solid #e1e1e1;
-    }
-
-    .propertypro-subnavigation.propertypro-module2 ul li a {
-        font-size: 1.5rem !important;
-        margin: 0;
-        padding: 0;
-    }
-
-    .propertypro-subnavigation-desktop {
-        display: none;
-    }
-
-    .propertypro-subnavigation-mobile-selected-option {
-        background-color: #edf2f5;
-        height: 100px;
-        line-height: 100px;
-        font-size: 1.5rem;
-    }
-
-    .propertypro-subnavigation-mobile-selected-option i, .propertypro-subnavigation-mobile ul li i {
-        float: right;
-        top: 30px;
-        right: 40px;
-        position: relative;
-        color: #9a9b9c;
-        font-size: 2.125rem;
-        line-height: 36px;
-    }
-
-    .propertypro-subnavigation-mobile ul li a {
-        padding: 0 !important;
-    }
-
-    .propertypro-subnavigation-mobile ul li a:not(.propertypro-active):not(:hover):not(:active):not(:focus) {
-        color: #8b8c8d !important;
-    }
-
-    .propertypro-subnavigation-mobile .propertypro-subnavigation-btn {
-        position: fixed;
-        bottom: 0;
-        z-index: 999;
-        width: 100%;
-        left: 0;
-        height: 80px;
-        margin: 0 !important;
-        line-height: 80px !important;
-        padding: 0 !important;
-    }
-
-    .propertypro-widget-tour .propertypro-headtitle p {
-        font-size: 1rem;
-        line-height: 25px;
-        margin: 0;
-    }
-
-    .tour1 .propertypro-widget-box {
-        margin-bottom: 0;
-    }
-
-    .tour1 .propertypro-widget-box:last-child {
-        margin-bottom: 40px;
-    }
-
-    .propertypro-widget-box .propertypro-tour-widget-content {
-        padding-bottom: 0;
-    }
-
-    .propertypro-blog-posts .post-image img, .propertypro-related-posts .post-image img {
-        width: 100%;
-    }
-
-    .category-nav {
-        height: auto;
-    }
-
-    .category-nav ul li {
-        display: inline;
-        width: auto;
-        border: 0;
-    }
-
-    .category-nav ul li a {
-        font-size: 1.050rem;
-        height: auto;
-        font-weight: 500;
-        line-height: 55px;
-        margin-right: 20px;
-    }
-
-    .propertypro-tour-section .propertypro-widget-tour .propertypro-widget-box .propertypro-background-block > .propertypro-background {
-        min-height: 500px !important;
-    }
-
-    .propertypro-search-box {
-        box-shadow: none;
-    }
-
-    .propertypro-find-home-type {
-        max-width: 400px;
-    }
-
-    .propertypro-find-home-type li {
-        padding: 0 20px;
-    }
-
-    .propertypro-guide-detail {
-        padding-right: 30px;
-        padding-left: 30px;
-    }
-
-    .propertypro-guide-masthead, .propertypro-article-masthead {
-        position: static !important;
-    }
-
-    .propertypro-article-masthead {
-        height: 100vh;
-    }
-
-    .propertypro-article-masthead .propertypro-article-header p {
-        display: none;
-    }
-
-    .propertypro-article-masthead nav {
-        position: fixed;
-        padding-top: 10px;
-        bottom: 10px;
-    }
-
-    .propertypro-guide-content {
-        padding: 0;
-    }
-
-    .propertypro-guide-item {
-        margin: 0 -15px 15px !important;
-    }
-
-    .propertypro-guide-content .propertypro-guide-item.propertypro-last {
-        margin: 0 -15px !important;
-    }
-}
-
 /* Extra small devices (portrait phones, less than 767px) */
 @media screen and (max-width: 47.938em) {
 
@@ -2767,11 +2497,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-masthead .propertypro-masthead-container{
-        width: 25rem;
+        width: 100%;
     }
 
     .propertypro-masthead .propertypro-masthead-container{
-        margin-top: 3rem;
+        margin-top: 5rem;
         margin-bottom: 0;
     }
 
@@ -2784,13 +2514,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-testimonial h4{
-        padding: 0 4rem;
+        padding: 0 3rem;
         font-size: 2.5rem;
         line-height: 3.75rem;
-    }
-
-    .propertypro-testimonial h4 {
-        line-height: 50px;
     }
 
     .propertypro-author-info {
@@ -2841,19 +2567,13 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         max-width: 50px;
     }
 
-    .propertypro-masthead h1 {
-        font-size: 2.80rem;
-        padding: 0 10%;
+    .propertypro-masthead .propertypro-search-box li a {
+        font-size: 1.5rem;
+        line-height: 1.25rem;
     }
 
     .propertypro-masthead.propertypro-module2 p {
         font-size: 1.5rem;
-    }
-
-    .propertypro-search-box {
-        margin-top: 25px;
-        overflow: hidden;
-        word-wrap: word;
     }
 
     .propertypro-search-box .propertypro-btn-search {
@@ -2967,18 +2687,61 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
+@media (min-width: 40.000em) and (max-width: 47.938em){
+    .propertypro-find-home-type li{
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 40.000em) and (max-width: 62.000em) {
+
+    .propertypro-top-footer .propertypro-footer-top-menu-title{
+        font-size: 1.125rem;
+    }
+
+    .propertypro-top-footer .propertypro-footer-top-menu-link a{
+        font-size: 1.25rem;
+        line-height: 3.125rem;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-link {
+        display: inline-block;
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 62.000em){
+    .propertypro-top-footer .propertypro-footer-logo {
+        text-align: left !important;
+        margin-bottom: 2rem;
+        padding-left: 2rem;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
+    .propertypro-bottom-footer .propertypro-social{
+        text-align: center !important;
+    }
+
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links{
+        margin-top: 2rem;
+    }
+
+    .propertypro-bottom-footer .propertypro-social{
+        margin: 2rem 0;
+    }
+}
+
 /* Extra small devices (portrait phones, less than 640px) */
 @media screen and (max-width: 40.000em) {
 
-    .propertypro-masthead h1 {
-        font-size: 2.20rem;
-        padding: 1.2em 0 0;
-        line-height: 3rem;
+    .propertypro-masthead .propertypro-masthead-title {
+        font-size: 3.2rem;
+        line-height: 4.5rem;
+        margin-bottom: 5rem;
     }
 
-    .propertypro-find-home-type {
-        max-width: 100%;
-        text-align: center;
+    .propertypro-find-home-type .propertypro-masthead-title{
+        padding: 0 1rem;
     }
 
     .propertypro-find-home-type li a {
@@ -2996,13 +2759,13 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-listings h3, .propertypro-testimonial h4 {
-        font-size: 1.875rem;
-        line-height: 40px;
+        font-size: 3.125rem !important;
+        line-height: 4.3rem !important;;
     }
 
-    .propertypro-listings p {
-        font-size: 1.125rem;
-        line-height: 30px;
+    .propertypro-listings .propertypro-listing-carousel-info p {
+        line-height: 2rem;
+        padding: 0;
     }
 
     .propertypro-listing-control-nav {
@@ -3049,6 +2812,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-blog-posts .post-item, .propertypro-related-posts .post-item {
         margin-bottom: 60px;
+    }
+
+    .propertypro-top-footer .propertypro-footer-top-menu-title,
+    .propertypro-top-footer .propertypro-footer-top-menu-links{
+        text-align: left;
     }
 }
 
@@ -3257,4 +3025,33 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 180px;
     }
 
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a{
+        margin-right: .2rem;
+    }
+
+    .propertypro-masthead .propertypro-masthead-title {
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+
+    .propertypro-find-home-type li {
+        padding: 0 .3rem;
+    }
+
+    .propertypro-listings h3, .propertypro-testimonial h4 {
+        font-size: 2rem !important;
+        line-height: 3rem !important;
+    }
+
+    .propertypro-listings .propertypro-listing-carousel-info p{
+        font-size: 1rem;
+    }
+
+    .propertypro-slider-content .propertypro-slides li .propertypro-testimonial-text {
+        font-size: 1rem;
+    }
+
+    .propertypro-masthead .propertypro-search-box li a {
+        font-size: 1rem;
+    }
 }

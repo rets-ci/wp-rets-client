@@ -81957,7 +81957,7 @@
 	          { className: 'col-md-12 col-lg-9 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-menu' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'container' },
+	            { className: 'container-fluid' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'row' },
