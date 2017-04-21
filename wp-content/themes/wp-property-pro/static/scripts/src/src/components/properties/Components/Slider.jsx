@@ -1,32 +1,15 @@
 import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
-import Util from '../../Util.jsx';
 
 let noUiSlider = require('nouislider');
 require('nouislider/distribute/nouislider.css');
 
-let min = 100000;
-let max = 1000000;
-
-let sliderFormatter = {
-  to: val => {
-  	let returnVal;
-    if (val === min) {
-      returnVal = Lib.RANGE_SLIDER_NO_MIN_TEXT;
-    } else if (val === max) {
-      returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
-    } else {
-      returnVal = Util.formatPriceFilter(val);
-    }
-    return returnVal;
-  },
-  from: val => val
-};
-
 class Slider extends Component {
   static propTypes = {
+    formatter: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
-    range: PropTypes.object.isRequired,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
     start: PropTypes.any,
     step: PropTypes.any,
     to: PropTypes.any
@@ -39,19 +22,38 @@ class Slider extends Component {
 
   componentDidMount() {
     let {
+      formatter,
       handleOnClick,
-      range,
+      max,
+      min,
       start,
       step,
       to
     } = this.props;
+    let range = {
+      min,
+      max
+    };
+
+    let percentages = [20, 40, 60, 80];
+
+    let filterPips = (value, type) => {
+      if (value === min || value === max) {
+        return 1;
+      } else {
+        let ourValue = (value / max) * 100;
+        return percentages.indexOf(ourValue) >= 0 ? 1 : 0;
+      }
+    };
+
     this.slider = noUiSlider.create(this.sliderElement, {
     	connect: true,
-      format: sliderFormatter,
+      format: formatter(),
       pips: {
-      	mode: 'range',
+      	mode: 'steps',
     		density: 5,
-        format: sliderFormatter
+        filter: filterPips,
+        format: formatter()
       },
       range: range,
     	start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
@@ -68,8 +70,8 @@ class Slider extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
-      let start = nextProps.start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : nextProps.start;
-      let to = nextProps.to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : nextProps.to;
+      let start = nextProps.start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? this.props.min : nextProps.start;
+      let to = nextProps.to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? this.props.max : nextProps.to;
       this.sliderElement.noUiSlider.set([start, to]);
     }
   }
@@ -77,7 +79,7 @@ class Slider extends Component {
   render() {
     return (
       <div>
-        <div ref={(r) => this.sliderElement = r}></div>
+        <div className={Lib.THEME_CLASSES_PREFIX + "filter-slider"} ref={(r) => this.sliderElement = r}></div>
       </div>
     );
   }
