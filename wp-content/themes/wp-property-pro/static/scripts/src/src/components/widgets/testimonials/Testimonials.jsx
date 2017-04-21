@@ -41,9 +41,15 @@ const TestimonialsContent = ({widget_cell, activeItem, switchActiveTestimonial})
     </li>
   ));
 
+  let linkClasses = [
+    'mr-auto',
+    'mx-auto',
+    'ml-auto'
+  ];
+
   let testimonials_authors = _.get(widget_cell, 'widget.fields.testimonials', []).map((testimonial, i) => (
     <li className={Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + Lib.THEME_CLASSES_PREFIX + "active" : "")} key={i}>
-      <a href="#" onClick={(event) => {
+      <a href="#" className={linkClasses[i]} onClick={(event) => {
         switchActiveTestimonial(i);
         event.preventDefault();
         event.stopPropagation();

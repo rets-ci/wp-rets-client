@@ -62723,9 +62723,12 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
 	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
 	        'a',
-	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
-	        _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	          className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
+	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-3', onClick: openUserPanel },
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          '\u2630'
+	        )
 	      ) : null,
 	      _react2.default.createElement(
 	        'a',
@@ -65384,13 +65387,15 @@
 	    );
 	  });
 
+	  var linkClasses = ['mr-auto', 'mx-auto', 'ml-auto'];
+
 	  var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	    return _react2.default.createElement(
 	      'li',
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + _lib.Lib.THEME_CLASSES_PREFIX + "active" : ""), key: i },
 	      _react2.default.createElement(
 	        'a',
-	        { href: '#', onClick: function onClick(event) {
+	        { href: '#', className: linkClasses[i], onClick: function onClick(event) {
 	            switchActiveTestimonial(i);
 	            event.preventDefault();
 	            event.stopPropagation();
@@ -65637,7 +65642,7 @@
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info text-center' },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
 	              _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
 	                'h3',
 	                { className: 'mx-auto' },

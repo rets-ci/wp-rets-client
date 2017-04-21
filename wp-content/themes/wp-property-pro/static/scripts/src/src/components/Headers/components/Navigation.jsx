@@ -9,9 +9,8 @@ const Navigation = ({openUserPanel}) => (
       {
         _.get(bundle, 'static_images_url', null)
           ?
-          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-2`} onClick={openUserPanel}>
-            <img src={bundle.static_images_url + "menu-icon.svg"} alt="Menu icon"
-                 className={Lib.THEME_CLASSES_PREFIX + "logo"}/>
+          <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}menu-icon hidden-md-up my-auto mr-3`} onClick={openUserPanel}>
+            <span>☰</span>
           </a>
           : null
       }

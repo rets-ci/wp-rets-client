@@ -34,7 +34,7 @@ export default class DefaultLayout extends Component {
       <div className="container">
         <div className="row">
           <div className={Lib.THEME_CLASSES_PREFIX + "listing-carousel-container"}>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info text-center`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
               {
                 _.get(item, 'title', null)
                   ? <h3 className="mx-auto">{_.get(item, 'title')}</h3>

@@ -175,7 +175,8 @@
       "rule-title": "font-family",
       "selector": [
         "h1, h2, h3",
-        ".propertypro-search-modal .propertypro-search-modal-box li a"
+        ".propertypro-search-modal .propertypro-search-modal-box li a",
+        ".propertypro-testimonial h4"
       ]
     },
     {
