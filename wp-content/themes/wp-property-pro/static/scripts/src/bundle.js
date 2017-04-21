@@ -29780,6 +29780,23 @@
 	            }
 	          });
 	        }
+
+	        if (params.sqft) {
+	          var _range = {};
+	          if (params.sqft.start !== _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	            _range.gte = params.sqft.start;
+	          }
+
+	          if (params.sqft.to !== _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	            _range.lt = params.sqft.to;
+	          }
+	          query.bool.must.push({
+	            "range": {
+	              "post_meta.rets_living_area": _range
+	            }
+	          });
+	          console.log(query);
+	        }
 	        query.bool.must.push({ "term": terms });
 	      }
 
@@ -47316,8 +47333,8 @@
 	  }
 
 	  _createClass(Util, null, [{
-	    key: 'formatPriceFilter',
-	    value: function formatPriceFilter(price) {
+	    key: 'formatPriceValue',
+	    value: function formatPriceValue(price) {
 	      var formattedNumber = (0, _numeral2.default)(price);
 	      if (price >= 100000) {
 	        formattedNumber = formattedNumber.format('$0a');
@@ -47327,8 +47344,8 @@
 	      return formattedNumber;
 	    }
 	  }, {
-	    key: 'formatSQFTFilter',
-	    value: function formatSQFTFilter(sqft) {
+	    key: 'formatSQFTValue',
+	    value: function formatSQFTValue(sqft) {
 	      var formattedNumber = (0, _numeral2.default)(sqft);
 	      return formattedNumber.format('0,0');
 	    }
@@ -47426,12 +47443,12 @@
 	    value: function priceFilterSearchTagText(filter) {
 	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
 	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-	          return 'Under ' + this.formatPriceFilter(filter.to);
+	          return 'Under ' + this.formatPriceValue(filter.to);
 	        } else {
-	          return 'Over ' + this.formatPriceFilter(filter.start);
+	          return 'Over ' + this.formatPriceValue(filter.start);
 	        }
 	      } else {
-	        return this.formatPriceFilter(filter.start) + '-' + this.formatPriceFilter(filter.to);
+	        return this.formatPriceValue(filter.start) + '-' + this.formatPriceValue(filter.to);
 	      }
 	    }
 	  }, {
@@ -52923,7 +52940,7 @@
 	        } else if (val === max) {
 	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	        } else {
-	          returnVal = _Util2.default.formatPriceFilter(val);
+	          returnVal = _Util2.default.formatPriceValue(val);
 	        }
 	        return returnVal;
 	      },
@@ -55670,7 +55687,7 @@
 	        } else if (val === max) {
 	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	        } else {
-	          returnVal = _Util2.default.formatSQFTFilter(val);
+	          returnVal = _Util2.default.formatSQFTValue(val);
 	        }
 	        return returnVal;
 	      },
@@ -55949,15 +55966,16 @@
 	            }
 
 	            var item = {
+	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
+	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
+	              full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
 	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
 	                return media.url;
 	              }),
-	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
-	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
-	              full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
-	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
-	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
+	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
 	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
 	            };
 
@@ -56888,13 +56906,14 @@
 	      var _this2 = this;
 
 	      var _props$data = this.props.data,
-	          gallery_images = _props$data.gallery_images,
-	          relative_permalink = _props$data.relative_permalink,
 	          address = _props$data.address,
-	          full_address = _props$data.full_address,
-	          beds = _props$data.beds,
 	          baths = _props$data.baths,
+	          beds = _props$data.beds,
+	          full_address = _props$data.full_address,
+	          gallery_images = _props$data.gallery_images,
+	          living_area = _props$data.living_area,
 	          price = _props$data.price,
+	          relative_permalink = _props$data.relative_permalink,
 	          thumbnail = _props$data.thumbnail;
 
 	      var self = this;
@@ -56972,7 +56991,7 @@
 	            _react2.default.createElement(
 	              'span',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "price" },
-	              _Util2.default.formatPriceFilter(price)
+	              _Util2.default.formatPriceValue(price)
 	            ),
 	            _react2.default.createElement(
 	              'span',
@@ -57017,7 +57036,8 @@
 	            _react2.default.createElement(
 	              'li',
 	              null,
-	              '1,142 SF'
+	              _Util2.default.formatSQFTValue(living_area),
+	              ' SF'
 	            )
 	          )
 	        )

@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 class Util extends React.Component {
 
-  static formatPriceFilter(price) {
+  static formatPriceValue(price) {
     let formattedNumber = numeral(price);
     if (price >= 100000) {
       formattedNumber = formattedNumber.format('$0a')
@@ -20,7 +20,7 @@ class Util extends React.Component {
     return formattedNumber;
   }
 
-  static formatSQFTFilter(sqft) {
+  static formatSQFTValue(sqft) {
     let formattedNumber = numeral(sqft);
     return formattedNumber.format('0,0');
   }
@@ -115,12 +115,12 @@ class Util extends React.Component {
   static priceFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        return 'Under ' + this.formatPriceFilter(filter.to);
+        return 'Under ' + this.formatPriceValue(filter.to);
       } else {
-        return 'Over ' + this.formatPriceFilter(filter.start);
+        return 'Over ' + this.formatPriceValue(filter.start);
       }
     } else {
-      return this.formatPriceFilter(filter.start) + '-' + this.formatPriceFilter(filter.to);
+      return this.formatPriceValue(filter.start) + '-' + this.formatPriceValue(filter.to);
     }
   }
 

@@ -418,6 +418,23 @@ class Api {
           }
         });
       }
+
+      if (params.sqft) {
+        let range = {};
+        if (params.sqft.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          range.gte = params.sqft.start
+        }
+
+        if (params.sqft.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          range.lt = params.sqft.to
+        }
+        query.bool.must.push({
+          "range": {
+            "post_meta.rets_living_area": range
+          }
+        });
+        console.log(query);
+      }
       query.bool.must.push({"term": terms});
     }
 
