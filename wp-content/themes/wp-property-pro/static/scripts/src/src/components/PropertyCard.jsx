@@ -60,7 +60,7 @@ export default class PropertyCard extends Component {
                   <img
                     alt="Card image cap"
                     className="swiper-lazy card-img-top"
-                    src={Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
+                    src={!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail}
                   />
                 </div>
                 {gallery_images.map((d, k) =>
@@ -105,7 +105,7 @@ export default class PropertyCard extends Component {
           </div>
           <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
           <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{full_address}</p>
-          <ul className={Lib.THEME_CLASSES_PREFIX + "liting-info-box"}>
+          <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box p-0`}>
             <li>{beds} Bed</li>
             <li>{baths} Bath</li>
             <li>1,142 SF</li>
