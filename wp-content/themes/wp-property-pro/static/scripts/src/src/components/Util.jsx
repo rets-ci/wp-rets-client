@@ -11,7 +11,6 @@ import _ from 'lodash';
 class Util extends React.Component {
 
   static formatPriceFilter(price) {
-    // format price
     let formattedNumber = numeral(price);
     if (price >= 100000) {
       formattedNumber = formattedNumber.format('$0a')
@@ -19,6 +18,16 @@ class Util extends React.Component {
       formattedNumber = formattedNumber.format('$0,0');
     }
     return formattedNumber;
+  }
+
+  static formatSQFTFilter(sqft) {
+    let formattedNumber = numeral(sqft);
+    return formattedNumber.format('0,0');
+  }
+
+  static formatLotSizeFilter(lotSize) {
+    let formattedNumber = numeral(lotSize);
+    return formattedNumber.format('0,0');
   }
 
   static getSearchFiltersFromURL(url, withoutPrefix) {

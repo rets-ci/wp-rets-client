@@ -1,7 +1,5 @@
-import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import Slider from '../Components/Slider.jsx';
-import Util from '../../Util.jsx';
 
 let sliderFormatter = (min, max) => {
   return () => ({
@@ -12,7 +10,7 @@ let sliderFormatter = (min, max) => {
       } else if (val === max) {
         returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
       } else {
-        returnVal = Util.formatSQFTFilter(val);
+        returnVal = Util.formatLotSizeFilter(val);
       }
       return returnVal;
     },
@@ -20,7 +18,7 @@ let sliderFormatter = (min, max) => {
   })
 };
 
-class SQFT extends Component {
+class LotSize extends Component {
   static propTypes = {
     saleType: PropTypes.string.isRequired,
     start: PropTypes.any,
@@ -41,30 +39,35 @@ class SQFT extends Component {
     } = this.props;
     let defaults = {
       Sale: {
-        start: 1000,
-        to: 1250
+        start: 0.25,
+        to: 0.35
       },
       Rent: {
-        start: 1000,
-        to: 1250
+        start: 0.25,
+        to: 0.35
       }
     };
-    let formatter;
     let min;
     let max;
     let range = {};
     let step;
     let percentages;
-    if (saleType === 'Sale' || saleType === 'Rent') {
-      step = 500;
-      min = 1000;
-      max = 10000;
-      formatter = sliderFormatter(min, max);
-    }
+    step = 0.25;
+    min = 0;
+    max = 1;
+    formatter = sliderFormatter(min, max);
+    range = {
+      min: min,
+      max: max
+    };
+    percentages = [10, 25, 50, 75];
+    percentages.forEach(p => {
+      range[p + '%'] = [min + (min * (p / 100))];
+    });
     return (
-      <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      <Slider formatter={formatter} range={range} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
     )
   }
 };
 
-export default SQFT;
+export default LotSize;

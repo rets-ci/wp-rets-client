@@ -64,23 +64,23 @@
 
 	var _MapSearchResults2 = _interopRequireDefault(_MapSearchResults);
 
-	var _PageLayout = __webpack_require__(314);
+	var _PageLayout = __webpack_require__(315);
 
 	var _PageLayout2 = _interopRequireDefault(_PageLayout);
 
-	var _Page = __webpack_require__(322);
+	var _Page = __webpack_require__(323);
 
 	var _Page2 = _interopRequireDefault(_Page);
 
-	var _Archive = __webpack_require__(420);
+	var _Archive = __webpack_require__(421);
 
 	var _Archive2 = _interopRequireDefault(_Archive);
 
-	var _Archive3 = __webpack_require__(422);
+	var _Archive3 = __webpack_require__(423);
 
 	var _Archive4 = _interopRequireDefault(_Archive3);
 
-	var _index = __webpack_require__(425);
+	var _index = __webpack_require__(426);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -29103,7 +29103,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _SearchResultListing = __webpack_require__(301);
+	var _SearchResultListing = __webpack_require__(302);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
@@ -29887,8 +29887,7 @@
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
-	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
-	  BLOG_POSTS_PER_ROW: 2
+	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
 	};
 
 /***/ },
@@ -47121,14 +47120,16 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: classNames },
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce1" }),
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce2" })
 	      );
 	    }
 	  }]);
 
 	  return LoadingCircle;
 	}(_react.Component);
+
+	;
 
 	exports.default = LoadingCircle;
 
@@ -47317,7 +47318,6 @@
 	  _createClass(Util, null, [{
 	    key: 'formatPriceFilter',
 	    value: function formatPriceFilter(price) {
-	      // format price
 	      var formattedNumber = (0, _numeral2.default)(price);
 	      if (price >= 100000) {
 	        formattedNumber = formattedNumber.format('$0a');
@@ -47325,6 +47325,18 @@
 	        formattedNumber = formattedNumber.format('$0,0');
 	      }
 	      return formattedNumber;
+	    }
+	  }, {
+	    key: 'formatSQFTFilter',
+	    value: function formatSQFTFilter(sqft) {
+	      var formattedNumber = (0, _numeral2.default)(sqft);
+	      return formattedNumber.format('0,0');
+	    }
+	  }, {
+	    key: 'formatLotSizeFilter',
+	    value: function formatLotSizeFilter(lotSize) {
+	      var formattedNumber = (0, _numeral2.default)(lotSize);
+	      return formattedNumber.format('0,0');
 	    }
 	  }, {
 	    key: 'getSearchFiltersFromURL',
@@ -47459,7 +47471,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.4
+	 * version : 2.0.6
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -47480,20 +47492,22 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.4',
+	        VERSION = '2.0.6',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0'
+	            defaultFormat: '0,0',
+	            scalePercentBy100: true
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat
+	            defaultFormat: defaults.defaultFormat,
+	            scalePercentBy100: defaults.scalePercentBy100
 	        };
 
 
@@ -47562,6 +47576,7 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
+	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -47637,6 +47652,7 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
+	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -47659,7 +47675,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, null, roundingFunction);
+	                int = numeral._.toFixed(value, 0, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -47684,6 +47700,12 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
+	            }
+
+	            if (int.length < leadingCount) {
+	                for (var i = leadingCount - int.length; i > 0; i--) {
+	                    int = '0' + int;
+	                }
 	            }
 
 	            if (thousands > -1) {
@@ -47843,9 +47865,8 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
-	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -48142,6 +48163,42 @@
 	    
 
 	(function() {
+	        numeral.register('format', 'bps', {
+	            regexps: {
+	                format: /(BPS)/,
+	                unformat: /(BPS)/
+	            },
+	            format: function(value, format, roundingFunction) {
+	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
+	                    output;
+
+	                value = value * 10000;
+
+	                // check for space before BPS
+	                format = format.replace(/\s?BPS/, '');
+
+	                output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	                if (numeral._.includes(output, ')')) {
+	                    output = output.split('');
+
+	                    output.splice(-1, 0, space + 'BPS');
+
+	                    output = output.join('');
+	                } else {
+	                    output = output + space + 'BPS';
+	                }
+
+	                return output;
+	            },
+	            unformat: function(string) {
+	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
+	            }
+	        });
+	})();
+
+
+	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -48151,10 +48208,17 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
+	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
+	            return decimal.suffixes.indexOf(item) < 0;
+	        }));
+	        var unformatRegex = allSuffixes.join('|');
+	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
+	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
+
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
+	            unformat: new RegExp(unformatRegex)
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -48253,7 +48317,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i);
+	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
 	                        break;
 	                }
 	            }
@@ -48267,7 +48331,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
 	                        break;
 	                }
 	            }
@@ -48348,7 +48412,9 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            value = value * 100;
+	            if (numeral.options.scalePercentBy100) {
+	                value = value * 100;
+	            }
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -48368,7 +48434,11 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            return numeral._.stringToNumber(string) * 0.01;
+	            var number = numeral._.stringToNumber(string);
+	            if (numeral.options.scalePercentBy100) {
+	                return number * 0.01;
+	            }
+	            return number;
 	        }
 	    });
 	})();
@@ -52292,6 +52362,10 @@
 
 	var _SQFT2 = _interopRequireDefault(_SQFT);
 
+	var _LotSize = __webpack_require__(301);
+
+	var _LotSize2 = _interopRequireDefault(_LotSize);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -52328,6 +52402,7 @@
 	    bedroomSelected: searchFiltersFormatted.bedrooms || null,
 	    priceSelected: searchFiltersFormatted.price || {},
 	    sqftSelected: searchFiltersFormatted.sqft || {},
+	    lotSizeSelected: searchFiltersFormatted.lotSize || {},
 	    searchFiltersFormatted: searchFiltersFormatted
 	  };
 	};
@@ -52352,6 +52427,7 @@
 	      bathroomSelected: props.bathroomSelected,
 	      bedroomSelected: props.bedroomSelected,
 	      localFilters: Object.assign({}, props.searchFilters),
+	      lotSizeSelected: props.lotSizeSelected,
 	      showAllFilters: false,
 	      priceSelected: props.priceSelected,
 	      sqftSelected: props.sqftSelected
@@ -52403,6 +52479,11 @@
 	        localFilters: Object.assign({}, this.state.localFilters, filter),
 	        priceSelected: { start: start, to: to }
 	      });
+	    }
+	  }, {
+	    key: 'handleLotSizeSelect',
+	    value: function handleLotSizeSelect(start, to) {
+	      console.log('handleLotSizeSelect');
 	    }
 	  }, {
 	    key: 'handleSQFTSelect',
@@ -52459,6 +52540,7 @@
 	          bathroomSelected = _state.bathroomSelected,
 	          bedroomSelected = _state.bedroomSelected,
 	          localFilters = _state.localFilters,
+	          lotSizeSelected = _state.lotSizeSelected,
 	          priceSelected = _state.priceSelected,
 	          showAllFilters = _state.showAllFilters,
 	          sqftSelected = _state.sqftSelected;
@@ -52809,6 +52891,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _lib = __webpack_require__(276);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -52817,6 +52901,10 @@
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52824,6 +52912,27 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var sliderFormatter = function sliderFormatter(min, max) {
+	  return function () {
+	    return {
+	      to: function to(val) {
+	        var returnVal = void 0;
+	        if (val === min) {
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
+	        } else if (val === max) {
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
+	        } else {
+	          returnVal = _Util2.default.formatPriceFilter(val);
+	        }
+	        return returnVal;
+	      },
+	      from: function from(val) {
+	        return val;
+	      }
+	    };
+	  };
+	};
 
 	var Price = function (_Component) {
 	  _inherits(Price, _Component);
@@ -52855,29 +52964,23 @@
 	          to: 3000
 	        }
 	      };
+	      var formatter = void 0;
 	      var min = void 0;
 	      var max = void 0;
-	      var range = {};
 	      var step = void 0;
 	      var percentages = void 0;
 	      if (saleType === 'Sale') {
-	        min = 100000;
+	        min = 25000;
 	        max = 1000000;
-	        step = 10000;
+	        formatter = sliderFormatter(min, max);
+	        step = 25000;
 	      } else if (saleType === 'Rent') {
-	        min = 100;
+	        min = 125;
 	        max = 5000;
-	        step = 10000;
+	        formatter = sliderFormatter(min, max);
+	        step = 125;
 	      }
-	      range = {
-	        min: min,
-	        max: max
-	      };
-	      percentages = [10, 25, 50, 75];
-	      percentages.forEach(function (p) {
-	        range[p + '%'] = [min + min * (p / 100)];
-	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -52912,10 +53015,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(281);
-
-	var _Util2 = _interopRequireDefault(_Util);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52926,26 +53025,6 @@
 
 	var noUiSlider = __webpack_require__(295);
 	__webpack_require__(296);
-
-	var min = 100000;
-	var max = 1000000;
-
-	var sliderFormatter = {
-	  to: function to(val) {
-	    var returnVal = void 0;
-	    if (val === min) {
-	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
-	    } else if (val === max) {
-	      returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
-	    } else {
-	      returnVal = _Util2.default.formatPriceFilter(val);
-	    }
-	    return returnVal;
-	  },
-	  from: function from(val) {
-	    return val;
-	  }
-	};
 
 	var Slider = function (_Component) {
 	  _inherits(Slider, _Component);
@@ -52963,19 +53042,38 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _props = this.props,
+	          formatter = _props.formatter,
 	          handleOnClick = _props.handleOnClick,
-	          range = _props.range,
+	          max = _props.max,
+	          min = _props.min,
 	          start = _props.start,
 	          step = _props.step,
 	          to = _props.to;
 
+	      var range = {
+	        min: min,
+	        max: max
+	      };
+
+	      var percentages = [20, 40, 60, 80];
+
+	      var filterPips = function filterPips(value, type) {
+	        if (value === min || value === max) {
+	          return 1;
+	        } else {
+	          var ourValue = value / max * 100;
+	          return percentages.indexOf(ourValue) >= 0 ? 1 : 0;
+	        }
+	      };
+
 	      this.slider = noUiSlider.create(this.sliderElement, {
 	        connect: true,
-	        format: sliderFormatter,
+	        format: formatter(),
 	        pips: {
-	          mode: 'range',
+	          mode: 'steps',
 	          density: 5,
-	          format: sliderFormatter
+	          filter: filterPips,
+	          format: formatter()
 	        },
 	        range: range,
 	        start: [start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
@@ -52993,8 +53091,8 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (nextProps.start !== this.props.start || nextProps.to !== this.props.to) {
-	        var start = nextProps.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : nextProps.start;
-	        var to = nextProps.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : nextProps.to;
+	        var start = nextProps.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? this.props.min : nextProps.start;
+	        var to = nextProps.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? this.props.max : nextProps.to;
 	        this.sliderElement.noUiSlider.set([start, to]);
 	      }
 	    }
@@ -53006,7 +53104,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('div', { ref: function ref(r) {
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-slider", ref: function ref(r) {
 	            return _this2.sliderElement = r;
 	          } })
 	      );
@@ -53017,8 +53115,10 @@
 	}(_react.Component);
 
 	Slider.propTypes = {
+	  formatter: _react.PropTypes.func.isRequired,
 	  handleOnClick: _react.PropTypes.func.isRequired,
-	  range: _react.PropTypes.object.isRequired,
+	  min: _react.PropTypes.number.isRequired,
+	  max: _react.PropTypes.number.isRequired,
 	  start: _react.PropTypes.any,
 	  step: _react.PropTypes.any,
 	  to: _react.PropTypes.any
@@ -55301,7 +55401,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -55538,6 +55638,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _lib = __webpack_require__(276);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -55546,6 +55648,10 @@
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -55553,6 +55659,27 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var sliderFormatter = function sliderFormatter(min, max) {
+	  return function () {
+	    return {
+	      to: function to(val) {
+	        var returnVal = void 0;
+	        if (val === min) {
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
+	        } else if (val === max) {
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
+	        } else {
+	          returnVal = _Util2.default.formatSQFTFilter(val);
+	        }
+	        return returnVal;
+	      },
+	      from: function from(val) {
+	        return val;
+	      }
+	    };
+	  };
+	};
 
 	var SQFT = function (_Component) {
 	  _inherits(SQFT, _Component);
@@ -55584,6 +55711,7 @@
 	          to: 1250
 	        }
 	      };
+	      var formatter = void 0;
 	      var min = void 0;
 	      var max = void 0;
 	      var range = {};
@@ -55593,16 +55721,9 @@
 	        step = 500;
 	        min = 1000;
 	        max = 10000;
+	        formatter = sliderFormatter(min, max);
 	      }
-	      range = {
-	        min: min,
-	        max: max
-	      };
-	      percentages = [10, 25, 50, 75];
-	      percentages.forEach(function (p) {
-	        range[p + '%'] = [min + min * (p / 100)];
-	      });
-	      return _react2.default.createElement(_Slider2.default, { range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -55635,6 +55756,119 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Slider = __webpack_require__(294);
+
+	var _Slider2 = _interopRequireDefault(_Slider);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var sliderFormatter = function sliderFormatter(min, max) {
+	  return function () {
+	    return {
+	      to: function to(val) {
+	        var returnVal = void 0;
+	        if (val === min) {
+	          returnVal = Lib.RANGE_SLIDER_NO_MIN_TEXT;
+	        } else if (val === max) {
+	          returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
+	        } else {
+	          returnVal = Util.formatLotSizeFilter(val);
+	        }
+	        return returnVal;
+	      },
+	      from: function from(val) {
+	        return val;
+	      }
+	    };
+	  };
+	};
+
+	var LotSize = function (_Component) {
+	  _inherits(LotSize, _Component);
+
+	  function LotSize(props) {
+	    _classCallCheck(this, LotSize);
+
+	    var _this = _possibleConstructorReturn(this, (LotSize.__proto__ || Object.getPrototypeOf(LotSize)).call(this, props));
+
+	    _this.state = {};
+	    return _this;
+	  }
+
+	  _createClass(LotSize, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          saleType = _props.saleType,
+	          start = _props.start,
+	          to = _props.to;
+
+	      var defaults = {
+	        Sale: {
+	          start: 0.25,
+	          to: 0.35
+	        },
+	        Rent: {
+	          start: 0.25,
+	          to: 0.35
+	        }
+	      };
+	      var min = void 0;
+	      var max = void 0;
+	      var range = {};
+	      var step = void 0;
+	      var percentages = void 0;
+	      step = 0.25;
+	      min = 0;
+	      max = 1;
+	      formatter = sliderFormatter(min, max);
+	      range = {
+	        min: min,
+	        max: max
+	      };
+	      percentages = [10, 25, 50, 75];
+	      percentages.forEach(function (p) {
+	        range[p + '%'] = [min + min * (p / 100)];
+	      });
+	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	    }
+	  }]);
+
+	  return LotSize;
+	}(_react.Component);
+
+	LotSize.propTypes = {
+	  saleType: _react.PropTypes.string.isRequired,
+	  start: _react.PropTypes.any,
+	  to: _react.PropTypes.any,
+	  handleOnClick: _react.PropTypes.func.isRequired
+	};
+	;
+
+	exports.default = LotSize;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _LoadingCircle = __webpack_require__(279);
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
@@ -55645,11 +55879,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _reactWaypoint = __webpack_require__(302);
+	var _reactWaypoint = __webpack_require__(303);
 
 	var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
 
-	var _PropertyCard = __webpack_require__(309);
+	var _PropertyCard = __webpack_require__(310);
 
 	var _PropertyCard2 = _interopRequireDefault(_PropertyCard);
 
@@ -55771,7 +56005,7 @@
 	exports.default = SearchResultListing;
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55786,7 +56020,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _consolidatedEvents = __webpack_require__(303);
+	var _consolidatedEvents = __webpack_require__(304);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56262,7 +56496,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56272,11 +56506,11 @@
 	exports.addEventListener = addEventListener;
 	exports.removeEventListener = removeEventListener;
 
-	var _normalizeEventOptions = __webpack_require__(304);
+	var _normalizeEventOptions = __webpack_require__(305);
 
 	var _normalizeEventOptions2 = _interopRequireDefault(_normalizeEventOptions);
 
-	var _TargetEventHandlers = __webpack_require__(307);
+	var _TargetEventHandlers = __webpack_require__(308);
 
 	var _TargetEventHandlers2 = _interopRequireDefault(_TargetEventHandlers);
 
@@ -56309,7 +56543,7 @@
 	}
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56317,7 +56551,7 @@
 	});
 	exports['default'] = normalizeEventOptions;
 
-	var _canUsePassiveEventListeners = __webpack_require__(305);
+	var _canUsePassiveEventListeners = __webpack_require__(306);
 
 	var _canUsePassiveEventListeners2 = _interopRequireDefault(_canUsePassiveEventListeners);
 
@@ -56340,7 +56574,7 @@
 	}
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56348,7 +56582,7 @@
 	});
 	exports['default'] = canUsePassiveEventListeners;
 
-	var _canUseDOM = __webpack_require__(306);
+	var _canUseDOM = __webpack_require__(307);
 
 	var _canUseDOM2 = _interopRequireDefault(_canUseDOM);
 
@@ -56390,7 +56624,7 @@
 	}
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56401,7 +56635,7 @@
 	exports['default'] = CAN_USE_DOM;
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56410,7 +56644,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _eventOptionsKey = __webpack_require__(308);
+	var _eventOptionsKey = __webpack_require__(309);
 
 	var _eventOptionsKey2 = _interopRequireDefault(_eventOptionsKey);
 
@@ -56531,7 +56765,7 @@
 	exports['default'] = TargetEventHandlers;
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, "__esModule", {
@@ -56569,7 +56803,7 @@
 	}
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56594,7 +56828,7 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _Swiper = __webpack_require__(310);
+	var _Swiper = __webpack_require__(311);
 
 	var _Swiper2 = _interopRequireDefault(_Swiper);
 
@@ -56666,8 +56900,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        {
-	          className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
+	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
@@ -56684,13 +56917,12 @@
 	                { className: 'swiper-wrapper' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'swiper-slide',
-	                    onClick: function onClick(eve) {
+	                  { className: 'swiper-slide', onClick: function onClick(eve) {
 	                      return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	                    } },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
-	                    className: 'swiper-lazy card-img-top',
+	                    className: 'swiper-lazy',
 	                    src: _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
 	                  })
 	                ),
@@ -56700,7 +56932,7 @@
 	                    { className: 'swiper-slide', key: k },
 	                    _react2.default.createElement('img', {
 	                      alt: _lodash2.default.isEmpty(d) ? 'Card image cap' : '',
-	                      className: 'swiper-lazy card-img-top',
+	                      className: 'swiper-lazy',
 	                      'data-src': _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
 	                    })
 	                  );
@@ -56709,35 +56941,29 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav-container" },
+	            'ul',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav" },
 	            _react2.default.createElement(
-	              'ul',
-	              { className: 'nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'direction-nav text-center' },
-	              _react2.default.createElement(
-	                'li',
-	                { className: 'nav-item mr-auto ' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle', onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    return _this2.handleNavigation.bind(_this2)('prev');
-	                  }, href: '#' })
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { className: 'nav-item' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-next rounded-circle',
-	                  onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    return _this2.handleNavigation.bind(_this2)('next');
-	                  }, href: '#' })
-	              )
+	              'li',
+	              null,
+	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-prev", onClick: function onClick(e) {
+	                  e.preventDefault();
+	                  return _this2.handleNavigation.bind(_this2)('prev');
+	                }, href: '#' })
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-next", onClick: function onClick(e) {
+	                  e.preventDefault();
+	                  return _this2.handleNavigation.bind(_this2)('next');
+	                }, href: '#' })
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block',
-	            onClick: function onClick(eve) {
+	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block', onClick: function onClick(eve) {
 	              return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	            } },
 	          _react2.default.createElement(
@@ -56753,8 +56979,7 @@
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "action-btn-group" },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active',
-	                  title: 'Save as favorite' },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active', title: 'Save as favorite' },
 	                _react2.default.createElement('i', { className: 'fa fa-heart', 'aria-hidden': 'true' })
 	              ),
 	              _react2.default.createElement(
@@ -56766,7 +56991,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'h4',
-	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title m-0' },
+	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title' },
 	            address
 	          ),
 	          _react2.default.createElement(
@@ -56810,7 +57035,7 @@
 	exports.default = PropertyCard;
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56825,7 +57050,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _swiper = __webpack_require__(311);
+	var _swiper = __webpack_require__(312);
 
 	var _swiper2 = _interopRequireDefault(_swiper);
 
@@ -56833,7 +57058,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	__webpack_require__(312);
+	__webpack_require__(313);
 
 	var Swiper = function () {
 	  function Swiper() {
@@ -56854,7 +57079,7 @@
 	;
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -62193,13 +62418,13 @@
 
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(313);
+	var content = __webpack_require__(314);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(299)(content, {});
@@ -62219,7 +62444,7 @@
 	}
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(298)();
@@ -62233,7 +62458,7 @@
 
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62248,15 +62473,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Header = __webpack_require__(315);
+	var _Header = __webpack_require__(316);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _LoadingAccordion = __webpack_require__(320);
+	var _LoadingAccordion = __webpack_require__(321);
 
 	var _LoadingAccordion2 = _interopRequireDefault(_LoadingAccordion);
 
-	var _UserPanel = __webpack_require__(321);
+	var _UserPanel = __webpack_require__(322);
 
 	var _UserPanel2 = _interopRequireDefault(_UserPanel);
 
@@ -62341,7 +62566,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
+	          null,
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -62365,7 +62590,7 @@
 	;
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62382,19 +62607,17 @@
 
 	var _index = __webpack_require__(278);
 
-	var _HeaderDefault = __webpack_require__(316);
+	var _HeaderDefault = __webpack_require__(317);
 
 	var _HeaderDefault2 = _interopRequireDefault(_HeaderDefault);
 
-	var _HeaderSearch = __webpack_require__(318);
+	var _HeaderSearch = __webpack_require__(319);
 
 	var _HeaderSearch2 = _interopRequireDefault(_HeaderSearch);
 
 	var _Util = __webpack_require__(281);
 
 	var _Util2 = _interopRequireDefault(_Util);
-
-	var _lib = __webpack_require__(276);
 
 	var _lodash = __webpack_require__(277);
 
@@ -62434,8 +62657,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    'div',
+	    null,
 	    headerElement
 	  );
 	};
@@ -62445,7 +62668,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62458,21 +62681,41 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Navigation = __webpack_require__(317);
+	var _Navigation = __webpack_require__(318);
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
+
+	var _lib = __webpack_require__(276);
+
+	var _lodash = __webpack_require__(277);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
+	      'span',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up', onClick: openUserPanel },
+	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
+	    ) : null,
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'container-fluid' },
+	      _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
+	    )
+	  );
 	};
 	exports.default = HeaderDefault;
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62499,63 +62742,54 @@
 	  var openUserPanel = _ref.openUserPanel;
 	  return _react2.default.createElement(
 	    'nav',
-	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
+	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
-	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
-	        'a',
-	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-2', onClick: openUserPanel },
-	        _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	          className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
-	      ) : null,
+	      'a',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand',
+	        href: _lodash2.default.get(bundle, 'site_url', ''),
+	        onClick: function onClick(eve) {
+	          eve.preventDefault();
+	          _reactRouter.browserHistory.push('');
+	        }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	        className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	      _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	        className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	    ),
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'nav navbar-toggler-right' },
 	      _react2.default.createElement(
-	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand mr-auto',
-	          href: _lodash2.default.get(bundle, 'site_url', ''),
-	          onClick: function onClick(eve) {
-	            eve.preventDefault();
-	            _reactRouter.browserHistory.push('');
-	          }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	        'li',
+	        { className: 'nav-item' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
+	          'Login'
+	        )
 	      ),
 	      _react2.default.createElement(
-	        'ul',
-	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
+	        'li',
+	        { className: 'nav-item hidden-sm-down' },
 	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item' },
+	          'button',
+	          { className: 'navbar-toggler', type: 'button', onClick: openUserPanel },
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	            'Login'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item hidden-sm-down' },
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'button', className: _lib.Lib.THEME_CLASSES_PREFIX + "navigation-menu-button", onClick: openUserPanel },
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              '\u2630'
-	            ),
-	            ' Menu'
-	          )
+	            'span',
+	            null,
+	            '\u2630'
+	          ),
+	          ' Menu'
 	        )
 	      )
 	    )
 	  );
 	};
+
 	exports.default = Navigation;
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62572,7 +62806,7 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _SearchFilters = __webpack_require__(319);
+	var _SearchFilters = __webpack_require__(320);
 
 	var _SearchFilters2 = _interopRequireDefault(_SearchFilters);
 
@@ -62606,80 +62840,84 @@
 
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container-fluid' },
+	        'section',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'container-fluid' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
-	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
-	              'a',
-	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  _reactRouter.browserHistory.push('');
-	                }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	              _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	                className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
-	            ) : null
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	            { className: 'row' },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#' },
-	              saleType,
-	              ' ',
-	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	            )
-	          ),
-	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	                'a',
+	                { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	                    eve.preventDefault();
+	                    _reactRouter.browserHistory.push('');
+	                  }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
+	              ) : null
+	            ),
 	            _react2.default.createElement(
-	              'ul',
-	              null,
+	              'span',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
 	              _react2.default.createElement(
-	                'li',
+	                'a',
+	                { href: '#' },
+	                saleType,
+	                ' ',
+	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              )
+	            ),
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	              _react2.default.createElement(
+	                'ul',
 	                null,
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-heart' })
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                null,
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-bell' }),
-	                  ' ',
+	                  'li',
+	                  null,
 	                  _react2.default.createElement(
-	                    'span',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
+	                    'a',
+	                    { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
 	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-circle' })
+	                      className: 'fa fa-heart' })
 	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                null,
+	                ),
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: this.props.openUserPanel,
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
+	                  'li',
+	                  null,
 	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '\u2630'
+	                    'a',
+	                    { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                    _react2.default.createElement('i', {
+	                      className: 'fa fa-bell' }),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'span',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
+	                      _react2.default.createElement('i', {
+	                        className: 'fa fa-circle' })
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'li',
+	                  null,
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: '#', onClick: this.props.openUserPanel,
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      '\u2630'
+	                    )
 	                  )
 	                )
 	              )
@@ -62700,7 +62938,7 @@
 	exports.default = HeaderSearch;
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62971,7 +63209,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(searchFilters);
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63011,23 +63249,15 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-container" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-container my-auto' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-accordion text-center' },
-	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
-	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
-	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
-	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
-	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
-	            )
-	          )
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-accordion" },
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
 	        )
 	      );
 	    }
@@ -63036,10 +63266,12 @@
 	  return LoadingAccordion;
 	}(_react.Component);
 
+	;
+
 	exports.default = LoadingAccordion;
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63092,7 +63324,7 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
+	    'div',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
@@ -63325,7 +63557,7 @@
 	exports.default = UserPanel;
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63342,39 +63574,39 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _Masthead = __webpack_require__(323);
+	var _Masthead = __webpack_require__(324);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Callout = __webpack_require__(334);
+	var _Callout = __webpack_require__(335);
 
 	var _Callout2 = _interopRequireDefault(_Callout);
 
-	var _Testimonials = __webpack_require__(336);
+	var _Testimonials = __webpack_require__(337);
 
 	var _Testimonials2 = _interopRequireDefault(_Testimonials);
 
-	var _ListingCarousel = __webpack_require__(338);
+	var _ListingCarousel = __webpack_require__(339);
 
 	var _ListingCarousel2 = _interopRequireDefault(_ListingCarousel);
 
-	var _Subnavigation = __webpack_require__(340);
+	var _Subnavigation = __webpack_require__(341);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-	var _Tour = __webpack_require__(347);
+	var _Tour = __webpack_require__(348);
 
 	var _Tour2 = _interopRequireDefault(_Tour);
 
-	var _Single = __webpack_require__(351);
+	var _Single = __webpack_require__(352);
 
 	var _Single2 = _interopRequireDefault(_Single);
 
-	var _Single3 = __webpack_require__(418);
+	var _Single3 = __webpack_require__(419);
 
 	var _Single4 = _interopRequireDefault(_Single3);
 
-	var _Footer = __webpack_require__(412);
+	var _Footer = __webpack_require__(413);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -63416,37 +63648,33 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
-	          rows.map(function (row) {
-	            var cells = _lodash2.default.get(row, 'cells', []);
+	        null,
+	        rows.map(function (row) {
+	          var cells = _lodash2.default.get(row, 'cells', []);
 
-	            return cells.map(function (cell) {
-	              switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	                case 'Property_Pro_Masthead_Widget':
-	                  return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Subnavigation_Widget':
-	                  return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
-	                  break;
-	                case 'Property_Pro_Tour_Widget':
-	                  return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Listing_Carousel_Widget':
-	                  return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Callout_Widget':
-	                  return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                  break;
-	                case 'Property_Pro_Testimonials_Widget':
-	                  return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                  break;
-	              }
-	            });
-	          })
-	        ),
+	          return cells.map(function (cell) {
+	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	              case 'Property_Pro_Masthead_Widget':
+	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Subnavigation_Widget':
+	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
+	                break;
+	              case 'Property_Pro_Tour_Widget':
+	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Listing_Carousel_Widget':
+	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Callout_Widget':
+	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                break;
+	              case 'Property_Pro_Testimonials_Widget':
+	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                break;
+	            }
+	          });
+	        }),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -63462,7 +63690,7 @@
 	exports.default = Page;
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63477,27 +63705,27 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _TitleDescriptionLayout = __webpack_require__(324);
+	var _TitleDescriptionLayout = __webpack_require__(325);
 
 	var _TitleDescriptionLayout2 = _interopRequireDefault(_TitleDescriptionLayout);
 
-	var _SubtitleTitleLayout = __webpack_require__(329);
+	var _SubtitleTitleLayout = __webpack_require__(330);
 
 	var _SubtitleTitleLayout2 = _interopRequireDefault(_SubtitleTitleLayout);
 
-	var _BlogSingleLayout = __webpack_require__(330);
+	var _BlogSingleLayout = __webpack_require__(331);
 
 	var _BlogSingleLayout2 = _interopRequireDefault(_BlogSingleLayout);
 
-	var _GuideLayout = __webpack_require__(331);
+	var _GuideLayout = __webpack_require__(332);
 
 	var _GuideLayout2 = _interopRequireDefault(_GuideLayout);
 
-	var _GuideSingleLayout = __webpack_require__(332);
+	var _GuideSingleLayout = __webpack_require__(333);
 
 	var _GuideSingleLayout2 = _interopRequireDefault(_GuideSingleLayout);
 
-	var _Modal = __webpack_require__(333);
+	var _Modal = __webpack_require__(334);
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -63558,8 +63786,7 @@
 	      );
 	      break;
 	    case 'guide_single_layout':
-	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle,
-	        returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
+	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle, returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
 	      break;
 	    case 'title_description_layout':
 	    default:
@@ -63569,16 +63796,12 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead", style: headerStyle },
 	    modal,
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'row' },
-	        container
-	      )
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "intro-wrap" },
+	      container
 	    )
 	  );
 	};
@@ -63588,13 +63811,13 @@
 	exports.default = Masthead;
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -63603,7 +63826,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _Search = __webpack_require__(325);
+	var _Search = __webpack_require__(326);
 
 	var _Search2 = _interopRequireDefault(_Search);
 
@@ -63616,30 +63839,29 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
-	  var widget_cell = _ref.widget_cell;
+	    var widget_cell = _ref.widget_cell;
 
-	  return _react2.default.createElement(
-	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h1',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	      'p',
-	      {
-	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
-	      widget_cell.widget.fields.subtitle
-	    ) : null,
-	    _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	  );
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	            'h1',
+	            null,
+	            widget_cell.widget.fields.title
+	        ) : null,
+	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
+	        ) : null,
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	    );
 	};
 
 	exports.default = TitleDescriptionLayout;
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63656,11 +63878,11 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _MobileTabsSearch = __webpack_require__(326);
+	var _MobileTabsSearch = __webpack_require__(327);
 
 	var _MobileTabsSearch2 = _interopRequireDefault(_MobileTabsSearch);
 
-	var _DropDownSearch = __webpack_require__(327);
+	var _DropDownSearch = __webpack_require__(328);
 
 	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
 
@@ -63786,7 +64008,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box" },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,
@@ -63834,7 +64056,7 @@
 	exports.default = Search;
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63943,7 +64165,7 @@
 	exports.default = MobileTabsSearch;
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63958,7 +64180,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactOnclickoutside = __webpack_require__(328);
+	var _reactOnclickoutside = __webpack_require__(329);
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
@@ -64025,7 +64247,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
+	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
 	              return self.props.handleChange(true);
 	            } },
 	          this.props.selectedOption,
@@ -64069,7 +64291,7 @@
 	exports.default = (0, _reactOnclickoutside2.default)(DropDownSearch);
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -64376,13 +64598,13 @@
 
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -64391,7 +64613,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _Search = __webpack_require__(325);
+	var _Search = __webpack_require__(326);
 
 	var _Search2 = _interopRequireDefault(_Search);
 
@@ -64404,31 +64626,29 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
-	  var widget_cell = _ref.widget_cell;
+	    var widget_cell = _ref.widget_cell;
 
-	  return _react2.default.createElement(
-	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
-	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	      'p',
-	      {
-	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
-	      widget_cell.widget.fields.subtitle
-	    ) : null,
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h1',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _react2.default.createElement(_Search2.default, {
-	      options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	  );
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-container' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	            'p',
+	            { className: 'hidden-sm-down' },
+	            widget_cell.widget.fields.subtitle
+	        ) : null,
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	            'h1',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
+	            widget_cell.widget.fields.title
+	        ) : null,
+	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	    );
 	};
 
 	exports.default = SubtitleTitleLayout;
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64458,13 +64678,13 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container' },
+	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
 	    _react2.default.createElement(
 	      'header',
 	      null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
+	        null,
 	        widget_cell.widget.fields.title
 	      ) : null
 	    ),
@@ -64473,21 +64693,20 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
 	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
 	          target: '_blank', title: 'Facebook', rel: 'noopener' },
 	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	      ) : null,
 	      twitterLink ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
-	          title: 'Twitter' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank', title: 'Twitter' },
 	        _react2.default.createElement('i', {
 	          className: 'fa fa-twitter' })
 	      ) : null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
 	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
 	          target: '_blank', title: 'LinkedIn' },
 	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
@@ -64499,7 +64718,7 @@
 	exports.default = BlogSingleLayout;
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64526,27 +64745,23 @@
 	  return _react2.default.createElement(
 	    'header',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-header" },
-	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-header-container mx-auto text-center' },
-	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	        widget_cell.widget.fields.title
-	      ) : null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	        'p',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
-	        widget_cell.widget.fields.subtitle
-	      ) : null
-	    )
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
+	      widget_cell.widget.fields.subtitle
+	    ) : null
 	  );
 	};
 
 	exports.default = GuideLayout;
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64588,55 +64803,47 @@
 	    _react2.default.createElement(
 	      'header',
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-header-container mx-auto text-center' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	          widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	          'p',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	          widget_cell.widget.fields.subtitle
-	        ) : null
-	      )
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	        widget_cell.widget.fields.title
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	        'p',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	        widget_cell.widget.fields.subtitle
+	      ) : null
 	    ),
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation' },
+	      null,
 	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items' },
+	        'ol',
+	        null,
 	        _react2.default.createElement(
-	          'ul',
-	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation-cotrols' },
+	          'li',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-prev" },
 	          _react2.default.createElement(
-	            'li',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-prev text-center' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  returnToArchiveHandler();
-	                } },
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	              prevLinkText
-	            )
-	          ),
+	            'a',
+	            { href: '#', onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                returnToArchiveHandler();
+	              } },
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	            prevLinkText
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-next" },
 	          _react2.default.createElement(
-	            'li',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-next text-center' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(eve) {
-	                  eve.preventDefault();
-	                  nextArticleHandler();
-	                } },
-	              nextLinkText,
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
-	            )
+	            'a',
+	            { href: '#', onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                nextArticleHandler();
+	              } },
+	            nextLinkText,
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
 	          )
 	        )
 	      )
@@ -64647,7 +64854,7 @@
 	exports.default = GuideSingleLayout;
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64815,50 +65022,42 @@
 	      var resultsElements = searchResults.map(function (s, k) {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-group" },
 	          _react2.default.createElement(
 	            'div',
-	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group' },
+	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
 	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                  'h4',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
-	                  s.text
-	                )
+	                'h4',
+	                null,
+	                s.text
 	              )
-	            ),
-	            s.children.length ? _react2.default.createElement(
-	              'ol',
-	              { className: 'list-group' },
-	              s.children.map(function (c, i) {
-	                return _react2.default.createElement(
-	                  'li',
-	                  { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-item border-0 p-0', key: i },
+	            )
+	          ),
+	          s.children.length ? _react2.default.createElement(
+	            'ol',
+	            null,
+	            s.children.map(function (c, i) {
+	              return _react2.default.createElement(
+	                'li',
+	                { key: i },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#',
+	                    onClick: function onClick(eve) {
+	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                    } },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'container' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'row' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', className: 'm-0',
-	                          onClick: function onClick(eve) {
-	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
-	                          } },
-	                        c.text
-	                      )
-	                    )
+	                    c.text
 	                  )
-	                );
-	              })
-	            ) : null
-	          )
+	                )
+	              );
+	            })
+	          ) : null
 	        );
 	      });
 
@@ -64866,7 +65065,7 @@
 	      var inputClasses = 'form-control';
 	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
 	        placeholder = 'Address, City, Zip.';
-	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'with-padding';
+	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'withPadding';
 	      }
 
 	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
@@ -64876,88 +65075,44 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
+	        { className: searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
+	          'a',
+	          { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(e) {
+	              e.preventDefault();_this2.props.closeModal();
+	            } },
+	          _react2.default.createElement('i', { className: 'fa fa-times' })
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { method: 'get', className: 'form-inline' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'modal-content ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'form',
-	                    { method: 'get', className: 'form-inline' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Search'
-	                      ),
-	                      _react2.default.createElement('i', { className: 'fa fa-search' })
-	                    ),
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Input'
-	                      ),
-	                      _react2.default.createElement('input', {
-	                        autoComplete: 'off',
-	                        className: inputClasses,
-	                        id: _lib.Lib.THEME_PREFIX + "search-input",
-	                        onChange: this.handleSearchValueChange.bind(this),
-	                        ref: function ref(input) {
-	                          _this2.searchInput = input;
-	                        },
-	                        type: 'text',
-	                        value: this.state.searchValue,
-	                        placeholder: placeholder
-	                      })
-	                    ),
-	                    window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
-	                      'button',
-	                      { type: 'button',
-	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
-	                      'Search'
-	                    )
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _this2.props.closeModal();
-	                  }, 'aria-label': 'Close' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { 'aria-hidden': 'true' },
-	                  '\xD7'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
-	                resultsElements
-	              )
+	            { className: 'container' },
+	            _react2.default.createElement('i', { className: 'fa fa-search' }),
+	            _react2.default.createElement('input', {
+	              autoComplete: 'off',
+	              className: inputClasses,
+	              id: _lib.Lib.THEME_PREFIX + "search-input",
+	              onChange: this.handleSearchValueChange.bind(this),
+	              ref: function ref(input) {
+	                _this2.searchInput = input;
+	              },
+	              type: 'text',
+	              value: this.state.searchValue,
+	              placeholder: placeholder
+	            }),
+	            window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
+	              'button',
+	              { type: 'button', className: 'btn btn-primary' },
+	              'Search'
 	            )
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
+	          resultsElements
 	        )
 	      );
 	    }
@@ -64969,7 +65124,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Modal);
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64984,7 +65139,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _DefaultLayout = __webpack_require__(335);
+	var _DefaultLayout = __webpack_require__(336);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -65022,7 +65177,7 @@
 	exports.default = Callout;
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65051,50 +65206,29 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'row' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'callout-container mx-auto' },
-	        _react2.default.createElement(
-	          'nav',
-	          { className: 'navbar navbar-toggleable-md' },
-	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	            'p',
-	            { className: 'navbar-brand mr-auto my-auto' },
-	            item.title
-	          ) : null,
-	          _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
-	            'ul',
-	            { className: 'navbar-nav' },
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(
-	                'a',
-	                { href: _lodash2.default.get(item, 'button.url', bundle.site_url),
-	                  className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
-	                item.button.label
-	              )
-	            )
-	          ) : null
-	        )
-	      )
-	    )
+	    _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	      'p',
+	      null,
+	      item.title
+	    ) : null,
+	    _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
+	      'a',
+	      { href: _lodash2.default.get(item, 'button.url', bundle.site_url), className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
+	      item.button.label
+	    ) : null
 	  );
 	};
 
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 336 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -65103,7 +65237,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _DefaultLayout = __webpack_require__(337);
+	var _DefaultLayout = __webpack_require__(338);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -65118,106 +65252,98 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
-	  };
+	    return {
+	        activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
+	    };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
-	      dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
-	    }
-	  };
+	    return {
+	        switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
+	            dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
+	        }
+	    };
 	};
 
 	var TestimonialsContent = function TestimonialsContent(_ref) {
-	  var widget_cell = _ref.widget_cell,
-	      activeItem = _ref.activeItem,
-	      switchActiveTestimonial = _ref.switchActiveTestimonial;
+	    var widget_cell = _ref.widget_cell,
+	        activeItem = _ref.activeItem,
+	        switchActiveTestimonial = _ref.switchActiveTestimonial;
 
 
-	  if (!widget_cell) {
-	    return null;
-	  }
+	    if (!widget_cell) {
+	        return null;
+	    }
 
-	  var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	        return _react2.default.createElement(
+	            'li',
+	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
+	            _react2.default.createElement(
+	                'blockquote',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    _lodash2.default.get(testimonial, 'review', '')
+	                )
+	            )
+	        );
+	    });
+
+	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	        return _react2.default.createElement(
+	            'li',
+	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active" : "", key: i },
+	            _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: function onClick(event) {
+	                        switchActiveTestimonial(i);
+	                        event.preventDefault();
+	                        event.stopPropagation();
+	                    } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "userBox" },
+	                    _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, alt: testimonial.title }) : null,
+	                    _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
+	                        'p',
+	                        { className: 'hidden-sm-down' },
+	                        testimonial.title
+	                    ) : null,
+	                    _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
+	                        'span',
+	                        { className: 'hidden-sm-down' },
+	                        testimonial.subtitle
+	                    ) : null
+	                )
+	            )
+	        );
+	    });
+
+	    var container = void 0;
+	    switch (widget_cell.widget.fields.layout) {
+	        case 'default_layout':
+	        default:
+	            container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
+	                testimonials_authors: testimonials_authors });
+	            break;
+	    }
+
 	    return _react2.default.createElement(
-	      'li',
-	      { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
-	      _react2.default.createElement(
-	        'blockquote',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'rating mx-auto' },
-	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial-text m-0 px-4' },
-	          _lodash2.default.get(testimonial, 'review', '')
-	        )
-	      )
+	        'section',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "testimonial" },
+	        container
 	    );
-	  });
-
-	  var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
-	    return _react2.default.createElement(
-	      'li',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + _lib.Lib.THEME_CLASSES_PREFIX + "active" : ""), key: i },
-	      _react2.default.createElement(
-	        'a',
-	        { href: '#', onClick: function onClick(event) {
-	            switchActiveTestimonial(i);
-	            event.preventDefault();
-	            event.stopPropagation();
-	          } },
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-box" },
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-image" },
-	            _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, className: 'rounded-circle', alt: testimonial.title }) : null
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-info" },
-	            _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
-	              'p',
-	              { className: 'hidden-sm-down' },
-	              testimonial.title
-	            ) : null,
-	            _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
-	              'span',
-	              { className: 'hidden-sm-down' },
-	              testimonial.subtitle
-	            ) : null
-	          )
-	        )
-	      )
-	    );
-	  });
-
-	  var container = void 0;
-	  switch (widget_cell.widget.fields.layout) {
-	    case 'default_layout':
-	    default:
-	      container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
-	        testimonials_authors: testimonials_authors });
-	      break;
-	  }
-
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial text-center' },
-	    container
-	  );
 	};
 
 	var Testimonials = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TestimonialsContent);
@@ -65225,7 +65351,7 @@
 	exports.default = Testimonials;
 
 /***/ },
-/* 337 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65256,35 +65382,27 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _react2.default.createElement(
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h4',
+	      null,
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
 	      'div',
-	      { className: 'row' },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "sliderContent" },
 	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonials-container mx-auto' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	          'h4',
-	          null,
-	          widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-content" },
-	          _react2.default.createElement(
-	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
-	            testimonials_reviews
-	          )
-	        ),
-	        _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "author-info" },
-	          _react2.default.createElement(
-	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
-	            testimonials_authors
-	          )
-	        )
+	        'ul',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	        testimonials_reviews
+	      )
+	    ),
+	    _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "userInfo" },
+	      _react2.default.createElement(
+	        'ul',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
+	        testimonials_authors
 	      )
 	    )
 	  );
@@ -65293,7 +65411,7 @@
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 338 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65306,7 +65424,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Defaultlayout = __webpack_require__(339);
+	var _Defaultlayout = __webpack_require__(340);
 
 	var _Defaultlayout2 = _interopRequireDefault(_Defaultlayout);
 
@@ -65340,7 +65458,7 @@
 	exports.default = ListingCarousel;
 
 /***/ },
-/* 339 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65357,11 +65475,11 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _PropertyCard = __webpack_require__(309);
+	var _PropertyCard = __webpack_require__(310);
 
 	var _PropertyCard2 = _interopRequireDefault(_PropertyCard);
 
-	var _Swiper = __webpack_require__(310);
+	var _Swiper = __webpack_require__(311);
 
 	var _Swiper2 = _interopRequireDefault(_Swiper);
 
@@ -65411,64 +65529,49 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
-	        _react2.default.createElement(
+	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	          'h3',
+	          null,
+	          _lodash2.default.get(item, 'title')
+	        ) : null,
+	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	          'p',
+	          null,
+	          _lodash2.default.get(item, 'subtitle')
+	        ) : null,
+	        posts.length ? _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel clearfix' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
+	            { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container', ref: function ref(r) {
+	                return _this2.swiperElement = r;
+	              } },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info text-center' },
-	              _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	                'h3',
-	                { className: 'mx-auto' },
-	                _lodash2.default.get(item, 'title')
-	              ) : null,
-	              _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	                'p',
-	                null,
-	                _lodash2.default.get(item, 'subtitle')
-	              ) : null
-	            ),
-	            posts.length ? _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
-	                  ref: function ref(r) {
-	                    return _this2.swiperElement = r;
-	                  } },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'swiper-wrapper' },
-	                  posts.map(function (post, key) {
-	                    return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
-	                  })
-	                )
-	              )
-	            ) : null,
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle', ref: function ref(r) {
-	                    return _this2.swiperElementPrev = r;
-	                  } },
-	                _react2.default.createElement('i', {
-	                  className: 'fa fa-angle-left' })
-	              ),
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle', ref: function ref(r) {
-	                    return _this2.swiperElementNext = r;
-	                  } },
-	                _react2.default.createElement('i', {
-	                  className: 'fa fa-angle-right' })
-	              )
+	              { className: 'swiper-wrapper' },
+	              posts.map(function (post, key) {
+	                return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
+	              })
 	            )
+	          )
+	        ) : null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-control-nav" },
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "prev-nav", ref: function ref(r) {
+	                return _this2.swiperElementPrev = r;
+	              } },
+	            _react2.default.createElement('i', { className: 'fa fa-angle-left' })
+	          ),
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "next-nav", ref: function ref(r) {
+	                return _this2.swiperElementNext = r;
+	              } },
+	            _react2.default.createElement('i', { className: 'fa fa-angle-right' })
 	          )
 	        )
 	      );
@@ -65485,7 +65588,7 @@
 	;
 
 /***/ },
-/* 340 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65498,11 +65601,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _IconLayout = __webpack_require__(341);
+	var _IconLayout = __webpack_require__(342);
 
 	var _IconLayout2 = _interopRequireDefault(_IconLayout);
 
-	var _TextLayout = __webpack_require__(343);
+	var _TextLayout = __webpack_require__(344);
 
 	var _TextLayout2 = _interopRequireDefault(_TextLayout);
 
@@ -65544,11 +65647,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-container' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'row' },
-	        container
-	      )
+	      container
 	    )
 	  );
 	};
@@ -65556,7 +65655,7 @@
 	exports.default = Subnavigation;
 
 /***/ },
-/* 341 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65569,7 +65668,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _IconItem = __webpack_require__(342);
+	var _IconItem = __webpack_require__(343);
 
 	var _IconItem2 = _interopRequireDefault(_IconItem);
 
@@ -65589,7 +65688,7 @@
 	    null,
 	    _react2.default.createElement(
 	      'ul',
-	      null,
+	      { className: 'clearfix' },
 	      items.map(function (item, i) {
 	        if (item.url === currentUrl) {
 	          return _react2.default.createElement(
@@ -65612,7 +65711,7 @@
 	exports.default = IconLayout;
 
 /***/ },
-/* 342 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65656,7 +65755,7 @@
 	exports.default = IconItem;
 
 /***/ },
-/* 343 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65671,11 +65770,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Desktop = __webpack_require__(344);
+	var _Desktop = __webpack_require__(345);
 
 	var _Desktop2 = _interopRequireDefault(_Desktop);
 
-	var _Mobile = __webpack_require__(346);
+	var _Mobile = __webpack_require__(347);
 
 	var _Mobile2 = _interopRequireDefault(_Mobile);
 
@@ -65729,7 +65828,7 @@
 	exports.default = TextLayout;
 
 /***/ },
-/* 344 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65744,7 +65843,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _TextItem = __webpack_require__(345);
+	var _TextItem = __webpack_require__(346);
 
 	var _TextItem2 = _interopRequireDefault(_TextItem);
 
@@ -65807,7 +65906,7 @@
 	exports.default = Desktop;
 
 /***/ },
-/* 345 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65845,7 +65944,7 @@
 	exports.default = TextItem;
 
 /***/ },
-/* 346 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65860,7 +65959,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactOnclickoutside = __webpack_require__(328);
+	var _reactOnclickoutside = __webpack_require__(329);
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
@@ -66036,7 +66135,7 @@
 	exports.default = (0, _reactOnclickoutside2.default)(Mobile);
 
 /***/ },
-/* 347 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66049,7 +66148,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DefaultLayout = __webpack_require__(348);
+	var _DefaultLayout = __webpack_require__(349);
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
@@ -66084,7 +66183,7 @@
 	exports.default = Tour;
 
 /***/ },
-/* 348 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66099,7 +66198,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _FeatureGroup = __webpack_require__(349);
+	var _FeatureGroup = __webpack_require__(350);
 
 	var _FeatureGroup2 = _interopRequireDefault(_FeatureGroup);
 
@@ -66119,36 +66218,32 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-tour" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container-fluid' },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle text-center' },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'row' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle mx-auto text-center' },
-	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	            'h2',
-	            null,
-	            item.title
-	          ) : null,
-	          _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	            'p',
-	            null,
-	            item.subtitle
-	          ) : null
-	        ),
-	        _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
-	          return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
-	        })
+	        { className: 'container' },
+	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	          'h2',
+	          null,
+	          item.title
+	        ) : null,
+	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	          'p',
+	          null,
+	          item.subtitle
+	        ) : null
 	      )
-	    )
+	    ),
+	    _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
+	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
+	    })
 	  );
 	};
 
 	exports.default = DefaultLayout;
 
 /***/ },
-/* 349 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66163,7 +66258,7 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _Feature = __webpack_require__(350);
+	var _Feature = __webpack_require__(351);
 
 	var _Feature2 = _interopRequireDefault(_Feature);
 
@@ -66183,8 +66278,7 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5' : 'col-lg-7';
-	  featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block p-0';
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background' : 'col-lg-7 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background';
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
@@ -66193,7 +66287,10 @@
 	  } : {};
 
 	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
-	    featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block-full';
+	    backgroundStyle = Object.assign({}, backgroundStyle, {
+	      "backgroundSize": "cover",
+	      "minWidth": "100%"
+	    });
 	  }
 
 	  return _react2.default.createElement(
@@ -66201,37 +66298,29 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-box", key: ind },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container-fluid' },
+	      { className: 'row no-gutters ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block' },
+	      _react2.default.createElement('div', { className: featureGroupBackgroundClasses, style: backgroundStyle })
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'row' },
+	        { className: 'container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: featureGroupBackgroundClasses },
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "background", style: backgroundStyle })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'container' },
+	            { className: featureGroupContentClasses },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row no-gutters' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: featureGroupContentClasses },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
-	                  _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
-	                    var last = featuresCount === counter;
-	                    counter++;
-	                    return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
-	                  })
-	                )
-	              )
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
+	              _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
+	                var last = featuresCount === counter;
+	                counter++;
+	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
+	              })
 	            )
 	          )
 	        )
@@ -66243,7 +66332,7 @@
 	exports.default = FeatureGroup;
 
 /***/ },
-/* 350 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66273,7 +66362,7 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content-container", key: ind },
+	    { key: ind },
 	    _lodash2.default.get(feature, 'title', null) ? _react2.default.createElement(
 	      'h3',
 	      null,
@@ -66303,7 +66392,7 @@
 	        _lodash2.default.get(feature, 'testimonial_section.image_src', null) ? _react2.default.createElement(
 	          'span',
 	          null,
-	          _react2.default.createElement('img', { className: 'rounded-circle', src: feature.testimonial_section.image_src,
+	          _react2.default.createElement('img', { src: feature.testimonial_section.image_src,
 	            alt: _lodash2.default.get(feature, 'testimonial_section.name', '') })
 	        ) : null,
 	        _lodash2.default.get(feature, 'testimonial_section.name', null) ? _react2.default.createElement(
@@ -66325,7 +66414,7 @@
 	exports.default = Feature;
 
 /***/ },
-/* 351 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66340,19 +66429,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Masthead = __webpack_require__(323);
+	var _Masthead = __webpack_require__(324);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _PostCard = __webpack_require__(352);
+	var _PostCard = __webpack_require__(353);
 
 	var _PostCard2 = _interopRequireDefault(_PostCard);
 
-	var _PostContent = __webpack_require__(353);
+	var _PostContent = __webpack_require__(354);
 
 	var _PostContent2 = _interopRequireDefault(_PostContent);
 
-	var _Footer = __webpack_require__(412);
+	var _Footer = __webpack_require__(413);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -66383,74 +66472,41 @@
 	    key: 'render',
 	    value: function render() {
 
-	      var posts = _lodash2.default.get(this.props.post, 'related_posts', []);
-	      var groups = [];
-
-	      if (posts) {
-	        (function () {
-	          var postsGroup = [];
-	          posts.map(function (post) {
-	            postsGroup.push(post);
-
-	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
-	              groups.push(postsGroup);
-	              postsGroup = [];
-	            }
-	          });
-	        })();
-	      }
-
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
+	          'article',
+	          null,
+	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
+	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
+	        ),
+	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	          'section',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	          _react2.default.createElement(
-	            'article',
-	            null,
-	            _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	            _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
-	          ),
-	          _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
+	            'div',
+	            { className: 'container' },
+	            _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
+	              _react2.default.createElement(
+	                'h4',
+	                null,
+	                'More ',
+	                this.props.post.category_title,
+	                ' Articles'
+	              )
+	            ) : null,
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'more-posts text-center' },
-	                  _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    'More ',
-	                    this.props.post.category_title,
-	                    ' Articles'
-	                  )
-	                ) : null
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                groups.map(function (g, group_index) {
-	                  var groupPosts = g.map(function (p, i) {
-	                    return _react2.default.createElement(_PostCard2.default, { data: p, key: i });
-	                  });
-	                  return _react2.default.createElement(
-	                    'div',
-	                    { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
-	                      key: group_index },
-	                    groupPosts
-	                  );
-	                })
-	              )
+	              { className: 'row' },
+	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
+	                return _react2.default.createElement(_PostCard2.default, { data: item });
+	              })
 	            )
-	          ) : null
-	        ),
+	          )
+	        ) : null,
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -66465,7 +66521,7 @@
 	exports.default = Single;
 
 /***/ },
-/* 352 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66521,10 +66577,10 @@
 
 	      return _react2.default.createElement(
 	        'section',
-	        { className: 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-item border-0' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-item col-lg-6' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-img-top ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-image' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-image" },
 	          _react2.default.createElement(
 	            'a',
 	            { href: url, title: title, onClick: function onClick(e) {
@@ -66535,29 +66591,25 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'card-block p-0' },
+	          'header',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-excerpt" },
 	          _react2.default.createElement(
-	            'header',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-header" },
+	            'h5',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-title" },
 	            _react2.default.createElement(
-	              'h5',
-	              { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-title' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: url, onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _Util2.default.goToUrl(relative_url);
-	                  } },
-	                title
-	              )
+	              'a',
+	              { href: url, onClick: function onClick(e) {
+	                  e.preventDefault();
+	                  _Util2.default.goToUrl(relative_url);
+	                } },
+	              title
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            { className: 'card-text' },
-	            excerpt
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          excerpt
 	        )
 	      );
 	    }
@@ -66572,7 +66624,7 @@
 	exports.default = PostCard;
 
 /***/ },
-/* 353 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66587,7 +66639,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRenderHtml = __webpack_require__(354);
+	var _reactRenderHtml = __webpack_require__(355);
 
 	var _reactRenderHtml2 = _interopRequireDefault(_reactRenderHtml);
 
@@ -66623,15 +66675,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-content-container mx-auto text-justify' },
-	              (0, _reactRenderHtml2.default)(this.props.content)
-	            )
-	          )
+	          (0, _reactRenderHtml2.default)(this.props.content)
 	        )
 	      ) : null;
 	    }
@@ -66646,15 +66690,15 @@
 	exports.default = PostContent;
 
 /***/ },
-/* 354 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var htmlParser = __webpack_require__(355);
+	var htmlParser = __webpack_require__(356);
 	var React = __webpack_require__(1);
-	var convertAttr = __webpack_require__(406);
-	var styleParser = __webpack_require__(408);
+	var convertAttr = __webpack_require__(407);
+	var styleParser = __webpack_require__(409);
 
 	var renderNode = function (node, key) {
 	  if (node.nodeName === '#text') {
@@ -66695,13 +66739,13 @@
 
 
 /***/ },
-/* 355 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Parser = __webpack_require__(356),
-	    Serializer = __webpack_require__(370);
+	var Parser = __webpack_require__(357),
+	    Serializer = __webpack_require__(371);
 
 	/** @namespace parse5 */
 
@@ -66797,33 +66841,33 @@
 	 * var serializer = new parse5.SerializerStream(node, { treeAdapter: parse5.treeAdapters.htmlparser2 });
 	 */
 	exports.treeAdapters = {
-	    default: __webpack_require__(366),
-	    htmlparser2: __webpack_require__(371)
+	    default: __webpack_require__(367),
+	    htmlparser2: __webpack_require__(372)
 	};
 
 
 	// Streaming
-	exports.ParserStream = __webpack_require__(372);
-	exports.SerializerStream = __webpack_require__(402);
-	exports.SAXParser = __webpack_require__(403);
+	exports.ParserStream = __webpack_require__(373);
+	exports.SerializerStream = __webpack_require__(403);
+	exports.SAXParser = __webpack_require__(404);
 
 
 /***/ },
-/* 356 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Tokenizer = __webpack_require__(357),
-	    OpenElementStack = __webpack_require__(362),
-	    FormattingElementList = __webpack_require__(364),
-	    locationInfoMixin = __webpack_require__(365),
-	    defaultTreeAdapter = __webpack_require__(366),
-	    doctype = __webpack_require__(367),
-	    foreignContent = __webpack_require__(368),
-	    mergeOptions = __webpack_require__(369),
-	    UNICODE = __webpack_require__(359),
-	    HTML = __webpack_require__(363);
+	var Tokenizer = __webpack_require__(358),
+	    OpenElementStack = __webpack_require__(363),
+	    FormattingElementList = __webpack_require__(365),
+	    locationInfoMixin = __webpack_require__(366),
+	    defaultTreeAdapter = __webpack_require__(367),
+	    doctype = __webpack_require__(368),
+	    foreignContent = __webpack_require__(369),
+	    mergeOptions = __webpack_require__(370),
+	    UNICODE = __webpack_require__(360),
+	    HTML = __webpack_require__(364);
 
 	//Aliases
 	var $ = HTML.TAG_NAMES,
@@ -69632,15 +69676,15 @@
 
 
 /***/ },
-/* 357 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Preprocessor = __webpack_require__(358),
-	    locationInfoMixin = __webpack_require__(360),
-	    UNICODE = __webpack_require__(359),
-	    NAMED_ENTITY_TRIE = __webpack_require__(361);
+	var Preprocessor = __webpack_require__(359),
+	    locationInfoMixin = __webpack_require__(361),
+	    UNICODE = __webpack_require__(360),
+	    NAMED_ENTITY_TRIE = __webpack_require__(362);
 
 	//Aliases
 	var $ = UNICODE.CODE_POINTS,
@@ -71739,12 +71783,12 @@
 
 
 /***/ },
-/* 358 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var UNICODE = __webpack_require__(359);
+	var UNICODE = __webpack_require__(360);
 
 	//Aliases
 	var $ = UNICODE.CODE_POINTS;
@@ -71900,7 +71944,7 @@
 
 
 /***/ },
-/* 359 */
+/* 360 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71953,12 +71997,12 @@
 
 
 /***/ },
-/* 360 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var UNICODE = __webpack_require__(359);
+	var UNICODE = __webpack_require__(360);
 
 	//Aliases
 	var $ = UNICODE.CODE_POINTS;
@@ -72128,7 +72172,7 @@
 
 
 /***/ },
-/* 361 */
+/* 362 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72140,12 +72184,12 @@
 
 
 /***/ },
-/* 362 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var HTML = __webpack_require__(363);
+	var HTML = __webpack_require__(364);
 
 	//Aliases
 	var $ = HTML.TAG_NAMES,
@@ -72541,7 +72585,7 @@
 
 
 /***/ },
-/* 363 */
+/* 364 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72813,7 +72857,7 @@
 
 
 /***/ },
-/* 364 */
+/* 365 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72986,14 +73030,14 @@
 
 
 /***/ },
-/* 365 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var OpenElementStack = __webpack_require__(362),
-	    Tokenizer = __webpack_require__(357),
-	    HTML = __webpack_require__(363);
+	var OpenElementStack = __webpack_require__(363),
+	    Tokenizer = __webpack_require__(358),
+	    HTML = __webpack_require__(364);
 
 
 	//Aliases
@@ -73209,7 +73253,7 @@
 
 
 /***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -73793,7 +73837,7 @@
 
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -73936,13 +73980,13 @@
 
 
 /***/ },
-/* 368 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Tokenizer = __webpack_require__(357),
-	    HTML = __webpack_require__(363);
+	var Tokenizer = __webpack_require__(358),
+	    HTML = __webpack_require__(364);
 
 	//Aliases
 	var $ = HTML.TAG_NAMES,
@@ -74202,7 +74246,7 @@
 
 
 /***/ },
-/* 369 */
+/* 370 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -74221,15 +74265,15 @@
 
 
 /***/ },
-/* 370 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaultTreeAdapter = __webpack_require__(366),
-	    doctype = __webpack_require__(367),
-	    mergeOptions = __webpack_require__(369),
-	    HTML = __webpack_require__(363);
+	var defaultTreeAdapter = __webpack_require__(367),
+	    doctype = __webpack_require__(368),
+	    mergeOptions = __webpack_require__(370),
+	    HTML = __webpack_require__(364);
 
 	//Aliases
 	var $ = HTML.TAG_NAMES,
@@ -74407,12 +74451,12 @@
 
 
 /***/ },
-/* 371 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var doctype = __webpack_require__(367);
+	var doctype = __webpack_require__(368);
 
 	//Conversion tables for DOM Level1 structure emulation
 	var nodeTypes = {
@@ -74740,14 +74784,14 @@
 
 
 /***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var WritableStream = __webpack_require__(373).Writable,
-	    inherits = __webpack_require__(399).inherits,
-	    Parser = __webpack_require__(356);
+	var WritableStream = __webpack_require__(374).Writable,
+	    inherits = __webpack_require__(400).inherits,
+	    Parser = __webpack_require__(357);
 
 	/**
 	 * Streaming HTML parser with scripting support.
@@ -74886,7 +74930,7 @@
 
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -74912,15 +74956,15 @@
 
 	module.exports = Stream;
 
-	var EE = __webpack_require__(374).EventEmitter;
-	var inherits = __webpack_require__(375);
+	var EE = __webpack_require__(375).EventEmitter;
+	var inherits = __webpack_require__(376);
 
 	inherits(Stream, EE);
-	Stream.Readable = __webpack_require__(376);
-	Stream.Writable = __webpack_require__(395);
-	Stream.Duplex = __webpack_require__(396);
-	Stream.Transform = __webpack_require__(397);
-	Stream.PassThrough = __webpack_require__(398);
+	Stream.Readable = __webpack_require__(377);
+	Stream.Writable = __webpack_require__(396);
+	Stream.Duplex = __webpack_require__(397);
+	Stream.Transform = __webpack_require__(398);
+	Stream.PassThrough = __webpack_require__(399);
 
 	// Backwards-compat with node 0.4.x
 	Stream.Stream = Stream;
@@ -75019,7 +75063,7 @@
 
 
 /***/ },
-/* 374 */
+/* 375 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -75327,7 +75371,7 @@
 
 
 /***/ },
-/* 375 */
+/* 376 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -75356,21 +75400,21 @@
 
 
 /***/ },
-/* 376 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var Stream = (function (){
 	  try {
-	    return __webpack_require__(373); // hack to fix a circular dependency issue when used with browserify
+	    return __webpack_require__(374); // hack to fix a circular dependency issue when used with browserify
 	  } catch(_){}
 	}());
-	exports = module.exports = __webpack_require__(377);
+	exports = module.exports = __webpack_require__(378);
 	exports.Stream = Stream || exports;
 	exports.Readable = exports;
-	exports.Writable = __webpack_require__(388);
-	exports.Duplex = __webpack_require__(387);
-	exports.Transform = __webpack_require__(393);
-	exports.PassThrough = __webpack_require__(394);
+	exports.Writable = __webpack_require__(389);
+	exports.Duplex = __webpack_require__(388);
+	exports.Transform = __webpack_require__(394);
+	exports.PassThrough = __webpack_require__(395);
 
 	if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 	  module.exports = Stream;
@@ -75379,7 +75423,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 377 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -75387,11 +75431,11 @@
 	module.exports = Readable;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(378);
+	var processNextTick = __webpack_require__(379);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var isArray = __webpack_require__(379);
+	var isArray = __webpack_require__(380);
 	/*</replacement>*/
 
 	/*<replacement>*/
@@ -75401,7 +75445,7 @@
 	Readable.ReadableState = ReadableState;
 
 	/*<replacement>*/
-	var EE = __webpack_require__(374).EventEmitter;
+	var EE = __webpack_require__(375).EventEmitter;
 
 	var EElistenerCount = function (emitter, type) {
 	  return emitter.listeners(type).length;
@@ -75412,25 +75456,25 @@
 	var Stream;
 	(function () {
 	  try {
-	    Stream = __webpack_require__(373);
+	    Stream = __webpack_require__(374);
 	  } catch (_) {} finally {
-	    if (!Stream) Stream = __webpack_require__(374).EventEmitter;
+	    if (!Stream) Stream = __webpack_require__(375).EventEmitter;
 	  }
 	})();
 	/*</replacement>*/
 
-	var Buffer = __webpack_require__(380).Buffer;
+	var Buffer = __webpack_require__(381).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(383);
+	var bufferShim = __webpack_require__(384);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var util = __webpack_require__(384);
-	util.inherits = __webpack_require__(375);
+	var util = __webpack_require__(385);
+	util.inherits = __webpack_require__(376);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var debugUtil = __webpack_require__(385);
+	var debugUtil = __webpack_require__(386);
 	var debug = void 0;
 	if (debugUtil && debugUtil.debuglog) {
 	  debug = debugUtil.debuglog('stream');
@@ -75439,7 +75483,7 @@
 	}
 	/*</replacement>*/
 
-	var BufferList = __webpack_require__(386);
+	var BufferList = __webpack_require__(387);
 	var StringDecoder;
 
 	util.inherits(Readable, Stream);
@@ -75459,7 +75503,7 @@
 	}
 
 	function ReadableState(options, stream) {
-	  Duplex = Duplex || __webpack_require__(387);
+	  Duplex = Duplex || __webpack_require__(388);
 
 	  options = options || {};
 
@@ -75521,14 +75565,14 @@
 	  this.decoder = null;
 	  this.encoding = null;
 	  if (options.encoding) {
-	    if (!StringDecoder) StringDecoder = __webpack_require__(392).StringDecoder;
+	    if (!StringDecoder) StringDecoder = __webpack_require__(393).StringDecoder;
 	    this.decoder = new StringDecoder(options.encoding);
 	    this.encoding = options.encoding;
 	  }
 	}
 
 	function Readable(options) {
-	  Duplex = Duplex || __webpack_require__(387);
+	  Duplex = Duplex || __webpack_require__(388);
 
 	  if (!(this instanceof Readable)) return new Readable(options);
 
@@ -75631,7 +75675,7 @@
 
 	// backwards compatibility.
 	Readable.prototype.setEncoding = function (enc) {
-	  if (!StringDecoder) StringDecoder = __webpack_require__(392).StringDecoder;
+	  if (!StringDecoder) StringDecoder = __webpack_require__(393).StringDecoder;
 	  this._readableState.decoder = new StringDecoder(enc);
 	  this._readableState.encoding = enc;
 	  return this;
@@ -76326,7 +76370,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 378 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -76376,7 +76420,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 379 */
+/* 380 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -76387,7 +76431,7 @@
 
 
 /***/ },
-/* 380 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -76400,9 +76444,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(381)
-	var ieee754 = __webpack_require__(382)
-	var isArray = __webpack_require__(379)
+	var base64 = __webpack_require__(382)
+	var ieee754 = __webpack_require__(383)
+	var isArray = __webpack_require__(380)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -78183,7 +78227,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 381 */
+/* 382 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -78303,7 +78347,7 @@
 
 
 /***/ },
-/* 382 */
+/* 383 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -78393,12 +78437,12 @@
 
 
 /***/ },
-/* 383 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
-	var buffer = __webpack_require__(380);
+	var buffer = __webpack_require__(381);
 	var Buffer = buffer.Buffer;
 	var SlowBuffer = buffer.SlowBuffer;
 	var MAX_LEN = buffer.kMaxLength || 2147483647;
@@ -78508,7 +78552,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 384 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -78619,23 +78663,23 @@
 	  return Object.prototype.toString.call(o);
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(380).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(381).Buffer))
 
 /***/ },
-/* 385 */
+/* 386 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 386 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Buffer = __webpack_require__(380).Buffer;
+	var Buffer = __webpack_require__(381).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(383);
+	var bufferShim = __webpack_require__(384);
 	/*</replacement>*/
 
 	module.exports = BufferList;
@@ -78697,7 +78741,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a duplex stream is just a stream that is both readable and writable.
@@ -78720,16 +78764,16 @@
 	module.exports = Duplex;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(378);
+	var processNextTick = __webpack_require__(379);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var util = __webpack_require__(384);
-	util.inherits = __webpack_require__(375);
+	var util = __webpack_require__(385);
+	util.inherits = __webpack_require__(376);
 	/*</replacement>*/
 
-	var Readable = __webpack_require__(377);
-	var Writable = __webpack_require__(388);
+	var Readable = __webpack_require__(378);
+	var Writable = __webpack_require__(389);
 
 	util.inherits(Duplex, Readable);
 
@@ -78777,7 +78821,7 @@
 	}
 
 /***/ },
-/* 388 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {// A bit simpler than readable streams.
@@ -78789,7 +78833,7 @@
 	module.exports = Writable;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(378);
+	var processNextTick = __webpack_require__(379);
 	/*</replacement>*/
 
 	/*<replacement>*/
@@ -78803,13 +78847,13 @@
 	Writable.WritableState = WritableState;
 
 	/*<replacement>*/
-	var util = __webpack_require__(384);
-	util.inherits = __webpack_require__(375);
+	var util = __webpack_require__(385);
+	util.inherits = __webpack_require__(376);
 	/*</replacement>*/
 
 	/*<replacement>*/
 	var internalUtil = {
-	  deprecate: __webpack_require__(391)
+	  deprecate: __webpack_require__(392)
 	};
 	/*</replacement>*/
 
@@ -78817,16 +78861,16 @@
 	var Stream;
 	(function () {
 	  try {
-	    Stream = __webpack_require__(373);
+	    Stream = __webpack_require__(374);
 	  } catch (_) {} finally {
-	    if (!Stream) Stream = __webpack_require__(374).EventEmitter;
+	    if (!Stream) Stream = __webpack_require__(375).EventEmitter;
 	  }
 	})();
 	/*</replacement>*/
 
-	var Buffer = __webpack_require__(380).Buffer;
+	var Buffer = __webpack_require__(381).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(383);
+	var bufferShim = __webpack_require__(384);
 	/*</replacement>*/
 
 	util.inherits(Writable, Stream);
@@ -78841,7 +78885,7 @@
 	}
 
 	function WritableState(options, stream) {
-	  Duplex = Duplex || __webpack_require__(387);
+	  Duplex = Duplex || __webpack_require__(388);
 
 	  options = options || {};
 
@@ -78975,7 +79019,7 @@
 	}
 
 	function Writable(options) {
-	  Duplex = Duplex || __webpack_require__(387);
+	  Duplex = Duplex || __webpack_require__(388);
 
 	  // Writable ctor is applied to Duplexes, too.
 	  // `realHasInstance` is necessary because using plain `instanceof`
@@ -79334,10 +79378,10 @@
 	    }
 	  };
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(389).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(390).setImmediate))
 
 /***/ },
-/* 389 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var apply = Function.prototype.apply;
@@ -79390,13 +79434,13 @@
 	};
 
 	// setimmediate attaches itself to the global object
-	__webpack_require__(390);
+	__webpack_require__(391);
 	exports.setImmediate = setImmediate;
 	exports.clearImmediate = clearImmediate;
 
 
 /***/ },
-/* 390 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -79589,7 +79633,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(3)))
 
 /***/ },
-/* 391 */
+/* 392 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -79663,7 +79707,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 392 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -79687,7 +79731,7 @@
 	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var Buffer = __webpack_require__(380).Buffer;
+	var Buffer = __webpack_require__(381).Buffer;
 
 	var isBufferEncoding = Buffer.isEncoding
 	  || function(encoding) {
@@ -79890,7 +79934,7 @@
 
 
 /***/ },
-/* 393 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a transform stream is a readable/writable stream where you do
@@ -79939,11 +79983,11 @@
 
 	module.exports = Transform;
 
-	var Duplex = __webpack_require__(387);
+	var Duplex = __webpack_require__(388);
 
 	/*<replacement>*/
-	var util = __webpack_require__(384);
-	util.inherits = __webpack_require__(375);
+	var util = __webpack_require__(385);
+	util.inherits = __webpack_require__(376);
 	/*</replacement>*/
 
 	util.inherits(Transform, Duplex);
@@ -80077,7 +80121,7 @@
 	}
 
 /***/ },
-/* 394 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a passthrough stream.
@@ -80088,11 +80132,11 @@
 
 	module.exports = PassThrough;
 
-	var Transform = __webpack_require__(393);
+	var Transform = __webpack_require__(394);
 
 	/*<replacement>*/
-	var util = __webpack_require__(384);
-	util.inherits = __webpack_require__(375);
+	var util = __webpack_require__(385);
+	util.inherits = __webpack_require__(376);
 	/*</replacement>*/
 
 	util.inherits(PassThrough, Transform);
@@ -80108,24 +80152,17 @@
 	};
 
 /***/ },
-/* 395 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(388)
-
-
-/***/ },
 /* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(387)
+	module.exports = __webpack_require__(389)
 
 
 /***/ },
 /* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(393)
+	module.exports = __webpack_require__(388)
 
 
 /***/ },
@@ -80137,6 +80174,13 @@
 
 /***/ },
 /* 399 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(395)
+
+
+/***/ },
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -80664,7 +80708,7 @@
 	}
 	exports.isPrimitive = isPrimitive;
 
-	exports.isBuffer = __webpack_require__(400);
+	exports.isBuffer = __webpack_require__(401);
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -80708,7 +80752,7 @@
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(401);
+	exports.inherits = __webpack_require__(402);
 
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -80729,7 +80773,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(3)))
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -80740,7 +80784,7 @@
 	}
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -80769,14 +80813,14 @@
 
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ReadableStream = __webpack_require__(373).Readable,
-	    inherits = __webpack_require__(399).inherits,
-	    Serializer = __webpack_require__(370);
+	var ReadableStream = __webpack_require__(374).Readable,
+	    inherits = __webpack_require__(400).inherits,
+	    Serializer = __webpack_require__(371);
 
 	/**
 	 * Streaming AST node to an HTML serializer.
@@ -80824,17 +80868,17 @@
 
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var TransformStream = __webpack_require__(373).Transform,
-	    DevNullStream = __webpack_require__(404),
-	    inherits = __webpack_require__(399).inherits,
-	    Tokenizer = __webpack_require__(357),
-	    ParserFeedbackSimulator = __webpack_require__(405),
-	    mergeOptions = __webpack_require__(369);
+	var TransformStream = __webpack_require__(374).Transform,
+	    DevNullStream = __webpack_require__(405),
+	    inherits = __webpack_require__(400).inherits,
+	    Tokenizer = __webpack_require__(358),
+	    ParserFeedbackSimulator = __webpack_require__(406),
+	    mergeOptions = __webpack_require__(370);
 
 	/**
 	 * @typedef {Object} SAXParserOptions
@@ -81060,13 +81104,13 @@
 
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var WritableStream = __webpack_require__(373).Writable,
-	    util = __webpack_require__(399);
+	var WritableStream = __webpack_require__(374).Writable,
+	    util = __webpack_require__(400);
 
 	var DevNullStream = module.exports = function () {
 	    WritableStream.call(this);
@@ -81080,15 +81124,15 @@
 
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Tokenizer = __webpack_require__(357),
-	    foreignContent = __webpack_require__(368),
-	    UNICODE = __webpack_require__(359),
-	    HTML = __webpack_require__(363);
+	var Tokenizer = __webpack_require__(358),
+	    foreignContent = __webpack_require__(369),
+	    UNICODE = __webpack_require__(360),
+	    HTML = __webpack_require__(364);
 
 
 	//Aliases
@@ -81239,12 +81283,12 @@
 
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var map = __webpack_require__(407);
+	var map = __webpack_require__(408);
 
 	var convert = function (key) {
 	  var val = map[key.toLowerCase()];
@@ -81256,7 +81300,7 @@
 
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -81494,11 +81538,11 @@
 	};
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var camelcase = __webpack_require__(409);
-	var uppercamelcase = __webpack_require__(410);
+	var camelcase = __webpack_require__(410);
+	var uppercamelcase = __webpack_require__(411);
 
 	function convertKey(key) {
 	  var vendorPrefixed = key.indexOf('-webkit-') === 0 ||
@@ -81523,7 +81567,7 @@
 
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -81585,11 +81629,11 @@
 
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var camelCase = __webpack_require__(411);
+	var camelCase = __webpack_require__(412);
 
 	module.exports = function () {
 		var cased = camelCase.apply(camelCase, arguments);
@@ -81598,7 +81642,7 @@
 
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -81631,7 +81675,7 @@
 
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -81644,11 +81688,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterTop = __webpack_require__(413);
+	var _FooterTop = __webpack_require__(414);
 
 	var _FooterTop2 = _interopRequireDefault(_FooterTop);
 
-	var _FooterBottom = __webpack_require__(415);
+	var _FooterBottom = __webpack_require__(416);
 
 	var _FooterBottom2 = _interopRequireDefault(_FooterBottom);
 
@@ -81662,21 +81706,17 @@
 
 	var Footer = function Footer() {
 	  return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
-	    "div",
-	    { className: "row" },
-	    _react2.default.createElement(
-	      "footer",
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
-	      _react2.default.createElement(_FooterTop2.default, null),
-	      _react2.default.createElement(_FooterBottom2.default, null)
-	    )
+	    "footer",
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
+	    _react2.default.createElement(_FooterTop2.default, null),
+	    _react2.default.createElement(_FooterBottom2.default, null)
 	  ) : null;
 	};
 
 	exports.default = Footer;
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81689,7 +81729,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterTopMenu = __webpack_require__(414);
+	var _FooterTopMenu = __webpack_require__(415);
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
@@ -81712,13 +81752,13 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-footer" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top-footer-container' },
+	      { className: 'container' },
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo text-center' },
+	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo' },
 	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
 	            'a',
 	            { href: bundle.site_url, title: bundle.site_name, onClick: function onClick(eve) {
@@ -81734,14 +81774,10 @@
 	          { className: 'col-md-12 col-lg-9 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-menu' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'row' },
-	              _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
-	                return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
-	              }) : null
-	            )
+	            { className: 'row' },
+	            _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
+	              return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
+	            }) : null
 	          )
 	        )
 	      )
@@ -81752,7 +81788,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81769,8 +81805,6 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(276);
-
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81786,19 +81820,19 @@
 	    { className: 'col-6 col-sm-6 col-lg-3' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-container" },
+	      null,
 	      _react2.default.createElement(
 	        'h5',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-title" },
+	        null,
 	        menu.title
 	      ),
 	      _react2.default.createElement(
 	        'ul',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-top-menu-links p-0' },
+	        null,
 	        _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	          return _react2.default.createElement(
 	            'li',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-link", key: i },
+	            { key: i },
 	            _react2.default.createElement(
 	              'a',
 	              { href: item.url, onClick: function onClick(eve) {
@@ -81817,7 +81851,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -81830,11 +81864,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _FooterBottomMenu = __webpack_require__(416);
+	var _FooterBottomMenu = __webpack_require__(417);
 
 	var _FooterBottomMenu2 = _interopRequireDefault(_FooterBottomMenu);
 
-	var _FooterBottomSocialMenu = __webpack_require__(417);
+	var _FooterBottomSocialMenu = __webpack_require__(418);
 
 	var _FooterBottomSocialMenu2 = _interopRequireDefault(_FooterBottomSocialMenu);
 
@@ -81853,7 +81887,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer" },
 	        _react2.default.createElement(
 	            "div",
-	            { className: "container " + _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer-container" },
+	            { className: "container" },
 	            _react2.default.createElement(
 	                "div",
 	                { className: "row" },
@@ -81867,7 +81901,7 @@
 	exports.default = FooterBottom;
 
 /***/ },
-/* 416 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81884,8 +81918,6 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _lib = __webpack_require__(276);
-
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81901,11 +81933,11 @@
 	    { className: 'col-md-12 col-lg-7' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'ul',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-bottom-menu-links p-0' },
+	      null,
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'li',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-bottom-menu-link", key: i },
+	          { key: i },
 	          _react2.default.createElement(
 	            'a',
 	            { href: item.url, onClick: function onClick(eve) {
@@ -81923,7 +81955,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 417 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81953,7 +81985,7 @@
 	    { className: 'col-md-12 col-lg-5' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'social text-right' },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "social" },
 	      _react2.default.createElement(
 	        'span',
 	        null,
@@ -81962,7 +81994,7 @@
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
-	          { key: i, className: item.title.toLowerCase() + ' text-center rounded-circle', href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
+	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );
@@ -81974,7 +82006,7 @@
 	exports.default = FooterTop;
 
 /***/ },
-/* 418 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81989,15 +82021,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRenderHtml = __webpack_require__(354);
+	var _reactRenderHtml = __webpack_require__(355);
 
 	var _reactRenderHtml2 = _interopRequireDefault(_reactRenderHtml);
 
-	var _Masthead = __webpack_require__(323);
+	var _Masthead = __webpack_require__(324);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _HeaderGuide = __webpack_require__(419);
+	var _HeaderGuide = __webpack_require__(420);
 
 	var _HeaderGuide2 = _interopRequireDefault(_HeaderGuide);
 
@@ -82053,28 +82085,24 @@
 	      var content = _lodash2.default.get(this.props.post, 'guide_single_content', {});
 
 	      return _react2.default.createElement(
-	        'article',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
+	        'div',
+	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'row no-gutters' },
+	            'article',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(_HeaderGuide2.default, null),
-	                  _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
-	                    returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
-	                    nextArticleHandler: this.nextArticleHandler.bind(this) })
-	                )
+	                { className: 'row' },
+	                _react2.default.createElement(_HeaderGuide2.default, null),
+	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
+	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
+	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -82082,17 +82110,13 @@
 	              { className: 'col-lg-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
-	                    'section',
-	                    {
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
-	                    (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
-	                  ) : null
-	                )
+	                { className: 'row' },
+	                _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
+	                  'section',
+	                  {
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
+	                  (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
+	                ) : null
 	              )
 	            )
 	          )
@@ -82110,7 +82134,7 @@
 	exports.default = Single;
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82142,51 +82166,42 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-toolbar' },
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
-	        _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
-	          'a',
-	          { className: 'navbar-brand mr-auto', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	              eve.preventDefault();
-	              _Util2.default.goToUrl('/');
-	            } },
-	          _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	            className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	          _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	            className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	        ) : null,
-	        _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
-	          'ul',
-	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
+	      { className: 'navbar navbar-toggleable-md bg-faded' },
+	      _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
+	        'a',
+	        { className: 'navbar-brand', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	            eve.preventDefault();
+	            _Util2.default.goToUrl('/');
+	          } },
+	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	      ) : null,
+	      _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
+	        'ul',
+	        { className: 'nav navbar-toggler-right' },
+	        _react2.default.createElement(
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            'li',
-	            { className: 'nav-item' },
-	            _react2.default.createElement(
-	              'a',
-	              { href: bundle.site_url, onClick: function onClick(eve) {
-	                  _react2.default.createElement('the', null);
-	                  eve.preventDefault();
-	                  _Util2.default.goToUrl('/');
-	                }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
-	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
-	                'Return Home'
-	              )
-	            )
+	            'a',
+	            { href: bundle.site_url, onClick: function onClick(eve) {
+	                eve.preventDefault();
+	                _Util2.default.goToUrl('/');
+	              }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
+	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	            'Return Home'
 	          )
-	        ) : null
-	      )
+	        )
+	      ) : null
 	    )
 	  );
 	};
 	exports.default = HeaderGuide;
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82203,19 +82218,19 @@
 
 	var _reactRedux = __webpack_require__(233);
 
-	var _Masthead = __webpack_require__(323);
+	var _Masthead = __webpack_require__(324);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _Subnavigation = __webpack_require__(340);
+	var _Subnavigation = __webpack_require__(341);
 
 	var _Subnavigation2 = _interopRequireDefault(_Subnavigation);
 
-	var _Posts = __webpack_require__(421);
+	var _Posts = __webpack_require__(422);
 
 	var _Posts2 = _interopRequireDefault(_Posts);
 
-	var _Footer = __webpack_require__(412);
+	var _Footer = __webpack_require__(413);
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -82288,15 +82303,10 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
-	          _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'),
-	            currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
-	          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') })
-	        ),
+	        null,
+	        _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
+	        _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'), currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
+	        _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') }),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -82315,7 +82325,7 @@
 	exports.default = Archive;
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82336,7 +82346,7 @@
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
-	var _PostCard = __webpack_require__(352);
+	var _PostCard = __webpack_require__(353);
 
 	var _PostCard2 = _interopRequireDefault(_PostCard);
 
@@ -82395,23 +82405,6 @@
 
 	      var self = this;
 
-	      var posts = _lodash2.default.get(this.props, 'posts', []);
-	      var groups = [];
-
-	      if (posts) {
-	        (function () {
-	          var postsGroup = [];
-	          posts.map(function (post) {
-	            postsGroup.push(post);
-
-	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
-	              groups.push(postsGroup);
-	              postsGroup = [];
-	            }
-	          });
-	        })();
-	      }
-
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "blog-posts" },
@@ -82421,43 +82414,32 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
-	            !this.state.loading || groups ? groups.map(function (g, group_index) {
+	            !this.state.loading ? this.props.posts.map(function (p, i) {
 
-	              var groupPosts = g.map(function (p, i) {
-	                return _react2.default.createElement(_PostCard2.default, { data: {
-	                    title: _lodash2.default.get(p, 'title', ''),
-	                    excerpt: _lodash2.default.get(p, 'excerpt', ''),
-	                    image_src: _lodash2.default.get(p, 'image_src', ''),
-	                    image_title: _lodash2.default.get(p, 'image_title', ''),
-	                    image_alt: _lodash2.default.get(p, 'image_alt', ''),
-	                    url: _lodash2.default.get(p, 'url', ''),
-	                    relative_url: _lodash2.default.get(p, 'relative_url', '')
+	              var item = {
+	                title: _lodash2.default.get(p, 'title', ''),
+	                excerpt: _lodash2.default.get(p, 'excerpt', ''),
+	                image_src: _lodash2.default.get(p, 'image_src', ''),
+	                image_title: _lodash2.default.get(p, 'image_title', ''),
+	                image_alt: _lodash2.default.get(p, 'image_alt', ''),
+	                url: _lodash2.default.get(p, 'url', ''),
+	                relative_url: _lodash2.default.get(p, 'relative_url', '')
 
-	                  }, key: i });
-	              });
+	              };
 
-	              return _react2.default.createElement(
-	                'div',
-	                { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
-	                  key: group_index },
-	                groupPosts
-	              );
+	              return _react2.default.createElement(_PostCard2.default, { data: item, key: i });
 	            }) : _react2.default.createElement(_LoadingCircle2.default, null)
 	          ),
 	          this.props.allowPagination ? _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more mx-auto' },
-	              this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
-	                'a',
-	                { href: '#', onClick: function onClick(e) {
-	                    return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
-	                  },
-	                  className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'load-more-link' },
-	                'Load More'
-	              )
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more text-center' },
+	            this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(e) {
+	                  return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
+	                },
+	                className: 'btn btn-primary' },
+	              'Load More'
 	            )
 	          ) : null
 	        )
@@ -82475,7 +82457,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Posts);
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82490,19 +82472,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Masthead = __webpack_require__(323);
+	var _Masthead = __webpack_require__(324);
 
 	var _Masthead2 = _interopRequireDefault(_Masthead);
 
-	var _CategoryCard = __webpack_require__(423);
+	var _CategoryCard = __webpack_require__(424);
 
 	var _CategoryCard2 = _interopRequireDefault(_CategoryCard);
 
-	var _ArticleCard = __webpack_require__(424);
+	var _ArticleCard = __webpack_require__(425);
 
 	var _ArticleCard2 = _interopRequireDefault(_ArticleCard);
 
-	var _HeaderGuide = __webpack_require__(419);
+	var _HeaderGuide = __webpack_require__(420);
 
 	var _HeaderGuide2 = _interopRequireDefault(_HeaderGuide);
 
@@ -82538,30 +82520,26 @@
 	      var cards = _lodash2.default.get(content, 'items', []).map(function (item, i) {
 	        var last = _lodash2.default.get(content, 'items', []).length === i + 1;
 	        return _react2.default.createElement(
-	          'li',
-	          { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list-item border-0', key: i },
+	          'div',
+	          { className: 'col-md-12', key: i },
 	          _lodash2.default.get(item, 'children', null) ? _react2.default.createElement(_CategoryCard2.default, { category: item, last: last }) : _react2.default.createElement(_ArticleCard2.default, { article: item, last: last })
 	        );
 	      });
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, null),
-	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
-	              )
+	              { className: 'row' },
+	              _react2.default.createElement(_HeaderGuide2.default, null),
+	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -82569,19 +82547,11 @@
 	            { className: 'col-lg-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
+	              { className: 'row' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-content' },
-	                  _react2.default.createElement(
-	                    'ul',
-	                    { className: 'list-group ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list' },
-	                    cards
-	                  )
-	                )
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
+	                cards
 	              )
 	            )
 	          )
@@ -82599,7 +82569,7 @@
 	exports.default = Archive;
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82657,64 +82627,60 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container p-0' },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row no-gutters' },
+	            { className: 'col-sm-8' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-8' },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
 	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
-	                _react2.default.createElement(
-	                  'header',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
-	                  _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
-	                    'h2',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
-	                    _react2.default.createElement(
-	                      'a',
-	                      {
-	                        href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
-	                          eve.preventDefault();
-	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
-	                        } },
-	                      _lodash2.default.get(this.props.category, 'title')
-	                    )
-	                  ) : null
-	                ),
-	                _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
-	                  'nav',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
+	                'header',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
+	                _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
+	                  'h2',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
 	                  _react2.default.createElement(
-	                    'ul',
-	                    { className: 'list-group' },
-	                    _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
-	                      return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
-	                        'li',
-	                        { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'category-navigation-item border-0 p-0', key: key },
-	                        _react2.default.createElement(
-	                          'a',
-	                          { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
-	                              eve.preventDefault();
-	                              _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
-	                            } },
-	                          _lodash2.default.get(item, 'title')
-	                        )
-	                      ) : null;
-	                    })
+	                    'a',
+	                    {
+	                      href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
+	                        eve.preventDefault();
+	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
+	                      } },
+	                    _lodash2.default.get(this.props.category, 'title')
 	                  )
 	                ) : null
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-sm-4' },
-	              _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                  background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
-	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
+	              ),
+	              _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
+	                'nav',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
+	                _react2.default.createElement(
+	                  'ul',
+	                  null,
+	                  _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
+	                    return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
+	                      'li',
+	                      { key: key },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
+	                            eve.preventDefault();
+	                            _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
+	                          } },
+	                        _lodash2.default.get(item, 'title')
+	                      )
+	                    ) : null;
+	                  })
+	                )
+	              ) : null
 	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-4' },
+	            _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
@@ -82731,7 +82697,7 @@
 	exports.default = CategoryCard;
 
 /***/ },
-/* 424 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82789,48 +82755,44 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: 'col-sm-8' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-8' },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
 	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
-	                _react2.default.createElement(
-	                  'header',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	                  _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
-	                    'h2',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
-	                    _react2.default.createElement(
-	                      'a',
-	                      {
-	                        href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
-	                          eve.preventDefault();
-	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
-	                        } },
-	                      _lodash2.default.get(this.props.article, 'title')
-	                    )
-	                  ) : null,
-	                  _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
-	                    'p',
+	                'header',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
+	                _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
+	                  'h2',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
+	                  _react2.default.createElement(
+	                    'a',
 	                    {
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	                    _lodash2.default.get(this.props.article, 'excerpt')
-	                  ) : null
-	                )
+	                      href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
+	                        eve.preventDefault();
+	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
+	                      } },
+	                    _lodash2.default.get(this.props.article, 'title')
+	                  )
+	                ) : null,
+	                _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
+	                  'p',
+	                  {
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	                  _lodash2.default.get(this.props.article, 'excerpt')
+	                ) : null
 	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-sm-4' },
-	              _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                  background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
-	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-4' },
+	            _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
@@ -82847,7 +82809,7 @@
 	exports.default = ArticleCard;
 
 /***/ },
-/* 425 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82860,51 +82822,51 @@
 
 	var _redux = __webpack_require__(242);
 
-	var _map = __webpack_require__(426);
+	var _map = __webpack_require__(427);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _locationModal = __webpack_require__(427);
+	var _locationModal = __webpack_require__(428);
 
 	var _locationModal2 = _interopRequireDefault(_locationModal);
 
-	var _propertiesModal = __webpack_require__(428);
+	var _propertiesModal = __webpack_require__(429);
 
 	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
-	var _searchProps = __webpack_require__(429);
+	var _searchProps = __webpack_require__(430);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(430);
+	var _searchResults = __webpack_require__(431);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(431);
+	var _mapMarkers = __webpack_require__(432);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _mapSearchResultsLoading = __webpack_require__(432);
+	var _mapSearchResultsLoading = __webpack_require__(433);
 
 	var _mapSearchResultsLoading2 = _interopRequireDefault(_mapSearchResultsLoading);
 
-	var _searchType = __webpack_require__(433);
+	var _searchType = __webpack_require__(434);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(434);
+	var _filterTerms = __webpack_require__(435);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _panel = __webpack_require__(435);
+	var _panel = __webpack_require__(436);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _testimonialsCarousel = __webpack_require__(436);
+	var _testimonialsCarousel = __webpack_require__(437);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
-	var _blogPosts = __webpack_require__(437);
+	var _blogPosts = __webpack_require__(438);
 
 	var _blogPosts2 = _interopRequireDefault(_blogPosts);
 
@@ -82929,7 +82891,7 @@
 	exports.default = propertyProApp;
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82960,7 +82922,7 @@
 	exports.default = map;
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -82988,7 +82950,7 @@
 	exports.default = locationModal;
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83016,7 +82978,7 @@
 	exports.default = propertiesModal;
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83043,7 +83005,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83080,7 +83042,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83107,7 +83069,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 432 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83134,7 +83096,7 @@
 	exports.default = mapSearchResultsLoading;
 
 /***/ },
-/* 433 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83164,7 +83126,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 434 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83191,7 +83153,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 435 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83221,7 +83183,7 @@
 	exports.default = panel;
 
 /***/ },
-/* 436 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83248,7 +83210,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

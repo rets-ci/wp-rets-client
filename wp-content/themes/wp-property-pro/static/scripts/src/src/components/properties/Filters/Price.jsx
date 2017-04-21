@@ -1,5 +1,24 @@
+import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import Slider from '../Components/Slider.jsx';
+import Util from '../../Util.jsx';
+
+let sliderFormatter = (min, max) => {
+  return () => ({
+    to: val => {
+  	   let returnVal;
+      if (val === min) {
+        returnVal = Lib.RANGE_SLIDER_NO_MIN_TEXT;
+      } else if (val === max) {
+        returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
+      } else {
+        returnVal = Util.formatPriceFilter(val);
+      }
+      return returnVal;
+    },
+    from: val => val
+  })
+};
 
 class Price extends Component {
   static propTypes = {
@@ -30,30 +49,24 @@ class Price extends Component {
         to: 3000
       }
     };
+    let formatter;
     let min;
     let max;
-    let range = {};
     let step;
     let percentages;
     if (saleType === 'Sale') {
-      min = 100000;
+      min = 25000;
       max = 1000000;
-      step = 10000;
+      formatter = sliderFormatter(min, max);
+      step = 25000;
     } else if (saleType === 'Rent') {
-      min = 100;
+      min = 125;
       max = 5000;
-      step = 10000;
+      formatter = sliderFormatter(min, max);
+      step = 125;
     }
-    range = {
-      min: min,
-      max: max
-    };
-    percentages = [10, 25, 50, 75];
-    percentages.forEach(p => {
-      range[p + '%'] = [min + (min * (p / 100))];
-    });
     return (
-      <Slider range={range} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
     )
   }
 };
