@@ -1380,6 +1380,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 50px;
 }
 
+.propertypro-advanced-filter .propertypro-filter-slider {
+    margin-top: 3em;
+}
+
 /* Range Slider Module */
 .propertypro-range-slider {
     clear: both;
