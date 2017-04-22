@@ -254,9 +254,11 @@ namespace UsabilityDynamics\WPRETSC {
        */
       static public function get_schedule_stats() {
 
+        $_stats = Utility::get_schedule_stats();
+
         return array(
           'ok' => true,
-          'data' => Utility::get_schedule_stats(),
+          'data' => $_stats['data'],
           'time' => timer_stop()
         );
 
