@@ -38,13 +38,14 @@ export default class PropertyCard extends Component {
 
   render() {
     let {
-      gallery_images,
-      relative_permalink,
       address,
-      full_address,
-      beds,
       baths,
+      beds,
+      full_address,
+      gallery_images,
+      living_area,
       price,
+      relative_permalink,
       thumbnail
     } = this.props.data;
     let self = this;
@@ -86,7 +87,7 @@ export default class PropertyCard extends Component {
         </div>
         <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`} onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className={Lib.THEME_CLASSES_PREFIX+"listing-top"}>
-            <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{Util.formatPriceFilter(price)}</span>
+            <span className={Lib.THEME_CLASSES_PREFIX+"price"}>{Util.formatPriceValue(price)}</span>
             <span className={Lib.THEME_CLASSES_PREFIX+"action-btn-group"}>
               <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`} title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
@@ -101,7 +102,7 @@ export default class PropertyCard extends Component {
           <ul className={Lib.THEME_CLASSES_PREFIX+"liting-info-box"}>
             <li>{beds} Bed</li>
             <li>{baths} Bath</li>
-            <li>1,142 SF</li>
+            <li>{Util.formatSQFTValue(living_area)} SF</li>
           </ul>
         </div>
       </div>
