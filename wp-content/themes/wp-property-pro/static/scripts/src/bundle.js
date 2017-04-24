@@ -64769,12 +64769,12 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-header-container mx-auto text-center' },
 	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-title' },
 	        widget_cell.widget.fields.title
 	      ) : null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	        'p',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
+	        { className: 'hidden-xs-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-excerpt' },
 	        widget_cell.widget.fields.subtitle
 	      ) : null
 	    )
@@ -64831,7 +64831,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-header-container mx-auto text-center' },
 	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	          'h1',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-title' },
 	          widget_cell.widget.fields.title
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(

@@ -18,7 +18,7 @@ const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, ne
         <div className={`${Lib.THEME_CLASSES_PREFIX}article-header-container mx-auto text-center`}>
           {
             _.get(widget_cell, 'widget.fields.title', '')
-              ? <h1 className={Lib.THEME_CLASSES_PREFIX + "guide-title"}>{widget_cell.widget.fields.title}</h1>
+              ? <h1 className={`${Lib.THEME_CLASSES_PREFIX}guide-title`}>{widget_cell.widget.fields.title}</h1>
               : null
           }
           {
