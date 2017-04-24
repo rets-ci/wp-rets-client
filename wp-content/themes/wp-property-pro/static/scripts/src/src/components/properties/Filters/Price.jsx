@@ -12,7 +12,7 @@ let sliderFormatter = (min, max) => {
       } else if (val === max) {
         returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
       } else {
-        returnVal = Util.formatPriceFilter(val);
+        returnVal = Util.formatPriceValue(val);
       }
       return returnVal;
     },

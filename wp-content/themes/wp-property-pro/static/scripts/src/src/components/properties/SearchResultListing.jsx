@@ -68,17 +68,17 @@ class SearchResultListing extends Component {
                     }
                   }
 
-                  let item = {
-                    gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
-                    relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
-                    address: _.get(p, '_source.post_meta.rets_address', ''),
-                    full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
-                    beds: _.get(p, '_source.post_meta.rets_beds', 0),
-                    baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
-                    price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
-                    thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
-                    full_image: true
-                  };
+              let item = {
+                address: _.get(p, '_source.post_meta.rets_address', ''),
+                baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
+                beds: _.get(p, '_source.post_meta.rets_beds', 0),
+                full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
+                gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
+                living_area: _.get(p, '_source.post_meta.rets_living_area', ''),
+                price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
+                relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
+                thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', '')
+              };
 
                   return (
                     <div className="col-md-6">
