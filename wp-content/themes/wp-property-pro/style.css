@@ -2697,6 +2697,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2 {
         font-size: 1.5rem;
+        line-height: 2rem;
     }
 
     .propertypro-category-card .propertypro-category-card-content ul li, .propertypro-article-card .propertypro-article-card-content ul li {

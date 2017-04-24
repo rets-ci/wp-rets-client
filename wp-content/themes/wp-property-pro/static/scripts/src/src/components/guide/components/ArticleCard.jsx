@@ -19,8 +19,8 @@ class ArticleCard extends Component {
 
     return (
       <section className={sectionClasses}>
-        <div className="container-fluid">
-          <div className="row">
+        <div className="container-fluid p-0">
+          <div className="row no-gutters">
             <div className="col-sm-8">
               <div className={Lib.THEME_CLASSES_PREFIX + "article-card-content"}>
                 <header className={Lib.THEME_CLASSES_PREFIX + "article-header"}>

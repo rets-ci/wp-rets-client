@@ -83034,10 +83034,10 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
+	          { className: 'container-fluid p-0' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-sm-8' },
