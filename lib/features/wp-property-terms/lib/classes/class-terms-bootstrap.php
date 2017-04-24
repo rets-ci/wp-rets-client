@@ -276,6 +276,8 @@ namespace UsabilityDynamics\WPP {
               $_taxonomies[ $_taxonomy ]['public'] = $_original_taxonomy['public'];
             }
 
+          } else if ( !isset( $_taxonomies[ $_taxonomy ] ) ) {
+            $_taxonomies[ $_taxonomy ] = $_taxonomy_data;
           }
 
         }
@@ -1153,9 +1155,9 @@ namespace UsabilityDynamics\WPP {
 
           if( !empty( $_terms ) ) {
             $_values[ $_tax_key ] = end( $_terms );
-            WPP_F::debug("Getting single-value terms for [$_tax_key], setting to [" . $_values[ $_tax_key ] . ']' );
+            //WPP_F::debug("Getting single-value terms for [$_tax_key], setting to [" . $_values[ $_tax_key ] . ']' );
           } else {
-            WPP_F::debug("Getting single-value terms for [$_tax_key], no values found." );
+            //WPP_F::debug("Getting single-value terms for [$_tax_key], no values found." );
           }
 
         }
@@ -1170,9 +1172,9 @@ namespace UsabilityDynamics\WPP {
 
           if( !empty( $_terms ) ) {
             $_values[ $_tax_key ] = $_terms;
-            WPP_F::debug("Getting multi-value terms for [$_tax_key], setting to [" . join( ', ', $_terms ) . ']' );
+            //WPP_F::debug("Getting multi-value terms for [$_tax_key], setting to [" . join( ', ', $_terms ) . ']' );
           } else {
-            WPP_F::debug("Getting multi-value terms for [$_tax_key], no values found." );
+            //WPP_F::debug("Getting multi-value terms for [$_tax_key], no values found." );
           }
 
         }
