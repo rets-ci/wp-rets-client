@@ -7,7 +7,7 @@ const IconLayout = ({items, currentUrl}) =>
   _.isEmpty(items)
     ? null
     : <nav>
-      <ul className="clearfix">
+      <ul>
         {
           items.map((item, i) => {
             if (item.url === currentUrl) {

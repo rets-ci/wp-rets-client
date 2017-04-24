@@ -29245,63 +29245,80 @@
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
-	            { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
+	              { className: 'container-fluid p-0' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
+	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  'Only showing ',
-	                  displayedResults.length,
-	                  'listings. Zoom in, or use filters to narrow your search.'
-	                )
-	              ),
-	              displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
-	                searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                  return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
-	                    locationFilter: locationFilter,
-	                    geoCoordinates: geoCoordinates
-	                  }));
-	                } })
-	            ),
-	            displayedResults.length ? _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                _react2.default.createElement(
-	                  'h1',
-	                  null,
-	                  'Homes for ',
-	                  searchFilters.sale_type
+	                  'div',
+	                  { className: 'col-md-4' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
+	                      _react2.default.createElement(
+	                        'span',
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
+	                        'Only showing ',
+	                        displayedResults.length,
+	                        'listings. Zoom in, or use filters to narrow your search.'
+	                      )
+	                    ),
+	                    displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
+	                      searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
+	                        return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
+	                          locationFilter: locationFilter,
+	                          geoCoordinates: geoCoordinates
+	                        }));
+	                      } })
+	                  )
 	                ),
 	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  'There are ',
-	                  this.props.resultsTotal,
-	                  ' homes for ',
-	                  searchFilters.sale_type,
-	                  ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
-	                )
-	              ),
-	              _react2.default.createElement(_SearchResultListing2.default, { allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
-	                properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
-	            ) : _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                _react2.default.createElement(
-	                  'h1',
-	                  null,
-	                  'No results to show. Please adjust the filters to select a different range of properties'
+	                  'div',
+	                  { className: 'col-md-8' },
+	                  displayedResults.length ? _react2.default.createElement(
+	                    'div',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                      _react2.default.createElement(
+	                        'h1',
+	                        null,
+	                        'Homes for ',
+	                        searchFilters.sale_type
+	                      ),
+	                      _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        'There are ',
+	                        this.props.resultsTotal,
+	                        ' homes for ',
+	                        searchFilters.sale_type,
+	                        ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                      )
+	                    ),
+	                    _react2.default.createElement(_SearchResultListing2.default, {
+	                      allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                      properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	                  ) : _react2.default.createElement(
+	                    'div',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                      _react2.default.createElement(
+	                        'h1',
+	                        null,
+	                        'No results to show. Please adjust the filters to select a different range of properties'
+	                      )
+	                    )
+	                  )
 	                )
 	              )
 	            )
@@ -29904,7 +29921,8 @@
 	  THEME_CLASSES_PREFIX: _lodash2.default.get(bundle, 'theme_prefix', ''),
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
-	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800
+	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
+	  BLOG_POSTS_PER_ROW: 2
 	};
 
 /***/ },
@@ -47137,16 +47155,14 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: classNames },
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce1" }),
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "double-bounce2" })
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
 	      );
 	    }
 	  }]);
 
 	  return LoadingCircle;
 	}(_react.Component);
-
-	;
 
 	exports.default = LoadingCircle;
 
@@ -47488,7 +47504,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.6
+	 * version : 2.0.4
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -47509,22 +47525,20 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.6',
+	        VERSION = '2.0.4',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0',
-	            scalePercentBy100: true
+	            defaultFormat: '0,0'
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat,
-	            scalePercentBy100: defaults.scalePercentBy100
+	            defaultFormat: defaults.defaultFormat
 	        };
 
 
@@ -47593,7 +47607,6 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
-	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -47669,7 +47682,6 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
-	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -47692,7 +47704,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, 0, roundingFunction);
+	                int = numeral._.toFixed(value, null, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -47717,12 +47729,6 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
-	            }
-
-	            if (int.length < leadingCount) {
-	                for (var i = leadingCount - int.length; i > 0; i--) {
-	                    int = '0' + int;
-	                }
 	            }
 
 	            if (thousands > -1) {
@@ -47882,8 +47888,9 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
+	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -48180,42 +48187,6 @@
 	    
 
 	(function() {
-	        numeral.register('format', 'bps', {
-	            regexps: {
-	                format: /(BPS)/,
-	                unformat: /(BPS)/
-	            },
-	            format: function(value, format, roundingFunction) {
-	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
-	                    output;
-
-	                value = value * 10000;
-
-	                // check for space before BPS
-	                format = format.replace(/\s?BPS/, '');
-
-	                output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	                if (numeral._.includes(output, ')')) {
-	                    output = output.split('');
-
-	                    output.splice(-1, 0, space + 'BPS');
-
-	                    output = output.join('');
-	                } else {
-	                    output = output + space + 'BPS';
-	                }
-
-	                return output;
-	            },
-	            unformat: function(string) {
-	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
-	            }
-	        });
-	})();
-
-
-	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -48225,17 +48196,10 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
-	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
-	            return decimal.suffixes.indexOf(item) < 0;
-	        }));
-	        var unformatRegex = allSuffixes.join('|');
-	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
-	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
-
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp(unformatRegex)
+	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -48334,7 +48298,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
+	                        output = numeral._.insert(output, ' ', i);
 	                        break;
 	                }
 	            }
@@ -48348,7 +48312,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
 	                        break;
 	                }
 	            }
@@ -48429,9 +48393,7 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            if (numeral.options.scalePercentBy100) {
-	                value = value * 100;
-	            }
+	            value = value * 100;
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -48451,11 +48413,7 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            var number = numeral._.stringToNumber(string);
-	            if (numeral.options.scalePercentBy100) {
-	                return number * 0.01;
-	            }
-	            return number;
+	            return numeral._.stringToNumber(string) * 0.01;
 	        }
 	    });
 	})();
@@ -55418,7 +55376,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -55937,6 +55895,23 @@
 	    value: function render() {
 	      var _this2 = this;
 
+	      var properties = _lodash2.default.get(this.props, 'properties', []);
+	      var groups = [];
+
+	      if (properties) {
+	        (function () {
+	          var propertiesGroup = [];
+	          properties.map(function (post) {
+	            propertiesGroup.push(post);
+
+	            if (propertiesGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
+	              groups.push(propertiesGroup);
+	              propertiesGroup = [];
+	            }
+	          });
+	        })();
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-wrap", ref: function ref(r) {
@@ -55944,45 +55919,53 @@
 	          } },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
-	          this.props.properties.map(function (p, i) {
+	          { className: 'container-fluid' },
+	          groups.map(function (g, group_index) {
 
-	            var city = '';
-	            var zipCode = '';
+	            var groupProperties = g.map(function (p, i) {
 
-	            var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
+	              var city = '';
+	              var zipCode = '';
 
-	            for (var termInd in listingLocation) {
-	              var term = listingLocation[termInd][0];
+	              var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
 
-	              switch (term.term_type) {
-	                case 'location-city-state':
-	                  city = term.name;
-	                  break;
-	                case 'location-zipcode':
-	                  zipCode = term.name;
-	                  break;
+	              for (var termInd in listingLocation) {
+	                var term = listingLocation[termInd][0];
+
+	                switch (term.term_type) {
+	                  case 'location-city-state':
+	                    city = term.name;
+	                    break;
+	                  case 'location-zipcode':
+	                    zipCode = term.name;
+	                    break;
+	                }
 	              }
-	            }
 
-	            var item = {
-	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
-	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
-	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
-	              full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
-	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
-	                return media.url;
-	              }),
-	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
-	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
-	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
-	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
-	            };
+	              var item = {
+	                address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	                baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
+	                beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
+	                full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
+	                gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
+	                  return media.url;
+	                }),
+	                living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
+	                price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	                relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
+	                thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
+	              };
 
+	              return _react2.default.createElement(
+	                'div',
+	                { className: 'col-md-6' },
+	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
+	              );
+	            });
 	            return _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-6', key: i },
-	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT })
+	              { className: 'row', key: group_index },
+	              groupProperties
 	            );
 	          })
 	        ),
@@ -56919,7 +56902,8 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
+	        {
+	          className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
@@ -56936,13 +56920,14 @@
 	                { className: 'swiper-wrapper' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'swiper-slide', onClick: function onClick(eve) {
+	                  { className: 'swiper-slide',
+	                    onClick: function onClick(eve) {
 	                      return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	                    } },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
-	                    className: 'swiper-lazy',
-	                    src: _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
+	                    className: 'swiper-lazy card-img-top',
+	                    src: !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
 	                  })
 	                ),
 	                gallery_images.map(function (d, k) {
@@ -56951,7 +56936,7 @@
 	                    { className: 'swiper-slide', key: k },
 	                    _react2.default.createElement('img', {
 	                      alt: _lodash2.default.isEmpty(d) ? 'Card image cap' : '',
-	                      className: 'swiper-lazy',
+	                      className: 'swiper-lazy card-img-top',
 	                      'data-src': _Util2.default.getThumbnailUrlBySize(d, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE)
 	                    })
 	                  );
@@ -56960,23 +56945,28 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav" },
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "direction-nav-container" },
 	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-prev", onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  return _this2.handleNavigation.bind(_this2)('prev');
-	                }, href: '#' })
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-next", onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  return _this2.handleNavigation.bind(_this2)('next');
-	                }, href: '#' })
+	              'ul',
+	              { className: 'nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'direction-nav text-center' },
+	              _react2.default.createElement(
+	                'li',
+	                { className: 'nav-item mr-auto ' },
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle', onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    return _this2.handleNavigation.bind(_this2)('prev');
+	                  }, href: '#' })
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                { className: 'nav-item' },
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-next rounded-circle',
+	                  onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    return _this2.handleNavigation.bind(_this2)('next');
+	                  }, href: '#' })
+	              )
 	            )
 	          )
 	        ),
@@ -57010,7 +57000,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'h4',
-	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title' },
+	            { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-title m-0' },
 	            address
 	          ),
 	          _react2.default.createElement(
@@ -57020,7 +57010,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'ul',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "liting-info-box" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-info-box p-0' },
 	            _react2.default.createElement(
 	              'li',
 	              null,
@@ -62586,7 +62576,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -62639,6 +62629,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -62677,8 +62669,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
-	    null,
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
 	    headerElement
 	  );
 	};
@@ -62705,32 +62697,12 @@
 
 	var _Navigation2 = _interopRequireDefault(_Navigation);
 
-	var _lib = __webpack_require__(276);
-
-	var _lodash = __webpack_require__(277);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
-	    _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
-	      'span',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up', onClick: openUserPanel },
-	      _react2.default.createElement('img', { src: bundle.static_images_url + "menu-icon.svg", alt: 'Menu icon',
-	        className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" })
-	    ) : null,
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'container-fluid' },
-	      _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
-	    )
-	  );
+	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
 	};
 	exports.default = HeaderDefault;
 
@@ -62762,50 +62734,62 @@
 	  var openUserPanel = _ref.openUserPanel;
 	  return _react2.default.createElement(
 	    'nav',
-	    { className: 'navbar navbar-toggleable-md bg-faded ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
+	    { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-navbar' },
 	    _react2.default.createElement(
-	      'a',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand',
-	        href: _lodash2.default.get(bundle, 'site_url', ''),
-	        onClick: function onClick(eve) {
-	          eve.preventDefault();
-	          _reactRouter.browserHistory.push('');
-	        }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	      _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	      _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	        className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	    ),
-	    _react2.default.createElement(
-	      'ul',
-	      { className: 'nav navbar-toggler-right' },
-	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item' },
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
+	      _lodash2.default.get(bundle, 'static_images_url', null) ? _react2.default.createElement(
+	        'a',
+	        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'menu-icon hidden-md-up my-auto mr-3', onClick: openUserPanel },
 	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	          'Login'
+	          'span',
+	          null,
+	          '\u2630'
 	        )
+	      ) : null,
+	      _react2.default.createElement(
+	        'a',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-logo-container navbar-brand mr-auto',
+	          href: _lodash2.default.get(bundle, 'site_url', ''),
+	          onClick: function onClick(eve) {
+	            eve.preventDefault();
+	            _reactRouter.browserHistory.push('');
+	          }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
 	      ),
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'nav-item hidden-sm-down' },
+	        'ul',
+	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'navbar-toggler', type: 'button', onClick: openUserPanel },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            'span',
-	            null,
-	            '\u2630'
-	          ),
-	          ' Menu'
+	            'a',
+	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
+	            'Login'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          { className: 'nav-item hidden-sm-down' },
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'button', className: _lib.Lib.THEME_CLASSES_PREFIX + "navigation-menu-button", onClick: openUserPanel },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '\u2630'
+	            ),
+	            ' Menu'
+	          )
 	        )
 	      )
 	    )
 	  );
 	};
-
 	exports.default = Navigation;
 
 /***/ },
@@ -62860,84 +62844,80 @@
 
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
-	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-panel" },
+	        'div',
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
+	              'a',
+	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  _reactRouter.browserHistory.push('');
+	                }, title: _lodash2.default.get(bundle, 'site_name', '') },
+	              _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
+	                className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
+	            ) : null
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
-	              _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
-	                'a',
-	                { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	                    eve.preventDefault();
-	                    _reactRouter.browserHistory.push('');
-	                  }, title: _lodash2.default.get(bundle, 'site_name', '') },
-	                _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name', ''),
-	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' })
-	              ) : null
-	            ),
+	              'a',
+	              { href: '#' },
+	              saleType,
+	              ' ',
+	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	            )
+	          ),
+	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
 	            _react2.default.createElement(
-	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	              'ul',
+	              null,
 	              _react2.default.createElement(
-	                'a',
-	                { href: '#' },
-	                saleType,
-	                ' ',
-	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
-	              )
-	            ),
-	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
-	              _react2.default.createElement(
-	                'ul',
+	                'li',
 	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
-	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-heart' })
-	                  )
-	                ),
+	                  'a',
+	                  { href: '#', title: 'Favorites', className: _lib.Lib.THEME_CLASSES_PREFIX + "favorite" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-heart' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                  _react2.default.createElement('i', {
+	                    className: 'fa fa-bell' }),
+	                  ' ',
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Notification', className: _lib.Lib.THEME_CLASSES_PREFIX + "notification" },
+	                    'span',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
 	                    _react2.default.createElement('i', {
-	                      className: 'fa fa-bell' }),
-	                    ' ',
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "indicator" },
-	                      _react2.default.createElement('i', {
-	                        className: 'fa fa-circle' })
-	                    )
+	                      className: 'fa fa-circle' })
 	                  )
-	                ),
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
 	                _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'a',
+	                  { href: '#', onClick: this.props.openUserPanel,
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', onClick: this.props.openUserPanel,
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "side-navigation" },
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      '\u2630'
-	                    )
+	                    'span',
+	                    null,
+	                    '\u2630'
 	                  )
 	                )
 	              )
@@ -63269,15 +63249,23 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-container" },
+	        { className: 'container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "spinner-accordion" },
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
-	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-container my-auto' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-accordion text-center' },
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect1" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect2" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect3" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect4" }),
+	              _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "rect5" })
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -63285,8 +63273,6 @@
 
 	  return LoadingAccordion;
 	}(_react.Component);
-
-	;
 
 	exports.default = LoadingAccordion;
 
@@ -63344,7 +63330,7 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
+	    'section',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
@@ -63668,33 +63654,37 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        rows.map(function (row) {
-	          var cells = _lodash2.default.get(row, 'cells', []);
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          rows.map(function (row) {
+	            var cells = _lodash2.default.get(row, 'cells', []);
 
-	          return cells.map(function (cell) {
-	            switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
-	              case 'Property_Pro_Masthead_Widget':
-	                return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Subnavigation_Widget':
-	                return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
-	                break;
-	              case 'Property_Pro_Tour_Widget':
-	                return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Listing_Carousel_Widget':
-	                return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Callout_Widget':
-	                return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
-	                break;
-	              case 'Property_Pro_Testimonials_Widget':
-	                return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
-	                break;
-	            }
-	          });
-	        }),
+	            return cells.map(function (cell) {
+	              switch (_lodash2.default.get(cell, 'widget.panels_info.class', '')) {
+	                case 'Property_Pro_Masthead_Widget':
+	                  return _react2.default.createElement(_Masthead2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Subnavigation_Widget':
+	                  return _react2.default.createElement(_Subnavigation2.default, { widget_cell: cell, currentUrl: _lodash2.default.get(_this2.props, 'post.post_url', '') });
+	                  break;
+	                case 'Property_Pro_Tour_Widget':
+	                  return _react2.default.createElement(_Tour2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Listing_Carousel_Widget':
+	                  return _react2.default.createElement(_ListingCarousel2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Callout_Widget':
+	                  return _react2.default.createElement(_Callout2.default, { widget_cell: cell });
+	                  break;
+	                case 'Property_Pro_Testimonials_Widget':
+	                  return _react2.default.createElement(_Testimonials2.default, { widget_cell: cell });
+	                  break;
+	              }
+	            });
+	          })
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -63806,7 +63796,8 @@
 	      );
 	      break;
 	    case 'guide_single_layout':
-	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle, returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
+	      return _react2.default.createElement(_GuideSingleLayout2.default, { widget_cell: widget_cell, headerStyle: headerStyle,
+	        returnToArchiveHandler: returnToArchiveHandler, nextArticleHandler: nextArticleHandler });
 	      break;
 	    case 'title_description_layout':
 	    default:
@@ -63816,12 +63807,16 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead", style: headerStyle },
+	    { className: 'jumbotron ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead text-center', style: headerStyle },
 	    modal,
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "intro-wrap" },
-	      container
+	      { className: 'container' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        container
+	      )
 	    )
 	  );
 	};
@@ -63837,7 +63832,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -63859,23 +63854,24 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TitleDescriptionLayout = function TitleDescriptionLayout(_ref) {
-	    var widget_cell = _ref.widget_cell;
+	  var widget_cell = _ref.widget_cell;
 
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            null,
-	            widget_cell.widget.fields.title
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	            'p',
-	            { className: 'hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
-	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title' },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      {
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle hidden-sm-down' },
+	      widget_cell.widget.fields.subtitle
+	    ) : null,
+	    _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	  );
 	};
 
 	exports.default = TitleDescriptionLayout;
@@ -64028,7 +64024,7 @@
 	      var self = this;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-box mx-auto' },
 	        _react2.default.createElement(_MobileTabsSearch2.default, {
 	          labels: this.state.labels,
 	          saleTypes: this.state.saleTypes,
@@ -64267,7 +64263,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-search" },
 	        _react2.default.createElement(
 	          'div',
-	          { id: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-options-type-container", onClick: function onClick() {
 	              return self.props.handleChange(true);
 	            } },
 	          this.props.selectedOption,
@@ -64624,7 +64620,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -64646,23 +64642,25 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SubtitleTitleLayout = function SubtitleTitleLayout(_ref) {
-	    var widget_cell = _ref.widget_cell;
+	  var widget_cell = _ref.widget_cell;
 
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-container' },
-	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	            'p',
-	            { className: 'hidden-sm-down' },
-	            widget_cell.widget.fields.subtitle
-	        ) : null,
-	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	            'h1',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
-	            widget_cell.widget.fields.title
-	        ) : null,
-	        _react2.default.createElement(_Search2.default, { options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
-	    );
+	  return _react2.default.createElement(
+	    'div',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container mx-auto' },
+	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	      'p',
+	      {
+	        className: _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-subtitle-top hidden-sm-down' },
+	      widget_cell.widget.fields.subtitle
+	    ) : null,
+	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	      'h1',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-title" },
+	      widget_cell.widget.fields.title
+	    ) : null,
+	    _react2.default.createElement(_Search2.default, {
+	      options: _lodash2.default.get(widget_cell, 'widget.fields.search_options', null) ? _lodash2.default.isEmpty(widget_cell.widget.fields.search_options) ? {} : widget_cell.widget.fields.search_options : {} })
+	  );
 	};
 
 	exports.default = SubtitleTitleLayout;
@@ -64698,13 +64696,13 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-title-container' },
+	    { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'masthead-container' },
 	    _react2.default.createElement(
 	      'header',
 	      null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
 	        'h1',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "masthead-blog-title" },
 	        widget_cell.widget.fields.title
 	      ) : null
 	    ),
@@ -64713,20 +64711,21 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "facebook",
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
 	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
 	          target: '_blank', title: 'Facebook', rel: 'noopener' },
 	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	      ) : null,
 	      twitterLink ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "twitter", href: twitterLink, target: '_blank', title: 'Twitter' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
+	          title: 'Twitter' },
 	        _react2.default.createElement('i', {
 	          className: 'fa fa-twitter' })
 	      ) : null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "linkedin",
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
 	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
 	          target: '_blank', title: 'LinkedIn' },
 	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
@@ -64765,16 +64764,20 @@
 	  return _react2.default.createElement(
 	    'header',
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-header" },
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h1',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	      'p',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
-	      widget_cell.widget.fields.subtitle
-	    ) : null
+	    _react2.default.createElement(
+	      'div',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-header-container mx-auto text-center' },
+	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	        'h1',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	        widget_cell.widget.fields.title
+	      ) : null,
+	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	        'p',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-excerpt" },
+	        widget_cell.widget.fields.subtitle
+	      ) : null
+	    )
 	  );
 	};
 
@@ -64823,47 +64826,55 @@
 	    _react2.default.createElement(
 	      'header',
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	      _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	        'h1',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
-	        widget_cell.widget.fields.title
-	      ) : null,
-	      _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
-	        'p',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	        widget_cell.widget.fields.subtitle
-	      ) : null
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'article-header-container mx-auto text-center' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	          'h1',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-title" },
+	          widget_cell.widget.fields.title
+	        ) : null,
+	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
+	          'p',
+	          { className: 'hidden-xs-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'article-excerpt' },
+	          widget_cell.widget.fields.subtitle
+	        ) : null
+	      )
 	    ),
 	    _react2.default.createElement(
 	      'nav',
-	      null,
+	      { className: 'navbar navbar-toggleable-md ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation' },
 	      _react2.default.createElement(
-	        'ol',
-	        null,
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items' },
 	        _react2.default.createElement(
-	          'li',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-prev" },
+	          'ul',
+	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-navigation-cotrols' },
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(eve) {
-	                eve.preventDefault();
-	                returnToArchiveHandler();
-	              } },
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            prevLinkText
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'li',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "nav-item-next" },
+	            'li',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-prev text-center' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  returnToArchiveHandler();
+	                } },
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	              prevLinkText
+	            )
+	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(eve) {
-	                eve.preventDefault();
-	                nextArticleHandler();
-	              } },
-	            nextLinkText,
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
+	            'li',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-item-next text-center' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(eve) {
+	                  eve.preventDefault();
+	                  nextArticleHandler();
+	                } },
+	              nextLinkText,
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-right' })
+	            )
 	          )
 	        )
 	      )
@@ -65042,42 +65053,50 @@
 	      var resultsElements = searchResults.map(function (s, k) {
 	        return _react2.default.createElement(
 	          'div',
-	          { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-group" },
+	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
+	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'container' },
 	              _react2.default.createElement(
-	                'h4',
-	                null,
-	                s.text
-	              )
-	            )
-	          ),
-	          s.children.length ? _react2.default.createElement(
-	            'ol',
-	            null,
-	            s.children.map(function (c, i) {
-	              return _react2.default.createElement(
-	                'li',
-	                { key: i },
+	                'div',
+	                { className: 'row' },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#',
-	                    onClick: function onClick(eve) {
-	                      return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
-	                    } },
+	                  'h4',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
+	                  s.text
+	                )
+	              )
+	            ),
+	            s.children.length ? _react2.default.createElement(
+	              'ol',
+	              { className: 'list-group' },
+	              s.children.map(function (c, i) {
+	                return _react2.default.createElement(
+	                  'li',
+	                  { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-item border-0 p-0', key: i },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'container' },
-	                    c.text
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'row' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'm-0',
+	                          onClick: function onClick(eve) {
+	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                          } },
+	                        c.text
+	                      )
+	                    )
 	                  )
-	                )
-	              );
-	            })
-	          ) : null
+	                );
+	              })
+	            ) : null
+	          )
 	        );
 	      });
 
@@ -65085,7 +65104,7 @@
 	      var inputClasses = 'form-control';
 	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
 	        placeholder = 'Address, City, Zip.';
-	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'withPadding';
+	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'with-padding';
 	      }
 
 	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
@@ -65095,44 +65114,88 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(e) {
-	              e.preventDefault();_this2.props.closeModal();
-	            } },
-	          _react2.default.createElement('i', { className: 'fa fa-times' })
-	        ),
-	        _react2.default.createElement(
-	          'form',
-	          { method: 'get', className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _react2.default.createElement('i', { className: 'fa fa-search' }),
-	            _react2.default.createElement('input', {
-	              autoComplete: 'off',
-	              className: inputClasses,
-	              id: _lib.Lib.THEME_PREFIX + "search-input",
-	              onChange: this.handleSearchValueChange.bind(this),
-	              ref: function ref(input) {
-	                _this2.searchInput = input;
-	              },
-	              type: 'text',
-	              value: this.state.searchValue,
-	              placeholder: placeholder
-	            }),
-	            window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
-	              'button',
-	              { type: 'button', className: 'btn btn-primary' },
-	              'Search'
-	            )
-	          )
-	        ),
+	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
-	          resultsElements
+	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'modal-content ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Search'
+	                      ),
+	                      _react2.default.createElement('i', { className: 'fa fa-search' })
+	                    ),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Input'
+	                      ),
+	                      _react2.default.createElement('input', {
+	                        autoComplete: 'off',
+	                        className: inputClasses,
+	                        id: _lib.Lib.THEME_PREFIX + "search-input",
+	                        onChange: this.handleSearchValueChange.bind(this),
+	                        ref: function ref(input) {
+	                          _this2.searchInput = input;
+	                        },
+	                        type: 'text',
+	                        value: this.state.searchValue,
+	                        placeholder: placeholder
+	                      })
+	                    ),
+	                    window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
+	                      'button',
+	                      { type: 'button',
+	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
+	                      'Search'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _this2.props.closeModal();
+	                  }, 'aria-label': 'Close' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '\xD7'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
+	                resultsElements
+	              )
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -65226,16 +65289,41 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	      'p',
-	      null,
-	      item.title
-	    ) : null,
-	    _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
-	      'a',
-	      { href: _lodash2.default.get(item, 'button.url', bundle.site_url), className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
-	      item.button.label
-	    ) : null
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'callout-container mx-auto' },
+	        _react2.default.createElement(
+	          'nav',
+	          { className: 'navbar navbar-toggleable-md' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout-items" },
+	            _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	              'p',
+	              { className: 'navbar-brand mr-auto my-auto' },
+	              item.title
+	            ) : null,
+	            _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
+	              'ul',
+	              { className: 'navbar-nav' },
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: _lodash2.default.get(item, 'button.url', bundle.site_url),
+	                    className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
+	                  item.button.label
+	                )
+	              )
+	            ) : null
+	          )
+	        )
+	      )
+	    )
 	  );
 	};
 
@@ -65248,7 +65336,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
@@ -65272,98 +65360,108 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
-	    };
+	  return {
+	    activeItem: _lodash2.default.get(state, 'testimonialsCarouselState.activeItem', 0)
+	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	    return {
-	        switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
-	            dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
-	        }
-	    };
+	  return {
+	    switchActiveTestimonial: function switchActiveTestimonial(activeItem) {
+	      dispatch((0, _index.setTestimonialsActiveItem)(activeItem));
+	    }
+	  };
 	};
 
 	var TestimonialsContent = function TestimonialsContent(_ref) {
-	    var widget_cell = _ref.widget_cell,
-	        activeItem = _ref.activeItem,
-	        switchActiveTestimonial = _ref.switchActiveTestimonial;
+	  var widget_cell = _ref.widget_cell,
+	      activeItem = _ref.activeItem,
+	      switchActiveTestimonial = _ref.switchActiveTestimonial;
 
 
-	    if (!widget_cell) {
-	        return null;
-	    }
+	  if (!widget_cell) {
+	    return null;
+	  }
 
-	    var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
-	        return _react2.default.createElement(
-	            'li',
-	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
-	            _react2.default.createElement(
-	                'blockquote',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'rating' },
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
-	                    _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
-	                ),
-	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    _lodash2.default.get(testimonial, 'review', '')
-	                )
-	            )
-	        );
-	    });
-
-	    var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
-	        return _react2.default.createElement(
-	            'li',
-	            { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active" : "", key: i },
-	            _react2.default.createElement(
-	                'a',
-	                { href: '#', onClick: function onClick(event) {
-	                        switchActiveTestimonial(i);
-	                        event.preventDefault();
-	                        event.stopPropagation();
-	                    } },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "userBox" },
-	                    _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, alt: testimonial.title }) : null,
-	                    _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
-	                        'p',
-	                        { className: 'hidden-sm-down' },
-	                        testimonial.title
-	                    ) : null,
-	                    _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
-	                        'span',
-	                        { className: 'hidden-sm-down' },
-	                        testimonial.subtitle
-	                    ) : null
-	                )
-	            )
-	        );
-	    });
-
-	    var container = void 0;
-	    switch (widget_cell.widget.fields.layout) {
-	        case 'default_layout':
-	        default:
-	            container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
-	                testimonials_authors: testimonials_authors });
-	            break;
-	    }
-
+	  var testimonials_reviews = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
 	    return _react2.default.createElement(
-	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "testimonial" },
-	        container
+	      'li',
+	      { className: i === activeItem ? _lib.Lib.THEME_CLASSES_PREFIX + "active-slide" : "", key: i },
+	      _react2.default.createElement(
+	        'blockquote',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'rating mx-auto' },
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' }),
+	          _react2.default.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial-text m-0 px-4' },
+	          _lodash2.default.get(testimonial, 'review', '')
+	        )
+	      )
 	    );
+	  });
+
+	  var linkClasses = ['mr-auto', 'mx-auto', 'ml-auto'];
+
+	  var testimonials_authors = _lodash2.default.get(widget_cell, 'widget.fields.testimonials', []).map(function (testimonial, i) {
+	    return _react2.default.createElement(
+	      'li',
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-item" + (i === activeItem ? " " + _lib.Lib.THEME_CLASSES_PREFIX + "active" : ""), key: i },
+	      _react2.default.createElement(
+	        'a',
+	        { href: '#', className: linkClasses[i], onClick: function onClick(event) {
+	            switchActiveTestimonial(i);
+	            event.preventDefault();
+	            event.stopPropagation();
+	          } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-box" },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-image" },
+	            _lodash2.default.get(testimonial, 'image_src', '') ? _react2.default.createElement('img', { src: testimonial.image_src, className: 'rounded-circle', alt: testimonial.title }) : null
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-info" },
+	            _lodash2.default.get(testimonial, 'title', '') ? _react2.default.createElement(
+	              'p',
+	              { className: 'hidden-sm-down' },
+	              testimonial.title
+	            ) : null,
+	            _lodash2.default.get(testimonial, 'subtitle', '') ? _react2.default.createElement(
+	              'span',
+	              { className: 'hidden-sm-down' },
+	              testimonial.subtitle
+	            ) : null
+	          )
+	        )
+	      )
+	    );
+	  });
+
+	  var container = void 0;
+	  switch (widget_cell.widget.fields.layout) {
+	    case 'default_layout':
+	    default:
+	      container = _react2.default.createElement(_DefaultLayout2.default, { widget_cell: widget_cell, testimonials_reviews: testimonials_reviews,
+	        testimonials_authors: testimonials_authors });
+	      break;
+	  }
+
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonial text-center' },
+	    container
+	  );
 	};
 
 	var Testimonials = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TestimonialsContent);
@@ -65402,27 +65500,35 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
-	    _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
-	      'h4',
-	      null,
-	      widget_cell.widget.fields.title
-	    ) : null,
-	    _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
+	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "sliderContent" },
+	      { className: 'row' },
 	      _react2.default.createElement(
-	        'ul',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
-	        testimonials_reviews
-	      )
-	    ),
-	    _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "userInfo" },
-	      _react2.default.createElement(
-	        'ul',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "slides" },
-	        testimonials_authors
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'testimonials-container mx-auto' },
+	        _lodash2.default.get(widget_cell, 'widget.fields.title', '') ? _react2.default.createElement(
+	          'h4',
+	          null,
+	          widget_cell.widget.fields.title
+	        ) : null,
+	        _lodash2.default.isEmpty(testimonials_reviews) ? null : _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "slider-content" },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
+	            testimonials_reviews
+	          )
+	        ),
+	        _lodash2.default.isEmpty(testimonials_authors) ? null : _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "author-info" },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'slides p-0' },
+	            testimonials_authors
+	          )
+	        )
 	      )
 	    )
 	  );
@@ -65549,49 +65655,64 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
-	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	          'h3',
-	          null,
-	          _lodash2.default.get(item, 'title')
-	        ) : null,
-	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	          'p',
-	          null,
-	          _lodash2.default.get(item, 'subtitle')
-	        ) : null,
-	        posts.length ? _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel clearfix' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container', ref: function ref(r) {
-	                return _this2.swiperElement = r;
-	              } },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'swiper-wrapper' },
-	              posts.map(function (post, key) {
-	                return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
-	              })
-	            )
-	          )
-	        ) : null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-control-nav" },
+	          { className: 'row' },
 	          _react2.default.createElement(
-	            'a',
-	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "prev-nav", ref: function ref(r) {
-	                return _this2.swiperElementPrev = r;
-	              } },
-	            _react2.default.createElement('i', { className: 'fa fa-angle-left' })
-	          ),
-	          _react2.default.createElement(
-	            'a',
-	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "next-nav", ref: function ref(r) {
-	                return _this2.swiperElementNext = r;
-	              } },
-	            _react2.default.createElement('i', { className: 'fa fa-angle-right' })
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
+	              _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	                'h3',
+	                { className: 'mx-auto' },
+	                _lodash2.default.get(item, 'title')
+	              ) : null,
+	              _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	                'p',
+	                null,
+	                _lodash2.default.get(item, 'subtitle')
+	              ) : null
+	            ),
+	            posts.length ? _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
+	                  ref: function ref(r) {
+	                    return _this2.swiperElement = r;
+	                  } },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'swiper-wrapper' },
+	                  posts.map(function (post, key) {
+	                    return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
+	                  })
+	                )
+	              )
+	            ) : null,
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle', ref: function ref(r) {
+	                    return _this2.swiperElementPrev = r;
+	                  } },
+	                _react2.default.createElement('i', {
+	                  className: 'fa fa-angle-left' })
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle', ref: function ref(r) {
+	                    return _this2.swiperElementNext = r;
+	                  } },
+	                _react2.default.createElement('i', {
+	                  className: 'fa fa-angle-right' })
+	              )
+	            )
 	          )
 	        )
 	      );
@@ -65667,7 +65788,11 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-container' },
-	      container
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        container
+	      )
 	    )
 	  );
 	};
@@ -65708,7 +65833,7 @@
 	    null,
 	    _react2.default.createElement(
 	      'ul',
-	      { className: 'clearfix' },
+	      null,
 	      items.map(function (item, i) {
 	        if (item.url === currentUrl) {
 	          return _react2.default.createElement(
@@ -65891,10 +66016,10 @@
 
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-desktop" },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-desktop hidden-sm-down' },
 	    links.length ? _react2.default.createElement(
 	      'ul',
-	      { className: 'clearfix' },
+	      null,
 	      links.map(function (link, key) {
 	        if (link.url === currentUrl) {
 	          return _react2.default.createElement(
@@ -66084,7 +66209,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'hidden-lg-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile' },
+	        { className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: selectedOptionClasses,
@@ -66238,25 +66363,29 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-tour" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle text-center' },
+	      { className: 'container-fluid' },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
-	        _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	          'h2',
-	          null,
-	          item.title
-	        ) : null,
-	        _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	          'p',
-	          null,
-	          item.subtitle
-	        ) : null
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'headtitle mx-auto text-center' },
+	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	            'h2',
+	            null,
+	            item.title
+	          ) : null,
+	          _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	            'p',
+	            null,
+	            item.subtitle
+	          ) : null
+	        ),
+	        _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
+	          return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
+	        })
 	      )
-	    ),
-	    _lodash2.default.get(item, 'feature_groups', []).map(function (featureGroup, key) {
-	      return _react2.default.createElement(_FeatureGroup2.default, { featureGroup: featureGroup, ind: key, key: key });
-	    })
+	    )
 	  );
 	};
 
@@ -66298,19 +66427,18 @@
 	  var counter = 1;
 	  var featuresCount = _lodash2.default.get(featureGroup, 'features', []).length;
 
-	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background' : 'col-lg-7 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background';
+	  var featureGroupBackgroundClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' && _lodash2.default.get(featureGroup, 'background', null) !== 'full' ? 'col-lg-7 push-lg-5' : 'col-lg-7';
+	  featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block p-0';
 	  var featureGroupContentClasses = _lodash2.default.get(featureGroup, 'layout', null) === 'left' ? "col-lg-6" : "col-lg-6 push-lg-6";
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
 	    "background": "url(" + featureGroup.image_section.image_src + ")",
-	    "backgroundPosition": featureGroup.image_section.image_position
+	    "backgroundPosition": featureGroup.image_section.image_position,
+	    "backgroundSize": "cover"
 	  } : {};
 
 	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {
-	    backgroundStyle = Object.assign({}, backgroundStyle, {
-	      "backgroundSize": "cover",
-	      "minWidth": "100%"
-	    });
+	    featureGroupBackgroundClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block-full';
 	  }
 
 	  return _react2.default.createElement(
@@ -66318,29 +66446,37 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-box", key: ind },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'row no-gutters ' + _lib.Lib.THEME_CLASSES_PREFIX + 'background-block' },
-	      _react2.default.createElement('div', { className: featureGroupBackgroundClasses, style: backgroundStyle })
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
+	      { className: 'container-fluid' },
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: featureGroupBackgroundClasses },
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + "background", style: backgroundStyle })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "widget-inner" },
 	          _react2.default.createElement(
 	            'div',
-	            { className: featureGroupContentClasses },
+	            { className: 'container' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
-	              _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
-	                var last = featuresCount === counter;
-	                counter++;
-	                return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
-	              })
+	              { className: 'row no-gutters' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: featureGroupContentClasses },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content" },
+	                  _lodash2.default.get(featureGroup, 'features', []).map(function (feature, k) {
+	                    var last = featuresCount === counter;
+	                    counter++;
+	                    return _react2.default.createElement(_Feature2.default, { feature: feature, last: last, ind: k, key: k });
+	                  })
+	                )
+	              )
 	            )
 	          )
 	        )
@@ -66382,7 +66518,7 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { key: ind },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "tour-widget-content-container", key: ind },
 	    _lodash2.default.get(feature, 'title', null) ? _react2.default.createElement(
 	      'h3',
 	      null,
@@ -66412,7 +66548,7 @@
 	        _lodash2.default.get(feature, 'testimonial_section.image_src', null) ? _react2.default.createElement(
 	          'span',
 	          null,
-	          _react2.default.createElement('img', { src: feature.testimonial_section.image_src,
+	          _react2.default.createElement('img', { className: 'rounded-circle', src: feature.testimonial_section.image_src,
 	            alt: _lodash2.default.get(feature, 'testimonial_section.name', '') })
 	        ) : null,
 	        _lodash2.default.get(feature, 'testimonial_section.name', null) ? _react2.default.createElement(
@@ -66492,41 +66628,74 @@
 	    key: 'render',
 	    value: function render() {
 
+	      var posts = _lodash2.default.get(this.props.post, 'related_posts', []);
+	      var groups = [];
+
+	      if (posts) {
+	        (function () {
+	          var postsGroup = [];
+	          posts.map(function (post) {
+	            postsGroup.push(post);
+
+	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
+	              groups.push(postsGroup);
+	              postsGroup = [];
+	            }
+	          });
+	        })();
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'container-fluid' },
 	        _react2.default.createElement(
-	          'article',
-	          null,
-	          _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
-	          _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
-	        ),
-	        _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	          'section',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
+	          'div',
+	          { className: 'row' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'container' },
-	            _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-posts" },
-	              _react2.default.createElement(
-	                'h4',
-	                null,
-	                'More ',
-	                this.props.post.category_title,
-	                ' Articles'
-	              )
-	            ) : null,
+	            'article',
+	            null,
+	            _lodash2.default.get(this.props.post, 'widgets.masthead', null) ? _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(this.props.post, 'widgets.masthead') }) : null,
+	            _lodash2.default.get(this.props.post, 'content', null) ? _react2.default.createElement(_PostContent2.default, { content: this.props.post.content }) : null
+	          ),
+	          _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	            'section',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "related-posts" },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
-	              _lodash2.default.get(this.props.post, 'related_posts', []).map(function (item) {
-	                return _react2.default.createElement(_PostCard2.default, { data: item });
-	              })
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _lodash2.default.get(this.props.post, 'category_title', null) && _lodash2.default.get(this.props.post, 'related_posts', []).length ? _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'more-posts text-center' },
+	                  _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    'More ',
+	                    this.props.post.category_title,
+	                    ' Articles'
+	                  )
+	                ) : null
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                groups.map(function (g, group_index) {
+	                  var groupPosts = g.map(function (p, i) {
+	                    return _react2.default.createElement(_PostCard2.default, { data: p, key: i });
+	                  });
+	                  return _react2.default.createElement(
+	                    'div',
+	                    { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
+	                      key: group_index },
+	                    groupPosts
+	                  );
+	                })
+	              )
 	            )
-	          )
-	        ) : null,
+	          ) : null
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -66597,10 +66766,10 @@
 
 	      return _react2.default.createElement(
 	        'section',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-item col-lg-6' },
+	        { className: 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-item border-0' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-image" },
+	          { className: 'card-img-top ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-image' },
 	          _react2.default.createElement(
 	            'a',
 	            { href: url, title: title, onClick: function onClick(e) {
@@ -66611,25 +66780,29 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'header',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-excerpt" },
+	          'div',
+	          { className: 'card-block p-0' },
 	          _react2.default.createElement(
-	            'h5',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-title" },
+	            'header',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "post-header" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: url, onClick: function onClick(e) {
-	                  e.preventDefault();
-	                  _Util2.default.goToUrl(relative_url);
-	                } },
-	              title
+	              'h5',
+	              { className: 'card-title ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-title' },
+	              _react2.default.createElement(
+	                'a',
+	                { href: url, onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _Util2.default.goToUrl(relative_url);
+	                  } },
+	                title
+	              )
 	            )
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'card-text' },
+	            excerpt
 	          )
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          excerpt
 	        )
 	      );
 	    }
@@ -66695,7 +66868,15 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          (0, _reactRenderHtml2.default)(this.props.content)
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'post-content-container mx-auto text-justify' },
+	              (0, _reactRenderHtml2.default)(this.props.content)
+	            )
+	          )
 	        )
 	      ) : null;
 	    }
@@ -81726,10 +81907,14 @@
 
 	var Footer = function Footer() {
 	  return _lodash2.default.get(bundle, 'footer', null) ? _react2.default.createElement(
-	    "footer",
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
-	    _react2.default.createElement(_FooterTop2.default, null),
-	    _react2.default.createElement(_FooterBottom2.default, null)
+	    "div",
+	    { className: "row" },
+	    _react2.default.createElement(
+	      "footer",
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "pagefooter" },
+	      _react2.default.createElement(_FooterTop2.default, null),
+	      _react2.default.createElement(_FooterBottom2.default, null)
+	    )
 	  ) : null;
 	};
 
@@ -81772,13 +81957,13 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-footer" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'container' },
+	      { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top-footer-container' },
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo' },
+	          { className: 'col-lg-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-logo text-center' },
 	          _lodash2.default.get(bundle, 'logos.vertical_logo', null) ? _react2.default.createElement(
 	            'a',
 	            { href: bundle.site_url, title: bundle.site_name, onClick: function onClick(eve) {
@@ -81794,10 +81979,14 @@
 	          { className: 'col-md-12 col-lg-9 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'footer-menu' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'row' },
-	            _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
-	              return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
-	            }) : null
+	            { className: 'container-fluid' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row' },
+	              _lodash2.default.get(bundle, 'footer.top_footer', null) ? bundle.footer.top_footer.map(function (menu, i) {
+	                return _react2.default.createElement(_FooterTopMenu2.default, { key: i, menu: menu });
+	              }) : null
+	            )
 	          )
 	        )
 	      )
@@ -81825,6 +82014,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81840,19 +82031,19 @@
 	    { className: 'col-6 col-sm-6 col-lg-3' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      null,
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-container" },
 	      _react2.default.createElement(
 	        'h5',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-title" },
 	        menu.title
 	      ),
 	      _react2.default.createElement(
 	        'ul',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-top-menu-links p-0' },
 	        _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	          return _react2.default.createElement(
 	            'li',
-	            { key: i },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-top-menu-link", key: i },
 	            _react2.default.createElement(
 	              'a',
 	              { href: item.url, onClick: function onClick(eve) {
@@ -81907,7 +82098,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer" },
 	        _react2.default.createElement(
 	            "div",
-	            { className: "container" },
+	            { className: "container " + _lib.Lib.THEME_CLASSES_PREFIX + "bottom-footer-container" },
 	            _react2.default.createElement(
 	                "div",
 	                { className: "row" },
@@ -81938,6 +82129,8 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _lib = __webpack_require__(276);
+
 	var _lodash = __webpack_require__(277);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -81953,11 +82146,11 @@
 	    { className: 'col-md-12 col-lg-7' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'ul',
-	      null,
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'footer-bottom-menu-links p-0' },
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'li',
-	          { key: i },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "footer-bottom-menu-link", key: i },
 	          _react2.default.createElement(
 	            'a',
 	            { href: item.url, onClick: function onClick(eve) {
@@ -82005,7 +82198,7 @@
 	    { className: 'col-md-12 col-lg-5' },
 	    _lodash2.default.isEmpty(menu) ? null : _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "social" },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'social text-right' },
 	      _react2.default.createElement(
 	        'span',
 	        null,
@@ -82014,7 +82207,7 @@
 	      _lodash2.default.get(menu, 'items', null) ? menu.items.map(function (item, i) {
 	        return _react2.default.createElement(
 	          'a',
-	          { key: i, className: item.title.toLowerCase(), href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
+	          { key: i, className: item.title.toLowerCase() + ' text-center rounded-circle', href: item.url, target: '_blank', title: item.title, rel: 'noopener' },
 	          _react2.default.createElement('i', {
 	            className: 'fa fa-' + (item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()) })
 	        );
@@ -82105,38 +82298,46 @@
 	      var content = _lodash2.default.get(this.props.post, 'guide_single_content', {});
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
+	        'article',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	          _react2.default.createElement(
-	            'article',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-post" },
+	            'div',
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-6' },
+	              { className: 'col-xl-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(_HeaderGuide2.default, null),
-	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
-	                  returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
-	                  nextArticleHandler: this.nextArticleHandler.bind(this) })
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(_HeaderGuide2.default, null),
+	                  _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead', ''),
+	                    returnToArchiveHandler: this.returnToArchiveHandler.bind(this),
+	                    nextArticleHandler: this.nextArticleHandler.bind(this) })
+	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-6' },
+	              { className: 'col-xl-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
-	                _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
-	                  'section',
-	                  {
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
-	                  (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
-	                ) : null
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _lodash2.default.get(content, 'content', null) ? _react2.default.createElement(
+	                    'section',
+	                    {
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-content" },
+	                    (0, _reactRenderHtml2.default)(_lodash2.default.get(content, 'content'))
+	                  ) : null
+	                )
 	              )
 	            )
 	          )
@@ -82186,35 +82387,44 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-toolbar' },
 	    _react2.default.createElement(
 	      'nav',
-	      { className: 'navbar navbar-toggleable-md bg-faded' },
-	      _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
-	        'a',
-	        { className: 'navbar-brand', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
-	            eve.preventDefault();
-	            _Util2.default.goToUrl('/');
-	          } },
-	        _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	          className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
-	        _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
-	          className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
-	      ) : null,
-	      _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
-	        'ul',
-	        { className: 'nav navbar-toggler-right' },
-	        _react2.default.createElement(
-	          'li',
-	          { className: 'nav-item' },
+	      { className: 'navbar navbar-toggleable-md' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-items mx-3' },
+	        _lodash2.default.get(bundle, 'template_url', null) ? _react2.default.createElement(
+	          'a',
+	          { className: 'navbar-brand mr-auto', href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
+	              eve.preventDefault();
+	              _Util2.default.goToUrl('/');
+	            } },
+	          _lodash2.default.get(bundle, 'logos.horizontal_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.horizontal_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	            className: 'hidden-sm-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'horizontal-logo' }) : null,
+	          _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement('img', { src: bundle.logos.square_logo, alt: _lodash2.default.get(bundle, 'site_name'),
+	            className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'logo ' + _lib.Lib.THEME_CLASSES_PREFIX + 'square-logo' }) : null
+	        ) : null,
+	        _lodash2.default.get(bundle, 'site_url', null) ? _react2.default.createElement(
+	          'ul',
+	          { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	          _react2.default.createElement(
-	            'a',
-	            { href: bundle.site_url, onClick: function onClick(eve) {
-	                eve.preventDefault();
-	                _Util2.default.goToUrl('/');
-	              }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
-	            _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
-	            'Return Home'
+	            'li',
+	            { className: 'nav-item' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: bundle.site_url, onClick: function onClick(eve) {
+	                  _react2.default.createElement('the', null);
+	                  eve.preventDefault();
+	                  _Util2.default.goToUrl('/');
+	                }, className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-back-to-home' },
+	              _react2.default.createElement('fa', { className: 'fa fa-arrow-left' }),
+	              _react2.default.createElement(
+	                'span',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "btn-back-to-home-content" },
+	                'Return Home'
+	              )
+	            )
 	          )
-	        )
-	      ) : null
+	        ) : null
+	      )
 	    )
 	  );
 	};
@@ -82323,10 +82533,15 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
-	        _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'), currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
-	        _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') }),
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') }),
+	          _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'),
+	            currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
+	          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') })
+	        ),
 	        _react2.default.createElement(_Footer2.default, null)
 	      );
 	    }
@@ -82425,6 +82640,23 @@
 
 	      var self = this;
 
+	      var posts = _lodash2.default.get(this.props, 'posts', []);
+	      var groups = [];
+
+	      if (posts) {
+	        (function () {
+	          var postsGroup = [];
+	          posts.map(function (post) {
+	            postsGroup.push(post);
+
+	            if (postsGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
+	              groups.push(postsGroup);
+	              postsGroup = [];
+	            }
+	          });
+	        })();
+	      }
+
 	      return _react2.default.createElement(
 	        'section',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "blog-posts" },
@@ -82434,32 +82666,43 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
-	            !this.state.loading ? this.props.posts.map(function (p, i) {
+	            !this.state.loading || groups ? groups.map(function (g, group_index) {
 
-	              var item = {
-	                title: _lodash2.default.get(p, 'title', ''),
-	                excerpt: _lodash2.default.get(p, 'excerpt', ''),
-	                image_src: _lodash2.default.get(p, 'image_src', ''),
-	                image_title: _lodash2.default.get(p, 'image_title', ''),
-	                image_alt: _lodash2.default.get(p, 'image_alt', ''),
-	                url: _lodash2.default.get(p, 'url', ''),
-	                relative_url: _lodash2.default.get(p, 'relative_url', '')
+	              var groupPosts = g.map(function (p, i) {
+	                return _react2.default.createElement(_PostCard2.default, { data: {
+	                    title: _lodash2.default.get(p, 'title', ''),
+	                    excerpt: _lodash2.default.get(p, 'excerpt', ''),
+	                    image_src: _lodash2.default.get(p, 'image_src', ''),
+	                    image_title: _lodash2.default.get(p, 'image_title', ''),
+	                    image_alt: _lodash2.default.get(p, 'image_alt', ''),
+	                    url: _lodash2.default.get(p, 'url', ''),
+	                    relative_url: _lodash2.default.get(p, 'relative_url', '')
 
-	              };
+	                  }, key: i });
+	              });
 
-	              return _react2.default.createElement(_PostCard2.default, { data: item, key: i });
+	              return _react2.default.createElement(
+	                'div',
+	                { className: 'card-deck ' + _lib.Lib.THEME_CLASSES_PREFIX + 'blog-posts-row',
+	                  key: group_index },
+	                groupPosts
+	              );
 	            }) : _react2.default.createElement(_LoadingCircle2.default, null)
 	          ),
 	          this.props.allowPagination ? _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more text-center' },
-	            this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
-	              'a',
-	              { href: '#', onClick: function onClick(e) {
-	                  return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
-	                },
-	                className: 'btn btn-primary' },
-	              'Load More'
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'load-more mx-auto' },
+	              this.state.loading ? _react2.default.createElement(_LoadingCircle2.default, null) : _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: function onClick(e) {
+	                    return self.seeMore.bind(_this2)(e, _this2.props.categoryId);
+	                  },
+	                  className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'load-more-link' },
+	                'Load More'
+	              )
 	            )
 	          ) : null
 	        )
@@ -82540,38 +82783,50 @@
 	      var cards = _lodash2.default.get(content, 'items', []).map(function (item, i) {
 	        var last = _lodash2.default.get(content, 'items', []).length === i + 1;
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'col-md-12', key: i },
+	          'li',
+	          { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list-item border-0', key: i },
 	          _lodash2.default.get(item, 'children', null) ? _react2.default.createElement(_CategoryCard2.default, { category: item, last: last }) : _react2.default.createElement(_ArticleCard2.default, { article: item, last: last })
 	        );
 	      });
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-lg-6' },
+	            { className: 'col-xl-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
-	              _react2.default.createElement(_HeaderGuide2.default, null),
-	              _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
+	              { className: 'container-fluid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(_HeaderGuide2.default, null),
+	                _react2.default.createElement(_Masthead2.default, { widget_cell: _lodash2.default.get(content, 'masthead') })
+	              )
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-lg-6' },
+	            { className: 'col-xl-6' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'row' },
+	              { className: 'container-fluid' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-content" },
-	                cards
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'guide-content' },
+	                  _react2.default.createElement(
+	                    'ul',
+	                    { className: 'list-group ' + _lib.Lib.THEME_CLASSES_PREFIX + 'guide-list' },
+	                    cards
+	                  )
+	                )
 	              )
 	            )
 	          )
@@ -82647,60 +82902,64 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row no-gutters' },
+	          { className: 'container-fluid p-0' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-8' },
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
+	              { className: 'col-sm-8' },
 	              _react2.default.createElement(
-	                'header',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
-	                _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
-	                  'h2',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-card-content" },
+	                _react2.default.createElement(
+	                  'header',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-header" },
+	                  _lodash2.default.get(this.props.category, 'title', null) ? _react2.default.createElement(
+	                    'h2',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-title" },
+	                    _react2.default.createElement(
+	                      'a',
+	                      {
+	                        href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
+	                          eve.preventDefault();
+	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
+	                        } },
+	                      _lodash2.default.get(this.props.category, 'title')
+	                    )
+	                  ) : null
+	                ),
+	                _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
+	                  'nav',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
 	                  _react2.default.createElement(
-	                    'a',
-	                    {
-	                      href: _lodash2.default.get(this.props.category, 'url', ''), onClick: function onClick(eve) {
-	                        eve.preventDefault();
-	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.category, 'relative_url', ''));
-	                      } },
-	                    _lodash2.default.get(this.props.category, 'title')
+	                    'ul',
+	                    { className: 'list-group' },
+	                    _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
+	                      return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
+	                        'li',
+	                        { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'category-navigation-item border-0 p-0', key: key },
+	                        _react2.default.createElement(
+	                          'a',
+	                          { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
+	                              eve.preventDefault();
+	                              _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
+	                            } },
+	                          _lodash2.default.get(item, 'title')
+	                        )
+	                      ) : null;
+	                    })
 	                  )
 	                ) : null
-	              ),
-	              _lodash2.default.get(this.props.category, 'children', null) ? _react2.default.createElement(
-	                'nav',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "category-navigation" },
-	                _react2.default.createElement(
-	                  'ul',
-	                  null,
-	                  _lodash2.default.get(this.props.category, 'children', []).map(function (item, key) {
-	                    return _lodash2.default.get(item, 'title', null) && _lodash2.default.get(item, 'relative_url', null) ? _react2.default.createElement(
-	                      'li',
-	                      { key: key },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: _lodash2.default.get(item, 'relative_url'), onClick: function onClick(eve) {
-	                            eve.preventDefault();
-	                            _Util2.default.goToUrl(_lodash2.default.get(item, 'relative_url'));
-	                          } },
-	                        _lodash2.default.get(item, 'title')
-	                      )
-	                    ) : null;
-	                  })
-	                )
-	              ) : null
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-sm-4' },
+	              _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                  background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
+	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.category, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                background: "url(" + _lodash2.default.get(this.props.category, 'image_src') + ") 50% 50% no-repeat"
-	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );
@@ -82775,44 +83034,48 @@
 	        { className: sectionClasses },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'container-fluid p-0' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-sm-8' },
+	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
+	              { className: 'col-sm-8' },
 	              _react2.default.createElement(
-	                'header',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
-	                _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
-	                  'h2',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
-	                  _react2.default.createElement(
-	                    'a',
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-card-content" },
+	                _react2.default.createElement(
+	                  'header',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-header" },
+	                  _lodash2.default.get(this.props.article, 'title', null) ? _react2.default.createElement(
+	                    'h2',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-title" },
+	                    _react2.default.createElement(
+	                      'a',
+	                      {
+	                        href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
+	                          eve.preventDefault();
+	                          _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
+	                        } },
+	                      _lodash2.default.get(this.props.article, 'title')
+	                    )
+	                  ) : null,
+	                  _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
+	                    'p',
 	                    {
-	                      href: _lodash2.default.get(this.props.article, 'url', ''), onClick: function onClick(eve) {
-	                        eve.preventDefault();
-	                        _Util2.default.goToUrl(_lodash2.default.get(_this2.props.article, 'relative_url', ''));
-	                      } },
-	                    _lodash2.default.get(this.props.article, 'title')
-	                  )
-	                ) : null,
-	                _lodash2.default.get(this.props.article, 'excerpt', null) ? _react2.default.createElement(
-	                  'p',
-	                  {
-	                    className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
-	                  _lodash2.default.get(this.props.article, 'excerpt')
-	                ) : null
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	                    _lodash2.default.get(this.props.article, 'excerpt')
+	                  ) : null
+	                )
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-sm-4' },
+	              _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
+	                  background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
+	                }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-sm-4' },
-	            _lodash2.default.get(this.props.article, 'image_src', null) ? _react2.default.createElement('div', { style: {
-	                background: "url(" + _lodash2.default.get(this.props.article, 'image_src') + ") 50% 50% no-repeat"
-	              }, className: _lib.Lib.THEME_CLASSES_PREFIX + "guide-item-img" }) : null
 	          )
 	        )
 	      );

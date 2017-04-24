@@ -9,8 +9,7 @@ import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state) => {
-  return {
-  }
+  return {}
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -43,7 +42,7 @@ class ArchiveContent extends Component {
     post: PropTypes.object.isRequired
   };
 
-  componentDidMount(){
+  componentDidMount() {
     let content = _.get(this.props.post, 'blog_content', {});
 
     // Initial get posts
@@ -55,10 +54,13 @@ class ArchiveContent extends Component {
     let content = _.get(this.props.post, 'blog_content', {});
 
     return (
-      <div>
-        <Masthead widget_cell={_.get(content, 'masthead')}/>
-        <Subnavigation widget_cell={_.get(content, 'subnavigation')} currentUrl={_.get(this.props.post, 'post_url', '')}/>
-        <Posts seeMoreHandler={this.props.getPosts} categoryId={_.get(content, 'category_id')}/>
+      <div className="container-fluid">
+        <div className="row">
+          <Masthead widget_cell={_.get(content, 'masthead')}/>
+          <Subnavigation widget_cell={_.get(content, 'subnavigation')}
+                         currentUrl={_.get(this.props.post, 'post_url', '')}/>
+          <Posts seeMoreHandler={this.props.getPosts} categoryId={_.get(content, 'category_id')}/>
+        </div>
         <Footer/>
       </div>
     )

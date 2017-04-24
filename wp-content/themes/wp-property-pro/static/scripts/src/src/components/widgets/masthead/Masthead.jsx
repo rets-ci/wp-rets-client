@@ -48,13 +48,14 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
     case 'guide_layout':
       return (
         <section className={Lib.THEME_CLASSES_PREFIX + "guide-masthead"} style={headerStyle}>
-          <GuideLayout widget_cell={widget_cell} />
+          <GuideLayout widget_cell={widget_cell}/>
         </section>
       );
       break;
     case 'guide_single_layout':
       return (
-        <GuideSingleLayout widget_cell={widget_cell} headerStyle={headerStyle} returnToArchiveHandler={returnToArchiveHandler} nextArticleHandler={nextArticleHandler} />
+        <GuideSingleLayout widget_cell={widget_cell} headerStyle={headerStyle}
+                           returnToArchiveHandler={returnToArchiveHandler} nextArticleHandler={nextArticleHandler}/>
       );
       break;
     case 'title_description_layout':
@@ -64,10 +65,12 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
   }
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX + "masthead"} style={headerStyle}>
+    <section className={`jumbotron ${Lib.THEME_CLASSES_PREFIX}masthead text-center`} style={headerStyle}>
       {modal}
-      <div className={Lib.THEME_CLASSES_PREFIX + "intro-wrap"}>
-        {container}
+      <div className="container">
+        <div className="row">
+          {container}
+        </div>
       </div>
     </section>
   );

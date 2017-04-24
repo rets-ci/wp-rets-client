@@ -18,29 +18,35 @@ class Archive extends Component {
     let cards = _.get(content, 'items', []).map((item, i) => {
       let last = _.get(content, 'items', []).length === i + 1;
       return (
-        <div className="col-md-12" key={i}>
+        <li className={`list-group-item ${Lib.THEME_CLASSES_PREFIX}guide-list-item border-0`} key={i}>
           {
             _.get(item, 'children', null)
               ? <CategoryCard category={item} last={last}/>
               : <ArticleCard article={item} last={last}/>
           }
-        </div>
+        </li>
       )
     });
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-lg-6">
-            <div className="row">
-              <HeaderGuide/>
-              <Masthead widget_cell={_.get(content, 'masthead')}/>
+      <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
+        <div className="row no-gutters">
+          <div className="col-xl-6">
+            <div className="container-fluid">
+              <div className="row">
+                <HeaderGuide/>
+                <Masthead widget_cell={_.get(content, 'masthead')}/>
+              </div>
             </div>
           </div>
-          <div className="col-lg-6">
-            <div className="row">
-              <div className={Lib.THEME_CLASSES_PREFIX + "guide-content"}>
-                {cards}
+          <div className="col-xl-6">
+            <div className="container-fluid">
+              <div className="row">
+                <div className={`${Lib.THEME_CLASSES_PREFIX}guide-content`}>
+                  <ul className={`list-group ${Lib.THEME_CLASSES_PREFIX}guide-list`}>
+                    {cards}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

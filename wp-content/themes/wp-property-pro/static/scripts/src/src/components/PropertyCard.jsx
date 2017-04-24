@@ -50,23 +50,25 @@ export default class PropertyCard extends Component {
     } = this.props.data;
     let self = this;
     return (
-      <div className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
-        <div className={Lib.THEME_CLASSES_PREFIX+"card-img"}>
-          <div className={Lib.THEME_CLASSES_PREFIX+"card-img-top"}>
+      <div
+        className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
+        <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide" onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
+                <div className="swiper-slide"
+                     onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
                   <img
                     alt="Card image cap"
-                    className="swiper-lazy"
-                    src={Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
+                    className="swiper-lazy card-img-top"
+                    src={!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail}
                   />
                 </div>
                 {gallery_images.map((d, k) =>
                   <div className="swiper-slide" key={k}>
                     <img
                       alt={_.isEmpty(d) ? 'Card image cap' : ''}
-                      className="swiper-lazy"
+                      className="swiper-lazy card-img-top"
                       data-src={Util.getThumbnailUrlBySize(d, Lib.PROPERTY_LISTING_IMAGE_SIZE)}
                     />
                   </div>
@@ -74,16 +76,19 @@ export default class PropertyCard extends Component {
               </div>
             </div>
           </div>
-          <ul className={Lib.THEME_CLASSES_PREFIX+"direction-nav"}>
-            <li><a className={Lib.THEME_CLASSES_PREFIX+"nav-prev"} onClick={(e) => {
-              e.preventDefault();
-              return this.handleNavigation.bind(this)('prev');
-            } } href="#"></a></li>
-            <li><a className={Lib.THEME_CLASSES_PREFIX+"nav-next"} onClick={(e) => {
-              e.preventDefault();
-              return this.handleNavigation.bind(this)('next');
-            } } href="#"></a></li>
-          </ul>
+          <div className={Lib.THEME_CLASSES_PREFIX+"direction-nav-container"}>
+            <ul className={`nav ${Lib.THEME_CLASSES_PREFIX}direction-nav text-center`}>
+              <li className="nav-item mr-auto "><a className={`${Lib.THEME_CLASSES_PREFIX}nav-prev rounded-circle`} onClick={(e) => {
+                e.preventDefault();
+                return this.handleNavigation.bind(this)('prev');
+              } } href="#"></a></li>
+              <li className="nav-item"><a className={`${Lib.THEME_CLASSES_PREFIX}nav-next rounded-circle`}
+                                                         onClick={(e) => {
+                                                           e.preventDefault();
+                                                           return this.handleNavigation.bind(this)('next');
+                                                         } } href="#"></a></li>
+            </ul>
+          </div>
         </div>
         <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`} onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
           <div className={Lib.THEME_CLASSES_PREFIX+"listing-top"}>
@@ -92,14 +97,14 @@ export default class PropertyCard extends Component {
               <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`} title="Save as favorite">
                 <i className="fa fa-heart" aria-hidden="true"></i>
               </a>
-              <a href="#" className={Lib.THEME_CLASSES_PREFIX+"hide"} title="Hide">
+              <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
                 <i className="fa fa-eye-slash" aria-hidden="true"></i>
               </a>
             </span>
           </div>
-          <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title`}>{address}</h4>
+          <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
           <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{full_address}</p>
-          <ul className={Lib.THEME_CLASSES_PREFIX+"liting-info-box"}>
+          <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box p-0`}>
             <li>{beds} Bed</li>
             <li>{baths} Bath</li>
             <li>{Util.formatSQFTValue(living_area)} SF</li>

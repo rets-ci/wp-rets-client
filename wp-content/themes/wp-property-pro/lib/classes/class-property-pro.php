@@ -712,7 +712,6 @@ namespace UsabilityDynamics {
           'slug' => 'guide',
           'with_front' => false
         ],
-        'hierarchical' => true,
         'show_in_rest' => true,
         'supports' => [
           'title',
@@ -720,7 +719,8 @@ namespace UsabilityDynamics {
           'author',
           'excerpt',
           'thumbnail',
-          'revisions'
+          'revisions',
+          'page-attributes'
         ]
       ];
       register_post_type('propertypro-guide', $args);

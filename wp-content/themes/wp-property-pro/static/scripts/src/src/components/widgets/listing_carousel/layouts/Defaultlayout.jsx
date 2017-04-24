@@ -9,6 +9,7 @@ export default class DefaultLayout extends Component {
   static propTypes = {
     item: PropTypes.object
   };
+
   constructor(props) {
     super(props);
   }
@@ -31,38 +32,46 @@ export default class DefaultLayout extends Component {
     let posts = _.get(item, 'posts', []);
     return (
       <div className="container">
-
-        {
-          _.get(item, 'title', null)
-            ? <h3>{_.get(item, 'title')}</h3>
-            : null
-        }
-        {
-          _.get(item, 'subtitle', null)
-            ? <p>{_.get(item, 'subtitle')}</p>
-            : null
-        }
-        {
-          posts.length
-            ?
-              <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel clearfix`}>
-                <div className={`swiper-container ${Lib.THEME_CLASSES_PREFIX}listing-carousel-container`} ref={(r) => this.swiperElement = r}>
-                  <div className="swiper-wrapper">
-                    {
-                      posts.map((post, key) => {
-                        return (
-                          <PropertyCard data={post} listType={Lib.PROPERTIES_LIST_CAROUSEL} key={key} />
-                        )
-                      })
-                    }
+        <div className="row">
+          <div className={Lib.THEME_CLASSES_PREFIX + "listing-carousel-container"}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
+              {
+                _.get(item, 'title', null)
+                  ? <h3 className="mx-auto">{_.get(item, 'title')}</h3>
+                  : null
+              }
+              {
+                _.get(item, 'subtitle', null)
+                  ? <p>{_.get(item, 'subtitle')}</p>
+                  : null
+              }
+            </div>
+            {
+              posts.length
+                ?
+                <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel`}>
+                  <div className={`swiper-container ${Lib.THEME_CLASSES_PREFIX}listing-carousel-container`}
+                       ref={(r) => this.swiperElement = r}>
+                    <div className="swiper-wrapper">
+                      {
+                        posts.map((post, key) => {
+                          return (
+                            <PropertyCard data={post} listType={Lib.PROPERTIES_LIST_CAROUSEL} key={key}/>
+                          )
+                        })
+                      }
                     </div>
+                  </div>
                 </div>
-              </div>
-            : null
-        }
-        <div className={Lib.THEME_CLASSES_PREFIX+"listing-control-nav"}>
-          <a href="#" className={Lib.THEME_CLASSES_PREFIX+"prev-nav"} ref={(r) => this.swiperElementPrev = r}><i className="fa fa-angle-left"></i></a>
-          <a href="#" className={Lib.THEME_CLASSES_PREFIX+"next-nav"} ref={(r) => this.swiperElementNext = r}><i className="fa fa-angle-right"></i></a>
+                : null
+            }
+            <div className={`${Lib.THEME_CLASSES_PREFIX}listing-control-nav text-center`}>
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}prev-nav mr-3 rounded-circle`} ref={(r) => this.swiperElementPrev = r}><i
+                className="fa fa-angle-left"></i></a>
+              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}next-nav rounded-circle`} ref={(r) => this.swiperElementNext = r}><i
+                className="fa fa-angle-right"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     );

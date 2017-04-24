@@ -7,11 +7,12 @@ const HeaderGuide = () => {
 
   return (
     <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}guide-toolbar`}>
-      <nav className="navbar navbar-toggleable-md bg-faded">
+      <nav className="navbar navbar-toggleable-md">
+        <div className={`${Lib.THEME_CLASSES_PREFIX}navigation-items mx-3`}>
         {
           _.get(bundle, 'template_url', null)
             ?
-            <a className="navbar-brand" href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
+            <a className="navbar-brand mr-auto" href={_.get(bundle, 'site_url', '')} onClick={(eve) => {
               eve.preventDefault();
               Util.goToUrl('/');
             }}>
@@ -33,19 +34,20 @@ const HeaderGuide = () => {
         {
           _.get(bundle, 'site_url', null)
             ?
-            <ul className="nav navbar-toggler-right">
+            <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
               <li className="nav-item">
-                <a href={bundle.site_url} onClick={(eve) => {
+                <a href={bundle.site_url} onClick={(eve) => {<the></the>
                   eve.preventDefault();
                   Util.goToUrl('/');
                 }} className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}btn-back-to-home`}>
                   <fa className="fa fa-arrow-left"></fa>
-                  Return Home</a>
+                  <span className={Lib.THEME_CLASSES_PREFIX+"btn-back-to-home-content"}>Return Home</span>
+                </a>
               </li>
             </ul>
             : null
         }
-
+        </div>
       </nav>
     </section>
   );

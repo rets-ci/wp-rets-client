@@ -50,7 +50,7 @@ class DropDownSearch extends Component {
 
     return (
       <div className={Lib.THEME_CLASSES_PREFIX+"drop-search"}>
-        <div id={Lib.THEME_CLASSES_PREFIX+"search-options-type-container"} onClick={() => self.props.handleChange(true)}>
+        <div className={Lib.THEME_CLASSES_PREFIX+"search-options-type-container"} onClick={() => self.props.handleChange(true)}>
           {this.props.selectedOption}
           <i className="fa fa-caret-down"></i>
         </div>
