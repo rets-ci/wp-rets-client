@@ -82308,10 +82308,10 @@
 	            { className: 'row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-6' },
+	              { className: 'col-xl-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
+	                { className: 'container-fluid' },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'row' },
@@ -82324,10 +82324,10 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-6' },
+	              { className: 'col-xl-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'container' },
+	                { className: 'container-fluid' },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'row' },

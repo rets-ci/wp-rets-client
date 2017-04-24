@@ -2076,8 +2076,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-guide-masthead h1, .propertypro-article-masthead h1 {
-    font-size: 3rem;
     margin-bottom: 1.5rem;
+}
+
+.propertypro-guide-masthead h1{
+    font-size: 3rem;
+}
+
+.propertypro-article-masthead h1{
+    font-size: 2rem;
 }
 
 .propertypro-guide-masthead p, .propertypro-article-masthead p {
@@ -2099,7 +2106,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-article-content {
-    padding: 25px 30px;
+    padding: 1.5rem 2rem;
 }
 
 .propertypro-guide-content .propertypro-guide-item {
@@ -2506,6 +2513,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 100%;
         width: 100%;
     }
+
+    .propertypro-guide-navigation{
+        position: fixed;
+    }
 }
 
 @media (min-width: 47.938em) and (max-width: 62.000em) {
@@ -2675,20 +2686,12 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 100vh;
     }
 
-    .propertypro-article-masthead .propertypro-article-header h1 {
-        font-size: 2rem;
-    }
-
-    .propertypro-article-content {
-        padding: 50px 30px 25px;
-    }
-
     .propertypro-article-content h2 {
         font-size: 2rem;
     }
 
     .propertypro-article-content p {
-        font-size: 1.5rem
+        font-size: 1.2rem
     }
 
     .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
@@ -2703,11 +2706,23 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-category-card .propertypro-category-card-content ul li, .propertypro-article-card .propertypro-article-card-content ul li {
         margin-bottom: 15px;
     }
+
+    .propertypro-article-masthead .propertypro-article-header-container{
+        max-width: 35rem;
+    }
+
+    .propertypro-article-masthead p{
+        font-size: 1rem;
+    }
 }
 
 @media (min-width: 40.000em) and (max-width: 47.938em) {
     .propertypro-find-home-type li {
         padding: 0 1.5rem;
+    }
+
+    .propertypro-article-masthead .propertypro-article-header {
+        vertical-align: bottom;
     }
 }
 

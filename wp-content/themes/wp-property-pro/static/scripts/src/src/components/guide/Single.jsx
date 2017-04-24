@@ -35,8 +35,8 @@ class Single extends Component {
       <article className={Lib.THEME_CLASSES_PREFIX + "guide-post"}>
         <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
           <div className="row no-gutters">
-            <div className="col-lg-6">
-              <div className="container">
+            <div className="col-xl-6">
+              <div className="container-fluid">
                 <div className="row">
                   <HeaderGuide/>
                   <Masthead widget_cell={_.get(content, 'masthead', '')}
@@ -45,8 +45,8 @@ class Single extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
-              <div className="container">
+            <div className="col-xl-6">
+              <div className="container-fluid">
                 <div className="row">
                   {
                     _.get(content, 'content', null)
