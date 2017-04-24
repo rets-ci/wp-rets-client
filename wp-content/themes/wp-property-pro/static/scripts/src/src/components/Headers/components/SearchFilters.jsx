@@ -1,4 +1,5 @@
 import {openPropertiesModal} from '../../../actions/index.jsx';
+import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -19,7 +20,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     removeSearchFilter(filter) {
       let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-      Util.goToUrl(window.location.pathname + queryParam);
+      Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
     }
   }
 };
@@ -74,14 +75,13 @@ class searchFilters extends Component {
 
     if (bathroomsFilter) {
       bathroomsElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={this.handleBathroomsFilterRemove.bind(this, bathroomsFilter)}></i></span> {bathroomsFilter}+ Baths</span>
-      )
+        <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
+      );
     }
+
     if (bedroomsFilter) {
       bedroomsElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={this.handleBedroomsFilterRemove.bind(this, bedroomsFilter)}></i></span> {bedroomsFilter}+ Beds</span>
+        <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
       );
     } else {
       bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -93,8 +93,7 @@ class searchFilters extends Component {
 
     if (priceFilter) {
       priceElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={this.handlePriceFilterRemove.bind(this, priceFilter)}></i></span> {Util.priceFilterSearchTagText(priceFilter)}</span>
+        <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
       );
     } else {
       priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
@@ -106,9 +105,8 @@ class searchFilters extends Component {
 
     if (sqftFilter) {
       sqftElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
-          <span><i className="fa fa-times" onClick={this.handleSQFTFilterRemove.bind(this, sqftFilter)}></i></span> {Util.sqftFilterSearchTagText(sqftFilter)}</span>
-      )
+        <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
+      );
     }
 
     let termFilter = filters['term'];
@@ -121,7 +119,12 @@ class searchFilters extends Component {
           <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
             <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
               {termFilters.map(t =>
-                <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}><span><i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i></span> {t.value}</span>
+                <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default`}>
+                  <span>
+                    <i className="fa fa-times" onClick={() => this.props.openPropertiesModal(true)}></i>
+                  </span>
+                  {t.value}
+                </span>
               )}
               {bathroomsElement}
               {bedroomsElement}
@@ -145,6 +148,6 @@ class searchFilters extends Component {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(searchFilters);

@@ -9,6 +9,15 @@ import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';
+import qs from 'qs';
+
+let convertToSearchParamObject = obj => {
+  let searchObject = {};
+  for (var k in obj) {
+    searchObject[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + k + "]"] = obj[k];
+  }
+  return searchObject;
+};
 
 let bathroomOptions =[
   {name: '1+', value: '1'},
@@ -18,21 +27,36 @@ let bathroomOptions =[
 ];
 
 let bedroomOptions = [
+  {name: '0+', value: '0'},
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
   {name: '3+', value: '3'},
-  {name: '4+', value: '4'}
+  {name: '4+', value: '4'},
+  {name: '5+', value: '5'},
+  {name: '6+', value: '6'}
 ];
 
+let defaultFiltervalues = {
+  bedroom: 0,
+  bathroom: 0,
+  price: {},
+  sqft: {},
+  lotsize: {}
+};
+
 const mapStateToProps = (state, ownProps) => {
-  let searchFiltersFormatted = Util.getQS(window.location.href, ownProps.searchFilters)[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+  let allQueryParams = Util.getQS(window.location.href, ownProps.searchFilters);
+  let searchFiltersFormatted = allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+  let allOtherFilters = Object.assign({}, allQueryParams);
+  delete allOtherFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]
   return {
+    allOtherFilters: allOtherFilters,
     bedroomOptions: bedroomOptions,
     bathroomSelected: searchFiltersFormatted.bathrooms || null,
-    bedroomSelected: searchFiltersFormatted.bedrooms || null,
-    priceSelected: searchFiltersFormatted.price || {},
-    sqftSelected: searchFiltersFormatted.sqft || {},
-    lotSizeSelected: searchFiltersFormatted.lotSize || {},
+    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedroom'],
+    priceSelected: searchFiltersFormatted.price || defaultFiltervalues['price'],
+    sqftSelected: searchFiltersFormatted.sqft || defaultFiltervalues['sqft'],
+    lotSizeSelected: searchFiltersFormatted.lotSize || defaultFiltervalues['lotsize'],
     searchFiltersFormatted: searchFiltersFormatted
   }
 };
@@ -47,6 +71,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class PropertiesModal extends Component {
   static propTypes = {
+    allOtherFilters: PropTypes.object,
     bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
     searchFilters: PropTypes.object.isRequired,
@@ -59,7 +84,7 @@ class PropertiesModal extends Component {
     this.state = {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
-      localFilters: Object.assign({}, props.searchFilters),
+      localFilters: Object.assign({}, props.searchFiltersFormatted),
       lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
       priceSelected: props.priceSelected,
@@ -82,7 +107,7 @@ class PropertiesModal extends Component {
   }
 
   handleBathroomSelect(val) {
-    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]"]: val};
+    let filter = {"bathrooms": val};
     this.setState({
       bathroomSelected: val,
       localFilters: Object.assign({}, this.state.localFilters, filter)
@@ -90,7 +115,7 @@ class PropertiesModal extends Component {
   }
 
   handleBedroomSelect(val) {
-    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
+    let filter = {"bedrooms": val};
     this.setState({
       bedroomSelected: val,
       localFilters: Object.assign({}, this.state.localFilters, filter)
@@ -99,9 +124,11 @@ class PropertiesModal extends Component {
 
   handlePriceSelect(start, to) {
     let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: to,
-    };
+      price: {
+        start: start,
+        to: to
+      }
+    }
     this.setState({
       localFilters: Object.assign({}, this.state.localFilters, filter),
       priceSelected: {start: start, to: to}
@@ -114,8 +141,10 @@ class PropertiesModal extends Component {
 
   handleSQFTSelect(start, to) {
     let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: to,
+      sqft: {
+        start: start,
+        to: to
+      }
     };
     this.setState({
       localFilters: Object.assign({}, this.state.localFilters, filter),
@@ -124,9 +153,13 @@ class PropertiesModal extends Component {
   }
 
   saveFilters() {
-    let url = new URI(window.location.href);
-    let updatedSearchParams = Util.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
-    url.setSearch(updatedSearchParams);
+    let url = new URI(window.location.host);
+    url.pathname(window.location.pathname);
+
+    let searchFilters = convertToSearchParamObject(this.state.localFilters);
+    let allFilters = Object.assign({}, this.props.allOtherFilters, searchFilters);
+    let queryParam = decodeURIComponent(qs.stringify(allFilters))
+    url.setSearch(queryParam);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
@@ -156,7 +189,6 @@ class PropertiesModal extends Component {
       searchFilters,
       searchFiltersFormatted
     } = this.props;
-
     let {
       bathroomSelected,
       bedroomSelected,
@@ -178,7 +210,7 @@ class PropertiesModal extends Component {
       selected: d.value === bedroomSelected,
       value: d.value
     }));
-    let anyFilterChange = !isEqual(searchFilters, localFilters);
+    let anyFilterChange = !isEqual(searchFiltersFormatted, localFilters);
     let termFilter = searchFiltersFormatted['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
