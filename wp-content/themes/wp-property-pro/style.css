@@ -2093,7 +2093,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: .9375rem 0;
 }
 
-.propertypro-guide-list-item{
+.propertypro-guide-list-item {
     background-color: inherit;
     margin: .1875rem .625rem !important;
 }
@@ -2391,21 +2391,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*  Responsive (Media queries)
 /*-----------------------------------------------------------------------------------*/
 
-/* Medium devices (tablets, less than 1199px) */
-@media screen and (max-width: 74.938em) {
-
-    .propertypro-subnavigation .propertypro-subnavigation-container,
-    .propertypro-subnavigation .propertypro-subnavigation-container nav{
-        width: 100%;
-    }
-
-    .propertypro-subnavigation ul li{
-        width: 25%;
-    }
-}
-
 @media (max-width: 62.000em) and (min-width: 47.938em) {
-    .propertypro-testimonial .propertypro-author-info{
+    .propertypro-testimonial .propertypro-author-info {
         width: 100%;
     }
 
@@ -2415,11 +2402,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         padding-left: 2rem;
     }
 
-    .propertypro-top-footer .propertypro-footer-top-menu-title{
+    .propertypro-top-footer .propertypro-footer-top-menu-title {
         font-size: 1.125rem;
     }
 
-    .propertypro-top-footer .propertypro-footer-top-menu-link a{
+    .propertypro-top-footer .propertypro-footer-top-menu-link a {
         font-size: 1.25rem;
         line-height: 3.125rem;
     }
@@ -2430,15 +2417,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
-    .propertypro-bottom-footer .propertypro-social{
+    .propertypro-bottom-footer .propertypro-social {
         text-align: center !important;
     }
 
-    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links{
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links {
         margin-top: 2rem;
     }
 
-    .propertypro-bottom-footer .propertypro-social{
+    .propertypro-bottom-footer .propertypro-social {
         margin: 2rem 0;
     }
 }
@@ -2485,6 +2472,48 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
+@media screen and (min-width: 74.938em) {
+    .propertypro-guide-container {
+        display: block;
+    }
+
+    .propertypro-guide-content {
+        width: 100%;
+    }
+}
+
+/* Medium devices (tablets, less than 1199px) */
+@media screen and (max-width: 74.938em) {
+
+    .propertypro-subnavigation .propertypro-subnavigation-container,
+    .propertypro-subnavigation .propertypro-subnavigation-container nav {
+        width: 100%;
+    }
+
+    .propertypro-subnavigation ul li {
+        width: 25%;
+    }
+
+    .propertypro-guide-container {
+        overflow-y: scroll;
+    }
+
+    .propertypro-guide-content {
+        overflow: visible;
+    }
+
+    .propertypro-guide-content, .propertypro-article-content {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+@media (min-width: 47.938em) and (max-width: 62.000em) {
+    .propertypro-navigation-cotrols {
+        margin: auto 3rem auto 0;
+    }
+}
+
 /* Extra small devices (portrait phones, less than 767px) */
 @media screen and (max-width: 47.938em) {
 
@@ -2496,20 +2525,20 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         padding: .5rem 0;
     }
 
-    .propertypro-navigation-items{
+    .propertypro-navigation-items {
         margin: 0 !important;
     }
 
-    .propertypro-masthead .propertypro-masthead-container{
+    .propertypro-masthead .propertypro-masthead-container {
         width: 100%;
     }
 
-    .propertypro-masthead .propertypro-masthead-container{
+    .propertypro-masthead .propertypro-masthead-container {
         margin-top: 5rem;
         margin-bottom: 0;
     }
 
-    .propertypro-testimonial h4{
+    .propertypro-testimonial h4 {
         padding: 0 3rem;
         font-size: 2.5rem;
         line-height: 3.75rem;
@@ -2523,7 +2552,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         padding-left: 0;
     }
 
-    .propertypro-author-info .propertypro-user-item a{
+    .propertypro-author-info .propertypro-user-item a {
         width: 3.6875rem;
         height: 3.6875rem;
         display: block;
@@ -2675,19 +2704,19 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
-@media (min-width: 40.000em) and (max-width: 47.938em){
-    .propertypro-find-home-type li{
+@media (min-width: 40.000em) and (max-width: 47.938em) {
+    .propertypro-find-home-type li {
         padding: 0 1.5rem;
     }
 }
 
 @media (min-width: 40.000em) and (max-width: 62.000em) {
 
-    .propertypro-top-footer .propertypro-footer-top-menu-title{
+    .propertypro-top-footer .propertypro-footer-top-menu-title {
         font-size: 1.125rem;
     }
 
-    .propertypro-top-footer .propertypro-footer-top-menu-link a{
+    .propertypro-top-footer .propertypro-footer-top-menu-link a {
         font-size: 1.25rem;
         line-height: 3.125rem;
     }
@@ -2698,7 +2727,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
-@media screen and (max-width: 62.000em){
+@media screen and (max-width: 62.000em) {
     .propertypro-top-footer .propertypro-footer-logo {
         text-align: left !important;
         margin-bottom: 2rem;
@@ -2706,15 +2735,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-bottom-footer .propertypro-footer-bottom-menu-links,
-    .propertypro-bottom-footer .propertypro-social{
+    .propertypro-bottom-footer .propertypro-social {
         text-align: center !important;
     }
 
-    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links{
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-links {
         margin-top: 2rem;
     }
 
-    .propertypro-bottom-footer .propertypro-social{
+    .propertypro-bottom-footer .propertypro-social {
         margin: 2rem 0;
     }
 
@@ -2726,11 +2755,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         display: inline-table;
     }
 
-    .propertypro-subnavigation .propertypro-subnavigation-container{
+    .propertypro-subnavigation .propertypro-subnavigation-container {
         width: 100%;
     }
 
-    .propertypro-subnavigation .propertypro-subnavigation-container ul li{
+    .propertypro-subnavigation .propertypro-subnavigation-container ul li {
         border-bottom: none;
     }
 }
@@ -2744,7 +2773,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         margin-bottom: 5rem;
     }
 
-    .propertypro-find-home-type .propertypro-masthead-title{
+    .propertypro-find-home-type .propertypro-masthead-title {
         padding: 0 1rem;
     }
 
@@ -2819,7 +2848,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-top-footer .propertypro-footer-top-menu-title,
-    .propertypro-top-footer .propertypro-footer-top-menu-links{
+    .propertypro-top-footer .propertypro-footer-top-menu-links {
         text-align: left;
     }
 
@@ -2833,7 +2862,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 25px;
     }
 
-    .propertypro-callout-items{
+    .propertypro-callout-items {
         display: block;
     }
 
@@ -3109,6 +3138,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-guide-masthead h1 {
         font-size: 1.8rem;
     }
+
+    .propertypro-category-card .propertypro-guide-item-img, .propertypro-article-card .propertypro-guide-item-img {
+        min-height: 20rem;
+    }
 }
 
 /* Extra small devices (portrait phones, less than 360px) */
@@ -3121,7 +3154,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 180px;
     }
 
-    .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a{
+    .propertypro-bottom-footer .propertypro-footer-bottom-menu-link a {
         margin-right: .2rem;
     }
 
@@ -3139,7 +3172,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 3rem !important;
     }
 
-    .propertypro-listings .propertypro-listing-carousel-info p{
+    .propertypro-listings .propertypro-listing-carousel-info p {
         font-size: 1rem;
     }
 

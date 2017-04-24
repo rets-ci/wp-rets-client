@@ -18,7 +18,7 @@ class CategoryCard extends Component {
 
     return (
       <section className={sectionClasses}>
-        <div className="container p-0">
+        <div className="container-fluid p-0">
           <div className="row no-gutters">
             <div className="col-sm-8">
               <div className={Lib.THEME_CLASSES_PREFIX + "category-card-content"}>

@@ -31,16 +31,16 @@ class Archive extends Component {
     return (
       <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}guide-container`}>
         <div className="row no-gutters">
-          <div className="col-lg-6">
-            <div className="container">
+          <div className="col-xl-6">
+            <div className="container-fluid">
               <div className="row">
                 <HeaderGuide/>
                 <Masthead widget_cell={_.get(content, 'masthead')}/>
               </div>
             </div>
           </div>
-          <div className="col-lg-6">
-            <div className="container">
+          <div className="col-xl-6">
+            <div className="container-fluid">
               <div className="row">
                 <div className={`${Lib.THEME_CLASSES_PREFIX}guide-content`}>
                   <ul className={`list-group ${Lib.THEME_CLASSES_PREFIX}guide-list`}>
