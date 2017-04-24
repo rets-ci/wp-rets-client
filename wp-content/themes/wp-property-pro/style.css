@@ -78,7 +78,7 @@ html, body {
     position: absolute;
     top: 1rem;
     left: 0;
-    z-index: 1;
+    z-index: 2;
 }
 
 .propertypro-login-box, .propertypro-login-box:visited {
@@ -1127,7 +1127,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-square-logo {
     max-width: 3rem;
-    margin-left: -10px;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -2030,7 +2029,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-guide-toolbar {
-    z-index: 12;
     padding-left: 1.5rem;
 }
 
@@ -2119,7 +2117,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
-    padding: 45px 35px 45px 45px;
+    padding: 3rem 2rem 3rem 3rem;
 }
 
 .propertypro-category-card .propertypro-category-card-content .propertypro-category-navigation-item {
@@ -2673,10 +2671,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 80vh;
     }
 
-    .propertypro-guide-masthead h1 {
-        padding-top: 12%;
-    }
-
     .propertypro-article-masthead {
         position: static;
         height: 100vh;
@@ -2692,7 +2686,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-category-card .propertypro-category-card-content, .propertypro-article-card .propertypro-article-card-content {
-        padding: 35px 25px 35px 35px;
+        padding: 2rem 1.5rem 2rem 2rem;
     }
 
     .propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2 {
@@ -2704,8 +2698,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         margin-bottom: 15px;
     }
 
+    .propertypro-guide-masthead .propertypro-guide-header-container,
     .propertypro-article-masthead .propertypro-article-header-container{
         max-width: 35rem;
+        margin-bottom: 7rem;
+        margin-top: 10rem;
     }
 
     .propertypro-article-masthead p{
@@ -2719,7 +2716,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-article-masthead .propertypro-article-header {
-        vertical-align: bottom;
+        display: block;
     }
 }
 
@@ -3195,5 +3192,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-masthead .propertypro-search-box li a {
         font-size: 1rem;
+    }
+
+    .propertypro-guide-masthead .propertypro-guide-header-container, .propertypro-article-masthead .propertypro-article-header-container {
+        max-width: 20rem;
+        margin-bottom: 0;
+        margin-top: 0;
     }
 }
