@@ -64836,7 +64836,7 @@
 	        ) : null,
 	        _lodash2.default.get(widget_cell, 'widget.fields.subtitle', '') ? _react2.default.createElement(
 	          'p',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "article-excerpt" },
+	          { className: 'hidden-xs-down ' + _lib.Lib.THEME_CLASSES_PREFIX + 'article-excerpt' },
 	          widget_cell.widget.fields.subtitle
 	        ) : null
 	      )

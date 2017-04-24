@@ -23,7 +23,7 @@ const GuideSingleLayout = ({widget_cell, headerStyle, returnToArchiveHandler, ne
           }
           {
             _.get(widget_cell, 'widget.fields.subtitle', '')
-              ? <p className={Lib.THEME_CLASSES_PREFIX + "article-excerpt"}>{widget_cell.widget.fields.subtitle}</p>
+              ? <p className={`hidden-xs-down ${Lib.THEME_CLASSES_PREFIX}article-excerpt`}>{widget_cell.widget.fields.subtitle}</p>
               : null
           }
         </div>
