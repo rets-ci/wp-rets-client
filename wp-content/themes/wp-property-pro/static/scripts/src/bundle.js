@@ -65281,25 +65281,29 @@
 	        _react2.default.createElement(
 	          'nav',
 	          { className: 'navbar navbar-toggleable-md' },
-	          _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	            'p',
-	            { className: 'navbar-brand mr-auto my-auto' },
-	            item.title
-	          ) : null,
-	          _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
-	            'ul',
-	            { className: 'navbar-nav' },
-	            _react2.default.createElement(
-	              'li',
-	              null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "callout-items" },
+	            _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	              'p',
+	              { className: 'navbar-brand mr-auto my-auto' },
+	              item.title
+	            ) : null,
+	            _lodash2.default.get(item, 'button.label', null) ? _react2.default.createElement(
+	              'ul',
+	              { className: 'navbar-nav' },
 	              _react2.default.createElement(
-	                'a',
-	                { href: _lodash2.default.get(item, 'button.url', bundle.site_url),
-	                  className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
-	                item.button.label
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: _lodash2.default.get(item, 'button.url', bundle.site_url),
+	                    className: 'btn ' + _lib.Lib.THEME_CLASSES_PREFIX + 'btn-contact' },
+	                  item.button.label
+	                )
 	              )
-	            )
-	          ) : null
+	            ) : null
+	          )
 	        )
 	      )
 	    )
@@ -65995,10 +65999,10 @@
 
 	  return _lodash2.default.isEmpty(items) ? null : _react2.default.createElement(
 	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation-desktop" },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-desktop hidden-sm-down' },
 	    links.length ? _react2.default.createElement(
 	      'ul',
-	      { className: 'clearfix' },
+	      null,
 	      links.map(function (link, key) {
 	        if (link.url === currentUrl) {
 	          return _react2.default.createElement(
@@ -66188,7 +66192,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'hidden-lg-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile' },
+	        { className: 'hidden-md-up ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-mobile' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: selectedOptionClasses,
@@ -66412,7 +66416,8 @@
 
 	  var backgroundStyle = _lodash2.default.get(featureGroup, 'image_section.image_src', null) !== null ? {
 	    "background": "url(" + featureGroup.image_section.image_src + ")",
-	    "backgroundPosition": featureGroup.image_section.image_position
+	    "backgroundPosition": featureGroup.image_section.image_position,
+	    "backgroundSize": "cover"
 	  } : {};
 
 	  if (_lodash2.default.get(featureGroup, 'background', null) === 'full') {

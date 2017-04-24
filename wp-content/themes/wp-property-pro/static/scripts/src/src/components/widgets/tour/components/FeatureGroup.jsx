@@ -16,7 +16,8 @@ const FeatureGroup = ({featureGroup, ind}) => {
   let backgroundStyle = _.get(featureGroup, 'image_section.image_src', null) !== null
     ? {
       "background": "url(" + featureGroup.image_section.image_src + ")",
-      "backgroundPosition": featureGroup.image_section.image_position
+      "backgroundPosition": featureGroup.image_section.image_position,
+      "backgroundSize": "cover"
     }
     : {};
 

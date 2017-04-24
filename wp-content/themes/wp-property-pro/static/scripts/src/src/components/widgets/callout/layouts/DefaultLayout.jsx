@@ -9,6 +9,7 @@ const DefaultLayout = ({item}) => {
       <div className="row">
         <div className={`${Lib.THEME_CLASSES_PREFIX}callout-container mx-auto`}>
           <nav className="navbar navbar-toggleable-md">
+            <div className={Lib.THEME_CLASSES_PREFIX + "callout-items"}>
               {
                 _.get(item, 'title', null)
                   ?
@@ -26,6 +27,7 @@ const DefaultLayout = ({item}) => {
                   </ul>
                   : null
               }
+            </div>
           </nav>
         </div>
       </div>
