@@ -1,4 +1,5 @@
 #### 0.3.1
+* Added [/wp-json/wp-rets-client/v1/systemPing] and [/wp-json/wp-rets-client/v1/getProperty] endpoints.
 * Added [/wp-json/wp-rets-client/v1/scheduleListings] endpoint and [wpp.scheduleListings] xml-rpc handler.
 * Added [/wp-json/wp-rets-client/v1/scheduleStats] endpoint and [wpp.scheduleStats] xml-rpc handler.
 * Added [/wp-json/wp-rets-client/v1/cleanup/status] and [/wp-json/wp-rets-client/v1/cleanup/process] endpoints.

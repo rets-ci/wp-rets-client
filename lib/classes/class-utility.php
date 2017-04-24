@@ -33,12 +33,15 @@ namespace UsabilityDynamics\WPRETSC {
         $_total = 0;
 
         foreach( $terms as $_term ) {
+
+
           $_data[] = array(
             '_id' => $_term->slug,
             'schedule' => $_term->slug,
             'term_count' => $_term->count,
             'meta_count' => isset( $_stats[ $_term->slug ] ) ? intval( $_stats[ $_term->slug ] ) : null,
-            'total' => $_term->count
+            'total' => $_term->count,
+            //'posts' => $posts->found_posts
           );
 
           $_total = $_total + $_term->count;
@@ -47,8 +50,9 @@ namespace UsabilityDynamics\WPRETSC {
 
         return array(
           'ok' => true,
-          'message' => 'There are [' . count( $terms ) . '] schedules with a total of [' . $_total . '] listings.',
           'data' => $_data,
+          'terms' => $terms,
+          'total' => $_total
           //'stats' => $_stats
         );
 

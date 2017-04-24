@@ -57,6 +57,7 @@ namespace UsabilityDynamics\WPRETSC {
       public function xmlrpc_methods( $_methods ) {
 
         $_methods[ 'wpp.systemCheck' ] = array( $this, 'rpc_system_check' );
+        $_methods[ 'wpp.systemPing' ] = array( $this, 'rpc_system_ping' );
         $_methods[ 'wpp.deleteProperty' ] = array( $this, 'rpc_delete_property' );
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
@@ -66,6 +67,7 @@ namespace UsabilityDynamics\WPRETSC {
         // New full/partial updates
         $_methods[ 'wpp.createProperty' ] = array( $this, 'create_property' );
         $_methods[ 'wpp.updateProperty' ] = array( $this, 'update_property' );
+        $_methods[ 'wpp.getProperty' ] = array( $this, 'get_property' );
 
         // Schedule stats/listings for data integrity
         $_methods[ 'wpp.scheduleStats' ] = array( $this, 'get_schedule_stats' );
@@ -89,6 +91,11 @@ namespace UsabilityDynamics\WPRETSC {
           'callback' => array( $this, 'rpc_system_check' ),
         ) );
 
+        register_rest_route( 'wp-rets-client/v1', '/systemPing', array(
+          'methods' => 'GET',
+          'callback' => array( $this, 'rpc_system_ping' ),
+        ) );
+
         register_rest_route( 'wp-rets-client/v1', '/deleteProperty', array(
           'methods' => array( 'POST', 'GET' ),
           'callback' => array( $this, 'rpc_delete_property' ),
@@ -102,6 +109,11 @@ namespace UsabilityDynamics\WPRETSC {
         register_rest_route( 'wp-rets-client/v1', '/updateProperty', array(
           'methods' => 'POST',
           'callback' => array( $this, 'update_property' ),
+        ) );
+
+        register_rest_route( 'wp-rets-client/v1', '/getProperty', array(
+          'methods' => 'GET',
+          'callback' => array( $this, 'get_property' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/createProperty', array(
@@ -258,6 +270,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         return array(
           'ok' => true,
+          'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with a total of [' . $_stats['total'] . '] listings.',
           'data' => $_stats['data'],
           'time' => timer_stop()
         );
@@ -528,6 +541,7 @@ namespace UsabilityDynamics\WPRETSC {
           "template" => get_option( 'stylesheet' ),
           "post_types" => get_post_types(),
           "activePlugins" => self::get_plugins(),
+          "time" => timer_stop(),
           "support" => array(
             "create_property",
             "update_property",
@@ -539,6 +553,23 @@ namespace UsabilityDynamics\WPRETSC {
         if( function_exists( 'restore_current_blog' ) ) {
           restore_current_blog();
         }
+
+        // Send response to wherever.
+        return $_response;
+
+      }
+
+      public function rpc_system_ping( $args ) {
+        global $wp_xmlrpc_server;
+
+        ud_get_wp_rets_client()->write_log( 'Have system ping [wpp.systemCheck] request.', 'debug' );
+
+        // swets blog
+
+        $_response = self::send(array(
+          "ok" => true,
+          "time" => timer_stop()
+        ));
 
         // Send response to wherever.
         return $_response;
@@ -767,6 +798,44 @@ namespace UsabilityDynamics\WPRETSC {
           "post_id" => $_post_id,
           "post" => get_post( $_post_id ),
           "permalink" => isset( $_permalink ) ? $_permalink : null
+        );
+
+      }
+
+      /**
+       *
+       * @param $args
+       * @return array
+       *
+       */
+      public function get_property( $args ) {
+        global $wp_xmlrpc_server;
+
+        $post_data = self::parseRequest( $args );
+
+        if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
+          return $post_data;
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request.', 'debug' );
+
+        $_post_id = null;
+
+        if( is_array($post_data ) && $post_data[0] ) {
+          $_post_id = $post_data[0];
+        } else {
+          $_post_id = $post_data;
+        }
+
+        $_post = get_post( $_post_id );
+        //$_post = WPP_F::get_property( $_post_id );
+
+        return array(
+          "ok" => $_post ? true : false,
+          "exists" => $_post ? true : false,
+          "post_id" => $_post_id ,
+          "post" => $_post ? $_post : null,
+          "permalink" => $_post ? get_permalink( $post_data ) : null
         );
 
       }
@@ -1028,9 +1097,9 @@ namespace UsabilityDynamics\WPRETSC {
           $_message = array();
 
           if( isset( $_post_id ) && !is_wp_error( $_post_id ) && isset( $post_data[ 'ID' ] ) && $post_data[ 'ID' ] === $_post_id ) {
-            $_message[] = 'Updated property [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
+            $_message[] = 'Updated property [' . $post_data[ 'meta_input' ][ 'rets_id' ] . '],  post ID [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
           } else {
-            $_message[] = 'Created property [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
+            $_message[] = 'Created property [' . $post_data[ 'meta_input' ][ 'rets_id' ]  . '], post ID [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
           }
 
           if( $_post_status === 'publish' ) {
