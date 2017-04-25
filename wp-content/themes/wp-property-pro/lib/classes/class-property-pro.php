@@ -533,6 +533,7 @@ namespace UsabilityDynamics {
         /** Get menu items */
         if (isset($widget['menu_select']))
           $widget['menu_items'] = array_map(function ($item) {
+            $item->title = htmlspecialchars_decode($item->title);
             $item->relative_url = str_replace(home_url(), "", $item->url);
             return $item;
           }, ($widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : []));
@@ -574,6 +575,10 @@ namespace UsabilityDynamics {
             }
 
             $field = $new_field;
+          }
+
+          if(in_array($k, ['title', 'subtitle'])){
+            $field = htmlspecialchars_decode($field);
           }
 
           if ($k === 'posts') {
