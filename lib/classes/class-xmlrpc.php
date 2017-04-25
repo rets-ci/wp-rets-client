@@ -59,6 +59,7 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.systemCheck' ] = array( $this, 'rpc_system_check' );
         $_methods[ 'wpp.systemPing' ] = array( $this, 'rpc_system_ping' );
         $_methods[ 'wpp.deleteProperty' ] = array( $this, 'rpc_delete_property' );
+        $_methods[ 'wpp.trashProperty' ] = array( $this, 'rpc_trash_property' );
         $_methods[ 'wpp.editProperty' ] = array( $this, 'rpc_edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
@@ -101,6 +102,11 @@ namespace UsabilityDynamics\WPRETSC {
           'callback' => array( $this, 'rpc_delete_property' ),
         ) );
 
+        register_rest_route( 'wp-rets-client/v1', '/trashProperty', array(
+          'methods' => array( 'POST', 'GET' ),
+          'callback' => array( $this, 'rpc_trash_property' ),
+        ) );
+
         register_rest_route( 'wp-rets-client/v1', '/editProperty', array(
           'methods' => 'POST',
           'callback' => array( $this, 'rpc_edit_property' ),
@@ -114,6 +120,14 @@ namespace UsabilityDynamics\WPRETSC {
         register_rest_route( 'wp-rets-client/v1', '/getProperty', array(
           'methods' => 'GET',
           'callback' => array( $this, 'get_property' ),
+          'args'            => array(
+            'ID' => array(
+              'default' => null,
+            ),
+            'mls_number' => array(
+              'default' => null
+            )
+          )
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/createProperty', array(
@@ -312,13 +326,14 @@ namespace UsabilityDynamics\WPRETSC {
        */
       static public function get_schedule_stats() {
 
-
-        $_stats = Utility::get_schedule_stats();
+        $_stats = Utility::get_schedule_stats(array(
+          'cache' => false
+        ));
 
 
         return array(
           'ok' => true,
-          'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with a total of [' . $_stats['total'] . '] listings.',
+          'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with [' . $_stats['total'] . '] total listings.',
           'data' => $_stats['data'],
           'time' => timer_stop()
         );
@@ -463,12 +478,12 @@ namespace UsabilityDynamics\WPRETSC {
 
             if( !self::token_login( isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : null, isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : null ) ) {
 
-              return array(
+              return array_filter(array(
                 'ok' => false,
                 'error' => "Unable to login.",
                 'username' => isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : '',
-                'password' => isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : '',
-              );
+                'password' => isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : ''
+              ));
 
             }
 
@@ -572,8 +587,6 @@ namespace UsabilityDynamics\WPRETSC {
 
         ud_get_wp_rets_client()->write_log( 'Have system check [wpp.systemCheck] request.', 'debug' );
 
-        // swets blog
-
         $post_data = self::parseRequest( $args );
         if( !empty( $post_data['error'] ) ) {
           return $post_data;
@@ -607,10 +620,14 @@ namespace UsabilityDynamics\WPRETSC {
 
       }
 
+      /**
+       * Minimal check.
+       *
+       */
       public function rpc_system_ping( $args ) {
         global $wp_xmlrpc_server;
 
-        ud_get_wp_rets_client()->write_log( 'Have system ping [wpp.systemCheck] request.', 'debug' );
+        ud_get_wp_rets_client()->write_log( 'Have system ping [wpp.systemPing] request.', 'debug' );
 
         // swets blog
 
@@ -638,6 +655,10 @@ namespace UsabilityDynamics\WPRETSC {
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
           return $post_data;
         }
+
+        $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
+          'skipTermCounting' => false
+        ));
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.createProperty] request.', 'debug' );
 
@@ -721,12 +742,12 @@ namespace UsabilityDynamics\WPRETSC {
           // delete all old attachments if the count of new media doesn't match up with old media
           if( count( $attached_media ) != count( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
 
-            ud_get_wp_rets_client()->write_log( 'For ['.$_post_id.'] property media count has changed. Before ['.count( $attached_media ).'], now ['.count( $post_data[ 'meta_input' ][ 'rets_media' ] ).'].', 'debug' );
+            //ud_get_wp_rets_client()->write_log( 'For ['.$_post_id.'] property media count has changed. Before ['.count( $attached_media ).'], now ['.count( $post_data[ 'meta_input' ][ 'rets_media' ] ).'].', 'debug' );
 
             //ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.', 'debug' );
             foreach( $attached_media as $_single_media_item ) {
-              ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item. (Skipping)', 'debug' );
-              // wp_delete_attachment( $_single_media_item->ID, true );
+              //ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item. (Skipping)', 'debug' );
+              wp_delete_attachment( $_single_media_item->ID, true );
             }
 
 
@@ -735,7 +756,7 @@ namespace UsabilityDynamics\WPRETSC {
           foreach( $post_data[ 'meta_input' ][ 'rets_media' ] as $media ) {
 
             if( in_array( $media[ 'url' ], $_already_attached_media ) ) {
-              ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
+              //ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
             }
 
             // attach media if a URL is set and it isn't already attached
@@ -837,8 +858,13 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>', 'error' );
         }
 
-        // Term counts can/may be updated now.
-        wp_defer_term_counting( false );
+        if( isset( $options[ 'skipTermCounting' ] ) && $options[ 'skipTermCounting' ] ) {
+          ud_get_wp_rets_client()->write_log( 'Skipping term counts for [' . $_post_id  . '] update.', 'debug' );
+        } else {
+          ud_get_wp_rets_client()->write_log( 'Updating deferred term counts [' . $_post_id  . '].', 'debug' );
+          wp_defer_term_counting( false );
+          ud_get_wp_rets_client()->write_log( 'Term count complete [' . $_post_id  . '].', 'debug' );
+        }
 
         ud_get_wp_rets_client()->write_log( 'Term counting complete for [' . $_post_id . '].', 'info' );
         return array(
@@ -854,6 +880,8 @@ namespace UsabilityDynamics\WPRETSC {
        * Get property by ID ro mls_number
        *
        *
+       *
+       *
        * @param $args
        * @return array
        *
@@ -863,10 +891,13 @@ namespace UsabilityDynamics\WPRETSC {
 
         $post_data = self::parseRequest( $args );
 
-        // error_log( print_r( $args, true ) );
-
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
           return $post_data;
+        }
+
+        if( method_exists( $args, 'get_param' ) ) {
+          // $post_data['ID'] = $args->get_param( 'ID' );
+          //$post_data['mls_number'] = $args->get_param( 'mls_number' );
         }
 
         ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request.', 'debug' );
@@ -881,6 +912,7 @@ namespace UsabilityDynamics\WPRETSC {
           $_post_id = $post_data;
         }
 
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request using [' . $_post_id . '] post_id.', 'debug' );
         $_post = get_post( $_post_id );
 
         $_resposne = array(
@@ -891,6 +923,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         if( $_post ) {
           $_resposne["post_id"] = intval( $_post_id );
+          $_resposne["post_status"] = $_post->post_status;
 
           if( isset( $post_data['detail'] ) ) {
             $_resposne[ "permalink" ] = $_post ? get_permalink( $_post_id ) : null;
@@ -905,6 +938,8 @@ namespace UsabilityDynamics\WPRETSC {
           }
 
         }
+
+        ud_get_wp_rets_client()->write_log( 'Completed [wpp.getProperty] request.', 'debug' );
 
         //$_post = WPP_F::get_property( $_post_id );
 
@@ -941,6 +976,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         // update import time
         $post_data[ 'meta_input' ][ 'wpp_import_time' ] = time();
+
 
         if( isset( $post_data[ 'post_status' ] ) ) {
           $wpdb->update( $wpdb->posts, array( 'post_status' => $post_data[ 'post_status' ] ), array( 'ID' => $post_data['ID' ] ) );
@@ -992,7 +1028,11 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.editProperty] request.', 'debug' );
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.editProperty] request.', 'info' );
+
+        $options = wp_parse_args( isset( $post_data['_options'] ) ? $post_data['_options'] : array(), array(
+          'skipTermCounting' => false
+        ));
 
         // Defer term counting until method called again.
         wp_defer_term_counting( true );
@@ -1009,7 +1049,7 @@ namespace UsabilityDynamics\WPRETSC {
           return array( 'ok' => false, 'error' => "Property missing RETS ID.", "data" => $post_data );
         }
 
-        $_new_post_status = $post_data[ 'post_status' ];
+        $_new_post_status = isset( $post_data[ 'post_status' ] ) ? $post_data[ 'post_status' ] : 'publish';
 
         // set post status to draft since it may be inserting for a while due to large amount of terms
         $post_data[ 'post_status' ] = 'draft';
@@ -1017,13 +1057,8 @@ namespace UsabilityDynamics\WPRETSC {
         if( !empty( $post_data[ 'ID' ] ) ) {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [' . $post_data[ 'ID' ] . '].', 'debug' );
           $_post = get_post( $post_data[ 'ID' ] );
-          // If post_date is not set wp_insert_post function sets the current datetime.
-          // So we are preventing to do it by setting already existing post_date. peshkov@UD
           $post_data[ 'post_date' ] = $_post->post_date;
-          // Status could be changed manually by administrator.
-          // So we are preventing to publish property again in case it was trashed. peshkov@UD
           $post_data[ 'post_status' ] = $_post->post_status;
-
         } else {
           ud_get_wp_rets_client()->write_log( 'Running wp_insert_post for [new post].', 'debug' );
         }
@@ -1065,30 +1100,29 @@ namespace UsabilityDynamics\WPRETSC {
           // get simple url litst of already attached media
           if( $attached_media ) {
 
-            foreach( (array)$attached_media as $_attached_media_id => $_media ) {
+            foreach( (array) $attached_media as $_attached_media_id => $_media ) {
               $_already_attached_media[ $_attached_media_id ] = $_media->guid;
             }
 
           }
 
           // delete all old attachments if the count of new media doesn't match up with old media
-          if( count( $attached_media ) != count( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
+          if( count( $attached_media ) !== count( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
 
             ud_get_wp_rets_client()->write_log( 'For ['.$_post_id.'] property media count has changed. Before ['.count( $attached_media ).'], now ['.count( $post_data[ 'meta_input' ][ 'rets_media' ] ).'].', 'debug' );
 
             //ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.', 'debug' );
             foreach( $attached_media as $_single_media_item ) {
-              ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.', 'debug' );
-              wp_delete_attachment( $_single_media_item->ID, true );
+              //ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.', 'debug' );
+              //wp_delete_attachment( $_single_media_item->ID, true );
             }
-
 
           }
 
           foreach( $post_data[ 'meta_input' ][ 'rets_media' ] as $media ) {
 
             if( in_array( $media[ 'url' ], $_already_attached_media ) ) {
-              ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
+              //ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
             }
 
             // attach media if a URL is set and it isn't already attached
@@ -1116,7 +1150,7 @@ namespace UsabilityDynamics\WPRETSC {
 
               // No idea why but set_post_thumbnail() fails routinely as does update_post_meta, testing this method.
               delete_post_meta( $_post_id, '_thumbnail_id' );
-              $_thumbnail_setting = add_post_meta( $_post_id, '_thumbnail_id', (int)$attach_id );
+              $_thumbnail_setting = add_post_meta( $_post_id, '_thumbnail_id', (int) $attach_id );
 
               if( $_thumbnail_setting ) {
                 ud_get_wp_rets_client()->write_log( 'Setting thumbnail [' . $attach_id . '] to post [' . $_post_id . '] because it has order of 1, result: ', 'debug' );
@@ -1137,11 +1171,8 @@ namespace UsabilityDynamics\WPRETSC {
           // old media is in $_already_attached_media
           // we get media that was attached before but not in new media
 
-        }
-
-        // We dont need to store this once the Media inserting is working well, besides we can always get it from api. - potanin@UD
-        if( isset( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
           unset( $post_data[ 'meta_input' ][ 'rets_media' ] );
+
         }
 
         if( $_post_id ) {
@@ -1190,15 +1221,23 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( '<pre>' . print_r( $_update_post, true ) . '</pre>', 'error' );
         }
 
-        // Term counts can/may be updated now.
-        wp_defer_term_counting( false );
+        if( isset( $options[ 'skipTermCounting' ] ) && $options[ 'skipTermCounting' ] ) {
+          ud_get_wp_rets_client()->write_log( 'Skipping term counts for [' . $_post_id  . '] update.', 'debug' );
+        } else {
+          ud_get_wp_rets_client()->write_log( 'Updating deferred term counts [' . $_post_id  . '].', 'debug' );
+          wp_defer_term_counting( false );
+          ud_get_wp_rets_client()->write_log( 'Term count complete [' . $_post_id  . '].', 'debug' );
+        }
 
-        return array(
+        $_response = array(
           "ok" => true,
           "post_id" => $_post_id,
-          "post" => get_post( $_post_id ),
           "permalink" => isset( $_permalink ) ? $_permalink : null
         );
+
+        ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] reponse.', 'debug' );
+
+        return $_response;
 
       }
 
@@ -1356,6 +1395,7 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * Delete Property.
        *
        * @param $args
        * @return array
@@ -1370,8 +1410,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         $response = array(
           "ok" => true,
-          "request" => $data,
-          "logs" => array(),
+          "request" => $data
         );
 
         $post_id = 0;
@@ -1385,9 +1424,7 @@ namespace UsabilityDynamics\WPRETSC {
         ud_get_wp_rets_client()->write_log( 'Have wpp.deleteProperty request.', 'info' );
 
         if( !$post_id || !is_numeric( $post_id ) ) {
-          $log = 'No post ID provided';
-          array_push( $response[ 'logs' ], $log );
-          ud_get_wp_rets_client()->write_log( $log, 'info' );
+          ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
           $response['ok'] = false;
           return $response;
         }
@@ -1407,11 +1444,10 @@ namespace UsabilityDynamics\WPRETSC {
 
           // Looks like post was deleted. But postmeta ( and probably terms ) still exist... Remove it.
           wp_delete_object_term_relationships( $post_id, get_object_taxonomies( 'property' ) );
+
           $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
 
-          $log = "Removed postmeta and terms for Property [{$post_id}].";
-          array_push( $response[ 'logs' ], $log );
-          ud_get_wp_rets_client()->write_log( $log, 'debug' );
+          ud_get_wp_rets_client()->write_log( "Removed postmeta and terms for Property [{$post_id}].", 'info' );
 
           do_action( 'wrc_property_deleted', $post_id );
 
@@ -1419,21 +1455,66 @@ namespace UsabilityDynamics\WPRETSC {
 
           ud_get_wp_rets_client()->write_log( "Post [$post_id] found. Removing it.", "info" );
 
-          if( wp_delete_post( $post_id, true ) ) {
-            $log = "Removed Property [{$post_id}]";
-            /**
-             * Do something after property is deleted
-             */
+          if( wp_delete_post( $post_id, false ) ) {
             do_action( 'wrc_property_deleted', $post_id );
+            $response[ "ok" ] = true;
           } else {
-            $log = "Property [{$post_id}] could not be removed";
+            ud_get_wp_rets_client()->write_log( "Property [{$post_id}] could not be removed", 'debug' );
             $response[ "ok" ] = false;
           }
 
-          array_push( $response[ 'logs' ], $log );
-          ud_get_wp_rets_client()->write_log( $log, 'debug' );
-
         }
+
+        ud_get_wp_rets_client()->write_log( "Finished removing [$post_id].", "info" );
+
+        $response['time' ] = timer_stop();
+
+        return $response;
+
+      }
+
+      /**
+       * Quick status change, real removal to occur later.
+       *
+       * @param $args
+       * @return array
+       */
+      public function rpc_trash_property( $args ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $data = self::parseRequest( $args );
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $data;
+        }
+
+        $response = array(
+          "ok" => true,
+          "request" => $data
+        );
+
+        $post_id = 0;
+        if( is_numeric( $data ) ) {
+          $post_id = $data;
+        } else if( !empty( $data[ 'id' ] ) ) {
+          $post_id = $data[ 'id' ];
+          ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Have [wpp.trashProperty] request.', 'info' );
+
+        if( !$post_id || !is_numeric( $post_id ) ) {
+          ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
+          $response['ok'] = false;
+          return $response;
+        }
+
+        ud_get_wp_rets_client()->write_log( "Checking post ID [$post_id]." );
+
+        $wpdb->update( $wpdb->posts, array( 'post_status' => 'trash' ), array( 'ID' => $post_id ) );
+
+        ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed." );
+
+        $response['time' ] = timer_stop();
 
         return $response;
 

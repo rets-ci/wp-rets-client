@@ -12,22 +12,35 @@ namespace UsabilityDynamics\WPRETSC {
 
     final class Utility {
 
-      static public function get_schedule_stats() {
+      /**
+       * Get published, private and future property counts for each schedule.
+       *
+       * @param array $options
+       * @return array|bool|mixed
+       */
+      static public function get_schedule_stats( $options = array() ) {
         global $wpdb;
+
+        $options = wp_parse_args( $options, array(
+          'cache' => 'schedule-stats'
+        ));
 
         $_stats  = array();
 
-        $_cache = wp_cache_get( 'schedule-stats', 'wp-rets-client' );
+        if( $options[ 'cache' ] ) {
 
-        if( $_cache ) {
-          $_cache['_cached'] = true;
-          return $_cache;
+          $_cache = wp_cache_get( $options[ 'cache' ], 'wp-rets-client' );
+
+          if( $_cache ) {
+            $_cache[ '_cached' ] = true;
+            return $_cache;
+          }
+
         }
 
-
-        foreach( $wpdb->get_results( "SELECT meta_value as schedule_id, count(meta_value) as count from {$wpdb->postmeta} where meta_key = 'wpp_import_schedule_id' group by meta_value order by count DESC;" ) as $_data ) {
-          $_stats[ $_data->schedule_id ] = $_data->count;
-        }
+        //foreach( $wpdb->get_results( "SELECT meta_value as schedule_id, count(meta_value) as count from {$wpdb->postmeta} where meta_key = 'wpp_import_schedule_id' group by meta_value order by count DESC;" ) as $_data ) {
+        //  $_stats[ $_data->schedule_id ] = $_data->count;
+        //}
 
         $terms = get_terms( array(
           'taxonomy' => 'rets_schedule',
@@ -42,13 +55,28 @@ namespace UsabilityDynamics\WPRETSC {
 
         foreach( $terms as $_term ) {
 
+          $query = new WP_Query( array(
+            'post_status' => array( 'publish', 'private', 'future' ),
+            'post_type'   => 'property',
+            'posts_per_page' => 1,
+            'tax_query' => array(
+              array(
+                'taxonomy' => 'rets_schedule',
+                'field'    => 'slug',
+                'terms'    => array( $_term->slug ),
+              ),
+            ),
+            //'meta_key'    => ( defined( 'RETS_ID_KEY' ) ? RETS_ID_KEY : 'wpp::rets_pk' ),
+            //'meta_value'  => $rets_id,
+          ) );
 
           $_data[] = array(
             '_id' => $_term->slug,
             'schedule' => $_term->slug,
-            'term_count' => $_term->count,
-            'meta_count' => isset( $_stats[ $_term->slug ] ) ? intval( $_stats[ $_term->slug ] ) : null,
-            'total' => $_term->count,
+            'total' => intval( $query->found_posts ),
+            //'term_count' => $_term->count,
+            //'meta_count' => isset( $_stats[ $_term->slug ] ) ? intval( $_stats[ $_term->slug ] ) : null,
+            //'total' => $_term->count,
             //'posts' => $posts->found_posts
           );
 
@@ -64,7 +92,9 @@ namespace UsabilityDynamics\WPRETSC {
           //'stats' => $_stats
         );
 
-        wp_cache_set( 'schedule-stats', $_result, 'wp-rets-client', 3600 );
+        if( $options[ 'cache' ] ) {
+          wp_cache_set( $options[ 'cache' ], $_result, 'wp-rets-client', 3600 );
+        }
 
         return $_result;
 
@@ -164,7 +194,7 @@ namespace UsabilityDynamics\WPRETSC {
           return true;
         }
 
-        if( ( $type === 'debug' || $type === 'notice' ) && file_exists( ud_get_wp_rets_client()->debug_file ) ) {
+        if( file_exists( ud_get_wp_rets_client()->debug_file ) ) {
           file_put_contents( ABSPATH . rtrim( ud_get_wp_rets_client()->debug_file, '/\\' ), $_content, FILE_APPEND  );
           return true;
         }
