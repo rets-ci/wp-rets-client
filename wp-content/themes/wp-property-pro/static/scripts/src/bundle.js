@@ -29647,7 +29647,15 @@
 	    key: 'topQuery',
 	    value: function topQuery(params, callback) {
 
-	      var rows = [];
+	      var rows = [{
+	        'order_key': 'city'
+	      }, {
+	        'order_key': 'zip'
+	      }, {
+	        'order_key': 'county'
+	      }, {
+	        'order_key': 'subdivision'
+	      }];
 
 	      var aggregations = this.getTopAggregations().aggs;
 	      var body = {
@@ -29704,7 +29712,12 @@
 	              text: _lodash2.default.get(aggregations[i], 'terms.title'),
 	              children: _buckets
 	            });
-	            rows.push(data);
+
+	            for (var r in rows) {
+	              if (i.indexOf(rows[r].order_key) !== -1) {
+	                rows[r] = data;
+	              }
+	            }
 	          }
 	        }
 
