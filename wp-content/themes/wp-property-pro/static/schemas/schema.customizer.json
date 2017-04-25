@@ -37,15 +37,15 @@
         "a:hover",
         "a:active",
         "a:focus",
-        ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:hover",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li:not(.propertypro-subnavigation-btn) a:hover",
         ".propertypro-subnavigation ul li:not(.propertypro-subnavigation-btn) a:hover",
-        ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:focus",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li:not(.propertypro-subnavigation-btn) a:focus",
         ".propertypro-subnavigation ul li:not(.propertypro-subnavigation-btn) a:focus",
-        ".propertypro-subnavigation.propertypro-module2 ul li a:hover svg path",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a:hover svg path",
         ".propertypro-subnavigation ul li a:hover svg path",
-        ".propertypro-subnavigation.propertypro-module2 ul li a.active",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a.active",
         ".propertypro-subnavigation ul li a.active",
-        ".propertypro-subnavigation.propertypro-module2 ul li.active a",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.active a",
         ".propertypro-subnavigation ul li.active a",
         ".propertypro-callout .container a",
         ".propertypro-search-box .propertypro-drop-search li a:hover",
@@ -80,7 +80,7 @@
         ".listing-type-box ul li a:focus",
         ".propertypro-testimonial .propertypro-slides li .propertypro-rating i",
         ".propertypro-sliderContent .propertypro-slides li p",
-        ".propertypro-subnavigation.propertypro-module2 ul li.propertypro-active a",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:focus",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:active",
@@ -145,7 +145,7 @@
         {
           "style": "border-bottom-color",
           "selector": [
-            ".propertypro-subnavigation.propertypro-module2 ul li.propertypro-active a"
+            ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a"
           ]
         }
       ]

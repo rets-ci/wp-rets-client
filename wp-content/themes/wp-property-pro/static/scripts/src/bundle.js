@@ -65768,10 +65768,11 @@
 	  var classes = _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation";
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'icon_layout':
+	      classes += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-icon-layout';
 	      container = _react2.default.createElement(_IconLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	    case 'text_layout':
-	      classes = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation ' + _lib.Lib.THEME_CLASSES_PREFIX + 'module2';
+	      classes += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-text-layout';
 	    default:
 	      container = _react2.default.createElement(_TextLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
