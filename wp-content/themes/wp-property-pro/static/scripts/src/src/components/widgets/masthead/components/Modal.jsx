@@ -164,7 +164,7 @@ class Modal extends Component {
     return (
       <div className={"modal " + searchModalClasses} onKeyDown={this.handleKeyPress.bind(this)}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`}>
-          <div className={`modal-content ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
+          <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
               <div className="container">
                 <div className="row">
@@ -188,13 +188,7 @@ class Modal extends Component {
                         placeholder={placeholder}
                       />
                     </div>
-                    {
-                      window.innerWidth < Lib.MOBILE_WIDTH
-                        ? null
-                        : <button type="button"
-                                  className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button-search-submit`}>
-                          Search</button>
-                    }
+                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button-search-submit`}>Search</button>
                   </form>
                 </div>
               </div>
@@ -217,7 +211,6 @@ class Modal extends Component {
       ;
   }
 }
-
 
 export default connect(
   mapStateToProps,

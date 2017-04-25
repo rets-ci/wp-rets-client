@@ -124,7 +124,6 @@ html, body {
 
 .propertypro-masthead {
     background-size: cover !important;
-    color: #fff;
     position: relative;
     margin-bottom: 0;
 }
@@ -169,22 +168,22 @@ html, body {
 
 /** Masthead search */
 .propertypro-search-box {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
+    box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, 0.15);
+    border-radius: .3125rem;
     max-width: 45rem;
     position: relative;
 }
 
 .propertypro-search-box .propertypro-btn-search {
-    height: 80px;
+    height: 5rem;
     font-size: 1.5rem;
     background-color: #ffffff;
     font-weight: 500;
-    line-height: 50px;
+    line-height: 3.125rem;
     display: block;
     width: 100%;
     text-align: left;
-    padding-left: 160px;
+    padding-left: 10rem;
     color: rgba(139, 140, 141, 0.4);
     outline: none;
     box-shadow: none;
@@ -192,11 +191,11 @@ html, body {
 }
 
 .propertypro-search-box .propertypro-btn-search.propertypro-short-padding {
-    padding-left: 15px;
+    padding-left: .9375rem;
 }
 
 .propertypro-search-box i {
-    margin-right: 8px;
+    margin-right: .5rem;
 }
 
 .propertypro-search-options-type-container {
@@ -208,39 +207,35 @@ html, body {
 }
 
 .propertypro-search-box .propertypro-drop-search {
-    width: 145px;
-    height: 80px;
-    border-radius: 5px 0 0 5px;
+    width: 9.0625rem;
+    height: 5rem;
+    border-radius: .25rem 0 0 .25rem;
     position: absolute;
     top: 0;
-    left: -1px;
-    color: #fff;
-    text-align: center;
-    z-index: 10;
-    line-height: 80px;
+    line-height: 5rem;
     cursor: pointer;
 }
 
 .propertypro-search-box .propertypro-drop-search i {
     font-size: 1.125rem;
-    margin-left: 8px;
+    margin-left: .5rem;
     position: relative;
     float: right;
     display: block;
-    top: 30px;
-    right: 10px;
+    top: 1.875rem;
+    right: .625rem;
 }
 
 .propertypro-search-box .propertypro-drop-search ul {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
-    width: 200px;
+    box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, 0.15);
+    border-radius: .3125rem;
+    width: 12.5rem;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
     list-style-type: none;
-    top: 81px;
-    position: absolute;
+    top: .0625rem;
+    position: relative;
     left: 0;
     display: none;
 }
@@ -248,10 +243,10 @@ html, body {
 .propertypro-search-box .propertypro-drop-search li a {
     display: block;
     text-align: left;
-    padding: 0 20px;
+    padding: 0 1.25rem;
     font-size: 1.15rem;
-    line-height: 50px;
-    border-bottom: 1px solid #dde4e9;
+    line-height: 3.125rem;
+    border-bottom: .0625rem solid #dde4e9;
     font-weight: 700;
 }
 
@@ -273,17 +268,17 @@ html, body {
 
 .propertypro-find-home-type li {
     display: inline-block;
-    padding: 0 5px;
+    padding: 0 .3125rem;
 }
 
 .propertypro-find-home-type li a {
     color: #fff;
-    padding: 8px 0;
+    padding: .5rem 0;
     opacity: 0.5;
     font-size: 1.10rem;
     font-weight: 700;
-    line-height: 10px;
-    border-bottom: 4px solid transparent;
+    line-height: .625rem;
+    border-bottom: .25rem solid transparent;
 }
 
 .propertypro-find-home-type li.propertypro-active a {
@@ -1141,11 +1136,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-search-modal .propertypro-modal-dialog {
     max-width: 100%;
 }
+.propertypro-search-modal .propertypro-modal-content {
+    height: 100vh;
+    display: block;
+}
 
 .propertypro-search-modal .propertypro-modal-body {
     background-color: #e9eff3;
     overflow: auto;
-    height: 100vh;
+    height: calc(100vh - 4.875rem);
 }
 
 .propertypro-search-modal .propertypro-close-panel {
@@ -1157,7 +1156,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-search-modal .propertypro-modal-header {
     box-shadow: 0 1.25rem 1.5rem rgba(224, 230, 234, 0.6);
     padding: 1rem 0;
-    z-index: 1;
 }
 
 .propertypro-search-modal .propertypro-modal-header form i {
@@ -2486,6 +2484,24 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /* Medium devices (tablets, less than 1199px) */
 @media screen and (max-width: 74.938em) {
 
+    .propertypro-search-modal .propertypro-modal-header form input{
+        width: 45rem;
+    }
+
+    .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
+    .propertypro-search-modal form .form-control,
+    .propertypro-search-modal form i {
+        font-size: 1.2rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-body{
+        height: calc(100vh - 4.5625rem);
+    }
+
+    .propertypro-search-modal-box ol li.propertypro-search-result-item a{
+        font-size: 2.2rem;
+    }
+
     .propertypro-subnavigation .propertypro-subnavigation-container,
     .propertypro-subnavigation .propertypro-subnavigation-container nav {
         width: 100%;
@@ -2708,6 +2724,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     .propertypro-article-masthead p{
         font-size: 1rem;
     }
+
+    .propertypro-button-search-submit{
+        display: none;
+    }
 }
 
 @media (min-width: 40.000em) and (max-width: 47.938em) {
@@ -2738,6 +2758,21 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 @media screen and (max-width: 62.000em) {
+    .propertypro-search-modal .propertypro-modal-header form input{
+        width: 30rem;
+    }
+
+    .propertypro-search-modal form .propertypro-button-search-submit,
+    .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
+    .propertypro-search-modal form .form-control,
+    .propertypro-search-modal form i{
+        font-size: 1rem;
+    }
+
+    .propertypro-search-modal-box ol li.propertypro-search-result-item a{
+        font-size: 2rem;
+    }
+
     .propertypro-top-footer .propertypro-footer-logo {
         text-align: left !important;
         margin-bottom: 2rem;
@@ -2957,8 +2992,26 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 35.938em) {
+    .propertypro-search-modal .propertypro-modal-header form input{
+        width: 32rem;
+        padding: .5rem;
+    }
+
+    .propertypro-search-modal .propertypro-close-panel{
+        top: 1.6rem;
+        font-size: 1.25rem;
+    }
+
     .propertypro-bottom-footer li a {
         font-size: 1rem;
+    }
+
+    .propertypro-search-modal-box ol li.propertypro-search-result-item a{
+        font-size: 1.5rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header{
+        padding: 1rem 0 0 0;
     }
 
     .propertypro-bottom-footer .propertypro-social {
@@ -2974,10 +3027,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 60px;
         font-size: 1.125rem;
         line-height: 40px;
-    }
-
-    .propertypro-search-modal .container {
-        width: 100%;
     }
 
     .propertypro-search-modal form .btn-primary {
@@ -3084,6 +3133,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /* Extra small devices (portrait phones, less than 440px) */
 @media screen and (max-width: 28.125em) {
+    .propertypro-search-modal .propertypro-modal-header form input{
+        width: 20rem;
+        padding: .5rem;
+    }
+
     .propertypro-top-footer {
         padding: 45px 0 15px;
     }
@@ -3175,6 +3229,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-find-home-type li {
         padding: 0 .3rem;
+    }
+
+    .propertypro-search-modal .propertypro-modal-header form input{
+        width: 18rem;
     }
 
     .propertypro-listings h3, .propertypro-testimonial h4 {
