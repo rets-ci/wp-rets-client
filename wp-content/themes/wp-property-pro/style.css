@@ -2559,6 +2559,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         margin-bottom: 0;
     }
 
+    .propertypro-masthead-blog-title{
+        font-size: 2.5rem;
+    }
+
     .propertypro-testimonial h4 {
         padding: 0 3rem;
         font-size: 2.5rem;
