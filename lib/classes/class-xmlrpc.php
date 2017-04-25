@@ -158,6 +158,13 @@ namespace UsabilityDynamics\WPRETSC {
               'default' => 10,
               'sanitize_callback' => 'absint',
             ),
+            'offset' => array(
+              'default' => 0,
+              'sanitize_callback' => 'absint',
+            ),
+            'unique' => array(
+              'default' => 'wpp::rets_pk'
+            ),
             'schedule_id' => array(
               'default' => false,
               'sanitize_callback' => 'sanitize_title',
@@ -189,12 +196,45 @@ namespace UsabilityDynamics\WPRETSC {
        * - rets_id - the unique meta key we use to find property. seems to be same as [wpp::rets_pk]
        *
        * /wp-json/wp-rets-client/v1/schedule/listings?order=desc&schedule_id=1463079227
+       * /wp-json/wp-rets-client/v1/schedule/listings?type=index
+       * /wp-json/wp-rets-client/v1/schedule/listings?type=index&unique=rets_id
+       *
+       * - type - mls_numbers - will return a summary of post_id -> rets_id. No consideration given to post_status or schedule.
        *
        * @param $request_data
        *
        * @return array
        */
       static public function get_schedule_listings( $request_data ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $post_data = self::parseRequest( $request_data );
+
+        if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
+          return $post_data;
+        }
+
+        // Quick summary of all listings, fetched by a meta key.
+        if( $request_data->get_param( 'type' ) == 'index' ) {
+          $_per_page = $request_data->get_param( 'per_page' );
+          $offset = $request_data->get_param( 'offset' );
+          $unique_key = $request_data->get_param( 'unique' );
+
+          $_total = $wpdb->get_var( "SELECT COUNT( post_id ) as total FROM $wpdb->postmeta WHERE meta_key='rets_id';");
+          $_list = $wpdb->get_results( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key='$unique_key' LIMIT $offset, $_per_page;" );
+
+          $_result = array(
+            'ok' => true,
+            'total' => intval($_total),
+            'data' => $_list,
+            'unique' => $unique_key,
+            'offset' => $request_data->get_param( 'offset' ),
+            'per_page' => $request_data->get_param( 'per_page' ),
+            'time' => timer_stop()
+          );
+
+          return $_result;
+        }
 
         $_query = array(
           'post_status' => array( 'draft', 'trash',  'publish' ),
@@ -212,6 +252,12 @@ namespace UsabilityDynamics\WPRETSC {
             ),
           ),
         );
+
+        if( $request_data->get_param( 'offset' ) ) {
+          $_query['offset'] = $request_data->get_param( 'offset' );
+        }
+
+        //error_log(print_r($_query,true));
 
         $_query = array_merge( $_query, array(
           'meta_key' => 'wpp_import_time',
@@ -266,7 +312,9 @@ namespace UsabilityDynamics\WPRETSC {
        */
       static public function get_schedule_stats() {
 
+
         $_stats = Utility::get_schedule_stats();
+
 
         return array(
           'ok' => true,
@@ -803,6 +851,8 @@ namespace UsabilityDynamics\WPRETSC {
       }
 
       /**
+       * Get property by ID ro mls_number
+       *
        *
        * @param $args
        * @return array
@@ -813,6 +863,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         $post_data = self::parseRequest( $args );
 
+        // error_log( print_r( $args, true ) );
+
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
           return $post_data;
         }
@@ -821,22 +873,42 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_post_id = null;
 
-        if( is_array($post_data ) && $post_data[0] ) {
-          $_post_id = $post_data[0];
+        if( is_array($post_data ) && isset( $post_data['ID'] ) ) {
+          $_post_id = $post_data['ID'];
+        } elseif( is_array( $post_data ) && isset( $post_data[ 'mls_number' ]))  {
+          $_post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
         } else {
           $_post_id = $post_data;
         }
 
         $_post = get_post( $_post_id );
-        //$_post = WPP_F::get_property( $_post_id );
 
-        return array(
+        $_resposne = array(
           "ok" => $_post ? true : false,
           "exists" => $_post ? true : false,
-          "post_id" => $_post_id ,
-          "post" => $_post ? $_post : null,
-          "permalink" => $_post ? get_permalink( $post_data ) : null
+          "time" => timer_stop()
         );
+
+        if( $_post ) {
+          $_resposne["post_id"] = intval( $_post_id );
+
+          if( isset( $post_data['detail'] ) ) {
+            $_resposne[ "permalink" ] = $_post ? get_permalink( $_post_id ) : null;
+            $_resposne[ 'meta_input' ] = array(
+              'modification_timestamp' => get_post_meta( $_post_id, 'rets_modified_datetime', true ),
+              'rets_listed_date' => get_post_meta( $_post_id, 'rets_listed_date', true ),
+              'rets_id' => get_post_meta( $_post_id, 'rets_id', true ),
+              'rets_schedule' => get_post_meta( $_post_id, 'rets_schedule', true ),
+              'wpp_import_time' => get_post_meta( $_post_id, 'wpp_import_time', true ),
+              'mls_number' => get_post_meta( $_post_id, 'mls_number', true )
+            );
+          }
+
+        }
+
+        //$_post = WPP_F::get_property( $_post_id );
+
+        return $_resposne;
 
       }
 

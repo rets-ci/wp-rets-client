@@ -17,6 +17,14 @@ namespace UsabilityDynamics\WPRETSC {
 
         $_stats  = array();
 
+        $_cache = wp_cache_get( 'schedule-stats', 'wp-rets-client' );
+
+        if( $_cache ) {
+          $_cache['_cached'] = true;
+          return $_cache;
+        }
+
+
         foreach( $wpdb->get_results( "SELECT meta_value as schedule_id, count(meta_value) as count from {$wpdb->postmeta} where meta_key = 'wpp_import_schedule_id' group by meta_value order by count DESC;" ) as $_data ) {
           $_stats[ $_data->schedule_id ] = $_data->count;
         }
@@ -48,13 +56,17 @@ namespace UsabilityDynamics\WPRETSC {
         }
         //die( '<pre>' . print_r( $terms , true ) . '</pre>' );
 
-        return array(
+        $_result = array(
           'ok' => true,
           'data' => $_data,
           'terms' => $terms,
           'total' => $_total
           //'stats' => $_stats
         );
+
+        wp_cache_set( 'schedule-stats', $_result, 'wp-rets-client', 3600 );
+
+        return $_result;
 
       }
       /**
@@ -74,15 +86,22 @@ namespace UsabilityDynamics\WPRETSC {
           return $_cache;
         }
 
-        $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
+        $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
+
+        if( $_actual_post_id ) {
+          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 36000 );
+          return $_actual_post_id;
+        }
 
         // temp support for old format
         if( empty( $_actual_post_id ) ) {
-          $_actual_post_id = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
+          $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
+          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 36000 );
+          return $_actual_post_id;
         }
 
         // this excludes any orphan meta as well as "inherit" posts, it will also use the post with ther LOWER ID meaning its more likely to be original
-        $query = new \WP_Query( array(
+        $query = new WP_Query( array(
           'post_status' => array( 'publish', 'draft', 'pending', 'trash', 'private', 'future' ),
           'post_type'   => 'property',
           'meta_key'    => ( defined( 'RETS_ID_KEY' ) ? RETS_ID_KEY : 'wpp::rets_pk' ),
