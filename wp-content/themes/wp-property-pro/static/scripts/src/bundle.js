@@ -66796,7 +66796,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'p',
-	            { className: 'card-text' },
+	            { className: 'card-text ' + _lib.Lib.THEME_CLASSES_PREFIX + 'post-card-text' },
 	            excerpt
 	          )
 	        )
