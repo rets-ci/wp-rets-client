@@ -444,7 +444,7 @@ html, body {
 
 .propertypro-card .propertypro-listing-top {
     position: absolute;
-    top: -43px;
+    top: -2.6875rem;
     left: 0;
     padding: 0 1.5rem;
     z-index: 2;
@@ -519,7 +519,7 @@ html, body {
 .propertypro-card .propertypro-card-block li {
     float: left;
     line-height: 1rem;
-    border-right: 1px solid #cad3d9;
+    border-right: .0625rem solid #cad3d9;
     padding: 0 .6rem;
     font-weight: 600;
     color: #000000;
@@ -558,7 +558,7 @@ html, body {
     width: 2.5rem;
     height: 2.5rem;
     position: relative;
-    z-index: 2;
+    z-index: 3;
     overflow: hidden;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
