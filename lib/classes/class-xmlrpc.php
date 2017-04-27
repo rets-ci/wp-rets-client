@@ -179,6 +179,9 @@ namespace UsabilityDynamics\WPRETSC {
             'unique' => array(
               'default' => 'wpp::rets_pk'
             ),
+            'post_status' => array(
+              'default' => array( 'publish', 'private', 'future', 'draft' )
+            ),
             'schedule_id' => array(
               'default' => false,
               'sanitize_callback' => 'sanitize_title',
@@ -225,7 +228,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $request_data );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
+          //return $post_data;
         }
 
         // Quick summary of all listings, fetched by a meta key.
@@ -234,8 +237,23 @@ namespace UsabilityDynamics\WPRETSC {
           $offset = $request_data->get_param( 'offset' );
           $unique_key = $request_data->get_param( 'unique' );
 
-          $_total = $wpdb->get_var( "SELECT COUNT( post_id ) as total FROM $wpdb->postmeta WHERE meta_key='rets_id';");
-          $_list = $wpdb->get_results( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key='$unique_key' LIMIT $offset, $_per_page;" );
+          if( is_string( $request_data->get_param( 'post_status' ) ) ) {
+            $_post_status = explode( ',', $request_data->get_param( 'post_status' ) );
+            $post_status = join( "','", $_post_status );
+          }
+
+          if( is_array( $request_data->get_param( 'post_status' ) ) ) {
+            $post_status = join( "','", $request_data->get_param( 'post_status' ) );
+          }
+
+          $_queries = array(
+            "all" => "SELECT post_id, meta_value as unique_field, post_status, post_date, post_modified FROM $wpdb->postmeta LEFT JOIN $wpdb->posts ON post_id=ID WHERE meta_key='$unique_key' AND post_status IN ('$post_status') LIMIT $offset, $_per_page;",
+            "total" => "SELECT count( post_id ) FROM $wpdb->postmeta LEFT JOIN $wpdb->posts ON post_id=ID WHERE meta_key='$unique_key' AND post_status = '$post_status' LIMIT $offset, $_per_page;"
+          );
+
+          $_total = $wpdb->get_var( $_queries['total' ]);
+
+          $_list = $wpdb->get_results( $_queries['all' ] );
 
           $_result = array(
             'ok' => true,
@@ -243,15 +261,18 @@ namespace UsabilityDynamics\WPRETSC {
             'data' => $_list,
             'unique' => $unique_key,
             'offset' => $request_data->get_param( 'offset' ),
+            'post_status' => explode( "','", $post_status ),
             'per_page' => $request_data->get_param( 'per_page' ),
-            'time' => timer_stop()
+            'time' => timer_stop(),
           );
+
+          ud_get_wp_rets_client()->write_log( "Using query [" . $_queries['all'] . "] to get index list." );
 
           return $_result;
         }
 
         $_query = array(
-          'post_status' => array( 'draft', 'trash',  'publish' ),
+          'post_status' => array( 'draft', 'publish', 'future', 'private' ),
           'post_type' => 'property',
           'posts_per_page' => $request_data->get_param( 'per_page' ),
           'update_post_meta_cache' => false,
@@ -477,6 +498,8 @@ namespace UsabilityDynamics\WPRETSC {
           if( is_callable( array( $args, 'get_json_params' ) ) ) {
 
             if( !self::token_login( isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : null, isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : null ) ) {
+
+              http_response_code( 401 );
 
               return array_filter(array(
                 'ok' => false,
