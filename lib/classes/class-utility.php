@@ -21,11 +21,24 @@ namespace UsabilityDynamics\WPRETSC {
       static public function get_schedule_stats( $options = array() ) {
         global $wpdb;
 
+        $terms = get_terms( array(
+          'taxonomy' => 'rets_schedule',
+          'orderby' => 'name',
+          'order'=> 'DESC',
+          'hide_empty' => false
+        ) );
+
+        ud_get_wp_rets_client()->write_log( 'Starting [get_schedule_stats].', 'debug' );
+
+        foreach( $terms as $_term ) {
+          wp_update_term_count_now( $_term->term_taxonomy_id, 'rets_schedule' );
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Completed term count in [get_schedule_stats].', 'debug' );
+
         $options = wp_parse_args( $options, array(
           'cache' => 'schedule-stats'
         ));
-
-        $_stats  = array();
 
         if( $options[ 'cache' ] ) {
 
@@ -41,13 +54,6 @@ namespace UsabilityDynamics\WPRETSC {
         //foreach( $wpdb->get_results( "SELECT meta_value as schedule_id, count(meta_value) as count from {$wpdb->postmeta} where meta_key = 'wpp_import_schedule_id' group by meta_value order by count DESC;" ) as $_data ) {
         //  $_stats[ $_data->schedule_id ] = $_data->count;
         //}
-
-        $terms = get_terms( array(
-          'taxonomy' => 'rets_schedule',
-          'orderby' => 'count',
-          'order'=> 'DESC',
-          'hide_empty' => false,
-        ) );
 
         $_data = array();
 
@@ -71,8 +77,8 @@ namespace UsabilityDynamics\WPRETSC {
           ) );
 
           $_data[] = array(
-            '_id' => $_term->slug,
-            'schedule' => $_term->slug,
+            '_id' => strval( $_term->slug ),
+            'schedule' => strval( $_term->slug ),
             'total' => intval( $query->found_posts ),
             //'term_count' => $_term->count,
             //'meta_count' => isset( $_stats[ $_term->slug ] ) ? intval( $_stats[ $_term->slug ] ) : null,
@@ -80,7 +86,7 @@ namespace UsabilityDynamics\WPRETSC {
             //'posts' => $posts->found_posts
           );
 
-          $_total = $_total + $_term->count;
+          $_total = $_total + $query->found_posts;
         }
         //die( '<pre>' . print_r( $terms , true ) . '</pre>' );
 
