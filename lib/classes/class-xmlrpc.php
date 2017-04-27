@@ -629,7 +629,7 @@ namespace UsabilityDynamics\WPRETSC {
           "support" => array(
             "schedule_stats",
             "schedule_listings",
-            "edit_property",
+            "get_property",
             "create_property",
             "update_property",
             "edit_property"
