@@ -39,7 +39,7 @@ export default class PostCard extends Component {
               }>{title}</a>
             </h5>
           </header>
-          <p className="card-text">{excerpt}</p>
+          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}post-card-text`}>{excerpt}</p>
         </div>
       </section>
     );
