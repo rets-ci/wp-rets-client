@@ -790,10 +790,12 @@ namespace UsabilityDynamics {
     function property_pro_delete_widget_posts_cache($post_ID, $post, $update)
     {
 
-      if (!$update)
+      // If this is just a revision, don't send the email.
+      if (!$update || wp_is_post_revision($post_ID) || wp_is_post_autosave($post_ID)) {
         return false;
+      }
 
-      wp_cache_delete('widget_posts_' . $_POST['post_ID'], 'property_pro');
+      wp_cache_delete('widget_posts_' . $post_ID, 'property_pro');
 
       return true;
 
