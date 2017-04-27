@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
@@ -9,13 +8,7 @@ import Modal from './components/Modal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const mapStateToProps = (state) => {
-  return {
-    open: state.locationModal ? state.locationModal.open : false
-  }
-};
-
-const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticleHandler}) => {
+const Masthead = ({widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
 
   if (!widget_cell) {
     return null;
@@ -24,12 +17,6 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
   let headerStyle = {
     background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + _.get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
   };
-
-  if (open) {
-    headerStyle = Object.assign(headerStyle, {
-      zIndex: "11"
-    });
-  }
 
   let container;
   let modal;
@@ -75,9 +62,5 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
     </section>
   );
 };
-
-const Masthead = connect(
-  mapStateToProps
-)(MastheadContent);
 
 export default Masthead;

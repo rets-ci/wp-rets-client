@@ -29647,7 +29647,15 @@
 	    key: 'topQuery',
 	    value: function topQuery(params, callback) {
 
-	      var rows = [];
+	      var rows = [{
+	        'order_key': 'city'
+	      }, {
+	        'order_key': 'zip'
+	      }, {
+	        'order_key': 'county'
+	      }, {
+	        'order_key': 'subdivision'
+	      }];
 
 	      var aggregations = this.getTopAggregations().aggs;
 	      var body = {
@@ -29704,7 +29712,12 @@
 	              text: _lodash2.default.get(aggregations[i], 'terms.title'),
 	              children: _buckets
 	            });
-	            rows.push(data);
+
+	            for (var r in rows) {
+	              if (i.indexOf(rows[r].order_key) !== -1) {
+	                rows[r] = data;
+	              }
+	            }
 	          }
 	        }
 
@@ -63713,8 +63726,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(233);
-
 	var _TitleDescriptionLayout = __webpack_require__(325);
 
 	var _TitleDescriptionLayout2 = _interopRequireDefault(_TitleDescriptionLayout);
@@ -63747,15 +63758,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    open: state.locationModal ? state.locationModal.open : false
-	  };
-	};
-
-	var MastheadContent = function MastheadContent(_ref) {
+	var Masthead = function Masthead(_ref) {
 	  var widget_cell = _ref.widget_cell,
-	      open = _ref.open,
 	      returnToArchiveHandler = _ref.returnToArchiveHandler,
 	      nextArticleHandler = _ref.nextArticleHandler;
 
@@ -63767,12 +63771,6 @@
 	  var headerStyle = {
 	    background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + _lodash2.default.get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
 	  };
-
-	  if (open) {
-	    headerStyle = Object.assign(headerStyle, {
-	      zIndex: "11"
-	    });
-	  }
 
 	  var container = void 0;
 	  var modal = void 0;
@@ -63820,8 +63818,6 @@
 	    )
 	  );
 	};
-
-	var Masthead = (0, _reactRedux.connect)(mapStateToProps)(MastheadContent);
 
 	exports.default = Masthead;
 
@@ -65120,7 +65116,7 @@
 	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'modal-content ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
+	            { className: 'modal-content border-0 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
@@ -65164,10 +65160,9 @@
 	                        placeholder: placeholder
 	                      })
 	                    ),
-	                    window.innerWidth < _lib.Lib.MOBILE_WIDTH ? null : _react2.default.createElement(
+	                    _react2.default.createElement(
 	                      'button',
-	                      { type: 'button',
-	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
+	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
 	                      'Search'
 	                    )
 	                  )
@@ -65773,10 +65768,11 @@
 	  var classes = _lib.Lib.THEME_CLASSES_PREFIX + "subnavigation";
 	  switch (widget_cell.widget.fields.layout) {
 	    case 'icon_layout':
+	      classes += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-icon-layout';
 	      container = _react2.default.createElement(_IconLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;
 	    case 'text_layout':
-	      classes = _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation ' + _lib.Lib.THEME_CLASSES_PREFIX + 'module2';
+	      classes += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'subnavigation-text-layout';
 	    default:
 	      container = _react2.default.createElement(_TextLayout2.default, { items: items, currentUrl: currentUrl });
 	      break;

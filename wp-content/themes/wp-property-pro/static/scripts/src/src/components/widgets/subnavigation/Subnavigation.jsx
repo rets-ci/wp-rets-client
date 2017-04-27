@@ -16,10 +16,11 @@ const Subnavigation = ({widget_cell, currentUrl}) => {
   let classes = Lib.THEME_CLASSES_PREFIX + "subnavigation";
   switch (widget_cell.widget.fields.layout) {
     case 'icon_layout':
+      classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-icon-layout`;
       container = <IconLayout items={items} currentUrl={currentUrl}/>;
       break;
     case 'text_layout':
-      classes = `${Lib.THEME_CLASSES_PREFIX}subnavigation ${Lib.THEME_CLASSES_PREFIX}module2`;
+      classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-text-layout`;
     default:
       container = <TextLayout items={items} currentUrl={currentUrl}/>
       break;
