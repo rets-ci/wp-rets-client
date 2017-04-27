@@ -228,7 +228,7 @@ namespace UsabilityDynamics\WPRETSC {
         $post_data = self::parseRequest( $request_data );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          //return $post_data;
+          return $post_data;
         }
 
         // Quick summary of all listings, fetched by a meta key.
@@ -248,7 +248,7 @@ namespace UsabilityDynamics\WPRETSC {
 
           $_queries = array(
             "all" => "SELECT post_id, meta_value as unique_field, post_status, post_date, post_modified FROM $wpdb->postmeta LEFT JOIN $wpdb->posts ON post_id=ID WHERE meta_key='$unique_key' AND post_status IN ('$post_status') LIMIT $offset, $_per_page;",
-            "total" => "SELECT count( post_id ) FROM $wpdb->postmeta LEFT JOIN $wpdb->posts ON post_id=ID WHERE meta_key='$unique_key' AND post_status = '$post_status' LIMIT $offset, $_per_page;"
+            "total" => "SELECT count( post_id ) FROM $wpdb->postmeta LEFT JOIN $wpdb->posts ON post_id=ID WHERE meta_key='$unique_key' AND post_status IN ('$post_status')  LIMIT $offset, $_per_page;"
           );
 
           $_total = $wpdb->get_var( $_queries['total' ]);
@@ -627,6 +627,9 @@ namespace UsabilityDynamics\WPRETSC {
           "activePlugins" => self::get_plugins(),
           "time" => timer_stop(),
           "support" => array(
+            "schedule_stats",
+            "schedule_listings",
+            "edit_property",
             "create_property",
             "update_property",
             "edit_property"
