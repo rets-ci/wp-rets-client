@@ -29935,7 +29935,8 @@
 	  AJAX_GET_POSTS_ACTION: "get_posts",
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
 	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
-	  BLOG_POSTS_PER_ROW: 2
+	  BLOG_POSTS_PER_ROW: 2,
+	  LOCATION_MODAL_REQUESTS_DELAY: 500
 	};
 
 /***/ },
@@ -64972,7 +64973,8 @@
 	    var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
 
 	    _this.state = {
-	      searchValue: ''
+	      searchValue: '',
+	      timeoutId: 0
 	    };
 	    // Set default values
 	    _this.props.topQuery();
@@ -65015,16 +65017,35 @@
 	      this.props.closeModal();
 	    }
 	  }, {
-	    key: 'handleSearchValueChange',
-	    value: function handleSearchValueChange(eve) {
-	      var val = eve.target.value;
-	      this.setState({ searchValue: val });
+	    key: 'search',
+	    value: function search() {
+
+	      var val = this.state.searchValue;
 
 	      if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
 	        this.props.topQuery();
 	      } else {
 	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
 	      }
+	    }
+	  }, {
+	    key: 'handleSearchValueChange',
+	    value: function handleSearchValueChange(eve) {
+	      var val = eve.target.value;
+
+	      this.setState.searchValue = val;
+	      this.forceUpdate();
+
+	      if (this.state.timeoutId) {
+	        clearTimeout(this.state.timeoutId);
+	      }
+
+	      var timeoutId = setTimeout(this.search.bind(this), _lib.Lib.LOCATION_MODAL_REQUESTS_DELAY);
+
+	      this.setState({
+	        searchValue: val,
+	        timeoutId: timeoutId
+	      });
 	    }
 	  }, {
 	    key: 'handleKeyPress',

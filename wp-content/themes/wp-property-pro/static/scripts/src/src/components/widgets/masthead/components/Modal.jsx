@@ -53,7 +53,8 @@ class Modal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: ''
+      searchValue: '',
+      timeoutId: 0
     };
     // Set default values
     this.props.topQuery();
@@ -93,15 +94,33 @@ class Modal extends Component {
     this.props.closeModal();
   }
 
-  handleSearchValueChange(eve) {
-    let val = eve.target.value;
-    this.setState({searchValue: val});
+  search(){
+
+    let val = this.state.searchValue;
 
     if (!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH) {
       this.props.topQuery();
     } else {
       this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''));
     }
+  }
+
+  handleSearchValueChange(eve) {
+    let val = eve.target.value;
+
+    this.setState.searchValue = val;
+    this.forceUpdate();
+
+    if(this.state.timeoutId){
+      clearTimeout(this.state.timeoutId);
+    }
+
+    let timeoutId = setTimeout(this.search.bind(this), Lib.LOCATION_MODAL_REQUESTS_DELAY);
+
+    this.setState({
+      searchValue: val,
+      timeoutId: timeoutId
+    });
   }
 
   handleKeyPress(event) {
