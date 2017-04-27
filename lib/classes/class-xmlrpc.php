@@ -272,7 +272,7 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         $_query = array(
-          'post_status' => array( 'draft', 'publish', 'future', 'private' ),
+          'post_status' => $request_data->get_param( 'post_status' ),
           'post_type' => 'property',
           'posts_per_page' => $request_data->get_param( 'per_page' ),
           'update_post_meta_cache' => false,
@@ -350,7 +350,6 @@ namespace UsabilityDynamics\WPRETSC {
         $_stats = Utility::get_schedule_stats(array(
           'cache' => false
         ));
-
 
         return array(
           'ok' => true,
@@ -504,6 +503,7 @@ namespace UsabilityDynamics\WPRETSC {
               return array_filter(array(
                 'ok' => false,
                 'error' => "Unable to login.",
+                'errorCode' => 401,
                 'username' => isset( $_SERVER[ 'HTTP_X_ACCESS_USER' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_USER' ] : '',
                 'password' => isset( $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] ) ? $_SERVER[ 'HTTP_X_ACCESS_PASSWORD' ] : ''
               ));

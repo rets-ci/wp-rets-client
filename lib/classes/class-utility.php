@@ -56,7 +56,7 @@ namespace UsabilityDynamics\WPRETSC {
         foreach( $terms as $_term ) {
 
           $query = new WP_Query( array(
-            'post_status' => array( 'publish', 'private', 'future' ),
+            'post_status' => array( 'publish', 'private', 'future', 'draft' ),
             'post_type'   => 'property',
             'posts_per_page' => 1,
             'tax_query' => array(
