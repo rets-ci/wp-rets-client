@@ -118,7 +118,7 @@ namespace UsabilityDynamics\WPRETSC {
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/getProperty', array(
-          'methods' => 'GET',
+          'methods' => array('GET', 'POST' ),
           'callback' => array( $this, 'get_property' ),
           'args'            => array(
             'ID' => array(
@@ -126,7 +126,10 @@ namespace UsabilityDynamics\WPRETSC {
             ),
             'mls_number' => array(
               'default' => null
-            )
+            ),
+            'detail' => array(
+              'default' => true
+            ),
           )
         ) );
 
@@ -749,6 +752,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         // self::insert_terms( $_post_id, $_post_data_tax_input, $post_data );
 
+
         if( !empty( $post_data[ 'meta_input' ][ 'rets_media' ] ) && is_array( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
 
           $_already_attached_media = array();
@@ -899,77 +903,6 @@ namespace UsabilityDynamics\WPRETSC {
           "post" => get_post( $_post_id ),
           "permalink" => isset( $_permalink ) ? $_permalink : null
         );
-
-      }
-
-      /**
-       * Get property by ID ro mls_number
-       *
-       *
-       *
-       *
-       * @param $args
-       * @return array
-       *
-       */
-      public function get_property( $args ) {
-        global $wp_xmlrpc_server;
-
-        $post_data = self::parseRequest( $args );
-
-        if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
-          return $post_data;
-        }
-
-        if( method_exists( $args, 'get_param' ) ) {
-          // $post_data['ID'] = $args->get_param( 'ID' );
-          //$post_data['mls_number'] = $args->get_param( 'mls_number' );
-        }
-
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request.', 'debug' );
-
-        $_post_id = null;
-
-        if( is_array($post_data ) && isset( $post_data['ID'] ) ) {
-          $_post_id = $post_data['ID'];
-        } elseif( is_array( $post_data ) && isset( $post_data[ 'mls_number' ]))  {
-          $_post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
-        } else {
-          $_post_id = $post_data;
-        }
-
-        ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request using [' . $_post_id . '] post_id.', 'debug' );
-        $_post = get_post( $_post_id );
-
-        $_resposne = array(
-          "ok" => $_post ? true : false,
-          "exists" => $_post ? true : false,
-          "time" => timer_stop()
-        );
-
-        if( $_post ) {
-          $_resposne["post_id"] = intval( $_post_id );
-          $_resposne["post_status"] = $_post->post_status;
-
-          if( isset( $post_data['detail'] ) ) {
-            $_resposne[ "permalink" ] = $_post ? get_permalink( $_post_id ) : null;
-            $_resposne[ 'meta_input' ] = array(
-              'modification_timestamp' => get_post_meta( $_post_id, 'rets_modified_datetime', true ),
-              'rets_listed_date' => get_post_meta( $_post_id, 'rets_listed_date', true ),
-              'rets_id' => get_post_meta( $_post_id, 'rets_id', true ),
-              'rets_schedule' => get_post_meta( $_post_id, 'rets_schedule', true ),
-              'wpp_import_time' => get_post_meta( $_post_id, 'wpp_import_time', true ),
-              'mls_number' => get_post_meta( $_post_id, 'mls_number', true )
-            );
-          }
-
-        }
-
-        ud_get_wp_rets_client()->write_log( 'Completed [wpp.getProperty] request.', 'debug' );
-
-        //$_post = WPP_F::get_property( $_post_id );
-
-        return $_resposne;
 
       }
 
@@ -1264,6 +1197,78 @@ namespace UsabilityDynamics\WPRETSC {
         ud_get_wp_rets_client()->write_log( 'Sending [wpp.editProperty] reponse.', 'debug' );
 
         return $_response;
+
+      }
+
+      /**
+       * Get property by ID ro mls_number
+       *
+       *
+       *
+       *
+       * @param $args
+       * @return array
+       *
+       */
+      public function get_property( $args ) {
+        global $wp_xmlrpc_server;
+
+        $post_data = self::parseRequest( $args );
+
+        if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
+          return $post_data;
+        }
+
+        if( method_exists( $args, 'get_param' ) ) {
+          $post_data['ID'] = $args->get_param( 'ID' );
+          $post_data['mls_number'] = $args->get_param( 'mls_number' );
+          $post_data['detail'] = $args->get_param( 'detail' );
+        }
+
+        // ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request.', 'debug' );
+
+        $_post_id = null;
+
+        if( is_array($post_data ) && isset( $post_data['ID'] ) ) {
+          $_post_id = $post_data['ID'];
+        } elseif( is_array( $post_data ) && isset( $post_data[ 'mls_number' ]))  {
+          $_post_id = ud_get_wp_rets_client()->find_property_by_rets_id( $post_data[ 'mls_number' ] );
+        } else {
+          $_post_id = $post_data;
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Have request [wpp.getProperty] request using [' . $_post_id . '] post_id.', 'debug' );
+
+        $_post = get_post( $_post_id );
+
+        $_resposne = array(
+          "ok" => $_post ? true : false,
+          "exists" => $_post ? true : false,
+          "time" => timer_stop()
+        );
+
+        if( $_post ) {
+          $_resposne["post_id"] = intval( $_post_id );
+          $_resposne["post_status"] = $_post->post_status;
+
+          if( isset( $post_data['detail'] ) ) {
+            $_resposne[ "permalink" ] = $_post ? get_permalink( $_post_id ) : null;
+            $_resposne[ 'meta_input' ] = array(
+              'modification_timestamp' => get_post_meta( $_post_id, 'rets_modified_datetime', true ),
+              'rets_listed_date' => get_post_meta( $_post_id, 'rets_listed_date', true ),
+              'rets_id' => get_post_meta( $_post_id, 'rets_id', true ),
+              'rets_schedule' => get_post_meta( $_post_id, 'rets_schedule', true ),
+              'wpp_import_time' => get_post_meta( $_post_id, 'wpp_import_time', true ),
+              'mls_number' => get_post_meta( $_post_id, 'mls_number', true ),
+              //'attachment' => wp_count_attachments()
+            );
+          }
+
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Completed [wpp.getProperty] request.', 'debug' );
+
+        return $_resposne;
 
       }
 
