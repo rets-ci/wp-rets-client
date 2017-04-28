@@ -76,8 +76,6 @@ html, body {
 
 .propertypro-toolbar {
     position: absolute;
-    top: 1rem;
-    left: 0;
     z-index: 2;
 }
 
@@ -1133,6 +1131,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     background-color: #e9eff3;
 }
 
+.propertypro-search-modal .propertypro-modal-dialog,
 .propertypro-search-modal .propertypro-modal-dialog {
     max-width: 100%;
 }
@@ -1225,36 +1224,37 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
 }
 
-.filter-section {
-    margin-bottom: 80px;
+.propertypro-filter-section {
+    margin-bottom: 5rem;
 }
 
-.filter-section h3 {
+.propertypro-filter-section h3 {
     font-size: 1.5rem;
     font-weight: 400;
     line-height: 24px;
     margin-bottom: 1em;
+    color: #414141;
 }
 
-.filter-section h3 span {
+.propertypro-filter-section h3 span {
     color: rgba(139, 140, 141, 0.6);
     font-size: 1rem;
     font-weight: 500;
     line-height: 16px;
 }
 
-.filter-section .propertypro-tag {
+.propertypro-filter-section .propertypro-tag {
     line-height: 40px;
     border-radius: 5px;
     margin-right: .30em;
     margin-bottom: 8px;
 }
 
-.filter-section .propertypro-tag.selected {
+.propertypro-filter-section .propertypro-tag.selected {
     background-color: #ffffff;
 }
 
-.filter-section .btn-primary {
+.propertypro-filter-section .btn-primary {
     border: 1px solid #d2dae0;
     font-size: 1.10rem;
     font-weight: 500;
@@ -1266,8 +1266,13 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     margin-bottom: 8px;
 }
 
-.filter-section .btn-primary.selected {
+.propertypro-filter-section .btn-primary.selected {
     background-color: #fff;
+}
+
+.propertypro-filter-section.propertypro-filter-section-price,
+.propertypro-filter-section.propertypro-filter-section-total-size{
+    width: 100%;
 }
 
 /* User Search Modal -> Advanced Search Filter */
@@ -1280,18 +1285,19 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-advanced-filter .propertypro-close-panel {
-    top: 35px;
-    right: 30px;
     opacity: .9;
 }
 
-.propertypro-advanced-filter form {
-    padding: 22px 0;
+.propertypro-advanced-filter form{
+    width: 100%;
 }
 
 .propertypro-advanced-filter form i {
     font-size: 1.5rem;
-    margin-top: 5px;
+}
+
+.propertypro-search-modal .propertypro-modal-header form .propertypro-tag i {
+    color: #000;
 }
 
 .propertypro-advanced-filter form .button-group {
@@ -1314,14 +1320,25 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #b6bec4;
 }
 
+.propertypro-advanced-filter .propertypro-close-panel {
+    font-size: 1.25rem;
+    font-weight: 700;
+    right: 2.25rem;
+}
+
+.propertypro-advanced-filter .propertypro-search-modal-box {
+    height: 91vh;
+    overflow: auto;
+    padding: 2.1875rem 0 5rem;
+    background-color: #e9eff3;
+}
+
 .propertypro-tagsinput {
     display: none;
 }
 
 .propertypro-advanced-filter .propertypro-bs-tags-box {
-    float: left;
-    width: 72%;
-    margin-left: 40px;
+    margin-left: 1.5rem;
 }
 
 .propertypro-advanced-filter form .button-group .btn-primary {
@@ -1332,7 +1349,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     font-size: .95rem;
 }
 
-.propertypro-bs-tags-box .propertypro-tag, .filter-section .propertypro-tag {
+.propertypro-bs-tags-box .propertypro-tag, .propertypro-filter-section .propertypro-tag {
     border-radius: 3px;
     border: 1px solid #d2dae0;
     background-color: rgba(237, 242, 245, 0.5);
@@ -1579,6 +1596,17 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     left: 0;
 }
 
+.propertypro-top-panel .propertypro-drop-nav {
+    float: left;
+    background-color: rgba(237, 242, 245, 0.498039);
+    width: 150px;
+    text-align: center;
+    border-width: 0px 1px;
+    border-style: solid;
+    border-color: rgb(210, 218, 224);
+    border-image: initial;
+}
+
 .propertypro-top-panel .propertypro-logo {
     width: 34px;
     float: none;
@@ -1590,15 +1618,30 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 80px;
     height: 80px;
 }
+.propertypro-toolbar .propertypro-search-box-wrap {
+    margin-left: 3.5rem;
+}
 
-.propertypro-top-panel .propertypro-drop-nav {
-    float: left;
+.propertypro-toolbar .propertypro-logo,
+.propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
+    line-height: 5rem;
+}
+
+.propertypro-toolbar .propertypro-drop-nav {
     background-color: rgba(237, 242, 245, 0.5);
     border: 1px solid #d2dae0;
     border-top-width: 0;
     border-bottom-width: 0;
-    width: 150px;
+    width: 9.375rem;
     text-align: center;
+}
+
+.propertypro-toolbar .propertypro-drop-nav a {
+    line-height: 5rem;
+    display: block;
+    color: #414141;
+    font-size: 1.40rem;
+    font-weight: 600;
 }
 
 .propertypro-top-panel .propertypro-drop-nav a {
@@ -2890,7 +2933,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 40px;
     }
 
-    .filter-section {
+    .propertypro-filter-section {
         margin-bottom: 40px;
     }
 
@@ -3101,21 +3144,21 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         height: 110px;
     }
 
-    .filter-section .btn-primary {
+    .propertypro-filter-section .btn-primary {
         font-size: 1rem;
         line-height: 18px;
     }
 
-    .filter-section .propertypro-tag {
+    .propertypro-filter-section .propertypro-tag {
         line-height: 28px;
     }
 
-    .filter-section h3 {
+    .propertypro-filter-section h3 {
         font-size: 20px;
         line-height: 20px;
     }
 
-    .filter-section h3 span {
+    .propertypro-filter-section h3 span {
         font-size: 0.875rem;
     }
 

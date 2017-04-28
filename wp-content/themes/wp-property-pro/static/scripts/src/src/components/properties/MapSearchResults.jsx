@@ -122,13 +122,13 @@ class MapSearchResults extends Component {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
     } else {
       elementToShow = (
-        <div>
+        <div className={Lib.THEME_CLASSES_PREFIX+"search-map"}>
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
             <div className="container-fluid p-0">
               <div className="row no-gutters">
-                <div className="col-md-4">
+                <div className="col-md-6 col-lg-4">
                   <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
                     <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
                 <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
@@ -144,7 +144,7 @@ class MapSearchResults extends Component {
                     }
                   </div>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-6 col-lg-8">
                   {displayedResults.length ?
                     <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
                       <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>

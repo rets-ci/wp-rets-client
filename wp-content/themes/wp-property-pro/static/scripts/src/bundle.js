@@ -29240,7 +29240,7 @@
 	      } else {
 	        elementToShow = _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map" },
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
@@ -29254,7 +29254,7 @@
 	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-4' },
+	                  { className: 'col-md-6 col-lg-4' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29280,7 +29280,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-8' },
+	                  { className: 'col-md-6 col-lg-8' },
 	                  displayedResults.length ? _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -52557,299 +52557,367 @@
 	      });
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        this.props.open ? _react2.default.createElement(
+	        {
+	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (this.props.open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
+	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + _lib.Lib.THEME_CLASSES_PREFIX + "advanced-filter" },
-	          _react2.default.createElement(
-	            'a',
-	            { onClick: function onClick() {
-	                return _this2.props.openPropertiesModal(false);
-	              }, href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down" },
-	            _react2.default.createElement('i', { className: 'fa fa-times' })
-	          ),
-	          _react2.default.createElement(
-	            'form',
-	            { method: 'get', className: 'clearfix hidden-md-down' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement('i', { className: 'fa fa-search' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
-	                  termFilters.map(function (t) {
-	                    return _react2.default.createElement(
-	                      'span',
-	                      { key: t.value, className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
-	                      _react2.default.createElement(
-	                        'span',
-	                        null,
-	                        _react2.default.createElement('i', { className: 'fa fa-times' })
-	                      ),
-	                      ' ',
-	                      t.value
-	                    );
-	                  }),
-	                  !termFilters.length && _react2.default.createElement('input', { type: 'text', size: '1', placeholder: 'Select bedroom type, amenities' })
-	                )
-	              ),
-	              _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput", readOnly: true }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'button-group' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', className: 'btn-reset', onClick: this.resetFilters.bind(this) },
-	                  'Reset'
-	                ),
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', className: "btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null), onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
-	                  'View Properties'
-	                )
-	              )
-	            )
-	          ),
+	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0', role: 'document' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'search-filter-nav hidden-lg-up' },
+	            { className: 'modal-content' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'ul',
-	                { className: 'clearfix' },
-	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Buy' },
-	                    _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      'Buy'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Rent' },
-	                    _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      'Rent'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Commercial' },
-	                    _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      'Commercial'
-	                    )
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'li',
-	                  null,
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', title: 'Land' },
-	                    _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
-	                    _react2.default.createElement(
-	                      'span',
-	                      null,
-	                      'Land'
-	                    )
-	                  )
-	                )
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'filter-section' },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Location ',
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '(City, School, Neighborhood, Zip)'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'filter-type' },
-	                  termFilters.map(function (t) {
-	                    return _react2.default.createElement(
-	                      'span',
-	                      { key: t.value, className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
-	                      t.value
-	                    );
-	                  }),
-	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', className: 'btn btn-primary' },
-	                    '+ More Locations'
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'filter-section' },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Bedrooms ',
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '(Minimum)'
-	                  )
-	                ),
-	                bedroomElements.map(function (d) {
-	                  return _react2.default.createElement(
-	                    'a',
-	                    { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
-	                        return _this2.handleBedroomSelect.bind(_this2)(d.value);
-	                      } },
-	                    d.name
-	                  );
-	                })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'filter-section' },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Price ',
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '(Range)'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  null,
-	                  _react2.default.createElement(_Price2.default, { saleType: searchFiltersFormatted.sale_type, start: priceSelected.start, to: priceSelected.to, handleOnClick: this.handlePriceSelect.bind(this) })
-	                ),
-	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Bathrooms ',
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '(Minimum)'
-	                  )
-	                ),
-	                bathroomElements.map(function (d) {
-	                  return _react2.default.createElement(
-	                    'a',
-	                    { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
-	                        return _this2.handleBathroomSelect.bind(_this2)(d.value);
-	                      } },
-	                    d.name
-	                  );
-	                })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'filter-section', style: { display: showAllFilters ? 'block' : 'none' } },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Total Size ',
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '(SQFT)'
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  null,
-	                  _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start, to: sqftSelected.to, handleOnClick: this.handleSQFTSelect.bind(this) })
-	                ),
-	                _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
-	              ),
-	              showAllFilters ? _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
-	                '- View Less Filters'
-	              ) : _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link", onClick: this.toggleViewAllFilters.bind(this) },
-	                '+ View More Filters'
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
+	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
 	              _react2.default.createElement(
 	                'button',
-	                { className: 'btn btn-reset' },
-	                'Reset'
+	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
+	                  onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _this2.props.openPropertiesModal(false);
+	                  }, 'aria-label': 'Close' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '\xD7'
+	                )
 	              ),
 	              _react2.default.createElement(
-	                'span',
-	                { className: 'nav-item-right' },
+	                'div',
+	                { className: 'container' },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', className: 'btn-cancel' },
-	                  'Cancel'
-	                ),
-	                ' ',
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline clearfix hidden-md-down' },
+	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-tags-box mr-auto' },
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	                        termFilters.map(function (t) {
+	                          return _react2.default.createElement(
+	                            'span',
+	                            { key: t.value, className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
+	                            _react2.default.createElement(
+	                              'span',
+	                              null,
+	                              _react2.default.createElement('i', {
+	                                className: 'fa fa-times' })
+	                            ),
+	                            ' ',
+	                            t.value
+	                          );
+	                        }),
+	                        !termFilters.length && _react2.default.createElement('input', { type: 'text', size: '1', placeholder: 'Select bedroom type, amenities' })
+	                      )
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput',
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput", readOnly: true }),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'button-group' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'btn-reset', onClick: this.resetFilters.bind(this) },
+	                        'Reset'
+	                      ),
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#',
+	                          className: "btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null),
+	                          onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
+	                        'View Properties'
+	                      )
+	                    )
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-body p-0' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'search-filter-nav hidden-lg-up' },
 	                _react2.default.createElement(
-	                  'i',
-	                  null,
-	                  '|'
-	                ),
-	                ' ',
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'ul',
+	                    { className: 'clearfix' },
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Buy' },
+	                        _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Buy'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Rent' },
+	                        _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Rent'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Commercial' },
+	                        _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Commercial'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Land' },
+	                        _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Land'
+	                        )
+	                      )
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', className: 'btn-apply' },
-	                  'Apply'
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Location ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(City, School, Neighborhood, Zip)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: 'filter-type' },
+	                        termFilters.map(function (t) {
+	                          return _react2.default.createElement(
+	                            'span',
+	                            { key: t.value,
+	                              className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
+	                            t.value
+	                          );
+	                        }),
+	                        _react2.default.createElement(
+	                          'a',
+	                          { href: '#', className: 'btn btn-primary' },
+	                          '+ More Locations'
+	                        )
+	                      )
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Bedrooms ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Minimum)'
+	                        )
+	                      ),
+	                      bedroomElements.map(function (d) {
+	                        return _react2.default.createElement(
+	                          'a',
+	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                            onClick: function onClick() {
+	                              return _this2.handleBedroomSelect.bind(_this2)(d.value);
+	                            } },
+	                          d.name
+	                        );
+	                      })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-price' },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Price ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Range)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_Price2.default, { saleType: searchFiltersFormatted.sale_type, start: priceSelected.start,
+	                          to: priceSelected.to,
+	                          handleOnClick: this.handlePriceSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section",
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Bathrooms ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Minimum)'
+	                        )
+	                      ),
+	                      bathroomElements.map(function (d) {
+	                        return _react2.default.createElement(
+	                          'a',
+	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                            onClick: function onClick() {
+	                              return _this2.handleBathroomSelect.bind(_this2)(d.value);
+	                            } },
+	                          d.name
+	                        );
+	                      })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Total Size ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(SQFT)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start,
+	                          to: sqftSelected.to,
+	                          handleOnClick: this.handleSQFTSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    showAllFilters ? _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                        onClick: this.toggleViewAllFilters.bind(this) },
+	                      '- View Less Filters'
+	                    ) : _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                        onClick: this.toggleViewAllFilters.bind(this) },
+	                      '+ View More Filters'
+	                    )
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-footer' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'button',
+	                    { className: 'btn btn-reset' },
+	                    'Reset'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'nav-item-right' },
+	                    _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: 'btn-cancel' },
+	                      'Cancel'
+	                    ),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'i',
+	                      null,
+	                      '|'
+	                    ),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: 'btn-apply' },
+	                      'Apply'
+	                    )
+	                  )
 	                )
 	              )
 	            )
 	          )
-	        ) : null
+	        )
 	      );
 	    }
 	  }]);
@@ -52864,6 +52932,7 @@
 	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
 	  standardSearch: _react.PropTypes.func.isRequired
 	};
+
 	;
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
@@ -55972,7 +56041,7 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'col-md-6' },
+	                { className: 'col-lg-6' },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
 	            });
@@ -63201,8 +63270,7 @@
 	                  ),
 	                  'More Filters'
 	                )
-	              ),
-	              _react2.default.createElement('input', { type: 'text', size: '1', placeholder: '' })
+	              )
 	            )
 	          ),
 	          _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
