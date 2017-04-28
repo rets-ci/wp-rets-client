@@ -10,7 +10,7 @@ import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';
 
-let bathroomOptions =[
+let bathroomOptions = [
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
   {name: '3+', value: '3'},
@@ -184,128 +184,171 @@ class PropertiesModal extends Component {
       return {tax: t, value: termFilter[t]}
     });
     return (
-      <div>
-        {this.props.open ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-modal" + " " + Lib.THEME_CLASSES_PREFIX + "advanced-filter"}>
-            <a onClick={() => this.props.openPropertiesModal(false)} href="#" className={Lib.THEME_CLASSES_PREFIX + "close-panel" + " hidden-md-down"}>
-              <i className="fa fa-times"></i>
-            </a>
-            <form method="get" className="clearfix hidden-md-down">
+      <div
+        className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${this.props.open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
+        <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
+          <div className="modal-content">
+            <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
+              <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.props.openPropertiesModal(false);
+                      }} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
               <div className="container">
-                <i className="fa fa-search"></i>
-                <div className={Lib.THEME_CLASSES_PREFIX + "bs-tags-box"}>
-                   <div className={Lib.THEME_CLASSES_PREFIX + "bs-tags-input"}>
-                     {termFilters.map(t =>
-                       <span key={t.value} className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default"}><span><i className="fa fa-times"></i></span> {t.value}</span>
-                      )}
-                      {!termFilters.length &&
-                        <input type="text" size="1" placeholder="Select bedroom type, amenities" />
-                      }
-                   </div>
+                <div className="row">
+                  <form method="get" className="form-inline clearfix hidden-md-down">
+                    <i className="fa fa-search"></i>
+                    <div className={`${Lib.THEME_CLASSES_PREFIX}bs-tags-box mr-auto`}>
+                      <div className={Lib.THEME_CLASSES_PREFIX + "bs-tags-input"}>
+                        {termFilters.map(t =>
+                          <span key={t.value} className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default"}><span><i
+                            className="fa fa-times"></i></span> {t.value}</span>
+                        )}
+                        {!termFilters.length &&
+                        <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
+                        }
+                      </div>
+                    </div>
+                    <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput"
+                           className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly/>
+                    <div className="button-group">
+                      <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
+                      <a href="#"
+                         className={"btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null)}
+                         onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
+                    </div>
+                  </form>
                 </div>
-                  <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly />
-                <div className="button-group">
-                   <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
-                   <a href="#" className={"btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null)} onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
-                </div>
-              </div>
-            </form>
-            <div className="search-filter-nav hidden-lg-up">
-              <div className="container">
-                <ul className="clearfix">
-                  <li>
-                    <a href="#" title="Buy">
-                      <img src="img/buy-icon.svg" alt="Buy" />
-                      <span>Buy</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" title="Rent">
-                      <img src="img/rent-icon.svg" alt="Rent" />
-                      <span>Rent</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" title="Commercial">
-                      <img src="img/commercial-icon.svg" alt="Commercial" />
-                      <span>Commercial</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" title="Land">
-                      <img src="img/land-icon.svg" alt="Land" />
-                      <span>Land</span>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
-            <div className={Lib.THEME_CLASSES_PREFIX + "search-modal-box"}>
-               <div className="container">
-                 <div className="filter-section">
-                   <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
-                   <div className="filter-type">
-                     {termFilters.map(t =>
-                       <span key={t.value} className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
-                     )}
-                     <a href="#" className="btn btn-primary">+ More Locations</a>
-                   </div>
-                 </div>
-                 <div className="filter-section">
-                   <h3>Bedrooms <span>(Minimum)</span></h3>
-                   {bedroomElements.map(d =>
-                     <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBedroomSelect.bind(this)(d.value)}>{d.name}</a>
-                   )}
-                 </div>
-                 <div className="filter-section">
-                   <h3>Price <span>(Range)</span></h3>
+            <div className="modal-body p-0">
+              <div className="search-filter-nav hidden-lg-up">
+                <div className="container">
+                  <ul className="clearfix">
+                    <li>
+                      <a href="#" title="Buy">
+                        <img src="img/buy-icon.svg" alt="Buy"/>
+                        <span>Buy</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" title="Rent">
+                        <img src="img/rent-icon.svg" alt="Rent"/>
+                        <span>Rent</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" title="Commercial">
+                        <img src="img/commercial-icon.svg" alt="Commercial"/>
+                        <span>Commercial</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" title="Land">
+                        <img src="img/land-icon.svg" alt="Land"/>
+                        <span>Land</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className={Lib.THEME_CLASSES_PREFIX + "search-modal-box"}>
+                <div className="container">
+                  <div className="row">
+                    <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}>
+                      <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
+                      <div className="filter-type">
+                        {termFilters.map(t =>
+                          <span key={t.value}
+                                className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
+                        )}
+                        <a href="#" className="btn btn-primary">+ More Locations</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}>
+                      <h3>Bedrooms <span>(Minimum)</span></h3>
+                      {bedroomElements.map(d =>
+                        <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`}
+                           onClick={() => this.handleBedroomSelect.bind(this)(d.value)}>{d.name}</a>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
+                      <h3>Price <span>(Range)</span></h3>
+                      <div>
+                        <Price saleType={searchFiltersFormatted.sale_type} start={priceSelected.start}
+                               to={priceSelected.to}
+                               handleOnClick={this.handlePriceSelect.bind(this)}/>
+                      </div>
+                      <input id="priceSlider" className="bs-hidden-input"/>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}
+                         style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Bathrooms <span>(Minimum)</span></h3>
+                      {bathroomElements.map(d =>
+                        <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`}
+                           onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                      style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Total Size <span>(SQFT)</span></h3>
+                      <div>
+                        <SQFT saleType={searchFiltersFormatted.sale_type} start={sqftSelected.start}
+                              to={sqftSelected.to}
+                              handleOnClick={this.handleSQFTSelect.bind(this)}/>
+                      </div>
+                      <input id="priceSlider" className="bs-hidden-input"/>
+                    </div>
+                  </div>
+                  {/* <div className={Lib.THEME_CLASSES_PREFIX+"filter-section"} style={{display: showAllFilters ? 'block' : 'none'}}>
+                   <h3>Lot Size <span>(Acres)</span></h3>
                    <div>
-                     <Price saleType={searchFiltersFormatted.sale_type} start={priceSelected.start} to={priceSelected.to} handleOnClick={this.handlePriceSelect.bind(this)} />
+                   <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
                    </div>
                    <input id="priceSlider" className="bs-hidden-input" />
-                 </div>
-
-                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
-                  <h3>Bathrooms <span>(Minimum)</span></h3>
-                  {bathroomElements.map(d =>
-                    <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
-                  )}
-                </div>
-                <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
-                  <h3>Total Size <span>(SQFT)</span></h3>
-                  <div>
-                    <SQFT saleType={searchFiltersFormatted.sale_type} start={sqftSelected.start} to={sqftSelected.to} handleOnClick={this.handleSQFTSelect.bind(this)} />
+                   </div> */}
+                  <div className="row">
+                    {showAllFilters ?
+                      <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
+                         onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
+                      :
+                      <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
+                         onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
+                    }
                   </div>
-                  <input id="priceSlider" className="bs-hidden-input" />
                 </div>
-                {/* <div className="filter-section" style={{display: showAllFilters ? 'block' : 'none'}}>
-                  <h3>Lot Size <span>(Acres)</span></h3>
-                  <div>
-                    <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
-                  </div>
-                  <input id="priceSlider" className="bs-hidden-input" />
-                </div> */}
-                {showAllFilters ?
-                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
-                :
-                  <a href="#" className={Lib.THEME_CLASSES_PREFIX+"view-link"} onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
-                }
-               </div>
-            </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
-              <div className="container">
-                <button className="btn btn-reset">Reset</button>
-                <span className="nav-item-right">
-                  <a href="#" className="btn-cancel">Cancel</a> <i>|</i> <a href="#" className="btn-apply">Apply</a>
-                </span>
               </div>
             </div>
-         </div>
-        : null}
+            <div className="modal-footer">
+              <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
+                <div className="container">
+                  <button className="btn btn-reset">Reset</button>
+                  <span className="nav-item-right">
+                  <a href="#" className="btn-cancel">Cancel</a> <i>|</i> <a href="#" className="btn-apply">Apply</a>
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
     )
   }
-};
+}
+;
 
 export default connect(
   mapStateToProps,

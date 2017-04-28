@@ -133,7 +133,6 @@ class searchFilters extends Component {
                   More Filters
                 </a>
               </span>
-              <input type="text" size="1" placeholder="" />
             </div>
           </div>
           <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
