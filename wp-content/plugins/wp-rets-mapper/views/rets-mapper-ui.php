@@ -1,13 +1,8 @@
 <?php
-global $wp_properties;
 
-$api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
-$field_alias = array();
-
-$_analysis = json_decode( wp_remote_retrieve_body( $api_url_response = wp_remote_get( $api_url ) ) );
 
 // iterate over all field aliases and create our field-alias arary ONLY for fields that belong to a group. This is a way of filtering out aliases to non-existant fields.
-foreach( $wp_properties[ 'field_alias' ] as $_field_key => $_field_alias ) {
+foreach( ud_get_wp_property( 'field_alias', array() ) as $_field_key => $_field_alias ) {
 
   if( $_field_alias ) {
     $_attribute_data = UsabilityDynamics\WPP\Attributes::get_attribute_data( $_field_key );
@@ -21,12 +16,15 @@ if( get_transient( 'wp-rets-mapper-data' ) ) {
   $_analysis = get_transient( 'wp-rets-mapper-data' );
 } else {
 
-  $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' );
+  //$api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' ) . '&field=_system.rets_class';
+  $api_url = 'https://api.rets.ci/v2/site/' . get_option( 'ud_site_id' ) . '/analysis?token=' . get_option( 'ud_site_secret_token' ) . '';
   $_analysis = json_decode( wp_remote_retrieve_body( wp_remote_get( $api_url ) ) );
   set_transient( 'wp-rets-mapper-data', $_analysis, 90 );
 }
 
 wp_enqueue_script( 'tablesorter', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/jquery.tablesorter.min.js' );
+wp_enqueue_script( 'underscore');
+//wp_enqueue_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js' );
 
 if( isset( $api_url_response->errors ) ) {
   print_r( 'We have some errors.' );
@@ -54,7 +52,17 @@ if( isset( $api_url_response->errors ) ) {
 
 <div class="wrap">
   <h3>RETS.ci Field Mapper</h3>
-<p><?php echo $_analysis->message; ?>.</p>
+
+  <?php if( $_analysis && isset( $_analysis->message ) ) : ?>
+    <p><?php echo $_analysis->message; ?>.</p>
+  <?php endif; ?>
+
+  <ul class="subsubsub hidden">
+    <li class=""><a href="#">RE_1</a></li>
+    <li class=""><a href="#">RT_6</a></li>
+    <li class=""><a href="#">LN_3</a></li>
+    <li class=""><a href="#">CI_4</a></li>
+  </ul>
 
 <table id="rets-mapper-table" class="widefat fixed tablesorter">
   <thead>
@@ -64,6 +72,7 @@ if( isset( $api_url_response->errors ) ) {
     <th scope="col" class="sortable"><a href="#"><span>Storage Type</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Slug</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable" style="width: 100px"><a href="#"><span>Count</span><span class="sorting-indicator"></span></a></th>
+    <th scope="col" class="sortable"><a href="#"><span>Classes</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable hidden"><a href="#"><span>Type</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable hidden"><a href="#"><span>Rate</span><span class="sorting-indicator"></span></a></th>
     <th scope="col" class="sortable"><a href="#"><span>Values</span><span class="sorting-indicator"></span></a></th>
@@ -74,14 +83,18 @@ if( isset( $api_url_response->errors ) ) {
   </thead>
   <tbody>
   <?php $c = 0; ?>
-
-  <?php foreach( $_analysis->data as $_field ) { ?>
+  <?php if( isset( $_analysis->data ) ) foreach( $_analysis->data as $_field ) { ?>
     <?php $c++; ?>
     <tr class="wp-rets-mapper-group wp-rets-mapper-group-<?php echo $_field->group ? $_field->group : 'post'; ?> mapper-string-<?php echo $c; ?>" data-rets-mapper-id="<?php echo $_field->_id; ?>" data-rets-mapper-key="<?php echo $_field->key; ?>" data-rets-mapper-group="<?php echo $_field->group ? $_field->group : 'post'; ?>">
     <th class="hidden"><?php echo $_field->_id; ?></th>
     <td><?php echo $_field->group; ?></td>
     <th class="mapper-slug"><?php echo $_field->key; ?></th>
     <td><?php echo $_field->totalCount; ?></td>
+
+    <td class="rets-mapper-classes-cell">
+      <?php echo join( ', ', (array) $_field->classes ); ?>
+    </td>
+
     <td class="hidden"><?php echo $_field->type; ?></td>
     <td class="hidden"><?php echo $_field->usageRate; ?></td>
     <td class="mapper-show-info" data-info-block="block-<?php echo $c; ?>" style="color:blue;font-weight: bold;cursor:pointer">
@@ -132,6 +145,9 @@ if( isset( $api_url_response->errors ) ) {
 <script>
 
   jQuery( document ).ready( function () {
+
+
+
 
       if( !localStorage.getItem( 'wp-rets-hidden-fields' ) ) {
         localStorage.setItem( 'wp-rets-hidden-fields', JSON.stringify( [

@@ -25,28 +25,48 @@ class SearchResultListing extends Component {
   }
 
   render() {
+
+    let properties = _.get(this.props, 'properties', []);
+    let groups = [];
+
+    if (properties) {
+      let propertiesGroup = [];
+      properties.map((post) => {
+        propertiesGroup.push(post);
+
+        if (propertiesGroup.length === Lib.BLOG_POSTS_PER_ROW) {
+          groups.push(propertiesGroup);
+          propertiesGroup = [];
+        }
+      });
+    }
+
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX+"listing-wrap"} ref={(r) => this.listingWrapElement = r}>
-        <div className="row">
-          {this.props.properties.map((p, i) => {
+      <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>
+        <div className="container-fluid">
+          {
+            groups.map((g, group_index) => {
 
-              let city = '';
-              let zipCode = '';
 
-              let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
+                let groupProperties = g.map((p, i) => {
 
-              for (let termInd in listingLocation) {
-                let term = listingLocation[termInd][0];
+                  let city = '';
+                  let zipCode = '';
 
-                switch (term.term_type) {
-                  case 'location-city-state':
-                    city = term.name;
-                    break;
-                  case 'location-zipcode':
-                    zipCode = term.name;
-                    break;
-                }
-              }
+                  let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
+
+                  for (let termInd in listingLocation) {
+                    let term = listingLocation[termInd][0];
+
+                    switch (term.term_type) {
+                      case 'location-city-state':
+                        city = term.name;
+                        break;
+                      case 'location-zipcode':
+                        zipCode = term.name;
+                        break;
+                    }
+                  }
 
               let item = {
                 address: _.get(p, '_source.post_meta.rets_address', ''),
@@ -60,17 +80,19 @@ class SearchResultListing extends Component {
                 thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', '')
               };
 
-              return (
-                <div className="col-sm-6" key={i}>
-                  <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT}/>
-                </div>
-              )
-            }
-          )}
+                  return (
+                    <div className="col-lg-6">
+                      <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i}/>
+                    </div>
+                  )
+                });
+                return (<div className="row" key={group_index}>{groupProperties}</div>);
+              }
+            )}
         </div>
         {this.props.allowPagination ?
-          <div className={Lib.THEME_CLASSES_PREFIX+"search-result-container"} >
-            <div className={Lib.THEME_CLASSES_PREFIX+"search-result-inner-container"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "search-result-inner-container"}>
               {this.state.loading ?
                 <LoadingCircle />
                 : null}

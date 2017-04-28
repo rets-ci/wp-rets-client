@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const Feature = ({feature, last, ind}) => {
   return (
-    <div key={ind}>
+    <div className={Lib.THEME_CLASSES_PREFIX+"tour-widget-content-container"} key={ind}>
       {
         _.get(feature, 'title', null)
           ? <h3>{feature.title}</h3>
@@ -32,7 +32,7 @@ const Feature = ({feature, last, ind}) => {
             <cite className="clearfix">
               {
                 _.get(feature, 'testimonial_section.image_src', null)
-                  ? <span><img src={feature.testimonial_section.image_src}
+                  ? <span><img className="rounded-circle" src={feature.testimonial_section.image_src}
                                alt={_.get(feature, 'testimonial_section.name', '')}/></span>
                   : null
               }

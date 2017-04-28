@@ -37,15 +37,15 @@
         "a:hover",
         "a:active",
         "a:focus",
-        ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:hover",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li:not(.propertypro-subnavigation-btn) a:hover",
         ".propertypro-subnavigation ul li:not(.propertypro-subnavigation-btn) a:hover",
-        ".propertypro-subnavigation.propertypro-module2 ul li:not(.propertypro-subnavigation-btn) a:focus",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li:not(.propertypro-subnavigation-btn) a:focus",
         ".propertypro-subnavigation ul li:not(.propertypro-subnavigation-btn) a:focus",
-        ".propertypro-subnavigation.propertypro-module2 ul li a:hover svg path",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a:hover svg path",
         ".propertypro-subnavigation ul li a:hover svg path",
-        ".propertypro-subnavigation.propertypro-module2 ul li a.active",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li a.active",
         ".propertypro-subnavigation ul li a.active",
-        ".propertypro-subnavigation.propertypro-module2 ul li.active a",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.active a",
         ".propertypro-subnavigation ul li.active a",
         ".propertypro-callout .container a",
         ".propertypro-search-box .propertypro-drop-search li a:hover",
@@ -78,9 +78,9 @@
         ".listing-type-box ul li a:hover",
         ".listing-type-box ul li a:active",
         ".listing-type-box ul li a:focus",
-        ".propertypro-testimonial .propertypro-slides li .rating i",
+        ".propertypro-testimonial .propertypro-slides li .propertypro-rating i",
         ".propertypro-sliderContent .propertypro-slides li p",
-        ".propertypro-subnavigation.propertypro-module2 ul li.propertypro-active a",
+        ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:hover",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:focus",
         ".propertypro-card .propertypro-listing-top .propertypro-action-btn-group a:active",
@@ -92,7 +92,9 @@
         ".propertypro-view-link",
         ".propertypro-filter-footernav .nav-item-right a.btn-apply",
         ".propertypro-top-panel form .propertypro-addfilter a",
-        ".propertypro-top-nav-bar li .propertypro-indicator"
+        ".propertypro-top-nav-bar li .propertypro-indicator",
+        ".propertypro-article-content a",
+        ".propertypro-testimonial .propertypro-slides p"
       ],
       "additional_rules": [
         {
@@ -143,7 +145,7 @@
         {
           "style": "border-bottom-color",
           "selector": [
-            ".propertypro-subnavigation.propertypro-module2 ul li.propertypro-active a"
+            ".propertypro-subnavigation.propertypro-subnavigation-text-layout ul li.propertypro-active a"
           ]
         }
       ]
@@ -172,14 +174,9 @@
       },
       "rule-title": "font-family",
       "selector": [
-        ".propertypro-testimonial h4",
-        ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box ol li .container",
-        ".propertypro-widget-tour .propertypro-headtitle h2",
-        ".propertypro-tour-widget-content h3",
-        ".propertypro-guide-masthead h1",
-        ".propertypro-article-masthead h1",
-        ".propertypro-article-content h2",
-        ".propertypro-article-content h3"
+        "h1, h2, h3",
+        ".propertypro-search-modal .propertypro-search-modal-box li a",
+        ".propertypro-testimonial h4"
       ]
     },
     {
@@ -195,32 +192,10 @@
       },
       "rule-title": "font-family",
       "selector": [
-        ".pageheader p.hidden-sm-down",
-        ".propertypro-testimonial .propertypro-sliderContent blockquote p",
-        ".propertypro-testimonial .propertypro-userInfo .propertypro-userBox p",
-        ".propertypro-testimonial .propertypro-userInfo .propertypro-userBox span",
-        ".propertypro-subnavigation ul li span",
-        ".propertypro-subnavigation ul li a",
-        ".propertypro-subnavigation a.btn-contact",
-        ".propertypro-masthead .propertypro-search-modal #wp-property-pro-search-input",
-        ".propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4",
-        ".propertypro-callout .container p",
-        ".propertypro-callout .container a",
-        ".propertypro-widget-tour .propertypro-headtitle p",
-        ".propertypro-tour-widget-content p",
-        ".propertypro-subnavigation-mobile-selected-option",
-        ".propertypro-post-content",
+        "body, p, span, input, button, select, textarea",
+        ".propertypro-card .propertypro-card-title",
         ".propertypro-post-content h2",
-        ".propertypro-post-content a",
-        ".propertypro-post-content li",
-        ".propertypro-guide-content .propertypro-category-card .propertypro-category-header",
-        ".propertypro-guide-content .propertypro-category-card .propertypro-category-navigation",
-        ".propertypro-article-content p",
-        ".propertypro-toolbar .propertypro-btn-back-to-home",
-        ".propertypro-article-masthead p",
-        ".propertypro-nav-item-prev a",
-        ".propertypro-nav-item-next a",
-        ".propertypro-guide-masthead .propertypro-guide-excerpt"
+        ".propertypro-category-card .propertypro-category-card-content h2, .propertypro-article-card .propertypro-article-card-content h2"
       ]
     },
     {

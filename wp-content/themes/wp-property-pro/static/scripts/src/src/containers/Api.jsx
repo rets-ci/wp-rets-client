@@ -266,7 +266,20 @@ class Api {
 
   static topQuery(params, callback) {
 
-    let rows = [];
+    let rows = [
+      {
+        'order_key': 'city'
+      },
+      {
+        'order_key': 'zip'
+      },
+      {
+        'order_key': 'county'
+      },
+      {
+        'order_key': 'subdivision'
+      }
+    ];
 
     let aggregations = this.getTopAggregations().aggs;
     let body = {
@@ -324,7 +337,12 @@ class Api {
             text: _.get(aggregations[i], 'terms.title'),
             children: _buckets
           });
-          rows.push(data);
+
+          for(let r in rows){
+            if(i.indexOf(rows[r].order_key) !== -1){
+              rows[r] = data;
+            }
+          }
         }
       }
 

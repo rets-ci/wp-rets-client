@@ -10,13 +10,13 @@ const FooterTop = ({menu}) => {
         _.isEmpty(menu)
           ? null
           :
-          <div className={Lib.THEME_CLASSES_PREFIX+"social"}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}social text-right`}>
             <span>{menu.title}</span>
             {
               _.get(menu, 'items', null)
               ?
               menu.items.map((item, i) =>
-                <a key={i} className={item.title.toLowerCase()} href={item.url} target="_blank" title={item.title} rel="noopener"><i
+                <a key={i} className={`${item.title.toLowerCase()} text-center rounded-circle`} href={item.url} target="_blank" title={item.title} rel="noopener"><i
                   className={`fa fa-${item.title.toLowerCase() === 'facebook ' ? item.title.toLowerCase() + '-f' : item.title.toLowerCase()}`}></i></a>
               )
               : null

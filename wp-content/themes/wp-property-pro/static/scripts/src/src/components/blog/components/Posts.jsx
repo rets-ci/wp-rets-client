@@ -39,40 +39,58 @@ class Posts extends Component {
   render() {
     let self = this;
 
+    let posts = _.get(this.props, 'posts', []);
+    let groups = [];
+
+    if (posts) {
+      let postsGroup = [];
+      posts.map((post) => {
+        postsGroup.push(post);
+
+        if (postsGroup.length === Lib.BLOG_POSTS_PER_ROW) {
+          groups.push(postsGroup);
+          postsGroup = [];
+        }
+      });
+    }
+
     return (
       <section className={Lib.THEME_CLASSES_PREFIX + "blog-posts"}>
         <div className="container">
           <div className="row">
-            {!this.state.loading ?
-              this.props.posts.map((p, i) => {
+            {!this.state.loading || groups ?
+              groups.map((g, group_index) => {
 
-                  let item = {
-                    title: _.get(p, 'title', ''),
-                    excerpt: _.get(p, 'excerpt', ''),
-                    image_src: _.get(p, 'image_src', ''),
-                    image_title: _.get(p, 'image_title', ''),
-                    image_alt: _.get(p, 'image_alt', ''),
-                    url: _.get(p, 'url', ''),
-                    relative_url: _.get(p, 'relative_url', ''),
+                  let groupPosts = g.map((p, i) =>
+                    <PostCard data={{
+                      title: _.get(p, 'title', ''),
+                      excerpt: _.get(p, 'excerpt', ''),
+                      image_src: _.get(p, 'image_src', ''),
+                      image_title: _.get(p, 'image_title', ''),
+                      image_alt: _.get(p, 'image_alt', ''),
+                      url: _.get(p, 'url', ''),
+                      relative_url: _.get(p, 'relative_url', ''),
 
-                  };
+                    }} key={i}/>
+                  );
 
-                  return (
-                      <PostCard data={item} key={i}/>
-                  )
+                  return (<div className={`card-deck ${Lib.THEME_CLASSES_PREFIX}blog-posts-row`}
+                               key={group_index}>{groupPosts}</div>);
                 }
               )
               : <LoadingCircle />
             }
           </div>
           {this.props.allowPagination ?
-            <div className={`${Lib.THEME_CLASSES_PREFIX}load-more text-center`}>
-              {this.state.loading ?
-                <LoadingCircle />
-                :
-                <a href="#" onClick={(e) => self.seeMore.bind(this)(e, this.props.categoryId)}
-                   className="btn btn-primary">Load More</a>
-              }
+            <div className="row">
+              <div className={`${Lib.THEME_CLASSES_PREFIX}load-more mx-auto`}>
+                {this.state.loading ?
+                  <LoadingCircle />
+                  :
+                  <a href="#" onClick={(e) => self.seeMore.bind(this)(e, this.props.categoryId)}
+                     className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}load-more-link`}>Load More</a>
+                }
+              </div>
             </div>
             : null}
         </div>

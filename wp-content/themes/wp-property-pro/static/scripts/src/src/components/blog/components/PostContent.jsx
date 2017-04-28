@@ -12,7 +12,13 @@ class PostContent extends Component {
     return (
       _.get(this.props, 'content', null)
         ? <section className={Lib.THEME_CLASSES_PREFIX + "post-content"}>
-          <div className="container">{renderHTML(this.props.content)}</div>
+          <div className="container">
+            <div className="row">
+              <div className={`${Lib.THEME_CLASSES_PREFIX}post-content-container mx-auto text-justify`}>
+              {renderHTML(this.props.content)}
+            </div>
+            </div>
+          </div>
         </section>
         : null
     )

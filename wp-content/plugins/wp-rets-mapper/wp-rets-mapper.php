@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: rets.ci mapper
- * Plugin URI: https://www.usabilitydynamics.com/product/wp-crm/
+ * Plugin URI: https://www.usabilitydynamics.com/
  * Description: Map fields
  * Author: Usability Dynamics, Inc.
  * Version: 0.1.1
@@ -16,9 +16,11 @@ add_action('admin_init', function() {
 
 add_action('admin_menu', function() {
 
-  add_dashboard_page('Mapper', 'Mapper', 'read', 'rets-mapper', function() {
-    include_once( __DIR__ . '/views/rets-mapper-ui.php' );
-  } );
+  if( function_exists( 'ud_get_wp_property' ) ) {
+    add_dashboard_page('Mapper', 'Mapper', 'read', 'rets-mapper', function() {
+      include_once( __DIR__ . '/views/rets-mapper-ui.php' );
+    } );
+  }
 
 });
 

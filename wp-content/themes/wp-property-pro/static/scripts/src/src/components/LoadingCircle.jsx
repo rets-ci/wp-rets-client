@@ -12,12 +12,11 @@ class LoadingCircle extends Component {
 
     return (
       <div className={classNames}>
-        <div className={Lib.THEME_CLASSES_PREFIX + "double-bounce1"}></div>
-        <div className={Lib.THEME_CLASSES_PREFIX + "double-bounce2"}></div>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce1 rounded-circle`}></div>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce2 rounded-circle`}></div>
       </div>
     );
   }
 }
-;
 
 export default LoadingCircle;

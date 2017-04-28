@@ -1,5 +1,6 @@
 import React from 'react';
 import Util from '../../Util.jsx';
+import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
 const FooterTop = ({menu}) => {
@@ -10,14 +11,14 @@ const FooterTop = ({menu}) => {
         _.isEmpty(menu)
           ? null
           :
-          <div>
-            <h5>{menu.title}</h5>
-            <ul>
+          <div className={Lib.THEME_CLASSES_PREFIX+"footer-top-menu-container"}>
+            <h5 className={Lib.THEME_CLASSES_PREFIX+"footer-top-menu-title"}>{menu.title}</h5>
+            <ul className={`${Lib.THEME_CLASSES_PREFIX}footer-top-menu-links p-0`}>
               {
                 _.get(menu, 'items', null)
                   ?
                   menu.items.map((item, i) =>
-                    <li key={i}><a href={item.url} onClick={(eve) => {
+                    <li className={Lib.THEME_CLASSES_PREFIX+"footer-top-menu-link"} key={i}><a href={item.url} onClick={(eve) => {
                       eve.preventDefault();
                       Util.goToUrl(_.get(item, 'relative_url', null))
                     }}>{item.title}</a></li>

@@ -7,11 +7,10 @@ import _ from 'lodash';
 const FooterTop = () => {
 
   return (
-    <div className={Lib.THEME_CLASSES_PREFIX+"top-footer"}>
-
-      <div className="container">
+    <div className={Lib.THEME_CLASSES_PREFIX + "top-footer"}>
+      <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}top-footer-container`}>
         <div className="row">
-          <div className={`col-lg-3 ${Lib.THEME_CLASSES_PREFIX}footer-logo`}>
+          <div className={`col-lg-3 ${Lib.THEME_CLASSES_PREFIX}footer-logo text-center`}>
             {
               _.get(bundle, 'logos.vertical_logo', null)
                 ?
@@ -28,14 +27,16 @@ const FooterTop = () => {
           </div>
 
           <div className={`col-md-12 col-lg-9 ${Lib.THEME_CLASSES_PREFIX}footer-menu`}>
-            <div className="row">
-              {
-                _.get(bundle, 'footer.top_footer', null)
-                  ? bundle.footer.top_footer.map((menu, i) =>
-                    <FooterTopMenu key={i} menu={menu}/>
-                  )
-                  : null
-              }
+            <div className="container-fluid">
+              <div className="row">
+                {
+                  _.get(bundle, 'footer.top_footer', null)
+                    ? bundle.footer.top_footer.map((menu, i) =>
+                      <FooterTopMenu key={i} menu={menu}/>
+                    )
+                    : null
+                }
+              </div>
             </div>
           </div>
         </div>

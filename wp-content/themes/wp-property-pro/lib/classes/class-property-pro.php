@@ -68,12 +68,14 @@ namespace UsabilityDynamics {
       /** Register taxonomy for guide post type */
       add_action('init', [$this, 'property_pro_register_guide_post_type_taxonomy']);
 
+      /** Delete cache with siteorigin posts query widget result on save post */
+      add_action('save_post', [$this, 'property_pro_delete_widget_posts_cache'], 10, 3);
+
       /** Add ajax actions */
 
       /** Get posts list */
       add_action('wp_ajax_get_posts', [$this, 'property_pro_get_blog_posts_handler']);
       add_action('wp_ajax_nopriv_get_posts', [$this, 'property_pro_get_blog_posts_handler']);
-
     }
 
     /**
@@ -439,8 +441,9 @@ namespace UsabilityDynamics {
       /** Builder content case */
       if (isset($post) && $post_data = get_post_meta($post->ID, 'panels_data', true)) {
         $params['post']['custom_content'] = true;
-        $params['post']['post_content'] = self::property_pro_rebuild_builder_content($post_data);
+        $params['post']['post_content'] = self::property_pro_rebuild_builder_content($post_data, $post->ID);
       }
+
 
       return $params;
     }
@@ -518,10 +521,18 @@ namespace UsabilityDynamics {
     }
 
 
-    /** Rebuild builder data array */
-    private static function property_pro_rebuild_builder_content($content)
+    /**
+     * Rebuild builder data array
+     * @param $content
+     * @param $post_id
+     * @return array
+     */
+    private static function property_pro_rebuild_builder_content($content, $post_id)
     {
       $rows = [];
+
+      $posts_array_for_caching = [];
+      $posts_cache = wp_cache_get('widget_posts_' . $post_id, 'property_pro');
 
       foreach ($content['widgets'] as $key => $widget) {
         $rows[$widget['panels_info']['grid']]['style'] = $content['grids'][$widget['panels_info']['grid']]['style'];
@@ -533,6 +544,7 @@ namespace UsabilityDynamics {
         /** Get menu items */
         if (isset($widget['menu_select']))
           $widget['menu_items'] = array_map(function ($item) {
+            $item->title = htmlspecialchars_decode($item->title);
             $item->relative_url = str_replace(home_url(), "", $item->url);
             return $item;
           }, ($widget['menu_select'] ? wp_get_nav_menu_items($widget['menu_select']) : []));
@@ -576,34 +588,47 @@ namespace UsabilityDynamics {
             $field = $new_field;
           }
 
+          if (in_array($k, ['title', 'subtitle'])) {
+            $field = htmlspecialchars_decode($field);
+          }
+
           if ($k === 'posts') {
+            $posts = $posts_cache ? $posts_cache[$widget['panels_info']['id']] : [];
 
-            $args = wp_parse_args(siteorigin_widget_post_selector_process_query($field));
-            $field = get_posts($args);
+            if (!$posts) {
 
-            /** Update posts array */
-            foreach ($field as &$post) {
-              $post->thumbnail = get_the_post_thumbnail_url($post->ID);
-              $post->relative_permalink = str_replace(home_url(), "", get_permalink($post));
-              $property_detail = get_property($post->ID);
-              $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
-              $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
-              $post->full_address = isset($property_detail['formatted_address']) ? $property_detail['formatted_address'] : '';
-              $post->beds = isset($property_detail['rets_beds']) ? $property_detail['rets_beds'] : '';
-              $post->baths = isset($property_detail['rets_baths_full']) ? $property_detail['rets_baths_full'] : '';
+              $args = wp_parse_args(siteorigin_widget_post_selector_process_query($field));
+              $posts = get_posts($args);
 
-              // Get gallery images
-              $post->gallery_images = [];
-              if ($attached_images = get_attached_media('image', $post->ID)) {
-                foreach ($attached_images as $im) {
-                  if ($post->thumbnail === $im->guid) {
-                    continue;
+              /** Update posts array */
+              foreach ($posts as &$post) {
+                $post->thumbnail = get_the_post_thumbnail_url($post->ID);
+                $post->relative_permalink = str_replace(home_url(), "", get_permalink($post));
+                $property_detail = get_property($post->ID);
+                $post->price = isset($property_detail['rets_list_price']) ? $property_detail['rets_list_price'] : '';
+                $post->address = isset($property_detail['rets_address']) ? $property_detail['rets_address'] : '';
+                $post->full_address = isset($property_detail['formatted_address']) ? $property_detail['formatted_address'] : '';
+                $post->beds = isset($property_detail['rets_beds']) ? $property_detail['rets_beds'] : '';
+                $post->baths = isset($property_detail['rets_baths_full']) ? $property_detail['rets_baths_full'] : '';
+
+                // Get gallery images
+                $post->gallery_images = [];
+                if ($attached_images = get_attached_media('image', $post->ID)) {
+                  foreach ($attached_images as $im) {
+                    if ($post->thumbnail === $im->guid) {
+                      continue;
+                    }
+
+                    $post->gallery_images[] = $im->guid;
                   }
-
-                  $post->gallery_images[] = $im->guid;
                 }
               }
+
+              $posts_array_for_caching[$widget['panels_info']['id']] = $posts;
             }
+
+            $field = $posts;
+
           }
 
           if ($k === 'image_position') {
@@ -639,7 +664,10 @@ namespace UsabilityDynamics {
           'weight' => isset($content['grid_cells'][$key]) ? $content['grid_cells'][$key]['weight'] : 0,
           'widget' => $widget
         ];
+      }
 
+      if ($posts_array_for_caching) {
+        wp_cache_set('widget_posts_' . $post_id, $posts_array_for_caching, 'property_pro');
       }
 
       return $rows;
@@ -666,7 +694,7 @@ namespace UsabilityDynamics {
 
       switch ($_GET['pageType']) {
         case 'json':
-          if(ob_get_level()){
+          if (ob_get_level()) {
             ob_end_flush();
           }
           break;
@@ -712,7 +740,6 @@ namespace UsabilityDynamics {
           'slug' => 'guide',
           'with_front' => false
         ],
-        'hierarchical' => true,
         'show_in_rest' => true,
         'supports' => [
           'title',
@@ -720,7 +747,8 @@ namespace UsabilityDynamics {
           'author',
           'excerpt',
           'thumbnail',
-          'revisions'
+          'revisions',
+          'page-attributes'
         ]
       ];
       register_post_type('propertypro-guide', $args);
@@ -747,6 +775,30 @@ namespace UsabilityDynamics {
       );
 
       register_taxonomy('propertypro-guide-category', ['propertypro-guide'], $args);
+    }
+
+    /**
+     * Delete cache with siteorigin posts query widget result
+     *
+     * @param $post_ID
+     * @param $post
+     * @param $update
+     * @return bool
+     *
+     * @author fq.jony@UD
+     */
+    function property_pro_delete_widget_posts_cache($post_ID, $post, $update)
+    {
+
+      // If this is just a revision, don't send the email.
+      if (!$update || wp_is_post_revision($post_ID) || wp_is_post_autosave($post_ID)) {
+        return false;
+      }
+
+      wp_cache_delete('widget_posts_' . $post_ID, 'property_pro');
+
+      return true;
+
     }
 
   }

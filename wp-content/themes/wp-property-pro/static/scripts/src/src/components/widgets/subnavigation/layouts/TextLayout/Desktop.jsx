@@ -18,11 +18,11 @@ const Desktop = ({items, currentUrl}) => {
   return (_.isEmpty(items)
       ? null
       :
-      <div className={Lib.THEME_CLASSES_PREFIX+"subnavigation-desktop"}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}subnavigation-desktop hidden-sm-down`}>
         {
           links.length
             ?
-            <ul className="clearfix">
+            <ul>
               {
                 links.map((link, key) => {
                     if (link.url === currentUrl) {

@@ -13,13 +13,14 @@ const Subnavigation = ({widget_cell, currentUrl}) => {
   let items = _.get(widget_cell, 'widget.fields.menu_items', []);
 
   let container;
-  let classes = Lib.THEME_CLASSES_PREFIX+"subnavigation";
+  let classes = Lib.THEME_CLASSES_PREFIX + "subnavigation";
   switch (widget_cell.widget.fields.layout) {
     case 'icon_layout':
+      classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-icon-layout`;
       container = <IconLayout items={items} currentUrl={currentUrl}/>;
       break;
     case 'text_layout':
-      classes = `${Lib.THEME_CLASSES_PREFIX}subnavigation ${Lib.THEME_CLASSES_PREFIX}module2`;
+      classes += ` ${Lib.THEME_CLASSES_PREFIX}subnavigation-text-layout`;
     default:
       container = <TextLayout items={items} currentUrl={currentUrl}/>
       break;
@@ -28,7 +29,9 @@ const Subnavigation = ({widget_cell, currentUrl}) => {
   return (
     <section className={classes}>
       <div className={`container ${Lib.THEME_CLASSES_PREFIX}subnavigation-container`}>
-        {container}
+        <div className="row">
+          {container}
+        </div>
       </div>
     </section>
   );

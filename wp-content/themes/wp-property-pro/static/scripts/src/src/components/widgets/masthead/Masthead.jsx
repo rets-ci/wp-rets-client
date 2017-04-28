@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import TitleDescriptionLayout from './layouts/TitleDescriptionLayout.jsx';
 import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
@@ -9,13 +8,7 @@ import Modal from './components/Modal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
-const mapStateToProps = (state) => {
-  return {
-    open: state.locationModal ? state.locationModal.open : false
-  }
-};
-
-const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticleHandler}) => {
+const Masthead = ({widget_cell, returnToArchiveHandler, nextArticleHandler}) => {
 
   if (!widget_cell) {
     return null;
@@ -24,12 +17,6 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
   let headerStyle = {
     background: "rgba(0,0,0,.4) url(" + widget_cell.widget.fields.image_src + ") " + _.get(widget_cell, 'widget.fields.image_position', '') + " no-repeat"
   };
-
-  if (open) {
-    headerStyle = Object.assign(headerStyle, {
-      zIndex: "11"
-    });
-  }
 
   let container;
   let modal;
@@ -48,13 +35,14 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
     case 'guide_layout':
       return (
         <section className={Lib.THEME_CLASSES_PREFIX + "guide-masthead"} style={headerStyle}>
-          <GuideLayout widget_cell={widget_cell} />
+          <GuideLayout widget_cell={widget_cell}/>
         </section>
       );
       break;
     case 'guide_single_layout':
       return (
-        <GuideSingleLayout widget_cell={widget_cell} headerStyle={headerStyle} returnToArchiveHandler={returnToArchiveHandler} nextArticleHandler={nextArticleHandler} />
+        <GuideSingleLayout widget_cell={widget_cell} headerStyle={headerStyle}
+                           returnToArchiveHandler={returnToArchiveHandler} nextArticleHandler={nextArticleHandler}/>
       );
       break;
     case 'title_description_layout':
@@ -64,17 +52,15 @@ const MastheadContent = ({widget_cell, open, returnToArchiveHandler, nextArticle
   }
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX + "masthead"} style={headerStyle}>
+    <section className={`jumbotron ${Lib.THEME_CLASSES_PREFIX}masthead text-center`} style={headerStyle}>
       {modal}
-      <div className={Lib.THEME_CLASSES_PREFIX + "intro-wrap"}>
-        {container}
+      <div className="container">
+        <div className="row">
+          {container}
+        </div>
       </div>
     </section>
   );
 };
-
-const Masthead = connect(
-  mapStateToProps
-)(MastheadContent);
 
 export default Masthead;

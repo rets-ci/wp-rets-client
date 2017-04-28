@@ -80,7 +80,7 @@ class Mobile extends Component {
     }
 
     return (
-      <div className={`hidden-lg-up ${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile`}>
+      <div className={`hidden-md-up ${Lib.THEME_CLASSES_PREFIX}subnavigation-mobile`}>
         <div className={selectedOptionClasses}
              onClick={() => self.handleChange.bind(this)(!this.props.dropDownOpen)}>
           {selectedOption}
