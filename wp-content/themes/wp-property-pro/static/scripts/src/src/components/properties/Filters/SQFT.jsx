@@ -42,23 +42,26 @@ class SQFT extends Component {
     let defaults = {
       Sale: {
         start: 1000,
-        to: 1250
+        to: 4000
       },
       Rent: {
         start: 1000,
-        to: 1250
+        to: 4000
       }
     };
     let formatter;
     let min;
     let max;
-    let range = {};
     let step;
-    let percentages;
     if (saleType === 'Sale' || saleType === 'Rent') {
       step = 500;
-      min = 1000;
+      min = 500;
       max = 10000;
+      formatter = sliderFormatter(min, max);
+    } else if (saleType === 'Commercial') {
+      step = 1000;
+      min = 1000;
+      max = 50000;
       formatter = sliderFormatter(min, max);
     }
     return (

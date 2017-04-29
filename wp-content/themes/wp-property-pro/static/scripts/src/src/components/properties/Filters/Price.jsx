@@ -53,7 +53,6 @@ class Price extends Component {
     let min;
     let max;
     let step;
-    let percentages;
     if (saleType === 'Sale') {
       min = 25000;
       max = 1000000;

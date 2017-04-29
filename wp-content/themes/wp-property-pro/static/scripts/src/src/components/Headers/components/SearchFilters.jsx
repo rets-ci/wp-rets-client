@@ -44,6 +44,14 @@ class searchFilters extends Component {
     this.props.removeSearchFilter(filter);
   }
 
+  handleLotSizefilterRemove(lotSizeFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]"]: lotSizeFilter.start,
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]"]: lotSizeFilter.to,
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
   handlePriceFilterRemove(priceFilter) {
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: priceFilter.start,
@@ -68,8 +76,12 @@ class searchFilters extends Component {
     let bathroomsFilter = filters['bathrooms'];
     let bedroomsFilter = filters['bedrooms'];
     let bedroomsElement;
+    let lotSizeElement;
+    let lotSizeFilter = filters['lotSize'];
     let priceFilter = filters['price'];
     let priceElement;
+    let propertyTypeFilter = filters['propertyType'];
+    let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
 
@@ -91,6 +103,12 @@ class searchFilters extends Component {
       </span>);
     }
 
+    if (lotSizeFilter) {
+      lotSizeElement = (
+        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+      )
+    }
+
     if (priceFilter) {
       priceElement = (
         <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
@@ -101,6 +119,10 @@ class searchFilters extends Component {
           <span>+</span> Price
         </a>
       </span>);
+    }
+
+    if (propertyTypeFilter) {
+
     }
 
     if (sqftFilter) {
@@ -130,6 +152,7 @@ class searchFilters extends Component {
               {bedroomsElement}
               {priceElement}
               {sqftElement}
+              {lotSizeElement}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
                 <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                   <span>+</span>

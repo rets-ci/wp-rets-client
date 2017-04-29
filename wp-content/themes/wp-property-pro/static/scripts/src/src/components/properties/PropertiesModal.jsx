@@ -19,11 +19,24 @@ let convertToSearchParamObject = obj => {
   return searchObject;
 };
 
-let bathroomOptions = [
+function removeDefaultFilters(filters, defaults) {
+	var finalObj = {};
+  for (var k in filters) {
+  	if (!defaults[k] || !isEqual(defaults[k], filters[k])) {
+    	finalObj[k] = filters[k];
+    }
+  }
+  return finalObj;
+}
+
+let bathroomOptions =[
+  {name: '0+', value: '0'},
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
   {name: '3+', value: '3'},
-  {name: '4+', value: '4'}
+  {name: '4+', value: '4'},
+  {name: '5+', value: '5'},
+  {name: '6+', value: '6'}
 ];
 
 let bedroomOptions = [
@@ -37,12 +50,28 @@ let bedroomOptions = [
 ];
 
 let defaultFiltervalues = {
-  bedroom: 0,
-  bathroom: 0,
-  price: {},
-  sqft: {},
-  lotsize: {}
+  bedrooms: '0',
+  bathrooms: '0',
+  price: {
+    start: 'No Min',
+    to: 'No Max'
+  },
+  sqft: {
+    start: 'No Min',
+    to: 'No Max'
+  },
+  lotsize: {
+    start: 'No Min',
+    to: 'No Max'
+  }
 };
+
+let propertyTypeOptions = [
+  {name: 'House', value: 'house'},
+  {name: 'Townhouse', value: 'townhouse'},
+  {name: 'Condo', value: 'condo'},
+  {name: 'Manufactured', value: 'manufactured'}
+];
 
 const mapStateToProps = (state, ownProps) => {
   let allQueryParams = Util.getQS(window.location.href, ownProps.searchFilters);
@@ -52,9 +81,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     allOtherFilters: allOtherFilters,
     bedroomOptions: bedroomOptions,
-    bathroomSelected: searchFiltersFormatted.bathrooms || null,
-    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedroom'],
+    bathroomSelected: searchFiltersFormatted.bathrooms || defaultFiltervalues['bathrooms'],
+    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedrooms'],
     priceSelected: searchFiltersFormatted.price || defaultFiltervalues['price'],
+    propertyTypeSelected: searchFiltersFormatted.propertyType || '',
     sqftSelected: searchFiltersFormatted.sqft || defaultFiltervalues['sqft'],
     lotSizeSelected: searchFiltersFormatted.lotSize || defaultFiltervalues['lotsize'],
     searchFiltersFormatted: searchFiltersFormatted
@@ -74,7 +104,7 @@ class PropertiesModal extends Component {
     allOtherFilters: PropTypes.object,
     bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
-    searchFilters: PropTypes.object.isRequired,
+    propertyTypeSelected: PropTypes.string,
     searchFiltersFormatted: PropTypes.object.isRequired,
     standardSearch: PropTypes.func.isRequired,
   }
@@ -85,6 +115,7 @@ class PropertiesModal extends Component {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
       localFilters: Object.assign({}, props.searchFiltersFormatted),
+      propertyTypeSelected: props.propertyTypeSelected,
       lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
       priceSelected: props.priceSelected,
@@ -135,8 +166,25 @@ class PropertiesModal extends Component {
     });
   }
 
+  handlePropertyTypeSelect(val) {
+    let filter = {"propertyType": val};
+    this.setState({
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      propertyTypeSelected: val
+    });
+  }
+
   handleLotSizeSelect(start, to) {
-    console.log('handleLotSizeSelect');
+    let filter = {
+      lotSize: {
+        start: start,
+        to: to
+      }
+    };
+    this.setState({
+      localFilters: Object.assign({}, this.state.localFilters, filter),
+      lotSizeSelected: {start: start, to: to}
+    });
   }
 
   handleSQFTSelect(start, to) {
@@ -155,8 +203,8 @@ class PropertiesModal extends Component {
   saveFilters() {
     let url = new URI(window.location.host);
     url.pathname(window.location.pathname);
-
-    let searchFilters = convertToSearchParamObject(this.state.localFilters);
+    let filters = removeDefaultFilters(this.state.localFilters, defaultFiltervalues);
+    let searchFilters = convertToSearchParamObject(filters);
     let allFilters = Object.assign({}, this.props.allOtherFilters, searchFilters);
     let queryParam = decodeURIComponent(qs.stringify(allFilters))
     url.setSearch(queryParam);
@@ -165,15 +213,18 @@ class PropertiesModal extends Component {
   }
 
   displayAllFilters(searchFiltersFormatted) {
-    return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
+    return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'] || !!searchFiltersFormatted['lotSize'];
   }
 
   resetFilters() {
     this.setState({
+      bathroomSelected: this.props.bathroomSelected,
       bedroomSelected: this.props.bedroomSelected,
+      lotSizeSelected: this.props.lotSizeSelected,
       priceSelected: this.props.priceSelected,
+      propertyTypeSelected: this.props.propertyTypeSelected,
       sqftSelected: this.props.sqftSelected,
-      localFilters: Object.assign({}, this.props.searchFilters)
+      localFilters: Object.assign({}, this.props.searchFiltersFormatted)
     });
   }
 
@@ -195,6 +246,7 @@ class PropertiesModal extends Component {
       localFilters,
       lotSizeSelected,
       priceSelected,
+      propertyTypeSelected,
       showAllFilters,
       sqftSelected
     } = this.state;
@@ -210,7 +262,14 @@ class PropertiesModal extends Component {
       selected: d.value === bedroomSelected,
       value: d.value
     }));
-    let anyFilterChange = !isEqual(searchFiltersFormatted, localFilters);
+
+    let propertyTypeElements = propertyTypeOptions.map(d => ({
+      name: d.name,
+      selected: d.value === propertyTypeSelected,
+      value: d.value
+    }));
+    let filters = removeDefaultFilters(localFilters, defaultFiltervalues);
+    let anyFilterChange = !isEqual(searchFiltersFormatted, filters);
     let termFilter = searchFiltersFormatted['term'];
     let termFilters = Object.keys(termFilter).map(t => {
       return {tax: t, value: termFilter[t]}
@@ -344,6 +403,29 @@ class PropertiesModal extends Component {
                       <input id="priceSlider" className="bs-hidden-input"/>
                     </div>
                   </div>
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                      style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Lot Size <span>(Acres)</span></h3>
+                      <div>
+                        <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
+                      </div>
+                      <input id="priceSlider" className="bs-hidden-input" />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section`}
+                      style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Type</h3>
+                      <div className="filter-type">
+                        {propertyTypeElements.map(d =>
+                          <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   {/* <div className={Lib.THEME_CLASSES_PREFIX+"filter-section"} style={{display: showAllFilters ? 'block' : 'none'}}>
                    <h3>Lot Size <span>(Acres)</span></h3>
                    <div>
@@ -361,7 +443,7 @@ class PropertiesModal extends Component {
                     }
                   </div>
                 </div>
-              </div>
+               </div>
             </div>
             <div className="modal-footer">
               <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>

@@ -404,7 +404,7 @@ class Api {
       if (params.bathrooms) {
         query.bool.must.push({
           "range": {
-            "post_meta.rets_total_baths": {
+            "meta.rets_total_baths.double": {
               "gte": params.bathrooms
             }
           }
@@ -414,7 +414,7 @@ class Api {
       if (params.bedrooms) {
         query.bool.must.push({
           "range": {
-            "post_meta.rets_beds": {
+            "meta.rets_beds.double": {
               "gte": params.bedrooms
             }
           }
@@ -432,7 +432,7 @@ class Api {
         }
         query.bool.must.push({
           "range": {
-            "post_meta.rets_list_price": range
+            "meta.rets_list_price.double": range
           }
         });
       }
@@ -448,10 +448,25 @@ class Api {
         }
         query.bool.must.push({
           "range": {
-            "post_meta.rets_living_area": range
+            "meta.rets_living_area.double": range
           }
         });
-        console.log(query);
+      }
+      if (params.lotSize) {
+        let range = {};
+        if (params.lotSize.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+          range.gte = params.lotSize.start
+        }
+
+        if (params.lotSize.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+          range.lt = params.lotSize.to
+        }
+        query.bool.must.push({
+          "range": {
+            "meta.rets_lot_size_area.double": range
+          }
+        });
+
       }
       query.bool.must.push({"term": terms});
     }

@@ -29778,7 +29778,7 @@
 	        if (params.bathrooms) {
 	          query.bool.must.push({
 	            "range": {
-	              "post_meta.rets_total_baths": {
+	              "meta.rets_total_baths.double": {
 	                "gte": params.bathrooms
 	              }
 	            }
@@ -29788,7 +29788,7 @@
 	        if (params.bedrooms) {
 	          query.bool.must.push({
 	            "range": {
-	              "post_meta.rets_beds": {
+	              "meta.rets_beds.double": {
 	                "gte": params.bedrooms
 	              }
 	            }
@@ -29806,7 +29806,7 @@
 	          }
 	          query.bool.must.push({
 	            "range": {
-	              "post_meta.rets_list_price": range
+	              "meta.rets_list_price.double": range
 	            }
 	          });
 	        }
@@ -29822,10 +29822,24 @@
 	          }
 	          query.bool.must.push({
 	            "range": {
-	              "post_meta.rets_living_area": _range
+	              "meta.rets_living_area.double": _range
 	            }
 	          });
-	          console.log(query);
+	        }
+	        if (params.lotSize) {
+	          var _range2 = {};
+	          if (params.lotSize.start !== _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	            _range2.gte = params.lotSize.start;
+	          }
+
+	          if (params.lotSize.to !== _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	            _range2.lt = params.lotSize.to;
+	          }
+	          query.bool.must.push({
+	            "range": {
+	              "meta.rets_lot_size_area.double": _range2
+	            }
+	          });
 	        }
 	        query.bool.must.push({ "term": terms });
 	      }
@@ -47380,10 +47394,10 @@
 	      return formattedNumber.format('0,0');
 	    }
 	  }, {
-	    key: 'formatLotSizeFilter',
-	    value: function formatLotSizeFilter(lotSize) {
+	    key: 'formatLotSizeValue',
+	    value: function formatLotSizeValue(lotSize) {
 	      var formattedNumber = (0, _numeral2.default)(lotSize);
-	      return formattedNumber.format('0,0');
+	      return formattedNumber.format('0.00');
 	    }
 	  }, {
 	    key: 'getSearchFiltersFromURL',
@@ -47469,6 +47483,19 @@
 	      return uri.pathname() + uri.search();
 	    }
 	  }, {
+	    key: 'lotSizeFilterSearchTagText',
+	    value: function lotSizeFilterSearchTagText(filter) {
+	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          return 'Under ' + this.formatLotSizeValue(filter.to) + ' ACRES';
+	        } else {
+	          return 'Over ' + this.formatLotSizeValue(filter.start) + ' ACRES';
+	        }
+	      } else {
+	        return this.formatLotSizeValue(filter.start) + '-' + this.formatLotSizeValue(filter.to) + ' ACRES';
+	      }
+	    }
+	  }, {
 	    key: 'priceFilterSearchTagText',
 	    value: function priceFilterSearchTagText(filter) {
 	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
@@ -47486,9 +47513,9 @@
 	    value: function sqftFilterSearchTagText(filter) {
 	      if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
 	        if (filter.start === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-	          return 'Under ' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
+	          return 'Under ' + this.formatSQFTValue(filter.to) + ' SQFT';
 	        } else {
-	          return 'Over ' + (0, _numeral2.default)(filter.start).format('0,0') + ' SQFT';
+	          return 'Over ' + this.formatSQFTValue(filter.start) + ' SQFT';
 	        }
 	      } else {
 	        return (0, _numeral2.default)(filter.start).format('0,0') + '-' + (0, _numeral2.default)(filter.to).format('0,0') + ' SQFT';
@@ -52447,17 +52474,38 @@
 	  return searchObject;
 	};
 
-	var bathroomOptions = [{ name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }];
+	function removeDefaultFilters(filters, defaults) {
+	  var finalObj = {};
+	  for (var k in filters) {
+	    if (!defaults[k] || !(0, _lodash.isEqual)(defaults[k], filters[k])) {
+	      finalObj[k] = filters[k];
+	    }
+	  }
+	  return finalObj;
+	}
+
+	var bathroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
 
 	var bedroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
 
 	var defaultFiltervalues = {
-	  bedroom: 0,
-	  bathroom: 0,
-	  price: {},
-	  sqft: {},
-	  lotsize: {}
+	  bedrooms: '0',
+	  bathrooms: '0',
+	  price: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  sqft: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  lotsize: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  }
 	};
+
+	var propertyTypeOptions = [{ name: 'House', value: 'house' }, { name: 'Townhouse', value: 'townhouse' }, { name: 'Condo', value: 'condo' }, { name: 'Manufactured', value: 'manufactured' }];
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  var allQueryParams = _Util2.default.getQS(window.location.href, ownProps.searchFilters);
@@ -52467,9 +52515,10 @@
 	  return {
 	    allOtherFilters: allOtherFilters,
 	    bedroomOptions: bedroomOptions,
-	    bathroomSelected: searchFiltersFormatted.bathrooms || null,
-	    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedroom'],
+	    bathroomSelected: searchFiltersFormatted.bathrooms || defaultFiltervalues['bathrooms'],
+	    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedrooms'],
 	    priceSelected: searchFiltersFormatted.price || defaultFiltervalues['price'],
+	    propertyTypeSelected: searchFiltersFormatted.propertyType || '',
 	    sqftSelected: searchFiltersFormatted.sqft || defaultFiltervalues['sqft'],
 	    lotSizeSelected: searchFiltersFormatted.lotSize || defaultFiltervalues['lotsize'],
 	    searchFiltersFormatted: searchFiltersFormatted
@@ -52496,6 +52545,7 @@
 	      bathroomSelected: props.bathroomSelected,
 	      bedroomSelected: props.bedroomSelected,
 	      localFilters: Object.assign({}, props.searchFiltersFormatted),
+	      propertyTypeSelected: props.propertyTypeSelected,
 	      lotSizeSelected: props.lotSizeSelected,
 	      showAllFilters: false,
 	      priceSelected: props.priceSelected,
@@ -52553,9 +52603,27 @@
 	      });
 	    }
 	  }, {
+	    key: 'handlePropertyTypeSelect',
+	    value: function handlePropertyTypeSelect(val) {
+	      var filter = { "propertyType": val };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        propertyTypeSelected: val
+	      });
+	    }
+	  }, {
 	    key: 'handleLotSizeSelect',
 	    value: function handleLotSizeSelect(start, to) {
-	      console.log('handleLotSizeSelect');
+	      var filter = {
+	        lotSize: {
+	          start: start,
+	          to: to
+	        }
+	      };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        lotSizeSelected: { start: start, to: to }
+	      });
 	    }
 	  }, {
 	    key: 'handleSQFTSelect',
@@ -52576,8 +52644,8 @@
 	    value: function saveFilters() {
 	      var url = new _urijs2.default(window.location.host);
 	      url.pathname(window.location.pathname);
-
-	      var searchFilters = convertToSearchParamObject(this.state.localFilters);
+	      var filters = removeDefaultFilters(this.state.localFilters, defaultFiltervalues);
+	      var searchFilters = convertToSearchParamObject(filters);
 	      var allFilters = Object.assign({}, this.props.allOtherFilters, searchFilters);
 	      var queryParam = decodeURIComponent(_qs2.default.stringify(allFilters));
 	      url.setSearch(queryParam);
@@ -52587,16 +52655,19 @@
 	  }, {
 	    key: 'displayAllFilters',
 	    value: function displayAllFilters(searchFiltersFormatted) {
-	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
+	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'] || !!searchFiltersFormatted['lotSize'];
 	    }
 	  }, {
 	    key: 'resetFilters',
 	    value: function resetFilters() {
 	      this.setState({
+	        bathroomSelected: this.props.bathroomSelected,
 	        bedroomSelected: this.props.bedroomSelected,
+	        lotSizeSelected: this.props.lotSizeSelected,
 	        priceSelected: this.props.priceSelected,
+	        propertyTypeSelected: this.props.propertyTypeSelected,
 	        sqftSelected: this.props.sqftSelected,
-	        localFilters: Object.assign({}, this.props.searchFilters)
+	        localFilters: Object.assign({}, this.props.searchFiltersFormatted)
 	      });
 	    }
 	  }, {
@@ -52621,6 +52692,7 @@
 	          localFilters = _state.localFilters,
 	          lotSizeSelected = _state.lotSizeSelected,
 	          priceSelected = _state.priceSelected,
+	          propertyTypeSelected = _state.propertyTypeSelected,
 	          showAllFilters = _state.showAllFilters,
 	          sqftSelected = _state.sqftSelected;
 
@@ -52640,7 +52712,16 @@
 	          value: d.value
 	        };
 	      });
-	      var anyFilterChange = !(0, _lodash.isEqual)(searchFiltersFormatted, localFilters);
+
+	      var propertyTypeElements = propertyTypeOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === propertyTypeSelected,
+	          value: d.value
+	        };
+	      });
+	      var filters = removeDefaultFilters(localFilters, defaultFiltervalues);
+	      var anyFilterChange = !(0, _lodash.isEqual)(searchFiltersFormatted, filters);
 	      var termFilter = searchFiltersFormatted['term'];
 	      var termFilters = Object.keys(termFilter).map(function (t) {
 	        return { tax: t, value: termFilter[t] };
@@ -52953,6 +53034,60 @@
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Lot Size ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Acres)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_LotSize2.default, { saleType: searchFiltersFormatted.sale_type, start: lotSizeSelected.start, to: lotSizeSelected.to, handleOnClick: this.handleLotSizeSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Type'
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: 'filter-type' },
+	                        propertyTypeElements.map(function (d) {
+	                          return _react2.default.createElement(
+	                            'a',
+	                            { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                                return _this2.handlePropertyTypeSelect.bind(_this2)(d.value);
+	                              } },
+	                            d.name
+	                          );
+	                        })
+	                      )
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
 	                    showAllFilters ? _react2.default.createElement(
 	                      'a',
 	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
@@ -53019,7 +53154,7 @@
 	  allOtherFilters: _react.PropTypes.object,
 	  bathroomSelected: _react.PropTypes.string,
 	  bedroomSelected: _react.PropTypes.string,
-	  searchFilters: _react.PropTypes.object.isRequired,
+	  propertyTypeSelected: _react.PropTypes.string,
 	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
 	  standardSearch: _react.PropTypes.func.isRequired
 	};
@@ -53117,7 +53252,6 @@
 	      var min = void 0;
 	      var max = void 0;
 	      var step = void 0;
-	      var percentages = void 0;
 	      if (saleType === 'Sale') {
 	        min = 25000;
 	        max = 1000000;
@@ -53231,10 +53365,30 @@
 	      });
 
 	      this.slider.on('change', function (values, handle, unencoded) {
-	        var start = values[0] === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT ? _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT : Math.round(unencoded[0]);
-	        var to = values[1] === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT ? _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT : Math.round(unencoded[1]);
+	        var start = void 0;
+	        var to = void 0;
+	        if (values[0] === _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+	          start = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
+	        } else {
+	          if (this.props.allowDecimalPlaces) {
+	            start = unencoded[0].toFixed(2);
+	          } else {
+	            start = Math.round(unencoded[0]);
+	          }
+	        }
+
+	        if (values[1] === _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+	          to = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
+	        } else {
+	          if (this.props.allowDecimalPlaces) {
+	            to = unencoded[1].toFixed(2);
+	          } else {
+	            to = Math.round(unencoded[1]);
+	          }
+	        }
+
 	        handleOnClick(start, to);
-	      });
+	      }.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -53264,6 +53418,7 @@
 	}(_react.Component);
 
 	Slider.propTypes = {
+	  allowDecimalPlaces: _react.PropTypes.bool,
 	  formatter: _react.PropTypes.func.isRequired,
 	  handleOnClick: _react.PropTypes.func.isRequired,
 	  min: _react.PropTypes.number.isRequired,
@@ -55550,7 +55705,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -55853,23 +56008,26 @@
 	      var defaults = {
 	        Sale: {
 	          start: 1000,
-	          to: 1250
+	          to: 4000
 	        },
 	        Rent: {
 	          start: 1000,
-	          to: 1250
+	          to: 4000
 	        }
 	      };
 	      var formatter = void 0;
 	      var min = void 0;
 	      var max = void 0;
-	      var range = {};
 	      var step = void 0;
-	      var percentages = void 0;
 	      if (saleType === 'Sale' || saleType === 'Rent') {
 	        step = 500;
-	        min = 1000;
+	        min = 500;
 	        max = 10000;
+	        formatter = sliderFormatter(min, max);
+	      } else if (saleType === 'Commercial') {
+	        step = 1000;
+	        min = 1000;
+	        max = 50000;
 	        formatter = sliderFormatter(min, max);
 	      }
 	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
@@ -55901,6 +56059,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _lib = __webpack_require__(276);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -55908,6 +56068,10 @@
 	var _Slider = __webpack_require__(294);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
+
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55923,11 +56087,11 @@
 	      to: function to(val) {
 	        var returnVal = void 0;
 	        if (val === min) {
-	          returnVal = Lib.RANGE_SLIDER_NO_MIN_TEXT;
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MIN_TEXT;
 	        } else if (val === max) {
-	          returnVal = Lib.RANGE_SLIDER_NO_MAX_TEXT;
+	          returnVal = _lib.Lib.RANGE_SLIDER_NO_MAX_TEXT;
 	        } else {
-	          returnVal = Util.formatLotSizeFilter(val);
+	          returnVal = _Util2.default.formatLotSizeValue(val);
 	        }
 	        return returnVal;
 	      },
@@ -55959,33 +56123,35 @@
 	          to = _props.to;
 
 	      var defaults = {
+	        Commercial: {
+	          start: 1,
+	          to: 3
+	        },
 	        Sale: {
-	          start: 0.25,
-	          to: 0.35
+	          start: 1,
+	          to: 3
 	        },
 	        Rent: {
-	          start: 0.25,
-	          to: 0.35
+	          start: 1,
+	          to: 3
 	        }
 	      };
+	      var formatter = void 0;
 	      var min = void 0;
 	      var max = void 0;
-	      var range = {};
 	      var step = void 0;
-	      var percentages = void 0;
-	      step = 0.25;
-	      min = 0;
-	      max = 1;
-	      formatter = sliderFormatter(min, max);
-	      range = {
-	        min: min,
-	        max: max
-	      };
-	      percentages = [10, 25, 50, 75];
-	      percentages.forEach(function (p) {
-	        range[p + '%'] = [min + min * (p / 100)];
-	      });
-	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, range: range, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      if (saleType === 'Sale' || saleType === 'Rent' || saleType === 'Commercial') {
+	        step = 0.25;
+	        min = 0.25;
+	        max = 10;
+	        formatter = sliderFormatter(min, max);
+	      } else if (saleType === 'Land') {
+	        step = 10;
+	        min = 10;
+	        max = 400;
+	        formatter = sliderFormatter(min, max);
+	      }
+	      return _react2.default.createElement(_Slider2.default, { allowDecimalPlaces: true, formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
 	  }]);
 
@@ -63193,19 +63359,27 @@
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
-	    key: 'handlePriceFilterRemove',
-	    value: function handlePriceFilterRemove(priceFilter) {
+	    key: 'handleLotSizefilterRemove',
+	    value: function handleLotSizefilterRemove(lotSizeFilter) {
 	      var _filter3;
 
-	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter3);
+	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]", lotSizeFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]", lotSizeFilter.to), _filter3);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
+	    key: 'handlePriceFilterRemove',
+	    value: function handlePriceFilterRemove(priceFilter) {
+	      var _filter4;
+
+	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter4);
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
 	    key: 'handleSQFTFilterRemove',
 	    value: function handleSQFTFilterRemove(sqftFilter) {
-	      var _filter4;
+	      var _filter5;
 
-	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter4);
+	      var filter = (_filter5 = {}, _defineProperty(_filter5, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter5, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter5);
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
@@ -63219,8 +63393,12 @@
 	      var bathroomsFilter = filters['bathrooms'];
 	      var bedroomsFilter = filters['bedrooms'];
 	      var bedroomsElement = void 0;
+	      var lotSizeElement = void 0;
+	      var lotSizeFilter = filters['lotSize'];
 	      var priceFilter = filters['price'];
 	      var priceElement = void 0;
+	      var propertyTypeFilter = filters['propertyType'];
+	      var propertyTypeElement = void 0;
 	      var sqftFilter = filters['sqft'];
 	      var sqftElement = void 0;
 
@@ -63249,6 +63427,10 @@
 	        );
 	      }
 
+	      if (lotSizeFilter) {
+	        lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
+	      }
+
 	      if (priceFilter) {
 	        priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
 	      } else {
@@ -63269,6 +63451,8 @@
 	          )
 	        );
 	      }
+
+	      if (propertyTypeFilter) {}
 
 	      if (sqftFilter) {
 	        sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
@@ -63308,6 +63492,7 @@
 	              bedroomsElement,
 	              priceElement,
 	              sqftElement,
+	              lotSizeElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },

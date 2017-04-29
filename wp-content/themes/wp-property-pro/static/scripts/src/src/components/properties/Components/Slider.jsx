@@ -4,8 +4,10 @@ import React, {Component, PropTypes} from 'react';
 let noUiSlider = require('nouislider');
 require('nouislider/distribute/nouislider.css');
 
+
 class Slider extends Component {
   static propTypes = {
+		allowDecimalPlaces: PropTypes.bool,
     formatter: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
     min: PropTypes.number.isRequired,
@@ -61,11 +63,31 @@ class Slider extends Component {
       tooltips: true
     });
 
-    this.slider.on('change', function(values, handle, unencoded){
-      let start = values[0] === Lib.RANGE_SLIDER_NO_MIN_TEXT ? Lib.RANGE_SLIDER_NO_MIN_TEXT : Math.round(unencoded[0]);
-      let to = values[1] === Lib.RANGE_SLIDER_NO_MAX_TEXT ? Lib.RANGE_SLIDER_NO_MAX_TEXT : Math.round(unencoded[1]);
+    this.slider.on('change', function(values, handle, unencoded) {
+      let start;
+      let to;
+      if (values[0] === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        start = Lib.RANGE_SLIDER_NO_MIN_TEXT
+      } else {
+				if (this.props.allowDecimalPlaces) {
+					start = unencoded[0].toFixed(2);
+				} else {
+					start = Math.round(unencoded[0]);
+				}
+      }
+
+      if (values[1] === Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        to = Lib.RANGE_SLIDER_NO_MAX_TEXT;
+      } else {
+				if (this.props.allowDecimalPlaces) {
+					to = unencoded[1].toFixed(2);
+				} else {
+					to = Math.round(unencoded[1]);
+				}
+      }
+
       handleOnClick(start, to);
-    });
+    }.bind(this));
   }
 
   componentWillReceiveProps(nextProps) {
