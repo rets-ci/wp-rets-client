@@ -1,10 +1,10 @@
-import {openPropertiesModal} from '../../actions/index.jsx';
+import {openLocationModal, openPropertiesModal} from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
-import Price from './Filters/Price.jsx';
-import SQFT from './Filters/SQFT.jsx';
-import LotSize from './Filters/LotSize.jsx';
+import Price from '../properties/Filters/Price.jsx';
+import SQFT from '../properties/Filters/SQFT.jsx';
+import LotSize from '../properties/Filters/LotSize.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
@@ -93,6 +93,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    openLocationModal() {
+      // dispatch(openPropertiesModal(false));
+      dispatch(openLocationModal(true));
+    },
+
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
     }
@@ -104,6 +109,7 @@ class PropertiesModal extends Component {
     allOtherFilters: PropTypes.object,
     bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
+    openLocationModal: PropTypes.func.isRequired,
     propertyTypeSelected: PropTypes.string,
     searchFiltersFormatted: PropTypes.object.isRequired,
     standardSearch: PropTypes.func.isRequired,
@@ -355,7 +361,7 @@ class PropertiesModal extends Component {
                           <span key={t.value}
                                 className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
                         )}
-                        <a href="#" className="btn btn-primary">+ More Locations</a>
+                        <a href="#" className="btn btn-primary" onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
                       </div>
                     </div>
                   </div>
@@ -426,13 +432,6 @@ class PropertiesModal extends Component {
                       </div>
                     </div>
                   </div>
-                  {/* <div className={Lib.THEME_CLASSES_PREFIX+"filter-section"} style={{display: showAllFilters ? 'block' : 'none'}}>
-                   <h3>Lot Size <span>(Acres)</span></h3>
-                   <div>
-                   <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
-                   </div>
-                   <input id="priceSlider" className="bs-hidden-input" />
-                   </div> */}
                   <div className="row">
                     {showAllFilters ?
                       <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
@@ -461,8 +460,7 @@ class PropertiesModal extends Component {
 
     )
   }
-}
-;
+};
 
 export default connect(
   mapStateToProps,

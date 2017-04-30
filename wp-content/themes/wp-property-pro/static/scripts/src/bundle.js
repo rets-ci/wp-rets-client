@@ -29093,9 +29093,13 @@
 
 	var _Map2 = _interopRequireDefault(_Map);
 
-	var _PropertiesModal = __webpack_require__(292);
+	var _PropertiesModal = __webpack_require__(440);
 
 	var _PropertiesModal2 = _interopRequireDefault(_PropertiesModal);
+
+	var _LocationModal = __webpack_require__(441);
+
+	var _LocationModal2 = _interopRequireDefault(_LocationModal);
 
 	var _react = __webpack_require__(1);
 
@@ -29241,6 +29245,7 @@
 	        elementToShow = _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map" },
+	          _react2.default.createElement(_LocationModal2.default, { searchFilters: searchFilters }),
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
@@ -29369,6 +29374,8 @@
 	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29727,9 +29734,8 @@
 	  }, {
 	    key: 'createESSearchQuery',
 	    value: function createESSearchQuery(params) {
-	      var terms = {};
-	      Object.keys(params.term).forEach(function (tax) {
-	        terms["terms." + tax + ".slug"] = params.term[tax];
+	      var terms = Object.keys(params.term).map(function (tax) {
+	        return { term: _defineProperty({}, "terms." + tax + ".slug", params.term[tax]) };
 	      });
 
 	      var query = {
@@ -29841,9 +29847,13 @@
 	            }
 	          });
 	        }
-	        query.bool.must.push({ "term": terms });
-	      }
 
+	        query.bool.must.push({
+	          "bool": {
+	            "should": terms
+	          }
+	        });
+	      }
 	      query = JSON.stringify(query);
 
 	      var size = params.size || 500;
@@ -52409,761 +52419,7 @@
 
 
 /***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _index = __webpack_require__(278);
-
-	var _reactRedux = __webpack_require__(233);
-
-	var _lodash = __webpack_require__(277);
-
-	var _lib = __webpack_require__(276);
-
-	var _Price = __webpack_require__(293);
-
-	var _Price2 = _interopRequireDefault(_Price);
-
-	var _SQFT = __webpack_require__(300);
-
-	var _SQFT2 = _interopRequireDefault(_SQFT);
-
-	var _LotSize = __webpack_require__(301);
-
-	var _LotSize2 = _interopRequireDefault(_LotSize);
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(178);
-
-	var _urijs = __webpack_require__(283);
-
-	var _urijs2 = _interopRequireDefault(_urijs);
-
-	var _Util = __webpack_require__(281);
-
-	var _Util2 = _interopRequireDefault(_Util);
-
-	var _qs = __webpack_require__(287);
-
-	var _qs2 = _interopRequireDefault(_qs);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var convertToSearchParamObject = function convertToSearchParamObject(obj) {
-	  var searchObject = {};
-	  for (var k in obj) {
-	    searchObject[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + k + "]"] = obj[k];
-	  }
-	  return searchObject;
-	};
-
-	function removeDefaultFilters(filters, defaults) {
-	  var finalObj = {};
-	  for (var k in filters) {
-	    if (!defaults[k] || !(0, _lodash.isEqual)(defaults[k], filters[k])) {
-	      finalObj[k] = filters[k];
-	    }
-	  }
-	  return finalObj;
-	}
-
-	var bathroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
-
-	var bedroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
-
-	var defaultFiltervalues = {
-	  bedrooms: '0',
-	  bathrooms: '0',
-	  price: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  },
-	  sqft: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  },
-	  lotsize: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  }
-	};
-
-	var propertyTypeOptions = [{ name: 'House', value: 'house' }, { name: 'Townhouse', value: 'townhouse' }, { name: 'Condo', value: 'condo' }, { name: 'Manufactured', value: 'manufactured' }];
-
-	var mapStateToProps = function mapStateToProps(state, ownProps) {
-	  var allQueryParams = _Util2.default.getQS(window.location.href, ownProps.searchFilters);
-	  var searchFiltersFormatted = allQueryParams[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-	  var allOtherFilters = Object.assign({}, allQueryParams);
-	  delete allOtherFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-	  return {
-	    allOtherFilters: allOtherFilters,
-	    bedroomOptions: bedroomOptions,
-	    bathroomSelected: searchFiltersFormatted.bathrooms || defaultFiltervalues['bathrooms'],
-	    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedrooms'],
-	    priceSelected: searchFiltersFormatted.price || defaultFiltervalues['price'],
-	    propertyTypeSelected: searchFiltersFormatted.propertyType || '',
-	    sqftSelected: searchFiltersFormatted.sqft || defaultFiltervalues['sqft'],
-	    lotSizeSelected: searchFiltersFormatted.lotSize || defaultFiltervalues['lotsize'],
-	    searchFiltersFormatted: searchFiltersFormatted
-	  };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    openPropertiesModal: function openPropertiesModal(open) {
-	      dispatch((0, _index.openPropertiesModal)(open));
-	    }
-	  };
-	};
-
-	var PropertiesModal = function (_Component) {
-	  _inherits(PropertiesModal, _Component);
-
-	  function PropertiesModal(props) {
-	    _classCallCheck(this, PropertiesModal);
-
-	    var _this = _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).call(this, props));
-
-	    _this.state = {
-	      bathroomSelected: props.bathroomSelected,
-	      bedroomSelected: props.bedroomSelected,
-	      localFilters: Object.assign({}, props.searchFiltersFormatted),
-	      propertyTypeSelected: props.propertyTypeSelected,
-	      lotSizeSelected: props.lotSizeSelected,
-	      showAllFilters: false,
-	      priceSelected: props.priceSelected,
-	      sqftSelected: props.sqftSelected
-	    };
-	    return _this;
-	  }
-
-	  _createClass(PropertiesModal, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
-	      this.setState({
-	        showAllFilters: showAllFilters
-	      });
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
-	      this.setState({
-	        showAllFilters: showAllFilters
-	      });
-	    }
-	  }, {
-	    key: 'handleBathroomSelect',
-	    value: function handleBathroomSelect(val) {
-	      var filter = { "bathrooms": val };
-	      this.setState({
-	        bathroomSelected: val,
-	        localFilters: Object.assign({}, this.state.localFilters, filter)
-	      });
-	    }
-	  }, {
-	    key: 'handleBedroomSelect',
-	    value: function handleBedroomSelect(val) {
-	      var filter = { "bedrooms": val };
-	      this.setState({
-	        bedroomSelected: val,
-	        localFilters: Object.assign({}, this.state.localFilters, filter)
-	      });
-	    }
-	  }, {
-	    key: 'handlePriceSelect',
-	    value: function handlePriceSelect(start, to) {
-	      var filter = {
-	        price: {
-	          start: start,
-	          to: to
-	        }
-	      };
-	      this.setState({
-	        localFilters: Object.assign({}, this.state.localFilters, filter),
-	        priceSelected: { start: start, to: to }
-	      });
-	    }
-	  }, {
-	    key: 'handlePropertyTypeSelect',
-	    value: function handlePropertyTypeSelect(val) {
-	      var filter = { "propertyType": val };
-	      this.setState({
-	        localFilters: Object.assign({}, this.state.localFilters, filter),
-	        propertyTypeSelected: val
-	      });
-	    }
-	  }, {
-	    key: 'handleLotSizeSelect',
-	    value: function handleLotSizeSelect(start, to) {
-	      var filter = {
-	        lotSize: {
-	          start: start,
-	          to: to
-	        }
-	      };
-	      this.setState({
-	        localFilters: Object.assign({}, this.state.localFilters, filter),
-	        lotSizeSelected: { start: start, to: to }
-	      });
-	    }
-	  }, {
-	    key: 'handleSQFTSelect',
-	    value: function handleSQFTSelect(start, to) {
-	      var filter = {
-	        sqft: {
-	          start: start,
-	          to: to
-	        }
-	      };
-	      this.setState({
-	        localFilters: Object.assign({}, this.state.localFilters, filter),
-	        sqftSelected: { start: start, to: to }
-	      });
-	    }
-	  }, {
-	    key: 'saveFilters',
-	    value: function saveFilters() {
-	      var url = new _urijs2.default(window.location.host);
-	      url.pathname(window.location.pathname);
-	      var filters = removeDefaultFilters(this.state.localFilters, defaultFiltervalues);
-	      var searchFilters = convertToSearchParamObject(filters);
-	      var allFilters = Object.assign({}, this.props.allOtherFilters, searchFilters);
-	      var queryParam = decodeURIComponent(_qs2.default.stringify(allFilters));
-	      url.setSearch(queryParam);
-	      this.props.openPropertiesModal(false);
-	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
-	    }
-	  }, {
-	    key: 'displayAllFilters',
-	    value: function displayAllFilters(searchFiltersFormatted) {
-	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'] || !!searchFiltersFormatted['lotSize'];
-	    }
-	  }, {
-	    key: 'resetFilters',
-	    value: function resetFilters() {
-	      this.setState({
-	        bathroomSelected: this.props.bathroomSelected,
-	        bedroomSelected: this.props.bedroomSelected,
-	        lotSizeSelected: this.props.lotSizeSelected,
-	        priceSelected: this.props.priceSelected,
-	        propertyTypeSelected: this.props.propertyTypeSelected,
-	        sqftSelected: this.props.sqftSelected,
-	        localFilters: Object.assign({}, this.props.searchFiltersFormatted)
-	      });
-	    }
-	  }, {
-	    key: 'toggleViewAllFilters',
-	    value: function toggleViewAllFilters() {
-	      this.setState({
-	        showAllFilters: !this.state.showAllFilters
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var _props = this.props,
-	          bedroomOptions = _props.bedroomOptions,
-	          searchFilters = _props.searchFilters,
-	          searchFiltersFormatted = _props.searchFiltersFormatted;
-	      var _state = this.state,
-	          bathroomSelected = _state.bathroomSelected,
-	          bedroomSelected = _state.bedroomSelected,
-	          localFilters = _state.localFilters,
-	          lotSizeSelected = _state.lotSizeSelected,
-	          priceSelected = _state.priceSelected,
-	          propertyTypeSelected = _state.propertyTypeSelected,
-	          showAllFilters = _state.showAllFilters,
-	          sqftSelected = _state.sqftSelected;
-
-
-	      var bathroomElements = bathroomOptions.map(function (d) {
-	        return {
-	          name: d.name,
-	          selected: d.value === bathroomSelected,
-	          value: d.value
-	        };
-	      });
-
-	      var bedroomElements = bedroomOptions.map(function (d) {
-	        return {
-	          name: d.name,
-	          selected: d.value === bedroomSelected,
-	          value: d.value
-	        };
-	      });
-
-	      var propertyTypeElements = propertyTypeOptions.map(function (d) {
-	        return {
-	          name: d.name,
-	          selected: d.value === propertyTypeSelected,
-	          value: d.value
-	        };
-	      });
-	      var filters = removeDefaultFilters(localFilters, defaultFiltervalues);
-	      var anyFilterChange = !(0, _lodash.isEqual)(searchFiltersFormatted, filters);
-	      var termFilter = searchFiltersFormatted['term'];
-	      var termFilters = Object.keys(termFilter).map(function (t) {
-	        return { tax: t, value: termFilter[t] };
-	      });
-	      return _react2.default.createElement(
-	        'div',
-	        {
-	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (this.props.open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0', role: 'document' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'modal-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
-	                  onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _this2.props.openPropertiesModal(false);
-	                  }, 'aria-label': 'Close' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { 'aria-hidden': 'true' },
-	                  '\xD7'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'form',
-	                    { method: 'get', className: 'form-inline clearfix hidden-md-down' },
-	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-tags-box mr-auto' },
-	                      _react2.default.createElement(
-	                        'div',
-	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
-	                        termFilters.map(function (t) {
-	                          return _react2.default.createElement(
-	                            'span',
-	                            { key: t.value, className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
-	                            _react2.default.createElement(
-	                              'span',
-	                              null,
-	                              _react2.default.createElement('i', {
-	                                className: 'fa fa-times' })
-	                            ),
-	                            ' ',
-	                            t.value
-	                          );
-	                        }),
-	                        !termFilters.length && _react2.default.createElement('input', { type: 'text', size: '1', placeholder: 'Select bedroom type, amenities' })
-	                      )
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput',
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput", readOnly: true }),
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'button-group' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', className: 'btn-reset', onClick: this.resetFilters.bind(this) },
-	                        'Reset'
-	                      ),
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#',
-	                          className: "btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null),
-	                          onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
-	                        'View Properties'
-	                      )
-	                    )
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-body p-0' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'search-filter-nav hidden-lg-up' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'container' },
-	                  _react2.default.createElement(
-	                    'ul',
-	                    { className: 'clearfix' },
-	                    _react2.default.createElement(
-	                      'li',
-	                      null,
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', title: 'Buy' },
-	                        _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          'Buy'
-	                        )
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'li',
-	                      null,
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', title: 'Rent' },
-	                        _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          'Rent'
-	                        )
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'li',
-	                      null,
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', title: 'Commercial' },
-	                        _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          'Commercial'
-	                        )
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'li',
-	                      null,
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', title: 'Land' },
-	                        _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          'Land'
-	                        )
-	                      )
-	                    )
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'container' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Location ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(City, School, Neighborhood, Zip)'
-	                        )
-	                      ),
-	                      _react2.default.createElement(
-	                        'div',
-	                        { className: 'filter-type' },
-	                        termFilters.map(function (t) {
-	                          return _react2.default.createElement(
-	                            'span',
-	                            { key: t.value,
-	                              className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
-	                            t.value
-	                          );
-	                        }),
-	                        _react2.default.createElement(
-	                          'a',
-	                          { href: '#', className: 'btn btn-primary' },
-	                          '+ More Locations'
-	                        )
-	                      )
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Bedrooms ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(Minimum)'
-	                        )
-	                      ),
-	                      bedroomElements.map(function (d) {
-	                        return _react2.default.createElement(
-	                          'a',
-	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
-	                            onClick: function onClick() {
-	                              return _this2.handleBedroomSelect.bind(_this2)(d.value);
-	                            } },
-	                          d.name
-	                        );
-	                      })
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-price' },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Price ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(Range)'
-	                        )
-	                      ),
-	                      _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        _react2.default.createElement(_Price2.default, { saleType: searchFiltersFormatted.sale_type, start: priceSelected.start,
-	                          to: priceSelected.to,
-	                          handleOnClick: this.handlePriceSelect.bind(this) })
-	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section",
-	                        style: { display: showAllFilters ? 'block' : 'none' } },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Bathrooms ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(Minimum)'
-	                        )
-	                      ),
-	                      bathroomElements.map(function (d) {
-	                        return _react2.default.createElement(
-	                          'a',
-	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
-	                            onClick: function onClick() {
-	                              return _this2.handleBathroomSelect.bind(_this2)(d.value);
-	                            } },
-	                          d.name
-	                        );
-	                      })
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
-	                        style: { display: showAllFilters ? 'block' : 'none' } },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Total Size ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(SQFT)'
-	                        )
-	                      ),
-	                      _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start,
-	                          to: sqftSelected.to,
-	                          handleOnClick: this.handleSQFTSelect.bind(this) })
-	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
-	                        style: { display: showAllFilters ? 'block' : 'none' } },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Lot Size ',
-	                        _react2.default.createElement(
-	                          'span',
-	                          null,
-	                          '(Acres)'
-	                        )
-	                      ),
-	                      _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        _react2.default.createElement(_LotSize2.default, { saleType: searchFiltersFormatted.sale_type, start: lotSizeSelected.start, to: lotSizeSelected.to, handleOnClick: this.handleLotSizeSelect.bind(this) })
-	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
-	                        style: { display: showAllFilters ? 'block' : 'none' } },
-	                      _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Type'
-	                      ),
-	                      _react2.default.createElement(
-	                        'div',
-	                        { className: 'filter-type' },
-	                        propertyTypeElements.map(function (d) {
-	                          return _react2.default.createElement(
-	                            'a',
-	                            { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
-	                                return _this2.handlePropertyTypeSelect.bind(_this2)(d.value);
-	                              } },
-	                            d.name
-	                          );
-	                        })
-	                      )
-	                    )
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    showAllFilters ? _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
-	                        onClick: this.toggleViewAllFilters.bind(this) },
-	                      '- View Less Filters'
-	                    ) : _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
-	                        onClick: this.toggleViewAllFilters.bind(this) },
-	                      '+ View More Filters'
-	                    )
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-footer' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'container' },
-	                  _react2.default.createElement(
-	                    'button',
-	                    { className: 'btn btn-reset' },
-	                    'Reset'
-	                  ),
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: 'nav-item-right' },
-	                    _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: 'btn-cancel' },
-	                      'Cancel'
-	                    ),
-	                    ' ',
-	                    _react2.default.createElement(
-	                      'i',
-	                      null,
-	                      '|'
-	                    ),
-	                    ' ',
-	                    _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: 'btn-apply' },
-	                      'Apply'
-	                    )
-	                  )
-	                )
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return PropertiesModal;
-	}(_react.Component);
-
-	PropertiesModal.propTypes = {
-	  allOtherFilters: _react.PropTypes.object,
-	  bathroomSelected: _react.PropTypes.string,
-	  bedroomSelected: _react.PropTypes.string,
-	  propertyTypeSelected: _react.PropTypes.string,
-	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
-	  standardSearch: _react.PropTypes.func.isRequired
-	};
-
-	;
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
-
-/***/ },
+/* 292 */,
 /* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -63375,11 +62631,17 @@
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
+	    key: 'handlePropertyTypeRemove',
+	    value: function handlePropertyTypeRemove(propertyFilter) {
+	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]', propertyFilter);
+	      this.props.removeSearchFilter(filter);
+	    }
+	  }, {
 	    key: 'handleSQFTFilterRemove',
 	    value: function handleSQFTFilterRemove(sqftFilter) {
-	      var _filter5;
+	      var _filter6;
 
-	      var filter = (_filter5 = {}, _defineProperty(_filter5, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter5, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter5);
+	      var filter = (_filter6 = {}, _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter6);
 	      this.props.removeSearchFilter(filter);
 	    }
 	  }, {
@@ -63451,8 +62713,9 @@
 	          )
 	        );
 	      }
-
-	      if (propertyTypeFilter) {}
+	      if (propertyTypeFilter) {
+	        propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilter, value: propertyFilter });
+	      }
 
 	      if (sqftFilter) {
 	        sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
@@ -63493,6 +62756,7 @@
 	              priceElement,
 	              sqftElement,
 	              lotSizeElement,
+	              propertyTypeElement,
 	              _react2.default.createElement(
 	                'span',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
@@ -64091,9 +63355,9 @@
 
 	var _GuideSingleLayout2 = _interopRequireDefault(_GuideSingleLayout);
 
-	var _Modal = __webpack_require__(335);
+	var _LocationModal = __webpack_require__(441);
 
-	var _Modal2 = _interopRequireDefault(_Modal);
+	var _LocationModal2 = _interopRequireDefault(_LocationModal);
 
 	var _lib = __webpack_require__(276);
 
@@ -64121,7 +63385,7 @@
 	  var modal = void 0;
 
 	  if (!_lodash2.default.isEmpty(_lodash2.default.get(widget_cell, 'widget.fields.search_options', {}))) {
-	    modal = _react2.default.createElement(_Modal2.default, null);
+	    modal = _react2.default.createElement(_LocationModal2.default, null);
 	  }
 
 	  switch (widget_cell.widget.fields.layout) {
@@ -65226,347 +64490,7 @@
 	exports.default = GuideSingleLayout;
 
 /***/ },
-/* 335 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(233);
-
-	var _reactRouter = __webpack_require__(178);
-
-	var _urijs = __webpack_require__(283);
-
-	var _urijs2 = _interopRequireDefault(_urijs);
-
-	var _index = __webpack_require__(278);
-
-	var _Api = __webpack_require__(275);
-
-	var _Api2 = _interopRequireDefault(_Api);
-
-	var _lib = __webpack_require__(276);
-
-	var _lodash = __webpack_require__(277);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    open: state.locationModal ? state.locationModal.open : false,
-	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
-	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
-	    saleType: _lodash2.default.get(state, 'searchType.saleType', ''),
-	    propertyTypes: _lodash2.default.get(state, 'searchType.propertyTypes', '')
-	  };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    closeModal: function closeModal() {
-	      dispatch((0, _index.openLocationModal)(false));
-	    },
-
-	    searchHandler: function searchHandler(term, saleType, propertyTypes) {
-
-	      var searchParams = {
-	        term: term,
-	        saleType: saleType,
-	        propertyTypes: propertyTypes
-	      };
-	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
-	        dispatch((0, _index.setSearchProps)(rows));
-	      });
-	    },
-	    topQuery: function topQuery() {
-	      _Api2.default.topQuery({
-	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
-	      }, function (rows) {
-	        dispatch((0, _index.setSearchProps)(rows));
-	      });
-	    }
-	  };
-	};
-
-	var Modal = function (_Component) {
-	  _inherits(Modal, _Component);
-
-	  function Modal(props) {
-	    _classCallCheck(this, Modal);
-
-	    var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
-
-	    _this.state = {
-	      searchValue: '',
-	      timeoutId: 0
-	    };
-	    // Set default values
-	    _this.props.topQuery();
-	    return _this;
-	  }
-
-	  _createClass(Modal, [{
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(prevProps, prevState) {
-	      if (this.props.open) {
-	        this.searchInput.focus();
-	      }
-	    }
-	  }, {
-	    key: 'handleClose',
-	    value: function handleClose(eve) {
-	      eve.preventDefault();
-	      this.props.closeModal();
-	    }
-	  }, {
-	    key: 'handleResultClick',
-	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
-	      eve.preventDefault();
-
-	      // TODO temporary comment this, until done with elastic search API
-
-	      if (url === null) {
-	        var _url$setSearch;
-
-	        // Properties results page
-	        var _url = new _urijs2.default();
-	        _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
-	        _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']', term), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
-	        _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
-	      } else {
-	        // Single property page
-	        _reactRouter.browserHistory.push(url);
-	      }
-
-	      this.props.closeModal();
-	    }
-	  }, {
-	    key: 'search',
-	    value: function search() {
-
-	      var val = this.state.searchValue;
-
-	      if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
-	        this.props.topQuery();
-	      } else {
-	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
-	      }
-	    }
-	  }, {
-	    key: 'handleSearchValueChange',
-	    value: function handleSearchValueChange(eve) {
-	      var val = eve.target.value;
-
-	      this.setState.searchValue = val;
-	      this.forceUpdate();
-
-	      if (this.state.timeoutId) {
-	        clearTimeout(this.state.timeoutId);
-	      }
-
-	      var timeoutId = setTimeout(this.search.bind(this), _lib.Lib.LOCATION_MODAL_REQUESTS_DELAY);
-
-	      this.setState({
-	        searchValue: val,
-	        timeoutId: timeoutId
-	      });
-	    }
-	  }, {
-	    key: 'handleKeyPress',
-	    value: function handleKeyPress(event) {
-	      if (event.keyCode === 27) {
-	        // ESC key
-	        this.props.closeModal();
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var _props = this.props,
-	          searchResults = _props.searchResults,
-	          searchType = _props.searchType,
-	          saleType = _props.saleType,
-	          propertyTypes = _props.propertyTypes;
-
-	      var self = this;
-	      var resultsElements = searchResults.map(function (s, k) {
-	        return _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
-	          _react2.default.createElement(
-	            'div',
-	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'container' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                  'h4',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
-	                  s.text
-	                )
-	              )
-	            ),
-	            s.children.length ? _react2.default.createElement(
-	              'ol',
-	              { className: 'list-group' },
-	              s.children.map(function (c, i) {
-	                return _react2.default.createElement(
-	                  'li',
-	                  { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-item border-0 p-0', key: i },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'container' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'row' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '#', className: 'm-0',
-	                          onClick: function onClick(eve) {
-	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
-	                          } },
-	                        c.text
-	                      )
-	                    )
-	                  )
-	                );
-	              })
-	            ) : null
-	          )
-	        );
-	      });
-
-	      var placeholder = 'Address, City, Zip, or Neighborhood.';
-	      var inputClasses = 'form-control';
-	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
-	        placeholder = 'Address, City, Zip.';
-	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'with-padding';
-	      }
-
-	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
-	      if (!this.props.open) {
-	        searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'hide';
-	      }
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this) },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'modal-content border-0 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'row' },
-	                  _react2.default.createElement(
-	                    'form',
-	                    { method: 'get', className: 'form-inline' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Search'
-	                      ),
-	                      _react2.default.createElement('i', { className: 'fa fa-search' })
-	                    ),
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Input'
-	                      ),
-	                      _react2.default.createElement('input', {
-	                        autoComplete: 'off',
-	                        className: inputClasses,
-	                        id: _lib.Lib.THEME_PREFIX + "search-input",
-	                        onChange: this.handleSearchValueChange.bind(this),
-	                        ref: function ref(input) {
-	                          _this2.searchInput = input;
-	                        },
-	                        type: 'text',
-	                        value: this.state.searchValue,
-	                        placeholder: placeholder
-	                      })
-	                    ),
-	                    _react2.default.createElement(
-	                      'button',
-	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
-	                      'Search'
-	                    )
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _this2.props.closeModal();
-	                  }, 'aria-label': 'Close' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { 'aria-hidden': 'true' },
-	                  '\xD7'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
-	                resultsElements
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Modal;
-	}(_react.Component);
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Modal);
-
-/***/ },
+/* 335 */,
 /* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -83578,7 +82502,7 @@
 	var _lib = __webpack_require__(276);
 
 	var locationModal = function locationModal() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false };
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -83893,6 +82817,1114 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _index = __webpack_require__(278);
+
+	var _reactRedux = __webpack_require__(233);
+
+	var _lodash = __webpack_require__(277);
+
+	var _lib = __webpack_require__(276);
+
+	var _Price = __webpack_require__(293);
+
+	var _Price2 = _interopRequireDefault(_Price);
+
+	var _SQFT = __webpack_require__(300);
+
+	var _SQFT2 = _interopRequireDefault(_SQFT);
+
+	var _LotSize = __webpack_require__(301);
+
+	var _LotSize2 = _interopRequireDefault(_LotSize);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(178);
+
+	var _urijs = __webpack_require__(283);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
+
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	var _qs = __webpack_require__(287);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var convertToSearchParamObject = function convertToSearchParamObject(obj) {
+	  var searchObject = {};
+	  for (var k in obj) {
+	    searchObject[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + k + "]"] = obj[k];
+	  }
+	  return searchObject;
+	};
+
+	function removeDefaultFilters(filters, defaults) {
+	  var finalObj = {};
+	  for (var k in filters) {
+	    if (!defaults[k] || !(0, _lodash.isEqual)(defaults[k], filters[k])) {
+	      finalObj[k] = filters[k];
+	    }
+	  }
+	  return finalObj;
+	}
+
+	var bathroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
+
+	var bedroomOptions = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
+
+	var defaultFiltervalues = {
+	  bedrooms: '0',
+	  bathrooms: '0',
+	  price: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  sqft: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  lotsize: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  }
+	};
+
+	var propertyTypeOptions = [{ name: 'House', value: 'house' }, { name: 'Townhouse', value: 'townhouse' }, { name: 'Condo', value: 'condo' }, { name: 'Manufactured', value: 'manufactured' }];
+
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  var allQueryParams = _Util2.default.getQS(window.location.href, ownProps.searchFilters);
+	  var searchFiltersFormatted = allQueryParams[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+	  var allOtherFilters = Object.assign({}, allQueryParams);
+	  delete allOtherFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+	  return {
+	    allOtherFilters: allOtherFilters,
+	    bedroomOptions: bedroomOptions,
+	    bathroomSelected: searchFiltersFormatted.bathrooms || defaultFiltervalues['bathrooms'],
+	    bedroomSelected: searchFiltersFormatted.bedrooms || defaultFiltervalues['bedrooms'],
+	    priceSelected: searchFiltersFormatted.price || defaultFiltervalues['price'],
+	    propertyTypeSelected: searchFiltersFormatted.propertyType || '',
+	    sqftSelected: searchFiltersFormatted.sqft || defaultFiltervalues['sqft'],
+	    lotSizeSelected: searchFiltersFormatted.lotSize || defaultFiltervalues['lotsize'],
+	    searchFiltersFormatted: searchFiltersFormatted
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    openLocationModal: function openLocationModal() {
+	      // dispatch(openPropertiesModal(false));
+	      dispatch((0, _index.openLocationModal)(true));
+	    },
+
+
+	    openPropertiesModal: function openPropertiesModal(open) {
+	      dispatch((0, _index.openPropertiesModal)(open));
+	    }
+	  };
+	};
+
+	var PropertiesModal = function (_Component) {
+	  _inherits(PropertiesModal, _Component);
+
+	  function PropertiesModal(props) {
+	    _classCallCheck(this, PropertiesModal);
+
+	    var _this = _possibleConstructorReturn(this, (PropertiesModal.__proto__ || Object.getPrototypeOf(PropertiesModal)).call(this, props));
+
+	    _this.state = {
+	      bathroomSelected: props.bathroomSelected,
+	      bedroomSelected: props.bedroomSelected,
+	      localFilters: Object.assign({}, props.searchFiltersFormatted),
+	      propertyTypeSelected: props.propertyTypeSelected,
+	      lotSizeSelected: props.lotSizeSelected,
+	      showAllFilters: false,
+	      priceSelected: props.priceSelected,
+	      sqftSelected: props.sqftSelected
+	    };
+	    return _this;
+	  }
+
+	  _createClass(PropertiesModal, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+	      this.setState({
+	        showAllFilters: showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'handleBathroomSelect',
+	    value: function handleBathroomSelect(val) {
+	      var filter = { "bathrooms": val };
+	      this.setState({
+	        bathroomSelected: val,
+	        localFilters: Object.assign({}, this.state.localFilters, filter)
+	      });
+	    }
+	  }, {
+	    key: 'handleBedroomSelect',
+	    value: function handleBedroomSelect(val) {
+	      var filter = { "bedrooms": val };
+	      this.setState({
+	        bedroomSelected: val,
+	        localFilters: Object.assign({}, this.state.localFilters, filter)
+	      });
+	    }
+	  }, {
+	    key: 'handlePriceSelect',
+	    value: function handlePriceSelect(start, to) {
+	      var filter = {
+	        price: {
+	          start: start,
+	          to: to
+	        }
+	      };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        priceSelected: { start: start, to: to }
+	      });
+	    }
+	  }, {
+	    key: 'handlePropertyTypeSelect',
+	    value: function handlePropertyTypeSelect(val) {
+	      var filter = { "propertyType": val };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        propertyTypeSelected: val
+	      });
+	    }
+	  }, {
+	    key: 'handleLotSizeSelect',
+	    value: function handleLotSizeSelect(start, to) {
+	      var filter = {
+	        lotSize: {
+	          start: start,
+	          to: to
+	        }
+	      };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        lotSizeSelected: { start: start, to: to }
+	      });
+	    }
+	  }, {
+	    key: 'handleSQFTSelect',
+	    value: function handleSQFTSelect(start, to) {
+	      var filter = {
+	        sqft: {
+	          start: start,
+	          to: to
+	        }
+	      };
+	      this.setState({
+	        localFilters: Object.assign({}, this.state.localFilters, filter),
+	        sqftSelected: { start: start, to: to }
+	      });
+	    }
+	  }, {
+	    key: 'saveFilters',
+	    value: function saveFilters() {
+	      var url = new _urijs2.default(window.location.host);
+	      url.pathname(window.location.pathname);
+	      var filters = removeDefaultFilters(this.state.localFilters, defaultFiltervalues);
+	      var searchFilters = convertToSearchParamObject(filters);
+	      var allFilters = Object.assign({}, this.props.allOtherFilters, searchFilters);
+	      var queryParam = decodeURIComponent(_qs2.default.stringify(allFilters));
+	      url.setSearch(queryParam);
+	      this.props.openPropertiesModal(false);
+	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
+	    }
+	  }, {
+	    key: 'displayAllFilters',
+	    value: function displayAllFilters(searchFiltersFormatted) {
+	      return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'] || !!searchFiltersFormatted['lotSize'];
+	    }
+	  }, {
+	    key: 'resetFilters',
+	    value: function resetFilters() {
+	      this.setState({
+	        bathroomSelected: this.props.bathroomSelected,
+	        bedroomSelected: this.props.bedroomSelected,
+	        lotSizeSelected: this.props.lotSizeSelected,
+	        priceSelected: this.props.priceSelected,
+	        propertyTypeSelected: this.props.propertyTypeSelected,
+	        sqftSelected: this.props.sqftSelected,
+	        localFilters: Object.assign({}, this.props.searchFiltersFormatted)
+	      });
+	    }
+	  }, {
+	    key: 'toggleViewAllFilters',
+	    value: function toggleViewAllFilters() {
+	      this.setState({
+	        showAllFilters: !this.state.showAllFilters
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          bedroomOptions = _props.bedroomOptions,
+	          searchFilters = _props.searchFilters,
+	          searchFiltersFormatted = _props.searchFiltersFormatted;
+	      var _state = this.state,
+	          bathroomSelected = _state.bathroomSelected,
+	          bedroomSelected = _state.bedroomSelected,
+	          localFilters = _state.localFilters,
+	          lotSizeSelected = _state.lotSizeSelected,
+	          priceSelected = _state.priceSelected,
+	          propertyTypeSelected = _state.propertyTypeSelected,
+	          showAllFilters = _state.showAllFilters,
+	          sqftSelected = _state.sqftSelected;
+
+
+	      var bathroomElements = bathroomOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === bathroomSelected,
+	          value: d.value
+	        };
+	      });
+
+	      var bedroomElements = bedroomOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === bedroomSelected,
+	          value: d.value
+	        };
+	      });
+
+	      var propertyTypeElements = propertyTypeOptions.map(function (d) {
+	        return {
+	          name: d.name,
+	          selected: d.value === propertyTypeSelected,
+	          value: d.value
+	        };
+	      });
+	      var filters = removeDefaultFilters(localFilters, defaultFiltervalues);
+	      var anyFilterChange = !(0, _lodash.isEqual)(searchFiltersFormatted, filters);
+	      var termFilter = searchFiltersFormatted['term'];
+	      var termFilters = Object.keys(termFilter).map(function (t) {
+	        return { tax: t, value: termFilter[t] };
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (this.props.open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0', role: 'document' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'modal-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
+	                  onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _this2.props.openPropertiesModal(false);
+	                  }, 'aria-label': 'Close' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '\xD7'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline clearfix hidden-md-down' },
+	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'bs-tags-box mr-auto' },
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	                        termFilters.map(function (t) {
+	                          return _react2.default.createElement(
+	                            'span',
+	                            { key: t.value, className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default" },
+	                            _react2.default.createElement(
+	                              'span',
+	                              null,
+	                              _react2.default.createElement('i', {
+	                                className: 'fa fa-times' })
+	                            ),
+	                            ' ',
+	                            t.value
+	                          );
+	                        }),
+	                        !termFilters.length && _react2.default.createElement('input', { type: 'text', size: '1', placeholder: 'Select bedroom type, amenities' })
+	                      )
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput',
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput", readOnly: true }),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'button-group' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'btn-reset', onClick: this.resetFilters.bind(this) },
+	                        'Reset'
+	                      ),
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#',
+	                          className: "btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null),
+	                          onClick: anyFilterChange ? this.saveFilters.bind(this) : null },
+	                        'View Properties'
+	                      )
+	                    )
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-body p-0' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'search-filter-nav hidden-lg-up' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'ul',
+	                    { className: 'clearfix' },
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Buy' },
+	                        _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Buy'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Rent' },
+	                        _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Rent'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Commercial' },
+	                        _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Commercial'
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', title: 'Land' },
+	                        _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          'Land'
+	                        )
+	                      )
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-modal-box" },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Location ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(City, School, Neighborhood, Zip)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: 'filter-type' },
+	                        termFilters.map(function (t) {
+	                          return _react2.default.createElement(
+	                            'span',
+	                            { key: t.value,
+	                              className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
+	                            t.value
+	                          );
+	                        }),
+	                        _react2.default.createElement(
+	                          'a',
+	                          { href: '#', className: 'btn btn-primary', onClick: function onClick() {
+	                              return _this2.props.openLocationModal(true);
+	                            } },
+	                          '+ More Locations'
+	                        )
+	                      )
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Bedrooms ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Minimum)'
+	                        )
+	                      ),
+	                      bedroomElements.map(function (d) {
+	                        return _react2.default.createElement(
+	                          'a',
+	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                            onClick: function onClick() {
+	                              return _this2.handleBedroomSelect.bind(_this2)(d.value);
+	                            } },
+	                          d.name
+	                        );
+	                      })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-price' },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Price ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Range)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_Price2.default, { saleType: searchFiltersFormatted.sale_type, start: priceSelected.start,
+	                          to: priceSelected.to,
+	                          handleOnClick: this.handlePriceSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section",
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Bathrooms ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Minimum)'
+	                        )
+	                      ),
+	                      bathroomElements.map(function (d) {
+	                        return _react2.default.createElement(
+	                          'a',
+	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                            onClick: function onClick() {
+	                              return _this2.handleBathroomSelect.bind(_this2)(d.value);
+	                            } },
+	                          d.name
+	                        );
+	                      })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Total Size ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(SQFT)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_SQFT2.default, { saleType: searchFiltersFormatted.sale_type, start: sqftSelected.start,
+	                          to: sqftSelected.to,
+	                          handleOnClick: this.handleSQFTSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Lot Size ',
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          '(Acres)'
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        _react2.default.createElement(_LotSize2.default, { saleType: searchFiltersFormatted.sale_type, start: lotSizeSelected.start, to: lotSizeSelected.to, handleOnClick: this.handleLotSizeSelect.bind(this) })
+	                      ),
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      {
+	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
+	                        style: { display: showAllFilters ? 'block' : 'none' } },
+	                      _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Type'
+	                      ),
+	                      _react2.default.createElement(
+	                        'div',
+	                        { className: 'filter-type' },
+	                        propertyTypeElements.map(function (d) {
+	                          return _react2.default.createElement(
+	                            'a',
+	                            { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                                return _this2.handlePropertyTypeSelect.bind(_this2)(d.value);
+	                              } },
+	                            d.name
+	                          );
+	                        })
+	                      )
+	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    showAllFilters ? _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                        onClick: this.toggleViewAllFilters.bind(this) },
+	                      '- View Less Filters'
+	                    ) : _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                        onClick: this.toggleViewAllFilters.bind(this) },
+	                      '+ View More Filters'
+	                    )
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-footer' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav hidden-lg-up' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'container' },
+	                  _react2.default.createElement(
+	                    'button',
+	                    { className: 'btn btn-reset' },
+	                    'Reset'
+	                  ),
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'nav-item-right' },
+	                    _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: 'btn-cancel' },
+	                      'Cancel'
+	                    ),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'i',
+	                      null,
+	                      '|'
+	                    ),
+	                    ' ',
+	                    _react2.default.createElement(
+	                      'a',
+	                      { href: '#', className: 'btn-apply' },
+	                      'Apply'
+	                    )
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PropertiesModal;
+	}(_react.Component);
+
+	PropertiesModal.propTypes = {
+	  allOtherFilters: _react.PropTypes.object,
+	  bathroomSelected: _react.PropTypes.string,
+	  bedroomSelected: _react.PropTypes.string,
+	  openLocationModal: _react.PropTypes.func.isRequired,
+	  propertyTypeSelected: _react.PropTypes.string,
+	  searchFiltersFormatted: _react.PropTypes.object.isRequired,
+	  standardSearch: _react.PropTypes.func.isRequired
+	};
+	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
+
+/***/ },
+/* 441 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _index = __webpack_require__(278);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(233);
+
+	var _reactRouter = __webpack_require__(178);
+
+	var _urijs = __webpack_require__(283);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
+
+	var _Api = __webpack_require__(275);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
+	var _lib = __webpack_require__(276);
+
+	var _lodash = __webpack_require__(277);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _Util = __webpack_require__(281);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    open: state.locationModal ? state.locationModal.open : false,
+	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
+	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
+	    saleType: _lodash2.default.get(state, 'searchType.saleType', ''),
+	    propertyTypes: _lodash2.default.get(state, 'searchType.propertyTypes', '')
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    closeModal: function closeModal() {
+	      dispatch((0, _index.openLocationModal)(false));
+	    },
+
+	    searchHandler: function searchHandler(term, saleType, propertyTypes) {
+
+	      var searchParams = {
+	        term: term,
+	        saleType: saleType,
+	        propertyTypes: propertyTypes
+	      };
+	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
+	        dispatch((0, _index.setSearchProps)(rows));
+	      });
+	    },
+	    topQuery: function topQuery() {
+	      _Api2.default.topQuery({
+	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
+	      }, function (rows) {
+	        dispatch((0, _index.setSearchProps)(rows));
+	      });
+	    }
+	  };
+	};
+
+	var LocationModal = function (_Component) {
+	  _inherits(LocationModal, _Component);
+
+	  function LocationModal(props) {
+	    _classCallCheck(this, LocationModal);
+
+	    var _this = _possibleConstructorReturn(this, (LocationModal.__proto__ || Object.getPrototypeOf(LocationModal)).call(this, props));
+
+	    _this.state = {
+	      searchValue: '',
+	      timeoutId: 0
+	    };
+	    // Set default values
+	    _this.props.topQuery();
+	    return _this;
+	  }
+
+	  _createClass(LocationModal, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (this.props.open) {
+	        this.searchInput.focus();
+	      }
+	    }
+	  }, {
+	    key: 'handleClose',
+	    value: function handleClose(eve) {
+	      eve.preventDefault();
+	      this.props.closeModal();
+	    }
+	  }, {
+	    key: 'handleResultClick',
+	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
+	      eve.preventDefault();
+
+	      // TODO temporary comment this, until done with elastic search API
+
+	      if (url === null) {
+	        var _url$setSearch;
+
+	        // Properties results page
+	        var _url = new _urijs2.default();
+	        _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
+	        _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']', term), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
+	        _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
+	      } else {
+	        // Single property page
+	        _reactRouter.browserHistory.push(url);
+	      }
+
+	      this.props.closeModal();
+	    }
+	  }, {
+	    key: 'search',
+	    value: function search() {
+
+	      var val = this.state.searchValue;
+
+	      if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	        this.props.topQuery();
+	      } else {
+	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
+	      }
+	    }
+	  }, {
+	    key: 'handleSearchValueChange',
+	    value: function handleSearchValueChange(eve) {
+	      var val = eve.target.value;
+
+	      this.setState.searchValue = val;
+	      this.forceUpdate();
+
+	      if (this.state.timeoutId) {
+	        clearTimeout(this.state.timeoutId);
+	      }
+
+	      var timeoutId = setTimeout(this.search.bind(this), _lib.Lib.LOCATION_MODAL_REQUESTS_DELAY);
+
+	      this.setState({
+	        searchValue: val,
+	        timeoutId: timeoutId
+	      });
+	    }
+	  }, {
+	    key: 'handleKeyPress',
+	    value: function handleKeyPress(event) {
+	      if (event.keyCode === 27) {
+	        // ESC key
+	        this.props.closeModal();
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          searchResults = _props.searchResults,
+	          searchType = _props.searchType,
+	          saleType = _props.saleType,
+	          propertyTypes = _props.propertyTypes;
+
+	      var self = this;
+	      var resultsElements = searchResults.map(function (s, k) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { key: k, className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-group' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'container' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'h4',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-title" },
+	                  s.text
+	                )
+	              )
+	            ),
+	            s.children.length ? _react2.default.createElement(
+	              'ol',
+	              { className: 'list-group' },
+	              s.children.map(function (c, i) {
+	                return _react2.default.createElement(
+	                  'li',
+	                  { className: 'list-group-item ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-result-item border-0 p-0', key: i },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'container' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'row' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'm-0',
+	                          onClick: function onClick(eve) {
+	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                          } },
+	                        c.text
+	                      )
+	                    )
+	                  )
+	                );
+	              })
+	            ) : null
+	          )
+	        );
+	      });
+
+	      var placeholder = 'Address, City, Zip, or Neighborhood.';
+	      var inputClasses = 'form-control';
+	      if (window.innerWidth < _lib.Lib.MOBILE_WIDTH) {
+	        placeholder = 'Address, City, Zip.';
+	        inputClasses = 'form-control ' + _lib.Lib.THEME_CLASSES_PREFIX + 'with-padding';
+	      }
+
+	      var searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'display';
+	      if (!this.props.open) {
+	        searchModalClasses = _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'hide';
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this), style: { zIndex: 1100 } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'modal-content border-0 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-header ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-header' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'row' },
+	                  _react2.default.createElement(
+	                    'form',
+	                    { method: 'get', className: 'form-inline' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Search'
+	                      ),
+	                      _react2.default.createElement('i', { className: 'fa fa-search' })
+	                    ),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'form-group' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { className: 'sr-only' },
+	                        'Input'
+	                      ),
+	                      _react2.default.createElement('input', {
+	                        autoComplete: 'off',
+	                        className: inputClasses,
+	                        id: _lib.Lib.THEME_PREFIX + "search-input",
+	                        onChange: this.handleSearchValueChange.bind(this),
+	                        ref: function ref(input) {
+	                          _this2.searchInput = input;
+	                        },
+	                        type: 'text',
+	                        value: this.state.searchValue,
+	                        placeholder: placeholder
+	                      })
+	                    ),
+	                    _react2.default.createElement(
+	                      'button',
+	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
+	                      'Search'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
+	                    e.preventDefault();
+	                    _this2.props.closeModal();
+	                  }, 'aria-label': 'Close' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '\xD7'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'modal-body ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-body' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
+	                resultsElements
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LocationModal;
+	}(_react.Component);
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LocationModal);
 
 /***/ }
 /******/ ]);

@@ -351,10 +351,7 @@ class Api {
   }
 
   static createESSearchQuery(params) {
-    let terms = {};
-    Object.keys(params.term).forEach(tax => {
-      terms["terms." + tax + ".slug"] = params.term[tax];
-    });
+    let terms = Object.keys(params.term).map(tax => { return {term: {["terms." + tax + ".slug"]: params.term[tax]}} });
 
     let query = {
       "bool": {
@@ -468,9 +465,13 @@ class Api {
         });
 
       }
-      query.bool.must.push({"term": terms});
-    }
 
+      query.bool.must.push({
+        "bool": {
+          "should": terms
+        }
+      });
+    }
     query = JSON.stringify(query);
 
     let size = params.size || 500;

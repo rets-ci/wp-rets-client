@@ -60,6 +60,13 @@ class searchFilters extends Component {
     this.props.removeSearchFilter(filter);
   }
 
+  handlePropertyTypeRemove(propertyFilter) {
+    let filter = {
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]']: propertyFilter
+    };
+    this.props.removeSearchFilter(filter);
+  }
+
   handleSQFTFilterRemove(sqftFilter) {
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: sqftFilter.start,
@@ -120,9 +127,10 @@ class searchFilters extends Component {
         </a>
       </span>);
     }
-
     if (propertyTypeFilter) {
-
+      propertyTypeElement = (
+        <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilter} value={propertyFilter} />
+      );
     }
 
     if (sqftFilter) {
@@ -153,6 +161,7 @@ class searchFilters extends Component {
               {priceElement}
               {sqftElement}
               {lotSizeElement}
+              {propertyTypeElement}
               <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
                 <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
                   <span>+</span>
