@@ -157,6 +157,13 @@ class Util extends React.Component {
     }
     return returnObject ?  url.search(returnObject) : url.search();
   }
+
+  static withoutSearchFilters(url) {
+    let uri = new URI(url);
+    let urlQuery = uri.query();
+    let query = qs.parse(urlQuery);
+    delete query[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+  }
 }
 
 export default Util;

@@ -8,10 +8,10 @@ require('nouislider/distribute/nouislider.css');
 class Slider extends Component {
   static propTypes = {
 		allowDecimalPlaces: PropTypes.bool,
-    formatter: PropTypes.func.isRequired,
+    formatter: PropTypes.func,
     handleOnClick: PropTypes.func.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    min: PropTypes.number,
+    max: PropTypes.number,
     start: PropTypes.any,
     step: PropTypes.any,
     to: PropTypes.any
@@ -33,8 +33,8 @@ class Slider extends Component {
       to
     } = this.props;
     let range = {
-      min,
-      max
+      min: min,
+      max: max
     };
 
     let percentages = [20, 40, 60, 80];
@@ -47,22 +47,20 @@ class Slider extends Component {
         return percentages.indexOf(ourValue) >= 0 ? 1 : 0;
       }
     };
-
     this.slider = noUiSlider.create(this.sliderElement, {
-    	connect: true,
-      format: formatter(),
+      connect: true,
+      format: formatter ? formatter() : null,
       pips: {
-      	mode: 'steps',
-    		density: 5,
+        mode: 'steps',
+        density: 5,
         filter: filterPips,
-        format: formatter()
+        format: formatter ? formatter() : null
       },
       range: range,
-    	start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
+      start: [start === Lib.RANGE_SLIDER_NO_MIN_TEXT ? min : start, to === Lib.RANGE_SLIDER_NO_MAX_TEXT ? max : to],
       step: step,
       tooltips: true
     });
-
     this.slider.on('change', function(values, handle, unencoded) {
       let start;
       let to;

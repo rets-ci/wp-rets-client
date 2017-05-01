@@ -124,7 +124,7 @@ class MapSearchResults extends Component {
     } else {
       elementToShow = (
         <div className={Lib.THEME_CLASSES_PREFIX+"search-map"}>
-          <LocationModal searchFilters={searchFilters} />
+          <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container`}>

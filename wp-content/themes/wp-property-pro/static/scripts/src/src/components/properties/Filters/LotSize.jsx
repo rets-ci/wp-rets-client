@@ -22,10 +22,10 @@ let sliderFormatter = (min, max) => {
 
 class LotSize extends Component {
   static propTypes = {
-    saleType: PropTypes.string.isRequired,
+    saleType: PropTypes.string,
     start: PropTypes.any,
     to: PropTypes.any,
-    handleOnClick: PropTypes.func.isRequired
+    handleOnClick: PropTypes.func
   };
 
   constructor(props) {

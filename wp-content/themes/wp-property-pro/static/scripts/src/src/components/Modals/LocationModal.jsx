@@ -1,4 +1,4 @@
-import {openLocationModal, setSearchProps} from '../../actions/index.jsx';
+import {openLocationModal, setSearchProps, updatePropertiesModalLocalFilter} from '../../actions/index.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
@@ -9,8 +9,11 @@ import _ from 'lodash';
 import Util from '../Util.jsx';
 
 const mapStateToProps = (state, ownProps) => {
+  let localFilters = state.propertiesModal.localFilters;
   return {
     open: state.locationModal ? state.locationModal.open : false,
+    localFilters: localFilters,
+    searchMode: !!Object.keys(localFilters).length,
     searchResults: _.get(state, 'searchPropsState.searchProps', []),
     searchType: _.get(state, 'searchType.searchType', ''),
     saleType: _.get(state, 'searchType.saleType', ''),
@@ -45,6 +48,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           dispatch(setSearchProps(rows));
         }
       );
+    },
+
+    updatePropertiesModalLocalFilter(filter) {
+      dispatch(updatePropertiesModalLocalFilter(filter));
     }
   };
 };
@@ -79,14 +86,24 @@ class LocationModal extends Component {
 
     if (url === null) {
       // Properties results page
-      let url = new URL();
-      url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
-      url.setSearch({
-        [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][' + tax + ']']: term,
-        [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
-        [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
-      });
-      browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
+      if (this.props.searchMode) {
+        // in searchMode, therefore we can assume that term filter also exists
+        let updatedTermFilter = this.props.localFilters.term.slice(0);
+        updatedTermFilter.push({[tax]: term});
+        this.props.updatePropertiesModalLocalFilter({
+          term: updatedTermFilter
+        });
+        this.props.closeModal();
+      } else {
+        let url = new URL();
+        url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+        url.setSearch({
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: term,
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
+        });
+        browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
+      }
     } else {
       // Single property page
       browserHistory.push(url);
@@ -141,8 +158,8 @@ class LocationModal extends Component {
     let self = this;
     let resultsElements = searchResults.map((s, k) => {
       return (
-        <div className="row">
-          <div key={k} className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
+        <div className="row" key={k}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}search-result-group`}>
             <div className="container">
               <div className="row">
                 <h4 className={Lib.THEME_CLASSES_PREFIX + "search-title"}>{s.text}</h4>
