@@ -1026,12 +1026,19 @@ namespace UsabilityDynamics\WPRETSC {
 
         $post_data['tax_input'] = array();
 
+        if( isset( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
+          $_rets_media = $post_data[ 'meta_input' ][ 'rets_media' ];
+          unset( $post_data[ 'meta_input' ][ 'rets_media' ] );
+        }
+
         // Ensure we have lat/log meta fields. @note May be a better place to set this up?
         if( ( !isset( $post_data[ 'meta_input' ][ 'latitude' ] ) || !$post_data[ 'meta_input' ][ 'latitude' ] ) && isset( $post_data['_system']['location']['lat'] ) ) {
           $post_data[ 'meta_input' ][ 'latitude' ] = $post_data['_system']['location']['lat'];
           $post_data[ 'meta_input' ][ 'longitude' ] = $post_data['_system']['location']['lon'];
           ud_get_wp_rets_client()->write_log( 'Inserted lat/lon from _system ' . $post_data['_system']['location']['lat'], 'debug' );
         }
+
+        error_log(print_r($post_data,true));
 
         $_post_id = wp_insert_post( $post_data, true );
 
@@ -1049,7 +1056,7 @@ namespace UsabilityDynamics\WPRETSC {
         // Insert all the terms and creates taxonomies.
         self::insert_property_terms( $_post_id, $_post_data_tax_input, $post_data );
 
-        if( !empty( $post_data[ 'meta_input' ][ 'rets_media' ] ) && is_array( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
+        if( isset( $_rets_media ) ) {
 
           $_already_attached_media = array();
           $_new_media = array();
@@ -1066,9 +1073,9 @@ namespace UsabilityDynamics\WPRETSC {
           }
 
           // delete all old attachments if the count of new media doesn't match up with old media
-          if( count( $attached_media ) !== count( $post_data[ 'meta_input' ][ 'rets_media' ] ) ) {
+          if( count( $attached_media ) !== count( $_rets_media ) ) {
 
-            ud_get_wp_rets_client()->write_log( 'For ['.$_post_id.'] property media count has changed. Before ['.count( $attached_media ).'], now ['.count( $post_data[ 'meta_input' ][ 'rets_media' ] ).'].', 'debug' );
+            ud_get_wp_rets_client()->write_log( 'For ['.$_post_id.'] property media count has changed. Before ['.count( $attached_media ).'], now ['.count( $_rets_media ).'].', 'debug' );
 
             //ud_get_wp_rets_client()->write_log( 'Deleting [' .  $_single_media_item->ID . '] media item.', 'debug' );
             foreach( $attached_media as $_single_media_item ) {
@@ -1078,7 +1085,7 @@ namespace UsabilityDynamics\WPRETSC {
 
           }
 
-          foreach( $post_data[ 'meta_input' ][ 'rets_media' ] as $media ) {
+          foreach( $_rets_media as $media ) {
 
             if( in_array( $media[ 'url' ], $_already_attached_media ) ) {
               //ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
@@ -1126,12 +1133,6 @@ namespace UsabilityDynamics\WPRETSC {
 
           }
 
-          // newly inserted media is in $_new_media
-          // old media is in $_already_attached_media
-          // we get media that was attached before but not in new media
-
-          unset( $post_data[ 'meta_input' ][ 'rets_media' ] );
-
         }
 
         if( $_post_id ) {
@@ -1158,8 +1159,8 @@ namespace UsabilityDynamics\WPRETSC {
 
           $_message = array();
 
-          if( isset( $_post_id ) && !is_wp_error( $_post_id ) && isset( $post_data[ 'ID' ] ) && $post_data[ 'ID' ] === $_post_id ) {
-            $_message[] = 'Updated property [' . $post_data[ 'meta_input' ][ 'rets_id' ] . '],  post ID [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
+          if( isset( $_post ) && $_post ) {
+            $_message[] = 'Updated property [' . $post_data[ 'meta_input' ][ 'rets_id' ] . '], post ID [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
           } else {
             $_message[] = 'Created property [' . $post_data[ 'meta_input' ][ 'rets_id' ]  . '], post ID [' . $_post_id  . '] in [' . timer_stop() . '] seconds with [' .$_post_status .'] status.';
           }
