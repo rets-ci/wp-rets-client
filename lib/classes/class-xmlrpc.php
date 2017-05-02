@@ -1300,7 +1300,11 @@ namespace UsabilityDynamics\WPRETSC {
           }
 
           // Avoid hierarchical taxonomies since they do not allow simple-value passing.
-          WPP_F::verify_have_system_taxonomy( $tax_name, array( 'hierarchical' => false ) );
+          if( method_exists( 'WPP_F', 'verify_have_system_taxonomy' ) ) {
+            WPP_F::verify_have_system_taxonomy( $tax_name, array( 'hierarchical' => false ) );
+          } else {
+            Utility::verify_have_system_taxonomy( $tax_name, array( 'hierarchical' => false ) );
+          }
 
           if( is_taxonomy_hierarchical( $tax_name ) ) {
             ud_get_wp_rets_client()->write_log( "Handling hierarchical taxonomy [$tax_name].", 'debug' );

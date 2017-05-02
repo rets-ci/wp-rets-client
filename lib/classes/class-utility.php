@@ -12,6 +12,48 @@ namespace UsabilityDynamics\WPRETSC {
 
     final class Utility {
 
+
+      /**
+       * Registers a system taxonomy if needed with most essential arguments.
+       *
+       * @since 2.2.1
+       * @author potanin@UD
+       * @param string $taxonomy
+       * @param array $args
+       * @return string
+       */
+      static public function verify_have_system_taxonomy($taxonomy = '', $args = array())
+      {
+
+        $args = wp_parse_args($args, array(
+          'hierarchical' => true
+        ));
+
+        if (taxonomy_exists($taxonomy)) {
+          return $taxonomy;
+        }
+
+        register_taxonomy( substr( $taxonomy, 0, 32 ), array( 'property' ), array(
+          'hierarchical' => $args['hierarchical'],
+          // 'update_count_callback' => null,
+          'labels' => array(),
+          'show_ui' => false,
+          'show_in_menu' => false,
+          'show_admin_column' => false,
+          'meta_box_cb' => false,
+          'query_var' => false,
+          'rewrite' => false
+        ));
+
+        if (taxonomy_exists($taxonomy)) {
+          return $taxonomy;
+        } else {
+          return false;
+        }
+
+      }
+
+
       /**
        * Get published, private and future property counts for each schedule.
        *

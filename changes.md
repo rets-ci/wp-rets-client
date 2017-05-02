@@ -1,4 +1,5 @@
 #### 0.3.1
+* Added `verify_have_system_taxonomy` utility method for fail-over for old WPP versions.
 * Added option to `skipTermCounting` when doing `wpp.editProperty`
 * Changed `wpp.scheduleStats` to returns counts of only published, private and future listings. 
 * Added `wpp.trashProperty` method for quicker removal.
