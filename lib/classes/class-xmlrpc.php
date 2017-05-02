@@ -1038,7 +1038,7 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( 'Inserted lat/lon from _system ' . $post_data['_system']['location']['lat'], 'debug' );
         }
 
-        error_log(print_r($post_data,true));
+        //error_log(print_r($post_data,true));
 
         $_post_id = wp_insert_post( $post_data, true );
 
