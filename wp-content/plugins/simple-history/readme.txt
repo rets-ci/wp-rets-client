@@ -3,8 +3,8 @@ Contributors: eskapism
 Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 4.5.1
-Tested up to: 4.6
-Stable tag: 2.13
+Tested up to: 4.7
+Stable tag: 2.14.1
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -59,6 +59,11 @@ Simple History logging login attempts, lockouts, and configuration changes made 
 **Redirection**
 The [redirection plugin](https://sv.wordpress.org/plugins/redirection/) manages url redirections, using a nice GUI.
 Simple History will log redirects and groups that are created, changed, enabled or disabled and also when the global plugin settings have been modified.
+
+**Duplicate Post**
+Tjhe plugin [Duplicate Post](https://wordpress.org/plugins/duplicate-post/) allows users to
+clone posts of any type.
+Simple History will log when a clone of a post or page is done.
 
 #### RSS feed available
 
@@ -156,6 +161,19 @@ A simple way to see any uncommon activity, for example an increased number of lo
 == Changelog ==
 
 ## Changelog
+
+= 2.14.1 (April 2017) =
+
+- Fix for users running on older PHP versions.
+
+= 2.14 (April 2017) =
+
+- Added support for plugin [Duplicate Post](https://wordpress.org/plugins/duplicate-post/).
+  Now when a user clones a post or page you will se this in the history log, with links to both the original post and the new copy.
+- Removed log level info from title in RSS feed
+- Make date dropdown less "jumpy" when loading page (due to select element switching to Select2)
+- Only add filters for plugin Limit Login Attempts if plugin is active. This fixes problem with Limit Login Attempts Reloaded and possibly other forks of the plugin.
+- Debug page now displays installed plugins.
 
 = 2.13 (November 2016) =
 
