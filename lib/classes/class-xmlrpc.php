@@ -234,19 +234,33 @@ namespace UsabilityDynamics\WPRETSC {
           return $post_data;
         }
 
-        // Quick summary of all listings, fetched by a meta key.
-        if( $request_data->get_param( 'type' ) == 'index' ) {
-          $_per_page = $request_data->get_param( 'per_page' );
-          $offset = $request_data->get_param( 'offset' );
-          $unique_key = $request_data->get_param( 'unique' );
+        // handle wp-json reqests
+        if( is_callable( array( $request_data, 'get_param' ) ) ) {
 
-          if( is_string( $request_data->get_param( 'post_status' ) ) ) {
-            $_post_status = explode( ',', $request_data->get_param( 'post_status' ) );
+          $post_data = wp_parse_args($post_data, array(
+            'type' => $request_data->get_param( 'type' ),
+            'per_page' => $request_data->get_param( 'per_page' ),
+            'offset' => $request_data->get_param( 'offset' ),
+            'post_status' => $request_data->get_param( 'post_status' ),
+            'order' => $request_data->get_param( 'order' ),
+            'unique' => $request_data->get_param( 'unique' )
+          ));
+
+        };
+
+        // Quick summary of all listings, fetched by a meta key.
+        if( $post_data['type'] === 'index' ) {
+          $_per_page = $post_data[ 'per_page' ];
+          $offset = $post_data[ 'offset' ];
+          $unique_key = $post_data[ 'unique' ];
+
+          if( is_string( $post_data[ 'post_status' ] ) ) {
+            $_post_status = explode( ',', $post_data[ 'post_status' ] );
             $post_status = join( "','", $_post_status );
           }
 
-          if( is_array( $request_data->get_param( 'post_status' ) ) ) {
-            $post_status = join( "','", $request_data->get_param( 'post_status' ) );
+          if( is_array( $post_data[ 'post_status' ] ) ) {
+            $post_status = join( "','", $post_data[ 'post_status' ] );
           }
 
           $_queries = array(
@@ -263,9 +277,9 @@ namespace UsabilityDynamics\WPRETSC {
             'total' => intval($_total),
             'data' => $_list,
             'unique' => $unique_key,
-            'offset' => $request_data->get_param( 'offset' ),
+            'offset' => $post_data[ 'offset' ],
             'post_status' => explode( "','", $post_status ),
-            'per_page' => $request_data->get_param( 'per_page' ),
+            'per_page' => $post_data[ 'per_page' ],
             'time' => timer_stop(),
           );
 
@@ -275,24 +289,24 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
         $_query = array(
-          'post_status' => $request_data->get_param( 'post_status' ),
+          'post_status' => $post_data[ 'post_status' ],
           'post_type' => 'property',
-          'posts_per_page' => $request_data->get_param( 'per_page' ),
+          'posts_per_page' => $post_data[ 'per_page' ],
           'update_post_meta_cache' => false,
           'update_post_term_cache' => false,
           'orderby' => 'modified',
-          'order' => strtoupper( $request_data->get_param( 'order' ) ),
+          'order' => strtoupper( $post_data[ 'order' ] ),
           'tax_query' => array(
             array(
               'taxonomy' => 'rets_schedule',
               'field'    => 'slug',
-              'terms'    => $request_data->get_param( 'schedule_id' ),
+              'terms'    => $post_data[ 'schedule_id' ],
             ),
           ),
         );
 
-        if( $request_data->get_param( 'offset' ) ) {
-          $_query['offset'] = $request_data->get_param( 'offset' );
+        if( $post_data[ 'offset' ] ) {
+          $_query['offset'] = $post_data[ 'offset' ];
         }
 
         //error_log(print_r($_query,true));
@@ -333,8 +347,8 @@ namespace UsabilityDynamics\WPRETSC {
 
         return array(
           'ok' => true,
-          'per_page' => $request_data->get_param( 'per_page' ),
-          'schedule' => $request_data->get_param( 'schedule_id' ),
+          'per_page' => $post_data[ 'per_page' ],
+          'schedule' => $post_data[ 'schedule_id' ],
           'total' => intval( $query->found_posts ),
           'data' => $_listings,
           'time' => timer_stop()
@@ -1088,7 +1102,8 @@ namespace UsabilityDynamics\WPRETSC {
           foreach( $_rets_media as $media ) {
 
             if( in_array( $media[ 'url' ], $_already_attached_media ) ) {
-              //ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
+              ud_get_wp_rets_client()->write_log( "Skipping [" . $media['url'] . "] because it's already attached to [" . $_post_id . "]", 'debug' );
+              continue;
             }
 
             // attach media if a URL is set and it isn't already attached
@@ -1519,6 +1534,7 @@ namespace UsabilityDynamics\WPRETSC {
         global $wp_xmlrpc_server, $wpdb;
 
         $data = self::parseRequest( $args );
+
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return $data;
         }
@@ -1529,6 +1545,7 @@ namespace UsabilityDynamics\WPRETSC {
         );
 
         $post_id = 0;
+
         if( is_numeric( $data ) ) {
           $post_id = $data;
         } else if( !empty( $data[ 'id' ] ) ) {

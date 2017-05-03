@@ -35,7 +35,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         register_taxonomy( substr( $taxonomy, 0, 32 ), array( 'property' ), array(
           'hierarchical' => $args['hierarchical'],
-          // 'update_count_callback' => null,
+          'update_count_callback' => null,
           'labels' => array(),
           'show_ui' => false,
           'show_in_menu' => false,
@@ -52,7 +52,6 @@ namespace UsabilityDynamics\WPRETSC {
         }
 
       }
-
 
       /**
        * Get published, private and future property counts for each schedule.
@@ -147,6 +146,7 @@ namespace UsabilityDynamics\WPRETSC {
         return $_result;
 
       }
+
       /**
        *
        * @param $rets_id
