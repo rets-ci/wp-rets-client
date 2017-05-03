@@ -1207,6 +1207,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 0;
 }
 
+.propertypro-location-modal {
+  z-index: 1100;
+}
+
 .propertypro-search-modal-box ol li.propertypro-search-result-item {
     display: block;
     margin-top: 1.5rem;

@@ -9,13 +9,8 @@ import qs from 'qs';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
-    },
-
-    updateURLWithQueryParam(queryParam) {
-      Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
     }
   }
 };
@@ -30,7 +25,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]']: bathroomsFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleBedroomsFilterRemove(bedroomFilter) {
@@ -38,7 +33,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleLotSizefilterRemove(lotSizeFilter) {
@@ -47,7 +42,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]"]: lotSizeFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handlePriceFilterRemove(priceFilter) {
@@ -56,7 +51,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handlePropertyTypeRemove(propertyFilter) {
@@ -64,7 +59,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]']: propertyFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleSQFTFilterRemove(sqftFilter) {
@@ -73,7 +68,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: sqftFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleTermFilterRemove(termFilter) {
@@ -86,7 +81,11 @@ class searchFilters extends Component {
     })
     parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
     let updatedQueryParam = qs.stringify(parsedQs);
-    this.props.updateURLWithQueryParam('?' + updatedQueryParam);
+    this.updateURLWithQueryParam('?' + updatedQueryParam);
+  }
+
+  updateURLWithQueryParam(queryParam) {
+    Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
   }
 
   render() {

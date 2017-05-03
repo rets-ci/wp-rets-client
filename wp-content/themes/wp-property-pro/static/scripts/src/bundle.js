@@ -29927,8 +29927,8 @@
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
-	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER',
-	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER',
+	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION',
+	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
 	  EXTENSION_DELIMITER: '.',
 	  INIT_MENU_ACTION: 'INIT_MENU',
@@ -29940,7 +29940,7 @@
 	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	  SET_PROPERTIES_MODAL_LOCAL_FILTER: 'SET_PROPERTIES_MODAL_LOCAL_FILTER',
+	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
 	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
 	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
 	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
@@ -29953,7 +29953,7 @@
 	  TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED: 'TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED',
 	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
-	  UPDATE_PROPERTIES_MODAL_LOCAL_FILTER: 'UPDATE_PROPERTIES_MODAL_LOCAL_FILTER',
+	  UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
 	  URL_DELIMITER: '/',
 	  POST_SUGGEST_COUNT: 5,
 	  TERM_SUGGEST_COUNT: 20,
@@ -47073,14 +47073,14 @@
 
 	var deletePropertiesModalSingleLocalFilter = exports.deletePropertiesModalSingleLocalFilter = function deletePropertiesModalSingleLocalFilter(filterKey) {
 	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER,
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
 	    filterKey: filterKey
 	  };
 	};
 
 	var deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalTermLocalFilter = function deletePropertiesModalTermLocalFilter(termFilter) {
 	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER,
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
 	    termFilter: termFilter
 	  };
 	};
@@ -47101,7 +47101,7 @@
 
 	var setPropertiesModalLocalFilter = exports.setPropertiesModalLocalFilter = function setPropertiesModalLocalFilter(localFilters) {
 	  return {
-	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER,
+	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
 	    localFilters: localFilters
 	  };
 	};
@@ -47170,7 +47170,7 @@
 
 	var updatePropertiesModalLocalFilter = exports.updatePropertiesModalLocalFilter = function updatePropertiesModalLocalFilter(filter) {
 	  return {
-	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER,
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
 	    filter: filter
 	  };
 	};
@@ -56671,7 +56671,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this), style: { zIndex: 1100 } },
+	        { className: 'modal ' + searchModalClasses + ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'location-modal', onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
@@ -63919,13 +63919,8 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-
 	    openPropertiesModal: function openPropertiesModal(open) {
 	      dispatch((0, _index.openPropertiesModal)(open));
-	    },
-
-	    updateURLWithQueryParam: function updateURLWithQueryParam(queryParam) {
-	      _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
 	    }
 	  };
 	};
@@ -63944,14 +63939,14 @@
 	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleBedroomsFilterRemove',
 	    value: function handleBedroomsFilterRemove(bedroomFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleLotSizefilterRemove',
@@ -63960,7 +63955,7 @@
 
 	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]", lotSizeFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]", lotSizeFilter.to), _filter3);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handlePriceFilterRemove',
@@ -63969,14 +63964,14 @@
 
 	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter4);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handlePropertyTypeRemove',
 	    value: function handlePropertyTypeRemove(propertyFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]', propertyFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleSQFTFilterRemove',
@@ -63985,7 +63980,7 @@
 
 	      var filter = (_filter6 = {}, _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter6);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleTermFilterRemove',
@@ -63999,7 +63994,12 @@
 	      });
 	      parsedQs[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
 	      var updatedQueryParam = _qs2.default.stringify(parsedQs);
-	      this.props.updateURLWithQueryParam('?' + updatedQueryParam);
+	      this.updateURLWithQueryParam('?' + updatedQueryParam);
+	    }
+	  }, {
+	    key: 'updateURLWithQueryParam',
+	    value: function updateURLWithQueryParam(queryParam) {
+	      _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
 	    }
 	  }, {
 	    key: 'render',
@@ -83858,13 +83858,13 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER:
+	    case _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters);
 	      delete localFilters[action.filterKey];
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
 	      }));
-	    case _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER:
+	    case _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters);
 	      localFilters.term = localFilters.term.filter(function (t) {
 	        return !(0, _lodash.isEqual)(t, action.termFilter);
@@ -83872,7 +83872,7 @@
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
 	      }));
-	    case _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER:
+	    case _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION:
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: action.localFilters
 	      }));
@@ -83880,7 +83880,7 @@
 	      return Object.assign({}, _extends({}, state, {
 	        open: action.open
 	      }));
-	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER:
+	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters, action.filter);
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
