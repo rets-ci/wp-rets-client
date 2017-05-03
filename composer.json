@@ -106,7 +106,7 @@
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
       "EP_HOST": "https://api.realty.ci-v5:jhygeipvfuujblue@api.wpcloud.io:19100",
       "wp_cache": true,
-      "concatenate_scripts": true,
+      "concatenate_scripts": false,
       "sunrise": false,
       "multisite": false,
       "empty_trash_days": 60,
