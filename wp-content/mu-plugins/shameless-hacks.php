@@ -9,6 +9,8 @@
  *
  */
 
+add_filter( 'postmeta_form_keys', function() { return array(); });
+
 add_filter( 'media_library_show_audio_playlist', function() { return false; });
 add_filter( 'media_library_show_video_playlist', function() { return false; });
 
