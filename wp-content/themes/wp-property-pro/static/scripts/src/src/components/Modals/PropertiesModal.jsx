@@ -1,46 +1,117 @@
-import {openPropertiesModal} from '../../actions/index.jsx';
+import FilterBar from './components/FilterBar.jsx';
+import {deletePropertiesModalSingleLocalFilter, deletePropertiesModalTermLocalFilter, openLocationModal, openPropertiesModal, setPropertiesModalLocalFilter, updatePropertiesModalLocalFilter} from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
-import Price from './Filters/Price.jsx';
-import SQFT from './Filters/SQFT.jsx';
-import LotSize from './Filters/LotSize.jsx';
+import Price from '../properties/Filters/Price.jsx';
+import SQFT from '../properties/Filters/SQFT.jsx';
+import LotSize from '../properties/Filters/LotSize.jsx';
 import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';
+import qs from 'qs';
 
-let bathroomOptions = [
+let convertToSearchParamObject = obj => {
+  let searchObject = {};
+  for (var k in obj) {
+    searchObject[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[" + k + "]"] = obj[k];
+  }
+  return searchObject;
+};
+
+function removeDefaultFilters(filters, defaults) {
+	var finalObj = {};
+  for (var k in filters) {
+  	if (!defaults[k] || !isEqual(defaults[k], filters[k])) {
+    	finalObj[k] = filters[k];
+    }
+  }
+  return finalObj;
+}
+
+let bathroomOptions =[
+  {name: '0+', value: '0'},
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
   {name: '3+', value: '3'},
-  {name: '4+', value: '4'}
+  {name: '4+', value: '4'},
+  {name: '5+', value: '5'},
+  {name: '6+', value: '6'}
 ];
 
 let bedroomOptions = [
+  {name: '0+', value: '0'},
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
   {name: '3+', value: '3'},
-  {name: '4+', value: '4'}
+  {name: '4+', value: '4'},
+  {name: '5+', value: '5'},
+  {name: '6+', value: '6'}
+];
+
+let defaultFiltervalues = {
+  bedrooms: '0',
+  bathrooms: '0',
+  price: {
+    start: 'No Min',
+    to: 'No Max'
+  },
+  sqft: {
+    start: 'No Min',
+    to: 'No Max'
+  },
+  lotsize: {
+    start: 'No Min',
+    to: 'No Max'
+  }
+};
+
+let propertyTypeOptions = [
+  {name: 'House', value: 'house'},
+  {name: 'Townhouse', value: 'townhouse'},
+  {name: 'Condo', value: 'condo'},
+  {name: 'Manufactured', value: 'manufactured'}
 ];
 
 const mapStateToProps = (state, ownProps) => {
-  let searchFiltersFormatted = Util.getQS(window.location.href, ownProps.searchFilters)[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+  let localFilters = state.propertiesModal.localFilters;
   return {
-    bedroomOptions: bedroomOptions,
-    bathroomSelected: searchFiltersFormatted.bathrooms || null,
-    bedroomSelected: searchFiltersFormatted.bedrooms || null,
-    priceSelected: searchFiltersFormatted.price || {},
-    sqftSelected: searchFiltersFormatted.sqft || {},
-    lotSizeSelected: searchFiltersFormatted.lotSize || {},
-    searchFiltersFormatted: searchFiltersFormatted
+    bathroomSelected: localFilters.bathrooms || defaultFiltervalues['bathrooms'],
+    bedroomSelected: localFilters.bedrooms || defaultFiltervalues['bedrooms'],
+    priceSelected: localFilters.price || defaultFiltervalues['price'],
+    propertyTypeSelected: localFilters.propertyType || '',
+    sqftSelected: localFilters.sqft || defaultFiltervalues['sqft'],
+    lotSizeSelected: localFilters.lotSize || defaultFiltervalues['lotsize'],
+    localFilters: localFilters
   }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openPropertiesModal: open => {
+    openLocationModal() {
+      // dispatch(openPropertiesModal(false));
+      dispatch(openLocationModal(true));
+    },
+
+    openPropertiesModal(open) {
       dispatch(openPropertiesModal(open));
+    },
+
+    deleteLocalFilterTerm(termFilter) {
+      dispatch(deletePropertiesModalTermLocalFilter(termFilter));
+    },
+
+    deleteSingleLocalFilter(filterKey) {
+      dispatch(deletePropertiesModalSingleLocalFilter(filterKey));
+    },
+
+    setLocalFilters(filter) {
+      dispatch(setPropertiesModalLocalFilter(filter));
+    },
+
+    updatePropertiesModalLocalFilter(filter) {
+      dispatch(updatePropertiesModalLocalFilter(filter));
     }
   }
 };
@@ -49,8 +120,9 @@ class PropertiesModal extends Component {
   static propTypes = {
     bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
-    searchFilters: PropTypes.object.isRequired,
-    searchFiltersFormatted: PropTypes.object.isRequired,
+    openLocationModal: PropTypes.func.isRequired,
+    propertyTypeSelected: PropTypes.string,
+    localFilters: PropTypes.object.isRequired,
     standardSearch: PropTypes.func.isRequired,
   }
 
@@ -59,7 +131,8 @@ class PropertiesModal extends Component {
     this.state = {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
-      localFilters: Object.assign({}, props.searchFilters),
+      initialFilters: Object.assign({}, props.localFilters),
+      propertyTypeSelected: props.propertyTypeSelected,
       lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
       priceSelected: props.priceSelected,
@@ -68,80 +141,100 @@ class PropertiesModal extends Component {
   }
 
   componentDidMount() {
-    let showAllFilters = this.displayAllFilters(this.props.searchFiltersFormatted);
+    let allQueryParams = Util.getQS(window.location.href, this.props.localFilters);
+    let searchFiltersFormatted = allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+    this.props.setLocalFilters(searchFiltersFormatted);
+    let showAllFilters = this.displayAllFilters(this.props.localFilters);
     this.setState({
       showAllFilters: showAllFilters
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    let showAllFilters = this.displayAllFilters(nextProps.searchFiltersFormatted);
+    let showAllFilters = this.displayAllFilters(nextProps.localFilters);
     this.setState({
-      showAllFilters: showAllFilters
+      showAllFilters: showAllFilters,
     });
+  }
+
+  componentWillUnmount() {
+    // reset local filters
+    this.props.setLocalFilters({});
   }
 
   handleBathroomSelect(val) {
-    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bathrooms]"]: val};
-    this.setState({
-      bathroomSelected: val,
-      localFilters: Object.assign({}, this.state.localFilters, filter)
-    });
+    let filter = {"bathrooms": val};
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   handleBedroomSelect(val) {
-    let filter = {[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[bedrooms]"]: val};
-    this.setState({
-      bedroomSelected: val,
-      localFilters: Object.assign({}, this.state.localFilters, filter)
-    });
+    let filter = {"bedrooms": val};
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   handlePriceSelect(start, to) {
     let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]"]: start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: to,
-    };
-    this.setState({
-      localFilters: Object.assign({}, this.state.localFilters, filter),
-      priceSelected: {start: start, to: to}
-    });
+      price: {
+        start: start,
+        to: to
+      }
+    }
+    this.props.updatePropertiesModalLocalFilter(filter);
+  }
+
+  handlePropertyTypeSelect(val) {
+    let filter = {"propertyType": val};
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   handleLotSizeSelect(start, to) {
-    console.log('handleLotSizeSelect');
+    let filter = {
+      lotSize: {
+        start: start,
+        to: to
+      }
+    };
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   handleSQFTSelect(start, to) {
     let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]"]: start,
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: to,
+      sqft: {
+        start: start,
+        to: to
+      }
     };
-    this.setState({
-      localFilters: Object.assign({}, this.state.localFilters, filter),
-      sqftSelected: {start: start, to: to}
-    });
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   saveFilters() {
-    let url = new URI(window.location.href);
-    let updatedSearchParams = Util.updateQueryFilter(window.location.href, this.state.localFilters, 'set', true);
-    url.setSearch(updatedSearchParams);
+    let url = new URI(window.location.host);
+    url.pathname(window.location.pathname);
+    let filters = removeDefaultFilters(this.props.localFilters, defaultFiltervalues);
+    let searchFilters = convertToSearchParamObject(filters);
+    let notSearchFilters = Util.withoutSearchFilters(window.location.href);
+    let allFilters = Object.assign({}, notSearchFilters, searchFilters);
+    let queryParam = decodeURIComponent(qs.stringify(allFilters))
+    url.setSearch(queryParam);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
 
-  displayAllFilters(searchFiltersFormatted) {
-    return !!searchFiltersFormatted['bathrooms'] || !!searchFiltersFormatted['sqft'];
+  displayAllFilters(localFilters) {
+    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'];
   }
 
   resetFilters() {
-    this.setState({
-      bedroomSelected: this.props.bedroomSelected,
-      priceSelected: this.props.priceSelected,
-      sqftSelected: this.props.sqftSelected,
-      localFilters: Object.assign({}, this.props.searchFilters)
-    });
+    let filter = {
+      "bathrooms": this.state.bathroomSelected,
+      "bedrooms": this.state.bedroomSelected,
+      "lotSize": this.state.lotSizeSelected,
+      "price": this.state.priceSelected,
+      "propertyType": this.state.propertyTypeSelected,
+      "sqft": this.state.sqftSelected
+    };
+
+    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   toggleViewAllFilters() {
@@ -152,19 +245,18 @@ class PropertiesModal extends Component {
 
   render() {
     let {
-      bedroomOptions,
-      searchFilters,
-      searchFiltersFormatted
+      bathroomSelected,
+      bedroomSelected,
+      lotSizeSelected,
+      priceSelected,
+      propertyTypeSelected,
+      sqftSelected,
+      localFilters
     } = this.props;
 
     let {
-      bathroomSelected,
-      bedroomSelected,
-      localFilters,
-      lotSizeSelected,
-      priceSelected,
-      showAllFilters,
-      sqftSelected
+      initialFilters,
+      showAllFilters
     } = this.state;
 
     let bathroomElements = bathroomOptions.map(d => ({
@@ -178,11 +270,21 @@ class PropertiesModal extends Component {
       selected: d.value === bedroomSelected,
       value: d.value
     }));
-    let anyFilterChange = !isEqual(searchFilters, localFilters);
-    let termFilter = searchFiltersFormatted['term'];
-    let termFilters = Object.keys(termFilter).map(t => {
-      return {tax: t, value: termFilter[t]}
-    });
+
+    let propertyTypeElements = propertyTypeOptions.map(d => ({
+      name: d.name,
+      selected: d.value === propertyTypeSelected,
+      value: d.value
+    }));
+
+    let filters = removeDefaultFilters(localFilters, defaultFiltervalues);
+    let termFilters = [];
+    let termFilter = localFilters['term'];
+    if (termFilter && termFilter.length) {
+      termFilters = termFilter.map(t => {
+        return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
+      });
+    }
     return (
       <div
         className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${this.props.open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
@@ -200,24 +302,14 @@ class PropertiesModal extends Component {
                 <div className="row">
                   <form method="get" className="form-inline clearfix hidden-md-down">
                     <i className="fa fa-search"></i>
-                    <div className={`${Lib.THEME_CLASSES_PREFIX}bs-tags-box mr-auto`}>
-                      <div className={Lib.THEME_CLASSES_PREFIX + "bs-tags-input"}>
-                        {termFilters.map(t =>
-                          <span key={t.value} className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default"}><span><i
-                            className="fa fa-times"></i></span> {t.value}</span>
-                        )}
-                        {!termFilters.length &&
-                        <input type="text" size="1" placeholder="Select bedroom type, amenities"/>
-                        }
-                      </div>
-                    </div>
+                    <FilterBar deleteSingleLocalFilter={this.props.deleteSingleLocalFilter} deleteLocalFilterTerm={this.props.deleteLocalFilterTerm} localFilters={localFilters} />
                     <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput"
                            className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly/>
                     <div className="button-group">
-                      <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
+                      <a href="#" className="btn-reset" onClick={() => {}}>Reset</a>
                       <a href="#"
-                         className={"btn btn-primary " + (!anyFilterChange ? "propertypro-btn-disabled" : null)}
-                         onClick={anyFilterChange ? this.saveFilters.bind(this) : null}>View Properties</a>
+                         className={"btn btn-primary"}
+                         onClick={this.saveFilters.bind(this)}>View Properties</a>
                     </div>
                   </form>
                 </div>
@@ -264,7 +356,7 @@ class PropertiesModal extends Component {
                           <span key={t.value}
                                 className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
                         )}
-                        <a href="#" className="btn btn-primary">+ More Locations</a>
+                        <a href="#" className="btn btn-primary" onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
                       </div>
                     </div>
                   </div>
@@ -282,9 +374,11 @@ class PropertiesModal extends Component {
                       className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
                       <h3>Price <span>(Range)</span></h3>
                       <div>
-                        <Price saleType={searchFiltersFormatted.sale_type} start={priceSelected.start}
-                               to={priceSelected.to}
-                               handleOnClick={this.handlePriceSelect.bind(this)}/>
+                        {localFilters.sale_type && priceSelected.start && priceSelected.to ?
+                          <Price saleType={localFilters.sale_type} start={priceSelected.start}
+                                 to={priceSelected.to}
+                                 handleOnClick={this.handlePriceSelect.bind(this)}/>
+                        : null}
                       </div>
                       <input id="priceSlider" className="bs-hidden-input"/>
                     </div>
@@ -305,20 +399,40 @@ class PropertiesModal extends Component {
                       style={{display: showAllFilters ? 'block' : 'none'}}>
                       <h3>Total Size <span>(SQFT)</span></h3>
                       <div>
-                        <SQFT saleType={searchFiltersFormatted.sale_type} start={sqftSelected.start}
-                              to={sqftSelected.to}
-                              handleOnClick={this.handleSQFTSelect.bind(this)}/>
+                        {localFilters.sale_type && sqftSelected.start && sqftSelected.to ?
+                          <SQFT saleType={localFilters.sale_type} start={sqftSelected.start}
+                                to={sqftSelected.to}
+                                handleOnClick={this.handleSQFTSelect.bind(this)}/>
+                        : null}
                       </div>
                       <input id="priceSlider" className="bs-hidden-input"/>
                     </div>
                   </div>
-                  {/* <div className={Lib.THEME_CLASSES_PREFIX+"filter-section"} style={{display: showAllFilters ? 'block' : 'none'}}>
-                   <h3>Lot Size <span>(Acres)</span></h3>
-                   <div>
-                   <LotSize saleType={searchFiltersFormatted.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
-                   </div>
-                   <input id="priceSlider" className="bs-hidden-input" />
-                   </div> */}
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                      style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Lot Size <span>(Acres)</span></h3>
+                      <div>
+                        {localFilters.sale_type && lotSizeSelected.start && lotSizeSelected.to ?
+                          <LotSize saleType={localFilters.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
+                        : null}
+                      </div>
+                      <input id="priceSlider" className="bs-hidden-input" />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div
+                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section`}
+                      style={{display: showAllFilters ? 'block' : 'none'}}>
+                      <h3>Type</h3>
+                      <div className="filter-type">
+                        {propertyTypeElements.map(d =>
+                          <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="row">
                     {showAllFilters ?
                       <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
@@ -329,7 +443,7 @@ class PropertiesModal extends Component {
                     }
                   </div>
                 </div>
-              </div>
+               </div>
             </div>
             <div className="modal-footer">
               <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
@@ -347,8 +461,7 @@ class PropertiesModal extends Component {
 
     )
   }
-}
-;
+};
 
 export default connect(
   mapStateToProps,

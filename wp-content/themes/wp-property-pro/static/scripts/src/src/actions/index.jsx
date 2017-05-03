@@ -1,5 +1,19 @@
 import {Lib} from '../lib.jsx'
 
+export const deletePropertiesModalSingleLocalFilter = filterKey => {
+  return {
+    type: Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER,
+    filterKey: filterKey
+  }
+};
+
+export const deletePropertiesModalTermLocalFilter = termFilter => {
+  return {
+    type: Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER,
+    termFilter: termFilter
+  }
+};
+
 export const openLocationModal = (open) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
@@ -11,6 +25,13 @@ export const openPropertiesModal = (open) => {
   return {
     type: Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
     open: open
+  }
+};
+
+export const setPropertiesModalLocalFilter = localFilters => {
+  return {
+    type: Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER,
+    localFilters: localFilters
   }
 };
 
@@ -75,3 +96,10 @@ export const setBlogPosts = (posts, allowPagination) => {
     allowPagination: allowPagination
   }
 };
+
+export const updatePropertiesModalLocalFilter = filter => {
+  return {
+    type: Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER,
+    filter: filter
+  }
+}

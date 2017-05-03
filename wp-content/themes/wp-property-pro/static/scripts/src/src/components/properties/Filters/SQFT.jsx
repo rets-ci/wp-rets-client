@@ -22,10 +22,10 @@ let sliderFormatter = (min, max) => {
 
 class SQFT extends Component {
   static propTypes = {
-    saleType: PropTypes.string.isRequired,
+    saleType: PropTypes.string,
     start: PropTypes.any,
     to: PropTypes.any,
-    handleOnClick: PropTypes.func.isRequired
+    handleOnClick: PropTypes.func
   };
 
   constructor(props) {
@@ -42,23 +42,26 @@ class SQFT extends Component {
     let defaults = {
       Sale: {
         start: 1000,
-        to: 1250
+        to: 4000
       },
       Rent: {
         start: 1000,
-        to: 1250
+        to: 4000
       }
     };
     let formatter;
     let min;
     let max;
-    let range = {};
     let step;
-    let percentages;
     if (saleType === 'Sale' || saleType === 'Rent') {
       step = 500;
-      min = 1000;
+      min = 500;
       max = 10000;
+      formatter = sliderFormatter(min, max);
+    } else if (saleType === 'Commercial') {
+      step = 1000;
+      min = 1000;
+      max = 50000;
       formatter = sliderFormatter(min, max);
     }
     return (

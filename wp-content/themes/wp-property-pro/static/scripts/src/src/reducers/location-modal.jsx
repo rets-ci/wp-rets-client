@@ -1,6 +1,6 @@
 import {Lib} from "../lib.jsx";
 
-const locationModal = (state = {}, action) => {
+const locationModal = (state = {open: false}, action) => {
   switch (action.type) {
     case Lib.TOGGLE_LOCATION_MODAL_ACTION:
       return Object.assign({}, state, {

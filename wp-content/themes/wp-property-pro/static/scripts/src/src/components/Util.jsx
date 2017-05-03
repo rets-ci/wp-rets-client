@@ -25,9 +25,9 @@ class Util extends React.Component {
     return formattedNumber.format('0,0');
   }
 
-  static formatLotSizeFilter(lotSize) {
+  static formatLotSizeValue(lotSize) {
     let formattedNumber = numeral(lotSize);
-    return formattedNumber.format('0,0');
+    return formattedNumber.format('0.00');
   }
 
   static getSearchFiltersFromURL(url, withoutPrefix) {
@@ -112,6 +112,18 @@ class Util extends React.Component {
     return uri.pathname() + uri.search();
   }
 
+  static lotSizeFilterSearchTagText(filter) {
+    if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
+      if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        return 'Under ' + this.formatLotSizeValue(filter.to) + ' ACRES';
+      } else {
+        return 'Over ' + this.formatLotSizeValue(filter.start) + ' ACRES';
+      }
+    } else {
+      return this.formatLotSizeValue(filter.start) + '-' + this.formatLotSizeValue(filter.to) + ' ACRES';
+    }
+  }
+
   static priceFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
@@ -127,9 +139,9 @@ class Util extends React.Component {
   static sqftFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-        return 'Under ' + numeral(filter.to).format('0,0') + ' SQFT';
+        return 'Under ' + this.formatSQFTValue(filter.to) + ' SQFT';
       } else {
-        return 'Over ' + numeral(filter.start).format('0,0') + ' SQFT';
+        return 'Over ' + this.formatSQFTValue(filter.start) + ' SQFT';
       }
     } else {
       return numeral(filter.start).format('0,0') + '-' + numeral(filter.to).format('0,0') + ' SQFT';
@@ -144,6 +156,13 @@ class Util extends React.Component {
       url.removeSearch(filter);
     }
     return returnObject ?  url.search(returnObject) : url.search();
+  }
+
+  static withoutSearchFilters(url) {
+    let uri = new URI(url);
+    let urlQuery = uri.query();
+    let query = qs.parse(urlQuery);
+    delete query[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
   }
 }
 

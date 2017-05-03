@@ -2,7 +2,7 @@ import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
 import mapState from './map.jsx';
 import locationModal from './location-modal.jsx';
-import propertiesModal from './properties-modal.jsx';
+import propertiesModal from './propertiesModal.jsx';
 import searchPropsState from './searchProps.jsx';
 import searchResults from './searchResults.jsx';
 import mapMarkersState from './mapMarkers.jsx';

@@ -22,10 +22,10 @@ let sliderFormatter = (min, max) => {
 
 class Price extends Component {
   static propTypes = {
-    saleType: PropTypes.string.isRequired,
+    saleType: PropTypes.string,
     start: PropTypes.any,
     to: PropTypes.any,
-    handleOnClick: PropTypes.func.isRequired
+    handleOnClick: PropTypes.func
   };
 
   constructor(props) {
@@ -53,7 +53,6 @@ class Price extends Component {
     let min;
     let max;
     let step;
-    let percentages;
     if (saleType === 'Sale') {
       min = 25000;
       max = 1000000;

@@ -4,7 +4,7 @@ import SubtitleTitleLayout from './layouts/SubtitleTitleLayout.jsx';
 import BlogSingleLayout from './layouts/BlogSingleLayout.jsx'
 import GuideLayout from './layouts/GuideLayout.jsx'
 import GuideSingleLayout from './layouts/GuideSingleLayout.jsx'
-import Modal from './components/Modal.jsx';
+import LocationModal from '../../Modals/LocationModal.jsx';
 import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 
@@ -22,7 +22,7 @@ const Masthead = ({widget_cell, returnToArchiveHandler, nextArticleHandler}) => 
   let modal;
 
   if (!_.isEmpty(_.get(widget_cell, 'widget.fields.search_options', {}))) {
-    modal = <Modal />;
+    modal = <LocationModal />;
   }
 
   switch (widget_cell.widget.fields.layout) {

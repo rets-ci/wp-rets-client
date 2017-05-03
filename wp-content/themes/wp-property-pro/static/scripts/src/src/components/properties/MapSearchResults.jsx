@@ -2,7 +2,8 @@ import Api from '../../containers/Api.jsx';
 import {setSearchResults, toggleMapSearchResultsLoading} from '../../actions/index.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
-import PropertiesModal from './PropertiesModal.jsx';
+import PropertiesModal from '../Modals/PropertiesModal.jsx';
+import LocationModal from '../Modals/LocationModal.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import SearchResultListing from './SearchResultListing.jsx';
@@ -123,6 +124,7 @@ class MapSearchResults extends Component {
     } else {
       elementToShow = (
         <div className={Lib.THEME_CLASSES_PREFIX+"search-map"}>
+          <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
