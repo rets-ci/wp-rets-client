@@ -9,6 +9,9 @@
  *
  */
 
+add_filter( 'media_library_show_audio_playlist', function() { return false; });
+add_filter( 'media_library_show_video_playlist', function() { return false; });
+
 add_filter( 'ud:errors:admin_notices', function() { return null; });
 add_filter( 'ud:messages:admin_notices', function() { return null; });
 add_filter( 'ud:warnings:admin_notices', function() { return null; });

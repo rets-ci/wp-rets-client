@@ -20,7 +20,7 @@ $_COOKIE = array();
 if ( !isset( $HTTP_RAW_POST_DATA ) ) {
 	$HTTP_RAW_POST_DATA = file_get_contents( 'php://input' );
 }
-//file_put_contents('/var/www/temp-xmlrpc.xml', $HTTP_RAW_POST_DATA );
+
 // fix for mozBlog and other cases where '<?xml' isn't on the very first line
 if ( isset($HTTP_RAW_POST_DATA) )
 	$HTTP_RAW_POST_DATA = trim($HTTP_RAW_POST_DATA);
