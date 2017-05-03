@@ -167,14 +167,14 @@ namespace UsabilityDynamics\WPRETSC {
         $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets_id' AND meta_value={$rets_id};" );
 
         if( $_actual_post_id ) {
-          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 36000 );
+          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 86400  );
           return $_actual_post_id;
         }
 
         // temp support for old format
         if( empty( $_actual_post_id ) ) {
           $_actual_post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='rets.id' AND meta_value={$rets_id};" );
-          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 36000 );
+          wp_cache_set( $_cache_key, $_actual_post_id, 'wp-rets-client', 86400 );
           return $_actual_post_id;
         }
 
@@ -196,7 +196,7 @@ namespace UsabilityDynamics\WPRETSC {
         if( count( $query->posts ) > 0 ) {
           ud_get_wp_rets_client()->write_log( 'Found ' . $query->posts[0]->ID . ' using $rets_id: ' . $rets_id);
 
-          wp_cache_set( $_cache_key, $query->posts[0]->ID, 'wp-rets-client', 3600 );
+          wp_cache_set( $_cache_key, $query->posts[0]->ID, 'wp-rets-client', 86400  );
 
           return $query->posts[0]->ID;
 
