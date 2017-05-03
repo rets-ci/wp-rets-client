@@ -99,7 +99,7 @@
       "WP_MEMORY_LIMIT": "3072M",
       "RDC_RECAPTCHA_KEY": "6Lfn7xIUAAAAAGQW5YdOc-swn8RAuZiSCno7cX-5",
       "RDC_RECAPTCHA_SECRET": "6Lfn7xIUAAAAAHtv6LS1QgU01y68PjellGSb4cKD",
-      "wp_memcached_servers": "client-cluster-1:23013,client-cluster-2:23013,client-cluster-3:23013",
+      "wp_memcached_servers": "client-cluster-1:23038,client-cluster-2:23038,client-cluster-3:23038",
       "JETPACK_IP_ADDRESS_OK": "82.117.232.61",
       "RETS_ID_KEY": "rets_id",
       "RETS_ES_LINK": "https://site:462410d704f694edb7422745387c6b12@dori-us-east-1.searchly.com",
