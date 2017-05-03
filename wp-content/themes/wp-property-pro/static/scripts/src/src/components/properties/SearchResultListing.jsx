@@ -70,6 +70,7 @@ class SearchResultListing extends Component {
 
               let item = {
                 address: _.get(p, '_source.post_meta.rets_address', ''),
+                location: _.get(p, '_source.post_meta.wpp_location_pin', []),
                 baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
                 beds: _.get(p, '_source.post_meta.rets_beds', 0),
                 full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),

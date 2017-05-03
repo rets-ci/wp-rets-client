@@ -29964,7 +29964,8 @@
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
 	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
 	  BLOG_POSTS_PER_ROW: 2,
-	  LOCATION_MODAL_REQUESTS_DELAY: 500
+	  LOCATION_MODAL_REQUESTS_DELAY: 500,
+	  GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview'
 	};
 
 /***/ },
@@ -47483,6 +47484,19 @@
 	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
 	    }
 	  }, {
+	    key: 'getGoogleStreetViewThumbnailURL',
+	    value: function getGoogleStreetViewThumbnailURL(params) {
+
+	      var key = _lodash2.default.get(bundle, 'google_api_key', null);
+
+	      if (!params.size || !params.location || !key) {
+	        console.log('Missed params');
+	        return '';
+	      }
+
+	      return _lib.Lib.GOOGLE_STREETVIEW_URL + '?size=' + params.size + '&location=' + params.location + '&key=' + key;
+	    }
+	  }, {
 	    key: 'getQS',
 	    value: function getQS(currentUrl, searchFilters) {
 	      var uri = new _urijs2.default(currentUrl);
@@ -56820,6 +56834,7 @@
 
 	              var item = {
 	                address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	                location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
 	                baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
 	                beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
 	                full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
@@ -57766,6 +57781,7 @@
 
 	      var _props$data = this.props.data,
 	          address = _props$data.address,
+	          location = _props$data.location,
 	          baths = _props$data.baths,
 	          beds = _props$data.beds,
 	          full_address = _props$data.full_address,
@@ -57803,7 +57819,10 @@
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
 	                    className: 'swiper-lazy card-img-top',
-	                    src: !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
+	                    src: _lodash2.default.isEmpty(thumbnail) ? _Util2.default.getGoogleStreetViewThumbnailURL({
+	                      size: _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE,
+	                      location: !_lodash2.default.isEmpty(location) ? location.join(',') : ''
+	                    }) : !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
 	                  })
 	                ),
 	                gallery_images.map(function (d, k) {
