@@ -394,6 +394,8 @@ namespace UsabilityDynamics {
           ];
         }, get_posts([
           'post_type' => $guide_post_type,
+          'orderby' => 'menu_order',
+          'order'   => 'ASC',
           'tax_query' => [
             [
               'taxonomy' => $guide_category,
@@ -420,6 +422,8 @@ namespace UsabilityDynamics {
           }, get_posts([
             'post_type' => 'propertypro-guide',
             'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'order'   => 'ASC',
             'tax_query' => [
               [
                 'taxonomy' => 'propertypro-guide-category',
