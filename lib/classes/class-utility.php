@@ -15,7 +15,7 @@ namespace UsabilityDynamics\WPRETSC {
       /**
        * Insert new media, remove any old media if no longer in payload.
        *
-       * wp post list --post_parent=26601984 --post_type=attachment
+       * wp post list --post_parent=27735668 --post_type=attachment
        *
        * @param $_post_id
        * @param $_rets_media
@@ -67,11 +67,18 @@ namespace UsabilityDynamics\WPRETSC {
             'post_excerpt' => isset( $media['post_excerpt'] ) ? $media['post_excerpt'] : '',
             'post_status' => 'inherit',
             'menu_order' => $media[ 'menu_order' ] ? ( (int)$media[ 'menu_order' ] ) : null,
-            'post_modified' => date("Y-m-d H:i:s",strtotime($_rets_media['updated'])),
-            'post_modified_gmt' => date("Y-m-d H:i:s",strtotime($_rets_media['updated'])),
-            'post_date' => date("Y-m-d H:i:s",strtotime($media[ 'updated' ])),
-            'post_date_gmt' => date("Y-m-d H:i:s",strtotime($media[ 'updated' ]))
           );
+
+          if( isset( $media[ 'updated' ] ) ) {
+
+            array_merge( $attachment, array(
+              'post_modified' => date( "Y-m-d H:i:s", strtotime( $_rets_media[ 'updated' ] ) ),
+              'post_modified_gmt' => date( "Y-m-d H:i:s", strtotime( $_rets_media[ 'updated' ] ) ),
+              'post_date' => date( "Y-m-d H:i:s", strtotime( $media[ 'updated' ] ) ),
+              'post_date_gmt' => isset( $media[ 'updated' ] ) ? date( "Y-m-d H:i:s", strtotime( $media[ 'updated' ] ) ) : null
+            ) );
+
+          }
 
           $attach_id = wp_insert_attachment( $attachment, $media[ 'guid' ], $_post_id );
 
