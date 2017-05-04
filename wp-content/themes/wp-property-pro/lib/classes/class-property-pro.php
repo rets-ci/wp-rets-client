@@ -99,7 +99,9 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
-      wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . GOOGLE_API_KEY);
+      if(defined('PROPERTYPRO_GOOGLE_API_KEY')) {
+        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
+      }
 
       $params = $this->property_pro_get_base_info();
 
@@ -137,8 +139,8 @@ namespace UsabilityDynamics {
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
-      if(defined('GOOGLE_API_KEY')){
-        $params['google_api_key'] = GOOGLE_API_KEY;
+      if(defined('PROPERTYPRO_GOOGLE_API_KEY')){
+        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
       }
 
       /** Get company logos */
