@@ -29387,10 +29387,10 @@
 	  _createClass(Api, null, [{
 	    key: 'getRequestUrl',
 	    value: function getRequestUrl() {
-	      var searchType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'post';
+	      var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'search/post/_search';
 	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_PER_PAGE;
 
-	      return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
+	      return 'https://' + bundle.elasticsearch_host + '/v3/' + path + '?size=' + size;
 	    }
 	  }, {
 	    key: 'getAggregationsFields',
@@ -29563,8 +29563,8 @@
 	      };
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('property', 0),
-	        'query': body
+	        'url': Api.getRequestUrl('search/property/_search', 0),
+	        'query': JSON.stringify(body)
 	      }, function (response) {
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
@@ -29671,17 +29671,13 @@
 	      for (var aggIndex in aggregations) {
 	        var aggregation = aggregations[aggIndex];
 
-	        body.aggs[aggIndex] = {
-	          "terms": {
-	            "field": _lodash2.default.get(aggregation, 'terms.field', ''),
-	            "size": params.size || 0
-	          }
-	        };
+	        body.aggs[aggIndex] = _lodash2.default.get(aggregation, 'terms.field', '');
 	      }
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('post', params.size || 0),
-	        'query': body
+	        'url': Api.getRequestUrl('_topAggregations', params.size || 0),
+	        'query': body,
+	        'method': 'GET'
 	      }, function (response) {
 	        var responseAggs = _lodash2.default.get(response, 'aggregations');
 
@@ -29872,7 +29868,7 @@
 
 	      Api.makeRequest({
 	        'url': Api.getRequestUrl(),
-	        'query': query
+	        'query': JSON.stringify(query)
 	      }, callback);
 	    }
 	  }, {
@@ -29887,10 +29883,9 @@
 	      jQuery.ajax({
 	        url: _lodash2.default.get(data, 'url'),
 	        dataType: 'json',
-	        type: 'POST',
+	        type: _lodash2.default.get(data, 'method', 'POST'),
 	        contentType: 'application/json',
-	        crossDomain: true,
-	        data: JSON.stringify(_lodash2.default.get(data, 'query')),
+	        data: _lodash2.default.get(data, 'query'),
 	        success: function success(response) {
 	          if (typeof callback !== 'undefined') {
 	            callback(response);
