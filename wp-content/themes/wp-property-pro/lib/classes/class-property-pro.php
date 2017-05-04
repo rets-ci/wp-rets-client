@@ -137,6 +137,10 @@ namespace UsabilityDynamics {
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
+      if(defined('GOOGLE_API_KEY')){
+        $params['google_api_key'] = GOOGLE_API_KEY;
+      }
+
       /** Get company logos */
       $params['logos'] = [
         'square_logo' => get_theme_mod('property_pro_company_square_logo'),
@@ -390,6 +394,8 @@ namespace UsabilityDynamics {
           ];
         }, get_posts([
           'post_type' => $guide_post_type,
+          'orderby' => 'menu_order',
+          'order'   => 'ASC',
           'tax_query' => [
             [
               'taxonomy' => $guide_category,
@@ -416,6 +422,8 @@ namespace UsabilityDynamics {
           }, get_posts([
             'post_type' => 'propertypro-guide',
             'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'order'   => 'ASC',
             'tax_query' => [
               [
                 'taxonomy' => 'propertypro-guide-category',
