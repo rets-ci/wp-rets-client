@@ -27,69 +27,53 @@ class SearchResultListing extends Component {
   render() {
 
     let properties = _.get(this.props, 'properties', []);
-    let groups = [];
-
-    if (properties) {
-      let propertiesGroup = [];
-      properties.map((post) => {
-        propertiesGroup.push(post);
-
-        if (propertiesGroup.length === Lib.BLOG_POSTS_PER_ROW) {
-          groups.push(propertiesGroup);
-          propertiesGroup = [];
-        }
-      });
-    }
 
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>
         <div className="container-fluid">
-          {
-            groups.map((g, group_index) => {
+          <div className="row">
+            {
+              properties.map((p, i) => {
 
+                    let city = '';
+                    let zipCode = '';
 
-                let groupProperties = g.map((p, i) => {
+                    let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
 
-                  let city = '';
-                  let zipCode = '';
+                    for (let termInd in listingLocation) {
+                      let term = listingLocation[termInd][0];
 
-                  let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
-
-                  for (let termInd in listingLocation) {
-                    let term = listingLocation[termInd][0];
-
-                    switch (term.term_type) {
-                      case 'location-city-state':
-                        city = term.name;
-                        break;
-                      case 'location-zipcode':
-                        zipCode = term.name;
-                        break;
+                      switch (term.term_type) {
+                        case 'location-city-state':
+                          city = term.name;
+                          break;
+                        case 'location-zipcode':
+                          zipCode = term.name;
+                          break;
+                      }
                     }
-                  }
 
-              let item = {
-                address: _.get(p, '_source.post_meta.rets_address', ''),
-                location: _.get(p, '_source.post_meta.wpp_location_pin', []),
-                baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
-                beds: _.get(p, '_source.post_meta.rets_beds', 0),
-                full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
-                gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
-                living_area: _.get(p, '_source.post_meta.rets_living_area', ''),
-                price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
-                relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
-                thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', '')
-              };
+                    let item = {
+                      address: _.get(p, '_source.post_meta.rets_address', ''),
+                      location: _.get(p, '_source.post_meta.wpp_location_pin', []),
+                      baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
+                      beds: _.get(p, '_source.post_meta.rets_beds', 0),
+                      full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
+                      gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
+                      living_area: _.get(p, '_source.post_meta.rets_living_area', ''),
+                      price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
+                      relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
+                      thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', '')
+                    };
 
-                  return (
-                    <div className="col-lg-6">
-                      <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i}/>
-                    </div>
-                  )
-                });
-                return (<div className="row" key={group_index}>{groupProperties}</div>);
-              }
-            )}
+                    return (
+                      <div className="col-lg-6 col-xl-4">
+                        <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i}/>
+                      </div>
+                    );
+                }
+              )}
+          </div>
         </div>
         {this.props.allowPagination ?
           <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>

@@ -29259,7 +29259,7 @@
 	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-4' },
+	                  { className: 'col-lg-4 col-xl-3' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29285,7 +29285,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-8' },
+	                  { className: 'col-lg-8 col-xl-9 hidden-md-down' },
 	                  displayedResults.length ? _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -29387,10 +29387,10 @@
 	  _createClass(Api, null, [{
 	    key: 'getRequestUrl',
 	    value: function getRequestUrl() {
-	      var searchType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'post';
+	      var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'search/post/_search';
 	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_PER_PAGE;
 
-	      return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
+	      return 'https://' + bundle.elasticsearch_host + '/v3/' + path + '?size=' + size;
 	    }
 	  }, {
 	    key: 'getAggregationsFields',
@@ -29563,8 +29563,8 @@
 	      };
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('property', 0),
-	        'query': body
+	        'url': Api.getRequestUrl('search/property/_search', 0),
+	        'query': JSON.stringify(body)
 	      }, function (response) {
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
@@ -29671,17 +29671,13 @@
 	      for (var aggIndex in aggregations) {
 	        var aggregation = aggregations[aggIndex];
 
-	        body.aggs[aggIndex] = {
-	          "terms": {
-	            "field": _lodash2.default.get(aggregation, 'terms.field', ''),
-	            "size": params.size || 0
-	          }
-	        };
+	        body.aggs[aggIndex] = _lodash2.default.get(aggregation, 'terms.field', '');
 	      }
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('post', params.size || 0),
-	        'query': body
+	        'url': Api.getRequestUrl('_topAggregations', params.size || 0),
+	        'query': body,
+	        'method': 'GET'
 	      }, function (response) {
 	        var responseAggs = _lodash2.default.get(response, 'aggregations');
 
@@ -29872,7 +29868,7 @@
 
 	      Api.makeRequest({
 	        'url': Api.getRequestUrl(),
-	        'query': query
+	        'query': JSON.stringify(query)
 	      }, callback);
 	    }
 	  }, {
@@ -29887,10 +29883,9 @@
 	      jQuery.ajax({
 	        url: _lodash2.default.get(data, 'url'),
 	        dataType: 'json',
-	        type: 'POST',
+	        type: _lodash2.default.get(data, 'method', 'POST'),
 	        contentType: 'application/json',
-	        crossDomain: true,
-	        data: JSON.stringify(_lodash2.default.get(data, 'query')),
+	        data: _lodash2.default.get(data, 'query'),
 	        success: function success(response) {
 	          if (typeof callback !== 'undefined') {
 	            callback(response);
@@ -56786,21 +56781,6 @@
 	      var _this2 = this;
 
 	      var properties = _lodash2.default.get(this.props, 'properties', []);
-	      var groups = [];
-
-	      if (properties) {
-	        (function () {
-	          var propertiesGroup = [];
-	          properties.map(function (post) {
-	            propertiesGroup.push(post);
-
-	            if (propertiesGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
-	              groups.push(propertiesGroup);
-	              propertiesGroup = [];
-	            }
-	          });
-	        })();
-	      }
 
 	      return _react2.default.createElement(
 	        'div',
@@ -56810,9 +56790,10 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container-fluid' },
-	          groups.map(function (g, group_index) {
-
-	            var groupProperties = g.map(function (p, i) {
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            properties.map(function (p, i) {
 
 	              var city = '';
 	              var zipCode = '';
@@ -56849,16 +56830,11 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'col-lg-6' },
+	                { className: 'col-lg-6 col-xl-4' },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
-	            });
-	            return _react2.default.createElement(
-	              'div',
-	              { className: 'row', key: group_index },
-	              groupProperties
-	            );
-	          })
+	            })
+	          )
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',

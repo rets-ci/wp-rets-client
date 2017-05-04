@@ -11,7 +11,7 @@
   "extra": {
     "settings": {
       "ELASTICSEARCH_HOST": "api.reddoorcompany.com",
-      "GOOGLE_API_KEY": "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss",
+      "PROPERTYPRO_GOOGLE_API_KEY": "AIzaSyAry82nr4I2Z57zobDmCkSqAM-vhPmCWss",
       "THEME_PREFIX": "propertypro-"
     }
   },
