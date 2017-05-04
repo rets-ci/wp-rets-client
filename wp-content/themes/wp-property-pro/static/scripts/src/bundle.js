@@ -29259,7 +29259,7 @@
 	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-4' },
+	                  { className: 'col-md-6 col-lg-4 col-xl-3' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29285,7 +29285,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-8' },
+	                  { className: 'col-md-6 col-lg-8 col-xl-9' },
 	                  displayedResults.length ? _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -56786,21 +56786,6 @@
 	      var _this2 = this;
 
 	      var properties = _lodash2.default.get(this.props, 'properties', []);
-	      var groups = [];
-
-	      if (properties) {
-	        (function () {
-	          var propertiesGroup = [];
-	          properties.map(function (post) {
-	            propertiesGroup.push(post);
-
-	            if (propertiesGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
-	              groups.push(propertiesGroup);
-	              propertiesGroup = [];
-	            }
-	          });
-	        })();
-	      }
 
 	      return _react2.default.createElement(
 	        'div',
@@ -56810,9 +56795,10 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container-fluid' },
-	          groups.map(function (g, group_index) {
-
-	            var groupProperties = g.map(function (p, i) {
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            properties.map(function (p, i) {
 
 	              var city = '';
 	              var zipCode = '';
@@ -56849,16 +56835,11 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'col-lg-6' },
+	                { className: 'col-lg-6 col-xl-4' },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
-	            });
-	            return _react2.default.createElement(
-	              'div',
-	              { className: 'row', key: group_index },
-	              groupProperties
-	            );
-	          })
+	            })
+	          )
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',
