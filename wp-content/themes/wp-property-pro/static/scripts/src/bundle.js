@@ -29259,7 +29259,7 @@
 	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-4 col-xl-3' },
+	                  { className: 'col-lg-4 col-xl-3' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29285,7 +29285,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-8 col-xl-9' },
+	                  { className: 'col-lg-8 col-xl-9 hidden-md-down' },
 	                  displayedResults.length ? _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
