@@ -12,6 +12,253 @@ namespace UsabilityDynamics\WPRETSC {
 
     final class Utility {
 
+      /**
+       * Insert new media, remove any old media if no longer in payload.
+       *
+       * wp post list --post_parent=26601984 --post_type=attachment
+       *
+       * @param $_post_id
+       * @param $_rets_media
+       * @param $_rets_media.updated - timestamp of last update
+       * @param $_rets_media.items - array of items
+       * @return bool
+       */
+      static public function insert_media( $_post_id, $_rets_media ) {
+        global $wpdb;
+
+        if( !isset( $_rets_media ) || !is_array($_rets_media ) || !isset( $_rets_media['items'])) {
+          return false;
+        }
+
+        ud_get_wp_rets_client()->write_log( "Running [insert_media] for [$_post_id], have [" .  count( $_rets_media['items'] ) . "] media items, updated [" . $_rets_media['updated'] ."].", 'debug' );
+
+        if( isset( $_rets_media[ 'updated' ] )) {
+          $_updated_formatted = date("Y-m-d H:i:s",strtotime($_rets_media[ 'updated' ]));
+          $_query =  "SELECT ID, post_modified_gmt, guid FROM {$wpdb->posts} WHERE post_parent='$_post_id' AND post_type='attachment' AND post_mime_type='image/jpeg' AND post_modified_gmt < '$_updated_formatted'; " ;
+        } else {
+          $_query =  "SELECT ID, post_modified_gmt, guid FROM {$wpdb->posts} WHERE post_parent='$_post_id' AND post_type='attachment' AND post_mime_type='image/jpeg'; " ;
+        }
+
+        // @temp, always remove all.
+        $_query =  "SELECT ID, post_modified_gmt, guid FROM {$wpdb->posts} WHERE post_parent='$_post_id' AND post_type='attachment' AND post_mime_type='image/jpeg'; " ;
+
+        $_attachments = $wpdb->get_results($_query);
+
+        // Remove old attachments..
+        foreach( (array) $_attachments as $_attachment ) {
+          $wpdb->delete( $wpdb->posts, array( 'ID' => $_attachment->ID ) );
+          $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $_attachment->ID ) );
+        }
+
+        if( count( $_attachments ) ) {
+          ud_get_wp_rets_client()->write_log( "Deleted [" .  count( $_attachments ) . "] that are older than our new updated [" . $_rets_media['updated'] ."] timestamp.", 'debug' );
+        }
+
+        // Insert new media.
+        foreach( (array) $_rets_media['items'] as $media ) {
+
+          $filetype = wp_check_filetype( basename( $media[ 'guid' ] ), null );
+
+          $attachment = array(
+            'guid' => $media[ 'guid' ],
+            'post_mime_type' => ( !empty( $filetype[ 'type' ] ) ? $filetype[ 'type' ] : 'image/jpeg' ),
+            'post_title' => $media['post_title'],
+            'post_content' => $media['post_content'],
+            'post_excerpt' => isset( $media['post_excerpt'] ) ? $media['post_excerpt'] : '',
+            'post_status' => 'inherit',
+            'menu_order' => $media[ 'menu_order' ] ? ( (int)$media[ 'menu_order' ] ) : null,
+            'post_modified' => date("Y-m-d H:i:s",strtotime($_rets_media['updated'])),
+            'post_modified_gmt' => date("Y-m-d H:i:s",strtotime($_rets_media['updated'])),
+            'post_date' => date("Y-m-d H:i:s",strtotime($media[ 'updated' ])),
+            'post_date_gmt' => date("Y-m-d H:i:s",strtotime($media[ 'updated' ]))
+          );
+
+          $attach_id = wp_insert_attachment( $attachment, $media[ 'guid' ], $_post_id );
+
+          update_post_meta( $attach_id, '_is_remote', '1' );
+
+          // set the item with order of 1 as the thumbnail
+          if( (int) $media[ 'menu_order' ] === 1 ) {
+            //set_post_thumbnail( $_post_id, $attach_id );
+
+            // No idea why but set_post_thumbnail() fails routinely as does update_post_meta, testing this method.
+            delete_post_meta( $_post_id, '_thumbnail_id' );
+
+            $_thumbnail_setting = add_post_meta( $_post_id, '_thumbnail_id', (int) $attach_id );
+
+            if( $_thumbnail_setting ) {
+              ud_get_wp_rets_client()->write_log( 'Setting thumbnail [' . $attach_id . '] to post [' . $_post_id . '] because it has order of 1, result: ', 'debug' );
+            } else {
+              ud_get_wp_rets_client()->write_log( 'Error! Failured at setting thumbnail [' . $attach_id . '] to post [' . $_post_id . ']', 'error' );
+            }
+
+          }
+
+        }
+
+
+        ud_get_wp_rets_client()->write_log( "Inserted or updated [" .  count( $_rets_media['items'] ) . "] that are older than our new updated [" . $_rets_media['updated'] ."] timestamp.", 'debug' );
+
+        return true;
+
+      }
+
+      /**
+       * Creates taxonomies and terms. Also handles hierarchies.
+       *
+       * @author potanin@UD
+       * @param $_post_id
+       * @param $_post_data_tax_input
+       * @param array $post_data
+       */
+      static public function insert_property_terms( $_post_id, $_post_data_tax_input, $post_data = array() ) {
+
+        ud_get_wp_rets_client()->write_log( "Have [" . count( $_post_data_tax_input ) . "] taxonomies to process.", 'debug' );
+
+        foreach( (array) $_post_data_tax_input as $tax_name => $tax_tags ) {
+          ud_get_wp_rets_client()->write_log( "Starting to process [$tax_name] taxonomy.", 'debug' );
+
+          $handled = apply_filters( 'retsci::insert_property_terms::handle', false, $tax_name, array(
+            'post_id' => $_post_id,
+            'post_data_tax_input' => $_post_data_tax_input,
+            'post_data' => $post_data,
+          ) );
+
+          if( $handled ) {
+            ud_get_wp_rets_client()->write_log( 'Taxonomy [' . $tax_name . '] has been handled via filter [wpp::insert_property_terms::handle]', 'debug' );
+            continue;
+          }
+
+          // Avoid hierarchical taxonomies since they do not allow simple-value passing.
+          if( method_exists( 'WPP_F', 'verify_have_system_taxonomy' ) ) {
+            WPP_F::verify_have_system_taxonomy( $tax_name, array( 'hierarchical' => false ) );
+          } else {
+            Utility::verify_have_system_taxonomy( $tax_name, array( 'hierarchical' => false ) );
+          }
+
+          if( is_taxonomy_hierarchical( $tax_name ) ) {
+            ud_get_wp_rets_client()->write_log( "Handling hierarchical taxonomy [$tax_name].", 'debug' );
+
+            $_terms = array();
+
+            foreach( $tax_tags as $_term_name ) {
+
+              if( is_object( $_term_name ) || is_array( $_term_name ) ) {
+
+                if( isset( $_term_name[ '_id'] ) ) {
+                  ud_get_wp_rets_client()->write_log( "Have hierarchical object term [$tax_name] with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
+                  $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
+                  ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] terms for [$tax_name] taxonomy.", 'debug' );
+                }
+
+                continue;
+              }
+
+              ud_get_wp_rets_client()->write_log( "Handling inserting term [$_term_name] for [$tax_name].", 'debug' );
+
+              $_term_parts = explode( ' > ', $_term_name );
+
+              $_term_parent_value = $_term_parts[0];
+
+              if( isset( $_term_parts[1] ) && $_term_parts[1] ) {
+                $_term_child_value = $_term_parts[1];
+              } else {
+                $_term_child_value = null;
+              }
+
+              $_term = get_term_by( 'slug', sanitize_title( $_term_name ), $tax_name, ARRAY_A );
+              $_term_parent = get_term_by( 'slug', sanitize_title( $_term_parent_value ), $tax_name, ARRAY_A );
+
+              if( is_wp_error( $_term_parent ) ) {
+                ud_get_wp_rets_client()->write_log( "Error inserting term [$tax_name]: " . $_term_parent->get_error_message(), 'error' );
+                //continue;
+              }
+
+              if( !$_term_parent ) {
+                ud_get_wp_rets_client()->write_log( "Did not find parent term [$tax_name] - [$_term_parent_value].", 'warn' );
+
+                $_term_parent = wp_insert_term( $_term_parent_value, $tax_name, array(
+                  "slug" => sanitize_title( $_term_parent_value )
+                ));
+
+                if( is_wp_error( $_term_parent ) ) {
+                  ud_get_wp_rets_client()->write_log( "Error creating term [$_term_parent_value] with [" . $_term_parent->get_error_message() ."].", 'error' );
+                } else {
+                  ud_get_wp_rets_client()->write_log( "Created parent term [$_term_parent_value] with [" . $_term_parent['term_id'] ."].", 'info' );
+                }
+
+              }
+
+              if( $_term_parent && !$_term && isset( $_term_parts ) && $_term_child_value  ) {
+
+                ud_get_wp_rets_client()->write_log( "Did not find child term [$_term_child_value] with slug [" .sanitize_title( $_term_name ) . "].", 'info' );
+                $_term = wp_insert_term( $_term_name, $tax_name, array(
+                  "parent" => $_term_parent['term_id'],
+                  "slug" => sanitize_title( $_term_name ),
+                  "description" => $_term_child_value
+                ));
+
+                // add_term_meta();
+
+                if( $_term && !is_wp_error( $_term ) ) {
+
+                  $_child_term_name_change = wp_update_term( $_term['term_id'], $tax_name, array(
+                    'name' => $_term_parent_value,
+                    'slug' => sanitize_title( $_term_name )
+                  ));
+
+
+                }
+
+                ud_get_wp_rets_client()->write_log( "Created child term [$_term_name] with [" . $_term['term_id'] ."] for [$_term_parent_value] parent.", 'debug' );
+              }
+
+              if( $_term_parent && $_term_parent['term_id'] ) {
+                $_terms[] = $_term_parent['term_id'];
+              }
+
+              if( $_term && $_term['term_id'] ) {
+                // ud_get_wp_rets_client()->write_log( "Did not find and could not create child term [$_term_parent_value] using [".sanitize_title( $_term_parts[1] )."] slug" );
+                $_terms[] = $_term['term_id'];
+              }
+
+            }
+
+            if( isset( $_terms ) && !empty( $_terms ) ) {
+              $_inserted_terms = wp_set_post_terms( $_post_id, $_terms, $tax_name );
+              ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_inserted_terms ) . "] terms.", 'info' );
+            }
+
+          }
+
+          if( !is_taxonomy_hierarchical( $tax_name ) ) {
+            ud_get_wp_rets_client()->write_log( "Handling non-hierarchical taxonomy [$tax_name].", 'debug' );
+
+            $_terms = array();
+
+            // check each tag, make sure its NOT an an array.
+            foreach( $tax_tags as $_term_name ) {
+
+              // Item is an array, which means this entry includes term meta.
+              if( is_object( $_term_name ) || is_array( $_term_name ) && isset( $_term_name[ '_id'] ) ) {
+                $_insert_result = WPP_F::insert_terms($_post_id, array($_term_name), array( '_taxonomy' => $tax_name ) );
+                ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_insert_result['set_terms'] ) . "] non-hierarchical terms for [$tax_name] taxonomy with [" . $_term_name[ '_id'] . "] _id.", 'debug' );
+              } else {
+                $_terms[] = $_term_name;
+              }
+
+            }
+
+            if( isset( $_terms ) && !empty( $_terms ) ) {
+              $_inserted_terms = wp_set_post_terms( $_post_id, $_terms, $tax_name );
+              ud_get_wp_rets_client()->write_log( "Inserted [" . count( $_inserted_terms ) . "] terms into [$tax_name] taxonomy.", "debug" );
+            }
+
+          }
+
+        }
+
+      }
 
       /**
        * Registers a system taxonomy if needed with most essential arguments.
