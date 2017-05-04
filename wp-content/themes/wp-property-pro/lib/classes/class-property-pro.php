@@ -407,13 +407,14 @@ namespace UsabilityDynamics {
         ]));
 
         /** Merge articles with child terms */
-        $params['post']['guide_content']['items'] = array_merge($content, array_map(function ($child) {
+        $child_terms = array_map(function ($child) {
 
           $child_term = get_term($child);
 
           $child_posts = array_map(function ($guide) {
             return [
               'ID' => $guide->ID,
+              'menu_order' => $guide->menu_order,
               'title' => $guide->post_title,
               'excerpt' => $guide->post_excerpt,
               'url' => get_permalink($guide->ID),
@@ -434,16 +435,32 @@ namespace UsabilityDynamics {
             ]
           ]));
 
+          $term_order = 0;
+          foreach ($child_posts as $p){
+            $term_order += $p['menu_order'];
+          }
+
           $rand_child_post_index = rand(0, count($child_posts) - 1);
 
           return [
             'title' => $child_term->name,
+            'menu_order' => $term_order,
             'url' => get_term_link($child, 'propertypro-guide-category'),
             'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
             'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
             'children' => $child_posts
           ];
-        }, get_term_children($term->term_id, $guide_category)));
+        }, get_term_children($term->term_id, $guide_category));
+
+        /** Ordering child terms */
+        usort($child_terms, function($a, $b){
+          if ($a['menu_order'] == $b['menu_order']) {
+            return 0;
+          }
+          return ($a['menu_order'] < $b['menu_order']) ? -1 : 1;
+        });
+
+        $params['post']['guide_content']['items'] = array_merge($content, $child_terms);
       }
 
       /** Builder content case */
