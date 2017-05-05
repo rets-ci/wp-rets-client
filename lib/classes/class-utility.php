@@ -7,6 +7,7 @@
 namespace UsabilityDynamics\WPRETSC {
 
   use WP_Query;
+  use WPP_F;
 
   if( !class_exists( 'UsabilityDynamics\WPRETSC\Utility' ) ) {
 
