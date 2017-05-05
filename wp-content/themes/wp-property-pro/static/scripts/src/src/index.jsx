@@ -35,7 +35,7 @@ render(
         }
         {
           _.get(bundle, 'category_base', null)
-            ? <Route path={"/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"}
+            ? <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle"}
                      component={Archive}/>
             : null
         }

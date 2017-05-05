@@ -39,6 +39,7 @@ export default class PropertyCard extends Component {
   render() {
     let {
       address,
+      location,
       baths,
       beds,
       full_address,
@@ -61,7 +62,10 @@ export default class PropertyCard extends Component {
                   <img
                     alt="Card image cap"
                     className="swiper-lazy card-img-top"
-                    src={!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail}
+                    src={_.isEmpty(thumbnail) ? Util.getGoogleStreetViewThumbnailURL({
+                      size: Lib.PROPERTY_LISTING_IMAGE_SIZE,
+                      location: !_.isEmpty(location) ? location.join(',') : ''
+                    }) : (!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail)}
                   />
                 </div>
                 {gallery_images.map((d, k) =>

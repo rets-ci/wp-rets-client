@@ -4,8 +4,8 @@ import _ from 'lodash';
 
 class Api {
 
-  static getRequestUrl(searchType = 'post', size = Lib.PROPERTY_PER_PAGE) {
-    return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
+  static getRequestUrl(path = 'search/post/_search', size = Lib.PROPERTY_PER_PAGE) {
+    return 'https://' + bundle.elasticsearch_host + '/v3/'+path+'?size=' + size;
   }
 
   static getAggregationsFields() {
@@ -175,8 +175,8 @@ class Api {
     };
 
     Api.makeRequest({
-      'url': Api.getRequestUrl('property', 0),
-      'query': body
+      'url': Api.getRequestUrl('search/property/_search', 0),
+      'query': JSON.stringify(body)
     }, function (response) {
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
@@ -244,7 +244,7 @@ class Api {
 
             _buckets.push({
               id: _.get(option, '_source.post_title', ''),
-              text: _.get(option, '_source.post_title', ''),
+              text: _.get(option, '_source.post_meta.formatted_address_simple', ''),
               url: _.get(option, '_source.post_name', null) ? [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(option, '_source.post_name', null)].join('/') : ''
             });
           }
@@ -288,17 +288,13 @@ class Api {
     for (let aggIndex in aggregations) {
       let aggregation = aggregations[aggIndex];
 
-      body.aggs[aggIndex] = {
-        "terms": {
-          "field": _.get(aggregation, 'terms.field', ''),
-          "size": params.size || 0
-        }
-      }
+      body.aggs[aggIndex] = _.get(aggregation, 'terms.field', '')
     }
 
     Api.makeRequest({
-      'url': Api.getRequestUrl('post', params.size || 0),
-      'query': body
+      'url': Api.getRequestUrl('_topAggregations', params.size || 0),
+      'query': body,
+      'method': 'GET'
     }, function (response) {
       let responseAggs = _.get(response, 'aggregations');
 
@@ -338,8 +334,8 @@ class Api {
             children: _buckets
           });
 
-          for(let r in rows){
-            if(i.indexOf(rows[r].order_key) !== -1){
+          for (let r in rows) {
+            if (i.indexOf(rows[r].order_key) !== -1) {
               rows[r] = data;
             }
           }
@@ -515,7 +511,7 @@ class Api {
 
     Api.makeRequest({
         'url': Api.getRequestUrl(),
-        'query': query
+        'query': JSON.stringify(query)
       },
       callback);
 
@@ -531,10 +527,9 @@ class Api {
     jQuery.ajax({
       url: _.get(data, 'url'),
       dataType: 'json',
-      type: 'POST',
+      type: _.get(data, 'method', 'POST'),
       contentType: 'application/json',
-      crossDomain: true,
-      data: JSON.stringify(_.get(data, 'query')),
+      data: _.get(data, 'query'),
       success: function (response) {
         if (typeof callback !== 'undefined') {
           callback(response);

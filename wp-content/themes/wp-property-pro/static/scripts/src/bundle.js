@@ -109,7 +109,7 @@
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, ''), component: _Archive2.default }) : null,
-	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
+	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
 	        component: _Archive2.default }) : null,
 	      _lodash2.default.get(bundle, 'guide_category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'guide_category_base').replace(/\//g, '') + "/:guideCategoryTitle",
 	        component: _Archive4.default }) : null,
@@ -29259,7 +29259,7 @@
 	                { className: 'row no-gutters' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-4' },
+	                  { className: 'col-lg-4 col-xl-3' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29285,7 +29285,7 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-md-6 col-lg-8' },
+	                  { className: 'col-lg-8 col-xl-9 hidden-md-down' },
 	                  displayedResults.length ? _react2.default.createElement(
 	                    'div',
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -29387,10 +29387,10 @@
 	  _createClass(Api, null, [{
 	    key: 'getRequestUrl',
 	    value: function getRequestUrl() {
-	      var searchType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'post';
+	      var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'search/post/_search';
 	      var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _lib.Lib.PROPERTY_PER_PAGE;
 
-	      return 'https://' + bundle.elasticsearch_host + '/v3/search/' + searchType + '/_search?size=' + size;
+	      return 'https://' + bundle.elasticsearch_host + '/v3/' + path + '?size=' + size;
 	    }
 	  }, {
 	    key: 'getAggregationsFields',
@@ -29563,8 +29563,8 @@
 	      };
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('property', 0),
-	        'query': body
+	        'url': Api.getRequestUrl('search/property/_search', 0),
+	        'query': JSON.stringify(body)
 	      }, function (response) {
 	        var rows = [];
 	        for (var aggregationKey in aggregationsFields) {
@@ -29631,7 +29631,7 @@
 
 	              _buckets.push({
 	                id: _lodash2.default.get(_option, '_source.post_title', ''),
-	                text: _lodash2.default.get(_option, '_source.post_title', ''),
+	                text: _lodash2.default.get(_option, '_source.post_meta.formatted_address_simple', ''),
 	                url: _lodash2.default.get(_option, '_source.post_name', null) ? [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(_option, '_source.post_name', null)].join('/') : ''
 	              });
 	            }
@@ -29671,17 +29671,13 @@
 	      for (var aggIndex in aggregations) {
 	        var aggregation = aggregations[aggIndex];
 
-	        body.aggs[aggIndex] = {
-	          "terms": {
-	            "field": _lodash2.default.get(aggregation, 'terms.field', ''),
-	            "size": params.size || 0
-	          }
-	        };
+	        body.aggs[aggIndex] = _lodash2.default.get(aggregation, 'terms.field', '');
 	      }
 
 	      Api.makeRequest({
-	        'url': Api.getRequestUrl('post', params.size || 0),
-	        'query': body
+	        'url': Api.getRequestUrl('_topAggregations', params.size || 0),
+	        'query': body,
+	        'method': 'GET'
 	      }, function (response) {
 	        var responseAggs = _lodash2.default.get(response, 'aggregations');
 
@@ -29872,7 +29868,7 @@
 
 	      Api.makeRequest({
 	        'url': Api.getRequestUrl(),
-	        'query': query
+	        'query': JSON.stringify(query)
 	      }, callback);
 	    }
 	  }, {
@@ -29887,10 +29883,9 @@
 	      jQuery.ajax({
 	        url: _lodash2.default.get(data, 'url'),
 	        dataType: 'json',
-	        type: 'POST',
+	        type: _lodash2.default.get(data, 'method', 'POST'),
 	        contentType: 'application/json',
-	        crossDomain: true,
-	        data: JSON.stringify(_lodash2.default.get(data, 'query')),
+	        data: _lodash2.default.get(data, 'query'),
 	        success: function success(response) {
 	          if (typeof callback !== 'undefined') {
 	            callback(response);
@@ -29964,7 +29959,8 @@
 	  QUERY_PARAM_SEARCH_FILTER_PREFIX: "wpp_search",
 	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
 	  BLOG_POSTS_PER_ROW: 2,
-	  LOCATION_MODAL_REQUESTS_DELAY: 500
+	  LOCATION_MODAL_REQUESTS_DELAY: 500,
+	  GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview'
 	};
 
 /***/ },
@@ -47483,6 +47479,19 @@
 	      return _lodash2.default.replace(thumbnailUrl, fileName, newFileName);
 	    }
 	  }, {
+	    key: 'getGoogleStreetViewThumbnailURL',
+	    value: function getGoogleStreetViewThumbnailURL(params) {
+
+	      var key = _lodash2.default.get(bundle, 'google_api_key', null);
+
+	      if (!params.size || !params.location || !key) {
+	        console.log('Missed params');
+	        return '';
+	      }
+
+	      return _lib.Lib.GOOGLE_STREETVIEW_URL + '?size=' + params.size + '&location=' + params.location + '&key=' + key;
+	    }
+	  }, {
 	    key: 'getQS',
 	    value: function getQS(currentUrl, searchFilters) {
 	      var uri = new _urijs2.default(currentUrl);
@@ -47595,7 +47604,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.6
+	 * version : 2.0.4
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -47616,22 +47625,20 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.6',
+	        VERSION = '2.0.4',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0',
-	            scalePercentBy100: true
+	            defaultFormat: '0,0'
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat,
-	            scalePercentBy100: defaults.scalePercentBy100
+	            defaultFormat: defaults.defaultFormat
 	        };
 
 
@@ -47700,7 +47707,6 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
-	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -47776,7 +47782,6 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
-	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -47799,7 +47804,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, 0, roundingFunction);
+	                int = numeral._.toFixed(value, null, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -47824,12 +47829,6 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
-	            }
-
-	            if (int.length < leadingCount) {
-	                for (var i = leadingCount - int.length; i > 0; i--) {
-	                    int = '0' + int;
-	                }
 	            }
 
 	            if (thousands > -1) {
@@ -47989,8 +47988,9 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
+	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -48287,42 +48287,6 @@
 	    
 
 	(function() {
-	        numeral.register('format', 'bps', {
-	            regexps: {
-	                format: /(BPS)/,
-	                unformat: /(BPS)/
-	            },
-	            format: function(value, format, roundingFunction) {
-	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
-	                    output;
-
-	                value = value * 10000;
-
-	                // check for space before BPS
-	                format = format.replace(/\s?BPS/, '');
-
-	                output = numeral._.numberToFormat(value, format, roundingFunction);
-
-	                if (numeral._.includes(output, ')')) {
-	                    output = output.split('');
-
-	                    output.splice(-1, 0, space + 'BPS');
-
-	                    output = output.join('');
-	                } else {
-	                    output = output + space + 'BPS';
-	                }
-
-	                return output;
-	            },
-	            unformat: function(string) {
-	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
-	            }
-	        });
-	})();
-
-
-	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -48332,17 +48296,10 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
-	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
-	            return decimal.suffixes.indexOf(item) < 0;
-	        }));
-	        var unformatRegex = allSuffixes.join('|');
-	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
-	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
-
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp(unformatRegex)
+	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -48441,7 +48398,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
+	                        output = numeral._.insert(output, ' ', i);
 	                        break;
 	                }
 	            }
@@ -48455,7 +48412,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
 	                        break;
 	                }
 	            }
@@ -48536,9 +48493,7 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            if (numeral.options.scalePercentBy100) {
-	                value = value * 100;
-	            }
+	            value = value * 100;
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -48558,11 +48513,7 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            var number = numeral._.stringToNumber(string);
-	            if (numeral.options.scalePercentBy100) {
-	                return number * 0.01;
-	            }
-	            return number;
+	            return numeral._.stringToNumber(string) * 0.01;
 	        }
 	    });
 	})();
@@ -55937,7 +55888,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(false) {
+		if(true) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -56830,21 +56781,6 @@
 	      var _this2 = this;
 
 	      var properties = _lodash2.default.get(this.props, 'properties', []);
-	      var groups = [];
-
-	      if (properties) {
-	        (function () {
-	          var propertiesGroup = [];
-	          properties.map(function (post) {
-	            propertiesGroup.push(post);
-
-	            if (propertiesGroup.length === _lib.Lib.BLOG_POSTS_PER_ROW) {
-	              groups.push(propertiesGroup);
-	              propertiesGroup = [];
-	            }
-	          });
-	        })();
-	      }
 
 	      return _react2.default.createElement(
 	        'div',
@@ -56854,9 +56790,10 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container-fluid' },
-	          groups.map(function (g, group_index) {
-
-	            var groupProperties = g.map(function (p, i) {
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            properties.map(function (p, i) {
 
 	              var city = '';
 	              var zipCode = '';
@@ -56878,6 +56815,7 @@
 
 	              var item = {
 	                address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	                location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
 	                baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
 	                beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
 	                full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
@@ -56892,16 +56830,11 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'col-lg-6' },
+	                { className: 'col-lg-6 col-xl-4' },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
-	            });
-	            return _react2.default.createElement(
-	              'div',
-	              { className: 'row', key: group_index },
-	              groupProperties
-	            );
-	          })
+	            })
+	          )
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',
@@ -57824,6 +57757,7 @@
 
 	      var _props$data = this.props.data,
 	          address = _props$data.address,
+	          location = _props$data.location,
 	          baths = _props$data.baths,
 	          beds = _props$data.beds,
 	          full_address = _props$data.full_address,
@@ -57861,7 +57795,10 @@
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
 	                    className: 'swiper-lazy card-img-top',
-	                    src: !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
+	                    src: _lodash2.default.isEmpty(thumbnail) ? _Util2.default.getGoogleStreetViewThumbnailURL({
+	                      size: _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE,
+	                      location: !_lodash2.default.isEmpty(location) ? location.join(',') : ''
+	                    }) : !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
 	                  })
 	                ),
 	                gallery_images.map(function (d, k) {

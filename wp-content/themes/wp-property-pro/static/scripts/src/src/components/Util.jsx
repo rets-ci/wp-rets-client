@@ -73,6 +73,18 @@ class Util extends React.Component {
     return _.replace(thumbnailUrl, fileName, newFileName);
   }
 
+  static getGoogleStreetViewThumbnailURL(params) {
+
+    let key = _.get(bundle, 'google_api_key', null);
+
+    if (!params.size || !params.location || !key) {
+      console.log('Missed params');
+      return '';
+    }
+
+    return `${Lib.GOOGLE_STREETVIEW_URL}?size=${params.size}&location=${params.location}&key=${key}`;
+  }
+
   static getQS(currentUrl, searchFilters) {
     let uri = new URI(currentUrl);
     uri.setSearch(searchFilters);

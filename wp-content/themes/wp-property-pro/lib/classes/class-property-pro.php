@@ -39,6 +39,11 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
+      /** @TODO Exclude situation with template include from some plugins - maybe hack */
+      add_action( 'template_include', function(){
+        return locate_template('index.php');
+      });
+
       $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
 
@@ -99,7 +104,9 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
-      wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . GOOGLE_API_KEY);
+      if(defined('PROPERTYPRO_GOOGLE_API_KEY')) {
+        wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
+      }
 
       $params = $this->property_pro_get_base_info();
 
@@ -136,6 +143,10 @@ namespace UsabilityDynamics {
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
+
+      if(defined('PROPERTYPRO_GOOGLE_API_KEY')){
+        $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
+      }
 
       /** Get company logos */
       $params['logos'] = [
@@ -390,6 +401,8 @@ namespace UsabilityDynamics {
           ];
         }, get_posts([
           'post_type' => $guide_post_type,
+          'orderby' => 'menu_order',
+          'order'   => 'ASC',
           'tax_query' => [
             [
               'taxonomy' => $guide_category,
@@ -401,13 +414,14 @@ namespace UsabilityDynamics {
         ]));
 
         /** Merge articles with child terms */
-        $params['post']['guide_content']['items'] = array_merge($content, array_map(function ($child) {
+        $child_terms = array_map(function ($child) {
 
           $child_term = get_term($child);
 
           $child_posts = array_map(function ($guide) {
             return [
               'ID' => $guide->ID,
+              'menu_order' => $guide->menu_order,
               'title' => $guide->post_title,
               'excerpt' => $guide->post_excerpt,
               'url' => get_permalink($guide->ID),
@@ -416,6 +430,8 @@ namespace UsabilityDynamics {
           }, get_posts([
             'post_type' => 'propertypro-guide',
             'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'order'   => 'ASC',
             'tax_query' => [
               [
                 'taxonomy' => 'propertypro-guide-category',
@@ -426,16 +442,32 @@ namespace UsabilityDynamics {
             ]
           ]));
 
+          $term_order = 0;
+          foreach ($child_posts as $p){
+            $term_order += $p['menu_order'];
+          }
+
           $rand_child_post_index = rand(0, count($child_posts) - 1);
 
           return [
             'title' => $child_term->name,
+            'menu_order' => $term_order,
             'url' => get_term_link($child, 'propertypro-guide-category'),
             'relative_url' => str_replace(home_url(), "", get_term_link($child, 'propertypro-guide-category')),
             'image_src' => get_the_post_thumbnail_url($child_posts[$rand_child_post_index]['ID']),
             'children' => $child_posts
           ];
-        }, get_term_children($term->term_id, $guide_category)));
+        }, get_term_children($term->term_id, $guide_category));
+
+        /** Ordering child terms */
+        usort($child_terms, function($a, $b){
+          if ($a['menu_order'] == $b['menu_order']) {
+            return 0;
+          }
+          return ($a['menu_order'] < $b['menu_order']) ? -1 : 1;
+        });
+
+        $params['post']['guide_content']['items'] = array_merge($content, $child_terms);
       }
 
       /** Builder content case */
