@@ -55,8 +55,17 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->write_log( "Deleted [" .  count( $_attachments ) . "] that are older than our new updated [" . $_rets_media['updated'] ."] timestamp.", 'debug' );
         }
 
+        $items = (array) $_rets_media['items'];
+        // Be sure out media items sorted by menu_order.
+        usort( $items, function($a,$b) {
+          if($a['menu_order'] === $b['menu_order']) return 0;
+          return ($a['menu_order'] < $b['menu_order']) ? -1 : 1;
+        });
+
+        $_thumbnail_setting = false;
+
         // Insert new media.
-        foreach( (array) $_rets_media['items'] as $media ) {
+        foreach( $items as $media ) {
 
           $filetype = wp_check_filetype( basename( $media[ 'guid' ] ), null );
 
@@ -85,8 +94,9 @@ namespace UsabilityDynamics\WPRETSC {
 
           update_post_meta( $attach_id, '_is_remote', '1' );
 
-          // set the item with order of 1 as the thumbnail
-          if( (int) $media[ 'menu_order' ] === 1 ) {
+          // set the first item from media as the thumbnail
+          // in case it could not be set, we try again and again with other media files
+          if( !$_thumbnail_setting ) {
             //set_post_thumbnail( $_post_id, $attach_id );
 
             // No idea why but set_post_thumbnail() fails routinely as does update_post_meta, testing this method.
@@ -516,27 +526,27 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        */
       public static function build_date_range( $strDateFrom,$strDateTo ) {
-          // takes two dates formatted as YYYY-MM-DD and creates an
-          // inclusive array of the dates between the from and to dates.
+        // takes two dates formatted as YYYY-MM-DD and creates an
+        // inclusive array of the dates between the from and to dates.
 
-          // could test validity of dates here but I'm already doing
-          // that in the main script
+        // could test validity of dates here but I'm already doing
+        // that in the main script
 
-          $aryRange=array();
+        $aryRange=array();
 
-          $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
-          $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
+        $iDateFrom=mktime(1,0,0,substr($strDateFrom,5,2),     substr($strDateFrom,8,2),substr($strDateFrom,0,4));
+        $iDateTo=mktime(1,0,0,substr($strDateTo,5,2),     substr($strDateTo,8,2),substr($strDateTo,0,4));
 
-          if ($iDateTo>=$iDateFrom)
+        if ($iDateTo>=$iDateFrom)
+        {
+          array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
+          while ($iDateFrom<$iDateTo)
           {
-            array_push($aryRange,date('Y-m-d',$iDateFrom)); // first entry
-            while ($iDateFrom<$iDateTo)
-            {
-              $iDateFrom+=86400; // add 24 hours
-              array_push($aryRange,date('Y-m-d',$iDateFrom));
-            }
+            $iDateFrom+=86400; // add 24 hours
+            array_push($aryRange,date('Y-m-d',$iDateFrom));
           }
-          return $aryRange;
+        }
+        return $aryRange;
 
       }
 
