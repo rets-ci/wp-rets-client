@@ -1751,6 +1751,28 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding-right: 0;
 }
 
+.propertypro-search-map-container .propertypro-search-map-mobile-navigation{
+    bottom: 0;
+    position: fixed;
+    display: block;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 0.1rem 0.5rem #000;
+}
+
+.propertypro-search-map-container .propertypro-search-map-mobile-navigation-items{
+    display: flex;
+    width: 100%;
+}
+
+.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers{
+    display: block;
+}
+
+.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers li{
+    display: inline-block;
+}
+
 .propertypro-search-result-loading {
     position: absolute !important;
     left: 50%;

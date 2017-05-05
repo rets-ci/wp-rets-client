@@ -29324,6 +29324,45 @@
 	                      )
 	                    )
 	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation hidden-lg-up' },
+	                  _react2.default.createElement(
+	                    'nav',
+	                    { className: 'navbar navbar-toggleable-md' },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items" },
+	                      _react2.default.createElement(
+	                        'ul',
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation-switchers navbar-nav mr-auto' },
+	                        _react2.default.createElement(
+	                          'li',
+	                          { className: 'nav-item' },
+	                          _react2.default.createElement(
+	                            'a',
+	                            { className: 'btn', href: '#' },
+	                            'Filter'
+	                          )
+	                        ),
+	                        _react2.default.createElement(
+	                          'li',
+	                          { className: 'nav-item' },
+	                          _react2.default.createElement(
+	                            'a',
+	                            { className: 'btn', href: '#' },
+	                            'List'
+	                          )
+	                        )
+	                      ),
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: 'btn' },
+	                        'Search'
+	                      )
+	                    )
+	                  )
 	                )
 	              )
 	            )
