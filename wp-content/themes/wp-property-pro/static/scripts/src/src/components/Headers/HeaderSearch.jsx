@@ -96,7 +96,7 @@ class HeaderSearch extends Component {
               <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
             </div>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap col-md-6 hidden-sm-down"}>
+          <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap col-md-6 col-sm-6"}>
             <SearchFilters filters={searchFilters}/>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3"}>
