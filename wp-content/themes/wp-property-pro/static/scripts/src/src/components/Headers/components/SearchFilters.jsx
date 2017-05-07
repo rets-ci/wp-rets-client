@@ -164,29 +164,27 @@ class searchFilters extends Component {
     }
 
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap"}>
-        <form method="get" className="clearfix hidden-md-down">
-          <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
-            <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
-              {termFilterElement}
-              {bathroomsElement}
-              {bedroomsElement}
-              {priceElement}
-              {sqftElement}
-              {lotSizeElement}
-              {propertyTypeElement}
-              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-                <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                  <span>+</span>
-                  More Filters
-                </a>
-              </span>
-            </div>
+      <form method="get" className="clearfix">
+        <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
+          <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
+            {termFilterElement}
+            {bathroomsElement}
+            {bedroomsElement}
+            {priceElement}
+            {sqftElement}
+            {lotSizeElement}
+            {propertyTypeElement}
+            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+              <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+                <span>+</span>
+                More Filters
+              </a>
+            </span>
           </div>
-          <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
-          <i className="fa fa-search"></i>
-        </form>
-      </div>
+        </div>
+        <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
+        {/* <i className="fa fa-search"></i> */}
+      </form>
     );
   }
 };

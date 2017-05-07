@@ -61,7 +61,7 @@ export default class PageLayout extends Component {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container"}>
         {Object.keys(this.state.post).length ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner container-fluid"}>
             <UserPanel location={location}/>
             <Header location={location}/>
             {React.Children.map(children, (child, i) => React.cloneElement(child, {

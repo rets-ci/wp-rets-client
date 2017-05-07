@@ -1601,9 +1601,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-top-panel .propertypro-drop-nav {
-    float: left;
     background-color: rgba(237, 242, 245, 0.498039);
-    width: 150px;
     text-align: center;
     border-width: 0px 1px;
     border-style: solid;
@@ -1623,13 +1621,22 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     height: 80px;
 }
 .propertypro-toolbar .propertypro-search-box-wrap {
-    margin-left: 3.5rem;
+    margin-left: 1.1rem;
 }
 
-.propertypro-toolbar .propertypro-logo,
+.propertypro-toolbar .propertypro-search-box-wrap form {
+  margin-top: 1.2rem;
+}
+
+.propertypro-toolbar .propertypro-logo {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/*.propertypro-toolbar .propertypro-logo,
 .propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
     line-height: 5rem;
-}
+}*/
 
 .propertypro-toolbar .propertypro-drop-nav {
     background-color: rgba(237, 242, 245, 0.5);
@@ -1744,15 +1751,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-search-map-container {
-    overflow: hidden;
     height: 100vh;
-    padding-top: 80px;
     position: relative;
-    width: 100%;
     backface-visibility: hidden;
     will-change: overflow;
-    padding-left: 0;
-    padding-right: 0;
 }
 
 .propertypro-search-result-loading {
@@ -1876,6 +1878,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #fff;
     border-radius: 3px;
     background-color: #d33320;
+}
+
+.propertypro-header-search-section {
+  position: static;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -3371,5 +3377,20 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         max-width: 20rem;
         margin-bottom: 0;
         margin-top: 0;
+    }
+
+    .propertypro-sale-type-selection div {
+      padding: 40px 0;
+    }
+
+    .propertypro-sale-type-selection div img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .propertypro-sale-type-selection div p {
+      color: #ffffff;
+	    margin-top: 1rem;
+	    text-align: center;
     }
 }

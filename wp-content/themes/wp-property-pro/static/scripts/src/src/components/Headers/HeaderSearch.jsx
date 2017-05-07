@@ -16,9 +16,27 @@ class HeaderSearch extends Component {
     } = this.props;
     let saleType = searchFilters['sale_type'];
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className={Lib.THEME_CLASSES_PREFIX + "logo"}>
+      <div>
+        {/* <div className={`row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection`} style={{backgroundColor: '#d03528'}}>
+          <div className="col-md-3">
+            <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
+      			<p>Buy</p>
+          </div>
+          <div className="col-md-3">
+            <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
+            <p>Rent</p>
+          </div>
+          <div className="col-md-3">
+            <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
+            <p>Commercial</p>
+          </div>
+          <div className="col-md-3">
+            <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
+            <p>Land</p>
+          </div>
+        </div> */}
+        <section className={`${Lib.THEME_CLASSES_PREFIX}toolbar ${Lib.THEME_CLASSES_PREFIX}header-search-section row`} >
+          <div className={Lib.THEME_CLASSES_PREFIX + "logo col-sm-1"}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -32,11 +50,15 @@ class HeaderSearch extends Component {
                 : null
             }
           </div>
-          <span className={Lib.THEME_CLASSES_PREFIX + "drop-nav"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "col-sm-2 hidden-xs-down"}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "drop-nav"}>
               <a href="#">{saleType} <i className="fa fa-caret-down"></i></a>
-            </span>
-          <SearchFilters filters={searchFilters}/>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar"}>
+            </div>
+          </div>
+          <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap col-md-6 hidden-sm-down"}>
+            <SearchFilters filters={searchFilters}/>
+          </div>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3"}>
             <ul>
               <li><a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX + "favorite"}><i
                 className="fa fa-heart"></i></a></li>
@@ -47,7 +69,7 @@ class HeaderSearch extends Component {
                      className={Lib.THEME_CLASSES_PREFIX + "side-navigation"}><span>☰</span></a></li>
             </ul>
           </div>
-        </div>
+        </section>
       </div>
     );
   }

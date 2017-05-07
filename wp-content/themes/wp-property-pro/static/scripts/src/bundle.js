@@ -29244,85 +29244,77 @@
 	      } else {
 	        elementToShow = _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map row" },
 	          _react2.default.createElement(_LocationModal2.default, null),
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container-fluid p-0' },
+	              { className: 'col-lg-4 col-xl-3' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row no-gutters' },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-lg-4 col-xl-3' },
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
 	                  _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
-	                      _react2.default.createElement(
-	                        'span',
-	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
-	                        'Only showing ',
-	                        displayedResults.length,
-	                        'listings. Zoom in, or use filters to narrow your search.'
-	                      )
-	                    ),
-	                    displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
-	                      searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                        return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
-	                          locationFilter: locationFilter,
-	                          geoCoordinates: geoCoordinates
-	                        }));
-	                      } })
+	                    'span',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
+	                    'Only showing ',
+	                    displayedResults.length,
+	                    'listings. Zoom in, or use filters to narrow your search.'
 	                  )
 	                ),
+	                displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
+	                  searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
+	                    return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
+	                      locationFilter: locationFilter,
+	                      geoCoordinates: geoCoordinates
+	                    }));
+	                  } })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-lg-8 col-xl-9 hidden-md-down' },
+	              displayedResults.length ? _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-lg-8 col-xl-9 hidden-md-down' },
-	                  displayedResults.length ? _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                      _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        'Homes for ',
-	                        searchFilters.sale_type
-	                      ),
-	                      _react2.default.createElement(
-	                        'p',
-	                        null,
-	                        'There are ',
-	                        this.props.resultsTotal,
-	                        ' homes for ',
-	                        searchFilters.sale_type,
-	                        ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
-	                      )
-	                    ),
-	                    _react2.default.createElement(_SearchResultListing2.default, {
-	                      allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
-	                      properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
-	                  ) : _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                      _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        'No results to show. Please adjust the filters to select a different range of properties'
-	                      )
-	                    )
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                  _react2.default.createElement(
+	                    'h1',
+	                    null,
+	                    'Homes for ',
+	                    searchFilters.sale_type
+	                  ),
+	                  _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'There are ',
+	                    this.props.resultsTotal,
+	                    ' homes for ',
+	                    searchFilters.sale_type,
+	                    ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                  )
+	                ),
+	                _react2.default.createElement(_SearchResultListing2.default, {
+	                  allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                  properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	              ) : _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                  _react2.default.createElement(
+	                    'h1',
+	                    null,
+	                    'No results to show. Please adjust the filters to select a different range of properties'
 	                  )
 	                )
 	              )
@@ -47604,7 +47596,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.4
+	 * version : 2.0.6
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -47625,20 +47617,22 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.4',
+	        VERSION = '2.0.6',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0'
+	            defaultFormat: '0,0',
+	            scalePercentBy100: true
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat
+	            defaultFormat: defaults.defaultFormat,
+	            scalePercentBy100: defaults.scalePercentBy100
 	        };
 
 
@@ -47707,6 +47701,7 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
+	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -47782,6 +47777,7 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
+	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -47804,7 +47800,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, null, roundingFunction);
+	                int = numeral._.toFixed(value, 0, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -47829,6 +47825,12 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
+	            }
+
+	            if (int.length < leadingCount) {
+	                for (var i = leadingCount - int.length; i > 0; i--) {
+	                    int = '0' + int;
+	                }
 	            }
 
 	            if (thousands > -1) {
@@ -47988,9 +47990,8 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
-	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -48287,6 +48288,42 @@
 	    
 
 	(function() {
+	        numeral.register('format', 'bps', {
+	            regexps: {
+	                format: /(BPS)/,
+	                unformat: /(BPS)/
+	            },
+	            format: function(value, format, roundingFunction) {
+	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
+	                    output;
+
+	                value = value * 10000;
+
+	                // check for space before BPS
+	                format = format.replace(/\s?BPS/, '');
+
+	                output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	                if (numeral._.includes(output, ')')) {
+	                    output = output.split('');
+
+	                    output.splice(-1, 0, space + 'BPS');
+
+	                    output = output.join('');
+	                } else {
+	                    output = output + space + 'BPS';
+	                }
+
+	                return output;
+	            },
+	            unformat: function(string) {
+	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
+	            }
+	        });
+	})();
+
+
+	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -48296,10 +48333,17 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
+	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
+	            return decimal.suffixes.indexOf(item) < 0;
+	        }));
+	        var unformatRegex = allSuffixes.join('|');
+	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
+	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
+
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
+	            unformat: new RegExp(unformatRegex)
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -48398,7 +48442,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i);
+	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
 	                        break;
 	                }
 	            }
@@ -48412,7 +48456,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
 	                        break;
 	                }
 	            }
@@ -48493,7 +48537,9 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            value = value * 100;
+	            if (numeral.options.scalePercentBy100) {
+	                value = value * 100;
+	            }
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -48513,7 +48559,11 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            return numeral._.stringToNumber(string) * 0.01;
+	            var number = numeral._.stringToNumber(string);
+	            if (numeral.options.scalePercentBy100) {
+	                return number * 0.01;
+	            }
+	            return number;
 	        }
 	    });
 	})();
@@ -52813,7 +52863,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Buy' },
-	                        _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "buy-icon.svg", alt: 'Buy' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52827,7 +52877,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Rent' },
-	                        _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "rent-icon.svg", alt: 'Rent' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52841,7 +52891,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Commercial' },
-	                        _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "commercial-icon.svg", alt: 'Commercial' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52855,7 +52905,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Land' },
-	                        _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "land-icon.svg", alt: 'Land' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -55888,7 +55938,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -63447,7 +63497,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner container-fluid" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -63540,8 +63590,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    'div',
+	    null,
 	    headerElement
 	  );
 	};
@@ -63560,6 +63610,8 @@
 	  value: true
 	});
 
+	var _lib = __webpack_require__(276);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -63573,7 +63625,11 @@
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
+	  );
 	};
 	exports.default = HeaderDefault;
 
@@ -63716,13 +63772,13 @@
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
+	          'section',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-section row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo col-sm-1" },
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	              'a',
 	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
@@ -63734,20 +63790,28 @@
 	            ) : null
 	          ),
 	          _react2.default.createElement(
-	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "col-sm-2 hidden-xs-down" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#' },
-	              saleType,
-	              ' ',
-	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#' },
+	                saleType,
+	                ' ',
+	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              )
 	            )
 	          ),
-	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-6 hidden-sm-down" },
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3" },
 	            _react2.default.createElement(
 	              'ul',
 	              null,
@@ -64029,45 +64093,40 @@
 	      }
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap" },
+	        'form',
+	        { method: 'get', className: 'clearfix' },
 	        _react2.default.createElement(
-	          'form',
-	          { method: 'get', className: 'clearfix hidden-md-down' },
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	            termFilterElement,
+	            bathroomsElement,
+	            bedroomsElement,
+	            priceElement,
+	            sqftElement,
+	            lotSizeElement,
+	            propertyTypeElement,
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
-	              termFilterElement,
-	              bathroomsElement,
-	              bedroomsElement,
-	              priceElement,
-	              sqftElement,
-	              lotSizeElement,
-	              propertyTypeElement,
+	              'span',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
 	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	                'a',
+	                { href: '#', onClick: function onClick() {
+	                    return _this2.props.openPropertiesModal(true);
+	                  } },
 	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick() {
-	                      return _this2.props.openPropertiesModal(true);
-	                    } },
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '+'
-	                  ),
-	                  'More Filters'
-	                )
+	                  'span',
+	                  null,
+	                  '+'
+	                ),
+	                'More Filters'
 	              )
 	            )
-	          ),
-	          _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
-	          _react2.default.createElement('i', { className: 'fa fa-search' })
-	        )
+	          )
+	        ),
+	        _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" })
 	      );
 	    }
 	  }]);
@@ -64205,7 +64264,7 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
 	      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(event) {
@@ -64528,7 +64587,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
