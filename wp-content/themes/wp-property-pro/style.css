@@ -1880,6 +1880,32 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     background-color: #d33320;
 }
 
+.propertypro-sale-type-selection div {
+  text-align: center;
+}
+
+.propertypro-sale-type-selection div a {
+  color: #fff;
+  display: block;
+  padding: 20px 0;
+}
+
+.propertypro-sale-type-selection div a img {
+  display: block;
+  margin: 0 auto 15px auto;
+}
+
+.propertypro-sale-type-selection div a:hover {
+  background: rgba(65, 65, 65, .3);
+}
+/*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
+  fill: #000;
+}*/
+
+.propertypro-sale-type-selection div a span {
+  margin-top: 1rem;
+}
+
 .propertypro-header-search-section {
   position: static;
 }
@@ -3377,15 +3403,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         max-width: 20rem;
         margin-bottom: 0;
         margin-top: 0;
-    }
-
-    .propertypro-sale-type-selection div {
-      padding: 40px 0;
-    }
-
-    .propertypro-sale-type-selection div img {
-      display: block;
-      margin: 0 auto;
     }
 
     .propertypro-sale-type-selection div p {
