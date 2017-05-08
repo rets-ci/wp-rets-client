@@ -56870,7 +56870,7 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'col-lg-6 col-xl-4' },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6' },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
 	            })
