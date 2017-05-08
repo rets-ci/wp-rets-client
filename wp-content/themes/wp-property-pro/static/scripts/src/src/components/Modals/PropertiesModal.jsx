@@ -321,25 +321,25 @@ class PropertiesModal extends Component {
                   <ul className="clearfix">
                     <li>
                       <a href="#" title="Buy">
-                        <img src="img/buy-icon.svg" alt="Buy"/>
+                        <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
                         <span>Buy</span>
                       </a>
                     </li>
                     <li>
                       <a href="#" title="Rent">
-                        <img src="img/rent-icon.svg" alt="Rent"/>
+                        <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
                         <span>Rent</span>
                       </a>
                     </li>
                     <li>
                       <a href="#" title="Commercial">
-                        <img src="img/commercial-icon.svg" alt="Commercial"/>
+                        <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
                         <span>Commercial</span>
                       </a>
                     </li>
                     <li>
                       <a href="#" title="Land">
-                        <img src="img/land-icon.svg" alt="Land"/>
+                        <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
                         <span>Land</span>
                       </a>
                     </li>

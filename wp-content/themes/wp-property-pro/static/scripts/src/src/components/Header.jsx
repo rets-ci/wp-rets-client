@@ -36,7 +36,7 @@ const HeaderContent = ({location, openUserPanel}) => {
   }
 
   return (
-    <section className={Lib.THEME_CLASSES_PREFIX + "toolbar"}>{headerElement}</section>
+    <div>{headerElement}</div>
   );
 };
 

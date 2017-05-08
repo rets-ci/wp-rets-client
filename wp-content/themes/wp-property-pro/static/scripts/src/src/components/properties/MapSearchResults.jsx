@@ -123,52 +123,48 @@ class MapSearchResults extends Component {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
     } else {
       elementToShow = (
-        <div className={Lib.THEME_CLASSES_PREFIX+"search-map"}>
+        <div className={Lib.THEME_CLASSES_PREFIX+"search-map row"}>
           <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
-          <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container`}>
-            <div className="container-fluid p-0">
-              <div className="row no-gutters">
-                <div className="col-lg-4 col-xl-3">
-                  <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
-                    <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-                <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
-                  listings. Zoom in, or use filters to narrow your search.</span>
-                    </div>
-                    {displayedResults.length &&
-                    <Map properties={displayedResults}
-                         searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
-                           ...Util.getSearchFiltersFromURL(window.location.href, true),
-                           locationFilter: locationFilter,
-                           geoCoordinates: geoCoordinates
-                         })}/>
-                    }
+          <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container row no-gutters`}>
+            <div className="col-lg-4 col-xl-3">
+              <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
+            <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
+              listings. Zoom in, or use filters to narrow your search.</span>
+                </div>
+                {displayedResults.length &&
+                <Map properties={displayedResults}
+                     searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
+                       ...Util.getSearchFiltersFromURL(window.location.href, true),
+                       locationFilter: locationFilter,
+                       geoCoordinates: geoCoordinates
+                     })}/>
+                }
+              </div>
+            </div>
+            <div className="col-lg-8 col-xl-9 hidden-md-down">
+              {displayedResults.length ?
+                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                  <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
+                    <h1>Homes for {searchFilters.sale_type}</h1>
+                    <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
+                      between
+                      $250,000 and $500,00
+                      with three to five betweens and two to three bathrooms.</p>
+                  </div>
+                  <SearchResultListing
+                    allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+                    properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
+                </div>
+                :
+                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                  <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
+                    <h1>No results to show. Please adjust the filters to select a different range of properties</h1>
                   </div>
                 </div>
-                <div className="col-lg-8 col-xl-9 hidden-md-down">
-                  {displayedResults.length ?
-                    <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
-                      <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-                        <h1>Homes for {searchFilters.sale_type}</h1>
-                        <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
-                          between
-                          $250,000 and $500,00
-                          with three to five betweens and two to three bathrooms.</p>
-                      </div>
-                      <SearchResultListing
-                        allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-                        properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
-                    </div>
-                    :
-                    <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
-                      <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-                        <h1>No results to show. Please adjust the filters to select a different range of properties</h1>
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
+              }
             </div>
           </section>
         </div>
