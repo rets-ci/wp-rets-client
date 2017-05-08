@@ -128,7 +128,7 @@ class MapSearchResults extends Component {
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container row no-gutters`}>
-            <div className="col-lg-4 col-xl-3">
+            <div className="col-sm-4">
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
             <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
@@ -144,7 +144,7 @@ class MapSearchResults extends Component {
                 }
               </div>
             </div>
-            <div className="col-lg-8 col-xl-9 hidden-md-down">
+            <div className="col-sm-8 hidden-xs-down">
               {displayedResults.length ?
                 <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
                   <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
@@ -166,7 +166,7 @@ class MapSearchResults extends Component {
                 </div>
               }
             </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-lg-up`}>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
               <nav className="navbar navbar-toggleable-md">
                 <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                   <ul className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>

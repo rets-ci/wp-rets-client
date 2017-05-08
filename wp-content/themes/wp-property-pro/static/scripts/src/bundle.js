@@ -29253,7 +29253,7 @@
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-4 col-xl-3' },
+	              { className: 'col-sm-4' },
 	              _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29279,7 +29279,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-lg-8 col-xl-9 hidden-md-down' },
+	              { className: 'col-sm-8 hidden-xs-down' },
 	              displayedResults.length ? _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -29321,7 +29321,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation hidden-lg-up' },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation hidden-sm-up' },
 	              _react2.default.createElement(
 	                'nav',
 	                { className: 'navbar navbar-toggleable-md' },
