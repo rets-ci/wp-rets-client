@@ -1880,22 +1880,30 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     background-color: #d33320;
 }
 
-.propertypro-sale-type-selection div {
+.propertypro-sale-type-selection {
+  background-color: #d03528;
+}
+
+.propertypro-sale-type-selection-hide {
+  display: none;
+}
+
+.propertypro-sale-type-selection .propertypro-selection-container {
   text-align: center;
 }
 
-.propertypro-sale-type-selection div a {
+.propertypro-sale-type-selection .propertypro-selection-container a {
   color: #fff;
   display: block;
-  padding: 20px 0;
+  padding: 1.6rem 0;
 }
 
-.propertypro-sale-type-selection div a img {
+.propertypro-sale-type-selection .propertypro-selection-container a img {
   display: block;
-  margin: 0 auto 15px auto;
+  margin: 0 auto 1rem auto;
 }
 
-.propertypro-sale-type-selection div a:hover {
+.propertypro-sale-type-selection .propertypro-selection-container a:hover {
   background: rgba(65, 65, 65, .3);
 }
 /*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
