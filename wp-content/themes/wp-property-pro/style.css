@@ -74,7 +74,8 @@ html, body {
 
 /** Toolbar **/
 
-.propertypro-toolbar {
+.propertypro-toolbar.propertypro-header-default,
+.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation{
     position: absolute;
     z-index: 2;
 }
@@ -1928,7 +1929,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
   margin-top: 1rem;
 }
 
-.propertypro-header-search-section {
+.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
   position: static;
 }
 

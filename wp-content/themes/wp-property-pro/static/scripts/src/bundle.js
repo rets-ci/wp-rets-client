@@ -63570,18 +63570,21 @@
 	  // this will ensure that all "/" characters is removed from the string
 	  var pathRoot = pathname.replace(/\//g, '');
 	  var headerElement = void 0;
+	  var sectionClassnames = _lib.Lib.THEME_CLASSES_PREFIX + "toolbar";
 	  if (pathRoot.indexOf('guide') !== -1) {
 	    return null;
 	  } else if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
 	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel, searchFilters: searchFilters });
+	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search";
 	  } else {
 	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
+	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-default";
 	  }
 
 	  return _react2.default.createElement(
-	    'div',
-	    null,
+	    'section',
+	    { className: sectionClassnames },
 	    headerElement
 	  );
 	};
@@ -63600,8 +63603,6 @@
 	  value: true
 	});
 
-	var _lib = __webpack_require__(276);
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -63615,11 +63616,7 @@
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
-	    _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
-	  );
+	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
 	};
 	exports.default = HeaderDefault;
 
@@ -63802,7 +63799,7 @@
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container" },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down', style: saleSelectionContainer },
@@ -63872,8 +63869,8 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'section',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-section row' },
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-navigation row' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo col-sm-1" },
