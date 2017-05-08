@@ -29244,85 +29244,77 @@
 	      } else {
 	        elementToShow = _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map row" },
 	          _react2.default.createElement(_LocationModal2.default, null),
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'container-fluid p-0' },
+	              { className: 'col-lg-4 col-xl-3' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row no-gutters' },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-lg-4 col-xl-3' },
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
 	                  _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
-	                      _react2.default.createElement(
-	                        'span',
-	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
-	                        'Only showing ',
-	                        displayedResults.length,
-	                        'listings. Zoom in, or use filters to narrow your search.'
-	                      )
-	                    ),
-	                    displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
-	                      searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                        return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
-	                          locationFilter: locationFilter,
-	                          geoCoordinates: geoCoordinates
-	                        }));
-	                      } })
+	                    'span',
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
+	                    'Only showing ',
+	                    displayedResults.length,
+	                    'listings. Zoom in, or use filters to narrow your search.'
 	                  )
 	                ),
+	                displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
+	                  searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
+	                    return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
+	                      locationFilter: locationFilter,
+	                      geoCoordinates: geoCoordinates
+	                    }));
+	                  } })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-lg-8 col-xl-9 hidden-md-down' },
+	              displayedResults.length ? _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'col-lg-8 col-xl-9 hidden-md-down' },
-	                  displayedResults.length ? _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                      _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        'Homes for ',
-	                        searchFilters.sale_type
-	                      ),
-	                      _react2.default.createElement(
-	                        'p',
-	                        null,
-	                        'There are ',
-	                        this.props.resultsTotal,
-	                        ' homes for ',
-	                        searchFilters.sale_type,
-	                        ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
-	                      )
-	                    ),
-	                    _react2.default.createElement(_SearchResultListing2.default, {
-	                      allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
-	                      properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
-	                  ) : _react2.default.createElement(
-	                    'div',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                      _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        'No results to show. Please adjust the filters to select a different range of properties'
-	                      )
-	                    )
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                  _react2.default.createElement(
+	                    'h1',
+	                    null,
+	                    'Homes for ',
+	                    searchFilters.sale_type
+	                  ),
+	                  _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'There are ',
+	                    this.props.resultsTotal,
+	                    ' homes for ',
+	                    searchFilters.sale_type,
+	                    ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
+	                  )
+	                ),
+	                _react2.default.createElement(_SearchResultListing2.default, {
+	                  allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                  properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	              ) : _react2.default.createElement(
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                  _react2.default.createElement(
+	                    'h1',
+	                    null,
+	                    'No results to show. Please adjust the filters to select a different range of properties'
 	                  )
 	                ),
 	                _react2.default.createElement(
@@ -29970,8 +29962,8 @@
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
-	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER',
-	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER',
+	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION',
+	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
 	  EXTENSION_DELIMITER: '.',
 	  INIT_MENU_ACTION: 'INIT_MENU',
@@ -29983,7 +29975,7 @@
 	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
-	  SET_PROPERTIES_MODAL_LOCAL_FILTER: 'SET_PROPERTIES_MODAL_LOCAL_FILTER',
+	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
 	  SET_SEARCH_PROPS_ACTION: 'SET_SEARCH_PROPS',
 	  SET_SEARCH_RESULTS_ACTION: 'SET_SEARCH_RESULTS',
 	  SET_SEARCH_TYPE: 'SET_SEARCH_TYPE',
@@ -29996,7 +29988,7 @@
 	  TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED: 'TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED',
 	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
-	  UPDATE_PROPERTIES_MODAL_LOCAL_FILTER: 'UPDATE_PROPERTIES_MODAL_LOCAL_FILTER',
+	  UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
 	  URL_DELIMITER: '/',
 	  POST_SUGGEST_COUNT: 5,
 	  TERM_SUGGEST_COUNT: 20,
@@ -47117,14 +47109,14 @@
 
 	var deletePropertiesModalSingleLocalFilter = exports.deletePropertiesModalSingleLocalFilter = function deletePropertiesModalSingleLocalFilter(filterKey) {
 	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER,
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
 	    filterKey: filterKey
 	  };
 	};
 
 	var deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalTermLocalFilter = function deletePropertiesModalTermLocalFilter(termFilter) {
 	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER,
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
 	    termFilter: termFilter
 	  };
 	};
@@ -47145,7 +47137,7 @@
 
 	var setPropertiesModalLocalFilter = exports.setPropertiesModalLocalFilter = function setPropertiesModalLocalFilter(localFilters) {
 	  return {
-	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER,
+	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
 	    localFilters: localFilters
 	  };
 	};
@@ -47214,7 +47206,7 @@
 
 	var updatePropertiesModalLocalFilter = exports.updatePropertiesModalLocalFilter = function updatePropertiesModalLocalFilter(filter) {
 	  return {
-	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER,
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
 	    filter: filter
 	  };
 	};
@@ -47652,7 +47644,7 @@
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 	 * numeral.js
-	 * version : 2.0.4
+	 * version : 2.0.6
 	 * author : Adam Draper
 	 * license : MIT
 	 * http://adamwdraper.github.com/Numeral-js/
@@ -47673,20 +47665,22 @@
 
 	    var numeral,
 	        _,
-	        VERSION = '2.0.4',
+	        VERSION = '2.0.6',
 	        formats = {},
 	        locales = {},
 	        defaults = {
 	            currentLocale: 'en',
 	            zeroFormat: null,
 	            nullFormat: null,
-	            defaultFormat: '0,0'
+	            defaultFormat: '0,0',
+	            scalePercentBy100: true
 	        },
 	        options = {
 	            currentLocale: defaults.currentLocale,
 	            zeroFormat: defaults.zeroFormat,
 	            nullFormat: defaults.nullFormat,
-	            defaultFormat: defaults.defaultFormat
+	            defaultFormat: defaults.defaultFormat,
+	            scalePercentBy100: defaults.scalePercentBy100
 	        };
 
 
@@ -47755,6 +47749,7 @@
 	            var locale = locales[numeral.options.currentLocale],
 	                negP = false,
 	                optDec = false,
+	                leadingCount = 0,
 	                abbr = '',
 	                trillion = 1000000000000,
 	                billion = 1000000000,
@@ -47830,6 +47825,7 @@
 	            int = value.toString().split('.')[0];
 	            precision = format.split('.')[1];
 	            thousands = format.indexOf(',');
+	            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
 	            if (precision) {
 	                if (numeral._.includes(precision, '[')) {
@@ -47852,7 +47848,7 @@
 	                    decimal = '';
 	                }
 	            } else {
-	                int = numeral._.toFixed(value, null, roundingFunction);
+	                int = numeral._.toFixed(value, 0, roundingFunction);
 	            }
 
 	            // check abbreviation again after rounding
@@ -47877,6 +47873,12 @@
 	            if (numeral._.includes(int, '-')) {
 	                int = int.slice(1);
 	                neg = true;
+	            }
+
+	            if (int.length < leadingCount) {
+	                for (var i = leadingCount - int.length; i > 0; i--) {
+	                    int = '0' + int;
+	                }
 	            }
 
 	            if (thousands > -1) {
@@ -48036,9 +48038,8 @@
 
 	            power = Math.pow(10, boundedPrecision);
 
-	            //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
 	            // Multiply up by precision, round accurately, then divide and use native toFixed():
-	            output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
+	            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
 
 	            if (optionals > maxDecimals - boundedPrecision) {
 	                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -48335,6 +48336,42 @@
 	    
 
 	(function() {
+	        numeral.register('format', 'bps', {
+	            regexps: {
+	                format: /(BPS)/,
+	                unformat: /(BPS)/
+	            },
+	            format: function(value, format, roundingFunction) {
+	                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
+	                    output;
+
+	                value = value * 10000;
+
+	                // check for space before BPS
+	                format = format.replace(/\s?BPS/, '');
+
+	                output = numeral._.numberToFormat(value, format, roundingFunction);
+
+	                if (numeral._.includes(output, ')')) {
+	                    output = output.split('');
+
+	                    output.splice(-1, 0, space + 'BPS');
+
+	                    output = output.join('');
+	                } else {
+	                    output = output + space + 'BPS';
+	                }
+
+	                return output;
+	            },
+	            unformat: function(string) {
+	                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
+	            }
+	        });
+	})();
+
+
+	(function() {
 	        var decimal = {
 	            base: 1000,
 	            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
@@ -48344,10 +48381,17 @@
 	            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 	        };
 
+	    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
+	            return decimal.suffixes.indexOf(item) < 0;
+	        }));
+	        var unformatRegex = allSuffixes.join('|');
+	        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
+	        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
+
 	    numeral.register('format', 'bytes', {
 	        regexps: {
 	            format: /([0\s]i?b)/,
-	            unformat: new RegExp('(' + decimal.suffixes.concat(binary.suffixes).join('|') + ')')
+	            unformat: new RegExp(unformatRegex)
 	        },
 	        format: function(value, format, roundingFunction) {
 	            var output,
@@ -48446,7 +48490,7 @@
 	                        output = numeral._.insert(output, locale.currency.symbol, i);
 	                        break;
 	                    case ' ':
-	                        output = numeral._.insert(output, ' ', i);
+	                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
 	                        break;
 	                }
 	            }
@@ -48460,7 +48504,7 @@
 	                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
 	                        break;
 	                    case ' ':
-	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i)));
+	                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
 	                        break;
 	                }
 	            }
@@ -48541,7 +48585,9 @@
 	            var space = numeral._.includes(format, ' %') ? ' ' : '',
 	                output;
 
-	            value = value * 100;
+	            if (numeral.options.scalePercentBy100) {
+	                value = value * 100;
+	            }
 
 	            // check for space before %
 	            format = format.replace(/\s?\%/, '');
@@ -48561,7 +48607,11 @@
 	            return output;
 	        },
 	        unformat: function(string) {
-	            return numeral._.stringToNumber(string) * 0.01;
+	            var number = numeral._.stringToNumber(string);
+	            if (numeral.options.scalePercentBy100) {
+	                return number * 0.01;
+	            }
+	            return number;
 	        }
 	    });
 	})();
@@ -52861,7 +52911,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Buy' },
-	                        _react2.default.createElement('img', { src: 'img/buy-icon.svg', alt: 'Buy' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "buy-icon.svg", alt: 'Buy' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52875,7 +52925,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Rent' },
-	                        _react2.default.createElement('img', { src: 'img/rent-icon.svg', alt: 'Rent' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "rent-icon.svg", alt: 'Rent' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52889,7 +52939,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Commercial' },
-	                        _react2.default.createElement('img', { src: 'img/commercial-icon.svg', alt: 'Commercial' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "commercial-icon.svg", alt: 'Commercial' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -52903,7 +52953,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', title: 'Land' },
-	                        _react2.default.createElement('img', { src: 'img/land-icon.svg', alt: 'Land' }),
+	                        _react2.default.createElement('img', { src: bundle.static_images_url + "land-icon.svg", alt: 'Land' }),
 	                        _react2.default.createElement(
 	                          'span',
 	                          null,
@@ -55936,7 +55986,7 @@
 		styleElementsInsertedAtTop = [];
 
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
 
@@ -56670,7 +56720,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: "modal " + searchModalClasses, onKeyDown: this.handleKeyPress.bind(this), style: { zIndex: 1100 } },
+	        { className: 'modal ' + searchModalClasses + ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'location-modal', onKeyDown: this.handleKeyPress.bind(this) },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0' },
@@ -63495,7 +63545,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container" },
 	        Object.keys(this.state.post).length ? _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner container-fluid" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
 	          _react2.default.createElement(_Header2.default, { location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
@@ -63588,8 +63638,8 @@
 	  }
 
 	  return _react2.default.createElement(
-	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    'div',
+	    null,
 	    headerElement
 	  );
 	};
@@ -63608,6 +63658,8 @@
 	  value: true
 	});
 
+	var _lib = __webpack_require__(276);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -63621,7 +63673,11 @@
 	var HeaderDefault = function HeaderDefault(_ref) {
 	  var openUserPanel = _ref.openUserPanel;
 
-	  return _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel });
+	  return _react2.default.createElement(
+	    'section',
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "toolbar" },
+	    _react2.default.createElement(_Navigation2.default, { openUserPanel: openUserPanel })
+	  );
 	};
 	exports.default = HeaderDefault;
 
@@ -63739,7 +63795,13 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _urijs = __webpack_require__(283);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63750,27 +63812,129 @@
 	var HeaderSearch = function (_Component) {
 	  _inherits(HeaderSearch, _Component);
 
-	  function HeaderSearch() {
+	  function HeaderSearch(props) {
 	    _classCallCheck(this, HeaderSearch);
 
-	    return _possibleConstructorReturn(this, (HeaderSearch.__proto__ || Object.getPrototypeOf(HeaderSearch)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (HeaderSearch.__proto__ || Object.getPrototypeOf(HeaderSearch)).call(this, props));
+
+	    _this.state = {
+	      saleSelectionOpened: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(HeaderSearch, [{
+	    key: 'handleSaleSelectionItemClick',
+	    value: function handleSaleSelectionItemClick(event, saleItem) {
+	      event.preventDefault();
+	      console.log('sale selection item clicked ', saleItem);
+	      var url = new _urijs2.default(window.location.href);
+	      url.setSearch(_defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleItem));
+	      this.setState({
+	        saleSelectionOpened: false
+	      });
+	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
+	    }
+	  }, {
+	    key: 'handleSaleTypeClick',
+	    value: function handleSaleTypeClick(event) {
+	      console.log('sale type clicked');
+	      event.preventDefault();
+	      this.setState({
+	        saleSelectionOpened: !this.state.saleSelectionOpened
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      var searchFilters = this.props.searchFilters;
 
+	      var saleSelectionContainer = {
+	        backgroundColor: '#d03528'
+	      };
+	      if (!this.state.saleSelectionOpened) {
+	        saleSelectionContainer['display'] = 'none';
+	      }
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down', style: saleSelectionContainer },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo" },
+	            { className: 'col-md-3' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(event) {
+	                  return _this2.handleSaleSelectionItemClick.bind(_this2)(event, 'Buy');
+	                } },
+	              _react2.default.createElement('img', { src: bundle.static_images_url + "buy-icon.svg", alt: 'Buy' }),
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'Buy'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-3' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(event) {
+	                  return _this2.handleSaleSelectionItemClick.bind(_this2)(event, 'Rent');
+	                } },
+	              _react2.default.createElement('img', { src: bundle.static_images_url + "rent-icon.svg", alt: 'Rent' }),
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'Rent'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-3' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(event) {
+	                  return _this2.handleSaleSelectionItemClick.bind(_this2)(event, 'Commercial');
+	                } },
+	              _react2.default.createElement('img', { src: bundle.static_images_url + "commercial-icon.svg", alt: 'Commercial' }),
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'Commercial'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-3' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick(event) {
+	                  return _this2.handleSaleSelectionItemClick.bind(_this2)(event, 'Land');
+	                } },
+	              _react2.default.createElement('img', { src: bundle.static_images_url + "land-icon.svg", alt: 'Land' }),
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'Land'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'section',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'toolbar ' + _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-section row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo col-sm-1" },
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	              'a',
 	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
@@ -63782,20 +63946,28 @@
 	            ) : null
 	          ),
 	          _react2.default.createElement(
-	            'span',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "col-sm-2 hidden-xs-down" },
 	            _react2.default.createElement(
-	              'a',
-	              { href: '#' },
-	              saleType,
-	              ' ',
-	              _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "drop-nav" },
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: this.handleSaleTypeClick.bind(this) },
+	                saleType,
+	                ' ',
+	                _react2.default.createElement('i', { className: 'fa fa-caret-down' })
+	              )
 	            )
 	          ),
-	          _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters }),
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-6 col-sm-6" },
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3" },
 	            _react2.default.createElement(
 	              'ul',
 	              null,
@@ -63902,15 +64074,28 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mobileViewFilterNumber = function mobileViewFilterNumber(filterParam) {
+	  var filters = Object.assign({}, filterParam);
+	  var numberOfFilters = 0;
+	  if (filters.term) {
+	    var termFilters = filters.term.slice(0);
+	    termFilters.pop();
+	    numberOfFilters = termFilters.length;
+	    delete filters['term'];
+	  }
+	  delete filters['bedrooms'];
+	  numberOfFilters += Object.keys(filters).length;
+	  return numberOfFilters;
+	};
+
+	var mobileViewCheck = function mobileViewCheck() {
+	  return window.innerWidth < _lib.Lib.MOBILE_WIDTH;
+	};
+
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-
 	    openPropertiesModal: function openPropertiesModal(open) {
 	      dispatch((0, _index.openPropertiesModal)(open));
-	    },
-
-	    updateURLWithQueryParam: function updateURLWithQueryParam(queryParam) {
-	      _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
 	    }
 	  };
 	};
@@ -63918,25 +64103,41 @@
 	var searchFilters = function (_Component) {
 	  _inherits(searchFilters, _Component);
 
-	  function searchFilters() {
+	  function searchFilters(props) {
 	    _classCallCheck(this, searchFilters);
 
-	    return _possibleConstructorReturn(this, (searchFilters.__proto__ || Object.getPrototypeOf(searchFilters)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (searchFilters.__proto__ || Object.getPrototypeOf(searchFilters)).call(this, props));
+
+	    _this.state = {
+	      isMobileView: mobileViewCheck()
+	    };
+	    return _this;
 	  }
 
 	  _createClass(searchFilters, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.updateDisplayFlag();
+	      window.addEventListener("resize", this.updateDisplayFlag.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps() {
+	      this.updateDisplayFlag();
+	    }
+	  }, {
 	    key: 'handleBathroomsFilterRemove',
 	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleBedroomsFilterRemove',
 	    value: function handleBedroomsFilterRemove(bedroomFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleLotSizefilterRemove',
@@ -63945,7 +64146,7 @@
 
 	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]", lotSizeFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]", lotSizeFilter.to), _filter3);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handlePriceFilterRemove',
@@ -63954,14 +64155,14 @@
 
 	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter4);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handlePropertyTypeRemove',
 	    value: function handlePropertyTypeRemove(propertyFilter) {
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]', propertyFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleSQFTFilterRemove',
@@ -63970,7 +64171,7 @@
 
 	      var filter = (_filter6 = {}, _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter6);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
-	      this.props.updateURLWithQueryParam(queryParam);
+	      this.updateURLWithQueryParam(queryParam);
 	    }
 	  }, {
 	    key: 'handleTermFilterRemove',
@@ -63984,7 +64185,19 @@
 	      });
 	      parsedQs[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
 	      var updatedQueryParam = _qs2.default.stringify(parsedQs);
-	      this.props.updateURLWithQueryParam('?' + updatedQueryParam);
+	      this.updateURLWithQueryParam('?' + updatedQueryParam);
+	    }
+	  }, {
+	    key: 'updateDisplayFlag',
+	    value: function updateDisplayFlag() {
+	      this.setState({
+	        isMobileView: mobileViewCheck()
+	      });
+	    }
+	  }, {
+	    key: 'updateURLWithQueryParam',
+	    value: function updateURLWithQueryParam(queryParam) {
+	      _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
 	    }
 	  }, {
 	    key: 'render',
@@ -64005,9 +64218,11 @@
 	      var propertyTypeElement = void 0;
 	      var sqftFilter = filters['sqft'];
 	      var sqftElement = void 0;
-
-	      if (bathroomsFilter) {
-	        bathroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBathroomsFilterRemove.bind(this), display: bathroomsFilter + '+ Baths', value: bathroomsFilter });
+	      var moreFiltersElement = void 0;
+	      if (!this.state.isMobileView) {
+	        if (bathroomsFilter) {
+	          bathroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBathroomsFilterRemove.bind(this), display: bathroomsFilter + '+ Baths', value: bathroomsFilter });
+	        }
 	      }
 
 	      if (bedroomsFilter) {
@@ -64031,14 +64246,65 @@
 	        );
 	      }
 
-	      if (lotSizeFilter) {
-	        lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
+	      if (!this.state.isMobileView) {
+	        if (lotSizeFilter) {
+	          lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
+	        }
 	      }
 
-	      if (priceFilter) {
-	        priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
-	      } else {
-	        priceElement = _react2.default.createElement(
+	      if (!this.state.isMobileView) {
+	        if (priceFilter) {
+	          priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
+	        } else {
+	          priceElement = _react2.default.createElement(
+	            'span',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', onClick: function onClick() {
+	                  return _this2.props.openPropertiesModal(true);
+	                } },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                '+'
+	              ),
+	              ' Price'
+	            )
+	          );
+	        }
+	      }
+
+	      if (!this.state.isMobileView) {
+	        if (propertyTypeFilter) {
+	          propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilter, value: propertyFilter });
+	        }
+	      }
+
+	      if (!this.state.isMobileView) {
+	        if (sqftFilter) {
+	          sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
+	        }
+	      }
+
+	      var termFilter = filters['term'];
+	      var termFilterElement = void 0;
+	      var termFilters = termFilter.map(function (t) {
+	        return { tax: Object.keys(t)[0], value: Object.values(t)[0] };
+	      });
+	      if (this.state.isMobileView) {
+	        termFilters = termFilters.slice(0, 1);
+	      }
+	      if (termFilters && termFilters.length) {
+	        termFilterElement = termFilters.map(function (t, i) {
+	          return _react2.default.createElement(_FilterTag2.default, { key: JSON.stringify(t), handleRemoveFilter: i !== 0 ? function () {
+	              return _this2.handleTermFilterRemove.bind(_this2)(t);
+	            } : null, display: t.value, value: t.value });
+	        });
+	      }
+	      if (this.state.isMobileView) {
+	        var numberOfFiltersToShow = mobileViewFilterNumber(filters);
+	        moreFiltersElement = _react2.default.createElement(
 	          'span',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
 	          _react2.default.createElement(
@@ -64051,71 +64317,48 @@
 	              null,
 	              '+'
 	            ),
-	            ' Price'
+	            numberOfFiltersToShow
+	          )
+	        );
+	      } else {
+	        moreFiltersElement = _react2.default.createElement(
+	          'span',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', onClick: function onClick() {
+	                return _this2.props.openPropertiesModal(true);
+	              } },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '+'
+	            ),
+	            'More Filters'
 	          )
 	        );
 	      }
-	      if (propertyTypeFilter) {
-	        propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilter, value: propertyFilter });
-	      }
-
-	      if (sqftFilter) {
-	        sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
-	      }
-
-	      var termFilter = filters['term'];
-	      var termFilterElement = void 0;
-	      var termFilters = termFilter.map(function (t) {
-	        return { tax: Object.keys(t)[0], value: Object.values(t)[0] };
-	      });
-	      if (termFilters && termFilters.length) {
-	        termFilterElement = termFilters.map(function (t, i) {
-	          return _react2.default.createElement(_FilterTag2.default, { key: JSON.stringify(t), handleRemoveFilter: i !== 0 ? function () {
-	              return _this2.handleTermFilterRemove.bind(_this2)(t);
-	            } : null, display: t.value, value: t.value });
-	        });
-	      }
 
 	      return _react2.default.createElement(
-	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap" },
+	        'form',
+	        { method: 'get', className: 'clearfix' },
 	        _react2.default.createElement(
-	          'form',
-	          { method: 'get', className: 'clearfix hidden-md-down' },
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-box" },
-	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
-	              termFilterElement,
-	              bathroomsElement,
-	              bedroomsElement,
-	              priceElement,
-	              sqftElement,
-	              lotSizeElement,
-	              propertyTypeElement,
-	              _react2.default.createElement(
-	                'span',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#', onClick: function onClick() {
-	                      return _this2.props.openPropertiesModal(true);
-	                    } },
-	                  _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    '+'
-	                  ),
-	                  'More Filters'
-	                )
-	              )
-	            )
-	          ),
-	          _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" }),
-	          _react2.default.createElement('i', { className: 'fa fa-search' })
-	        )
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "bs-tags-input" },
+	            termFilterElement,
+	            bathroomsElement,
+	            bedroomsElement,
+	            priceElement,
+	            sqftElement,
+	            lotSizeElement,
+	            propertyTypeElement,
+	            moreFiltersElement
+	          )
+	        ),
+	        _react2.default.createElement('input', { type: 'text', defaultValue: 'Raleigh,Raleigh2', 'data-role': 'tagsinput', className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput" })
 	      );
 	    }
 	  }]);
@@ -64253,7 +64496,7 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
 	      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(event) {
@@ -64576,7 +64819,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row' },
@@ -83843,13 +84086,13 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER:
+	    case _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters);
 	      delete localFilters[action.filterKey];
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
 	      }));
-	    case _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER:
+	    case _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters);
 	      localFilters.term = localFilters.term.filter(function (t) {
 	        return !(0, _lodash.isEqual)(t, action.termFilter);
@@ -83857,7 +84100,7 @@
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
 	      }));
-	    case _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER:
+	    case _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION:
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: action.localFilters
 	      }));
@@ -83865,7 +84108,7 @@
 	      return Object.assign({}, _extends({}, state, {
 	        open: action.open
 	      }));
-	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER:
+	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION:
 	      var localFilters = Object.assign({}, state.localFilters, action.filter);
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters

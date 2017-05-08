@@ -7,15 +7,26 @@ import Util from '../../Util.jsx';
 import {isEqual} from 'lodash';
 import qs from 'qs';
 
+let mobileViewFilterNumber = filterParam => {
+  let filters = Object.assign({}, filterParam);
+  let numberOfFilters = 0;
+  if (filters.term) {
+    let termFilters = filters.term.slice(0);
+    termFilters.pop();
+    numberOfFilters = termFilters.length;
+    delete filters['term'];
+  }
+  delete filters['bedrooms'];
+  numberOfFilters += Object.keys(filters).length;
+  return numberOfFilters;
+};
+
+let mobileViewCheck = () => window.innerWidth < Lib.MOBILE_WIDTH;
+
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-
     openPropertiesModal: open => {
       dispatch(openPropertiesModal(open));
-    },
-
-    updateURLWithQueryParam(queryParam) {
-      Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
     }
   }
 };
@@ -25,12 +36,28 @@ class searchFilters extends Component {
     filters: PropTypes.object.isRequired
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobileView: mobileViewCheck()
+    };
+  }
+
+  componentDidMount() {
+    this.updateDisplayFlag();
+    window.addEventListener("resize", this.updateDisplayFlag.bind(this));
+  }
+
+  componentWillReceiveProps() {
+    this.updateDisplayFlag();
+  }
+
   handleBathroomsFilterRemove(bathroomsFilter) {
     let filter = {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]']: bathroomsFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleBedroomsFilterRemove(bedroomFilter) {
@@ -38,7 +65,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]']: bedroomFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleLotSizefilterRemove(lotSizeFilter) {
@@ -47,7 +74,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]"]: lotSizeFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handlePriceFilterRemove(priceFilter) {
@@ -56,7 +83,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]"]: priceFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handlePropertyTypeRemove(propertyFilter) {
@@ -64,7 +91,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]']: propertyFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleSQFTFilterRemove(sqftFilter) {
@@ -73,7 +100,7 @@ class searchFilters extends Component {
       [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]"]: sqftFilter.to,
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
-    this.props.updateURLWithQueryParam(queryParam);
+    this.updateURLWithQueryParam(queryParam);
   }
 
   handleTermFilterRemove(termFilter) {
@@ -86,7 +113,17 @@ class searchFilters extends Component {
     })
     parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'] = updatedTermFilter;
     let updatedQueryParam = qs.stringify(parsedQs);
-    this.props.updateURLWithQueryParam('?' + updatedQueryParam);
+    this.updateURLWithQueryParam('?' + updatedQueryParam);
+  }
+
+  updateDisplayFlag() {
+    this.setState({
+      isMobileView: mobileViewCheck()
+    })
+  }
+
+  updateURLWithQueryParam(queryParam) {
+    Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
   }
 
   render() {
@@ -105,11 +142,13 @@ class searchFilters extends Component {
     let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
-
-    if (bathroomsFilter) {
-      bathroomsElement = (
-        <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
-      );
+    let moreFiltersElement;
+    if (!this.state.isMobileView) {
+      if (bathroomsFilter) {
+        bathroomsElement = (
+          <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
+        );
+      }
     }
 
     if (bedroomsFilter) {
@@ -124,33 +163,42 @@ class searchFilters extends Component {
       </span>);
     }
 
-    if (lotSizeFilter) {
-      lotSizeElement = (
-        <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
-      )
+    if (!this.state.isMobileView) {
+      if (lotSizeFilter) {
+        lotSizeElement = (
+          <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
+        )
+      }
     }
 
-    if (priceFilter) {
-      priceElement = (
-        <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
-      );
-    } else {
-      priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-        <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-          <span>+</span> Price
-        </a>
-      </span>);
-    }
-    if (propertyTypeFilter) {
-      propertyTypeElement = (
-        <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilter} value={propertyFilter} />
-      );
+    if (!this.state.isMobileView) {
+      if (priceFilter) {
+        priceElement = (
+          <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
+        );
+      } else {
+        priceElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+            <span>+</span> Price
+          </a>
+        </span>);
+      }
     }
 
-    if (sqftFilter) {
-      sqftElement = (
-        <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
-      );
+    if (!this.state.isMobileView) {
+      if (propertyTypeFilter) {
+        propertyTypeElement = (
+          <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilter} value={propertyFilter} />
+        );
+      }
+    }
+
+    if (!this.state.isMobileView) {
+      if (sqftFilter) {
+        sqftElement = (
+          <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
+        );
+      }
     }
 
     let termFilter = filters['term'];
@@ -158,36 +206,52 @@ class searchFilters extends Component {
     let termFilters = termFilter.map(t => {
       return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
     });
+    if (this.state.isMobileView) {
+      termFilters = termFilters.slice(0, 1);
+    }
     if (termFilters && termFilters.length) {
       termFilterElement = termFilters.map((t, i) =>
         <FilterTag key={JSON.stringify(t)} handleRemoveFilter={i !== 0 ? (() => this.handleTermFilterRemove.bind(this)(t)) : null} display={t.value} value={t.value} />
       );
     }
+    if (this.state.isMobileView) {
+      let numberOfFiltersToShow = mobileViewFilterNumber(filters);
+      moreFiltersElement = (
+        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+            <span>+</span>
+            {numberOfFiltersToShow}
+          </a>
+        </span>
+      );
+    } else {
+      moreFiltersElement = (
+        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+            <span>+</span>
+            More Filters
+          </a>
+        </span>
+      );
+    }
 
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap"}>
-        <form method="get" className="clearfix hidden-md-down">
-          <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
-            <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
-              {termFilterElement}
-              {bathroomsElement}
-              {bedroomsElement}
-              {priceElement}
-              {sqftElement}
-              {lotSizeElement}
-              {propertyTypeElement}
-              <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-                <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-                  <span>+</span>
-                  More Filters
-                </a>
-              </span>
-            </div>
+      <form method="get" className="clearfix">
+        <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
+          <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-input"}>
+            {termFilterElement}
+            {bathroomsElement}
+            {bedroomsElement}
+            {priceElement}
+            {sqftElement}
+            {lotSizeElement}
+            {propertyTypeElement}
+            {moreFiltersElement}
           </div>
-          <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
-          <i className="fa fa-search"></i>
-        </form>
-      </div>
+        </div>
+        <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
+        {/* <i className="fa fa-search"></i> */}
+      </form>
     );
   }
 };

@@ -199,7 +199,7 @@ class LocationModal extends Component {
     }
 
     return (
-      <div className={"modal " + searchModalClasses} onKeyDown={this.handleKeyPress.bind(this)} style={{zIndex: 1100}}>
+      <div className={`modal ${searchModalClasses} ${Lib.THEME_CLASSES_PREFIX}location-modal`} onKeyDown={this.handleKeyPress.bind(this)}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`}>
           <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>

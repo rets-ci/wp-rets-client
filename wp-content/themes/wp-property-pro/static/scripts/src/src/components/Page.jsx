@@ -31,7 +31,7 @@ class Page extends Component {
       rows
     } = this.props;
     return (
-      <div className="container-fluid">
+      <div>
         <div className="row">
           {
             rows.map((row) => {
