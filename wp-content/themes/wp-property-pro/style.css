@@ -94,6 +94,10 @@ html, body {
     flex-direction: inherit;
 }
 
+.propertypro-navigation-navbar {
+    width: 100%;
+}
+
 .propertypro-navigation-items {
     display: flex;
     width: 100%;
@@ -1022,6 +1026,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /** Page Footer */
 
+.propertypro-top-footer,
+.propertypro-bottom-footer{
+    width: 100%;
+}
+
 .propertypro-top-footer {
     background-color: #e9eff3;
     padding: 4rem 0;
@@ -1067,14 +1076,14 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     font-size: 1.10rem;
 }
 
-.propertypro-pagefooter .propertypro-social span {
+.propertypro-footer-container .propertypro-social span {
     display: inline-block;
     margin-right: .6rem;
     color: #8b8c8d;
     text-transform: uppercase;
 }
 
-.propertypro-pagefooter .propertypro-social a {
+.propertypro-footer-container .propertypro-social a {
     width: 2rem;
     height: 2rem;
     display: inline-block;
@@ -1082,28 +1091,28 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 2rem;
 }
 
-.propertypro-pagefooter .propertypro-social a:last-child {
+.propertypro-footer-container .propertypro-social a:last-child {
     margin-right: 0;
 }
 
-.propertypro-pagefooter .propertypro-social a i {
+.propertypro-footer-container .propertypro-social a i {
     color: #fff;
     font-size: 1.125rem;
 }
 
-.propertypro-pagefooter .propertypro-social .facebook {
+.propertypro-footer-container .propertypro-social .facebook {
     background-color: #3a5a98;
 }
 
-.propertypro-pagefooter .propertypro-social .facebook {
+.propertypro-footer-container .propertypro-social .facebook {
     line-height: 2.125rem;
 }
 
-.propertypro-pagefooter .propertypro-social .twitter {
+.propertypro-footer-container .propertypro-social .twitter {
     background-color: #1a97ce;
 }
 
-.propertypro-pagefooter .propertypro-social .linkedin {
+.propertypro-footer-container .propertypro-social .linkedin {
     background-color: #388ba9;
 }
 
@@ -2535,8 +2544,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /* Medium devices (tablets, more than 992px) */
 @media screen and (min-width: 62.000em) {
     .propertypro-bottom-footer {
-        height: 164px;
-        padding: 65px 0;
+        padding: 4rem 0;
     }
 
     .tax-propertypro-guide-category {
@@ -3326,7 +3334,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         width: 85%;
     }
 
-    .propertypro-pagefooter {
+    .propertypro-footer-container {
         text-align: center;
     }
 

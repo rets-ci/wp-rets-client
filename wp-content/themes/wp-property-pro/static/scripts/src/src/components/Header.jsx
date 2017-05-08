@@ -35,7 +35,7 @@ const HeaderContent = ({location, openUserPanel}) => {
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
-    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default";
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row";
   }
 
   return (

@@ -50,7 +50,7 @@ class HeaderSearch extends Component {
     let saleType = searchFilters['sale_type'];
     return (
       <div className={Lib.THEME_CLASSES_PREFIX+"header-search-container"}>
-        <div className={`row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`} style={saleSelectionContainer}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down row`} style={saleSelectionContainer}>
           <div className="col-md-3">
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>
               <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
@@ -76,7 +76,7 @@ class HeaderSearch extends Component {
             </a>
           </div>
         </div>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`} >
+        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row no-gutters`} >
           <div className={Lib.THEME_CLASSES_PREFIX + "logo col-sm-1"}>
             {
               _.get(bundle, 'logos.square_logo', null)

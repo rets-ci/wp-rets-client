@@ -123,7 +123,7 @@ class MapSearchResults extends Component {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
     } else {
       elementToShow = (
-        <div className={Lib.THEME_CLASSES_PREFIX+"search-map row"}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map row no-gutters`}>
           <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
@@ -182,7 +182,7 @@ class MapSearchResults extends Component {
       );
     }
     return (
-      <div>
+      <div className={Lib.THEME_CLASSES_PREFIX+"search-map-container"}>
         {elementToShow}
       </div>
     )
