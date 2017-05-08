@@ -63600,7 +63600,7 @@
 	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-footer" },
 	    _react2.default.createElement(
 	      'div',
-	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "top-footer-container" },
+	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'top-footer-container mx-auto' },
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'row no-gutters' },
