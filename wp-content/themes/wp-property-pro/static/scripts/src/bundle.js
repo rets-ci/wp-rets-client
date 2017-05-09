@@ -29914,8 +29914,8 @@
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
-	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION',
-	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION',
+	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER',
+	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
 	  EXTENSION_DELIMITER: '.',
 	  INIT_MENU_ACTION: 'INIT_MENU',
@@ -63803,11 +63803,9 @@
 
 	      var searchFilters = this.props.searchFilters;
 
-	      var saleSelectionContainer = {
-	        backgroundColor: '#d03528'
-	      };
+	      var containerClasses = 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down';
 	      if (!this.state.saleSelectionOpened) {
-	        saleSelectionContainer['display'] = 'none';
+	        containerClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection-hide';
 	      }
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
@@ -63815,10 +63813,10 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down', style: saleSelectionContainer },
+	          { className: containerClasses },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-md-3' },
+	            { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'selection-container' },
 	            _react2.default.createElement(
 	              'a',
 	              { href: '#', onClick: function onClick(event) {
@@ -63834,7 +63832,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-md-3' },
+	            { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'selection-container' },
 	            _react2.default.createElement(
 	              'a',
 	              { href: '#', onClick: function onClick(event) {
@@ -63850,7 +63848,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-md-3' },
+	            { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'selection-container' },
 	            _react2.default.createElement(
 	              'a',
 	              { href: '#', onClick: function onClick(event) {
@@ -63866,7 +63864,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-md-3' },
+	            { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'selection-container' },
 	            _react2.default.createElement(
 	              'a',
 	              { href: '#', onClick: function onClick(event) {
