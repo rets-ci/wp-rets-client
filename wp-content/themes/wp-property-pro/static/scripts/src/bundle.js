@@ -56870,7 +56870,7 @@
 
 	              return _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6' },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
 	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
 	              );
 	            })
@@ -63548,7 +63548,7 @@
 	var Footer = function Footer() {
 	  var pathRoot = _lodash2.default.get(location, 'pathname', '').replace(/\//g, '');
 
-	  // Don't display footer for properties base page
+	  // Don't display footer for properties base page and guide
 	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1) {
 	    return null;
 	  }
