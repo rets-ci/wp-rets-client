@@ -1,3 +1,4 @@
+import Footer from './Footer.jsx';
 import React, {Component, PropTypes} from 'react';
 import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
@@ -61,13 +62,14 @@ export default class PageLayout extends Component {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container"}>
         {Object.keys(this.state.post).length ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner container-fluid"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner"}>
             <UserPanel location={location}/>
             <Header location={location}/>
             {React.Children.map(children, (child, i) => React.cloneElement(child, {
               post: _.get(this.state, 'post', {}),
               rows: _.get(this.state, 'post.custom_content', null) ? this.state.post.post_content : []
             }))}
+            <Footer/>
           </div>
           : <LoadingAccordion />}
       </div>

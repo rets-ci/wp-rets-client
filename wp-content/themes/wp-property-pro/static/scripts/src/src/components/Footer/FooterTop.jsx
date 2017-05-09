@@ -8,8 +8,8 @@ const FooterTop = () => {
 
   return (
     <div className={Lib.THEME_CLASSES_PREFIX + "top-footer"}>
-      <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}top-footer-container`}>
-        <div className="row">
+      <div className={`${Lib.THEME_CLASSES_PREFIX}top-footer-container mx-auto`}>
+        <div className="row no-gutters">
           <div className={`col-lg-3 ${Lib.THEME_CLASSES_PREFIX}footer-logo text-center`}>
             {
               _.get(bundle, 'logos.vertical_logo', null)

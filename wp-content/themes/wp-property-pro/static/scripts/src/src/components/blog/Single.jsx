@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import PostCard from './components/PostCard.jsx';
 import PostContent from './components/PostContent.jsx';
-import Footer from '../Footer.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 
@@ -74,7 +73,6 @@ class Single extends Component {
               : null
           }
         </div>
-        <Footer/>
       </div>
     )
   }

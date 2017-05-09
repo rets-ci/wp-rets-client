@@ -26,17 +26,22 @@ const HeaderContent = ({location, openUserPanel}) => {
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
   let headerElement;
+  let sectionClassnames = Lib.THEME_CLASSES_PREFIX + "toolbar";
   if (pathRoot.indexOf('guide') !== -1) {
     return null;
   } else if (pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')) {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
+    sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
   }
 
   return (
-    <div>{headerElement}</div>
+    <section className={sectionClassnames}>
+      {headerElement}
+    </section>
   );
 };
 

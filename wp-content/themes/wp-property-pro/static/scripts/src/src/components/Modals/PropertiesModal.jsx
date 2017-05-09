@@ -1,5 +1,12 @@
 import FilterBar from './components/FilterBar.jsx';
-import {deletePropertiesModalSingleLocalFilter, deletePropertiesModalTermLocalFilter, openLocationModal, openPropertiesModal, setPropertiesModalLocalFilter, updatePropertiesModalLocalFilter} from '../../actions/index.jsx';
+import {
+  deletePropertiesModalSingleLocalFilter,
+  deletePropertiesModalTermLocalFilter,
+  openLocationModal,
+  openPropertiesModal,
+  setPropertiesModalLocalFilter,
+  updatePropertiesModalLocalFilter
+} from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
@@ -21,16 +28,16 @@ let convertToSearchParamObject = obj => {
 };
 
 function removeDefaultFilters(filters, defaults) {
-	var finalObj = {};
+  var finalObj = {};
   for (var k in filters) {
-  	if (!defaults[k] || !isEqual(defaults[k], filters[k])) {
-    	finalObj[k] = filters[k];
+    if (!defaults[k] || !isEqual(defaults[k], filters[k])) {
+      finalObj[k] = filters[k];
     }
   }
   return finalObj;
 }
 
-let bathroomOptions =[
+let bathroomOptions = [
   {name: '0+', value: '0'},
   {name: '1+', value: '1'},
   {name: '2+', value: '2'},
@@ -302,13 +309,15 @@ class PropertiesModal extends Component {
                 <div className="row">
                   <form method="get" className="form-inline clearfix hidden-md-down">
                     <i className="fa fa-search"></i>
-                    <FilterBar deleteSingleLocalFilter={this.props.deleteSingleLocalFilter} deleteLocalFilterTerm={this.props.deleteLocalFilterTerm} localFilters={localFilters} />
+                    <FilterBar deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
+                               deleteLocalFilterTerm={this.props.deleteLocalFilterTerm} localFilters={localFilters}/>
                     <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput"
                            className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly/>
-                    <div className="button-group">
-                      <a href="#" className="btn-reset" onClick={() => {}}>Reset</a>
+                    <div className={`${Lib.THEME_CLASSES_PREFIX}advanced-filter-form-button-group button-group`}>
+                      <a href="#" className="btn-reset" onClick={() => {
+                      }}>Reset</a>
                       <a href="#"
-                         className={"btn btn-primary"}
+                         className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button`}
                          onClick={this.saveFilters.bind(this)}>View Properties</a>
                     </div>
                   </form>
@@ -316,31 +325,31 @@ class PropertiesModal extends Component {
               </div>
             </div>
             <div className="modal-body p-0">
-              <div className="search-filter-nav hidden-lg-up">
+              <div className={`${Lib.THEME_CLASSES_PREFIX}search-filter-nav hidden-lg-up`}>
                 <div className="container">
                   <ul className="clearfix">
                     <li>
-                      <a href="#" title="Buy">
+                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Buy">
                         <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
-                        <span>Buy</span>
+                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Buy</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#" title="Rent">
+                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Rent">
                         <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
-                        <span>Rent</span>
+                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Rent</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#" title="Commercial">
+                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Commercial">
                         <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
-                        <span>Commercial</span>
+                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Commercial</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#" title="Land">
+                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Land">
                         <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
-                        <span>Land</span>
+                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Land</span>
                       </a>
                     </li>
                   </ul>
@@ -356,7 +365,8 @@ class PropertiesModal extends Component {
                           <span key={t.value}
                                 className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
                         )}
-                        <a href="#" className="btn btn-primary" onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
+                        <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
+                           onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
                       </div>
                     </div>
                   </div>
@@ -364,7 +374,8 @@ class PropertiesModal extends Component {
                     <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}>
                       <h3>Bedrooms <span>(Minimum)</span></h3>
                       {bedroomElements.map(d =>
-                        <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`}
+                        <a key={d.value} href="#"
+                           className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}filter-section-button ${(d.selected ? "selected" : null)}`}
                            onClick={() => this.handleBedroomSelect.bind(this)(d.value)}>{d.name}</a>
                       )}
                     </div>
@@ -378,9 +389,9 @@ class PropertiesModal extends Component {
                           <Price saleType={localFilters.sale_type} start={priceSelected.start}
                                  to={priceSelected.to}
                                  handleOnClick={this.handlePriceSelect.bind(this)}/>
-                        : null}
+                          : null}
                       </div>
-                      <input id="priceSlider" className="bs-hidden-input"/>
+                      <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
                     </div>
                   </div>
                   <div className="row">
@@ -388,7 +399,8 @@ class PropertiesModal extends Component {
                          style={{display: showAllFilters ? 'block' : 'none'}}>
                       <h3>Bathrooms <span>(Minimum)</span></h3>
                       {bathroomElements.map(d =>
-                        <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`}
+                        <a key={d.value} href="#"
+                           className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
                            onClick={() => this.handleBathroomSelect.bind(this)(d.value)}>{d.name}</a>
                       )}
                     </div>
@@ -403,9 +415,9 @@ class PropertiesModal extends Component {
                           <SQFT saleType={localFilters.sale_type} start={sqftSelected.start}
                                 to={sqftSelected.to}
                                 handleOnClick={this.handleSQFTSelect.bind(this)}/>
-                        : null}
+                          : null}
                       </div>
-                      <input id="priceSlider" className="bs-hidden-input"/>
+                      <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
                     </div>
                   </div>
                   <div className="row">
@@ -415,10 +427,11 @@ class PropertiesModal extends Component {
                       <h3>Lot Size <span>(Acres)</span></h3>
                       <div>
                         {localFilters.sale_type && lotSizeSelected.start && lotSizeSelected.to ?
-                          <LotSize saleType={localFilters.sale_type} start={lotSizeSelected.start} to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)} />
-                        : null}
+                          <LotSize saleType={localFilters.sale_type} start={lotSizeSelected.start}
+                                   to={lotSizeSelected.to} handleOnClick={this.handleLotSizeSelect.bind(this)}/>
+                          : null}
                       </div>
-                      <input id="priceSlider" className="bs-hidden-input" />
+                      <input id="priceSlider" className={`${Lib.THEME_CLASSES_PREFIX}hidden-input bs-hidden-input`}/>
                     </div>
                   </div>
                   <div className="row">
@@ -428,7 +441,9 @@ class PropertiesModal extends Component {
                       <h3>Type</h3>
                       <div className="filter-type">
                         {propertyTypeElements.map(d =>
-                          <a key={d.value} href="#" className={`btn btn-primary ${(d.selected ? "selected" : null)}`} onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
+                          <a key={d.value} href="#"
+                             className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
+                             onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
                         )}
                       </div>
                     </div>
@@ -443,13 +458,13 @@ class PropertiesModal extends Component {
                     }
                   </div>
                 </div>
-               </div>
+              </div>
             </div>
             <div className="modal-footer">
               <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
                 <div className="container">
-                  <button className="btn btn-reset">Reset</button>
-                  <span className="nav-item-right">
+                  <button className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}>Reset</button>
+                  <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right nav-item-right`}>
                   <a href="#" className="btn-cancel">Cancel</a> <i>|</i> <a href="#" className="btn-apply">Apply</a>
                 </span>
                 </div>
@@ -461,7 +476,8 @@ class PropertiesModal extends Component {
 
     )
   }
-};
+}
+;
 
 export default connect(
   mapStateToProps,

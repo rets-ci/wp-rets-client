@@ -4,15 +4,24 @@ import FooterBottom from "./Footer/FooterBottom.jsx"
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
-const Footer = () =>
-  _.get(bundle, 'footer', null)
-    ?
-    <div className="row">
-      <footer className={Lib.THEME_CLASSES_PREFIX + "pagefooter"}>
+const Footer = () => {
+  let pathRoot = _.get(location, 'pathname', '').replace(/\//g, '');
+
+  // Don't display footer for properties base page and guide
+  if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1){
+    return null;
+  }
+
+  return (
+    _.get(bundle, 'footer', null)
+      ?
+      <footer className={`${Lib.THEME_CLASSES_PREFIX}footer-container row no-gutters`}>
         <FooterTop />
         <FooterBottom/>
       </footer>
-    </div>
-    : null;
+      : null
+  )
+};
+
 
 export default Footer;

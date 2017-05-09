@@ -4,8 +4,8 @@ import _ from 'lodash';
 
 class Api {
 
-  static getRequestUrl(path = 'search/post/_search', size = Lib.PROPERTY_PER_PAGE) {
-    return 'https://' + bundle.elasticsearch_host + '/v3/'+path+'?size=' + size;
+  static getRequestUrl(size = Lib.PROPERTY_PER_PAGE) {
+    return 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=' + size;
   }
 
   static getAggregationsFields() {
@@ -171,12 +171,14 @@ class Api {
     }
 
     let body = {
-      suggest
+      data: JSON.stringify({
+        suggest: suggest
+      })
     };
 
     Api.makeRequest({
-      'url': Api.getRequestUrl('search/property/_search', 0),
-      'query': JSON.stringify(body)
+      'url': Api.getRequestUrl(0),
+      'query': body
     }, function (response) {
       let rows = [];
       for (let aggregationKey in aggregationsFields) {
@@ -288,13 +290,19 @@ class Api {
     for (let aggIndex in aggregations) {
       let aggregation = aggregations[aggIndex];
 
-      body.aggs[aggIndex] = _.get(aggregation, 'terms.field', '')
+      body.aggs[aggIndex] = {
+        "terms": {
+          "field": _.get(aggregation, 'terms.field', ''),
+          "size": params.size || 0
+        }
+      }
     }
 
     Api.makeRequest({
-      'url': Api.getRequestUrl('_topAggregations', params.size || 0),
-      'query': body,
-      'method': 'GET'
+      'url': Api.getRequestUrl(params.size || 0),
+      'query': {
+        data: JSON.stringify(body)
+      }
     }, function (response) {
       let responseAggs = _.get(response, 'aggregations');
 
@@ -511,7 +519,9 @@ class Api {
 
     Api.makeRequest({
         'url': Api.getRequestUrl(),
-        'query': JSON.stringify(query)
+        'query': {
+          data: JSON.stringify(query)
+        }
       },
       callback);
 
@@ -527,7 +537,7 @@ class Api {
     jQuery.ajax({
       url: _.get(data, 'url'),
       dataType: 'json',
-      type: _.get(data, 'method', 'POST'),
+      type: 'GET',
       contentType: 'application/json',
       data: _.get(data, 'query'),
       success: function (response) {

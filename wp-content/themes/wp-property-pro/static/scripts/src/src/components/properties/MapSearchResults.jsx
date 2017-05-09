@@ -80,7 +80,9 @@ class MapSearchResults extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      mapDisplay: true
+    };
     this.displayedProperties = [];
   }
 
@@ -107,6 +109,14 @@ class MapSearchResults extends Component {
     this.props.standardSearch(searchFilters);
   }
 
+  clickMobileSwitcherHandler(mapDisplay) {
+    let state = this.state;
+    state.mapDisplay = mapDisplay;
+    this.setState({
+      state
+    });
+  }
+
   render() {
     let {
       displayedResults,
@@ -123,12 +133,12 @@ class MapSearchResults extends Component {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
     } else {
       elementToShow = (
-        <div className={Lib.THEME_CLASSES_PREFIX+"search-map row"}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map row no-gutters`}>
           <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container row no-gutters`}>
-            <div className="col-lg-4 col-xl-3">
+            <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
             <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
@@ -144,7 +154,7 @@ class MapSearchResults extends Component {
                 }
               </div>
             </div>
-            <div className="col-lg-8 col-xl-9 hidden-md-down">
+            <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
               {displayedResults.length ?
                 <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
                   <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
@@ -166,12 +176,27 @@ class MapSearchResults extends Component {
                 </div>
               }
             </div>
+            <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
+              <nav className="navbar navbar-toggleable-md">
+                <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
+                  <ul
+                    className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
+                    <li className="nav-item"><a className="btn" href="#">Filter</a></li>
+                    <li className="nav-item"><a className="btn" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
+                    }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
+                  </ul>
+                  <a href="#" className="btn">Search</a>
+                </div>
+              </nav>
+            </div>
           </section>
         </div>
       );
     }
     return (
-      <div>
+      <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
         {elementToShow}
       </div>
     )

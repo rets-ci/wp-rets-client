@@ -67,7 +67,7 @@ class SearchResultListing extends Component {
                     };
 
                     return (
-                      <div className="col-lg-6 col-xl-4">
+                      <div className={`${Lib.THEME_CLASSES_PREFIX}card-col col-6`} key={i}>
                         <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i}/>
                       </div>
                     );

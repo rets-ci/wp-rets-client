@@ -9,7 +9,7 @@ const FooterBottom = () => {
     return (
         <div className={Lib.THEME_CLASSES_PREFIX+"bottom-footer"}>
             <div className={`container ${Lib.THEME_CLASSES_PREFIX}bottom-footer-container`}>
-                <div className="row">
+                <div className="row no-gutters">
                     <FooterBottomMenu menu={_.get(bundle, 'footer.bottom_footer.menu', {})}/>
                     <FooterBottomSocialMenu menu={_.get(bundle, 'footer.bottom_footer.social_menu', {})}/>
                 </div>
