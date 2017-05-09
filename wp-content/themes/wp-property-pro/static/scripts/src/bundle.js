@@ -52827,12 +52827,13 @@
 	                    'form',
 	                    { method: 'get', className: 'form-inline clearfix hidden-md-down' },
 	                    _react2.default.createElement('i', { className: 'fa fa-search' }),
-	                    _react2.default.createElement(_FilterBar2.default, { deleteSingleLocalFilter: this.props.deleteSingleLocalFilter, deleteLocalFilterTerm: this.props.deleteLocalFilterTerm, localFilters: localFilters }),
+	                    _react2.default.createElement(_FilterBar2.default, { deleteSingleLocalFilter: this.props.deleteSingleLocalFilter,
+	                      deleteLocalFilterTerm: this.props.deleteLocalFilterTerm, localFilters: localFilters }),
 	                    _react2.default.createElement('input', { type: 'text', value: 'Raleigh,Raleigh2', 'data-role': 'tagsinput',
 	                      className: _lib.Lib.THEME_CLASSES_PREFIX + "tagsinput", readOnly: true }),
 	                    _react2.default.createElement(
 	                      'div',
-	                      { className: 'button-group' },
+	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter-form-button-group button-group' },
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#', className: 'btn-reset', onClick: function onClick() {} },
@@ -52841,7 +52842,7 @@
 	                      _react2.default.createElement(
 	                        'a',
 	                        { href: '#',
-	                          className: "btn btn-primary",
+	                          className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-submit-button',
 	                          onClick: this.saveFilters.bind(this) },
 	                        'View Properties'
 	                      )
@@ -52855,7 +52856,7 @@
 	              { className: 'modal-body p-0' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'search-filter-nav hidden-lg-up' },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-filter-nav hidden-lg-up' },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'container' },
@@ -52867,11 +52868,11 @@
 	                      null,
 	                      _react2.default.createElement(
 	                        'a',
-	                        { href: '#', title: 'Buy' },
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item", href: '#', title: 'Buy' },
 	                        _react2.default.createElement('img', { src: bundle.static_images_url + "buy-icon.svg", alt: 'Buy' }),
 	                        _react2.default.createElement(
 	                          'span',
-	                          null,
+	                          { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label" },
 	                          'Buy'
 	                        )
 	                      )
@@ -52881,11 +52882,11 @@
 	                      null,
 	                      _react2.default.createElement(
 	                        'a',
-	                        { href: '#', title: 'Rent' },
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item", href: '#', title: 'Rent' },
 	                        _react2.default.createElement('img', { src: bundle.static_images_url + "rent-icon.svg", alt: 'Rent' }),
 	                        _react2.default.createElement(
 	                          'span',
-	                          null,
+	                          { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label" },
 	                          'Rent'
 	                        )
 	                      )
@@ -52895,11 +52896,11 @@
 	                      null,
 	                      _react2.default.createElement(
 	                        'a',
-	                        { href: '#', title: 'Commercial' },
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item", href: '#', title: 'Commercial' },
 	                        _react2.default.createElement('img', { src: bundle.static_images_url + "commercial-icon.svg", alt: 'Commercial' }),
 	                        _react2.default.createElement(
 	                          'span',
-	                          null,
+	                          { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label" },
 	                          'Commercial'
 	                        )
 	                      )
@@ -52909,11 +52910,11 @@
 	                      null,
 	                      _react2.default.createElement(
 	                        'a',
-	                        { href: '#', title: 'Land' },
+	                        { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item", href: '#', title: 'Land' },
 	                        _react2.default.createElement('img', { src: bundle.static_images_url + "land-icon.svg", alt: 'Land' }),
 	                        _react2.default.createElement(
 	                          'span',
-	                          null,
+	                          { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label" },
 	                          'Land'
 	                        )
 	                      )
@@ -52956,7 +52957,8 @@
 	                        }),
 	                        _react2.default.createElement(
 	                          'a',
-	                          { href: '#', className: 'btn btn-primary', onClick: function onClick() {
+	                          { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button btn btn-primary',
+	                            onClick: function onClick() {
 	                              return _this2.props.openLocationModal(true);
 	                            } },
 	                          '+ More Locations'
@@ -52983,7 +52985,8 @@
 	                      bedroomElements.map(function (d) {
 	                        return _react2.default.createElement(
 	                          'a',
-	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                          { key: d.value, href: '#',
+	                            className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button ' + (d.selected ? "selected" : null),
 	                            onClick: function onClick() {
 	                              return _this2.handleBedroomSelect.bind(_this2)(d.value);
 	                            } },
@@ -53016,7 +53019,7 @@
 	                          to: priceSelected.to,
 	                          handleOnClick: this.handlePriceSelect.bind(this) }) : null
 	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
 	                  ),
 	                  _react2.default.createElement(
@@ -53039,7 +53042,8 @@
 	                      bathroomElements.map(function (d) {
 	                        return _react2.default.createElement(
 	                          'a',
-	                          { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null),
+	                          { key: d.value, href: '#',
+	                            className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button btn btn-primary ' + (d.selected ? "selected" : null),
 	                            onClick: function onClick() {
 	                              return _this2.handleBathroomSelect.bind(_this2)(d.value);
 	                            } },
@@ -53073,7 +53077,7 @@
 	                          to: sqftSelected.to,
 	                          handleOnClick: this.handleSQFTSelect.bind(this) }) : null
 	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
 	                  ),
 	                  _react2.default.createElement(
@@ -53097,9 +53101,10 @@
 	                      _react2.default.createElement(
 	                        'div',
 	                        null,
-	                        localFilters.sale_type && lotSizeSelected.start && lotSizeSelected.to ? _react2.default.createElement(_LotSize2.default, { saleType: localFilters.sale_type, start: lotSizeSelected.start, to: lotSizeSelected.to, handleOnClick: this.handleLotSizeSelect.bind(this) }) : null
+	                        localFilters.sale_type && lotSizeSelected.start && lotSizeSelected.to ? _react2.default.createElement(_LotSize2.default, { saleType: localFilters.sale_type, start: lotSizeSelected.start,
+	                          to: lotSizeSelected.to, handleOnClick: this.handleLotSizeSelect.bind(this) }) : null
 	                      ),
-	                      _react2.default.createElement('input', { id: 'priceSlider', className: 'bs-hidden-input' })
+	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
 	                  ),
 	                  _react2.default.createElement(
@@ -53121,7 +53126,9 @@
 	                        propertyTypeElements.map(function (d) {
 	                          return _react2.default.createElement(
 	                            'a',
-	                            { key: d.value, href: '#', className: 'btn btn-primary ' + (d.selected ? "selected" : null), onClick: function onClick() {
+	                            { key: d.value, href: '#',
+	                              className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button btn btn-primary ' + (d.selected ? "selected" : null),
+	                              onClick: function onClick() {
 	                                return _this2.handlePropertyTypeSelect.bind(_this2)(d.value);
 	                              } },
 	                            d.name
@@ -53159,12 +53166,12 @@
 	                  { className: 'container' },
 	                  _react2.default.createElement(
 	                    'button',
-	                    { className: 'btn btn-reset' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'button-reset btn btn-reset' },
 	                    'Reset'
 	                  ),
 	                  _react2.default.createElement(
 	                    'span',
-	                    { className: 'nav-item-right' },
+	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav-item-right nav-item-right' },
 	                    _react2.default.createElement(
 	                      'a',
 	                      { href: '#', className: 'btn-cancel' },
@@ -53203,6 +53210,7 @@
 	  localFilters: _react.PropTypes.object.isRequired,
 	  standardSearch: _react.PropTypes.func.isRequired
 	};
+
 	;
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PropertiesModal);
@@ -56729,7 +56737,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                      'button',
-	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit' },
+	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button-search-submit ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-submit-button' },
 	                      'Search'
 	                    )
 	                  )
@@ -64799,7 +64807,8 @@
 
 	  return _react2.default.createElement(
 	    'section',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
+	    {
+	      className: _lib.Lib.THEME_CLASSES_PREFIX + "user-panel row " + (panelOpen ? _lib.Lib.THEME_CLASSES_PREFIX + "on" : "") },
 	    _react2.default.createElement(
 	      'a',
 	      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "close-panel", onClick: function onClick(event) {
@@ -64838,7 +64847,8 @@
 	        _react2.default.createElement(
 	          'a',
 	          { href: '#' },
-	          _react2.default.createElement('img', { src: bundle.static_images_url + "paresh.png", alt: '', className: _lib.Lib.THEME_CLASSES_PREFIX + "default-user" }),
+	          _react2.default.createElement('img', { src: bundle.static_images_url + "paresh.png", alt: '',
+	            className: _lib.Lib.THEME_CLASSES_PREFIX + "default-user" }),
 	          _react2.default.createElement(
 	            'h5',
 	            null,
@@ -64851,8 +64861,9 @@
 	          ),
 	          _react2.default.createElement(
 	            'span',
-	            null,
-	            _react2.default.createElement('img', { src: bundle.static_images_url + "settings.svg", alt: '' })
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-info-box-status-image" },
+	            _react2.default.createElement('img', {
+	              src: bundle.static_images_url + "settings.svg", alt: '' })
 	          )
 	        )
 	      )
@@ -64862,13 +64873,13 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation" },
 	      _react2.default.createElement(
 	        'ol',
-	        { className: 'clearfix' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'user-navigation-list clearfix' },
 	        _react2.default.createElement(
 	          'li',
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Home For You' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Home For You' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64878,7 +64889,8 @@
 	            ' Home For You ',
 	            _react2.default.createElement(
 	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "tag" },
+	              {
+	                className: _lib.Lib.THEME_CLASSES_PREFIX + "tag" },
 	              '8'
 	            )
 	          )
@@ -64888,7 +64900,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Shared Favorites' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Shared Favorites' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64898,7 +64910,8 @@
 	            ' Shared Favorites ',
 	            _react2.default.createElement(
 	              'span',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "tag" },
+	              {
+	                className: _lib.Lib.THEME_CLASSES_PREFIX + "tag" },
 	              '8'
 	            )
 	          )
@@ -64908,7 +64921,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Comments' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Comments' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64922,7 +64935,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Search Homes' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Search Homes' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64937,7 +64950,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Favorites' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Favorites' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64951,7 +64964,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Saved Searches' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Saved Searches' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64966,7 +64979,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Buy With Us' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Buy With Us' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64981,7 +64994,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Home Buyer\u2019s Guide' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Home Buyer\u2019s Guide' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -64996,7 +65009,7 @@
 	          null,
 	          _react2.default.createElement(
 	            'a',
-	            { href: '#', title: 'Home Buyer\u2019s Blog' },
+	            { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "user-navigation-item-link", title: 'Home Buyer\u2019s Blog' },
 	            _react2.default.createElement(
 	              'span',
 	              null,
@@ -65013,7 +65026,7 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "more" },
 	      _react2.default.createElement(
 	        'a',
-	        { href: '#' },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-link", href: '#' },
 	        _react2.default.createElement(
 	          'span',
 	          null,
@@ -66155,21 +66168,21 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post clearfix' },
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post-link ' + _lib.Lib.THEME_CLASSES_PREFIX + 'facebook rounded-circle',
 	          href: "https://www.facebook.com/sharer/sharer.php?u=" + widget_cell.widget.fields.post_url,
 	          target: '_blank', title: 'Facebook', rel: 'noopener' },
 	        _react2.default.createElement('i', { className: 'fa fa-facebook-f' })
 	      ) : null,
 	      twitterLink ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post-link ' + _lib.Lib.THEME_CLASSES_PREFIX + 'twitter rounded-circle', href: twitterLink, target: '_blank',
 	          title: 'Twitter' },
 	        _react2.default.createElement('i', {
 	          className: 'fa fa-twitter' })
 	      ) : null,
 	      _lodash2.default.get(widget_cell, 'widget.fields.post_url', null) && _lodash2.default.get(widget_cell, 'widget.fields.post_title', null) ? _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'share-post-link ' + _lib.Lib.THEME_CLASSES_PREFIX + 'linkedin rounded-circle',
 	          href: "https://www.linkedin.com/shareArticle?mini=true&url=" + widget_cell.widget.fields.post_url + "&title=" + widget_cell.widget.fields.post_title,
 	          target: '_blank', title: 'LinkedIn' },
 	        _react2.default.createElement('i', { className: 'fa fa-linkedin' })
