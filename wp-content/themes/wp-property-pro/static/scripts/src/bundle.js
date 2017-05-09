@@ -63549,7 +63549,7 @@
 	  var pathRoot = _lodash2.default.get(location, 'pathname', '').replace(/\//g, '');
 
 	  // Don't display footer for properties base page
-	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
+	  if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1) {
 	    return null;
 	  }
 
@@ -83306,8 +83306,7 @@
 	          _react2.default.createElement(_Subnavigation2.default, { widget_cell: _lodash2.default.get(content, 'subnavigation'),
 	            currentUrl: _lodash2.default.get(this.props.post, 'post_url', '') }),
 	          _react2.default.createElement(_Posts2.default, { seeMoreHandler: this.props.getPosts, categoryId: _lodash2.default.get(content, 'category_id') })
-	        ),
-	        _react2.default.createElement(_Footer2.default, null)
+	        )
 	      );
 	    }
 	  }]);

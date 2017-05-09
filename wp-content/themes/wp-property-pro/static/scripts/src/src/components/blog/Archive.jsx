@@ -61,7 +61,6 @@ class ArchiveContent extends Component {
                          currentUrl={_.get(this.props.post, 'post_url', '')}/>
           <Posts seeMoreHandler={this.props.getPosts} categoryId={_.get(content, 'category_id')}/>
         </div>
-        <Footer/>
       </div>
     )
   }

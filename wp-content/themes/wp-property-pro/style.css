@@ -75,6 +75,7 @@ html, body {
 /** Toolbar **/
 
 .propertypro-toolbar.propertypro-header-default,
+.propertypro-toolbar.propertypro-guide-toolbar,
 .propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation{
     position: absolute;
     z-index: 2;

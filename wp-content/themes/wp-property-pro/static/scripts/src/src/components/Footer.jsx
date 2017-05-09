@@ -7,8 +7,8 @@ import _ from 'lodash';
 const Footer = () => {
   let pathRoot = _.get(location, 'pathname', '').replace(/\//g, '');
 
-  // Don't display footer for properties base page
-  if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '')){
+  // Don't display footer for properties base page and guide
+  if(pathRoot === _.get(wpp, 'instance.settings.configuration.base_slug', '') || pathRoot.indexOf('guide') !== -1){
     return null;
   }
 
