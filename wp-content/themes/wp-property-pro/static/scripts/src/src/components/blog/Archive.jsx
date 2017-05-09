@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import Subnavigation from '../widgets/subnavigation/Subnavigation.jsx';
 import Posts from './components/Posts.jsx';
-import Footer from '../Footer.jsx';
 import {setBlogPosts} from '../../actions/index.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';

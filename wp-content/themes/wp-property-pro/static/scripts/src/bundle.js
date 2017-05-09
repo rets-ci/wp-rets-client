@@ -67733,10 +67733,6 @@
 
 	var _PostContent2 = _interopRequireDefault(_PostContent);
 
-	var _Footer = __webpack_require__(319);
-
-	var _Footer2 = _interopRequireDefault(_Footer);
-
 	var _lib = __webpack_require__(276);
 
 	var _lodash = __webpack_require__(277);
@@ -67831,8 +67827,7 @@
 	              )
 	            )
 	          ) : null
-	        ),
-	        _react2.default.createElement(_Footer2.default, null)
+	        )
 	      );
 	    }
 	  }]);
@@ -83252,10 +83247,6 @@
 	var _Posts = __webpack_require__(424);
 
 	var _Posts2 = _interopRequireDefault(_Posts);
-
-	var _Footer = __webpack_require__(319);
-
-	var _Footer2 = _interopRequireDefault(_Footer);
 
 	var _index = __webpack_require__(278);
 
