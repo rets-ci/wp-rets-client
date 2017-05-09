@@ -29192,7 +29192,9 @@
 
 	    var _this = _possibleConstructorReturn(this, (MapSearchResults.__proto__ || Object.getPrototypeOf(MapSearchResults)).call(this, props));
 
-	    _this.state = {};
+	    _this.state = {
+	      mapDisplay: true
+	    };
 	    _this.displayedProperties = [];
 	    return _this;
 	  }
@@ -29224,6 +29226,15 @@
 	      this.props.standardSearch(searchFilters);
 	    }
 	  }, {
+	    key: 'clickMobileSwitcherHandler',
+	    value: function clickMobileSwitcherHandler(mapDisplay) {
+	      var state = this.state;
+	      state.mapDisplay = mapDisplay;
+	      this.setState({
+	        state: state
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -29253,7 +29264,7 @@
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-4' },
+	              { className: 'col-sm-4 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
 	              _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
@@ -29279,7 +29290,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-8 hidden-xs-down' },
+	              { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
 	              displayedResults.length ? _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
@@ -29330,7 +29341,8 @@
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items" },
 	                  _react2.default.createElement(
 	                    'ul',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation-switchers navbar-nav mr-auto' },
+	                    {
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation-switchers navbar-nav mr-auto' },
 	                    _react2.default.createElement(
 	                      'li',
 	                      { className: 'nav-item' },
@@ -29345,8 +29357,11 @@
 	                      { className: 'nav-item' },
 	                      _react2.default.createElement(
 	                        'a',
-	                        { className: 'btn', href: '#' },
-	                        'List'
+	                        { className: 'btn', href: '#', onClick: function onClick(e) {
+	                            e.preventDefault();
+	                            _this2.clickMobileSwitcherHandler.bind(_this2)(!_this2.state.mapDisplay);
+	                          } },
+	                        this.state.mapDisplay ? 'List' : 'Map'
 	                      )
 	                    )
 	                  ),
