@@ -681,7 +681,7 @@ html, body {
     border-bottom: .0625rem solid #d2dae0;
 }
 
-.propertypro-user-navigation .user-navigation-item-link {
+.propertypro-user-navigation .propertypro-user-navigation-item-link {
     display: block;
     padding: 0 2.1875rem;
     font-size: 1.050rem;
@@ -690,7 +690,7 @@ html, body {
     position: relative;
 }
 
-.propertypro-user-navigation .user-navigation-item-link span {
+.propertypro-user-navigation .propertypro-user-navigation-item-link span {
     display: inline-block;
     margin-right: .9375rem;
 }
