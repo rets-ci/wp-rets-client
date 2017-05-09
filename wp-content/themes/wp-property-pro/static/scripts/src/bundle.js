@@ -63945,7 +63945,7 @@
 	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search";
 	  } else {
 	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
-	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-default row";
+	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
 	  }
 
 	  return _react2.default.createElement(
