@@ -41,35 +41,33 @@ class HeaderSearch extends Component {
     let {
       searchFilters
     } = this.props;
-    let saleSelectionContainer = {
-      backgroundColor: '#d03528'
-    };
+    let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
     if (!this.state.saleSelectionOpened) {
-      saleSelectionContainer['display'] = 'none';
+      containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}sale-type-selection-hide`;
     }
     let saleType = searchFilters['sale_type'];
     return (
       <div className={Lib.THEME_CLASSES_PREFIX+"header-search-container"}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down row`} style={saleSelectionContainer}>
-          <div className="col-md-3">
+        <div className={containerClasses}>
+          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>
               <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
         			<span>Buy</span>
             </a>
           </div>
-          <div className="col-md-3">
+          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Rent')}>
               <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
               <span>Rent</span>
             </a>
           </div>
-          <div className="col-md-3">
+          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Commercial')}>
               <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
               <span>Commercial</span>
             </a>
           </div>
-          <div className="col-md-3">
+          <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Land')}>
               <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
               <span>Land</span>
