@@ -29137,7 +29137,8 @@
 	    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
 	    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
 	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
-	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0)
+	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0),
+	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearchState.saleTypesPanelOpen', false)
 	  };
 	};
 
@@ -29249,19 +29250,23 @@
 	      var propertyTypes = location.query['wpp_search[property_types]'];
 	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, false);
 
+	      var listingSidebarStyle = {
+	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
+	      };
+
 	      var elementToShow = void 0;
 	      if (mapSearchResultsLoading) {
 	        elementToShow = _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" });
 	      } else {
 	        elementToShow = _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map row no-gutters' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
 	          _react2.default.createElement(_LocationModal2.default, null),
 	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
 	            open: propertiesModalOpen }),
 	          _react2.default.createElement(
 	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-container row no-gutters' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-sm-4 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
@@ -29293,7 +29298,7 @@
 	              { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
 	              displayedResults.length ? _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
@@ -29318,7 +29323,7 @@
 	                  properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
 	              ) : _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
@@ -30000,6 +30005,7 @@
 	  STRING_ARRAY_DELIMITER: '-',
 	  THEME_PREFIX: 'wp-property-pro-',
 	  TOGGLE_LOCATION_MODAL_ACTION: 'TOGGLE_LOCATION_MODAL',
+	  SALE_TYPES_PANEL_OPEN_ACTION: 'SALE_TYPES_PANEL_OPEN',
 	  TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED: 'TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED',
 	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
@@ -30015,7 +30021,8 @@
 	  SUBNAVIGATION_MOBILE_HEIGHT_FOR_BUTTON_DISPLAY: 800,
 	  BLOG_POSTS_PER_ROW: 2,
 	  LOCATION_MODAL_REQUESTS_DELAY: 500,
-	  GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview'
+	  GOOGLE_STREETVIEW_URL: 'https://maps.googleapis.com/maps/api/streetview',
+	  HEADER_SEARCH_HEIGHT: 80
 	};
 
 /***/ },
@@ -47118,7 +47125,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+	exports.openSaleTypesPanel = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
 
 	var _lib = __webpack_require__(276);
 
@@ -47223,6 +47230,13 @@
 	  return {
 	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
 	    filter: filter
+	  };
+	};
+
+	var openSaleTypesPanel = exports.openSaleTypesPanel = function openSaleTypesPanel(open) {
+	  return {
+	    type: _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION,
+	    open: open
 	  };
 	};
 
@@ -56852,52 +56866,48 @@
 	          } },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            properties.map(function (p, i) {
+	          { className: 'row' },
+	          properties.map(function (p, i) {
 
-	              var city = '';
-	              var zipCode = '';
+	            var city = '';
+	            var zipCode = '';
 
-	              var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
+	            var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
 
-	              for (var termInd in listingLocation) {
-	                var term = listingLocation[termInd][0];
+	            for (var termInd in listingLocation) {
+	              var term = listingLocation[termInd][0];
 
-	                switch (term.term_type) {
-	                  case 'location-city-state':
-	                    city = term.name;
-	                    break;
-	                  case 'location-zipcode':
-	                    zipCode = term.name;
-	                    break;
-	                }
+	              switch (term.term_type) {
+	                case 'location-city-state':
+	                  city = term.name;
+	                  break;
+	                case 'location-zipcode':
+	                  zipCode = term.name;
+	                  break;
 	              }
+	            }
 
-	              var item = {
-	                address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
-	                location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
-	                baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
-	                beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
-	                full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
-	                gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
-	                  return media.url;
-	                }),
-	                living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
-	                price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
-	                relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
-	                thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
-	              };
+	            var item = {
+	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
+	              location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
+	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
+	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
+	              full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
+	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
+	                return media.url;
+	              }),
+	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
+	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
+	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
+	            };
 
-	              return _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
-	                _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
-	              );
-	            })
-	          )
+	            return _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
+	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
+	            );
+	          })
 	        ),
 	        this.props.allowPagination ? _react2.default.createElement(
 	          'div',
@@ -63924,7 +63934,8 @@
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
-	    location: ownProps.location
+	    location: ownProps.location,
+	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearchState.saleTypesPanelOpen', false)
 	  };
 	};
 
@@ -63938,7 +63949,8 @@
 
 	var HeaderContent = function HeaderContent(_ref) {
 	  var location = _ref.location,
-	      openUserPanel = _ref.openUserPanel;
+	      openUserPanel = _ref.openUserPanel,
+	      saleTypesPanelOpen = _ref.saleTypesPanelOpen;
 
 	  var pathname = _lodash2.default.get(location, 'pathname', '');
 	  // this will ensure that all "/" characters is removed from the string
@@ -63951,6 +63963,10 @@
 	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
 	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel, searchFilters: searchFilters });
 	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search";
+
+	    if (saleTypesPanelOpen) {
+	      sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
+	    }
 	  } else {
 	    headerElement = _react2.default.createElement(_HeaderDefault2.default, { openUserPanel: openUserPanel });
 	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
@@ -64096,6 +64112,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(233);
+
 	var _reactRouter = __webpack_require__(178);
 
 	var _SearchFilters = __webpack_require__(329);
@@ -64103,6 +64121,8 @@
 	var _SearchFilters2 = _interopRequireDefault(_SearchFilters);
 
 	var _lib = __webpack_require__(276);
+
+	var _index = __webpack_require__(278);
 
 	var _lodash = __webpack_require__(277);
 
@@ -64122,18 +64142,27 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearch.saleTypesPanelOpen', false)
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    doOpenSaleTypesPanel: function doOpenSaleTypesPanel(open) {
+	      dispatch((0, _index.openSaleTypesPanel)(open));
+	    }
+	  };
+	};
+
 	var HeaderSearch = function (_Component) {
 	  _inherits(HeaderSearch, _Component);
 
 	  function HeaderSearch(props) {
 	    _classCallCheck(this, HeaderSearch);
 
-	    var _this = _possibleConstructorReturn(this, (HeaderSearch.__proto__ || Object.getPrototypeOf(HeaderSearch)).call(this, props));
-
-	    _this.state = {
-	      saleSelectionOpened: false
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (HeaderSearch.__proto__ || Object.getPrototypeOf(HeaderSearch)).call(this, props));
 	  }
 
 	  _createClass(HeaderSearch, [{
@@ -64143,9 +64172,7 @@
 	      console.log('sale selection item clicked ', saleItem);
 	      var url = new _urijs2.default(window.location.href);
 	      url.setSearch(_defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleItem));
-	      this.setState({
-	        saleSelectionOpened: false
-	      });
+	      this.props.saleTypesPanelOpen(false);
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
 	    }
 	  }, {
@@ -64153,9 +64180,8 @@
 	    value: function handleSaleTypeClick(event) {
 	      console.log('sale type clicked');
 	      event.preventDefault();
-	      this.setState({
-	        saleSelectionOpened: !this.state.saleSelectionOpened
-	      });
+
+	      this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
 	    }
 	  }, {
 	    key: 'render',
@@ -64165,7 +64191,7 @@
 	      var searchFilters = this.props.searchFilters;
 
 	      var containerClasses = 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down';
-	      if (!this.state.saleSelectionOpened) {
+	      if (!this.props.saleTypesPanelOpen) {
 	        containerClasses += ' ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection-hide';
 	      }
 	      var saleType = searchFilters['sale_type'];
@@ -64245,7 +64271,7 @@
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-navigation row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "logo col-sm-1" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo col-sm-1 my-auto' },
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	              'a',
 	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
@@ -64337,7 +64363,7 @@
 	  searchFilters: _react.PropTypes.object.isRequired,
 	  openUserPanel: _react.PropTypes.func.isRequired
 	};
-	exports.default = HeaderSearch;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderSearch);
 
 /***/ },
 /* 329 */
@@ -83888,51 +83914,55 @@
 
 	var _redux = __webpack_require__(242);
 
-	var _map = __webpack_require__(429);
+	var _headerSearch = __webpack_require__(429);
+
+	var _headerSearch2 = _interopRequireDefault(_headerSearch);
+
+	var _map = __webpack_require__(430);
 
 	var _map2 = _interopRequireDefault(_map);
 
-	var _locationModal = __webpack_require__(430);
+	var _locationModal = __webpack_require__(431);
 
 	var _locationModal2 = _interopRequireDefault(_locationModal);
 
-	var _propertiesModal = __webpack_require__(431);
+	var _propertiesModal = __webpack_require__(432);
 
 	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
-	var _searchProps = __webpack_require__(432);
+	var _searchProps = __webpack_require__(433);
 
 	var _searchProps2 = _interopRequireDefault(_searchProps);
 
-	var _searchResults = __webpack_require__(433);
+	var _searchResults = __webpack_require__(434);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
 
-	var _mapMarkers = __webpack_require__(434);
+	var _mapMarkers = __webpack_require__(435);
 
 	var _mapMarkers2 = _interopRequireDefault(_mapMarkers);
 
-	var _mapSearchResultsLoading = __webpack_require__(435);
+	var _mapSearchResultsLoading = __webpack_require__(436);
 
 	var _mapSearchResultsLoading2 = _interopRequireDefault(_mapSearchResultsLoading);
 
-	var _searchType = __webpack_require__(436);
+	var _searchType = __webpack_require__(437);
 
 	var _searchType2 = _interopRequireDefault(_searchType);
 
-	var _filterTerms = __webpack_require__(437);
+	var _filterTerms = __webpack_require__(438);
 
 	var _filterTerms2 = _interopRequireDefault(_filterTerms);
 
-	var _panel = __webpack_require__(438);
+	var _panel = __webpack_require__(439);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _testimonialsCarousel = __webpack_require__(439);
+	var _testimonialsCarousel = __webpack_require__(440);
 
 	var _testimonialsCarousel2 = _interopRequireDefault(_testimonialsCarousel);
 
-	var _blogPosts = __webpack_require__(440);
+	var _blogPosts = __webpack_require__(441);
 
 	var _blogPosts2 = _interopRequireDefault(_blogPosts);
 
@@ -83951,13 +83981,42 @@
 	    filterTermsState: _filterTerms2.default,
 	    panel: _panel2.default,
 	    testimonialsCarouselState: _testimonialsCarousel2.default,
-	    blogPostsState: _blogPosts2.default
+	    blogPostsState: _blogPosts2.default,
+	    headerSearch: _headerSearch2.default
 	});
 
 	exports.default = propertyProApp;
 
 /***/ },
 /* 429 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _lib = __webpack_require__(276);
+
+	var headerSearch = function headerSearch() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION:
+	      return Object.assign({}, state, {
+	        open: action.open
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	exports.default = headerSearch;
+
+/***/ },
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -83988,7 +84047,7 @@
 	exports.default = map;
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84016,7 +84075,7 @@
 	exports.default = locationModal;
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84077,7 +84136,7 @@
 	exports.default = propertiesModal;
 
 /***/ },
-/* 432 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84104,7 +84163,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 433 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84141,7 +84200,7 @@
 	exports.default = searchResults;
 
 /***/ },
-/* 434 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84168,7 +84227,7 @@
 	exports.default = mapMarkers;
 
 /***/ },
-/* 435 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84195,7 +84254,7 @@
 	exports.default = mapSearchResultsLoading;
 
 /***/ },
-/* 436 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84225,7 +84284,7 @@
 	exports.default = searchProps;
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84252,7 +84311,7 @@
 	exports.default = filterTerms;
 
 /***/ },
-/* 438 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84282,7 +84341,7 @@
 	exports.default = panel;
 
 /***/ },
-/* 439 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -84309,7 +84368,7 @@
 	exports.default = testimonialsCarousel;
 
 /***/ },
-/* 440 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

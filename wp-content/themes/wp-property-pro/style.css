@@ -81,6 +81,14 @@ html, body {
     z-index: 2;
 }
 
+.propertypro-toolbar.propertypro-header-search {
+    height: 5rem;
+}
+
+.propertypro-toolbar.propertypro-header-search-with-open-sale-types-panel {
+    height: 13rem;
+}
+
 .propertypro-login-box, .propertypro-login-box:visited {
     background: transparent;
     border-radius: .1875rem;
@@ -1605,7 +1613,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-toolbar .propertypro-logo {
-  margin-top: 0.5rem;
   text-align: center;
 }
 
@@ -1674,14 +1681,19 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-map-container {
-    height: 100vh;
+    height: 100%;
 }
 
 .propertypro-search-map-container {
-    height: 100vh;
     position: relative;
     backface-visibility: hidden;
     will-change: overflow;
+}
+
+.propertypro-search-map,
+.propertypro-search-map-section,
+.propertypro-search-map{
+    height: 100%;
 }
 
 .propertypro-search-map-container .propertypro-search-map-mobile-navigation{
@@ -1713,6 +1725,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-listing-map {
+    height: 100%;
     position: relative;
 }
 
@@ -1738,7 +1751,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-listing-sidebar {
     position: relative;
     overflow-y: scroll;
-    height: 100vh;
 }
 
 .propertypro-listing-sidebar .sidebar-inner {
