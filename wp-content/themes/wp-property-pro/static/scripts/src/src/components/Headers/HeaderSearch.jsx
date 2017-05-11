@@ -31,7 +31,7 @@ class HeaderSearch extends Component {
     console.log('sale selection item clicked ', saleItem);
     let url = new URI(window.location.href);
     url.setSearch({[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleItem});
-    this.props.saleTypesPanelOpen(false);
+    this.props.doOpenSaleTypesPanel(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
 

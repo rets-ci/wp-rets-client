@@ -10,7 +10,7 @@ import _ from 'lodash';
 const mapStateToProps = (state, ownProps) => {
   return {
     location: ownProps.location,
-    saleTypesPanelOpen: _.get(state, 'headerSearchState.saleTypesPanelOpen', false)
+    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 

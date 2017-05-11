@@ -20,7 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
     resultsTotal: _.get(state, 'searchResults.totalProps', 0),
-    saleTypesPanelOpen: _.get(state, 'headerSearchState.saleTypesPanelOpen', false)
+    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 

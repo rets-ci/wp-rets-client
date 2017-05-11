@@ -29138,7 +29138,7 @@
 	    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
 	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
 	    resultsTotal: _lodash2.default.get(state, 'searchResults.totalProps', 0),
-	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearchState.saleTypesPanelOpen', false)
+	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearch.saleTypesPanelOpen', false)
 	  };
 	};
 
@@ -63935,7 +63935,7 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
 	    location: ownProps.location,
-	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearchState.saleTypesPanelOpen', false)
+	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearch.saleTypesPanelOpen', false)
 	  };
 	};
 
@@ -64172,7 +64172,7 @@
 	      console.log('sale selection item clicked ', saleItem);
 	      var url = new _urijs2.default(window.location.href);
 	      url.setSearch(_defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleItem));
-	      this.props.saleTypesPanelOpen(false);
+	      this.props.doOpenSaleTypesPanel(false);
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
 	    }
 	  }, {
@@ -84006,7 +84006,7 @@
 	  switch (action.type) {
 	    case _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION:
 	      return Object.assign({}, state, {
-	        open: action.open
+	        saleTypesPanelOpen: action.open
 	      });
 	    default:
 	      return state;
