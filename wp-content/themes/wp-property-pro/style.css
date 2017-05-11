@@ -1811,11 +1811,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-sale-type-selection {
     background-color: #d03528;
+    width: 100%;
 }
 
 .propertypro-sale-type-selection-hide {
     display: none;
-    width: 100%;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container {
