@@ -49,7 +49,7 @@ section, article, footer {
 /*  Typography
 /*-----------------------------------------------------------------------------------*/
 body, p, input, button, select, textarea {
-`    letter-spacing: .0625rem;
+     letter-spacing: .0625rem;
 }
 
 h1 {
@@ -76,9 +76,17 @@ html, body {
 
 .propertypro-toolbar.propertypro-header-default,
 .propertypro-toolbar.propertypro-guide-toolbar,
-.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation{
+.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
     position: absolute;
     z-index: 2;
+}
+
+.propertypro-toolbar.propertypro-header-search {
+    height: 5rem;
+}
+
+.propertypro-toolbar.propertypro-header-search-with-open-sale-types-panel {
+    height: 13rem;
 }
 
 .propertypro-login-box, .propertypro-login-box:visited {
@@ -1028,7 +1036,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /** Page Footer */
 
 .propertypro-top-footer,
-.propertypro-bottom-footer{
+.propertypro-bottom-footer {
     width: 100%;
 }
 
@@ -1219,7 +1227,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-location-modal {
-  z-index: 1100;
+    z-index: 1100;
 }
 
 .propertypro-search-modal-box ol li.propertypro-search-result-item {
@@ -1286,7 +1294,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-filter-section.propertypro-filter-section-price,
-.propertypro-filter-section.propertypro-filter-section-total-size{
+.propertypro-filter-section.propertypro-filter-section-total-size {
     width: 100%;
 }
 
@@ -1303,7 +1311,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     opacity: .9;
 }
 
-.propertypro-advanced-filter form{
+.propertypro-advanced-filter form {
     width: 100%;
 }
 
@@ -1596,17 +1604,17 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 5rem;
     height: 5rem;
 }
+
 .propertypro-toolbar .propertypro-search-box-wrap {
     margin-left: 1.1rem;
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap form {
-  margin-top: 1.2rem;
+    margin-top: 1.2rem;
 }
 
 .propertypro-toolbar .propertypro-logo {
-  margin-top: 0.5rem;
-  text-align: center;
+    text-align: center;
 }
 
 /*.propertypro-toolbar .propertypro-logo,
@@ -1674,17 +1682,22 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-map-container {
-    height: 100vh;
+    height: 100%;
 }
 
 .propertypro-search-map-container {
-    height: 100vh;
     position: relative;
     backface-visibility: hidden;
     will-change: overflow;
 }
 
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation{
+.propertypro-search-map,
+.propertypro-search-map-section,
+.propertypro-search-map {
+    height: 100%;
+}
+
+.propertypro-search-map-container .propertypro-search-map-mobile-navigation {
     bottom: 0;
     position: fixed;
     display: block;
@@ -1693,16 +1706,16 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     box-shadow: 0 0.1rem 0.5rem #000;
 }
 
-.propertypro-search-map-container .propertypro-search-map-mobile-navigation-items{
+.propertypro-search-map-container .propertypro-search-map-mobile-navigation-items {
     display: flex;
     width: 100%;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers{
+.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers {
     display: block;
 }
 
-.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers li{
+.propertypro-search-map-mobile-navigation .propertypro-search-map-mobile-navigation-switchers li {
     display: inline-block;
 }
 
@@ -1713,6 +1726,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-listing-map {
+    height: 100%;
     position: relative;
 }
 
@@ -1738,7 +1752,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-listing-sidebar {
     position: relative;
     overflow-y: scroll;
-    height: 100vh;
 }
 
 .propertypro-listing-sidebar .sidebar-inner {
@@ -1797,41 +1810,43 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-sale-type-selection {
-  background-color: #d03528;
+    background-color: #d03528;
+    width: 100%;
 }
 
 .propertypro-sale-type-selection-hide {
-  display: none;
+    display: none;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container {
-  text-align: center;
+    text-align: center;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container a {
-  color: #fff;
-  display: block;
-  padding: 1.6rem 0;
+    color: #fff;
+    display: block;
+    padding: 1.6rem 0;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container a img {
-  display: block;
-  margin: 0 auto 1rem auto;
+    display: block;
+    margin: 0 auto 1rem auto;
 }
 
 .propertypro-sale-type-selection .propertypro-selection-container a:hover {
-  background: rgba(65, 65, 65, .3);
+    background: rgba(65, 65, 65, .3);
 }
+
 /*.propertypro-sale-type-selection div a .icon-container svg:hover .sale-icons {
   fill: #000;
 }*/
 
 .propertypro-sale-type-selection div a span {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
-  position: static;
+    position: static;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -2395,8 +2410,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*-----------------------------------------------------------------------------------*/
 
 /* Large devices (more than 1440px) */
-@media screen and (min-width: 90em){
-    .propertypro-card-col{
+@media screen and (min-width: 90em) {
+    .propertypro-card-col {
         max-width: 33.33%;
     }
 }
@@ -2782,7 +2797,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         display: none;
     }
 
-    .propertypro-bottom-footer{
+    .propertypro-bottom-footer {
         margin-bottom: 5rem;
     }
 }
@@ -3012,15 +3027,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         margin: .5rem;
     }
 
-    .propertypro-post-content .propertypro-post-content-container{
+    .propertypro-post-content .propertypro-post-content-container {
         margin: .5rem !important;
     }
 
-    .propertypro-blog-posts-row{
+    .propertypro-blog-posts-row {
         margin-bottom: 0;
     }
 
-    .propertypro-blog-posts-row .propertypro-post-item{
+    .propertypro-blog-posts-row .propertypro-post-item {
         margin-bottom: 1rem;
     }
 
@@ -3307,8 +3322,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-sale-type-selection div p {
-      color: #ffffff;
-	    margin-top: 1rem;
-	    text-align: center;
+        color: #ffffff;
+        margin-top: 1rem;
+        text-align: center;
     }
 }

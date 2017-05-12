@@ -1,5 +1,6 @@
 import {routerReducer} from 'react-router-redux';
 import {combineReducers} from 'redux';
+import headerSearch from './headerSearch.jsx';
 import mapState from './map.jsx';
 import locationModal from './location-modal.jsx';
 import propertiesModal from './propertiesModal.jsx';
@@ -26,7 +27,8 @@ const propertyProApp = combineReducers({
     filterTermsState,
     panel,
     testimonialsCarouselState,
-    blogPostsState
+    blogPostsState,
+    headerSearch
 });
 
 export default propertyProApp

@@ -19,7 +19,8 @@ const mapStateToProps = (state, ownProps) => {
     mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
     propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
-    resultsTotal: _.get(state, 'searchResults.totalProps', 0)
+    resultsTotal: _.get(state, 'searchResults.totalProps', 0),
+    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -128,21 +129,25 @@ class MapSearchResults extends Component {
     let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, false);
 
+    let listingSidebarStyle = {
+      height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
+    };
+
     let elementToShow;
     if (mapSearchResultsLoading) {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
     } else {
       elementToShow = (
-        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map row no-gutters`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
           <LocationModal />
           <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
                            open={propertiesModalOpen}/>
-          <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-container row no-gutters`}>
+          <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
             <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
                 <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-            <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
-              listings. Zoom in, or use filters to narrow your search.</span>
+                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
+                    listings. Zoom in, or use filters to narrow your search.</span>
                 </div>
                 {displayedResults.length &&
                 <Map properties={displayedResults}
@@ -156,7 +161,7 @@ class MapSearchResults extends Component {
             </div>
             <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
               {displayedResults.length ?
-                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
                   <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
                     <h1>Homes for {searchFilters.sale_type}</h1>
                     <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
@@ -169,7 +174,7 @@ class MapSearchResults extends Component {
                     properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
                 </div>
                 :
-                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
+                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
                   <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
                     <h1>No results to show. Please adjust the filters to select a different range of properties</h1>
                   </div>

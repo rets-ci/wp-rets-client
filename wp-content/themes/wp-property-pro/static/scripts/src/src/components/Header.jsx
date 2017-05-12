@@ -9,7 +9,8 @@ import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    location: ownProps.location
+    location: ownProps.location,
+    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
 
@@ -21,7 +22,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 };
 
-const HeaderContent = ({location, openUserPanel}) => {
+const HeaderContent = ({location, openUserPanel, saleTypesPanelOpen}) => {
   let pathname = _.get(location, 'pathname', '');
   // this will ensure that all "/" characters is removed from the string
   let pathRoot = pathname.replace(/\//g, '');
@@ -33,6 +34,11 @@ const HeaderContent = ({location, openUserPanel}) => {
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, true);
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
+
+    if(saleTypesPanelOpen){
+      sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
+    }
+
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";

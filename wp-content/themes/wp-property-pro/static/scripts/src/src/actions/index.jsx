@@ -102,4 +102,11 @@ export const updatePropertiesModalLocalFilter = filter => {
     type: Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
     filter: filter
   }
-}
+};
+
+export const openSaleTypesPanel = open => {
+  return {
+    type: Lib.SALE_TYPES_PANEL_OPEN_ACTION,
+    open: open
+  }
+};

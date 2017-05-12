@@ -1,16 +1,29 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
+import {openSaleTypesPanel} from '../../actions/index.jsx';
 import _ from 'lodash';
 import URI from 'urijs';
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
+  }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    doOpenSaleTypesPanel: (open) => {
+      dispatch(openSaleTypesPanel(open));
+    }
+  };
+};
 
 class HeaderSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      saleSelectionOpened: false
-    };
   }
 
   handleSaleSelectionItemClick(event, saleItem) {
@@ -18,18 +31,15 @@ class HeaderSearch extends Component {
     console.log('sale selection item clicked ', saleItem);
     let url = new URI(window.location.href);
     url.setSearch({[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleItem});
-    this.setState({
-      saleSelectionOpened: false
-    });
+    this.props.doOpenSaleTypesPanel(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
   }
 
   handleSaleTypeClick(event) {
     console.log('sale type clicked')
     event.preventDefault();
-    this.setState({
-      saleSelectionOpened: !this.state.saleSelectionOpened
-    });
+
+    this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
   }
 
   static propTypes = {
@@ -42,17 +52,17 @@ class HeaderSearch extends Component {
       searchFilters
     } = this.props;
     let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
-    if (!this.state.saleSelectionOpened) {
+    if (!this.props.saleTypesPanelOpen) {
       containerClasses += ` ${Lib.THEME_CLASSES_PREFIX}sale-type-selection-hide`;
     }
     let saleType = searchFilters['sale_type'];
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX+"header-search-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
         <div className={containerClasses}>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>
               <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
-        			<span>Buy</span>
+              <span>Buy</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
@@ -74,8 +84,8 @@ class HeaderSearch extends Component {
             </a>
           </div>
         </div>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row no-gutters`} >
-          <div className={Lib.THEME_CLASSES_PREFIX + "logo col-sm-1"}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row no-gutters`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-sm-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -94,7 +104,7 @@ class HeaderSearch extends Component {
               <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
             </div>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX+"search-box-wrap col-md-6 col-sm-6"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-6 col-sm-6"}>
             <SearchFilters filters={searchFilters}/>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3"}>
@@ -114,4 +124,7 @@ class HeaderSearch extends Component {
   }
 }
 
-export default HeaderSearch;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderSearch);
