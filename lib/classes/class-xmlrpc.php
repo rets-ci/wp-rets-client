@@ -388,6 +388,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         return array(
           'ok' => true,
+          'key' => 'wp',
           'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with [' . $_stats['total'] . '] total listings.',
           'data' => $_stats['data'],
           'time' => timer_stop()
