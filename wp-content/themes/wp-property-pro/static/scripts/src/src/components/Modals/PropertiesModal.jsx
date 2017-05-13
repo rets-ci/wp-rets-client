@@ -298,6 +298,28 @@ class PropertiesModal extends Component {
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
           <div className="modal-content">
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
+              <div className="container">
+                <div className="d-flex flex-row hidden-md-down">
+                  <div className="p-2 my-auto">
+                    <i className="fa fa-search"></i>
+                  </div>
+                  <div className="p-2 col-xl-9 col-lg-8 my-auto">
+                    <FilterBar
+                      deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
+                      deleteLocalFilterTerm={this.props.deleteLocalFilterTerm}
+                      localFilters={localFilters}
+                    />
+                  </div>
+                  <div className="p-2 my-auto">
+                    <a href="#" className="btn-reset" onClick={() => {}}>Reset</a>
+                  </div>
+                  <div className="p-2 my-auto">
+                    <a href="#"
+                       className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button`}
+                       onClick={this.saveFilters.bind(this)}>View Properties</a>
+                  </div>
+                </div>
+              </div>
               <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
                       onClick={(e) => {
                         e.preventDefault();
@@ -305,24 +327,6 @@ class PropertiesModal extends Component {
                       }} aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <div className="container">
-                <div className="row">
-                  <form method="get" className="form-inline clearfix hidden-md-down">
-                    <i className="fa fa-search"></i>
-                    <FilterBar deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
-                               deleteLocalFilterTerm={this.props.deleteLocalFilterTerm} localFilters={localFilters}/>
-                    <input type="text" value="Raleigh,Raleigh2" data-role="tagsinput"
-                           className={Lib.THEME_CLASSES_PREFIX + "tagsinput"} readOnly/>
-                    <div className={`${Lib.THEME_CLASSES_PREFIX}advanced-filter-form-button-group button-group`}>
-                      <a href="#" className="btn-reset" onClick={() => {
-                      }}>Reset</a>
-                      <a href="#"
-                         className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button`}
-                         onClick={this.saveFilters.bind(this)}>View Properties</a>
-                    </div>
-                  </form>
-                </div>
-              </div>
             </div>
             <div className="modal-body p-0">
               <div className={`${Lib.THEME_CLASSES_PREFIX}search-filter-nav hidden-lg-up`}>

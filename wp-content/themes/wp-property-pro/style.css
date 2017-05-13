@@ -1177,7 +1177,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 1rem 0;
 }
 
-.propertypro-search-modal .propertypro-modal-header form i {
+.propertypro-search-modal .propertypro-modal-header i {
+    font-size: 1.5rem;
     color: #d8d8d8;
 }
 
@@ -1189,7 +1190,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border: 0;
 }
 
-.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control, .propertypro-search-modal form i {
+.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control {
     font-size: 1.5rem;
 }
 
@@ -1307,10 +1308,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding-bottom: 9.375rem;
 }
 
-.propertypro-advanced-filter .propertypro-close-panel {
-    opacity: .9;
-}
-
 .propertypro-advanced-filter form {
     width: 100%;
 }
@@ -1329,7 +1326,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     height: 3.125rem;
 }
 
-.propertypro-advanced-filter form .btn-primary {
+.propertypro-advanced-filter .propertypro-modal-header .btn-primary {
     border-radius: .1875rem;
     width: auto;
     line-height: 1.5625rem;
@@ -1337,16 +1334,16 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: .60em 2em;
 }
 
+.propertypro-advanced-filter .propertypro-search-modal-submit-button {
+  background-color: #d03528 !important;
+  border-color: #d03528 !important;
+  /*margin-right: 2.8125rem;*/
+}
+
 .propertypro-advanced-filter form a.propertypro-btn-disabled {
     border-color: #d6dee3 !important;
     background-color: #d6dee3 !important;
     color: #b6bec4;
-}
-
-.propertypro-advanced-filter .propertypro-close-panel {
-    font-size: 1.25rem;
-    font-weight: 700;
-    right: 2.25rem;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-box {
@@ -3087,9 +3084,16 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 2.5rem;
     }
 
-    .propertypro-search-modal form .propertypro-search-modal-submit-button {
-        margin-right: 2.8125rem;
-        width: 6.875rem;
+    .propertypro-search-modal .propertypro-search-modal-submit-button {
+      background-color: #d03528 !important;
+      border-color: #d03528 !important;
+      border-radius: .1875rem;
+      color: #fff;
+      margin-right: 2.8125rem;
+      width: 6.875rem;
+      /*width: auto;*/
+      line-height: 1.5625rem;
+      padding: .60em 2em;
     }
 
     .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
