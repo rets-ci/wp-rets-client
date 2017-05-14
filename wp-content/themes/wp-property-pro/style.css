@@ -1173,7 +1173,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-search-modal .propertypro-modal-header {
-    box-shadow: 0 1.25rem 1.5rem rgba(224, 230, 234, 0.6);
     padding: 1rem 0;
 }
 
@@ -1260,7 +1259,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
 }
 
-.propertypro-filter-section h3 span {
+.propertypro-filter-section h3 span, .propertypro-search-filter-nav .propertypro-sale-selection-text {
     color: rgba(139, 140, 141, 0.6);
     font-size: 1rem;
     font-weight: 500;
@@ -1495,24 +1494,19 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 0;
 }
 
-.propertypro-search-filter-nav ul li {
-    float: left;
-    width: calc(25% - 0px);
-    border-right: .0625rem solid #dde4e9;
-    display: inline-table;
+.propertypro-search-filter-nav svg.icon-group {
+  fill: rgb(139, 140, 141);
+  width: 25%;
+  height: 25%;
 }
 
-.propertypro-search-filter-nav ul li:last-child {
-    border-right: 0;
+.propertypro-search-filter-nav svg.icon-group:hover {
+  fill: rgb(208, 53, 40);
+  cursor: pointer;
 }
 
-.propertypro-search-filter-nav ul li a {
-    display: block;
-    height: 8.75rem;
-    text-align: center;
-    color: rgba(139, 140, 141, 0.6);
-    display: table-cell;
-    vertical-align: middle;
+.propertypro-search-filter-nav svg.icon-group.selected {
+  fill: rgb(208, 53, 40);
 }
 
 .search-filter-nav ul li a span {

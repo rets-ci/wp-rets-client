@@ -61,25 +61,25 @@ class HeaderSearch extends Component {
         <div className={containerClasses}>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>
-              <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
+              <img src={bundle.static_images_url + "buy-icon-red.svg"} alt="Buy"/>
               <span>Buy</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Rent')}>
-              <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
+              <img src={bundle.static_images_url + "rent-icon-red.svg"} alt="Rent"/>
               <span>Rent</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Commercial')}>
-              <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
+              <img src={bundle.static_images_url + "commercial-icon-red.svg"} alt="Commercial"/>
               <span>Commercial</span>
             </a>
           </div>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Land')}>
-              <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
+              <img src={bundle.static_images_url + "land-icon-red.svg"} alt="Land"/>
               <span>Land</span>
             </a>
           </div>

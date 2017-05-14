@@ -19,6 +19,11 @@ import URI from 'urijs';
 import Util from '../Util.jsx';
 import qs from 'qs';
 
+import BuyIcon from '-!svg-react-loader!../../../../../images/src/buy-icon-standard.svg';
+import RentIcon from '-!svg-react-loader!../../../../../images/src/rent-icon-standard.svg';
+import CommercialIcon from '-!svg-react-loader!../../../../../images/src/commercial-icon-standard.svg';
+import LandIcon from '-!svg-react-loader!../../../../../images/src/land-icon-standard.svg';
+
 let convertToSearchParamObject = obj => {
   let searchObject = {};
   for (var k in obj) {
@@ -204,6 +209,13 @@ class PropertiesModal extends Component {
     this.props.updatePropertiesModalLocalFilter(filter);
   }
 
+  handleSaleTypeSelect(saleType) {
+    let filter = {
+      sale_type: saleType
+    };
+    this.props.updatePropertiesModalLocalFilter(filter);
+  }
+
   handleSQFTSelect(start, to) {
     let filter = {
       sqft: {
@@ -297,9 +309,9 @@ class PropertiesModal extends Component {
         className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${this.props.open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
           <div className="modal-content">
-            <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
+            <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>
               <div className="container">
-                <div className="d-flex flex-row hidden-md-down">
+                <div className="d-flex flex-row">
                   <div className="p-2 my-auto">
                     <i className="fa fa-search"></i>
                   </div>
@@ -330,33 +342,39 @@ class PropertiesModal extends Component {
             </div>
             <div className="modal-body p-0">
               <div className={`${Lib.THEME_CLASSES_PREFIX}search-filter-nav hidden-lg-up`}>
-                <div className="container">
-                  <ul className="clearfix">
-                    <li>
-                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Buy">
-                        <img src={bundle.static_images_url + "buy-icon.svg"} alt="Buy"/>
-                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Buy</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Rent">
-                        <img src={bundle.static_images_url + "rent-icon.svg"} alt="Rent"/>
-                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Rent</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Commercial">
-                        <img src={bundle.static_images_url + "commercial-icon.svg"} alt="Commercial"/>
-                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Commercial</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item"} href="#" title="Land">
-                        <img src={bundle.static_images_url + "land-icon.svg"} alt="Land"/>
-                        <span className={Lib.THEME_CLASSES_PREFIX + "filter-nav-item-label"}>Land</span>
-                      </a>
-                    </li>
-                  </ul>
+                <div className="row">
+                  <div className="card col-3">
+                    <div className="card-img-top mt-4 text-center">
+                      <BuyIcon className={`icon-group ${localFilters.sale_type === 'Buy' ? 'selected' : ''}`} onClick={() => this.handleSaleTypeSelect('Buy')} />
+                    </div>
+                    <div className="card-block">
+                      <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Buy</h3>
+                    </div>
+                  </div>
+                  <div className="card col-3">
+                    <div className="card-img-top mt-4 text-center">
+                      <RentIcon className={`icon-group ${localFilters.sale_type === 'Rent' ? 'selected' : ''}`} onClick={() => this.handleSaleTypeSelect('Rent')} />
+                    </div>
+                    <div className="card-block">
+                      <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Rent</h3>
+                    </div>
+                  </div>
+                  <div className="card col-3">
+                    <div className="card-img-top mt-4 text-center">
+                      <CommercialIcon className={`icon-group ${localFilters.sale_type === 'Commercial' ? 'selected' : ''}`} onClick={() => this.handleSaleTypeSelect('Commercial')} />
+                    </div>
+                    <div className="card-block">
+                      <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Commercial</h3>
+                    </div>
+                  </div>
+                  <div className="card col-3">
+                    <div className="card-img-top mt-4 text-center">
+                      <LandIcon className={`icon-group ${localFilters.sale_type === 'Land' ? 'selected' : ''}`} onClick={() => this.handleSaleTypeSelect('Land')} />
+                    </div>
+                    <div className="card-block">
+                      <h3 className={`card-text text-center ${Lib.THEME_CLASSES_PREFIX}sale-selection-text`}>Land</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className={Lib.THEME_CLASSES_PREFIX + "search-modal-box"}>
