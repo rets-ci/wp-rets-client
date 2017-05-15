@@ -30,6 +30,7 @@ export default class PageLayout extends Component {
       dataType: 'json',
       success: data => {
         if (_.get(data, 'post', null)) {
+          document.title = _.get(data, 'page_title', '');
           self.setState({post: data.post});
         }
       },
