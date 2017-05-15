@@ -1173,11 +1173,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-search-modal .propertypro-modal-header {
-    box-shadow: 0 1.25rem 1.5rem rgba(224, 230, 234, 0.6);
     padding: 1rem 0;
 }
 
-.propertypro-search-modal .propertypro-modal-header form i {
+.propertypro-search-modal .propertypro-modal-header i {
+    font-size: 1.5rem;
     color: #d8d8d8;
 }
 
@@ -1189,7 +1189,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border: 0;
 }
 
-.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control, .propertypro-search-modal form i {
+.propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4, .propertypro-search-modal form .form-control {
     font-size: 1.5rem;
 }
 
@@ -1259,7 +1259,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
 }
 
-.propertypro-filter-section h3 span {
+.propertypro-filter-section h3 span, .propertypro-search-filter-nav .propertypro-sale-selection-text {
     color: rgba(139, 140, 141, 0.6);
     font-size: 1rem;
     font-weight: 500;
@@ -1307,10 +1307,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding-bottom: 9.375rem;
 }
 
-.propertypro-advanced-filter .propertypro-close-panel {
-    opacity: .9;
-}
-
 .propertypro-advanced-filter form {
     width: 100%;
 }
@@ -1329,7 +1325,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     height: 3.125rem;
 }
 
-.propertypro-advanced-filter form .btn-primary {
+.propertypro-advanced-filter .propertypro-modal-header .btn-primary {
     border-radius: .1875rem;
     width: auto;
     line-height: 1.5625rem;
@@ -1337,16 +1333,16 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: .60em 2em;
 }
 
+.propertypro-advanced-filter .propertypro-search-modal-submit-button {
+  background-color: #d03528 !important;
+  border-color: #d03528 !important;
+  /*margin-right: 2.8125rem;*/
+}
+
 .propertypro-advanced-filter form a.propertypro-btn-disabled {
     border-color: #d6dee3 !important;
     background-color: #d6dee3 !important;
     color: #b6bec4;
-}
-
-.propertypro-advanced-filter .propertypro-close-panel {
-    font-size: 1.25rem;
-    font-weight: 700;
-    right: 2.25rem;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-box {
@@ -1498,24 +1494,19 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 0;
 }
 
-.propertypro-search-filter-nav ul li {
-    float: left;
-    width: calc(25% - 0px);
-    border-right: .0625rem solid #dde4e9;
-    display: inline-table;
+.propertypro-search-filter-nav svg.icon-group {
+  fill: rgb(139, 140, 141);
+  width: 25%;
+  height: 25%;
 }
 
-.propertypro-search-filter-nav ul li:last-child {
-    border-right: 0;
+.propertypro-search-filter-nav svg.icon-group:hover {
+  fill: rgb(208, 53, 40);
+  cursor: pointer;
 }
 
-.propertypro-search-filter-nav ul li a {
-    display: block;
-    height: 8.75rem;
-    text-align: center;
-    color: rgba(139, 140, 141, 0.6);
-    display: table-cell;
-    vertical-align: middle;
+.propertypro-search-filter-nav svg.icon-group.selected {
+  fill: rgb(208, 53, 40);
 }
 
 .search-filter-nav ul li a span {
@@ -3087,9 +3078,16 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 2.5rem;
     }
 
-    .propertypro-search-modal form .propertypro-search-modal-submit-button {
-        margin-right: 2.8125rem;
-        width: 6.875rem;
+    .propertypro-search-modal .propertypro-search-modal-submit-button {
+      background-color: #d03528 !important;
+      border-color: #d03528 !important;
+      border-radius: .1875rem;
+      color: #fff;
+      margin-right: 2.8125rem;
+      width: 6.875rem;
+      /*width: auto;*/
+      line-height: 1.5625rem;
+      padding: .60em 2em;
     }
 
     .propertypro-search-filter-nav .propertypro-filter-nav-item-label {
