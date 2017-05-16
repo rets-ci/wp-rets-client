@@ -388,7 +388,7 @@ namespace UsabilityDynamics\WPRETSC {
 
         return array(
           'ok' => true,
-          'key' => isset($_GET['api_key']) ? $_GET['api_key'] : '',
+          'kind' => isset($_GET['kind']) ? $_GET['kind'] : '',
           'message' => 'There are [' . count( $_stats['terms'] ) . '] schedules with [' . $_stats['total'] . '] total listings.',
           'data' => $_stats['data'],
           'time' => timer_stop()
