@@ -69247,6 +69247,7 @@
 	        dataType: 'json',
 	        success: function success(data) {
 	          if (_lodash2.default.get(data, 'post', null)) {
+	            document.title = _lodash2.default.get(data, 'page_title', '');
 	            self.setState({ post: data.post });
 	          }
 	        },
