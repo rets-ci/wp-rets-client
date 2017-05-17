@@ -37,7 +37,7 @@ namespace UsabilityDynamics\WPP {
          * Register post type
          */
         add_action( 'init', array( $this, 'register_layout_post_type' ) );
-        add_action( 'wp_admin', array( $this, 'wp_admin' ) );
+        add_action( 'admin_init', array( $this, 'wp_admin' ) );
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 100  );
 
         /**
@@ -230,25 +230,33 @@ namespace UsabilityDynamics\WPP {
        */
       public function wp_admin() {
 
-        wp_insert_term( __( 'Single Property', ud_get_wp_property_layouts()->domain ), 'wpp_layout_type', array(
-          'description' => __( 'Single Property Layouts', ud_get_wp_property_layouts()->domain ),
-          'slug' => 'single-property'
-        ) );
+        if (!has_term('single-property', 'wpp_layout_type')) {
+          wp_insert_term(__('Single Property', ud_get_wp_property_layouts()->domain), 'wpp_layout_type', array(
+            'description' => __('Single Property Layouts', ud_get_wp_property_layouts()->domain),
+            'slug' => 'single-property'
+          ));
+        }
 
-        wp_insert_term( __( 'Property Overview', ud_get_wp_property_layouts()->domain ), 'wpp_layout_type', array(
-          'description' => __( 'Property Overview Layouts', ud_get_wp_property_layouts()->domain ),
-          'slug' => 'property-overview'
-        ) );
+        if (!has_term('property-overview', 'wpp_layout_type')) {
+          wp_insert_term(__('Property Overview', ud_get_wp_property_layouts()->domain), 'wpp_layout_type', array(
+            'description' => __('Property Overview Layouts', ud_get_wp_property_layouts()->domain),
+            'slug' => 'property-overview'
+          ));
+        }
 
-        wp_insert_term( __( 'Term Overview', ud_get_wp_property_layouts()->domain ), 'wpp_layout_type', array(
-          'description' => __( 'Term Overview Layouts', ud_get_wp_property_layouts()->domain ),
-          'slug' => 'term-overview'
-        ) );
+        if (!has_term('term-overview', 'wpp_layout_type')) {
+          wp_insert_term(__('Term Overview', ud_get_wp_property_layouts()->domain), 'wpp_layout_type', array(
+            'description' => __('Term Overview Layouts', ud_get_wp_property_layouts()->domain),
+            'slug' => 'term-overview'
+          ));
+        }
 
-        wp_insert_term( __( 'Load layout to API', ud_get_wp_property_layouts()->domain ), 'wpp_layout_api', array(
-          'description' => __( 'Load layout to API', ud_get_wp_property_layouts()->domain ),
-          'slug' => 'layout-api'
-        ));
+        if (!has_term('layout-api', 'wpp_layout_type')) {
+          wp_insert_term(__('Load layout to API', ud_get_wp_property_layouts()->domain), 'wpp_layout_api', array(
+            'description' => __('Load layout to API', ud_get_wp_property_layouts()->domain),
+            'slug' => 'layout-api'
+          ));
+        }
 
       }
 
