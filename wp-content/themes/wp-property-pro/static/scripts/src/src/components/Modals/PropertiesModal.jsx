@@ -19,10 +19,10 @@ import URI from 'urijs';
 import Util from '../Util.jsx';
 import qs from 'qs';
 
-import BuyIcon from '-!svg-react-loader!../../../../../images/src/buy-icon-standard.svg';
-import RentIcon from '-!svg-react-loader!../../../../../images/src/rent-icon-standard.svg';
-import CommercialIcon from '-!svg-react-loader!../../../../../images/src/commercial-icon-standard.svg';
-import LandIcon from '-!svg-react-loader!../../../../../images/src/land-icon-standard.svg';
+import BuyIcon from '../../../../../images/src/buy-icon-standard.svg';
+import RentIcon from '../../../../../images/src/rent-icon-standard.svg';
+import CommercialIcon from '../../../../../images/src/commercial-icon-standard.svg';
+import LandIcon from '../../../../../images/src/land-icon-standard.svg';
 
 let convertToSearchParamObject = obj => {
   let searchObject = {};

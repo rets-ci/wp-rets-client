@@ -28,9 +28,9 @@ module.exports = {
             loader: "file?name=images/[name].[ext]"
           },
           {
-            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            test: /\.svg$/,
             exclude: /node_modules/,
-            loader: 'url?limit=10000&mimetype=image/svg+xml'
+            loader: 'svg-react'
           }
         ]
     },
