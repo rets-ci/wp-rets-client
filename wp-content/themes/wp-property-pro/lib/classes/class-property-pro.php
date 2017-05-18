@@ -41,8 +41,8 @@ namespace UsabilityDynamics {
 
       /** @TODO Exclude situation with template include from some plugins - maybe hack */
       add_action( 'template_include', function(){
-        return locate_template('index.php');
-      });
+        return get_stylesheet_directory().'/index.php';
+      }, 100);
 
       $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
