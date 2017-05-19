@@ -11,6 +11,12 @@ import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
 import Price from '../properties/Filters/Price.jsx';
+import {
+  bathroom as bathroomOptions,
+  bedroom as bedroomOptions,
+  defaultPropertyFilters as defaultFiltervalues,
+  property_type as propertyTypeOptions
+} from '../staticFilters.js';
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
 import React, {Component, PropTypes} from 'react';
@@ -42,57 +48,13 @@ function removeDefaultFilters(filters, defaults) {
   return finalObj;
 }
 
-let bathroomOptions = [
-  {name: '0+', value: '0'},
-  {name: '1+', value: '1'},
-  {name: '2+', value: '2'},
-  {name: '3+', value: '3'},
-  {name: '4+', value: '4'},
-  {name: '5+', value: '5'},
-  {name: '6+', value: '6'}
-];
-
-let bedroomOptions = [
-  {name: '0+', value: '0'},
-  {name: '1+', value: '1'},
-  {name: '2+', value: '2'},
-  {name: '3+', value: '3'},
-  {name: '4+', value: '4'},
-  {name: '5+', value: '5'},
-  {name: '6+', value: '6'}
-];
-
-let defaultFiltervalues = {
-  bedrooms: '0',
-  bathrooms: '0',
-  price: {
-    start: 'No Min',
-    to: 'No Max'
-  },
-  sqft: {
-    start: 'No Min',
-    to: 'No Max'
-  },
-  lotsize: {
-    start: 'No Min',
-    to: 'No Max'
-  }
-};
-
-let propertyTypeOptions = [
-  {name: 'House', value: 'house'},
-  {name: 'Townhouse', value: 'townhouse'},
-  {name: 'Condo', value: 'condo'},
-  {name: 'Manufactured', value: 'manufactured'}
-];
-
 const mapStateToProps = (state, ownProps) => {
   let localFilters = state.propertiesModal.localFilters;
   return {
     bathroomSelected: localFilters.bathrooms || defaultFiltervalues['bathrooms'],
     bedroomSelected: localFilters.bedrooms || defaultFiltervalues['bedrooms'],
     priceSelected: localFilters.price || defaultFiltervalues['price'],
-    propertyTypeSelected: localFilters.propertyType || '',
+    propertyTypeSelected: localFilters.property_type || '',
     sqftSelected: localFilters.sqft || defaultFiltervalues['sqft'],
     lotSizeSelected: localFilters.lotSize || defaultFiltervalues['lotsize'],
     localFilters: localFilters
@@ -195,7 +157,7 @@ class PropertiesModal extends Component {
   }
 
   handlePropertyTypeSelect(val) {
-    let filter = {"propertyType": val};
+    let filter = {"property_type": val};
     this.props.updatePropertiesModalLocalFilter(filter);
   }
 
@@ -240,7 +202,7 @@ class PropertiesModal extends Component {
   }
 
   displayAllFilters(localFilters) {
-    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'];
+    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
   }
 
   resetFilters() {

@@ -440,6 +440,14 @@ class Api {
         });
       }
 
+      if (params.property_type) {
+        query.bool.must.push({
+          "term": {
+            "meta.property_type.value": params.property_type
+          }
+        });
+      }
+
       if (params.sqft) {
         let range = {};
         if (params.sqft.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
@@ -486,6 +494,7 @@ class Api {
     let aggregations = JSON.stringify({});
 
     let source = JSON.stringify([
+      "meta.property_type.value",
       "post_title",
       "post_name",
       "post_meta.wpp_location_latitude",
