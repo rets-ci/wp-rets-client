@@ -449,7 +449,15 @@ class PropertiesModal extends Component {
                 <div className="container">
                   <button className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}>Reset</button>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right nav-item-right`}>
-                  <a href="#" className="btn-cancel">Cancel</a> <i>|</i> <a href="#" className="btn-apply">Apply</a>
+                  <a
+                    href="#"
+                    className="btn-cancel"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.openPropertiesModal(false);
+                    }}>Cancel</a>
+                      <i>|</i>
+                  <a href="#" className="btn-apply" onClick={this.saveFilters.bind(this)}>Apply</a>
                 </span>
                 </div>
               </div>

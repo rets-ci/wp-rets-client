@@ -54080,11 +54080,11 @@
 
 	var _lib = __webpack_require__(294);
 
-	var _Price = __webpack_require__(313);
+	var _Price = __webpack_require__(314);
 
 	var _Price2 = _interopRequireDefault(_Price);
 
-	var _staticFilters = __webpack_require__(320);
+	var _staticFilters = __webpack_require__(313);
 
 	var _SQFT = __webpack_require__(321);
 
@@ -54798,19 +54798,23 @@
 	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-footernav-item-right nav-item-right' },
 	                    _react2.default.createElement(
 	                      'a',
-	                      { href: '#', className: 'btn-cancel' },
+	                      {
+	                        href: '#',
+	                        className: 'btn-cancel',
+	                        onClick: function onClick(e) {
+	                          e.preventDefault();
+	                          _this2.props.openPropertiesModal(false);
+	                        } },
 	                      'Cancel'
 	                    ),
-	                    ' ',
 	                    _react2.default.createElement(
 	                      'i',
 	                      null,
 	                      '|'
 	                    ),
-	                    ' ',
 	                    _react2.default.createElement(
 	                      'a',
-	                      { href: '#', className: 'btn-apply' },
+	                      { href: '#', className: 'btn-apply', onClick: this.saveFilters.bind(this) },
 	                      'Apply'
 	                    )
 	                  )
@@ -54863,7 +54867,7 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _staticFilters = __webpack_require__(320);
+	var _staticFilters = __webpack_require__(313);
 
 	var _Util = __webpack_require__(299);
 
@@ -55045,6 +55049,43 @@
 
 /***/ }),
 /* 313 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var bathroom = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
+
+	var bedroom = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
+
+	var defaultPropertyFilters = {
+	  bedrooms: '0',
+	  bathrooms: '0',
+	  price: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  sqft: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  },
+	  lotsize: {
+	    start: 'No Min',
+	    to: 'No Max'
+	  }
+	};
+
+	var property_type = [{ name: 'House', value: 'house' }, { name: 'Townhouse', value: 'townhouse' }, { name: 'Condo', value: 'condo' }, { name: 'Manufactured', value: 'manufactured' }];
+
+	exports.bathroom = bathroom;
+	exports.bedroom = bedroom;
+	exports.defaultPropertyFilters = defaultPropertyFilters;
+	exports.property_type = property_type;
+
+/***/ }),
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55061,7 +55102,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Slider = __webpack_require__(314);
+	var _Slider = __webpack_require__(315);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
@@ -55161,7 +55202,7 @@
 	exports.default = Price;
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55186,8 +55227,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var noUiSlider = __webpack_require__(315);
-	__webpack_require__(316);
+	var noUiSlider = __webpack_require__(316);
+	__webpack_require__(317);
 
 	var Slider = function (_Component) {
 	  _inherits(Slider, _Component);
@@ -55310,7 +55351,7 @@
 	exports.default = Slider;
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! nouislider - 9.2.0 - 2017-01-11 10:35:34 */
@@ -57461,16 +57502,16 @@
 	}));
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(317);
+	var content = __webpack_require__(318);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(319)(content, {});
+	var update = __webpack_require__(320)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -57487,10 +57528,10 @@
 	}
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(318)();
+	exports = module.exports = __webpack_require__(319)();
 	// imports
 
 
@@ -57501,7 +57542,7 @@
 
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports) {
 
 	/*
@@ -57557,7 +57598,7 @@
 
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -57809,43 +57850,6 @@
 
 
 /***/ }),
-/* 320 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var bathroom = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
-
-	var bedroom = [{ name: '0+', value: '0' }, { name: '1+', value: '1' }, { name: '2+', value: '2' }, { name: '3+', value: '3' }, { name: '4+', value: '4' }, { name: '5+', value: '5' }, { name: '6+', value: '6' }];
-
-	var defaultPropertyFilters = {
-	  bedrooms: '0',
-	  bathrooms: '0',
-	  price: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  },
-	  sqft: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  },
-	  lotsize: {
-	    start: 'No Min',
-	    to: 'No Max'
-	  }
-	};
-
-	var property_type = [{ name: 'House', value: 'house' }, { name: 'Townhouse', value: 'townhouse' }, { name: 'Condo', value: 'condo' }, { name: 'Manufactured', value: 'manufactured' }];
-
-	exports.bathroom = bathroom;
-	exports.bedroom = bedroom;
-	exports.defaultPropertyFilters = defaultPropertyFilters;
-	exports.property_type = property_type;
-
-/***/ }),
 /* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57863,7 +57867,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Slider = __webpack_require__(314);
+	var _Slider = __webpack_require__(315);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
@@ -57980,7 +57984,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Slider = __webpack_require__(314);
+	var _Slider = __webpack_require__(315);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
@@ -69175,7 +69179,7 @@
 	var content = __webpack_require__(379);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(319)(content, {});
+	var update = __webpack_require__(320)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -69195,7 +69199,7 @@
 /* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(318)();
+	exports = module.exports = __webpack_require__(319)();
 	// imports
 
 
@@ -70186,7 +70190,7 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _staticFilters = __webpack_require__(320);
+	var _staticFilters = __webpack_require__(313);
 
 	var _Util = __webpack_require__(299);
 

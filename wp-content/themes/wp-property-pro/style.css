@@ -1519,7 +1519,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-filter-footernav {
     box-shadow: 0 0 1.5rem rgba(224, 230, 234, 0.6);
     background-color: #ffffff;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
