@@ -105,7 +105,6 @@ class PropertiesModal extends Component {
     this.state = {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
-      initialFilters: Object.assign({}, props.localFilters),
       propertyTypeSelected: props.propertyTypeSelected,
       lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
@@ -120,6 +119,8 @@ class PropertiesModal extends Component {
     this.props.setLocalFilters(searchFiltersFormatted);
     let showAllFilters = this.displayAllFilters(this.props.localFilters);
     this.setState({
+      // note that searchFiltersFormatted is the same as localFilters
+      initialFilters: Object.assign({}, searchFiltersFormatted),
       showAllFilters: showAllFilters
     });
   }
@@ -136,6 +137,10 @@ class PropertiesModal extends Component {
     this.props.setLocalFilters({});
   }
 
+  displayAllFilters(localFilters) {
+    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
+  }
+
   handleBathroomSelect(val) {
     let filter = {"bathrooms": val};
     this.props.updatePropertiesModalLocalFilter(filter);
@@ -144,6 +149,13 @@ class PropertiesModal extends Component {
   handleBedroomSelect(val) {
     let filter = {"bedrooms": val};
     this.props.updatePropertiesModalLocalFilter(filter);
+  }
+
+  handleCancel(e) {
+    e.preventDefault();
+      // reset local filters
+    // this.props.setLocalFilters({});
+    this.props.openPropertiesModal(false);
   }
 
   handlePriceSelect(start, to) {
@@ -188,6 +200,12 @@ class PropertiesModal extends Component {
     this.props.updatePropertiesModalLocalFilter(filter);
   }
 
+  resetFilters() {
+    console.log('resetting filter, initialFilters');
+    console.log(this.state.initialFilters);
+    this.props.setLocalFilters(this.state.initialFilters);
+  }
+
   saveFilters() {
     let url = new URI(window.location.host);
     url.pathname(window.location.pathname);
@@ -199,23 +217,6 @@ class PropertiesModal extends Component {
     url.setSearch(queryParam);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
-  }
-
-  displayAllFilters(localFilters) {
-    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
-  }
-
-  resetFilters() {
-    let filter = {
-      "bathrooms": this.state.bathroomSelected,
-      "bedrooms": this.state.bedroomSelected,
-      "lotSize": this.state.lotSizeSelected,
-      "price": this.state.priceSelected,
-      "propertyType": this.state.propertyTypeSelected,
-      "sqft": this.state.sqftSelected
-    };
-
-    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   toggleViewAllFilters() {
@@ -285,7 +286,7 @@ class PropertiesModal extends Component {
                     />
                   </div>
                   <div className="p-2 my-auto">
-                    <a href="#" className="btn-reset" onClick={() => {}}>Reset</a>
+                    <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
                   </div>
                   <div className="p-2 my-auto">
                     <a href="#"
@@ -294,11 +295,12 @@ class PropertiesModal extends Component {
                   </div>
                 </div>
               </div>
-              <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        this.props.openPropertiesModal(false);
-                      }} aria-label="Close">
+              <button
+                aria-label="Close"
+                className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
+                type="button"
+                onClick={this.handleCancel.bind(this)}
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -447,15 +449,15 @@ class PropertiesModal extends Component {
             <div className="modal-footer">
               <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
                 <div className="container">
-                  <button className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}>Reset</button>
+                  <button
+                    className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}
+                    onClick={this.resetFilters.bind(this)}
+                    >Reset</button>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right nav-item-right`}>
                   <a
                     href="#"
                     className="btn-cancel"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.openPropertiesModal(false);
-                    }}>Cancel</a>
+                    onClick={this.handleCancel.bind(this)}>Cancel</a>
                       <i>|</i>
                   <a href="#" className="btn-apply" onClick={this.saveFilters.bind(this)}>Apply</a>
                 </span>

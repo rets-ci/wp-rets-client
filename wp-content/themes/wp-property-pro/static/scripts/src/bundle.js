@@ -54202,7 +54202,6 @@
 	    _this.state = {
 	      bathroomSelected: props.bathroomSelected,
 	      bedroomSelected: props.bedroomSelected,
-	      initialFilters: Object.assign({}, props.localFilters),
 	      propertyTypeSelected: props.propertyTypeSelected,
 	      lotSizeSelected: props.lotSizeSelected,
 	      showAllFilters: false,
@@ -54220,6 +54219,8 @@
 	      this.props.setLocalFilters(searchFiltersFormatted);
 	      var showAllFilters = this.displayAllFilters(this.props.localFilters);
 	      this.setState({
+	        // note that searchFiltersFormatted is the same as localFilters
+	        initialFilters: Object.assign({}, searchFiltersFormatted),
 	        showAllFilters: showAllFilters
 	      });
 	    }
@@ -54238,6 +54239,11 @@
 	      this.props.setLocalFilters({});
 	    }
 	  }, {
+	    key: 'displayAllFilters',
+	    value: function displayAllFilters(localFilters) {
+	      return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
+	    }
+	  }, {
 	    key: 'handleBathroomSelect',
 	    value: function handleBathroomSelect(val) {
 	      var filter = { "bathrooms": val };
@@ -54248,6 +54254,14 @@
 	    value: function handleBedroomSelect(val) {
 	      var filter = { "bedrooms": val };
 	      this.props.updatePropertiesModalLocalFilter(filter);
+	    }
+	  }, {
+	    key: 'handleCancel',
+	    value: function handleCancel(e) {
+	      e.preventDefault();
+	      // reset local filters
+	      // this.props.setLocalFilters({});
+	      this.props.openPropertiesModal(false);
 	    }
 	  }, {
 	    key: 'handlePriceSelect',
@@ -54297,6 +54311,13 @@
 	      this.props.updatePropertiesModalLocalFilter(filter);
 	    }
 	  }, {
+	    key: 'resetFilters',
+	    value: function resetFilters() {
+	      console.log('resetting filter, initialFilters');
+	      console.log(this.state.initialFilters);
+	      this.props.setLocalFilters(this.state.initialFilters);
+	    }
+	  }, {
 	    key: 'saveFilters',
 	    value: function saveFilters() {
 	      var url = new _urijs2.default(window.location.host);
@@ -54309,25 +54330,6 @@
 	      url.setSearch(queryParam);
 	      this.props.openPropertiesModal(false);
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
-	    }
-	  }, {
-	    key: 'displayAllFilters',
-	    value: function displayAllFilters(localFilters) {
-	      return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
-	    }
-	  }, {
-	    key: 'resetFilters',
-	    value: function resetFilters() {
-	      var filter = {
-	        "bathrooms": this.state.bathroomSelected,
-	        "bedrooms": this.state.bedroomSelected,
-	        "lotSize": this.state.lotSizeSelected,
-	        "price": this.state.priceSelected,
-	        "propertyType": this.state.propertyTypeSelected,
-	        "sqft": this.state.sqftSelected
-	      };
-
-	      this.props.updatePropertiesModalLocalFilter(filter);
 	    }
 	  }, {
 	    key: 'toggleViewAllFilters',
@@ -54424,7 +54426,7 @@
 	                    { className: 'p-2 my-auto' },
 	                    _react2.default.createElement(
 	                      'a',
-	                      { href: '#', className: 'btn-reset', onClick: function onClick() {} },
+	                      { href: '#', className: 'btn-reset', onClick: this.resetFilters.bind(this) },
 	                      'Reset'
 	                    )
 	                  ),
@@ -54443,11 +54445,12 @@
 	              ),
 	              _react2.default.createElement(
 	                'button',
-	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
-	                  onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _this2.props.openPropertiesModal(false);
-	                  }, 'aria-label': 'Close' },
+	                {
+	                  'aria-label': 'Close',
+	                  className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
+	                  type: 'button',
+	                  onClick: this.handleCancel.bind(this)
+	                },
 	                _react2.default.createElement(
 	                  'span',
 	                  { 'aria-hidden': 'true' },
@@ -54790,7 +54793,10 @@
 	                  { className: 'container' },
 	                  _react2.default.createElement(
 	                    'button',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + 'button-reset btn btn-reset' },
+	                    {
+	                      className: _lib.Lib.THEME_CLASSES_PREFIX + 'button-reset btn btn-reset',
+	                      onClick: this.resetFilters.bind(this)
+	                    },
 	                    'Reset'
 	                  ),
 	                  _react2.default.createElement(
@@ -54801,10 +54807,7 @@
 	                      {
 	                        href: '#',
 	                        className: 'btn-cancel',
-	                        onClick: function onClick(e) {
-	                          e.preventDefault();
-	                          _this2.props.openPropertiesModal(false);
-	                        } },
+	                        onClick: this.handleCancel.bind(this) },
 	                      'Cancel'
 	                    ),
 	                    _react2.default.createElement(
