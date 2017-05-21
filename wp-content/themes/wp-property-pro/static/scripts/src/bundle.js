@@ -54575,7 +54575,7 @@
 	                          return _react2.default.createElement(
 	                            'span',
 	                            { key: t.value,
-	                              className: _lib.Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected" },
+	                              className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button btn btn-primary selected' },
 	                            t.value
 	                          );
 	                        }),

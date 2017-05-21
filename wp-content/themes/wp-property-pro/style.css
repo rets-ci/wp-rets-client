@@ -1266,17 +1266,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 1rem;
 }
 
-.propertypro-filter-section .propertypro-tag {
-    line-height: 2.5rem;
-    border-radius: .3125rem;
-    margin-right: .30em;
-    margin-bottom: .5rem;
-}
-
-.propertypro-filter-section .propertypro-tag.selected {
-    background-color: #ffffff;
-}
-
 .propertypro-filter-section .propertypro-filter-section-button {
     border: .0625rem solid #d2dae0;
     font-size: 1.10rem;
@@ -1378,6 +1367,18 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
     padding: .2em .8em;
     margin: 0 .2em .30em 0;
+}
+
+
+.propertypro-filter-section .propertypro-tag {
+    /*line-height: 2.5rem;
+    border-radius: .3125rem;
+    margin-right: .30em;
+    margin-bottom: .5rem;*/
+}
+
+.propertypro-filter-section .propertypro-tag.selected {
+    background-color: #ffffff;
 }
 
 .propertypro-bs-tags-box .propertypro-tag i {

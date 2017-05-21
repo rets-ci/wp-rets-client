@@ -347,7 +347,7 @@ class PropertiesModal extends Component {
                       <div className="filter-type">
                         {termFilters.map(t =>
                           <span key={t.value}
-                                className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
+                                className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>{t.value}</span>
                         )}
                         <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
                            onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
