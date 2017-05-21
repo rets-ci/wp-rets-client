@@ -356,7 +356,7 @@ class Api {
 
   static createESSearchQuery(params) {
     let terms = params.term.map(term => {
-      return {term: {["terms." + Object.keys(term)[0] + ".slug"]: Object.values(term)[0]}}
+      return {term: {["terms." + Object.keys(term)[0] + ".name.raw"]: Object.values(term)[0]}}
     });
 
     let query = {

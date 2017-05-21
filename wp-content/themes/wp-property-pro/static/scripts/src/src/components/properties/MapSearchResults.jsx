@@ -30,7 +30,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       let {
         locationFilter,
         property_types,
-        geoCoordinates
+        geoCoordinates,
+
       } = params;
       let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
       let searchParams = {
@@ -41,6 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         size: Lib.PROPERTY_PER_PAGE,
         topLeft: geoCoordinates ? geoCoordinates.topLeft : null
       };
+      
       let query = Api.createESSearchQuery(searchParams);
       dispatch(toggleMapSearchResultsLoading(true));
       Api.search(query, function (response) {
@@ -128,7 +130,6 @@ class MapSearchResults extends Component {
     } = this.props;
     let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = Util.getSearchFiltersFromURL(window.location.href, false);
-
     let listingSidebarStyle = {
       height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
     };

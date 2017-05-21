@@ -30664,6 +30664,7 @@
 	        size: _lib.Lib.PROPERTY_PER_PAGE,
 	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
 	      });
+
 	      var query = _Api2.default.createESSearchQuery(searchParams);
 	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
 	      _Api2.default.search(query, function (response) {
@@ -30756,7 +30757,6 @@
 
 	      var propertyTypes = location.query['wpp_search[property_types]'];
 	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, false);
-
 	      var listingSidebarStyle = {
 	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
 	      };
@@ -31296,7 +31296,7 @@
 	    key: 'createESSearchQuery',
 	    value: function createESSearchQuery(params) {
 	      var terms = params.term.map(function (term) {
-	        return { term: _defineProperty({}, "terms." + Object.keys(term)[0] + ".slug", Object.values(term)[0]) };
+	        return { term: _defineProperty({}, "terms." + Object.keys(term)[0] + ".name.raw", Object.values(term)[0]) };
 	      });
 
 	      var query = {
@@ -62157,17 +62157,15 @@
 	    }
 	  }, {
 	    key: 'handleResultClick',
-	    value: function handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
+	    value: function handleResultClick(eve, tax, term, text, searchType, saleType, propertyTypes, url) {
 	      eve.preventDefault();
-
-	      // TODO temporary comment this, until done with elastic search API
 
 	      if (url === null) {
 	        // Properties results page
 	        if (this.props.searchMode) {
 	          // in searchMode, therefore we can assume that term filter also exists
 	          var updatedTermFilter = this.props.localFilters.term.slice(0);
-	          updatedTermFilter.push(_defineProperty({}, tax, term));
+	          updatedTermFilter.push(_defineProperty({}, tax, text));
 	          this.props.updatePropertiesModalLocalFilter({
 	            term: updatedTermFilter
 	          });
@@ -62177,7 +62175,7 @@
 
 	          var _url = new _urijs2.default();
 	          _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
-	          _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']', term), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
+	          _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']', encodeURIComponent(text)), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
 	          _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
 	        }
 	      } else {
@@ -62203,9 +62201,6 @@
 	    key: 'handleSearchValueChange',
 	    value: function handleSearchValueChange(eve) {
 	      var val = eve.target.value;
-
-	      this.setState.searchValue = val;
-	      this.forceUpdate();
 
 	      if (this.state.timeoutId) {
 	        clearTimeout(this.state.timeoutId);
@@ -62275,7 +62270,7 @@
 	                        'a',
 	                        { href: '#', className: 'm-0',
 	                          onClick: function onClick(eve) {
-	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
+	                            return self.handleResultClick.bind(_this2)(eve, c.taxonomy, c.term, c.text, searchType, saleType, propertyTypes, _lodash2.default.get(c, 'url', null));
 	                          } },
 	                        c.text
 	                      )
@@ -89983,24 +89978,25 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _lib = __webpack_require__(294);
 
 	var searchProps = function searchProps() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
 
-	    switch (action.type) {
-	        case _lib.Lib.SET_SEARCH_PROPS_ACTION:
-	            return Object.assign({}, state, {
-	                searchProps: action.searchProps
-	            });
-	        default:
-	            return state;
-	    }
+	  switch (action.type) {
+	    case _lib.Lib.SET_SEARCH_PROPS_ACTION:
+	      return Object.assign({}, state, {
+	        searchProps: action.searchProps
+	      });
+	    default:
+	      return state;
+	  }
 	};
+
 	exports.default = searchProps;
 
 /***/ }),

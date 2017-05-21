@@ -79,17 +79,15 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  handleResultClick(eve, tax, term, searchType, saleType, propertyTypes, url) {
+  handleResultClick(eve, tax, term, text, searchType, saleType, propertyTypes, url) {
     eve.preventDefault();
-
-    // TODO temporary comment this, until done with elastic search API
 
     if (url === null) {
       // Properties results page
       if (this.props.searchMode) {
         // in searchMode, therefore we can assume that term filter also exists
         let updatedTermFilter = this.props.localFilters.term.slice(0);
-        updatedTermFilter.push({[tax]: term});
+        updatedTermFilter.push({[tax]: text});
         this.props.updatePropertiesModalLocalFilter({
           term: updatedTermFilter
         });
@@ -98,7 +96,7 @@ class LocationModal extends Component {
         let url = new URL();
         url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
         url.setSearch({
-          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: term,
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: encodeURIComponent(text),
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
         });
@@ -112,7 +110,7 @@ class LocationModal extends Component {
     this.props.closeModal();
   }
 
-  search(){
+  search() {
 
     let val = this.state.searchValue;
 
@@ -125,9 +123,6 @@ class LocationModal extends Component {
 
   handleSearchValueChange(eve) {
     let val = eve.target.value;
-
-    this.setState.searchValue = val;
-    this.forceUpdate();
 
     if(this.state.timeoutId){
       clearTimeout(this.state.timeoutId);
@@ -172,7 +167,7 @@ class LocationModal extends Component {
                     <div className="container">
                       <div className="row">
                         <a href="#" className="m-0"
-                           onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.term, searchType, saleType, propertyTypes, _.get(c, 'url', null))}>
+                           onClick={(eve) => self.handleResultClick.bind(this)(eve, c.taxonomy, c.term, c.text, searchType, saleType, propertyTypes, _.get(c, 'url', null))}>
                           {c.text}
                         </a>
                       </div>
