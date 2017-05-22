@@ -3,6 +3,7 @@ import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';
 import {isEqual} from 'lodash';
 import qs from 'qs';
@@ -88,7 +89,7 @@ class searchFilters extends Component {
 
   handlePropertyTypeRemove(propertyFilter) {
     let filter = {
-      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[propertyFilter]']: propertyFilter
+      [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_type]']: propertyFilter
     };
     let queryParam = Util.updateQueryFilter(window.location.href, filter, 'remove', false);
     this.updateURLWithQueryParam(queryParam);
@@ -138,7 +139,7 @@ class searchFilters extends Component {
     let lotSizeFilter = filters['lotSize'];
     let priceFilter = filters['price'];
     let priceElement;
-    let propertyTypeFilter = filters['propertyType'];
+    let propertyTypeFilter = filters['property_type'];
     let propertyTypeElement;
     let sqftFilter = filters['sqft'];
     let sqftElement;
@@ -184,11 +185,11 @@ class searchFilters extends Component {
         </span>);
       }
     }
-
     if (!this.state.isMobileView) {
       if (propertyTypeFilter) {
+        let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
         propertyTypeElement = (
-          <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilter} value={propertyFilter} />
+          <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilterValue} value={propertyTypeFilter} />
         );
       }
     }

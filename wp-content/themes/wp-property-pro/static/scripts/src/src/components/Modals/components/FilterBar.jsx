@@ -2,6 +2,7 @@ import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';
 
 class FilterBar extends Component {
@@ -28,6 +29,7 @@ class FilterBar extends Component {
     let {
       localFilters
     } = this.props;
+
     let termFilterElement;
     let termFilters = [];
     let termFilter = localFilters['term'];
@@ -47,7 +49,7 @@ class FilterBar extends Component {
     let lotSizeFilter = localFilters['lotSize'];
     let priceFilter = localFilters['price'];
     let priceElement;
-    let propertyTypeFilter = localFilters['propertyType'];
+    let propertyTypeFilter = localFilters['property_type'];
     let propertyTypeElement;
     let sqftFilter = localFilters['sqft'];
     let sqftElement;
@@ -77,8 +79,9 @@ class FilterBar extends Component {
     }
 
     if (propertyTypeFilter) {
+      let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
       propertyTypeElement = (
-        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('propertyType')} display={propertyFilter} value={propertyFilter} />
+        <FilterTag handleRemoveFilter={() => this.handleSingleFilterRemove.bind(this)('property_type')} display={propertyFilterValue} value={propertyTypeFilter} />
       );
     }
 

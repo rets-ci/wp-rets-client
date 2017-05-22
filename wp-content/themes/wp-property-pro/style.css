@@ -1266,17 +1266,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 1rem;
 }
 
-.propertypro-filter-section .propertypro-tag {
-    line-height: 2.5rem;
-    border-radius: .3125rem;
-    margin-right: .30em;
-    margin-bottom: .5rem;
-}
-
-.propertypro-filter-section .propertypro-tag.selected {
-    background-color: #ffffff;
-}
-
 .propertypro-filter-section .propertypro-filter-section-button {
     border: .0625rem solid #d2dae0;
     font-size: 1.10rem;
@@ -1378,6 +1367,18 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #414141;
     padding: .2em .8em;
     margin: 0 .2em .30em 0;
+}
+
+
+.propertypro-filter-section .propertypro-tag {
+    /*line-height: 2.5rem;
+    border-radius: .3125rem;
+    margin-right: .30em;
+    margin-bottom: .5rem;*/
+}
+
+.propertypro-filter-section .propertypro-tag.selected {
+    background-color: #ffffff;
 }
 
 .propertypro-bs-tags-box .propertypro-tag i {
@@ -1519,7 +1520,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-filter-footernav {
     box-shadow: 0 0 1.5rem rgba(224, 230, 234, 0.6);
     background-color: #ffffff;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -2377,6 +2378,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /* noUISlider overrides */
 .noUi-connect {
     background: #d03528 !important;
+}
+
+.noUi-tooltip {
+    white-space: nowrap;
 }
 
 /** Utils **/
