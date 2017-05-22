@@ -39,10 +39,15 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
+      global $post;
+
       /** @TODO Exclude situation with template include from some plugins - maybe hack */
-      add_action( 'template_include', function(){
-        return get_stylesheet_directory().'/index.php';
-      }, 100);
+      if($post->post_type !== 'property'){
+        add_action( 'template_include', function(){
+          return get_stylesheet_directory().'/index.php';
+        }, 100);
+      }
+
 
       $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
@@ -283,7 +288,7 @@ namespace UsabilityDynamics {
             ]
           ];
         } /** Is blog single page */
-        else {
+        elseif($post->post_type === 'post') {
           $params['post']['is_blog_single'] = true;
           $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
@@ -739,7 +744,21 @@ namespace UsabilityDynamics {
 
     function property_pro_buffer_handler($output)
     {
+      global $post;
+
       $params = $this->property_pro_get_page_content();
+      if (is_single() && $post->post_type === 'property') {
+        $d = new \DOMDocument;
+        $mock = new \DOMDocument;
+        $d->loadHTML($output);
+        $body = $d->getElementsByTagName('body')->item(0);
+        foreach ($body->childNodes as $child) {
+          $mock->appendChild($mock->importNode($child, true));
+        }
+        $body_content = $mock->saveHTML();
+        $params['post']['output'] = $body_content;
+      }
+
       return wp_json_encode($params);
     }
 
