@@ -11,6 +11,12 @@ import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import {Lib} from '../../lib.jsx';
 import Price from '../properties/Filters/Price.jsx';
+import {
+  bathroom as bathroomOptions,
+  bedroom as bedroomOptions,
+  defaultPropertyFilters as defaultFiltervalues,
+  property_type as propertyTypeOptions
+} from '../staticFilters.js';
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
 import React, {Component, PropTypes} from 'react';
@@ -42,57 +48,13 @@ function removeDefaultFilters(filters, defaults) {
   return finalObj;
 }
 
-let bathroomOptions = [
-  {name: '0+', value: '0'},
-  {name: '1+', value: '1'},
-  {name: '2+', value: '2'},
-  {name: '3+', value: '3'},
-  {name: '4+', value: '4'},
-  {name: '5+', value: '5'},
-  {name: '6+', value: '6'}
-];
-
-let bedroomOptions = [
-  {name: '0+', value: '0'},
-  {name: '1+', value: '1'},
-  {name: '2+', value: '2'},
-  {name: '3+', value: '3'},
-  {name: '4+', value: '4'},
-  {name: '5+', value: '5'},
-  {name: '6+', value: '6'}
-];
-
-let defaultFiltervalues = {
-  bedrooms: '0',
-  bathrooms: '0',
-  price: {
-    start: 'No Min',
-    to: 'No Max'
-  },
-  sqft: {
-    start: 'No Min',
-    to: 'No Max'
-  },
-  lotsize: {
-    start: 'No Min',
-    to: 'No Max'
-  }
-};
-
-let propertyTypeOptions = [
-  {name: 'House', value: 'house'},
-  {name: 'Townhouse', value: 'townhouse'},
-  {name: 'Condo', value: 'condo'},
-  {name: 'Manufactured', value: 'manufactured'}
-];
-
 const mapStateToProps = (state, ownProps) => {
   let localFilters = state.propertiesModal.localFilters;
   return {
     bathroomSelected: localFilters.bathrooms || defaultFiltervalues['bathrooms'],
     bedroomSelected: localFilters.bedrooms || defaultFiltervalues['bedrooms'],
     priceSelected: localFilters.price || defaultFiltervalues['price'],
-    propertyTypeSelected: localFilters.propertyType || '',
+    propertyTypeSelected: localFilters.property_type || '',
     sqftSelected: localFilters.sqft || defaultFiltervalues['sqft'],
     lotSizeSelected: localFilters.lotSize || defaultFiltervalues['lotsize'],
     localFilters: localFilters
@@ -143,7 +105,6 @@ class PropertiesModal extends Component {
     this.state = {
       bathroomSelected: props.bathroomSelected,
       bedroomSelected: props.bedroomSelected,
-      initialFilters: Object.assign({}, props.localFilters),
       propertyTypeSelected: props.propertyTypeSelected,
       lotSizeSelected: props.lotSizeSelected,
       showAllFilters: false,
@@ -158,6 +119,8 @@ class PropertiesModal extends Component {
     this.props.setLocalFilters(searchFiltersFormatted);
     let showAllFilters = this.displayAllFilters(this.props.localFilters);
     this.setState({
+      // note that searchFiltersFormatted is the same as localFilters
+      initialFilters: Object.assign({}, searchFiltersFormatted),
       showAllFilters: showAllFilters
     });
   }
@@ -174,6 +137,10 @@ class PropertiesModal extends Component {
     this.props.setLocalFilters({});
   }
 
+  displayAllFilters(localFilters) {
+    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'] || !!localFilters['property_type'];
+  }
+
   handleBathroomSelect(val) {
     let filter = {"bathrooms": val};
     this.props.updatePropertiesModalLocalFilter(filter);
@@ -182,6 +149,13 @@ class PropertiesModal extends Component {
   handleBedroomSelect(val) {
     let filter = {"bedrooms": val};
     this.props.updatePropertiesModalLocalFilter(filter);
+  }
+
+  handleCancel(e) {
+    e.preventDefault();
+      // reset local filters
+    // this.props.setLocalFilters({});
+    this.props.openPropertiesModal(false);
   }
 
   handlePriceSelect(start, to) {
@@ -195,7 +169,7 @@ class PropertiesModal extends Component {
   }
 
   handlePropertyTypeSelect(val) {
-    let filter = {"propertyType": val};
+    let filter = {"property_type": val};
     this.props.updatePropertiesModalLocalFilter(filter);
   }
 
@@ -226,6 +200,12 @@ class PropertiesModal extends Component {
     this.props.updatePropertiesModalLocalFilter(filter);
   }
 
+  resetFilters() {
+    console.log('resetting filter, initialFilters');
+    console.log(this.state.initialFilters);
+    this.props.setLocalFilters(this.state.initialFilters);
+  }
+
   saveFilters() {
     let url = new URI(window.location.host);
     url.pathname(window.location.pathname);
@@ -237,23 +217,6 @@ class PropertiesModal extends Component {
     url.setSearch(queryParam);
     this.props.openPropertiesModal(false);
     browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
-  }
-
-  displayAllFilters(localFilters) {
-    return !!localFilters['bathrooms'] || !!localFilters['sqft'] || !!localFilters['lotSize'];
-  }
-
-  resetFilters() {
-    let filter = {
-      "bathrooms": this.state.bathroomSelected,
-      "bedrooms": this.state.bedroomSelected,
-      "lotSize": this.state.lotSizeSelected,
-      "price": this.state.priceSelected,
-      "propertyType": this.state.propertyTypeSelected,
-      "sqft": this.state.sqftSelected
-    };
-
-    this.props.updatePropertiesModalLocalFilter(filter);
   }
 
   toggleViewAllFilters() {
@@ -323,7 +286,7 @@ class PropertiesModal extends Component {
                     />
                   </div>
                   <div className="p-2 my-auto">
-                    <a href="#" className="btn-reset" onClick={() => {}}>Reset</a>
+                    <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
                   </div>
                   <div className="p-2 my-auto">
                     <a href="#"
@@ -332,11 +295,12 @@ class PropertiesModal extends Component {
                   </div>
                 </div>
               </div>
-              <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        this.props.openPropertiesModal(false);
-                      }} aria-label="Close">
+              <button
+                aria-label="Close"
+                className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
+                type="button"
+                onClick={this.handleCancel.bind(this)}
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -385,7 +349,7 @@ class PropertiesModal extends Component {
                       <div className="filter-type">
                         {termFilters.map(t =>
                           <span key={t.value}
-                                className={Lib.THEME_CLASSES_PREFIX + "tag badge badge-default selected"}>{t.value}</span>
+                                className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>{t.value}</span>
                         )}
                         <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
                            onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
@@ -485,9 +449,17 @@ class PropertiesModal extends Component {
             <div className="modal-footer">
               <div className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav hidden-lg-up`}>
                 <div className="container">
-                  <button className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}>Reset</button>
+                  <button
+                    className={`${Lib.THEME_CLASSES_PREFIX}button-reset btn btn-reset`}
+                    onClick={this.resetFilters.bind(this)}
+                    >Reset</button>
                   <span className={`${Lib.THEME_CLASSES_PREFIX}filter-footernav-item-right nav-item-right`}>
-                  <a href="#" className="btn-cancel">Cancel</a> <i>|</i> <a href="#" className="btn-apply">Apply</a>
+                  <a
+                    href="#"
+                    className="btn-cancel"
+                    onClick={this.handleCancel.bind(this)}>Cancel</a>
+                      <i>|</i>
+                  <a href="#" className="btn-apply" onClick={this.saveFilters.bind(this)}>Apply</a>
                 </span>
                 </div>
               </div>

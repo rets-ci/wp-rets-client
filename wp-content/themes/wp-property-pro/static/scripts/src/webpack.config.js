@@ -14,7 +14,7 @@ module.exports = {
             loader: 'style-loader!css-loader'
           },
           {
-            test: /\.jsx$/,
+            test: /\.(js|jsx)$/,
             exclude: /node_modules/,
             loader: 'babel',
             query: { presets: ['es2015', 'react', 'stage-0'] }
@@ -35,6 +35,9 @@ module.exports = {
         ]
     },
     resolve: {
+      fallback: [
+        'node_modules'
+      ],
       alias: {
         'swiper-css': path.join(__dirname, '/node_modules/swiper/dist/css/swiper.min.css')
       }
