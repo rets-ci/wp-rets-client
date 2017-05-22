@@ -723,6 +723,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function create_property( $args ) {
         global $wp_xmlrpc_server;
 
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
@@ -884,6 +886,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function update_property( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+
         $post_data = self::parseRequest( $args );
 
         if( ( isset( $wp_xmlrpc_server ) && !empty( $wp_xmlrpc_server->error ) ) || isset( $post_data['error'] ) ) {
@@ -954,6 +958,8 @@ namespace UsabilityDynamics\WPRETSC {
        */
       public function edit_property( $args ) {
         global $wp_xmlrpc_server;
+
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
 
         $post_data = self::parseRequest( $args );
 
@@ -1186,6 +1192,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function delete_property( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+
         $data = self::parseRequest( $args );
         if( !empty( $wp_xmlrpc_server->error ) ) {
           return $data;
@@ -1265,6 +1273,8 @@ namespace UsabilityDynamics\WPRETSC {
       public function trash_property( $args ) {
         global $wp_xmlrpc_server, $wpdb;
 
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
+
         $data = self::parseRequest( $args );
 
         if( !empty( $wp_xmlrpc_server->error ) ) {
@@ -1312,6 +1322,8 @@ namespace UsabilityDynamics\WPRETSC {
        * @return array
        */
       public function insert_media( $args ) {
+
+        add_filter( 'ep_sync_insert_permissions_bypass', '__return_true', 99, 2 );
 
         $post_data = self::parseRequest( $args );
 
