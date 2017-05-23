@@ -87834,7 +87834,7 @@
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        slidesPerView: 'auto',
-	        centeredSlides: false,
+	        centeredSlides: window.innerWidth >= _lib.Lib.MOBILE_WIDTH,
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
 	        spaceBetween: 20,
@@ -87851,64 +87851,62 @@
 	      var posts = _lodash2.default.get(item, 'posts', []);
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
+	            _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
+	              'h3',
+	              { className: 'mx-auto' },
+	              _lodash2.default.get(item, 'title')
+	            ) : null,
+	            _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
+	              'p',
+	              null,
+	              _lodash2.default.get(item, 'subtitle')
+	            ) : null
+	          ),
+	          posts.length ? _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel mx-auto' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-info mx-auto text-center' },
-	              _lodash2.default.get(item, 'title', null) ? _react2.default.createElement(
-	                'h3',
-	                { className: 'mx-auto' },
-	                _lodash2.default.get(item, 'title')
-	              ) : null,
-	              _lodash2.default.get(item, 'subtitle', null) ? _react2.default.createElement(
-	                'p',
-	                null,
-	                _lodash2.default.get(item, 'subtitle')
-	              ) : null
-	            ),
-	            posts.length ? _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel' },
+	              { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
+	                ref: function ref(r) {
+	                  return _this2.swiperElement = r;
+	                } },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'swiper-container ' + _lib.Lib.THEME_CLASSES_PREFIX + 'listing-carousel-container',
-	                  ref: function ref(r) {
-	                    return _this2.swiperElement = r;
-	                  } },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'swiper-wrapper' },
-	                  posts.map(function (post, key) {
-	                    return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
-	                  })
-	                )
+	                { className: 'swiper-wrapper' },
+	                posts.map(function (post, key) {
+	                  return _react2.default.createElement(_PropertyCard2.default, { data: post, listType: _lib.Lib.PROPERTIES_LIST_CAROUSEL, key: key });
+	                })
 	              )
-	            ) : null,
+	            )
+	          ) : null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-control-nav text-center' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle', ref: function ref(r) {
-	                    return _this2.swiperElementPrev = r;
-	                  } },
-	                _react2.default.createElement('i', {
-	                  className: 'fa fa-angle-left' })
-	              ),
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle', ref: function ref(r) {
-	                    return _this2.swiperElementNext = r;
-	                  } },
-	                _react2.default.createElement('i', {
-	                  className: 'fa fa-angle-right' })
-	              )
+	              'a',
+	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'prev-nav mr-3 rounded-circle',
+	                ref: function ref(r) {
+	                  return _this2.swiperElementPrev = r;
+	                } },
+	              _react2.default.createElement('i', {
+	                className: 'fa fa-angle-left' })
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'next-nav rounded-circle',
+	                ref: function ref(r) {
+	                  return _this2.swiperElementNext = r;
+	                } },
+	              _react2.default.createElement('i', {
+	                className: 'fa fa-angle-right' })
 	            )
 	          )
 	        )
