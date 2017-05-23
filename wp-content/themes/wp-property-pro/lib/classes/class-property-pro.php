@@ -39,15 +39,12 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
-      global $post;
-
       /** @TODO Exclude situation with template include from some plugins - maybe hack */
-      if($post->post_type !== 'property'){
+      if(!isset($_GET['pageType'])){
         add_action( 'template_include', function(){
           return get_stylesheet_directory().'/index.php';
         }, 100);
       }
-
 
       $this->_stylesDir = get_template_directory_uri() . '/static/styles/';
       $this->_scriptsDir = get_template_directory_uri() . '/static/scripts/';
