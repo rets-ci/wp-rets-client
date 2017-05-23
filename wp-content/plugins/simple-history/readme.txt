@@ -4,7 +4,7 @@ Donate link: http://eskapism.se/sida/donate/
 Tags: history, log, changes, changelog, audit, trail, pages, attachments, users, dashboard, admin, syslog, feed, activity, stream, audit trail, brute-force
 Requires at least: 4.5.1
 Tested up to: 4.7
-Stable tag: 2.14.1
+Stable tag: 2.15
 
 View changes made by users within WordPress. See who created a page, uploaded an attachment or approved an comment, and more.
 
@@ -61,7 +61,7 @@ The [redirection plugin](https://sv.wordpress.org/plugins/redirection/) manages 
 Simple History will log redirects and groups that are created, changed, enabled or disabled and also when the global plugin settings have been modified.
 
 **Duplicate Post**
-Tjhe plugin [Duplicate Post](https://wordpress.org/plugins/duplicate-post/) allows users to
+The plugin [Duplicate Post](https://wordpress.org/plugins/duplicate-post/) allows users to
 clone posts of any type.
 Simple History will log when a clone of a post or page is done.
 
@@ -161,6 +161,14 @@ A simple way to see any uncommon activity, for example an increased number of lo
 == Changelog ==
 
 ## Changelog
+
+= 2.15 (May 2017) =
+
+- Use thumbnail version of PDF preview instead of full size image.
+- Remove Google Maps image when clicking IP address of failed login and similar, because Google Maps must be used with API key.
+  Hostname, Network, City, Region and Country is still shown.
+- Fix notice in available updates logger.
+- Fix notice in redirection logger.
 
 = 2.14.1 (April 2017) =
 
