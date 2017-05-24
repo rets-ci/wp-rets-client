@@ -63774,13 +63774,7 @@
 	  _createClass(Util, null, [{
 	    key: 'formatPriceValue',
 	    value: function formatPriceValue(price) {
-	      var formattedNumber = (0, _numeral2.default)(price);
-	      if (price >= 100000) {
-	        formattedNumber = formattedNumber.format('$0a');
-	      } else {
-	        formattedNumber = formattedNumber.format('$0,0');
-	      }
-	      return formattedNumber;
+	      return (0, _numeral2.default)(price).format('$0,0');
 	    }
 	  }, {
 	    key: 'formatSQFTValue',

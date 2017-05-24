@@ -11,13 +11,7 @@ import _ from 'lodash';
 class Util extends React.Component {
 
   static formatPriceValue(price) {
-    let formattedNumber = numeral(price);
-    if (price >= 100000) {
-      formattedNumber = formattedNumber.format('$0a')
-    } else {
-      formattedNumber = formattedNumber.format('$0,0');
-    }
-    return formattedNumber;
+    return numeral(price).format('$0,0');
   }
 
   static formatSQFTValue(sqft) {
