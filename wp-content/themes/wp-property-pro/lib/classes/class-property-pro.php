@@ -40,9 +40,9 @@ namespace UsabilityDynamics {
     {
 
       /** @TODO Exclude situation with template include from some plugins - maybe hack */
-      if(!isset($_GET['pageType'])){
-        add_action( 'template_include', function(){
-          return get_stylesheet_directory().'/index.php';
+      if (!isset($_GET['pageType'])) {
+        add_action('template_include', function () {
+          return get_stylesheet_directory() . '/index.php';
         }, 100);
       }
 
@@ -106,7 +106,7 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
-      if(defined('PROPERTYPRO_GOOGLE_API_KEY')) {
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY')) {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
       }
 
@@ -147,7 +147,7 @@ namespace UsabilityDynamics {
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
-      if(defined('PROPERTYPRO_GOOGLE_API_KEY')){
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY')) {
         $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
       }
 
@@ -285,7 +285,7 @@ namespace UsabilityDynamics {
             ]
           ];
         } /** Is blog single page */
-        elseif($post->post_type === 'post') {
+        elseif ($post->post_type === 'post') {
           $params['post']['is_blog_single'] = true;
           $params['post']['content'] = apply_filters('the_content', $post->post_content);
           if ($categories = get_the_category($post->ID)) {
@@ -405,7 +405,7 @@ namespace UsabilityDynamics {
         }, get_posts([
           'post_type' => $guide_post_type,
           'orderby' => 'menu_order',
-          'order'   => 'ASC',
+          'order' => 'ASC',
           'tax_query' => [
             [
               'taxonomy' => $guide_category,
@@ -434,7 +434,7 @@ namespace UsabilityDynamics {
             'post_type' => 'propertypro-guide',
             'posts_per_page' => -1,
             'orderby' => 'menu_order',
-            'order'   => 'ASC',
+            'order' => 'ASC',
             'tax_query' => [
               [
                 'taxonomy' => 'propertypro-guide-category',
@@ -446,7 +446,7 @@ namespace UsabilityDynamics {
           ]));
 
           $term_order = 0;
-          foreach ($child_posts as $p){
+          foreach ($child_posts as $p) {
             $term_order += $p['menu_order'];
           }
 
@@ -463,7 +463,7 @@ namespace UsabilityDynamics {
         }, get_term_children($term->term_id, $guide_category));
 
         /** Ordering child terms */
-        usort($child_terms, function($a, $b){
+        usort($child_terms, function ($a, $b) {
           if ($a['menu_order'] == $b['menu_order']) {
             return 0;
           }
@@ -628,48 +628,50 @@ namespace UsabilityDynamics {
           }
 
           if ($k === 'posts') {
-            $posts = $posts_cache ? $posts_cache[$widget['panels_info']['id']] : [];
+            $formatted_posts = $posts_cache ? $posts_cache[$widget['panels_info']['id']] : [];
 
-            if (!$posts) {
+            if (!$formatted_posts) {
 
               $args = wp_parse_args(siteorigin_widget_post_selector_process_query($field));
+              $args['fields'] = 'ids';
               $posts = get_posts($args);
 
               /** Update posts array */
-              foreach ($posts as &$post) {
-                $post->thumbnail = get_the_post_thumbnail_url($post->ID);
-                $post->relative_permalink = str_replace(home_url(), "", get_permalink($post));
-                $property_detail = get_property($post->ID);
+              foreach ($posts as $postId) {
+                $formatted_post = new \stdClass();
+                $formatted_post->thumbnail = get_the_post_thumbnail_url($postId);
+                $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
+                $property_detail = get_property($postId);
 
-                $post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
-                $post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
+                $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
+                $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
 
                 /** Get formatted address with zipcode */
                 $formatted_address_simple = isset($property_detail['formatted_address_simple']) ? $property_detail['formatted_address_simple'] : '';
                 $zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
-                $post->full_address .= $formatted_address_simple. ' ' . $zip;
+                $formatted_post->full_address .= $formatted_address_simple . ' ' . $zip;
 
-                $post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
-                $post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
+                $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
+                $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
 
                 // Get gallery images
-                $post->gallery_images = [];
-                if ($attached_images = get_attached_media('image', $post->ID)) {
+                $formatted_post->gallery_images = [];
+                if ($attached_images = get_attached_media('image', $postId)) {
                   foreach ($attached_images as $im) {
-                    if ($post->thumbnail === $im->guid) {
+                    if ($formatted_post->thumbnail === $im->guid) {
                       continue;
                     }
 
-                    $post->gallery_images[] = $im->guid;
+                    $formatted_post->gallery_images[] = $im->guid;
                   }
                 }
+                $formatted_posts[] = $formatted_post;
               }
 
-              $posts_array_for_caching[$widget['panels_info']['id']] = $posts;
+              $posts_array_for_caching[$widget['panels_info']['id']] = $formatted_posts;
             }
 
-            $field = $posts;
-
+            $field = $formatted_posts;
           }
 
           if ($k === 'image_position') {
