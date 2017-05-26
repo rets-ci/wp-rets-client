@@ -30321,7 +30321,7 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "single-container" },
+	    { className: _lib.Lib.THEME_CLASSES_PREFIX + "single-container", style: { color: '#000000' } },
 	    _lodash2.default.get(post, 'output', null) ? (0, _reactRenderHtml2.default)(_lodash2.default.get(post, 'output')) : null
 	  );
 	};
