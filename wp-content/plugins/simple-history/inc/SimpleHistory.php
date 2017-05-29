@@ -881,6 +881,7 @@ class SimpleHistory {
 			$loggersDir . "SimpleUserLogger.php",
 			$loggersDir . "SimpleCategoriesLogger.php",
 			$loggersDir . "AvailableUpdatesLogger.php",
+			$loggersDir . "FileEditsLogger.php",
 
 			// Loggers for third party plugins
 			$loggersDir . "PluginUserSwitchingLogger.php",
@@ -1080,6 +1081,7 @@ class SimpleHistory {
 			$dropinsDir . "SimpleHistorySettingsDebugDropin.php",
 			$dropinsDir . "SimpleHistorySidebarDropin.php",
 			$dropinsDir . "SimpleHistorySidebarStats.php",
+			$dropinsDir . "SimpleHistoryWPCLIDropin.php",
 		);
 
 		/**
