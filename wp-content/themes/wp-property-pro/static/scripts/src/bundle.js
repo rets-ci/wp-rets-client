@@ -30582,9 +30582,9 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _Api = __webpack_require__(293);
 
@@ -30652,22 +30652,8 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    standardSearch: function standardSearch(params) {
-	      var locationFilter = params.locationFilter,
-	          property_types = params.property_types,
-	          geoCoordinates = params.geoCoordinates;
-
-	      var pt = property_types.split(_lib.Lib.STRING_ARRAY_DELIMITER);
-	      var searchParams = _extends({}, params, {
-	        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
-	        locationFilter: locationFilter || false,
-	        property_types: pt,
-	        size: _lib.Lib.PROPERTY_PER_PAGE,
-	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
-	      });
-
-	      var query = _Api2.default.createESSearchQuery(searchParams);
 	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
-	      _Api2.default.search(query, function (response) {
+	      _Api2.default.makeStandardPropertySearch(params, function (query, response) {
 	        dispatch((0, _index.toggleMapSearchResultsLoading)(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
@@ -30918,6 +30904,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -31447,6 +31435,27 @@
 	      }, callback);
 	    }
 	  }, {
+	    key: 'makeStandardPropertySearch',
+	    value: function makeStandardPropertySearch(params, callback) {
+	      var locationFilter = params.locationFilter,
+	          property_types = params.property_types,
+	          geoCoordinates = params.geoCoordinates;
+
+	      var pt = property_types.split(_lib.Lib.STRING_ARRAY_DELIMITER);
+	      var searchParams = _extends({}, params, {
+	        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
+	        locationFilter: locationFilter || false,
+	        property_types: pt,
+	        size: _lib.Lib.PROPERTY_PER_PAGE,
+	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
+	      });
+
+	      var query = this.createESSearchQuery(searchParams);
+	      this.search(query, function (response) {
+	        callback(query, response);
+	      });
+	    }
+	  }, {
 	    key: 'makeRequest',
 	    value: function makeRequest(data, callback) {
 
@@ -31525,6 +31534,8 @@
 	  TOGGLE_PROPERTIES_MODAL_ACTION: 'TOGGLE_PROPERTIES_MODAL',
 	  TOP_AGGREGATIONS_COUNT: 5,
 	  UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
+	  UPDATE_PROPERTIES_MODAL_RESULT_COUNT: 'UPDATE_PROPERTIES_MODAL_RESULT_COUNT',
+	  UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION: 'UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION',
 	  URL_DELIMITER: '/',
 	  POST_SUGGEST_COUNT: 5,
 	  TERM_SUGGEST_COUNT: 20,
@@ -48640,7 +48651,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.openSaleTypesPanel = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+	exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
 
 	var _lib = __webpack_require__(294);
 
@@ -48748,10 +48759,24 @@
 	  };
 	};
 
+	var updatePropertiesModalResultCount = exports.updatePropertiesModalResultCount = function updatePropertiesModalResultCount(count) {
+	  return {
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
+	    count: count
+	  };
+	};
+
 	var openSaleTypesPanel = exports.openSaleTypesPanel = function openSaleTypesPanel(open) {
 	  return {
 	    type: _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION,
 	    open: open
+	  };
+	};
+
+	var setPropertiesModalResultCountLoading = exports.setPropertiesModalResultCountLoading = function setPropertiesModalResultCountLoading(show) {
+	  return {
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
+	    show: show
 	  };
 	};
 
@@ -54068,6 +54093,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _Api = __webpack_require__(293);
+
+	var _Api2 = _interopRequireDefault(_Api);
+
 	var _FilterBar = __webpack_require__(311);
 
 	var _FilterBar2 = _interopRequireDefault(_FilterBar);
@@ -54161,6 +54190,8 @@
 	    bedroomSelected: localFilters.bedrooms || _staticFilters.defaultPropertyFilters['bedrooms'],
 	    priceSelected: localFilters.price || _staticFilters.defaultPropertyFilters['price'],
 	    propertyTypeSelected: localFilters.property_type || '',
+	    resultCount: state.propertiesModal.resultCount,
+	    resultCountButtonLoading: state.propertiesModal.resultCountButtonLoading,
 	    sqftSelected: localFilters.sqft || _staticFilters.defaultPropertyFilters['sqft'],
 	    lotSizeSelected: localFilters.lotSize || _staticFilters.defaultPropertyFilters['lotsize'],
 	    localFilters: localFilters
@@ -54186,7 +54217,15 @@
 	      dispatch((0, _index.setPropertiesModalLocalFilter)(filter));
 	    },
 	    updatePropertiesModalLocalFilter: function updatePropertiesModalLocalFilter(filter) {
+	      // run an ES query and when completed, update the total number of properties
 	      dispatch((0, _index.updatePropertiesModalLocalFilter)(filter));
+	    },
+	    updateResultCount: function updateResultCount(filters) {
+	      dispatch((0, _index.setPropertiesModalResultCountLoading)(true));
+	      _Api2.default.makeStandardPropertySearch(filters, function (query, response) {
+	        dispatch((0, _index.setPropertiesModalResultCountLoading)(false));
+	        dispatch((0, _index.updatePropertiesModalResultCount)(_.get(response, 'hits.total', null)));
+	      });
 	    }
 	  };
 	};
@@ -54227,6 +54266,10 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.localFilters !== this.props.localFilters) {
+	        var filters = removeDefaultFilters(nextProps.localFilters, _staticFilters.defaultPropertyFilters);
+	        this.props.updateResultCount(filters);
+	      }
 	      var showAllFilters = this.displayAllFilters(nextProps.localFilters);
 	      this.setState({
 	        showAllFilters: showAllFilters
@@ -54313,8 +54356,6 @@
 	  }, {
 	    key: 'resetFilters',
 	    value: function resetFilters() {
-	      console.log('resetting filter, initialFilters');
-	      console.log(this.state.initialFilters);
 	      this.props.setLocalFilters(this.state.initialFilters);
 	    }
 	  }, {
@@ -54435,10 +54476,11 @@
 	                    { className: 'p-2 my-auto' },
 	                    _react2.default.createElement(
 	                      'a',
-	                      { href: '#',
-	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-submit-button',
+	                      {
+	                        href: '#',
+	                        className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-submit-button ' + (this.props.resultCountButtonLoading ? 'disabled' : null),
 	                        onClick: this.saveFilters.bind(this) },
-	                      'View Properties'
+	                      this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"
 	                    )
 	                  )
 	                )
@@ -89930,9 +89972,11 @@
 	var _lib = __webpack_require__(294);
 
 	var defaultState = {
-	  open: false,
 	  localFilters: {},
-	  otherFilters: {}
+	  open: false,
+	  otherFilters: {},
+	  resultCount: null,
+	  resultCountButtonLoading: false
 	};
 
 	var propertiesModal = function propertiesModal() {
@@ -89966,6 +90010,14 @@
 	      var localFilters = Object.assign({}, state.localFilters, action.filter);
 	      return Object.assign({}, _extends({}, state, {
 	        localFilters: localFilters
+	      }));
+	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT:
+	      return Object.assign({}, _extends({}, state, {
+	        resultCount: action.count
+	      }));
+	    case _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION:
+	      return Object.assign({}, _extends({}, state, {
+	        resultCountButtonLoading: action.show
 	      }));
 	    default:
 	      return state;

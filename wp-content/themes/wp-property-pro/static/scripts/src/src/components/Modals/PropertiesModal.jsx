@@ -1,3 +1,4 @@
+import Api from '../../containers/Api.jsx';
 import FilterBar from './components/FilterBar.jsx';
 import {
   deletePropertiesModalSingleLocalFilter,
@@ -5,7 +6,9 @@ import {
   openLocationModal,
   openPropertiesModal,
   setPropertiesModalLocalFilter,
-  updatePropertiesModalLocalFilter
+  setPropertiesModalResultCountLoading,
+  updatePropertiesModalLocalFilter,
+  updatePropertiesModalResultCount
 } from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
@@ -55,6 +58,8 @@ const mapStateToProps = (state, ownProps) => {
     bedroomSelected: localFilters.bedrooms || defaultFiltervalues['bedrooms'],
     priceSelected: localFilters.price || defaultFiltervalues['price'],
     propertyTypeSelected: localFilters.property_type || '',
+    resultCount: state.propertiesModal.resultCount,
+    resultCountButtonLoading: state.propertiesModal.resultCountButtonLoading,
     sqftSelected: localFilters.sqft || defaultFiltervalues['sqft'],
     lotSizeSelected: localFilters.lotSize || defaultFiltervalues['lotsize'],
     localFilters: localFilters
@@ -85,7 +90,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
 
     updatePropertiesModalLocalFilter(filter) {
+      // run an ES query and when completed, update the total number of properties
       dispatch(updatePropertiesModalLocalFilter(filter));
+    },
+
+    updateResultCount(filters) {
+      dispatch(setPropertiesModalResultCountLoading(true));
+      Api.makeStandardPropertySearch(filters, (query, response) => {
+        dispatch(setPropertiesModalResultCountLoading(false));
+        dispatch(updatePropertiesModalResultCount(_.get(response, 'hits.total', null)));
+      });
     }
   }
 };
@@ -126,6 +140,10 @@ class PropertiesModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.localFilters !== this.props.localFilters) {
+      let filters = removeDefaultFilters(nextProps.localFilters, defaultFiltervalues);
+      this.props.updateResultCount(filters);
+    }
     let showAllFilters = this.displayAllFilters(nextProps.localFilters);
     this.setState({
       showAllFilters: showAllFilters,
@@ -201,8 +219,6 @@ class PropertiesModal extends Component {
   }
 
   resetFilters() {
-    console.log('resetting filter, initialFilters');
-    console.log(this.state.initialFilters);
     this.props.setLocalFilters(this.state.initialFilters);
   }
 
@@ -289,9 +305,12 @@ class PropertiesModal extends Component {
                     <a href="#" className="btn-reset" onClick={this.resetFilters.bind(this)}>Reset</a>
                   </div>
                   <div className="p-2 my-auto">
-                    <a href="#"
-                       className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button`}
-                       onClick={this.saveFilters.bind(this)}>View Properties</a>
+                    <a
+                      href="#"
+                      className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button ${this.props.resultCountButtonLoading ? 'disabled' : null}`}
+                      onClick={this.saveFilters.bind(this)}>
+                        {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
+                    </a>
                   </div>
                 </div>
               </div>
