@@ -1,5 +1,9 @@
-<?php get_header(); ?>
+<?php
+get_header();
 
-<?php the_content(); ?>
+while (have_posts()) : the_post();
+  the_content();
 
-<?php get_footer(); ?>
+endwhile;
+
+get_footer();
