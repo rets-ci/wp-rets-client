@@ -54373,6 +54373,21 @@
 	      _reactRouter.browserHistory.push(decodeURIComponent(url.pathname() + url.search()));
 	    }
 	  }, {
+	    key: 'showFilterBasedOnSaleType',
+	    value: function showFilterBasedOnSaleType(saleType, filter) {
+	      var filtersSaleTypeMap = {
+	        'Buy': ['bedrooms', 'bathrooms', 'location', 'lotSize', 'price', 'propert_type', 'sqft'],
+	        'Commercial': ['location', 'lotSize', 'price', 'sqft'],
+	        'Rent': ['bathrooms', 'bedrooms', 'location', 'lotSize', 'price', 'propert_type', 'sqft'],
+	        'Land': ['location', 'lotSize', 'price']
+	      };
+	      if (!filtersSaleTypeMap[saleType]) {
+	        console.log('saletype ' + saleType + ' was not recognized, properties modal filters might work properly');
+	        return false;
+	      }
+	      return filtersSaleTypeMap[saleType].indexOf(filter) >= 0;
+	    }
+	  }, {
 	    key: 'toggleViewAllFilters',
 	    value: function toggleViewAllFilters() {
 	      this.setState({
@@ -54597,7 +54612,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'container' },
-	                  _react2.default.createElement(
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'location') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54634,8 +54649,8 @@
 	                        )
 	                      )
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'bedrooms') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54663,8 +54678,8 @@
 	                        );
 	                      })
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'price') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54690,8 +54705,8 @@
 	                      ),
 	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'bathrooms') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54720,8 +54735,8 @@
 	                        );
 	                      })
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'sqft') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54748,8 +54763,8 @@
 	                      ),
 	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'lotSize') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54775,8 +54790,8 @@
 	                      ),
 	                      _react2.default.createElement('input', { id: 'priceSlider', className: _lib.Lib.THEME_CLASSES_PREFIX + 'hidden-input bs-hidden-input' })
 	                    )
-	                  ),
-	                  _react2.default.createElement(
+	                  ) : null,
+	                  this.showFilterBasedOnSaleType(localFilters.sale_type, 'property_type') ? _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -54805,7 +54820,7 @@
 	                        })
 	                      )
 	                    )
-	                  ),
+	                  ) : null,
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
@@ -55205,29 +55220,47 @@
 	          to = _props.to;
 
 	      var defaults = {
-	        Sale: {
-	          start: 150000,
-	          to: 400000
+	        Commercial: {
+	          start: 500,
+	          to: 3000
 	        },
 	        Rent: {
 	          start: 500,
 	          to: 3000
+	        },
+	        Land: {
+	          start: 500,
+	          to: 3000
+	        },
+	        Sale: {
+	          start: 150000,
+	          to: 400000
 	        }
 	      };
 	      var formatter = void 0;
 	      var min = void 0;
 	      var max = void 0;
 	      var step = void 0;
-	      if (saleType === 'Sale') {
-	        min = 25000;
-	        max = 1000000;
+	      if (saleType === 'Commercial') {
+	        min = 125;
+	        max = 5000;
 	        formatter = sliderFormatter(min, max);
-	        step = 25000;
+	        step = 125;
 	      } else if (saleType === 'Rent') {
 	        min = 125;
 	        max = 5000;
 	        formatter = sliderFormatter(min, max);
 	        step = 125;
+	      } else if (saleType === 'Land') {
+	        min = 25000;
+	        max = 1000000;
+	        formatter = sliderFormatter(min, max);
+	        step = 25000;
+	      } else if (saleType === 'Sale') {
+	        min = 25000;
+	        max = 1000000;
+	        formatter = sliderFormatter(min, max);
+	        step = 25000;
 	      }
 	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
 	    }
