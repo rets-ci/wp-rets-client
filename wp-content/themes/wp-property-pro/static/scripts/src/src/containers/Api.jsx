@@ -536,6 +536,28 @@ class Api {
 
   }
 
+  static makeStandardPropertySearch(params, callback) {
+    let {
+        locationFilter,
+        property_types,
+        geoCoordinates
+      } = params;
+      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
+      let searchParams = {
+        ...params,
+        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
+        locationFilter: locationFilter || false,
+        property_types: pt,
+        size: Lib.PROPERTY_PER_PAGE,
+        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
+      };
+      
+      let query = this.createESSearchQuery(searchParams);
+      this.search(query, response => {
+        callback(query, response);
+      });
+  }
+
   static makeRequest(data, callback) {
 
     if (_.isEmpty(_.get(data, 'url', null)) || _.isEmpty(_.get(data, 'query', null))) {

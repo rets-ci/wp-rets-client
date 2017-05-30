@@ -1,5 +1,8 @@
 import Api from '../../containers/Api.jsx';
-import {setSearchResults, toggleMapSearchResultsLoading} from '../../actions/index.jsx';
+import {
+  setSearchResults,
+  toggleMapSearchResultsLoading
+} from '../../actions/index.jsx';
 import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
@@ -27,25 +30,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     standardSearch: (params) => {
-      let {
-        locationFilter,
-        property_types,
-        geoCoordinates,
-
-      } = params;
-      let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
-      let searchParams = {
-        ...params,
-        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
-        locationFilter: locationFilter || false,
-        property_types: pt,
-        size: Lib.PROPERTY_PER_PAGE,
-        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
-      };
-      
-      let query = Api.createESSearchQuery(searchParams);
       dispatch(toggleMapSearchResultsLoading(true));
-      Api.search(query, function (response) {
+      Api.makeStandardPropertySearch(params, (query, response) => {
         dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));

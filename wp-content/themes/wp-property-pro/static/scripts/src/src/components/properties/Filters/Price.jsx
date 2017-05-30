@@ -40,29 +40,47 @@ class Price extends Component {
       to
     } = this.props;
     let defaults = {
-      Sale: {
-        start: 150000,
-        to: 400000
+      Commercial: {
+        start: 500,
+        to: 3000
       },
       Rent: {
         start: 500,
         to: 3000
+      },
+      Land: {
+        start: 500,
+        to: 3000
+      },
+      Sale: {
+        start: 150000,
+        to: 400000
       }
     };
     let formatter;
     let min;
     let max;
     let step;
-    if (saleType === 'Sale') {
-      min = 25000;
-      max = 1000000;
+    if (saleType === 'Commercial') {
+      min = 125;
+      max = 5000;
       formatter = sliderFormatter(min, max);
-      step = 25000;
+      step = 125;
     } else if (saleType === 'Rent') {
       min = 125;
       max = 5000;
       formatter = sliderFormatter(min, max);
       step = 125;
+    } else if (saleType === 'Land') {
+      min = 25000;
+      max = 1000000;
+      formatter = sliderFormatter(min, max);
+      step = 25000;
+    } else if (saleType === 'Sale') {
+      min = 25000;
+      max = 1000000;
+      formatter = sliderFormatter(min, max);
+      step = 25000;
     }
     return (
       <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
