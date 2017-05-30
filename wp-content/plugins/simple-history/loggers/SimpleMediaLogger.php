@@ -146,16 +146,18 @@ class SimpleMediaLogger extends SimpleLogger
 
 	/**
 	 * Get output for detailed log section
+	 *
+	 * @param array $row Row.
 	 */
-	function getLogRowDetailsOutput($row) {
+	function getLogRowDetailsOutput( $row ) {
 
 		$context = $row->context;
-		$message_key = $context["_message_key"];
-		$output = "";
+		$message_key = $context['_message_key'];
+		$output = '';
 
-		$attachment_id = $context["attachment_id"];
+		$attachment_id = $context['attachment_id'];
 		$attachment_post = get_post( $attachment_id );
-		$attachment_is_available = is_a($attachment_post, "WP_Post");
+		$attachment_is_available = is_a( $attachment_post, 'WP_Post' );
 
 		if ( "attachment_updated" == $message_key ) {
 
@@ -177,16 +179,20 @@ class SimpleMediaLogger extends SimpleLogger
 			$message = "";
 			$full_src = false;
 
+			// Is true if attachment is an image. But for example PDFs can have thumbnail images, but they are not considered to be image.
 			$is_image = wp_attachment_is_image( $attachment_id );
+
+			// $message .= $is_image ? "is images yes" : "is image no";
 			$is_video = strpos($filetype["type"], "video/") !== false;
 			$is_audio = strpos($filetype["type"], "audio/") !== false;
 
 			$full_image_width = null;
 			$full_image_height = null;
+
 			if ( $is_image ) {
 
-				$thumb_src = wp_get_attachment_image_src($attachment_id, array(350,500));
-				$full_src = wp_get_attachment_image_src($attachment_id, "full");
+				$thumb_src = wp_get_attachment_image_src( $attachment_id, array( 350, 500 ) );
+				$full_src = wp_get_attachment_image_src( $attachment_id, 'full' );
 
 				$full_image_width = $full_src[1];
 				$full_image_height = $full_src[2];
@@ -218,14 +224,13 @@ class SimpleMediaLogger extends SimpleLogger
 
 			} else {
 
-				// use wordpress icon for other media types
+				// Use WordPress icon for other media types.
 				if ( $attachment_is_available ) {
-					$context["attachment_thumb"] = wp_get_attachment_image( $attachment_id, null, true );
+					$context['attachment_thumb'] = sprintf(
+						'%1$s',
+						wp_get_attachment_image( $attachment_id, array( 350, 500 ), true ) // Placeholder 1.
+					);
 				}
-				/*else {
-				  // Add icon for deleted media?
-					$context["attachment_thumb"] = "thumb";
-				}*/
 
 			}
 
@@ -238,7 +243,7 @@ class SimpleMediaLogger extends SimpleLogger
 					$message .= "<a class='SimpleHistoryLogitemThumbnailLink' href='".$edit_link."'>";
 				}
 
-				$message .= __('{attachment_thumb}', 'simple-history');
+				$message .= __( '{attachment_thumb}', 'simple-history' );
 
 				if ( $is_image ) {
 					$message .= "</a>";
@@ -249,15 +254,14 @@ class SimpleMediaLogger extends SimpleLogger
 			$message .= "<p class='SimpleHistoryLogitem--logger-SimpleMediaLogger--attachment-meta'>";
 			$message .= "<span class='SimpleHistoryLogitem__inlineDivided'>" . __('{attachment_size_format}', "simple-history") . "</span> ";
 			$message .= "<span class='SimpleHistoryLogitem__inlineDivided'>" . __('{attachment_filetype_extension}', "simple-history") . "</span>";
-			
+
 			if ( $full_image_width && $full_image_height ) {
 
-				$message .= " <span class='SimpleHistoryLogitem__inlineDivided'>" . __('{full_image_width} × {full_image_height}', "simple-history") . "</span>";
+				$message .= " <span class='SimpleHistoryLogitem__inlineDivided'>" . __( '{full_image_width} × {full_image_height}', 'simple-history' ) . '</span>';
 
 			}
 
-			//$message .= " <span class='SimpleHistoryLogitem__inlineDivided'>" . sprintf( __('<a href="%1$s">Edit attachment</a>'), $edit_link ) . "</span>";
-			$message .= "</p>";
+			$message .= '</p>';
 
 			$output .= $this->interpolate( $message, $context, $row );
 
@@ -360,7 +364,10 @@ class SimpleMediaLogger extends SimpleLogger
 
 		if ( isset( $row->context["attachment_id"] ) ) {
 
-			$permalink = add_query_arg(array("action" => "edit", "post" => $row->context["attachment_id"]), admin_url( "post.php" ) );
+			$permalink = add_query_arg( array(
+				'action' => 'edit',
+				'post' => $row->context['attachment_id'],
+			), admin_url( 'post.php' ) );
 
 			if ( $permalink ) {
 				$link = $permalink;

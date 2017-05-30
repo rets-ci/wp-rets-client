@@ -39,6 +39,10 @@ const HeaderContent = ({location, openUserPanel, saleTypesPanelOpen}) => {
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
     }
 
+  }else if(pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1){
+    // @TODO property single page don't have GET params which require for header filters
+    // so don't display header for current page now.
+    return null;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";

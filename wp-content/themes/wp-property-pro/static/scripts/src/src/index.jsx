@@ -4,6 +4,7 @@ import {browserHistory, IndexRoute, Router, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {syncHistoryWithStore} from 'react-router-redux';
+import PropertiesSingle from "./components/properties/Single.jsx"
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
@@ -23,6 +24,11 @@ render(
     <Router history={history}>
       <Route path="/" component={PageLayout}>
         <IndexRoute component={Page}/>
+        {
+          _.get(wpp, 'instance.settings.configuration.base_slug', null) && _.get(bundle, 'blog_base', null)
+            ? <Route path={"/" + _.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _.get(wpp, 'instance.settings.configuration.base_slug') + "/:propertySlug"} component={PropertiesSingle}/>
+            : null
+        }
         {
           _.get(wpp, 'instance.settings.configuration.base_slug', null)
             ? <Route path={"/" + _.get(wpp, 'instance.settings.configuration.base_slug')} component={MapSearchResults}/>
