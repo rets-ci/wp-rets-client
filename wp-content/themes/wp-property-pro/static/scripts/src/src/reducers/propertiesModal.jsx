@@ -2,9 +2,11 @@ import {isEqual} from 'lodash';
 import {Lib} from "../lib.jsx";
 
 let defaultState = {
-  open: false,
   localFilters: {},
-  otherFilters: {}
+  open: false,
+  otherFilters: {},
+  resultCount: null,
+  resultCountButtonLoading: false
 };
 
 const propertiesModal = (state = defaultState, action) => {
@@ -48,6 +50,19 @@ const propertiesModal = (state = defaultState, action) => {
           localFilters: localFilters
         }
       );
+    case Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT:
+      return Object.assign({},
+        {
+          ...state,
+          resultCount: action.count
+        }
+      );
+    case Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION:
+      return Object.assign({},
+      {
+        ...state,
+        resultCountButtonLoading: action.show
+      });
     default:
       return state
   }

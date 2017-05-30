@@ -104,9 +104,23 @@ export const updatePropertiesModalLocalFilter = filter => {
   }
 };
 
+export const updatePropertiesModalResultCount = count => {
+  return {
+    type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
+    count: count
+  }
+};
+
 export const openSaleTypesPanel = open => {
   return {
     type: Lib.SALE_TYPES_PANEL_OPEN_ACTION,
     open: open
   }
 };
+
+export const setPropertiesModalResultCountLoading = show => {
+  return {
+    type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
+    show: show
+  }
+}
