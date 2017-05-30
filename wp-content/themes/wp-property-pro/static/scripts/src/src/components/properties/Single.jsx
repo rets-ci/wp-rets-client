@@ -1,19 +1,34 @@
 import _ from 'lodash';
 import {Lib} from '../../lib.jsx'
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import renderHTML from 'react-render-html';
 
-const Single = ({post}) => {
+class Single extends Component {
+  static propTypes = {
+    post: PropTypes.object.isRequired
+  };
 
-  return (
-    <div className={Lib.THEME_CLASSES_PREFIX + "single-container"} style={{color: '#000000'}}>
-      {
-        _.get(post, 'output', null)
-          ? renderHTML(_.get(post, 'output'))
-          : null
-      }
-    </div>
-  );
-};
+  componentDidMount() {
+    let scripts = _.get(this.props.post, 'scripts', '');
+    for (let i in scripts) {
+      let script = scripts[i];
+
+      //@TODO render javascript scripts async
+    }
+  }
+
+  render() {
+    return (
+      <div className={Lib.THEME_CLASSES_PREFIX + "single-container"} style={{color: '#000000'}}>
+        {
+          _.get(this.props.post, 'output', null)
+            ? renderHTML(_.get(this.props.post, 'output'))
+            : null
+        }
+      </div>
+    );
+  }
+}
+
 
 export default Single;

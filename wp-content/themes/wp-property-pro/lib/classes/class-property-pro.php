@@ -53,7 +53,9 @@ namespace UsabilityDynamics {
       $this->property_pro_customizer();
 
       /** Scripts action section */
-      add_action('wp_enqueue_scripts', [$this, 'property_pro_enqueue_scripts']);
+      if (!isset($_GET['pageType'])) {
+        add_action('wp_enqueue_scripts', [$this, 'property_pro_enqueue_scripts']);
+      }
       add_action('admin_enqueue_scripts', [$this, 'property_pro_enqueue_admin_scripts']);
 
       /** Buffering output */
@@ -99,6 +101,7 @@ namespace UsabilityDynamics {
 
     function property_pro_enqueue_scripts()
     {
+      global $post;
 
       wp_enqueue_script('jquery');
       wp_enqueue_style('bootstrap', $this->_stylesDir . '/src/bootstrap.min.css');
@@ -106,7 +109,7 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY')) {
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
       }
 
@@ -756,12 +759,20 @@ namespace UsabilityDynamics {
         $d = new \DOMDocument;
         $mock = new \DOMDocument;
         $d->loadHTML($output);
+
+        $scripts = [];
+        foreach(iterator_to_array($d->getElementsByTagName('script')) as $node) {
+          $scripts[] = $node->ownerDocument->saveHTML($node);
+          $node->parentNode->removeChild($node);
+        };
+
         $body = $d->getElementsByTagName('body')->item(0);
         foreach ($body->childNodes as $child) {
           $mock->appendChild($mock->importNode($child, true));
         }
         $body_content = $mock->saveHTML();
         $params['post']['output'] = $body_content;
+        $params['post']['scripts'] = $scripts;
       }
 
       return wp_json_encode($params);
