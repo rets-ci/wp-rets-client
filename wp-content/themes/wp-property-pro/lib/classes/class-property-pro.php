@@ -755,22 +755,41 @@ namespace UsabilityDynamics {
       global $post;
 
       $params = $this->property_pro_get_page_content();
+
+      /** Using buffer output for single property page, but separate scripts from body content and send it separately */
       if (is_single() && $post->post_type === 'property') {
-        $d = new \DOMDocument;
+
+        $dom = new \DOMDocument;
+        $dom->loadHTML($output);
+
+        /** Get body node */
+        $body = $dom->getElementsByTagName('body')->item(0);
+
         $mock = new \DOMDocument;
-        $d->loadHTML($output);
 
         $scripts = [];
-        foreach(iterator_to_array($d->getElementsByTagName('script')) as $node) {
-          $scripts[] = $node->ownerDocument->saveHTML($node);
+
+        /** Get all script tags from body */
+        $body_scripts = iterator_to_array($body->getElementsByTagName('script'));
+
+        /** @var \DOMElement $node */
+        foreach ($body_scripts as $node) {
+
+          $scripts[] = [
+            'src' => $node->getAttribute('src'),
+            'content' => $node->textContent
+          ];
+
+          /** Removing scripts from body node */
           $node->parentNode->removeChild($node);
         };
 
-        $body = $d->getElementsByTagName('body')->item(0);
         foreach ($body->childNodes as $child) {
           $mock->appendChild($mock->importNode($child, true));
         }
+
         $body_content = $mock->saveHTML();
+
         $params['post']['output'] = $body_content;
         $params['post']['scripts'] = $scripts;
       }

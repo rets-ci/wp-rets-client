@@ -13,7 +13,20 @@ class Single extends Component {
     for (let i in scripts) {
       let script = scripts[i];
 
-      //@TODO render javascript scripts async
+      let scriptNode = document.createElement("script");
+
+      scriptNode.type = 'text/javascript';
+
+      if (_.get(script, 'src', null)) {
+        scriptNode.src = _.get(script, 'src');
+      }
+      if (_.get(script, 'content', null)) {
+        scriptNode.text = _.get(script, 'content');
+      }
+
+      scriptNode.async = true;
+
+      document.body.appendChild(scriptNode);
     }
   }
 

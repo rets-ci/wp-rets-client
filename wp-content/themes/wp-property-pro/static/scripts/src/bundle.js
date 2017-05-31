@@ -30339,7 +30339,20 @@
 	      for (var i in scripts) {
 	        var script = scripts[i];
 
-	        document.body.appendChild(script);
+	        var scriptNode = document.createElement("script");
+
+	        scriptNode.type = 'text/javascript';
+
+	        if (_lodash2.default.get(script, 'src', null)) {
+	          scriptNode.src = _lodash2.default.get(script, 'src');
+	        }
+	        if (_lodash2.default.get(script, 'content', null)) {
+	          scriptNode.text = _lodash2.default.get(script, 'content');
+	        }
+
+	        scriptNode.async = true;
+
+	        document.body.appendChild(scriptNode);
 	      }
 	    }
 	  }, {
