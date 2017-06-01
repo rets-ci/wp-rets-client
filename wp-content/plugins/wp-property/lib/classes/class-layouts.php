@@ -431,7 +431,7 @@ namespace UsabilityDynamics\WPP {
         $wp_query->is_page = true;
         $wp_query->is_archive = false;
         $wp_query->is_tax = false;
-        $wp_query->is_single = is_single();
+        $wp_query->is_single = true;
 
         //self::debug( 'page_template : ', $_layout['layout_id' ] );
 
