@@ -77514,7 +77514,9 @@
 
 	          var _url = new _urijs2.default();
 	          _url.resource(_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'));
-	          _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']', encodeURIComponent(text)), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleType), _url$setSearch));
+	          //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
+	          var modifiedSaleType = saleType === 'Sale' ? 'Buy' : saleType;
+	          _url.setSearch((_url$setSearch = {}, _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']', encodeURIComponent(text)), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]', propertyTypes), _defineProperty(_url$setSearch, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', modifiedSaleType), _url$setSearch));
 	          _reactRouter.browserHistory.push('/' + decodeURIComponent(_url.pathname() + _url.search()));
 	        }
 	      } else {
