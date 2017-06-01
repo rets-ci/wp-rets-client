@@ -1,6 +1,6 @@
 <?php
 /**
- * Festival Core
+ * PropertyPro Core
  *
  * @version 0.1.0
  * @author Usability Dynamics
