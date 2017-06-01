@@ -75,14 +75,13 @@ html, body {
 /** Toolbar **/
 
 .propertypro-toolbar.propertypro-header-default,
-.propertypro-toolbar.propertypro-guide-toolbar,
-.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
+.propertypro-toolbar.propertypro-guide-toolbar {
     position: absolute;
     z-index: 2;
 }
 
 .propertypro-toolbar.propertypro-header-search {
-    height: 5rem;
+    /*height: 5rem;*/
 }
 
 .propertypro-toolbar.propertypro-header-search-with-open-sale-types-panel {
@@ -1599,7 +1598,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap {
-    margin-left: 1.1rem;
+    /*margin-left: 1.1rem;*/
 }
 
 .propertypro-toolbar .propertypro-search-box-wrap form {
@@ -1610,12 +1609,18 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     text-align: center;
 }
 
+.propertypro-toolbar .propertypro-logo img {
+    margin-left: 1.5rem;
+}
+
 /*.propertypro-toolbar .propertypro-logo,
 .propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
     line-height: 5rem;
 }*/
 
 .propertypro-toolbar .propertypro-drop-nav {
+    display: table;
+    height: 100%;
     background-color: rgba(237, 242, 245, 0.5);
     border: .0625rem solid #d2dae0;
     border-top-width: 0;
@@ -1625,19 +1630,21 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-toolbar .propertypro-drop-nav a {
+    display: table-cell;
     line-height: 5rem;
-    display: block;
     color: #414141;
     font-size: 1.40rem;
     font-weight: 600;
+    vertical-align: middle;
 }
 
 .propertypro-top-nav-bar {
-    position: absolute;
+    margin-top: 1.7rem;
+    /*position: absolute;
     right: 0;
-    width: 11.875rem;
-    line-height: 4.875rem;
-    padding-left: .0625rem;
+    width: 11.875rem;*/
+    /*line-height: 4.875rem;
+    padding-left: .0625rem;*/
 }
 
 .propertypro-top-nav-bar ul {
@@ -1804,7 +1811,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-sale-type-selection {
     background-color: #d03528;
-    width: 100%;
 }
 
 .propertypro-sale-type-selection-hide {
@@ -1838,9 +1844,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     margin-top: 1rem;
 }
 
-.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
+/*.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
     position: static;
-}
+}*/
 
 /*-----------------------------------------------------------------------------------*/
 /*  Blog

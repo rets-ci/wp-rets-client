@@ -84,8 +84,8 @@ class HeaderSearch extends Component {
             </a>
           </div>
         </div>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row no-gutters`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-sm-1 my-auto`}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-sm-2 col-md-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -99,15 +99,15 @@ class HeaderSearch extends Component {
                 : null
             }
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "col-sm-2 hidden-xs-down"}>
+          <div className="col-sm-2 hidden-sm-down">
             <div className={Lib.THEME_CLASSES_PREFIX + "drop-nav"}>
               <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
             </div>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-6 col-sm-6"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-7 col-sm-6"}>
             <SearchFilters filters={searchFilters}/>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-3"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2"}>
             <ul>
               <li><a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX + "favorite"}><i
                 className="fa fa-heart"></i></a></li>
