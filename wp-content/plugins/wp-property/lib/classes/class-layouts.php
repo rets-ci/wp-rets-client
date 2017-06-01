@@ -418,7 +418,7 @@ namespace UsabilityDynamics\WPP {
         if ($_layout && !empty($wp_query->post) && !empty($_layout['layout_id']) && $_layout['layout_id'] ) {
           $wp_query->post->_original_id = $wp_query->post->ID;
           $wp_query->post->_layout = $_layout;
-          $wp_query->post->ID = isset($_layout['layout_id']) ? intval( $_layout['layout_id'] ) : 0;
+          $wp_query->post->ID = intval( $_layout['layout_id'] );
         }
 
         // Set post count to 0 to avoid loops.

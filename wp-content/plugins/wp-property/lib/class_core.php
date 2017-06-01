@@ -25,6 +25,8 @@ class WPP_Core {
       ini_set( 'memory_limit', '128M' );
     }
 
+    //** Modifing post query according to capability */    
+    add_filter('pre_get_posts', array( $this, 'capability_wpp_property' ));
     //** Modify request to change feed */
     add_filter( 'request', 'property_feed' );
 
@@ -300,14 +302,12 @@ class WPP_Core {
     wp_register_script( 'wpp-settings-developer-attributes', WPP_URL . 'scripts/view/settings-developer-attributes.js', array( 'wp-property-admin-settings', 'lodash-js' ), WPP_Version );
     wp_register_script( 'wpp-settings-developer-types', WPP_URL . 'scripts/view/settings-developer-types.js', array( 'wp-property-admin-settings', 'lodash-js' ), WPP_Version );
     
-    if(WPP_FEATURE_FLAG_SETTINGS_V2){
-      $_featureFlags = array();
-      $featureFlags = ud_get_wp_property()->get_feature_flags();
-      foreach ($featureFlags as $flag) {
-        $_featureFlags[$flag->constant] = $flag->enabled;
-      }
-      wp_localize_script( 'wp-property-admin-settings', 'featureFlags', $_featureFlags );
+    $_featureFlags = array();
+    $featureFlags = ud_get_wp_property()->get_feature_flags();
+    foreach ($featureFlags as $flag) {
+      $_featureFlags[$flag->constant] = $flag->enabled;
     }
+    wp_localize_script( 'wp-property-admin-settings', 'featureFlags', $_featureFlags );
 
     wp_register_script( 'wp-property-backend-global', WPP_URL . 'scripts/wpp.admin.global.js', array( 'jquery', 'wp-property-global', 'wpp-localization', 'underscore' ), WPP_Version );
     wp_register_script( 'wp-property-backend-editor', WPP_URL . 'scripts/wpp.admin.editor.js', array( 'jquery', 'wp-property-global', 'wpp-localization' ), WPP_Version );
@@ -453,6 +453,27 @@ class WPP_Core {
     return $attributes;
   }
 
+  /**
+   * Limiting to view only own property if 
+   * user don't have edit_others_posts capability.
+   * 
+   * @since 2.2.0.1
+   * @author alim
+   */
+
+  public function capability_wpp_property($query) {
+    global $current_screen;
+
+    if( (!empty($query->query['post_type']) && 'property' != $query->query['post_type']) || !$query->is_admin )
+        return $query;
+
+    if( !current_user_can( 'edit_others_posts' ) ) {
+      global $user_ID;
+      $query->set('author', $user_ID );
+    }
+    return $query;
+  }
+  
   /**
    * May be return thumbnail ID for property.
    * HOOK on get_post_meta
@@ -685,7 +706,7 @@ class WPP_Core {
 
     $update_data = $_REQUEST[ 'wpp_data' ][ 'meta' ];
 
-    //** Neccessary meta data which is required by Supermap Premium Feature. Should be always set even the Supermap disabled. peshkov@UD */
+    //** Necessary meta data which is required by Supermap Premium Feature. Should be always set even the Supermap disabled. peshkov@UD */
     if( empty( $_REQUEST[ 'exclude_from_supermap' ] ) ) {
       if( !metadata_exists( 'post', $post_id, 'exclude_from_supermap' ) ) {
         $update_data[ 'exclude_from_supermap' ] = 'false';
@@ -742,7 +763,7 @@ class WPP_Core {
     ) );
 
     // Checking if this is a child property if then add it to children array.
-    if($parent_id = wp_get_post_parent_id($post_id)){
+    if($prev_parent_id = wp_get_post_parent_id($post_id)){
       $children[$post_id] = null;
     }
 
@@ -753,12 +774,12 @@ class WPP_Core {
       //* Determine child property_type */
       $child_property_type = get_post_meta( $child_id, 'property_type', true );
 
-      //* Check if child's property type has inheritence rules, and if meta_key exists in inheritance array */
+      //* Check if child's property type has inheritance rules, and if meta_key exists in inheritance array */
       if(
         isset( $wp_properties[ 'property_inheritance' ][ $child_property_type ] ) &&
         is_array( $wp_properties[ 'property_inheritance' ][ $child_property_type ] )
       ) {
-        // Getting parret id //because current property could be a child.
+        // Getting parent id //because current property could be a child.
         $parent_id = wp_get_post_parent_id($child_id);
 
         foreach( $wp_properties[ 'property_inheritance' ][ $child_property_type ] as $i_meta_key ) {
@@ -771,12 +792,6 @@ class WPP_Core {
 
     $_gpid = WPP_F::maybe_set_gpid( $post_id );
 
-    do_action( 'save_property', $post_id, array(
-      'children' => $children,
-      'gpid' => $_gpid,
-      'update_data' => $update_data,
-      'geo_data' => $geo_data
-    ));
 
     /**
      * Flush all object caches related to current property
@@ -785,6 +800,15 @@ class WPP_Core {
     /**
      * Flush WP-Property caches
      */
+
+    // We need to do it after flashing the cache.
+    do_action( 'save_property', $post_id, array(
+      'parent_id' => $prev_parent_id,
+      'children' => $children,
+      'gpid' => $_gpid,
+      'update_data' => $update_data,
+      'geo_data' => $geo_data
+    ));
 
   }
 
@@ -1221,17 +1245,26 @@ class WPP_Core {
     //* General WPP capabilities */
     $wpp_capabilities = array(
       //* Manage WPP Properties Capabilities */
-      'edit_wpp_properties' => __( 'View Properties', ud_get_wp_property()->domain ),
-      'edit_wpp_property' => __( 'Add/Edit Properties', ud_get_wp_property()->domain ),
-      'edit_others_wpp_properties' => __( 'Edit Other Properties', ud_get_wp_property()->domain ),
-      'delete_wpp_property' => __( 'Delete Properties', ud_get_wp_property()->domain ),
-      'publish_wpp_properties' => __( 'Publish Properties', ud_get_wp_property()->domain ),
+      'edit_wpp_properties' => sprintf(__( 'View %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+
+      'edit_wpp_property' => sprintf(__( 'Add/Edit %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+      'delete_wpp_property' => sprintf(__( 'Delete %s', ud_get_wp_property()->domain ), WPP_F::property_label()),
+
+      'publish_wpp_properties' => sprintf(__( 'Publish %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+
+      //* WPP others property capability */
+      'edit_others_wpp_properties' => sprintf(__( 'Edit Others %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+      'delete_others_wpp_properties' => sprintf(__( 'Delete Others %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+      //* WPP private property capability */
+      'edit_private_wpp_properties' => sprintf(__( 'Edit Private %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+      'delete_private_wpp_properties' => sprintf(__( 'Delete Private %s', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
+
       //* WPP make featured capability */
-      'manage_wpp_make_featured' => __( 'Allow to mark properties as featured', ud_get_wp_property()->domain ),
+      'manage_wpp_make_featured' => sprintf(__( 'Allow to mark %s as featured', ud_get_wp_property()->domain ), WPP_F::property_label('plural')),
       //* WPP Settings capability */
       'manage_wpp_settings' => __( 'Manage Settings', ud_get_wp_property()->domain ),
       //* WPP Taxonomies capability */
-      'manage_wpp_categories' => __( 'Manage Taxonomies', ud_get_wp_property()->domain )
+      'manage_wpp_categories' => __( 'Manage Taxonomies', ud_get_wp_property()->domain ),
     );
 
     //* Adds Premium Feature Capabilities */
@@ -1246,6 +1279,12 @@ class WPP_Core {
       if( empty( $role->capabilities[ $cap ] ) ) {
         $role->add_cap( $cap );
         $is_cap_added = true;
+      }
+      if($cap == 'edit_wpp_property' && empty($role->capabilities[ 'create_wpp_properties' ])){
+        $role->add_cap( 'create_wpp_properties' );
+      }
+      elseif($cap == 'delete_wpp_property' && empty($role->capabilities[ 'delete_wpp_properties' ])){
+        $role->add_cap( 'delete_wpp_properties' );
       }
     }
 

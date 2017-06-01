@@ -474,14 +474,17 @@ class WPP_F extends UsabilityDynamics\Utility
   static public function property_label($type = 'singular')
   {
     global $wp_post_types;
+    $label = '';
 
     if ($type == 'plural') {
-      return (!empty($wp_post_types['property']->labels->name) ? $wp_post_types['property']->labels->name : __('Properties'));
+      $label = (!empty($wp_post_types['property']->labels->name) ? $wp_post_types['property']->labels->name : __('Properties'));
     }
 
     if ($type == 'singular') {
-      return (!empty($wp_post_types['property']->labels->singular_name) ? $wp_post_types['property']->labels->singular_name : __('Property'));
+      $label = (!empty($wp_post_types['property']->labels->singular_name) ? $wp_post_types['property']->labels->singular_name : __('Property'));
     }
+    $label = apply_filters('property_label', $label, $type);
+    return $label;
 
   }
 
@@ -707,6 +710,12 @@ class WPP_F extends UsabilityDynamics\Utility
       'show_ui' => true,
       '_edit_link' => 'post.php?post=%d',
       'capability_type' => array('wpp_property', 'wpp_properties'),
+      'capabilities' => array(
+            'create_posts' => 'create_wpp_properties',
+            'edit_published_posts' => 'edit_wpp_properties',
+            'delete_published_posts' => 'delete_wpp_properties',
+        ),
+      'map_meta_cap' => true,
       'hierarchical' => true,
       'rewrite' => array(
         'slug' => $wp_properties['configuration']['base_slug']
@@ -5079,13 +5088,20 @@ class WPP_F extends UsabilityDynamics\Utility
   static public function get_properties_quantity($post_status = array('publish'))
   {
     global $wpdb;
+    $where = '';
+    
+    /** Limiting to view only own property if user don't have edit_others_posts capability. */
+    if(!current_user_can( 'edit_others_posts' )){
+      global $user_ID;
+      $where .= " AND post_author = $user_ID";
+    }
 
     $results = $wpdb->get_col("
       SELECT ID
       FROM {$wpdb->posts}
       WHERE post_status IN ('" . implode("','", $post_status) . "')
         AND post_type = 'property'
-    ");
+    " . $where );
 
     $results = apply_filters('wpp_get_properties_quantity', $results, $post_status);
 
