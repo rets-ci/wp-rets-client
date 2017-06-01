@@ -78880,6 +78880,10 @@
 
 	var _Util2 = _interopRequireDefault(_Util);
 
+	var _reactRenderHtml = __webpack_require__(285);
+
+	var _reactRenderHtml2 = _interopRequireDefault(_reactRenderHtml);
+
 	var _Swiper = __webpack_require__(431);
 
 	var _Swiper2 = _interopRequireDefault(_Swiper);
@@ -78948,10 +78952,29 @@
 	          gallery_images = _props$data.gallery_images,
 	          living_area = _props$data.living_area,
 	          price = _props$data.price,
+	          property_type = _props$data.property_type,
+	          property_type_label = _props$data.property_type_label,
 	          relative_permalink = _props$data.relative_permalink,
-	          thumbnail = _props$data.thumbnail;
+	          sqft = _props$data.sqft,
+	          thumbnail = _props$data.thumbnail,
+	          zip = _props$data.zip;
 
 	      var self = this;
+
+	      var info_box = '<li>' + property_type_label + ' Type</li>';
+
+	      if (property_type !== 'commercial' && property_type !== 'land') {
+	        info_box += '<li>' + beds + ' beds</li><li>' + baths + ' baths</li>';
+	      }
+
+	      if (property_type !== 'land') {
+	        info_box += '<li>' + _Util2.default.formatSQFTValue(sqft) + ' SF</li>';
+	      }
+
+	      if (property_type === 'land') {
+	        info_box += '<li>acres</li>';
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        {
@@ -79008,7 +79031,8 @@
 	              _react2.default.createElement(
 	                'li',
 	                { className: 'nav-item mr-auto ' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle', onClick: function onClick(e) {
+	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle',
+	                  onClick: function onClick(e) {
 	                    e.preventDefault();
 	                    return _this2.handleNavigation.bind(_this2)('prev');
 	                  }, href: '#' })
@@ -79027,7 +79051,8 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block', onClick: function onClick(eve) {
+	          { className: 'card-block ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-block',
+	            onClick: function onClick(eve) {
 	              return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
 	            } },
 	          _react2.default.createElement(
@@ -79043,7 +79068,8 @@
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "action-btn-group" },
 	              _react2.default.createElement(
 	                'a',
-	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active', title: 'Save as favorite' },
+	                { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + 'favorite ' + _lib.Lib.THEME_CLASSES_PREFIX + 'active',
+	                  title: 'Save as favorite' },
 	                _react2.default.createElement('i', { className: 'fa fa-heart', 'aria-hidden': 'true' })
 	              ),
 	              _react2.default.createElement(
@@ -79061,29 +79087,12 @@
 	          _react2.default.createElement(
 	            'p',
 	            { className: 'card-text ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-text' },
-	            full_address
+	            zip
 	          ),
 	          _react2.default.createElement(
 	            'ul',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'listing-info-box p-0' },
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              beds,
-	              ' Bed'
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              baths,
-	              ' Bath'
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _Util2.default.formatSQFTValue(living_area),
-	              ' SF'
-	            )
+	            (0, _reactRenderHtml2.default)(info_box)
 	          )
 	        )
 	      );

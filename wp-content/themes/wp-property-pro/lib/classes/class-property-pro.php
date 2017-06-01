@@ -646,13 +646,19 @@ namespace UsabilityDynamics {
                 $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
                 $property_detail = get_property($postId);
 
+                $formatted_post->property_type = isset($property_detail['property_type']) ? $property_detail['property_type'] : '';
+                $formatted_post->property_type_label = isset($property_detail['property_type_label']) ? $property_detail['property_type_label'] : '';
+                $formatted_post->sqft = isset($property_detail['wpp_price_per_sqft']) ? $property_detail['wpp_price_per_sqft'] : 0;
                 $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
                 $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
 
                 /** Get formatted address with zipcode */
                 $formatted_address_simple = isset($property_detail['formatted_address_simple']) ? $property_detail['formatted_address_simple'] : '';
                 $zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
+                $formatted_post->zip .= $zip;
                 $formatted_post->full_address .= $formatted_address_simple . ' ' . $zip;
+
+                $formatted_post->terms = get_the_terms($postId, 'wpp_location');
 
                 $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
                 $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
