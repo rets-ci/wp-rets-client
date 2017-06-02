@@ -95,10 +95,12 @@ class LocationModal extends Component {
       } else {
         let url = new URL();
         url.resource(_.get(wpp, 'instance.settings.configuration.base_slug'));
+        //TODO: this is a temporary replacement of "Sale" to "Buy" value until we decide on the exact set of sale type values
+        let modifiedSaleType = saleType === 'Sale' ? 'Buy' : saleType;
         url.setSearch({
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[term][0][' + tax + ']']: encodeURIComponent(text),
           [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_types]']: propertyTypes,
-          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleType
+          [Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: modifiedSaleType
         });
         browserHistory.push('/' + decodeURIComponent(url.pathname() + url.search()));
       }
