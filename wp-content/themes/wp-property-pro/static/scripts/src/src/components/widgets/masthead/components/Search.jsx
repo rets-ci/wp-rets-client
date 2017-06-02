@@ -95,17 +95,16 @@ class SearchContent extends Component {
 
     let searchBtnClasses = `btn ${Lib.THEME_CLASSES_PREFIX}btn-search`;
 
-    if(this.state.labels.length === 0){
+    if (this.state.labels.length === 0) {
       return null;
-    }else if(this.state.labels.length === 1){
+    } else if (this.state.labels.length === 1) {
       searchBtnClasses += " " + Lib.THEME_CLASSES_PREFIX + "short-padding";
     }
 
     let placeholder = 'Address, City, Zip, or Neighborhood';
-    if(window.innerWidth < Lib.MOBILE_WIDTH){
+    if (window.innerWidth < Lib.MOBILE_WIDTH) {
       placeholder = 'Address, City, Zip';
     }
-
     let self = this;
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-box mx-auto`}>

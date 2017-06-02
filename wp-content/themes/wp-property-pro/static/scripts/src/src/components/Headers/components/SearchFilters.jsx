@@ -215,27 +215,6 @@ class searchFilters extends Component {
         <FilterTag key={JSON.stringify(t)} handleRemoveFilter={i !== 0 ? (() => this.handleTermFilterRemove.bind(this)(t)) : null} display={t.value} value={t.value} />
       );
     }
-    if (this.state.isMobileView) {
-      let numberOfFiltersToShow = mobileViewFilterNumber(filters);
-      moreFiltersElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-            <span>+</span>
-            {numberOfFiltersToShow}
-          </a>
-        </span>
-      );
-    } else {
-      moreFiltersElement = (
-        <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-            <span>+</span>
-            More Filters
-          </a>
-        </span>
-      );
-    }
-
     return (
       <form method="get" className="clearfix">
         <div className={Lib.THEME_CLASSES_PREFIX+"bs-tags-box"}>
@@ -247,7 +226,18 @@ class searchFilters extends Component {
             {sqftElement}
             {lotSizeElement}
             {propertyTypeElement}
-            {moreFiltersElement}
+            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-lg-up`}>
+              <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+                <span>+</span>
+                {mobileViewFilterNumber(filters)}
+              </a>
+            </span>
+            <span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter hidden-md-down`}>
+              <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+                <span>+</span>
+                More Filters
+              </a>
+            </span>
           </div>
         </div>
         <input type="text" defaultValue="Raleigh,Raleigh2" data-role="tagsinput" className={Lib.THEME_CLASSES_PREFIX+"tagsinput"} />
