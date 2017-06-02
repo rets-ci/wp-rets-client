@@ -507,6 +507,7 @@ class Api {
       "post_meta.rets_list_date",
       "post_meta.rets_thumbnail_url",
       "terms.wpp_listing_type",
+      "post_meta.rets_address",
       "post_meta.rets_beds",
       "post_meta.rets_total_baths",
       "post_meta.rets_list_price",
@@ -516,6 +517,7 @@ class Api {
       "post_meta.rets_directions",
       "post_meta.rets_street_name",
       "post_meta.rets_thumbnail_url",
+      "post_meta.rets_postal_code",
       "wpp_media",
       "tax_input"
     ]);
