@@ -1166,8 +1166,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-search-modal .propertypro-close-panel {
-    position: absolute;
-    right: 1.25rem;
     font-size: 2rem;
 }
 
@@ -1847,6 +1845,11 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*.propertypro-toolbar .propertypro-header-search-container .propertypro-header-search-navigation {
     position: static;
 }*/
+
+.propertypro-header-search-container form .propertypro-addfilter a {
+    font-weight: 700;
+    color: #d33320;
+}
 
 /*-----------------------------------------------------------------------------------*/
 /*  Blog

@@ -309,7 +309,7 @@ class PropertiesModal extends Component {
                   <div className="p-2 my-auto">
                     <i className="fa fa-search"></i>
                   </div>
-                  <div className="p-2 col-xl-9 col-lg-8 my-auto">
+                  <div className="p-2 col-xl-8 col-lg-8 my-auto">
                     <FilterBar
                       deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
                       deleteLocalFilterTerm={this.props.deleteLocalFilterTerm}
@@ -327,16 +327,18 @@ class PropertiesModal extends Component {
                         {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
                     </a>
                   </div>
+                  <div className="p-2 my-auto">
+                    <button
+                      aria-label="Close"
+                      className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
+                      type="button"
+                      onClick={this.handleCancel.bind(this)}
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button
-                aria-label="Close"
-                className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto hidden-md-down`}
-                type="button"
-                onClick={this.handleCancel.bind(this)}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div className="modal-body p-0">
               <div className={`${Lib.THEME_CLASSES_PREFIX}search-filter-nav hidden-lg-up`}>
