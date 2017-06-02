@@ -34,35 +34,20 @@ class SearchResultListing extends Component {
           {
             properties.map((p, i) => {
 
-                let city = '';
-                let zipCode = '';
-
-                let listingLocation = _.get(p, '_source.tax_input.wpp_listing_location', []);
-
-                for (let termInd in listingLocation) {
-                  let term = listingLocation[termInd][0];
-
-                  switch (term.term_type) {
-                    case 'location-city-state':
-                      city = term.name;
-                      break;
-                    case 'location-zipcode':
-                      zipCode = term.name;
-                      break;
-                  }
-                }
-
                 let item = {
                   address: _.get(p, '_source.post_meta.rets_address', ''),
                   location: _.get(p, '_source.post_meta.wpp_location_pin', []),
                   baths: _.get(p, '_source.post_meta.rets_total_baths', 0),
                   beds: _.get(p, '_source.post_meta.rets_beds', 0),
-                  full_address: _.get(p, '_source.post_meta.formatted_address_simple', ''),
+                  city: _.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
                   gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
                   living_area: _.get(p, '_source.post_meta.rets_living_area', ''),
                   price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
+                  post_type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
+                  type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
                   relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
-                  thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', '')
+                  thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+                  zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
                 };
 
                 return (

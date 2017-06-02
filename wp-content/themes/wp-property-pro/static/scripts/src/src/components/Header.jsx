@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {toggleUserPanel} from '../actions/index.jsx';
 import HeaderDefault from './Headers/HeaderDefault.jsx';
+import HeaderPropertiesSingle from './Headers/HeaderPropertySingle.jsx';
 import HeaderSearch from './Headers/HeaderSearch.jsx';
 import Util from './Util.jsx';
 import {Lib} from '../lib.jsx';
@@ -35,14 +36,11 @@ const HeaderContent = ({location, openUserPanel, saleTypesPanelOpen}) => {
     headerElement = <HeaderSearch openUserPanel={openUserPanel} searchFilters={searchFilters}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search";
 
-    if(saleTypesPanelOpen){
+    if (saleTypesPanelOpen) {
       sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-search-with-open-sale-types-panel";
     }
-
-  }else if(pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1){
-    // @TODO property single page don't have GET params which require for header filters
-    // so don't display header for current page now.
-    return null;
+  } else if (pathRoot.indexOf(_.get(wpp, 'instance.settings.configuration.base_slug', '')) !== -1) {
+    headerElement = <HeaderPropertiesSingle openUserPanel={openUserPanel}/>;
   } else {
     headerElement = <HeaderDefault openUserPanel={openUserPanel}/>;
     sectionClassnames += " " + Lib.THEME_CLASSES_PREFIX + "header-default row no-gutters";
