@@ -63395,7 +63395,7 @@
 
 	      var aggregations = JSON.stringify({});
 
-	      var source = JSON.stringify(["meta.property_type.value", "post_title", "post_name", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.formatted_address_simple", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_list_price", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "wpp_media", "tax_input"]);
+	      var source = JSON.stringify(["meta.property_type.value", "post_title", "post_name", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.formatted_address_simple", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_address", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_list_price", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "post_meta.rets_postal_code", "wpp_media", "tax_input"]);
 
 	      // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
 	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
@@ -77810,37 +77810,22 @@
 	          { className: 'row' },
 	          properties.map(function (p, i) {
 
-	            var city = '';
-	            var zipCode = '';
-
-	            var listingLocation = _lodash2.default.get(p, '_source.tax_input.wpp_listing_location', []);
-
-	            for (var termInd in listingLocation) {
-	              var term = listingLocation[termInd][0];
-
-	              switch (term.term_type) {
-	                case 'location-city-state':
-	                  city = term.name;
-	                  break;
-	                case 'location-zipcode':
-	                  zipCode = term.name;
-	                  break;
-	              }
-	            }
-
 	            var item = {
 	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
 	              location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
 	              baths: _lodash2.default.get(p, '_source.post_meta.rets_total_baths', 0),
 	              beds: _lodash2.default.get(p, '_source.post_meta.rets_beds', 0),
-	              full_address: _lodash2.default.get(p, '_source.post_meta.formatted_address_simple', ''),
+	              city: _lodash2.default.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
 	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
 	                return media.url;
 	              }),
 	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
+	              type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
 	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
-	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', '')
+	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
+	              zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
 	            };
 
 	            return _react2.default.createElement(
@@ -78952,27 +78937,26 @@
 	          location = _props$data.location,
 	          baths = _props$data.baths,
 	          beds = _props$data.beds,
-	          full_address = _props$data.full_address,
+	          city = _props$data.city,
 	          gallery_images = _props$data.gallery_images,
 	          living_area = _props$data.living_area,
 	          price = _props$data.price,
 	          property_type = _props$data.property_type,
-	          property_type_label = _props$data.property_type_label,
 	          relative_permalink = _props$data.relative_permalink,
-	          sqft = _props$data.sqft,
 	          thumbnail = _props$data.thumbnail,
+	          type = _props$data.type,
 	          zip = _props$data.zip;
 
 	      var self = this;
 
-	      var info_box = '<li>' + property_type_label + ' Type</li>';
+	      var info_box = '<li>' + type + ' Type</li>';
 
 	      if (property_type !== 'commercial' && property_type !== 'land') {
-	        info_box += '<li>' + beds + ' beds</li><li>' + baths + ' baths</li>';
+	        info_box += '<li>' + beds + ' Bed</li><li>' + baths + ' Bath</li>';
 	      }
 
 	      if (property_type !== 'land') {
-	        info_box += '<li>' + _Util2.default.formatSQFTValue(sqft) + ' SF</li>';
+	        info_box += '<li>' + _Util2.default.formatSQFTValue(living_area) + ' SF</li>';
 	      }
 
 	      if (property_type === 'land') {
@@ -79091,7 +79075,9 @@
 	          _react2.default.createElement(
 	            'p',
 	            { className: 'card-text ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-text' },
-	            zip
+	            zip,
+	            ', ',
+	            city
 	          ),
 	          _react2.default.createElement(
 	            'ul',

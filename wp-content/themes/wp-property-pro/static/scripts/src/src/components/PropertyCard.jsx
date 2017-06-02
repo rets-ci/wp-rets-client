@@ -43,27 +43,26 @@ export default class PropertyCard extends Component {
       location,
       baths,
       beds,
-      full_address,
+      city,
       gallery_images,
       living_area,
       price,
       property_type,
-      property_type_label,
       relative_permalink,
-      sqft,
       thumbnail,
+      type,
       zip
     } = this.props.data;
     let self = this;
 
-    let info_box = `<li>${property_type_label} Type</li>`;
+    let info_box = `<li>${type} Type</li>`;
 
     if (property_type !== 'commercial' && property_type !== 'land') {
-      info_box += `<li>${beds} beds</li><li>${baths} baths</li>`;
+      info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
     }
 
     if (property_type !== 'land') {
-      info_box += `<li>${Util.formatSQFTValue(sqft)} SF</li>`;
+      info_box += `<li>${Util.formatSQFTValue(living_area)} SF</li>`;
     }
 
     if (property_type === 'land') {
@@ -130,7 +129,7 @@ export default class PropertyCard extends Component {
             </span>
           </div>
           <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
-          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{zip}</p>
+          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{zip}, {city}</p>
           <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box p-0`}>{renderHTML(info_box)}</ul>
         </div>
       </div>

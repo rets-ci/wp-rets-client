@@ -646,24 +646,29 @@ namespace UsabilityDynamics {
                 $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
                 $property_detail = get_property($postId);
 
+                /** Build item object */
                 $formatted_post->property_type = isset($property_detail['property_type']) ? $property_detail['property_type'] : '';
-                $formatted_post->property_type_label = isset($property_detail['property_type_label']) ? $property_detail['property_type_label'] : '';
                 $formatted_post->sqft = isset($property_detail['wpp_price_per_sqft']) ? $property_detail['wpp_price_per_sqft'] : 0;
                 $formatted_post->price = isset($property_detail['wpp_list_price']) ? $property_detail['wpp_list_price'] : '';
                 $formatted_post->address = isset($property_detail['wpp_address']) ? $property_detail['wpp_address'] : '';
-
-                /** Get formatted address with zipcode */
-                $formatted_address_simple = isset($property_detail['formatted_address_simple']) ? $property_detail['formatted_address_simple'] : '';
-                $zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
-                $formatted_post->zip .= $zip;
-                $formatted_post->full_address .= $formatted_address_simple . ' ' . $zip;
-
-                $formatted_post->terms = get_the_terms($postId, 'wpp_location');
-
+                $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
+                $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
+                $listing_types_array = get_the_terms($postId, 'wpp_listing_type');
+                $formatted_post->type = $listing_types_array && isset($listing_types_array[0]->name) ? $listing_types_array[0]->name : '';
                 $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
                 $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
 
-                // Get gallery images
+                /** Get city  */
+                $city_term = array_filter(array_map(function($term){
+                  $term->term_type = get_term_meta( $term->term_id, '_type', true );
+                  return $term;
+                }, get_the_terms($postId, 'wpp_location')), function($term){
+                  return $term->term_type === 'wpp_location_city';
+                });
+                $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
+
+
+                /** Get gallery images */
                 $formatted_post->gallery_images = [];
                 if ($attached_images = get_attached_media('image', $postId)) {
                   foreach ($attached_images as $im) {
