@@ -46,6 +46,7 @@ export default class PropertyCard extends Component {
       city,
       gallery_images,
       living_area,
+      lots_size,
       price,
       property_type,
       relative_permalink,
@@ -66,7 +67,7 @@ export default class PropertyCard extends Component {
     }
 
     if (property_type === 'land') {
-      info_box += `<li>acres</li>`;
+      info_box += `<li>${lots_size} Acres</li>`;
     }
 
     return (

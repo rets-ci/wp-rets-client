@@ -77823,7 +77823,8 @@
 	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
 	                return media.url;
 	              }),
-	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', ''),
+	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', 0),
+	              lots_size: _lodash2.default.get(p, '_source.post_meta.rets_lot_size_area', 0),
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
 	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
 	              type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
@@ -78944,6 +78945,7 @@
 	          city = _props$data.city,
 	          gallery_images = _props$data.gallery_images,
 	          living_area = _props$data.living_area,
+	          lots_size = _props$data.lots_size,
 	          price = _props$data.price,
 	          property_type = _props$data.property_type,
 	          relative_permalink = _props$data.relative_permalink,
@@ -78964,7 +78966,7 @@
 	      }
 
 	      if (property_type === 'land') {
-	        info_box += '<li>acres</li>';
+	        info_box += '<li>' + lots_size + ' Acres</li>';
 	      }
 
 	      return _react2.default.createElement(

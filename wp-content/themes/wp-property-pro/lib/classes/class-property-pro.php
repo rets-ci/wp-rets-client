@@ -654,9 +654,10 @@ namespace UsabilityDynamics {
                 $formatted_post->living_area = isset($property_detail['wpp_total_living_are']) ? $property_detail['wpp_total_living_are'] : '';
                 $formatted_post->zip = isset($property_detail['wpp_location_zip']) ? $property_detail['wpp_location_zip'] : '';
                 $listing_types_array = get_the_terms($postId, 'wpp_listing_type');
-                $formatted_post->type = $listing_types_array && isset($listing_types_array[0]->name) ? $listing_types_array[0]->name : '';
+                $formatted_post->type = $listing_types_array && isset($listing_types_array[0]->name) ? $listing_types_array[0]->name : ucfirst($formatted_post->property_type);
                 $formatted_post->beds = isset($property_detail['wpp_bedrooms_count']) ? $property_detail['wpp_bedrooms_count'] : '';
                 $formatted_post->baths = isset($property_detail['wpp_full_bathrooms_count']) ? $property_detail['wpp_full_bathrooms_count'] : '';
+                $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
 
                 /** Get city  */
                 $city_term = array_filter(array_map(function($term){
