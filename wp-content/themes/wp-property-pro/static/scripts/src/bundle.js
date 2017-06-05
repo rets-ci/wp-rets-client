@@ -69285,7 +69285,7 @@
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
-	                    { className: 'p-2 col-xl-9 col-lg-8 my-auto' },
+	                    { className: 'p-2 col-xl-8 col-lg-8 my-auto' },
 	                    _react2.default.createElement(_FilterBar2.default, {
 	                      deleteSingleLocalFilter: this.props.deleteSingleLocalFilter,
 	                      deleteLocalFilterTerm: this.props.deleteLocalFilterTerm,
@@ -69312,21 +69312,25 @@
 	                        onClick: this.saveFilters.bind(this) },
 	                      this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"
 	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'p-2 my-auto' },
+	                    _react2.default.createElement(
+	                      'button',
+	                      {
+	                        'aria-label': 'Close',
+	                        className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
+	                        type: 'button',
+	                        onClick: this.handleCancel.bind(this)
+	                      },
+	                      _react2.default.createElement(
+	                        'span',
+	                        { 'aria-hidden': 'true' },
+	                        '\xD7'
+	                      )
+	                    )
 	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                {
-	                  'aria-label': 'Close',
-	                  className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto hidden-md-down',
-	                  type: 'button',
-	                  onClick: this.handleCancel.bind(this)
-	                },
-	                _react2.default.createElement(
-	                  'span',
-	                  { 'aria-hidden': 'true' },
-	                  '\xD7'
 	                )
 	              )
 	            ),
