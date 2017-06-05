@@ -44,7 +44,7 @@ namespace UsabilityDynamics\PropertyPro {
        */
       public function register_instance($wp_customize, $i)
       {
-        //** Add Section if it has not been added yet. */
+        /** Add Section if it has not been added yet. */
         $sections = $this->get('sections');
         if (!$wp_customize->get_section($i['section'])) {
           $section = wp_parse_args($sections[$i['section']], [
@@ -62,10 +62,10 @@ namespace UsabilityDynamics\PropertyPro {
         if (isset($i['default']))
           $settings_args['default'] = $i['default'];
 
-        //** Add Setting */
+        /** Add Setting */
         $wp_customize->add_setting($i['key'], $settings_args);
 
-        //** Add Control */
+        /** Add Control */
         $control_args = [
           'label' => (!empty($i['label']) ? $i['label'] : $i['key']),
           'section' => $i['section'],
@@ -92,7 +92,7 @@ namespace UsabilityDynamics\PropertyPro {
               'Make a choice'
             ];
 
-            foreach (get_terms('nav_menu', array('hide_empty' => true)) as $menu)
+            foreach (get_terms('nav_menu', ['hide_empty' => true]) as $menu)
               $i['choices'][$menu->term_id] = $menu->name;
 
             $i['control'] = 'select';
@@ -104,7 +104,7 @@ namespace UsabilityDynamics\PropertyPro {
             $wp_customize->add_control($i['key'], $control_args);
             break;
           default:
-            //** Custom Control must be added using the hook below. */
+            /** Custom Control must be added using the hook below. */
             if (has_action("lib-wp-theme::customizer::control::{$i[ 'control' ]}")) {
               do_action("lib-wp-theme::customizer::control::{$i[ 'control' ]}", $i);
             } else {
@@ -144,7 +144,7 @@ namespace UsabilityDynamics\PropertyPro {
        */
       public function get_asset_data()
       {
-        $data = array();
+        $data = [];
         foreach ((array)$this->get('settings') as $setting) {
           if (is_array($setting['css']) && count($setting['css'])) {
             foreach ($setting['css'] as $rule) {
@@ -194,7 +194,7 @@ namespace UsabilityDynamics\PropertyPro {
           'key' => false,
           'label' => false,
           'section' => false,
-          'control' => false, // values: 'background-image', 'color', 'background-color', 'border-color', 'image'
+          'control' => false,
           'selector' => false,
           'min_width' => '',
           'max_width' => '',
@@ -238,7 +238,7 @@ namespace UsabilityDynamics\PropertyPro {
           $css = [];
 
           foreach ($to_parse as $i) {
-            //** Add CSS rules */
+            /** Add CSS rules */
             $media_query = '';
             if (!empty($i['min_width']) || !empty($i['max_width'])) {
               $media_query .= 'only screen and';
@@ -257,8 +257,8 @@ namespace UsabilityDynamics\PropertyPro {
               'prefix' => '',
               'postfix' => '',
               'media_query' => $media_query,
-              'type' => 'style', // style, image
-              'important' => true, // must default to true for backwards compatibility
+              'type' => 'style',
+              'important' => true,
             ];
             switch ($i['control']) {
               case 'text':
@@ -290,7 +290,7 @@ namespace UsabilityDynamics\PropertyPro {
                 break;
               default:
                 $rule['style'] = $i['control'];
-                //** Custom CSS rules must be added using the hook below. */
+                /** Custom CSS rules must be added using the hook below. */
                 $rule = apply_filters("lib-wp-theme::customizer::css::{$i[ 'control' ]}", $rule, $i);
                 if (empty($rule['style'])) {
                   throw new \Exception("CSS rules are incorrect. Check control '{$i[ 'control' ]}'");
@@ -314,7 +314,7 @@ namespace UsabilityDynamics\PropertyPro {
                 foreach ($i['additional_rules'] as $key => $add_rule) {
                   if (isset($add_rule['style']) && !empty($add_rule['style'])) {
 
-                    //** Add CSS rules */
+                    /** Add CSS rules */
                     $media_query = '';
                     if (!empty($add_rule['min_width']) || !empty($add_rule['max_width'])) {
                       $media_query .= 'only screen and';
@@ -334,8 +334,8 @@ namespace UsabilityDynamics\PropertyPro {
                       'prefix' => '',
                       'postfix' => '',
                       'media_query' => $media_query,
-                      'type' => 'style', // style, image
-                      'important' => true // must default to true for backwards compatibility
+                      'type' => 'style',
+                      'important' => true
                     ];
                     /** Add on the important rule */
                     if (isset($add_rule['important'])) {
@@ -354,7 +354,7 @@ namespace UsabilityDynamics\PropertyPro {
 
         } catch (\Exception $e) {
           $i = false;
-          // Filter can be used for logs.
+          /** Filter can be used for logs. */
           do_action('lib-wp-theme::customizer::error', 'Customizer Error: ' . $e->getMessage() . " Setting '{$i['label']} ( {$i['key']} )' can not be initialized.");
         }
 

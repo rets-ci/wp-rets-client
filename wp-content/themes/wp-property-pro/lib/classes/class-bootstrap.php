@@ -38,7 +38,7 @@ namespace UsabilityDynamics\PropertyPro {
         wp_die('<h1>Fatal Error</h1><p>PropertyPro Theme not found.</p>');
       }
 
-      // Instantaite Theme.
+      /** Instantaite Theme. */
       $this->theme = new PropertyPro();
 
     }
