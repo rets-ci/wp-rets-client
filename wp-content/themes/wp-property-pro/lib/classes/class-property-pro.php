@@ -13,7 +13,7 @@ namespace UsabilityDynamics {
   use WPModel\Post;
 
   /**
-   * Festival Theme
+   * PropertyPro Theme
    *
    * @author Usability Dynamics
    */
@@ -39,7 +39,6 @@ namespace UsabilityDynamics {
     public function __construct()
     {
 
-      /** @TODO Exclude situation with template include from some plugins - maybe hack */
       if (!isset($_GET['pageType'])) {
         add_action('template_include', function () {
           return get_stylesheet_directory() . '/index.php';
@@ -89,11 +88,9 @@ namespace UsabilityDynamics {
 
     /**
      * Adds settings to customizer
-     * @param array $options
      */
-    public function property_pro_customizer($options = [])
+    public function property_pro_customizer()
     {
-
       if (class_exists('\UsabilityDynamics\PropertyPro\Customizer')) {
         $this->customizer = new Customizer();
       }
@@ -109,7 +106,7 @@ namespace UsabilityDynamics {
 
       wp_enqueue_script('google-analytics', $this->_scriptsDir . '/src/google-analytics.js');
       wp_enqueue_script('bundle', $this->_scriptsDir . '/src/bundle.js', [], null, true);
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && !is_single() && $post->post_type !== 'property') {
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY && !is_single() && $post->post_type !== 'property') {
         wp_enqueue_script('googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3&key=' . PROPERTYPRO_GOOGLE_API_KEY);
       }
 
@@ -119,7 +116,7 @@ namespace UsabilityDynamics {
        * @TODO Add elasticsearch host to wp property settings and get value from it,
        * now host value in theme composer.json
        */
-      $params['elasticsearch_host'] = ELASTICSEARCH_HOST;
+      $params['elasticsearch_host'] = defined('ELASTICSEARCH_HOST') && ELASTICSEARCH_HOST ? ELASTICSEARCH_HOST : $_SERVER['HTTP_HOST'];
       wp_localize_script('jquery', 'bundle', $params);
     }
 
@@ -150,7 +147,7 @@ namespace UsabilityDynamics {
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
       ];
 
-      if (defined('PROPERTYPRO_GOOGLE_API_KEY')) {
+      if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
         $params['google_api_key'] = PROPERTYPRO_GOOGLE_API_KEY;
       }
 
@@ -660,10 +657,10 @@ namespace UsabilityDynamics {
                 $formatted_post->lots_size = isset($property_detail['wpp_lot_size']) ? $property_detail['wpp_lot_size'] : '';
 
                 /** Get city  */
-                $city_term = array_filter(array_map(function($term){
-                  $term->term_type = get_term_meta( $term->term_id, '_type', true );
+                $city_term = array_filter(array_map(function ($term) {
+                  $term->term_type = get_term_meta($term->term_id, '_type', true);
                   return $term;
-                }, get_the_terms($postId, 'wpp_location')), function($term){
+                }, get_the_terms($postId, 'wpp_location')), function ($term) {
                   return $term->term_type === 'wpp_location_city';
                 });
                 $formatted_post->city = $city_term ? array_shift($city_term)->name : '';
@@ -861,17 +858,17 @@ namespace UsabilityDynamics {
         'singular_name' => 'Category'
       ];
 
-      $args = array(
+      $args = [
         'hierarchical' => true,
         'labels' => $labels,
         'show_ui' => true,
         'show_admin_column' => true,
         'query_var' => true,
-        'rewrite' => array(
+        'rewrite' => [
           'slug' => 'guides',
           'with_front' => false
-        ),
-      );
+        ],
+      ];
 
       register_taxonomy('propertypro-guide-category', ['propertypro-guide'], $args);
     }
@@ -889,7 +886,7 @@ namespace UsabilityDynamics {
     function property_pro_delete_widget_posts_cache($post_ID, $post, $update)
     {
 
-      // If this is just a revision, don't send the email.
+      /** If this is just a revision, don't send the email. */
       if (!$update || wp_is_post_revision($post_ID) || wp_is_post_autosave($post_ID)) {
         return false;
       }

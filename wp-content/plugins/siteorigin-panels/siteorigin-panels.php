@@ -3,7 +3,7 @@
 Plugin Name: Page Builder by SiteOrigin
 Plugin URI: https://siteorigin.com/page-builder/
 Description: A drag and drop, responsive page builder that simplifies building your website.
-Version: 2.5.3
+Version: 2.5.4
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 License: GPL3
@@ -11,14 +11,13 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: http://siteorigin.com/page-builder/#donate
 */
 
-define( 'SITEORIGIN_PANELS_VERSION', '2.5.3' );
+define( 'SITEORIGIN_PANELS_VERSION', '2.5.4' );
 if ( ! defined( 'SITEORIGIN_PANELS_JS_SUFFIX' ) ) {
 	define( 'SITEORIGIN_PANELS_JS_SUFFIX', '.min' );
 }
 define( 'SITEORIGIN_PANELS_VERSION_SUFFIX', '-25' );
 
 require_once plugin_dir_path( __FILE__ ) . 'inc/functions.php';
-require_once plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
 
 class SiteOrigin_Panels {
 
@@ -31,6 +30,8 @@ class SiteOrigin_Panels {
 		add_action( 'plugins_loaded', array( $this, 'version_check' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 100 );
+		
+		add_action('widgets_init', array( $this, 'widgets_init' ) );
 
 		add_filter( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'siteorigin_panels_data', array( $this, 'process_panels_data' ), 5 );
@@ -135,13 +136,20 @@ class SiteOrigin_Panels {
 	 * @param $class
 	 */
 	public static function autoloader( $class ) {
-		if ( strpos( $class, 'SiteOrigin_Panels_' ) === 0 ) {
-			$filename = strtolower( str_replace( array( 'SiteOrigin_Panels_', '_' ), array( '', '-' ), $class ) );
+		$filename = false;
+		if ( strpos( $class, 'SiteOrigin_Panels_Widgets_' ) === 0 ) {
+			$filename = str_replace( 'SiteOrigin_Panels_Widgets_', '', $class );
+			$filename = str_replace( '_', '-', $filename );
+			$filename = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $filename ) );
+			$filename = plugin_dir_path( __FILE__ ) . 'inc/widgets/' . $filename . '.php';
+		}
+		else if ( strpos( $class, 'SiteOrigin_Panels_' ) === 0 ) {
+			$filename = str_replace( array( 'SiteOrigin_Panels_', '_' ), array( '', '-' ), $class );
 			$filename = plugin_dir_path( __FILE__ ) . 'inc/' . strtolower( $filename ) . '.php';
-
-			if ( file_exists( $filename ) ) {
-				include $filename;
-			}
+		}
+		
+		if ( ! empty( $filename ) && file_exists( $filename ) ) {
+			include $filename;
 		}
 	}
 
@@ -408,6 +416,12 @@ class SiteOrigin_Panels {
 		}
 
 		return $admin_bar;
+	}
+	
+	function widgets_init(){
+		register_widget( 'SiteOrigin_Panels_Widgets_PostContent' );
+		register_widget( 'SiteOrigin_Panels_Widgets_PostLoop' );
+		register_widget( 'SiteOrigin_Panels_Widgets_Layout' );
 	}
 
 	function live_edit_link_style() {

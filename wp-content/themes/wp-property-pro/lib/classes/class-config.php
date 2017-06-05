@@ -24,9 +24,9 @@ namespace UsabilityDynamics\PropertyPro {
     /**
      * The constants that should be dynamically generated
      */
-    protected $protectedConstants = array(
+    protected $protectedConstants = [
       'WP_ALLOW_MULTISITE'
-    );
+    ];
 
     /**
      * @var null
@@ -41,12 +41,12 @@ namespace UsabilityDynamics\PropertyPro {
     /**
      * @var array
      */
-    private $appliedConstants = array();
+    private $appliedConstants = [];
 
     /**
      * @var array
      */
-    private $serverParameters = array();
+    private $serverParameters = [];
 
     public function __construct()
     {
@@ -55,31 +55,31 @@ namespace UsabilityDynamics\PropertyPro {
         $this->composer_file = get_template_directory() . '/composer.json';
       }
 
-      // Get settings
+      /** Get settings */
       $this->_settings = Config::parseComposer($this->composer_file);
 
-      // Flatted nested object/aray
+      /** Flatted nested object/aray */
       $this->_settings = Config::flatten($this->_settings);
 
-      // Fix value types.
+      /** Fix value types. */
       $this->_settings = Config::normalize($this->_settings);
 
-      // Replace dynamic patterns
+      /** Replace dynamic patterns */
       $this->_settings = Config::replacePatterns($this->_settings, $_SERVER);
 
-      // Fix value types.
+      /** Fix value types. */
       $this->_settings = Config::normalize($this->_settings, true);
 
-      // Handle Database.
+      /** Handle Database. */
       $this->parseDatabase();
 
-      // Intersect existing settings with settings passed with server.
+      /** Intersect existing settings with settings passed with server. */
       $this->addServerParameters();
 
-      // Apply consants and save them to object for debugging
+      /** Apply consants and save them to object for debugging */
       $this->applyConstants();
 
-      // Set global variables.
+      /** Set global variables. */
       $this->applyGlobals();
 
       return $this;
@@ -98,14 +98,13 @@ namespace UsabilityDynamics\PropertyPro {
     {
 
       try {
-
-        $_settings = array();
+        $_settings = [];
 
         $_composer = file_get_contents($composer_file);
         $_composer = json_decode($_composer, false, 512);
 
       } catch (\Exception $error) {
-        // Most likely can't parse JSON file... Silently fail.
+        /** Most likely can't parse JSON file... Silently fail. */
         return isset($_settings) ? $_settings : null;
       }
 
@@ -186,13 +185,13 @@ namespace UsabilityDynamics\PropertyPro {
 
       }
 
-      // Remove blanks.
+      /** Remove blanks. */
       $array = array_filter($array, create_function('$a', 'return $a!=="";'));
 
-      // Set array key case
+      /** Set array key case */
       $array = array_change_key_case($array, $upper_key_case);
 
-      // Sort alphabetically.
+      /** Sort alphabetically. */
       ksort($array);
 
       return $array;
@@ -230,19 +229,16 @@ namespace UsabilityDynamics\PropertyPro {
 
     }
 
-    /**
-     *
-     */
     private function parseDatabase()
     {
 
-      // Single database, do nothing.
+      /** Single database, do nothing. */
       if (isset($this->_settings['DB_HOST']) && $this->_settings['DB_HOST']) {
         return;
       }
 
-      // Multiple databases.
-      if (isset( $this->_settings['DB_0_HOST'] ) && $this->_settings['DB_0_HOST']) {
+      /** Multiple databases. */
+      if (isset($this->_settings['DB_0_HOST']) && $this->_settings['DB_0_HOST']) {
 
         foreach (Config::find_by_prefix($this->_settings, 'DB_0') as $_key => $_value) {
 
@@ -265,7 +261,6 @@ namespace UsabilityDynamics\PropertyPro {
 
       $arr_result = [];
       foreach ($arr_main_array as $key => $value) {
-        //$exp_key = explode('_', $key);
         if (strpos($key, $prefix) === 0) {
           $arr_result[$key] = $value;
         }
@@ -282,7 +277,7 @@ namespace UsabilityDynamics\PropertyPro {
     private function addServerParameters()
     {
 
-      // Create an array of existing settings as well as accepted settings that may be set via $_SERVER even if not set in comoser.json
+      /** Create an array of existing settings as well as accepted settings that may be set via $_SERVER even if not set in comoser.json */
       $_acceptedKeys = array_merge($this->_settings, [
         'WP_DEBUG' => null,
         'WP_SITEURL' => null,
@@ -300,10 +295,10 @@ namespace UsabilityDynamics\PropertyPro {
         'WP_ELASTIC_INDEX' => null,
       ]);
 
-      // Extract valid server parameters that match available keys
+      /** Extract valid server parameters that match available keys */
       $this->serverParameters = array_intersect_key(Config::normalize($_SERVER, true), $_acceptedKeys);
 
-      // Override extracted server parameters into settings
+      /** Override extracted server parameters into settings */
       $this->_settings = array_merge($this->_settings, $this->serverParameters);
 
       return $this;
@@ -320,7 +315,7 @@ namespace UsabilityDynamics\PropertyPro {
     private function applyConstants($_settings = null)
     {
 
-      // Save original consants.
+      /** Save original consants. */
       $_originalConstants = get_defined_constants();
 
       $_settings = isset($_settings) ? $_settings : $this->_settings;
