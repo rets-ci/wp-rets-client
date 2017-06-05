@@ -1607,15 +1607,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     text-align: center;
 }
 
-.propertypro-toolbar .propertypro-logo img {
-    margin-left: 1.5rem;
-}
-
-/*.propertypro-toolbar .propertypro-logo,
-.propertypro-toolbar .propertypro-search-box-wrap .propertypro-bs-tags-box {
-    line-height: 5rem;
-}*/
-
 .propertypro-toolbar .propertypro-drop-nav {
     display: table;
     height: 100%;
@@ -1623,7 +1614,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     border: .0625rem solid #d2dae0;
     border-top-width: 0;
     border-bottom-width: 0;
-    width: 9.375rem;
     text-align: center;
 }
 
@@ -1651,13 +1641,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     padding: 0;
 }
 
-.propertypro-top-nav-bar li {
-    display: inline;
-    float: left;
-    width: 33.3333%;
-    text-align: center;
-}
-
 .propertypro-top-nav-bar li a {
     position: relative;
 }
@@ -1671,12 +1654,21 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-top-nav-bar li a > i {
-    font-size: 1.375rem;
     color: #414141;
 }
 
-.propertypro-top-nav-bar li .propertypro-side-navigation span {
+.propertypro-navbar-navigation-icon {
     font-size: 1.375rem;
+}
+
+.propertypro-navigation-menu-left a {
+    display: table;
+    height: 100%;
+}
+
+.propertypro-navigation-menu-left span {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .propertypro-map-container {
@@ -3183,6 +3175,15 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         min-height: 20rem;
     }
 }
+
+
+/* Smal devices according to Bootstrap grid guidelines */
+@media (min-width: 576px) and (max-width: 768px) {
+    .propertypro-navbar-navigation-icon {
+        font-size: 2rem;
+    }
+}
+
 
 /* Extra small devices (portrait phones, less than 525px) */
 @media screen and (max-width: 32.813em) {
