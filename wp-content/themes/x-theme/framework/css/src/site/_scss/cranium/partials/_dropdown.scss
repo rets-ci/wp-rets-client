@@ -1,0 +1,52 @@
+// =============================================================================
+// SCSS/SITE/_DROPDOWN.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Positioning
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-dropdown {
+  visibility: hidden;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  transform: translate3d(0, 5%, 0);
+  transition-delay: 0s, 0s, 0.5s;
+  transition-duration: 0.5s, 0.5s, 0s;
+  transition-property: opacity, transform, visibility;
+  transition-timing-function: $materialStand;
+  pointer-events: none;
+  z-index: 9999;
+
+  &[data-x-stem*="u"] {
+    transform: translate3d(0, -5%, 0);
+  }
+
+  &.x-active {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-duration: 0.5s;
+    transition-property: opacity, transform;
+    pointer-events: auto;
+  }
+}
+
+ul.x-dropdown,
+ol.x-dropdown {
+  list-style: none;
+}
+
+.menu-item-has-children {
+  position: relative;
+}

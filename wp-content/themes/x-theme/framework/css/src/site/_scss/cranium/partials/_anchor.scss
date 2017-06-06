@@ -1,0 +1,333 @@
+// =============================================================================
+// SCSS/SITE/_ANCHOR.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Variables
+//   02. Base
+//   03. Text
+//   04. Graphic
+//   05. Sub Indicator
+//   06. Animations
+// =============================================================================
+
+// Variables
+// =============================================================================
+
+$transitionDurationYep:     0.3s;
+$transitionDurationNope:    0s;
+
+
+
+// Base
+// =============================================================================
+
+.x-anchor {
+  @include display(inline-flex);
+  @include flex-direction(column);
+  position: relative;
+  min-width: 1px;
+  cursor: pointer;
+  transition-property: border-color, background-color, box-shadow;
+}
+
+.x-anchor-content {
+  @include display(flex);
+  @include flex(1 0 auto);
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+  transform: translate3d(0, 0, 0);
+}
+
+
+// Transitions, Animations, and No Delay/Duration
+// ----------------------------------------------
+
+.x-anchor,
+.x-anchor-text-primary,
+.x-anchor-text-secondary,
+.x-anchor-graphic-icon,
+.x-anchor-graphic-image,
+.x-anchor-graphic-toggle,
+.x-anchor-sub-indicator {
+  transition-duration: $transitionDurationYep;
+  transition-timing-function: $materialStand;
+}
+
+[data-x-anchor-anim] {
+  animation-duration: $transitionDurationYep;
+  animation-fill-mode: forwards;
+  animation-timing-function: $materialStand;
+
+  &[class*="secondary"] {
+    animation-duration: $transitionDurationYep * 1.5;
+  }
+}
+
+.x-nat {
+  &,
+  a,
+  i,
+  ul,
+  ol,
+  img,
+  div,
+  span,
+  button {
+    animation-delay: $transitionDurationNope !important;
+    transition-delay: $transitionDurationNope !important;
+    animation-duration: $transitionDurationNope !important;
+    transition-duration: $transitionDurationNope !important;
+  }
+}
+
+
+
+// Text
+// =============================================================================
+
+.x-anchor-text {
+  @include flex-shrink(1);
+  min-width: 1px;
+}
+
+.x-anchor-text-primary,
+.x-anchor-text-secondary {
+  position: relative;
+  display: block;
+  transition-property: color, text-shadow;
+  z-index: 3;
+}
+
+
+
+// Graphic
+// =============================================================================
+
+.x-anchor-graphic {
+  @include flex-shrink(0);
+  position: relative;
+  letter-spacing: 0;
+  line-height: 1;
+  z-index: 2;
+}
+
+
+// Elements
+// --------
+// 01. All
+// 02. Icons
+// 03. Images
+
+.x-anchor-graphic-icon,
+.x-anchor-graphic-image,
+.x-anchor-graphic-toggle {
+  transition-property: opacity, transform, color, text-shadow, box-shadow;
+}
+
+.x-anchor-graphic-icon {
+  display: block;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  text-align: center;
+
+  &:before {
+    display: inherit;
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    text-align: inherit;
+  }
+}
+
+.x-anchor-graphic-image,
+.x-anchor-graphic-image.x-image {
+  display: block;
+}
+
+
+// Transforms - Primary/Secondary Foundation
+// -----------------------------------------
+// Using .x-anchor-graphic-primary:not(:only-child) avoids conflicts if the
+// optional [data-x-anchor-anim] attribute is present.
+
+.x-anchor-graphic-primary:not(:only-child),
+.x-anchor-graphic-secondary {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.x-anchor-graphic-primary:not(:only-child) {
+  position: relative;
+  opacity: 1;
+  z-index: 2;
+}
+
+.x-anchor-graphic-secondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+.x-anchor[class*="active"] {
+  .x-anchor-graphic-primary:not(:only-child) { opacity: 0; }
+  .x-anchor-graphic-secondary                { opacity: 1; }
+}
+
+
+// Transforms - Scale Up
+// ---------------------
+
+.x-anchor-scale-up {
+  &.x-anchor-graphic-primary:not(:only-child) { transform: scale(1);    }
+  &.x-anchor-graphic-secondary                { transform: scale(0.35); }
+}
+
+.x-anchor[class*="active"] {
+  .x-anchor-scale-up {
+    &.x-anchor-graphic-primary:not(:only-child) { transform: scale(1.5); }
+    &.x-anchor-graphic-secondary                { transform: scale(1);   }
+  }
+}
+
+
+// Transforms - Scale Down
+// -----------------------
+
+.x-anchor-scale-down {
+  &.x-anchor-graphic-primary:not(:only-child) { transform: scale(1);   }
+  &.x-anchor-graphic-secondary                { transform: scale(1.5); }
+}
+
+.x-anchor[class*="active"] {
+  .x-anchor-scale-down {
+    &.x-anchor-graphic-primary:not(:only-child) { transform: scale(0.35); }
+    &.x-anchor-graphic-secondary                { transform: scale(1);    }
+  }
+}
+
+
+// Transforms - Flip X
+// -------------------
+
+.x-anchor-flip-x {
+  &.x-anchor-graphic-primary:not(:only-child) { transform: perspective(100px) rotateX(0deg);    }
+  &.x-anchor-graphic-secondary                { transform: perspective(100px) rotateX(-180deg); }
+}
+
+.x-anchor[class*="active"] {
+  .x-anchor-flip-x {
+    &.x-anchor-graphic-primary:not(:only-child) { transform: perspective(100px) rotateX(180deg); }
+    &.x-anchor-graphic-secondary                { transform: perspective(100px) rotateX(0deg);   }
+  }
+}
+
+
+// Transforms - Flip Y
+// -------------------
+
+.x-anchor-flip-y {
+  &.x-anchor-graphic-primary:not(:only-child) { transform: perspective(100px) rotateY(0deg);    }
+  &.x-anchor-graphic-secondary                { transform: perspective(100px) rotateY(-180deg); }
+}
+
+.x-anchor[class*="active"] {
+  .x-anchor-flip-y {
+    &.x-anchor-graphic-primary:not(:only-child) { transform: perspective(100px) rotateY(180deg); }
+    &.x-anchor-graphic-secondary                { transform: perspective(100px) rotateY(0deg);   }
+  }
+}
+
+
+
+// Sub Indicator
+// =============================================================================
+
+.x-anchor-sub-indicator {
+  position: relative;
+  display: block;
+  width: auto;
+  height: auto;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
+  transition-property: color, text-shadow;
+  z-index: 2;
+
+  &:before {
+    display: inherit;
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    text-align: inherit;
+  }
+}
+
+li:not(.menu-item-has-children) {
+  > a .x-anchor-sub-indicator {
+    display: none;
+    visibility: hidden;
+    speak: none;
+  }
+}
+
+
+
+// Animations
+// =============================================================================
+
+@keyframes x-anchor-slide-top {
+  33%  { opacity: 0; transform: none;                     }
+  34%  { opacity: 0; transform: translate3d(0, -100%, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0);     }
+}
+
+@keyframes x-anchor-slide-left {
+  33%  { opacity: 0; transform: none;                    }
+  34%  { opacity: 0; transform: translate3d(-50%, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0);    }
+}
+
+@keyframes x-anchor-slide-right {
+  33%  { opacity: 0; transform: none;                   }
+  34%  { opacity: 0; transform: translate3d(50%, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0);   }
+}
+
+@keyframes x-anchor-slide-bottom {
+  33%  { opacity: 0; transform: none;                    }
+  34%  { opacity: 0; transform: translate3d(0, 100%, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0);    }
+}
+
+@keyframes x-anchor-scale-up {
+  33%  { opacity: 0; transform: none;             }
+  34%  { opacity: 0; transform: scale3d(0, 0, 1); }
+  100% { opacity: 1; transform: scale3d(1, 1, 1); }
+}
+
+@keyframes x-anchor-scale-down {
+  33%  { opacity: 0; transform: none;                 }
+  34%  { opacity: 0; transform: scale3d(1.5, 1.5, 1); }
+  100% { opacity: 1; transform: scale3d(1, 1, 1);     }
+}
+
+@keyframes x-anchor-flip-x {
+  33%  { opacity: 0; transform: none;                                          }
+  34%  { opacity: 0; transform: perspective(125px) rotate3d(1, 0, 0, -180deg); }
+  100% { opacity: 1; transform: perspective(125px) rotate3d(1, 0, 0, 0deg);    }
+}
+
+@keyframes x-anchor-flip-y {
+  33%  { opacity: 0; transform: none;                                          }
+  34%  { opacity: 0; transform: perspective(125px) rotate3d(0, 1, 0, -180deg); }
+  100% { opacity: 1; transform: perspective(125px) rotate3d(0, 1, 0, 0deg);    }
+}

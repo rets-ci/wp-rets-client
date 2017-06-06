@@ -1,0 +1,95 @@
+// =============================================================================
+// SCSS/SITE/_MINI-CART.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. RTL
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-mini-cart {
+  ul {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  li,
+  a:not(.x-anchor) {
+    transition-duration: 0.3s;
+    transition-property: color, text-shadow, border-color, background-color, box-shadow;
+    transition-timing-function: $materialStand;
+  }
+
+  li {
+    @include cf();
+  }
+
+  a:not(.x-anchor) {
+    display: block;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  img {
+    float: left;
+    display: block;
+    margin: 0;
+  }
+
+  .remove {
+    float: right;
+    text-align: center !important;
+  }
+
+  .quantity {
+    display: block;
+    margin: 0 !important;
+  }
+
+  .total {
+    margin: 0;
+
+    strong {
+      font-weight: inherit;
+    }
+  }
+
+  .buttons {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include flex-direction(row);
+    margin: 0;
+  }
+
+  .widget_shopping_cart_content {
+    @include display(flex);
+    @include flex-direction(column);
+  }
+}
+
+
+
+// RTL
+// =============================================================================
+
+.rtl {
+  .x-mini-cart {
+    img {
+      float: right;
+    }
+
+    .remove {
+      float: left;
+    }
+  }
+}

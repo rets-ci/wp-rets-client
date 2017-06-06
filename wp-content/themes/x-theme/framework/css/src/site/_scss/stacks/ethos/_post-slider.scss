@@ -1,0 +1,108 @@
+// =============================================================================
+// _POST-SLIDER.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base Styles
+//   02. Individual Slides
+//   03. Direction Navigation
+// =============================================================================
+
+// Base Styles
+// =============================================================================
+
+.x-post-slider {
+  position: relative;
+  overflow: hidden;
+  background-color: $baseModBackground;
+
+  .x-slides {
+    background-color: $black;
+  }
+}
+
+
+
+// Individual Slides
+// =============================================================================
+
+.x-post-slider-entry {
+  position: relative;
+  padding-bottom: 425px;
+  overflow: hidden;
+  background-color: $baseModBackground;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  > a {
+    display: block;
+    padding: 0 65px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    background-color: $entryCoverBackground;
+    @include transition(#{background-color 0.4s ease});
+
+    > .cover {
+      display: table;
+      width: 100%;
+      height: 100%;
+
+      > .middle {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &:hover {
+    > a {
+      background-color: $entryCoverBackgroundHover;
+    }
+  }
+
+  .featured-meta { font-size: 18px; }
+  .h-featured    { font-size: 42px; }
+  .featured-view { font-size: 16px; }
+
+  @include break(cubs) {
+    .featured-meta { font-size: 16px; }
+    .h-featured    { font-size: 32px; }
+    .featured-view { font-size: 14px; }
+  }
+
+  @include break(middle-bear) {
+    .featured-meta { display: none; }
+    .h-featured    { font-size: 24px; }
+    .featured-view { font-size: 10px; }
+  }
+
+  @include break(baby-bear) {
+    .h-featured    { font-size: 16px; }
+    .featured-view { display: none; }
+  }
+}
+
+
+
+// Direction Navigation
+// =============================================================================
+
+.x-post-slider {
+  .flex-direction-nav {
+    a {
+      margin-top: -20px;
+      width: 35px;
+      height: 45px;
+      line-height: 41px;
+    }
+  }
+}

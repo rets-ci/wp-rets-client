@@ -1,0 +1,166 @@
+// =============================================================================
+// SCSS/SITE/_OFF-CANVAS.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Background
+//   03. Close
+//   04. Content
+//   05. Location
+//   06. Admin Bar
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-off-canvas {
+  overflow-x: hidden;
+  overflow-y: auto;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: visibility 0s linear 0.525s;
+  pointer-events: none;
+  z-index: 99999998;
+
+  &.x-active {
+    visibility: visible;
+    transition-delay: 0s;
+    pointer-events: auto;
+  }
+}
+
+
+
+// Background
+// =============================================================================
+
+.x-off-canvas-bg {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.5s $materialStand;
+}
+
+.x-off-canvas.x-active {
+  .x-off-canvas-bg {
+    opacity: 1;
+  }
+}
+
+
+
+// Close
+// =============================================================================
+
+.x-off-canvas-close {
+  display: block;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+  background-color: transparent;
+  opacity: 0;
+  transform: scale(0);
+  transition-duration: 0.3s, 0.5s, 0.5s;
+  transition-property: color, opacity, transform;
+  transition-timing-function: $materialStand;
+  z-index: 3;
+
+  span {
+    display: block;
+  }
+}
+
+.x-off-canvas.x-active {
+  .x-off-canvas-close {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+// Content
+// =============================================================================
+
+.x-off-canvas-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  transition: transform 0.5s $materialStand;
+  z-index: 2;
+}
+
+.x-off-canvas.x-active {
+  .x-off-canvas-content {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+
+// Location
+// =============================================================================
+
+// Close
+// -----
+
+.x-off-canvas-close-left {
+  left: 0;
+}
+
+.x-off-canvas-close-right {
+  right: 0;
+}
+
+
+// Content
+// -------
+
+.x-off-canvas-content-left {
+  left: 0;
+  transform: translate3d(-115%, 0, 0);
+}
+
+.x-off-canvas-content-right {
+  right: 0;
+  transform: translate3d(115%, 0, 0);
+}
+
+
+
+// Admin Bar
+// =============================================================================
+
+.admin-bar {
+  .x-off-canvas {
+    top: $wp-bar-sm;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  .admin-bar {
+    .x-off-canvas {
+      top: $wp-bar-lg;
+    }
+  }
+}

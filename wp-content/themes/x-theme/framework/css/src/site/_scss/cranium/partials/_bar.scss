@@ -1,0 +1,261 @@
+// =============================================================================
+// SCSS/SITE/_BAR.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Spaces and Spacers
+//   03. Scrolling
+//   04. Regions and Position
+//   05. Bar and Mod Containers
+//   06. Miscellaneous
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-bar {
+  position: relative;
+}
+
+.x-bar,
+.x-bar-scroll,
+.x-bar-scroll-outer,
+.x-bar-scroll-inner,
+.x-bar-content {
+  @include display(flex);
+}
+
+.x-bar,
+.x-bar-scroll,
+.x-bar-scroll-outer,
+.x-bar-scroll-inner {
+  @include justify-content(space-between);
+}
+
+.x-bar-h {
+  &,
+  .x-bar-scroll,
+  .x-bar-scroll-outer,
+  .x-bar-scroll-inner {
+    @include flex-direction(row);
+  }
+}
+
+.x-bar-v {
+  &,
+  .x-bar-scroll,
+  .x-bar-scroll-outer,
+  .x-bar-scroll-inner {
+    @include flex-direction(column);
+  }
+}
+
+.x-bar-scroll,
+.x-bar-scroll-outer,
+.x-bar-scroll-inner,
+.x-bar-content {
+  @include flex(1 0 auto);
+}
+
+.x-bar-content {
+  z-index: 5;
+}
+
+.x-bar,
+.x-bar-scroll,
+.x-bar-scroll-outer,
+.x-bar-scroll-inner,
+.x-bar-content,
+.x-bar-container {
+  min-width: 1px;
+}
+
+
+
+// Spaces and Spacers
+// =============================================================================
+
+// Notes
+// -----
+// 01. Defines the physical space for fixed or absolute bars.
+// 02. Reposition right bar space into proper placement.
+// 03. Defines the end spacing for bars.
+
+.x-bar-space { // 01
+  @include flex-shrink(0);
+}
+
+.x-bar-space-right { // 02
+  -webkit-order: 9999;
+          order: 9999;
+}
+
+.x-bar-outer-spacers { // 03
+  &:before,
+  &:after {
+    content: "";
+    @include flex-grow(0);
+    @include flex-shrink(0);
+    display: block;
+    pointer-events: none;
+    visibility: hidden;
+  }
+}
+
+
+
+// Scrolling
+// =============================================================================
+
+.x-bar-scroll {
+  position: relative;
+  width: 100% !important;
+  height: 100% !important;
+
+  .ps-scrollbar-x-rail,
+  .ps-scrollbar-y-rail {
+    z-index: 10;
+  }
+}
+
+.x-bar-scroll-outer,
+.x-bar-scroll-inner {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.x-bar-scroll-outer {
+  overflow: hidden !important;
+}
+
+.x-bar-scroll-inner {
+  box-sizing: content-box !important;
+  -webkit-overflow-scrolling: touch !important;
+  -ms-overflow-style: -ms-autohiding-scrollbar !important;
+}
+
+.x-bar-h {
+  .x-bar-scroll-inner {
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    padding: 0 0 50px 0 !important;
+  }
+}
+
+.x-bar-v {
+  .x-bar-scroll-inner {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    padding: 0 50px 0 0 !important;
+  }
+}
+
+
+
+// Regions and Position
+// =============================================================================
+
+.x-bar-absolute {
+  position: absolute;
+}
+
+.x-bar-fixed {
+  position: fixed;
+}
+
+
+// Bottom
+// ------
+
+.x-bar-bottom {
+  bottom: 0;
+}
+
+
+// Left and Right
+// --------------
+
+.x-bar-left  { top: 0; left: 0; bottom: 0;  }
+.x-bar-right { top: 0; right: 0; bottom: 0; }
+
+
+// Admin Bar Offsets
+// -----------------
+
+@media screen and (min-width: 783px) {
+  .admin-bar {
+    .x-bar-left,
+    .x-bar-right {
+      top: $wp-bar-sm;
+    }
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 782px) {
+  .admin-bar {
+    .x-bar-left,
+    .x-bar-right {
+      top: $wp-bar-lg;
+    }
+  }
+}
+
+
+
+// Bar and Mod Containers
+// =============================================================================
+
+// Base
+// ----
+
+.x-bar-h {
+  .x-bar-container,
+  .x-mod-container {
+    height: inherit;
+  }
+}
+
+.x-bar-v {
+  .x-bar-container,
+  .x-mod-container {
+    width: inherit;
+  }
+}
+
+
+// Bar Containers
+// --------------
+
+.x-bar-container {
+  @include display(flex);
+  position: relative;
+  z-index: 1;
+}
+
+
+// Mod Containers
+// --------------
+
+.x-mod-container {
+  @include display(flex);
+  @include flex-direction(inherit);
+  @include align-items(inherit);
+  position: relative;
+}
+
+
+
+// Miscellaneous
+// =============================================================================
+
+.x-absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

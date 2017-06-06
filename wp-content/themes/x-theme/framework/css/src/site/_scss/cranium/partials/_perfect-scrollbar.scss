@@ -1,0 +1,181 @@
+// =============================================================================
+// SCSS/SITE/_PERFECT-SCROLLBAR.SCSS
+// -----------------------------------------------------------------------------
+// Site styles (perfect-scrollbar v0.6.14).
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Variables
+//   02. Mixins
+//   03. Output
+// =============================================================================
+
+// Variables
+// =============================================================================
+
+$ps-border-radius:                   6px !default;
+
+$ps-rail-default-opacity:            0 !default;
+$ps-rail-container-hover-opacity:    0.6 !default;
+$ps-rail-hover-opacity:              0.9 !default;
+
+$ps-bar-bg:                          transparent !default;
+$ps-bar-container-hover-bg:          #aaa !default;
+$ps-bar-hover-bg:                    #999 !default;
+$ps-rail-hover-bg:                   #eee !default;
+
+$ps-scrollbar-x-rail-bottom:         0px !default;
+$ps-scrollbar-x-rail-height:         15px !default;
+$ps-scrollbar-x-bottom:              2px !default;
+$ps-scrollbar-x-height:              6px !default;
+$ps-scrollbar-x-hover-height:        11px !default;
+
+$ps-scrollbar-y-rail-right:          0 !default;
+$ps-scrollbar-y-rail-width:          15px !default;
+$ps-scrollbar-y-right:               2px !default;
+$ps-scrollbar-y-width:               6px !default;
+$ps-scrollbar-y-hover-width:         11px !default;
+
+
+
+// Mixins
+// =============================================================================
+
+@mixin scrollbar-rail-default() {
+  display: none;
+  position: absolute;
+  opacity: $ps-rail-default-opacity;
+  transition: background-color .2s linear, opacity .2s linear;
+}
+
+@mixin scrollbar-rail-hover() {
+  background-color: $ps-rail-hover-bg;
+  opacity: $ps-rail-hover-opacity;
+}
+
+@mixin scrollbar-default() {
+  position: absolute;
+  background-color: $ps-bar-container-hover-bg;
+  border-radius: $ps-border-radius;
+  transition: height .2s linear, width .2s ease-in-out, background-color .2s linear, border-radius .2s ease-in-out;
+}
+
+@mixin scrollbar-hover() {
+  background-color: $ps-bar-hover-bg;
+}
+
+@mixin in-scrolling() {
+  &.ps-in-scrolling {
+    &.ps-x > .ps-scrollbar-x-rail {
+      @include scrollbar-rail-hover();
+      > .ps-scrollbar-x {
+        @include scrollbar-hover();
+        height: $ps-scrollbar-x-hover-height;
+      }
+    }
+    &.ps-y > .ps-scrollbar-y-rail {
+      @include scrollbar-rail-hover();
+      > .ps-scrollbar-y {
+        @include scrollbar-hover();
+        width: $ps-scrollbar-y-hover-width;
+      }
+    }
+  }
+}
+
+@mixin ps-container() {
+  -ms-touch-action: auto;
+  touch-action: auto;
+  overflow: hidden !important;
+  -ms-overflow-style: none;
+
+  // Edge
+  @supports (-ms-overflow-style: none) {
+    overflow: auto !important;
+  }
+
+  // IE10+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    overflow: auto !important;
+  }
+
+  &.ps-active-x > .ps-scrollbar-x-rail,
+  &.ps-active-y > .ps-scrollbar-y-rail {
+    display: block;
+    background-color: $ps-bar-bg;
+  }
+
+  @include in-scrolling();
+
+  > .ps-scrollbar-x-rail {
+    @include scrollbar-rail-default();
+    bottom: $ps-scrollbar-x-rail-bottom;
+    height: $ps-scrollbar-x-rail-height;
+
+    > .ps-scrollbar-x {
+      @include scrollbar-default();
+      bottom: $ps-scrollbar-x-bottom;
+      height: $ps-scrollbar-x-height;
+    }
+    &:hover,
+    &:active {
+      > .ps-scrollbar-x {
+        height: $ps-scrollbar-x-hover-height;
+      }
+    }
+  }
+
+  > .ps-scrollbar-y-rail {
+    @include scrollbar-rail-default();
+    right: $ps-scrollbar-y-rail-right;
+    width: $ps-scrollbar-y-rail-width;
+
+    > .ps-scrollbar-y {
+      @include scrollbar-default();
+      right: $ps-scrollbar-y-right;
+      width: $ps-scrollbar-y-width;
+    }
+    &:hover,
+    &:active {
+      > .ps-scrollbar-y {
+        width: $ps-scrollbar-y-hover-width;
+      }
+    }
+  }
+
+  &:hover {
+    @include in-scrolling();
+
+    > .ps-scrollbar-x-rail,
+    > .ps-scrollbar-y-rail {
+      opacity: $ps-rail-container-hover-opacity;
+    }
+
+    > .ps-scrollbar-x-rail:hover {
+      @include scrollbar-rail-hover();
+
+      > .ps-scrollbar-x {
+        @include scrollbar-hover();
+      }
+    }
+
+    > .ps-scrollbar-y-rail:hover {
+      @include scrollbar-rail-hover();
+
+      > .ps-scrollbar-y {
+        @include scrollbar-hover();
+      }
+    }
+  }
+}
+
+
+
+// Output
+// =============================================================================
+
+.ps-container {
+  @include ps-container();
+}

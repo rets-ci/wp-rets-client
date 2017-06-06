@@ -1,0 +1,153 @@
+// =============================================================================
+// SCSS/SITE/_TOGGLE.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Types: Burger, Grid, and More
+//   03. Animated Elements
+//   04. Animations: Burger
+//   05. Animations: Grid
+//   06. Animations: More
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-toggle {
+  display: block;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+  speak: none;
+
+  > span {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: inherit;
+    background-color: currentColor;
+  }
+}
+
+
+
+// Types: Burger, Grid, and More
+// =============================================================================
+
+.x-toggle-burger,
+.x-toggle-grid,
+.x-toggle-more-h,
+.x-toggle-more-v {
+  height: 1em;
+}
+
+.x-toggle-grid,
+.x-toggle-more-h,
+.x-toggle-more-v {
+  width: 1em;
+}
+
+.x-toggle-more-h,
+.x-toggle-more-v {
+  border-radius: 100em;
+}
+
+.x-toggle-more-v {
+  transform: translate3d(0, 0, 0) rotate(90deg);
+}
+
+
+
+// Animated Elements
+// =============================================================================
+
+// Notes
+// -----
+// 01. animation-name
+// 02. animation-duration
+// 03. animation-timing-function
+// 04. animation-delay
+// 05. animation-iteration-count
+// 06. animation-direction
+// 07. animation-fill-mode
+// 08. animation-play-state
+
+[data-x-toggle-anim] {
+  animation: none 0.5s $easeInOutQuint 0s infinite alternate forwards paused; // 01-08 $easeOutQuint
+
+  &.x-paused  { animation-play-state: paused;  }
+  &.x-running { animation-play-state: running; }
+}
+
+
+
+// Animations: Burger
+// =============================================================================
+
+@keyframes xBunT-1 {
+  50%  { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, 0, 0) rotate(45deg); }
+}
+
+@keyframes xPatty-1 {
+  49%  { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes xBunB-1 {
+  50%  { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, 0, 0) rotate(-45deg); }
+}
+
+
+
+// Animations: Grid
+// =============================================================================
+
+// Notes
+// -----
+// 01. TL, T, TR, L, R, BL, B, BR
+
+@keyframes xGrid-1 {
+  50% {
+    box-shadow: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; // 01
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+  100% {
+    box-shadow: -1em 0, -2em 0, 0 -1em, 0 2em, 0 -2em, 0 1em, 2em 0, 1em 0; // 01
+    transform: rotate3d(0, 0, 1, -45deg);
+  }
+}
+
+
+
+// Animations: More
+// =============================================================================
+
+@keyframes xMore1-1 {
+  50%  { transform: translate3d(0, 0, 0); }
+  75%  { border-radius: 0; }
+  100% { border-radius: 0; transform: translate3d(0, 0, 0) rotate(45deg) scale3d(4, 0.5, 1); }
+}
+
+@keyframes xMore2-1 {
+  49%  { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes xMore3-1 {
+  50%  { transform: translate3d(0, 0, 0) rotate(-45deg); }
+  75%  { border-radius: 0; }
+  100% { border-radius: 0; transform: translate3d(0, 0, 0) rotate(-45deg) scale3d(4, 0.5, 1); }
+}

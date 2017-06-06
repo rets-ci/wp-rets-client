@@ -1,0 +1,137 @@
+// =============================================================================
+// _CSS3.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Box Sizing
+//   02. Animations
+//   03. Transitions
+//   04. Transform
+//       a. Transform
+//       b. Transform Style
+//   05. Backface Visibility
+//   06. Perspective
+//   07. User Select
+//   08. Resize Anything
+//   09. Content Columns
+// =============================================================================
+
+// Box Sizing
+// =============================================================================
+
+@mixin box-sizing($boxModel) {
+  -webkit-box-sizing: $boxModel;
+     -moz-box-sizing: $boxModel;
+          box-sizing: $boxModel;
+}
+
+
+
+// Animations
+// =============================================================================
+
+@mixin animate($animation) {
+  -webkit-animation: $animation;
+     -moz-animation: $animation;
+       -o-animation: $animation;
+          animation: $animation;
+}
+
+
+
+// Transitions
+// =============================================================================
+
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+          transition: $transition;
+}
+
+
+
+// Transformations
+// =============================================================================
+
+// Notes
+// -----
+// 01. Transform.
+// 02. Transform style.
+
+@mixin transform($transformations) {
+  -webkit-transform: $transformations;
+          transform: $transformations;
+}
+
+@mixin transform-style($style) {
+  -webkit-transform-style: $style;
+          transform-style: $style;
+}
+
+
+
+// Backface Visibility
+// =============================================================================
+
+@mixin backface-visibility($visibility){
+  -webkit-backface-visibility: $visibility;
+          backface-visibility: $visibility;
+}
+
+
+
+// Perspective
+// =============================================================================
+
+@mixin perspective($value) {
+  -webkit-perspective: $value;
+      -ms-perspective: $value;
+          perspective: $value;
+}
+
+
+
+// User Select
+// =============================================================================
+
+@mixin user-select($select) {
+  -webkit-user-select: $select;
+     -moz-user-select: $select;
+       -o-user-select: $select;
+          user-select: $select;
+}
+
+
+
+// Resize Anything
+// =============================================================================
+
+// Notes
+// -----
+// 01. Options: horizontal || vertical || both
+// 02. Safari fix.
+
+@mixin resizable($direction) {
+  resize: $direction; // 01
+  overflow: auto; // 02
+}
+
+
+
+// Content Columns
+// =============================================================================
+
+@mixin content-columns($columnCount: 2, $columnGap: 3em, $columnRule: 1px solid #e5e5e5) {
+  -webkit-column-count: $columnCount;
+     -moz-column-count: $columnCount;
+          column-count: $columnCount;
+  -webkit-column-gap: $columnGap;
+     -moz-column-gap: $columnGap;
+          column-gap: $columnGap;
+  -webkit-column-rule: $columnRule;
+     -moz-column-rule: $columnRule;
+          column-rule: $columnRule;
+}

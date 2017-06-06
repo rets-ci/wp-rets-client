@@ -1,0 +1,91 @@
+// =============================================================================
+// SCSS/SITE/_PARTIAL-MENU.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Case Adjustments
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-menu,
+.x-menu .sub-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.x-menu,
+.x-menu li {
+  min-width: 1px;
+}
+
+.x-has-sub {
+  position: relative;
+}
+
+
+
+// Case Adjustments
+// =============================================================================
+
+// Resets
+// ------
+
+.x-menu-modal,
+.x-menu-dropdown,
+.x-menu-collapsed,
+.x-menu-inline .x-dropdown {
+  .x-anchor {
+    @include display(flex);
+  }
+}
+
+.x-menu-modal,
+.x-menu-collapsed {
+  li {
+    &:before,
+    &:after {
+      content: "";
+      display: table;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+}
+
+
+// Collapsed
+// ---------
+
+.x-bar-v {
+  .x-menu-collapsed {
+    &,
+    > li {
+      width: inherit;
+    }
+  }
+}
+
+
+// Inline
+// ------
+
+.x-menu-inline {
+  @include display(flex);
+
+  > li {
+    @include display(flex);
+    @include flex-direction(inherit);
+    @include justify-content(inherit);
+    @include align-items(inherit);
+  }
+}

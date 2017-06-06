@@ -1,0 +1,115 @@
+// =============================================================================
+// SCSS/SITE/_PARTIAL-SEARCH.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Base
+//   02. Buttons
+//   03. Input
+// =============================================================================
+
+// Base
+// =============================================================================
+
+.x-search {
+  @include display(flex);
+  @include align-items(center);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  transition-duration: 0.3s;
+  transition-property: border-color, background-color, box-shadow;
+  transition-timing-function: $materialStand;
+  cursor: text;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+
+
+// Buttons
+// =============================================================================
+
+.x-search-btn {
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  @include flex-shrink(0);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  transition-duration: 0.3s;
+  transition-property: color, border-color, background-color, box-shadow;
+  transition-timing-function: $materialStand;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+  }
+
+  svg {
+    display: block;
+    width: 1em;
+    height: 1em;
+    margin: 0 auto;
+    line-height: inherit;
+    stroke: currentColor;
+  }
+}
+
+
+// Submit
+// ------
+
+.x-search-btn-submit {
+  @include order(1);
+}
+
+
+// Clear
+// -----
+
+.x-search-btn-clear {
+  @include order(3);
+  visibility: hidden;
+  pointer-events: none;
+
+  .x-search-has-content & {
+    visibility: visible;
+    pointer-events: auto;    
+  }
+}
+
+
+
+// Input
+// =============================================================================
+
+.x-search-input {
+  @include flex-grow(1);
+  @include order(2);
+  width: 100%;
+  min-width: 1px;
+  height: auto !important;
+  border: 0 !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  transition-duration: 0.3s;
+  transition-property: color;
+  transition-timing-function: $materialStand;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+
+  &::-webkit-input-placeholder { color: currentColor; opacity: 1; }
+  &::-moz-placeholder          { color: currentColor; opacity: 1; }
+  &:-ms-input-placeholder      { color: currentColor; opacity: 1; }
+}

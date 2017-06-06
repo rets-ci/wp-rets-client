@@ -1,0 +1,162 @@
+// =============================================================================
+// SCSS/SITE/_FLEX.SCSS
+// -----------------------------------------------------------------------------
+// Site styles.
+// =============================================================================
+
+// =============================================================================
+// TABLE OF CONTENTS
+// -----------------------------------------------------------------------------
+//   01. Layout
+//   02. Direction
+//   03. Wrap
+//   04. Main Axis
+//   05. Cross Axis
+//   06. Wrap Alignment
+//   07. IE10+ Hacks
+// =============================================================================
+
+// Layout
+// =============================================================================
+
+[data-x-flex-layout] {
+  @include display(flex);
+}
+
+
+
+// Direction
+// =============================================================================
+
+[data-x-flex-layout*="row"] {
+  @include flex-direction(row);
+
+  &[data-x-flex-layout*="rev"] {
+    @include flex-direction(row-reverse);
+  }
+}
+
+[data-x-flex-layout*="col"] {
+  @include flex-direction(column);
+
+  &[data-x-flex-layout*="rev"] {
+    @include flex-direction(column-reverse);
+  }
+}
+
+
+
+// Wrap
+// =============================================================================
+
+[data-x-flex-layout*="rows"],
+[data-x-flex-layout*="cols"] {
+  @include flex-wrap(wrap);
+}
+
+
+
+// Main Axis
+// =============================================================================
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="top-"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="-left"] {
+  @include justify-content(flex-start);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="center-"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="-center"] {
+  @include justify-content(center);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="bottom-"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="-right"] {
+  @include justify-content(flex-end);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="spread-"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="-spread"] {
+  @include justify-content(space-around);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="justify-"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="-justify"] {
+  @include justify-content(space-between);
+}
+
+
+
+// Cross Axis
+// =============================================================================
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="-left"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="top-"] {
+  @include align-items(flex-start);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="-center"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="center-"] {
+  @include align-items(center);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="-right"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="bottom-"] {
+  @include align-items(flex-end);
+}
+
+[data-x-flex-layout*="col"][data-x-flex-layout*="-stretch"],
+[data-x-flex-layout*="row"][data-x-flex-layout*="stretch-"] {
+  @include align-items(stretch);
+}
+
+
+
+// Wrap Alignment
+// =============================================================================
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="top-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-left"] {
+  @include align-content(flex-start);
+}
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="bottom-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-right"] {
+  @include align-content(flex-end);
+}
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="center-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-center"] {
+  @include align-content(center);
+}
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="justify-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-justify"] {
+  @include align-content(space-between);
+}
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="spread-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-spread"] {
+  @include align-content(space-around);
+}
+
+[data-x-flex-layout*="rows"][data-x-flex-layout*="stretch-"],
+[data-x-flex-layout*="cols"][data-x-flex-layout*="-stretch"] {
+  @include align-content(stretch);
+}
+
+
+
+// IE10+ Hacks
+// =============================================================================
+
+// Notes
+// -----
+// 01. Prevents horizontal overflow of content.
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+
+  [data-x-flex-layout*="col"]:not([data-x-flex-layout*="row"]) > * { // 01
+    max-width: auto;
+  }
+
+}
