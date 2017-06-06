@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
+import NavigationIcons from './components/NavigationIcons.jsx';
 
 class HeaderPropertySingle extends Component {
   constructor(props) {
@@ -31,15 +32,7 @@ class HeaderPropertySingle extends Component {
             }
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2"}>
-            <ul>
-              <li><a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX + "favorite"}><i
-                className="fa fa-heart"></i></a></li>
-              <li><a href="#" title="Notification" className={Lib.THEME_CLASSES_PREFIX + "notification"}><i
-                className="fa fa-bell"></i> <span className={Lib.THEME_CLASSES_PREFIX + "indicator"}><i
-                className="fa fa-circle"></i></span></a></li>
-              <li><a href="#" onClick={this.props.openUserPanel}
-                     className={Lib.THEME_CLASSES_PREFIX + "side-navigation"}><span>☰</span></a></li>
-            </ul>
+            <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>
       </div>

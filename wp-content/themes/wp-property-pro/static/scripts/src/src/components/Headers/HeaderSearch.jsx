@@ -5,7 +5,9 @@ import SearchFilters from './components/SearchFilters.jsx';
 import {Lib} from '../../lib.jsx';
 import {openSaleTypesPanel} from '../../actions/index.jsx';
 import _ from 'lodash';
+import NavigationIcons from './components/NavigationIcons.jsx';
 import URI from 'urijs';
+import UserPanelIcon from './components/UserPanelIcon.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -85,7 +87,10 @@ class HeaderSearch extends Component {
           </div>
         </div>
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-sm-2 col-md-1 my-auto`}>
+          <div className={`col-1 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
+            <UserPanelIcon openUserPanel={this.props.openUserPanel} />
+          </div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -99,24 +104,14 @@ class HeaderSearch extends Component {
                 : null
             }
           </div>
-          <div className="col-sm-2 hidden-sm-down">
-            <div className={Lib.THEME_CLASSES_PREFIX + "drop-nav"}>
-              <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
-            </div>
+          <div className={`hidden-sm-down col-md-2 ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
+            <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-md-7 col-sm-6"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-6 col-lg-7"}>
             <SearchFilters filters={searchFilters}/>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2"}>
-            <ul>
-              <li><a href="#" title="Favorites" className={Lib.THEME_CLASSES_PREFIX + "favorite"}><i
-                className="fa fa-heart"></i></a></li>
-              <li><a href="#" title="Notification" className={Lib.THEME_CLASSES_PREFIX + "notification"}><i
-                className="fa fa-bell"></i> <span className={Lib.THEME_CLASSES_PREFIX + "indicator"}><i
-                className="fa fa-circle"></i></span></a></li>
-              <li><a href="#" onClick={this.props.openUserPanel}
-                     className={Lib.THEME_CLASSES_PREFIX + "side-navigation"}><span>☰</span></a></li>
-            </ul>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-2 col-md-2"}>
+            <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>
       </div>
