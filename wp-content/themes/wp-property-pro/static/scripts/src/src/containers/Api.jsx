@@ -371,18 +371,18 @@ class Api {
       }
     };
 
-    if (params.locationFilter) {
+    if (params.geoCoordinates) {
       // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
       query.bool.filter = {
         "geo_bounding_box": {
           "wpp_location_pin": {
             "top_left": {
-              "lat": params.topLeft.lat,
-              "lon": params.topLeft.lon
+              "lat": params.geoCoordinates.topLeft.lat,
+              "lon": params.geoCoordinates.topLeft.lon
             },
             "bottom_right": {
-              "lat": params.bottomRight.lat,
-              "lon": params.bottomRight.lon
+              "lat": params.geoCoordinates.bottomRight.lat,
+              "lon": params.geoCoordinates.bottomRight.lon
             }
           }
         }
@@ -519,6 +519,7 @@ class Api {
       "post_meta.rets_thumbnail_url",
       "post_meta.rets_postal_code",
       "wpp_media",
+      "wpp_location_pin",
       "tax_input"
     ]);
 
@@ -527,31 +528,24 @@ class Api {
   }
 
   static search(query, callback) {
-
     Api.makeRequest({
-        'url': Api.getRequestUrl(),
-        'query': {
-          data: JSON.stringify(query)
-        }
-      },
-      callback);
-
+      'url': Api.getRequestUrl(),
+      'query': {
+        data: JSON.stringify(query)
+      }
+    }, callback);
   }
 
   static makeStandardPropertySearch(params, callback) {
     let {
-        locationFilter,
         property_types,
         geoCoordinates
       } = params;
       let pt = property_types.split(Lib.STRING_ARRAY_DELIMITER);
       let searchParams = {
         ...params,
-        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
-        locationFilter: locationFilter || false,
         property_types: pt,
-        size: Lib.PROPERTY_PER_PAGE,
-        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
+        size: Lib.PROPERTY_PER_PAGE
       };
       
       let query = this.createESSearchQuery(searchParams);

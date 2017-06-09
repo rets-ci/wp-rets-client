@@ -62847,8 +62847,6 @@
 	  value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _Api = __webpack_require__(355);
@@ -62879,6 +62877,8 @@
 
 	var _reactRedux = __webpack_require__(241);
 
+	var _reactRouter = __webpack_require__(182);
+
 	var _SearchResultListing = __webpack_require__(418);
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
@@ -62892,6 +62892,14 @@
 	var _lodash = __webpack_require__(293);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _qs = __webpack_require__(365);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _urijs = __webpack_require__(361);
+
+	var _urijs2 = _interopRequireDefault(_urijs);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62995,6 +63003,20 @@
 	      });
 	    }
 	  }, {
+	    key: 'updateURIGeoCoordinates',
+	    value: function updateURIGeoCoordinates(geoCoordinates) {
+	      // update URL
+	      var url = new _urijs2.default(window.location.href);
+	      var queryParam = window.location.search.replace('?', '');
+	      var currentFilters = _qs2.default.parse(queryParam);
+	      // remove any current geoCorrdinates before adding additional ones
+	      delete currentFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
+	      currentFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
+	      var newSearchQuery = '?' + _qs2.default.stringify(currentFilters);
+	      var constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
+	      _reactRouter.browserHistory.push(constructedQuery);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -63007,11 +63029,10 @@
 	          results = _props.results;
 
 	      var propertyTypes = location.query['wpp_search[property_types]'];
-	      var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, false);
+	      var searchFilters = _qs2.default.parse(window.location.search.replace('?', ''))[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
 	      var listingSidebarStyle = {
 	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
 	      };
-
 	      var elementToShow = void 0;
 	      if (mapSearchResultsLoading) {
 	        elementToShow = _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" });
@@ -63020,8 +63041,7 @@
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
 	          _react2.default.createElement(_LocationModal2.default, null),
-	          _react2.default.createElement(_PropertiesModal2.default, { searchFilters: searchFilters, standardSearch: this.props.standardSearch,
-	            open: propertiesModalOpen }),
+	          _react2.default.createElement(_PropertiesModal2.default, null),
 	          _react2.default.createElement(
 	            'section',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
@@ -63042,13 +63062,8 @@
 	                    'listings. Zoom in, or use filters to narrow your search.'
 	                  )
 	                ),
-	                displayedResults.length && _react2.default.createElement(_Map2.default, { properties: displayedResults,
-	                  searchByCoordinates: function searchByCoordinates(locationFilter, geoCoordinates) {
-	                    return _this2.props.standardSearch(_extends({}, _Util2.default.getSearchFiltersFromURL(window.location.href, true), {
-	                      locationFilter: locationFilter,
-	                      geoCoordinates: geoCoordinates
-	                    }));
-	                  } })
+	                displayedResults.length && _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
+	                  searchByCoordinates: this.updateURIGeoCoordinates.bind(this) })
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -63562,18 +63577,18 @@
 	        }
 	      };
 
-	      if (params.locationFilter) {
+	      if (params.geoCoordinates) {
 	        // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
 	        query.bool.filter = {
 	          "geo_bounding_box": {
 	            "wpp_location_pin": {
 	              "top_left": {
-	                "lat": params.topLeft.lat,
-	                "lon": params.topLeft.lon
+	                "lat": params.geoCoordinates.topLeft.lat,
+	                "lon": params.geoCoordinates.topLeft.lon
 	              },
 	              "bottom_right": {
-	                "lat": params.bottomRight.lat,
-	                "lon": params.bottomRight.lon
+	                "lat": params.geoCoordinates.bottomRight.lat,
+	                "lon": params.geoCoordinates.bottomRight.lon
 	              }
 	            }
 	          }
@@ -63683,7 +63698,7 @@
 
 	      var aggregations = JSON.stringify({});
 
-	      var source = JSON.stringify(["meta.property_type.value", "post_title", "post_name", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.formatted_address_simple", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_address", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_list_price", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "post_meta.rets_postal_code", "wpp_media", "tax_input"]);
+	      var source = JSON.stringify(["meta.property_type.value", "post_title", "post_name", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.formatted_address_simple", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_address", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_list_price", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "post_meta.rets_postal_code", "wpp_media", "wpp_location_pin", "tax_input"]);
 
 	      // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
 	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
@@ -63691,7 +63706,6 @@
 	  }, {
 	    key: 'search',
 	    value: function search(query, callback) {
-
 	      Api.makeRequest({
 	        'url': Api.getRequestUrl(),
 	        'query': {
@@ -63702,17 +63716,13 @@
 	  }, {
 	    key: 'makeStandardPropertySearch',
 	    value: function makeStandardPropertySearch(params, callback) {
-	      var locationFilter = params.locationFilter,
-	          property_types = params.property_types,
+	      var property_types = params.property_types,
 	          geoCoordinates = params.geoCoordinates;
 
 	      var pt = property_types.split(_lib.Lib.STRING_ARRAY_DELIMITER);
 	      var searchParams = _extends({}, params, {
-	        bottomRight: geoCoordinates ? geoCoordinates.bottomRight : null,
-	        locationFilter: locationFilter || false,
 	        property_types: pt,
-	        size: _lib.Lib.PROPERTY_PER_PAGE,
-	        topLeft: geoCoordinates ? geoCoordinates.topLeft : null
+	        size: _lib.Lib.PROPERTY_PER_PAGE
 	      });
 
 	      var query = this.createESSearchQuery(searchParams);
@@ -64013,9 +64023,33 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
+	      var currentGeoBounds = this.props.currentGeoBounds;
+
+	      var centerPoint = void 0;
+	      if (currentGeoBounds) {
+	        var calculateCenter = new google.maps.LatLngBounds({
+	          lat: +currentGeoBounds.sw.lat,
+	          lng: +currentGeoBounds.sw.lon
+	        }, {
+	          lat: +currentGeoBounds.ne.lat,
+	          lng: +currentGeoBounds.ne.lon
+	        }).getCenter();
+	        centerPoint = {
+	          lat: calculateCenter.lat(),
+	          lng: calculateCenter.lng()
+	        };
+	      } else if (this.props.properties.length) {
+	        centerPoint = {
+	          lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+	          lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
+	        };
+	      } else {
+	        centerPoint = 0;
+	      }
+
 	      var initialCoordinates = {
-	        lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-	        lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
+	        lat: centerPoint !== 0 ? centerPoint.lat : 0,
+	        lng: centerPoint !== 0 ? centerPoint.lng : 0
 	      };
 	      this.map = new window.google.maps.Map(this.mapElement, {
 	        center: initialCoordinates,
@@ -64027,7 +64061,7 @@
 	        var bounds = _this2.map.getBounds();
 	        var ne = bounds.getNorthEast();
 	        var sw = bounds.getSouthWest();
-	        _this2.props.searchByCoordinates(true, _Util2.default.esGeoBoundingBoxObjFormat({
+	        _this2.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
 	          ne: {
 	            lat: ne.lat(),
 	            lon: ne.lng()
@@ -64045,7 +64079,7 @@
 	      var _this3 = this;
 
 	      properties.forEach(function (p) {
-	        var latLng = new window.google.maps.LatLng(p._source.post_meta.wpp_location_latitude, p._source.post_meta.wpp_location_longitude);
+	        var latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
 	        var marker = new window.google.maps.Marker({
 	          position: latLng,
 	          map: _this3.map
@@ -64068,6 +64102,7 @@
 	}(_react.Component);
 
 	Map.propTypes = {
+	  currentGeoBounds: _react.PropTypes.object,
 	  searchByCoordinates: _react.PropTypes.func.isRequired,
 	  properties: _react.PropTypes.array.isRequired
 	};
@@ -64212,8 +64247,8 @@
 	      return query;
 	    }
 	  }, {
-	    key: 'esGeoBoundingBoxObjFormat',
-	    value: function esGeoBoundingBoxObjFormat(params) {
+	    key: 'googleGeoFormatToElasticsearch',
+	    value: function googleGeoFormatToElasticsearch(params) {
 	      var sw = params.sw,
 	          ne = params.ne;
 
@@ -64225,6 +64260,24 @@
 	        bottomRight: {
 	          lat: sw.lat,
 	          lon: ne.lon
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'elasticsearchGeoFormatToGoogle',
+	    value: function elasticsearchGeoFormatToGoogle(params) {
+	      var bottomRight = params.bottomRight,
+	          topLeft = params.topLeft;
+
+
+	      return {
+	        ne: {
+	          lat: topLeft.lat,
+	          lon: bottomRight.lon
+	        },
+	        sw: {
+	          lat: bottomRight.lat,
+	          lon: topLeft.lon
 	        }
 	      };
 	    }
@@ -70002,8 +70055,7 @@
 	  bedroomSelected: _react.PropTypes.string,
 	  openLocationModal: _react.PropTypes.func.isRequired,
 	  propertyTypeSelected: _react.PropTypes.string,
-	  localFilters: _react.PropTypes.object.isRequired,
-	  standardSearch: _react.PropTypes.func.isRequired
+	  localFilters: _react.PropTypes.object.isRequired
 	};
 
 	;
