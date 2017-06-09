@@ -355,9 +355,6 @@ class Api {
   }
 
   static createESSearchQuery(params) {
-    let terms = params.term.map(term => {
-      return {term: {["terms." + Object.keys(term)[0] + ".name.raw"]: Object.values(term)[0]}}
-    });
 
     let query = {
       "bool": {
@@ -372,113 +369,120 @@ class Api {
     };
 
     if (params.geoCoordinates) {
-      // note: the references to topLeft and bottomRight are correct, because of the way ES does its geo_bounding_box
-      query.bool.filter = {
-        "geo_bounding_box": {
-          "wpp_location_pin": {
-            "top_left": {
-              "lat": params.geoCoordinates.topLeft.lat,
-              "lon": params.geoCoordinates.topLeft.lon
-            },
-            "bottom_right": {
-              "lat": params.geoCoordinates.bottomRight.lat,
-              "lon": params.geoCoordinates.bottomRight.lon
+      query.bool.must.push(
+        {
+          "geo_bounding_box": {
+            "wpp_location_pin": {
+              "top_left": {
+                "lat": params.geoCoordinates.topLeft.lat,
+                "lon": params.geoCoordinates.topLeft.lon
+              },
+              "bottom_right": {
+                "lat": params.geoCoordinates.bottomRight.lat,
+                "lon": params.geoCoordinates.bottomRight.lon
+              }
             }
           }
         }
-      };
-    } else {
-      if (params.sale_type) {
-        query.bool.must.push({
-          "term": {
-            "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
-          }
-        });
-      }
+      );
+    }
 
-      if (params.property_types && params.property_types.length) {
-        query.bool.must.push({
-          "terms": {
-            "terms.wpp_listing_type.slug": params.property_types
-          }
-        });
-      }
-
-      if (params.bathrooms) {
-        query.bool.must.push({
-          "range": {
-            "meta.rets_total_baths.double": {
-              "gte": params.bathrooms
-            }
-          }
-        });
-      }
-
-      if (params.bedrooms) {
-        query.bool.must.push({
-          "range": {
-            "meta.rets_beds.double": {
-              "gte": params.bedrooms
-            }
-          }
-        });
-      }
-
-      if (params.price) {
-        let range = {};
-        if (params.price.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-          range.gte = params.price.start
+    if (params.sale_type) {
+      query.bool.must.push({
+        "term": {
+          "terms.wpp_listing_status.slug": 'for-' + params.sale_type.toLowerCase()
         }
+      });
+    }
 
-        if (params.price.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-          range.lt = params.price.to
+    if (params.property_types && params.property_types.length) {
+      query.bool.must.push({
+        "terms": {
+          "terms.wpp_listing_type.slug": params.property_types
         }
-        query.bool.must.push({
-          "range": {
-            "meta.rets_list_price.double": range
+      });
+    }
+
+    if (params.bathrooms) {
+      query.bool.must.push({
+        "range": {
+          "meta.rets_total_baths.double": {
+            "gte": params.bathrooms
           }
-        });
+        }
+      });
+    }
+
+    if (params.bedrooms) {
+      query.bool.must.push({
+        "range": {
+          "meta.rets_beds.double": {
+            "gte": params.bedrooms
+          }
+        }
+      });
+    }
+
+    if (params.price) {
+      let range = {};
+      if (params.price.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        range.gte = params.price.start
       }
 
-      if (params.property_type) {
-        query.bool.must.push({
-          "term": {
-            "meta.property_type.value": params.property_type
-          }
-        });
+      if (params.price.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        range.lt = params.price.to
+      }
+      query.bool.must.push({
+        "range": {
+          "meta.rets_list_price.double": range
+        }
+      });
+    }
+
+    if (params.property_type) {
+      query.bool.must.push({
+        "term": {
+          "meta.property_type.value": params.property_type
+        }
+      });
+    }
+
+    if (params.sqft) {
+      let range = {};
+      if (params.sqft.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        range.gte = params.sqft.start
       }
 
-      if (params.sqft) {
-        let range = {};
-        if (params.sqft.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-          range.gte = params.sqft.start
-        }
-
-        if (params.sqft.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-          range.lt = params.sqft.to
-        }
-        query.bool.must.push({
-          "range": {
-            "meta.rets_living_area.double": range
-          }
-        });
+      if (params.sqft.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        range.lt = params.sqft.to
       }
-      if (params.lotSize) {
-        let range = {};
-        if (params.lotSize.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
-          range.gte = params.lotSize.start
+      query.bool.must.push({
+        "range": {
+          "meta.rets_living_area.double": range
         }
-
-        if (params.lotSize.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
-          range.lt = params.lotSize.to
-        }
-        query.bool.must.push({
-          "range": {
-            "meta.rets_lot_size_area.double": range
-          }
-        });
-
+      });
+    }
+    if (params.lotSize) {
+      let range = {};
+      if (params.lotSize.start !== Lib.RANGE_SLIDER_NO_MIN_TEXT) {
+        range.gte = params.lotSize.start
       }
+
+      if (params.lotSize.to !== Lib.RANGE_SLIDER_NO_MAX_TEXT) {
+        range.lt = params.lotSize.to
+      }
+      query.bool.must.push({
+        "range": {
+          "meta.rets_lot_size_area.double": range
+        }
+      });
+
+    }
+
+    if (!params.geoCoordinates) {
+      let terms = params.term.map(term => {
+        return {term: {["terms." + Object.keys(term)[0] + ".name.raw"]: Object.values(term)[0]}}
+      });
 
       query.bool.must.push({
         "bool": {
