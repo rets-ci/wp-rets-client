@@ -64080,9 +64080,13 @@
 	    value: function setPropertyMarkers(properties) {
 	      var _this3 = this;
 
+	      var icon = {
+	        url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png'
+	      };
 	      properties.forEach(function (p) {
 	        var latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
 	        var marker = new window.google.maps.Marker({
+	          icon: icon,
 	          position: latLng,
 	          map: _this3.map
 	        });

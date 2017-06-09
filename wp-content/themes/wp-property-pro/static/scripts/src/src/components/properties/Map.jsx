@@ -85,9 +85,13 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties) {
+    let icon = {
+      url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png',
+    }
     properties.forEach((p) => {
       let latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
       let marker = new window.google.maps.Marker({
+        icon: icon,
         position: latLng,
         map: this.map
       });
