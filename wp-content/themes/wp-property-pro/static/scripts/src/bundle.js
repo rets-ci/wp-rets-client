@@ -62853,13 +62853,13 @@
 
 	var _Api2 = _interopRequireDefault(_Api);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
-	var _LoadingCircle = __webpack_require__(357);
+	var _LoadingCircle = __webpack_require__(368);
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
-	var _Map = __webpack_require__(358);
+	var _Map = __webpack_require__(369);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
@@ -62883,7 +62883,7 @@
 
 	var _SearchResultListing2 = _interopRequireDefault(_SearchResultListing);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -62893,11 +62893,11 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _qs = __webpack_require__(365);
+	var _qs = __webpack_require__(362);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
-	var _urijs = __webpack_require__(361);
+	var _urijs = __webpack_require__(358);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
@@ -63198,6 +63198,10 @@
 	var _lodash = __webpack_require__(293);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _Util = __webpack_require__(356);
+
+	var _Util2 = _interopRequireDefault(_Util);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63693,6 +63697,7 @@
 	          }
 	        });
 	      }
+
 	      query = JSON.stringify(query);
 
 	      var size = params.size || 500;
@@ -63701,9 +63706,23 @@
 	      var aggregations = JSON.stringify({});
 
 	      var source = JSON.stringify(["meta.property_type.value", "post_title", "post_name", "post_meta.wpp_location_latitude", "post_meta.wpp_location_longitude", "permalink", "post_meta.google_place_id", "post_meta.formatted_address", "post_meta.formatted_address_simple", "post_meta.wpp_location_pin", "post_meta.rets_list_date", "post_meta.rets_thumbnail_url", "terms.wpp_listing_type", "post_meta.rets_address", "post_meta.rets_beds", "post_meta.rets_total_baths", "post_meta.rets_list_price", "post_meta.rets_living_area", "post_meta.rets_lot_size_area", "post_meta.rets_street_number", "post_meta.rets_directions", "post_meta.rets_street_name", "post_meta.rets_thumbnail_url", "post_meta.rets_postal_code", "wpp_media", "wpp_location_pin", "tax_input"]);
-
+	      var sort = [];
+	      if (params.geoCoordinates) {
+	        var centerCoors = _Util2.default.calculateCenterCoors(_Util2.default.elasticsearchGeoFormatToGoogle(params.geoCoordinates));
+	        centerCoors['lon'] = centerCoors['lng'];
+	        delete centerCoors['lng'];
+	        sort.push({
+	          "_geo_distance": {
+	            "wpp_location_pin": centerCoors,
+	            "order": "asc",
+	            "unit": "km",
+	            "distance_type": "arc"
+	          }
+	        });
+	      }
+	      sort = JSON.stringify(sort);
 	      // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
-	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
+	      return JSON.parse('{"query":' + query + ',"_source": ' + source + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
 	    }
 	  }, {
 	    key: 'search',
@@ -63772,361 +63791,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
-
-	var _lib = __webpack_require__(294);
-
-	var deletePropertiesModalSingleLocalFilter = exports.deletePropertiesModalSingleLocalFilter = function deletePropertiesModalSingleLocalFilter(filterKey) {
-	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
-	    filterKey: filterKey
-	  };
-	};
-
-	var deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalTermLocalFilter = function deletePropertiesModalTermLocalFilter(termFilter) {
-	  return {
-	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
-	    termFilter: termFilter
-	  };
-	};
-
-	var openLocationModal = exports.openLocationModal = function openLocationModal(open) {
-	  return {
-	    type: _lib.Lib.TOGGLE_LOCATION_MODAL_ACTION,
-	    open: open
-	  };
-	};
-
-	var openPropertiesModal = exports.openPropertiesModal = function openPropertiesModal(open) {
-	  return {
-	    type: _lib.Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
-	    open: open
-	  };
-	};
-
-	var setPropertiesModalLocalFilter = exports.setPropertiesModalLocalFilter = function setPropertiesModalLocalFilter(localFilters) {
-	  return {
-	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
-	    localFilters: localFilters
-	  };
-	};
-
-	var setSearchProps = exports.setSearchProps = function setSearchProps(searchProps) {
-	  return {
-	    type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
-	    searchProps: searchProps
-	  };
-	};
-
-	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
-	  return {
-	    type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
-	    append: append,
-	    query: query,
-	    searchResults: searchResults,
-	    totalProps: total
-	  };
-	};
-
-	var setSearchType = exports.setSearchType = function setSearchType(searchObject) {
-	  return {
-	    type: _lib.Lib.SET_SEARCH_TYPE,
-	    searchType: searchObject.searchType,
-	    saleType: searchObject.saleType,
-	    propertyTypes: searchObject.propertyTypes
-	  };
-	};
-
-	var setFilterTerms = exports.setFilterTerms = function setFilterTerms(filterTerms) {
-	  return {
-	    type: _lib.Lib.SET_FILTER_TERMS_ACTION,
-	    filterTerms: filterTerms
-	  };
-	};
-
-	var toggleMapSearchResultsLoading = exports.toggleMapSearchResultsLoading = function toggleMapSearchResultsLoading(loading) {
-	  return {
-	    type: _lib.Lib.TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED,
-	    loading: loading
-	  };
-	};
-
-	var toggleUserPanel = exports.toggleUserPanel = function toggleUserPanel(open) {
-	  return {
-	    type: _lib.Lib.TOGGLE_USER_PANEL,
-	    open: open
-	  };
-	};
-
-	var setTestimonialsActiveItem = exports.setTestimonialsActiveItem = function setTestimonialsActiveItem(activeItem) {
-	  return {
-	    type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
-	    activeItem: activeItem
-	  };
-	};
-
-	var setBlogPosts = exports.setBlogPosts = function setBlogPosts(posts, allowPagination) {
-	  return {
-	    type: _lib.Lib.SET_BLOG_POSTS_ACTION,
-	    posts: posts,
-	    allowPagination: allowPagination
-	  };
-	};
-
-	var updatePropertiesModalLocalFilter = exports.updatePropertiesModalLocalFilter = function updatePropertiesModalLocalFilter(filter) {
-	  return {
-	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
-	    filter: filter
-	  };
-	};
-
-	var updatePropertiesModalResultCount = exports.updatePropertiesModalResultCount = function updatePropertiesModalResultCount(count) {
-	  return {
-	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
-	    count: count
-	  };
-	};
-
-	var openSaleTypesPanel = exports.openSaleTypesPanel = function openSaleTypesPanel(open) {
-	  return {
-	    type: _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION,
-	    open: open
-	  };
-	};
-
-	var setPropertiesModalResultCountLoading = exports.setPropertiesModalResultCountLoading = function setPropertiesModalResultCountLoading(show) {
-	  return {
-	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
-	    show: show
-	  };
-	};
-
-/***/ }),
-/* 357 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _lib = __webpack_require__(294);
-
-	var _lodash = __webpack_require__(293);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LoadingCircle = function (_Component) {
-	  _inherits(LoadingCircle, _Component);
-
-	  function LoadingCircle() {
-	    _classCallCheck(this, LoadingCircle);
-
-	    return _possibleConstructorReturn(this, (LoadingCircle.__proto__ || Object.getPrototypeOf(LoadingCircle)).apply(this, arguments));
-	  }
-
-	  _createClass(LoadingCircle, [{
-	    key: 'render',
-	    value: function render() {
-	      var additionalClass = this.props.additionalClass;
-
-
-	      var classNames = additionalClass && _lodash2.default.isString(additionalClass) ? _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-circle ' + additionalClass : _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle";
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: classNames },
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
-	      );
-	    }
-	  }]);
-
-	  return LoadingCircle;
-	}(_react.Component);
-
-	exports.default = LoadingCircle;
-
-/***/ }),
-/* 358 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Util = __webpack_require__(359);
-
-	var _Util2 = _interopRequireDefault(_Util);
-
-	var _lib = __webpack_require__(294);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Map = function (_Component) {
-	  _inherits(Map, _Component);
-
-	  function Map(props) {
-	    _classCallCheck(this, Map);
-
-	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
-
-	    _this.state = {};
-	    _this.markers = [];
-	    return _this;
-	  }
-
-	  _createClass(Map, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.properties.length) {
-	        this.clearAllMarkers();
-	        this.setPropertyMarkers(nextProps.properties);
-	      }
-	    }
-	  }, {
-	    key: 'clearAllMarkers',
-	    value: function clearAllMarkers() {
-	      this.markers.forEach(function (m) {
-	        m.setMap(null);
-	      });
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      var currentGeoBounds = this.props.currentGeoBounds;
-
-	      var centerPoint = void 0;
-	      if (currentGeoBounds) {
-	        var calculateCenter = new google.maps.LatLngBounds({
-	          lat: +currentGeoBounds.sw.lat,
-	          lng: +currentGeoBounds.sw.lon
-	        }, {
-	          lat: +currentGeoBounds.ne.lat,
-	          lng: +currentGeoBounds.ne.lon
-	        }).getCenter();
-	        centerPoint = {
-	          lat: calculateCenter.lat(),
-	          lng: calculateCenter.lng()
-	        };
-	      } else if (this.props.properties.length) {
-	        centerPoint = {
-	          lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-	          lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
-	        };
-	      } else {
-	        centerPoint = 0;
-	      }
-
-	      var initialCoordinates = {
-	        lat: centerPoint !== 0 ? centerPoint.lat : 0,
-	        lng: centerPoint !== 0 ? centerPoint.lng : 0
-	      };
-	      this.map = new window.google.maps.Map(this.mapElement, {
-	        center: initialCoordinates,
-	        scrollwheel: false,
-	        zoom: 9
-	      });
-	      this.setPropertyMarkers(this.props.properties);
-	      this.map.addListener('dragend', function () {
-	        var bounds = _this2.map.getBounds();
-	        var ne = bounds.getNorthEast();
-	        var sw = bounds.getSouthWest();
-	        _this2.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
-	          ne: {
-	            lat: ne.lat(),
-	            lon: ne.lng()
-	          },
-	          sw: {
-	            lat: sw.lat(),
-	            lon: sw.lng()
-	          }
-	        }));
-	      });
-	    }
-	  }, {
-	    key: 'setPropertyMarkers',
-	    value: function setPropertyMarkers(properties) {
-	      var _this3 = this;
-
-	      var icon = {
-	        url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png'
-	      };
-	      properties.forEach(function (p) {
-	        var latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
-	        var marker = new window.google.maps.Marker({
-	          icon: icon,
-	          position: latLng,
-	          map: _this3.map
-	        });
-	        _this3.markers.push(marker);
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this4 = this;
-
-	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", className: _lib.Lib.THEME_CLASSES_PREFIX + "map-container", ref: function ref(r) {
-	          return _this4.mapElement = r;
-	        } });
-	    }
-	  }]);
-
-	  return Map;
-	}(_react.Component);
-
-	Map.propTypes = {
-	  currentGeoBounds: _react.PropTypes.object,
-	  searchByCoordinates: _react.PropTypes.func.isRequired,
-	  properties: _react.PropTypes.array.isRequired
-	};
-	exports.default = Map;
-
-/***/ }),
-/* 359 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _numeral = __webpack_require__(360);
+	var _numeral = __webpack_require__(357);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -64140,11 +63808,11 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _urijs = __webpack_require__(361);
+	var _urijs = __webpack_require__(358);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
-	var _qs = __webpack_require__(365);
+	var _qs = __webpack_require__(362);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -64174,6 +63842,25 @@
 	  }
 
 	  _createClass(Util, null, [{
+	    key: 'calculateCenterCoors',
+	    value: function calculateCenterCoors(params) {
+	      var ne = params.ne,
+	          sw = params.sw;
+
+	      var calculateCenter = new google.maps.LatLngBounds({
+	        lat: +sw.lat,
+	        lng: +sw.lon
+	      }, {
+	        lat: +ne.lat,
+	        lng: +ne.lon
+	      }).getCenter();
+	      var centerPoint = {
+	        lat: calculateCenter.lat(),
+	        lng: calculateCenter.lng()
+	      };
+	      return centerPoint;
+	    }
+	  }, {
 	    key: 'formatPriceValue',
 	    value: function formatPriceValue(price) {
 	      return (0, _numeral2.default)(price).format('$0,0');
@@ -64370,7 +64057,7 @@
 	exports.default = Util;
 
 /***/ }),
-/* 360 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -65389,7 +65076,7 @@
 
 
 /***/ }),
-/* 361 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -65409,10 +65096,10 @@
 	  // https://github.com/umdjs/umd/blob/master/returnExports.js
 	  if (typeof module === 'object' && module.exports) {
 	    // Node
-	    module.exports = factory(__webpack_require__(362), __webpack_require__(363), __webpack_require__(364));
+	    module.exports = factory(__webpack_require__(359), __webpack_require__(360), __webpack_require__(361));
 	  } else if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(362), __webpack_require__(363), __webpack_require__(364)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(359), __webpack_require__(360), __webpack_require__(361)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else {
 	    // Browser globals (root is window)
 	    root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
@@ -67649,7 +67336,7 @@
 
 
 /***/ }),
-/* 362 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/punycode v1.4.0 by @mathias */
@@ -68187,7 +67874,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(264)(module), (function() { return this; }())))
 
 /***/ }),
-/* 363 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -68378,7 +68065,7 @@
 
 
 /***/ }),
-/* 364 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -68629,14 +68316,14 @@
 
 
 /***/ }),
-/* 365 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var stringify = __webpack_require__(366);
-	var parse = __webpack_require__(369);
-	var formats = __webpack_require__(368);
+	var stringify = __webpack_require__(363);
+	var parse = __webpack_require__(366);
+	var formats = __webpack_require__(365);
 
 	module.exports = {
 	    formats: formats,
@@ -68646,13 +68333,13 @@
 
 
 /***/ }),
-/* 366 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(367);
-	var formats = __webpack_require__(368);
+	var utils = __webpack_require__(364);
+	var formats = __webpack_require__(365);
 
 	var arrayPrefixGenerators = {
 	    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -68859,7 +68546,7 @@
 
 
 /***/ }),
-/* 367 */
+/* 364 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -69047,7 +68734,7 @@
 
 
 /***/ }),
-/* 368 */
+/* 365 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -69071,12 +68758,12 @@
 
 
 /***/ }),
-/* 369 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(367);
+	var utils = __webpack_require__(364);
 
 	var has = Object.prototype.hasOwnProperty;
 
@@ -69244,6 +68931,357 @@
 
 
 /***/ }),
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+
+	var _lib = __webpack_require__(294);
+
+	var deletePropertiesModalSingleLocalFilter = exports.deletePropertiesModalSingleLocalFilter = function deletePropertiesModalSingleLocalFilter(filterKey) {
+	  return {
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION,
+	    filterKey: filterKey
+	  };
+	};
+
+	var deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalTermLocalFilter = function deletePropertiesModalTermLocalFilter(termFilter) {
+	  return {
+	    type: _lib.Lib.DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION,
+	    termFilter: termFilter
+	  };
+	};
+
+	var openLocationModal = exports.openLocationModal = function openLocationModal(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_LOCATION_MODAL_ACTION,
+	    open: open
+	  };
+	};
+
+	var openPropertiesModal = exports.openPropertiesModal = function openPropertiesModal(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_PROPERTIES_MODAL_ACTION,
+	    open: open
+	  };
+	};
+
+	var setPropertiesModalLocalFilter = exports.setPropertiesModalLocalFilter = function setPropertiesModalLocalFilter(localFilters) {
+	  return {
+	    type: _lib.Lib.SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
+	    localFilters: localFilters
+	  };
+	};
+
+	var setSearchProps = exports.setSearchProps = function setSearchProps(searchProps) {
+	  return {
+	    type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
+	    searchProps: searchProps
+	  };
+	};
+
+	var setSearchResults = exports.setSearchResults = function setSearchResults(query, searchResults, total, append) {
+	  return {
+	    type: _lib.Lib.SET_SEARCH_RESULTS_ACTION,
+	    append: append,
+	    query: query,
+	    searchResults: searchResults,
+	    totalProps: total
+	  };
+	};
+
+	var setSearchType = exports.setSearchType = function setSearchType(searchObject) {
+	  return {
+	    type: _lib.Lib.SET_SEARCH_TYPE,
+	    searchType: searchObject.searchType,
+	    saleType: searchObject.saleType,
+	    propertyTypes: searchObject.propertyTypes
+	  };
+	};
+
+	var setFilterTerms = exports.setFilterTerms = function setFilterTerms(filterTerms) {
+	  return {
+	    type: _lib.Lib.SET_FILTER_TERMS_ACTION,
+	    filterTerms: filterTerms
+	  };
+	};
+
+	var toggleMapSearchResultsLoading = exports.toggleMapSearchResultsLoading = function toggleMapSearchResultsLoading(loading) {
+	  return {
+	    type: _lib.Lib.TOGGLE_MAP_SEARCH_RESULTS_LOADING_STARTED,
+	    loading: loading
+	  };
+	};
+
+	var toggleUserPanel = exports.toggleUserPanel = function toggleUserPanel(open) {
+	  return {
+	    type: _lib.Lib.TOGGLE_USER_PANEL,
+	    open: open
+	  };
+	};
+
+	var setTestimonialsActiveItem = exports.setTestimonialsActiveItem = function setTestimonialsActiveItem(activeItem) {
+	  return {
+	    type: _lib.Lib.SET_TESTIMONIAL_ACTIVE_ITEM_ACTION,
+	    activeItem: activeItem
+	  };
+	};
+
+	var setBlogPosts = exports.setBlogPosts = function setBlogPosts(posts, allowPagination) {
+	  return {
+	    type: _lib.Lib.SET_BLOG_POSTS_ACTION,
+	    posts: posts,
+	    allowPagination: allowPagination
+	  };
+	};
+
+	var updatePropertiesModalLocalFilter = exports.updatePropertiesModalLocalFilter = function updatePropertiesModalLocalFilter(filter) {
+	  return {
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_LOCAL_FILTER_ACTION,
+	    filter: filter
+	  };
+	};
+
+	var updatePropertiesModalResultCount = exports.updatePropertiesModalResultCount = function updatePropertiesModalResultCount(count) {
+	  return {
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT,
+	    count: count
+	  };
+	};
+
+	var openSaleTypesPanel = exports.openSaleTypesPanel = function openSaleTypesPanel(open) {
+	  return {
+	    type: _lib.Lib.SALE_TYPES_PANEL_OPEN_ACTION,
+	    open: open
+	  };
+	};
+
+	var setPropertiesModalResultCountLoading = exports.setPropertiesModalResultCountLoading = function setPropertiesModalResultCountLoading(show) {
+	  return {
+	    type: _lib.Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
+	    show: show
+	  };
+	};
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lib = __webpack_require__(294);
+
+	var _lodash = __webpack_require__(293);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoadingCircle = function (_Component) {
+	  _inherits(LoadingCircle, _Component);
+
+	  function LoadingCircle() {
+	    _classCallCheck(this, LoadingCircle);
+
+	    return _possibleConstructorReturn(this, (LoadingCircle.__proto__ || Object.getPrototypeOf(LoadingCircle)).apply(this, arguments));
+	  }
+
+	  _createClass(LoadingCircle, [{
+	    key: 'render',
+	    value: function render() {
+	      var additionalClass = this.props.additionalClass;
+
+
+	      var classNames = additionalClass && _lodash2.default.isString(additionalClass) ? _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-circle ' + additionalClass : _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle";
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: classNames },
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
+	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
+	      );
+	    }
+	  }]);
+
+	  return LoadingCircle;
+	}(_react.Component);
+
+	exports.default = LoadingCircle;
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Util = __webpack_require__(356);
+
+	var _Util2 = _interopRequireDefault(_Util);
+
+	var _lib = __webpack_require__(294);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Map = function (_Component) {
+	  _inherits(Map, _Component);
+
+	  function Map(props) {
+	    _classCallCheck(this, Map);
+
+	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+
+	    _this.state = {};
+	    _this.markers = [];
+	    return _this;
+	  }
+
+	  _createClass(Map, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.properties.length) {
+	        this.clearAllMarkers();
+	        this.setPropertyMarkers(nextProps.properties);
+	      }
+	    }
+	  }, {
+	    key: 'clearAllMarkers',
+	    value: function clearAllMarkers() {
+	      this.markers.forEach(function (m) {
+	        m.setMap(null);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      var currentGeoBounds = this.props.currentGeoBounds;
+
+	      var centerPoint = void 0;
+	      if (currentGeoBounds) {
+	        var calculateCenter = new google.maps.LatLngBounds({
+	          lat: +currentGeoBounds.sw.lat,
+	          lng: +currentGeoBounds.sw.lon
+	        }, {
+	          lat: +currentGeoBounds.ne.lat,
+	          lng: +currentGeoBounds.ne.lon
+	        }).getCenter();
+	        centerPoint = {
+	          lat: calculateCenter.lat(),
+	          lng: calculateCenter.lng()
+	        };
+	      } else if (this.props.properties.length) {
+	        centerPoint = {
+	          lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+	          lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
+	        };
+	      } else {
+	        centerPoint = 0;
+	      }
+
+	      var initialCoordinates = {
+	        lat: centerPoint !== 0 ? centerPoint.lat : 0,
+	        lng: centerPoint !== 0 ? centerPoint.lng : 0
+	      };
+	      this.map = new window.google.maps.Map(this.mapElement, {
+	        center: initialCoordinates,
+	        scrollwheel: false,
+	        zoom: 9
+	      });
+	      this.setPropertyMarkers(this.props.properties);
+	      this.map.addListener('dragend', function () {
+	        var bounds = _this2.map.getBounds();
+	        var ne = bounds.getNorthEast();
+	        var sw = bounds.getSouthWest();
+	        _this2.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
+	          ne: {
+	            lat: ne.lat(),
+	            lon: ne.lng()
+	          },
+	          sw: {
+	            lat: sw.lat(),
+	            lon: sw.lng()
+	          }
+	        }));
+	      });
+	    }
+	  }, {
+	    key: 'setPropertyMarkers',
+	    value: function setPropertyMarkers(properties) {
+	      var _this3 = this;
+
+	      var icon = {
+	        url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png'
+	      };
+	      properties.forEach(function (p) {
+	        var latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
+	        var marker = new window.google.maps.Marker({
+	          icon: icon,
+	          position: latLng,
+	          map: _this3.map
+	        });
+	        _this3.markers.push(marker);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+
+	      return _react2.default.createElement('div', { id: _lib.Lib.THEME_CLASSES_PREFIX + "Map", className: _lib.Lib.THEME_CLASSES_PREFIX + "map-container", ref: function ref(r) {
+	          return _this4.mapElement = r;
+	        } });
+	    }
+	  }]);
+
+	  return Map;
+	}(_react.Component);
+
+	Map.propTypes = {
+	  currentGeoBounds: _react.PropTypes.object,
+	  searchByCoordinates: _react.PropTypes.func.isRequired,
+	  properties: _react.PropTypes.array.isRequired
+	};
+	exports.default = Map;
+
+/***/ }),
 /* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -69263,7 +69301,7 @@
 
 	var _FilterBar2 = _interopRequireDefault(_FilterBar);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _reactRedux = __webpack_require__(241);
 
@@ -69291,15 +69329,15 @@
 
 	var _reactRouter = __webpack_require__(182);
 
-	var _urijs = __webpack_require__(361);
+	var _urijs = __webpack_require__(358);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
-	var _qs = __webpack_require__(365);
+	var _qs = __webpack_require__(362);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -70094,7 +70132,7 @@
 
 	var _staticFilters = __webpack_require__(373);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -70331,7 +70369,7 @@
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -73114,7 +73152,7 @@
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -73231,7 +73269,7 @@
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -77286,7 +77324,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _react = __webpack_require__(1);
 
@@ -77296,7 +77334,7 @@
 
 	var _reactRouter = __webpack_require__(182);
 
-	var _urijs = __webpack_require__(361);
+	var _urijs = __webpack_require__(358);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
@@ -77310,7 +77348,7 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -77650,7 +77688,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _LoadingCircle = __webpack_require__(357);
+	var _LoadingCircle = __webpack_require__(368);
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
@@ -78765,11 +78803,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _numeral = __webpack_require__(360);
+	var _numeral = __webpack_require__(357);
 
 	var _numeral2 = _interopRequireDefault(_numeral);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -84651,7 +84689,7 @@
 
 	var _FooterTopMenu2 = _interopRequireDefault(_FooterTopMenu);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -84723,7 +84761,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -84838,7 +84876,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -84947,7 +84985,7 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _HeaderDefault = __webpack_require__(448);
 
@@ -84961,7 +84999,7 @@
 
 	var _HeaderSearch2 = _interopRequireDefault(_HeaderSearch);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -85346,7 +85384,7 @@
 
 	var _lib = __webpack_require__(294);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _lodash = __webpack_require__(293);
 
@@ -85356,7 +85394,7 @@
 
 	var _NavigationIcons2 = _interopRequireDefault(_NavigationIcons);
 
-	var _urijs = __webpack_require__(361);
+	var _urijs = __webpack_require__(358);
 
 	var _urijs2 = _interopRequireDefault(_urijs);
 
@@ -85566,7 +85604,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _FilterTag = __webpack_require__(372);
 
@@ -85582,13 +85620,13 @@
 
 	var _staticFilters = __webpack_require__(373);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
 	var _lodash = __webpack_require__(293);
 
-	var _qs = __webpack_require__(365);
+	var _qs = __webpack_require__(362);
 
 	var _qs2 = _interopRequireDefault(_qs);
 
@@ -85983,7 +86021,7 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _lib = __webpack_require__(294);
 
@@ -86574,7 +86612,7 @@
 
 	var _DropDownSearch2 = _interopRequireDefault(_DropDownSearch);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _lib = __webpack_require__(294);
 
@@ -87706,7 +87744,7 @@
 
 	var _DefaultLayout2 = _interopRequireDefault(_DefaultLayout);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _lib = __webpack_require__(294);
 
@@ -88225,7 +88263,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -88420,7 +88458,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -88464,7 +88502,7 @@
 
 	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -89074,7 +89112,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -89267,7 +89305,7 @@
 
 	var _HeaderGuide2 = _interopRequireDefault(_HeaderGuide);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -89389,7 +89427,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -89481,7 +89519,7 @@
 
 	var _Posts2 = _interopRequireDefault(_Posts);
 
-	var _index = __webpack_require__(356);
+	var _index = __webpack_require__(367);
 
 	var _lib = __webpack_require__(294);
 
@@ -89593,7 +89631,7 @@
 
 	var _reactRedux = __webpack_require__(241);
 
-	var _LoadingCircle = __webpack_require__(357);
+	var _LoadingCircle = __webpack_require__(368);
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
@@ -89873,7 +89911,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 
@@ -90005,7 +90043,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Util = __webpack_require__(359);
+	var _Util = __webpack_require__(356);
 
 	var _Util2 = _interopRequireDefault(_Util);
 

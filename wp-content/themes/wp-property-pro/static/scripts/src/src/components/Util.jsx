@@ -10,6 +10,29 @@ import _ from 'lodash';
 
 class Util extends React.Component {
 
+  static calculateCenterCoors(params) {
+    let {
+      ne,
+      sw
+    } = params;
+    let calculateCenter = (
+      new google.maps.LatLngBounds(
+      {
+        lat: +sw.lat,
+        lng: +sw.lon
+        }, {
+        lat: +ne.lat,
+        lng: +ne.lon
+      }
+      )
+    ).getCenter();
+    let centerPoint = {
+      lat: calculateCenter.lat(),
+      lng: calculateCenter.lng()
+    };
+    return centerPoint;
+  }
+
   static formatPriceValue(price) {
     return numeral(price).format('$0,0');
   }
