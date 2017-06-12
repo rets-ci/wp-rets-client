@@ -77907,7 +77907,7 @@
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
 	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
 	              type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
-	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
+	              relative_permalink: _lodash2.default.get(p, '_source.permalink', ''),
 	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
 	              zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
 	            };

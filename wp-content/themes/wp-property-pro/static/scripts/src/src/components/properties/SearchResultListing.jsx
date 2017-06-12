@@ -46,7 +46,7 @@ class SearchResultListing extends Component {
                   price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
                   post_type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
                   type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
-                  relative_permalink: [_.get(wpp, 'instance.settings.configuration.base_slug'), _.get(p, '_source.post_name', '')].join(Lib.URL_DELIMITER),
+                  relative_permalink: _.get(p, '_source.permalink', ''),
                   thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
                   zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
                 };
