@@ -110,8 +110,7 @@ class PropertiesModal extends Component {
     bedroomSelected: PropTypes.string,
     openLocationModal: PropTypes.func.isRequired,
     propertyTypeSelected: PropTypes.string,
-    localFilters: PropTypes.object.isRequired,
-    standardSearch: PropTypes.func.isRequired,
+    localFilters: PropTypes.object.isRequired
   }
 
   constructor(props) {

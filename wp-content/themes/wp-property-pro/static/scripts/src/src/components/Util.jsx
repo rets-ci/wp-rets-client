@@ -86,7 +86,7 @@ class Util extends React.Component {
     return query;
   }
 
-  static esGeoBoundingBoxObjFormat(params) {
+  static googleGeoFormatToElasticsearch(params) {
     let {
       sw,
       ne
@@ -101,6 +101,24 @@ class Util extends React.Component {
         lon: ne.lon
       }
     };
+  }
+
+  static elasticsearchGeoFormatToGoogle(params) {
+    let {
+      bottomRight,
+      topLeft
+    } = params;
+
+    return {
+      ne: {
+        lat: topLeft.lat,
+        lon: bottomRight.lon
+      },
+      sw: {
+        lat: bottomRight.lat,
+        lon: topLeft.lon
+      }
+    }
   }
 
   static goToUrl(url) {
