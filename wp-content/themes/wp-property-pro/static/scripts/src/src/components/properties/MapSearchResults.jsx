@@ -9,10 +9,13 @@ import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import SearchResultListing from './SearchResultListing.jsx';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
+import qs from 'qs';
+import URI from 'urijs';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -106,6 +109,19 @@ class MapSearchResults extends Component {
     });
   }
 
+  updateURIGeoCoordinates(geoCoordinates) {
+    // update URL
+    let url = new URI(window.location.href);
+    let queryParam = window.location.search.replace('?', '');
+    let currentFilters = qs.parse(queryParam);
+    // remove any current geoCorrdinates before adding additional ones
+    delete currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
+    currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
+    let newSearchQuery = '?' + qs.stringify(currentFilters);
+    let constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
+    browserHistory.push(constructedQuery);
+  }
+
   render() {
     let {
       displayedResults,
@@ -115,11 +131,10 @@ class MapSearchResults extends Component {
       results
     } = this.props;
     let propertyTypes = location.query['wpp_search[property_types]'];
-    let searchFilters = Util.getSearchFiltersFromURL(window.location.href, false);
+    let searchFilters = qs.parse(window.location.search.replace('?', ''))[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let listingSidebarStyle = {
       height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
     };
-
     let elementToShow;
     if (mapSearchResultsLoading) {
       elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
@@ -127,8 +142,7 @@ class MapSearchResults extends Component {
       elementToShow = (
         <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
           <LocationModal />
-          <PropertiesModal searchFilters={searchFilters} standardSearch={this.props.standardSearch}
-                           open={propertiesModalOpen}/>
+          <PropertiesModal open={propertiesModalOpen} />
           <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
             <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
               <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
@@ -137,12 +151,8 @@ class MapSearchResults extends Component {
                     listings. Zoom in, or use filters to narrow your search.</span>
                 </div>
                 {displayedResults.length &&
-                <Map properties={displayedResults}
-                     searchByCoordinates={(locationFilter, geoCoordinates) => this.props.standardSearch({
-                       ...Util.getSearchFiltersFromURL(window.location.href, true),
-                       locationFilter: locationFilter,
-                       geoCoordinates: geoCoordinates
-                     })}/>
+                <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
+                     searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}/>
                 }
               </div>
             </div>

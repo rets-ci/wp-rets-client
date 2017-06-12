@@ -4,6 +4,7 @@ import {Lib} from '../../lib.jsx';
 
 export default class Map extends Component {
   static propTypes = {
+    currentGeoBounds: PropTypes.object,
     searchByCoordinates: PropTypes.func.isRequired,
     properties: PropTypes.array.isRequired
   };
@@ -26,9 +27,38 @@ export default class Map extends Component {
   }
 
   componentDidMount() {
+    let {
+      currentGeoBounds
+    } = this.props;
+    let centerPoint;
+    if (currentGeoBounds) {
+      let calculateCenter = (
+        new google.maps.LatLngBounds(
+        {
+          lat: +currentGeoBounds.sw.lat,
+          lng: +currentGeoBounds.sw.lon
+          }, {
+          lat: +currentGeoBounds.ne.lat,
+          lng: +currentGeoBounds.ne.lon
+        }
+        )
+      ).getCenter();
+      centerPoint = {
+        lat: calculateCenter.lat(),
+        lng: calculateCenter.lng()
+      };
+    } else if (this.props.properties.length) {
+      centerPoint = {
+        lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+        lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
+      };
+    } else {
+      centerPoint = 0;
+    }
+
     let initialCoordinates = {
-      lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-      lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
+      lat: (centerPoint !== 0 ? centerPoint.lat : 0),
+      lng: (centerPoint !== 0 ? centerPoint.lng : 0)
     };
     this.map = new window.google.maps.Map(this.mapElement, {
       center: initialCoordinates,
@@ -40,7 +70,7 @@ export default class Map extends Component {
       let bounds = this.map.getBounds();
       let ne = bounds.getNorthEast();
       let sw = bounds.getSouthWest();
-      this.props.searchByCoordinates(true, Util.esGeoBoundingBoxObjFormat(
+      this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
         {
           ne: {
             lat: ne.lat(),
@@ -55,9 +85,13 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties) {
+    let icon = {
+      url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png',
+    }
     properties.forEach((p) => {
-      let latLng = new window.google.maps.LatLng(p._source.post_meta.wpp_location_latitude ,p._source.post_meta.wpp_location_longitude);
+      let latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
       let marker = new window.google.maps.Marker({
+        icon: icon,
         position: latLng,
         map: this.map
       });

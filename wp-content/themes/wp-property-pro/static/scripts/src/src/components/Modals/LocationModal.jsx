@@ -64,14 +64,16 @@ class LocationModal extends Component {
       searchValue: '',
       timeoutId: 0
     };
-    // Set default values
-    this.props.topQuery();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.open) {
       this.searchInput.focus();
+      if (!this.props.searchResults.length) {
+        this.props.topQuery();
+      }
     }
+    
   }
 
   handleClose(eve) {
