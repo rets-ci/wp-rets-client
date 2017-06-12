@@ -134,6 +134,25 @@ namespace UsabilityDynamics {
 
       $blog_post_id = get_option('page_for_posts');
 
+      /** Just get one fresh property */
+      $property = get_posts([
+        'posts_per_page' => 1,
+        'post_type' => 'property',
+        'post_status' => 'publish',
+        'orderby' => 'date',
+        'order' => 'DESC'
+      ]);
+
+      $property_single_url = '';
+      if($property){
+        /** Rebuild post permalink to single property routing */
+        $property_single_url_array = array_filter(explode('/', str_replace(site_url(), '', get_permalink(array_shift($property)))));
+        array_pop($property_single_url_array);
+
+        if($property_single_url_array)
+          $property_single_url = implode('/', $property_single_url_array);
+      }
+
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
@@ -144,7 +163,8 @@ namespace UsabilityDynamics {
         'blog_base' => $blog_post_id ? str_replace(home_url(), "", get_permalink($blog_post_id)) : null,
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
         'guide_category_base' => 'guides',
-        'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : ''
+        'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
+        'property_single_url' => $property_single_url
       ];
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
@@ -766,7 +786,8 @@ namespace UsabilityDynamics {
       $params = $this->property_pro_get_page_content();
 
       /** Using buffer output for single property page, but separate scripts from body content and send it separately */
-      if (is_single() && $post->post_type === 'property') {
+      /** @TODO commented it while widgets for single page not ready */
+      if (false && is_single() && $post->post_type === 'property') {
 
         $dom = new \DOMDocument;
         $dom->loadHTML($output);
