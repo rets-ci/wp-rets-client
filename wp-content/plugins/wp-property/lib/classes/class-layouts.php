@@ -60,7 +60,7 @@ namespace UsabilityDynamics\WPP {
         ));
 
         // Identify page template to use.
-        add_filter('template_include', array($this, 'page_template'), 99);
+        add_filter('template_include', array($this, 'page_template'), 98);
 
         // Override Layout metadata.
         add_action( 'get_header', array( $this, 'get_header' ), 50 );
@@ -72,6 +72,7 @@ namespace UsabilityDynamics\WPP {
 
         // Add footer CSS. (Hopefully not used).
         add_action('wp_footer', array($this, 'panels_print_inline_css'));
+
 
       }
 
@@ -228,7 +229,7 @@ namespace UsabilityDynamics\WPP {
         }
 
         // Property Terms
-        if ( !is_property_overview_page() && is_tax() && get_queried_object() && get_queried_object()->taxonomy && in_array('property', get_taxonomy(get_queried_object()->taxonomy)->object_type) ) {
+        if ( !is_property_overview_page() && (is_tax() || (get_queried_object() && get_queried_object()->taxonomy && in_array('property', get_taxonomy(get_queried_object()->taxonomy)->object_type)))) {
           $_options['render_type'] = 'term-overview';
           $_options['layout_id'] = get_theme_mod('layouts_property_term_id', isset( $_layouts['term-overview'] ) ? reset($_layouts['term-overview'])->_id : null );
           $_options['template_file'] = get_theme_mod('layouts_term_overview_select', null );
@@ -406,6 +407,7 @@ namespace UsabilityDynamics\WPP {
        */
       public function page_template($template)
       {
+
         global $wp_query;
 
         $_layout = apply_filters('wpp::layouts::configuration', false);
@@ -514,7 +516,7 @@ namespace UsabilityDynamics\WPP {
         }
 
         // $_layout_config = apply_filters('wpp::layouts::layout_override', false, $render, $post);
-       // $modified_data = $this->standard_render($render['layout_id'], $_layout_config);
+        // $modified_data = $this->standard_render($render['layout_id'], $_layout_config);
 
         if( isset( $modified_data ) ) {
           return $modified_data;
@@ -595,7 +597,7 @@ namespace UsabilityDynamics\WPP {
           }
         }
 
-        $html = '';
+        ob_start();
 
         $panel_layout_classes = apply_filters('wpp::layouts::panels_layout_classes', array(), $post_id, $panels_data);
 
@@ -604,15 +606,15 @@ namespace UsabilityDynamics\WPP {
           'id' => 'pl-' . $post_id
         ), $post_id, $panels_data);
 
-        $html .= apply_filters('wpp::layouts::before_container', '<div id="wpp_layout">');
+        echo apply_filters('wpp::layouts::before_container', '<div id="wpp_layout">');
 
-        $html .= '<div';
+        echo '<div';
         foreach ($panel_layout_attributes as $name => $value) {
           if ($value) {
-            $html .= ' ' . $name . '="' . esc_attr($value) . '"';
+            echo ' ' . $name . '="' . esc_attr($value) . '"';
           }
         }
-        $html .= '>';
+        echo '>';
 
 
         if (empty($wpp_layouts_panels_inline_css)) $wpp_layouts_panels_inline_css = array();
@@ -631,13 +633,13 @@ namespace UsabilityDynamics\WPP {
             'id' => !empty($grid_id) ? $grid_id : 'pg-' . $post_id . '-' . $gi,
           ), $panels_data['grids'][$gi]);
 
-          $html .= apply_filters('wpp::layouts::panels_before_row', '', $panels_data['grids'][$gi], $grid_attributes);
+          echo apply_filters('wpp::layouts::panels_before_row', '', $panels_data['grids'][$gi], $grid_attributes);
 
-          $html .= '<div ';
+          echo '<div ';
           foreach ($grid_attributes as $name => $value) {
-            $html .= $name . '="' . esc_attr($value) . '" ';
+            echo $name . '="' . esc_attr($value) . '" ';
           }
-          $html .= '>';
+          echo '>';
 
           $style_attributes = array();
           if (!empty($panels_data['grids'][$gi]['style']['class'])) {
@@ -645,7 +647,7 @@ namespace UsabilityDynamics\WPP {
           }
 
           $row_style_wrapper = $this->panels_start_style_wrapper('row', $style_attributes, !empty($panels_data['grids'][$gi]['style']) ? $panels_data['grids'][$gi]['style'] : array());
-          if (!empty($row_style_wrapper)) $html .= $row_style_wrapper;
+          if (!empty($row_style_wrapper)) echo $row_style_wrapper;
 
           $collapse_order = !empty($panels_data['grids'][$gi]['style']['collapse_order']) ? $panels_data['grids'][$gi]['style']['collapse_order'] : (!is_rtl() ? 'left-top' : 'right-top');
 
@@ -669,17 +671,17 @@ namespace UsabilityDynamics\WPP {
               'id' => 'pgc-' . $post_id . '-' . (!empty($grid_id) ? $grid_id : $gi) . '-' . $ci
             ), $panels_data);
 
-            $html .= '<div ';
+            echo '<div ';
 
             foreach ($cell_attributes as $name => $value) {
-              $html .= $name . '="' . esc_attr($value) . '" ';
+              echo $name . '="' . esc_attr($value) . '" ';
             }
 
-            $html .= '>';
+            echo '>';
 
             $cell_style_wrapper = $this->panels_start_style_wrapper('cell', array(), !empty($panels_data['grids'][$gi]['style']) ? $panels_data['grids'][$gi]['style'] : array());
 
-            if (!empty($cell_style_wrapper)) $html .= $cell_style_wrapper;
+            if (!empty($cell_style_wrapper)) echo $cell_style_wrapper;
 
             foreach ($widgets as $pi => $widget_info) {
 
@@ -691,20 +693,22 @@ namespace UsabilityDynamics\WPP {
               $this->panels_the_widget($widget_info['panels_info'], $widget_info, $gi, $ci, $pi, $pi == 0, $pi == count($widgets) - 1, $post_id, $widget_style_wrapper);
             }
 
-            if (!empty($cell_style_wrapper)) $html .= '</div>';
-            $html .= '</div>';
+            if (!empty($cell_style_wrapper)) echo '</div>';
+            echo '</div>';
           }
 
-          $html .= '</div>';
+          echo '</div>';
 
-          if (!empty($row_style_wrapper)) $html .= '</div>';
+          if (!empty($row_style_wrapper)) echo '</div>';
 
-          $html .= apply_filters('wpp::layouts::panels_after_row', '', $panels_data['grids'][$gi], $grid_attributes);
+          echo apply_filters('wpp::layouts::panels_after_row', '', $panels_data['grids'][$gi], $grid_attributes);
         }
 
-        $html .= '</div>';
+        echo '</div>';
 
-        $html .= apply_filters('wpp::layouts::after_container', '</div>');
+        echo apply_filters('wpp::layouts::after_container', '</div>');
+
+        $html = ob_get_clean();
 
         $html = apply_filters('wpp::layouts::panels_render', $html, $post_id, !empty($post) ? $post : null);
 

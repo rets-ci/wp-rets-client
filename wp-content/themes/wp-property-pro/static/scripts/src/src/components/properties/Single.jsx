@@ -9,6 +9,9 @@ class Single extends Component {
   };
 
   componentDidMount() {
+
+    return false;
+
     let scripts = _.get(this.props.post, 'scripts', '');
     for (let i in scripts) {
       let script = scripts[i];
@@ -33,11 +36,25 @@ class Single extends Component {
   render() {
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"} style={{color: '#000000'}}>
-        {
-          _.get(this.props.post, 'output', null)
-            ? renderHTML(_.get(this.props.post, 'output'))
-            : null
-        }
+        <div className="row no-gutters">
+          <div className="jumbotron">
+            {
+              _.get(this.props.post, 'post_title', null)
+                ? <h1>{_.get(this.props.post, 'post_title')}</h1>
+                : null
+            }
+            {
+              _.get(this.props.post, 'post_content', null)
+                ? <div>{renderHTML(_.get(this.props.post, 'post_content'))}</div>
+                : null
+            }
+            {
+              //  _.get(this.props.post, 'output', null)
+              //  ? renderHTML(_.get(this.props.post, 'output'))
+              //: null
+            }
+          </div>
+        </div>
       </div>
     );
   }
