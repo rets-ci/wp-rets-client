@@ -113,7 +113,7 @@
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) && _lodash2.default.get(bundle, 'blog_base', null)
 	      //@TODO need get from server dynamic routing for property single page, this is just static hardcode
-	      ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug') + "/:propertySlug", component: _Single2.default }) : null,
+	      ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'property_single_url') + "/:propertySlug", component: _Single2.default }) : null,
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, ''), component: _Archive2.default }) : null,
 	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
@@ -30625,6 +30625,9 @@
 	  _createClass(Single, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+
+	      return false;
+
 	      var scripts = _lodash2.default.get(this.props.post, 'scripts', '');
 	      for (var i in scripts) {
 	        var script = scripts[i];
@@ -30651,7 +30654,24 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "single-container", style: { color: '#000000' } },
-	        _lodash2.default.get(this.props.post, 'output', null) ? (0, _reactRenderHtml2.default)(_lodash2.default.get(this.props.post, 'output')) : null
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row no-gutters' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'jumbotron' },
+	            _lodash2.default.get(this.props.post, 'post_title', null) ? _react2.default.createElement(
+	              'h1',
+	              null,
+	              _lodash2.default.get(this.props.post, 'post_title')
+	            ) : null,
+	            _lodash2.default.get(this.props.post, 'post_content', null) ? _react2.default.createElement(
+	              'div',
+	              null,
+	              (0, _reactRenderHtml2.default)(_lodash2.default.get(this.props.post, 'post_content'))
+	            ) : null
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -77765,7 +77785,7 @@
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
 	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''),
 	              type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
-	              relative_permalink: [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(p, '_source.post_name', '')].join(_lib.Lib.URL_DELIMITER),
+	              relative_permalink: _lodash2.default.get(p, '_source.permalink', ''),
 	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
 	              zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
 	            };
@@ -85230,7 +85250,7 @@
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container" },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-navigation row' },
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'header-search-navigation row no-gutters' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo col-sm-2 col-md-1 my-auto mr-auto' },
