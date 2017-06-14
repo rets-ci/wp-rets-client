@@ -10,13 +10,60 @@ export default class Map extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      dragMode: false
+    };
     this.markers = [];
+    this.map;
   }
+
+  calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
+    let calculateCenter = (
+        new google.maps.LatLngBounds(
+        {
+          lat: +swLat,
+          lng: +swLon
+          }, {
+          lat: +neLat,
+          lng: +neLon
+        }
+        )
+      ).getCenter();
+      return {
+        lat: calculateCenter.lat(),
+        lng: calculateCenter.lng()
+      };
+  }
+
+  getInitialCoordinates(currentGeoBounds, properties) {
+    // calculate the initial coordinates based on geo bounds from the URL or the properties
+    let centerPoint;
+    if (currentGeoBounds) {
+      centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.swLon);
+    } else if (properties && properties.length) {
+      centerPoint = {
+        lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+        lng: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[1] : 0
+      };
+    } else {
+      centerPoint = {
+        lat: Lib.DEFAULT_MAP_COORDINATES.lat,
+        lng: Lib.DEFAULT_MAP_COORDINATES.lng
+      };
+    }
+
+    return centerPoint;
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.properties.length) {
+    if (nextProps.properties !== this.props.properties) {
+      if (!this.state.dragMode) {
+        let coordinates = this.getInitialCoordinates(null, nextProps.properties);
+        this.setMapCoordinates(coordinates);
+      }
       this.clearAllMarkers();
       this.setPropertyMarkers(nextProps.properties);
+      
     }
   }
 
@@ -26,45 +73,26 @@ export default class Map extends Component {
     });
   }
 
+  setMapCoordinates(coordinates) {
+    if (!this.map) {
+      this.map = new window.google.maps.Map(this.mapElement, {
+        center: coordinates,
+        scrollwheel: false,
+        zoom: 9
+      });
+    } else {
+      this.map.setCenter(
+        coordinates
+      );
+    }
+  }
+
   componentDidMount() {
     let {
       currentGeoBounds
     } = this.props;
-    let centerPoint;
-    if (currentGeoBounds) {
-      let calculateCenter = (
-        new google.maps.LatLngBounds(
-        {
-          lat: +currentGeoBounds.sw.lat,
-          lng: +currentGeoBounds.sw.lon
-          }, {
-          lat: +currentGeoBounds.ne.lat,
-          lng: +currentGeoBounds.ne.lon
-        }
-        )
-      ).getCenter();
-      centerPoint = {
-        lat: calculateCenter.lat(),
-        lng: calculateCenter.lng()
-      };
-    } else if (this.props.properties.length) {
-      centerPoint = {
-        lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-        lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
-      };
-    } else {
-      centerPoint = 0;
-    }
-
-    let initialCoordinates = {
-      lat: (centerPoint !== 0 ? centerPoint.lat : 0),
-      lng: (centerPoint !== 0 ? centerPoint.lng : 0)
-    };
-    this.map = new window.google.maps.Map(this.mapElement, {
-      center: initialCoordinates,
-      scrollwheel: false,
-      zoom: 9
-    });
+    let coordinates = this.getInitialCoordinates(currentGeoBounds, this.props.properties);
+    this.setMapCoordinates(coordinates);
     this.setPropertyMarkers(this.props.properties);
     this.map.addListener('dragend', () => {
       let bounds = this.map.getBounds();
@@ -81,6 +109,10 @@ export default class Map extends Component {
             lon: sw.lng()
           }
         }));
+      // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+      this.setState({
+        dragMode: true
+      });
     });
   }
 

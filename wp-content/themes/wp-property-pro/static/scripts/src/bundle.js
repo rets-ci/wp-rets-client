@@ -47795,6 +47795,10 @@
 	var Lib = exports.Lib = {
 	  ADD_MAP_ACTION: 'ADD_MAP',
 	  ADD_MARKER_ACTION: 'ADD_MARKER',
+	  DEFAULT_MAP_COORDINATES: {
+	    lat: 36.0017455,
+	    lng: -79.0249944
+	  },
 	  DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_SINGLE_LOCAL_FILTER',
 	  DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER_ACTION: 'DELETE_PROPERTIES_MODAL_TERM_LOCAL_FILTER',
 	  TOGGLE_USER_PANEL: 'TOGGLE_USER_PANEL',
@@ -62945,9 +62949,7 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    standardSearch: function standardSearch(params) {
-	      dispatch((0, _index.toggleMapSearchResultsLoading)(true));
 	      _Api2.default.makeStandardPropertySearch(params, function (query, response) {
-	        dispatch((0, _index.toggleMapSearchResultsLoading)(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), false));
 	        } else {
@@ -62956,9 +62958,7 @@
 	      });
 	    },
 	    doSearchWithQuery: function doSearchWithQuery(query, append) {
-	      // dispatch(toggleMapSearchResultsLoading(true));
 	      _Api2.default.search(query, function (response) {
-	        // dispatch(toggleMapSearchResultsLoading(false));
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
 	          dispatch((0, _index.setSearchResults)(query, _lodash2.default.get(response, 'hits.hits', []), _lodash2.default.get(response, 'hits.total', 0), append));
 	        } else {
@@ -62996,9 +62996,13 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (!_lodash2.default.isEqual(nextProps.queryParams, this.props.queryParams)) {
-	        this.props.resetSearchResults();
 	        this.applyQueryFilters();
 	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.props.resetSearchResults();
 	    }
 	  }, {
 	    key: 'seeMoreHandler',
@@ -63053,48 +63057,48 @@
 	      var listingSidebarStyle = {
 	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
 	      };
-	      var elementToShow = void 0;
-	      if (mapSearchResultsLoading) {
-	        elementToShow = _react2.default.createElement(_LoadingCircle2.default, { additionalClass: _lib.Lib.THEME_CLASSES_PREFIX + "search-result-loading" });
-	      } else {
-	        elementToShow = _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
-	          _react2.default.createElement(_LocationModal2.default, null),
-	          _react2.default.createElement(_PropertiesModal2.default, { open: propertiesModalOpen }),
+	      var elementToShow = _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
+	        _react2.default.createElement(_LocationModal2.default, null),
+	        _react2.default.createElement(_PropertiesModal2.default, { open: propertiesModalOpen }),
+	        _react2.default.createElement(
+	          'section',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
 	          _react2.default.createElement(
-	            'section',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
+	            'div',
+	            { className: 'col-sm-4 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-4 ' + (!this.state.mapDisplay ? "hidden-xs-down" : "") },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
 	              _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-map" },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
-	                  _react2.default.createElement(
-	                    'span',
-	                    { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
-	                    'Only showing ',
-	                    displayedResults.length,
-	                    'listings. Zoom in, or use filters to narrow your search.'
-	                  )
-	                ),
-	                displayedResults.length && _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
-	                  searchByCoordinates: this.updateURIGeoCoordinates.bind(this) })
-	              )
-	            ),
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption" },
+	                displayedResults.length ? _react2.default.createElement(
+	                  'span',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
+	                  'Only showing ',
+	                  displayedResults.length,
+	                  'listings. Zoom in, or use filters to narrow your search.'
+	                ) : null
+	              ),
+	              _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
+	                searchByCoordinates: this.updateURIGeoCoordinates.bind(this) }),
+	              '}'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
-	              displayedResults.length ? _react2.default.createElement(
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
+	              _react2.default.createElement(
 	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
+	                  null,
 	                  _react2.default.createElement(
 	                    'h1',
 	                    null,
@@ -63110,70 +63114,58 @@
 	                    searchFilters.sale_type,
 	                    ' that are priced between $250,000 and $500,00 with three to five betweens and two to three bathrooms.'
 	                  )
-	                ),
-	                _react2.default.createElement(_SearchResultListing2.default, {
-	                  allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
-	                  properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
-	              ) : _react2.default.createElement(
-	                'div',
-	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
-	                  _react2.default.createElement(
-	                    'h1',
-	                    null,
-	                    'No results to show. Please adjust the filters to select a different range of properties'
-	                  )
 	                )
-	              )
-	            ),
+	              ),
+	              _react2.default.createElement(_SearchResultListing2.default, {
+	                allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
+	                properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation hidden-sm-up' },
 	            _react2.default.createElement(
-	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation hidden-sm-up' },
+	              'nav',
+	              { className: 'navbar navbar-toggleable-md' },
 	              _react2.default.createElement(
-	                'nav',
-	                { className: 'navbar navbar-toggleable-md' },
+	                'div',
+	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items" },
 	                _react2.default.createElement(
-	                  'div',
-	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items" },
+	                  'ul',
+	                  {
+	                    className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation-switchers navbar-nav mr-auto' },
 	                  _react2.default.createElement(
-	                    'ul',
-	                    {
-	                      className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-mobile-navigation-switchers navbar-nav mr-auto' },
+	                    'li',
+	                    { className: 'nav-item' },
 	                    _react2.default.createElement(
-	                      'li',
-	                      { className: 'nav-item' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { className: 'btn', href: '#' },
-	                        'Filter'
-	                      )
-	                    ),
-	                    _react2.default.createElement(
-	                      'li',
-	                      { className: 'nav-item' },
-	                      _react2.default.createElement(
-	                        'a',
-	                        { className: 'btn', href: '#', onClick: function onClick(e) {
-	                            e.preventDefault();
-	                            _this2.clickMobileSwitcherHandler.bind(_this2)(!_this2.state.mapDisplay);
-	                          } },
-	                        this.state.mapDisplay ? 'List' : 'Map'
-	                      )
+	                      'a',
+	                      { className: 'btn', href: '#' },
+	                      'Filter'
 	                    )
 	                  ),
 	                  _react2.default.createElement(
-	                    'a',
-	                    { href: '#', className: 'btn' },
-	                    'Search'
+	                    'li',
+	                    { className: 'nav-item' },
+	                    _react2.default.createElement(
+	                      'a',
+	                      { className: 'btn', href: '#', onClick: function onClick(e) {
+	                          e.preventDefault();
+	                          _this2.clickMobileSwitcherHandler.bind(_this2)(!_this2.state.mapDisplay);
+	                        } },
+	                      this.state.mapDisplay ? 'List' : 'Map'
+	                    )
 	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#', className: 'btn' },
+	                  'Search'
 	                )
 	              )
 	            )
 	          )
-	        );
-	      }
+	        )
+	      );
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-map-container" },
@@ -69187,15 +69179,58 @@
 
 	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
-	    _this.state = {};
+	    _this.state = {
+	      dragMode: false
+	    };
 	    _this.markers = [];
+	    _this.map;
 	    return _this;
 	  }
 
 	  _createClass(Map, [{
+	    key: 'calculateGeoRectangleCenterPoint',
+	    value: function calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
+	      var calculateCenter = new google.maps.LatLngBounds({
+	        lat: +swLat,
+	        lng: +swLon
+	      }, {
+	        lat: +neLat,
+	        lng: +neLon
+	      }).getCenter();
+	      return {
+	        lat: calculateCenter.lat(),
+	        lng: calculateCenter.lng()
+	      };
+	    }
+	  }, {
+	    key: 'getInitialCoordinates',
+	    value: function getInitialCoordinates(currentGeoBounds, properties) {
+	      // calculate the initial coordinates based on geo bounds from the URL or the properties
+	      var centerPoint = void 0;
+	      if (currentGeoBounds) {
+	        centerPoint = this.calculateGeoRectangleCenterPoint(currentGeoBounds.ne.lat, currentGeoBounds.ne.lon, currentGeoBounds.sw.lat, currentGeoBounds.swLon);
+	      } else if (properties && properties.length) {
+	        centerPoint = {
+	          lat: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[0] : 0,
+	          lng: properties.length ? +properties[0]._source.post_meta.wpp_location_pin[1] : 0
+	        };
+	      } else {
+	        centerPoint = {
+	          lat: _lib.Lib.DEFAULT_MAP_COORDINATES.lat,
+	          lng: _lib.Lib.DEFAULT_MAP_COORDINATES.lng
+	        };
+	      }
+
+	      return centerPoint;
+	    }
+	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.properties.length) {
+	      if (nextProps.properties !== this.props.properties) {
+	        if (!this.state.dragMode) {
+	          var coordinates = this.getInitialCoordinates(null, nextProps.properties);
+	          this.setMapCoordinates(coordinates);
+	        }
 	        this.clearAllMarkers();
 	        this.setPropertyMarkers(nextProps.properties);
 	      }
@@ -69208,43 +69243,27 @@
 	      });
 	    }
 	  }, {
+	    key: 'setMapCoordinates',
+	    value: function setMapCoordinates(coordinates) {
+	      if (!this.map) {
+	        this.map = new window.google.maps.Map(this.mapElement, {
+	          center: coordinates,
+	          scrollwheel: false,
+	          zoom: 9
+	        });
+	      } else {
+	        this.map.setCenter(coordinates);
+	      }
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
 	      var currentGeoBounds = this.props.currentGeoBounds;
 
-	      var centerPoint = void 0;
-	      if (currentGeoBounds) {
-	        var calculateCenter = new google.maps.LatLngBounds({
-	          lat: +currentGeoBounds.sw.lat,
-	          lng: +currentGeoBounds.sw.lon
-	        }, {
-	          lat: +currentGeoBounds.ne.lat,
-	          lng: +currentGeoBounds.ne.lon
-	        }).getCenter();
-	        centerPoint = {
-	          lat: calculateCenter.lat(),
-	          lng: calculateCenter.lng()
-	        };
-	      } else if (this.props.properties.length) {
-	        centerPoint = {
-	          lat: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[0] : 0,
-	          lng: this.props.properties.length ? +this.props.properties[0]._source.post_meta.wpp_location_pin[1] : 0
-	        };
-	      } else {
-	        centerPoint = 0;
-	      }
-
-	      var initialCoordinates = {
-	        lat: centerPoint !== 0 ? centerPoint.lat : 0,
-	        lng: centerPoint !== 0 ? centerPoint.lng : 0
-	      };
-	      this.map = new window.google.maps.Map(this.mapElement, {
-	        center: initialCoordinates,
-	        scrollwheel: false,
-	        zoom: 9
-	      });
+	      var coordinates = this.getInitialCoordinates(currentGeoBounds, this.props.properties);
+	      this.setMapCoordinates(coordinates);
 	      this.setPropertyMarkers(this.props.properties);
 	      this.map.addListener('dragend', function () {
 	        var bounds = _this2.map.getBounds();
@@ -69260,6 +69279,10 @@
 	            lon: sw.lng()
 	          }
 	        }));
+	        // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+	        _this2.setState({
+	          dragMode: true
+	        });
 	      });
 	    }
 	  }, {
@@ -77750,7 +77773,6 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if (nextProps.properties !== this.props.properties) {
-	        console.log('resetting loading');
 	        this.setState({ loading: false });
 	      }
 	    }
@@ -77759,7 +77781,8 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var properties = _lodash2.default.get(this.props, 'properties', []);
+	      var properties = this.props.properties;
+
 
 	      return _react2.default.createElement(
 	        'div',
