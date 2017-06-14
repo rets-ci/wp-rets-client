@@ -142,8 +142,7 @@ class MapSearchResults extends Component {
             <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
               <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
                 {displayedResults.length ? 
-                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
-                    listings. Zoom in, or use filters to narrow your search.</span>
+                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.</span>
                 : null}
               </div>
               <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}

@@ -63079,7 +63079,7 @@
 	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + "caption-content" },
 	                  'Only showing ',
 	                  displayedResults.length,
-	                  'listings. Zoom in, or use filters to narrow your search.'
+	                  ' listings. Explore the map, or use filters to narrow your search.'
 	                ) : null
 	              ),
 	              _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
@@ -69179,11 +69179,12 @@
 
 	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
+	    _this.bounds;
+	    _this.map;
+	    _this.markers = [];
 	    _this.state = {
 	      dragMode: false
 	    };
-	    _this.markers = [];
-	    _this.map;
 	    return _this;
 	  }
 
@@ -69201,6 +69202,35 @@
 	        lat: calculateCenter.lat(),
 	        lng: calculateCenter.lng()
 	      };
+	    }
+	  }, {
+	    key: 'clearBounds',
+	    value: function clearBounds() {
+	      this.bounds = new google.maps.LatLngBounds();
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.properties !== this.props.properties) {
+	        if (!this.state.dragMode) {
+	          var coordinates = this.getInitialCoordinates(null, nextProps.properties);
+	          this.setMapCoordinates(coordinates);
+	        }
+	        this.clearAllMarkers();
+	        this.clearBounds();
+	        this.setPropertyMarkers(nextProps.properties);
+	        if (!this.state.dragMode) {
+	          // auto zoom
+	          this.map.fitBounds(this.bounds);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'clearAllMarkers',
+	    value: function clearAllMarkers() {
+	      this.markers.forEach(function (m) {
+	        m.setMap(null);
+	      });
 	    }
 	  }, {
 	    key: 'getInitialCoordinates',
@@ -69224,25 +69254,6 @@
 	      return centerPoint;
 	    }
 	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.properties !== this.props.properties) {
-	        if (!this.state.dragMode) {
-	          var coordinates = this.getInitialCoordinates(null, nextProps.properties);
-	          this.setMapCoordinates(coordinates);
-	        }
-	        this.clearAllMarkers();
-	        this.setPropertyMarkers(nextProps.properties);
-	      }
-	    }
-	  }, {
-	    key: 'clearAllMarkers',
-	    value: function clearAllMarkers() {
-	      this.markers.forEach(function (m) {
-	        m.setMap(null);
-	      });
-	    }
-	  }, {
 	    key: 'setMapCoordinates',
 	    value: function setMapCoordinates(coordinates) {
 	      if (!this.map) {
@@ -69252,13 +69263,33 @@
 	          zoom: 9
 	        });
 	      } else {
-	        this.map.setCenter(coordinates);
+	        this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
+	        var center = this.map.getCenter();
 	      }
+	    }
+	  }, {
+	    key: 'setPropertyMarkers',
+	    value: function setPropertyMarkers(properties) {
+	      var _this2 = this;
+
+	      var icon = {
+	        url: bundle.static_images_url + 'oval-3-25.png'
+	      };
+	      properties.forEach(function (p) {
+	        var loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
+	        var marker = new window.google.maps.Marker({
+	          icon: icon,
+	          position: loc,
+	          map: _this2.map
+	        });
+	        _this2.markers.push(marker);
+	        _this2.bounds.extend(loc);
+	      });
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var currentGeoBounds = this.props.currentGeoBounds;
 
@@ -69266,10 +69297,10 @@
 	      this.setMapCoordinates(coordinates);
 	      this.setPropertyMarkers(this.props.properties);
 	      this.map.addListener('dragend', function () {
-	        var bounds = _this2.map.getBounds();
+	        var bounds = _this3.map.getBounds();
 	        var ne = bounds.getNorthEast();
 	        var sw = bounds.getSouthWest();
-	        _this2.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
+	        _this3.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
 	          ne: {
 	            lat: ne.lat(),
 	            lon: ne.lng()
@@ -69280,27 +69311,9 @@
 	          }
 	        }));
 	        // set localState to distinguish between initial load and dragging in componentWillReceiveProps
-	        _this2.setState({
+	        _this3.setState({
 	          dragMode: true
 	        });
-	      });
-	    }
-	  }, {
-	    key: 'setPropertyMarkers',
-	    value: function setPropertyMarkers(properties) {
-	      var _this3 = this;
-
-	      var icon = {
-	        url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png'
-	      };
-	      properties.forEach(function (p) {
-	        var latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
-	        var marker = new window.google.maps.Marker({
-	          icon: icon,
-	          position: latLng,
-	          map: _this3.map
-	        });
-	        _this3.markers.push(marker);
 	      });
 	    }
 	  }, {

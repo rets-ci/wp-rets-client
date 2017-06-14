@@ -10,11 +10,12 @@ export default class Map extends Component {
   };
   constructor(props) {
     super(props);
+    this.bounds;
+    this.map;
+    this.markers = [];
     this.state = {
       dragMode: false
     };
-    this.markers = [];
-    this.map;
   }
 
   calculateGeoRectangleCenterPoint(neLat, neLon, swLat, swLon) {
@@ -33,6 +34,32 @@ export default class Map extends Component {
         lat: calculateCenter.lat(),
         lng: calculateCenter.lng()
       };
+  }
+
+  clearBounds() {
+    this.bounds = new google.maps.LatLngBounds();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.properties !== this.props.properties) {
+      if (!this.state.dragMode) {
+        let coordinates = this.getInitialCoordinates(null, nextProps.properties);
+        this.setMapCoordinates(coordinates);
+      }
+      this.clearAllMarkers();
+      this.clearBounds();
+      this.setPropertyMarkers(nextProps.properties);
+      if (!this.state.dragMode) {
+        // auto zoom
+        this.map.fitBounds(this.bounds);
+      }
+    }
+  }
+
+  clearAllMarkers() {
+    this.markers.forEach(m => {
+      m.setMap(null);
+    });
   }
 
   getInitialCoordinates(currentGeoBounds, properties) {
@@ -55,24 +82,6 @@ export default class Map extends Component {
     return centerPoint;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.properties !== this.props.properties) {
-      if (!this.state.dragMode) {
-        let coordinates = this.getInitialCoordinates(null, nextProps.properties);
-        this.setMapCoordinates(coordinates);
-      }
-      this.clearAllMarkers();
-      this.setPropertyMarkers(nextProps.properties);
-      
-    }
-  }
-
-  clearAllMarkers() {
-    this.markers.forEach(m => {
-      m.setMap(null);
-    });
-  }
-
   setMapCoordinates(coordinates) {
     if (!this.map) {
       this.map = new window.google.maps.Map(this.mapElement, {
@@ -81,10 +90,25 @@ export default class Map extends Component {
         zoom: 9
       });
     } else {
-      this.map.setCenter(
-        coordinates
-      );
+      this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
+      let center = this.map.getCenter();
     }
+  }
+
+  setPropertyMarkers(properties) {
+    let icon = {
+      url: bundle.static_images_url + 'oval-3-25.png',
+    };
+    properties.forEach((p) => {
+      let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
+      let marker = new window.google.maps.Marker({
+        icon: icon,
+        position: loc,
+        map: this.map
+      });
+      this.markers.push(marker);
+      this.bounds.extend(loc);
+    });
   }
 
   componentDidMount() {
@@ -113,21 +137,6 @@ export default class Map extends Component {
       this.setState({
         dragMode: true
       });
-    });
-  }
-
-  setPropertyMarkers(properties) {
-    let icon = {
-      url: '/wp-content/themes/wp-property-pro/static/images/src/oval-3-25.png',
-    }
-    properties.forEach((p) => {
-      let latLng = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
-      let marker = new window.google.maps.Marker({
-        icon: icon,
-        position: latLng,
-        map: this.map
-      });
-      this.markers.push(marker);
     });
   }
 
