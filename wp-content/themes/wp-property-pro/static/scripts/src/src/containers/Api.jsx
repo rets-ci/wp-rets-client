@@ -1,6 +1,7 @@
 import React from 'react';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
+import Util from '../components/Util.jsx';
 
 class Api {
 
@@ -490,6 +491,7 @@ class Api {
         }
       });
     }
+    
     query = JSON.stringify(query);
 
     let size = params.size || 500;
@@ -526,9 +528,23 @@ class Api {
       "wpp_location_pin",
       "tax_input"
     ]);
-
+    let sort = [];
+    if (params.geoCoordinates) {
+      let centerCoors = Util.calculateCenterCoors(Util.elasticsearchGeoFormatToGoogle(params.geoCoordinates));
+      centerCoors['lon'] = centerCoors['lng'];
+      delete centerCoors['lng'];
+      sort.push({
+        "_geo_distance": {
+          "wpp_location_pin": centerCoors,
+          "order": "asc",
+          "unit": "km",
+          "distance_type": "arc"
+        }
+      });
+    }
+    sort = JSON.stringify(sort);
     // return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "sort":[{"post_date":{"order":"asc"}},{"post_title":{"order":"asc"}}],"aggregations":' + aggregations + '}');
-    return JSON.parse('{"query":' + query + ',"_source": ' + source + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
+    return JSON.parse('{"query":' + query + ',"_source": ' + source + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
   static search(query, callback) {

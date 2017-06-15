@@ -19,14 +19,14 @@ class SearchResultListing extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.properties !== this.props.properties) {
-      console.log('resetting loading');
       this.setState({loading: false});
     }
   }
 
   render() {
-
-    let properties = _.get(this.props, 'properties', []);
+    let {
+      properties
+    } = this.props;
 
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>

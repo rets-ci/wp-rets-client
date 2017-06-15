@@ -33,9 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     standardSearch: (params) => {
-      dispatch(toggleMapSearchResultsLoading(true));
       Api.makeStandardPropertySearch(params, (query, response) => {
-        dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), false));
         } else {
@@ -44,9 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     doSearchWithQuery: (query, append) => {
-      // dispatch(toggleMapSearchResultsLoading(true));
       Api.search(query, response => {
-        // dispatch(toggleMapSearchResultsLoading(false));
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
@@ -84,10 +80,12 @@ class MapSearchResults extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps.queryParams, this.props.queryParams)) {
-      this.props.resetSearchResults();
       this.applyQueryFilters();
     }
+  }
 
+  componentWillUnmount() {
+    this.props.resetSearchResults();
   }
 
   seeMoreHandler() {
@@ -135,68 +133,57 @@ class MapSearchResults extends Component {
     let listingSidebarStyle = {
       height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
     };
-    let elementToShow;
-    if (mapSearchResultsLoading) {
-      elementToShow = (<LoadingCircle additionalClass={Lib.THEME_CLASSES_PREFIX + "search-result-loading"}/>);
-    } else {
-      elementToShow = (
-        <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
-          <LocationModal />
-          <PropertiesModal open={propertiesModalOpen} />
-          <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
-            <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-              <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
-                <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
-                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length}
-                    listings. Zoom in, or use filters to narrow your search.</span>
-                </div>
-                {displayedResults.length &&
-                <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
-                     searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}/>
-                }
+    let elementToShow = (
+      <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
+        <LocationModal />
+        <PropertiesModal open={propertiesModalOpen} />
+        <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
+          <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
+              <div className={Lib.THEME_CLASSES_PREFIX + "caption"}>
+                {displayedResults.length ? 
+                  <span className={Lib.THEME_CLASSES_PREFIX + "caption-content"}>Only showing {displayedResults.length} listings. Explore the map, or use filters to narrow your search.</span>
+                : null}
               </div>
-            </div>
-            <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-              {displayedResults.length ?
-                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
-                  <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-                    <h1>Homes for {searchFilters.sale_type}</h1>
-                    <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
-                      between
-                      $250,000 and $500,00
-                      with three to five betweens and two to three bathrooms.</p>
-                  </div>
-                  <SearchResultListing
-                    allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-                    properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
-                </div>
-                :
-                <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
-                  <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-                    <h1>No results to show. Please adjust the filters to select a different range of properties</h1>
-                  </div>
-                </div>
+              <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
+                    searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}/>
               }
             </div>
-            <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
-              <nav className="navbar navbar-toggleable-md">
-                <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
-                  <ul
-                    className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
-                    <li className="nav-item"><a className="btn" href="#">Filter</a></li>
-                    <li className="nav-item"><a className="btn" href="#" onClick={(e) => {
-                      e.preventDefault();
-                      this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
-                    }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
-                  </ul>
-                  <a href="#" className="btn">Search</a>
-                </div>
-              </nav>
+          </div>
+          <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
+              <div>
+                <h1>Homes for {searchFilters.sale_type}</h1>
+                <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
+                  between
+                  $250,000 and $500,00
+                  with three to five betweens and two to three bathrooms.</p>
+              </div>
             </div>
-          </section>
-        </div>
-      );
-    }
+            <SearchResultListing
+              allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
+              properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
+          </div>
+          </div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
+            <nav className="navbar navbar-toggleable-md">
+              <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
+                <ul
+                  className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
+                  <li className="nav-item"><a className="btn" href="#">Filter</a></li>
+                  <li className="nav-item"><a className="btn" href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
+                  }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
+                </ul>
+                <a href="#" className="btn">Search</a>
+              </div>
+            </nav>
+          </div>
+        </section>
+      </div>
+    );
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "search-map-container"}>
         {elementToShow}
