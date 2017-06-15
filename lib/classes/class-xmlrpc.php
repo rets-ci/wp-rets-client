@@ -932,7 +932,7 @@ namespace UsabilityDynamics\WPRETSC {
           update_post_meta( $post_data['ID' ], $_meta_key, $_meta_value );
         }
 
-        if( isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ] ) {
+        if( (isset( $options[ 'skipTermUpdates' ] ) || !$options[ 'skipTermUpdates' ]) && isset($post_data[ 'tax_input' ]) ) {
           Utility::insert_property_terms( $post_data[ 'ID' ], $post_data[ 'tax_input' ], $post_data );
           ud_get_wp_rets_client()->write_log( 'Updated terms.', 'debug' );
         }
