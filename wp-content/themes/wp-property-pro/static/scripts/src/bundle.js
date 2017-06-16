@@ -79018,11 +79018,13 @@
 	              _react2.default.createElement(
 	                'li',
 	                { className: 'nav-item mr-auto ' },
-	                _react2.default.createElement('a', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle',
+	                _react2.default.createElement('a', {
+	                  className: _lib.Lib.THEME_CLASSES_PREFIX + 'nav-prev rounded-circle',
 	                  onClick: function onClick(e) {
 	                    e.preventDefault();
 	                    return _this2.handleNavigation.bind(_this2)('prev');
-	                  }, href: '#' })
+	                  },
+	                  href: '#' })
 	              ),
 	              _react2.default.createElement(
 	                'li',
@@ -88087,12 +88089,10 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
-	        slidesPerView: 'auto',
-	        centeredSlides: window.innerWidth >= _lib.Lib.MOBILE_WIDTH,
+	        slidesPerView: 5,
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
-	        spaceBetween: 20,
-	        loop: true
+	        spaceBetween: 20
 	      });
 	    }
 	  }, {
