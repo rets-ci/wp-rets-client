@@ -208,6 +208,7 @@ namespace UsabilityDynamics {
 
       /** Get customizer colors settings */
       $params['colors']['primary_color'] = get_theme_mod('property_pro_primary_color');
+      $params['colors']['secondary_color'] = get_theme_mod('property_pro_secondary_color');
 
       return $params;
 
