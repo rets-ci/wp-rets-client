@@ -62934,10 +62934,12 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  var allQueryParams = ownProps.location.query ? _qs2.default.parse(ownProps.location.query) : {};
 	  return {
+	    allQueryParams: allQueryParams,
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
 	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
-	    queryParams: ownProps.location.query,
+	    searchQueryParams: allQueryParams[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
 	    mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
 	    propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
 	    results: _lodash2.default.get(state, 'searchResults.searchResults', []),
@@ -62995,7 +62997,7 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (!_lodash2.default.isEqual(nextProps.queryParams, this.props.queryParams)) {
+	      if (!_lodash2.default.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
 	        this.applyQueryFilters();
 	      }
 	    }
@@ -63029,12 +63031,15 @@
 	  }, {
 	    key: 'updateURIGeoCoordinates',
 	    value: function updateURIGeoCoordinates(geoCoordinates) {
+	      //TODO: this should be refactored to use the URL related functions in Util.jsx
 	      // update URL
 	      var url = new _urijs2.default(window.location.href);
 	      var queryParam = window.location.search.replace('?', '');
 	      var currentFilters = _qs2.default.parse(queryParam);
 	      // remove any current geoCorrdinates before adding additional ones
 	      delete currentFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
+	      // remove selected property as well
+	      delete currentFilters['selected_property'];
 	      currentFilters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
 	      var newSearchQuery = '?' + _qs2.default.stringify(currentFilters);
 	      var constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
@@ -63046,14 +63051,17 @@
 	      var _this2 = this;
 
 	      var _props = this.props,
+	          allQueryParams = _props.allQueryParams,
+	          searchQueryParams = _props.searchQueryParams,
 	          displayedResults = _props.displayedResults,
 	          location = _props.location,
 	          mapSearchResultsLoading = _props.mapSearchResultsLoading,
 	          propertiesModalOpen = _props.propertiesModalOpen,
 	          results = _props.results;
 
+	      var filters = _qs2.default.parse(window.location.search.replace('?', ''));
 	      var propertyTypes = location.query['wpp_search[property_types]'];
-	      var searchFilters = _qs2.default.parse(window.location.search.replace('?', ''))[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
+	      var searchFilters = filters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
 	      var listingSidebarStyle = {
 	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
 	      };
@@ -63083,7 +63091,7 @@
 	                ) : null
 	              ),
 	              _react2.default.createElement(_Map2.default, { currentGeoBounds: searchFilters.geoCoordinates ? _Util2.default.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null, properties: displayedResults,
-	                searchByCoordinates: this.updateURIGeoCoordinates.bind(this) }),
+	                searchByCoordinates: this.updateURIGeoCoordinates.bind(this), selectedProperty: filters.selected_property }),
 	              '}'
 	            )
 	          ),
@@ -63118,7 +63126,10 @@
 	              ),
 	              _react2.default.createElement(_SearchResultListing2.default, {
 	                allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
-	                properties: displayedResults, seeMoreHandler: this.seeMoreHandler.bind(this) })
+	                properties: displayedResults,
+	                seeMoreHandler: this.seeMoreHandler.bind(this),
+	                selectedProperty: filters.selected_property
+	              })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -69171,6 +69182,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var defaultIcon = {
+	  url: bundle.static_images_url + 'oval-3-25.png'
+	};
+	var selectedIcon = {
+	  url: bundle.static_images_url + 'oval-selected-3-25.png'
+	};
+
 	var Map = function (_Component) {
 	  _inherits(Map, _Component);
 
@@ -69216,7 +69234,7 @@
 	          var coordinates = this.getInitialCoordinates(null, nextProps.properties);
 	          this.setMapCoordinates(coordinates);
 	        }
-	        this.clearAllMarkers();
+	        this.clearMarkers();
 	        this.clearBounds();
 	        this.setPropertyMarkers(nextProps.properties);
 	        if (!this.state.dragMode) {
@@ -69224,13 +69242,23 @@
 	          this.map.fitBounds(this.bounds);
 	        }
 	      }
+	      var condition = !this.markers.filter(function (m) {
+	        return m.selected;
+	      }).length || nextProps.selectedProperty !== this.markers.filter(function (m) {
+	        return m.selected;
+	      })[0].propertyId;
+	      if (condition) {
+	        this.deselectMarkers(this.markers);
+	        this.selectMarker(this.markers, nextProps.selectedProperty);
+	      }
 	    }
 	  }, {
-	    key: 'clearAllMarkers',
-	    value: function clearAllMarkers() {
+	    key: 'clearMarkers',
+	    value: function clearMarkers() {
 	      this.markers.forEach(function (m) {
 	        m.setMap(null);
 	      });
+	      this.markers = [];
 	    }
 	  }, {
 	    key: 'getInitialCoordinates',
@@ -69272,15 +69300,19 @@
 	    value: function setPropertyMarkers(properties) {
 	      var _this2 = this;
 
-	      var icon = {
-	        url: bundle.static_images_url + 'oval-3-25.png'
-	      };
 	      properties.forEach(function (p) {
 	        var loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
 	        var marker = new window.google.maps.Marker({
-	          icon: icon,
+	          icon: defaultIcon,
 	          position: loc,
 	          map: _this2.map
+	        });
+	        marker.propertyId = p._id;
+	        marker.selected = false;
+	        marker.addListener('click', function () {
+	          var filter = { 'selected_property': marker.propertyId };
+	          var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'set', false);
+	          _Util2.default.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
 	        });
 	        _this2.markers.push(marker);
 	        _this2.bounds.extend(loc);
@@ -69291,30 +69323,61 @@
 	    value: function componentDidMount() {
 	      var _this3 = this;
 
-	      var currentGeoBounds = this.props.currentGeoBounds;
+	      var _props = this.props,
+	          currentGeoBounds = _props.currentGeoBounds,
+	          selectedProperty = _props.selectedProperty;
+	      // no properties to pass into `getInitialCoordinates`
 
-	      var coordinates = this.getInitialCoordinates(currentGeoBounds, this.props.properties);
+	      var coordinates = this.getInitialCoordinates(currentGeoBounds, null);
 	      this.setMapCoordinates(coordinates);
-	      this.setPropertyMarkers(this.props.properties);
+	      // this.setPropertyMarkers(this.props.properties);
 	      this.map.addListener('dragend', function () {
-	        var bounds = _this3.map.getBounds();
-	        var ne = bounds.getNorthEast();
-	        var sw = bounds.getSouthWest();
-	        _this3.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
-	          ne: {
-	            lat: ne.lat(),
-	            lon: ne.lng()
-	          },
-	          sw: {
-	            lat: sw.lat(),
-	            lon: sw.lng()
-	          }
-	        }));
-	        // set localState to distinguish between initial load and dragging in componentWillReceiveProps
-	        _this3.setState({
-	          dragMode: true
-	        });
+	        // only trigger the Geo change at a certain zoom level
+	        if (_this3.map.getZoom() < 14) {
+	          var bounds = _this3.map.getBounds();
+	          var ne = bounds.getNorthEast();
+	          var sw = bounds.getSouthWest();
+	          _this3.props.searchByCoordinates(_Util2.default.googleGeoFormatToElasticsearch({
+	            ne: {
+	              lat: ne.lat(),
+	              lon: ne.lng()
+	            },
+	            sw: {
+	              lat: sw.lat(),
+	              lon: sw.lng()
+	            }
+	          }));
+	          // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+	          _this3.setState({
+	            dragMode: true
+	          });
+	        }
 	      });
+	    }
+	  }, {
+	    key: 'deselectMarkers',
+	    value: function deselectMarkers(markers) {
+	      var selectedMarkers = markers.filter(function (m) {
+	        return m.selected;
+	      });
+	      if (selectedMarkers.length) {
+	        selectedMarkers.forEach(function (m) {
+	          m.selected = false;
+	          m.setIcon(defaultIcon);
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'selectMarker',
+	    value: function selectMarker(markers, selectedProperty) {
+	      // Remove all current selected markers
+	      var selectedMarker = markers.filter(function (m) {
+	        return m.propertyId === selectedProperty;
+	      });
+	      if (selectedMarker.length) {
+	        selectedMarker[0].setIcon(selectedIcon);
+	        selectedMarker[0].selected = true;
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -69336,6 +69399,7 @@
 	  properties: _react.PropTypes.array.isRequired
 	};
 	exports.default = Map;
+	;
 
 /***/ }),
 /* 370 */
@@ -77744,6 +77808,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(36);
+
 	var _LoadingCircle = __webpack_require__(368);
 
 	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
@@ -77779,6 +77845,7 @@
 	    var _this = _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).call(this, props));
 
 	    _this.state = { loading: false };
+	    _this.properties = {};
 	    return _this;
 	  }
 
@@ -77790,12 +77857,33 @@
 	      }
 	    }
 	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.props.properties.length && this.props.selectedProperty) {
+	        this.scrollToProperty(this.props.selectedProperty);
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (this.props.properties.length && this.props.selectedProperty) {
+	        this.scrollToProperty(this.props.selectedProperty);
+	      }
+	    }
+	  }, {
+	    key: 'scrollToProperty',
+	    value: function scrollToProperty(propertyId) {
+	      var node = (0, _reactDom.findDOMNode)(this.properties[propertyId]);
+	      node.scrollIntoView({ behaviour: 'smooth' });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
-	      var properties = this.props.properties;
-
+	      var _props = this.props,
+	          properties = _props.properties,
+	          selectedProperty = _props.selectedProperty;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -77804,7 +77892,9 @@
 	          } },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'row', ref: function ref(r) {
+	              return _this2.searchResultLisintElement = r;
+	            } },
 	          properties.map(function (p, i) {
 
 	            var item = {
@@ -77816,6 +77906,7 @@
 	              gallery_images: _lodash2.default.get(p, '_source.wpp_media', []).map(function (media) {
 	                return media.url;
 	              }),
+	              id: p._id,
 	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', 0),
 	              lots_size: _lodash2.default.get(p, '_source.post_meta.rets_lot_size_area', 0),
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
@@ -77825,11 +77916,12 @@
 	              thumbnail: _lodash2.default.get(p, '_source.post_meta.rets_thumbnail_url', ''),
 	              zip: _lodash2.default.get(p, '_source.post_meta.rets_postal_code[0]', '')
 	            };
-
 	            return _react2.default.createElement(
 	              'div',
 	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
-	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i })
+	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i, highlighted: selectedProperty === p._id, ref: function ref(r) {
+	                  return _this2.properties[p._id] = r;
+	                } })
 	            );
 	          })
 	        ),
@@ -78937,6 +79029,7 @@
 	          beds = _props$data.beds,
 	          city = _props$data.city,
 	          gallery_images = _props$data.gallery_images,
+	          id = _props$data.id,
 	          living_area = _props$data.living_area,
 	          lots_size = _props$data.lots_size,
 	          price = _props$data.price,
@@ -78945,6 +79038,9 @@
 	          thumbnail = _props$data.thumbnail,
 	          type = _props$data.type,
 	          zip = _props$data.zip;
+
+
+	      var classes = [];
 
 	      var self = this;
 
@@ -78962,10 +79058,25 @@
 	        info_box += '<li>' + lots_size + ' Acres</li>';
 	      }
 
+	      if (this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL) {
+	        classes = classes.concat(['card', _lib.Lib.THEME_CLASSES_PREFIX + 'card', _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage', 'swiper-slide']);
+	      } else {
+	        classes = classes.concat(['card', _lib.Lib.THEME_CLASSES_PREFIX + 'card']);
+	      }
+	      if (this.props.highlighted) {
+	        classes.push(_lib.Lib.THEME_CLASSES_PREFIX + 'card-selected');
+	      }
+
+	      if (this.props.highlighted) {
+	        console.log('this property is highlighted');
+	        console.log('address: ', address);
+	        classes.push(_lib.Lib.THEME_CLASSES_PREFIX + 'card-selected');
+	      }
+	      classes.push(id);
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          className: this.props.listType === _lib.Lib.PROPERTIES_LIST_CAROUSEL ? 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card-homepage swiper-slide' : 'card ' + _lib.Lib.THEME_CLASSES_PREFIX + 'card' },
+	          className: classes.join(' ') },
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "card-img" },
@@ -88089,6 +88200,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
+	        // centeredSlides: window.innerWidth >= Lib.MOBILE_WIDTH,
 	        slidesPerView: 5,
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
