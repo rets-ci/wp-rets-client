@@ -21,11 +21,11 @@ export default class PropertyCard extends Component {
 
   componentDidMount() {
     this.swiper = Swiper.init(this.swiperElement, {
-      preloadImages: false,
-      lazyLoadingOnTransitionStart: true,
-      effect: 'fade',
+      effect: 'slide',
       lazyLoading: true,
-      loop: true
+      lazyLoadingOnTransitionStart: true,
+      preloadImages: false,
+      spaceBetween: 30
     });
   }
 
@@ -79,13 +79,8 @@ export default class PropertyCard extends Component {
     } else {
       classes = classes.concat(['card', `${Lib.THEME_CLASSES_PREFIX}card`]);
     }
-    if (this.props.highlighted) {
-      classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
-    }
 
     if (this.props.highlighted) {
-      console.log('this property is highlighted');
-      console.log('address: ', address);
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
     classes.push(id);
@@ -96,8 +91,7 @@ export default class PropertyCard extends Component {
           <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide"
-                     onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
+                <div className="swiper-slide">
                   <img
                     alt="Card image cap"
                     className="swiper-lazy card-img-top"

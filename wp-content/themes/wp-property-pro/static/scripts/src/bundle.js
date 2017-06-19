@@ -63062,9 +63062,6 @@
 	      var filters = _qs2.default.parse(window.location.search.replace('?', ''));
 	      var propertyTypes = location.query['wpp_search[property_types]'];
 	      var searchFilters = filters[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-	      var listingSidebarStyle = {
-	        height: window.innerHeight - _lib.Lib.HEADER_SEARCH_HEIGHT
-	      };
 	      var elementToShow = _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
@@ -63100,7 +63097,7 @@
 	            { className: 'col-sm-8 ' + (this.state.mapDisplay ? "hidden-xs-down" : "") },
 	            _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar", style: listingSidebarStyle },
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-sidebar" },
 	              _react2.default.createElement(
 	                'div',
 	                { className: _lib.Lib.THEME_CLASSES_PREFIX + "headtitle" },
@@ -77877,6 +77874,11 @@
 	      node.scrollIntoView({ behaviour: 'smooth' });
 	    }
 	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      return this.props.properties !== nextProps.properties || this.props.selectedProperty !== nextProps.selectedProperty;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -79001,11 +79003,11 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
-	        preloadImages: false,
-	        lazyLoadingOnTransitionStart: true,
-	        effect: 'fade',
+	        effect: 'slide',
 	        lazyLoading: true,
-	        loop: true
+	        lazyLoadingOnTransitionStart: true,
+	        preloadImages: false,
+	        spaceBetween: 30
 	      });
 	    }
 	  }, {
@@ -79063,13 +79065,8 @@
 	      } else {
 	        classes = classes.concat(['card', _lib.Lib.THEME_CLASSES_PREFIX + 'card']);
 	      }
-	      if (this.props.highlighted) {
-	        classes.push(_lib.Lib.THEME_CLASSES_PREFIX + 'card-selected');
-	      }
 
 	      if (this.props.highlighted) {
-	        console.log('this property is highlighted');
-	        console.log('address: ', address);
 	        classes.push(_lib.Lib.THEME_CLASSES_PREFIX + 'card-selected');
 	      }
 	      classes.push(id);
@@ -79093,10 +79090,7 @@
 	                { className: 'swiper-wrapper' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'swiper-slide',
-	                    onClick: function onClick(eve) {
-	                      return self.handlePropertyClick.bind(_this2)(eve, relative_permalink);
-	                    } },
+	                  { className: 'swiper-slide' },
 	                  _react2.default.createElement('img', {
 	                    alt: 'Card image cap',
 	                    className: 'swiper-lazy card-img-top',
@@ -85636,7 +85630,7 @@
 	      var saleType = searchFilters['sale_type'];
 	      return _react2.default.createElement(
 	        'div',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container" },
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid" },
 	        _react2.default.createElement(
 	          'div',
 	          { className: containerClasses },
@@ -85715,7 +85709,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo col-1 col-md-2 col-lg-1 my-auto' },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'logo col-2 col-md-2 col-lg-1 my-auto' },
 	            _lodash2.default.get(bundle, 'logos.square_logo', null) ? _react2.default.createElement(
 	              'a',
 	              { href: _lodash2.default.get(bundle, 'site_url', ''), onClick: function onClick(eve) {
@@ -85739,7 +85733,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-6 col-lg-7" },
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-7 col-md-6 col-lg-7" },
 	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters })
 	          ),
 	          _react2.default.createElement(
@@ -85958,36 +85952,32 @@
 	        if (bathroomsFilter) {
 	          bathroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBathroomsFilterRemove.bind(this), display: bathroomsFilter + '+ Baths', value: bathroomsFilter });
 	        }
-	      }
 
-	      if (bedroomsFilter) {
-	        bedroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBedroomsFilterRemove.bind(this), display: bedroomsFilter + '+ Beds', value: bedroomsFilter });
-	      } else {
-	        bedroomsElement = _react2.default.createElement(
-	          'span',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
-	          _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick() {
-	                return _this2.props.openPropertiesModal(true);
-	              } },
+	        if (bedroomsFilter) {
+	          bedroomsElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleBedroomsFilterRemove.bind(this), display: bedroomsFilter + '+ Beds', value: bedroomsFilter });
+	        } else {
+	          bedroomsElement = _react2.default.createElement(
+	            'span',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'tag badge badge-default ' + _lib.Lib.THEME_CLASSES_PREFIX + 'addfilter' },
 	            _react2.default.createElement(
-	              'span',
-	              null,
-	              '+'
-	            ),
-	            ' Bedroom'
-	          )
-	        );
-	      }
+	              'a',
+	              { href: '#', onClick: function onClick() {
+	                  return _this2.props.openPropertiesModal(true);
+	                } },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                '+'
+	              ),
+	              ' Bedroom'
+	            )
+	          );
+	        }
 
-	      if (!this.state.isMobileView) {
 	        if (lotSizeFilter) {
 	          lotSizeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleLotSizefilterRemove.bind(this), display: _Util2.default.lotSizeFilterSearchTagText(lotSizeFilter), value: lotSizeFilter });
 	        }
-	      }
 
-	      if (!this.state.isMobileView) {
 	        if (priceFilter) {
 	          priceElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePriceFilterRemove.bind(this), display: _Util2.default.priceFilterSearchTagText(priceFilter), value: priceFilter });
 	        } else {
@@ -86008,8 +85998,7 @@
 	            )
 	          );
 	        }
-	      }
-	      if (!this.state.isMobileView) {
+
 	        if (propertyTypeFilter) {
 	          var propertyFilterValue = _staticFilters.property_type.filter(function (p) {
 	            return p.value === propertyTypeFilter;
@@ -86018,9 +86007,7 @@
 	          });
 	          propertyTypeElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handlePropertyTypeRemove.bind(this), display: propertyFilterValue, value: propertyTypeFilter });
 	        }
-	      }
 
-	      if (!this.state.isMobileView) {
 	        if (sqftFilter) {
 	          sqftElement = _react2.default.createElement(_FilterTag2.default, { handleRemoveFilter: this.handleSQFTFilterRemove.bind(this), display: _Util2.default.sqftFilterSearchTagText(sqftFilter), value: sqftFilter });
 	        }
@@ -86448,7 +86435,15 @@
 	      { className: _lib.Lib.THEME_CLASSES_PREFIX + "more" },
 	      _react2.default.createElement(
 	        'a',
-	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "more-link", href: '#' },
+	        {
+	          className: _lib.Lib.THEME_CLASSES_PREFIX + "more-link",
+	          href: '#',
+	          onClick: function onClick(event) {
+	            closeUserPanel();
+	            event.preventDefault();
+	            event.stopPropagation();
+	          }
+	        },
 	        _react2.default.createElement(
 	          'span',
 	          null,
@@ -88201,7 +88196,7 @@
 	    value: function componentDidMount() {
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        // centeredSlides: window.innerWidth >= Lib.MOBILE_WIDTH,
-	        slidesPerView: 5,
+	        slidesPerView: 'auto',
 	        nextButton: this.swiperElementNext,
 	        prevButton: this.swiperElementPrev,
 	        spaceBetween: 20
@@ -88217,7 +88212,7 @@
 	      var posts = _lodash2.default.get(item, 'posts', []);
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'row' },
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "listing-carousel-container" },

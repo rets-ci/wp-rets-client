@@ -150,29 +150,25 @@ class searchFilters extends Component {
           <FilterTag handleRemoveFilter={this.handleBathroomsFilterRemove.bind(this)} display={bathroomsFilter + `+ Baths`} value={bathroomsFilter} />
         );
       }
-    }
 
-    if (bedroomsFilter) {
-      bedroomsElement = (
-        <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
-      );
-    } else {
-      bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
-        <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
-          <span>+</span> Bedroom
-        </a>
-      </span>);
-    }
+      if (bedroomsFilter) {
+        bedroomsElement = (
+          <FilterTag handleRemoveFilter={this.handleBedroomsFilterRemove.bind(this)} display={bedroomsFilter + `+ Beds`} value={bedroomsFilter} />
+        );
+      } else {
+        bedroomsElement = (<span className={`${Lib.THEME_CLASSES_PREFIX}tag badge badge-default ${Lib.THEME_CLASSES_PREFIX}addfilter`}>
+          <a href="#" onClick={() => this.props.openPropertiesModal(true)}>
+            <span>+</span> Bedroom
+          </a>
+        </span>);
+      }
 
-    if (!this.state.isMobileView) {
       if (lotSizeFilter) {
         lotSizeElement = (
           <FilterTag handleRemoveFilter={this.handleLotSizefilterRemove.bind(this)} display={Util.lotSizeFilterSearchTagText(lotSizeFilter)} value={lotSizeFilter} />
         )
       }
-    }
 
-    if (!this.state.isMobileView) {
       if (priceFilter) {
         priceElement = (
           <FilterTag handleRemoveFilter={this.handlePriceFilterRemove.bind(this)} display={Util.priceFilterSearchTagText(priceFilter)} value={priceFilter} />
@@ -184,17 +180,14 @@ class searchFilters extends Component {
           </a>
         </span>);
       }
-    }
-    if (!this.state.isMobileView) {
+
       if (propertyTypeFilter) {
         let propertyFilterValue = propertyTypeOptions.filter(p => p.value === propertyTypeFilter).map(p => p.name);
         propertyTypeElement = (
           <FilterTag handleRemoveFilter={this.handlePropertyTypeRemove.bind(this)} display={propertyFilterValue} value={propertyTypeFilter} />
         );
       }
-    }
 
-    if (!this.state.isMobileView) {
       if (sqftFilter) {
         sqftElement = (
           <FilterTag handleRemoveFilter={this.handleSQFTFilterRemove.bind(this)} display={Util.sqftFilterSearchTagText(sqftFilter)} value={sqftFilter} />
