@@ -72,6 +72,10 @@ html, body {
     height: 100%;
 }
 
+.propertypro-page-layout-container, .propertypro-page-layout-container-inner, .propertypro-search-map-container {
+    height: 100%;
+}
+
 /** Toolbar **/
 
 .propertypro-toolbar.propertypro-header-default,

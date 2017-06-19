@@ -138,9 +138,6 @@ class MapSearchResults extends Component {
     let filters = qs.parse(window.location.search.replace('?', ''));
     let propertyTypes = location.query['wpp_search[property_types]'];
     let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-    let listingSidebarStyle = {
-      height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
-    };
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
         <LocationModal />
@@ -159,7 +156,7 @@ class MapSearchResults extends Component {
             </div>
           </div>
           <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
             <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
               <div>
                 <h1>Homes for {searchFilters.sale_type}</h1>

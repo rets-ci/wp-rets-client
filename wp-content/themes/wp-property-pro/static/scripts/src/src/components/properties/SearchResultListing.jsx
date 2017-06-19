@@ -42,6 +42,10 @@ class SearchResultListing extends Component {
     node.scrollIntoView({ behaviour: 'smooth' });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty);
+  }
+
   render() {
     let {
       properties,

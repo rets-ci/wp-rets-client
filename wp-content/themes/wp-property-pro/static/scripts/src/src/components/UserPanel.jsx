@@ -92,7 +92,17 @@ const UserPanelContent = ({panelOpen, closeUserPanel}) => {
         </ol>
       </div>
       <div className={Lib.THEME_CLASSES_PREFIX + "more"}>
-        <a className={Lib.THEME_CLASSES_PREFIX + "more-link"} href="#"><span>☰</span> Menu <i className="fa fa-caret-down"></i></a>
+        <a
+          className={Lib.THEME_CLASSES_PREFIX + "more-link"}
+          href="#"
+          onClick={(event) => {
+            closeUserPanel();
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+        >
+          <span>☰</span> Menu <i className="fa fa-caret-down"></i>
+          </a>
       </div>
     </section>
   )
