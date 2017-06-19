@@ -45,6 +45,7 @@ export default class PropertyCard extends Component {
       beds,
       city,
       gallery_images,
+      id,
       living_area,
       lots_size,
       price,
@@ -54,6 +55,9 @@ export default class PropertyCard extends Component {
       type,
       zip
     } = this.props.data;
+
+    let classes = [];
+
     let self = this;
 
     let info_box = `<li>${type} Type</li>`;
@@ -70,9 +74,24 @@ export default class PropertyCard extends Component {
       info_box += `<li>${lots_size} Acres</li>`;
     }
 
+    if (this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL) {
+      classes = classes.concat(['card', `${Lib.THEME_CLASSES_PREFIX}card`, `${Lib.THEME_CLASSES_PREFIX}card-homepage`, 'swiper-slide']);
+    } else {
+      classes = classes.concat(['card', `${Lib.THEME_CLASSES_PREFIX}card`]);
+    }
+    if (this.props.highlighted) {
+      classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
+    }
+
+    if (this.props.highlighted) {
+      console.log('this property is highlighted');
+      console.log('address: ', address);
+      classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
+    }
+    classes.push(id);
     return (
       <div
-        className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
+        className={classes.join(' ')}>
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
           <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>

@@ -2,6 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 
+let defaultIcon = {
+  url: bundle.static_images_url + 'oval-3-25.png',
+};
+let selectedIcon = {
+  url: bundle.static_images_url + 'oval-selected-3-25.png'
+};
+
 export default class Map extends Component {
   static propTypes = {
     currentGeoBounds: PropTypes.object,
@@ -46,7 +53,7 @@ export default class Map extends Component {
         let coordinates = this.getInitialCoordinates(null, nextProps.properties);
         this.setMapCoordinates(coordinates);
       }
-      this.clearAllMarkers();
+      this.clearMarkers();
       this.clearBounds();
       this.setPropertyMarkers(nextProps.properties);
       if (!this.state.dragMode) {
@@ -54,12 +61,18 @@ export default class Map extends Component {
         this.map.fitBounds(this.bounds);
       }
     }
+    let condition = !this.markers.filter(m => m.selected).length || nextProps.selectedProperty !== this.markers.filter(m => m.selected)[0].propertyId;
+    if (condition) {
+      this.deselectMarkers(this.markers);
+      this.selectMarker(this.markers, nextProps.selectedProperty);
+    }
   }
 
-  clearAllMarkers() {
+  clearMarkers() {
     this.markers.forEach(m => {
       m.setMap(null);
     });
+    this.markers = [];
   }
 
   getInitialCoordinates(currentGeoBounds, properties) {
@@ -96,15 +109,19 @@ export default class Map extends Component {
   }
 
   setPropertyMarkers(properties) {
-    let icon = {
-      url: bundle.static_images_url + 'oval-3-25.png',
-    };
     properties.forEach((p) => {
       let loc = new window.google.maps.LatLng(p._source.wpp_location_pin.lat, p._source.wpp_location_pin.lon);
       let marker = new window.google.maps.Marker({
-        icon: icon,
+        icon: defaultIcon,
         position: loc,
         map: this.map
+      });
+      marker.propertyId = p._id;
+      marker.selected = false;
+      marker.addListener('click', () => {
+        let filter = {'selected_property': marker.propertyId};
+        let queryParam = Util.updateQueryFilter(window.location.href, filter, 'set', false);
+        Util.goToUrl(window.location.pathname + decodeURIComponent(queryParam));
       });
       this.markers.push(marker);
       this.bounds.extend(loc);
@@ -113,31 +130,55 @@ export default class Map extends Component {
 
   componentDidMount() {
     let {
-      currentGeoBounds
+      currentGeoBounds,
+      selectedProperty
     } = this.props;
-    let coordinates = this.getInitialCoordinates(currentGeoBounds, this.props.properties);
+    // no properties to pass into `getInitialCoordinates`
+    let coordinates = this.getInitialCoordinates(currentGeoBounds, null);
     this.setMapCoordinates(coordinates);
-    this.setPropertyMarkers(this.props.properties);
+    // this.setPropertyMarkers(this.props.properties);
     this.map.addListener('dragend', () => {
-      let bounds = this.map.getBounds();
-      let ne = bounds.getNorthEast();
-      let sw = bounds.getSouthWest();
-      this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
-        {
-          ne: {
-            lat: ne.lat(),
-            lon: ne.lng()
-          },
-          sw: {
-            lat: sw.lat(),
-            lon: sw.lng()
-          }
-        }));
-      // set localState to distinguish between initial load and dragging in componentWillReceiveProps
-      this.setState({
-        dragMode: true
-      });
+      // only trigger the Geo change at a certain zoom level
+      if (this.map.getZoom() < 14) {
+        let bounds = this.map.getBounds();
+        let ne = bounds.getNorthEast();
+        let sw = bounds.getSouthWest();
+        this.props.searchByCoordinates(Util.googleGeoFormatToElasticsearch(
+          {
+            ne: {
+              lat: ne.lat(),
+              lon: ne.lng()
+            },
+            sw: {
+              lat: sw.lat(),
+              lon: sw.lng()
+            }
+          }));
+        // set localState to distinguish between initial load and dragging in componentWillReceiveProps
+        this.setState({
+          dragMode: true
+        });
+      }
     });
+  }
+
+  deselectMarkers(markers) {
+    let selectedMarkers = markers.filter(m => m.selected);
+    if (selectedMarkers.length) {
+      selectedMarkers.forEach(m => {
+        m.selected = false;
+        m.setIcon(defaultIcon);
+      });
+    }
+  }
+
+  selectMarker(markers, selectedProperty) {
+    // Remove all current selected markers
+    let selectedMarker = markers.filter(m => m.propertyId === selectedProperty);
+    if (selectedMarker.length) {
+      selectedMarker[0].setIcon(selectedIcon);
+      selectedMarker[0].selected = true;
+    }
   }
 
   render() {
@@ -145,4 +186,4 @@ export default class Map extends Component {
       <div id={Lib.THEME_CLASSES_PREFIX+"Map"} className={Lib.THEME_CLASSES_PREFIX+"map-container"} ref={(r) => this.mapElement = r} ></div>
     );
   }
-}
+};

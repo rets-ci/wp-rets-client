@@ -1790,6 +1790,21 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     margin-bottom: 1.875rem;
 }
 
+.propertypro-card:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f28200;
+    height: 3px;
+    display: none;
+}
+
+.propertypro-card-selected:before {
+    display: block;
+}
+
 /* Search Map -> Search Property Type */
 .propertypro-listing-sidebar .propertypro-headtitle .btn {
     margin-left: .9375rem;
