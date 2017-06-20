@@ -77861,7 +77861,9 @@
 
 	    var _this = _possibleConstructorReturn(this, (SearchResultListing.__proto__ || Object.getPrototypeOf(SearchResultListing)).call(this, props));
 
-	    _this.state = { loading: false };
+	    _this.state = {
+	      loading: false
+	    };
 	    _this.properties = {};
 	    return _this;
 	  }
@@ -77896,7 +77898,7 @@
 	  }, {
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return this.props.properties !== nextProps.properties || this.props.selectedProperty !== nextProps.selectedProperty;
+	      return this.props.properties !== nextProps.properties || this.props.selectedProperty !== nextProps.selectedProperty || nextState.loading !== this.state.loading;
 	    }
 	  }, {
 	    key: 'render',
@@ -77961,12 +77963,12 @@
 	              this.props.properties.length,
 	              ' results'
 	            ),
-	            _react2.default.createElement(_reactWaypoint2.default, {
+	            !this.state.loading ? _react2.default.createElement(_reactWaypoint2.default, {
 	              onEnter: function onEnter() {
 	                _this2.setState({ loading: true });
 	                _this2.props.seeMoreHandler();
 	              }
-	            })
+	            }) : null
 	          )
 	        ) : null
 	      );
