@@ -62950,6 +62950,10 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
+	    openPropertiesModal: function openPropertiesModal(open) {
+	      dispatch((0, _index.openPropertiesModal)(open));
+	    },
+
 	    standardSearch: function standardSearch(params) {
 	      _Api2.default.makeStandardPropertySearch(params, function (query, response) {
 	        if (_lodash2.default.get(response, 'hits.total', null)) {
@@ -63056,6 +63060,7 @@
 	          displayedResults = _props.displayedResults,
 	          location = _props.location,
 	          mapSearchResultsLoading = _props.mapSearchResultsLoading,
+	          openPropertiesModal = _props.openPropertiesModal,
 	          propertiesModalOpen = _props.propertiesModalOpen,
 	          results = _props.results;
 
@@ -63147,7 +63152,10 @@
 	                    { className: 'nav-item' },
 	                    _react2.default.createElement(
 	                      'a',
-	                      { className: 'btn', href: '#' },
+	                      { className: 'btn', href: '#', onClick: function onClick(e) {
+	                          e.preventDefault();
+	                          openPropertiesModal(true);
+	                        } },
 	                      'Filter'
 	                    )
 	                  ),

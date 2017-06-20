@@ -1744,6 +1744,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-listing-sidebar {
+    height: 100%;
     position: relative;
     overflow-y: scroll;
 }
@@ -1784,6 +1785,10 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-result-container {
     overflow: hidden;
+}
+
+.propertypro-search-result-container p {
+    color: #000000;
 }
 
 .propertypro-search-result-inner-container {
