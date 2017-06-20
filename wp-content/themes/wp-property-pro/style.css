@@ -2396,13 +2396,17 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
-/* noUISlider overrides */
+/* noUISlider related CSS and override rules */
 .noUi-connect {
     background: #d03528 !important;
 }
 
 .noUi-tooltip {
     white-space: nowrap;
+}
+
+.propertypro-noUislider-container {
+    padding: 0 20px;
 }
 
 /** Utils **/
@@ -2975,7 +2979,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-filter-section {
-        margin-bottom: 2.5rem;
+        margin-bottom: 5rem;
     }
 
     .propertypro-tour-widget-content h3 {

@@ -65,7 +65,9 @@ class SQFT extends Component {
       formatter = sliderFormatter(min, max);
     }
     return (
-      <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      <div className={Lib.THEME_CLASSES_PREFIX + "noUislider-container"}>
+        <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      </div>
     )
   }
 };

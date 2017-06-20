@@ -69938,7 +69938,7 @@
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      { className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section' },
 	                      _react2.default.createElement(
 	                        'h3',
 	                        null,
@@ -69976,7 +69976,7 @@
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section" },
+	                      { className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section' },
 	                      _react2.default.createElement(
 	                        'h3',
 	                        null,
@@ -70006,7 +70006,7 @@
 	                    _react2.default.createElement(
 	                      'div',
 	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-price' },
+	                        className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-price' },
 	                      _react2.default.createElement(
 	                        'h3',
 	                        null,
@@ -70032,7 +70032,7 @@
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                      'div',
-	                      { className: _lib.Lib.THEME_CLASSES_PREFIX + "filter-section",
+	                      { className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
 	                        style: { display: showAllFilters ? 'block' : 'none' } },
 	                      _react2.default.createElement(
 	                        'h3',
@@ -70063,7 +70063,7 @@
 	                    _react2.default.createElement(
 	                      'div',
 	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
 	                        style: { display: showAllFilters ? 'block' : 'none' } },
 	                      _react2.default.createElement(
 	                        'h3',
@@ -70091,7 +70091,7 @@
 	                    _react2.default.createElement(
 	                      'div',
 	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
+	                        className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-total-size',
 	                        style: { display: showAllFilters ? 'block' : 'none' } },
 	                      _react2.default.createElement(
 	                        'h3',
@@ -70118,7 +70118,7 @@
 	                    _react2.default.createElement(
 	                      'div',
 	                      {
-	                        className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
+	                        className: 'col-12 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section',
 	                        style: { display: showAllFilters ? 'block' : 'none' } },
 	                      _react2.default.createElement(
 	                        'h3',
@@ -70146,15 +70146,23 @@
 	                    'div',
 	                    { className: 'row' },
 	                    showAllFilters ? _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
-	                        onClick: this.toggleViewAllFilters.bind(this) },
-	                      '- View Less Filters'
+	                      'div',
+	                      { className: 'col-7' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                          onClick: this.toggleViewAllFilters.bind(this) },
+	                        '- View Less Filters'
+	                      )
 	                    ) : _react2.default.createElement(
-	                      'a',
-	                      { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
-	                        onClick: this.toggleViewAllFilters.bind(this) },
-	                      '+ View More Filters'
+	                      'div',
+	                      { className: 'col-7' },
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '#', className: _lib.Lib.THEME_CLASSES_PREFIX + "view-link",
+	                          onClick: this.toggleViewAllFilters.bind(this) },
+	                        '+ View More Filters'
+	                      )
 	                    )
 	                  )
 	                )
@@ -70582,7 +70590,11 @@
 	        formatter = sliderFormatter(min, max);
 	        step = 25000;
 	      }
-	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "noUislider-container" },
+	        _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick })
+	      );
 	    }
 	  }]);
 
@@ -73347,7 +73359,11 @@
 	        max = 50000;
 	        formatter = sliderFormatter(min, max);
 	      }
-	      return _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "noUislider-container" },
+	        _react2.default.createElement(_Slider2.default, { formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick })
+	      );
 	    }
 	  }]);
 
@@ -73468,7 +73484,11 @@
 	        max = 400;
 	        formatter = sliderFormatter(min, max);
 	      }
-	      return _react2.default.createElement(_Slider2.default, { allowDecimalPlaces: true, formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "noUislider-container" },
+	        _react2.default.createElement(_Slider2.default, { allowDecimalPlaces: true, formatter: formatter, max: max, min: min, start: start || defaults[saleType].start, step: step, to: to || defaults[saleType].to, handleOnClick: this.props.handleOnClick })
+	      );
 	    }
 	  }]);
 
