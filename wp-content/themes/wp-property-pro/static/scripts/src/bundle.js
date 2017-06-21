@@ -69294,7 +69294,6 @@
 	          center: coordinates,
 	          mapTypeControlOptions: { mapTypeIds: [] },
 	          scrollwheel: false,
-	          streetView: false,
 	          streetViewControl: false,
 	          zoom: 9
 	        });
@@ -77957,7 +77956,7 @@
 	            };
 	            return _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
+	              { className: 'col-12 col-sm-6 col-xl-4', key: i },
 	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i, highlighted: selectedProperty === p._id, ref: function ref(r) {
 	                  return _this2.properties[p._id] = r;
 	                } })
@@ -79083,13 +79082,13 @@
 
 	      var self = this;
 
-	      var info_box = '<li>' + type + ' Type</li>';
+	      var info_box = '<li>' + type + '</li>';
 
 	      if (property_type !== 'commercial' && property_type !== 'land') {
 	        info_box += '<li>' + beds + ' Bed</li><li>' + baths + ' Bath</li>';
 	      }
 
-	      if (property_type !== 'land') {
+	      if (property_type !== 'land' && !!+living_area[0]) {
 	        info_box += '<li>' + _Util2.default.formatSQFTValue(living_area) + ' SF</li>';
 	      }
 
@@ -85884,12 +85883,17 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.updateDisplayFlag();
-	      window.addEventListener("resize", this.updateDisplayFlag.bind(this));
+	      window.addEventListener('resize', this.updateDisplayFlag.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps() {
 	      this.updateDisplayFlag();
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('resize', this.updateDisplayFlag);
 	    }
 	  }, {
 	    key: 'handleBathroomsFilterRemove',

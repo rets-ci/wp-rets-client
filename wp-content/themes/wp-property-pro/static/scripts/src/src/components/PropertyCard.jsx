@@ -60,13 +60,13 @@ export default class PropertyCard extends Component {
 
     let self = this;
 
-    let info_box = `<li>${type} Type</li>`;
+    let info_box = `<li>${type}</li>`;
 
     if (property_type !== 'commercial' && property_type !== 'land') {
       info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
     }
 
-    if (property_type !== 'land') {
+    if (property_type !== 'land' && !!+living_area[0]) {
       info_box += `<li>${Util.formatSQFTValue(living_area)} SF</li>`;
     }
 

@@ -101,7 +101,6 @@ export default class Map extends Component {
         center: coordinates,
         mapTypeControlOptions: {mapTypeIds: []},
         scrollwheel: false,
-        streetView: false,
         streetViewControl: false,
         zoom: 9
       });
