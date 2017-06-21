@@ -46,11 +46,15 @@ class searchFilters extends Component {
 
   componentDidMount() {
     this.updateDisplayFlag();
-    window.addEventListener("resize", this.updateDisplayFlag.bind(this));
+    window.addEventListener('resize', this.updateDisplayFlag.bind(this));
   }
 
   componentWillReceiveProps() {
     this.updateDisplayFlag();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize');
   }
 
   handleBathroomsFilterRemove(bathroomsFilter) {
