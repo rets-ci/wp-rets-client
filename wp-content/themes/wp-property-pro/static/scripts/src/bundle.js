@@ -79134,7 +79134,7 @@
 	                    }) : !_lodash2.default.get(this.props.data, 'full_image', false) ? _Util2.default.getThumbnailUrlBySize(thumbnail, _lib.Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail
 	                  })
 	                ),
-	                gallery_images.map(function (d, k) {
+	                gallery_images.slice(1, gallery_images.length).map(function (d, k) {
 	                  return _react2.default.createElement(
 	                    'div',
 	                    { className: 'swiper-slide', key: k },
