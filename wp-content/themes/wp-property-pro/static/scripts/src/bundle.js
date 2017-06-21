@@ -69292,7 +69292,10 @@
 	      if (!this.map) {
 	        this.map = new window.google.maps.Map(this.mapElement, {
 	          center: coordinates,
+	          mapTypeControlOptions: { mapTypeIds: [] },
 	          scrollwheel: false,
+	          streetView: false,
+	          streetViewControl: false,
 	          zoom: 9
 	        });
 	      } else {
