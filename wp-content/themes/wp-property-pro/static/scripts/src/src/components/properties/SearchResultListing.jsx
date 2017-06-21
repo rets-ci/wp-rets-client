@@ -15,7 +15,9 @@ class SearchResultListing extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {loading: false};
+    this.state = {
+      loading: false
+    };
     this.properties = {};
   }
 
@@ -38,12 +40,16 @@ class SearchResultListing extends Component {
   }
 
   scrollToProperty(propertyId) {
-    let node = findDOMNode(this.properties[propertyId]);
-    node.scrollIntoView({ behaviour: 'smooth' });
+    if (!this.properties[propertyId]) {
+     console.log('chosen property was not found in the results');
+    } else {
+      let node = findDOMNode(this.properties[propertyId]);
+      node.scrollIntoView({ behaviour: 'smooth' });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty);
+    return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty) || (nextState.loading !== this.state.loading);
   }
 
   render() {
@@ -89,12 +95,14 @@ class SearchResultListing extends Component {
                 <LoadingCircle />
                 : null}
               <p>Showing {this.props.properties.length} results</p>
-              <Waypoint
-                onEnter={() => {
-                  this.setState({loading: true});
-                  this.props.seeMoreHandler();
-                }}
-              />
+              {!this.state.loading ?
+                <Waypoint
+                  onEnter={() => {
+                    this.setState({loading: true});
+                    this.props.seeMoreHandler();
+                  }}
+                />
+              : null}
             </div>
           </div>
           : null}

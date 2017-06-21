@@ -101,7 +101,7 @@ export default class PropertyCard extends Component {
                       }) : (!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail)}
                   />
                 </div>
-                {gallery_images.map((d, k) =>
+                {gallery_images.slice(1, gallery_images.length).map((d, k) =>
                   <div className="swiper-slide" key={k}>
                     <img
                       alt={_.isEmpty(d) ? 'Card image cap' : ''}

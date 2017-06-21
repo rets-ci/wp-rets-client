@@ -1,5 +1,6 @@
 import Api from '../../containers/Api.jsx';
 import {
+  openPropertiesModal,
   setSearchResults,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
@@ -34,6 +35,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    openPropertiesModal: open => {
+      dispatch(openPropertiesModal(open));
+    },
+
     standardSearch: (params) => {
       Api.makeStandardPropertySearch(params, (query, response) => {
         if (_.get(response, 'hits.total', null)) {
@@ -132,6 +137,7 @@ class MapSearchResults extends Component {
       displayedResults,
       location,
       mapSearchResultsLoading,
+      openPropertiesModal,
       propertiesModalOpen,
       results
     } = this.props;
@@ -179,11 +185,16 @@ class MapSearchResults extends Component {
               <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                 <ul
                   className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
-                  <li className="nav-item"><a className="btn" href="#">Filter</a></li>
-                  <li className="nav-item"><a className="btn" href="#" onClick={(e) => {
-                    e.preventDefault();
-                    this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
-                  }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
+                  <li className="nav-item">
+                    <a className="btn" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      openPropertiesModal(true);
+                    }}>Filter</a></li>
+                  <li className="nav-item">
+                    <a className="btn" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
+                    }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
                 </ul>
                 <a href="#" className="btn">Search</a>
               </div>
