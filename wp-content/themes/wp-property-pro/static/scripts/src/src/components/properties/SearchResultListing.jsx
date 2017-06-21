@@ -40,8 +40,12 @@ class SearchResultListing extends Component {
   }
 
   scrollToProperty(propertyId) {
-    let node = findDOMNode(this.properties[propertyId]);
-    node.scrollIntoView({ behaviour: 'smooth' });
+    if (!this.properties[propertyId]) {
+     console.log('chosen property was not found in the results');
+    } else {
+      let node = findDOMNode(this.properties[propertyId]);
+      node.scrollIntoView({ behaviour: 'smooth' });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

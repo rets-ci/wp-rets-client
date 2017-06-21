@@ -77900,8 +77900,12 @@
 	  }, {
 	    key: 'scrollToProperty',
 	    value: function scrollToProperty(propertyId) {
-	      var node = (0, _reactDom.findDOMNode)(this.properties[propertyId]);
-	      node.scrollIntoView({ behaviour: 'smooth' });
+	      if (!this.properties[propertyId]) {
+	        console.log('chosen property was not found in the results');
+	      } else {
+	        var node = (0, _reactDom.findDOMNode)(this.properties[propertyId]);
+	        node.scrollIntoView({ behaviour: 'smooth' });
+	      }
 	    }
 	  }, {
 	    key: 'shouldComponentUpdate',
