@@ -85643,7 +85643,6 @@
 	    key: 'handleSaleSelectionItemClick',
 	    value: function handleSaleSelectionItemClick(event, saleItem) {
 	      event.preventDefault();
-	      console.log('sale selection item clicked ', saleItem);
 	      var url = new _urijs2.default(window.location.href);
 	      url.setSearch(_defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleItem));
 	      this.props.doOpenSaleTypesPanel(false);
@@ -85652,7 +85651,6 @@
 	  }, {
 	    key: 'handleSaleTypeClick',
 	    value: function handleSaleTypeClick(event) {
-	      console.log('sale type clicked');
 	      event.preventDefault();
 
 	      this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
