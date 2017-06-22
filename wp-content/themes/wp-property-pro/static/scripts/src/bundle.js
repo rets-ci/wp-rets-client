@@ -69737,7 +69737,8 @@
 	          priceSelected = _props.priceSelected,
 	          propertyTypeSelected = _props.propertyTypeSelected,
 	          sqftSelected = _props.sqftSelected,
-	          localFilters = _props.localFilters;
+	          localFilters = _props.localFilters,
+	          open = _props.open;
 	      var _state = this.state,
 	          initialFilters = _state.initialFilters,
 	          showAllFilters = _state.showAllFilters;
@@ -69778,7 +69779,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (this.props.open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
+	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0', role: 'document' },
@@ -85863,6 +85864,14 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
+	    deleteLocalFilterTerm: function deleteLocalFilterTerm(termFilter) {
+	      dispatch((0, _index.deletePropertiesModalTermLocalFilter)(termFilter));
+	    },
+	    deleteSingleLocalFilter: function deleteSingleLocalFilter(filterKey) {
+	      dispatch((0, _index.deletePropertiesModalSingleLocalFilter)(filterKey));
+	    },
+
+
 	    openPropertiesModal: function openPropertiesModal(open) {
 	      dispatch((0, _index.openPropertiesModal)(open));
 	    }
@@ -85902,6 +85911,7 @@
 	  }, {
 	    key: 'handleBathroomsFilterRemove',
 	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
+	      this.props.deleteSingleLocalFilter('bathrooms');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85909,6 +85919,7 @@
 	  }, {
 	    key: 'handleBedroomsFilterRemove',
 	    value: function handleBedroomsFilterRemove(bedroomFilter) {
+	      this.props.deleteSingleLocalFilter('bedrooms');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85918,6 +85929,7 @@
 	    value: function handleLotSizefilterRemove(lotSizeFilter) {
 	      var _filter3;
 
+	      this.props.deleteSingleLocalFilter('lotSize');
 	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]", lotSizeFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]", lotSizeFilter.to), _filter3);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85927,6 +85939,7 @@
 	    value: function handlePriceFilterRemove(priceFilter) {
 	      var _filter4;
 
+	      this.props.deleteSingleLocalFilter('price');
 	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter4);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85934,6 +85947,7 @@
 	  }, {
 	    key: 'handlePropertyTypeRemove',
 	    value: function handlePropertyTypeRemove(propertyFilter) {
+	      this.props.deleteSingleLocalFilter('property_type');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_type]', propertyFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85943,6 +85957,7 @@
 	    value: function handleSQFTFilterRemove(sqftFilter) {
 	      var _filter6;
 
+	      this.props.deleteSingleLocalFilter('sqft');
 	      var filter = (_filter6 = {}, _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter6);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85951,6 +85966,7 @@
 	    key: 'handleTermFilterRemove',
 	    value: function handleTermFilterRemove(termFilter) {
 	      var filterToRemove = _defineProperty({}, termFilter.tax, termFilter.value);
+	      this.props.deleteLocalFilterTerm(filterToRemove);
 	      var currentQueryParam = window.location.search.replace('?', '');
 	      var parsedQs = _qs2.default.parse(currentQueryParam);
 	      var currentTermFilter = parsedQs[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'];
