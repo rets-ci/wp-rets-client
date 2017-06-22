@@ -563,6 +563,10 @@ html, body {
     position: relative;
 }
 
+.propertypro-direction-nav {
+    padding: 0 1rem;
+}
+
 .propertypro-card-img .propertypro-direction-nav-container {
     position: absolute;
     width: 100%;
