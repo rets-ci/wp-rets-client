@@ -69194,6 +69194,8 @@
 	  url: bundle.static_images_url + 'oval-selected-3-25.png'
 	};
 
+	var defaultZoom = 9;
+
 	var Map = function (_Component) {
 	  _inherits(Map, _Component);
 
@@ -69243,8 +69245,10 @@
 	        this.clearBounds();
 	        this.setPropertyMarkers(nextProps.properties);
 	        if (!this.state.dragMode) {
-	          // auto zoom
 	          this.map.fitBounds(this.bounds);
+	          if (this.map.getZoom() < defaultZoom) {
+	            this.map.setZoom(defaultZoom);
+	          }
 	        }
 	      }
 	      var condition = !this.markers.filter(function (m) {
@@ -69295,7 +69299,7 @@
 	          mapTypeControlOptions: { mapTypeIds: [] },
 	          scrollwheel: false,
 	          streetViewControl: false,
-	          zoom: 9
+	          zoom: defaultZoom
 	        });
 	      } else {
 	        this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));

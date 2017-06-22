@@ -9,6 +9,8 @@ let selectedIcon = {
   url: bundle.static_images_url + 'oval-selected-3-25.png'
 };
 
+let defaultZoom = 9;
+
 export default class Map extends Component {
   static propTypes = {
     currentGeoBounds: PropTypes.object,
@@ -57,8 +59,10 @@ export default class Map extends Component {
       this.clearBounds();
       this.setPropertyMarkers(nextProps.properties);
       if (!this.state.dragMode) {
-        // auto zoom
         this.map.fitBounds(this.bounds);
+        if (this.map.getZoom() < defaultZoom) {
+          this.map.setZoom(defaultZoom);
+        }
       }
     }
     let condition = !this.markers.filter(m => m.selected).length || nextProps.selectedProperty !== this.markers.filter(m => m.selected)[0].propertyId;
@@ -102,7 +106,7 @@ export default class Map extends Component {
         mapTypeControlOptions: {mapTypeIds: []},
         scrollwheel: false,
         streetViewControl: false,
-        zoom: 9
+        zoom: defaultZoom
       });
     } else {
       this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
