@@ -939,14 +939,29 @@ class SimpleLogger {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return null
+	 * @param mixed  $level The log level.
+	 * @param string $message The log message.
+	 * @param array  $context The log context.
+	 * @return class SimpleLogger instance
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log( $level = 'info', $message = '', $context = array() ) {
 
 		global $wpdb;
+
+		// Check that passed args are of correct types.
+		if ( ! is_string( $level ) || ! is_string( $message ) ) {
+			return $this;
+		}
+
+		// Context must be array, but can be passed as null and so on.
+		if ( ! is_array( $context ) ) {
+			$context = array();
+		}
+
+		// Don't go on if message is empty.
+		if ( empty( $message ) ) {
+			return $this;
+		}
 
 		/*
 		 * Filter that makes it possible to shortcut this log.
@@ -954,7 +969,7 @@ class SimpleLogger {
 		 *
 		 * @since 2.3.1
 		 */
-		$do_log = apply_filters( "simple_history/log/do_log", true, $level, $message, $context, $this );
+		$do_log = apply_filters( 'simple_history/log/do_log', true, $level, $message, $context, $this );
 
 		if ( $do_log === false ) {
 			return $this;

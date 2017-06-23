@@ -269,7 +269,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: tmp/base/inc/fields/posts.class.php:82, tmp/widgets/contact/contact.php:47, tmp/widgets/cta/cta.php:63, tmp/widgets/editor/editor.php:32, tmp/widgets/features/features.php:132, tmp/widgets/post-carousel/post-carousel.php:91, tmp/widgets/price-table/price-table.php:41, tmp/widgets/price-table/price-table.php:60, tmp/widgets/simple-masonry/simple-masonry.php:43, tmp/widgets/simple-masonry/simple-masonry.php:74, tmp/widgets/social-media-buttons/social-media-buttons.php:42, tmp/widgets/taxonomy/taxonomy.php:33, tmp/widgets/testimonial/testimonial.php:40, tmp/widgets/video/video.php:32
+#: tmp/base/inc/fields/posts.class.php:82, tmp/widgets/contact/contact.php:47, tmp/widgets/cta/cta.php:63, tmp/widgets/editor/editor.php:32, tmp/widgets/features/features.php:132, tmp/widgets/post-carousel/post-carousel.php:97, tmp/widgets/price-table/price-table.php:41, tmp/widgets/price-table/price-table.php:60, tmp/widgets/simple-masonry/simple-masonry.php:43, tmp/widgets/simple-masonry/simple-masonry.php:74, tmp/widgets/social-media-buttons/social-media-buttons.php:42, tmp/widgets/taxonomy/taxonomy.php:33, tmp/widgets/testimonial/testimonial.php:40, tmp/widgets/video/video.php:32
 msgid "Title"
 msgstr ""
 
@@ -2109,27 +2109,39 @@ msgstr ""
 msgid "This widget requires Page Builder."
 msgstr ""
 
-#: tmp/widgets/post-carousel/post-carousel.php:44
+#: tmp/widgets/post-carousel/post-carousel.php:49
 msgid "SiteOrigin Post Carousel"
 msgstr ""
 
-#: tmp/widgets/post-carousel/post-carousel.php:46
+#: tmp/widgets/post-carousel/post-carousel.php:51
 msgid "Display your posts as a carousel."
 msgstr ""
 
-#: tmp/widgets/post-carousel/post-carousel.php:96
+#: tmp/widgets/post-carousel/post-carousel.php:103
+msgid "Default Thumbnail"
+msgstr ""
+
+#: tmp/widgets/post-carousel/post-carousel.php:104
+msgid "Choose Thumbnail"
+msgstr ""
+
+#: tmp/widgets/post-carousel/post-carousel.php:105
+msgid "Set Thumbnail"
+msgstr ""
+
+#: tmp/widgets/post-carousel/post-carousel.php:111
 msgid "Featured Image size"
 msgstr ""
 
-#: tmp/widgets/post-carousel/post-carousel.php:102
+#: tmp/widgets/post-carousel/post-carousel.php:117
 msgid "Posts query"
 msgstr ""
 
-#: tmp/widgets/post-carousel/tpl/base.php:10, tmp/widgets/post-carousel/tpl/base.php:18
+#: tmp/widgets/post-carousel/tpl/base.php:16, tmp/widgets/post-carousel/tpl/base.php:24
 msgid "Next"
 msgstr ""
 
-#: tmp/widgets/post-carousel/tpl/base.php:11, tmp/widgets/post-carousel/tpl/base.php:16
+#: tmp/widgets/post-carousel/tpl/base.php:17, tmp/widgets/post-carousel/tpl/base.php:22
 msgid "Previous"
 msgstr ""
 
