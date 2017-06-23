@@ -178,9 +178,11 @@ namespace UsabilityDynamics {
         'property_types' => $property_types
       ];
 
-      $front_page_id = get_option( 'page_on_front' );
-      if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
-        $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+      if (is_property_overview_page()) {
+        $front_page_id = get_option('page_on_front');
+        if ($post_data = get_post_meta($front_page_id, 'panels_data', true)) {
+          $params['front_page_post_content'] = self::property_pro_rebuild_builder_content($post_data, $front_page_id);
+        }
       }
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
