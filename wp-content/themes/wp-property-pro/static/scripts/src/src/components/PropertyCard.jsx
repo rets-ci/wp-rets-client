@@ -21,11 +21,11 @@ export default class PropertyCard extends Component {
 
   componentDidMount() {
     this.swiper = Swiper.init(this.swiperElement, {
-      preloadImages: false,
-      lazyLoadingOnTransitionStart: true,
-      effect: 'fade',
+      effect: 'slide',
       lazyLoading: true,
-      loop: true
+      lazyLoadingOnTransitionStart: true,
+      preloadImages: false,
+      spaceBetween: 30
     });
   }
 
@@ -45,6 +45,7 @@ export default class PropertyCard extends Component {
       beds,
       city,
       gallery_images,
+      id,
       living_area,
       lots_size,
       price,
@@ -54,15 +55,18 @@ export default class PropertyCard extends Component {
       type,
       zip
     } = this.props.data;
+
+    let classes = [];
+
     let self = this;
 
-    let info_box = `<li>${type} Type</li>`;
+    let info_box = `<li>${type}</li>`;
 
     if (property_type !== 'commercial' && property_type !== 'land') {
       info_box += `<li>${beds} Bed</li><li>${baths} Bath</li>`;
     }
 
-    if (property_type !== 'land') {
+    if (property_type !== 'land' && !!+living_area[0]) {
       info_box += `<li>${Util.formatSQFTValue(living_area)} SF</li>`;
     }
 
@@ -70,15 +74,24 @@ export default class PropertyCard extends Component {
       info_box += `<li>${lots_size} Acres</li>`;
     }
 
+    if (this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL) {
+      classes = classes.concat(['card', `${Lib.THEME_CLASSES_PREFIX}card`, `${Lib.THEME_CLASSES_PREFIX}card-homepage`, 'swiper-slide']);
+    } else {
+      classes = classes.concat(['card', `${Lib.THEME_CLASSES_PREFIX}card`]);
+    }
+
+    if (this.props.highlighted) {
+      classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
+    }
+    classes.push(id);
     return (
       <div
-        className={this.props.listType === Lib.PROPERTIES_LIST_CAROUSEL ? `card ${Lib.THEME_CLASSES_PREFIX}card ${Lib.THEME_CLASSES_PREFIX}card-homepage swiper-slide` : `card ${Lib.THEME_CLASSES_PREFIX}card`}>
+        className={classes.join(' ')}>
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
           <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide"
-                     onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
+                <div className="swiper-slide">
                   <img
                     alt="Card image cap"
                     className="swiper-lazy card-img-top"
@@ -88,7 +101,7 @@ export default class PropertyCard extends Component {
                       }) : (!_.get(this.props.data, 'full_image', false) ? Util.getThumbnailUrlBySize(thumbnail, Lib.PROPERTY_LISTING_IMAGE_SIZE) : thumbnail)}
                   />
                 </div>
-                {gallery_images.map((d, k) =>
+                {gallery_images.slice(1, gallery_images.length).map((d, k) =>
                   <div className="swiper-slide" key={k}>
                     <img
                       alt={_.isEmpty(d) ? 'Card image cap' : ''}

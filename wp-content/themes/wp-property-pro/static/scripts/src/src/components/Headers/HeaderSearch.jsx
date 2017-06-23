@@ -30,7 +30,6 @@ class HeaderSearch extends Component {
 
   handleSaleSelectionItemClick(event, saleItem) {
     event.preventDefault();
-    console.log('sale selection item clicked ', saleItem);
     let url = new URI(window.location.href);
     url.setSearch({[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleItem});
     this.props.doOpenSaleTypesPanel(false);
@@ -38,7 +37,6 @@ class HeaderSearch extends Component {
   }
 
   handleSaleTypeClick(event) {
-    console.log('sale type clicked')
     event.preventDefault();
 
     this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
@@ -59,7 +57,7 @@ class HeaderSearch extends Component {
     }
     let saleType = searchFilters['sale_type'];
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid"}>
         <div className={containerClasses}>
           <div className={`col-md-3 ${Lib.THEME_CLASSES_PREFIX}selection-container`}>
             <a href="#" onClick={event => this.handleSaleSelectionItemClick.bind(this)(event, 'Buy')}>
@@ -90,7 +88,7 @@ class HeaderSearch extends Component {
           <div className={`col-1 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
             <UserPanelIcon openUserPanel={this.props.openUserPanel} />
           </div>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-1 col-md-2 col-lg-1 my-auto`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -107,8 +105,8 @@ class HeaderSearch extends Component {
           <div className={`hidden-sm-down col-md-2 ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-6 col-lg-7"}>
-            <SearchFilters filters={searchFilters}/>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-7 col-md-6 col-lg-7"}>
+            <SearchFilters filters={searchFilters} />
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-2 col-md-2"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />

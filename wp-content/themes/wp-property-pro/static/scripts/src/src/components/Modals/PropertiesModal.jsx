@@ -263,7 +263,8 @@ class PropertiesModal extends Component {
       priceSelected,
       propertyTypeSelected,
       sqftSelected,
-      localFilters
+      localFilters,
+      open
     } = this.props;
 
     let {
@@ -299,7 +300,7 @@ class PropertiesModal extends Component {
     }
     return (
       <div
-        className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${this.props.open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
+        className={`modal ${Lib.THEME_CLASSES_PREFIX}search-modal ${Lib.THEME_CLASSES_PREFIX}advanced-filter ${open ? Lib.THEME_CLASSES_PREFIX + "display" : Lib.THEME_CLASSES_PREFIX + "hide"}`}>
         <div className={`modal-dialog ${Lib.THEME_CLASSES_PREFIX}modal-dialog m-0`} role="document">
           <div className="modal-content">
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header hidden-md-down`}>
@@ -380,7 +381,7 @@ class PropertiesModal extends Component {
                 <div className="container">
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'location') ?
                     <div className="row">
-                      <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}>
+                      <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
                         <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
                         <div className="filter-type">
                           {termFilters.map(t =>
@@ -395,7 +396,7 @@ class PropertiesModal extends Component {
                   : null}
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'bedrooms') ?
                     <div className="row">
-                      <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}>
+                      <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
                         <h3>Bedrooms <span>(Minimum)</span></h3>
                         {bedroomElements.map(d =>
                           <a key={d.value} href="#"
@@ -408,7 +409,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'price') ?
                     <div className="row">
                       <div
-                        className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-price`}>
                         <h3>Price <span>(Range)</span></h3>
                         <div>
                           {localFilters.sale_type && priceSelected.start && priceSelected.to ?
@@ -423,7 +424,7 @@ class PropertiesModal extends Component {
                   : null}
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'bathrooms') ?
                     <div className="row">
-                      <div className={Lib.THEME_CLASSES_PREFIX + "filter-section"}
+                      <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}
                           style={{display: showAllFilters ? 'block' : 'none'}}>
                         <h3>Bathrooms <span>(Minimum)</span></h3>
                         {bathroomElements.map(d =>
@@ -437,7 +438,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'sqft') ?
                     <div className="row">
                       <div
-                        className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
                         style={{display: showAllFilters ? 'block' : 'none'}}>
                         <h3>Total Size <span>(SQFT)</span></h3>
                         <div>
@@ -454,7 +455,7 @@ class PropertiesModal extends Component {
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'lotSize') ?
                     <div className="row">
                       <div
-                        className={`${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section ${Lib.THEME_CLASSES_PREFIX}filter-section-total-size`}
                         style={{display: showAllFilters ? 'block' : 'none'}}>
                         <h3>Lot Size <span>(Acres)</span></h3>
                         <div>
@@ -468,28 +469,32 @@ class PropertiesModal extends Component {
                     </div>
                   : null}
                   {this.showFilterBasedOnSaleType(localFilters.sale_type, 'property_type') ?
-                  <div className="row">
-                    <div
-                      className={`${Lib.THEME_CLASSES_PREFIX}filter-section`}
-                      style={{display: showAllFilters ? 'block' : 'none'}}>
-                      <h3>Type</h3>
-                      <div className="filter-type">
-                        {propertyTypeElements.map(d =>
-                          <a key={d.value} href="#"
-                             className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
-                             onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
-                        )}
+                    <div className="row">
+                      <div
+                        className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}
+                        style={{display: showAllFilters ? 'block' : 'none'}}>
+                        <h3>Type</h3>
+                        <div className="filter-type">
+                          {propertyTypeElements.map(d =>
+                            <a key={d.value} href="#"
+                              className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary ${(d.selected ? "selected" : null)}`}
+                              onClick={() => this.handlePropertyTypeSelect.bind(this)(d.value)}>{d.name}</a>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
                   : null}
                   <div className="row">
                     {showAllFilters ?
-                      <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
-                         onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
+                      <div className="col-7">
+                        <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
+                          onClick={this.toggleViewAllFilters.bind(this)}>- View Less Filters</a>
+                      </div>
                       :
-                      <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
-                         onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
+                      <div className="col-7">
+                        <a href="#" className={Lib.THEME_CLASSES_PREFIX + "view-link"}
+                          onClick={this.toggleViewAllFilters.bind(this)}>+ View More Filters</a>
+                      </div>
                     }
                   </div>
                 </div>

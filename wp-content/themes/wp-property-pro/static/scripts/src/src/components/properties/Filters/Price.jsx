@@ -83,7 +83,9 @@ class Price extends Component {
       step = 25000;
     }
     return (
-      <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      <div className={Lib.THEME_CLASSES_PREFIX + "noUislider-container"}>
+        <Slider formatter={formatter} max={max} min={min} start={start || defaults[saleType].start} step={step} to={to || defaults[saleType].to} handleOnClick={this.props.handleOnClick} />
+      </div>
     )
   }
 };

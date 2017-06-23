@@ -72,6 +72,10 @@ html, body {
     height: 100%;
 }
 
+.propertypro-page-layout-container, .propertypro-page-layout-container-inner, .propertypro-search-map-container {
+    height: 100%;
+}
+
 /** Toolbar **/
 
 .propertypro-toolbar.propertypro-header-default,
@@ -557,6 +561,10 @@ html, body {
 
 .propertypro-card-img {
     position: relative;
+}
+
+.propertypro-direction-nav {
+    padding: 0 1rem;
 }
 
 .propertypro-card-img .propertypro-direction-nav-container {
@@ -1740,6 +1748,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-listing-sidebar {
+    height: 100%;
     position: relative;
     overflow-y: scroll;
 }
@@ -1782,12 +1791,31 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     overflow: hidden;
 }
 
+.propertypro-search-result-container p {
+    color: #000000;
+}
+
 .propertypro-search-result-inner-container {
     float: right;
 }
 
 .propertypro-listing-wrap .propertypro-card {
     margin-bottom: 1.875rem;
+}
+
+.propertypro-card:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f28200;
+    height: 3px;
+    display: none;
+}
+
+.propertypro-card-selected:before {
+    display: block;
 }
 
 /* Search Map -> Search Property Type */
@@ -2377,13 +2405,17 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 }
 
-/* noUISlider overrides */
+/* noUISlider related CSS and override rules */
 .noUi-connect {
     background: #d03528 !important;
 }
 
 .noUi-tooltip {
     white-space: nowrap;
+}
+
+.propertypro-noUislider-container {
+    padding: 0 20px;
 }
 
 /** Utils **/
@@ -2406,13 +2438,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*-----------------------------------------------------------------------------------*/
 /*  Responsive (Media queries)
 /*-----------------------------------------------------------------------------------*/
-
-/* Large devices (more than 1440px) */
-@media screen and (min-width: 90em) {
-    .propertypro-card-col {
-        max-width: 33.33%;
-    }
-}
 
 @media (max-width: 62.000em) and (min-width: 47.938em) {
     .propertypro-testimonial .propertypro-author-info {
@@ -2956,7 +2981,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     }
 
     .propertypro-filter-section {
-        margin-bottom: 2.5rem;
+        margin-bottom: 5rem;
     }
 
     .propertypro-tour-widget-content h3 {

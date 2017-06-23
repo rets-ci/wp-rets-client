@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {findDOMNode} from 'react-dom';
 import LoadingCircle from '../LoadingCircle.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
@@ -14,7 +15,10 @@ class SearchResultListing extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {loading: false};
+    this.state = {
+      loading: false
+    };
+    this.properties = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,14 +27,39 @@ class SearchResultListing extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.properties.length && this.props.selectedProperty) {
+      this.scrollToProperty(this.props.selectedProperty)
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.properties.length && this.props.selectedProperty) {
+      this.scrollToProperty(this.props.selectedProperty)
+    }
+  }
+
+  scrollToProperty(propertyId) {
+    if (!this.properties[propertyId]) {
+     console.log('chosen property was not found in the results');
+    } else {
+      let node = findDOMNode(this.properties[propertyId]);
+      node.scrollIntoView({ behaviour: 'smooth' });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty) || (nextState.loading !== this.state.loading);
+  }
+
   render() {
     let {
-      properties
+      properties,
+      selectedProperty
     } = this.props;
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>
-        <div className="row">
+        <div className="row" ref={(r) => this.searchResultLisintElement = r}>
           {
             properties.map((p, i) => {
 
@@ -41,6 +70,7 @@ class SearchResultListing extends Component {
                   beds: _.get(p, '_source.post_meta.rets_beds', 0),
                   city: _.get(p, '_source.tax_input.wpp_location.wpp_location_city[0].name', ''),
                   gallery_images: _.get(p, '_source.wpp_media', []).map((media) => media.url),
+                  id: p._id,
                   living_area: _.get(p, '_source.post_meta.rets_living_area', 0),
                   lots_size: _.get(p, '_source.post_meta.rets_lot_size_area', 0),
                   price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
@@ -50,10 +80,9 @@ class SearchResultListing extends Component {
                   thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
                   zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')
                 };
-
                 return (
-                  <div className={`${Lib.THEME_CLASSES_PREFIX}card-col col-6`} key={i}>
-                    <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i}/>
+                  <div className={`col-12 col-sm-6 col-xl-4`} key={i}>
+                    <PropertyCard data={item} listType={Lib.PROPERTIES_LIST_DEFAULT} key={i} highlighted={selectedProperty === p._id} ref={(r) => this.properties[p._id] = r} />
                   </div>
                 );
               }
@@ -66,12 +95,14 @@ class SearchResultListing extends Component {
                 <LoadingCircle />
                 : null}
               <p>Showing {this.props.properties.length} results</p>
-              <Waypoint
-                onEnter={() => {
-                  this.setState({loading: true});
-                  this.props.seeMoreHandler();
-                }}
-              />
+              {!this.state.loading ?
+                <Waypoint
+                  onEnter={() => {
+                    this.setState({loading: true});
+                    this.props.seeMoreHandler();
+                  }}
+                />
+              : null}
             </div>
           </div>
           : null}

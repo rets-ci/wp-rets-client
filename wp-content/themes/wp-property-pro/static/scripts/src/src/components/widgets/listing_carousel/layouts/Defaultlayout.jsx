@@ -16,7 +16,8 @@ export default class DefaultLayout extends Component {
 
   componentDidMount() {
     this.swiper = Swiper.init(this.swiperElement, {
-      slidesPerView: 5,
+      // centeredSlides: window.innerWidth >= Lib.MOBILE_WIDTH,
+      slidesPerView: 'auto',
       nextButton: this.swiperElementNext,
       prevButton: this.swiperElementPrev,
       spaceBetween: 20
@@ -29,7 +30,7 @@ export default class DefaultLayout extends Component {
     } = this.props;
     let posts = _.get(item, 'posts', []);
     return (
-      <div className="row">
+      <div>
         <div className={Lib.THEME_CLASSES_PREFIX + "listing-carousel-container"}>
           <div className={`${Lib.THEME_CLASSES_PREFIX}listing-carousel-info mx-auto text-center`}>
             {

@@ -1,5 +1,6 @@
 import Api from '../../containers/Api.jsx';
 import {
+  openPropertiesModal,
   setSearchResults,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
@@ -18,10 +19,12 @@ import qs from 'qs';
 import URI from 'urijs';
 
 const mapStateToProps = (state, ownProps) => {
+  let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
   return {
+    allQueryParams: allQueryParams,
     query: _.get(state, 'searchResults.query', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
-    queryParams: ownProps.location.query,
+    searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
     mapSearchResultsLoading: state.mapSearchResultsLoading.loading,
     propertiesModalOpen: state.propertiesModal ? state.propertiesModal.open : false,
     results: _.get(state, 'searchResults.searchResults', []),
@@ -32,6 +35,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    openPropertiesModal: open => {
+      dispatch(openPropertiesModal(open));
+    },
+
     standardSearch: (params) => {
       Api.makeStandardPropertySearch(params, (query, response) => {
         if (_.get(response, 'hits.total', null)) {
@@ -79,7 +86,7 @@ class MapSearchResults extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(nextProps.queryParams, this.props.queryParams)) {
+    if (!_.isEqual(nextProps.searchQueryParams, this.props.searchQueryParams)) {
       this.applyQueryFilters();
     }
   }
@@ -108,12 +115,15 @@ class MapSearchResults extends Component {
   }
 
   updateURIGeoCoordinates(geoCoordinates) {
+    //TODO: this should be refactored to use the URL related functions in Util.jsx
     // update URL
     let url = new URI(window.location.href);
     let queryParam = window.location.search.replace('?', '');
     let currentFilters = qs.parse(queryParam);
     // remove any current geoCorrdinates before adding additional ones
     delete currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'];
+    // remove selected property as well
+    delete currentFilters['selected_property'];
     currentFilters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['geoCoordinates'] = geoCoordinates;
     let newSearchQuery = '?' + qs.stringify(currentFilters);
     let constructedQuery = decodeURIComponent(url.pathname() + newSearchQuery);
@@ -122,17 +132,18 @@ class MapSearchResults extends Component {
 
   render() {
     let {
+      allQueryParams,
+      searchQueryParams,
       displayedResults,
       location,
       mapSearchResultsLoading,
+      openPropertiesModal,
       propertiesModalOpen,
       results
     } = this.props;
+    let filters = qs.parse(window.location.search.replace('?', ''));
     let propertyTypes = location.query['wpp_search[property_types]'];
-    let searchFilters = qs.parse(window.location.search.replace('?', ''))[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
-    let listingSidebarStyle = {
-      height: (window.innerHeight - Lib.HEADER_SEARCH_HEIGHT)
-    };
+    let searchFilters = filters[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
         <LocationModal />
@@ -146,12 +157,12 @@ class MapSearchResults extends Component {
                 : null}
               </div>
               <Map currentGeoBounds={searchFilters.geoCoordinates ? Util.elasticsearchGeoFormatToGoogle(searchFilters.geoCoordinates) : null} properties={displayedResults}
-                    searchByCoordinates={this.updateURIGeoCoordinates.bind(this)}/>
+                    searchByCoordinates={this.updateURIGeoCoordinates.bind(this)} selectedProperty={filters.selected_property} />
               }
             </div>
           </div>
           <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"} style={listingSidebarStyle}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
             <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
               <div>
                 <h1>Homes for {searchFilters.sale_type}</h1>
@@ -163,7 +174,10 @@ class MapSearchResults extends Component {
             </div>
             <SearchResultListing
               allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
-              properties={displayedResults} seeMoreHandler={this.seeMoreHandler.bind(this)}/>
+              properties={displayedResults}
+              seeMoreHandler={this.seeMoreHandler.bind(this)}
+              selectedProperty={filters.selected_property}
+              />
           </div>
           </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation hidden-sm-up`}>
@@ -171,11 +185,16 @@ class MapSearchResults extends Component {
               <div className={Lib.THEME_CLASSES_PREFIX + "search-map-mobile-navigation-items"}>
                 <ul
                   className={`${Lib.THEME_CLASSES_PREFIX}search-map-mobile-navigation-switchers navbar-nav mr-auto`}>
-                  <li className="nav-item"><a className="btn" href="#">Filter</a></li>
-                  <li className="nav-item"><a className="btn" href="#" onClick={(e) => {
-                    e.preventDefault();
-                    this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
-                  }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
+                  <li className="nav-item">
+                    <a className="btn" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      openPropertiesModal(true);
+                    }}>Filter</a></li>
+                  <li className="nav-item">
+                    <a className="btn" href="#" onClick={(e) => {
+                      e.preventDefault();
+                      this.clickMobileSwitcherHandler.bind(this)(!this.state.mapDisplay);
+                    }}>{this.state.mapDisplay ? 'List' : 'Map'}</a></li>
                 </ul>
                 <a href="#" className="btn">Search</a>
               </div>
