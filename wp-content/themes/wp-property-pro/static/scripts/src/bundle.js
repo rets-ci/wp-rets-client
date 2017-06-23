@@ -69194,6 +69194,8 @@
 	  url: bundle.static_images_url + 'oval-selected-3-25.png'
 	};
 
+	var defaultZoom = 9;
+
 	var Map = function (_Component) {
 	  _inherits(Map, _Component);
 
@@ -69243,8 +69245,10 @@
 	        this.clearBounds();
 	        this.setPropertyMarkers(nextProps.properties);
 	        if (!this.state.dragMode) {
-	          // auto zoom
 	          this.map.fitBounds(this.bounds);
+	          if (this.map.getZoom() < defaultZoom) {
+	            this.map.setZoom(defaultZoom);
+	          }
 	        }
 	      }
 	      var condition = !this.markers.filter(function (m) {
@@ -69294,9 +69298,8 @@
 	          center: coordinates,
 	          mapTypeControlOptions: { mapTypeIds: [] },
 	          scrollwheel: false,
-	          streetView: false,
 	          streetViewControl: false,
-	          zoom: 9
+	          zoom: defaultZoom
 	        });
 	      } else {
 	        this.map.setCenter(new google.maps.LatLng(coordinates.lat, coordinates.lng));
@@ -69734,7 +69737,8 @@
 	          priceSelected = _props.priceSelected,
 	          propertyTypeSelected = _props.propertyTypeSelected,
 	          sqftSelected = _props.sqftSelected,
-	          localFilters = _props.localFilters;
+	          localFilters = _props.localFilters,
+	          open = _props.open;
 	      var _state = this.state,
 	          initialFilters = _state.initialFilters,
 	          showAllFilters = _state.showAllFilters;
@@ -69775,7 +69779,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (this.props.open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
+	          className: 'modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal ' + _lib.Lib.THEME_CLASSES_PREFIX + 'advanced-filter ' + (open ? _lib.Lib.THEME_CLASSES_PREFIX + "display" : _lib.Lib.THEME_CLASSES_PREFIX + "hide") },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog ' + _lib.Lib.THEME_CLASSES_PREFIX + 'modal-dialog m-0', role: 'document' },
@@ -77957,7 +77961,7 @@
 	            };
 	            return _react2.default.createElement(
 	              'div',
-	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'card-col col-6', key: i },
+	              { className: 'col-12 col-sm-6 col-xl-4', key: i },
 	              _react2.default.createElement(_PropertyCard2.default, { data: item, listType: _lib.Lib.PROPERTIES_LIST_DEFAULT, key: i, highlighted: selectedProperty === p._id, ref: function ref(r) {
 	                  return _this2.properties[p._id] = r;
 	                } })
@@ -79083,13 +79087,13 @@
 
 	      var self = this;
 
-	      var info_box = '<li>' + type + ' Type</li>';
+	      var info_box = '<li>' + type + '</li>';
 
 	      if (property_type !== 'commercial' && property_type !== 'land') {
 	        info_box += '<li>' + beds + ' Bed</li><li>' + baths + ' Bath</li>';
 	      }
 
-	      if (property_type !== 'land') {
+	      if (property_type !== 'land' && !!+living_area[0]) {
 	        info_box += '<li>' + _Util2.default.formatSQFTValue(living_area) + ' SF</li>';
 	      }
 
@@ -85639,7 +85643,6 @@
 	    key: 'handleSaleSelectionItemClick',
 	    value: function handleSaleSelectionItemClick(event, saleItem) {
 	      event.preventDefault();
-	      console.log('sale selection item clicked ', saleItem);
 	      var url = new _urijs2.default(window.location.href);
 	      url.setSearch(_defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]', saleItem));
 	      this.props.doOpenSaleTypesPanel(false);
@@ -85648,7 +85651,6 @@
 	  }, {
 	    key: 'handleSaleTypeClick',
 	    value: function handleSaleTypeClick(event) {
-	      console.log('sale type clicked');
 	      event.preventDefault();
 
 	      this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
@@ -85860,6 +85862,14 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
+	    deleteLocalFilterTerm: function deleteLocalFilterTerm(termFilter) {
+	      dispatch((0, _index.deletePropertiesModalTermLocalFilter)(termFilter));
+	    },
+	    deleteSingleLocalFilter: function deleteSingleLocalFilter(filterKey) {
+	      dispatch((0, _index.deletePropertiesModalSingleLocalFilter)(filterKey));
+	    },
+
+
 	    openPropertiesModal: function openPropertiesModal(open) {
 	      dispatch((0, _index.openPropertiesModal)(open));
 	    }
@@ -85884,7 +85894,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.updateDisplayFlag();
-	      window.addEventListener("resize", this.updateDisplayFlag.bind(this));
+	      window.addEventListener('resize', this.updateDisplayFlag.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -85892,8 +85902,14 @@
 	      this.updateDisplayFlag();
 	    }
 	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      window.removeEventListener('resize', this.updateDisplayFlag);
+	    }
+	  }, {
 	    key: 'handleBathroomsFilterRemove',
 	    value: function handleBathroomsFilterRemove(bathroomsFilter) {
+	      this.props.deleteSingleLocalFilter('bathrooms');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bathrooms]', bathroomsFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85901,6 +85917,7 @@
 	  }, {
 	    key: 'handleBedroomsFilterRemove',
 	    value: function handleBedroomsFilterRemove(bedroomFilter) {
+	      this.props.deleteSingleLocalFilter('bedrooms');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[bedrooms]', bedroomFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85910,6 +85927,7 @@
 	    value: function handleLotSizefilterRemove(lotSizeFilter) {
 	      var _filter3;
 
+	      this.props.deleteSingleLocalFilter('lotSize');
 	      var filter = (_filter3 = {}, _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][start]", lotSizeFilter.start), _defineProperty(_filter3, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[lotSize][to]", lotSizeFilter.to), _filter3);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85919,6 +85937,7 @@
 	    value: function handlePriceFilterRemove(priceFilter) {
 	      var _filter4;
 
+	      this.props.deleteSingleLocalFilter('price');
 	      var filter = (_filter4 = {}, _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][start]", priceFilter.start), _defineProperty(_filter4, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[price][to]", priceFilter.to), _filter4);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85926,6 +85945,7 @@
 	  }, {
 	    key: 'handlePropertyTypeRemove',
 	    value: function handlePropertyTypeRemove(propertyFilter) {
+	      this.props.deleteSingleLocalFilter('property_type');
 	      var filter = _defineProperty({}, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[property_type]', propertyFilter);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85935,6 +85955,7 @@
 	    value: function handleSQFTFilterRemove(sqftFilter) {
 	      var _filter6;
 
+	      this.props.deleteSingleLocalFilter('sqft');
 	      var filter = (_filter6 = {}, _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][start]", sqftFilter.start), _defineProperty(_filter6, _lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + "[sqft][to]", sqftFilter.to), _filter6);
 	      var queryParam = _Util2.default.updateQueryFilter(window.location.href, filter, 'remove', false);
 	      this.updateURLWithQueryParam(queryParam);
@@ -85943,6 +85964,7 @@
 	    key: 'handleTermFilterRemove',
 	    value: function handleTermFilterRemove(termFilter) {
 	      var filterToRemove = _defineProperty({}, termFilter.tax, termFilter.value);
+	      this.props.deleteLocalFilterTerm(filterToRemove);
 	      var currentQueryParam = window.location.search.replace('?', '');
 	      var parsedQs = _qs2.default.parse(currentQueryParam);
 	      var currentTermFilter = parsedQs[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'];

@@ -563,6 +563,10 @@ html, body {
     position: relative;
 }
 
+.propertypro-direction-nav {
+    padding: 0 1rem;
+}
+
 .propertypro-card-img .propertypro-direction-nav-container {
     position: absolute;
     width: 100%;
@@ -2434,13 +2438,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /*-----------------------------------------------------------------------------------*/
 /*  Responsive (Media queries)
 /*-----------------------------------------------------------------------------------*/
-
-/* Large devices (more than 1440px) */
-@media screen and (min-width: 90em) {
-    .propertypro-card-col {
-        max-width: 33.33%;
-    }
-}
 
 @media (max-width: 62.000em) and (min-width: 47.938em) {
     .propertypro-testimonial .propertypro-author-info {

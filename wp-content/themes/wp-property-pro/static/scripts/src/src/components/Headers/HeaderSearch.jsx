@@ -30,7 +30,6 @@ class HeaderSearch extends Component {
 
   handleSaleSelectionItemClick(event, saleItem) {
     event.preventDefault();
-    console.log('sale selection item clicked ', saleItem);
     let url = new URI(window.location.href);
     url.setSearch({[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX + '[sale_type]']: saleItem});
     this.props.doOpenSaleTypesPanel(false);
@@ -38,7 +37,6 @@ class HeaderSearch extends Component {
   }
 
   handleSaleTypeClick(event) {
-    console.log('sale type clicked')
     event.preventDefault();
 
     this.props.doOpenSaleTypesPanel(!this.props.saleTypesPanelOpen);
@@ -108,7 +106,7 @@ class HeaderSearch extends Component {
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-7 col-md-6 col-lg-7"}>
-            <SearchFilters filters={searchFilters}/>
+            <SearchFilters filters={searchFilters} />
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-2 col-md-2"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
