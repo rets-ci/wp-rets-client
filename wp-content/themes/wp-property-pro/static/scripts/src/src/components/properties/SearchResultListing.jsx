@@ -74,8 +74,8 @@ class SearchResultListing extends Component {
                   living_area: _.get(p, '_source.post_meta.rets_living_area', 0),
                   lots_size: _.get(p, '_source.post_meta.rets_lot_size_area', 0),
                   price: _.get(p, '_source.post_meta.rets_list_price[0]', 0),
-                  post_type: _.get(bundle, 'property_types.'+_.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
-                  type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
+                  post_type: _.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
+                  type: _.get(bundle, 'property_types.'+_.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
                   relative_permalink: _.get(p, '_source.permalink', ''),
                   thumbnail: _.get(p, '_source.post_meta.rets_thumbnail_url', ''),
                   zip: _.get(p, '_source.post_meta.rets_postal_code[0]', '')

@@ -160,7 +160,7 @@ namespace UsabilityDynamics {
       ]);
 
       foreach($property_types_array as $type){
-        $property_types[$type->slug] = $type->slug;
+        $property_types[$type->slug] = $type->name;
       }
 
       $params = [
