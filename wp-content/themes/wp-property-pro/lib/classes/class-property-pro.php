@@ -153,6 +153,16 @@ namespace UsabilityDynamics {
           $property_single_url = implode('/', $property_single_url_array);
       }
 
+      /** Get property types */
+      $property_types = [];
+      $property_types_array = get_terms([
+        'taxonomy' => 'wpp_listing_type'
+      ]);
+
+      foreach($property_types_array as $type){
+        $property_types[$type->slug] = $type->slug;
+      }
+
       $params = [
         'site_url' => site_url(),
         'admin_ajax_url' => admin_url('admin-ajax.php'),
@@ -164,7 +174,8 @@ namespace UsabilityDynamics {
         'category_base' => get_option('category_base') ? get_option('category_base') : 'category',
         'guide_category_base' => 'guides',
         'theme_prefix' => defined('THEME_PREFIX') ? THEME_PREFIX : '',
-        'property_single_url' => $property_single_url
+        'property_single_url' => $property_single_url,
+        'property_types' => $property_types
       ];
 
       if (defined('PROPERTYPRO_GOOGLE_API_KEY') && PROPERTYPRO_GOOGLE_API_KEY) {
