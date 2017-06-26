@@ -63961,23 +63961,28 @@
 	      return _lib.Lib.GOOGLE_STREETVIEW_URL + '?size=' + params.size + '&location=' + params.location + '&key=' + key;
 	    }
 	  }, {
-	    key: 'getSearchTypeParameters',
-	    value: function getSearchTypeParameters(bundle) {
+	    key: 'getSearchTypeOptions',
+	    value: function getSearchTypeOptions(bundle) {
 
 	      var MastheadWidgetData = bundle.front_page_post_content[0].cells.filter(function (c) {
 	        return c.widget.panels_info.class === 'Property_Pro_Masthead_Widget';
 	      });
 	      var searchTypeData = MastheadWidgetData[0].widget.fields.search_options;
+	      return searchTypeData;
+	    }
+	  }, {
+	    key: 'getSearchTypeParameters',
+	    value: function getSearchTypeParameters(options) {
 
-	      var labels = Object.keys(searchTypeData).map(function (o) {
+	      var labels = Object.keys(options).map(function (o) {
 	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
 	        return labelsArr[0];
 	      });
-	      var saleTypes = Object.keys(searchTypeData).map(function (o) {
+	      var saleTypes = Object.keys(options).map(function (o) {
 	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
 	        return labelsArr[1];
 	      });
-	      var propertyTypes = Object.keys(searchTypeData).map(function (o) {
+	      var propertyTypes = Object.keys(options).map(function (o) {
 	        var labelsArr = o.split(_lib.Lib.STRING_ARRAY_DELIMITER);
 	        return labelsArr.slice(2).join(_lib.Lib.STRING_ARRAY_DELIMITER);
 	      });
@@ -69591,7 +69596,9 @@
 	    },
 	    removeLastLocationFilter: function removeLastLocationFilter() {
 	      // TODO: this function is not pure, make it so by removing its dependency on window
-	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(window.bundle),
+	      var options = _Util2.default.getSearchTypeOptions(window.bundle);
+
+	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(options),
 	          labels = _Util$getSearchTypePa.labels,
 	          saleTypes = _Util$getSearchTypePa.saleTypes,
 	          propertyTypes = _Util$getSearchTypePa.propertyTypes;
@@ -85984,7 +85991,9 @@
 	    },
 	    removeLastLocationFilter: function removeLastLocationFilter() {
 	      // TODO: this function is not pure, make it so by removing its dependency on window
-	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(window.bundle),
+	      var options = _Util2.default.getSearchTypeOptions(window.bundle);
+
+	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(options),
 	          labels = _Util$getSearchTypePa.labels,
 	          saleTypes = _Util$getSearchTypePa.saleTypes,
 	          propertyTypes = _Util$getSearchTypePa.propertyTypes;
