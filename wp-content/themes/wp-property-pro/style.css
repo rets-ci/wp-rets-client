@@ -1387,7 +1387,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     background-color: #ffffff;
 }
 
-.propertypro-bs-tags-box .propertypro-tag i {
+.propertypro-bs-tags-box .propertypro-tag i, .propertypro-filter-section-button i {
     position: relative;
     font-size: 0.625rem;
     left: auto;

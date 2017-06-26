@@ -7,8 +7,10 @@ import {
   openPropertiesModal,
   setPropertiesModalLocalFilter,
   setPropertiesModalResultCountLoading,
+  setSearchType,
   updatePropertiesModalLocalFilter,
-  updatePropertiesModalResultCount
+  updatePropertiesModalResultCount,
+  toggleLocationModalSearchMode
 } from '../../actions/index.jsx';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
@@ -60,6 +62,7 @@ const mapStateToProps = (state, ownProps) => {
     propertyTypeSelected: localFilters.property_type || '',
     resultCount: state.propertiesModal.resultCount,
     resultCountButtonLoading: state.propertiesModal.resultCountButtonLoading,
+    searchMode: state.locationModal.searchMode,
     sqftSelected: localFilters.sqft || defaultFiltervalues['sqft'],
     lotSizeSelected: localFilters.lotSize || defaultFiltervalues['lotsize'],
     localFilters: localFilters
@@ -68,9 +71,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openLocationModal() {
+    disableLocationModalSearchMode() {
+      dispatch(toggleLocationModalSearchMode(false));
+    },
+
+    enableLocationModalSearchMode() {
+      dispatch(toggleLocationModalSearchMode(true));
+    },
+
+    openLocationModal(modifyType) {
       // dispatch(openPropertiesModal(false));
-      dispatch(openLocationModal(true));
+      dispatch(openLocationModal(true, modifyType));
     },
 
     openPropertiesModal(open) {
@@ -83,6 +94,22 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     deleteSingleLocalFilter(filterKey) {
       dispatch(deletePropertiesModalSingleLocalFilter(filterKey));
+    },
+
+    removeLastLocationFilter() {
+      // TODO: this function is not pure, make it so by removing its dependency on window
+      let {
+        labels,
+        saleTypes,
+        propertyTypes
+      } = Util.getSearchTypeParameters(window.bundle);
+
+      dispatch(setSearchType({
+        searchType: labels.length ? labels[0] : '',
+        saleType: saleTypes.length ? saleTypes[0] : '',
+        propertyTypes: propertyTypes.length ? propertyTypes[0] : ''
+      }));
+      dispatch(openLocationModal(true, 'replace'));
     },
 
     setLocalFilters(filter) {
@@ -130,6 +157,7 @@ class PropertiesModal extends Component {
     let allQueryParams = Util.getQS(window.location.href, this.props.localFilters);
     let searchFiltersFormatted = allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX];
     this.props.setLocalFilters(searchFiltersFormatted);
+    this.props.enableLocationModalSearchMode();
     let showAllFilters = this.displayAllFilters(this.props.localFilters);
     this.setState({
       // note that searchFiltersFormatted is the same as localFilters
@@ -139,6 +167,9 @@ class PropertiesModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!this.props.searchMode) {
+      this.props.enableLocationModalSearchMode();
+    }
     if (nextProps.localFilters !== this.props.localFilters) {
       let filters = removeDefaultFilters(nextProps.localFilters, defaultFiltervalues);
       this.props.updateResultCount(filters);
@@ -151,7 +182,7 @@ class PropertiesModal extends Component {
 
   componentWillUnmount() {
     // reset local filters
-    this.props.setLocalFilters({});
+    this.props.disableLocationModalSearchMode();
   }
 
   displayAllFilters(localFilters) {
@@ -215,6 +246,11 @@ class PropertiesModal extends Component {
       }
     };
     this.props.updatePropertiesModalLocalFilter(filter);
+  }
+
+  handleTermFilterRemove(filter) {
+    let filterToRemove = {[filter.tax]: filter.value};
+    this.props.deleteLocalFilterTerm(filterToRemove);
   }
 
   resetFilters() {
@@ -292,11 +328,25 @@ class PropertiesModal extends Component {
 
     let filters = removeDefaultFilters(localFilters, defaultFiltervalues);
     let termFilters = [];
+    let termFilterElement;
     let termFilter = localFilters['term'];
     if (termFilter && termFilter.length) {
       termFilters = termFilter.map(t => {
         return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
       });
+      if (termFilters.length === 1) {
+        termFilterElement = <span key={termFilters[0].value} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+          <i className="fa fa-times" onClick={() => this.props.removeLastLocationFilter()}></i>
+          <span>{termFilters[0].value}</span>
+        </span>;
+      } else {
+        termFilterElement = termFilters.map((t, i) =>
+          <span key={t.value} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
+            <i className="fa fa-times" onClick={() => this.handleTermFilterRemove.bind(this)(t)}></i>
+            <span>{t.value}</span>
+          </span>
+        );
+      }
     }
     return (
       <div
@@ -314,6 +364,7 @@ class PropertiesModal extends Component {
                       deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
                       deleteLocalFilterTerm={this.props.deleteLocalFilterTerm}
                       localFilters={localFilters}
+                      removeLastLocationFilter={this.props.removeLastLocationFilter}
                     />
                   </div>
                   <div className="p-2 my-auto">
@@ -384,12 +435,9 @@ class PropertiesModal extends Component {
                       <div className={`col-12 ${Lib.THEME_CLASSES_PREFIX}filter-section`}>
                         <h3>Location <span>(City, School, Neighborhood, Zip)</span></h3>
                         <div className="filter-type">
-                          {termFilters.map(t =>
-                            <span key={t.value}
-                                  className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>{t.value}</span>
-                          )}
+                          {termFilterElement}
                           <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary`}
-                            onClick={() => this.props.openLocationModal(true)}>+ More Locations</a>
+                            onClick={() => this.props.openLocationModal('append')}>+ More Locations</a>
                         </div>
                       </div>
                     </div>

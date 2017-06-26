@@ -4,6 +4,7 @@ import MobileTabsSearch from './MobileTabsSearch.jsx';
 import DropDownSearch from './DropDownSearch.jsx';
 import {openLocationModal, setSearchType, setFilterTerms} from '../../../../actions/index.jsx';
 import {Lib} from '../../../../lib.jsx';
+import Util from '../../../Util.jsx';
 import _ from 'lodash';
 
 const mapStateToProps = (state, history) => {
@@ -17,23 +18,23 @@ const mapStateToProps = (state, history) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        openSearchModal: open => {
-          dispatch(openLocationModal(open));
-        },
+  return {
+    openSearchModal: modifyType => {
+      dispatch(openLocationModal(true, modifyType));
+    },
 
-        setSearchType: (searchType, saleType, propertyTypes) => {
-          dispatch(setSearchType({
-              searchType: searchType,
-              saleType: saleType,
-              propertyTypes: propertyTypes
-          }));
-        },
+    setSearchType: (searchType, saleType, propertyTypes) => {
+      dispatch(setSearchType({
+          searchType: searchType,
+          saleType: saleType,
+          propertyTypes: propertyTypes
+      }));
+    },
 
-        clearTermFilter: () => {
-          dispatch(setFilterTerms([]));
-        }
+    clearTermFilter: () => {
+      dispatch(setFilterTerms([]));
     }
+  }
 };
 
 class SearchContent extends Component {
@@ -56,22 +57,16 @@ class SearchContent extends Component {
   };
 
   componentDidMount() {
-    let labels = Object.keys(this.props.options).map(o => {
-      let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
-      return labelsArr[0];
-    });
-    let saleTypes = Object.keys(this.props.options).map(o => {
-        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
-        return labelsArr[1];
-    });
-    let propertyTypes = Object.keys(this.props.options).map(o => {
-        let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
-        return labelsArr.slice(2).join(Lib.STRING_ARRAY_DELIMITER);
-    });
+    let {
+      labels,
+      saleTypes,
+      propertyTypes
+    } = Util.getSearchTypeParameters(this.props.options);
+    
     this.setState({
-      labels: labels,
-      saleTypes: saleTypes,
-      propertyTypes: propertyTypes
+      labels,
+      saleTypes,
+      propertyTypes
     });
     this.props.setSearchType(labels.length ? labels[0] : '', saleTypes.length ? saleTypes[0] : '', propertyTypes.length ? propertyTypes[0] : '');
   }
@@ -124,7 +119,7 @@ class SearchContent extends Component {
           handleChange={this.handleSearchDropDownChange.bind(this)}
           handleOptionSelect={this.handleSearchDropDownOptionSelect.bind(this)}
         />
-        <button className={searchBtnClasses} onClick={() => self.props.openSearchModal(true)} type="button">
+        <button className={searchBtnClasses} onClick={() => self.props.openSearchModal('replace')} type="button">
           <i className="fa fa-search"></i> {placeholder}
         </button>
       </div>

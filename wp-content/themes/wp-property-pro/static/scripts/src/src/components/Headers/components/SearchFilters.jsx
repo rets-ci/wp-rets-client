@@ -1,7 +1,11 @@
 import {
   deletePropertiesModalTermLocalFilter,
   deletePropertiesModalSingleLocalFilter,
-  openPropertiesModal
+  openLocationModal,
+  setPropertiesModalLocalFilter,
+  setSearchType,
+  openPropertiesModal,
+  toggleLocationModalSearchMode
 } from '../../../actions/index.jsx';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
@@ -36,6 +40,23 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     deleteSingleLocalFilter(filterKey) {
       dispatch(deletePropertiesModalSingleLocalFilter(filterKey));
+    },
+
+    removeLastLocationFilter() {
+      // TODO: this function is not pure, make it so by removing its dependency on window
+      let {
+        labels,
+        saleTypes,
+        propertyTypes
+      } = Util.getSearchTypeParameters(window.bundle);
+
+      dispatch(setSearchType({
+        searchType: labels.length ? labels[0] : '',
+        saleType: saleTypes.length ? saleTypes[0] : '',
+        propertyTypes: propertyTypes.length ? propertyTypes[0] : ''
+      }));
+      dispatch(toggleLocationModalSearchMode(false));
+      dispatch(openLocationModal(true, 'replace'));
     },
 
     openPropertiesModal: open => {
@@ -128,7 +149,7 @@ class searchFilters extends Component {
 
   handleTermFilterRemove(termFilter) {
     let filterToRemove = {[termFilter.tax]: termFilter.value};
-    this.props.deleteLocalFilterTerm(filterToRemove)
+    this.props.deleteLocalFilterTerm(filterToRemove);
     let currentQueryParam = window.location.search.replace('?', '');
     var parsedQs = qs.parse(currentQueryParam);
     var currentTermFilter = parsedQs[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX]['term'];
@@ -227,9 +248,13 @@ class searchFilters extends Component {
       termFilters = termFilters.slice(0, 1);
     }
     if (termFilters && termFilters.length) {
-      termFilterElement = termFilters.map((t, i) =>
-        <FilterTag key={JSON.stringify(t)} handleRemoveFilter={i !== 0 ? (() => this.handleTermFilterRemove.bind(this)(t)) : null} display={t.value} value={t.value} />
-      );
+      if (termFilters.length === 1) {
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.props.removeLastLocationFilter()} display={termFilters[0].value} value={termFilters[0].value} />;
+      } else {
+        termFilterElement = termFilters.map((t, i) =>
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
+        );
+      }
     }
     return (
       <form method="get" className="clearfix">

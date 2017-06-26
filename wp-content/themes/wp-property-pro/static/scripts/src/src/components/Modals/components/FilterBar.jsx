@@ -9,7 +9,8 @@ class FilterBar extends Component {
   static propTypes = {
     deleteSingleLocalFilter: PropTypes.func.isRequired,
     deleteLocalFilterTerm: PropTypes.func.isRequired,
-    localFilters: PropTypes.object.isRequired
+    localFilters: PropTypes.object.isRequired,
+    removeLastLocationFilter: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -27,20 +28,28 @@ class FilterBar extends Component {
 
   render() {
     let {
-      localFilters
+      localFilters,
+      removeLastLocationFilter
     } = this.props;
 
     let termFilterElement;
     let termFilters = [];
     let termFilter = localFilters['term'];
+
+    
     if (termFilter && termFilter.length) {
       termFilters = termFilter.map(t => {
         return {tax: Object.keys(t)[0], value: Object.values(t)[0]}
       });
-      termFilterElement = termFilters.map((t, i) =>
-        <FilterTag key={JSON.stringify(t)} handleRemoveFilter={i !== 0 ? (() => this.handleTermFilterRemove.bind(this)(t)) : null} display={t.value} value={t.value} />
-      );
+      if (termFilters.length === 1) {
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => removeLastLocationFilter()} display={termFilters[0].value} value={termFilters[0].value} />;
+      } else {
+        termFilterElement = termFilters.map((t, i) =>
+          <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
+        );
+      }
     }
+
     let bathroomsElement;
     let bathroomsFilter = localFilters['bathrooms'];
     let bedroomsFilter = localFilters['bedrooms'];

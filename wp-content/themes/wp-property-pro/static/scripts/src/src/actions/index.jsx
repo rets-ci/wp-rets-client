@@ -14,9 +14,10 @@ export const deletePropertiesModalTermLocalFilter = termFilter => {
   }
 };
 
-export const openLocationModal = (open) => {
+export const openLocationModal = (open, modifyType) => {
   return {
     type: Lib.TOGGLE_LOCATION_MODAL_ACTION,
+    modifyType: modifyType || null,
     open: open
   }
 };
@@ -122,5 +123,12 @@ export const setPropertiesModalResultCountLoading = show => {
   return {
     type: Lib.UPDATE_PROPERTIES_MODAL_RESULT_COUNT_LOADING_ACTION,
     show: show
+  }
+}
+
+export const toggleLocationModalSearchMode = searchMode => {
+  return {
+    type: Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE,
+    searchMode: searchMode
   }
 }
