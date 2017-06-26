@@ -79167,7 +79167,7 @@
 	      this.swiper = _Swiper2.default.init(this.swiperElement, {
 	        effect: 'slide',
 	        lazyLoading: true,
-	        lazyLoadingOnTransitionStart: true,
+	        lazyLoadingInPrevNext: true,
 	        preloadImages: false,
 	        spaceBetween: 30
 	      });
