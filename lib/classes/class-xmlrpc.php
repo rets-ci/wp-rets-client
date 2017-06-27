@@ -60,6 +60,7 @@ namespace UsabilityDynamics\WPRETSC {
         $_methods[ 'wpp.systemPing' ] = array( $this, 'rpc_system_ping' );
         $_methods[ 'wpp.deleteProperty' ] = array( $this, 'delete_property' );
         $_methods[ 'wpp.trashProperty' ] = array( $this, 'trash_property' );
+        $_methods[ 'wpp.getPostIdByMlsId' ] = array( $this, 'get_post_id_by_mls_id' );
         $_methods[ 'wpp.editProperty' ] = array( $this, 'edit_property' );
         $_methods[ 'wpp.removeDuplicatedMLS' ] = array( $this, 'rpc_remove_duplicated_mls' );
         $_methods[ 'wpp.modifiedHistogram' ] = array( $this, 'rpc_get_modified_histogram' );
@@ -106,6 +107,11 @@ namespace UsabilityDynamics\WPRETSC {
         register_rest_route( 'wp-rets-client/v1', '/trashProperty', array(
           'methods' => array( 'POST', 'GET' ),
           'callback' => array( $this, 'trash_property' ),
+        ) );
+
+        register_rest_route( 'wp-rets-client/v1', '/getPostIdByMlsId', array(
+          'methods' => array( 'POST', 'GET' ),
+          'callback' => array( $this, 'get_post_id_by_mls_id' ),
         ) );
 
         register_rest_route( 'wp-rets-client/v1', '/editProperty', array(
@@ -1296,7 +1302,7 @@ namespace UsabilityDynamics\WPRETSC {
           ud_get_wp_rets_client()->logfile = !empty( $data[ 'logfile' ] ) ? $data[ 'logfile' ] : ud_get_wp_rets_client()->logfile;
         }
 
-        ud_get_wp_rets_client()->write_log( 'Have [wpp.trashProperty] request.', 'info' );
+        ud_get_wp_rets_client()->write_log( 'Have [wpp.trashProperty] request. Post id: ' . $post_id, 'info' );
 
         if( !$post_id || !is_numeric( $post_id ) ) {
           ud_get_wp_rets_client()->write_log(  'No post ID provided', 'info' );
@@ -1311,6 +1317,48 @@ namespace UsabilityDynamics\WPRETSC {
         ud_get_wp_rets_client()->write_log( "Property [$post_id] trashed." );
 
         $response['time' ] = timer_stop();
+
+        return $response;
+
+      }
+
+      /**
+       * Get post ID by mls number
+       *
+       * @param $args
+       * @return array
+       */
+      public function get_post_id_by_mls_id( $args ) {
+        global $wp_xmlrpc_server, $wpdb;
+
+        $data = self::parseRequest( $args );
+
+        if( !empty( $wp_xmlrpc_server->error ) ) {
+          return $data;
+        }
+
+        $response = array(
+          "ok" => true,
+          "request" => $data
+        );
+
+        $post_id = 0;
+
+        if( isset($data['id']) && !empty( $data[ 'id' ] ) ) {
+          $post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='".( defined( 'RETS_ID_KEY' ) ? RETS_ID_KEY : 'wpp::rets_pk' )."' AND meta_value={$data['id']};" );
+        }
+
+        $response['post_id'] = $post_id;
+
+        ud_get_wp_rets_client()->write_log( 'Have [wpp.getPostIdByMlsId] request.', 'info' );
+
+        if( !$post_id || !is_numeric( $post_id ) ) {
+          ud_get_wp_rets_client()->write_log(  'No post ID provided for mls id:' . $data['id'] , 'info' );
+          $response['ok'] = false;
+          return $response;
+        }
+
+        ud_get_wp_rets_client()->write_log( 'Returned post_id:' . $post_id, 'info' );
 
         return $response;
 
