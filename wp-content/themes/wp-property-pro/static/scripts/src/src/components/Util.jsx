@@ -187,6 +187,27 @@ class Util extends React.Component {
     return uri.pathname() + uri.search();
   }
 
+  static loadScripts(scripts) {
+    for (let i in scripts) {
+      let script = scripts[i];
+
+      let scriptNode = document.createElement("script");
+
+      scriptNode.type = 'text/javascript';
+
+      if (_.get(script, 'src', null)) {
+        scriptNode.src = _.get(script, 'src');
+      }
+      if (_.get(script, 'content', null)) {
+        scriptNode.text = _.get(script, 'content');
+      }
+
+      scriptNode.async = true;
+
+      document.body.appendChild(scriptNode);
+    }
+  }
+
   static lotSizeFilterSearchTagText(filter) {
     if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT || filter.to === Lib.RANGE_SLIDER_NO_MAX_TEXT)  {
       if (filter.start === Lib.RANGE_SLIDER_NO_MIN_TEXT) {
