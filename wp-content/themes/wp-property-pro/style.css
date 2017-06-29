@@ -459,10 +459,10 @@ html, body {
 
 .propertypro-card .propertypro-listing-top {
     position: absolute;
-    top: -2.6875rem;
+    top: 12rem;
     left: 0;
     padding: 0 1.5rem;
-    z-index: 2;
+    z-index: 3;
 }
 
 .propertypro-card .propertypro-listing-top .propertypro-price {
@@ -506,10 +506,10 @@ html, body {
     font-size: 1.25rem;
 }
 
-.propertypro-card .propertypro-card-block:before {
+.propertypro-card .propertypro-card-img-top:before {
     content: "";
     position: absolute;
-    top: -7.1875rem;
+    top: 7.8rem;
     left: 0;
     width: 100%;
     z-index: 2;

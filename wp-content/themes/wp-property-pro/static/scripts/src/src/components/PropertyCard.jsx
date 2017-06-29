@@ -23,7 +23,7 @@ export default class PropertyCard extends Component {
     this.swiper = Swiper.init(this.swiperElement, {
       effect: 'slide',
       lazyLoading: true,
-      lazyLoadingOnTransitionStart: true,
+      lazyLoadingInPrevNext: true,
       preloadImages: false,
       spaceBetween: 30
     });

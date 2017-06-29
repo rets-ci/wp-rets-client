@@ -98,11 +98,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     removeLastLocationFilter() {
       // TODO: this function is not pure, make it so by removing its dependency on window
+      let options = Util.getSearchTypeOptions(window.bundle);
       let {
         labels,
         saleTypes,
         propertyTypes
-      } = Util.getSearchTypeParameters(window.bundle);
+      } = Util.getSearchTypeParameters(options);
 
       dispatch(setSearchType({
         searchType: labels.length ? labels[0] : '',

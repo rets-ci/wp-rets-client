@@ -102,20 +102,24 @@ class Util extends React.Component {
     return `${Lib.GOOGLE_STREETVIEW_URL}?size=${params.size}&location=${params.location}&key=${key}`;
   }
 
-  static getSearchTypeParameters(bundle) {
+  static getSearchTypeOptions(bundle) {
 
     let MastheadWidgetData = bundle.front_page_post_content[0].cells.filter(c => c.widget.panels_info.class === 'Property_Pro_Masthead_Widget');
     let searchTypeData = MastheadWidgetData[0].widget.fields.search_options;
+    return searchTypeData;
+  }
 
-    let labels = Object.keys(searchTypeData).map(o => {
+  static getSearchTypeParameters(options) {
+
+    let labels = Object.keys(options).map(o => {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
       return labelsArr[0];
     });
-    let saleTypes = Object.keys(searchTypeData).map(o => {
+    let saleTypes = Object.keys(options).map(o => {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
       return labelsArr[1];
     });
-    let propertyTypes = Object.keys(searchTypeData).map(o => {
+    let propertyTypes = Object.keys(options).map(o => {
       let labelsArr = o.split(Lib.STRING_ARRAY_DELIMITER);
       return labelsArr.slice(2).join(Lib.STRING_ARRAY_DELIMITER);
     });
