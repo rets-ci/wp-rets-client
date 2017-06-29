@@ -430,6 +430,7 @@ html, body {
 .propertypro-listing-info-box {
     list-style-type: none;
     position: relative;
+    padding: 0 0 1rem 0;
 }
 
 .propertypro-listing-control-nav a {
@@ -451,6 +452,8 @@ html, body {
     border-radius: .75rem;
     border-color: #d2dae0;
     opacity: 0.99;
+    /*width: 25rem;*/
+    max-height: 25rem;
 }
 
 .propertypro-card .propertypro-card-block {
@@ -528,23 +531,22 @@ html, body {
     color: #8b8c8d;
     font-size: .95rem;
     line-height: 1.5rem;
-    margin-bottom: 2rem;
 }
 
-.propertypro-card .propertypro-card-block li {
+ul.propertypro-listing-info-box li {
     float: left;
     line-height: 1rem;
     border-right: .0625rem solid #cad3d9;
-    padding: 0 .6rem;
+    padding: 0 .5rem;
     font-weight: 600;
     color: #000000;
 }
 
-.propertypro-card .propertypro-card-block li:first-child {
+ul.propertypro-listing-info-box li:first-child {
     padding-left: 0;
 }
 
-.propertypro-card .propertypro-card-block li:last-child {
+ul.propertypro-listing-info-box li:last-child {
     border-right: 0;
 }
 
@@ -1200,7 +1202,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-search-modal form .propertypro-button-search-submit {
     border-radius: .2rem;
-    width: 9.375rem;
     border-color: #d6dee3;
     background-color: #d6dee3;
     color: #b6bec4;
@@ -1209,6 +1210,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     line-height: 1.25rem;
     cursor: pointer;
     box-shadow: none;
+    min-width: 9.375rem;
 }
 
 .propertypro-search-modal form input.propertypro-with-padding {
@@ -1317,15 +1319,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     float: right;
     width: 16.5625rem;
     height: 3.125rem;
-}
-
-.propertypro-advanced-filter .propertypro-modal-header .btn-primary {
-    border-radius: .1875rem;
-    width: auto;
-    line-height: 1.5625rem;
-    color: #fff;
-    padding: .60em 2em;
-    font-weight: 700;
 }
 
 .propertypro-advanced-filter .propertypro-search-modal-submit-button {
@@ -1803,19 +1796,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     margin-bottom: 1.875rem;
 }
 
-.propertypro-card:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f28200;
-    height: 3px;
-    display: none;
-}
-
-.propertypro-card-selected:before {
-    display: block;
+.propertypro-card-selected {
+    border-bottom: 3px solid #f28200;
 }
 
 /* Search Map -> Search Property Type */
@@ -1869,6 +1851,31 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 .propertypro-header-search-container form .propertypro-addfilter a {
     font-weight: 700;
     color: #d33320;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Single
+/*-----------------------------------------------------------------------------------*/
+
+.propertypro-top-information-card-container {
+    background-color: #e8eef2;
+}
+
+.propertypro-single-container {
+    color: #000000;
+}
+
+.propertypro-single-container ul.propertypro-listing-info-box {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.propertypro-single-container .propertypro-top-information-card {
+    border: none;
+}
+
+.properypto-small-info-box .propertypro-top {
+  margin-bottom: 0;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -2433,6 +2440,29 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 .propertypro-hide {
     display: none !important;
+}
+
+
+.propertypro-button {
+    border-radius: .1875rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.5625rem;
+    padding: .60em 2em;
+    width: auto;
+}
+
+.propertypro-primary-button {
+    background-color: #d03528 !important;
+    border-color: #d03528 !important;
+    color: #fff;
+}
+
+.propertypro-secondary-button {
+    border-color: #d6dee3;
+    background-color: #d6dee3;
+    color: #b6bec4;
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -3110,6 +3140,8 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         line-height: 2.5rem;
     }
 
+    
+
     .propertypro-search-modal .propertypro-search-modal-submit-button {
       background-color: #d03528 !important;
       border-color: #d03528 !important;
@@ -3283,7 +3315,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
         font-size: .85rem;
     }
 
-    .propertypro-card .propertypro-card-block li {
+    ul.propertypro-listing-info-box li {
         padding: 0 .625rem;
         font-size: .90rem;
     }

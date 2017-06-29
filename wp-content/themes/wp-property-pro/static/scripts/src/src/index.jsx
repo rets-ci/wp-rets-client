@@ -4,7 +4,7 @@ import {browserHistory, IndexRoute, Router, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {syncHistoryWithStore} from 'react-router-redux';
-import PropertiesSingle from "./components/properties/Single.jsx"
+import PropertiesSingle from "./components/properties/Single.jsx";
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
