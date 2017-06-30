@@ -234,7 +234,7 @@ class LocationModal extends Component {
                         placeholder={placeholder}
                       />
                     </div>
-                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button-search-submit ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button`}>Search</button>
+                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>Search</button>
                   </form>
                 </div>
               </div>

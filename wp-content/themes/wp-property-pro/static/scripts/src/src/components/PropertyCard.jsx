@@ -4,7 +4,7 @@ import numeral from 'numeral';
 import Util from './Util.jsx';
 import renderHTML from 'react-render-html';
 import Swiper from './Swiper.jsx';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import _ from 'lodash';
 
 export default class PropertyCard extends Component {
@@ -84,11 +84,28 @@ export default class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
     classes.push(id);
+    let link;
+    // TODO: remove after the pathname only part of the URL is sent back from the server
+    if (relative_permalink.includes('http')) {
+      link = relative_permalink.replace('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci', '');
+    }
     return (
       <div
         className={classes.join(' ')}>
         <div className={Lib.THEME_CLASSES_PREFIX + "card-img"}>
           <div className={Lib.THEME_CLASSES_PREFIX + "card-img-top"}>
+            <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
+              <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
+              <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
+                {/*<a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
+                  title="Save as favorite">
+                  <i className="fa fa-heart" aria-hidden="true"></i>
+                </a>
+                <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
+                  <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                </a>*/}
+              </span>
+            </div>
             <div className="swiper-container" ref={(r) => this.swiperElement = r}>
               <div className="swiper-wrapper">
                 <div className="swiper-slide">
@@ -131,24 +148,15 @@ export default class PropertyCard extends Component {
             </ul>
           </div>
         </div>
-        <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}
-             onClick={(eve) => self.handlePropertyClick.bind(this)(eve, relative_permalink)}>
-          <div className={Lib.THEME_CLASSES_PREFIX + "listing-top"}>
-            <span className={Lib.THEME_CLASSES_PREFIX + "price"}>{Util.formatPriceValue(price)}</span>
-            <span className={Lib.THEME_CLASSES_PREFIX + "action-btn-group"}>
-              <a href="#" className={`${Lib.THEME_CLASSES_PREFIX}favorite ${Lib.THEME_CLASSES_PREFIX}active`}
-                 title="Save as favorite">
-                <i className="fa fa-heart" aria-hidden="true"></i>
-              </a>
-              <a href="#" className={Lib.THEME_CLASSES_PREFIX + "hide"} title="Hide">
-                <i className="fa fa-eye-slash" aria-hidden="true"></i>
-              </a>
-            </span>
+        <Link
+          to={link}
+        >
+          <div className={`card-block ${Lib.THEME_CLASSES_PREFIX}card-block`}>
+            <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
+            <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{zip}, {city}</p>
+            <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>{renderHTML(info_box)}</ul>
           </div>
-          <h4 className={`card-title ${Lib.THEME_CLASSES_PREFIX}card-title m-0`}>{address}</h4>
-          <p className={`card-text ${Lib.THEME_CLASSES_PREFIX}card-text`}>{zip}, {city}</p>
-          <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box p-0`}>{renderHTML(info_box)}</ul>
-        </div>
+        </Link>
       </div>
     );
   }

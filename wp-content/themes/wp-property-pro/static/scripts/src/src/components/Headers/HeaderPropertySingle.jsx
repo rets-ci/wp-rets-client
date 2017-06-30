@@ -15,9 +15,9 @@ class HeaderPropertySingle extends Component {
 
   render() {
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container"}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row no-gutters`}>
-          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-sm-2 col-md-1 my-auto mr-auto`}>
+      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid"}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
                 ?
@@ -31,7 +31,7 @@ class HeaderPropertySingle extends Component {
                 : null
             }
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2 offset-8 offset-md-8 offset-lg-9"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>

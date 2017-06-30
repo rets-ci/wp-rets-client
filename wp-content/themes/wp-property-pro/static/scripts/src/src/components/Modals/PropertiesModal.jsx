@@ -374,7 +374,7 @@ class PropertiesModal extends Component {
                   <div className="p-2 my-auto">
                     <a
                       href="#"
-                      className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}search-modal-submit-button ${this.props.resultCountButtonLoading ? 'disabled' : null}`}
+                      className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button ${this.props.resultCountButtonLoading ? 'disabled' : ''}`}
                       onClick={this.saveFilters.bind(this)}>
                         {this.props.resultCount ? "View " + this.props.resultCount + " Properties" : "View Properties"}
                     </a>
