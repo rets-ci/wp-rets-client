@@ -111,9 +111,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
-	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) && _lodash2.default.get(bundle, 'blog_base', null)
-	      //@TODO need get from server dynamic routing for property single page, this is just static hardcode
-	      ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'property_single_url') + "/:propertySlug", component: _Single2.default }) : null,
+	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) && _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'property_single_url') + "/:propertySlug", component: _Single2.default }) : null,
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, ''), component: _Archive2.default }) : null,
 	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
