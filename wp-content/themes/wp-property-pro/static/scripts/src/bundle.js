@@ -63850,7 +63850,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63864,7 +63864,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63878,7 +63878,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63892,7 +63892,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63906,7 +63906,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63920,7 +63920,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -79072,8 +79072,6 @@
 	  _createClass(TopImageListing, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log('images');
-	      console.log(this.props.images);
 
 	      return _react2.default.createElement('div', { style: { backgroundColor: 'black', height: '100px' } });
 	    }

@@ -11,8 +11,6 @@ class TopImageListing extends Component {
   }
 
   render() {
-    console.log('images');
-    console.log(this.props.images);
     
     return (
       <div style={{backgroundColor: 'black', height: '100px'}}>
