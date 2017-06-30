@@ -49,7 +49,7 @@
       "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
       "WP_UPSTREAM_AUTOMATIC_PUSH": true,
       "db_name": "www.reddoorcompany.com/latest-v3",
-      "WP_PROPERTY_LAYOUTS": true
+      "WP_PROPERTY_LAYOUTS": false
     },
     "settings_production": {
       "db_name": "www.reddoorcompany.com.v2",
