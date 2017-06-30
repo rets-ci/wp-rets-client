@@ -353,12 +353,6 @@ namespace UsabilityDynamics {
               ]
             ]
           ];
-        }elseif ($post->post_type === 'property') {
-          if ($attached_images = get_attached_media('image', $post->ID)) {
-            foreach ($attached_images as $im) {
-              $params['post']['images'][] = $im->guid;
-            }
-          }
         }
       } /** Is blog page ? */
       elseif (get_query_var('cat') || ($blog_post_id && !is_front_page() && is_home())) {
