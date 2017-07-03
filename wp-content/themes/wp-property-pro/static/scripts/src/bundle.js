@@ -85080,9 +85080,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _LoadingCircle = __webpack_require__(307);
+
+	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
+
 	var _reactImages = __webpack_require__(488);
 
 	var _reactImages2 = _interopRequireDefault(_reactImages);
+
+	var _reactPreload = __webpack_require__(689);
+
+	var _reactPreload2 = _interopRequireDefault(_reactPreload);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85091,6 +85099,15 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function imageSizeNameAppended(image, width, height) {
+	  var strArr = image.split('.');
+	  // '- 2' gets you the actual path
+	  var path = strArr[strArr.length - 2];
+	  var newPath = path + '-' + width + 'x' + height;
+	  strArr[strArr.length - 2] = newPath;
+	  return strArr.join('.');
+	}
 
 	var ImageMixer = function (_Component) {
 	  _inherits(ImageMixer, _Component);
@@ -85136,6 +85153,16 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleImageLoadError',
+	    value: function handleImageLoadError() {
+	      console.warn('error loading images');
+	    }
+	  }, {
+	    key: 'handleImageLoadSuccess',
+	    value: function handleImageLoadSuccess() {
+	      console.warn('successful loading');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var images = this.props.images;
@@ -85145,42 +85172,56 @@
 	          src: i
 	        };
 	      });
+	      var imagesSubset = images.slice(0, 5);
+	      imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 600, 600);
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'd-flex flex-row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer', onClick: this.imageMixerClicked.bind(this) },
+	        _reactPreload2.default,
+	        {
+	          autoResolveDelay: 3000,
+	          loadingIndicator: _react2.default.createElement(_LoadingCircle2.default, null),
+	          images: imagesSubset,
+	          onError: this.handleImageLoadError,
+	          onSuccess: this.handleImageLoadSuccess,
+	          resolveOnError: true,
+	          mountChildren: true
+	        },
 	        _react2.default.createElement(
 	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-600' },
-	          _react2.default.createElement('img', { src: images[0] || "" })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
+	          { className: 'd-flex flex-row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer', onClick: this.imageMixerClicked.bind(this) },
 	          _react2.default.createElement(
 	            'div',
-	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	            _react2.default.createElement('img', { src: images[1] || "" })
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-600' },
+	            _react2.default.createElement('img', { src: imagesSubset[0] || "" })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
+	              _react2.default.createElement('img', { src: imagesSubset[1] || "" })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
+	              _react2.default.createElement('img', { src: imagesSubset[2] || "" })
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	            _react2.default.createElement('img', { src: images[2] || "" })
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
-	          _react2.default.createElement('img', { src: images[3] || "" }),
-	          _react2.default.createElement('img', { src: images[4] || "" })
-	        ),
-	        _react2.default.createElement(_reactImages2.default, {
-	          currentImage: this.state.currentLightboxImage,
-	          images: LightboxImages,
-	          isOpen: this.state.lightboxIsOpen,
-	          onClickNext: this.gotoNext.bind(this),
-	          onClickPrev: this.gotoPrevious.bind(this),
-	          onClose: this.closeLightbox.bind(this)
-	        })
+	            _react2.default.createElement('img', { src: imagesSubset[3] || "" }),
+	            _react2.default.createElement('img', { src: imagesSubset[4] || "" })
+	          ),
+	          _react2.default.createElement(_reactImages2.default, {
+	            currentImage: this.state.currentLightboxImage,
+	            images: LightboxImages,
+	            isOpen: this.state.lightboxIsOpen,
+	            onClickNext: this.gotoNext.bind(this),
+	            onClickPrev: this.gotoPrevious.bind(this),
+	            onClose: this.closeLightbox.bind(this)
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -112034,6 +112075,338 @@
 	};
 
 	exports.default = searchResults;
+
+/***/ }),
+/* 689 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Preload = exports.ImageHelper = exports.ImageCache = undefined;
+
+	var _ImageCache = __webpack_require__(690);
+
+	Object.defineProperty(exports, 'ImageCache', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_ImageCache).default;
+	  }
+	});
+
+	var _ImageHelper = __webpack_require__(691);
+
+	Object.defineProperty(exports, 'ImageHelper', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_ImageHelper).default;
+	  }
+	});
+
+	var _Preload2 = __webpack_require__(692);
+
+	var _Preload3 = _interopRequireDefault(_Preload2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Preload = exports.Preload = _Preload3.default;
+
+	exports.default = Preload;
+
+/***/ }),
+/* 690 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var hash = {};
+	var cache = [];
+
+	var add = function add(url) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    if (!hash[url]) {
+	        hash[url] = new Image();
+
+	        if (options.crossOrigin) {
+	            hash[url].crossOrigin = options.crossOrigin;
+	        }
+
+	        hash[url].src = url;
+
+	        cache.push(hash[url]);
+	    }
+	    return hash[url];
+	};
+
+	var get = function get(url, options) {
+	    return add(url, options);
+	};
+
+	var stuff = function stuff(urls, options) {
+	    if (urls.length > 0) {
+	        urls.map(function (url) {
+	            return add(url, options);
+	        });
+	    }
+	};
+
+	var ImageCache = {
+	    add: add,
+	    stuff: stuff,
+	    get: get,
+	    hash: hash,
+	    cache: cache
+	};
+
+	exports.default = ImageCache;
+
+/***/ }),
+/* 691 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _ImageCache = __webpack_require__(690);
+
+	var _ImageCache2 = _interopRequireDefault(_ImageCache);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ImageHelper = {
+	    loadImage: function loadImage(url, options) {
+	        var image = _ImageCache2.default.get(url, options);
+
+	        return new Promise(function (resolve, reject) {
+	            var handleSuccess = function handleSuccess() {
+	                resolve(image);
+	            };
+	            var handleError = function handleError() {
+	                reject(new Error('failed to preload ' + url));
+	            };
+
+	            if (image.complete) {
+	                // image is loaded, go ahead and change the state
+
+	                if (image.naturalWidth && image.naturalHeight) {
+	                    // successful load
+	                    handleSuccess();
+	                } else {
+	                    (function () {
+	                        // IE CACHED IMAGES RACE CONDITION
+	                        // -------------------------------
+	                        // IE11 sometimes reports cached images as image.complete,
+	                        // but naturalWidth and naturalHeight = 0.
+	                        // A few ms later it will get the dimensions correct,
+	                        // so check a few times before rejecting it.
+	                        var counter = 1;
+	                        var checkDimensions = setInterval(function () {
+	                            if (image.naturalWidth && image.naturalHeight) {
+	                                window.clearInterval(checkDimensions);
+	                                handleSuccess();
+	                            }
+	                            if (counter === 3) {
+	                                window.clearInterval(checkDimensions);
+	                                handleError();
+	                            }
+	                            counter++;
+	                        }, 50);
+	                    })();
+	                }
+	            } else {
+	                image.addEventListener('load', handleSuccess, false);
+	                image.addEventListener('error', handleError, false);
+	            }
+	        });
+	    },
+	    loadImages: function loadImages(urls, options) {
+	        var _this = this;
+
+	        var promises = urls.map(function (url) {
+	            return _this.loadImage(url, options);
+	        });
+	        return Promise.all(promises).catch(function (err) {
+	            console.warn(err.message);
+	        });
+	    },
+
+
+	    // preload without caring about the result
+	    stuffImages: function stuffImages(urls, options) {
+	        _ImageCache2.default.stuff(urls, options);
+	    }
+	};
+
+	exports.default = ImageHelper;
+
+/***/ }),
+/* 692 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ImageHelper = __webpack_require__(691);
+
+	var _ImageHelper2 = _interopRequireDefault(_ImageHelper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var propTypes = {
+	    // Rendered on success
+	    children: _react.PropTypes.element.isRequired,
+
+	    // Rendered during load
+	    loadingIndicator: _react.PropTypes.node.isRequired,
+
+	    // Array of image urls to be preloaded
+	    images: _react.PropTypes.array,
+
+	    // If set, the preloader will automatically show
+	    // the children content after this amount of time
+	    autoResolveDelay: _react.PropTypes.number,
+
+	    // Error callback. Is passed the error
+	    onError: _react.PropTypes.func,
+
+	    // Success callback
+	    onSuccess: _react.PropTypes.func,
+
+	    // Whether or not we should still show the content
+	    // even if there is a preloading error
+	    resolveOnError: _react.PropTypes.bool,
+
+	    // Whether or not we should mount the child content after
+	    // images have finished loading (or after autoResolveDelay)
+	    mountChildren: _react.PropTypes.bool
+	};
+
+	var defaultProps = {
+	    images: [],
+	    resolveOnError: true,
+	    mountChildren: true,
+	    loadingIndicator: null
+	};
+
+	var Preload = function (_Component) {
+	    _inherits(Preload, _Component);
+
+	    function Preload(props) {
+	        _classCallCheck(this, Preload);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Preload).call(this, props));
+
+	        _this.state = {
+	            ready: false
+	        };
+
+	        _this._handleSuccess = _this._handleSuccess.bind(_this);
+	        _this._handleError = _this._handleError.bind(_this);
+	        _this._mounted = false;
+	        return _this;
+	    }
+
+	    _createClass(Preload, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            if (!this.props.images || this.props.images.length === 0) {
+	                this._handleSuccess();
+	            }
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this._mounted = true;
+	            if (!this.state.ready) {
+	                _ImageHelper2.default.loadImages(this.props.images).then(this._handleSuccess, this._handleError);
+
+	                if (this.props.autoResolveDelay && this.props.autoResolveDelay > 0) {
+	                    this.autoResolveTimeout = setTimeout(this._handleSuccess, this.props.autoResolveDelay);
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            this._mounted = false;
+	            if (this.autoResolveTimeout) {
+	                clearTimeout(this.autoResolveTimeout);
+	            }
+	        }
+	    }, {
+	        key: '_handleSuccess',
+	        value: function _handleSuccess() {
+	            if (this.autoResolveTimeout) {
+	                clearTimeout(this.autoResolveTimeout);
+	                console.warn('images failed to preload, auto resolving');
+	            }
+
+	            if (this.state.ready || !this._mounted) {
+	                return;
+	            }
+
+	            this.setState({
+	                ready: true
+	            });
+
+	            if (this.props.onSuccess) {
+	                this.props.onSuccess();
+	            }
+	        }
+	    }, {
+	        key: '_handleError',
+	        value: function _handleError(err) {
+
+	            if (!this._mounted) {
+	                return;
+	            }
+
+	            if (this.props.resolveOnError) {
+	                this._handleSuccess();
+	            }
+
+	            if (this.props.onError) {
+	                this.props.onError(err);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return this.state.ready && this.props.mountChildren ? this.props.children : this.props.loadingIndicator;
+	        }
+	    }]);
+
+	    return Preload;
+	}(_react.Component);
+
+	Preload.propTypes = propTypes;
+	Preload.defaultProps = defaultProps;
+
+	exports.default = Preload;
 
 /***/ })
 /******/ ]);
