@@ -30607,6 +30607,10 @@
 
 	var _PropertyInfoTabs2 = _interopRequireDefault(_PropertyInfoTabs);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -63823,6 +63827,10 @@
 
 	var _lib = __webpack_require__(294);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -63940,11 +63948,15 @@
 /* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -63954,60 +63966,60 @@
 
 	function PropertyInfoTabs(props) {
 	  return _react2.default.createElement(
-	    "div",
-	    { className: "card text-center mb-4" },
+	    'div',
+	    { className: 'card text-center mb-4' },
 	    _react2.default.createElement(
-	      "div",
-	      { className: "card-header" },
+	      'div',
+	      { className: 'card-header' },
 	      _react2.default.createElement(
-	        "ul",
-	        { className: "nav nav-tabs card-header-tabs" },
+	        'ul',
+	        { className: 'nav nav-tabs card-header-tabs' },
 	        _react2.default.createElement(
-	          "li",
-	          { className: "nav-item" },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            "a",
-	            { className: "nav-link active", href: "#" },
-	            "Active"
+	            'a',
+	            { className: 'nav-link active', href: '#' },
+	            'Active'
 	          )
 	        ),
 	        _react2.default.createElement(
-	          "li",
-	          { className: "nav-item" },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            "a",
-	            { className: "nav-link", href: "#" },
-	            "Link"
+	            'a',
+	            { className: 'nav-link', href: '#' },
+	            'Link'
 	          )
 	        ),
 	        _react2.default.createElement(
-	          "li",
-	          { className: "nav-item" },
+	          'li',
+	          { className: 'nav-item' },
 	          _react2.default.createElement(
-	            "a",
-	            { className: "nav-link disabled", href: "#" },
-	            "Disabled"
+	            'a',
+	            { className: 'nav-link disabled', href: '#' },
+	            'Disabled'
 	          )
 	        )
 	      )
 	    ),
 	    _react2.default.createElement(
-	      "div",
-	      { className: "card-block" },
+	      'div',
+	      { className: 'card-block' },
 	      _react2.default.createElement(
-	        "h4",
-	        { className: "card-title" },
-	        "Special title treatment"
+	        'h4',
+	        { className: 'card-title' },
+	        'Special title treatment'
 	      ),
 	      _react2.default.createElement(
-	        "p",
-	        { className: "card-text" },
-	        "With supporting text below as a natural lead-in to additional content."
+	        'p',
+	        { className: 'card-text' },
+	        'With supporting text below as a natural lead-in to additional content.'
 	      ),
 	      _react2.default.createElement(
-	        "a",
-	        { href: "#", className: "btn btn-primary" },
-	        "Go somewhere"
+	        'a',
+	        { href: '#', className: 'btn btn-primary' },
+	        'Go somewhere'
 	      )
 	    )
 	  );
@@ -79046,6 +79058,10 @@
 
 	var _lib = __webpack_require__(294);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -79159,7 +79175,7 @@
 	}(_react.Component);
 
 	ImageMixer.propTypes = {
-	  images: _react.PropTypes.array
+	  images: _propTypes2.default.array
 	};
 	exports.default = ImageMixer;
 
@@ -84399,6 +84415,10 @@
 
 	var _LocationModal2 = _interopRequireDefault(_LocationModal);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -84699,12 +84719,12 @@
 	}(_react.Component);
 
 	MapSearchResults.propTypes = {
-	  doSearchWithQuery: _react.PropTypes.func.isRequired,
-	  location: _react.PropTypes.object,
-	  mapSearchResultsLoading: _react.PropTypes.bool.isRequired,
-	  params: _react.PropTypes.object,
-	  resetSearchResults: _react.PropTypes.func.isRequired,
-	  results: _react.PropTypes.array.isRequired
+	  doSearchWithQuery: _propTypes2.default.func.isRequired,
+	  location: _propTypes2.default.object,
+	  mapSearchResultsLoading: _propTypes2.default.bool.isRequired,
+	  params: _propTypes2.default.object,
+	  resetSearchResults: _propTypes2.default.func.isRequired,
+	  results: _propTypes2.default.array.isRequired
 	};
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MapSearchResults);
 
@@ -85477,6 +85497,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -85537,6 +85561,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -85774,9 +85802,9 @@
 	}(_react.Component);
 
 	Map.propTypes = {
-	  currentGeoBounds: _react.PropTypes.object,
-	  searchByCoordinates: _react.PropTypes.func.isRequired,
-	  properties: _react.PropTypes.array.isRequired
+	  currentGeoBounds: _propTypes2.default.object,
+	  searchByCoordinates: _propTypes2.default.func.isRequired,
+	  properties: _propTypes2.default.array.isRequired
 	};
 	exports.default = Map;
 	;
@@ -85822,6 +85850,10 @@
 	var _LotSize = __webpack_require__(502);
 
 	var _LotSize2 = _interopRequireDefault(_LotSize);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -86663,11 +86695,11 @@
 	}(_react.Component);
 
 	PropertiesModal.propTypes = {
-	  bathroomSelected: _react.PropTypes.string,
-	  bedroomSelected: _react.PropTypes.string,
-	  openLocationModal: _react.PropTypes.func.isRequired,
-	  propertyTypeSelected: _react.PropTypes.string,
-	  localFilters: _react.PropTypes.object.isRequired
+	  bathroomSelected: _propTypes2.default.string,
+	  bedroomSelected: _propTypes2.default.string,
+	  openLocationModal: _propTypes2.default.func.isRequired,
+	  propertyTypeSelected: _propTypes2.default.string,
+	  localFilters: _propTypes2.default.object.isRequired
 	};
 
 	;
@@ -86691,6 +86723,10 @@
 	var _FilterTag2 = _interopRequireDefault(_FilterTag);
 
 	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -86842,10 +86878,10 @@
 	}(_react.Component);
 
 	FilterBar.propTypes = {
-	  deleteSingleLocalFilter: _react.PropTypes.func.isRequired,
-	  deleteLocalFilterTerm: _react.PropTypes.func.isRequired,
-	  localFilters: _react.PropTypes.object.isRequired,
-	  removeLastLocationFilter: _react.PropTypes.func.isRequired
+	  deleteSingleLocalFilter: _propTypes2.default.func.isRequired,
+	  deleteLocalFilterTerm: _propTypes2.default.func.isRequired,
+	  localFilters: _propTypes2.default.object.isRequired,
+	  removeLastLocationFilter: _propTypes2.default.func.isRequired
 	};
 	;
 
@@ -86939,6 +86975,10 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -87056,10 +87096,10 @@
 	}(_react.Component);
 
 	Price.propTypes = {
-	  saleType: _react.PropTypes.string,
-	  start: _react.PropTypes.any,
-	  to: _react.PropTypes.any,
-	  handleOnClick: _react.PropTypes.func
+	  saleType: _propTypes2.default.string,
+	  start: _propTypes2.default.any,
+	  to: _propTypes2.default.any,
+	  handleOnClick: _propTypes2.default.func
 	};
 	;
 
@@ -87078,6 +87118,10 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -87201,14 +87245,14 @@
 	}(_react.Component);
 
 	Slider.propTypes = {
-	  allowDecimalPlaces: _react.PropTypes.bool,
-	  formatter: _react.PropTypes.func,
-	  handleOnClick: _react.PropTypes.func.isRequired,
-	  min: _react.PropTypes.number,
-	  max: _react.PropTypes.number,
-	  start: _react.PropTypes.any,
-	  step: _react.PropTypes.any,
-	  to: _react.PropTypes.any
+	  allowDecimalPlaces: _propTypes2.default.bool,
+	  formatter: _propTypes2.default.func,
+	  handleOnClick: _propTypes2.default.func.isRequired,
+	  min: _propTypes2.default.number,
+	  max: _propTypes2.default.number,
+	  start: _propTypes2.default.any,
+	  step: _propTypes2.default.any,
+	  to: _propTypes2.default.any
 	};
 	;
 
@@ -89727,6 +89771,10 @@
 
 	var _lib = __webpack_require__(294);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -89825,10 +89873,10 @@
 	}(_react.Component);
 
 	SQFT.propTypes = {
-	  saleType: _react.PropTypes.string,
-	  start: _react.PropTypes.any,
-	  to: _react.PropTypes.any,
-	  handleOnClick: _react.PropTypes.func
+	  saleType: _propTypes2.default.string,
+	  start: _propTypes2.default.any,
+	  to: _propTypes2.default.any,
+	  handleOnClick: _propTypes2.default.func
 	};
 	;
 
@@ -89847,6 +89895,10 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -89950,10 +90002,10 @@
 	}(_react.Component);
 
 	LotSize.propTypes = {
-	  saleType: _react.PropTypes.string,
-	  start: _react.PropTypes.any,
-	  to: _react.PropTypes.any,
-	  handleOnClick: _react.PropTypes.func
+	  saleType: _propTypes2.default.string,
+	  start: _propTypes2.default.any,
+	  to: _propTypes2.default.any,
+	  handleOnClick: _propTypes2.default.func
 	};
 	;
 
@@ -93917,6 +93969,10 @@
 
 	var _index = __webpack_require__(487);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -94285,6 +94341,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -94447,9 +94507,9 @@
 	}(_react.Component);
 
 	SearchResultListing.propTypes = {
-	  allowPagination: _react.PropTypes.bool.isRequired,
-	  properties: _react.PropTypes.array.isRequired,
-	  seeMoreHandler: _react.PropTypes.func.isRequired
+	  allowPagination: _propTypes2.default.bool.isRequired,
+	  properties: _propTypes2.default.array.isRequired,
+	  seeMoreHandler: _propTypes2.default.func.isRequired
 	};
 	exports.default = SearchResultListing;
 
@@ -95439,6 +95499,10 @@
 
 	var _lib = __webpack_require__(294);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -95683,8 +95747,8 @@
 	}(_react.Component);
 
 	PropertyCard.propTypes = {
-	  data: _react.PropTypes.object.isRequired,
-	  listType: _react.PropTypes.string.isRequired
+	  data: _propTypes2.default.object.isRequired,
+	  listType: _propTypes2.default.string.isRequired
 	};
 	exports.default = PropertyCard;
 
@@ -101148,6 +101212,10 @@
 
 	var _Footer2 = _interopRequireDefault(_Footer);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -101265,7 +101333,7 @@
 	}(_react.Component);
 
 	PageLayout.propTypes = {
-	  children: _react.PropTypes.object.isRequired
+	  children: _propTypes2.default.object.isRequired
 	};
 	exports.default = PageLayout;
 	;
@@ -101836,6 +101904,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -101905,7 +101977,7 @@
 	}(_react.Component);
 
 	HeaderPropertySingle.propTypes = {
-	  openUserPanel: _react.PropTypes.func.isRequired
+	  openUserPanel: _propTypes2.default.func.isRequired
 	};
 	exports.default = HeaderPropertySingle;
 
@@ -102016,6 +102088,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -102232,8 +102308,8 @@
 	}(_react.Component);
 
 	HeaderSearch.propTypes = {
-	  searchFilters: _react.PropTypes.object.isRequired,
-	  openUserPanel: _react.PropTypes.func.isRequired
+	  searchFilters: _propTypes2.default.object.isRequired,
+	  openUserPanel: _propTypes2.default.func.isRequired
 	};
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(HeaderSearch);
 
@@ -102256,6 +102332,10 @@
 	var _FilterTag2 = _interopRequireDefault(_FilterTag);
 
 	var _lib = __webpack_require__(294);
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -102612,7 +102692,7 @@
 	}(_react.Component);
 
 	searchFilters.propTypes = {
-	  filters: _react.PropTypes.object.isRequired
+	  filters: _propTypes2.default.object.isRequired
 	};
 	;
 
@@ -102629,6 +102709,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -102997,6 +103081,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -103110,8 +103198,8 @@
 	}(_react.Component);
 
 	Page.propTypes = {
-	  post: _react.PropTypes.object,
-	  rows: _react.PropTypes.array
+	  post: _propTypes2.default.object,
+	  rows: _propTypes2.default.array
 	};
 	exports.default = Page;
 
@@ -103287,6 +103375,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -103453,12 +103545,12 @@
 	}(_react.Component);
 
 	SearchContent.propTypes = {
-	  currentState: _react.PropTypes.object.isRequired,
-	  searchProps: _react.PropTypes.array,
-	  filterTerms: _react.PropTypes.array,
-	  searchType: _react.PropTypes.string,
-	  clearTermFilter: _react.PropTypes.func,
-	  options: _react.PropTypes.object.isRequired
+	  currentState: _propTypes2.default.object.isRequired,
+	  searchProps: _propTypes2.default.array,
+	  filterTerms: _propTypes2.default.array,
+	  searchType: _propTypes2.default.string,
+	  clearTermFilter: _propTypes2.default.func,
+	  options: _propTypes2.default.object.isRequired
 	};
 
 
@@ -103477,6 +103569,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -103565,11 +103661,11 @@
 	}(_react.Component);
 
 	MobileTabsSearch.propTypes = {
-	  handleOptionSelect: _react.PropTypes.func,
-	  labels: _react.PropTypes.array,
-	  propertyTypes: _react.PropTypes.array.isRequired,
-	  saleTypes: _react.PropTypes.array.isRequired,
-	  selectedOption: _react.PropTypes.string
+	  handleOptionSelect: _propTypes2.default.func,
+	  labels: _propTypes2.default.array,
+	  propertyTypes: _propTypes2.default.array.isRequired,
+	  saleTypes: _propTypes2.default.array.isRequired,
+	  selectedOption: _propTypes2.default.string
 	};
 	;
 
@@ -103586,6 +103682,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -103691,13 +103791,13 @@
 	}(_react.Component);
 
 	DropDownSearch.propTypes = {
-	  handleChange: _react.PropTypes.func,
-	  handleOptionSelect: _react.PropTypes.func,
-	  labels: _react.PropTypes.array,
-	  open: _react.PropTypes.bool.isRequired,
-	  propertyTypes: _react.PropTypes.array.isRequired,
-	  saleTypes: _react.PropTypes.array.isRequired,
-	  selectedOption: _react.PropTypes.string
+	  handleChange: _propTypes2.default.func,
+	  handleOptionSelect: _propTypes2.default.func,
+	  labels: _propTypes2.default.array,
+	  open: _propTypes2.default.bool.isRequired,
+	  propertyTypes: _propTypes2.default.array.isRequired,
+	  saleTypes: _propTypes2.default.array.isRequired,
+	  selectedOption: _propTypes2.default.string
 	};
 	exports.default = (0, _reactOnclickoutside2.default)(DropDownSearch);
 
@@ -104676,6 +104776,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -104801,7 +104905,7 @@
 	}(_react.Component);
 
 	DefaultLayout.propTypes = {
-	  item: _react.PropTypes.object
+	  item: _propTypes2.default.object
 	};
 	exports.default = DefaultLayout;
 	;
@@ -104990,6 +105094,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -105046,8 +105154,8 @@
 	}(_react.Component);
 
 	TextLayout.propTypes = {
-	  items: _react.PropTypes.array.isRequired,
-	  currentUrl: _react.PropTypes.string.isRequired
+	  items: _propTypes2.default.array.isRequired,
+	  currentUrl: _propTypes2.default.string.isRequired
 	};
 	exports.default = TextLayout;
 
@@ -105178,6 +105286,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -105351,10 +105463,10 @@
 	}(_react.Component);
 
 	Mobile.propTypes = {
-	  items: _react.PropTypes.array.isRequired,
-	  currentUrl: _react.PropTypes.string.isRequired,
-	  dropDownOpen: _react.PropTypes.bool.isRequired,
-	  handleChange: _react.PropTypes.func.isRequired
+	  items: _propTypes2.default.array.isRequired,
+	  currentUrl: _propTypes2.default.string.isRequired,
+	  dropDownOpen: _propTypes2.default.bool.isRequired,
+	  handleChange: _propTypes2.default.func.isRequired
 	};
 	exports.default = (0, _reactOnclickoutside2.default)(Mobile);
 
@@ -105660,6 +105772,10 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -105777,7 +105893,7 @@
 	}(_react.Component);
 
 	Single.propTypes = {
-	  post: _react.PropTypes.object.isRequired
+	  post: _propTypes2.default.object.isRequired
 	};
 	exports.default = Single;
 
@@ -105792,6 +105908,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -105884,7 +106004,7 @@
 	}(_react.Component);
 
 	PostCard.propTypes = {
-	  data: _react.PropTypes.object.isRequired
+	  data: _propTypes2.default.object.isRequired
 	};
 	exports.default = PostCard;
 
@@ -105899,6 +106019,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -105958,7 +106082,7 @@
 	}(_react.Component);
 
 	PostContent.propTypes = {
-	  content: _react.PropTypes.string.isRequired
+	  content: _propTypes2.default.string.isRequired
 	};
 	exports.default = PostContent;
 
@@ -105973,6 +106097,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -106094,7 +106222,7 @@
 	}(_react.Component);
 
 	Single.propTypes = {
-	  post: _react.PropTypes.object
+	  post: _propTypes2.default.object
 	};
 	exports.default = Single;
 
@@ -106204,6 +106332,10 @@
 
 	var _Posts2 = _interopRequireDefault(_Posts);
 
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
 	var _index = __webpack_require__(487);
 
 	var _lib = __webpack_require__(294);
@@ -106290,7 +106422,7 @@
 	}(_react.Component);
 
 	ArchiveContent.propTypes = {
-	  post: _react.PropTypes.object.isRequired
+	  post: _propTypes2.default.object.isRequired
 	};
 
 
@@ -106309,6 +106441,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -106451,8 +106587,8 @@
 	}(_react.Component);
 
 	Posts.propTypes = {
-	  seeMoreHandler: _react.PropTypes.func.isRequired,
-	  categoryId: _react.PropTypes.number.isRequired
+	  seeMoreHandler: _propTypes2.default.func.isRequired,
+	  categoryId: _propTypes2.default.number.isRequired
 	};
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Posts);
 
@@ -106467,6 +106603,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -106576,7 +106716,7 @@
 	}(_react.Component);
 
 	Archive.propTypes = {
-	  post: _react.PropTypes.object
+	  post: _propTypes2.default.object
 	};
 	exports.default = Archive;
 
@@ -106591,6 +106731,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -106707,8 +106851,8 @@
 	}(_react.Component);
 
 	CategoryCard.propTypes = {
-	  category: _react.PropTypes.object,
-	  last: _react.PropTypes.bool
+	  category: _propTypes2.default.object,
+	  last: _propTypes2.default.bool
 	};
 	exports.default = CategoryCard;
 
@@ -106723,6 +106867,10 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(185);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _react = __webpack_require__(1);
 
@@ -106823,8 +106971,8 @@
 	}(_react.Component);
 
 	ArticleCard.propTypes = {
-	  article: _react.PropTypes.object,
-	  last: _react.PropTypes.bool
+	  article: _propTypes2.default.object,
+	  last: _propTypes2.default.bool
 	};
 	exports.default = ArticleCard;
 

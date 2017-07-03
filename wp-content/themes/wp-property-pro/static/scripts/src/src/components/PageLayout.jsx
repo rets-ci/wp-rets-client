@@ -1,5 +1,6 @@
 import Footer from './Footer.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
 import UserPanel from './UserPanel.jsx';

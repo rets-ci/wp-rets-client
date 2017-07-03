@@ -9,7 +9,8 @@ import {
 } from '../../../actions/index.jsx';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';

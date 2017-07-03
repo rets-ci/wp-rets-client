@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import Desktop from './TextLayout/Desktop.jsx';
 import Mobile from './TextLayout/Mobile.jsx';
 

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Masthead from './widgets/masthead/Masthead.jsx';
 import Callout from './widgets/callout/Callout.jsx';

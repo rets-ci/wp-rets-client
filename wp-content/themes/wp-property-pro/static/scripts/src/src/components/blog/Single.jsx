@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import Masthead from '../widgets/masthead/Masthead.jsx';
 import PostCard from './components/PostCard.jsx';
 import PostContent from './components/PostContent.jsx';
