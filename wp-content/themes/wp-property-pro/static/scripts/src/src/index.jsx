@@ -26,7 +26,6 @@ render(
         <IndexRoute component={Page}/>
         {
           _.get(wpp, 'instance.settings.configuration.base_slug', null) && _.get(bundle, 'blog_base', null)
-            //@TODO need get from server dynamic routing for property single page, this is just static hardcode
             ? <Route path={"/" + _.get(bundle, 'property_single_url') + "/:propertySlug"} component={PropertiesSingle}/>
             : null
         }

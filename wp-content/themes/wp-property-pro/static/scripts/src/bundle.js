@@ -111,9 +111,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _PageLayout2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Page2.default }),
-	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) && _lodash2.default.get(bundle, 'blog_base', null)
-	      //@TODO need get from server dynamic routing for property single page, this is just static hardcode
-	      ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'property_single_url') + "/:propertySlug", component: _Single2.default }) : null,
+	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) && _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'property_single_url') + "/:propertySlug", component: _Single2.default }) : null,
 	      _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), component: _MapSearchResults2.default }) : null,
 	      _lodash2.default.get(bundle, 'blog_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, ''), component: _Archive2.default }) : null,
 	      _lodash2.default.get(bundle, 'category_base', null) ? _react2.default.createElement(_reactRouter.Route, { path: "/" + _lodash2.default.get(bundle, 'blog_base').replace(/\//g, '') + "/" + _lodash2.default.get(bundle, 'category_base').replace(/\//g, '') + "/:categoryTitle",
@@ -30617,9 +30615,9 @@
 
 	var _reactRenderHtml2 = _interopRequireDefault(_reactRenderHtml);
 
-	var _TopImageListing = __webpack_require__(473);
+	var _ImageMixer = __webpack_require__(473);
 
-	var _TopImageListing2 = _interopRequireDefault(_TopImageListing);
+	var _ImageMixer2 = _interopRequireDefault(_ImageMixer);
 
 	var _Util = __webpack_require__(474);
 
@@ -30684,7 +30682,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "single-container" },
-	        _react2.default.createElement(_TopImageListing2.default, { images: images }),
+	        _react2.default.createElement(_ImageMixer2.default, { images: images }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'jumbotron' },
@@ -63850,7 +63848,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63864,7 +63862,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63878,7 +63876,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63892,7 +63890,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63906,7 +63904,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -63920,7 +63918,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col-md-3 properypto-small-info-box' },
+	      { className: 'col-md-3 ' + _lib.Lib.THEME_CLASSES_PREFIX + 'small-info-box' },
 	      _react2.default.createElement(
 	        'p',
 	        { className: 'text-muted ' + _lib.Lib.THEME_CLASSES_PREFIX + 'top' },
@@ -79045,6 +79043,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _lib = __webpack_require__(294);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -79057,35 +79057,62 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var TopImageListing = function (_Component) {
-	  _inherits(TopImageListing, _Component);
+	var ImageMixer = function (_Component) {
+	  _inherits(ImageMixer, _Component);
 
-	  function TopImageListing(props) {
-	    _classCallCheck(this, TopImageListing);
+	  function ImageMixer(props) {
+	    _classCallCheck(this, ImageMixer);
 
-	    var _this = _possibleConstructorReturn(this, (TopImageListing.__proto__ || Object.getPrototypeOf(TopImageListing)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (ImageMixer.__proto__ || Object.getPrototypeOf(ImageMixer)).call(this, props));
 
 	    _this.state = {};
 	    return _this;
 	  }
 
-	  _createClass(TopImageListing, [{
+	  _createClass(ImageMixer, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log('images');
-	      console.log(this.props.images);
+	      var images = this.props.images;
 
-	      return _react2.default.createElement('div', { style: { backgroundColor: 'black', height: '100px' } });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'd-flex flex-row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'image-mixer' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-600' },
+	          _react2.default.createElement('img', { src: images[0] || "" })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
+	            _react2.default.createElement('img', { src: images[1] || "" })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
+	            _react2.default.createElement('img', { src: images[2] || "" })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'img-container-height-300' },
+	          _react2.default.createElement('img', { src: images[3] || "" }),
+	          _react2.default.createElement('img', { src: images[4] || "" })
+	        )
+	      );
 	    }
 	  }]);
 
-	  return TopImageListing;
+	  return ImageMixer;
 	}(_react.Component);
 
-	TopImageListing.propTypes = {
+	ImageMixer.propTypes = {
 	  images: _react.PropTypes.array
 	};
-	exports.default = TopImageListing;
+	exports.default = ImageMixer;
 
 /***/ }),
 /* 474 */

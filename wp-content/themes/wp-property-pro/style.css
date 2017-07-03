@@ -1879,6 +1879,28 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 /*-----------------------------------------------------------------------------------*/
+/*  Image Mixer
+/*-----------------------------------------------------------------------------------*/
+
+.propertypro-img-container-height-300 img {
+    max-height: 300px;
+}
+
+.propertypro-img-container-width-400 img {
+    max-width: 400px;
+}
+
+.propertypro-img-container-height-600 img {
+    max-height: 600px;
+}
+
+.propertypro-image-mixer {
+    background-color: #eceeef;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/*-----------------------------------------------------------------------------------*/
 /*  Blog
 /*-----------------------------------------------------------------------------------*/
 

@@ -5,7 +5,7 @@ import PropertyHighlights from './Components/PropertyHighlights.jsx';
 import PropertyInfoTabs from './Components/PropertyInfoTabs.jsx';
 import React, {Component, PropTypes} from 'react';
 import renderHTML from 'react-render-html';
-import TopImageListing from './Components/TopImageListing.jsx';
+import ImageMixer from './Components/ImageMixer.jsx';
 import Util from '../Util.jsx';
 
 let getLastUpdated = lastUpdated => {
@@ -47,7 +47,7 @@ class Single extends Component {
     let lastUpdated = getLastUpdated(post_date);
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
-        <TopImageListing images={images} />
+        <ImageMixer images={images} />
         <div className="jumbotron">
           <div className="container">
             <div className="row">
