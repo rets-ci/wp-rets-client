@@ -42,12 +42,13 @@ class Single extends Component {
       post_modified,
       post_title,
       images
-    } = this.props.post;
+    } = this.props;
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
+
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
-        <ImageMixer images={images} />
+        <ImageMixer images={images || []} />
         <div className="jumbotron">
           <div className="container">
             <div className="row">

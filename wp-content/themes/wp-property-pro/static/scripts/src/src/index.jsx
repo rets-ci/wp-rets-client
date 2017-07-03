@@ -4,7 +4,7 @@ import {browserHistory, IndexRoute, Router, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {syncHistoryWithStore} from 'react-router-redux';
-import PropertiesSingle from "./components/properties/Single.jsx";
+import PropertiesSingleContainer from './components/properties/SingleContainer.jsx';
 import MapSearchResults from './components/properties/MapSearchResults.jsx';
 import PageLayout from './components/PageLayout.jsx';
 import Page from './components/Page.jsx';
@@ -26,7 +26,7 @@ render(
         <IndexRoute component={Page}/>
         {
           _.get(wpp, 'instance.settings.configuration.base_slug', null) && _.get(bundle, 'blog_base', null)
-            ? <Route path={"/" + _.get(bundle, 'property_single_url') + "/:propertySlug"} component={PropertiesSingle}/>
+            ? <Route path={"/" + _.get(bundle, 'property_single_url') + "/:propertySlug"} component={PropertiesSingleContainer}/>
             : null
         }
         {

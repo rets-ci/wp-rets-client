@@ -49,7 +49,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     doSearchWithQuery: (query, append) => {
-      Api.search(query, response => {
+      let url = Api.getPropertySearchRequestURL();
+      Api.search(url, query, response => {
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {
