@@ -1673,6 +1673,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 .propertypro-map-container {
+    min-height: 600px;
     height: 100%;
 }
 
@@ -3011,7 +3012,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-listings h3, .propertypro-testimonial h4 {
         font-size: 3.125rem !important;
-        line-height: 4.3rem !important;;
+        line-height: 4.3rem !important;
     }
 
     .propertypro-listings .propertypro-listing-carousel-info p {

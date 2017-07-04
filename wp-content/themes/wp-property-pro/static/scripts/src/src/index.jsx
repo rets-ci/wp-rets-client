@@ -13,6 +13,10 @@ import GuideArchive from './components/guide/Archive.jsx';
 import propertyProApp from './reducers/index.jsx';
 import {Lib} from './lib.jsx';
 import _ from 'lodash';
+import shims from './shims.js';
+
+// set up all relevant shims and polyfills for various browsers
+shims();
 
 let store = createStore(propertyProApp);
 
