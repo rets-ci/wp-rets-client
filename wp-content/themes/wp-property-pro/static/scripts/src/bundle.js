@@ -99165,59 +99165,49 @@
 	                { className: 'container' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'row' },
+	                  { className: 'd-flex flex-row' },
 	                  _react2.default.createElement(
-	                    'form',
-	                    { method: 'get', className: 'form-inline' },
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Search'
-	                      ),
-	                      _react2.default.createElement('i', { className: 'fa fa-search' })
-	                    ),
-	                    _react2.default.createElement(
-	                      'div',
-	                      { className: 'form-group' },
-	                      _react2.default.createElement(
-	                        'label',
-	                        { className: 'sr-only' },
-	                        'Input'
-	                      ),
-	                      _react2.default.createElement('input', {
-	                        autoComplete: 'off',
-	                        className: inputClasses,
-	                        id: _lib.Lib.THEME_PREFIX + "search-input",
-	                        onChange: this.handleSearchValueChange.bind(this),
-	                        ref: function ref(input) {
-	                          _this2.searchInput = input;
-	                        },
-	                        type: 'text',
-	                        value: this.state.searchValue,
-	                        placeholder: placeholder
-	                      })
-	                    ),
+	                    'div',
+	                    { className: 'p-2 my-auto' },
+	                    _react2.default.createElement('i', { className: 'fa fa-search' })
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'p-2 col-xl-10 col-lg-10 my-auto' },
+	                    _react2.default.createElement('input', {
+	                      autoComplete: 'off',
+	                      className: inputClasses,
+	                      id: _lib.Lib.THEME_PREFIX + "search-input",
+	                      onChange: this.handleSearchValueChange.bind(this),
+	                      ref: function ref(input) {
+	                        _this2.searchInput = input;
+	                      },
+	                      type: 'text',
+	                      value: this.state.searchValue,
+	                      placeholder: placeholder
+	                    })
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'p-2 my-auto' },
 	                    _react2.default.createElement(
 	                      'button',
 	                      { type: 'button', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'button ' + _lib.Lib.THEME_CLASSES_PREFIX + 'secondary-button' },
 	                      'Search'
 	                    )
+	                  ),
+	                  _react2.default.createElement(
+	                    'button',
+	                    { type: 'button', className: 'close p-2 my-auto ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel', onClick: function onClick(e) {
+	                        e.preventDefault();
+	                        _this2.props.closeModal();
+	                      }, 'aria-label': 'Close' },
+	                    _react2.default.createElement(
+	                      'span',
+	                      { 'aria-hidden': 'true' },
+	                      '\xD7'
+	                    )
 	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { type: 'button', className: 'close ' + _lib.Lib.THEME_CLASSES_PREFIX + 'close-panel my-auto', onClick: function onClick(e) {
-	                    e.preventDefault();
-	                    _this2.props.closeModal();
-	                  }, 'aria-label': 'Close' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { 'aria-hidden': 'true' },
-	                  '\xD7'
 	                )
 	              )
 	            ),

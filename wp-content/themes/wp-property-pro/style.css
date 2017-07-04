@@ -1188,10 +1188,9 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #d8d8d8;
 }
 
-.propertypro-search-modal .propertypro-modal-header form input {
-    width: 58.5rem;
+.propertypro-search-modal .propertypro-modal-header input {
+    font-size: 1.5rem;
     font-weight: 700;
-    line-height: 1.5rem;
     padding-left: 1.5rem;
     border: 0;
 }
@@ -2585,10 +2584,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 /* Medium devices (tablets, less than 1199px) */
 @media screen and (max-width: 74.938em) {
 
-    .propertypro-search-modal .propertypro-modal-header form input {
-        width: 45rem;
-    }
-
     .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
     .propertypro-search-modal form .form-control,
     .propertypro-search-modal form i {
@@ -2915,9 +2910,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 }
 
 @media screen and (max-width: 62.000em) {
-    .propertypro-search-modal .propertypro-modal-header form input {
-        width: 30rem;
-    }
 
     .propertypro-search-modal form .propertypro-button-search-submit,
     .propertypro-masthead .propertypro-search-modal .propertypro-search-modal-box h4,
@@ -3126,10 +3118,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media screen and (max-width: 35.938em) {
-    .propertypro-search-modal .propertypro-modal-header form input {
-        width: 32rem;
-        padding: .5rem;
-    }
 
     .propertypro-search-modal .propertypro-close-panel {
         top: 1.6rem;
@@ -3285,10 +3273,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
 /* Extra small devices (portrait phones, less than 440px) */
 @media screen and (max-width: 28.125em) {
-    .propertypro-search-modal .propertypro-modal-header form input {
-        width: 20rem;
-        padding: .5rem;
-    }
 
     .propertypro-top-footer {
         padding: 2.8125rem 0 0.9375rem;
@@ -3386,10 +3370,6 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
 
     .propertypro-find-home-type li {
         padding: 0 .3rem;
-    }
-
-    .propertypro-search-modal .propertypro-modal-header form input {
-        width: 18rem;
     }
 
     .propertypro-listings h3, .propertypro-testimonial h4 {

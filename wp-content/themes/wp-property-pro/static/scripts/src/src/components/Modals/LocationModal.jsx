@@ -214,37 +214,42 @@ class LocationModal extends Component {
           <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
               <div className="container">
-                <div className="row">
-                  <form method="get" className="form-inline">
-                    <div className="form-group">
-                      <label className="sr-only">Search</label>
-                      <i className="fa fa-search"></i>
-                    </div>
-                    <div className="form-group">
-                      <label className="sr-only">Input</label>
-                      <input
-                        autoComplete="off"
-                        className={inputClasses}
-                        id={Lib.THEME_PREFIX + "search-input"}
-                        onChange={this.handleSearchValueChange.bind(this)}
-                        ref={(input) => {
-                          this.searchInput = input;
-                        }}
-                        type="text"
-                        value={this.state.searchValue}
-                        placeholder={placeholder}
-                      />
-                    </div>
-                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>Search</button>
-                  </form>
+
+                <div className="d-flex flex-row">
+                  <div className="p-2 my-auto">
+                    <i className="fa fa-search"></i>
+                  </div>
+
+                  <div className="p-2 col-xl-10 col-lg-10 my-auto">
+                    <input
+                      autoComplete="off"
+                      className={inputClasses}
+                      id={Lib.THEME_PREFIX + "search-input"}
+                      onChange={this.handleSearchValueChange.bind(this)}
+                      ref={(input) => {
+                        this.searchInput = input;
+                      }}
+                      type="text"
+                      value={this.state.searchValue}
+                      placeholder={placeholder}
+                    />
+                  </div>
+
+                  <div className="p-2 my-auto">
+                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>
+                      Search
+                    </button>
+                  </div>
+
+                  <button type="button" className={`close p-2 my-auto ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
+                      e.preventDefault();
+                      this.props.closeModal();
+                    }} aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+
                 </div>
               </div>
-              <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto`} onClick={(e) => {
-                e.preventDefault();
-                this.props.closeModal();
-              }} aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
