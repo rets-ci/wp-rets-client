@@ -1293,6 +1293,12 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     width: 100%;
 }
 
+p.propertypro-gentle-error {
+    font-size: 1.5rem;
+    color: #414141;
+    text-align: center;
+}
+
 /* User Search Modal -> Advanced Search Filter */
 .propertypro-advanced-filter {
     display: block;
@@ -2481,7 +2487,7 @@ html[xmlns] .propertypro-testimonial .propertypro-slides {
     color: #fff;
 }
 
-.propertypro-secondary-button {
+.propertypro-secondary-button, .propertypro-secondary-button:focus, .propertypro-secondary-button:hover, .propertypro-secondary-button:active {
     border-color: #d6dee3;
     background-color: #d6dee3;
     color: #b6bec4;

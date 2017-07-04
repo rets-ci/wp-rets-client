@@ -31366,6 +31366,8 @@
 	  PROPERTY_PER_PAGE: 18,
 	  RANGE_SLIDER_NO_MIN_TEXT: 'No Min',
 	  RANGE_SLIDER_NO_MAX_TEXT: 'No Max',
+	  RECEIVE_POSTS_ACTION: 'RECEIVE_POSTS',
+	  REQUEST_POSTS_ACTION: 'REQUEST_POSTS',
 	  SET_FILTER_TERMS_ACTION: 'SET_FILTER_TERMS',
 	  SET_MAP_MARKERS_ACTION: 'SET_MAP_MARKERS',
 	  SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION: 'SET_PROPERTIES_MODAL_LOCAL_FILTER_ACTION',
@@ -90325,7 +90327,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
+	exports.toggleLocationModalSearchMode = exports.setPropertiesModalResultCountLoading = exports.openSaleTypesPanel = exports.updatePropertiesModalResultCount = exports.updatePropertiesModalLocalFilter = exports.setBlogPosts = exports.setTestimonialsActiveItem = exports.toggleUserPanel = exports.toggleMapSearchResultsLoading = exports.setFilterTerms = exports.setSearchType = exports.setSearchResults = exports.receiveLocationModalPosts = exports.requestLocationModalPosts = exports.setSearchProps = exports.setPropertiesModalLocalFilter = exports.openPropertiesModal = exports.openLocationModal = exports.deletePropertiesModalTermLocalFilter = exports.deletePropertiesModalSingleLocalFilter = undefined;
 
 	var _lib = __webpack_require__(294);
 
@@ -90369,6 +90371,19 @@
 	  return {
 	    type: _lib.Lib.SET_SEARCH_PROPS_ACTION,
 	    searchProps: searchProps
+	  };
+	};
+
+	var requestLocationModalPosts = exports.requestLocationModalPosts = function requestLocationModalPosts() {
+	  return {
+	    type: _lib.Lib.REQUEST_POSTS_ACTION
+	  };
+	};
+
+	var receiveLocationModalPosts = exports.receiveLocationModalPosts = function receiveLocationModalPosts(posts) {
+	  return {
+	    type: _lib.Lib.RECEIVE_POSTS_ACTION,
+	    posts: posts
 	  };
 	};
 
@@ -98901,6 +98916,10 @@
 
 	var _Api2 = _interopRequireDefault(_Api);
 
+	var _LoadingAccordion = __webpack_require__(639);
+
+	var _LoadingAccordion2 = _interopRequireDefault(_LoadingAccordion);
+
 	var _lib = __webpack_require__(294);
 
 	var _lodash = __webpack_require__(295);
@@ -98924,11 +98943,12 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  var localFilters = state.propertiesModal.localFilters;
 	  return {
+	    isFetching: state.locationModal.isFetching,
 	    open: state.locationModal ? state.locationModal.open : false,
 	    localFilters: localFilters,
 	    modifyType: state.locationModal.modifyType,
 	    searchMode: state.locationModal.searchMode,
-	    searchResults: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
+	    searchResults: _lodash2.default.get(state, 'locationModal.items', []),
 	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
 	    saleType: _lodash2.default.get(state, 'searchType.saleType', ''),
 	    propertyTypes: _lodash2.default.get(state, 'searchType.propertyTypes', '')
@@ -98948,15 +98968,19 @@
 	        saleType: saleType,
 	        propertyTypes: propertyTypes
 	      };
+	      // reset the searchProps
+	      dispatch((0, _index.requestLocationModalPosts)());
 	      _Api2.default.autocompleteQuery(searchParams, function (rows) {
-	        dispatch((0, _index.setSearchProps)(rows));
+	        dispatch((0, _index.receiveLocationModalPosts)(rows));
 	      });
 	    },
 	    topQuery: function topQuery() {
+	      // reset the searchProps
+	      dispatch((0, _index.requestLocationModalPosts)());
 	      _Api2.default.topQuery({
 	        size: _lib.Lib.TOP_AGGREGATIONS_COUNT
 	      }, function (rows) {
-	        dispatch((0, _index.setSearchProps)(rows));
+	        dispatch((0, _index.receiveLocationModalPosts)(rows));
 	      });
 	    },
 
@@ -98986,9 +99010,13 @@
 	    value: function componentDidUpdate(prevProps, prevState) {
 	      if (this.props.open) {
 	        this.searchInput.focus();
-	        if (!this.props.searchResults.length) {
-	          this.props.topQuery();
-	        }
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (this.props.open !== nextProps.open) {
+	        this.props.topQuery();
 	      }
 	    }
 	  }, {
@@ -99042,8 +99070,7 @@
 	    value: function search() {
 
 	      var val = this.state.searchValue;
-
-	      if (!val || val.length < _lib.Lib.MIN_SEARCH_KEY_LENGTH) {
+	      if (!val) {
 	        this.props.topQuery();
 	      } else {
 	        this.props.searchHandler(val, _lodash2.default.get(this.props, 'saleType', ''), _lodash2.default.get(this.props, 'propertyTypes', ''));
@@ -99079,6 +99106,7 @@
 	      var _this2 = this;
 
 	      var _props = this.props,
+	          isFetching = _props.isFetching,
 	          searchResults = _props.searchResults,
 	          searchType = _props.searchType,
 	          saleType = _props.saleType,
@@ -99217,7 +99245,11 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'container-fluid ' + _lib.Lib.THEME_CLASSES_PREFIX + 'search-modal-box' },
-	                resultsElements
+	                !resultsElements.length ? isFetching ? _react2.default.createElement(_LoadingAccordion2.default, null) : _react2.default.createElement(
+	                  'p',
+	                  { className: _lib.Lib.THEME_CLASSES_PREFIX + 'gentle-error' },
+	                  'Nothing to show. Please try a different search'
+	                ) : resultsElements
 	              )
 	            )
 	          )
@@ -108321,7 +108353,6 @@
 	var mapStateToProps = function mapStateToProps(state, history) {
 	  return {
 	    currentState: state,
-	    searchProps: _lodash2.default.get(state, 'searchPropsState.searchProps', []),
 	    searchType: _lodash2.default.get(state, 'searchType.searchType', ''),
 	    filterTerms: _lodash2.default.get(state, 'filterTermsState.filterTerms', []),
 	    history: history
@@ -108451,7 +108482,6 @@
 
 	SearchContent.propTypes = {
 	  currentState: _propTypes2.default.object.isRequired,
-	  searchProps: _propTypes2.default.array,
 	  filterTerms: _propTypes2.default.array,
 	  searchType: _propTypes2.default.string,
 	  clearTermFilter: _propTypes2.default.func,
@@ -111911,10 +111941,6 @@
 
 	var _propertiesModal2 = _interopRequireDefault(_propertiesModal);
 
-	var _searchProps = __webpack_require__(684);
-
-	var _searchProps2 = _interopRequireDefault(_searchProps);
-
 	var _searchResults = __webpack_require__(685);
 
 	var _searchResults2 = _interopRequireDefault(_searchResults);
@@ -111953,7 +111979,6 @@
 	    mapState: _map2.default,
 	    locationModal: _locationModal2.default,
 	    propertiesModal: _propertiesModal2.default,
-	    searchPropsState: _searchProps2.default,
 	    searchResults: _searchResults2.default,
 	    searchType: _searchType2.default,
 	    mapMarkersState: _mapMarkers2.default,
@@ -112040,7 +112065,7 @@
 	var _lib = __webpack_require__(294);
 
 	var locationModal = function locationModal() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { open: false, modifyType: null, searchMode: false };
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isFetching: false, open: false, modifyType: null, searchMode: false, items: [] };
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -112052,6 +112077,16 @@
 	    case _lib.Lib.TOGGLE_LOCATION_MODAL_SEARCH_MODE:
 	      return Object.assign({}, state, {
 	        searchMode: action.searchMode
+	      });
+	    case _lib.Lib.REQUEST_POSTS_ACTION:
+	      return Object.assign({}, state, {
+	        isFetching: true,
+	        items: []
+	      });
+	    case _lib.Lib.RECEIVE_POSTS_ACTION:
+	      return Object.assign({}, state, {
+	        isFetching: false,
+	        items: action.posts
 	      });
 	    default:
 	      return state;
@@ -112132,34 +112167,7 @@
 	exports.default = propertiesModal;
 
 /***/ }),
-/* 684 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _lib = __webpack_require__(294);
-
-	var searchProps = function searchProps() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _lib.Lib.SET_SEARCH_PROPS_ACTION:
-	      return Object.assign({}, state, {
-	        searchProps: action.searchProps
-	      });
-	    default:
-	      return state;
-	  }
-	};
-
-	exports.default = searchProps;
-
-/***/ }),
+/* 684 */,
 /* 685 */
 /***/ (function(module, exports, __webpack_require__) {
 
