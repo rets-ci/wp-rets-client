@@ -1,7 +1,8 @@
 import Api from '../containers/Api.jsx';
 import {setMapProps} from '../actions/index.jsx';
 import {Lib} from '../lib.jsx'
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
@@ -22,7 +23,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         tax: tax,
         term: term
       };
-      Api.search(params, function (response) {
+      let url = Api.getPropertySearchRequestURL();
+      Api.search(url, params, function (response) {
         dispatch(setMapProps(response.hits.hits.length ? response.hits.hits : []));
       });
     }

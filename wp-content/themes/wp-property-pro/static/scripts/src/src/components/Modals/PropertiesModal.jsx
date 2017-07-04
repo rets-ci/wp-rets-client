@@ -24,7 +24,8 @@ import {
 } from '../staticFilters.js';
 import SQFT from '../properties/Filters/SQFT.jsx';
 import LotSize from '../properties/Filters/LotSize.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 import URI from 'urijs';
 import Util from '../Util.jsx';

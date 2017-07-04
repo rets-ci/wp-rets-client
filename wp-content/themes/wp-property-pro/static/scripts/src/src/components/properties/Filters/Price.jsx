@@ -1,5 +1,6 @@
 import {Lib} from '../../../lib.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import Slider from '../Components/Slider.jsx';
 import Util from '../../Util.jsx';
 

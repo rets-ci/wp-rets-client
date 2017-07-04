@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 
 function PropertyInfoTabs(props) {
   return <div className="card text-center mb-4">

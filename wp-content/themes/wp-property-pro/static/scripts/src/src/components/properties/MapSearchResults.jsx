@@ -8,7 +8,8 @@ import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import SearchResultListing from './SearchResultListing.jsx';
@@ -49,7 +50,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     doSearchWithQuery: (query, append) => {
-      Api.search(query, response => {
+      let url = Api.getPropertySearchRequestURL();
+      Api.search(url, query, response => {
         if (_.get(response, 'hits.total', null)) {
           dispatch(setSearchResults(query, _.get(response, 'hits.hits', []), _.get(response, 'hits.total', 0), append));
         } else {

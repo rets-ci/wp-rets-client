@@ -9,7 +9,8 @@ import {
 } from '../../../actions/index.jsx';
 import FilterTag from '../../FilterTag.jsx';
 import {Lib} from '../../../lib.jsx';
-import React, {Component, PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {property_type as propertyTypeOptions} from '../../staticFilters.js';
 import Util from '../../Util.jsx';
@@ -76,11 +77,14 @@ class searchFilters extends Component {
     this.state = {
       isMobileView: mobileViewCheck()
     };
+
+    this.updateDisplayFlag = this.updateDisplayFlag.bind(this);
+
   }
 
   componentDidMount() {
     this.updateDisplayFlag();
-    window.addEventListener('resize', this.updateDisplayFlag.bind(this));
+    window.addEventListener('resize', this.updateDisplayFlag);
   }
 
   componentWillReceiveProps() {

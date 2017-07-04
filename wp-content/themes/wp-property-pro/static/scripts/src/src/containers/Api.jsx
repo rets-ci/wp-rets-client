@@ -5,7 +5,7 @@ import Util from '../components/Util.jsx';
 
 class Api {
 
-  static getRequestUrl(size = Lib.PROPERTY_PER_PAGE) {
+  static getPropertySearchRequestURL(size = Lib.PROPERTY_PER_PAGE) {
     return 'https://' + bundle.elasticsearch_host + '/v3/_newSearch?size=' + size;
   }
 
@@ -178,7 +178,7 @@ class Api {
     };
 
     Api.makeRequest({
-      'url': Api.getRequestUrl(0),
+      'url': Api.getPropertySearchRequestURL(0),
       'query': body
     }, function (response) {
       let rows = [];
@@ -300,7 +300,7 @@ class Api {
     }
 
     Api.makeRequest({
-      'url': Api.getRequestUrl(params.size || 0),
+      'url': Api.getPropertySearchRequestURL(params.size || 0),
       'query': {
         data: JSON.stringify(body)
       }
@@ -547,9 +547,9 @@ class Api {
     return JSON.parse('{"query":' + query + ',"_source": ' + source + ',"sort": ' + sort + ', "size":' + size + ', "from": ' + from + ', "aggregations":' + aggregations + '}');
   }
 
-  static search(query, callback) {
+  static search(url, query, callback) {
     Api.makeRequest({
-      'url': Api.getRequestUrl(),
+      'url': url,
       'query': {
         data: JSON.stringify(query)
       }
@@ -569,7 +569,8 @@ class Api {
       };
       
       let query = this.createESSearchQuery(searchParams);
-      this.search(query, response => {
+      let url = this.getPropertySearchRequestURL();
+      this.search(url, query, response => {
         callback(query, response);
       });
   }
@@ -587,7 +588,10 @@ class Api {
       type: 'GET',
       contentType: 'application/json',
       data: _.get(data, 'query'),
-      success: function (response) {
+      error: (jqXHR, textStatus) => {
+        console.log('error occured while retrieving data: ', textStatus);
+      },
+      success: response => {
         if (typeof callback !== 'undefined') {
           callback(response);
         } else {
