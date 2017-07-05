@@ -43,6 +43,19 @@ export const setSearchProps = (searchProps) => {
   }
 };
 
+export const requestLocationModalPosts = () => {
+  return {
+    type: Lib.REQUEST_POSTS_ACTION
+  }
+}
+
+export const receiveLocationModalPosts = (posts) => {
+  return {
+    type: Lib.RECEIVE_POSTS_ACTION,
+    posts: posts
+  }
+}
+
 export const setSearchResults = (query, searchResults, total, append) => {
   return {
     type: Lib.SET_SEARCH_RESULTS_ACTION,

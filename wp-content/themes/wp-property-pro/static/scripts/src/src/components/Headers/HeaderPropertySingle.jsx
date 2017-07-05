@@ -16,7 +16,7 @@ class HeaderPropertySingle extends Component {
 
   render() {
     return (
-      <div className={Lib.THEME_CLASSES_PREFIX + "header-search-container container-fluid"}>
+      <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`} >
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
           <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
             {

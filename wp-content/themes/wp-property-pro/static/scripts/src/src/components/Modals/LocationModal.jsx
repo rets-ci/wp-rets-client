@@ -1,10 +1,17 @@
-import {openLocationModal, setSearchProps, updatePropertiesModalLocalFilter} from '../../actions/index.jsx';
+import {
+  openLocationModal,
+  setSearchProps,
+  receiveLocationModalPosts,
+  requestLocationModalPosts,
+  updatePropertiesModalLocalFilter
+} from '../../actions/index.jsx';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import URL from 'urijs';
 import Api from '../../containers/Api.jsx';
+import LoadingAccordion from '../LoadingAccordion.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import Util from '../Util.jsx';
@@ -12,11 +19,12 @@ import Util from '../Util.jsx';
 const mapStateToProps = (state, ownProps) => {
   let localFilters = state.propertiesModal.localFilters;
   return {
+    isFetching: state.locationModal.isFetching,
     open: state.locationModal ? state.locationModal.open : false,
     localFilters: localFilters,
     modifyType: state.locationModal.modifyType,
     searchMode: state.locationModal.searchMode,
-    searchResults: _.get(state, 'searchPropsState.searchProps', []),
+    searchResults: _.get(state, 'locationModal.items', []),
     searchType: _.get(state, 'searchType.searchType', ''),
     saleType: _.get(state, 'searchType.saleType', ''),
     propertyTypes: _.get(state, 'searchType.propertyTypes', '')
@@ -36,18 +44,22 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saleType: saleType,
         propertyTypes: propertyTypes
       };
+      // reset the searchProps
+      dispatch(requestLocationModalPosts());
       Api.autocompleteQuery(searchParams,
         function (rows) {
-          dispatch(setSearchProps(rows));
+          dispatch(receiveLocationModalPosts(rows));
         }
       );
     },
     topQuery: () => {
+      // reset the searchProps
+      dispatch(requestLocationModalPosts());
       Api.topQuery({
           size: Lib.TOP_AGGREGATIONS_COUNT
         },
         function (rows) {
-          dispatch(setSearchProps(rows));
+          dispatch(receiveLocationModalPosts(rows));
         }
       );
     },
@@ -71,11 +83,13 @@ class LocationModal extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.open) {
       this.searchInput.focus();
-      if (!this.props.searchResults.length) {
-        this.props.topQuery();
-      }
     }
-    
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open) {
+      this.props.topQuery();
+    }
   }
 
   handleClose(eve) {
@@ -127,8 +141,7 @@ class LocationModal extends Component {
   search() {
 
     let val = this.state.searchValue;
-
-    if (!val || val.length < Lib.MIN_SEARCH_KEY_LENGTH) {
+    if (!val) {
       this.props.topQuery();
     } else {
       this.props.searchHandler(val, _.get(this.props, 'saleType', ''), _.get(this.props, 'propertyTypes', ''));
@@ -159,6 +172,7 @@ class LocationModal extends Component {
 
   render() {
     let {
+      isFetching,
       searchResults,
       searchType,
       saleType,
@@ -214,41 +228,49 @@ class LocationModal extends Component {
           <div className={`modal-content border-0 ${Lib.THEME_CLASSES_PREFIX}modal-content`}>
             <div className={`modal-header ${Lib.THEME_CLASSES_PREFIX}modal-header`}>
               <div className="container">
-                <div className="row">
-                  <form method="get" className="form-inline">
-                    <div className="form-group">
-                      <label className="sr-only">Search</label>
-                      <i className="fa fa-search"></i>
-                    </div>
-                    <div className="form-group">
-                      <label className="sr-only">Input</label>
-                      <input
-                        autoComplete="off"
-                        className={inputClasses}
-                        id={Lib.THEME_PREFIX + "search-input"}
-                        onChange={this.handleSearchValueChange.bind(this)}
-                        ref={(input) => {
-                          this.searchInput = input;
-                        }}
-                        type="text"
-                        value={this.state.searchValue}
-                        placeholder={placeholder}
-                      />
-                    </div>
-                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>Search</button>
-                  </form>
+
+                <div className="d-flex flex-row">
+                  <div className="p-2 my-auto">
+                    <i className="fa fa-search"></i>
+                  </div>
+
+                  <div className="p-2 col-xl-10 col-lg-10 my-auto">
+                    <input
+                      autoComplete="off"
+                      className={inputClasses}
+                      id={Lib.THEME_PREFIX + "search-input"}
+                      onChange={this.handleSearchValueChange.bind(this)}
+                      ref={(input) => {
+                        this.searchInput = input;
+                      }}
+                      type="text"
+                      value={this.state.searchValue}
+                      placeholder={placeholder}
+                    />
+                  </div>
+
+                  <div className="p-2 my-auto">
+                    <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button`}>
+                      Search
+                    </button>
+                  </div>
+
+                  <button type="button" className={`close p-2 my-auto ${Lib.THEME_CLASSES_PREFIX}close-panel`} onClick={(e) => {
+                      e.preventDefault();
+                      this.props.closeModal();
+                    }} aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+
                 </div>
               </div>
-              <button type="button" className={`close ${Lib.THEME_CLASSES_PREFIX}close-panel my-auto`} onClick={(e) => {
-                e.preventDefault();
-                this.props.closeModal();
-              }} aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div className={`modal-body ${Lib.THEME_CLASSES_PREFIX}modal-body`}>
               <div className={`container-fluid ${Lib.THEME_CLASSES_PREFIX}search-modal-box`}>
-                {resultsElements}
+                {!resultsElements.length ?
+                  (isFetching ? <LoadingAccordion /> : <p className={`${Lib.THEME_CLASSES_PREFIX}gentle-error`}>Nothing to show. Please try a different search</p>) :
+                  resultsElements
+                }
               </div>
             </div>
           </div>

@@ -11,7 +11,6 @@ import _ from 'lodash';
 const mapStateToProps = (state, history) => {
   return {
     currentState: state,
-    searchProps: _.get(state, 'searchPropsState.searchProps', []),
     searchType: _.get(state, 'searchType.searchType', ''),
     filterTerms: _.get(state, 'filterTermsState.filterTerms', []),
     history: history
@@ -50,7 +49,6 @@ class SearchContent extends Component {
   }
   static propTypes = {
     currentState: PropTypes.object.isRequired,
-    searchProps: PropTypes.array,
     filterTerms: PropTypes.array,
     searchType: PropTypes.string,
     clearTermFilter: PropTypes.func,
