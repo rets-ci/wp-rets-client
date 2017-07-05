@@ -34,9 +34,9 @@ const Navigation = ({openUserPanel}) => (
         }
       </a>
       <ul className={`navbar-nav ${Lib.THEME_CLASSES_PREFIX}navigation-cotrols`}>
-        <li className="nav-item">
+        {/*<li className="nav-item">
           <a href="#" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}login-box`}>Login</a>
-        </li>
+        </li>*/}
         <li className="nav-item hidden-sm-down">
           <button type="button" className={Lib.THEME_CLASSES_PREFIX+"navigation-menu-button"} onClick={openUserPanel}><span>☰</span> Menu</button>
         </li>

@@ -106873,15 +106873,6 @@
 	        { className: 'navbar-nav ' + _lib.Lib.THEME_CLASSES_PREFIX + 'navigation-cotrols' },
 	        _react2.default.createElement(
 	          'li',
-	          { className: 'nav-item' },
-	          _react2.default.createElement(
-	            'a',
-	            { href: '#', className: 'btn btn-primary ' + _lib.Lib.THEME_CLASSES_PREFIX + 'login-box' },
-	            'Login'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'li',
 	          { className: 'nav-item hidden-sm-down' },
 	          _react2.default.createElement(
 	            'button',
