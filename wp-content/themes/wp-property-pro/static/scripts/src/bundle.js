@@ -31008,7 +31008,7 @@
 	              _buckets.push({
 	                id: _lodash2.default.get(_option, '_source.post_title', ''),
 	                text: _lodash2.default.get(_option, '_source.post_meta.formatted_address_simple', ''),
-	                url: _lodash2.default.get(_option, '_source.post_name', null) ? [_lodash2.default.get(wpp, 'instance.settings.configuration.base_slug'), _lodash2.default.get(_option, '_source.post_name', null)].join('/') : ''
+	                url: _lodash2.default.get(_option, '_source.post_name', null) ? [_lodash2.default.get(bundle, 'property_single_url'), _lodash2.default.get(_option, '_source.post_name', null)].join('/') : ''
 	              });
 	            }
 	          }
