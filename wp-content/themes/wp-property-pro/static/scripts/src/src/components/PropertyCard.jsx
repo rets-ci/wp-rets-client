@@ -90,7 +90,7 @@ export default class PropertyCard extends Component {
     if (relative_permalink.includes('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci')) {
       link = relative_permalink.replace('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci', '');
     } else {
-      link = relative_permalink;
+      link = relative_permalink; 
     }
     return (
       <div
