@@ -106,10 +106,10 @@ class HeaderSearch extends Component {
           <div className={`hidden-sm-down col-md-2 ${Lib.THEME_CLASSES_PREFIX}drop-nav`}>
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-7 col-md-6 col-lg-7"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8"}>
             <SearchFilters filters={searchFilters} />
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-2 col-md-2"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>

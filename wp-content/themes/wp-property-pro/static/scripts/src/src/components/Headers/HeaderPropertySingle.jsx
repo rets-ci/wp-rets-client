@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
 import NavigationIcons from './components/NavigationIcons.jsx';
+import UserPanelIcon from './components/UserPanelIcon.jsx';
 
 class HeaderPropertySingle extends Component {
   constructor(props) {
@@ -18,6 +19,9 @@ class HeaderPropertySingle extends Component {
     return (
       <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-container ${Lib.THEME_CLASSES_PREFIX}header-property-single container-fluid`} >
         <div className={`${Lib.THEME_CLASSES_PREFIX}header-search-navigation row`}>
+          <div className={`col-1 hidden-md-up ${Lib.THEME_CLASSES_PREFIX}navigation-menu-left`}>
+            <UserPanelIcon openUserPanel={this.props.openUserPanel} />
+          </div>
           <div className={`${Lib.THEME_CLASSES_PREFIX}logo col-2 col-md-2 col-lg-1 my-auto`}>
             {
               _.get(bundle, 'logos.square_logo', null)
@@ -32,7 +36,7 @@ class HeaderPropertySingle extends Component {
                 : null
             }
           </div>
-          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-md-2 col-sm-2 offset-8 offset-md-8 offset-lg-9"}>
+          <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1 offset-md-9 offset-lg-10"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
           </div>
         </div>
