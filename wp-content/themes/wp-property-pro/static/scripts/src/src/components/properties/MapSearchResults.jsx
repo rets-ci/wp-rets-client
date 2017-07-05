@@ -4,7 +4,6 @@ import {
   setSearchResults,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
-import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';

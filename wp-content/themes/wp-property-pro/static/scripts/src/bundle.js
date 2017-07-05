@@ -30700,7 +30700,7 @@
 	        'Request property id ',
 	        id,
 	        ' could not be found'
-	      ) : _react2.default.createElement(_LoadingCircle2.default, null);
+	      ) : _react2.default.createElement(_LoadingCircle2.default, { containerHeight: '600px', verticallyCentered: true });
 	    }
 	  }]);
 
@@ -53742,16 +53742,20 @@
 	  _createClass(LoadingCircle, [{
 	    key: 'render',
 	    value: function render() {
-	      var additionalClass = this.props.additionalClass;
+	      var _props = this.props,
+	          containerHeight = _props.containerHeight,
+	          verticallyCentered = _props.verticallyCentered;
 
-
-	      var classNames = additionalClass && _lodash2.default.isString(additionalClass) ? _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-circle ' + additionalClass : _lib.Lib.THEME_CLASSES_PREFIX + "spinner-circle";
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: classNames },
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
-	        _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
+	        { className: verticallyCentered ? _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-container' : null, style: { height: containerHeight } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'spinner-circle my-auto text-center' },
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce1 rounded-circle' }),
+	          _react2.default.createElement('div', { className: _lib.Lib.THEME_CLASSES_PREFIX + 'double-bounce2 rounded-circle' })
+	        )
 	      );
 	    }
 	  }]);
@@ -53759,6 +53763,10 @@
 	  return LoadingCircle;
 	}(_react.Component);
 
+	LoadingCircle.propTypes = {
+	  verticallyCentered: _propTypes2.default.bool,
+	  containerHeight: _propTypes2.default.string
+	};
 	exports.default = LoadingCircle;
 
 /***/ }),
@@ -85183,11 +85191,12 @@
 	      });
 	      var imagesSubset = images.slice(0, 5);
 	      imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 600, 600);
+	      var loadingContainer = _react2.default.createElement(_LoadingCircle2.default, { containerHeight: '600px', verticallyCentered: true });
 	      return _react2.default.createElement(
 	        _reactPreload2.default,
 	        {
 	          autoResolveDelay: 3000,
-	          loadingIndicator: _react2.default.createElement(_LoadingCircle2.default, null),
+	          loadingIndicator: loadingContainer,
 	          images: imagesSubset,
 	          onError: this.handleImageLoadError,
 	          onSuccess: this.handleImageLoadSuccess,
@@ -89988,10 +89997,6 @@
 	var _Api2 = _interopRequireDefault(_Api);
 
 	var _index = __webpack_require__(552);
-
-	var _LoadingCircle = __webpack_require__(307);
-
-	var _LoadingCircle2 = _interopRequireDefault(_LoadingCircle);
 
 	var _Map = __webpack_require__(553);
 

@@ -79,7 +79,7 @@ class SingleContainer extends Component {
         this.state.property ?
           <Single {...singlePropertyData(this.state.property)} />
         : <p>Request property id {id} could not be found</p>
-      : <LoadingCircle />);
+      : <LoadingCircle containerHeight="600px" verticallyCentered={true} />);
   }
 };
 

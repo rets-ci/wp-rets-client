@@ -4,17 +4,23 @@ import {Lib} from '../lib.jsx';
 import _ from 'lodash';
 
 class LoadingCircle extends Component {
+  static propTypes = {
+    verticallyCentered: PropTypes.bool,
+    containerHeight: PropTypes.string
+  }
+
   render() {
     let {
-      additionalClass
-    } = this.props;
-
-    let classNames = additionalClass && _.isString(additionalClass) ? `${Lib.THEME_CLASSES_PREFIX}spinner-circle ${additionalClass}` : Lib.THEME_CLASSES_PREFIX + "spinner-circle";
+      containerHeight,
+      verticallyCentered
+    } = this.props
 
     return (
-      <div className={classNames}>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce1 rounded-circle`}></div>
-        <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce2 rounded-circle`}></div>
+      <div className={verticallyCentered ? `${Lib.THEME_CLASSES_PREFIX}spinner-container` : null} style={{height: containerHeight}}>
+        <div className={`${Lib.THEME_CLASSES_PREFIX}spinner-circle my-auto text-center`}>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce1 rounded-circle`}></div>
+          <div className={`${Lib.THEME_CLASSES_PREFIX}double-bounce2 rounded-circle`}></div>
+        </div>
       </div>
     );
   }
