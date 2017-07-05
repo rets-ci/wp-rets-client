@@ -90252,7 +90252,8 @@
 	                allowPagination: this.props.resultsTotal > this.props.displayedResults.length,
 	                properties: displayedResults,
 	                seeMoreHandler: this.seeMoreHandler.bind(this),
-	                selectedProperty: filters.selected_property
+	                selectedProperty: filters.selected_property,
+	                total: this.props.resultsTotal
 	              })
 	            )
 	          ),
@@ -99452,7 +99453,8 @@
 
 	      var _props = this.props,
 	          properties = _props.properties,
-	          selectedProperty = _props.selectedProperty;
+	          selectedProperty = _props.selectedProperty,
+	          total = _props.total;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -99506,6 +99508,8 @@
 	              null,
 	              'Showing ',
 	              this.props.properties.length,
+	              ' out of ',
+	              total,
 	              ' results'
 	            ),
 	            !this.state.loading ? _react2.default.createElement(_reactWaypoint2.default, {
@@ -99526,7 +99530,8 @@
 	SearchResultListing.propTypes = {
 	  allowPagination: _propTypes2.default.bool.isRequired,
 	  properties: _propTypes2.default.array.isRequired,
-	  seeMoreHandler: _propTypes2.default.func.isRequired
+	  seeMoreHandler: _propTypes2.default.func.isRequired,
+	  total: _propTypes2.default.number
 	};
 	exports.default = SearchResultListing;
 

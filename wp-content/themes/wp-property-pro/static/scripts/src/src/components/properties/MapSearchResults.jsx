@@ -181,6 +181,7 @@ class MapSearchResults extends Component {
               properties={displayedResults}
               seeMoreHandler={this.seeMoreHandler.bind(this)}
               selectedProperty={filters.selected_property}
+              total={this.props.resultsTotal}
               />
           </div>
           </div>
