@@ -38,15 +38,22 @@ class Single extends Component {
 
   render() {
     let {
+      baths,
+      beds,
       post_content,
       post_date,
       post_modified,
       post_title,
+      rets_city,
+      rets_state,
+      rets_list_price,
+      rets_living_area,
+      rets_lot_size_area,
+      rets_postal_code,
       images
     } = this.props;
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
-
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "single-container"}>
         <ImageMixer images={images || []} />
@@ -55,13 +62,25 @@ class Single extends Component {
             <div className="row">
               <div className="col-md-12">
                 <h4>{post_title}</h4>
-                <h6 className="card-subtitle mb-2 text-muted">Durham, NC 27712</h6>
+                <h6 className="card-subtitle mb-2 text-muted">{rets_city ? rets_city + "," : null} {rets_state} {rets_postal_code}</h6>
                 <ul className={`${Lib.THEME_CLASSES_PREFIX}listing-info-box`}>
-                  <li>$499,000</li>
-                  <li>3 Bed</li>
-                  <li>2 Bath</li>
-                  <li>1,142 SF</li>
-                  <li>2.23 Acers</li>
+                  <li>{rets_list_price ? Util.formatPriceValue(rets_list_price) : "N/A"}</li>
+                  {beds ?
+                    <li>{beds} Bed</li>
+                    : null
+                  }
+                  {baths ?
+                    <li>{baths} Bath</li>
+                    : null
+                  }
+                  {rets_living_area ? 
+                    <li>{Util.formatSQFTValue(rets_living_area)} SF</li>
+                    : null
+                  }
+                  {rets_lot_size_area ? 
+                    <li>{Util.formatLotSizeValue(rets_lot_size_area)} Acers</li>
+                    : null
+                  }
                 </ul>
                 <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}primary-button card-link`}>Request Showing</button>
                 <button type="button" className={`btn btn-primary ${Lib.THEME_CLASSES_PREFIX}button ${Lib.THEME_CLASSES_PREFIX}secondary-button card-link`}>Request Application</button>

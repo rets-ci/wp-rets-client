@@ -4,7 +4,6 @@ import {
   setSearchResults,
   toggleMapSearchResultsLoading
 } from '../../actions/index.jsx';
-import LoadingCircle from '../LoadingCircle.jsx';
 import Map from './Map.jsx';
 import PropertiesModal from '../Modals/PropertiesModal.jsx';
 import LocationModal from '../Modals/LocationModal.jsx';
@@ -23,6 +22,7 @@ const mapStateToProps = (state, ownProps) => {
   let allQueryParams = ownProps.location.query ? qs.parse(ownProps.location.query) : {};
   return {
     allQueryParams: allQueryParams,
+    front_page_post_content: ownProps.front_page_post_content,
     query: _.get(state, 'searchResults.query', []),
     displayedResults: _.get(state, 'searchResults.displayedResults', []),
     searchQueryParams: allQueryParams[Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
@@ -68,6 +68,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class MapSearchResults extends Component {
   static propTypes = {
     doSearchWithQuery: PropTypes.func.isRequired,
+    front_page_post_content: PropTypes.array.isRequired,
     location: PropTypes.object,
     mapSearchResultsLoading: PropTypes.bool.isRequired,
     params: PropTypes.object,
@@ -137,6 +138,7 @@ class MapSearchResults extends Component {
       allQueryParams,
       searchQueryParams,
       displayedResults,
+      front_page_post_content,
       location,
       mapSearchResultsLoading,
       openPropertiesModal,
@@ -149,7 +151,7 @@ class MapSearchResults extends Component {
     let elementToShow = (
       <div className={`${Lib.THEME_CLASSES_PREFIX}search-map`}>
         <LocationModal />
-        <PropertiesModal open={propertiesModalOpen} />
+        <PropertiesModal front_page_post_content={front_page_post_content} open={propertiesModalOpen} />
         <section className={`${Lib.THEME_CLASSES_PREFIX}search-map-section row no-gutters`}>
           <div className={`col-sm-4 ${!this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
             <div className={Lib.THEME_CLASSES_PREFIX + "listing-map"}>
@@ -179,6 +181,7 @@ class MapSearchResults extends Component {
               properties={displayedResults}
               seeMoreHandler={this.seeMoreHandler.bind(this)}
               selectedProperty={filters.selected_property}
+              total={this.props.resultsTotal}
               />
           </div>
           </div>

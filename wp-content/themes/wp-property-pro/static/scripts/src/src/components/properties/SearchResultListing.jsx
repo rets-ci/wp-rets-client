@@ -11,7 +11,8 @@ class SearchResultListing extends Component {
   static propTypes = {
     allowPagination: PropTypes.bool.isRequired,
     properties: PropTypes.array.isRequired,
-    seeMoreHandler: PropTypes.func.isRequired
+    seeMoreHandler: PropTypes.func.isRequired,
+    total: PropTypes.number
   };
 
   constructor(props) {
@@ -56,7 +57,8 @@ class SearchResultListing extends Component {
   render() {
     let {
       properties,
-      selectedProperty
+      selectedProperty,
+      total
     } = this.props;
     return (
       <div className={Lib.THEME_CLASSES_PREFIX + "listing-wrap"} ref={(r) => this.listingWrapElement = r}>
@@ -95,7 +97,7 @@ class SearchResultListing extends Component {
               {this.state.loading ?
                 <LoadingCircle />
                 : null}
-              <p>Showing {this.props.properties.length} results</p>
+              <p>Showing {this.props.properties.length} out of {total} results</p>
               {!this.state.loading ?
                 <Waypoint
                   onEnter={() => {

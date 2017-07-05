@@ -9,20 +9,41 @@ let singlePropertyData = (data) => {
     ID: id,
     post_date,
     post_content,
+    post_meta: {
+      rets_list_price,
+      rets_living_area,
+      rets_lot_size_area,
+      rets_total_baths: baths,
+      rets_postal_code,
+      beds
+    },
     post_modified,
     post_title,
+    tax_input: {
+      rets_city,
+      rets_state
+    },
     wpp_media
   } = data._source;
 
   let images = wpp_media.map(w => w.url);
 
   return {
+    baths,
+    beds,
     id,
     images,
     post_date,
     post_content,
     post_modified,
-    post_title
+    post_title,
+    rets_city: _.get(rets_city, 'rets_city[0].name', null),
+    rets_state: _.get(rets_state, 'rets_state[0].name', null),
+    rets_list_price,
+    rets_living_area,
+    rets_lot_size_area,
+    rets_postal_code,
+    ...data
   }
 }
 
@@ -64,7 +85,6 @@ class SingleContainer extends Component {
         if (!_.get(data, 'hits.hits[0]', null)) {
           this.setState({property: false});
         } else {
-          console.log(data.hits.hits[0]);
           this.setState({
             property: data.hits.hits[0]
           });
@@ -79,7 +99,7 @@ class SingleContainer extends Component {
         this.state.property ?
           <Single {...singlePropertyData(this.state.property)} />
         : <p>Request property id {id} could not be found</p>
-      : <LoadingCircle />);
+      : <LoadingCircle containerHeight="600px" verticallyCentered={true} />);
   }
 };
 

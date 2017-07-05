@@ -1884,6 +1884,15 @@ p.propertypro-gentle-error {
   margin-bottom: 0;
 }
 
+.propertypro-header-property-single {
+    padding-bottom: 1.1rem;
+}
+
+.propertypro-header-property-single .propertypro-logo img {
+    margin-top: 1rem;
+}
+
+
 /*-----------------------------------------------------------------------------------*/
 /*  Image Mixer
 /*-----------------------------------------------------------------------------------*/

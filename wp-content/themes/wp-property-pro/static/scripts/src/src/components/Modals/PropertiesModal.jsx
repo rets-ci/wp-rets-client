@@ -59,6 +59,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     bathroomSelected: localFilters.bathrooms || defaultFiltervalues['bathrooms'],
     bedroomSelected: localFilters.bedrooms || defaultFiltervalues['bedrooms'],
+    front_page_post_content: ownProps.front_page_post_content,
     priceSelected: localFilters.price || defaultFiltervalues['price'],
     propertyTypeSelected: localFilters.property_type || '',
     resultCount: state.propertiesModal.resultCount,
@@ -99,7 +100,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     removeLastLocationFilter() {
       // TODO: this function is not pure, make it so by removing its dependency on window
-      let options = Util.getSearchTypeOptions(window.bundle);
+      let options = Util.getSearchTypeOptions(this.props.front_page_post_content);
       let {
         labels,
         saleTypes,
@@ -137,6 +138,7 @@ class PropertiesModal extends Component {
   static propTypes = {
     bathroomSelected: PropTypes.string,
     bedroomSelected: PropTypes.string,
+    front_page_post_content: PropTypes.array.isRequired,
     openLocationModal: PropTypes.func.isRequired,
     propertyTypeSelected: PropTypes.string,
     localFilters: PropTypes.object.isRequired
@@ -297,6 +299,7 @@ class PropertiesModal extends Component {
     let {
       bathroomSelected,
       bedroomSelected,
+      front_page_post_content,
       lotSizeSelected,
       priceSelected,
       propertyTypeSelected,
@@ -338,7 +341,7 @@ class PropertiesModal extends Component {
       });
       if (termFilters.length === 1) {
         termFilterElement = <span key={termFilters[0].value} className={`${Lib.THEME_CLASSES_PREFIX}filter-section-button btn btn-primary selected`}>
-          <i className="fa fa-times" onClick={() => this.props.removeLastLocationFilter()}></i>
+          <i className="fa fa-times" onClick={() => this.props.removeLastLocationFilter.bind(this)()}></i>
           <span>{termFilters[0].value}</span>
         </span>;
       } else {
@@ -366,7 +369,7 @@ class PropertiesModal extends Component {
                       deleteSingleLocalFilter={this.props.deleteSingleLocalFilter}
                       deleteLocalFilterTerm={this.props.deleteLocalFilterTerm}
                       localFilters={localFilters}
-                      removeLastLocationFilter={this.props.removeLastLocationFilter}
+                      removeLastLocationFilter={this.props.removeLastLocationFilter.bind(this)}
                     />
                   </div>
                   <div className="p-2 my-auto">

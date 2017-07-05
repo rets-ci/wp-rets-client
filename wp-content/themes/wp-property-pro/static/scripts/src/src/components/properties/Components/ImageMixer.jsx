@@ -68,10 +68,11 @@ class ImageMixer extends Component {
     }));
     let imagesSubset = images.slice(0, 5);
     imagesSubset[0] = imageSizeNameAppended(imagesSubset[0], 600, 600);
+    let loadingContainer = (<LoadingCircle containerHeight="600px" verticallyCentered={true} />);
     return (
       <Preload
         autoResolveDelay={3000}
-        loadingIndicator={<LoadingCircle />}
+        loadingIndicator={loadingContainer}
         images={imagesSubset}
         onError={this.handleImageLoadError}
         onSuccess={this.handleImageLoadSuccess}

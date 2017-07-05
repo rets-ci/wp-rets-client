@@ -102,9 +102,9 @@ class Util extends React.Component {
     return `${Lib.GOOGLE_STREETVIEW_URL}?size=${params.size}&location=${params.location}&key=${key}`;
   }
 
-  static getSearchTypeOptions(bundle) {
+  static getSearchTypeOptions(front_page_post_content) {
 
-    let MastheadWidgetData = bundle.front_page_post_content[0].cells.filter(c => c.widget.panels_info.class === 'Property_Pro_Masthead_Widget');
+    let MastheadWidgetData = front_page_post_content[0].cells.filter(c => c.widget.panels_info.class === 'Property_Pro_Masthead_Widget');
     let searchTypeData = MastheadWidgetData[0].widget.fields.search_options;
     return searchTypeData;
   }

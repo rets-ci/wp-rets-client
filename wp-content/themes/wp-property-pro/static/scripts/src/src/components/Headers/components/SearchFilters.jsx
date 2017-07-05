@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     removeLastLocationFilter() {
       // TODO: this function is not pure, make it so by removing its dependency on window
-      let options = Util.getSearchTypeOptions(window.bundle);
+      let options = Util.getSearchTypeOptions(this.props.front_page_post_content);
       let {
         labels,
         saleTypes,
@@ -254,7 +254,7 @@ class searchFilters extends Component {
     }
     if (termFilters && termFilters.length) {
       if (termFilters.length === 1) {
-        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.props.removeLastLocationFilter()} display={termFilters[0].value} value={termFilters[0].value} />;
+        termFilterElement = <FilterTag key={JSON.stringify(termFilters[0])} handleRemoveFilter={() => this.props.removeLastLocationFilter.bind(this)()} display={termFilters[0].value} value={termFilters[0].value} />;
       } else {
         termFilterElement = termFilters.map((t, i) =>
           <FilterTag key={JSON.stringify(t)} handleRemoveFilter={() => this.handleTermFilterRemove.bind(this)(t)} display={t.value} value={t.value} />
