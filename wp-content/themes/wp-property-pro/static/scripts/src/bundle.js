@@ -48645,9 +48645,9 @@
 	    }
 	  }, {
 	    key: 'getSearchTypeOptions',
-	    value: function getSearchTypeOptions(bundle) {
+	    value: function getSearchTypeOptions(front_page_post_content) {
 
-	      var MastheadWidgetData = bundle.front_page_post_content[0].cells.filter(function (c) {
+	      var MastheadWidgetData = front_page_post_content[0].cells.filter(function (c) {
 	        return c.widget.panels_info.class === 'Property_Pro_Masthead_Widget';
 	      });
 	      var searchTypeData = MastheadWidgetData[0].widget.fields.search_options;
@@ -90051,6 +90051,7 @@
 	  var allQueryParams = ownProps.location.query ? _qs2.default.parse(ownProps.location.query) : {};
 	  return {
 	    allQueryParams: allQueryParams,
+	    front_page_post_content: ownProps.front_page_post_content,
 	    query: _lodash2.default.get(state, 'searchResults.query', []),
 	    displayedResults: _lodash2.default.get(state, 'searchResults.displayedResults', []),
 	    searchQueryParams: allQueryParams[_lib.Lib.QUERY_PARAM_SEARCH_FILTER_PREFIX],
@@ -90173,6 +90174,7 @@
 	          allQueryParams = _props.allQueryParams,
 	          searchQueryParams = _props.searchQueryParams,
 	          displayedResults = _props.displayedResults,
+	          front_page_post_content = _props.front_page_post_content,
 	          location = _props.location,
 	          mapSearchResultsLoading = _props.mapSearchResultsLoading,
 	          openPropertiesModal = _props.openPropertiesModal,
@@ -90186,7 +90188,7 @@
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map' },
 	        _react2.default.createElement(_LocationModal2.default, null),
-	        _react2.default.createElement(_PropertiesModal2.default, { open: propertiesModalOpen }),
+	        _react2.default.createElement(_PropertiesModal2.default, { front_page_post_content: front_page_post_content, open: propertiesModalOpen }),
 	        _react2.default.createElement(
 	          'section',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + 'search-map-section row no-gutters' },
@@ -90310,6 +90312,7 @@
 
 	MapSearchResults.propTypes = {
 	  doSearchWithQuery: _propTypes2.default.func.isRequired,
+	  front_page_post_content: _propTypes2.default.array.isRequired,
 	  location: _propTypes2.default.object,
 	  mapSearchResultsLoading: _propTypes2.default.bool.isRequired,
 	  params: _propTypes2.default.object,
@@ -90849,6 +90852,7 @@
 	  return {
 	    bathroomSelected: localFilters.bathrooms || _staticFilters.defaultPropertyFilters['bathrooms'],
 	    bedroomSelected: localFilters.bedrooms || _staticFilters.defaultPropertyFilters['bedrooms'],
+	    front_page_post_content: ownProps.front_page_post_content,
 	    priceSelected: localFilters.price || _staticFilters.defaultPropertyFilters['price'],
 	    propertyTypeSelected: localFilters.property_type || '',
 	    resultCount: state.propertiesModal.resultCount,
@@ -90883,7 +90887,7 @@
 	    },
 	    removeLastLocationFilter: function removeLastLocationFilter() {
 	      // TODO: this function is not pure, make it so by removing its dependency on window
-	      var options = _Util2.default.getSearchTypeOptions(window.bundle);
+	      var options = _Util2.default.getSearchTypeOptions(this.props.front_page_post_content);
 
 	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(options),
 	          labels = _Util$getSearchTypePa.labels,
@@ -91096,6 +91100,7 @@
 	      var _props = this.props,
 	          bathroomSelected = _props.bathroomSelected,
 	          bedroomSelected = _props.bedroomSelected,
+	          front_page_post_content = _props.front_page_post_content,
 	          lotSizeSelected = _props.lotSizeSelected,
 	          priceSelected = _props.priceSelected,
 	          propertyTypeSelected = _props.propertyTypeSelected,
@@ -91144,7 +91149,7 @@
 	            'span',
 	            { key: termFilters[0].value, className: _lib.Lib.THEME_CLASSES_PREFIX + 'filter-section-button btn btn-primary selected' },
 	            _react2.default.createElement('i', { className: 'fa fa-times', onClick: function onClick() {
-	                return _this2.props.removeLastLocationFilter();
+	                return _this2.props.removeLastLocationFilter.bind(_this2)();
 	              } }),
 	            _react2.default.createElement(
 	              'span',
@@ -91200,7 +91205,7 @@
 	                      deleteSingleLocalFilter: this.props.deleteSingleLocalFilter,
 	                      deleteLocalFilterTerm: this.props.deleteLocalFilterTerm,
 	                      localFilters: localFilters,
-	                      removeLastLocationFilter: this.props.removeLastLocationFilter
+	                      removeLastLocationFilter: this.props.removeLastLocationFilter.bind(this)
 	                    })
 	                  ),
 	                  _react2.default.createElement(
@@ -91624,6 +91629,7 @@
 	PropertiesModal.propTypes = {
 	  bathroomSelected: _propTypes2.default.string,
 	  bedroomSelected: _propTypes2.default.string,
+	  front_page_post_content: _propTypes2.default.array.isRequired,
 	  openLocationModal: _propTypes2.default.func.isRequired,
 	  propertyTypeSelected: _propTypes2.default.string,
 	  localFilters: _propTypes2.default.object.isRequired
@@ -106283,7 +106289,10 @@
 	        success: function success(data) {
 	          if (_lodash2.default.get(data, 'post', null)) {
 	            document.title = _lodash2.default.get(data, 'page_title', '');
-	            self.setState({ post: data.post });
+	            self.setState({
+	              front_page_post_content: data.front_page_post_content,
+	              post: data.post
+	            });
 	          }
 	        },
 	        error: function error(jqXHR, textStatus, errorThrown) {
@@ -106324,9 +106333,10 @@
 	          'div',
 	          { className: _lib.Lib.THEME_CLASSES_PREFIX + "page-layout-container-inner" },
 	          _react2.default.createElement(_UserPanel2.default, { location: location }),
-	          _react2.default.createElement(_Header2.default, { location: location }),
+	          _react2.default.createElement(_Header2.default, { front_page_post_content: _lodash2.default.get(this.state, 'front_page_post_content', null), location: location }),
 	          _react2.default.Children.map(children, function (child, i) {
 	            return _react2.default.cloneElement(child, {
+	              front_page_post_content: _lodash2.default.get(_this2.state, 'front_page_post_content', null),
 	              post: _lodash2.default.get(_this2.state, 'post', {}),
 	              rows: _lodash2.default.get(_this2.state, 'post.custom_content', null) ? _this2.state.post.post_content : []
 	            });
@@ -106736,6 +106746,7 @@
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
+	    front_page_post_content: ownProps.front_page_post_content,
 	    location: ownProps.location,
 	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearch.saleTypesPanelOpen', false)
 	  };
@@ -106750,7 +106761,8 @@
 	};
 
 	var HeaderContent = function HeaderContent(_ref) {
-	  var location = _ref.location,
+	  var front_page_post_content = _ref.front_page_post_content,
+	      location = _ref.location,
 	      openUserPanel = _ref.openUserPanel,
 	      saleTypesPanelOpen = _ref.saleTypesPanelOpen;
 
@@ -106763,7 +106775,7 @@
 	    return null;
 	  } else if (pathRoot === _lodash2.default.get(wpp, 'instance.settings.configuration.base_slug', '')) {
 	    var searchFilters = _Util2.default.getSearchFiltersFromURL(window.location.href, true);
-	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { openUserPanel: openUserPanel, searchFilters: searchFilters });
+	    headerElement = _react2.default.createElement(_HeaderSearch2.default, { front_page_post_content: front_page_post_content, openUserPanel: openUserPanel, searchFilters: searchFilters });
 	    sectionClassnames += " " + _lib.Lib.THEME_CLASSES_PREFIX + "header-search";
 
 	    if (saleTypesPanelOpen) {
@@ -107127,6 +107139,7 @@
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
+	    front_page_post_content: ownProps.front_page_post_content,
 	    saleTypesPanelOpen: _lodash2.default.get(state, 'headerSearch.saleTypesPanelOpen', false)
 	  };
 	};
@@ -107169,7 +107182,9 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var searchFilters = this.props.searchFilters;
+	      var _props = this.props,
+	          front_page_post_content = _props.front_page_post_content,
+	          searchFilters = _props.searchFilters;
 
 	      var containerClasses = 'row ' + _lib.Lib.THEME_CLASSES_PREFIX + 'sale-type-selection hidden-sm-down';
 	      if (!this.props.saleTypesPanelOpen) {
@@ -107282,7 +107297,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: _lib.Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8" },
-	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters })
+	            _react2.default.createElement(_SearchFilters2.default, { filters: searchFilters, front_page_post_content: front_page_post_content })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -107298,6 +107313,7 @@
 	}(_react.Component);
 
 	HeaderSearch.propTypes = {
+	  front_page_post_content: _propTypes2.default.array.isRequired,
 	  searchFilters: _propTypes2.default.object.isRequired,
 	  openUserPanel: _propTypes2.default.func.isRequired
 	};
@@ -107383,7 +107399,7 @@
 	    },
 	    removeLastLocationFilter: function removeLastLocationFilter() {
 	      // TODO: this function is not pure, make it so by removing its dependency on window
-	      var options = _Util2.default.getSearchTypeOptions(window.bundle);
+	      var options = _Util2.default.getSearchTypeOptions(this.props.front_page_post_content);
 
 	      var _Util$getSearchTypePa = _Util2.default.getSearchTypeParameters(options),
 	          labels = _Util$getSearchTypePa.labels,
@@ -107616,7 +107632,7 @@
 	      if (termFilters && termFilters.length) {
 	        if (termFilters.length === 1) {
 	          termFilterElement = _react2.default.createElement(_FilterTag2.default, { key: JSON.stringify(termFilters[0]), handleRemoveFilter: function handleRemoveFilter() {
-	              return _this2.props.removeLastLocationFilter();
+	              return _this2.props.removeLastLocationFilter.bind(_this2)();
 	            }, display: termFilters[0].value, value: termFilters[0].value });
 	        } else {
 	          termFilterElement = termFilters.map(function (t, i) {

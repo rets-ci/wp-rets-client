@@ -12,6 +12,7 @@ import UserPanelIcon from './components/UserPanelIcon.jsx';
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    front_page_post_content: ownProps.front_page_post_content,
     saleTypesPanelOpen: _.get(state, 'headerSearch.saleTypesPanelOpen', false)
   }
 };
@@ -44,12 +45,14 @@ class HeaderSearch extends Component {
   }
 
   static propTypes = {
+    front_page_post_content: PropTypes.array.isRequired,
     searchFilters: PropTypes.object.isRequired,
     openUserPanel: PropTypes.func.isRequired
   };
 
   render() {
     let {
+      front_page_post_content,
       searchFilters
     } = this.props;
     let containerClasses = `row ${Lib.THEME_CLASSES_PREFIX}sale-type-selection hidden-sm-down`;
@@ -107,7 +110,7 @@ class HeaderSearch extends Component {
             <a href="#" onClick={this.handleSaleTypeClick.bind(this)}>{saleType} <i className="fa fa-caret-down"></i></a>
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "search-box-wrap col-8 col-md-7 col-lg-8"}>
-            <SearchFilters filters={searchFilters} />
+            <SearchFilters filters={searchFilters} front_page_post_content={front_page_post_content} />
           </div>
           <div className={Lib.THEME_CLASSES_PREFIX + "top-nav-bar col-1 col-md-1"}>
             <NavigationIcons openUserPanel={this.props.openUserPanel} />
