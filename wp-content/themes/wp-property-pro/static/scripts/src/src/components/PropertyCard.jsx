@@ -87,8 +87,10 @@ export default class PropertyCard extends Component {
     classes.push(id);
     let link;
     // TODO: remove after the pathname only part of the URL is sent back from the server
-    if (relative_permalink.includes('http')) {
+    if (relative_permalink.includes('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci')) {
       link = relative_permalink.replace('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci', '');
+    } else {
+      link = relative_permalink;
     }
     return (
       <div
