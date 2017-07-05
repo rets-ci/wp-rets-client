@@ -248,7 +248,7 @@ class Api {
             _buckets.push({
               id: _.get(option, '_source.post_title', ''),
               text: _.get(option, '_source.post_meta.formatted_address_simple', ''),
-              url: _.get(option, '_source.post_name', null) ? [_.get(bundle, 'property_single_url'), _.get(option, '_source.post_name', null)].join('/') : '',
+              url: _.get(option, '_source.post_name', null) ? [_.get(bundle, 'property_single_url'), _.get(option, '_source.post_name', null)].join('/') : ''
             });
           }
         }
