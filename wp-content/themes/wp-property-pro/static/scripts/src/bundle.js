@@ -30596,6 +30596,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _Api = __webpack_require__(293);
 
 	var _Api2 = _interopRequireDefault(_Api);
@@ -30629,8 +30631,18 @@
 	      id = _data$_source.ID,
 	      post_date = _data$_source.post_date,
 	      post_content = _data$_source.post_content,
+	      _data$_source$post_me = _data$_source.post_meta,
+	      rets_list_price = _data$_source$post_me.rets_list_price,
+	      rets_living_area = _data$_source$post_me.rets_living_area,
+	      rets_lot_size_area = _data$_source$post_me.rets_lot_size_area,
+	      baths = _data$_source$post_me.rets_total_baths,
+	      rets_postal_code = _data$_source$post_me.rets_postal_code,
+	      beds = _data$_source$post_me.beds,
 	      post_modified = _data$_source.post_modified,
 	      post_title = _data$_source.post_title,
+	      _data$_source$tax_inp = _data$_source.tax_input,
+	      rets_city = _data$_source$tax_inp.rets_city,
+	      rets_state = _data$_source$tax_inp.rets_state,
 	      wpp_media = _data$_source.wpp_media;
 
 
@@ -30638,14 +30650,22 @@
 	    return w.url;
 	  });
 
-	  return {
+	  return _extends({
+	    baths: baths,
+	    beds: beds,
 	    id: id,
 	    images: images,
 	    post_date: post_date,
 	    post_content: post_content,
 	    post_modified: post_modified,
-	    post_title: post_title
-	  };
+	    post_title: post_title,
+	    rets_city: _.get(rets_city, 'rets_city[0].name', null),
+	    rets_state: _.get(rets_state, 'rets_state[0].name', null),
+	    rets_list_price: rets_list_price,
+	    rets_living_area: rets_living_area,
+	    rets_lot_size_area: rets_lot_size_area,
+	    rets_postal_code: rets_postal_code
+	  }, data);
 	};
 
 	var SingleContainer = function (_Component) {
@@ -30684,7 +30704,6 @@
 	          if (!_.get(data, 'hits.hits[0]', null)) {
 	            _this2.setState({ property: false });
 	          } else {
-	            console.log(data.hits.hits[0]);
 	            _this2.setState({
 	              property: data.hits.hits[0]
 	            });
@@ -53867,15 +53886,22 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
+	          baths = _props.baths,
+	          beds = _props.beds,
 	          post_content = _props.post_content,
 	          post_date = _props.post_date,
 	          post_modified = _props.post_modified,
 	          post_title = _props.post_title,
+	          rets_city = _props.rets_city,
+	          rets_state = _props.rets_state,
+	          rets_list_price = _props.rets_list_price,
+	          rets_living_area = _props.rets_living_area,
+	          rets_lot_size_area = _props.rets_lot_size_area,
+	          rets_postal_code = _props.rets_postal_code,
 	          images = _props.images;
 
 	      var daysOnWebsite = daysPassedSincePostedDate(post_date);
 	      var lastUpdated = getLastUpdated(post_date);
-
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _lib.Lib.THEME_CLASSES_PREFIX + "single-container" },
@@ -53900,7 +53926,11 @@
 	                _react2.default.createElement(
 	                  'h6',
 	                  { className: 'card-subtitle mb-2 text-muted' },
-	                  'Durham, NC 27712'
+	                  rets_city ? rets_city + "," : null,
+	                  ' ',
+	                  rets_state,
+	                  ' ',
+	                  rets_postal_code
 	                ),
 	                _react2.default.createElement(
 	                  'ul',
@@ -53908,28 +53938,32 @@
 	                  _react2.default.createElement(
 	                    'li',
 	                    null,
-	                    '$499,000'
+	                    rets_list_price ? _Util2.default.formatPriceValue(rets_list_price) : "N/A"
 	                  ),
-	                  _react2.default.createElement(
+	                  beds ? _react2.default.createElement(
 	                    'li',
 	                    null,
-	                    '3 Bed'
-	                  ),
-	                  _react2.default.createElement(
+	                    beds,
+	                    ' Bed'
+	                  ) : null,
+	                  baths ? _react2.default.createElement(
 	                    'li',
 	                    null,
-	                    '2 Bath'
-	                  ),
-	                  _react2.default.createElement(
+	                    baths,
+	                    ' Bath'
+	                  ) : null,
+	                  rets_living_area ? _react2.default.createElement(
 	                    'li',
 	                    null,
-	                    '1,142 SF'
-	                  ),
-	                  _react2.default.createElement(
+	                    _Util2.default.formatSQFTValue(rets_living_area),
+	                    ' SF'
+	                  ) : null,
+	                  rets_lot_size_area ? _react2.default.createElement(
 	                    'li',
 	                    null,
-	                    '2.23 Acers'
-	                  )
+	                    _Util2.default.formatLotSizeValue(rets_lot_size_area),
+	                    ' Acers'
+	                  ) : null
 	                ),
 	                _react2.default.createElement(
 	                  'button',
