@@ -94617,7 +94617,6 @@
 	              return _this2.searchResultLisintElement = r;
 	            } },
 	          properties.map(function (p, i) {
-
 	            var item = {
 	              address: _lodash2.default.get(p, '_source.post_meta.rets_address', ''),
 	              location: _lodash2.default.get(p, '_source.post_meta.wpp_location_pin', []),
@@ -94631,6 +94630,7 @@
 	              living_area: _lodash2.default.get(p, '_source.post_meta.rets_living_area', 0),
 	              lots_size: _lodash2.default.get(p, '_source.post_meta.rets_lot_size_area', 0),
 	              price: _lodash2.default.get(p, '_source.post_meta.rets_list_price[0]', 0),
+	              post_name: _lodash2.default.get(p, '_source.post_name', 0),
 	              post_type: _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].name', ''),
 	              type: _lodash2.default.get(bundle, 'property_types.' + _lodash2.default.get(p, '_source.tax_input.rets_property_type.rets_property_type[0].slug', ''), 'Other'),
 	              relative_permalink: _lodash2.default.get(p, '_source.permalink', ''),
@@ -95752,22 +95752,24 @@
 
 	      var _props$data = this.props.data,
 	          address = _props$data.address,
-	          location = _props$data.location,
 	          baths = _props$data.baths,
 	          beds = _props$data.beds,
 	          city = _props$data.city,
 	          gallery_images = _props$data.gallery_images,
 	          id = _props$data.id,
 	          living_area = _props$data.living_area,
+	          location = _props$data.location,
 	          lots_size = _props$data.lots_size,
 	          price = _props$data.price,
 	          property_type = _props$data.property_type,
+	          post_name = _props$data.post_name,
 	          relative_permalink = _props$data.relative_permalink,
 	          thumbnail = _props$data.thumbnail,
 	          type = _props$data.type,
 	          zip = _props$data.zip;
 
 
+	      var link = '/' + bundle.property_single_url + '/' + post_name;
 	      var classes = [];
 
 	      var self = this;
@@ -95796,13 +95798,6 @@
 	        classes.push(_lib.Lib.THEME_CLASSES_PREFIX + 'card-selected');
 	      }
 	      classes.push(id);
-	      var link = void 0;
-	      // TODO: remove after the pathname only part of the URL is sent back from the server
-	      if (relative_permalink.includes('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci')) {
-	        link = relative_permalink.replace('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci', '');
-	      } else {
-	        link = relative_permalink;
-	      }
 	      return _react2.default.createElement(
 	        'div',
 	        {
