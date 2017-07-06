@@ -15,13 +15,23 @@ let singlePropertyData = (data) => {
       rets_lot_size_area,
       rets_total_baths: baths,
       rets_postal_code,
+      rets_year_built,
       beds
     },
     post_modified,
     post_title,
     tax_input: {
       rets_city,
-      rets_state
+      rets_middle_school,
+      rets_high_school,
+      rets_state,
+      wpp_location: {
+        wpp_location_subdivision,
+        wpp_location_city
+      },
+      wpp_schools: {
+        elementary_school
+      }
     },
     wpp_media
   } = data._source;
@@ -31,6 +41,7 @@ let singlePropertyData = (data) => {
   return {
     baths,
     beds,
+    elementary_school: _.get(elementary_school, '[0].name', null),
     id,
     images,
     post_date,
@@ -42,7 +53,12 @@ let singlePropertyData = (data) => {
     rets_list_price,
     rets_living_area,
     rets_lot_size_area,
+    rets_high_school: _.get(rets_high_school, 'rets_high_school[0].name'),
+    rets_middle_school: _.get(rets_middle_school, 'rets_middle_school[0].name', null),
     rets_postal_code,
+    rets_year_built,
+    wpp_location_subdivision: _.get(wpp_location_subdivision, '[0].name', null),
+    wpp_location_city: _.get(wpp_location_city, '[0].name'),
     ...data
   }
 }

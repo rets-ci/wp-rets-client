@@ -1,5 +1,6 @@
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.jsx',
@@ -34,12 +35,16 @@ module.exports = {
           }
         ]
     },
+    plugins: [
+      new webpack.optimize.DedupePlugin()
+    ],
     resolve: {
       fallback: [
         'node_modules'
       ],
       alias: {
-        'swiper-css': path.join(__dirname, '/node_modules/swiper/dist/css/swiper.min.css')
+        'swiper-css': path.join(__dirname, '/node_modules/swiper/dist/css/swiper.min.css'),
+        'nprogress-css': path.join(__dirname, '/node_modules/nprogress/nprogress.css'),
       }
     }
 };

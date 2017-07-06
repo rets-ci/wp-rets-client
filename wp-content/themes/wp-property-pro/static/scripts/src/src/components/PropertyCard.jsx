@@ -41,22 +41,24 @@ export default class PropertyCard extends Component {
   render() {
     let {
       address,
-      location,
       baths,
       beds,
       city,
       gallery_images,
       id,
       living_area,
+      location,
       lots_size,
       price,
       property_type,
+      post_name,
       relative_permalink,
       thumbnail,
       type,
       zip
     } = this.props.data;
 
+    let link = '/' + bundle.property_single_url + '/' + post_name;
     let classes = [];
 
     let self = this;
@@ -85,13 +87,6 @@ export default class PropertyCard extends Component {
       classes.push(`${Lib.THEME_CLASSES_PREFIX}card-selected`);
     }
     classes.push(id);
-    let link;
-    // TODO: remove after the pathname only part of the URL is sent back from the server
-    if (relative_permalink.includes('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci')) {
-      link = relative_permalink.replace('https://usabilitydynamics-www-reddoorcompany-com-latest-v3.c.rabbit.ci', '');
-    } else {
-      link = relative_permalink;
-    }
     return (
       <div
         className={classes.join(' ')}>

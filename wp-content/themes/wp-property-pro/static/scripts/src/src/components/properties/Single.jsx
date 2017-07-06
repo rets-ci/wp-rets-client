@@ -40,17 +40,23 @@ class Single extends Component {
     let {
       baths,
       beds,
+      elementary_school,
+      images,
       post_content,
       post_date,
       post_modified,
       post_title,
       rets_city,
+      rets_high_school,
       rets_state,
       rets_list_price,
       rets_living_area,
       rets_lot_size_area,
+      rets_middle_school,
       rets_postal_code,
-      images
+      rets_year_built,
+      wpp_location_subdivision,
+      wpp_location_city
     } = this.props;
     let daysOnWebsite = daysPassedSincePostedDate(post_date);
     let lastUpdated = getLastUpdated(post_date);
@@ -113,7 +119,14 @@ class Single extends Component {
             }
           </div>
           <h5 className="mb-4">Property Highlights</h5>
-          <PropertyHighlights />
+          <PropertyHighlights
+            elementary_school={elementary_school}
+            rets_high_school={rets_high_school}
+            rets_middle_school={rets_middle_school}
+            rets_year_built={rets_year_built}
+            wpp_location_city={wpp_location_city}
+            wpp_location_subdivision={wpp_location_subdivision}
+           />
           <h5 className="mb-4">Property Details for {post_title}</h5>
           <p className="text-muted">847 Estes Street is a house for rent in Durham, NC 27701. This 1440 square foot house sits on a 0.13 lot and features 3 bedrooms and 2 bathrooms. Built in 1915, this house has been on the market for a total of 1 month and is currently priced at $1,100 a month.</p>
           <PropertyInfoTabs />
