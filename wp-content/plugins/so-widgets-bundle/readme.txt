@@ -2,8 +2,8 @@
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 4.2
 Tested up to: 4.8
-Stable tag: 1.9.1
-Build time: 2017-06-08T19:51:00+02:00
+Stable tag: 1.9.2
+Build time: 2017-07-04T16:52:10+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -53,6 +53,22 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.9.3 - 3 July 2017 =
+* Editor: Fix settings form label.
+* Don't select the external fallback field as value input.
+* Social media buttons: Don't output calls when missing network name.
+* Use gettext for widget global settings dialog title.
+* Image: Added link attributes to template variables.
+* Image grid: Use `get_template_variables`.
+* Image grid: Template code structure a bit more readable.
+* Simple masonry: Assign link attributes in `get_template_variables`.
+* Slider widget: Output link attributes.
+* Features: Remove redundant paragraph from template.
+* Google Maps: Fix issue when no matches found in maps API error string.
+* Google Maps: Mention required Google Maps APIs in field descriptions.
+* Google Maps: Localized strings used in JS.
+* Elementor 1.5: Ensure widgets' setup scripts are run after editing.
 
 = 1.9.2 - 8 June 2017 =
 * Post Carousel: default image for posts without featured images.
