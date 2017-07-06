@@ -15,6 +15,7 @@ import {Lib} from './lib.jsx';
 import _ from 'lodash';
 import shims from './shims.js';
 
+
 // set up all relevant shims and polyfills for various browsers
 shims();
 
@@ -22,6 +23,7 @@ let store = createStore(propertyProApp);
 
 // Create an enhanced router history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
+
 
 render(
   <Provider store={store}>

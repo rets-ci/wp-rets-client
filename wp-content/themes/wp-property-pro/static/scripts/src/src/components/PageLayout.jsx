@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Header from './Header.jsx';
 import LoadingAccordion from './LoadingAccordion.jsx';
+import nprogress from 'nprogress/nprogress.js';
 import UserPanel from './UserPanel.jsx';
 import {Lib} from '../lib.jsx';
 import _ from 'lodash';
+
+require('nprogress-css');
 
 export default class PageLayout extends Component {
   static propTypes = {
@@ -22,6 +25,7 @@ export default class PageLayout extends Component {
   fetchData(url) {
     // Get page content query
     let self = this;
+    nprogress.start();
     jQuery.ajax({
       url: url,
       type: 'GET',
@@ -31,6 +35,7 @@ export default class PageLayout extends Component {
       dataType: 'json',
       success: data => {
         if (_.get(data, 'post', null)) {
+          nprogress.done();
           document.title = _.get(data, 'page_title', '');
           self.setState({
             front_page_post_content: data.front_page_post_content,
@@ -77,7 +82,7 @@ export default class PageLayout extends Component {
             }))}
             <Footer/>
           </div>
-          : <LoadingAccordion />}
+          : null}
       </div>
     );
   }

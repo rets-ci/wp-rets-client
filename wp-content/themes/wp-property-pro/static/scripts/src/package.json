@@ -17,6 +17,7 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "nprogress": "^0.2.0",
     "numeral": "^2.0.4",
     "object.values": "^1.0.4",
     "prop-types": "^15.5.10",
