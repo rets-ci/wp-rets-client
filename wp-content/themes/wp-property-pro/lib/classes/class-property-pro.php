@@ -679,6 +679,7 @@ namespace UsabilityDynamics {
               foreach ($posts as $postId) {
                 $formatted_post = new \stdClass();
                 $formatted_post->thumbnail = get_the_post_thumbnail_url($postId);
+                $formatted_post->post_name = get_post_field('post_name', $postId);
                 $formatted_post->relative_permalink = str_replace(home_url(), "", get_permalink($postId));
                 $property_detail = get_property($postId);
 
