@@ -44,6 +44,16 @@
       "wp_memcached_servers": "127.0.0.1:11211",
       "WP_PROPERTY_LAYOUTS": true
     },
+    "settings_latest-v3-1": {
+      "wp_debug_log": true,
+      "wp_debug_display": true,
+      "wp_siteurl": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3-1.c.rabbit.ci",
+      "wp_home": "https://usabilitydynamics-www-reddoorcompany-com-latest-v3-1.c.rabbit.ci",
+      "WP_UPSTREAM_AUTOMATIC_PUSH": true,
+      "db_name": "www.reddoorcompany.com/latest-v3-1",
+      "wp_memcached_servers": "127.0.0.1:11211",
+      "WP_PROPERTY_LAYOUTS": true
+    },
     "settings_develop-dmitry": {
       "wp_debug_log": true,
       "WPP_FEATURE_FLAG_DISABLE_EDITOR": false,
