@@ -11,7 +11,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import SearchResultListing from './SearchResultListing.jsx';
+import SearchResultListing from './components/SearchResultListing.jsx';
+import SearchFilterDescriptionText from './SearchFilterDescriptionText.jsx';
 import Util from '../Util.jsx';
 import {Lib} from '../../lib.jsx';
 import _ from 'lodash';
@@ -167,15 +168,13 @@ class MapSearchResults extends Component {
           </div>
           <div className={`col-sm-8 ${this.state.mapDisplay ? "hidden-xs-down" : ""}`}>
           <div className={Lib.THEME_CLASSES_PREFIX + "listing-sidebar"}>
-            <div className={Lib.THEME_CLASSES_PREFIX + "headtitle"}>
-              <div>
-                <h1>Homes for {searchFilters.sale_type}</h1>
-                <p>There are {this.props.resultsTotal} homes for {searchFilters.sale_type} that are priced
-                  between
-                  $250,000 and $500,00
-                  with three to five betweens and two to three bathrooms.</p>
-              </div>
-            </div>
+            <SearchFilterDescriptionText
+              bathrooms={searchFilters.bathrooms}
+              bedrooms={searchFilters.bedrooms}
+              price={searchFilters.price}
+              saleType={searchFilters.sale_type}
+              total={this.props.resultsTotal}
+            />
             <SearchResultListing
               allowPagination={this.props.resultsTotal > this.props.displayedResults.length}
               properties={displayedResults}

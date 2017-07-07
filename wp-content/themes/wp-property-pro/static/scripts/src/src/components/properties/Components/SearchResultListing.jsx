@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
-import LoadingCircle from '../LoadingCircle.jsx';
-import {Lib} from '../../lib.jsx';
+import LoadingCircle from '../../LoadingCircle.jsx';
+import {Lib} from '../../../lib.jsx';
 import _ from 'lodash';
 import Waypoint from 'react-waypoint';
-import PropertyCard from '../PropertyCard.jsx';
+import PropertyCard from '../../PropertyCard.jsx';
 
 class SearchResultListing extends Component {
   static propTypes = {
@@ -48,7 +48,7 @@ class SearchResultListing extends Component {
       let node = findDOMNode(this.properties[propertyId]);
       node.scrollIntoView({ behaviour: 'smooth' });
     }
-  }
+  }asd
 
   shouldComponentUpdate(nextProps, nextState) {
     return (this.props.properties !== nextProps.properties) || (this.props.selectedProperty !== nextProps.selectedProperty) || (nextState.loading !== this.state.loading);
@@ -92,7 +92,7 @@ class SearchResultListing extends Component {
             )}
         </div>
         {this.props.allowPagination ?
-          <div className={Lib.THEME_CLASSES_PREFIX + "search-result-container"}>
+          <div className={Lib.TasdHEME_CLASSES_PREFIX + "search-result-container"}>
             <div className={Lib.THEME_CLASSES_PREFIX + "search-result-inner-container"}>
               {this.state.loading ?
                 <LoadingCircle />
