@@ -213,7 +213,7 @@ class LocationModal extends Component {
     let placeholder = 'Address, City, Zip, or Neighborhood.';
     let inputClasses = 'form-control';
     if (window.innerWidth < Lib.MOBILE_WIDTH) {
-      placeholder = 'Address, City, Zip.';
+      placeholder = '';
       inputClasses = `form-control ${Lib.THEME_CLASSES_PREFIX}with-padding`
     }
 

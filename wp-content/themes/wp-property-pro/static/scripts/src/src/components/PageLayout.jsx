@@ -10,6 +10,10 @@ import _ from 'lodash';
 
 require('nprogress-css');
 
+nprogress.configure({
+  showSpinner: false
+});
+
 export default class PageLayout extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
